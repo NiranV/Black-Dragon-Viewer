@@ -96,16 +96,10 @@ private:
 	LLVector3 mRot;
 	LLVector3 mScale;
 	LLVector3 mPivot;
-<<<<<<< HEAD
-	typedef std::vector<LLAvatarBoneInfo*> child_list_t;
-	child_list_t mChildList;
-	std::string mRotOrder;
-	//BD - Poser
-	BOOL mHasPosition;
-=======
 	typedef std::vector<LLAvatarBoneInfo*> bones_t;
 	bones_t mChildren;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+	//BD - Poser
+	BOOL mHasPosition;
 };
 
 //------------------------------------------------------------------------
@@ -388,8 +382,6 @@ void LLAvatarAppearance::initClass(const std::string& avatar_file_name_arg, cons
 	root->getFastAttributeS32( wearable_definition_version_string, wearable_def_version );
 	LLWearable::setCurrentDefinitionVersion( wearable_def_version );
 
-	std::string mesh_file_name;
-
 	LLXmlTreeNode* skeleton_node = root->getChildByName( "skeleton" );
 	if (!skeleton_node)
 	{
@@ -461,7 +453,7 @@ void LLAvatarAppearance::initClass(const std::string& avatar_file_name_arg, cons
 void LLAvatarAppearance::cleanupClass()
 {
 	delete_and_clear(sAvatarXmlInfo);
-	// *TODO: What about sAvatarSkeletonInfo ???
+	delete_and_clear(sAvatarSkeletonInfo);
 	sSkeletonXMLTree.cleanup();
 	sXMLTree.cleanup();
 }
@@ -1779,7 +1771,6 @@ void LLAvatarAppearance::makeJointAliases(LLAvatarBoneInfo *bone_info)
 
 const LLAvatarAppearance::joint_alias_map_t& LLAvatarAppearance::getJointAliases ()
 {
-    LLAvatarAppearance::joint_alias_map_t alias_map;
     if (mJointAliasMap.empty())
     {
         
@@ -1990,6 +1981,7 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMeshNodes(LLXmlTreeNode* root)
 				{
 					LL_WARNS() << "Unknown param type." << LL_ENDL;
 				}
+				delete info;
                 return FALSE;
 			}
 

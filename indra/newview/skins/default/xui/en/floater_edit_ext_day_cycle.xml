@@ -5,10 +5,10 @@
         help_topic="day_presets"
         save_rect="false"
         title="Edit Day Cycle"
-        width="705"
-        height="700"
+        width="700"
+        height="368"
         min_width="705"
-        min_height="700"
+        min_height="368"
         single_instance="true" 
         can_resize="false">
 
@@ -27,155 +27,120 @@
     <string name="commit_parcel">Apply To Parcel</string>
     <string name="commit_region">Apply To Region</string>
 
-    <!-- Layout -->
-    <layout_stack name="outer_stack"
-            width="705"
-            height="700"
-            follows="all"
-            animate="false"
-            top="0"
-            orientation="vertical">
-        <layout_panel name="name_and_import"
-                border="false"
-                auto_resize="false"
-                user_resize="false"
-                height="29"
-                min_height="29"
-                background_visible="false">
-            <!-- This layout_panel is for loading legacy presets -->
-            <text
-                    follows="top|left"
-                    font="SansSerif"
-                    height="10"
-                    layout="topleft"
-                    name="label"
-                    left="15"
-                    top="5"
-                    width="105">
-                Day Cycle Name:
-            </text>
-            <line_editor
-                    follows="top|left"
-                    layout="topleft"
-                    left_pad="10"
-                    max_length_bytes="100"
-                    name="day_cycle_name"
-                    prevalidate_callback="ascii"
-                    top="5"
-                    width="200"
-                    height="21" />
-            <button
-                    height="23"
-                    label="Import"
-                    follows="right|top"
-                    right="-10"
-                    font="SansSerif"
-                    top_delta="0"
-                    name="btn_import"
-                    tool_tip="Import legacy settings from disk." 
-                    width="96" />
-        </layout_panel>
-        <layout_panel name="content"
-                border="false"
-                auto_resize="true"
-                user_resize="false"
-                background_visible="false">
-            <layout_stack name="content_stack"
-                    width="705"
-                    follows="all"
-                    animate="false"
-                    top="0"
-                    orientation="vertical">
-                <layout_panel name="timeline_track_selection"
-                        border="false"
-                        bevel_style="in"
-                        auto_resize="false"
-                        user_resize="false"
-                        height="150"
-                        min_height="0"
-                        visible="true">
+<text
+                            name="icn_lock_edit"
+                            follows="left|top"
+                            height="10"
+                            layout="topleft"
+                            left_delta="10"
+                            top="0"
+                            width="500">
+                        Select a key frame from the timeline below to edit settings.
+                    </text>
+                    <icon
+    follows="top|left"
+    height="100"
+    color="1 1 1 1"
+    image_name="Panel_Background"
+    layout="topleft"
+    name="vicon"
+    mouse_opaque="false"
+    visible="true"
+    width="686"
+    top_pad="30"
+    left="7"/>
                     <panel name="timeline_layers"
                             border="false"
                             follows="left|top"
-                            height="150"
-                            width="110"
-                            top_pad="0"
+                            height="25"
+                            left="7"
+                            width="689"
+                            top_delta="-25"
                             min_height="0"
                             visible="true">
                         <button
                                 follows="left|top"
-                                height="23"
+                                height="20"
                                 label="Sky 4"
                                 layout="topleft"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
                                 top_pad="5"
-                                left="10"
+                                left="0"
                                 name="sky4_track"
-                                width="100"> 
+                                width="140"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
                                     parameter="4" />
                         </button>
                         <button
                                 follows="left|top"
-                                height="23"
+                                height="20"
                                 label="Sky 3"
                                 layout="topleft"
-                                top_pad="0"
-                                left="10"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
                                 name="sky3_track"
-                                width="100"> 
+                                width="136"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
                                     parameter="3" />
                         </button>
                         <button
                                 follows="left|top"
-                                height="23"
+                                height="20"
                                 label="Sky 2"
                                 layout="topleft"
-                                top_pad="0"
-                                left="10"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
                                 name="sky2_track"
-                                width="100"> 
+                                width="136"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
                                     parameter="2" />
                         </button>
                         <button
                                 follows="left|top"
-                                height="23"
+                                height="20"
                                 label="Ground Level"
                                 layout="topleft"
-                                top_pad="0"
-                                left="10"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
                                 name="sky1_track"
-                                width="100"> 
+                                width="136"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
                                     parameter="1" />
                         </button>
                         <button
                                 follows="left|top"
-                                height="23"
+                                height="20"
                                 label="Water"
                                 layout="topleft"
-                                top_pad="0"
-                                left="10"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
                                 name="water_track"
-                                width="100"> 
+                                width="138"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
                                     parameter="0" />
                         </button>
                     </panel>
                     <panel name="timeline"
-                            border="true"
                             follows="left|top"
-                            height="150"
+                            height="97"
                             min_height="0"
-                            width="595"
-                            min_width="595"
-                            left_pad="0"
+                            width="683"
+                            left_delta="1"
+                            top_pad="1"
                             visible="true">              
                         <!-- Todo: These 5 tests might be subjected to a change to be dynamically generated, consider using layout_stack to get dynamic width adjustment-->
                         <text
@@ -191,7 +156,7 @@
                                 follows="left|top|right"
                                 height="15"
                                 layout="topleft"
-                                left_delta="117"
+                                left_delta="135"
                                 name="p1"
                                 top_delta="0"
                                 value="25% [DSC]"
@@ -200,7 +165,7 @@
                                 follows="left|top|right"
                                 height="15"
                                 layout="topleft"
-                                left_delta="122"
+                                left_delta="135"
                                 name="p2"
                                 top_delta="0"
                                 value="50% [DSC]"
@@ -209,7 +174,7 @@
                                 follows="left|top|right"
                                 height="15"
                                 layout="topleft"
-                                left_delta="122"
+                                left_delta="135"
                                 name="p3"
                                 top_delta="0"
                                 value="75% [DSC]"
@@ -218,7 +183,7 @@
                                 follows="left|top|right"
                                 height="15"
                                 layout="topleft"
-                                left_delta="122"
+                                left_delta="135"
                                 name="p4"
                                 top_delta="0"
                                 value="100% [DSC]"
@@ -239,7 +204,7 @@
                                 show_text="false"
                                 top_pad="0"
                                 use_triangle="true"
-                                width="525" />
+                                width="603" />
 
                         <multi_slider
                                 decimal_digits="0"
@@ -255,316 +220,221 @@
                                 max_val="1"
                                 name="WLDayCycleFrames"
                                 show_text="false"
-                                top_pad="15"
-                                width="525" />
+                                top_pad="10"
+                                width="603" />
 
                         <text
                                 follows="left|bottom"
                                 height="25"
                                 layout="topleft"
-                                left_pad="0"
+                                left_pad="5"
                                 name="current_time"
                                 value="[PRCNT]% [DSC]"
-                                top_delta="-5"
+                                top_delta="-1"
                                 width="56"
                                 word_wrap="true"/>
 
-                        <layout_stack
-                                follows="all"
-                                height="200"
-                                animate="false"
-                                top_pad="0"
-                                left="0"
-                                orientation="horizontal">
-                            <layout_panel
-                                    border="false"
-                                    bevel_style="in"
-                                    auto_resize="false"
-                                    user_resize="false"
-                                    height="150"
-                                    width="200"
-                                    min_height="0"
-                                    visible="true">
                                 <button
                                         follows="top|left"
                                         height="23"
                                         width="110"
                                         label="Clone Track From"
-                                        left="10"
-                                        top_pad="10"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+                                        left="1"
+                                        top_pad="11"
                                         name="copy_track" />
                                 <button
                                         follows="top|left"
                                         height="23"
                                         width="110"
                                         label="Load Track From"
-                                        top_pad="0"
-                                        left_delta="0"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+                                        top_delta="0"
+                                        left_pad="1"
                                         name="load_track" />
                                 <button
                                         follows="top|left"
                                         height="23"
-                                        width="110"
+                                        width="109"
                                         label="Clear Track"
-                                        top_pad="0"
-                                        left_delta="0"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+                                        top_delta="0"
+                                        left_pad="1"
                                         name="clear_track" />
                                     
-                            </layout_panel>
-                            <layout_panel
-                                    border="false"
-                                    bevel_style="in"
-                                    auto_resize="false"
-                                    user_resize="false"
-                                    height="150"
-                                    width="200"
-                                    min_height="0"
-                                    visible="true">
-                                <layout_stack
-                                        name="progress_control"
-                                        follows="top|left"
-                                        height="25"
-                                        width="83"
-                                        layout="topleft"
-                                        animate="false"
-                                        left="31"
-                                        top="40"
-                                        orientation="horizontal">
-
-                                    <layout_panel
-                                            name="skip_back"
-                                            mouse_opaque="false"
-                                            auto_resize="false"
-                                            layout="topleft"
-                                            top="0"
-                                            height="25"
-                                            min_width="25"
-                                            width="25">
                                         <button
                                                 name="skip_back_btn"
                                                 follows="top"
                                                 image_overlay="SkipBackward_Off"
-                                                image_disabled="PushButton_Disabled"
-                                                image_disabled_selected="PushButton_Disabled"
-                                                image_selected="PushButton_Selected"
-                                                image_unselected="PushButton_Off"
+                                                image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                                 hover_glow_amount="0.15"
                                                 auto_resize="false"
                                                 width="25"
-                                                height="25"
+                                                height="23"
                                                 layout="topleft"
                                                 tool_tip="Step back"
-                                                top="0"
-                                                left="0">
+                                                top_delta="0"
+                                                left_pad="1">
                                             <button.commit_callback
                                                     function="DayCycle.PlayActions"
                                                     parameter="back" />
                                         </button>
-                                    </layout_panel>
-
-                                    <layout_panel
-                                            name="play_layout"
-                                            mouse_opaque="false"
-                                            auto_resize="false"
-                                            layout="topleft"
-                                            top="0"
-                                            height="25"
-                                            min_width="25"
-                                            width="25">
                                         <button
                                                 name="play_btn"
                                                 follows="top"
                                                 image_overlay="Play_Off"
-                                                image_disabled="PushButton_Disabled"
-                                                image_disabled_selected="PushButton_Disabled"
-                                                image_selected="PushButton_Selected"
-                                                image_unselected="PushButton_Off"
+                                                image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                                 hover_glow_amount="0.15"
                                                 auto_resize="false"
                                                 layout="topleft"
-                                                height="25"
+                                                height="23"
                                                 width="25"
-                                                left="0"
-                                                top="0">
+                                                left_pad="1"
+                                                top_delta="0">
                                             <button.commit_callback
                                                     function="DayCycle.PlayActions"
                                                     parameter="play" />
                                         </button>
-                                    </layout_panel>
-
-                                    <layout_panel
-                                            name="pause_layout"
-                                            mouse_opaque="false"
-                                            auto_resize="false"
-                                            layout="topleft"
-                                            top="0"
-                                            height="25"
-                                            min_width="25"
-                                            width="25"
-                                            visible="false">
                                         <button
                                                 name="pause_btn"
                                                 follows="top"
                                                 image_overlay="Pause_Off"
-                                                image_disabled="PushButton_Disabled"
-                                                image_disabled_selected="PushButton_Disabled"
-                                                image_selected="PushButton_Selected"
-                                                image_unselected="PushButton_Off"
+                                                image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                                 hover_glow_amount="0.15"
                                                 auto_resize="false"
+                                                visible="false"
                                                 layout="topleft"
-                                                height="25"
+                                                height="23"
                                                 width="25"
-                                                left="0"
-                                                top="0">
+                                                left_delta="0"
+                                                top_delta="0">
                                             <button.commit_callback
                                                     function="DayCycle.PlayActions"
                                                     parameter="pause" />
                                         </button>
-                                    </layout_panel>
-
-                                    <layout_panel
-                                            name="skip_forward"
-                                            mouse_opaque="false"
-                                            auto_resize="false"
-                                            layout="topleft"
-                                            top="0"
-                                            height="25"
-                                            min_width="25"
-                                            width="25">
                                         <button
                                                 name="skip_forward_btn"
                                                 follows="top"
                                                 image_overlay="SkipForward_Off"
-                                                image_disabled="PushButton_Disabled"
-                                                image_disabled_selected="PushButton_Disabled"
-                                                image_selected="PushButton_Selected"
-                                                image_unselected="PushButton_Off"
+                                                image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                                 hover_glow_amount="0.15"
                                                 width="25"
-                                                height="25"
+                                                height="23"
                                                 layout="topleft"
+                                                left_pad="1"
                                                 tool_tip="Step forward"
-                                                top="0">
+                                                top_delta="0">
                                             <button.commit_callback
                                                     function="DayCycle.PlayActions"
                                                     parameter="forward" />
                                         </button>
-                                    </layout_panel>
-                                </layout_stack>
-                            </layout_panel>
-                            <layout_panel
-                                    border="false"
-                                    bevel_style="in"
-                                    auto_resize="false"
-                                    user_resize="false"
-                                    width="190"
-                                    height="150"
-                                    min_height="0"
-                                    visible="true">
+                                        
                                 <button
 
                                         follows="top|right"
                                         height="23"
                                         width="90"
-                                        right="-10"
-                                        top_pad="10"
+                                        left_pad="1"
+                                        top_delta="0"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                         label="Add [FRAME]"
                                         name="add_frame" />
                                 <button
                                         follows="top|left"
                                         height="23"
                                         width="90"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                         label="Load [FRAME]"
-                                        top_pad="0"
-                                        left_delta="0"
+                                        top_delta="0"
+                                        left_pad="1"
                                         name="btn_load_frame" />
                                 <button
                                         follows="left|top"
                                         height="23"
                                         width="90"
+                                        image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                                         label="Delete [FRAME]"
-                                        top_pad="0"
-                                        left_delta="0"
+                                        top_delta="0"
+                                        left_pad="1"
                                         name="delete_frame" />
-                            </layout_panel>
-                        </layout_stack>
                     </panel>
-                </layout_panel>
-                <layout_panel name="frame_edit_controls"
-                        auto_resize="false"
-                        user_resize="false"
-                        height="30"
-                        width="700"
-                        min_height="30"
-                        visible="true">
-                    <!--bg_alpha_color="blue"
-                background_visible="true" -->
-                    <text
-                            name="icn_lock_edit"
-                            follows="bottom"
-                            height="10"
-                            layout="bottomleft"
-                            left_delta="15"
-                            top_pad="15"
-                            font="SansSerif"
-                            text_color="Yellow"
-                            width="500">
-                        Select a key frame from the timeline above to edit settings.
-                    </text>
-                </layout_panel>
-                <layout_panel name="frame_settings_water"
-                        auto_resize="true"
-                        user_resize="false"
-                        height="420"
-                        width="700"
-                        min_height="0"
-                        visible="false">
+                    <icon
+    follows="top|left"
+    height="193"
+    color="1 1 1 1"
+    image_name="Panel_Background"
+    layout="topleft"
+    name="vicon"
+    mouse_opaque="false"
+    visible="true"
+    width="686"
+    top_pad="30"
+    left="7"/>
                     <tab_container
                             follows="all"
-                            halign="left"
-                            height="420"
+                            halign="center"
+                            height="188"
                             layout="topleft"
-                            left="0"
+                            left="5"
                             name="water_tabs"
+                            tab_height="20"
                             tab_position="top"
                             tab_width="140"
                             tab_padding_right="3"
-                            top_pad="0"
-                            width="700">
+                            top_delta="-20"
+                            width="689">
                         <panel
-                                border="true"
-                                class="panel_settings_water"
-                                filename="panel_settings_water.xml"
-                                label="Water"
+                                class="panel_settings_water_settings"
+                                filename="panel_settings_water_settings.xml"
+                                label="Settings"
                                 layout="topleft"
                                 left_delta="0"
                                 top_pad="5"
-                                name="water_panel"/>
+                                name="water_image_panel"/>
+                        <panel
+                                class="panel_settings_water_image"
+                                filename="panel_settings_water_image.xml"
+                                label="Image"
+                                layout="topleft"
+                                left_delta="0"
+                                top_pad="5"
+                                name="water_settings_panel"/>
                     </tab_container>
-                </layout_panel>
-                <layout_panel name="frame_settings_sky"
-                        auto_resize="true"
-                        user_resize="false"
-                        height="420"
-                        width="700"
-                        min_height="0"
-                        visible="true">
                     <tab_container
                             follows="all"
-                            halign="left"
-                            height="420"
+                            halign="center"
+                            height="188"
                             visible="true"
                             layout="topleft"
-                            left="0"
+                            left="5"
                             name="sky_tabs"
+                            tab_height="20"
                             tab_position="top"
                             tab_width="140"
                             tab_padding_right="3"
-                            top_pad="0"
-                            width="700">
+                            top_delta="0"
+                            width="689">
                         <panel
-                                border="true"
                                 class="panel_settings_atmos"
                                 filename="panel_settings_sky_atmos.xml"
                                 label="Atmosphere &amp; Lighting"
@@ -573,16 +443,6 @@
                                 top_pad="5"
                                 name="atmosphere_panel" />
                         <panel
-                                border="true"
-                                class="panel_settings_cloud"
-                                filename="panel_settings_sky_clouds.xml"
-                                label="Clouds"
-                                layout="topleft"
-                                left_delta="0"
-                                top_pad="5"
-                                name="clouds_panel" />
-                        <panel
-                                border="true"
                                 class="panel_settings_sunmoon"
                                 filename="panel_settings_sky_sunmoon.xml"
                                 label="Sun &amp; Moon"
@@ -590,6 +450,14 @@
                                 left_delta="0"
                                 top_pad="5"
                                 name="moon_panel" />
+                        <panel
+                                class="panel_settings_cloud"
+                                filename="panel_settings_sky_clouds.xml"
+                                label="Clouds"
+                                layout="topleft"
+                                left_delta="0"
+                                top_pad="5"
+                                name="clouds_panel" />
                         <!-- added programatically so it doesn't show up whether we want it or not
                         <panel
                                 border="true"
@@ -602,24 +470,58 @@
                                 name="density_panel" />
                          -->
                     </tab_container>
-                </layout_panel>        
-            </layout_stack>
-        </layout_panel>
-        <layout_panel name="buttons"
-                auto_resize="false"
-                user_resize="false"
-                height="26"
-                min_height="26"
-                visible="true"
-                width="700">
+                    <icon
+    follows="left|bottom|right"
+    image_name="Toolbar_Middle_Off"
+    height="23"
+    width="120"
+    layout="topleft"
+    name="sky_preset_icon"
+    left_delta="4"
+    top_pad="1"/>
+            <text
+                    follows="top|left"
+                    height="10"
+                    layout="topleft"
+                    name="label"
+                    left="15"
+                    top_delta="5"
+                    width="105">
+                Day Cycle Name:
+            </text>
+            <line_editor
+                    follows="top|left"
+                    layout="topleft"
+                    left_pad="10"
+                    max_length_bytes="100"
+                    name="day_cycle_name"
+                    prevalidate_callback="ascii"
+                    top_delta="-5"
+                    width="200"
+                    height="22" />
+            <button
+                    height="23"
+                    label="Import"
+                    follows="left|top"
+                    left_pad="1"
+                    top_delta="0"
+                    name="btn_import"
+                    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+                    tool_tip="Import legacy settings from disk." 
+                    width="111" />
             <button
                     follows="top|left"
                     height="23"
                     label="Save"
-                    left="5"
-                    top_pad="0"
+                    left_pad="1"
+                    top_delta="0"
                     name="save_btn"
-                    width="156" />
+                    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+                    width="111" />
 
             <button
                     follows="top|left"
@@ -627,25 +529,26 @@
                     name="btn_flyout"
                     label=""
                     layout="topleft"
-                    left_pad="-20"
-                    top="0"
-                    image_selected="SegmentedBtn_Right_Selected_Press"
-                    image_unselected="SegmentedBtn_Right_Off"
-                    image_pressed="SegmentedBtn_Right_Press"
-                    image_pressed_selected="SegmentedBtn_Right_Selected_Press"
+                    left_pad="1"
+                    top_delta="0"
+                    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                     image_overlay="Arrow_Small_Up"
-                    width="20"/>
+                    width="25"/>
 
             <button
                     follows="top|left"
                     height="23"
                     label="Cancel"
                     layout="topleft"
-                    left_pad="10"
+                    left_pad="1"
+                    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
                     name="cancel_btn"
-                    width="150" /> 
+                    width="110" />
+            
 
-        </layout_panel>
-    </layout_stack>
 
 </floater>

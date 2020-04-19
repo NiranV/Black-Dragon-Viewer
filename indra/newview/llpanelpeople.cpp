@@ -630,7 +630,6 @@ BOOL LLPanelPeople::postBuild()
 	getChild<LLFilterEditor>("groups_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 	getChild<LLFilterEditor>("recent_filter_input")->setCommitCallback(boost::bind(&LLPanelPeople::onFilterEdit, this, _2));
 
-<<<<<<< HEAD
 	mGroupCount = getChild<LLTextBox>("groupcount");
 	//BD
 	mFriendCount = getChild<LLTextBox>("friendcount");
@@ -640,13 +639,11 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyGearBtn = getChild<LLUICtrl>("nearby_gear_btn");
 	mRecentGearBtn = getChild<LLUICtrl>("recent_gear_btn");
 	mBlockedGearBtn = getChild<LLUICtrl>("blocked_gear_btn");
-=======
 	if(LLAgentBenefitsMgr::current().getGroupMembershipLimit() < max_premium)
 	{
 		getChild<LLTextBox>("groupcount")->setText(getString("GroupCountWithInfo"));
 		getChild<LLTextBox>("groupcount")->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
 	}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
 	mTabContainer->setCommitCallback(boost::bind(&LLPanelPeople::onTabSelected, this, _2));
@@ -894,14 +891,17 @@ void LLPanelPeople::updateButtons()
 	//BD
 	const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
 	LLAvatarTracker::buddy_map_t all_buddies;
-	U32 groups_count = gAgent.mGroups.size();
 	av_tracker.copyBuddyList(all_buddies);
-	mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
-	mGroupCount->setTextArg("[MAX_GROUPS]", llformat("%d", gMaxAgentGroups));
 	mBlockCount->setVisible(blocked_tab_active);
 	U32 block_count = mBlockedList->size();
 	mBlockCount->setTextArg("[BLOCKED_COUNT]", llformat("%d", block_count));
 	mBlockCount->setTextArg("[LIMIT]", llformat("%d", gSavedSettings.getS32("MuteListLimit")));
+
+	U32 groups_count = gAgent.mGroups.size();
+	S32 max_groups = LLAgentBenefitsMgr::current().getGroupMembershipLimit();
+	mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
+	mGroupCount->setTextArg("[MAX_GROUPS]", llformat("%d", max_groups));
+
 	mMenuFilters->setVisible(!group_tab_active);
 	mMenuEdit->setVisible(!recent_tab_active);
 
@@ -911,18 +911,9 @@ void LLPanelPeople::updateButtons()
 		{
 			selected_id = mGroupList->getSelectedUUID();
 		}
-<<<<<<< HEAD
-=======
 
 		LLPanel* groups_panel = mTabContainer->getCurrentPanel();
 		groups_panel->getChildView("minus_btn")->setEnabled(item_selected && selected_id.notNull()); // a real group selected
-
-		U32 groups_count = gAgent.mGroups.size();
-		S32 max_groups = LLAgentBenefitsMgr::current().getGroupMembershipLimit();
-		U32 groups_remaining = max_groups > groups_count ? max_groups - groups_count : 0;
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[COUNT]", llformat("%d", groups_count));
-		groups_panel->getChild<LLUICtrl>("groupcount")->setTextArg("[REMAINING]", llformat("%d", groups_remaining));
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	}
 	else
 	{

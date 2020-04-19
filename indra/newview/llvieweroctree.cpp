@@ -1186,9 +1186,7 @@ static LLTrace::BlockTimerStatHandle FTM_OCCLUSION_DRAW("Draw");
 
 void LLOcclusionCullingGroup::doOcclusion(LLCamera* camera, const LLVector4a* shift)
 {
-	//BD - Work around water flickering until there's a proper fix.
-	if (mSpatialPartition->isOcclusionEnabled() && LLPipeline::sUseOcclusion > 1
-		&& LLDrawPool::POOL_WATER != mSpatialPartition->mDrawableType)
+	if (mSpatialPartition->isOcclusionEnabled() && LLPipeline::sUseOcclusion > 1)
 	{
 		//move mBounds to the agent space if necessary
 		LLVector4a bounds[2];
@@ -1200,7 +1198,10 @@ void LLOcclusionCullingGroup::doOcclusion(LLCamera* camera, const LLVector4a* sh
 		}
 
 		F32 OCCLUSION_FUDGE_Z = SG_OCCLUSION_FUDGE; //<-- #Solution #2
-		//BD - Work around water flickering until there's a proper fix.
+		if (LLDrawPool::POOL_WATER == mSpatialPartition->mDrawableType)
+		{
+			OCCLUSION_FUDGE_Z = 1.;
+		}
 
 		// Don't cull hole/edge water, unless we have the GL_ARB_depth_clamp extension
 		if (earlyFail(camera, bounds))
@@ -1224,12 +1225,12 @@ void LLOcclusionCullingGroup::doOcclusion(LLCamera* camera, const LLVector4a* sh
 						mOcclusionQuery[LLViewerCamera::sCurCameraID] = getNewOcclusionQueryObjectName();
 					}
 
-					//BD - Work around water flickering until there's a proper fix.
 					// Depth clamp all water to avoid it being culled as a result of being
 					// behind the far clip plane, and in the case of edge water to avoid
 					// it being culled while still visible.
 					bool const use_depth_clamp = gGLManager.mHasDepthClamp &&
-												(mSpatialPartition->mDrawableType == LLDrawPool::POOL_VOIDWATER);
+												(mSpatialPartition->mDrawableType == LLDrawPool::POOL_WATER ||						
+												mSpatialPartition->mDrawableType == LLDrawPool::POOL_VOIDWATER);
 
 					LLGLEnable clamp(use_depth_clamp ? GL_DEPTH_CLAMP : 0);				
 						

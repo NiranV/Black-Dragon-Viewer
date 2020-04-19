@@ -868,7 +868,7 @@ void LLWearableHoldingPattern::onAllComplete()
 //		// attachments, even those that are not being removed. This is
 //		// needed to get joint positions all slammed down to their
 //		// pre-attachment states.
-//		gAgentAvatarp->clearAttachmentPosOverrides();
+//		gAgentAvatarp->clearAttachmentOverrides();
 //
 //		if (objects_to_remove.size() || items_to_add.size())
 //		{
@@ -891,10 +891,10 @@ void LLWearableHoldingPattern::onAllComplete()
 //			 ++it)
 //		{
 //			LLViewerObject *objectp = *it;
-//			if (!objectp->isAnimatedObject())
-//			{
-//				gAgentAvatarp->addAttachmentOverridesForObject(objectp);
-//			}
+//            if (!objectp->isAnimatedObject())
+//            {
+//                gAgentAvatarp->addAttachmentOverridesForObject(objectp);
+//            }
 //		}
 //		
 //		// Add new attachments to match those requested.
@@ -2030,10 +2030,7 @@ bool LLAppearanceMgr::getCanReplaceCOF(const LLUUID& outfit_cat_id)
 // [/RLVa:KB]
 
 	// Check whether it's the base outfit.
-//	if (outfit_cat_id.isNull())
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2010-09-21 (Catznip-2.1)
-	if ( (outfit_cat_id.isNull()) || ((outfit_cat_id == getBaseOutfitUUID()) && (!isOutfitDirty())) )
-// [/SL:KB]
+	if (outfit_cat_id.isNull())
 	{
 		return false;
 	}
@@ -2716,9 +2713,7 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 		// attachments, even those that are not being removed. This is
 		// needed to get joint positions all slammed down to their
 		// pre-attachment states.
-		//BD - Do NOT do this, we end up scrunching our avatar with deformers and BOM. Besides, we already do
-		//     it somewhere else.
-		//gAgentAvatarp->clearAttachmentOverrides();
+		gAgentAvatarp->clearAttachmentOverrides();
 		// (End of LL code)
 
 		// Take off the attachments that will no longer be in the outfit.
@@ -2731,13 +2726,14 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
 
 		// (Start of LL code from LLWearableHoldingPattern::onAllComplete())
 		// Restore attachment pos overrides for the attachments that are remaining in the outfit.
-		//BD - Do NOT do this, we end up scrunching our avatar with deformers and BOM. Besides, we already do
-		//     it somewhere else.
-		/*for (LLAgentWearables::llvo_vec_t::iterator it = objects_to_retain.begin(); it != objects_to_retain.end(); ++it)
+		for (LLAgentWearables::llvo_vec_t::iterator it = objects_to_retain.begin(); it != objects_to_retain.end(); ++it)
 		{
 			LLViewerObject *objectp = *it;
-			gAgentAvatarp->addAttachmentOverridesForObject(objectp);
-		}*/
+			if (!objectp->isAnimatedObject())
+			{
+				gAgentAvatarp->addAttachmentOverridesForObject(objectp);
+			}
+		}
 
 		// Add new attachments to match those requested.
 		LL_DEBUGS("Avatar") << self_av_string() << "Adding " << items_to_add.size() << " attachments" << LL_ENDL;
@@ -3292,7 +3288,7 @@ void LLAppearanceMgr::removeAllAttachmentsFromAvatar()
 class LLUpdateOnCOFLinkRemove : public LLInventoryCallback
 {
 public:
-	LLUpdateOnCOFLinkRemove(const LLUUID& remove_item_id, LLPointer<LLInventoryCallback> cb = NULL) :
+	LLUpdateOnCOFLinkRemove(const LLUUID& remove_item_id, LLPointer<LLInventoryCallback> cb = NULL):
 		mItemID(remove_item_id),
 		mCB(cb)
 	{
@@ -3317,14 +3313,13 @@ private:
 // [SL:KB] - Patch: Appearance-AISFilter | Checked: 2015-05-02 (Catznip-3.7)
 void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInventoryCallback> cb, bool immediate_delete)
 // [/SL:KB]
-{
-	LLInventoryModel::cat_array_t cat_array;
+{	LLInventoryModel::cat_array_t cat_array;
 	LLInventoryModel::item_array_t item_array;
 	gInventory.collectDescendents(LLAppearanceMgr::getCOF(),
-		cat_array,
-		item_array,
-		LLInventoryModel::EXCLUDE_TRASH);
-	for (S32 i = 0; i<item_array.size(); i++)
+								  cat_array,
+								  item_array,
+								  LLInventoryModel::EXCLUDE_TRASH);
+	for (S32 i=0; i<item_array.size(); i++)
 	{
 		const LLViewerInventoryItem* item = item_array.at(i).get();
 		if (item->getIsLinkType() && item->getLinkedUUID() == item_id)
@@ -3335,13 +3330,11 @@ void LLAppearanceMgr::removeCOFItemLinks(const LLUUID& item_id, LLPointer<LLInve
 				RLV_ASSERT(rlvPredCanRemoveItem(item));
 			}
 // [/RLVa:KB]
-//			bool immediate_delete = false;
-//			if (item->getType() == LLAssetType::AT_OBJECT)
-//			{
-//				immediate_delete = true;
-//			}
 
-			if (item->getType() == LLAssetType::AT_OBJECT)
+//			if (item->getType() == LLAssetType::AT_OBJECT)
+// [RLVa:KB] - Checked: 2013-02-12 (RLVa-1.4.8)
+			if (immediate_delete)
+// [/RLVa:KB]
 			{
 				// Immediate delete
 				remove_inventory_item(item->getUUID(), cb, true);

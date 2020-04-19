@@ -28,6 +28,9 @@
 #define LL_LLFLOATERENVIRONMENTSETTINGS_H
 
 #include "llfloater.h"
+#include "llsettingssky.h"
+#include "llsettingswater.h"
+#include "llenvironment.h"
 
 class LLComboBox;
 class LLRadioGroup;
@@ -66,6 +69,9 @@ private:
 	LLComboBox*		mWaterPresetCombo;
 	LLComboBox*		mSkyPresetCombo;
 	LLComboBox*		mDayCyclePresetCombo;
+
+	LLSettingsSky::ptr_t		mLiveSky;
+	LLSettingsWater::ptr_t		mLiveWater;
 };
 
 #endif // LL_LLFLOATERENVIRONMENTSETTINGS_H

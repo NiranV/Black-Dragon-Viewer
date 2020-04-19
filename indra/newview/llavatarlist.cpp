@@ -272,6 +272,7 @@ void LLAvatarList::refresh()
 	for (uuid_vec_t::const_iterator it=added.begin(); it != added.end(); it++)
 	{
 		const LLUUID& buddy_id = *it;
+
 		LLAvatarName av_name;
 		have_names &= LLAvatarNameCache::get(buddy_id, &av_name);
 

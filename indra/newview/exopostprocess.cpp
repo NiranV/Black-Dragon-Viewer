@@ -127,7 +127,7 @@ void exoPostProcess::ExodusRenderPostStack(LLRenderTarget *src, LLRenderTarget *
 }
 void exoPostProcess::ExodusRenderPostSettingsUpdate()
 {
-	mVertexShaderLevel = LLViewerShaderMgr::instance()->getVertexShaderLevel(LLViewerShaderMgr::SHADER_AVATAR);
+	mVertexShaderLevel = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_AVATAR);
 	sExodusRenderGamma = gSavedSettings.getVector3("ExodusRenderGamma");
 	sExodusRenderExposure = gSavedSettings.getVector3("ExodusRenderExposure");
 	sExodusRenderOffset = gSavedSettings.getVector3("ExodusRenderOffset");
@@ -343,7 +343,7 @@ void exoPostProcess::ExodusRenderLens(LLRenderTarget* src, LLRenderTarget* dst)
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
 
 	shader->uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, gPipeline.mTransformedSunDir.mV);
-	shader->uniform4fv(LLShaderMgr::SUNLIGHT_COLOR, 1, gSky.getSunDiffuseColor().mV);
+	shader->uniform4fv(LLShaderMgr::SUNLIGHT_COLOR, 1, gPipeline.mSunDiffuse.mV);
     mExoPostBuffer->drawArrays(LLRender::TRIANGLES, 0, 3);
     stop_glerror();
     

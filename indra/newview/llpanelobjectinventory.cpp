@@ -58,6 +58,7 @@
 #include "llpreviewtexture.h"
 #include "llscrollcontainer.h"
 #include "llselectmgr.h"
+#include "llstatusbar.h"
 #include "lltooldraganddrop.h"
 #include "lltrans.h"
 #include "llviewerassettype.h"
@@ -66,13 +67,10 @@
 #include "llviewerobjectlist.h"
 #include "llviewermessage.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
-
-//BD
-#include "llfloatersidepanelcontainer.h"
-#include "llsidepanelinventory.h"
 
 const LLColor4U DEFAULT_WHITE(255, 255, 255);
 
@@ -615,7 +613,7 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 			bool fLocked = (pAttachObj) ? gRlvAttachmentLocks.isLockedAttachment(pAttachObj->getRootEdit()) : false;
 			if ( ((LLAssetType::AT_NOTECARD == item->getType()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_VIEWNOTE)) || (fLocked))) || 
 				 ((LLAssetType::AT_LSL_TEXT == item->getType()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_VIEWSCRIPT)) || (fLocked))) ||
-				 ((LLAssetType::AT_TEXTURE == item->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWTEXTURE))) )
+				 ((LLAssetType::AT_TEXTURE == item->getType()) && (!RlvActions::canPreviewTextures())))
 			{
 				disabled_items.push_back(std::string("Task Open"));
 			}
@@ -623,34 +621,31 @@ void LLTaskInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 // [/RLVa:KB]
 	}
 	items.push_back(std::string("Task Properties"));
-// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Added: RLVa-1.2.1f
 	if ((flags & FIRST_SELECTED_ITEM) == 0)
 	{
 		disabled_items.push_back(std::string("Task Properties"));
 	}
-	items.push_back(std::string("Task Rename"));
-	if ( (!isItemRenameable()) || ((flags & FIRST_SELECTED_ITEM) == 0) )
+	if(isItemRenameable())
 	{
-		disabled_items.push_back(std::string("Task Rename"));
-	}
-	items.push_back(std::string("Task Remove"));
-	if (!isItemRemovable())
-	{
-		disabled_items.push_back(std::string("Task Remove"));
-	}
-// [/RLVa:KB]
-//	if(isItemRenameable())
-//	{
-//		items.push_back(std::string("Task Rename"));
+		items.push_back(std::string("Task Rename"));
 //		if ((flags & FIRST_SELECTED_ITEM) == 0)
-//		{
-//			disabled_items.push_back(std::string("Task Rename"));
-//		}
-//	}
-//	if(isItemRemovable())
-//	{
-//		items.push_back(std::string("Task Remove"));
-//	}
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Added: RLVa-1.2.1f
+		if ( (!isItemRenameable()) || ((flags & FIRST_SELECTED_ITEM) == 0) )
+// [/RLVa:KB]
+		{
+			disabled_items.push_back(std::string("Task Rename"));
+		}
+	}
+	if(isItemRemovable())
+	{
+		items.push_back(std::string("Task Remove"));
+// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Added: RLVa-1.2.1f
+		if (!isItemRemovable())
+		{
+			disabled_items.push_back(std::string("Task Remove"));
+		}
+// [/RLVa:KB]
+	}
 
 	hide_context_entries(menu, items, disabled_items);
 }
@@ -1452,6 +1447,7 @@ void LLPanelObjectInventory::reset()
 	mFolders = LLUICtrlFactory::create<LLFolderView>(p);
 
 	mFolders->setCallbackRegistrar(&mCommitCallbackRegistrar);
+	mFolders->setEnableRegistrar(&mEnableCallbackRegistrar);
 
 	if (hasFocus())
 	{

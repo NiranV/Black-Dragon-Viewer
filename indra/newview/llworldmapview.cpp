@@ -138,7 +138,7 @@ void LLWorldMapView::initClass()
 	sTrackArrowImage =		LLUI::getUIImage("direction_arrow.tga");
 	sClassifiedsImage =		LLUI::getUIImage("icon_top_pick.tga");
 	//BD
-	sForSaleImage =			LLUI::getUIImage("Icon_For_Sale");
+	sForSaleImage = LLUI::getUIImage("Icon_For_Sale");
 	// To Do: update the image resource for adult lands on sale.
 	sForSaleAdultImage =    LLUI::getUIImage("icon_for_sale_adult.tga");
 	
@@ -458,7 +458,7 @@ void LLWorldMapView::draw()
 			std::string mesg;
 			if (info->isDown())
 			{
-				mesg = llformat( "%s (%s) ", info->getName().c_str(), sStringsMap["offline"].c_str());
+				mesg = llformat( "%s (%s)", info->getName().c_str(), sStringsMap["offline"].c_str());
 			}
 			else
 			{
@@ -470,7 +470,7 @@ void LLWorldMapView::draw()
 				}
 
 				//BD - Show an avatar count behind the SIM name
-				mesg = llformat( "%s (%d *) ", info->getName().c_str(), agent_count);
+				mesg = llformat("%s (%d *) ", info->getName().c_str(), agent_count);
 			}
 //			if (!mesg.empty())
 // [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5

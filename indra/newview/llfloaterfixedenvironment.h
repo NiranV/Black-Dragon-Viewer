@@ -39,6 +39,8 @@ class LLButton;
 class LLLineEditor;
 class LLFloaterSettingsPicker;
 class LLFixedSettingCopiedCallback;
+//BD
+class LLComboBox;
 
 /**
  * Floater container for creating and editing fixed environment settings.
@@ -81,7 +83,7 @@ protected:
     void                    checkAndConfirmSettingsLoss(on_confirm_fn cb);
 
     LLTabContainer *        mTab;
-    LLLineEditor *          mTxtName;
+    LLComboBox *			mTxtName;
 
     LLSettingsBase::ptr_t   mSettings;
 
@@ -119,7 +121,6 @@ protected:
     void                    onSaveAsCommit(const LLSD& notification, const LLSD& response, const LLSettingsBase::ptr_t &settings);
 
 private:
-    void                    onNameChanged(const std::string &name);
 
     void                    onButtonImport();
     void                    onButtonApply(LLUICtrl *ctrl, const LLSD &data);
@@ -129,6 +130,12 @@ private:
     void                    onAssetLoaded(LLUUID asset_id, LLSettingsBase::ptr_t settins, S32 status);
 
     bool                    mIsDirty;
+
+	//BD - Windlight Stuff
+	void                    onButtonReset();
+	void                    onButtonSave();
+	void                    onButtonDelete();
+	void					onSelectPreset();
 };
 
 class LLFloaterFixedEnvironmentWater : public LLFloaterFixedEnvironment

@@ -6,8 +6,6 @@
 
 include(CMakeCopyIfDifferent)
 include(Linking)
-include(Variables)
-include(LLCommon)
 
 ###################################################################
 # set up platform specific lists of files that need to be copied
@@ -50,16 +48,6 @@ if(WINDOWS)
         libhunspell.dll
         )
 
-    if (FMODSTUDIO)
-      if(ADDRESS_SIZE STREQUAL 64)
-        list(APPEND debug_files fmodL64.dll)
-        list(APPEND release_files fmod64.dll)
-      else(ADDRESS_SIZE STREQUAL 64)
-        list(APPEND debug_files fmodL.dll)
-        list(APPEND release_files fmod.dll)
-      endif(ADDRESS_SIZE STREQUAL 64)
-    endif (FMODSTUDIO)
-    
     # Filenames are different for 32/64 bit BugSplat file and we don't
     # have any control over them so need to branch.
     if (BUGSPLAT_DB)
@@ -74,6 +62,10 @@ if(WINDOWS)
       endif(ADDRESS_SIZE EQUAL 32)
     endif (BUGSPLAT_DB)
 
+    if (USE_FMODSTUDIO)
+      list(APPEND debug_files fmodL.dll)
+      list(APPEND release_files fmod.dll)
+    endif (USE_FMODSTUDIO)
 
     #*******************************
     # Copy MS C runtime dlls, required for packaging.
@@ -196,14 +188,10 @@ elseif(DARWIN)
         libnghttp2.14.14.0.dylib
        )
 
-    if (OPENAL)
-      list(APPEND release_files libopenal.dylib libalut.dylib)
-    endif (OPENAL)
-
-    if (FMODSTUDIO)
+    if (USE_FMODSTUDIO)
       list(APPEND debug_files libfmodL.dylib)
       list(APPEND release_files libfmod.dylib)
-    endif (FMODSTUDIO)
+    endif (USE_FMODSTUDIO)
 
 elseif(LINUX)
     # linux is weird, multiple side by side configurations aren't supported
@@ -250,14 +238,10 @@ elseif(LINUX)
         libfontconfig.so.1
        )
 
-    if (USE_TCMALLOC)
-      list(APPEND release_files "libtcmalloc_minimal.so")
-    endif (USE_TCMALLOC)
-
-    if (FMODSTUDIO)
+    if (USE_FMODSTUDIO)
       list(APPEND debug_files "libfmodL.so")
       list(APPEND release_files "libfmod.so")
-    endif (FMODSTUDIO)
+    endif (USE_FMODSTUDIO)
 
 else(WINDOWS)
     message(STATUS "WARNING: unrecognized platform for staging 3rd party libs, skipping...")

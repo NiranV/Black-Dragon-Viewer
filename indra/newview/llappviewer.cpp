@@ -503,9 +503,10 @@ void idle_afk_check()
 {
 	// check idle timers
 	F32 current_idle = gAwayTriggerTimer.getElapsedTimeF32();
+	static const LLCachedControl<S32> afk_timeout_cc(gSavedSettings, "AFKTimeout");
 // [RLVa:KB] - Checked: 2010-05-03 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
 	// Enforce an idle time of 30 minutes if @allowidle=n restricted
-	F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? gSavedSettings.getS32("AFKTimeout") : 60 * 30;
+	F32 afk_timeout = (!gRlvHandler.hasBehaviour(RLV_BHVR_ALLOWIDLE)) ? afk_timeout_cc : 60 * 30;
 // [/RLVa:KB]
 //	F32 afk_timeout  = gSavedSettings.getS32("AFKTimeout");
 	if (afk_timeout && (current_idle > afk_timeout) && ! gAgent.getAFK())
@@ -626,9 +627,8 @@ static void settings_to_globals()
 static void settings_modify()
 {
 	LLRenderTarget::sUseFBO				= gSavedSettings.getBOOL("RenderDeferred");
-	//BD
-	LLPipeline::sRenderBump				= gSavedSettings.getBOOL("RenderObjectBump") || gSavedSettings.getBOOL("RenderDeferred");
-	LLPipeline::sRenderDeferred			= gSavedSettings.getBOOL("RenderDeferred");
+	LLPipeline::sRenderBump				= gSavedSettings.getBOOL("RenderObjectBump");
+	LLPipeline::sRenderDeferred		= LLPipeline::sRenderBump && gSavedSettings.getBOOL("RenderDeferred");
 	LLVOSurfacePatch::sLODFactor		= gSavedSettings.getF32("RenderTerrainLODFactor");
 	LLVOSurfacePatch::sLODFactor		*= LLVOSurfacePatch::sLODFactor; //square lod factor to get exponential range of [1,4]
 	gDebugGL							= gSavedSettings.getBOOL("RenderDebugGL") || gDebugSession;
@@ -1146,21 +1146,14 @@ bool LLAppViewer::init()
 	try {
 		initializeSecHandler();
 	}
-	catch (LLProtectedDataException ex)
+	catch (const LLProtectedDataException&)
 	{
 	  LLNotificationsUtil::add("CorruptedProtectedDataStore");
 	}
 
 	gGLActive = FALSE;
 
-<<<<<<< HEAD
 /*	LLProcess::Params updater;
-=======
-#if LL_RELEASE_FOR_DOWNLOAD 
-    if (!gSavedSettings.getBOOL("CmdLineSkipUpdater"))
-    {
-	LLProcess::Params updater;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	updater.desc = "updater process";
 	// Because it's the updater, it MUST persist beyond the lifespan of the
 	// viewer itself.
@@ -1185,13 +1178,18 @@ bool LLAppViewer::init()
 	// ForceAddressSize
 	updater.args.add(stringize(gSavedSettings.getU32("ForceAddressSize")));
 
-		// Run the updater. An exception from launching the updater should bother us.
-		LLLeap::create(updater, true);
-	}
-	else
+#if LL_WINDOWS && !LL_RELEASE_FOR_DOWNLOAD && !LL_SEND_CRASH_REPORTS
+	// This is neither a release package, nor crash-reporting enabled test build
+	// try to run version updater, but don't bother if it fails (file might be missing)
+	LLLeap *leap_p = LLLeap::create(updater, false);
+	if (!leap_p)
 	{
-		LL_WARNS("InitInfo") << "Skipping updater check." << LL_ENDL;
+		LL_WARNS("LLLeap") << "Failed to run LLLeap" << LL_ENDL;
 	}
+#else
+ 	// Run the updater. An exception from launching the updater should bother us.
+	LLLeap::create(updater, true);
+#endif
 
 	// Iterate over --leap command-line options. But this is a bit tricky: if
 	// there's only one, it won't be an array at all.
@@ -1223,7 +1221,6 @@ bool LLAppViewer::init()
 							 << "lleventhost no longer supported as a dynamic library"
 							 << LL_ENDL;
 	}
-#endif
 
 	LLTextUtil::TextHelpers::iconCallbackCreationFunction = create_text_segment_icon_from_url_match;
 
@@ -1393,7 +1390,7 @@ bool LLAppViewer::frame()
 		{
 			LOG_UNHANDLED_EXCEPTION("");
 		}
-		catch (std::bad_alloc)
+		catch (const std::bad_alloc&)
 		{
 			LLMemory::logMemoryInfo(TRUE);
 			LLFloaterMemLeak* mem_leak_instance = LLFloaterReg::findTypedInstance<LLFloaterMemLeak>("mem_leaking");
@@ -1834,7 +1831,7 @@ bool LLAppViewer::cleanup()
         gAudiop->shutdown();
 
 		delete gAudiop;
-		gAudiop = NULL;
+		gAudiop = nullptr;
 	}
 
 	// Note: this is where LLFeatureManager::getInstance()-> used to be deleted.
@@ -2264,21 +2261,15 @@ void errorCallback(const std::string &error_string)
 	// haven't actually trashed anything yet, we can afford to write the whole
 	// static info file.
 	LLAppViewer::instance()->writeDebugInfo();
-<<<<<<< HEAD
 	
-// [SL:KB] - Patch: Viewer-Build | Checked: 2010-12-04 (Catznip-2.4)
+// [SL:KB] - Patch: Viewer-Build | Checked: Catznip-2.4
 #if !LL_RELEASE_FOR_DOWNLOAD && LL_WINDOWS
 	DebugBreak();
 #else
 	LLError::crashAndLoop(error_string);
 #endif // LL_RELEASE_WITH_DEBUG_INFO && LL_WINDOWS
 // [/SL:KB]
-=======
-
-#ifndef SHADER_CRASH_NONFATAL
-	LLError::crashAndLoop(error_string);
-#endif
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+//	LLError::crashAndLoop(error_string);
 }
 
 void LLAppViewer::initLoggingAndGetLastDuration()
@@ -2709,9 +2700,11 @@ bool LLAppViewer::initConfiguration()
         }
     }
 
+#if AL_VIEWER_EVENT_RECORDER
     if  (clp.hasOption("logevents")) {
 		LLViewerEventRecorder::instance().setEventLoggingOn();
     }
+#endif
 
 	std::string CmdLineChannel(gSavedSettings.getString("CmdLineChannel"));
 	if(! CmdLineChannel.empty())
@@ -3046,10 +3039,12 @@ bool LLAppViewer::initWindow()
 		.name(VIEWER_WINDOW_CLASSNAME)
 		.x(gSavedSettings.getS32("WindowX"))
 		.y(gSavedSettings.getS32("WindowY"))
+		//BD
 		.width(gSavedSettings.getS32("WindowWidth"))
 		.height(gSavedSettings.getS32("WindowHeight"))
 		.min_width(gSavedSettings.getS32("MinWindowWidth"))
 		.min_height(gSavedSettings.getS32("MinWindowHeight"))
+
 		.fullscreen(gSavedSettings.getBOOL("FullScreen"))
 		.ignore_pixel_depth(ignorePixelDepth)
 		.first_run(mIsFirstRun);
@@ -4400,8 +4395,8 @@ bool LLAppViewer::initCache()
 		{
 			old_vfs_data_file = gDirUtilp->add(dir, found_file);
 
-			S32 start_pos = found_file.find_last_of('.');
-			if (start_pos > 0)
+			size_t start_pos = found_file.find_last_of('.');
+			if (start_pos != std::string::npos && start_pos > 0)
 			{
 				sscanf(found_file.substr(start_pos+1).c_str(), "%d", &old_salt);
 			}
@@ -4623,6 +4618,18 @@ void LLAppViewer::badNetworkHandler()
 		gAgentCamera.changeCameraToThirdPerson( FALSE );	// don't animate, need immediate switch
 		gSavedSettings.setBOOL("ShowParcelOwners", FALSE);
 		idle();
+
+		std::string snap_filename = gDirUtilp->getLindenUserDir();
+		snap_filename += gDirUtilp->getDirDelimiter();
+		snap_filename += LLStartUp::getScreenLastFilename();
+		// use full pixel dimensions of viewer window (not post-scale dimensions)
+		gViewerWindow->saveSnapshot(snap_filename,
+									gViewerWindow->getWindowWidthRaw(),
+									gViewerWindow->getWindowHeightRaw(),
+									FALSE,
+									TRUE,
+									LLSnapshotModel::SNAPSHOT_TYPE_COLOR,
+									LLSnapshotModel::SNAPSHOT_FORMAT_PNG);
 		mSavedFinalSnapshot = TRUE;
 
 		if (gAgent.isInHomeRegion())
@@ -5373,7 +5380,8 @@ void LLAppViewer::idleNetwork()
 	gObjectList.mNumNewObjects = 0;
 	S32 total_decoded = 0;
 
-	if (!gSavedSettings.getBOOL("SpeedTest"))
+	static const LLCachedControl<bool> speedTest(gSavedSettings, "SpeedTest");
+	if (!speedTest)
 	{
 		LL_RECORD_BLOCK_TIME(FTM_IDLE_NETWORK); // decode
 
@@ -5412,7 +5420,8 @@ void LLAppViewer::idleNetwork()
 		}
 
 		// Handle per-frame message system processing.
-		gMessageSystem->processAcks(gSavedSettings.getF32("AckCollectTime"));
+        static LLCachedControl<F32> sAckCollectTime(gSavedSettings, "AckCollectTime", 0.1f);
+		gMessageSystem->processAcks(sAckCollectTime);
 
 #ifdef TIME_THROTTLE_MESSAGES
 		if (total_time >= CheckMessagesMaxTime)
@@ -5725,7 +5734,8 @@ void LLAppViewer::setMasterSystemAudioMute(bool mute)
 //virtual
 bool LLAppViewer::getMasterSystemAudioMute()
 {
-	return gSavedSettings.getBOOL("MuteAudio");
+	static const LLCachedControl<bool> mute_audio(gSavedSettings, "MuteAudio");
+	return mute_audio;
 }
 
 //----------------------------------------------------------------------------

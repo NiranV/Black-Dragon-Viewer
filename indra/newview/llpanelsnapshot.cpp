@@ -151,6 +151,37 @@ LLSideTrayPanelContainer* LLPanelSnapshot::getParentContainer()
 	return parent;
 }
 
+void LLPanelSnapshot::updateImageQualityLevel()
+{
+	LLSliderCtrl* quality_slider = getChild<LLSliderCtrl>("image_quality_slider");
+	S32 quality_val = llfloor((F32) quality_slider->getValue().asReal());
+
+	std::string quality_lvl;
+
+	if (quality_val < 20)
+	{
+		quality_lvl = LLTrans::getString("snapshot_quality_very_low");
+	}
+	else if (quality_val < 40)
+	{
+		quality_lvl = LLTrans::getString("snapshot_quality_low");
+	}
+	else if (quality_val < 60)
+	{
+		quality_lvl = LLTrans::getString("snapshot_quality_medium");
+	}
+	else if (quality_val < 80)
+	{
+		quality_lvl = LLTrans::getString("snapshot_quality_high");
+	}
+	else
+	{
+		quality_lvl = LLTrans::getString("snapshot_quality_very_high");
+	}
+
+	getChild<LLTextBox>("image_quality_level")->setTextArg("[QLVL]", quality_lvl);
+}
+
 void LLPanelSnapshot::cancel()
 {
 	LLSideTrayPanelContainer* parent = getParentContainer();

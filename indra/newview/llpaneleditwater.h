@@ -66,25 +66,15 @@ public:
                             LLPanelSettingsWaterMainTab();
 
     virtual BOOL	        postBuild() override;
-    virtual void	        setEnabled(BOOL enabled) override;
+    //virtual void	        setEnabled(BOOL enabled) override;
 
 protected:
     virtual void            refresh() override;
 
 private:
-
-    LLColorSwatchCtrl *     mClrFogColor;
-//     LLSlider *              mSldFogDensity;
-//     LLSlider *              mSldUnderWaterMod;
-    LLTextureCtrl *         mTxtNormalMap;
-
     void                    onFogColorChanged();
     void                    onFogDensityChanged();
     void                    onFogUnderWaterChanged();
-    void                    onNormalMapChanged();
-
-    void                    onLargeWaveChanged();
-    void                    onSmallWaveChanged();
 
     void                    onNormalScaleChanged();
     void                    onFresnelScaleChanged();
@@ -92,6 +82,45 @@ private:
     void                    onScaleAboveChanged();
     void                    onScaleBelowChanged();
     void                    onBlurMultipChanged();
+
+	LLColorSwatchCtrl *     mClrFogColor;
+	LLUICtrl*				mFogDensity;
+	LLUICtrl*				mUnderwaterMod;
+	LLUICtrl*				mWaterNormX;
+	LLUICtrl*				mWaterNormY;
+	LLUICtrl*				mWaterNormZ;
+	LLUICtrl*				mFresnelScale;
+	LLUICtrl*				mFresnelOffset;
+	LLUICtrl*				mScaleAbove;
+	LLUICtrl*				mScaleBelow;
+	LLUICtrl*				mBlurMult;
+};
+
+//BD - Image Tab
+class LLPanelSettingsWaterSecondaryTab : public LLPanelSettingsWater
+{
+	LOG_CLASS(LLPanelSettingsWaterSecondaryTab);
+
+public:
+	LLPanelSettingsWaterSecondaryTab();
+
+	virtual BOOL	        postBuild() override;
+	//virtual void	        setEnabled(BOOL enabled) override;
+
+protected:
+	virtual void            refresh() override;
+
+private:
+	void                    onNormalMapChanged();
+
+	void                    onLargeWaveChanged();
+	void                    onSmallWaveChanged();
+
+	LLTextureCtrl *         mTxtNormalMap;
+	LLUICtrl*				mWave1X;
+	LLUICtrl*				mWave1Y;
+	LLUICtrl*				mWave2X;
+	LLUICtrl*				mWave2Y;
 };
 
 

@@ -33,11 +33,11 @@
 #include "AL/al.h"
 #include "AL/alut.h"
 
-class LLListener_OpenAL  : public LLListener
+class LLListener_OpenAL final : public LLListener
 {
  public:  
 	LLListener_OpenAL();
-	virtual ~LLListener_OpenAL();
+	virtual ~LLListener_OpenAL() = default;
 
 	virtual void translate(const LLVector3& offset) override;
 	virtual void setPosition(const LLVector3& pos) override;

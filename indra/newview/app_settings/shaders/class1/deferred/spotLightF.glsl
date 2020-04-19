@@ -70,71 +70,10 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
-<<<<<<< HEAD
-uniform float global_light_strength;
-
-vec2 encode_normal(vec3 n)
-{
-	float f = sqrt(8 * n.z + 8);
-	return n.xy / f + 0.5;
-}
-
-vec3 decode_normal (vec2 enc)
-{
-    vec2 fenc = enc*4-2;
-    float f = dot(fenc,fenc);
-    float g = sqrt(1-f/4);
-    vec3 n;
-    n.xy = fenc*g;
-    n.z = 1-f/2;
-    return n;
-}
-
-vec3 srgb_to_linear(vec3 cs)
-{
-	vec3 low_range = cs / vec3(12.92);
-	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
-	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
-
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lte.r ? low_range.r : high_range.r;
-	result.g = lte.g ? low_range.g : high_range.g;
-	result.b = lte.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lte);
-#endif
-
-}
-
-vec3 linear_to_srgb(vec3 cl)
-{
-	cl = clamp(cl, vec3(0), vec3(1));
-	vec3 low_range  = cl * 12.92;
-	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
-	bvec3 lt = lessThan(cl,vec3(0.0031308));
-
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lt.r ? low_range.r : high_range.r;
-	result.g = lt.g ? low_range.g : high_range.g;
-	result.b = lt.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lt);
-#endif
-
-}
-
-vec4 correctWithGamma(vec4 col)
-{
-	return vec4(srgb_to_linear(col.rgb), col.a);
-}
-=======
 vec3 getNorm(vec2 pos_screen);
 vec3 srgb_to_linear(vec3 c);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+
+uniform float global_light_strength;
 
 vec4 texture2DLodSpecular(sampler2D projectionMap, vec2 tc, float lod)
 {
@@ -306,10 +245,6 @@ void main()
 		}
 	}	
 
-<<<<<<< HEAD
-#if REFLECTIONS
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	if (envIntensity > 0.0)
 	{
 		vec3 ref = reflect(normalize(pos), norm);
@@ -339,14 +274,8 @@ void main()
 		}
 	}
 #endif
-<<<<<<< HEAD
-	
  col *= global_light_strength;
- 
-=======
-
 	//col.r = 1.0;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	frag_color.rgb = col;	
 	frag_color.a = 0.0;
 }

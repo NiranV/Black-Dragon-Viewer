@@ -71,7 +71,7 @@ public:
 //	//BD - Motion Blur
 	F32*						mLastMatrixPalette;
 	U32							mLastMatrixPaletteUpdated;
-	
+
 private:
 
 	//copy mesh into given face's vertex buffer, applying current animation pose

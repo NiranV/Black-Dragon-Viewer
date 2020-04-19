@@ -156,6 +156,11 @@ private:
     // For testing, there's a UsePeopleAPI setting that can be flipped (must restart viewer).
     bool mUsePeopleAPI;
 
+// [RLVa:KB] - Checked: 2010-12-08 (RLVa-1.4.0a) | Added: RLVa-1.2.2c
+    // RLVa override for display names
+    bool mRlvForceDisplayNames = false;
+// [/RLVa:KB]
+
     // Base lookup URL for name service.
     // On simulator, loaded from indra.xml
     // On viewer, usually a simulator capability (at People API team's request)

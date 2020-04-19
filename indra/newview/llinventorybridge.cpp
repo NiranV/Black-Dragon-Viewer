@@ -81,18 +81,15 @@
 #include "llwearableitemslist.h"
 #include "lllandmarkactions.h"
 #include "llpanellandmarks.h"
-<<<<<<< HEAD
+#include "llviewerparcelmgr.h"
+#include "llparcel.h"
+
+#include "llenvironment.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
 #include "rlvactions.h"
 #include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
-=======
-#include "llviewerparcelmgr.h"
-#include "llparcel.h"
-
-#include "llenvironment.h"
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 #include <boost/shared_ptr.hpp>
 
@@ -853,7 +850,7 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
 			{
 				items.push_back(std::string("Marketplace Separator"));
 
-				if (gMenuHolder->mMarketPlaceListings->getVisible())
+                if (gMenuHolder->getChild<LLView>("MarketplaceListings")->getVisible())
                 {
                     items.push_back(std::string("Marketplace Copy"));
                     items.push_back(std::string("Marketplace Move"));
@@ -930,7 +927,7 @@ void LLInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 			if ( (pItem) &&
 				 ( ((LLAssetType::AT_NOTECARD == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWNOTE))) ||
 				   ((LLAssetType::AT_LSL_TEXT == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWSCRIPT))) ||
-				   ((LLAssetType::AT_TEXTURE == pItem->getType()) && (gRlvHandler.hasBehaviour(RLV_BHVR_VIEWTEXTURE))) ) )
+				   ((LLAssetType::AT_TEXTURE == pItem->getType()) && (!RlvActions::canPreviewTextures()))))
 			{
 				disabled_items.push_back(std::string("Open"));
 			}
@@ -2136,6 +2133,14 @@ BOOL LLItemBridge::isItemCopyable() const
 	LLViewerInventoryItem* item = getItem();
 	if (item)
 	{
+		// Can't copy worn objects.
+		// Worn objects are tied to their inworld conterparts
+		// Copy of modified worn object will return object with obsolete asset and inventory
+		if(get_is_item_worn(mUUID))
+		{
+			return FALSE;
+		}
+
 		return item->getPermissions().allowCopyBy(gAgent.getID()) || gSavedSettings.getBOOL("InventoryLinking");
 	}
 	return FALSE;
@@ -3770,7 +3775,7 @@ void LLFolderBridge::perform_pasteFromClipboard()
                 }
 
 // [RLVa:KB] - Checked: RLVa-2.1.0
-				if ( ((item) && (!RlvActions::canPaste(item, dest_folder))) || ((cat) && (!RlvActions::canPaste(cat, dest_folder))) )
+				if ( ((item) && (!RlvActions::canPasteInventory(item, dest_folder))) || ((cat) && (!RlvActions::canPasteInventory(cat, dest_folder))) )
 				{
 					RlvActions::notifyBlocked(RLV_STRING_BLOCKED_INVFOLDER);
 					return;
@@ -5508,6 +5513,13 @@ bool LLTextureBridge::canSaveTexture(void)
 		return false;
 	}
 	
+// [RLVa:KB] - Checked: RLVa-2.2 (@viewtexture)
+	if (!RlvActions::canPreviewTextures())
+	{
+		return false;
+	}
+// [/RLVa:KB]
+
 	const LLViewerInventoryItem *item = model->getItem(mUUID);
 	if (item)
 	{

@@ -64,8 +64,11 @@
 
 // extern
 const S32Megabytes gMinVideoRam(32);
+#if defined(_WIN64) || defined(__amd64__) || defined(__x86_64__)
+const S32Megabytes gMaxVideoRam(3072);
+#else
 const S32Megabytes gMaxVideoRam(512);
-
+#endif
 
 // statics
 LLPointer<LLViewerTexture>        LLViewerTexture::sNullImagep = NULL;
@@ -76,6 +79,7 @@ LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sWhiteImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sDefaultImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sSmokeImagep = NULL;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sFlatNormalImagep = NULL;
+LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sPixieSmallImagep = NULL;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sDefaultDiffuseImagep = NULL;
 // [/SL:KB]
@@ -83,20 +87,17 @@ LLViewerMediaTexture::media_map_t LLViewerMediaTexture::sMediaMap;
 LLTexturePipelineTester* LLViewerTextureManager::sTesterp = NULL;
 const std::string sTesterName("TextureTester");
 
-//BD - Exodus Post Process
-LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
-
 S32 LLViewerTexture::sImageCount = 0;
 S32 LLViewerTexture::sRawCount = 0;
 S32 LLViewerTexture::sAuxCount = 0;
 LLFrameTimer LLViewerTexture::sEvaluationTimer;
 F32 LLViewerTexture::sDesiredDiscardBias = 0.f;
 F32 LLViewerTexture::sDesiredDiscardScale = 1.1f;
-U64Bytes LLViewerTexture::sBoundTextureMemory;
-U64Bytes LLViewerTexture::sTotalTextureMemory;
-U32Megabytes LLViewerTexture::sMaxBoundTextureMemory;
-U32Megabytes LLViewerTexture::sMaxTotalTextureMem;
-S32Bytes LLViewerTexture::sMaxDesiredTextureMem;
+S64Bytes LLViewerTexture::sMaxDesiredTextureMem;
+S64Bytes LLViewerTexture::sBoundTextureMemory;
+S64Bytes LLViewerTexture::sTotalTextureMemory;
+S32Megabytes LLViewerTexture::sMaxBoundTextureMemory;
+S32Megabytes LLViewerTexture::sMaxTotalTextureMem;
 S8  LLViewerTexture::sCameraMovingDiscardBias = 0;
 F32 LLViewerTexture::sCameraMovingBias = 0.0f;
 S32 LLViewerTexture::sMaxSculptRez = 128; //max sculpt image size
@@ -112,6 +113,9 @@ F32  LLViewerTexture::sTexelPixelRatio = 1.0f;
 
 //BD
 LLFrameTimer LLViewerTexture::sGracePeriodTimer;
+
+//BD - Exodus Post Process
+LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
 
 LLViewerTexture::EDebugTexels LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_OFF;
 
@@ -462,11 +466,12 @@ void LLViewerTextureManager::cleanup()
 	LLViewerFetchedTexture::sMissingAssetImagep = NULL;
 	LLTexUnit::sWhiteTexture = 0;
 	LLViewerFetchedTexture::sWhiteImagep = NULL;
-	
+
 	LLViewerFetchedTexture::sFlatNormalImagep = NULL;
 
 //	//BD - Exodus Post Process
 	LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
+	LLViewerFetchedTexture::sPixieSmallImagep = NULL;
 
 	LLViewerMediaTexture::cleanUpClass();	
 }
@@ -493,8 +498,8 @@ const F32 discard_bias_delta = .25f;
 const F32 discard_delta_time = 0.5f;
 const F32 GPU_MEMORY_CHECK_WAIT_TIME = 1.0f;
 // non-const (used externally
-F32 texmem_lower_bound_scale = 0.85f;
-F32 texmem_middle_bound_scale = 0.925f;
+//F32 texmem_lower_bound_scale = 0.85f;
+//F32 texmem_middle_bound_scale = 0.925f;
 
 static LLTrace::BlockTimerStatHandle FTM_TEXTURE_MEMORY_CHECK("Memory Check");
 
@@ -517,8 +522,9 @@ bool LLViewerTexture::isMemoryForTextureLow()
 //static
 bool LLViewerTexture::isMemoryForTextureSuficientlyFree()
 {
-    const S32Megabytes DESIRED_FREE_TEXTURE_MEMORY(50);
-    const S32Megabytes DESIRED_FREE_MAIN_MEMORY(200);
+	//BD
+    const S32Megabytes DESIRED_FREE_TEXTURE_MEMORY(256);
+    const S32Megabytes DESIRED_FREE_MAIN_MEMORY(512);
 
     S32Megabytes gpu;
     S32Megabytes physical;
@@ -637,9 +643,10 @@ void LLViewerTexture::updateClass(const F32 velocity, const F32 angular_velocity
 			}
 		}
 	}
+	//BD
 	else if (sDesiredDiscardBias > 0.0f
-			 && sBoundTextureMemory < sMaxBoundTextureMemory * texmem_lower_bound_scale
-			 && sTotalTextureMemory < sMaxTotalTextureMem * texmem_lower_bound_scale
+			 && sBoundTextureMemory < sMaxBoundTextureMemory /* * texmem_lower_bound_scale */
+			 && sTotalTextureMemory < sMaxTotalTextureMem /* * texmem_lower_bound_scale */
 			 && isMemoryForTextureSuficientlyFree())
 	{
 		// If we are using less texture memory than we should,
@@ -741,11 +748,35 @@ S8 LLViewerTexture::getType() const
 
 void LLViewerTexture::cleanup()
 {
+	notifyAboutMissingAsset();
+
 	mFaceList[LLRender::DIFFUSE_MAP].clear();
 	mFaceList[LLRender::NORMAL_MAP].clear();
 	mFaceList[LLRender::SPECULAR_MAP].clear();
 	mVolumeList[LLRender::LIGHT_TEX].clear();
 	mVolumeList[LLRender::SCULPT_TEX].clear();
+}
+
+void LLViewerTexture::notifyAboutCreatingTexture()
+{
+	for(U32 ch = 0; ch < LLRender::NUM_TEXTURE_CHANNELS; ++ch)
+	{
+		for(U32 f = 0; f < mNumFaces[ch]; f++)
+		{
+			mFaceList[ch][f]->notifyAboutCreatingTexture(this);
+		}
+	}
+}
+
+void LLViewerTexture::notifyAboutMissingAsset()
+{
+	for(U32 ch = 0; ch < LLRender::NUM_TEXTURE_CHANNELS; ++ch)
+	{
+		for(U32 f = 0; f < mNumFaces[ch]; f++)
+		{
+			mFaceList[ch][f]->notifyAboutMissingAsset(this);
+		}
+	}
 }
 
 // virtual
@@ -1568,6 +1599,8 @@ BOOL LLViewerFetchedTexture::createTexture(S32 usename/*= 0*/)
 
 	res = mGLTexturep->createGLTexture(mRawDiscardLevel, mRawImage, usename, TRUE, mBoostLevel);
 
+	notifyAboutCreatingTexture();
+
 	setActive();
 
 	if (!needsToSaveRawImage())
@@ -2220,7 +2253,7 @@ bool LLViewerFetchedTexture::updateFetch()
 			c = mComponents;
 		}
 
-		const U32 override_tex_discard_level = gSavedSettings.getU32("TextureDiscardLevel");
+		static const LLCachedControl<U32> override_tex_discard_level(gSavedSettings, "TextureDiscardLevel");
 		if (override_tex_discard_level != 0)
 		{
 			desired_discard = override_tex_discard_level;
@@ -2299,6 +2332,8 @@ void LLViewerFetchedTexture::setIsMissingAsset(BOOL is_missing)
 	}
 	if (is_missing)
 	{
+		notifyAboutMissingAsset();
+
 		if (mUrl.empty())
 		{
 			LL_WARNS() << mID << ": Marking image as missing" << LL_ENDL;
@@ -3284,13 +3319,13 @@ void LLViewerLODTexture::processTextureStats()
 				scaleDown();
 			}
 			// Limit the amount of GL memory bound each frame
-			else if ( sBoundTextureMemory > sMaxBoundTextureMemory * texmem_middle_bound_scale &&
+			else if ( sBoundTextureMemory > sMaxBoundTextureMemory /* * texmem_middle_bound_scale */ &&
 				(!getBoundRecently() || mDesiredDiscardLevel >= mCachedRawDiscardLevel))
 			{
 				scaleDown();
 			}
 			// Only allow GL to have 2x the video card memory
-			else if ( sTotalTextureMemory > sMaxTotalTextureMem * texmem_middle_bound_scale &&
+			else if ( sTotalTextureMemory > sMaxTotalTextureMem /* * texmem_middle_bound_scale */ &&
 				(!getBoundRecently() || mDesiredDiscardLevel >= mCachedRawDiscardLevel))
 			{
 				scaleDown();
@@ -3503,10 +3538,10 @@ BOOL LLViewerMediaTexture::findFaces()
 		for(U32 i = 0; i < end; i++)
 		{
 			if ((*face_list)[i]->isMediaAllowed())
-			{
-				mMediaFaceList.push_back((*face_list)[i]);
-			}
+		{
+			mMediaFaceList.push_back((*face_list)[i]);
 		}
+	}
 	}
 	}
 	
@@ -3608,6 +3643,14 @@ void LLViewerMediaTexture::addFace(U32 ch, LLFace* facep)
 		LLViewerTexture* tex = gTextureList.findImage(te->getID(), TEX_LIST_STANDARD);
 		if(tex)
 		{
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-5.2)
+			// See LLViewerMediaTexture::removeFace()
+			if (facep->isDefaultTexture(ch))
+			{
+				return;
+			}
+// [/SL:KB]
+
 			mTextureList.push_back(tex);//increase the reference number by one for tex to avoid deleting it.
 			return;
 		}
@@ -3627,9 +3670,15 @@ void LLViewerMediaTexture::addFace(U32 ch, LLFace* facep)
 }
 
 //virtual 
-void LLViewerMediaTexture::removeFace(U32 ch, LLFace* facep) 
+//void LLViewerMediaTexture::removeFace(U32 ch, LLFace* facep) 
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-5.2)
+void LLViewerMediaTexture::removeFace(U32 channel, LLFace* facep) 
+// [/SL:KB]
 {
-	LLViewerTexture::removeFace(ch, facep);
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-5.2)
+	LLViewerTexture::removeFace(channel, facep);
+// [/SL:KB]
+//	LLViewerTexture::removeFace(ch, facep);
 
 	const LLTextureEntry* te = facep->getTextureEntry();
 	if(te && te->getID().notNull())
@@ -3642,6 +3691,18 @@ void LLViewerMediaTexture::removeFace(U32 ch, LLFace* facep)
 			{
 				if(*iter == tex)
 				{
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-5.2)
+					// Switching to the default texture results in clearing the media textures on all prims;
+					// a side-effect is that we loose out on the reference to the original (non-media)
+					// texture potentially letting it dissapear from memory if this was the only reference to it
+					// (which is harmless, it just means we'll need to grab it from the cache or refetch it but
+					// the LL - debug - code at the bottom of addFace/removeFace disagrees so we'll hang on
+					// to it (and then block readding it a seond time higher up)
+					if (facep->isDefaultTexture(channel))
+					{
+						return;
+					}
+// [/SL:KB]
 					mTextureList.erase(iter); //decrease the reference number for tex by one.
 					return;
 				}
@@ -3686,6 +3747,13 @@ void LLViewerMediaTexture::removeFace(U32 ch, LLFace* facep)
 				}
 				if(i == end) //no hit for this texture, remove it.
 				{
+// [SL:KB] - Patch: Render-TextureToggle (Catznip-5.2)
+					// See above
+					if (facep->isDefaultTexture(channel))
+					{
+						return;
+					}
+// [/SL:KB]
 					mTextureList.erase(iter); //decrease the reference number for tex by one.
 					return;
 				}

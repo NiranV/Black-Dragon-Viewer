@@ -193,7 +193,6 @@ Ansariel Hiller
 	MAINT-4677
 	MAINT-6300
 	MAINT-6397
-	MAINT-4677
 	MAINT-6432
 	MAINT-6513
 	MAINT-6514
@@ -217,7 +216,6 @@ Ansariel Hiller
 	MAINT-7059
 	MAINT-6519
 	MAINT-7899
-	STORM-2151
 	STORM-2105
 	STORM-2151
 	MAINT-6917
@@ -225,6 +223,7 @@ Ansariel Hiller
 	MAINT-8723
 	SL-10385
 	SL-10891
+	SL-10675
 Aralara Rajal
 Arare Chantilly
 	CHUIBUG-191
@@ -1127,7 +1126,6 @@ NiranV Dean
     BUG-6840
     BUG-6958
     BUG-7020
-    BUG-9325
 Nounouch Hapmouche
 	VWR-238
 Ollie Kubrick
@@ -1332,7 +1330,6 @@ Sovereign Engineer
     OPEN-195
     OPEN-217
     OPEN-295
-    STORM-2107
     MAINT-6107
     STORM-2107
     MAINT-6218

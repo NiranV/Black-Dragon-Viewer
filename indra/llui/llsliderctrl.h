@@ -35,7 +35,7 @@
 #include "lllineeditor.h"
 
 
-class LLSliderCtrl: public LLF32UICtrl, public LLSearchableControl
+class LLSliderCtrl : public LLF32UICtrl, public LLSearchableControl
 {
 public:
 	struct Params : public LLInitParam::Block<Params, LLF32UICtrl::Params>

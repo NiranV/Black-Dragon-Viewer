@@ -20,10 +20,12 @@
 #include "llviewercamera.h"
 #include "llvoavatarself.h"
 #include "llworld.h"
+
 #include "rlvactions.h"
 #include "rlvhelper.h"
 #include "rlvhandler.h"
 #include "rlvinventory.h"
+#include "rlvmodifiers.h"
 
 // ============================================================================
 // Camera
@@ -184,7 +186,7 @@ bool RlvActions::canSendIM(const LLUUID& idRecipient)
 		  ( (!gRlvHandler.hasBehaviour(RLV_BHVR_SENDIMTO)) || (!gRlvHandler.isException(RLV_BHVR_SENDIMTO, idRecipient)) ) );
 }
 
-bool RlvActions::canStartIM(const LLUUID& idRecipient)
+bool RlvActions::canStartIM(const LLUUID& idRecipient, bool fIgnoreOpen)
 {
 	// User can start an IM session with "recipient" (could be an agent or a group) if:
 	//   - not generally restricted from starting IM sessions (or the recipient is an exception or inside the exclusion range)
@@ -194,7 +196,7 @@ bool RlvActions::canStartIM(const LLUUID& idRecipient)
 		(!isRlvEnabled()) ||
 		( ( (!gRlvHandler.hasBehaviour(RLV_BHVR_STARTIM)) || (gRlvHandler.isException(RLV_BHVR_STARTIM, idRecipient)) || (rlvCheckAvatarIMDistance(idRecipient, RLV_MODIFIER_STARTIMDISTMIN, RLV_MODIFIER_STARTIMDISTMAX)) ) &&
 		  ( (!gRlvHandler.hasBehaviour(RLV_BHVR_STARTIMTO)) || (!gRlvHandler.isException(RLV_BHVR_STARTIMTO, idRecipient)) ) ) ||
-		( (hasOpenP2PSession(idRecipient)) || (hasOpenGroupSession(idRecipient)) );
+		( (!fIgnoreOpen) && ((hasOpenP2PSession(idRecipient)) || (hasOpenGroupSession(idRecipient))) );
 }
 
 bool RlvActions::canShowName(EShowNamesContext eContext, const LLUUID& idAgent)
@@ -214,7 +216,7 @@ bool RlvActions::canShowName(EShowNamesContext eContext, const LLUUID& idAgent)
 			case SNC_DEFAULT:
 			case SNC_TELEPORTOFFER:
 			case SNC_TELEPORTREQUEST:
-				return gRlvHandler.isException(RLV_BHVR_SHOWNAMES, idAgent);
+				return gRlvHandler.isException(RLV_BHVR_SHOWNAMES, idAgent) || (gAgentID == idAgent);
 		}
 	}
 	return false;
@@ -248,7 +250,7 @@ EChatType RlvActions::checkChatVolume(EChatType chatType)
 // Inventory
 //
 
-bool RlvActions::canPaste(const LLInventoryCategory* pSourceCat, const LLInventoryCategory* pDestCat)
+bool RlvActions::canPasteInventory(const LLInventoryCategory* pSourceCat, const LLInventoryCategory* pDestCat)
 {
 	// The user can paste the specified object into the destination if:
 	//   - the source and destination are subject to the same lock type (or none at all) => NOTE: this happens to be the same logic we use for moving
@@ -256,12 +258,17 @@ bool RlvActions::canPaste(const LLInventoryCategory* pSourceCat, const LLInvento
 		( (pSourceCat) && (pDestCat) && ((!RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) || (RlvFolderLocks::instance().canMoveFolder(pSourceCat->getUUID(), pDestCat->getUUID()))) );
 }
 
-bool RlvActions::canPaste(const LLInventoryItem* pSourceItem, const LLInventoryCategory* pDestCat)
+bool RlvActions::canPasteInventory(const LLInventoryItem* pSourceItem, const LLInventoryCategory* pDestCat)
 {
 	// The user can paste the specified object into the destination if:
 	//   - the source and destination are subject to the same lock type (or none at all) => NOTE: this happens to be the same logic we use for moving
 	return (!isRlvEnabled()) ||
 		( (pSourceItem) && (pDestCat) && ((!RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) || (RlvFolderLocks::instance().canMoveItem(pSourceItem->getUUID(), pDestCat->getUUID()))) );
+}
+
+bool RlvActions::canPreviewTextures()
+{
+	return (!gRlvHandler.hasBehaviour(RLV_BHVR_VIEWTEXTURE));
 }
 
 // ============================================================================
@@ -288,6 +295,21 @@ bool RlvActions::autoAcceptTeleportRequest(const LLUUID& idRequester)
 	return ((idRequester.notNull()) && (gRlvHandler.isException(RLV_BHVR_ACCEPTTPREQUEST, idRequester))) || (gRlvHandler.hasBehaviour(RLV_BHVR_ACCEPTTPREQUEST));
 }
 
+bool RlvActions::canFly()
+{
+	return (!gRlvHandler.getCurrentCommand()) ? !gRlvHandler.hasBehaviour(RLV_BHVR_FLY) : !gRlvHandler.hasBehaviourExcept(RLV_BHVR_FLY, gRlvHandler.getCurrentObject());
+}
+
+bool RlvActions::canFly(const LLUUID& idRlvObjExcept)
+{
+	return !gRlvHandler.hasBehaviourExcept(RLV_BHVR_FLY, idRlvObjExcept);
+}
+
+bool RlvActions::canJump()
+{
+	return !gRlvHandler.hasBehaviour(RLV_BHVR_JUMP);
+}
+
 // ============================================================================
 // Teleporting
 //
@@ -295,22 +317,25 @@ bool RlvActions::autoAcceptTeleportRequest(const LLUUID& idRequester)
 bool RlvActions::canTeleportToLocal(const LLVector3d& posGlobal)
 {
 	// User can initiate a local teleport if:
-	//   - not restricted from "sit teleporting" (or the destination is within the allowed xy-radius)
-	//   - not restricted from teleporting locally (or the destination is within the allowed xy-radius)
 	//   - can stand up (or isn't sitting)
+	//   - not restricted from "sit teleporting" (or the destination is within the allowed xyz-radius)
+	//   - not restricted from teleporting locally (or the destination is within the allowed xy-radius)
 	// NOTE: if we're teleporting due to an active command we should disregard any restrictions from the same object
 	const LLUUID& idRlvObjExcept = gRlvHandler.getCurrentObject();
-	bool fCanStand = RlvActions::canStand(idRlvObjExcept);
-	if ( (fCanStand) && ((gRlvHandler.hasBehaviourExcept(RLV_BHVR_SITTP, gRlvHandler.getCurrentObject())) || (gRlvHandler.hasBehaviourExcept(RLV_BHVR_TPLOCAL, gRlvHandler.getCurrentObject()))) )
+	bool fCanTeleport = RlvActions::canStand(idRlvObjExcept);
+	if ( (fCanTeleport) && (gRlvHandler.hasBehaviourExcept(RLV_BHVR_SITTP, idRlvObjExcept)) )
 	{
-		// User can stand up but is either @sittp or @tplocal restricted so we need to distance check
-		const F32 nDistSq = (LLVector2(posGlobal.mdV[0], posGlobal.mdV[1]) - LLVector2(gAgent.getPositionGlobal().mdV[0], gAgent.getPositionGlobal().mdV[1])).lengthSquared();
-		F32 nMaxDist = llmin(RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_TPLOCALDIST)->getValue<float>(), RLV_MODIFIER_TPLOCAL_DEFAULT);
-		if (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))
-			nMaxDist = llmin(nMaxDist, RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SITTPDIST)->getValue<F32>());
-		return (nDistSq < nMaxDist * nMaxDist);
+		const F32 nDistSq = (posGlobal - gAgent.getPositionGlobal()).lengthSquared();
+		const F32 nSitTpDist = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SITTPDIST)->getValue<F32>();
+		fCanTeleport = nDistSq < nSitTpDist * nSitTpDist;
 	}
-	return fCanStand;
+	if ( (fCanTeleport) && (gRlvHandler.hasBehaviourExcept(RLV_BHVR_TPLOCAL, idRlvObjExcept)) )
+	{
+		const F32 nDistSq = (LLVector2(posGlobal.mdV[0], posGlobal.mdV[1]) - LLVector2(gAgent.getPositionGlobal().mdV[0], gAgent.getPositionGlobal().mdV[1])).lengthSquared();
+		const F32 nTpLocalDist = llmin(RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_TPLOCALDIST)->getValue<float>(), RLV_MODIFIER_TPLOCAL_DEFAULT);
+		fCanTeleport = nDistSq < nTpLocalDist * nTpLocalDist;
+	}
+	return fCanTeleport;
 }
 
 bool RlvActions::canTeleportToLocation()

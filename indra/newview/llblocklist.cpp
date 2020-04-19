@@ -73,7 +73,6 @@ LLBlockList::~LLBlockList()
 	if (mContextMenu.get())
 	{
 		mContextMenu.get()->die();
-		mContextMenu.markDead();
 	}
 
 	LLMuteList::getInstance()->removeObserver(this);

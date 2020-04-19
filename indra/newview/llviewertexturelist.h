@@ -124,8 +124,8 @@ public:
 
 	void handleIRCallback(void **data, const S32 number);
 
-	U32Megabytes	getMaxResidentTexMem() const	{ return mMaxResidentTexMemInMegaBytes; }
-	U32Megabytes	getMaxTotalTextureMem() const   { return mMaxTotalTextureMemInMegaBytes;}
+	S32Megabytes	getMaxResidentTexMem() const	{ return mMaxResidentTexMemInMegaBytes; }
+	S32Megabytes	getMaxTotalTextureMem() const   { return mMaxTotalTextureMemInMegaBytes;}
 	S32 getNumImages()					{ return mImageList.size(); }
 
 	void updateMaxResidentTexMem(S32Megabytes mem);

@@ -336,12 +336,19 @@ bool LLScrollListCtrl::preProcessChildNode(LLXMLNodePtr child)
 LLScrollListCtrl::~LLScrollListCtrl()
 {
 	delete mSortCallback;
+	delete mIsFriendSignal;
 
 	std::for_each(mItemList.begin(), mItemList.end(), DeletePointer());
 	mItemList.clear();
 	std::for_each(mColumns.begin(), mColumns.end(), DeletePairedPointer());
 	mColumns.clear();
-	delete mIsFriendSignal;
+	auto menu = mPopupMenuHandle.get();
+	if (menu)
+	{
+		menu->die();
+		mPopupMenuHandle.markDead();
+	}
+
 }
 
 
@@ -971,7 +978,7 @@ void LLScrollListCtrl::deleteItems(const LLSD& sd)
 	for (iter = mItemList.begin(); iter < mItemList.end(); )
 	{
 		LLScrollListItem* itemp = *iter;
-		if (itemp && itemp->getValue().asString() == sd.asString())
+		if (itemp->getValue().asString() == sd.asString())
 		{
 			if (itemp == mLastSelected)
 			{
@@ -995,7 +1002,7 @@ void LLScrollListCtrl::deleteSelectedItems()
 	for (iter = mItemList.begin(); iter < mItemList.end(); )
 	{
 		LLScrollListItem* itemp = *iter;
-		if (itemp && itemp->getSelected())
+		if (itemp->getSelected())
 		{
 			delete itemp;
 			iter = mItemList.erase(iter);
@@ -1917,6 +1924,7 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 				menu_name, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
 			if (menu)
 			{
+				mPopupMenuHandle = menu->getHandle();
 				if (mIsFriendSignal)
 				{
 					bool isFriend = *(*mIsFriendSignal)(uuid);
@@ -1930,7 +1938,6 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 					}
 				}
 
-				mPopupMenuHandle = menu->getHandle();
 				menu->show(x, y);
 				LLMenuGL::showPopup(this, menu, x, y);
 				return TRUE;

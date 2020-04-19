@@ -62,6 +62,7 @@
 #include "llworldmapview.h"
 #include "llviewercontrol.h"
 
+
 const F32 DESTINATION_REACHED_RADIUS    = 3.0f;
 const F32 DESTINATION_VISITED_RADIUS    = 6.0f;
 
@@ -109,7 +110,8 @@ void LLTracker::stopTracking(bool clear_ui)
 // static virtual
 void LLTracker::drawHUDArrow()
 {
-	if (!gSavedSettings.getBOOL("RenderTrackerBeacon")) return;
+	static const LLCachedControl<bool> render_tracker_beacon(gSavedSettings, "RenderTrackerBeacon");
+	if (!render_tracker_beacon) return;
 
 	if (gViewerWindow->getProgressView()->getVisible()) return;
 
@@ -159,7 +161,8 @@ void LLTracker::drawHUDArrow()
 // static 
 void LLTracker::render3D()
 {
-	if (!gFloaterWorldMap || !gSavedSettings.getBOOL("RenderTrackerBeacon"))
+	static const LLCachedControl<bool> render_tracker_beacon(gSavedSettings, "RenderTrackerBeacon");
+	if (!gFloaterWorldMap || !render_tracker_beacon)
 	{
 		return;
 	}

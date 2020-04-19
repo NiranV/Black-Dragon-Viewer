@@ -647,7 +647,12 @@ void LLFloater::openFloater(const LLSD& key)
 {
     LL_INFOS() << "Opening floater " << getName() << " full path: " << getPathname() << LL_ENDL;
 
-	LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), true,"floater"); // Last param is event subtype or empty string
+#if AL_VIEWER_EVENT_RECORDER
+	if(LLViewerEventRecorder::getLoggingStatus())
+	{
+		LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), true,"floater"); // Last param is event subtype or empty string
+	}
+#endif
 
 	mKey = key; // in case we need to open ourselves again
 	
@@ -696,7 +701,14 @@ void LLFloater::openFloater(const LLSD& key)
 void LLFloater::closeFloater(bool app_quitting)
 {
 	LL_INFOS() << "Closing floater " << getName() << LL_ENDL;
-	LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), false,"floater"); // Last param is event subtype or empty string
+
+#if AL_VIEWER_EVENT_RECORDER
+	if(LLViewerEventRecorder::getLoggingStatus())
+	{
+		LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), false,"floater"); // Last param is event subtype or empty string
+	}
+#endif
+
 	if (app_quitting)
 	{
 		LLFloater::sQuitting = true;
@@ -1548,7 +1560,6 @@ BOOL LLFloater::offerClickToButton(S32 x, S32 y, MASK mask, EFloaterButton index
 //BD - UI Improvements
 BOOL LLFloater::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-	//BD - UI Improvements
 	LLPanel::handleScrollWheel(x,y,clicks,mask);
 	return TRUE;//always
 }
@@ -1558,9 +1569,13 @@ BOOL LLFloater::handleMouseUp(S32 x, S32 y, MASK mask)
 {
 	LL_DEBUGS() << "LLFloater::handleMouseUp calling LLPanel (really LLView)'s handleMouseUp (first initialized xui to: " << getPathname() << " )" << LL_ENDL;
 	BOOL handled = LLPanel::handleMouseUp(x,y,mask); // Not implemented in LLPanel so this actually calls LLView
-	if (handled) {
+
+#if AL_VIEWER_EVENT_RECORDER
+	if (handled && LLViewerEventRecorder::getLoggingStatus()) {
 		LLViewerEventRecorder::instance().updateMouseEventInfo(x,y,-55,-55,getPathname());
 	}
+#endif
+
 	return handled;
 }
 
@@ -1585,10 +1600,13 @@ BOOL LLFloater::handleMouseDown(S32 x, S32 y, MASK mask)
 	else
 	{
 		bringToFront( x, y );
-		BOOL handled = LLPanel::handleMouseDown( x, y, mask ); 
-		if (handled) {
+		BOOL handled = LLPanel::handleMouseDown( x, y, mask );
+
+#if AL_VIEWER_EVENT_RECORDER
+		if (handled && LLViewerEventRecorder::getLoggingStatus()) {
 			LLViewerEventRecorder::instance().updateMouseEventInfo(x,y,-55,-55,getPathname()); 
 		}
+#endif
 		return handled;
 	}
 }
@@ -1842,8 +1860,6 @@ void LLFloater::onClickCloseBtn(bool app_quitting)
 // virtual
 void LLFloater::draw()
 {
-	const F32 alpha = getCurrentTransparency();
-
 	// draw background
 	if( isBackgroundVisible() )
 	{
@@ -1871,6 +1887,7 @@ void LLFloater::draw()
 			overlay_color = getTransparentImageOverlay();
 		}
 
+		const F32 alpha = getCurrentTransparency();
 		if (image)
 		{
 			// We're using images for this floater's backgrounds
@@ -1902,9 +1919,9 @@ void LLFloater::draw()
 	{
 		if (hasFocus() && getDefaultButton()->getEnabled())
 		{
-			LLFocusableElement* focus_ctrl = gFocusMgr.getKeyboardFocus();
+			LLButton* focus_ctrl = dynamic_cast<LLButton*>(gFocusMgr.getKeyboardFocus());
 			// is this button a direct descendent and not a nested widget (e.g. checkbox)?
-			BOOL focus_is_child_button = dynamic_cast<LLButton*>(focus_ctrl) != NULL && dynamic_cast<LLButton*>(focus_ctrl)->getParent() == this;
+			BOOL focus_is_child_button = focus_ctrl != NULL && focus_ctrl->getParent() == this;
 			// only enable default button when current focus is not a button
 			getDefaultButton()->setBorderEnabled(!focus_is_child_button);
 		}
@@ -1967,35 +1984,34 @@ void	LLFloater::drawShadow(LLPanel* panel)
 		right = panel->getRect().getWidth() - LLPANEL_BORDER_WIDTH;
 		bottom = LLPANEL_BORDER_WIDTH;
 
-		static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
-		F32 shadow_offset = (F32)shadow_offset_S32;
+	static LLUICachedControl<S32> shadow_offset_S32 ("DropShadowFloater", 0);
+	F32 shadow_offset = (F32)shadow_offset_S32;
 
 		/*if (!panel->isBackgroundOpaque())
-		{
-			shadow_offset *= 0.2f;
-			shadow_color.mV[VALPHA] *= 0.5f;
+	{
+		shadow_offset *= 0.2f;
+		shadow_color.mV[VALPHA] *= 0.5f;
 		}*/
-		gl_drop_shadow(left, top, right, bottom, 
-			shadow_color % getCurrentTransparency(),
+	gl_drop_shadow(left, top, right, bottom, 
+		shadow_color % getCurrentTransparency(),
 		ll_round(shadow_offset));
-	}
+}
 }
 
 void LLFloater::updateTransparency(LLView* view, ETypeTransparency transparency_type)
 {
-	if (!view) return;
-	child_list_t children = *view->getChildList();
-	child_list_t::iterator it = children.begin();
-
-	LLUICtrl* ctrl = dynamic_cast<LLUICtrl*>(view);
-	if (ctrl)
+	if (view)
 	{
-		ctrl->setTransparencyType(transparency_type);
-	}
+		if (view->isCtrl())
+		{
+			static_cast<LLUICtrl*>(view)->setTransparencyType(transparency_type);
+		}
 
-	for(; it != children.end(); ++it)
-	{
-		updateTransparency(*it, transparency_type);
+		for (LLView* pChild : *view->getChildList())
+		{
+			if ((pChild->getChildCount()) || (pChild->isCtrl()))
+				updateTransparency(pChild, transparency_type);
+		}
 	}
 }
 

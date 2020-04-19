@@ -1,401 +1,1130 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater layout="topleft"
-         name="env_adjust_snapshot"
-         help_topic="day_presets"
-         save_rect="false"
-         title="Personal Lighting"
-         width="845"
-         height="240"
-         min_width="500"
-         min_height="235"
-         single_instance="true"
-         can_resize="false">
-    <layout_stack name="outer_stack"
-                  width="845"
-                  height="230"
-                  follows="all"
-                  animate="false"
-                  top="0"
-                  orientation="vertical">
-        <!-- If I put in a timeline it would go here -->
-        <layout_panel name="env_controls"
-                      border="false"
-                      bevel_style="in"
-                      auto_resize="true"
-                      user_resize="true"
-                      height="150"
-                      min_height="0"
-                      visible="true">
-            <layout_stack name="settings_stack"
-                          width="855"
-                          height="150"
-                          follows="all"
-                          animate="false"
-                          orientation="horizontal">
-                <layout_panel border="false"
-                              bevel_style="in"
-                              auto_resize="false"
-                              user_resize="false"
-                              visible="true"
-                              width="160"
-                              height="150">
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left="10"
-                          top="5"
-                          width="80">Ambient:</text>
-                    <color_swatch can_apply_immediately="true"
-                                  follows="left|top"
-                                  height="40"
-                                  label_height="0"
-                                  layout="topleft"
-                                  left_delta="0"
-                                  name="ambient_light"
-                                  top_pad="5"
-                                  width="60"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="0"
-                          top_pad="10"
-                          width="80">Blue Horizon:</text>
-                    <color_swatch can_apply_immediately="true"
-                                  follows="left|top"
-                                  height="40"
-                                  label_height="0"
-                                  layout="topleft"
-                                  left_delta="0"
-                                  name="blue_horizon"
-                                  top_pad="5"
-                                  width="60"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="0"
-                          top_pad="10"
-                          width="80">Blue Density:</text>
-                    <color_swatch can_apply_immediately="true"
-                                  follows="left|top"
-                                  height="40"
-                                  label_height="0"
-                                  layout="topleft"
-                                  left_delta="0"
-                                  name="blue_density"
-                                  top_pad="5"
-                                  width="60"/>
-                    <button
-                      follows="left|top"
-                      height="23"
-                      label="Reset"
-                      tool_tip="Close and reset to Shared Environment"
-                      layout="topleft"
-                      name="btn_reset"
-                      left_delta="-2"
-                      top_pad="10"
-                      width="100"/>
-                    <text follows="right|top"
-                          height="10"
-                          layout="topleft"
-                          right="-12"
-                          top="5"
-                          width="60">Sun Color:</text>
-                    <color_swatch can_apply_immediately="true"
-                                  follows="left|top"
-                                  height="10"
-                                  label_height="0"
-                                  layout="topleft"
-                                  left_delta="0"
-                                  name="sun_color"
-                                  top_pad="5"
-                                  width="60"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="0"
-                          top_pad="5"
-                          width="80">Cloud Color:</text>
-                    <color_swatch can_apply_immediately="true"
-                                  follows="left|top"
-                                  height="10"
-                                  label_height="0"
-                                  layout="topleft"
-                                  left_delta="0"
-                                  name="cloud_color"
-                                  top_pad="5"
-                                  width="60"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="0"
-                          top_pad="10"
-                          name="cloud_map_label"
-                          width="80">Cloud Image:</text>
-                    <texture_picker height="63"
-                                    layout="topleft"
-                                    left_delta="0"
-                                    name="cloud_map"
-                                    top_pad="5"
-                                    width="60"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="0"
-                          top_pad="-13"
-                          name="cloud_map_label"
-                          width="80">Water Image:</text>
-                    <texture_picker height="63"
-                                    layout="topleft"
-                                    left_delta="0"
-                                    name="water_normal_map"
-                                    top_pad="5"
-                                    width="60"/>
-                </layout_panel>
-                <layout_panel border="false"
-                              bevel_style="in"
-                              auto_resize="false"
-                              user_resize="false"
-                              visible="true"
-                              width="200"
-                              height="150">
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="5"
-                          top_pad="5"
-                          width="80">Haze Horizon:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0"
-                            max_val="5"
-                            name="haze_horizon"
-                            top_pad="5"
-                            width="185"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="5"
-                          width="80">Haze Density:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0"
-                            max_val="5"
-                            name="haze_density"
-                            top_pad="5"
-                            width="185"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="5"
-                          width="185">Cloud Coverage:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0"
-                            max_val="1"
-                            name="cloud_coverage"
-                            top_pad="5"
-                            width="185"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="5"
-                          width="185">Cloud Scale:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0.01"
-                            max_val="3"
-                            name="cloud_scale"
-                            top_pad="5"
-                            width="185"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="15"
-                          width="80">Scene Gamma:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            max_val="20"
-                            name="scene_gamma"
-                            top_pad="5"
-                            width="185"
-                            can_edit_text="true"/>
-                </layout_panel>
-                <layout_panel border="false"
-                              bevel_style="in"
-                              auto_resize="false"
-                              user_resize="false"
-                              height="150"
-                              width="310"
-                              min_height="0"
-                              visible="true">
-                    <text follows="top|left"
-                          font="SansSerifBold"
-                          height="10"
-                          layout="topleft"
-                          name="label"
-                          left="5"
-                          top="5"
-                          width="105">Sun:</text>
-                    <sun_moon_trackball name="sun_rotation"
-                                        follows="left|top"
-                                        left_delta="0"
-                                        top_delta="20"
-                                        height="150"
-                                        width="150"
-                                        thumb_mode="sun"/>
-                    <check_box control_name="sunbeacon"
-                               width="60"
-                               height="16"
-                               label="Show Beacon"
-                               layout="topleft"
-                               name="sunbeacon"
-                               left_delta="55"
-                               bottom="-20"
-                               follows="bottom|right"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_pad="40"
-                          top="25"
-                          width="80">Scale:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0.25"
-                            max_val="20"
-                            name="sun_scale"
-                            top_delta="15"
-                            width="130"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="5"
-                          width="100">Glow Focus:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="-2"
-                            max_val="2"
-                            name="glow_focus"
-                            top_pad="5"
-                            width="130"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="5"
-                          width="200">Glow Size:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0"
-                            max_val="1.99"
-                            name="glow_size"
-                            top_pad="5"
-                            width="130"
-                            can_edit_text="true"/>
-                    <text follows="left|top"
-                          height="10"
-                          layout="topleft"
-                          left_delta="-5"
-                          top_pad="10"
-                          width="200">Star Brightness:</text>
-                    <slider decimal_digits="2"
-                            follows="left|top"
-                            height="16"
-                            increment="0.01"
-                            initial_value="0"
-                            layout="topleft"
-                            left_delta="5"
-                            min_val="0"
-                            max_val="500"
-                            name="star_brightness"
-                            top_pad="5"
-                            width="130"
-                            can_edit_text="true"/>
-                </layout_panel>
-                <layout_panel border="false"
-                              bevel_style="in"
-                              auto_resize="false"
-                              user_resize="false"
-                              height="150"
-                              width="160"
-                              min_height="0"
-                              visible="true">
-                    <text follows="top|left"
-                          font="SansSerifBold"
-                          height="10"
-                          layout="topleft"
-                          name="label"
-                          left="5"
-                          top="5"
-                          width="105">Moon:</text>
-                    <sun_moon_trackball name="moon_rotation"
-                                        follows="left|top"
-                                        left_delta="0"
-                                        top_delta="20"
-                                        height="150"
-                                        width="150"
-                                        thumb_mode="moon"/>
-                    <check_box control_name="moonbeacon"
-                               width="60"
-                               height="16"
-                               label="Show Beacon"
-                               layout="topleft"
-                               name="moonbeacon"
-                               right="-50"
-                               bottom="-20"
-                               follows="bottom|right"/>
-                </layout_panel>
-            </layout_stack>
-        </layout_panel>
-    </layout_stack>
-</floater>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater
+height="222"
+layout="topleft"
+name="Edit Sky"
+save_rect="true"
+title="Edit Sky"
+width="700">
+<string name="title_new">
+			Create a new Sky Preset
+</string>
+<string name="title_edit">
+			Edit Sky Preset
+</string>
+<string name="title_neutral">
+			Edit a Sky Preset or create a new one.
+</string>
+<string name="combo_label">
+			-Type or select a preset-
+</string>
+    <icon
+    follows="top|left"
+    height="193"
+    color="1 1 1 1"
+    image_name="Panel_Background"
+    layout="topleft"
+    name="vicon"
+    mouse_opaque="false"
+    visible="true"
+    width="686"
+    top="22"
+    left="7"/>
+    <tab_container
+    follows="left|top"
+    height="188"
+    halign="center"
+    layout="topleft"
+    tab_height="20"
+    left="5"
+    name="tab_settings"
+    tab_position="top"
+    top="2"
+    width="689">
+        <panel
+        border="false"
+        bevel_style="none"
+        follows="left|top|right|bottom"
+        height="196"
+        label="Atmosphere &amp; Lighting"
+        layout="topleft"
+        left="0"
+        mouse_opaque="false"
+        name="panel_settings_sky_atmos"
+        top="60"
+        width="698">
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="BHText"
+            top="7"
+            width="200">
+            Blue Horizon
+            </text>
+            <color_swatch
+            can_apply_immediately="true"
+            allow_alpha="false"
+            follows="left|top"
+            height="55"
+            label_height="0"
+            layout="topleft"
+            left_delta="7"
+            name="blue_horizon"
+            top_pad="2"
+            width="55" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="123"
+            name="BDensText2"
+            top="7"
+            width="200">
+            Blue Density
+            </text>
+            <color_swatch
+            can_apply_immediately="true"
+            allow_alpha="false"
+            follows="left|top"
+            height="55"
+            label_height="0"
+            layout="topleft"
+            left_delta="7"
+            name="blue_density"
+            top_pad="2"
+            width="55" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            top="91"
+            name="BDensText"
+            width="200">
+            Haze Horizon
+            </text>
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            initial_value="0.25"
+            layout="topleft"
+            show_text="true"
+            min_val="0"
+            max_val="5"
+            can_edit_text="true"
+            left_delta="0"
+            top_pad="1"
+            name="haze_horizon"
+            width="196" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="HDText"
+            top="133"
+            width="200">
+            Haze Density
+            </text>
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            can_edit_text="true"
+            show_text="true"
+            initial_value="0.7"
+            min_val="0"
+            max_val="5"
+            layout="topleft"
+            left_delta="0"
+            name="haze_density"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="WLAmbientText"
+            top="7"
+            width="150">
+               Ambient
+            </text>
+            <color_swatch
+            can_apply_immediately="true"
+            allow_alpha="false"
+            follows="left|top"
+            height="55"
+            label_height="0"
+            layout="topleft"
+            left_delta="7"
+            name="ambient_light"
+            top_pad="2"
+            width="55" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            top="91"
+            name="BDensText"
+            width="200">
+            Moisture / Droplet / Ice
+            </text>
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            label_width="8"
+            initial_value="0.25"
+            min_val="0"
+            max_val="1"
+            label="M"
+            layout="topleft"
+            show_text="true"
+            can_edit_text="true"
+            left_delta="0"
+            top_pad="1"
+            name="moisture_level"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            show_text="true"
+            can_edit_text="true"
+            label_width="8"
+            initial_value="0.7"
+            min_val="5"
+            max_val="1000"
+            label="D"
+            layout="topleft"
+            left_delta="0"
+            name="droplet_radius"
+            top_pad="1"
+            width="196" />
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            label_width="8"
+            show_text="true"
+            can_edit_text="true"
+            initial_value="0.7"
+            min_val="0"
+            max_val="1"
+            label="I"
+            layout="topleft"
+            left_delta="0"
+            name="ice_level"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="DensMultText"
+            top="7"
+            width="200">
+            Density Multiplier
+            </text>
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.0001"
+            initial_value="0.1"
+            layout="topleft"
+            show_text="true"
+            can_edit_text="true"
+            min_val="0.0001"
+            max_val="2"
+            left_delta="0"
+            name="density_multip"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLDistanceMultText"
+            top="49"
+            width="200">
+            Distance Multiplier
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            initial_value="1.0"
+            layout="topleft"
+            min_val="0.05"
+            max_val="1000"
+            left_delta="0"
+            increment="0.01"
+            show_text="true"
+            can_edit_text="true"
+            name="distance_multip"
+            top_pad="1"
+            width="196" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="MaxAltText"
+            top="91"
+            width="200">
+            Max Altitude
+            </text>
+            <slider
+            decimal_digits="0"
+            follows="left|top"
+            height="16"
+            increment="1"
+            initial_value="500"
+            min_val="0.00"
+            max_val="10000"
+            layout="topleft"
+            left_delta="0"
+            show_text="true"
+            can_edit_text="true"
+            name="max_alt"
+            top_pad="1"
+            width="196" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="SceneGammaText"
+            top="133"
+            width="200">
+            Scene Gamma
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="top|left"
+            height="16"
+            increment="0.01"
+            initial_value="2.0"
+            layout="topleft"
+            show_text="true"
+            can_edit_text="true"
+            left_delta="0"
+            min_val="0"
+            max_val="20"
+            name="scene_gamma"
+            top_pad="1"
+            width="196" />
+        </panel>
+        <panel
+        border="false"
+        bevel_style="none"
+        follows="left|top|right|bottom"
+        height="196"
+        label="Sun &amp; Moon"
+        layout="topleft"
+        left_delta="0"
+        name="Lighting"
+        top_delta="4"
+        width="698">
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="SLCText"
+            top="7"
+            width="150">
+            Sun Color
+            </text>
+            <color_swatch
+            can_apply_immediately="true"
+            allow_alpha="false"
+            follows="left|top"
+            height="55"
+            label_height="0"
+            layout="topleft"
+            left_delta="7"
+            name="sun_moon_color"
+            top_pad="2"
+            width="55" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="123"
+            name="SLCText"
+            top="7"
+            width="150">
+            Sun Image
+            </text>
+            <texture_picker
+            height="78"
+            layout="topleft"
+            left_delta="6"
+            name="sun_image"
+            top_pad="2"
+            width="55"/>
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="SLCText"
+            top="91"
+            width="150">
+            Moon Image
+            </text>
+            <texture_picker
+            height="78"
+            layout="topleft"
+            left_delta="6"
+            name="moon_image"
+            top_pad="2"
+            width="55"/>
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="WLSunVerticalText"
+            top="7"
+            width="200">
+            Sun Position
+            </text>
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            initial_value="0.5"
+            can_edit_text="true"
+            max_val="1"
+            min_val="-1"
+            label_width="8"
+            label="X"
+            layout="topleft"
+            left_delta="0"
+            top_pad="1"
+            name="sun_position_x"
+            width="196" />
+            <slider
+            decimal_digits="3"
+            follows="left|top"
+            height="16"
+            increment="0.001"
+            initial_value="0.5"
+            can_edit_text="true"
+            max_val="1"
+            min_val="-1"
+            label_width="8"
+            label="Y"
+            layout="topleft"
+            left_delta="0"
+            top_pad="1"
+            name="sun_position_y"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="1.0"
+            can_edit_text="true"
+            label_width="8"
+            max_val="20"
+            min_val="0.25"
+            label="S"
+            layout="topleft"
+            left_delta="0"
+            name="sun_scale"
+            top_pad="1"
+            width="196" />
+            <check_box
+            control_name="sunbeacon"
+            width="60"
+            height="16"
+            label="Beacon"
+            layout="topleft"
+            name="sunbeacon"
+            left_pad="-67"
+            top_delta="-53"
+            follows="top|left"/>
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="SunGlowText"
+            top="91"
+            width="200">
+            Glow Focus
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.1"
+            can_edit_text="true"
+            min_val="-2"
+            max_val="2"
+            layout="topleft"
+            left_delta="0"
+            name="glow_focus"
+            top_pad="1"
+            width="196" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="SunGlowText"
+            top="133"
+            width="200">
+            Glow Size
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="top|left"
+            height="16"
+            increment="0.01"
+            initial_value="0.25"
+            can_edit_text="true"
+            layout="topleft"
+            left_delta="0"
+            max_val="1.99"
+            min_val="0.01"
+            name="glow_size"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLSunVerticalText"
+            top="7"
+            width="200">
+            Moon Position
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label_width="8"
+            label="X"
+            layout="topleft"
+            max_val="1"
+            min_val="-1"
+            left_delta="0"
+            top_pad="1"
+            name="moon_position_x"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            max_val="1"
+            min_val="-1"
+            label_width="8"
+            label="Y"
+            layout="topleft"
+            left_delta="0"
+            top_pad="1"
+            name="moon_position_y"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="1.0"
+            can_edit_text="true"
+            max_val="20"
+            min_val="0.25"
+            label_width="8"
+            label="S"
+            layout="topleft"
+            left_delta="0"
+            name="moon_scale"
+            top_pad="1"
+            width="196" />
+            <check_box
+            control_name="moonbeacon"
+            width="60"
+            height="16"
+            label="Beacon"
+            layout="topleft"
+            name="moonbeacon"
+            left_pad="-67"
+            top_delta="-53"
+            follows="top|left"/>
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLStarText"
+            top="91"
+            width="200">
+            Moon Brightness
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="top|left"
+            height="16"
+            increment="0.01"
+            initial_value="0"
+            can_edit_text="true"
+            layout="topleft"
+            show_text="true"
+            left_delta="0"
+            min_val="0"
+            max_val="1"
+            name="moon_brightness"
+            top_pad="1"
+            width="196" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLStarText"
+            top="133"
+            width="200">
+            Star Brightness
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="top|left"
+            height="16"
+            increment="0.01"
+            initial_value="0"
+            layout="topleft"
+            show_text="true"
+            can_edit_text="true"
+            left_delta="0"
+            min_val="0"
+            max_val="500"
+            name="star_brightness"
+            top_pad="1"
+            width="196" />
+        </panel>
+        <panel
+        border="false"
+        bevel_style="none"
+        follows="left|top|right|bottom"
+        height="196"
+        label="Clouds"
+        layout="topleft"
+        left_delta="0"
+        mouse_opaque="false"
+        name="panel_settings_sky_clouds"
+        top_delta="4"
+        width="698">
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="WLCloudColorText"
+            top="7"
+            width="200">
+            Cloud Color
+            </text>
+            <color_swatch
+            can_apply_immediately="true"
+            allow_alpha="false"
+            follows="left|top"
+            height="55"
+            label_height="0"
+            layout="topleft"
+            left_delta="7"
+            name="cloud_color"
+            top_pad="2"
+            width="55" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="123"
+            name="SLCText"
+            top="7"
+            width="150">
+            Cloud Image
+            </text>
+            <texture_picker
+            height="78"
+            layout="topleft"
+            left_delta="7"
+            name="cloud_map"
+            top_pad="2"
+            width="55"/>
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="10"
+            name="WLCloudColorText2"
+            top="91"
+            width="200">
+            Cloud XY/Density
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label_width="8"
+            label="X"
+            layout="topleft"
+            left_delta="0"
+            max_val="1"
+            min_val="0"
+            top_pad="1"
+            name="cloud_density_x"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label_width="7"
+            label="Y"
+            layout="topleft"
+            max_val="1"
+            min_val="0"
+            left_delta="0"
+            top_pad="1"
+            name="cloud_density_y"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="1.0"
+            can_edit_text="true"
+            label_width="7"
+            max_val="3"
+            min_val="0"
+            label="D"
+            layout="topleft"
+            left_delta="0"
+            name="cloud_density_d"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="WLCloudCoverageText"
+            top="7"
+            width="220">
+            Clouds Coverage/Scale/Variance
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label="C"
+            max_val="1"
+            min_val="0"
+            label_width="8"
+            layout="topleft"
+            left_delta="0"
+            name="cloud_coverage"
+            top_pad="1"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="1.0"
+            can_edit_text="true"
+            label="S"
+            label_width="8"
+            layout="topleft"
+            left_delta="0"
+            max_val="3"
+            min_val="0.01"
+            name="cloud_scale"
+            top_pad="1"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            max_val="1"
+            min_val="0"
+            can_edit_text="true"
+            label="V"
+            label_width="8"
+            layout="topleft"
+            left_delta="0"
+            top_pad="1"
+            name="cloud_variance"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="235"
+            name="WLCloudDetailText"
+            top="91"
+            width="200">
+            Cloud Detail (XY/Density)
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label_width="8"
+            max_val="1"
+            min_val="0"
+            label="X"
+            layout="topleft"
+            left_delta="0"
+            top_pad="1"
+            name="cloud_detail_x"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            label_width="8"
+            max_val="1"
+            min_val="0"
+            label="Y"
+            layout="topleft"
+            left_delta="0"
+            name="cloud_detail_y"
+            top_pad="1"
+            width="196" />
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="1.0"
+            can_edit_text="true"
+            label_width="8"
+            max_val="1"
+            min_val="0"
+            label="D"
+            layout="topleft"
+            left_delta="0"
+            name="cloud_detail_d"
+            top_pad="1"
+            width="196" />
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLCloudScrollXText"
+            top="7"
+            width="150">
+            Cloud Scroll X
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            layout="topleft"
+            left_delta="0"
+            max_val="30"
+            min_val="-30"
+            name="cloud_scroll_x"
+            top_pad="1"
+            width="196" />
+            <check_box
+            follows="left|top"
+            height="16"
+            label="   Lock"
+            layout="topleft"
+            left_pad="-67"
+            name="WLCloudLockX"
+            top_delta="-21"
+            width="200" />
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="WLCloudScrollYText"
+            top="49"
+            width="150">
+            Cloud Scroll Y
+            </text>
+            <slider
+            decimal_digits="2"
+            follows="left|top"
+            height="16"
+            increment="0.01"
+            initial_value="0.5"
+            can_edit_text="true"
+            layout="topleft"
+            left_delta="0"
+            max_val="30"
+            min_val="-30"
+            name="cloud_scroll_y"
+            top_pad="1"
+            width="196" />
+            <check_box
+            follows="left|top"
+            height="16"
+            label="   Lock"
+            layout="topleft"
+            top_delta="-21"
+            left_pad="-67"
+            name="WLCloudLockY"
+            width="200" />
+            
+            
+            <text
+            type="string"
+            length="1"
+            follows="left|top"
+            font="SansSerif"
+            height="16"
+            layout="topleft"
+            left="470"
+            name="CloudNoiseImageText"
+            top="91"
+            width="150">
+            Cloud Noise Image
+            </text>
+            <combo_box
+            control_name="CloudNoiseImageName"
+            height="23"
+            allow_text_entry="false"
+            layout="topleft"
+            left_delta="6"
+            follows="left|top"
+            top_pad="1"
+            name="CloudNoiseImage"
+            width="170">
+            <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            </combo_box>
+        </panel>
+    </tab_container>
+    <combo_box
+    follows="top|left"
+    layout="topleft"
+    allow_text_entry="true"
+    left="9"
+    max_chars="100"
+    height="22"
+    name="sky_preset_combo"
+    top_pad="1"
+    width="177">
+    <combo_box.combo_editor
+    text_pad_left="5"
+    background_image="TextField_Off"
+    background_image_disabled="TextField_Disabled"
+    background_image_focused="TextField_Active"/>
+    <combo_box.combo_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"/>
+    <combo_box.drop_down_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"
+    image_disabled="ComboToolbarButton_Disabled"/>
+    </combo_box>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Save Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="-7"
+    name="save"
+    top_delta="0"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Delete Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="delete"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Import Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="import"
+    width="80"/>
+    <icon
+    follows="left|bottom|right"
+    image_name="Toolbar_Middle_Off"
+    height="23"
+    width="213"
+    layout="topleft"
+    name="sky_preset_icon"
+    left_pad="1"
+    top_delta="0"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Reset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="reset"
+    width="55"/>
+ </floater>

@@ -37,9 +37,9 @@ class LLOfferInfo;
 class RlvInventory : public LLSingleton<RlvInventory>, public LLInventoryObserver
 {
 	LLSINGLETON(RlvInventory);
+public:
 	~RlvInventory();
 
-public:
 	// LLInventoryObserver override
 	/*virtual*/ void changed(U32 mask);
 

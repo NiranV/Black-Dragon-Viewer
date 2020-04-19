@@ -169,7 +169,7 @@ void LLViewerJointAttachment::setupDrawable(LLViewerObject *object)
 //-----------------------------------------------------------------------------
 BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 {
-	object->extractAttachmentItemID();
+//	object->extractAttachmentItemID();
 
 	// Same object reattached
 	if (isObjectAttached(object))
@@ -197,12 +197,28 @@ BOOL LLViewerJointAttachment::addObject(LLViewerObject* object)
 	if (LLViewerObject* pAttachObj = getAttachedObject(object->getAttachmentItemID()))
 	{
 		LL_INFOS() << "(same object re-attached)" << LL_ENDL;
-		object->markDead();
-
-		// If this happens to be attached to self, then detach.
-		LLVOAvatarSelf::detachAttachmentIntoInventory(object->getAttachmentItemID());
-		return FALSE;
-	}
+		pAttachObj->markDead();
+		if (pAttachObj->permYouOwner())
+		{
+			gMessageSystem->newMessage("ObjectDetach");
+			gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+			gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+			gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+			gMessageSystem->nextBlockFast(_PREHASH_ObjectData);
+			gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, pAttachObj->getLocalID());
+			gMessageSystem->sendReliable(gAgent.getRegionHost());
+		}
+ 	}
+// [/SL:KB]
+//	if (getAttachedObject(object->getAttachmentItemID()))
+//	{
+//		LL_INFOS() << "(same object re-attached)" << LL_ENDL;
+//		object->markDead();
+//
+//		// If this happens to be attached to self, then detach.
+//		LLVOAvatarSelf::detachAttachmentIntoInventory(object->getAttachmentItemID());
+//		return FALSE;
+//	}
 
 	mAttachedObjects.push_back(object);
 	setupDrawable(object);

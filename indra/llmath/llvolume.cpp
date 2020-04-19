@@ -517,8 +517,6 @@ S32 LLProfile::getNumNGonPoints(const LLProfileParams& params, S32 sides, F32 of
 		t += t_step;
 	}
 
-	t_fraction = (end - (t - t_step))*sides;
-
 	// Find the fraction that we need to add to the end point.
 	t_fraction = (end - (t - t_step))*sides;
 	if (t_fraction > 0.0001f)
@@ -2123,13 +2121,16 @@ BOOL LLVolume::generate()
 	// stretched due to twisting or scaling on the path.  
 	S32 split = (S32) ((mDetail)*0.66f);
 	
-	if (mParams.getPathParams().getCurveType() == LL_PCODE_PATH_LINE &&
-		(mParams.getPathParams().getScale().mV[0] != 1.0f ||
-		 mParams.getPathParams().getScale().mV[1] != 1.0f) &&
-		(mParams.getProfileParams().getCurveType() == LL_PCODE_PROFILE_SQUARE ||
-		 mParams.getProfileParams().getCurveType() == LL_PCODE_PROFILE_ISOTRI ||
-		 mParams.getProfileParams().getCurveType() == LL_PCODE_PROFILE_EQUALTRI ||
-		 mParams.getProfileParams().getCurveType() == LL_PCODE_PROFILE_RIGHTTRI))
+	const auto& path_params = mParams.getPathParams();
+	const auto& profile_params = mParams.getProfileParams();
+
+	if (path_params.getCurveType() == LL_PCODE_PATH_LINE &&
+		(path_params.getScale().mV[0] != 1.0f ||
+		 path_params.getScale().mV[1] != 1.0f) &&
+		(profile_params.getCurveType() == LL_PCODE_PROFILE_SQUARE ||
+		 profile_params.getCurveType() == LL_PCODE_PROFILE_ISOTRI ||
+		 profile_params.getCurveType() == LL_PCODE_PROFILE_EQUALTRI ||
+		 profile_params.getCurveType() == LL_PCODE_PROFILE_RIGHTTRI))
 	{
 		split = 0;
 	}
@@ -2141,8 +2142,8 @@ BOOL LLVolume::generate()
 
 	if ((mParams.getSculptType() & LL_SCULPT_TYPE_MASK) != LL_SCULPT_TYPE_MESH)
 	{
-		U8 path_type = mParams.getPathParams().getCurveType();
-		U8 profile_type = mParams.getProfileParams().getCurveType();
+		U8 path_type = path_params.getCurveType();
+		U8 profile_type = profile_params.getCurveType();
 		if (path_type == LL_PCODE_PATH_LINE && profile_type == LL_PCODE_PROFILE_CIRCLE)
 		{
 			//cylinders don't care about Z-Axis
@@ -2154,8 +2155,8 @@ BOOL LLVolume::generate()
 		}
 	}
 
-	BOOL regenPath = mPathp->generate(mParams.getPathParams(), path_detail, split);
-	BOOL regenProf = mProfilep->generate(mParams.getProfileParams(), mPathp->isOpen(),profile_detail, split);
+	BOOL regenPath = mPathp->generate(path_params, path_detail, split);
+	BOOL regenProf = mProfilep->generate(profile_params, mPathp->isOpen(),profile_detail, split);
 
 	if (regenPath || regenProf ) 
 	{
@@ -3559,7 +3560,7 @@ bool LLVolumeParams::setSkew(const F32 skew_value)
 
 bool LLVolumeParams::setSculptID(const LLUUID sculpt_id, U8 sculpt_type)
 {
-	mSculptID = sculpt_id;
+	mSculptID = std::move(sculpt_id);
 	mSculptType = sculpt_type;
 	return true;
 }
@@ -5257,22 +5258,21 @@ public:
 					LLVCacheTriangleData* tri = *iter;
 					//BD
 					if (tri)
-					//if (tri != NULL)
 					{
-						if (tri->mActive)
-						{
-							tri->mScore = tri->mVertex[0]->mScore;
-							tri->mScore += tri->mVertex[1]->mScore;
-							tri->mScore += tri->mVertex[2]->mScore;
+					if (tri->mActive)
+					{
+						tri->mScore = tri->mVertex[0]->mScore;
+						tri->mScore += tri->mVertex[1]->mScore;
+						tri->mScore += tri->mVertex[2]->mScore;
 
-							if (!mBestTriangle || mBestTriangle->mScore < tri->mScore)
-							{
-								mBestTriangle = tri;
-							}
+						if (!mBestTriangle || mBestTriangle->mScore < tri->mScore)
+						{
+							mBestTriangle = tri;
 						}
 					}
 				}
 			}
+		}
 		}
 
 		//knock trailing 3 vertices off the cache
@@ -5317,7 +5317,7 @@ bool LLVolumeFace::cacheOptimize()
 		triangle_data.resize(mNumIndices / 3);
 		vertex_data.resize(mNumVertices);
 	}
-	catch (std::bad_alloc)
+	catch (const std::bad_alloc&)
 	{
 		LL_WARNS("LLVOLUME") << "Resize failed" << LL_ENDL;
 		return false;
@@ -5471,7 +5471,7 @@ bool LLVolumeFace::cacheOptimize()
 	{
 		new_idx.resize(mNumVertices, -1);
 	}
-	catch (std::bad_alloc)
+	catch (const std::bad_alloc&)
 	{
 		ll_aligned_free<64>(pos);
 		ll_aligned_free_16(wght);

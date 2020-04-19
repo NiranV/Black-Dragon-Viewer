@@ -92,7 +92,6 @@ public:
 	const LLMatrix4* mModelMatrix;
 //	//BD - Motion Blur
 	LLMatrix4* mLastModelMatrix;
-	U32		mMatrixUpdateFrame;
 
 	U16 mStart;
 	U16 mEnd;

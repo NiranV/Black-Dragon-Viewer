@@ -51,9 +51,9 @@ U32 wpo2(U32 i);
 
 U32 LLImageGL::sUniqueCount				= 0;
 U32 LLImageGL::sBindCount				= 0;
-U64Bytes LLImageGL::sGlobalTextureMemory(0);
-U64Bytes LLImageGL::sBoundTextureMemory(0);
-U64Bytes LLImageGL::sCurBoundTextureMemory(0);
+S64Bytes LLImageGL::sGlobalTextureMemory(0);
+S64Bytes LLImageGL::sBoundTextureMemory(0);
+S64Bytes LLImageGL::sCurBoundTextureMemory(0);
 S32 LLImageGL::sCount					= 0;
 
 BOOL LLImageGL::sGlobalUseAnisotropic	= FALSE;
@@ -265,11 +265,11 @@ void LLImageGL::updateStats(F32 current_time)
 	LL_RECORD_BLOCK_TIME(FTM_IMAGE_UPDATE_STATS);
 	sLastFrameTime = current_time;
 	sBoundTextureMemory = sCurBoundTextureMemory;
-	sCurBoundTextureMemory = S32Bytes(0);
+	sCurBoundTextureMemory = S64Bytes(0);
 }
 
 //static
-S32 LLImageGL::updateBoundTexMem(const S32Bytes mem, const S32 ncomponents, S32 category)
+S64 LLImageGL::updateBoundTexMem(const S64Bytes mem, const S32 ncomponents, S32 category)
 {
 	LLImageGL::sCurBoundTextureMemory += mem ;
 	return LLImageGL::sCurBoundTextureMemory.value();
@@ -442,7 +442,7 @@ void LLImageGL::init(BOOL usemipmaps)
 	// so that it is obvious by visual inspection if we forgot to
 	// init a field.
 
-	mTextureMemory = (S32Bytes)0;
+	mTextureMemory = S64Bytes(0);
 	mLastBindTime = 0.f;
 
 	mPickMask = NULL;
@@ -610,7 +610,7 @@ void LLImageGL::forceUpdateBindStats(void) const
 	mLastBindTime = sLastFrameTime;
 }
 
-BOOL LLImageGL::updateBindStats(S32Bytes tex_mem) const
+BOOL LLImageGL::updateBindStats(S64Bytes tex_mem) const
 {	
 	if (mTexName != 0)
 	{
@@ -1373,38 +1373,6 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
 
 	if( !mHasExplicitFormat )
 	{
-<<<<<<< HEAD
-		switch (mComponents)
-		{
-			case 1:
-			// Use luminance alpha (for fonts)
-			mFormatInternal = GL_LUMINANCE8;
-			mFormatPrimary = GL_LUMINANCE;
-			mFormatType = GL_UNSIGNED_BYTE;
-			break;
-			case 2:
-			// Use luminance alpha (for fonts)
-			mFormatInternal = GL_LUMINANCE8_ALPHA8;
-			mFormatPrimary = GL_LUMINANCE_ALPHA;
-			mFormatType = GL_UNSIGNED_BYTE;
-			break;
-			case 3:
-			mFormatInternal = GL_RGB8;
-			mFormatPrimary = GL_RGB;
-			mFormatType = GL_UNSIGNED_BYTE;
-			break;
-			case 4:
-			mFormatInternal = GL_RGBA8;
-			mFormatPrimary = GL_RGBA;
-			mFormatType = GL_UNSIGNED_BYTE;
-			break;
-			//BD - Don't crash on bad number of components. Skip it instead.
-			default:
-			LL_WARNS() << "Bad number of components for texture: " << (U32)getComponents() << LL_ENDL;
-			return FALSE;
-			break;
-		}
-=======
         switch (mComponents)
         {
         case 1:
@@ -1447,10 +1415,12 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
             mFormatPrimary = GL_RGBA;
             mFormatType = GL_UNSIGNED_BYTE;
             break;
+			//BD - Don't crash on bad number of components. Skip it instead.
         default:
-            LL_ERRS() << "Bad number of components for texture: " << (U32)getComponents() << LL_ENDL;
+			LL_WARNS() << "Bad number of components for texture: " << (U32)getComponents() << LL_ENDL;
+			return FALSE;
+			break;
         }
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 		calcAlphaChannelOffsetAndStride() ;
 	}
@@ -1561,7 +1531,7 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const U8* data_in, BOOL data_
 	}
 
 	disclaimMem(mTextureMemory);
-	mTextureMemory = (S32Bytes)getMipBytes(discard_level);
+	mTextureMemory = S64Bytes(getMipBytes(discard_level));
 	claimMem(mTextureMemory);
 	sGlobalTextureMemory += mTextureMemory;
 	mTexelsInGLTexture = getWidth() * getHeight() ;
@@ -1696,11 +1666,11 @@ void LLImageGL::destroyGLTexture()
 {
 	if (mTexName != 0)
 	{
-		if(mTextureMemory != S32Bytes(0))
+		if(mTextureMemory != S64Bytes(0))
 		{
 			sGlobalTextureMemory -= mTextureMemory;
 			disclaimMem(mTextureMemory);
-			mTextureMemory = (S32Bytes)0;
+			mTextureMemory = (S64Bytes)0;
 		}
 		
 		LLImageGL::deleteTextures(1, &mTexName);			
@@ -2120,7 +2090,10 @@ void LLImageGL::updatePickMask(S32 width, S32 height, const U8* data_in)
 	}
 }
 
-BOOL LLImageGL::getMask(const LLVector2 &tc)
+//BOOL LLImageGL::getMask(const LLVector2 &tc)
+// [RLVa:KB] - Checked: RLVa-2.2 (@setoverlay)
+BOOL LLImageGL::getMask(const LLVector2 &tc) const
+// [/RLVa:KB]
 {
 	BOOL res = TRUE;
 

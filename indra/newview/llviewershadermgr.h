@@ -60,7 +60,6 @@ public:
 	BOOL loadShadersWindLight();
 	BOOL loadTransformShaders();
 
-<<<<<<< HEAD
 //	//BD - Fast Shader Toggles
 	BOOL resetDeferredShaders();
 	BOOL loadShadersMaterials(bool success);
@@ -68,18 +67,19 @@ public:
 	BOOL loadShadersSpotlights(bool success);
 	BOOL loadShadersSSAO(bool success);
 	BOOL loadShadersShadows(bool success);
-	BOOL loadShadersGodrays(bool success);
 	BOOL loadShadersBlurLight(bool success);
+
+//	//BD - Screen Space Reflections
 	BOOL loadShadersSSR(bool success);
 
 //	//BD - Exodus Post Process
 	void unloadExodusPostShaders();
-    BOOL loadExodusPostShaders();
+	BOOL loadExodusPostShaders();
 
-	std::vector<S32> mVertexShaderLevel;
-=======
+	//BD - Volumetric Lighting
+	BOOL loadShadersGodrays(bool success);
+
 	std::vector<S32> mShaderLevel;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	S32	mMaxAvatarShaderLevel;
 
 	enum EShaderClass
@@ -290,17 +290,6 @@ extern LLGLSLShader			gWLMoonProgram;
 extern LLGLSLShader			gPostColorFilterProgram;
 extern LLGLSLShader			gPostNightVisionProgram;
 
-//BD - Exodus Post Process
-extern LLGLSLShader         gColorGradePost;
-extern LLGLSLShader         gLinearToneMapping;
-extern LLGLSLShader         gReinhardToneMapping;
-extern LLGLSLShader         gFilmicToneMapping;
-extern LLGLSLShader         gVignettePost;
-extern LLGLSLShader         gColorGradePostLegacy;
-extern LLGLSLShader         gFilmicToneMappingAdv;
-
-extern LLGLSLShader         gLensFlare;
-extern LLGLSLShader         gSpecialPost;
 
 // Deferred rendering shaders
 extern LLGLSLShader			gDeferredImpostorProgram;
@@ -364,6 +353,22 @@ extern LLGLSLShader			gDeferredSkinnedFullbrightShinyProgram;
 extern LLGLSLShader			gDeferredSkinnedFullbrightProgram;
 extern LLGLSLShader			gNormalMapGenProgram;
 
+// Deferred materials shaders
+extern LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];
+extern LLGLSLShader			gDeferredMaterialWaterProgram[LLMaterial::SHADER_COUNT*2];
+
+//BD - Exodus Post Process
+extern LLGLSLShader         gColorGradePost;
+extern LLGLSLShader         gLinearToneMapping;
+extern LLGLSLShader         gReinhardToneMapping;
+extern LLGLSLShader         gFilmicToneMapping;
+extern LLGLSLShader         gVignettePost;
+extern LLGLSLShader         gColorGradePostLegacy;
+extern LLGLSLShader         gFilmicToneMappingAdv;
+
+extern LLGLSLShader         gLensFlare;
+extern LLGLSLShader         gSpecialPost;
+
 //BD - Volumetric Lighting
 extern LLGLSLShader			gVolumetricLightProgram;
 
@@ -375,7 +380,4 @@ extern LLGLSLShader			gSkinnedVelocityProgram;
 extern LLGLSLShader			gSkinnedVelocityAlphaProgram;
 extern LLGLSLShader			gMotionBlurProgram;
 
-// Deferred materials shaders
-extern LLGLSLShader			gDeferredMaterialProgram[LLMaterial::SHADER_COUNT*2];
-extern LLGLSLShader			gDeferredMaterialWaterProgram[LLMaterial::SHADER_COUNT*2];
 #endif

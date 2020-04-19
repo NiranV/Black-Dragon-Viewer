@@ -628,15 +628,6 @@ Warten Sie kurz und versuchen Sie dann noch einmal, sich anzumelden.
 	<string name="BUTTON_HELP">
 		Hilfe anzeigen
 	</string>
-	<string name="TooltipNotecardNotAllowedTypeDrop">
-		Objekte dieses Typs können nicht an Notizkarten 
-für diese Region angehängt werden.
-	</string>
-	<string name="TooltipNotecardOwnerRestrictedDrop">
-		An Notizkarten können nur Objekte ohne 
-Berechtigungseinschränkungen für den 
-nächsten Eigentümer angehängt werden.
-	</string>
 	<string name="Searching">
 		Suchen...
 	</string>
@@ -716,18 +707,6 @@ nächsten Eigentümer angehängt werden.
 		Fehler bei der Upload-Anforderung. Um das Problem zu lösen, 
 besuchen Sie bitte http://secondlife.com/support
 	</string>
-	<string name="SettingValidationError">
-		Validierung für das Importieren der Einstellungen [NAME] fehlgeschlagen
-	</string>
-	<string name="SettingImportFileError">
-		[FILE] konnte nicht geöffnet werden
-	</string>
-	<string name="SettingParseFileError">
-		[FILE] konnte nicht geöffnet werden
-	</string>
-	<string name="SettingTranslateError">
-		Altes Windlight [NAME] konnte nicht übernommen werden
-	</string>
 	<string name="texture">
 		Textur
 	</string>
@@ -802,9 +781,6 @@ besuchen Sie bitte http://secondlife.com/support
 	</string>
 	<string name="symbolic folder link">
 		Link zu Ordner
-	</string>
-	<string name="settings blob">
-		Einstellungen
 	</string>
 	<string name="mesh">
 		mesh
@@ -1136,9 +1112,6 @@ besuchen Sie bitte http://secondlife.com/support
 	<string name="ForceSitAvatar">
 		Ihren Avatar zwingen, sich zu setzen
 	</string>
-	<string name="ChangeEnvSettings">
-		Umgebungseinstellungen ändern
-	</string>
 	<string name="NotConnected">
 		Nicht verbunden
 	</string>
@@ -1290,9 +1263,6 @@ besuchen Sie bitte http://secondlife.com/support
 	<string name="tattoo">
 		Tätowierung
 	</string>
-	<string name="universal">
-		Universal
-	</string>
 	<string name="physics">
 		Physik
 	</string>
@@ -1334,9 +1304,6 @@ besuchen Sie bitte http://secondlife.com/support
 	</string>
 	<string name="tattoo_not_worn">
 		Tätowierung nicht getragen
-	</string>
-	<string name="universal_not_worn">
-		Universal nicht getragen
 	</string>
 	<string name="physics_not_worn">
 		Physik nicht getragen
@@ -1388,9 +1355,6 @@ besuchen Sie bitte http://secondlife.com/support
 	</string>
 	<string name="create_new_tattoo">
 		Neue Tätowierung erstellen
-	</string>
-	<string name="create_new_universal">
-		Neues Universal erstellen
 	</string>
 	<string name="create_new_physics">
 		Neue Physik erstellen
@@ -2520,27 +2484,6 @@ Falls diese Meldung weiterhin angezeigt wird, wenden Sie sich unter http://suppo
 	</string>
 	<string name="RegionSettings">
 		Regionseinstellungen
-	</string>
-	<string name="NoEnvironmentSettings">
-		Diese Region unterstützt keine Umgebungseinstellungen.
-	</string>
-	<string name="EnvironmentSun">
-		Sonne
-	</string>
-	<string name="EnvironmentMoon">
-		Mond
-	</string>
-	<string name="EnvironmentBloom">
-		Bloom
-	</string>
-	<string name="EnvironmentCloudNoise">
-		Wolkenrauschen
-	</string>
-	<string name="EnvironmentNormalMap">
-		Normal-Map
-	</string>
-	<string name="EnvironmentTransparent">
-		Transparent
 	</string>
 	<string name="ClassifiedClicksTxt">
 		Klicks: [TELEPORT] teleportieren, [MAP] Karte, [PROFILE] Profil
@@ -4758,9 +4701,6 @@ Missbrauchsbericht
 	<string name="New Tattoo">
 		Neue Tätowierung
 	</string>
-	<string name="New Universal">
-		Neues Universal
-	</string>
 	<string name="New Physics">
 		Neue Physik
 	</string>
@@ -4886,15 +4826,6 @@ Missbrauchsbericht
 	</string>
 	<string name="Female - Wow">
 		Weiblich - Wow
-	</string>
-	<string name="New Daycycle">
-		Neuer Tageszyklus
-	</string>
-	<string name="New Water">
-		Neues Wasser
-	</string>
-	<string name="New Sky">
-		Neuer Himmel
 	</string>
 	<string name="/bow">
 		/verbeugen
@@ -5424,12 +5355,6 @@ Setzen Sie den Editorpfad in Anführungszeichen
 	<string name="BeaconMedia">
 		Medien-Beacons werden angezeigt (weiß)
 	</string>
-	<string name="BeaconSun">
-		Sonnenrichtungs-Beacon ansehen (orange)
-	</string>
-	<string name="BeaconMoon">
-		Mondrichtungs-Beacon ansehen (lila)
-	</string>
 	<string name="ParticleHiding">
 		Partikel werden ausgeblendet
 	</string>
@@ -5456,12 +5381,6 @@ Setzen Sie den Editorpfad in Anführungszeichen
 	</string>
 	<string name="Command_Destinations_Label">
 		Ziele
-	</string>
-	<string name="Command_Environments_Label">
-		Meine Umgebungen
-	</string>
-	<string name="Command_Facebook_Label">
-		Facebook
 	</string>
 	<string name="Command_Flickr_Label">
 		Flickr
@@ -5555,12 +5474,6 @@ Setzen Sie den Editorpfad in Anführungszeichen
 	</string>
 	<string name="Command_Destinations_Tooltip">
 		Ziele von Interesse
-	</string>
-	<string name="Command_Environments_Tooltip">
-		Meine Umgebungen
-	</string>
-	<string name="Command_Facebook_Tooltip">
-		Auf Facebook posten
 	</string>
 	<string name="Command_Flickr_Tooltip">
 		Auf Flickr hochladen
@@ -5769,12 +5682,6 @@ Setzen Sie den Editorpfad in Anführungszeichen
 	<string name="ExperiencePermission12">
 		automatisch Erlebnisberechtigungen akzeptieren
 	</string>
-	<string name="ExperiencePermission16">
-		ihren Avatar zwingen, sich zu setzen
-	</string>
-	<string name="ExperiencePermission17">
-		Ändern Ihrer Umgebungseinstellungen
-	</string>
 	<string name="ExperiencePermissionShortUnknown">
 		unbekannten Vorgang durchführen: [Permission]
 	</string>
@@ -5799,26 +5706,6 @@ Setzen Sie den Editorpfad in Anführungszeichen
 	<string name="ExperiencePermissionShort12">
 		Berechtigung
 	</string>
-<<<<<<< HEAD
-=======
-	<string name="ExperiencePermissionShort16">
-		Sitzen
-	</string>
-	<string name="ExperiencePermissionShort17">
-		Umgebung
-	</string>
-	<string name="logging_calls_disabled_log_empty">
-		Unterhaltungen werden nicht protokolliert. Um ein Protokoll zu starten, wählen Sie „Speichern: nur Protokoll“ oder „Speichern: Protokoll und Transkripte“ unter „Einstellungen“ &gt; „Chat“.
-	</string>
-	<string name="logging_calls_disabled_log_not_empty">
-		Es werden keine Unterhaltungen mehr protokolliert. Um weiterhin ein Protokoll zu führen, wählen Sie „Speichern: nur Protokoll“ oder „Speichern: Protokoll und Transkripte“ unter „Einstellungen“ &gt; „Chat“.
-	</string>
-	<string name="logging_calls_enabled_log_empty">
-		Keine protokollierten Unterhaltungen verfügbar. Hier erscheint ein Protokolleintrag, wenn Sie eine Person kontaktieren oder von einer Person kontaktiert werden.
-	</string>
-	<string name="loading_chat_logs">
-		Laden...
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	</string>
 	<string name="na">
 		Nicht zutreffend

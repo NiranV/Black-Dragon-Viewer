@@ -55,14 +55,9 @@
 #include "llviewershadermgr.h"
 #include "llcontrolavatar.h"
 
-<<<<<<< HEAD
 //BD
 #include "lltoolmgr.h"
 
-//#pragma optimize("", off)
-
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 static LLTrace::BlockTimerStatHandle FTM_FRUSTUM_CULL("Frustum Culling");
 static LLTrace::BlockTimerStatHandle FTM_CULL_REBOUND("Cull Rebound Partition");
 
@@ -2041,7 +2036,7 @@ void renderComplexityDisplay(LLDrawable* drawablep)
 		return;
 	}
 
-	LLVOVolume *voVol = dynamic_cast<LLVOVolume*>(vobj);
+	LLVOVolume *voVol = vobj->asVolume();;
 
 	if (!voVol)
 	{
@@ -2060,8 +2055,8 @@ void renderComplexityDisplay(LLDrawable* drawablep)
 	LLViewerObject::const_child_list_t children = voVol->getChildren();
 	for (LLViewerObject::const_child_list_t::const_iterator iter = children.begin(); iter != children.end(); ++iter)
 	{
-		const LLViewerObject *child = *iter;
-		const LLVOVolume *child_volume = dynamic_cast<const LLVOVolume*>(child);
+		LLViewerObject *child = *iter;
+		LLVOVolume* child_volume = child ? child->asVolume() : nullptr;
 		if (child_volume)
 		{
 			cost += child_volume->getRenderCost(textures);
@@ -2184,9 +2179,10 @@ void renderBoundingBox(LLDrawable* drawable, BOOL set_color = TRUE)
                     	gGL.diffuseColor4f(0,0.5f,0,1); // dark green
 						break;
 				default:
-						LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(drawable->getVObj()->asAvatar());
-						if (cav)
+						auto avatarp = drawable->getVObj()->asAvatar();
+						if (avatarp && avatarp->isControlAvatar())
 						{
+							LLControlAvatar* cav = static_cast<LLControlAvatar*>(avatarp);
 							bool has_pos_constraint = (cav->mPositionConstraintFixup != LLVector3());
 							bool has_scale_constraint = (cav->mScaleConstraintFixup != 1.0f);
 							if (has_pos_constraint || has_scale_constraint)
@@ -3429,21 +3425,24 @@ public:
 				renderTexelDensity(drawable);
 			}
 
-			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(drawable->getVObj().get());
-			
-			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_VOLUME))
+			LLViewerObject* vobjp = drawable->getVObj();
+			LLVOAvatar* avatar = vobjp ? vobjp->asAvatar() : nullptr;
+			if (avatar)
 			{
-				renderAvatarCollisionVolumes(avatar);
-			}
+				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_VOLUME))
+				{
+					renderAvatarCollisionVolumes(avatar);
+				}
 
-			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
-			{
-				renderAvatarBones(avatar);
-			}
+				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
+				{
+					renderAvatarBones(avatar);
+				}
 
-			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AGENT_TARGET))
-			{
-				renderAgentTarget(avatar);
+				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AGENT_TARGET))
+				{
+					renderAgentTarget(avatar);
+				}
 			}
 			
 			if (gDebugGL)
@@ -3995,7 +3994,7 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mVertexBuffer(buffer),
 	mTexture(texture),
 	mTextureMatrix(NULL),
-	mMatrixUpdateFrame(0),
+	mModelMatrix(NULL),
 	mStart(start),
 	mEnd(end),
 	mCount(count),
@@ -4020,7 +4019,6 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mDiffuseAlphaMode(0),
 	mSelected(selected),
 //	//BD - Motion Blur
-	mModelMatrix(NULL),
 	mLastModelMatrix(NULL)
 {
 	mVertexBuffer->validateRange(mStart, mEnd, mCount, mOffset);
@@ -4090,6 +4088,7 @@ LLCullResult::LLCullResult()
 		mRenderMap[i].push_back(NULL);
 		mRenderMapEnd[i] = &mRenderMap[i][0];
 		mRenderMapAllocated[i] = 0;
+		mRenderMapSize[i] = 0;
 	}
 
 	clear();

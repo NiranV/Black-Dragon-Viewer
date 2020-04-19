@@ -57,11 +57,21 @@
 #include "llsettingsvo.h"
 #include "llinventorymodel.h"
 
+//BD
+#include "llcombobox.h"
+#include "bdfunctions.h"
+#include "llsdserialize.h"
+#include "llsettingsvo.h"
+#include "llviewermenufile.h"
+#include "llinventorymodel.h"
+#include "llinventoryfunctions.h"
+#include "llagent.h"
+
 extern LLControlGroup gSavedSettings;
 
 namespace
 {
-    const std::string FIELD_SETTINGS_NAME("settings_name");
+    const std::string FIELD_SETTINGS_NAME("sky_preset_combo");
 
     const std::string CONTROL_TAB_AREA("tab_settings");
 
@@ -79,6 +89,14 @@ namespace
     const std::string ACTION_APPLY_REGION("apply_region");
 
     const std::string XML_FLYOUTMENU_FILE("menu_save_settings.xml");
+
+	//BD - Windlight Stuff
+	const S32 FLOATER_ENVIRONMENT_UPDATE(-2);
+
+	//const std::string   BTN_RESET("reset");
+	const std::string   BTN_SAVE("save");
+	const std::string   BTN_DELETE("delete");
+	//const std::string   BTN_IMPORT("import");
 }
 
 //=========================================================================
@@ -130,14 +148,17 @@ LLFloaterFixedEnvironment::~LLFloaterFixedEnvironment()
 BOOL LLFloaterFixedEnvironment::postBuild()
 {
     mTab = getChild<LLTabContainer>(CONTROL_TAB_AREA);
-    mTxtName = getChild<LLLineEditor>(FIELD_SETTINGS_NAME);
-
-    mTxtName->setCommitOnFocusLost(TRUE);
-    mTxtName->setCommitCallback([this](LLUICtrl *, const LLSD &) { onNameChanged(mTxtName->getValue().asString()); });
+    mTxtName = getChild<LLComboBox>(FIELD_SETTINGS_NAME);
+	mTxtName->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
 
     getChild<LLButton>(BUTTON_NAME_IMPORT)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
     getChild<LLButton>(BUTTON_NAME_CANCEL)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onClickCloseBtn(); });
     getChild<LLButton>(BUTTON_NAME_LOAD)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onButtonLoad(); });
+
+	//BD
+	//getChild<LLUICtrl>(BTN_RESET)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonReset(); });
+	getChild<LLUICtrl>(BTN_DELETE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonDelete(); });
+	getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
 
     mFlyoutControl = new LLFlyoutComboBtnCtrl(this, BUTTON_NAME_COMMIT, BUTTON_NAME_FLYOUT, XML_FLYOUTMENU_FILE, false);
     mFlyoutControl->setAction([this](LLUICtrl *ctrl, const LLSD &data) { onButtonApply(ctrl, data); });
@@ -162,6 +183,11 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
     syncronizeTabs();
     refresh();
     LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
+
+	std::string type = mSettings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : "water";
+	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
+	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
 
 }
 
@@ -375,12 +401,6 @@ void LLFloaterFixedEnvironment::onAssetLoaded(LLUUID asset_id, LLSettingsBase::p
     syncronizeTabs();
     refresh();
     LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_FAST);
-}
-
-void LLFloaterFixedEnvironment::onNameChanged(const std::string &name)
-{
-    mSettings->setName(name);
-    setDirtyFlag();
 }
 
 void LLFloaterFixedEnvironment::onButtonImport()
@@ -743,10 +763,16 @@ BOOL LLFloaterFixedEnvironmentWater::postBuild()
 
     LLPanelSettingsWater * panel;
     panel = new LLPanelSettingsWaterMainTab;
-    panel->buildFromFile("panel_settings_water.xml");
+    panel->buildFromFile("panel_settings_water_settings.xml");
     panel->setWater(std::static_pointer_cast<LLSettingsWater>(mSettings));
     panel->setOnDirtyFlagChanged( [this] (LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
     mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(true));
+
+	panel = new LLPanelSettingsWaterSecondaryTab;
+	panel->buildFromFile("panel_settings_water_image.xml");
+	panel->setWater(std::static_pointer_cast<LLSettingsWater>(mSettings));
+	panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
+	mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(true));
 
     return TRUE;
 }
@@ -815,17 +841,17 @@ BOOL LLFloaterFixedEnvironmentSky::postBuild()
     panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
     mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(true));
 
-    panel = new LLPanelSettingsSkyCloudTab;
-    panel->buildFromFile("panel_settings_sky_clouds.xml");
-    panel->setSky(std::static_pointer_cast<LLSettingsSky>(mSettings));
-    panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
-    mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(false));
-
     panel = new LLPanelSettingsSkySunMoonTab;
     panel->buildFromFile("panel_settings_sky_sunmoon.xml");
     panel->setSky(std::static_pointer_cast<LLSettingsSky>(mSettings));
     panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
     mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(false));
+
+	panel = new LLPanelSettingsSkyCloudTab;
+	panel->buildFromFile("panel_settings_sky_clouds.xml");
+	panel->setSky(std::static_pointer_cast<LLSettingsSky>(mSettings));
+	panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
+	mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(false));
 
     return TRUE;
 }
@@ -868,7 +894,7 @@ void LLFloaterFixedEnvironmentSky::loadSkySettingFromFile(const std::vector<std:
     std::string filename = filenames[0];
     LLSD messages;
 
-    LL_DEBUGS("ENVEDIT") << "Selected file: " << filename << LL_ENDL;
+    LL_INFOS("ENVEDIT") << "Selected file: " << filename << LL_ENDL;
     LLSettingsSky::ptr_t legacysky = LLEnvironment::createSkyFromLegacyPreset(filename, messages);
 
     if (!legacysky)
@@ -886,4 +912,32 @@ void LLFloaterFixedEnvironmentSky::loadSkySettingFromFile(const std::vector<std:
     LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_FAST, true);
 }
 
-//=========================================================================
+//BD - Windlight Stuff
+//=====================================================================================================
+void LLFloaterFixedEnvironment::onButtonSave()
+{
+	std::string folder = mSettings->getSettingsType() == "sky" ? "skies" : "water";
+	gDragonLibrary.savePreset(mTxtName->getValue(), mSettings);
+	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
+	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
+}
+
+void LLFloaterFixedEnvironment::onButtonDelete()
+{
+	std::string type = mSettings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : "water";
+	gDragonLibrary.deletePreset(mTxtName->getValue(), folder);
+	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
+	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
+}
+
+void LLFloaterFixedEnvironment::onSelectPreset()
+{
+	gDragonLibrary.onSelectPreset(mTxtName, mSettings);
+
+	//BD - Don't use the escaped string.
+	mSettings->setName(mTxtName->getValue().asString());
+	setDirtyFlag();
+
+	refresh();
+}

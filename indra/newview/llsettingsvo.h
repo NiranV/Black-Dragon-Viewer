@@ -98,6 +98,9 @@ public:
 
     static ptr_t buildFromLegacyPresetFile(const std::string &name, const std::string &path, LLSD &messages);
 
+	//BD - Local Windlights
+	static ptr_t buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages);
+
     static LLSD     convertToLegacy(const ptr_t &, bool isAdvanced);
 
     bool isAdvanced() const { return  m_isAdvanced; }
@@ -133,6 +136,9 @@ public:
     virtual ptr_t   buildClone() const SETTINGS_OVERRIDE;
 
     static ptr_t buildFromLegacyPresetFile(const std::string &name, const std::string &path, LLSD &messages);
+
+	//BD - Local Windlights
+	static ptr_t buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages);
 
     static LLSD     convertToLegacy(const ptr_t &);
 

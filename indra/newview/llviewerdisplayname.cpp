@@ -98,7 +98,7 @@ void LLViewerDisplayName::set(const std::string& display_name, const set_name_sl
             boost::bind(&LLViewerDisplayName::setDisplayNameCoro, cap_url, body));
 }
 
-void LLViewerDisplayName::setDisplayNameCoro(const std::string& cap_url, const LLSD& body)
+void LLViewerDisplayName::setDisplayNameCoro(const std::string cap_url, const LLSD body)
 {
     LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
@@ -148,10 +148,10 @@ public:
 		{
 			LLUUID agent_id = gAgent.getID();
 			// Flush stale data
-			LLAvatarNameCache::getInstance()->erase(agent_id);
+			LLAvatarNameCache::getInstance()->erase( agent_id );
 			// Queue request for new data: nothing to do on callback though...
 			// Note: no need to disconnect the callback as it never gets out of scope
-			LLAvatarNameCache::get(agent_id, boost::bind(&LLViewerDisplayName::doNothing));
+            LLAvatarNameCache::getInstance()->get(agent_id, boost::bind(&LLViewerDisplayName::doNothing));
 			// Kill name tag, as it is wrong
 			LLVOAvatar::invalidateNameTag( agent_id );
 		}
@@ -190,9 +190,9 @@ class LLDisplayNameUpdate : public LLHTTPNode
 		//LLSD headers = response->mHeaders;
 		LLSD headers;
 		av_name.mExpires = 
-			LLAvatarNameCache::getInstance()->nameExpirationFromHeaders(headers);
+            LLAvatarNameCache::getInstance()->nameExpirationFromHeaders(headers);
 
-		LLAvatarNameCache::getInstance()->insert(agent_id, av_name);
+        LLAvatarNameCache::getInstance()->insert(agent_id, av_name);
 
 		// force name tag to update
 		LLVOAvatar::invalidateNameTag(agent_id);

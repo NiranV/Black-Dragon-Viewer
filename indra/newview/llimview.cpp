@@ -200,18 +200,18 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		if (msg["source_type"].asInteger() == CHAT_SOURCE_OBJECT)
 		{
 			user_preferences = gSavedSettings.getString("NotificationObjectIMOptions");
-			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundObjectIM"))
+			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundObjectIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
 		}
 		else
 		{
-    		user_preferences = gSavedSettings.getString("NotificationNearbyChatOptions");
-			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNearbyChatIM"))
+    	user_preferences = gSavedSettings.getString("NotificationNearbyChatOptions");
+			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNearbyChatIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
-			}
+    }
 		}
 	}
     else if(session->isP2PSessionType())
@@ -219,7 +219,7 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         if (LLAvatarTracker::instance().isBuddy(participant_id))
         {
         	user_preferences = gSavedSettings.getString("NotificationFriendIMOptions");
-			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundFriendIM"))
+			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundFriendIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -227,24 +227,24 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         else
         {
         	user_preferences = gSavedSettings.getString("NotificationNonFriendIMOptions");
-			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNonFriendIM"))
+			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNonFriendIM") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
-			}
-		}
+        }
+    }
 	}
     else if(session->isAdHocSessionType())
     {
     	user_preferences = gSavedSettings.getString("NotificationConferenceIMOptions");
-		if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundConferenceIM"))
+		if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundConferenceIM") == TRUE))
 		{
 			make_ui_sound("UISndNewIncomingIMSession");
-		}
+    }
 	}
     else if(session->isGroupSessionType())
     {
     	user_preferences = gSavedSettings.getString("NotificationGroupChatOptions");
-		if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundGroupChatIM"))
+		if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundGroupChatIM") == TRUE))
 		{
 			make_ui_sound("UISndNewIncomingIMSession");
 		}
@@ -294,16 +294,17 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
         else
         {
 			store_dnd_message = true;
-		}
+	        }
+
     }
 
     // 2. Flash line item
     if ("openconversations" == user_preferences
     		|| ON_TOP == conversations_floater_status
     		|| ("toast" == user_preferences && ON_TOP != conversations_floater_status)
-			|| ("flash" == user_preferences && (CLOSED == conversations_floater_status
-			|| NOT_ON_TOP == conversations_floater_status))
-			|| is_dnd_msg)
+		|| ("flash" == user_preferences && (CLOSED == conversations_floater_status
+				 	 	 	 	 	 	|| NOT_ON_TOP == conversations_floater_status))
+		|| is_dnd_msg)
     {
     	if(!LLMuteList::getInstance()->isMuted(participant_id))
     	{
@@ -321,9 +322,9 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 				else
 				{
-					im_box->flashConversationItemWidget(session_id, true);
-				}
-			}
+    		im_box->flashConversationItemWidget(session_id, true);
+    	}
+    }
 		}
 	}
 
@@ -338,23 +339,23 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 		|| msg["source_type"].asInteger() == CHAT_SOURCE_OBJECT))
 	{
 		if(!LLMuteList::getInstance()->isMuted(participant_id))
-		{
+    {
 			if(!gAgent.isDoNotDisturb())
-    		{
+    	{
 				gToolBarView->flashCommand(LLCommandId("chat"), true, im_box->isMinimized());
-    		}
+    	}
 			else
 			{
 				store_dnd_message = true;
 			}
-		}
+    }
 	}
 
     // 4. Toast
     if ((("toast" == user_preferences) &&
 		(ON_TOP_AND_ITEM_IS_SELECTED != conversations_floater_status) &&
 		(!session_floater->isTornOff() || !LLFloater::isVisible(session_floater)))
-		|| !session_floater->isMessagePaneExpanded())
+    		    || !session_floater->isMessagePaneExpanded())
 
     {
         //Show IM toasts (upper right toasts)
@@ -369,10 +370,10 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 				else
 				{
-					LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
-				}
-			}
-		}
+            LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
+        }
+    }
+}
 	}
 	if (store_dnd_message)
 	{
@@ -2748,7 +2749,7 @@ void LLIMMgr::addMessage(
 			}
 
 			//Play sound for new conversations
-			if (!gAgent.isDoNotDisturb() && gSavedSettings.getBOOL("PlaySoundNewConversation"))
+			if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundNewConversation") == TRUE))
 			{
 				make_ui_sound("UISndNewIncomingIMSession");
 			}
@@ -2770,9 +2771,9 @@ void LLIMMgr::addMessage(
 			LLIMModel::instance().addMessage(new_session_id, user.getDisplayName(), other_participant_id, msg);
 		}
 		else
-		{
-			LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
-		}
+	{
+		LLIMModel::instance().addMessage(new_session_id, from, other_participant_id, msg);
+	}
 	}
 
 	// Open conversation floater if offline messages are present
@@ -3234,24 +3235,16 @@ void LLIMMgr::addPendingAgentListUpdates(
 	{
 		//new school update
 		LLSD update_types = LLSD::emptyArray();
-		LLSD::array_iterator array_iter;
-
 		update_types.append("agent_updates");
 		update_types.append("updates");
 
-		for (
-			array_iter = update_types.beginArray();
-			array_iter != update_types.endArray();
-			++array_iter)
+		for (const auto& update_type : update_types.array())
 		{
 			//we only want to include the last update for a given agent
-			for (
-				iter = updates[array_iter->asString()].beginMap();
-				iter != updates[array_iter->asString()].endMap();
-				++iter)
+			for (const auto& update_pair : updates[update_type.asStringRef()].map())
 			{
-				mPendingAgentListUpdates[session_id.asString()][array_iter->asString()][iter->first] =
-					iter->second;
+				mPendingAgentListUpdates[session_id.asString()][update_type.asStringRef()][update_pair.first] =
+					update_pair.second;
 			}
 		}
 	}
@@ -3263,13 +3256,10 @@ void LLIMMgr::addPendingAgentListUpdates(
 		//of agent_id -> "LEAVE"/"ENTER"
 
 		//only want to keep last update for each agent
-		for (
-			iter = updates["updates"].beginMap();
-			iter != updates["updates"].endMap();
-			++iter)
+		for (const auto& update_pair : updates["updates"].map())
 		{
-			mPendingAgentListUpdates[session_id.asString()]["updates"][iter->first] =
-				iter->second;
+			mPendingAgentListUpdates[session_id.asString()]["updates"][update_pair.first] =
+				update_pair.second;
 		}
 	}
 }

@@ -61,7 +61,6 @@ public:
                             LLPanelSettingsSkyAtmosTab();
 
     virtual BOOL	        postBuild() override;
-    virtual void	        setEnabled(BOOL enabled) override;
 
 protected:
     virtual void            refresh() override;
@@ -80,6 +79,20 @@ private:
     void                    onDropletRadiusChanged();
     void                    onIceLevelChanged();
 
+	//BD - Atmosphere
+	LLColorSwatchCtrl* mAmbientLight;
+	LLColorSwatchCtrl* mBlueHorizon;
+	LLColorSwatchCtrl* mBlueDensity;
+	LLUICtrl* mHazeHorizon;
+	LLUICtrl* mHazeDensity;
+	LLUICtrl* mSceneGamma;
+	LLUICtrl* mDensityMult;
+	LLUICtrl* mDistanceMult;
+	LLUICtrl* mMaxAltitude;
+	LLUICtrl* mMoisture;
+	LLUICtrl* mDroplet;
+	LLUICtrl* mIceLevel;
+
 };
 
 class LLPanelSettingsSkyCloudTab : public LLPanelSettingsSky
@@ -90,7 +103,6 @@ public:
                             LLPanelSettingsSkyCloudTab();
 
     virtual BOOL	        postBuild() override;
-    void	                setEnabled(BOOL enabled) override;
 
 protected:
     virtual void            refresh() override;
@@ -104,6 +116,21 @@ private:
     void                    onCloudMapChanged();
     void                    onCloudDensityChanged();
     void                    onCloudDetailChanged();
+
+	//BD - Clouds
+	LLColorSwatchCtrl* mCloudColor;
+	LLUICtrl* mCloudCoverage;
+	LLUICtrl* mCloudScale;
+	LLUICtrl* mCloudVariance;
+	LLUICtrl* mCloudScrollX;
+	LLUICtrl* mCloudScrollY;
+	LLTextureCtrl* mCloudImage;
+	LLUICtrl* mCloudDensityX;
+	LLUICtrl* mCloudDensityY;
+	LLUICtrl* mCloudDensityD;
+	LLUICtrl* mCloudDetailX;
+	LLUICtrl* mCloudDetailY;
+	LLUICtrl* mCloudDetailD;
 };
 
 class LLPanelSettingsSkySunMoonTab : public LLPanelSettingsSky
@@ -114,7 +141,6 @@ public:
                             LLPanelSettingsSkySunMoonTab();
 
     virtual BOOL	        postBuild() override;
-    virtual void	        setEnabled(BOOL enabled) override;
 
 protected:
     virtual void            refresh() override;
@@ -130,6 +156,23 @@ private:
     void                    onMoonScaleChanged();
     void                    onMoonBrightnessChanged();
     void                    onMoonImageChanged();
+
+	//BD - Sun & Moon
+	LLColorSwatchCtrl* mSunMoonColor;
+	LLUICtrl* mGlowFocus;
+	LLUICtrl* mGlowSize;
+	LLUICtrl* mStarBrightness;
+	LLUICtrl* mSunPositionX;
+	LLUICtrl* mSunPositionY;
+	LLTextureCtrl* mSunImage;
+	LLUICtrl* mSunScale;
+	LLUICtrl* mMoonPositionX;
+	LLUICtrl* mMoonPositionY;
+	LLTextureCtrl* mMoonImage;
+	LLUICtrl* mMoonScale;
+	LLUICtrl* mMoonBrightness;
+	LLUICtrl* mMoonBeacon;
+	LLUICtrl* mSunBeacon;
 };
 
 // single subtab of the density settings tab
@@ -141,7 +184,6 @@ public:
     LLPanelSettingsSkyDensityTab();
 
     virtual BOOL postBuild() override;
-    virtual void setEnabled(BOOL enabled) override;
 
 protected:
     virtual void refresh() override;

@@ -62,6 +62,7 @@
 #include "llfloaterregioninfo.h"
 #include "llfloaterlandholdings.h"
 #include "llfloaterpreference.h"
+#include "llfloatersidepanelcontainer.h"
 #include "llfloatersnapshot.h"
 #include "llhudeffecttrail.h"
 #include "llhudmanager.h"
@@ -121,9 +122,6 @@
 #include "rlvinventory.h"
 #include "rlvui.h"
 // [/RLVa:KB]
-
-//BD
-#include "llfloatersidepanelcontainer.h"
 
 #include <boost/algorithm/string/split.hpp> //
 #include <boost/foreach.hpp>
@@ -1701,7 +1699,14 @@ void LLOfferInfo::sendReceiveResponse(bool accept, const LLUUID &destination_fol
 	if(IM_INVENTORY_OFFERED == mIM)
 	{
 		// add buddy to recent people list
-		LLRecentPeople::instance().add(mFromID);
+//		LLRecentPeople::instance().add(mFromID);
+// [RLVa:KB] - Checked: RLVa-2.0.1
+		// RELEASE-RLVa: [RLVa-2.0.1] Make sure this stays in sync with the condition in inventory_offer_handler()
+		bool fRlvCanShowName = (!RlvActions::isRlvEnabled()) ||
+			(RlvActions::canShowName(RlvActions::SNC_DEFAULT, mFromID)) || (!RlvUtil::isNearbyAgent(mFromID)) || (RlvUIEnabler::hasOpenIM(mFromID)) || (RlvUIEnabler::hasOpenProfile(mFromID));
+		if (fRlvCanShowName)
+			LLRecentPeople::instance().add(mFromID);
+// [/RLVa:KB]
 	}
 
 	if (mTransactionID.isNull())
@@ -2081,15 +2086,9 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 	bool accept = true;
 
 	// If user accepted, accept to proper folder, if user discarded, accept to trash.
-// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1)
-	bool fRlvNotifyAccepted = false;
-// [/RLVa:KB]
 	switch(button)
 	{
 		case IOR_ACCEPT:
-			destination = mFolderID;
-			//don't spam user if flooded
-
 // [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1)
 			// Only treat the offer as 'Give to #RLV' if:
 			//   - the user has enabled the feature
@@ -2097,30 +2096,29 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 			//   - the name starts with the prefix - mDesc format: '[OBJECTNAME]'  ( http://slurl.com/... )
 			if ( (rlv_handler_t::isEnabled()) && (IM_TASK_INVENTORY_OFFERED == mIM) && (LLAssetType::AT_CATEGORY == mType) && (mDesc.find(RLV_PUTINV_PREFIX) == 1) )
 			{
-				fRlvNotifyAccepted = true;
 				if (!RlvSettings::getForbidGiveToRLV())
 				{
 					const LLUUID& idRlvRoot = RlvInventory::instance().getSharedRootID();
 					if (idRlvRoot.notNull())
 						mFolderID = idRlvRoot;
 
-					fRlvNotifyAccepted = false;		// "accepted_in_rlv" is sent from RlvGiveToRLVTaskOffer *after* we have the folder
-
+					// "accepted_in_rlv" is sent from RlvGiveToRLVTaskOffer *after* we have the folder
 					RlvGiveToRLVTaskOffer* pOfferObserver = new RlvGiveToRLVTaskOffer(mTransactionID);
 					gInventory.addObserver(pOfferObserver);
+				}
+				else
+				{
+					std::string::size_type idxToken = mDesc.find("'  ( http://");
+					if (std::string::npos != idxToken)
+					{
+						RlvBehaviourNotifyHandler::sendNotification("accepted_in_inv inv_offer " + mDesc.substr(1, idxToken - 1));
+					}
 				}
 			}
 // [/RLVa:KB]
 
-// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1)
-			if (fRlvNotifyAccepted)
-			{
-				std::string::size_type idxToken = mDesc.find("'  ( http://");
-				if (std::string::npos != idxToken)
-					RlvBehaviourNotifyHandler::sendNotification("accepted_in_inv inv_offer " + mDesc.substr(1, idxToken - 1));
-			}
-// [/RLVa:KB]
-
+			destination = mFolderID;
+			//don't spam user if flooded
 			if (check_offer_throttle(mFromName, true))
 			{
 				log_message = "<nolink>" + chatHistory_string + "</nolink> " + LLTrans::getString("InvOfferGaveYou") + " " + getSanitizedDescription() + LLTrans::getString(".");
@@ -2142,6 +2140,7 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 				// but user can mute object after receiving message
 				accept = false;
 			}
+
 // [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1e) | Added: RLVa-1.2.1e
 			if ( (rlv_handler_t::isEnabled()) && 
 				 (IM_TASK_INVENTORY_OFFERED == mIM) && (LLAssetType::AT_CATEGORY == mType) && (mDesc.find(RLV_PUTINV_PREFIX) == 1) )
@@ -2151,8 +2150,6 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 					RlvBehaviourNotifyHandler::sendNotification("declined inv_offer " + mDesc.substr(1, idxToken - 1));
 			}
 // [/RLVa:KB]
-
-
 
 			break;
 	}
@@ -2367,17 +2364,17 @@ void process_improved_im(LLMessageSystem *msg, void **user_data)
         from_group,
         to_id,
         offline,
-		dialog,
-		session_id,
-		timestamp,
-		agentName,
-		message,
-		parent_estate_id,
-		region_id,
-		position,
-		binary_bucket,
-		binary_bucket_size,
-		sender);
+        dialog,
+        session_id,
+        timestamp,
+        agentName,
+        message,
+        parent_estate_id,
+        region_id,
+        position,
+        binary_bucket,
+        binary_bucket_size,
+        sender);
 }
 
 void send_do_not_disturb_message (LLMessageSystem* msg, const LLUUID& from_id, const LLUUID& session_id)
@@ -2686,7 +2683,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 				{
 					RlvUtil::filterNames(chat.mFromName);
 				}
-				else if (chat.mFromID != gAgent.getID())
+				else if (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, chat.mFromID))
 				{
 					chat.mFromName = RlvStrings::getAnonym(chat.mFromName);
 					chat.mRlvNamesFiltered = TRUE;
@@ -4003,13 +4000,14 @@ void process_kill_object(LLMessageSystem *mesgsys, void **user_data)
 			LLViewerObject *objectp = gObjectList.findObject(id);
 			if (objectp)
 			{
-//// [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
-//				if ( (objectp->isAttachment()) && (gAgentAvatarp) && (gAgent.getTeleportState() != LLAgent::TELEPORT_NONE) && (objectp->permYouOwner()) )
-//				{
-//					gAgentAvatarp->addPendingDetach(objectp->getRootEdit()->getID());
-//					continue;
-//				}
-//// [/SL:KB]
+// [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
+				if ( (objectp->isAttachment()) && (!objectp->isTempAttachment()) && (LLAgent::TELEPORT_NONE != gAgent.getTeleportState()) &&
+					 (gAgentAvatarp) && (objectp->permYouOwner()) && (gSavedSettings.getBOOL("BlockAttachmentKillsOnTeleport")) )
+				{
+					//gAgentAvatarp->addPendingDetach(objectp->getRootEdit()->getID());
+					continue;
+				}
+// [/SL:KB]
 
 				// Display green bubble on kill
 				if ( gShowObjectUpdates )
@@ -4431,7 +4429,7 @@ void process_object_animation(LLMessageSystem *mesgsys, void **user_data)
         return;
     }
     
-	LLVOVolume *volp = dynamic_cast<LLVOVolume*>(objp);
+	LLVOVolume *volp = objp->asVolume();
     if (!volp)
     {
 		LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for non-volume object " << uuid << LL_ENDL;
@@ -6572,16 +6570,20 @@ void send_lures(const LLSD& notification, const LLSD& response)
 
 		// Record the offer.
 		{
-			LLAvatarName av_name;
-			LLAvatarNameCache::get(target_id, &av_name);  // for im log filenames
 // [RLVa:KB] - Checked: RLVa-2.0.1
 			bool fRlvCanShowName = (!notification["payload"].has("rlv_shownames")) ? true : !notification["payload"]["rlv_shownames"].asBoolean();
 // [/RLVa:KB]
+			LLAvatarName av_name;
+			LLAvatarNameCache::get(target_id, &av_name);  // for im log filenames
 			LLSD args;
+// [SL:KB] - Patch: Notification-Logging | Checked: 2012-08-23 (Catznip-3.3)
 // [RLVa:KB] - Checked: RLVa-2.0.1
 			args["TO_NAME"] = LLSLURL("agent", target_id, (fRlvCanShowName) ? "completename" : "rlvanonym").getSLURLString();;
 // [/RLVa:KB]
+//			args["TO_NAME"] = LLSLURL("agent", target_id, "completename").getSLURLString();;
+// [/SL:KB]
 //			args["TO_NAME"] = LLSLURL("agent", target_id, "displayname").getSLURLString();;
+
 	
 			LLSD payload;
 				

@@ -310,9 +310,6 @@ BOOL LLFloaterWorldMap::postBuild()
 	setDefaultBtn(NULL);
 	
 	mZoomTimer.stop();
-
-	// keep onscreen
-	gFloaterView->adjustToFitScreen(this, FALSE);
 	
 	onChangeMaturity();
 	

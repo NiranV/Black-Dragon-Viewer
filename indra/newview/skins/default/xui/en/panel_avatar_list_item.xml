@@ -83,7 +83,7 @@
     top="5"
     use_ellipses="true"
     value="(loading)"
-    width="292"/>
+    width="212"/>
     <text
     follows="top|left|right"
     font="SansSerifSmall"
@@ -115,9 +115,10 @@
     font.style="BOLD"
     font_shadow="soft"
     text_color="0.3 0.76 1 0.95"
+    bg_visible="true"
     height="13"
     layout="topleft"
-    right="-66"
+    right="-86"
     halign="right"
     visible="false"
     word_wrap="false"

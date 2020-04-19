@@ -67,37 +67,6 @@ indra/web/doc/asset-upload/plugins/verify-texture
 installed.xml
 libraries
 tarfile_tmp
-<<<<<<< HEAD:.hgignore
-debian/secondlife-viewer*
-debian/secondlife-appearance-utility*
-debian/files
-build-stamp
-configure-stamp
-^indra/lib/python/mulib.*
-^web/locale.*
-^web/secondlife.com.*
-^web/config.*
-^indra/web/dataservice/locale.*
-^indra/web/dataservice/lib/shared/vault.*
-^indra/web/dataservice/vendor.*
-glob:indra/newview/dbghelp.dll
-glob:*.cpp.orig
-glob:*.cpp.bak
-glob:*.h.bak
-glob:*.h.orig
-glob:indra/newview/typed_locations.txt
-glob:indra/newview/teleport_history.txt
-glob:indra/newview/search_history.txt
-glob:indra/newview/filters.xml
-glob:indra/newview/avatar_icons_cache.txt
-glob:indra/newview/avatar_lad.log
-glob:*.diff
-indra/newview/pilot.txt
-indra/newview/pilot.xml
-*.rej
-*.patch
-=======
 web/config.*
 web/locale.*
 web/secondlife.com.*
->>>>>>> 2c81050b689284886b30740ac226feaafeb54544:.gitignore

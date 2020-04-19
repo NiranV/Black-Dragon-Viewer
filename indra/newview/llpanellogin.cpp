@@ -821,7 +821,7 @@ void LLPanelLogin::onClickConnect()
 		{
 			LLGridManager::getInstance()->setGridChoice(combo_val.asString());
 		}
-		catch (LLInvalidGridName ex)
+		catch (const LLInvalidGridName& ex)
 		{
 			LLSD args;
 			args["GRID"] = ex.name();
@@ -1025,7 +1025,7 @@ void LLPanelLogin::updateServer()
 			sInstance->getChildView("create_new_account_text")->setVisible( system_grid);
 			sInstance->getChildView("forgot_password_text")->setVisible(system_grid);
 		}
-		catch (LLInvalidGridName ex)
+		catch (const LLInvalidGridName& ex)
 		{
 			LL_WARNS("AppInit")<<"server '"<<ex.name()<<"' selection failed"<<LL_ENDL;
 			LLSD args;

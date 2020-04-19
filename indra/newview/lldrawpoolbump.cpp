@@ -48,9 +48,6 @@
 #include "llspatialpartition.h"
 #include "llviewershadermgr.h"
 
-//BD
-#include "llglcommonfunc.h"
-
 //#include "llimagebmp.h"
 //#include "../tools/imdebug/imdebug.h"
 
@@ -126,12 +123,14 @@ void LLStandardBumpmap::addstandard()
 	if( fields_read != 1 )
 	{
 		LL_WARNS() << "Bad LLStandardBumpmap header" << LL_ENDL;
+		fclose(file);
 		return;
 	}
 
 	if( file_version > STD_BUMP_LATEST_FILE_VERSION )
 	{
 		LL_WARNS() << "LLStandardBumpmap has newer version (" << file_version << ") than viewer (" << STD_BUMP_LATEST_FILE_VERSION << ")" << LL_ENDL;
+		fclose(file);
 		return;
 	}
 
@@ -149,6 +148,7 @@ void LLStandardBumpmap::addstandard()
 		if( fields_read != 2 )
 		{
 			LL_WARNS() << "Bad LLStandardBumpmap entry" << LL_ENDL;
+			fclose(file);
 			return;
 		}
 
@@ -202,7 +202,7 @@ void LLDrawPoolBump::prerender()
 // static
 S32 LLDrawPoolBump::numBumpPasses()
 {
-	if (gSavedSettings.getBOOL("RenderObjectBump"))
+	if (LLPipeline::sRenderBump)
 	{
 		if (mShaderLevel > 1)
 		{
@@ -649,10 +649,6 @@ void LLDrawPoolBump::renderGroup(LLSpatialGroup* group, U32 type, U32 mask, BOOL
 		{
 			params.mGroup->rebuildMesh();
 		}
-
-		//BD
-		LLGLEnableFunc stencil_test(GL_STENCIL_TEST, params.mSelected, &LLGLCommonFunc::selected_stencil_test);
-
 		params.mVertexBuffer->setBuffer(mask);
 		params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 		gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);
@@ -831,7 +827,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 
 S32 LLDrawPoolBump::getNumDeferredPasses()
 { 
-	if (gSavedSettings.getBOOL("RenderObjectBump"))
+	if (LLPipeline::sRenderBump)
 	{
 		return 1;
 	}
@@ -1566,10 +1562,6 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 	{
 		params.mGroup->rebuildMesh();
 	}
-
-	//BD
-	LLGLEnableFunc stencil_test(GL_STENCIL_TEST, params.mSelected, &LLGLCommonFunc::selected_stencil_test);
-
 	params.mVertexBuffer->setBuffer(mask);
 	params.mVertexBuffer->drawRange(params.mDrawMode, params.mStart, params.mEnd, params.mCount, params.mOffset);
 	gPipeline.addTrianglesDrawn(params.mCount, params.mDrawMode);

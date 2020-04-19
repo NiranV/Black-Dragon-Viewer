@@ -15,7 +15,6 @@ include(BuildPackagesInfo)
 include(BuildVersion)
 include(CMakeCopyIfDifferent)
 include(DBusGlib)
-include(DirectX)
 include(DragDrop)
 include(EXPAT)
 include(FMODSTUDIO)
@@ -63,12 +62,13 @@ if (NOT HAVOK_TPV)
    add_subdirectory(${LLPHYSICSEXTENSIONS_SRC_DIR} llphysicsextensions)
 endif (NOT HAVOK_TPV)
 
-if(FMODSTUDIO)
+if(USE_FMODSTUDIO)
   include_directories(${FMODSTUDIO_INCLUDE_DIR})
-endif(FMODSTUDIO)
+endif(USE_FMODSTUDIO)
 
 include_directories(
     ${DBUSGLIB_INCLUDE_DIRS}
+    ${ZLIB_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
     ${GLOD_INCLUDE_DIR}
     ${LLAUDIO_INCLUDE_DIRS}
@@ -127,6 +127,7 @@ set(viewer_SOURCE_FILES
     pieslice.cpp
     qtoolalign.cpp
 
+    alunzip.cpp
     groupchatlistener.cpp
     llaccountingcostmanager.cpp
     llaisapi.cpp
@@ -231,6 +232,7 @@ set(viewer_SOURCE_FILES
     llfloaterautoreplacesettings.cpp
     llfloateravatar.cpp
     llfloateravatarpicker.cpp
+    llfloateravatarrendersettings.cpp
     llfloateravatartextures.cpp
     llfloaterbanduration.cpp
     llfloaterbeacons.cpp
@@ -248,21 +250,12 @@ set(viewer_SOURCE_FILES
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
-<<<<<<< HEAD
-    llfloaterdeleteprefpreset.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
     llfloaterdisplayname.cpp
-    llfloatereditdaycycle.cpp
-    llfloatereditsky.cpp
-    llfloatereditwater.cpp
-    llfloaterenvironmentsettings.cpp
-=======
-    llfloaterdeleteprefpreset.cpp
-    llfloaterdestinations.cpp
     llfloatereditextdaycycle.cpp
     llfloaterenvironmentadjust.cpp
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+    llfloaterenvironmentsettings.cpp
     llfloaterevent.cpp
     llfloaterexperiencepicker.cpp
     llfloaterexperienceprofile.cpp
@@ -332,6 +325,7 @@ set(viewer_SOURCE_FILES
     llfloatersettingsdebug.cpp
     llfloatersidepanelcontainer.cpp
     llfloatersnapshot.cpp
+    llfloatersounddevices.cpp
     llfloaterspellchecksettings.cpp
     llfloatertelehub.cpp
     llfloatertestinspectors.cpp
@@ -346,8 +340,8 @@ set(viewer_SOURCE_FILES
     llfloaterurlentry.cpp
     llfloatervoiceeffect.cpp
     llfloatervoicevolume.cpp
+    llfloaterwateradjust.cpp
     llfloaterwebcontent.cpp
-    llfloaterwebprofile.cpp
     llfloaterwhitelistentry.cpp
     llfloaterwindowsize.cpp
     llfloaterworldmap.cpp
@@ -479,6 +473,7 @@ set(viewer_SOURCE_FILES
     llpanelgrouproles.cpp
     llpanelhome.cpp
     llpanelland.cpp
+    llpanellandaudio.cpp
     llpanellandmarkinfo.cpp
     llpanellandmarks.cpp
     llpanellandmedia.cpp
@@ -756,6 +751,7 @@ set(viewer_SOURCE_FILES
     rlvinventory.cpp
     rlvextensions.cpp
     rlvfloaters.cpp
+    rlvmodifiers.cpp
     rlvui.cpp
     )
 
@@ -782,6 +778,7 @@ set(viewer_HEADER_FILES
 
     CMakeLists.txt
     ViewerInstall.cmake
+    alunzip.h
     groupchatlistener.h
     llaccountingcost.h
     llaccountingcostmanager.h
@@ -888,6 +885,7 @@ set(viewer_HEADER_FILES
     llfloaterautoreplacesettings.h
     llfloateravatar.h
     llfloateravatarpicker.h
+    llfloateravatarrendersettings.h
     llfloateravatartextures.h
     llfloaterbanduration.h
     llfloaterbeacons.h
@@ -907,16 +905,10 @@ set(viewer_HEADER_FILES
     llfloaterconversationpreview.h
     llfloaterdeleteprefpreset.h
     llfloaterdestinations.h
-<<<<<<< HEAD
     llfloaterdisplayname.h
-    llfloatereditdaycycle.h
-    llfloatereditsky.h
-    llfloatereditwater.h
-    llfloaterenvironmentsettings.h
-=======
     llfloatereditextdaycycle.h
     llfloaterenvironmentadjust.h
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+    llfloaterenvironmentsettings.h
     llfloaterevent.h
     llfloaterexperiencepicker.h
     llfloaterexperienceprofile.h
@@ -989,6 +981,7 @@ set(viewer_HEADER_FILES
     llfloatersettingsdebug.h
     llfloatersidepanelcontainer.h
     llfloatersnapshot.h
+    llfloatersounddevices.h
     llfloaterspellchecksettings.h
     llfloatertelehub.h
     llfloatertestinspectors.h
@@ -1003,8 +996,8 @@ set(viewer_HEADER_FILES
     llfloaterurlentry.h
     llfloatervoiceeffect.h
     llfloatervoicevolume.h
+    llfloaterwateradjust.h
     llfloaterwebcontent.h
-    llfloaterwebprofile.h
     llfloaterwhitelistentry.h
     llfloaterwindowsize.h
     llfloaterworldmap.h
@@ -1126,6 +1119,7 @@ set(viewer_HEADER_FILES
     llpanelgrouproles.h
     llpanelhome.h
     llpanelland.h
+    llpanellandaudio.h
     llpanellandmarkinfo.h
     llpanellandmarks.h
     llpanellandmedia.h
@@ -1329,6 +1323,7 @@ set(viewer_HEADER_FILES
     llviewerkeyboard.h
     llviewerlayer.h
     llviewermedia.h
+    llviewermedia_streamingaudio.h
     llviewermediafocus.h
     llviewermediaobserver.h
     llviewermenu.h
@@ -1405,6 +1400,7 @@ set(viewer_HEADER_FILES
     rlvinventory.h
     rlvextensions.h
     rlvfloaters.h
+    rlvmodifiers.h
     rlvui.h
     roles_constants.h
     VertexCache.h
@@ -1634,20 +1630,13 @@ if (WINDOWS)
         list(APPEND viewer_SOURCE_FILES ${viewer_RESOURCE_FILES})
     endif (NOT USESYSTEMLIBS)
 
-    find_library(DINPUT_LIBRARY dinput8 ${DIRECTX_LIBRARY_DIR})
-    find_library(DXGUID_LIBRARY dxguid ${DIRECTX_LIBRARY_DIR})
-    mark_as_advanced(
-        DINPUT_LIBRARY
-        DXGUID_LIBRARY
-        )
-
 # see EXP-1765 - theory is opengl32.lib needs to be included before gdi32.lib (windows libs)
     set(viewer_LIBRARIES
         opengl32
         ${WINDOWS_LIBRARIES}
         comdlg32
-        ${DINPUT_LIBRARY}
-        ${DXGUID_LIBRARY}
+        dinput8
+        dxguid
         kernel32
         odbc32
         odbccp32
@@ -1770,15 +1759,15 @@ if (WINDOWS)
 endif (WINDOWS)
 
 if (OPENAL)
-  list(APPEND LLSTARTUP_COMPILE_DEFINITIONS "LL_OPENAL=1")
+  set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DLL_OPENAL")
 endif (OPENAL)
 
-if (FMODSTUDIO)
-  list(APPEND LLSTARTUP_COMPILE_DEFINITIONS "LL_FMODSTUDIO=1")
+if (USE_FMODSTUDIO)
+  set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DUSE_FMODSTUDIO=1")
   set(FMODWRAPPER_LIBRARY ${FMODSTUDIO_LIBRARY})
-endif (FMODSTUDIO)
+endif (USE_FMODSTUDIO)
 
-set_source_files_properties(llstartup.cpp PROPERTIES COMPILE_DEFINITIONS "${LLSTARTUP_COMPILE_DEFINITIONS}")
+set_source_files_properties(llstartup.cpp PROPERTIES COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS}")
 
 list(APPEND viewer_SOURCE_FILES ${viewer_HEADER_FILES})
 
@@ -1893,21 +1882,13 @@ if (WINDOWS)
             )
     endif (ADDRESS_SIZE EQUAL 64)
 
-    if (FMODSTUDIO)
-      if (ADDRESS_SIZE EQUAL 32)
-        list(APPEND COPY_INPUT_DEPENDENCIES
-             ${SHARED_LIB_STAGING_DIR}/Release/fmod.dll
-             ${SHARED_LIB_STAGING_DIR}/RelWithDebInfo/fmod.dll
-             ${SHARED_LIB_STAGING_DIR}/Debug/fmodL.dll
-            )
-      elseif (ADDRESS_SIZE EQUAL 64)
-        list(APPEND COPY_INPUT_DEPENDENCIES
-             ${SHARED_LIB_STAGING_DIR}/Release/fmod64.dll
-             ${SHARED_LIB_STAGING_DIR}/RelWithDebInfo/fmod64.dll
-             ${SHARED_LIB_STAGING_DIR}/Debug/fmodL64.dll
-            )
-      endif (ADDRESS_SIZE EQUAL 32)
-    endif (FMODSTUDIO)
+    if (USE_FMODSTUDIO)
+      list(APPEND COPY_INPUT_DEPENDENCIES
+           ${SHARED_LIB_STAGING_DIR}/Release/fmod.dll
+           ${SHARED_LIB_STAGING_DIR}/RelWithDebInfo/fmod.dll
+           ${SHARED_LIB_STAGING_DIR}/Debug/fmodL.dll
+          )
+    endif (USE_FMODSTUDIO)
 
     add_custom_command(
       OUTPUT  ${CMAKE_CFG_INTDIR}/copy_touched.bat
@@ -1946,6 +1927,21 @@ if (WINDOWS)
       SLPlugin
       windows-crash-logger
     )
+
+    # sets the 'working directory' for debugging from visual studio.
+    if (NOT UNATTENDED)
+        add_custom_command(
+            TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+            COMMAND ${CMAKE_SOURCE_DIR}/tools/vstool/vstool.exe
+            ARGS
+              --solution
+              ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.sln
+              --workingdir
+              ${VIEWER_BINARY_NAME}
+              "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMENT "Setting the ${VIEWER_BINARY_NAME} working directory for debugging."
+            )
+    endif (NOT UNATTENDED)
 
     # sets the 'working directory' for debugging from visual studio.
     # Condition for version can be moved to requirements once build agents will be updated (see TOOL-3865)
@@ -2181,18 +2177,14 @@ if (DARWIN)
   set(product "${VIEWER_CHANNEL}")
   set(MACOSX_EXECUTABLE_NAME "${VIEWER_CHANNEL}")
   set(MACOSX_BUNDLE_INFO_STRING "${VIEWER_CHANNEL}")
+  set(MACOSX_BUNDLE_ICON_FILE "secondlife.icns")
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.secondlife.indra.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_NAME "BlackDragon")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
-<<<<<<< HEAD
   set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2018")
   set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "BlackDragon.nib")
-=======
-  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2019")
-  set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "LLApplication")
 
   # https://blog.kitware.com/upcoming-in-cmake-2-8-12-osx-rpath-support/

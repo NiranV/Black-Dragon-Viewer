@@ -1,29 +1,29 @@
-/**
-* @file audioengine_fmodstudio.h
-* @brief Definition of LLAudioEngine class abstracting the audio
-* support as a FMOD Studio implementation
-*
-* $LicenseInfo:firstyear=2002&license=viewerlgpl$
-* Second Life Viewer Source Code
-* Copyright (C) 2014, Linden Research, Inc.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation;
-* version 2.1 of the License only.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-*
-* Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
-* $/LicenseInfo$
-*/
+/** 
+ * @file audioengine_fmodstudio.h
+ * @brief Definition of LLAudioEngine class abstracting the audio 
+ * support as a FMOD Studio implementation
+ *
+ * $LicenseInfo:firstyear=2002&license=viewerlgpl$
+ * Second Life Viewer Source Code
+ * Copyright (C) 2014, Linden Research, Inc.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License only.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 
+ * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
+ * $/LicenseInfo$
+ */
 
 #ifndef LL_AUDIOENGINE_FMODSTUDIO_H
 #define LL_AUDIOENGINE_FMODSTUDIO_H
@@ -44,16 +44,16 @@ namespace FMOD
 typedef struct FMOD_DSP_DESCRIPTION FMOD_DSP_DESCRIPTION;
 
 //Interfaces
-class LLAudioEngine_FMODSTUDIO : public LLAudioEngine
+class LLAudioEngine_FMODSTUDIO final : public LLAudioEngine 
 {
 public:
 	enum
 	{
-		RESAMPLE_LINEAR = 0,
+		RESAMPLE_LINEAR=0,
 		RESAMPLE_CUBIC,
 		RESAMPLE_SPLINE
 	};
-	LLAudioEngine_FMODSTUDIO(const std::string& app_name, bool enable_profiler, U32 resample_method);
+	LLAudioEngine_FMODSTUDIO(std::string app_name, bool enable_profiler, U32 resample_method);
 	virtual ~LLAudioEngine_FMODSTUDIO();
 
 	// initialization/startup/shutdown
@@ -70,7 +70,7 @@ public:
 
 	typedef F32 MIXBUFFERFORMAT;
 
-	FMOD::System *getSystem()				const { return mSystem; }
+	FMOD::System *getSystem()				const {return mSystem;}
 protected:
 	/*virtual*/ LLAudioBuffer *createBuffer() final override; // Get a free buffer, or flush an existing one if you have to.
 	/*virtual*/ LLAudioChannel *createChannel() final override; // Create a new audio channel.
@@ -93,7 +93,7 @@ public:
 };
 
 
-class LLAudioChannelFMODSTUDIO : public LLAudioChannel
+class LLAudioChannelFMODSTUDIO final : public LLAudioChannel
 {
 public:
 	LLAudioChannelFMODSTUDIO(FMOD::System *audioengine);
@@ -111,14 +111,14 @@ protected:
 
 	void set3DMode(bool use3d);
 protected:
-	FMOD::System *getSystem()	const { return mSystemp; }
+	FMOD::System *getSystem()	const {return mSystemp;}
 	FMOD::System *mSystemp;
 	FMOD::Channel *mChannelp;
 	S32 mLastSamplePos;
 };
 
 
-class LLAudioBufferFMODSTUDIO : public LLAudioBuffer
+class LLAudioBufferFMODSTUDIO final : public LLAudioBuffer
 {
 public:
 	LLAudioBufferFMODSTUDIO(FMOD::System *audioengine);
@@ -128,7 +128,7 @@ public:
 	/*virtual*/ U32 getLength() final override;
 	friend class LLAudioChannelFMODSTUDIO;
 protected:
-	FMOD::System *getSystem()	const { return mSystemp; }
+	FMOD::System *getSystem()	const {return mSystemp;}
 	FMOD::System *mSystemp;
 	FMOD::Sound *getSound()		const{ return mSoundp; }
 	FMOD::Sound *mSoundp;

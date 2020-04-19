@@ -70,13 +70,10 @@
 #include "llfloaterperms.h"
 #include "llclipboard.h"
 #include "llhttpretrypolicy.h"
-<<<<<<< HEAD
+#include "llsettingsvo.h"
 // [RLVa:KB] - Checked: 2014-11-02 (RLVa-1.4.11)
 #include "rlvcommon.h"
 // [/RLVa:KB]
-=======
-#include "llsettingsvo.h"
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 // do-nothing ops for use in callbacks.
 void no_op_inventory_func(const LLUUID&) {} 

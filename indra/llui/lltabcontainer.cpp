@@ -478,7 +478,7 @@ void LLTabContainer::draw()
 		}
 
 		//BD - Consistent Widths
-		if (!has_scroll_arrows && !mIsVertical && mConsistentWidths)
+		if (!has_scroll_arrows && !mIsVertical && mConsistentWidths && getTabCount() > 0)
 		{
 			static LLUICachedControl<S32> tab_padding("UITabPadding", 0);
 
@@ -656,10 +656,13 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 			tab_button->setFocus(TRUE);
 		}
 	}
-	if (handled) {
+
+#if AL_VIEWER_EVENT_RECORDER
+	if (handled && LLViewerEventRecorder::getLoggingStatus()) {
 		// Note: May need to also capture local coords right here ?
 		LLViewerEventRecorder::instance().update_xui(getPathname( ));
 	}
+#endif
 
 	return handled;
 }
@@ -740,10 +743,13 @@ BOOL LLTabContainer::handleMouseUp( S32 x, S32 y, MASK mask )
 		}
 		gFocusMgr.setMouseCapture(NULL);
 	}
-	if (handled) {
+
+#if AL_VIEWER_EVENT_RECORDER
+	if (handled && LLViewerEventRecorder::getLoggingStatus()) {
 		// Note: may need to capture local coords here
 		LLViewerEventRecorder::instance().update_xui(getPathname( ));
 	}
+#endif
 	return handled;
 }
 

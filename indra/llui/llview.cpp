@@ -605,7 +605,9 @@ void LLView::setVisible(BOOL visible)
 void LLView::onVisibilityChange ( BOOL new_visibility )
 {
 	BOOL old_visibility;
-	BOOL log_visibility_change = LLViewerEventRecorder::instance().getLoggingStatus();
+#if AL_VIEWER_EVENT_RECORDER
+	BOOL log_visibility_change = LLViewerEventRecorder::getLoggingStatus();
+#endif
 	BOOST_FOREACH(LLView* viewp, mChildList)
 	{
 		if (!viewp)
@@ -616,19 +618,22 @@ void LLView::onVisibilityChange ( BOOL new_visibility )
 		// only views that are themselves visible will have their overall visibility affected by their ancestors
 		old_visibility=viewp->getVisible();
 
-		if(log_visibility_change)
+#if AL_VIEWER_EVENT_RECORDER
+		if (log_visibility_change)
 		{
-		if (old_visibility!=new_visibility)
-		{
-			LLViewerEventRecorder::instance().logVisibilityChange( viewp->getPathname(), viewp->getName(), new_visibility,"widget");
+			if (old_visibility != new_visibility)
+			{
+				LLViewerEventRecorder::instance().logVisibilityChange(viewp->getPathname(), viewp->getName(), new_visibility, "widget");
+			}
 		}
-		}
+#endif
 
 		if (old_visibility)
 		{
 			viewp->onVisibilityChange ( new_visibility );
 		}
 
+#if AL_VIEWER_EVENT_RECORDER
 		if(log_visibility_change)
 		{
 			// Consider changing returns to confirm success and know which widget grabbed it
@@ -637,6 +642,7 @@ void LLView::onVisibilityChange ( BOOL new_visibility )
 			LL_DEBUGS() << "LLView::handleVisibilityChange	 - now: " << getVisible()  << " xui: " << viewp->getPathname() << " name: " << viewp->getName() << LL_ENDL;
 		
 		}
+#endif
 	}
 }
 
@@ -735,7 +741,7 @@ LLView* LLView::childrenHandleMouseEvent(const METHOD& method, S32 x, S32 y, XDA
 			LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x	<< "local/global y " << local_y << " " << y << LL_ENDL;
 			LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
 
-			LLViewerEventRecorder::instance().updateMouseEventInfo(x,y,-55,-55,getPathname()); 
+				LLViewerEventRecorder::instance().updateMouseEventInfo(x,y,-55,-55,getPathname()); 
 
 			// This is NOT event recording related
 			viewp->logMouseEvent();
@@ -759,7 +765,7 @@ LLView* LLView::childrenHandleScrollEvent(const METHOD& method, S32 x, S32 y, S3
 		if (!viewp->visibleEnabledAndContains(local_x, local_y))
 		{
 			continue;
-		}
+			}
 
 		if ((viewp->*method)(local_x, local_y, clicks, mask)
 			|| (allow_mouse_block && viewp->blockMouseEvent(local_x, local_y)))
@@ -904,12 +910,14 @@ BOOL LLView::handleToolTip(S32 x, S32 y, MASK mask)
 	{
 		// allow "scrubbing" over ui by showing next tooltip immediately
 		// if previous one was still visible
+		static LLUICachedControl<F32> tool_tip_delay("ToolTipDelay", 0.69999f);
+		static LLUICachedControl<F32> tool_tip_fast_delay("ToolTipFastDelay", 0.1f);
 		F32 timeout = LLToolTipMgr::instance().toolTipVisible() 
-		              ? LLUI::getInstance()->mSettingGroups["config"]->getF32( "ToolTipFastDelay" )
-		              : LLUI::getInstance()->mSettingGroups["config"]->getF32( "ToolTipDelay" );
+		              ? tool_tip_fast_delay
+		              : tool_tip_delay;
 
 		// Even if we don't show tooltips, consume the event, nothing below should show tooltip
-		bool allow_ui_tooltips = LLUI::getInstance()->mSettingGroups["config"]->getBOOL("BasicUITooltips");
+		static LLUICachedControl<bool> allow_ui_tooltips("BasicUITooltips", true);
 		if (allow_ui_tooltips)
 		{
 			LLToolTipMgr::instance().show(LLToolTip::Params()
@@ -1036,10 +1044,12 @@ BOOL LLView::handleUnicodeChar(llwchar uni_char, BOOL called_from_parent)
 		handled = mParentView->handleUnicodeChar(uni_char, FALSE);
 	}
 
-	if (handled)
+#if AL_VIEWER_EVENT_RECORDER
+	if (handled && LLViewerEventRecorder::getLoggingStatus())
 	{
 		LLViewerEventRecorder::instance().logKeyUnicodeEvent(uni_char);
 	}
+#endif
 	
 	return handled;
 }
@@ -1611,7 +1621,6 @@ LLView* LLView::findChildView(const std::string& name, BOOL recurse) const
 	//if(name.empty())
 	//	return NULL;
 	// Look for direct children *first*
-	LL_DEBUGS() << "Trying to find Widget: " << name << LL_ENDL;
 	BOOST_FOREACH(LLView* childp, mChildList)
 	{
 		llassert(childp);

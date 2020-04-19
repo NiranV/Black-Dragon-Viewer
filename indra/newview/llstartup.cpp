@@ -39,7 +39,7 @@
 #include "llviewermedia_streamingaudio.h"
 #include "llaudioengine.h"
 
-#ifdef LL_FMODSTUDIO
+#if USE_FMODSTUDIO
 #include "llaudioengine_fmodstudio.h"
 #endif
 
@@ -210,6 +210,7 @@
 
 //BD
 #include "llsidepanelinventory.h"
+#include "llpanelprofileclassifieds.h"
 
 //
 // exported globals
@@ -623,7 +624,7 @@ bool idle_startup()
 			delete gAudiop;
 			gAudiop = nullptr;
 
-#ifdef LL_FMODSTUDIO
+#if USE_FMODSTUDIO
 			if (!gAudiop
 #if !LL_WINDOWS
 				&& NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER")
@@ -635,11 +636,9 @@ bool idle_startup()
 #endif
 
 #ifdef LL_OPENAL
-			if (!gAudiop
 #if !LL_WINDOWS
-				&& NULL == getenv("LL_BAD_OPENAL_DRIVER")
+			if (NULL == getenv("LL_BAD_OPENAL_DRIVER"))
 #endif // !LL_WINDOWS
-				)
 			{
 				gAudiop = (LLAudioEngine *) new LLAudioEngine_OpenAL();
 			}
@@ -648,7 +647,7 @@ bool idle_startup()
 			if (gAudiop)
 			{
 #if LL_WINDOWS
-				// FMOD Studio on Windows needs the window handle to stop playing audio
+				// FMOD Ex on Windows needs the window handle to stop playing audio
 				// when window is minimized. JC
 				void* window_handle = (HWND)gViewerWindow->getPlatformWindow();
 #else
@@ -720,6 +719,13 @@ bool idle_startup()
 			show_connect_box = TRUE;
 		}
 
+// [RLVa:KB] - Patch: RLVa-2.1.0
+		if (gSavedSettings.getBOOL(RLV_SETTING_MAIN))
+		{
+			show_connect_box = TRUE;
+		}
+// [/RVA:KB]
+
 		//setup map of datetime strings to codes and slt & local time offset from utc
 		// *TODO: Does this need to be here?
 		LLStringOps::setupDatetimeInfo(false);
@@ -734,7 +740,7 @@ bool idle_startup()
 	{
 		LL_DEBUGS("AppInit") << "STATE_BROWSER_INIT" << LL_ENDL;
 		std::string msg = LLTrans::getString("LoginInitializingBrowser");
-		set_startup_status(0.00f, msg.c_str(), gAgent.mMOTD.c_str());
+		set_startup_status(0.03f, msg.c_str(), gAgent.mMOTD.c_str());
 		display_startup();
 		// LLViewerMedia::initBrowser();
 		LLStartUp::setStartupState( STATE_LOGIN_SHOW );
@@ -823,7 +829,6 @@ bool idle_startup()
 		while( PeekMessage( &msg, /*All hWnds owned by this thread */ NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE ) )
 		{ }
 #endif
-
         display_startup();
         timeout.reset();
 		return FALSE;
@@ -2166,8 +2171,7 @@ bool idle_startup()
 		{
 			LLStartUp::setStartupState( STATE_WEARABLES_WAIT );
 		}
-		//BD
-		else if (timeout_frac > 30.f) 
+		else if (timeout_frac > 10.f) 
 		{
 			// If we exceed the wait above while isAgentAvatarValid is
 			// not true yet, we will change startup state and
@@ -2666,7 +2670,7 @@ void register_viewer_callbacks(LLMessageSystem* msg)
 
 	msg->setHandlerFunc("InitiateDownload", process_initiate_download);
 	msg->setHandlerFunc("LandStatReply", LLFloaterTopObjects::handle_land_reply);
-    msg->setHandlerFunc("GenericMessage", process_generic_message);
+	msg->setHandlerFunc("GenericMessage", process_generic_message);
     msg->setHandlerFunc("LargeGenericMessage", process_large_generic_message);
 
 	msg->setHandlerFuncFast(_PREHASH_FeatureDisabled, process_feature_disabled_message);
@@ -2682,8 +2686,6 @@ const S32 OPT_MALE = 0;
 const S32 OPT_FEMALE = 1;
 const S32 OPT_TRUST_CERT = 0;
 const S32 OPT_CANCEL_TRUST = 1;
-//BD - Cancel Sex Selection
-const S32 OPT_CANCEL = 2;
 	
 bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 {
@@ -2697,14 +2699,11 @@ bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 		case OPT_MALE:
 			LLStartUp::loadInitialOutfit( gSavedSettings.getString("DefaultMaleAvatar"), "male" );
 			break;
-//		//BD - Cancel Sex Selection
-		case OPT_CLOSED_WINDOW:
+			
         case OPT_FEMALE:
-			LLStartUp::loadInitialOutfit(gSavedSettings.getString("DefaultFemaleAvatar"), "female");
-			break;
-//		//BD - Cancel Sex Selection.
-		case OPT_CANCEL:
+		case OPT_CLOSED_WINDOW:
         default:
+			LLStartUp::loadInitialOutfit(gSavedSettings.getString("DefaultFemaleAvatar"), "female");
 			break;
 	}
 	return false;

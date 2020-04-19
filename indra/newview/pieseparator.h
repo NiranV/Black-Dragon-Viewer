@@ -28,20 +28,19 @@
 #ifndef PIESEPARATOR_H
 #define PIESEPARATOR_H
 
-#include "llinitparam.h"
 #include "lluictrl.h"
 
 // a pie slice that does nothing and is not highlighting by mouse hover
 class PieSeparator : public LLUICtrl
 {
-	public:
-		// parameter block for the XUI factory
-		struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
-		{
-			Params();
-		};
+public:
+	// parameter block for the XUI factory
+	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
+	{
+		Params();
+	};
 
-		PieSeparator(const Params& p);
+	PieSeparator(const Params& p);
 };
 
 #endif // PIESEPARATOR_H

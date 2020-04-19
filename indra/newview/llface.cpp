@@ -173,16 +173,12 @@ void LLFace::init(LLDrawable* drawablep, LLViewerObject* objp)
 	mImportanceToCamera = 0.f ;
 	mBoundingSphereRadius = 0.0f ;
 
-<<<<<<< HEAD
-	mHasMedia = FALSE ;
+	mHasMedia = false ;
+	mIsMediaAllowed = true;
 
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 	mShowDiffTexture = true;
 // [/SL:KB]
-=======
-	mHasMedia = false ;
-	mIsMediaAllowed = true;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 }
 
 void LLFace::destroy()
@@ -239,10 +235,10 @@ void LLFace::destroy()
 //	//BD - Motion Blur
 	if (mLastMatrixPalette)
 	{
-		delete [] mLastMatrixPalette;
+		delete[] mLastMatrixPalette;
 		mLastMatrixPalette = NULL;
 	}
-	
+
 	setDrawInfo(NULL);
 		
 	mDrawablep = NULL;
@@ -370,6 +366,34 @@ void LLFace::dirtyTexture()
 	}
 
 	gPipeline.markTextured(drawablep);
+}
+
+void LLFace::notifyAboutCreatingTexture(LLViewerTexture *texture)
+{
+	LLDrawable* drawablep = getDrawable();
+	if(mVObjp.notNull() && mVObjp->getVolume())
+	{
+		LLVOVolume *vobj = drawablep->getVOVolume();
+		if(vobj && vobj->notifyAboutCreatingTexture(texture))
+		{
+			gPipeline.markTextured(drawablep);
+			gPipeline.markRebuild(drawablep, LLDrawable::REBUILD_VOLUME);
+		}
+	}
+}
+
+void LLFace::notifyAboutMissingAsset(LLViewerTexture *texture)
+{
+	LLDrawable* drawablep = getDrawable();
+	if(mVObjp.notNull() && mVObjp->getVolume())
+	{
+		LLVOVolume *vobj = drawablep->getVOVolume();
+		if(vobj && vobj->notifyAboutMissingAsset(texture))
+		{
+			gPipeline.markTextured(drawablep);
+			gPipeline.markRebuild(drawablep, LLDrawable::REBUILD_VOLUME);
+		}
+	}
 }
 
 void LLFace::switchTexture(U32 ch, LLViewerTexture* new_texture)
@@ -842,9 +866,6 @@ static void xform4a(LLVector4a &tex_coord, const LLVector4a& trans, const LLVect
 	// Texture transforms are done about the center of the face.
 	st.setAdd(tex_coord, trans);
 	
-	// Handle rotation
-	LLVector4a rot_st;
-		
 	// <s0 * cosAng, s0*-sinAng, s1*cosAng, s1*-sinAng>
 	LLVector4a s0;
 	s0.splat(st, 0);
@@ -920,7 +941,6 @@ BOOL LLFace::genVolumeBBoxes(const LLVolume &volume, S32 f,
 		//VECTORIZE THIS
 		LLMatrix4a mat_vert;
 		mat_vert.loadu(mat_vert_in);
-        LLVector4a new_extents[2];
 
 		llassert(less_than_max_mag(face.mExtents[0]));
 		llassert(less_than_max_mag(face.mExtents[1]));
@@ -2743,6 +2763,13 @@ LLViewerTexture* LLFace::getTexture(U32 ch) const
 }
 
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+bool LLFace::isDefaultTexture(U32 nChannel) const
+{
+	// NOTE: mShowDiffTexture gets flipped before the clear (good) but also before the restore (bad) and hence can't
+	//       be used to tell whether we're usurping a texture channel for our own use
+	return (LLRender::DIFFUSE_MAP == nChannel) ? mOrigDiffTexture.notNull() : false;
+}
+
 void LLFace::setDefaultTexture(U32 nChannel, bool fShowDefault) const
 {
 	bool fUpdated = false;

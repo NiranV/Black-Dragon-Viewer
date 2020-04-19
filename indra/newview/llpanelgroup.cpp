@@ -379,16 +379,9 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 	if(button_refresh)
 		button_refresh->setVisible(!is_null_group_id);
 
-<<<<<<< HEAD
-	if(button_create)
-		button_create->setVisible(is_null_group_id);
 	//BD
 	//if(button_cancel)
 	//	button_cancel->setVisible(!is_null_group_id);
-=======
-	if(button_cancel)
-		button_cancel->setVisible(!is_null_group_id);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	if(button_call)
 		button_call->setVisible(!is_null_group_id);

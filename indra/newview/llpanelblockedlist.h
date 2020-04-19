@@ -66,7 +66,16 @@ private:
 
 	// UI callbacks
 	void unblockItem();
+	void blockResidentByName();
+	void blockObjectByName();
 	void onFilterEdit(const std::string& search_string);
+
+	// List commnads
+	void onCustomAction(const LLSD& userdata);
+	BOOL isActionChecked(const LLSD& userdata);
+
+	void callbackBlockPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names);
+	static void callbackBlockByName(const std::string& text);
 
 private:
 	LLBlockList* mBlockedList;

@@ -2351,7 +2351,9 @@ Only large parcels can be listed in search.
     <panel
           border="true"
           follows="all"
-          label="ENVIRONMENT"
+          label="Environment"
+          bg_alpha_image="Panel_Background"
+         background_visible="true"
           layout="topleft"
           left="0"
           top="0"

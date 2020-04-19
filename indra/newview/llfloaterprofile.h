@@ -228,7 +228,6 @@ private:
 	//BD - Web Panel
 	//////////////////////////
 	void onCommitLoad(LLUICtrl* ctrl);
-	void onCommitWebProfile();
 
 	std::string			mURLHome;
 	std::string			mURLWebProfile;

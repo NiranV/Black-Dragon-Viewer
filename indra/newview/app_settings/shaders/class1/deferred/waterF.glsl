@@ -41,11 +41,6 @@ uniform sampler2D bumpMap2;
 uniform float blend_factor;
 uniform sampler2D screenTex;
 uniform sampler2D refTex;
-<<<<<<< HEAD
-uniform sampler2D noiseMap;
-
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 uniform float sunAngle;
 uniform float sunAngle2;
 uniform vec3 lightDir;
@@ -168,23 +163,13 @@ void main()
 	vec4 pos = vary_position;
 	
 	color.rgb += spec * specular;
-<<<<<<< HEAD
-	
-	//color.rgb = atmosTransport(color.rgb);
-=======
 
 	color.rgb = atmosTransport(color.rgb);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	color.rgb = scaleSoftClip(color.rgb);
     
 	color.a   = spec * sunAngle2;
     
 	vec3 screenspacewavef = normalize((norm_mat*vec4(wavef, 1.0)).xyz);
-<<<<<<< HEAD
-	
-	frag_data[0] = vec4(color.rgb, color); // diffuse
-	frag_data[1] = vec4(0.5,0.5,0.5,0.95);		// speccolor, spec
-=======
 
 	//frag_data[0] = color;
 
@@ -195,6 +180,5 @@ void main()
 
 
     frag_data[1] = vec4(0);		// speccolor, spec
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	frag_data[2] = vec4(encode_normal(screenspacewavef.xyz), 0.05, 0);// normalxy, 0, 0
 }

@@ -32,11 +32,7 @@
 
 LLListener_OpenAL::LLListener_OpenAL()
 	: LLListener(),
-	mRolloffFactor(1.f)
-{
-}
-
-LLListener_OpenAL::~LLListener_OpenAL()
+	  mRolloffFactor(1.f)
 {
 }
 

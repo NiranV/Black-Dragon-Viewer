@@ -26,8 +26,19 @@
  */
 
 #include "llviewerprecompiledheaders.h"
+
 #include "pieslice.h"
 
+// pick up parameters from the XUI definition
+PieSlice::Params::Params() :
+	on_click("on_click"),
+	on_visible("on_visible"),
+	on_enable("on_enable"),
+	start_autohide("start_autohide", false),
+	autohide("autohide", false),
+	check_enable_once("check_enable_once", false)
+{
+}
 
 // create a new slice and memorize the XUI parameters
 PieSlice::PieSlice(const PieSlice::Params& p) :
@@ -36,28 +47,16 @@ PieSlice::PieSlice(const PieSlice::Params& p) :
 	mStartAutohide(p.start_autohide),
 	mAutohide(p.autohide),
 	mCheckEnableOnce(p.check_enable_once),
-	mDoUpdateEnabled(TRUE)
+	mDoUpdateEnabled(true)
 {
-
-	LL_DEBUGS() << "PieSlice::PieSlice(): " << mLabel << " " << mAutohide << " " << mCheckEnableOnce << LL_ENDL;
-}
-
-// pick up parameters from the XUI definition
-PieSlice::Params::Params() :
-	on_click("on_click"),
-	on_visible("on_visible"),
-	on_enable("on_enable"),
-	start_autohide("start_autohide",FALSE),
-	autohide("autohide",FALSE),
-	check_enable_once("check_enable_once",FALSE)
-{
+	LL_DEBUGS("Pie") << "PieSlice::PieSlice(): " << mLabel << " " << mAutohide << " " << mCheckEnableOnce << LL_ENDL;
 }
 
 // initialize parameters
 void PieSlice::initFromParams(const Params& p)
 {
 	// add a callback if on_click is provided
-	if(p.on_click.isProvided())
+	if (p.on_click.isProvided())
 	{
 		setCommitCallback(initCommitCallback(p.on_click));
 	}
@@ -87,12 +86,12 @@ void PieSlice::initFromParams(const Params& p)
 // call this to make the menu update its "enabled" status
 void PieSlice::updateEnabled()
 {
-	if(mDoUpdateEnabled && mEnableSignal.num_slots()>0)
+	if (mDoUpdateEnabled && mEnableSignal.num_slots() > 0)
 	{
-		bool enabled=mEnableSignal(this,LLSD());
-		if(mEnabledControlVariable)
+		bool enabled = mEnableSignal(this, LLSD());
+		if (mEnabledControlVariable)
 		{
-			if(!enabled)
+			if (!enabled)
 			{
 				// callback overrides control variable; this will call setEnabled()
 				mEnabledControlVariable->set(false);
@@ -110,9 +109,9 @@ void PieSlice::updateEnabled()
 // call this to make the menu update its "visible" status
 void PieSlice::updateVisible()
 {
-	if(mVisibleSignal.num_slots()>0)
+	if (mVisibleSignal.num_slots() > 0)
 	{
-		bool visible=mVisibleSignal(this,LLSD());
+		bool visible = mVisibleSignal(this, LLSD());
 		setVisible(visible);
 	}
 }
@@ -136,24 +135,24 @@ std::string PieSlice::getLabel() const
 }
 
 // accessor
-void PieSlice::setLabel(const std::string newLabel)
+void PieSlice::setLabel(const std::string& newLabel)
 {
-	mLabel=newLabel;
+	mLabel = newLabel;
 }
 
 // accessor
-BOOL PieSlice::getStartAutohide()
+bool PieSlice::getStartAutohide()
 {
 	return mStartAutohide;
 }
 
 // accessor
-BOOL PieSlice::getAutohide()
+bool PieSlice::getAutohide()
 {
 	return mStartAutohide | mAutohide;
 }
 
 void PieSlice::resetUpdateEnabledCheck()
 {
-	mDoUpdateEnabled = TRUE;
+	mDoUpdateEnabled = true;
 }

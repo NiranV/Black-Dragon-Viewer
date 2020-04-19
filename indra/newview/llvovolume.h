@@ -115,6 +115,7 @@ public:
 
 public:
 						LLVOVolume(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp);
+				LLVOVolume* asVolume();
 	/*virtual*/ void markDead();		// Override (and call through to parent) to clean up media references
 
 	/*virtual*/ LLDrawable* createDrawable(LLPipeline *pipeline);
@@ -148,11 +149,10 @@ public:
 	/*virtual*/ U32		getTriangleCount(S32* vcount = NULL) const;
 	/*virtual*/ U32		getHighLODTriangleCount();
 	//BD
-	/*virtual*/ U64		getHighLODTriangleCount64();
-	void	getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32 &light_cost, U32 &projector_cost,
-								U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost, 
-								U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const;
-
+	/*virtual*/ U64     getHighLODTriangleCount64();
+	void				getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32 &light_cost, U32 &projector_cost,
+											U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost,
+											U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const;
 	/*virtual*/ BOOL lineSegmentIntersect(const LLVector4a& start, const LLVector4a& end, 
 										  S32 face = -1,                        // which face to check, -1 = ALL_SIDES
 										  BOOL pick_transparent = FALSE,
@@ -170,6 +170,9 @@ public:
 				LLVector3 volumeDirectionToAgent(const LLVector3& dir) const;
 
 				
+// [FS:Beq] - Patch: Appearance-RebuildAttachments | Checked: Catznip-5.3
+				void    forceLOD(S32 lod);
+// [/FS]
 				BOOL	getVolumeChanged() const				{ return mVolumeChanged; }
 				
 	/*virtual*/ F32  	getRadius() const						{ return mVObjRadius; };
@@ -259,13 +262,14 @@ public:
 	void setLightCutoff(F32 cutoff);
 	void setLightTextureID(LLUUID id);
 	void setSpotLightParams(LLVector3 params);
-	//BD
-	void setHasShadow(BOOL has_shadow);
 
-	void setHasGlow(BOOL has_glow);
-	void setHasShiny(BOOL has_shiny);
-	void setIsAnimated(BOOL is_animated);
-	void setRenderComplexityBase(S32 complexity);
+	//BD
+	void setHasShadow(bool has_shadow);
+
+	void setHasGlow(BOOL has_glow) { mHasGlow = has_glow; }
+	void setHasShiny(BOOL has_shiny) { mHasShiny = has_shiny; }
+	void setIsAnimated(BOOL is_animated) { mIsAnimated = is_animated; }
+	void setRenderComplexityBase(S32 complexity) { mRenderComplexityBase = complexity; }
 
 	BOOL getIsLight() const;
 
@@ -373,6 +377,8 @@ public:
     void updateVisualComplexity();
     
 	void notifyMeshLoaded();
+	void notifySkinInfoLoaded(const LLMeshSkinInfo* skin);
+	void notifySkinInfoUnavailable();
 	
 	// Returns 'true' iff the media data for this object is in flight
 	bool isMediaDataBeingFetched() const;
@@ -451,6 +457,11 @@ private:
 
 	LLPointer<LLRiggedVolume> mRiggedVolume;
 
+	bool hasSkinInfoFailed() const { return mSkinInfoFailed; }
+
+	bool mSkinInfoFailed;
+	const LLMeshSkinInfo *mSkinInfo;
+	
 	// statics
 public:
 	static F32 sLODSlopDistanceFactor;// Changing this to zero, effectively disables the LOD transition slop
@@ -470,7 +481,7 @@ public:
 	bool notifyAboutMissingAsset(LLViewerTexture *texture);
 
 private:
-	struct material_info
+	struct material_info 
 	{
 		LLRender::eTexIndex map;
 		U8 te;

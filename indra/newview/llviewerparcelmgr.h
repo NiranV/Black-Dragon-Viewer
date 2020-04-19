@@ -295,13 +295,10 @@ public:
 // [/SL:KB]
 	void onTeleportFinished(bool local, const LLVector3d& new_pos);
 	void onTeleportFailed();
-<<<<<<< HEAD
+	bool getTeleportInProgress();
 // [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
 	void onTeleportDone();
 // [/SL:KB]
-=======
-	bool getTeleportInProgress();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	static BOOL isParcelOwnedByAgent(const LLParcel* parcelp, U64 group_proxy_power);
 	static BOOL isParcelModifiableByAgent(const LLParcel* parcelp, U64 group_proxy_power);

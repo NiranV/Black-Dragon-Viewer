@@ -110,48 +110,21 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 { 
     LL_RECORD_BLOCK_TIME(FTM_RENDER_ALPHA_DEFERRED);
 
-    F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
-
     emissive_shader = (LLPipeline::sRenderDeferred)   ? &gDeferredEmissiveProgram    :
                       (LLPipeline::sUnderWaterRender) ? &gObjectEmissiveWaterProgram : &gObjectEmissiveProgram;
 
     emissive_shader->bind();
     emissive_shader->uniform1i(LLShaderMgr::NO_ATMO, (LLPipeline::sRenderingHUDs) ? 1 : 0);
     emissive_shader->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f); 
-	emissive_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 
 	if (pass == 0)
 	{
-<<<<<<< HEAD
-		if (LLPipeline::sImpostorRender)
-		{
-			simple_shader = &gDeferredAlphaImpostorProgram;
-			fullbright_shader = &gDeferredFullbrightProgram;
-		}
-		else if (LLPipeline::sUnderWaterRender)
-		{
-			simple_shader = &gDeferredAlphaWaterProgram;
-			fullbright_shader = &gDeferredFullbrightWaterProgram;
-		}
-		else
-		{
-		simple_shader = &gDeferredAlphaProgram;
-			fullbright_shader = &gDeferredFullbrightProgram;
-		}
-
-		fullbright_shader->bind();
-		fullbright_shader->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f);
-		//BD
-		fullbright_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (1.0f/2.2f));
-=======
         fullbright_shader = (LLPipeline::sImpostorRender)   ? &gDeferredFullbrightProgram      :
                             (LLPipeline::sUnderWaterRender) ? &gDeferredFullbrightWaterProgram : &gDeferredFullbrightProgram;
 
 		fullbright_shader->bind();
 		fullbright_shader->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f); 
-		fullbright_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
         fullbright_shader->uniform1i(LLShaderMgr::NO_ATMO, LLPipeline::sRenderingHUDs ? 1 : 0);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		fullbright_shader->unbind();
 
         simple_shader = (LLPipeline::sImpostorRender)   ? &gDeferredAlphaImpostorProgram :
@@ -160,12 +133,7 @@ void LLDrawPoolAlpha::beginPostDeferredPass(S32 pass)
 		//prime simple shader (loads shadow relevant uniforms)
 		gPipeline.bindDeferredShader(*simple_shader);
 
-<<<<<<< HEAD
-		simple_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (1.0f/2.2f));
-=======
-		simple_shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
         simple_shader->uniform1i(LLShaderMgr::NO_ATMO, LLPipeline::sRenderingHUDs ? 1 : 0);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	}
 	else if (!LLPipeline::sImpostorRender)
 	{
@@ -265,7 +233,7 @@ void LLDrawPoolAlpha::endRenderPass( S32 pass )
 	LL_RECORD_BLOCK_TIME(FTM_RENDER_ALPHA_SETUP);
 	LLRenderPass::endRenderPass(pass);
 
-	if (gPipeline.canUseWindLightShaders())
+	if(gPipeline.canUseWindLightShaders()) 
 	{
 		LLGLSLShader::bindNoShader();
 	}
@@ -640,8 +608,8 @@ void LLDrawPoolAlpha::renderEmissives(U32 mask, std::vector<LLDrawInfo*>& emissi
 
 void LLDrawPoolAlpha::renderAlpha(U32 mask, S32 pass)
 {
-    BOOL batch_fullbrights = gSavedSettings.getBOOL("RenderAlphaBatchFullbrights");
-    BOOL batch_emissives   = gSavedSettings.getBOOL("RenderAlphaBatchEmissives");
+    static const LLCachedControl<bool> batch_fullbrights(gSavedSettings, "RenderAlphaBatchFullbrights");
+	static const LLCachedControl<bool> batch_emissives(gSavedSettings, "RenderAlphaBatchEmissives");
 	BOOL initialized_lighting = FALSE;
 	BOOL light_enabled = TRUE;
 	
@@ -837,6 +805,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask, S32 pass)
 				// If this alpha mesh has glow, then draw it a second time to add the destination-alpha (=glow).  Interleaving these state-changing calls is expensive, but glow must be drawn Z-sorted with alpha.
 				if (current_shader && 
 					draw_glow_for_this_partition &&
+					(!is_particle_or_hud_particle || params.mHasGlow) &&
 					params.mVertexBuffer->hasDataType(LLVertexBuffer::TYPE_EMISSIVE))
 				{
                     LL_RECORD_BLOCK_TIME(FTM_RENDER_ALPHA_EMISSIVE);

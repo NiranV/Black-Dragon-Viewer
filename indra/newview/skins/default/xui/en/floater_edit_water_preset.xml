@@ -37,7 +37,7 @@
        layout="topleft"
        tab_height="20"
        left="5"
-       name="Object Info Tabs"
+       name="tab_settings"
        tab_position="top"
        top="2"
        width="689">

@@ -302,14 +302,14 @@ F32		gAveLandCompression = 0.f,
 		gWorstLandCompression = 0.f, 
 		gWorstWaterCompression = 0.f;
 
-U32Bytes				gTotalWorldData, 
+U64Bytes				gTotalWorldData, 
 								gTotalObjectData, 
 								gTotalTextureData;
 U32								gSimPingCount = 0;
 U32Bits				gObjectData;
 F32Milliseconds		gAvgSimPing(0.f);
 // rely on default initialization
-U32Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY];
+U64Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY];
 
 extern U32  gVisCompared;
 extern U32  gVisTested;
@@ -342,10 +342,12 @@ void update_statistics()
 
 	record(LLStatViewer::TRIANGLES_DRAWN_PER_FRAME, last_frame_recording.getSum(LLStatViewer::TRIANGLES_DRAWN));
 
-	sample(LLStatViewer::ENABLE_VBO,      (F64)gSavedSettings.getBOOL("RenderVBOEnable"));
+	sample(LLStatViewer::ENABLE_VBO,      (F64)LLVertexBuffer::sEnableVBOs);
 	sample(LLStatViewer::LIGHTING_DETAIL, (F64)gPipeline.getLightingDetail());
-	sample(LLStatViewer::DRAW_DISTANCE,   (F64)gSavedSettings.getF32("RenderFarClip"));
-	sample(LLStatViewer::CHAT_BUBBLES,    gSavedSettings.getBOOL("UseChatBubbles"));
+	sample(LLStatViewer::DRAW_DISTANCE,   (F64)LLPipeline::RenderFarClip);
+
+	static const LLCachedControl<bool> use_chat_bubbles(gSavedSettings, "UseChatBubbles");
+	sample(LLStatViewer::CHAT_BUBBLES, use_chat_bubbles);
 
 	typedef LLTrace::StatType<LLTrace::TimeBlockAccumulator>::instance_tracker_t stat_type_t;
 

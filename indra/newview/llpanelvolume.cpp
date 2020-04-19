@@ -326,12 +326,6 @@ void LLPanelVolume::getState( )
 	
 	if (is_light && editable && single_volume)
 	{
-<<<<<<< HEAD
-		mLightColorSwatch->setEnabled( TRUE );
-		mLightColorSwatch->setValid(TRUE);
-		mLightColorSwatch->set(volobjp->getLightBaseColor());
-=======
-		//mLabelColor		 ->setEnabled( TRUE );
 		LLColorSwatchCtrl* LightColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
 		if(LightColorSwatch)
 		{
@@ -339,7 +333,6 @@ void LLPanelVolume::getState( )
 			LightColorSwatch->setValid( TRUE );
 			LightColorSwatch->set(volobjp->getLightSRGBBaseColor());
 		}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 		mLightTextureCtrl->setEnabled(TRUE);
 		mLightTextureCtrl->setValid(TRUE);
@@ -734,7 +727,7 @@ void LLPanelVolume::sendHasShadow()
 	}
 	LLVOVolume *volobjp = (LLVOVolume *)objectp;
 
-	BOOL value = getChild<LLUICtrl>("Shadow Checkbox Ctrl")->getValue();
+	bool value = getChild<LLUICtrl>("Shadow Checkbox Ctrl")->getValue();
 	volobjp->setHasShadow(value);
 	LL_INFOS() << "update shadow sent" << LL_ENDL;
 }

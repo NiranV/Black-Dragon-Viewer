@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-background_visible="true"
  follows="all"
  height="570"
  label="Group Creation"
@@ -16,22 +15,22 @@ background_visible="true"
   </panel.string>
   <panel
     name="group_info_top"
-    follows="top|left"
+    follows="top|left|right"
     top="0"
     left="0"
-    height="29"
-    width="313"
+    height="25"
+    width="308"
     layout="topleft">
     <line_editor
-     follows="left|top"
+     follows="left|top|right"
      font="SansSerif"
      label="Type your new group name here"
      layout="topleft"
      max_length_bytes="35"
      name="group_name_editor"
-     left="12"
+     left="6"
      top="5"
-     width="270"
+     width="298"
      height="20"
      visible="true" />
   </panel>
@@ -39,29 +38,25 @@ background_visible="true"
     name="layout"
     orientation="vertical"
      follows="all"
-    left="8"
+    left="6"
     top_pad="0"
-    height="538"
+    height="530"
     width="300"
     border_size="0">
     <layout_panel
-        bg_alpha_color="DkGray2"
-        bg_opaque_color="DkGray2"
-        background_visible="true"
-        background_opaque="true"
         name="group_info"
         follows="all"
         layout="topleft"
         auto_resize="false"
         user_resize="false"
-        height="206"
+        height="185"
         width="313">
       <panel
          name="group_info_top"
          follows="top|left|right"
          top="0"
          left="0"
-         height="99"
+         height="94"
          width="312"
          layout="topleft">
         <texture_picker
@@ -73,7 +68,7 @@ background_visible="true"
          tool_tip="Click to choose a picture"
          layout="topleft"
          height="110"
-         left="5"
+         left="0"
          top="5"
          width="100" />
         <text_editor
@@ -85,9 +80,7 @@ background_visible="true"
          height="86"
          max_length="511"
          top="6"
-         right="-4"
-         bg_readonly_color="DkGray2"
-         text_readonly_color="White"
+         right="-1"
          word_wrap="true">
           Group Charter
         </text_editor>
@@ -95,21 +88,19 @@ background_visible="true"
       <panel
             layout="topleft"
             follows="left|top|right"
-            background_visible="false"
             bevel_style="none"
             border="false"
-            bg_alpha_color="FloaterUnfocusBorderColor"
-            height="100"
+            height="95"
             width="313"
             left="0"
             name="preferences_container"
-            top_pad="5">
+            top_pad="0">
         <check_box
          follows="right|top|left"
          layout="topleft"
          label="Anyone can join"
          height="16"
-         left="10"
+         left="5"
          name="open_enrollement"
          tool_tip="Sets whether this group allows new members to join without being invited."
          width="90" />
@@ -118,7 +109,7 @@ background_visible="true"
          layout="topleft"
          name="check_enrollment_fee"
          tool_tip="Sets whether to require an enrollment fee to join the group"
-         top_pad="5"
+         top_pad="0"
          left_delta="0"
          height="16"
          width="300" />
@@ -132,19 +123,19 @@ background_visible="true"
          layout="topleft"
          max_val="99999"
          height="23"
-         left="30"
+         left="2"
          name="spin_enrollment_fee"
          tool_tip="New members must pay this fee to join the group when Enrollment Fee is checked."
          width="170" />
         <combo_box
-         follows="left|top"
+         follows="left|top|right"
          layout="topleft"
          name="group_mature_check"
          tool_tip="Maturity ratings designate the type of content and behavior allowed in a group"
          height="23"
-         left="10"
+         left="0"
          top_pad="4"
-         width="190">
+         width="312">
           <combo_item name="select_mature" value="Select">
             - Select maturity rating -
           </combo_item>
@@ -156,6 +147,16 @@ background_visible="true"
            label="General Content"
            name="pg"
            value="Not Mature" />
+          <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
         </combo_box>
       </panel>
     </layout_panel>
@@ -178,8 +179,8 @@ background_visible="true"
         name="fee_information"
         skip_link_underline="true"
         height="26"
-        left="8"
-        right="-8"
+        left="2"
+        width="312"
         top="5"
         word_wrap="true">
         The fee to create a group is based on your membership level. [https://secondlife.com/my/account/membership.php More info]
@@ -195,8 +196,8 @@ background_visible="true"
         enabled="false"
         height="150"
         left="2"
-        top_pad="8"
-        width="290">
+        top_pad="4"
+        width="312">
         <scroll_list.columns
           dynamic_width="false"
           name="clmn_name"
@@ -228,72 +229,13 @@ background_visible="true"
     </layout_panel>
     <layout_panel
       background_visible="false"
-      background_opaque="true"
       name="create_actions"
       follows="all"
       layout="topleft"
       auto_resize="false"
       user_resize="false"
-      height="75"
+      height="65"
       width="313">
-
-      <layout_stack
-        follows="bottom|left|right"
-        layout="topleft"
-        name="button_row_ls"
-        left="1"
-        right="-1"
-        orientation="horizontal"
-        height="25"
-        top="1">
-        <layout_panel
-          follows="bottom|left|right"
-          layout="bottomleft"
-          name="layout_crt"
-          auto_resize="true"
-          height="23"
-          width="91">
-          <!-- placeholder to autoadjust buttons (since they are of different sizes)-->
-        </layout_panel>
-        <layout_panel
-          follows="bottom|left|right"
-          layout="bottomleft"
-          name="layout_crt"
-          auto_resize="false"
-          height="23"
-          width="245">
-          <button
-            follows="bottom|left|right"
-            layout="topleft"
-            label="Create group for L$ [COST]"
-            name="btn_create"
-            visible="true"
-            tool_tip="Create a new Group"
-            height="23"
-            left="1"
-            top="0"
-            width="160" />
-          <button
-            follows="bottom|left|right"
-            name="back"
-            label="Cancel"
-            layout="topleft"
-            tool_tip="Return to list of groups"
-            left_pad="13"
-            height="23"
-            top="0"
-            width="70" />
-        </layout_panel>
-        <layout_panel
-          follows="bottom|left|right"
-          layout="bottomleft"
-          name="layout_crt"
-          auto_resize="true"
-          height="23"
-          width="91">
-          <!-- placeholder to autoadjust buttons-->
-        </layout_panel>
-      </layout_stack>
       <text
         font="SansSerifSmall"
         follows="top|left|right"
@@ -301,7 +243,7 @@ background_visible="true"
         mouse_opaque="false"
         type="string"
         height="26"
-        left="6"
+        left="2"
         right="-6"
         name="info_deletion"
         top_pad="8"
@@ -309,6 +251,34 @@ background_visible="true"
         halign="center">
         Note: After 7 days, a group with no members (other than the creator) is deleted
       </text>
+          <button
+            follows="bottom|left|right"
+            layout="topleft"
+            label="Create group for L$ [COST]"
+            name="btn_create"
+            visible="true"
+            tool_tip="Create a new Group"
+            image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+            height="23"
+            left="0"
+            right="-107"
+            top_pad="7"
+            width="207" />
+          <button
+            follows="bottom|right"
+            name="back"
+            label="Cancel"
+            layout="topleft"
+            tool_tip="Return to list of groups"
+            image_hover_unselected="Toolbar_Middle_Over"
+                     image_selected="Toolbar_Middle_Selected"
+                     image_unselected="Toolbar_Middle_Off"
+            left_pad="1"
+            height="23"
+            top_delta="0"
+            width="106" />
     </layout_panel>
   </layout_stack>
 </panel>

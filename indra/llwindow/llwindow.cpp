@@ -208,8 +208,8 @@ BOOL LLWindow::setSize(LLCoordWindow size)
 }
 
 
-// virtual
-void LLWindow::setMinSize(U32 min_width, U32 min_height, bool enforce_immediately)
+//BD - virtual
+void LLWindow::setMinSize(S32 min_width, S32 min_height, bool enforce_immediately)
 {
 	mMinWindowWidth = min_width;
 	mMinWindowHeight = min_height;

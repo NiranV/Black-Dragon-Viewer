@@ -41,47 +41,6 @@ VARYING vec3 vary_position;
 VARYING vec4 vertex_color;
 VARYING vec2 vary_texcoord0;
 
-<<<<<<< HEAD
-vec3 fullbrightAtmosTransport(vec3 light);
-vec3 fullbrightScaleSoftClip(vec3 light);
-
-vec3 srgb_to_linear(vec3 cs)
-{
-	vec3 low_range = cs / vec3(12.92);
-	vec3 high_range = pow((cs+vec3(0.055))/vec3(1.055), vec3(2.4));
-	bvec3 lte = lessThanEqual(cs,vec3(0.04045));
-
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lte.r ? low_range.r : high_range.r;
-	result.g = lte.g ? low_range.g : high_range.g;
-	result.b = lte.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lte);
-#endif
-
-}
-
-vec3 linear_to_srgb(vec3 cl)
-{
-	cl = clamp(cl, vec3(0), vec3(1));
-	vec3 low_range  = cl * 12.92;
-	vec3 high_range = 1.055 * pow(cl, vec3(0.41666)) - 0.055;
-	bvec3 lt = lessThan(cl,vec3(0.0031308));
-
-#ifdef OLD_SELECT
-	vec3 result;
-	result.r = lt.r ? low_range.r : high_range.r;
-	result.g = lt.g ? low_range.g : high_range.g;
-	result.b = lt.b ? low_range.b : high_range.b;
-    return result;
-#else
-	return mix(high_range, low_range, lt);
-#endif
-
-}
-=======
 #ifdef WATER_FOG
 vec4 applyWaterFogView(vec3 pos, vec4 color);
 #endif
@@ -90,7 +49,6 @@ vec3 srgb_to_linear(vec3 cs);
 vec3 linear_to_srgb(vec3 cl);
 vec3 fullbrightAtmosTransport(vec3 light);
 vec3 fullbrightScaleSoftClip(vec3 light);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 #ifdef HAS_ALPHA_MASK
 uniform float minimum_alpha;
@@ -114,25 +72,17 @@ void main()
 #endif
 
 	color.rgb *= vertex_color.rgb;
-<<<<<<< HEAD
-	color.rgb = fullbrightAtmosTransport(color.rgb);
-	color.rgb = fullbrightScaleSoftClip(color.rgb);
-
-#ifdef WATER_FOG
-	vec3 pos = vary_position;
-	color = applyWaterFogDeferred(pos, vec4(color.rgb, final_alpha));
-=======
 
 #ifdef WATER_FOG
 	vec3 pos = vary_position;
 	vec4 fogged = applyWaterFogView(pos, vec4(color.rgb, final_alpha));
 	color.rgb = fogged.rgb;
 	color.a   = fogged.a;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 #else
     color.a   = final_alpha;
 #endif
 
-	frag_color = color;
+	frag_color.rgb = color.rgb;
+	frag_color.a   = color.a;
 }
 

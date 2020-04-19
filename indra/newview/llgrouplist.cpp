@@ -156,7 +156,7 @@ BOOL LLGroupList::handleDoubleClick(S32 x, S32 y, MASK mask)
 	// Handle double click only for the selected item in the list, skip clicks on empty space.
 	if (handled)
 	{
-		if (mDoubleClickSignal)
+		if (mDoubleClickSignal && getItemsRect().pointInRect(x, y))
 		{
 			(*mDoubleClickSignal)(this, x, y, mask);
 		}
@@ -269,6 +269,8 @@ void LLGroupList::addNewItem(const LLUUID& id, const std::string& name, const LL
 	item->setName(name, mNameFilter);
 	item->setGroupIconID(icon_id);
 
+	item->getChildView("info_btn")->setVisible( false);
+	item->getChildView("profile_btn")->setVisible( false);
 	item->setGroupIconVisible(mShowIcons);
     item->setVisibleInProfile(visible_in_profile);
 	addItem(item, id, pos);
@@ -375,8 +377,7 @@ LLGroupListItem::LLGroupListItem(bool for_agent)
 :	LLPanel(),
 mGroupIcon(NULL),
 mGroupNameBox(NULL),
-mProfileBtn(NULL),
-mSelectedIcon(NULL),
+mInfoBtn(NULL),
 mGroupID(LLUUID::null)
 {
     if (for_agent)
@@ -407,12 +408,11 @@ BOOL  LLGroupListItem::postBuild()
 	mGroupIcon = getChild<LLGroupIconCtrl>("group_icon");
 	mGroupNameBox = getChild<LLTextBox>("group_name");
 
-	getChild<LLButton>("info_btn")->setClickedCallback(boost::bind(&LLGroupListItem::onInfoBtnClick, this));
+	mInfoBtn = getChild<LLButton>("info_btn");
+	mInfoBtn->setClickedCallback(boost::bind(&LLGroupListItem::onInfoBtnClick, this));
 
-	mProfileBtn = getChild<LLButton>("profile_btn");
-	mProfileBtn->setClickedCallback(boost::bind(&LLGroupListItem::onProfileBtnClick, this));
+	childSetAction("profile_btn", boost::bind(&LLGroupListItem::onProfileBtnClick, this));
 
-	mSelectedIcon = getChild<LLIconCtrl>("selected_icon");
 	return TRUE;
 }
 
@@ -421,12 +421,17 @@ void LLGroupListItem::setValue( const LLSD& value )
 {
 	if (!value.isMap()) return;
 	if (!value.has("selected")) return;
-		mSelectedIcon->setVisible( value["selected"]);
+	getChildView("selected_icon")->setVisible( value["selected"]);
 }
 
 void LLGroupListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( true);
+	if (mGroupID.notNull()) // don't show the info button for the "none" group
+	{
+		mInfoBtn->setVisible(true);
+		getChildView("profile_btn")->setVisible( true);
+	}
 
 	LLPanel::onMouseEnter(x, y, mask);
 }
@@ -434,6 +439,8 @@ void LLGroupListItem::onMouseEnter(S32 x, S32 y, MASK mask)
 void LLGroupListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 {
 	getChildView("hovered_icon")->setVisible( false);
+	mInfoBtn->setVisible(false);
+	getChildView("profile_btn")->setVisible( false);
 
 	LLPanel::onMouseLeave(x, y, mask);
 }
@@ -452,8 +459,6 @@ void LLGroupListItem::setGroupID(const LLUUID& group_id)
 	mID = group_id;
 	mGroupID = group_id;
 	setActive(group_id == gAgent.getGroupID());
-
-	mProfileBtn->setVisible(!mGroupID.isNull());
 
 	LLGroupMgr::getInstance()->addObserver(this);
 }

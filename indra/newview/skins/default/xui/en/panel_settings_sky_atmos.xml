@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<panel
+<!--<panel
         border="true"
         follows="all"
         label="Atmosphere &amp; Lighting"
@@ -319,4 +319,326 @@
             </layout_stack>                
         </layout_panel>
     </layout_stack>
+</panel>-->
+
+<panel
+border="false"
+bevel_style="none"
+follows="left|top|right|bottom"
+height="196"
+label="Atmosphere &amp; Lighting"
+layout="topleft"
+left="0"
+mouse_opaque="false"
+name="panel_settings_sky_atmos"
+top="60"
+width="698">
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="10"
+    name="BHText"
+    top="7"
+    width="200">
+    Blue Horizon
+    </text>
+    <color_swatch
+    can_apply_immediately="true"
+    allow_alpha="false"
+    follows="left|top"
+    height="55"
+    label_height="0"
+    layout="topleft"
+    left_delta="7"
+    name="blue_horizon"
+    top_pad="2"
+    width="55" />
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="123"
+    name="BDensText2"
+    top="7"
+    width="200">
+    Blue Density
+    </text>
+    <color_swatch
+    can_apply_immediately="true"
+    allow_alpha="false"
+    follows="left|top"
+    height="55"
+    label_height="0"
+    layout="topleft"
+    left_delta="7"
+    name="blue_density"
+    top_pad="2"
+    width="55" />
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="10"
+    top="91"
+    name="BDensText"
+    width="200">
+    Haze Horizon
+    </text>
+    <slider
+    decimal_digits="3"
+    follows="left|top"
+    height="16"
+    increment="0.001"
+    initial_value="0.25"
+    layout="topleft"
+    show_text="true"
+    min_val="0"
+    max_val="5"
+    can_edit_text="true"
+    left_delta="0"
+    top_pad="1"
+    name="haze_horizon"
+    width="196" />
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="10"
+    name="HDText"
+    top="133"
+    width="200">
+    Haze Density
+    </text>
+    <slider
+    decimal_digits="3"
+    follows="left|top"
+    height="16"
+    increment="0.001"
+    can_edit_text="true"
+    show_text="true"
+    initial_value="0.7"
+    min_val="0"
+    max_val="5"
+    layout="topleft"
+    left_delta="0"
+    name="haze_density"
+    top_pad="1"
+    width="196" />
+    
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="235"
+    name="WLAmbientText"
+    top="7"
+    width="150">
+       Ambient
+    </text>
+    <color_swatch
+    can_apply_immediately="true"
+    allow_alpha="false"
+    follows="left|top"
+    height="55"
+    label_height="0"
+    layout="topleft"
+    left_delta="7"
+    name="ambient_light"
+    top_pad="2"
+    width="55" />
+    
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="235"
+    top="91"
+    name="BDensText"
+    width="200">
+    Moisture / Droplet / Ice
+    </text>
+    <slider
+    decimal_digits="3"
+    follows="left|top"
+    height="16"
+    increment="0.001"
+    label_width="8"
+    initial_value="0.25"
+    min_val="0"
+    max_val="1"
+    label="M"
+    layout="topleft"
+    show_text="true"
+    can_edit_text="true"
+    left_delta="0"
+    top_pad="1"
+    name="moisture_level"
+    width="196" />
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    increment="0.01"
+    show_text="true"
+    can_edit_text="true"
+    label_width="8"
+    initial_value="0.7"
+    min_val="5"
+    max_val="1000"
+    label="D"
+    layout="topleft"
+    left_delta="0"
+    name="droplet_radius"
+    top_pad="1"
+    width="196" />
+    <slider
+    decimal_digits="3"
+    follows="left|top"
+    height="16"
+    increment="0.001"
+    label_width="8"
+    show_text="true"
+    can_edit_text="true"
+    initial_value="0.7"
+    min_val="0"
+    max_val="1"
+    label="I"
+    layout="topleft"
+    left_delta="0"
+    name="ice_level"
+    top_pad="1"
+    width="196" />
+    
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="470"
+    name="DensMultText"
+    top="7"
+    width="200">
+    Density Multiplier
+    </text>
+    <slider
+    decimal_digits="3"
+    follows="left|top"
+    height="16"
+    increment="0.0001"
+    initial_value="0.1"
+    layout="topleft"
+    show_text="true"
+    can_edit_text="true"
+    min_val="0.0001"
+    max_val="2"
+    left_delta="0"
+    name="density_multip"
+    top_pad="1"
+    width="196" />
+    
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="470"
+    name="WLDistanceMultText"
+    top="49"
+    width="200">
+    Distance Multiplier
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    initial_value="1.0"
+    layout="topleft"
+    min_val="0.05"
+    max_val="1000"
+    left_delta="0"
+    increment="0.01"
+    show_text="true"
+    can_edit_text="true"
+    name="distance_multip"
+    top_pad="1"
+    width="196" />
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="470"
+    name="MaxAltText"
+    top="91"
+    width="200">
+    Max Altitude
+    </text>
+    <slider
+    decimal_digits="0"
+    follows="left|top"
+    height="16"
+    increment="1"
+    initial_value="500"
+    min_val="0.00"
+    max_val="10000"
+    layout="topleft"
+    left_delta="0"
+    show_text="true"
+    can_edit_text="true"
+    name="max_alt"
+    top_pad="1"
+    width="196" />
+    <text
+    type="string"
+    length="1"
+    follows="left|top"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="470"
+    name="SceneGammaText"
+    top="133"
+    width="200">
+    Scene Gamma
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="top|left"
+    height="16"
+    increment="0.01"
+    initial_value="2.0"
+    layout="topleft"
+    show_text="true"
+    can_edit_text="true"
+    left_delta="0"
+    min_val="0"
+    max_val="20"
+    name="scene_gamma"
+    top_pad="1"
+    width="196" />
 </panel>

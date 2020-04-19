@@ -163,6 +163,7 @@ LLFolderView::LLFolderView(const Params& p)
 :	LLFolderViewFolder(p),
 	mScrollContainer( NULL ),
 	mPopupMenuHandle(),
+	mMenuFileName(p.options_menu),
 	mAllowMultiSelect(p.allow_multiselect),
 	mAllowDrag(p.allow_drag),
 	mShowEmptyMessage(p.show_empty_message),
@@ -182,6 +183,7 @@ LLFolderView::LLFolderView(const Params& p)
 	mMinWidth(0),
 	mDragAndDropThisFrame(FALSE),
 	mCallbackRegistrar(NULL),
+	mEnableRegistrar(NULL),
 	mUseEllipses(p.use_ellipses),
 	mDraggingOverItem(NULL),
 	mStatusTextBox(NULL),
@@ -245,16 +247,6 @@ LLFolderView::LLFolderView(const Params& p)
 	mStatusTextBox->setFollowsTop();
 	addChild(mStatusTextBox);
 
-
-	// make the popup menu available
-	llassert(LLMenuGL::sMenuContainer != NULL);
-	LLMenuGL* menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>(p.options_menu, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
-	if (!menu)
-	{
-		menu = LLUICtrlFactory::getDefaultWidget<LLMenuGL>("inventory_menu");
-	}
-	mPopupMenuHandle = menu->getHandle();
-
 	mViewModelItem->openItem();
 }
 
@@ -274,6 +266,7 @@ LLFolderView::~LLFolderView( void )
 	mStatusTextBox = NULL;
 
 	if (mPopupMenuHandle.get()) mPopupMenuHandle.get()->die();
+	mPopupMenuHandle.markDead();
 
 	mAutoOpenItems.removeAllNodes();
 	clearSelection();
@@ -341,7 +334,9 @@ static LLTrace::BlockTimerStatHandle FTM_FILTER("Filter Folder View");
 void LLFolderView::filter( LLFolderViewFilter& filter )
 {
 	LL_RECORD_BLOCK_TIME(FTM_FILTER);
-    filter.resetTime(llclamp(LLUI::getInstance()->mSettingGroups["config"]->getS32(mParentPanel.get()->getVisible() ? "FilterItemsMaxTimePerFrameVisible" : "FilterItemsMaxTimePerFrameUnvisible"), 1, 100));
+	static const LLUICachedControl<S32> filter_item_max_time_visible("FilterItemsMaxTimePerFrameVisible", 10);
+	static const LLUICachedControl<S32> filter_item_max_time_unvisible("FilterItemsMaxTimePerFrameUnvisible", 1);
+	filter.resetTime(llclamp(mParentPanel.get()->getVisible() ? static_cast<S32>(filter_item_max_time_visible) : static_cast<S32>(filter_item_max_time_unvisible), 1, 100));
 
     // Note: we filter the model, not the view
 	getViewModelItem()->filter(filter);
@@ -660,7 +655,8 @@ void LLFolderView::draw()
 		closeAutoOpenedFolders();
 	}
 
-	if (mSearchTimer.getElapsedTimeF32() > LLUI::getInstance()->mSettingGroups["config"]->getF32("TypeAheadTimeout") || !mSearchString.size())
+	static LLUICachedControl<F32> type_ahead_timeout("TypeAheadTimeout", 0);
+	if (mSearchTimer.getElapsedTimeF32() > type_ahead_timeout || mSearchString.empty())
 	{
 		mSearchString.clear();
 	}
@@ -1324,7 +1320,8 @@ BOOL LLFolderView::handleUnicodeCharHere(llwchar uni_char)
 		}
 
 		//do text search
-		if (mSearchTimer.getElapsedTimeF32() > LLUI::getInstance()->mSettingGroups["config"]->getF32("TypeAheadTimeout"))
+		static LLUICachedControl<F32> type_ahead_timeout("TypeAheadTimeout", 0.f);
+		if (mSearchTimer.getElapsedTimeF32() > type_ahead_timeout)
 		{
 			mSearchString.clear();
 		}
@@ -1436,22 +1433,56 @@ BOOL LLFolderView::handleRightMouseDown( S32 x, S32 y, MASK mask )
 	BOOL handled = childrenHandleRightMouseDown(x, y, mask) != NULL;
 	S32 count = mSelectedItems.size();
 
-	LLMenuGL* menu = (LLMenuGL*)mPopupMenuHandle.get();
+	// make the popup menu available
+	LLMenuGL* menu = static_cast<LLMenuGL*>(mPopupMenuHandle.get());
+	if (!menu)
+	{
+		if (mCallbackRegistrar)
+		{
+			mCallbackRegistrar->pushScope();
+		}
+		if (mEnableRegistrar)
+		{
+			mEnableRegistrar->pushScope();
+		}
+		llassert(LLMenuGL::sMenuContainer != NULL);
+		menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>(mMenuFileName, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
+		if (!menu)
+		{
+			menu = LLUICtrlFactory::getDefaultWidget<LLMenuGL>("inventory_menu");
+		}
+		mPopupMenuHandle = menu->getHandle();
+		if (mEnableRegistrar)
+		{
+			mEnableRegistrar->popScope();
+		}
+		if (mCallbackRegistrar)
+		{
+			mCallbackRegistrar->popScope();
+		}
+	}
 	bool hide_folder_menu = mSuppressFolderMenu && isFolderSelected();
-	if ((handled
-		&& ( count > 0 && (hasVisibleChildren()) ) // show menu only if selected items are visible
-		&& menu ) &&
+	if ((menu && handled
+		&& ( count > 0 && (hasVisibleChildren()) )) && // show menu only if selected items are visible
 		!hide_folder_menu)
 	{
 		if (mCallbackRegistrar)
         {
 			mCallbackRegistrar->pushScope();
         }
+		if (mEnableRegistrar)
+		{
+			mEnableRegistrar->pushScope();
+		}
 
 		updateMenuOptions(menu);
 	   
 		menu->updateParent(LLMenuGL::sMenuContainer);
 		LLMenuGL::showPopup(this, menu, x, y);
+		if (mEnableRegistrar)
+		{
+			mEnableRegistrar->popScope();
+		}
 		if (mCallbackRegistrar)
         {
 			mCallbackRegistrar->popScope();
@@ -1529,7 +1560,7 @@ void LLFolderView::deleteAllChildren()
 {
 	closeRenamer();
 	if (mPopupMenuHandle.get()) mPopupMenuHandle.get()->die();
-	mPopupMenuHandle = LLHandle<LLView>();
+	mPopupMenuHandle.markDead();
 	mScrollContainer = NULL;
 	mRenameItem = NULL;
 	mRenamer = NULL;

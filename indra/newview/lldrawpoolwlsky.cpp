@@ -43,18 +43,7 @@
 #include "pipeline.h"
 #include "llsky.h"
 #include "llvowlsky.h"
-<<<<<<< HEAD
-#include "llviewerregion.h"
-#include "llface.h"
-#include "llrender.h"
-
-//BD - Changable Cloud Noise Texture
-#include "llviewercontrol.h"
-
-LLPointer<LLViewerTexture> LLDrawPoolWLSky::sCloudNoiseTexture = NULL;
-=======
 #include "llsettingsvo.h"
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 static LLStaticHashedString sCamPosLocal("camPosLocal");
 static LLStaticHashedString sCustomAlpha("custom_alpha");
@@ -69,10 +58,6 @@ static float sStarTime;
 LLDrawPoolWLSky::LLDrawPoolWLSky(void) :
 	LLDrawPool(POOL_WL_SKY)
 {
-<<<<<<< HEAD
-	loadCloudNoise();
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 }
 
 LLDrawPoolWLSky::~LLDrawPoolWLSky()
@@ -670,43 +655,3 @@ void LLDrawPoolWLSky::cleanupGL()
 void LLDrawPoolWLSky::restoreGL()
 {
 }
-<<<<<<< HEAD
-
-//BD - Changable Cloud Noise Texture
-//static
-void LLDrawPoolWLSky::loadCloudNoise()
-{
-	const std::string cloudNoiseFilename(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight", gSavedSettings.getString("CloudNoiseImageName")));
-	LL_INFOS() << "loading WindLight cloud noise from " << cloudNoiseFilename << LL_ENDL;
-
-	LLPointer<LLImageFormatted> cloudNoiseFile(LLImageFormatted::createFromExtension(cloudNoiseFilename));
-
-	if (cloudNoiseFile.isNull()) 
-	{
-		LL_WARNS() << "Failed to load cloud noise image " << cloudNoiseFilename << LL_ENDL;
-	}
-
-	if (cloudNoiseFile->load(cloudNoiseFilename))
-	{
-		sCloudNoiseRawImage = new LLImageRaw();
-
-		if (cloudNoiseFile->decode(sCloudNoiseRawImage, 0.0f))
-		{
-			//debug use			
-			LL_DEBUGS() << "cloud noise raw image width: " << sCloudNoiseRawImage->getWidth() << " : height: " << sCloudNoiseRawImage->getHeight() << " : components: " <<
-				(S32)sCloudNoiseRawImage->getComponents() << " : data size: " << sCloudNoiseRawImage->getDataSize() << LL_ENDL;
-			llassert_always(sCloudNoiseRawImage->getData());
-
-			sCloudNoiseTexture = LLViewerTextureManager::getLocalTexture(sCloudNoiseRawImage.get(), TRUE);
-		}
-		else
-		{
-			sCloudNoiseRawImage = NULL;
-		}
-	}
-
-	LLWLParamManager::getInstance()->propagateParameters();
-}
-
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762

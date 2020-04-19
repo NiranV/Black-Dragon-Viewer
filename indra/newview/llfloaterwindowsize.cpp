@@ -81,6 +81,9 @@ void LLFloaterWindowSize::initWindowSizeControls()
 	//BD - Ugh... make the spinners show the correct value on first creation
 	height = height - 38;
 	width = width - 16;
+
+	mWindowWidth->setValue(width);
+	mWindowHeight->setValue(height);
 }
 
 void LLFloaterWindowSize::onClickSet()

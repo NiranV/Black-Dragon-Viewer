@@ -2203,6 +2203,38 @@ LLSettingsDay::ptr_t LLEnvironment::createDayCycleFromLegacyPreset(const std::st
     return day;
 }
 
+//======================================================================
+//BD - Local Windlights
+LLSettingsWater::ptr_t LLEnvironment::createWaterFromPreset(const std::string filename, LLSD &messages)
+{
+	std::string name(gDirUtilp->getBaseFileName(filename, true));
+	std::string path(gDirUtilp->getDirName(filename));
+
+	LLSettingsWater::ptr_t water = LLSettingsVOWater::buildFromPresetFile(name, path, messages);
+
+	if (!water)
+	{
+		messages["NAME"] = name;
+		messages["FILE"] = filename;
+	}
+	return water;
+}
+
+LLSettingsSky::ptr_t LLEnvironment::createSkyFromPreset(const std::string filename, LLSD &messages)
+{
+	std::string name(gDirUtilp->getBaseFileName(filename, true));
+	std::string path(gDirUtilp->getDirName(filename));
+
+	LLSettingsSky::ptr_t sky = LLSettingsVOSky::buildFromPresetFile(name, path, messages);
+	if (!sky)
+	{
+		messages["NAME"] = name;
+		messages["FILE"] = filename;
+	}
+	return sky;
+}
+
+
 LLSettingsDay::ptr_t LLEnvironment::createDayCycleFromEnvironment(EnvSelection_t env, LLSettingsBase::ptr_t settings)
 {
     std::string type(settings->getSettingsType());
@@ -2656,33 +2688,39 @@ bool LLEnvironment::DayTransition::applyTimeDelta(const LLSettingsBase::Seconds&
     return changed;
 }
 
-void LLEnvironment::DayTransition::animate() 
+void LLEnvironment::DayTransition::animate()
 {
-    mNextInstance->animate();
+	mNextInstance->animate();
 
-    mWater = mStartWater->buildClone();
-    mBlenderWater = std::make_shared<LLSettingsBlenderTimeDelta>(mWater, mStartWater, mNextInstance->getWater(), mTransitionTime);
-    mBlenderWater->setOnFinished(
-        [this](LLSettingsBlender::ptr_t blender) { 
-            mBlenderWater.reset();
+	if (mStartWater)
+	{
+		mWater = mStartWater->buildClone();
+		mBlenderWater = std::make_shared<LLSettingsBlenderTimeDelta>(mWater, mStartWater, mNextInstance->getWater(), mTransitionTime);
+		mBlenderWater->setOnFinished(
+			[this](LLSettingsBlender::ptr_t blender) {
+			mBlenderWater.reset();
 
-            if (!mBlenderSky && !mBlenderWater)
-                LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
-            else
-                setWater(mNextInstance->getWater());
-    });
+			if (!mBlenderSky && !mBlenderWater)
+				LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
+			else
+				setWater(mNextInstance->getWater());
+		});
+	}
 
-    mSky = mStartSky->buildClone();
-    mBlenderSky = std::make_shared<LLSettingsBlenderTimeDelta>(mSky, mStartSky, mNextInstance->getSky(), mTransitionTime);
-    mBlenderSky->setOnFinished(
-        [this](LLSettingsBlender::ptr_t blender) {
-        mBlenderSky.reset();
+	if (mStartSky)
+	{
+		mSky = mStartSky->buildClone();
+		mBlenderSky = std::make_shared<LLSettingsBlenderTimeDelta>(mSky, mStartSky, mNextInstance->getSky(), mTransitionTime);
+		mBlenderSky->setOnFinished(
+			[this](LLSettingsBlender::ptr_t blender) {
+			mBlenderSky.reset();
 
-        if (!mBlenderSky && !mBlenderWater)
-            LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
-        else
-            setSky(mNextInstance->getSky());
-    });
+			if (!mBlenderSky && !mBlenderWater)
+				LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
+			else
+				setSky(mNextInstance->getSky());
+		});
+	}
 }
 
 void LLEnvironment::saveToSettings()

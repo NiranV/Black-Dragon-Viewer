@@ -307,18 +307,18 @@ Please try logging in again in a minute.</string>
 	<string name="BUTTON_TEAR_OFF">Tear Off</string>
 	<string name="BUTTON_DOCK">Dock</string>
 	<string name="BUTTON_HELP">Show Help</string>
-
-	<!-- ToolTips for notecards -->
-	<string name="TooltipNotecardNotAllowedTypeDrop">
+	
+	    <!-- ToolTips for notecards -->
+    <string name="TooltipNotecardNotAllowedTypeDrop">
 Items of this type can't be attached
 to notecards on this region.
-	</string>
-	<string name="TooltipNotecardOwnerRestrictedDrop">
+    </string>
+    <string name="TooltipNotecardOwnerRestrictedDrop">
 Only items with unrestricted
 'next owner' permissions
 can be attached to notecards.
-	</string>
-
+    </string>
+	
 	<!-- searching - generic -->
 	<string name="Searching">Searching...</string>
 	<string name="NoneFound">None found.</string>
@@ -370,12 +370,12 @@ can be attached to notecards.
 Error in upload request.  Please visit 
 http://secondlife.com/support for help fixing this problem.
 </string>
-
+	
 	<!-- Settings errors -->
-	<string name="SettingValidationError">Validation failed for importing settings [NAME]</string>
-	<string name="SettingImportFileError">Could not open file [FILE]</string>
-	<string name="SettingParseFileError">Could not open file [FILE]</string>
-	<string name="SettingTranslateError">Could not translate legacy windlight [NAME]</string>
+    <string name="SettingValidationError">Validation failed for importing settings [NAME]</string>
+    <string name="SettingImportFileError">Could not open file [FILE]</string>
+    <string name="SettingParseFileError">Could not open file [FILE]</string>
+    <string name="SettingTranslateError">Could not translate legacy windlight [NAME]</string>
 	<!-- Asset Type human readable names:  these will replace variable [TYPE] in notification FailedToFindWearable* -->
 	<!-- Will also replace [OBJECTTYPE] in notifications: UserGiveItem, ObjectGiveItem -->
 	<string name="texture">texture</string>
@@ -575,6 +575,7 @@ http://secondlife.com/support for help fixing this problem.
 	<string name="choose_the_directory">Choose Directory</string>
 	<string name="script_files">Scripts</string>
 	<string name="dictionary_files">Dictionaries</string>
+	<string name="zip_files">Zip files</string>
 
   <!-- LSL Usage Hover Tips -->
   <!-- NOTE: For now these are set as translate="false", until DEV-40761 is implemented (to internationalize the rest of tooltips in the same window).
@@ -2791,14 +2792,14 @@ If you continue to receive this message, please contact Second Life support for 
 	<!-- Environment settings -->
 	<string name="LocalSettings">Local Settings</string>
 	<string name="RegionSettings">Region Settings</string>
-
+	
 	<string name="NoEnvironmentSettings">This Region does not support environmental settings.</string>
-	<string name="EnvironmentSun">Sun</string>
-	<string name="EnvironmentMoon">Moon</string>
-	<string name="EnvironmentBloom">Bloom</string>
-	<string name="EnvironmentCloudNoise">Cloud Noise</string>
-	<string name="EnvironmentNormalMap">Normal Map</string>
-	<string name="EnvironmentTransparent">Transparent</string>
+    <string name="EnvironmentSun">Sun</string>
+    <string name="EnvironmentMoon">Moon</string>
+    <string name="EnvironmentBloom">Bloom</string>
+    <string name="EnvironmentCloudNoise">Cloud Noise</string>
+    <string name="EnvironmentNormalMap">Normal Map</string>
+    <string name="EnvironmentTransparent">Transparent</string>
 
 	<!-- panel classified -->
 	<string name="ClassifiedClicksTxt">Clicks: [TELEPORT] teleport, [MAP] map, [PROFILE] profile</string>
@@ -3886,13 +3887,13 @@ Abuse Report</string>
   <string name="Female - Shrug">Female - Shrug</string>
   <string name="Female - Stick tougue out">Female - Stick tongue out</string>
   <string name="Female - Wow">Female - Wow</string>
-
-<!-- settings -->
+	
+  <!-- settings -->
   <string name="New Daycycle">New Daycycle</string>
   <string name="New Water">New Water</string>
   <string name="New Sky">New Sky</string>
   
-
+	
   <string name="/bow">/bow</string>
   <string name="/clap">/clap</string>
   <string name="/count">/count</string>
@@ -4281,6 +4282,22 @@ Try enclosing path to the editor with double quotes.
   <!-- Statistics -->
   <string name="na">n/a</string>
 
+  <!-- Presets graphic/camera -->
+  <string name="preset_combo_label">-Empty list-</string>
+  <string name="Default">Default</string>
+  <string name="none_paren_cap">(None)</string>
+  <string name="no_limit">No Limit</string>
+  
+  <string name="Mav_Details_MAV_FOUND_DEGENERATE_TRIANGLES">
+      The physics shape contains triangles which are too small. Try simplifying the physics model.
+  </string>
+  <string name="Mav_Details_MAV_CONFIRMATION_DATA_MISMATCH">
+      The physics shape contains bad confirmation data. Try to correct the physics model.
+  </string>
+  <string name="Mav_Details_MAV_UNKNOWN_VERSION">
+      The physics shape does not have correct version. Set the correct version for the physics model.
+  </string>
+
   <!-- CURL error messages -->
   <string name="couldnt_resolve_host">
 DNS could not resolve the host name([HOSTNAME]).
@@ -4313,8 +4330,8 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
   <!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">3.7.5</string>
-	<string name="VIEWER_VERSION_IDENTIFIER">Improving Dragon</string>
+	<string name="VIEWER_VERSION_LOCAL">3.8.0 Test</string>
+	<string name="VIEWER_VERSION_IDENTIFIER">Enhancing Dragon</string>
 	
   <string name="UnmuteText">Show Text</string>
   <string name="MuteText">Block Text</string>

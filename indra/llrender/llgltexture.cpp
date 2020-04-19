@@ -307,7 +307,7 @@ LLTexUnit::eTextureAddressMode LLGLTexture::getAddressMode(void) const
 	return mGLTexturep->getAddressMode() ;
 }
 
-S32Bytes LLGLTexture::getTextureMemory() const
+S64Bytes LLGLTexture::getTextureMemory() const
 {
 	llassert(mGLTexturep.notNull()) ;
 
@@ -328,7 +328,10 @@ BOOL LLGLTexture::getIsAlphaMask() const
 	return mGLTexturep->getIsAlphaMask() ;
 }
 
-BOOL LLGLTexture::getMask(const LLVector2 &tc)
+//BOOL LLGLTexture::getMask(const LLVector2 &tc)
+// [RLVa:KB] - Checked: RLVa-2.2 (@setoverlay)
+bool LLGLTexture::getMask(const LLVector2 &tc) const
+// [/RLVa:KB]
 {
 	llassert(mGLTexturep.notNull()) ;
 

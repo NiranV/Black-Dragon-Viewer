@@ -1220,7 +1220,7 @@ bool LLFloaterTools::selectedMediaEditable()
 		
 		if ( ( owner_mask_on & PERM_MODIFY ) ||
 			( group_mask_on & PERM_MODIFY ) || 
-			( group_mask_on & PERM_MODIFY ) )
+			(everyone_mask_on & PERM_MODIFY ) )
 		{
 			selected_Media_editable = true;
 		}

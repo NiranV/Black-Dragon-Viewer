@@ -56,43 +56,11 @@ uniform float far_z;
 
 uniform mat4 inv_proj;
 
-<<<<<<< HEAD
-uniform float global_light_strength;
-
-vec2 encode_normal(vec3 n)
-{
-	float f = sqrt(8 * n.z + 8);
-	return n.xy / f + 0.5;
-}
-
-vec3 decode_normal (vec2 enc)
-{
-    vec2 fenc = enc*4-2;
-    float f = dot(fenc,fenc);
-    float g = sqrt(1-f/4);
-    vec3 n;
-    n.xy = fenc*g;
-    n.z = 1-f/2;
-    return n;
-}
-
-vec4 getPosition(vec2 pos_screen)
-{
-	float depth = texture2DRect(depthMap, pos_screen.xy).r;
-	vec2 sc = pos_screen.xy*2.0;
-	sc /= screen_res;
-	sc -= vec2(1.0,1.0);
-	vec4 ndc = vec4(sc.x, sc.y, 2.0*depth-1.0, 1.0);
-	vec4 pos = inv_proj * ndc;
-	pos /= pos.w;
-	pos.w = 1.0;
-	return pos;
-}
-=======
 vec4 getPosition(vec2 pos_screen);
 vec3 getNorm(vec2 pos_screen);
 vec3 srgb_to_linear(vec3 c);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+
+uniform float global_light_strength;
 
 void main() 
 {
@@ -125,10 +93,8 @@ void main()
 		dist /= light[i].w;
 		if (dist <= 1.0)
 		{
-			float da = dot(norm, lv);
+		float da = dot(norm, lv);
 			if (da > 0.0)
-<<<<<<< HEAD
-=======
 		{
 			lv = normalize(lv);
 			da = dot(norm, lv);
@@ -150,61 +116,36 @@ void main()
 			//vec3 col = vec3(dist2, light_col[i].a, lit);
 			
 			if (spec.a > 0.0)
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 			{
-				lv = normalize(lv);
-				da = dot(norm, lv);
-				
-				float fa = light_col[i].a+1.0;
-				float dist_atten = clamp(1.0-(dist-1.0*(1.0-fa))/fa, 0.0, 1.0);
-				dist_atten *= dist_atten;
-				dist_atten *= 2.0;
-				
-				dist_atten *= noise;
-	
-				float lit = da * dist_atten;
-							
-				vec3 col = light_col[i].rgb*lit*diff;
-				
-				//vec3 col = vec3(dist2, light_col[i].a, lit);
-				
-				if (spec.a > 0.0)
+				lit = min(da*6.0, 1.0) * dist_atten;
+				//vec3 ref = dot(pos+lv, norm);
+				vec3 h = normalize(lv+npos);
+				float nh = dot(norm, h);
+				float nv = dot(norm, npos);
+				float vh = dot(npos, h);
+				float sa = nh;
+				float fres = pow(1 - dot(h, npos), 5)*0.4+0.5;
+
+				float gtdenom = 2 * nh;
+				float gt = max(0, min(gtdenom * nv / vh, gtdenom * da / vh));
+								
+				if (nh > 0.0)
 				{
-					lit = min(da*6.0, 1.0) * dist_atten;
-					//vec3 ref = dot(pos+lv, norm);
-					vec3 h = normalize(lv+npos);
-					float nh = dot(norm, h);
-					float nv = dot(norm, npos);
-					float vh = dot(npos, h);
-					float sa = nh;
-					float fres = pow(1 - dot(h, npos), 5)*0.4+0.5;
-	
-					float gtdenom = 2 * nh;
-					float gt = max(0, min(gtdenom * nv / vh, gtdenom * da / vh));
-									
-					if (nh > 0.0)
-					{
-						float scol = fres*texture2D(lightFunc, vec2(nh, spec.a)).r*gt/(nh*da);
-						col += lit*scol*light_col[i].rgb*spec.rgb;
-						//col += spec.rgb;
-					}
+					float scol = fres*texture2D(lightFunc, vec2(nh, spec.a)).r*gt/(nh*da);
+					col += lit*scol*light_col[i].rgb*spec.rgb;
+					//col += spec.rgb;
 				}
-				
-				out_col += col;
 			}
+			
+			out_col += col;
 		}
 	}
-<<<<<<< HEAD
-	
- out_col *= global_light_strength;
-=======
 	}
 #endif
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
-	
+	out_col *= global_light_strength;
 	frag_color.rgb = out_col;
 	frag_color.a = 0.0;
-	
+
 #ifdef IS_AMD_CARD
 	// If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
 	vec4 dummy1 = light[0];

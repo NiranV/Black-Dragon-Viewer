@@ -130,7 +130,6 @@ BOOL LLFastTimerView::postBuild()
 {
 	mPauseBtn = getChild<LLButton>("pause_btn");
 	mScrollBar = getChild<LLScrollbar>("scroll_vert");
-<<<<<<< HEAD
 
 	mLinesPanel = getChild<LLView>("lines_panel");
 	mLegendPanel = getChild<LLView>("legend");
@@ -140,10 +139,6 @@ BOOL LLFastTimerView::postBuild()
 	mMetricCombo = getChild<LLComboBox>("metric_combo");
 	
 	mPauseBtn->setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
-=======
-	
-	pause_btn.setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	return TRUE;
 }
 
@@ -269,6 +264,12 @@ BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 			bar_index < end_index; 
 			++bar_index)
 		{
+			if (!row.mBars)
+			{
+				LL_WARNS() << "mTimerBarRows.mBars is null at index: " << bar_index << " bailing out" << LL_ENDL;
+				break;
+			}
+
 			TimerBar& bar = row.mBars[bar_index];
 			if (bar.mSelfStart > mouse_time_offset)
 			{
@@ -370,7 +371,6 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 
 BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-<<<<<<< HEAD
 	if (x < mBarRect.mLeft)
 	{
 		// Inside mScrollBar and list of timers
@@ -383,20 +383,6 @@ BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 			0,
 			llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
 	}
-=======
-    if (x < mBarRect.mLeft)
-    {
-        // Inside mScrollBar and list of timers
-        mScrollBar->handleScrollWheel(x,y,clicks);
-    }
-    else
-    {
-	setPauseState(true);
-	mScrollIndex = llclamp(	mScrollIndex + clicks,
-							0,
-							llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
-    }
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	return TRUE;
 }
 
@@ -462,21 +448,16 @@ void LLFastTimerView::draw()
 
 void LLFastTimerView::onOpen(const LLSD& key)
 {
+	mTimerBarRows.resize(NUM_FRAMES_HISTORY);
 	setPauseState(false);
 	mRecording.reset();
 	mRecording.appendPeriodicRecording(LLTrace::get_frame_recording());
-	for(std::deque<TimerBarRow>::iterator it = mTimerBarRows.begin(), end_it = mTimerBarRows.end();
-		it != end_it; 
-		++it)
-	{
-		delete []it->mBars;
-		it->mBars = NULL;
-	}
 }
 										
 void LLFastTimerView::onClose(bool app_quitting)
 {
 	setVisible(FALSE);
+	mTimerBarRows.clear();
 }
 
 void saveChart(const std::string& label, const char* suffix, LLImageRaw* scratch)
@@ -1722,4 +1703,13 @@ S32 LLFastTimerView::drawBar(LLRect bar_rect, TimerBarRow& row, S32 image_width,
 	}
 
 	return bar_index;
+}
+
+LLFastTimerView::TimerBarRow::~TimerBarRow()
+{
+	if (mBars != nullptr) 
+	{
+		delete[] mBars;
+		mBars = nullptr;
+	}
 }

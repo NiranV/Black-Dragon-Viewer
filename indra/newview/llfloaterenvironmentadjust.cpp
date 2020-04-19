@@ -31,42 +31,112 @@
 #include "llnotificationsutil.h"
 #include "llslider.h"
 #include "llsliderctrl.h"
+#include "llcombobox.h"
 #include "llcolorswatch.h"
 #include "lltexturectrl.h"
 #include "llvirtualtrackball.h"
 #include "llenvironment.h"
 #include "llviewercontrol.h"
 
+//BD
+#include "bdfunctions.h"
+#include "llsdserialize.h"
+#include "llsettingsvo.h"
+#include "llviewermenufile.h"
+#include "llinventorymodel.h"
+#include "llinventoryfunctions.h"
+#include "llagent.h"
+
+
 //=========================================================================
 namespace
 {
-    const std::string FIELD_SKY_AMBIENT_LIGHT("ambient_light");
-    const std::string FIELD_SKY_BLUE_HORIZON("blue_horizon");
-    const std::string FIELD_SKY_BLUE_DENSITY("blue_density");
-    const std::string FIELD_SKY_SUN_COLOR("sun_color");
-    const std::string FIELD_SKY_CLOUD_COLOR("cloud_color");
-    const std::string FIELD_SKY_HAZE_HORIZON("haze_horizon");
-    const std::string FIELD_SKY_HAZE_DENSITY("haze_density");
-    const std::string FIELD_SKY_CLOUD_COVERAGE("cloud_coverage");
-    const std::string FIELD_SKY_CLOUD_MAP("cloud_map");
-    const std::string FIELD_WATER_NORMAL_MAP("water_normal_map");
-    const std::string FIELD_SKY_CLOUD_SCALE("cloud_scale");
-    const std::string FIELD_SKY_SCENE_GAMMA("scene_gamma");
-    const std::string FIELD_SKY_SUN_ROTATION("sun_rotation");
-    const std::string FIELD_SKY_SUN_SCALE("sun_scale");
-    const std::string FIELD_SKY_GLOW_FOCUS("glow_focus");
-    const std::string FIELD_SKY_GLOW_SIZE("glow_size");
-    const std::string FIELD_SKY_STAR_BRIGHTNESS("star_brightness");
-    const std::string FIELD_SKY_MOON_ROTATION("moon_rotation");
-    const std::string BTN_RESET("btn_reset");
-
-    const F32 SLIDER_SCALE_SUN_AMBIENT(3.0f);
-    const F32 SLIDER_SCALE_BLUE_HORIZON_DENSITY(2.0f);
-    const F32 SLIDER_SCALE_GLOW_R(20.0f);
-    const F32 SLIDER_SCALE_GLOW_B(-5.0f);
-    //const F32 SLIDER_SCALE_DENSITY_MULTIPLIER(0.001f);
-
     const S32 FLOATER_ENVIRONMENT_UPDATE(-2);
+
+
+	//BD - Atmosphere
+	const std::string   FIELD_SKY_AMBIENT_LIGHT("ambient_light");
+	const std::string   FIELD_SKY_BLUE_HORIZON("blue_horizon");
+	const std::string   FIELD_SKY_BLUE_DENSITY("blue_density");
+	const std::string   FIELD_SKY_HAZE_HORIZON("haze_horizon");
+	const std::string   FIELD_SKY_HAZE_DENSITY("haze_density");
+	const std::string   FIELD_SKY_SCENE_GAMMA("scene_gamma");
+	const std::string   FIELD_SKY_DENSITY_MULTIP("density_multip");
+	const std::string   FIELD_SKY_DISTANCE_MULTIP("distance_multip");
+	const std::string   FIELD_SKY_MAX_ALT("max_alt");
+
+	const std::string   FIELD_SKY_DENSITY_MOISTURE_LEVEL("moisture_level");
+	const std::string   FIELD_SKY_DENSITY_DROPLET_RADIUS("droplet_radius");
+	const std::string   FIELD_SKY_DENSITY_ICE_LEVEL("ice_level");
+
+	//BD - Sun & Moon
+	const std::string   FIELD_SKY_SUN_MOON_COLOR("sun_moon_color");
+	const std::string   FIELD_SKY_GLOW_FOCUS("glow_focus");
+	const std::string   FIELD_SKY_GLOW_SIZE("glow_size");
+	const std::string   FIELD_SKY_STAR_BRIGHTNESS("star_brightness");
+	const std::string   FIELD_SKY_SUN_POSITION_X("sun_position_x");
+	const std::string   FIELD_SKY_SUN_POSITION_Y("sun_position_y");
+	const std::string   FIELD_SKY_SUN_IMAGE("sun_image");
+	const std::string   FIELD_SKY_SUN_SCALE("sun_scale");
+	const std::string   FIELD_SKY_SUN_BEACON("sunbeacon");
+	const std::string   FIELD_SKY_MOON_BEACON("moonbeacon");
+	const std::string   FIELD_SKY_MOON_POSITION_X("moon_position_x");
+	const std::string   FIELD_SKY_MOON_POSITION_Y("moon_position_y");
+	const std::string   FIELD_SKY_MOON_IMAGE("moon_image");
+	const std::string   FIELD_SKY_MOON_SCALE("moon_scale");
+	const std::string   FIELD_SKY_MOON_BRIGHTNESS("moon_brightness");
+
+	const std::string   PANEL_SKY_SUN_LAYOUT("sun_layout");
+	const std::string   PANEL_SKY_MOON_LAYOUT("moon_layout");
+
+	//BD - Clouds
+	const std::string   FIELD_SKY_CLOUD_COLOR("cloud_color");
+	const std::string   FIELD_SKY_CLOUD_COVERAGE("cloud_coverage");
+	const std::string   FIELD_SKY_CLOUD_SCALE("cloud_scale");
+	const std::string   FIELD_SKY_CLOUD_VARIANCE("cloud_variance");
+
+	const std::string   FIELD_SKY_CLOUD_SCROLL_X("cloud_scroll_x");
+	const std::string   FIELD_SKY_CLOUD_SCROLL_Y("cloud_scroll_y");
+	const std::string   FIELD_SKY_CLOUD_MAP("cloud_map");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_X("cloud_density_x");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_Y("cloud_density_y");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_D("cloud_density_d");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_X("cloud_detail_x");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_Y("cloud_detail_y");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_D("cloud_detail_d");
+
+	//BD - Density
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL("rayleigh_exponential");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL_SCALE("rayleigh_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_LINEAR("rayleigh_linear");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_CONSTANT("rayleigh_constant");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_MAX_ALTITUDE("rayleigh_max_altitude");
+
+	const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL("mie_exponential");
+	const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL_SCALE("mie_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_MIE_LINEAR("mie_linear");
+	const std::string   FIELD_SKY_DENSITY_MIE_CONSTANT("mie_constant");
+	const std::string   FIELD_SKY_DENSITY_MIE_ANISO("mie_aniso_factor");
+	const std::string   FIELD_SKY_DENSITY_MIE_MAX_ALTITUDE("mie_max_altitude");
+
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL("absorption_exponential");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL_SCALE("absorption_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_LINEAR("absorption_linear");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_CONSTANT("absorption_constant");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE("absorption_max_altitude");
+
+	const std::string   BTN_RESET("reset");
+	const std::string   BTN_SAVE("save");
+	const std::string   BTN_DELETE("delete");
+	const std::string   BTN_IMPORT("import");
+
+	const std::string   EDITOR_NAME("sky_preset_combo");
+
+	const F32 SLIDER_SCALE_SUN_AMBIENT(3.0f);
+	const F32 SLIDER_SCALE_BLUE_HORIZON_DENSITY(2.0f);
+	const F32 SLIDER_SCALE_GLOW_R(20.0f);
+	const F32 SLIDER_SCALE_GLOW_B(-5.0f);
+	const F32 SLIDER_SCALE_DENSITY_MULTIPLIER(0.001f);
 }
 
 //=========================================================================
@@ -80,34 +150,105 @@ LLFloaterEnvironmentAdjust::~LLFloaterEnvironmentAdjust()
 //-------------------------------------------------------------------------
 BOOL LLFloaterEnvironmentAdjust::postBuild()
 {
-    getChild<LLUICtrl>(FIELD_SKY_AMBIENT_LIGHT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onAmbientLightChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_BLUE_HORIZON)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueHorizonChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_BLUE_DENSITY)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeHorizonChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSceneGammaChanged(); });
+	//BD - Atmosphere
+	mAmbientLight = getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT);
+	mAmbientLight->setCommitCallback([this](LLUICtrl *, const LLSD &) { onAmbientLightChanged(); });
+	mBlueHorizon = getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON);
+	mBlueHorizon->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueHorizonChanged(); });
+	mBlueDensity = getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY);
+	mBlueDensity->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueDensityChanged(); });
+	mHazeHorizon = getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON);
+	mHazeHorizon->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeHorizonChanged(); });
+	mHazeDensity = getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY);
+	mHazeDensity->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeDensityChanged(); });
+	mSceneGamma = getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA);
+	mSceneGamma->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSceneGammaChanged(); });
+	mDensityMult = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP);
+	mDensityMult->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDensityMultipChanged(); });
+	mDistanceMult = getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP);
+	mDistanceMult->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDistanceMultipChanged(); });
+	mMaxAltitude = getChild<LLUICtrl>(FIELD_SKY_MAX_ALT);
+	mMaxAltitude->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMaxAltChanged(); });
+	mMoisture = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL);
+	mMoisture->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoistureLevelChanged(); });
+	mDroplet = getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS);
+	mDroplet->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDropletRadiusChanged(); });
+	mIceLevel = getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL);
+	mIceLevel->setCommitCallback([this](LLUICtrl *, const LLSD &) { onIceLevelChanged(); });
 
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COLOR)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudColorChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudCoverageChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScaleChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_COLOR)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunColorChanged(); });
+	//BD - Sun & Moon
+	mSunMoonColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_MOON_COLOR);
+	mSunMoonColor->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunMoonColorChanged(); });
+	mGlowFocus = getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS);
+	mGlowFocus->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
+	mGlowSize = getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE);
+	mGlowSize->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
+	mStarBrightness = getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS);
+	mStarBrightness->setCommitCallback([this](LLUICtrl *, const LLSD &) { onStarBrightnessChanged(); });
+	mSunPositionX = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_X);
+	mSunPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationXChanged(); });
+	mSunPositionY = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_Y);
+	mSunPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationYChanged(); });
+	mSunImage = getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE);
+	mSunImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunImageChanged(); });
+	mSunScale = getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE);
+	mSunScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunScaleChanged(); });
+	mSunImage->setBlankImageAssetID(LLSettingsSky::GetBlankSunTextureId());
+	mSunImage->setDefaultImageAssetID(LLSettingsSky::GetBlankSunTextureId());
+	mSunImage->setAllowNoTexture(TRUE);
+	mMoonPositionX = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_X);
+	mMoonPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationXChanged(); });
+	mMoonPositionY = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_Y);
+	mMoonPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationYChanged(); });
+	mMoonImage = getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE);
+	mMoonImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonImageChanged(); });
+	mMoonImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
+	mMoonImage->setBlankImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
+	mMoonImage->setAllowNoTexture(TRUE);
+	mMoonScale = getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE);
+	mMoonScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonScaleChanged(); });
+	mMoonBrightness = getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS);
+	mMoonBrightness->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonBrightnessChanged(); });
 
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onStarBrightnessChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_ROTATION)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunScaleChanged(); });
+	//BD - Clouds
+	mCloudColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR);
+	mCloudColor->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudColorChanged(); });
+	mCloudCoverage = getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE);
+	mCloudCoverage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudCoverageChanged(); });
+	mCloudScale = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE);
+	mCloudScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScaleChanged(); });
+	mCloudVariance = getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE); 
+	mCloudVariance->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudVarianceChanged(); });
 
-    getChild<LLUICtrl>(FIELD_SKY_MOON_ROTATION)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
+	mCloudScrollX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_X);
+	mCloudScrollX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
+	mCloudScrollY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_Y);
+	mCloudScrollY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
+	mCloudImage = getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP);
+	mCloudImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudMapChanged(); });
+	mCloudImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultCloudNoiseTextureId());
+	mCloudImage->setAllowNoTexture(TRUE);
+
+	mCloudDensityX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X);
+	mCloudDensityX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDensityY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y); 
+	mCloudDensityY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDensityD = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D); 
+	mCloudDensityD->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDetailX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X); 
+	mCloudDetailX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+	mCloudDetailY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y); 
+	mCloudDetailY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+	mCloudDetailD = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D); 
+	mCloudDetailD->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+
     getChild<LLUICtrl>(BTN_RESET)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonReset(); });
+	getChild<LLUICtrl>(BTN_DELETE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonDelete(); });
+	getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
+	getChild<LLUICtrl>(BTN_IMPORT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
 
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudMapChanged(); });
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setDefaultImageAssetID(LLSettingsSky::GetDefaultCloudNoiseTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setAllowNoTexture(TRUE);
-
-    getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP)->setDefaultImageAssetID(LLSettingsWater::GetDefaultWaterNormalAssetId());
-    getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP)->setBlankImageAssetID(LLUUID(gSavedSettings.getString("DefaultBlankNormalTexture")));
-    getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onWaterMapChanged(); });
+	mNameCombo = getChild<LLComboBox>(EDITOR_NAME);
+	mNameCombo->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
 
     refresh();
     return TRUE;
@@ -125,6 +266,9 @@ void LLFloaterEnvironmentAdjust::onOpen(const LLSD& key)
 
     LLFloater::onOpen(key);
     refresh();
+
+	gDragonLibrary.loadPresetsFromDir(mNameCombo, "skies");
+	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveSky);
 }
 
 void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
@@ -132,7 +276,6 @@ void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
     LLEnvironment::instance().revertBeaconsState();
     mEventConnection.disconnect();
     mLiveSky.reset();
-    mLiveWater.reset();
     LLFloater::onClose(app_quitting);
 }
 
@@ -140,39 +283,78 @@ void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
 //-------------------------------------------------------------------------
 void LLFloaterEnvironmentAdjust::refresh()
 {
-    if (!mLiveSky || !mLiveWater)
-    {
-        setAllChildrenEnabled(FALSE);
-        return;
-    }
+	if (!mLiveSky)
+	{
+		setAllChildrenEnabled(FALSE);
+		return;
+	}
 
-    setEnabled(TRUE);
-    setAllChildrenEnabled(TRUE);
+	setEnabled(TRUE);
+	setAllChildrenEnabled(TRUE);
 
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT)->set(mLiveSky->getAmbientColor() / SLIDER_SCALE_SUN_AMBIENT);
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON)->set(mLiveSky->getBlueHorizon() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY)->set(mLiveSky->getBlueDensity() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setValue(mLiveSky->getHazeHorizon());
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setValue(mLiveSky->getHazeDensity());
-    getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setValue(mLiveSky->getGamma());
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR)->set(mLiveSky->getCloudColor());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->setValue(mLiveSky->getCloudShadow());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->setValue(mLiveSky->getCloudScale());
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_COLOR)->set(mLiveSky->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
+	//BD - Atmosphere
+	mAmbientLight->set(mLiveSky->getAmbientColor() / SLIDER_SCALE_SUN_AMBIENT);
+	mBlueHorizon->set(mLiveSky->getBlueHorizon() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
+	mBlueDensity->set(mLiveSky->getBlueDensity() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
+	mHazeHorizon->setValue(mLiveSky->getHazeHorizon());
+	mHazeDensity->setValue(mLiveSky->getHazeDensity());
+	mSceneGamma->setValue(mLiveSky->getGamma());
 
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setValue(mLiveSky->getCloudNoiseTextureId());
-    getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP)->setValue(mLiveWater->getNormalMapID());
+	F32 density_mult = mLiveSky->getDensityMultiplier();
+	density_mult /= SLIDER_SCALE_DENSITY_MULTIPLIER;
+	mDensityMult->setValue(density_mult);
+	mDistanceMult->setValue(mLiveSky->getDistanceMultiplier());
+	mMaxAltitude->setValue(mLiveSky->getMaxY());
 
-    LLColor3 glow(mLiveSky->getGlow());
+	mMoisture->setValue(mLiveSky->getSkyMoistureLevel());
+	mDroplet->setValue(mLiveSky->getSkyDropletRadius());
+	mIceLevel->setValue(mLiveSky->getSkyIceLevel());
 
-    // takes 40 - 0.2 range -> 0 - 1.99 UI range
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->setValue(2.0 - (glow.mV[0] / SLIDER_SCALE_GLOW_R));
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->setValue(glow.mV[2] / SLIDER_SCALE_GLOW_B);
-    getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->setValue(mLiveSky->getStarBrightness());
-    getChild<LLVirtualTrackball>(FIELD_SKY_SUN_ROTATION)->setRotation(mLiveSky->getSunRotation());
-    getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->setValue(mLiveSky->getSunScale());
-    getChild<LLVirtualTrackball>(FIELD_SKY_MOON_ROTATION)->setRotation(mLiveSky->getMoonRotation());
 
+	//BD - Sun & Moon
+	LLColor3 glow(mLiveSky->getGlow());
+	// takes 40 - 0.2 range -> 0 - 1.99 UI range
+	mGlowSize->setValue(2.0 - (glow.mV[0] / SLIDER_SCALE_GLOW_R));
+	mGlowFocus->setValue(glow.mV[2] / SLIDER_SCALE_GLOW_B);
+	mStarBrightness->setValue(mLiveSky->getStarBrightness());
+	mSunMoonColor->set(mLiveSky->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
+	mSunScale->setValue(mLiveSky->getSunScale());
+	mMoonImage->setValue(mLiveSky->getMoonTextureId());
+	mMoonScale->setValue(mLiveSky->getMoonScale());
+	mMoonBrightness->setValue(mLiveSky->getMoonBrightness());
+
+	F32 pitch, yaw, roll = 0.f;
+	mLiveSky->getSunRotation().getEulerAngles(&roll, &pitch, &yaw);
+	mSunPositionX->setValue(pitch / F_PI);
+	mSunPositionY->setValue(yaw / F_PI);
+	mPreviousSunRot = LLVector3(roll, pitch, yaw);
+
+	mLiveSky->getMoonRotation().getEulerAngles(&roll, &pitch, &yaw);
+	mMoonPositionX->setValue(pitch / F_PI);
+	mMoonPositionY->setValue(yaw / F_PI);
+	mPreviousMoonRot = LLVector3(roll, pitch, yaw);
+
+	//BD - Clouds
+	mCloudColor->set(mLiveSky->getCloudColor());
+	mCloudCoverage->setValue(mLiveSky->getCloudShadow());
+	mCloudScale->setValue(mLiveSky->getCloudScale());
+	mCloudVariance->setValue(mLiveSky->getCloudVariance());
+
+	LLVector2 cloudScroll(mLiveSky->getCloudScrollRate());
+	mCloudScrollX->setValue(cloudScroll[0]);
+	mCloudScrollY->setValue(cloudScroll[1]);
+
+	mCloudImage->setValue(mLiveSky->getCloudNoiseTextureId());
+
+	LLVector3 cloudDensity(mLiveSky->getCloudPosDensity1().getValue());
+	mCloudDensityX->setValue(cloudDensity[0]);
+	mCloudDensityY->setValue(cloudDensity[1]);
+	mCloudDensityD->setValue(cloudDensity[2]);
+
+	LLVector3 cloudDetail(mLiveSky->getCloudPosDensity2().getValue());
+	mCloudDetailX->setValue(cloudDetail[0]);
+	mCloudDetailY->setValue(cloudDetail[1]);
+	mCloudDetailD->setValue(cloudDetail[2]);
 }
 
 
@@ -186,26 +368,22 @@ void LLFloaterEnvironmentAdjust::captureCurrentEnvironment()
         if (environment.getEnvironmentDay(LLEnvironment::ENV_LOCAL))
         {   // We have a full day cycle in the local environment.  Freeze the sky
             mLiveSky = environment.getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL)->buildClone();
-            mLiveWater = environment.getEnvironmentFixedWater(LLEnvironment::ENV_LOCAL)->buildClone();
             updatelocal = true;
         }
         else
         {   // otherwise we can just use the sky.
             mLiveSky = environment.getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL);
-            mLiveWater = environment.getEnvironmentFixedWater(LLEnvironment::ENV_LOCAL);
         }
     }
     else
     {
         mLiveSky = environment.getEnvironmentFixedSky(LLEnvironment::ENV_PARCEL, true)->buildClone();
-        mLiveWater = environment.getEnvironmentFixedWater(LLEnvironment::ENV_PARCEL, true)->buildClone();
         updatelocal = true;
     }
 
     if (updatelocal)
     {
         environment.setEnvironment(LLEnvironment::ENV_LOCAL, mLiveSky, FLOATER_ENVIRONMENT_UPDATE);
-        environment.setEnvironment(LLEnvironment::ENV_LOCAL, mLiveWater, FLOATER_ENVIRONMENT_UPDATE);
     }
     environment.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
     environment.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
@@ -220,159 +398,12 @@ void LLFloaterEnvironmentAdjust::onButtonReset()
         S32 opt = LLNotificationsUtil::getSelectedOption(notif, resp);
         if (opt == 0)
         {
-            this->closeFloater();
+            //this->closeFloater();
             LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().updateEnvironment();
         }
     }); 
-
-}
-//-------------------------------------------------------------------------
-void LLFloaterEnvironmentAdjust::onAmbientLightChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setAmbientColor(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT)->get() * SLIDER_SCALE_SUN_AMBIENT));
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onBlueHorizonChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setBlueHorizon(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON)->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onBlueDensityChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setBlueDensity(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY)->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onHazeHorizonChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setHazeHorizon(getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onHazeDensityChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setHazeDensity(getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onSceneGammaChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setGamma(getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onCloudColorChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setCloudColor(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR)->get()));
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onCloudCoverageChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setCloudShadow(getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onCloudScaleChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setCloudScale(getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onGlowChanged()
-{
-    if (!mLiveSky)
-        return;
-    LLColor3 glow(getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->getValue().asReal(), 0.0f, getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->getValue().asReal());
-
-    // takes 0 - 1.99 UI range -> 40 -> 0.2 range
-    glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R;
-    glow.mV[2] *= SLIDER_SCALE_GLOW_B;
-
-    mLiveSky->setGlow(glow);
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onStarBrightnessChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setStarBrightness(getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->getValue().asReal());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onSunRotationChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setSunRotation(getChild<LLVirtualTrackball>(FIELD_SKY_SUN_ROTATION)->getRotation());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onSunScaleChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setSunScale((getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->getValue().asReal()));
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onMoonRotationChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setMoonRotation(getChild<LLVirtualTrackball>(FIELD_SKY_MOON_ROTATION)->getRotation());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onCloudMapChanged()
-{
-    if (!mLiveSky)
-        return;
-    mLiveSky->setCloudNoiseTextureId(getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->getValue().asUUID());
-    mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onWaterMapChanged()
-{
-    if (!mLiveWater)
-        return;
-    mLiveWater->setNormalMapID(getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP)->getValue().asUUID());
-    mLiveWater->update();
-}
-
-void LLFloaterEnvironmentAdjust::onSunColorChanged()
-{
-    if (!mLiveSky)
-        return;
-    LLColor3 color(getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_COLOR)->get());
-
-    color *= SLIDER_SCALE_SUN_AMBIENT;
-
-    mLiveSky->setSunlightColor(color);
-    mLiveSky->update();
 }
 
 
@@ -386,4 +417,340 @@ void LLFloaterEnvironmentAdjust::onEnvironmentUpdated(LLEnvironment::EnvSelectio
             refresh();
         }
     }
+}
+
+
+//BD - Atmosphere
+void LLFloaterEnvironmentAdjust::onAmbientLightChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setAmbientColor(LLColor3(mAmbientLight->get() * SLIDER_SCALE_SUN_AMBIENT));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onBlueHorizonChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setBlueHorizon(LLColor3(mBlueHorizon->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onBlueDensityChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setBlueDensity(LLColor3(mBlueDensity->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onHazeHorizonChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setHazeHorizon(mHazeHorizon->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onHazeDensityChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setHazeDensity(mHazeDensity->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onSceneGammaChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setGamma(mSceneGamma->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onDensityMultipChanged()
+{
+	if (!mLiveSky) return;
+	F32 density_mult = mDensityMult->getValue().asReal();
+	density_mult *= SLIDER_SCALE_DENSITY_MULTIPLIER;
+	mLiveSky->setDensityMultiplier(density_mult);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onDistanceMultipChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setDistanceMultiplier(mDistanceMult->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMaxAltChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setMaxY(mMaxAltitude->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoistureLevelChanged()
+{
+	if (!mLiveSky) return;
+	F32 moisture_level = mMoisture->getValue().asReal();
+	mLiveSky->setSkyMoistureLevel(moisture_level);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onDropletRadiusChanged()
+{
+	if (!mLiveSky) return;
+	F32 droplet_radius = mDroplet->getValue().asReal();
+	mLiveSky->setSkyDropletRadius(droplet_radius);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onIceLevelChanged()
+{
+	if (!mLiveSky) return;
+	F32 ice_level = mIceLevel->getValue().asReal();
+	mLiveSky->setSkyIceLevel(ice_level);
+	mLiveSky->update();
+}
+
+
+//BD - Sun & Moon
+void LLFloaterEnvironmentAdjust::onSunMoonColorChanged()
+{
+	if (!mLiveSky) return;
+	LLColor3 color(mSunMoonColor->get());
+
+	color *= SLIDER_SCALE_SUN_AMBIENT;
+
+	mLiveSky->setSunlightColor(color);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onGlowChanged()
+{
+	if (!mLiveSky) return;
+	LLColor3 glow(mGlowSize->getValue().asReal(), 0.0f, mGlowFocus->getValue().asReal());
+
+	// takes 0 - 1.99 UI range -> 40 -> 0.2 range
+	glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R;
+	glow.mV[2] *= SLIDER_SCALE_GLOW_B;
+
+	mLiveSky->setGlow(glow);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onStarBrightnessChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setStarBrightness(mStarBrightness->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onSunRotationXChanged()
+{
+	if (!mLiveSky) return;
+
+	LLVector3 vec3;
+	F32 old_value;
+	LLQuaternion rot = mLiveSky->getSunRotation();
+
+	F32 val = mSunPositionX->getValue().asReal() * F_PI;
+	old_value = mPreviousSunRot.mV[VY];
+	mPreviousSunRot.mV[VY] = val;
+	val -= old_value;
+	vec3.mV[VY] = val;
+
+	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	rot = LLQuaternion(rot_mat)*rot;
+
+	mLiveSky->setSunRotation(rot);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onSunRotationYChanged()
+{
+	if (!mLiveSky) return;
+	LLVector3 vec3;
+	F32 old_value;
+	LLQuaternion rot = mLiveSky->getSunRotation();
+
+	F32 val = mSunPositionY->getValue().asReal() * F_PI;
+	old_value = mPreviousSunRot.mV[VZ];
+	mPreviousSunRot.mV[VZ] = val;
+	val -= old_value;
+	vec3.mV[VZ] = val;
+
+	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	rot = LLQuaternion(rot_mat)*rot;
+
+	mLiveSky->setSunRotation(rot);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onSunScaleChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setSunScale((mSunScale->getValue().asReal()));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onSunImageChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setSunTextureId(mSunImage->getValue().asUUID());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoonRotationXChanged()
+{
+	if (!mLiveSky) return;
+
+	LLVector3 vec3;
+	F32 old_value;
+	LLQuaternion rot = mLiveSky->getMoonRotation();
+
+	F32 val = mMoonPositionX->getValue().asReal() * F_PI;
+	old_value = mPreviousMoonRot.mV[VY];
+	mPreviousMoonRot.mV[VY] = val;
+	val -= old_value;
+	vec3.mV[VY] = val;
+
+	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	rot = LLQuaternion(rot_mat)*rot;
+
+	mLiveSky->setMoonRotation(rot);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoonRotationYChanged()
+{
+	if (!mLiveSky) return;
+	LLVector3 vec3;
+	F32 old_value;
+	LLQuaternion rot = mLiveSky->getMoonRotation();
+
+	F32 val = mMoonPositionY->getValue().asReal() * F_PI;
+	old_value = mPreviousMoonRot.mV[VZ];
+	mPreviousMoonRot.mV[VZ] = val;
+	val -= old_value;
+	vec3.mV[VZ] = val;
+
+	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	rot = LLQuaternion(rot_mat)*rot;
+
+	mLiveSky->setMoonRotation(rot);
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoonImageChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setMoonTextureId(mMoonImage->getValue().asUUID());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoonScaleChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setMoonScale((mMoonScale->getValue().asReal()));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onMoonBrightnessChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setMoonBrightness((mMoonBrightness->getValue().asReal()));
+	mLiveSky->update();
+}
+
+
+
+//BD - Clouds
+void LLFloaterEnvironmentAdjust::onCloudColorChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setCloudColor(LLColor3(mCloudColor->get()));
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onCloudCoverageChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setCloudShadow(mCloudCoverage->getValue().asReal());
+	mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::onCloudScaleChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setCloudScale(mCloudScale->getValue().asReal());
+}
+
+void LLFloaterEnvironmentAdjust::onCloudVarianceChanged()
+{
+	if (!mLiveSky) return;
+	mLiveSky->setCloudVariance(mCloudVariance->getValue().asReal());
+}
+
+void LLFloaterEnvironmentAdjust::onCloudScrollChanged()
+{
+	if (!mLiveSky) return;
+	LLVector2 scroll(mCloudScrollX->getValue().asReal(), mCloudScrollY->getValue().asReal());
+	mLiveSky->setCloudScrollRate(scroll);
+}
+
+void LLFloaterEnvironmentAdjust::onCloudMapChanged()
+{
+	if (!mLiveSky) return;
+	LLTextureCtrl* ctrl = mCloudImage;
+	mLiveSky->setCloudNoiseTextureId(ctrl->getValue().asUUID());
+}
+
+void LLFloaterEnvironmentAdjust::onCloudDensityChanged()
+{
+	if (!mLiveSky) return;
+	LLColor3 density(mCloudDensityX->getValue().asReal(), mCloudDensityY->getValue().asReal(), mCloudDensityD->getValue().asReal());
+	mLiveSky->setCloudPosDensity1(density);
+}
+
+void LLFloaterEnvironmentAdjust::onCloudDetailChanged()
+{
+	if (!mLiveSky) return;
+	LLColor3 detail(mCloudDetailX->getValue().asReal(),	mCloudDetailY->getValue().asReal(),	mCloudDetailD->getValue().asReal());
+	mLiveSky->setCloudPosDensity2(detail);
+}
+
+//BD - Windlight Stuff
+//=====================================================================================================
+void LLFloaterEnvironmentAdjust::onButtonSave()
+{
+	if (!mLiveSky) return;
+	gDragonLibrary.savePreset(mNameCombo->getValue(), mLiveSky);
+	gDragonLibrary.loadPresetsFromDir(mNameCombo, "skies");
+	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveSky);
+}
+
+void LLFloaterEnvironmentAdjust::onButtonDelete()
+{
+	if (!mLiveSky) return;
+	gDragonLibrary.deletePreset(mNameCombo->getValue(), "skies");
+	gDragonLibrary.loadPresetsFromDir(mNameCombo, "skies");
+	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveSky);
+}
+
+void LLFloaterEnvironmentAdjust::onButtonImport()
+{   // Load a a legacy Windlight XML from disk.
+	(new LLFilePickerReplyThread(boost::bind(&LLFloaterEnvironmentAdjust::loadSkySettingFromFile, this, _1), LLFilePicker::FFLOAD_XML, false))->getFile();
+}
+
+void LLFloaterEnvironmentAdjust::loadSkySettingFromFile(const std::vector<std::string>& filenames)
+{
+	if (filenames.size() < 1) return;
+	std::string filename = filenames[0];
+	gDragonLibrary.loadPreset(filename, mLiveSky);
+	refresh();
+}
+
+void LLFloaterEnvironmentAdjust::onSelectPreset()
+{
+	if (!mLiveSky) return;
+	gDragonLibrary.onSelectPreset(mNameCombo, mLiveSky);
+	refresh();
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<floater
+<!--<floater
         can_tear_off="false"
         can_resize="false"
         can_drag_on_left="false"
@@ -82,7 +82,8 @@
                     tab_position="top"
                     tab_width="120"
                     tab_padding_right="3">
-                <!-- Tabs inserted here in code -->
+                
+                
             </tab_container>
         </layout_panel>
         <layout_panel name="button_panel"
@@ -158,4 +159,228 @@
             </layout_stack>
         </layout_panel>
     </layout_stack>
+</floater>-->
+
+<floater
+height="222"
+layout="topleft"
+name="Fixed Environment"
+save_rect="true"
+title="Fixed Environment"
+save_visibility="false"
+help_topic="fixed_environment"
+single_instance="true" 
+width="700">
+    <string name="title_new">
+    Create a new Sky Preset
+    </string>
+    <string name="title_edit">
+    Edit Sky Preset
+    </string>
+    <string name="title_neutral">
+    Edit a Sky Preset or create a new one.
+    </string>
+    <string name="combo_label">
+    -Type or select a preset-
+    </string>
+    <icon
+    follows="top|left"
+    height="193"
+    color="1 1 1 1"
+    image_name="Panel_Background"
+    layout="topleft"
+    name="vicon"
+    mouse_opaque="false"
+    visible="true"
+    width="686"
+    top="22"
+    left="7"/>
+    <tab_container
+    follows="left|top"
+    height="188"
+    halign="center"
+    layout="topleft"
+    tab_height="20"
+    left="5"
+    name="tab_settings"
+    tab_position="top"
+    top="2"
+    width="689">
+    <!-- Tabs inserted here in code -->
+    </tab_container>
+    
+    <combo_box
+    follows="top|left"
+    layout="topleft"
+    allow_text_entry="true"
+    left="9"
+    max_chars="100"
+    height="22"
+    name="sky_preset_combo"
+    top_pad="1"
+    width="177">
+    <combo_box.combo_editor
+    text_pad_left="5"
+    background_image="TextField_Off"
+    background_image_disabled="TextField_Disabled"
+    background_image_focused="TextField_Active"/>
+    <combo_box.combo_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"/>
+    <combo_box.drop_down_button
+    image_unselected="ComboToolbarButton_Off"
+    image_selected="ComboToolbarButton_Selected"
+    image_pressed="ComboToolbarButton_Selected" 
+    image_pressed_selected="ComboToolbarButton_Selected"
+    image_disabled="ComboToolbarButton_Disabled"/>
+    </combo_box>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Save Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="-7"
+    name="save"
+    top_delta="0"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Delete Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="delete"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Import Preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    top_delta="0"
+    name="btn_import"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Commit"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    top_delta="0"
+    name="btn_commit"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    name="btn_flyout"
+    label=""
+    layout="topleft"
+    left_pad="1"
+    tab_stop="false"
+    top_delta="0"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    image_overlay="Arrow_Small_Up"
+    width="26"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Cancel"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    top_delta="0"
+    name="btn_cancel"
+    width="80"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Load"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    top_delta="0"
+    name="btn_load"
+    width="80"/>
+    <!--<icon
+    follows="left|bottom|right"
+    image_name="Toolbar_Middle_Off"
+    height="23"
+    width="545"
+    layout="topleft"
+    name="sky_preset_icon"
+    left_pad="1"
+    top_delta="0"/>
+    <button
+    follows="bottom|right"
+    height="23"
+    label="Refresh"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="refresh"
+    width="60"/>
+    
+    <button
+    follows="top|left"
+    height="23"
+    label="Make this my new preset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    is_toggle="true"
+    left_pad="1"
+    name="make_default_cb"
+    top_delta="0"
+    width="152"/>
+    <button
+    follows="top|left"
+    height="23"
+    label="Day Cycle Editor"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    is_toggle="false"
+    left_pad="1"
+    name="day_cycle_editor"
+    top_delta="0"
+    width="105">
+    <button.commit_callback
+    function="World.EnvPreset"
+    parameter="edit_day_cycle" />
+    </button>-->
+    <!--<button
+    follows="bottom|right"
+    height="23"
+    label="Reset"
+    image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
+    layout="topleft"
+    left_pad="1"
+    name="reset"
+    width="55"/>-->
 </floater>

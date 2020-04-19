@@ -125,12 +125,6 @@ void LLVector2::setValue(const LLSD& sd)
 }
 
 //BD - Vector2
-LLVector2::LLVector2(const LLSD& sd)
-{
-	setValue(sd);
-}
-
-// static 
 BOOL LLVector2::parseVector2(const std::string& buf, LLVector2* value)
 {
 	if (buf.empty() || value == NULL)

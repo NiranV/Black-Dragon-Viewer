@@ -812,6 +812,7 @@ BOOL LLToolPie::handleMouseUp(S32 x, S32 y, MASK mask)
 		if (fValidPick)
 // [/RLVa:KB]
         {
+
             // handle special cases of steering picks
             LLViewerObject* avatar_object = mPick.getObject();
 
@@ -965,7 +966,8 @@ static bool needs_tooltip(LLSelectNode* nodep)
 BOOL LLToolPie::handleTooltipLand(std::string line, std::string tooltip_msg)
 {
 	//  Do not show hover for land unless prefs are set to allow it. 
-	if (!gSavedSettings.getBOOL("ShowLandHoverTip")) return TRUE; 
+	static const LLCachedControl<bool> show_land_hover_tips(gSavedSettings, "ShowLandHoverTip");
+	if (!show_land_hover_tips) return TRUE;
 
 	LLViewerParcelMgr::getInstance()->setHoverParcel( mHoverPick.mPosGlobal );
 
@@ -1333,7 +1335,8 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 
 BOOL LLToolPie::handleToolTip(S32 local_x, S32 local_y, MASK mask)
 {
-	if (!LLUI::getInstance()->mSettingGroups["config"]->getBOOL("ShowHoverTips")) return TRUE;
+	static const LLCachedControl<bool> show_hover_tips(gSavedSettings, "ShowHoverTips");
+	if (!show_hover_tips) return TRUE;
 	if (!mHoverPick.isValid()) return TRUE;
 
 	LLViewerObject* hover_object = mHoverPick.getObject();
@@ -1539,7 +1542,8 @@ void LLToolPie::handleDeselect()
 
 LLTool* LLToolPie::getOverrideTool(MASK mask)
 {
-	if (gSavedSettings.getBOOL("EnableGrab"))
+	static const LLCachedControl<bool> enable_grab(gSavedSettings, "EnableGrab");
+	if (enable_grab)
 	{
 		if (mask == MASK_CONTROL)
 		{

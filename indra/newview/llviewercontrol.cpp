@@ -82,7 +82,6 @@
 #include "llvoavatar.h"
 #include "llviewerregion.h"
 #include "lldrawpoolwlsky.h"
-#include "llenvmanager.h"
 #include "llfloatersnapshot.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
@@ -414,6 +413,12 @@ static bool handleRepartition(const LLSD&)
 static bool handleRenderDynamicLODChanged(const LLSD& newvalue)
 {
 	LLPipeline::sDynamicLOD = newvalue.asBoolean();
+	return true;
+}
+
+static bool handleRenderLocalLightsChanged(const LLSD& newvalue)
+{
+	gPipeline.setLightingDetail(-1);
 	return true;
 }
 
@@ -833,7 +838,7 @@ bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 
 //BD - Give UseEnvironmentFromRegion a purpose and make it able to
 //     switch between Region/Fixed Windlight from everywhere via UI.
-static bool handleUseRegioLight(const LLSD& newvalue)
+/*static bool handleUseRegioLight(const LLSD& newvalue)
 {
 	LLEnvManagerNew& envmgr = LLEnvManagerNew::instance();
 	gSavedSettings.setBOOL("UseEnvironmentFromRegion" , newvalue.asBoolean());
@@ -850,7 +855,7 @@ static bool handleUseRegioLight(const LLSD& newvalue)
 		envmgr.setUseRegionSettings(false);
 	}
 	return true;
-}
+}*/
 
 static bool handleTerrainScaleChanged(const LLSD& inputvalue)
 {
@@ -954,11 +959,11 @@ static bool handleAlphaChanged(const LLSD& newvalue)
 	return true;
 }
 
-static bool handleCloudNoiseChanged(const LLSD& newvalue)
+/*static bool handleCloudNoiseChanged(const LLSD& newvalue)
 {
 	LLDrawPoolWLSky::loadCloudNoise();
 	return true;
-}
+}*/
 
 //BD - Machinima Sidebar
 static bool handleMachinimaSidebar(const LLSD& newvalue)
@@ -997,23 +1002,15 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderMaxTextureIndex")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderUseTriStrips")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	gSavedSettings.getControl("RenderAvatarVP")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-<<<<<<< HEAD
-	gSavedSettings.getControl("VertexShaderEnable")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	gSavedSettings.getControl("RenderUIBuffer")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
-=======
 	gSavedSettings.getControl("RenderUIBuffer")->getSignal()->connect(boost::bind(&handleWindowResized, _2));
 	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	gSavedSettings.getControl("RenderFSAASamples")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResX")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularResY")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderSpecularExponent")->getSignal()->connect(boost::bind(&handleLUTBufferChanged, _2));
 	gSavedSettings.getControl("RenderAnisotropic")->getSignal()->connect(boost::bind(&handleAnisotropicChanged, _2));
-<<<<<<< HEAD
-=======
-	gSavedSettings.getControl("RenderShadowResolutionScale")->getSignal()->connect(boost::bind(&handleShadowsResized, _2));
+	//gSavedSettings.getControl("RenderShadowResolutionScale")->getSignal()->connect(boost::bind(&handleShadowsResized, _2));
 	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	gSavedSettings.getControl("RenderGlow")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderGlowResolutionPow")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 	gSavedSettings.getControl("RenderAvatarCloth")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
@@ -1037,7 +1034,12 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDebugGL")->getSignal()->connect(boost::bind(&handleRenderDebugGLChanged, _2));
 	gSavedSettings.getControl("RenderDebugPipeline")->getSignal()->connect(boost::bind(&handleRenderDebugPipelineChanged, _2));
 	gSavedSettings.getControl("RenderResolutionDivisor")->getSignal()->connect(boost::bind(&handleRenderResolutionDivisorChanged, _2));
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+	gSavedSettings.getControl("RenderResolutionMultiplier")->getSignal()->connect(boost::bind(&handleRenderResolutionDivisorChanged, _2));
+// [/SL:KB]
 	gSavedSettings.getControl("RenderDeferred")->getSignal()->connect(boost::bind(&handleRenderDeferredChanged, _2));
+	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderPerformanceTest")->getSignal()->connect(boost::bind(&handleRenderPerfTestChanged, _2));
 	gSavedSettings.getControl("TextureMemory")->getSignal()->connect(boost::bind(&handleVideoMemoryChanged, _2));
 	gSavedSettings.getControl("ChatFontSize")->getSignal()->connect(boost::bind(&handleChatFontSizeChanged, _2));
@@ -1148,8 +1150,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("FastSelectionUpdates")->getSignal()->connect(boost::bind(&handleSelectionUpdateChanged, _2));
 
 	//BD - Windlight
-	gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
-	gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
+	//gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
+	//gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
 
 	//BD - System
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
@@ -1183,10 +1185,11 @@ void settings_setup_listeners()
 	//BD - Rendering (Main Toggles)
 	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
 	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
-	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
-	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
-	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
-	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
+	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
+	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	//gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
+	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
+	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 //	//BD - Depth of Field

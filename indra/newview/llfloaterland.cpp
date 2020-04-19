@@ -52,6 +52,7 @@
 #include "llavataractions.h"
 #include "lllineeditor.h"
 #include "llnamelistctrl.h"
+#include "llpanellandaudio.h"
 #include "llpanellandmedia.h"
 #include "llradiogroup.h"
 #include "llresmgr.h"					// getMonetaryString

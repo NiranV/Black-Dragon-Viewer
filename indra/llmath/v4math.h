@@ -30,12 +30,9 @@
 #include "llerror.h"
 #include "llmath.h"
 #include "v3math.h"
-<<<<<<< HEAD
+#include "v2math.h"
 //BD - Vector4
 #include "v3dmath.h"
-=======
-#include "v2math.h"
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 class LLMatrix3;
 class LLMatrix4;
@@ -65,17 +62,8 @@ class LLVector4
 		LLVector4(F32 x, F32 y, F32 z, F32 w);
 
 //		//BD - Vector4
-		explicit LLVector4(const LLVector2 &vec);				// Initializes LLVector2 to (vec[0]. vec[1], 0, 0)
 		explicit LLVector4(const LLVector3d &vec);				// Initializes LLVector3 to (vec[0]. vec[1], vec[2], 0)
-		explicit LLVector4(const LLSD& sd);
 
-		void LLVector4::setValue(const LLSD& sd)
-		{
-			mV[0] = (F32)sd[0].asReal();
-			mV[1] = (F32)sd[1].asReal();
-			mV[2] = (F32)sd[2].asReal();
-			mV[3] = (F32)sd[3].asReal();
-		}
 
 		LLSD LLVector4::getValue() const
 		{

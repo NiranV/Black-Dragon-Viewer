@@ -152,7 +152,7 @@ void LLOutfitGallery::updateRowsIfNeeded()
     {
         reArrangeRows(1);
     }
-    else if((mRowPanelWidth > (getRect().getWidth() + mItemHorizontalGap)) && mItemsInRow > 2)
+    else if((mRowPanelWidth > (getRect().getWidth() + mItemHorizontalGap)) && mItemsInRow > 3)
     {
         reArrangeRows(-1);
     }
@@ -241,7 +241,7 @@ void LLOutfitGallery::removeLastRow()
     mGalleryPanel->removeChild(mLastRowPanel);
     mUnusedRowPanels.push_back(mLastRowPanel);
     mRowPanels.pop_back();
-    mLastRowPanel = mRowPanels.back();
+    mLastRowPanel = mRowPanels.empty() ? nullptr : mRowPanels.back();
 }
 
 LLPanel* LLOutfitGallery::addToRow(LLPanel* row_stack, LLOutfitGalleryItem* item, int pos, int hgap)
@@ -1173,60 +1173,66 @@ void LLOutfitGallery::uploadPhoto(LLUUID outfit_id)
 void LLOutfitGallery::uploadOutfitImage(const std::vector<std::string>& filenames, LLUUID outfit_id)
 {
     std::string filename = filenames[0];
-    LLLocalBitmap* unit = new LLLocalBitmap(filename);
-    if (unit->getValid())
-    {
-        std::string exten = gDirUtilp->getExtension(filename);
-        U32 codec = LLImageBase::getCodecFromExtension(exten);
 
-        LLImageDimensionsInfo image_info;
-        std::string image_load_error;
-        if (!image_info.load(filename, codec))
-        {
-            image_load_error = image_info.getLastError();
-        }
+	const std::string exten = gDirUtilp->getExtension(filename);
+	const U32 codec = LLImageBase::getCodecFromExtension(exten);
 
-        S32 max_width = MAX_OUTFIT_PHOTO_WIDTH;
-        S32 max_height = MAX_OUTFIT_PHOTO_HEIGHT;
+	if (codec != IMG_CODEC_INVALID)
+	{
+		LLImageDimensionsInfo image_info;
+		std::string image_load_error;
+		if (!image_info.load(filename, codec))
+		{
+			image_load_error = image_info.getLastError();
+		}
 
-        if ((image_info.getWidth() > max_width) || (image_info.getHeight() > max_height))
-        {
-            LLStringUtil::format_map_t args;
-            args["WIDTH"] = llformat("%d", max_width);
-            args["HEIGHT"] = llformat("%d", max_height);
+		S32 max_width = MAX_OUTFIT_PHOTO_WIDTH;
+		S32 max_height = MAX_OUTFIT_PHOTO_HEIGHT;
 
-            image_load_error = LLTrans::getString("outfit_photo_load_dimensions_error", args);
-        }
+		if ((image_info.getWidth() > max_width) || (image_info.getHeight() > max_height))
+		{
+			LLStringUtil::format_map_t args;
+			args["WIDTH"] = llformat("%d", max_width);
+			args["HEIGHT"] = llformat("%d", max_height);
 
-        if (!image_load_error.empty())
-        {
-            LLSD subst;
-            subst["REASON"] = image_load_error;
-            LLNotificationsUtil::add("OutfitPhotoLoadError", subst);
-            return;
-        }
+			image_load_error = LLTrans::getString("outfit_photo_load_dimensions_error", args);
+		}
+
+		if (!image_load_error.empty())
+		{
+			LLSD subst;
+			subst["REASON"] = image_load_error;
+			LLNotificationsUtil::add("OutfitPhotoLoadError", subst);
+			return;
+		}
 
         S32 expected_upload_cost = LLAgentBenefitsMgr::current().getTextureUploadCost();
-        void *nruserdata = NULL;
-        nruserdata = (void *)&outfit_id;
+		void* nruserdata = NULL;
+		nruserdata = (void*)&outfit_id;
 
-        LLViewerInventoryCategory *outfit_cat = gInventory.getCategory(outfit_id);
-        if (!outfit_cat) return;
-        updateSnapshotFolderObserver();
-        checkRemovePhoto(outfit_id);
-        std::string upload_pending_name = outfit_id.asString();
-        std::string upload_pending_desc = "";
-        LLUUID photo_id = upload_new_resource(filename, // file
-            upload_pending_name,
-            upload_pending_desc,
-            0, LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
-            LLFloaterPerms::getNextOwnerPerms("Uploads"),
-            LLFloaterPerms::getGroupPerms("Uploads"),
-            LLFloaterPerms::getEveryonePerms("Uploads"),
-            upload_pending_name, LLAssetStorage::LLStoreAssetCallback(), expected_upload_cost, nruserdata, false);
-        mOutfitLinkPending = outfit_id;
+		LLViewerInventoryCategory* outfit_cat = gInventory.getCategory(outfit_id);
+		if (!outfit_cat) return;
+		updateSnapshotFolderObserver();
+		checkRemovePhoto(outfit_id);
+		std::string upload_pending_name = outfit_id.asString();
+		std::string upload_pending_desc = "";
+		(void)upload_new_resource(filename, // file
+			upload_pending_name,
+			upload_pending_desc,
+			0, LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
+			LLFloaterPerms::getNextOwnerPerms("Uploads"),
+			LLFloaterPerms::getGroupPerms("Uploads"),
+			LLFloaterPerms::getEveryonePerms("Uploads"),
+			upload_pending_name, LLAssetStorage::LLStoreAssetCallback(), expected_upload_cost, nruserdata, false);
+		mOutfitLinkPending = outfit_id;
+	}
+    else
+    {
+        LLSD subst;
+        subst["REASON"] = LLTrans::getString("outfit_photo_load_codec_error");;
+        LLNotificationsUtil::add("OutfitPhotoLoadError", subst);
+        return;
     }
-    delete unit;
 }
 
 void LLOutfitGallery::linkPhotoToOutfit(LLUUID photo_id, LLUUID outfit_id)

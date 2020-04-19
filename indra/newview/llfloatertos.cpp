@@ -240,8 +240,6 @@ void LLFloaterTOS::handleMediaEvent(LLPluginClassMedia* /*self*/, EMediaEvent ev
 			LL_INFOS("TOS") << "TOS: NAVIGATE COMPLETE" << LL_ENDL;
 			// enable Agree to TOS check box now that page has loaded
 			updateAgreeEnabled(true);
-			LLTextBox* tos_list = getChild<LLTextBox>("agree_list");
-			tos_list->setEnabled(true);
 		}
 	}
 }

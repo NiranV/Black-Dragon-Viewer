@@ -330,8 +330,8 @@ void LLMaterialMgr::put(const LLUUID& object_id, const U8 te, const LLMaterial& 
 	if (mPutQueue.end() == itQueue)
 	{
 		LL_DEBUGS("Materials") << "mPutQueue insert object " << object_id << LL_ENDL;
-		mPutQueue.insert(std::pair<LLUUID, facematerial_map_t>(object_id, facematerial_map_t()));
-		itQueue = mPutQueue.find(object_id);
+		auto ret = mPutQueue.insert(std::pair<LLUUID, facematerial_map_t>(object_id, facematerial_map_t()));
+		itQueue = ret.first;
 	}
 
 	facematerial_map_t::iterator itFace = itQueue->second.find(te);
@@ -664,12 +664,12 @@ void LLMaterialMgr::processGetQueue()
 		material_queue_t& materials = itRegionQueue->second;
 		U32 max_entries = regionp->getMaxMaterialsPerTransaction();
 		material_queue_t::iterator loopMaterial = materials.begin();
-		while ( (materials.end() != loopMaterial) && (materialsData.size() < max_entries) )
+		while ( (materials.end() != loopMaterial) && ((U32)materialsData.size() < max_entries) )
 		{
 			material_queue_t::iterator itMaterial = loopMaterial++;
 			materialsData.append((*itMaterial).asLLSD());
-			materials.erase(itMaterial);
 			markGetPending(region_id, *itMaterial);
+			materials.erase(itMaterial);
 		}
 		if (materials.empty())
 		{
@@ -933,7 +933,7 @@ void LLMaterialMgr::processPutQueue()
 		        facematerial_map_t& face_map = itQueue->second;
 				        U32 max_entries = regionp->getMaxMaterialsPerTransaction();
 		        facematerial_map_t::iterator itFace = face_map.begin();
-				        while ( (face_map.end() != itFace) && (facesData.size() < max_entries) )
+				        while ( (face_map.end() != itFace) && ((U32)facesData.size() < max_entries) )
 		        {
 			        LLSD faceData = LLSD::emptyMap();
 			        faceData[MATERIALS_CAP_FACE_FIELD] = static_cast<LLSD::Integer>(itFace->first);

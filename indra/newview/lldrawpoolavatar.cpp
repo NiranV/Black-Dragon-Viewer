@@ -451,11 +451,11 @@ void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
 		break;
 	}
 
-	sVertexProgram->uniform4f(LLShaderMgr::VIEWPORT, (F32) gGLViewport[0],
-										(F32) gGLViewport[1],
-										(F32) gGLViewport[2],
-										(F32) gGLViewport[3]);
-		
+	sVertexProgram->uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0],
+		(F32)gGLViewport[1],
+		(F32)gGLViewport[2],
+		(F32)gGLViewport[3]);
+
 
 	sVertexProgram->uniformMatrix4fv(LLShaderMgr::LAST_MODELVIEW_MATRIX, 1, GL_FALSE, gGLLastModelView);
 	sVertexProgram->uniformMatrix4fv(LLShaderMgr::CURRENT_MODELVIEW_MATRIX, 1, GL_FALSE, gGLModelView);
@@ -532,6 +532,7 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		}
 	}
 }
+
 
 S32 LLDrawPoolAvatar::getNumShadowPasses()
 {
@@ -1057,7 +1058,7 @@ void LLDrawPoolAvatar::beginSkinned()
 	}
 	else
 	{
-		if (gPipeline.canUseVertexShaders())
+		if(gPipeline.canUseVertexShaders())
 		{
 			// software skinning, use a basic shader for windlight.
 			// TODO: find a better fallback method for software skinning.
@@ -1092,7 +1093,7 @@ void LLDrawPoolAvatar::endSkinned()
 	}
 	else
 	{
-		if (gPipeline.canUseVertexShaders())
+		if(gPipeline.canUseVertexShaders())
 		{
 			// software skinning, use a basic shader for windlight.
 			// TODO: find a better fallback method for software skinning.
@@ -1205,10 +1206,6 @@ void LLDrawPoolAvatar::beginRiggedGlow()
 		sVertexProgram->bind();
 
 		sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, LLPipeline::sRenderDeferred ? 2.2f : 1.1f);
-<<<<<<< HEAD
-		//BD
-		sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (1.0f/2.2f));
-=======
 
         if (LLPipeline::sRenderingHUDs)
 	    {
@@ -1218,10 +1215,6 @@ void LLDrawPoolAvatar::beginRiggedGlow()
 	    {
 		    sVertexProgram->uniform1i(LLShaderMgr::NO_ATMO, 0);
 	    }
-
-		F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
-		sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	}
 }
 
@@ -1276,19 +1269,11 @@ void LLDrawPoolAvatar::beginRiggedFullbright()
 		{
             sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f);
             sVertexProgram->uniform1i(LLShaderMgr::NO_ATMO, 0);
-			F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
-			sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
 		} 
 		else 
 		{
-<<<<<<< HEAD
-			sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f);
-			//BD
-			sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (1.0f/2.2f));
-=======
             sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 1.0f);
             sVertexProgram->uniform1i(LLShaderMgr::NO_ATMO, 0);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
 	}
 }
@@ -1406,21 +1391,13 @@ void LLDrawPoolAvatar::beginRiggedFullbrightShiny()
         }
 		else if (LLPipeline::sRenderDeferred)
 		{
-<<<<<<< HEAD
-			sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f);
-			//BD
-			sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (1.0f/2.2f));
-=======
             sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 2.2f);
-			F32 gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
-			sVertexProgram->uniform1f(LLShaderMgr::DISPLAY_GAMMA, (gamma > 0.1f) ? 1.0f / gamma : (1.0f/2.2f));
             sVertexProgram->uniform1i(LLShaderMgr::NO_ATMO, 0);
         }
         else
         {
 			sVertexProgram->uniform1f(LLShaderMgr::TEXTURE_GAMMA, 1.0f);
             sVertexProgram->uniform1i(LLShaderMgr::NO_ATMO, 0);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
 	}
 }
@@ -2083,7 +2060,7 @@ void LLDrawPoolAvatar::updateRiggedFaceVertexBuffer(
 		//build matrix palette
 		LLMatrix4a mat[LL_MAX_JOINTS_PER_MESH_OBJECT];
         U32 count = LLSkinningUtil::getMeshJointCount(skin);
-        LLSkinningUtil::initSkinningMatrixPalette((LLMatrix4*)mat, count, skin, avatar);
+        LLSkinningUtil::initSkinningMatrixPalette(mat, count, skin, avatar);
         LLSkinningUtil::checkSkinWeights(weights, buffer->getNumVerts(), skin);
 
 		LLMatrix4a bind_shape_matrix;
@@ -2239,15 +2216,15 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 }
             }
 
-			if (tex)
-			{
-				LLGLenum image_format = tex->getPrimaryFormat();
-				if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
-				{
-					is_alpha_blend = true;
+            if (tex)
+            {
+                LLGLenum image_format = tex->getPrimaryFormat();
+                if (!is_alpha_mask && (image_format == GL_RGBA || image_format == GL_ALPHA))
+                {
+                    is_alpha_blend = true;
 					is_alpha_mask = false;
-				}
-			}
+                }
+            }
 
             if (mat)
             {                
@@ -2255,15 +2232,15 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 {
                     case LLMaterial::DIFFUSE_ALPHA_MODE_MASK:
                     {
-                        is_alpha_mask = true;
-						is_alpha_blend = false;
+                        is_alpha_mask  = true;
+                        is_alpha_blend = false;
                     }
                     break;
 
                     case LLMaterial::DIFFUSE_ALPHA_MODE_BLEND:
                     {
                         is_alpha_blend = true;
-						is_alpha_mask = false;
+                        is_alpha_mask  = false;
                     }
                     break;
 
@@ -2287,7 +2264,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 			}
 
             // if this is alpha mask content and we're doing opaques or a non-alpha-mask shadow pass...
-			if (is_alpha_mask && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_MASK))
+            if (is_alpha_mask && (LLDrawPoolAvatar::sSkipTransparent || LLDrawPoolAvatar::sShadowPass != SHADOW_PASS_ATTACHMENT_ALPHA_MASK))
             {
 				continue;
             }
@@ -2312,7 +2289,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 // upload matrix palette to shader
 				LLMatrix4a mat[LL_MAX_JOINTS_PER_MESH_OBJECT];
 				U32 count = LLSkinningUtil::getMeshJointCount(skin);
-                LLSkinningUtil::initSkinningMatrixPalette((LLMatrix4*)mat, count, skin, avatar);
+                LLSkinningUtil::initSkinningMatrixPalette(mat, count, skin, avatar);
 
 				stop_glerror();
 
@@ -2361,6 +2338,7 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 					memcpy(face->mLastMatrixPalette->mMatrix, mat[0].mMatrix, sizeof(LLMatrix4)*skin->mJointNames.size());
 				}
+
 				stop_glerror();
 			}
 			else
@@ -2387,12 +2365,15 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
                 {
                     specular = face->getTexture(LLRender::SPECULAR_MAP);
                 }
-                if (specular)
+                if (specular && specular_channel > -1)
                 {
                     gGL.getTexUnit(specular_channel)->bind(specular);
                 }
                 
-				gGL.getTexUnit(normal_channel)->bind(face->getTexture(LLRender::NORMAL_MAP));
+				if (normal_channel > -1)
+				{
+					gGL.getTexUnit(normal_channel)->bind(face->getTexture(LLRender::NORMAL_MAP));
+				}
 				gGL.getTexUnit(sDiffuseChannel)->bind(face->getTexture(LLRender::DIFFUSE_MAP), false, true);
 
 

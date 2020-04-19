@@ -527,10 +527,10 @@ void LLGLTexMemBar::draw()
 	U32 texFetchLatMax = U32(recording.getMax(LLTextureFetch::sTexFetchLatency).value() * 1000.0f);
 
 	//BD
-	U32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
-	U32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
-	U32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
-	U32Megabytes max_total_mem = LLViewerTexture::sMaxTotalTextureMem;
+	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
+	S32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
+	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	S32Megabytes max_total_mem = LLViewerTexture::sMaxTotalTextureMem;
 
 	F32Bytes total_texture_downloaded = gTotalTextureData;
 	F32Bytes total_object_downloaded = gTotalObjectData;

@@ -97,7 +97,7 @@
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvactions.h"
 #include "rlvhandler.h"
-#include "rlvhelper.h"
+#include "rlvmodifiers.h"
 // [/RLVa:KB]
 #include "llglheaders.h"
 #include "llinventoryobserver.h"
@@ -733,7 +733,6 @@ bool LLSelectMgr::enableLinkObjects()
 	{
 		new_value = false;
 	}
-	
 // [RLVa:KB] - Checked: 2011-03-19 (RLVa-1.3.0f) | Modified: RLVa-0.2.0g
 	if ( (new_value) && ((rlv_handler_t::isEnabled()) && (!RlvActions::canStand())) )
 	{
@@ -2091,7 +2090,7 @@ void LLSelectMgr::selectionSetMedia(U8 media_type, const LLSD &media_data)
 					else {
 						// Add/update media
 						object->setTEMediaFlags(te, mMediaFlags);
-						LLVOVolume *vo = dynamic_cast<LLVOVolume*>(object);
+						LLVOVolume *vo = object->asVolume();
 						llassert(NULL != vo);
 						if (NULL != vo) 
 						{
@@ -2117,7 +2116,7 @@ void LLSelectMgr::selectionSetMedia(U8 media_type, const LLSD &media_data)
 			if (object->permModify())
 			{
 				object->sendTEUpdate();
-				LLVOVolume *vo = dynamic_cast<LLVOVolume*>(object);
+				LLVOVolume *vo = object->asVolume();
 				llassert(NULL != vo);
 				// It's okay to skip this object if hasMedia() is false...
 				// the sendTEUpdate() above would remove all media data if it were
@@ -2581,7 +2580,7 @@ void LLSelectMgr::logNoOp(LLSelectNode* node, void *)
 // static
 void LLSelectMgr::logAttachmentRequest(LLSelectNode* node, void *)
 {
-    LLAttachmentsMgr::instance().onAttachmentRequested(node->mItemID);
+//    LLAttachmentsMgr::instance().onAttachmentRequested(node->mItemID);
 }
 
 // static
@@ -3801,6 +3800,15 @@ BOOL LLSelectMgr::selectGetEditMoveLinksetPermissions(bool &move, bool &modify)
             (object->permModify() || selecting_linked_set))
         {
             this_object_movable = true;
+
+// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-0.2.0g
+			if ( (rlv_handler_t::isEnabled()) &&
+				 ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
+			{
+				if ((isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == object->getRootEdit()))
+					this_object_movable = false;
+			}
+// [/RLVa:KB]
         }
         move = move && this_object_movable;
         modify = modify && object->permModify();
@@ -3980,6 +3988,17 @@ void LLSelectMgr::selectDuplicate(const LLVector3& offset, BOOL select_copy)
 		//RN: do not duplicate attachments
 		make_ui_sound("UISndInvalidOp");
 		return;
+	}
+	if (!canDuplicate())
+	{
+		LLSelectNode* node = getSelection()->getFirstRootNode(NULL, true);
+		if (node)
+		{
+			LLSD args;
+			args["OBJ_NAME"] = node->mName;
+			LLNotificationsUtil::add("NoCopyPermsNoObject", args);
+			return;
+		}
 	}
 	LLDuplicateData	data;
 
@@ -7795,7 +7814,7 @@ S32 LLObjectSelection::getSelectedObjectRenderCost()
 						 ++child_iter)
 				   {
 					   LLViewerObject* child_obj = *child_iter;
-					   LLVOVolume *child = dynamic_cast<LLVOVolume*>( child_obj );
+					   LLVOVolume *child = child_obj ? child_obj->asVolume() : nullptr;
 					   if (child)
 					   {
 						   cost += child->getRenderCost(textures);

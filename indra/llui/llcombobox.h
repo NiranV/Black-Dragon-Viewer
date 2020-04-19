@@ -107,6 +107,8 @@ public:
 	virtual BOOL	handleToolTip(S32 x, S32 y, MASK mask);
 	virtual BOOL	handleKeyHere(KEY key, MASK mask);
 	virtual BOOL	handleUnicodeCharHere(llwchar uni_char);
+	//BD - UI Improvements
+	BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) final override;
 
 	// LLUICtrl interface
 	virtual void	clear();					// select nothing

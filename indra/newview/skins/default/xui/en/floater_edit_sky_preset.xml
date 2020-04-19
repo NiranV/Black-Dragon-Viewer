@@ -32,12 +32,12 @@ width="700">
 	left="7"/>
     <tab_container
      follows="left|top"
-     height="186"
+     height="188"
      halign="center"
      layout="topleft"
 	 tab_height="20"
      left="5"
-     name="WindLight"
+     name="tab_settings"
      tab_position="top"
      top="2"
      width="689">
@@ -46,7 +46,7 @@ width="700">
      bevel_style="none"
      follows="left|top|right|bottom"
      height="196"
-     label="Atmosphere"
+     label="Atmosphere &amp; Lighting"
      layout="topleft"
      left="0"
      mouse_opaque="false"
@@ -70,13 +70,37 @@ width="700">
          can_apply_immediately="true"
          allow_alpha="false"
          follows="left|top"
-         height="50"
+         height="55"
          label_height="0"
          layout="topleft"
          left_delta="7"
-         name="WLBlueHorizon"
+         name="blue_horizon"
          top_pad="6"
-         width="60" />
+         width="55" />
+		<text
+         type="string"
+         length="1"
+         follows="left|top"
+         font="SansSerif"
+         height="16"
+         layout="topleft"
+         left="123"
+         name="BDensText2"
+         top="7"
+         width="200">
+            Blue Density
+        </text>
+        <color_swatch
+         can_apply_immediately="true"
+         allow_alpha="false"
+         follows="left|top"
+         height="55"
+         label_height="0"
+         layout="topleft"
+         left_delta="7"
+         name="blue_density"
+         top_pad="6"
+         width="55" />
         <text
          type="string"
          length="1"
@@ -84,7 +108,7 @@ width="700">
          font="SansSerif"
          height="16"
          layout="topleft"
-         left_delta="-7"
+         left="10"
          top="91"
          name="BDensText"
          width="200">
@@ -101,9 +125,9 @@ width="700">
 	 show_text="false"
          left_delta="0"
          top_pad="3"
-         name="WLHazeHorizon"
+         name="haze_horizon"
          width="150" />
-	<spinner
+		<spinner
          control_name="WLHazeHorizon"
          decimal_digits="3"
          follows="left|top"
@@ -115,46 +139,20 @@ width="700">
          top_delta="-6"
          name="WLHazeHorizon2"
          width="60" />
-
-        <text
+		<text
          type="string"
          length="1"
          follows="left|top"
          font="SansSerif"
          height="16"
          layout="topleft"
-         left="235"
-         name="BDensText2"
-         top="7"
-         width="200">
-            Blue Density
-        </text>
-        <color_swatch
-         can_apply_immediately="true"
-         allow_alpha="false"
-         follows="left|top"
-         height="50"
-         label_height="0"
-         layout="topleft"
-         left_delta="7"
-         name="WLBlueDensity"
-         top_pad="6"
-         width="60" />
-        <text
-         type="string"
-         length="1"
-         follows="left|top"
-         font="SansSerif"
-         height="16"
-         layout="topleft"
-         left_delta="-7"
+         left="10"
          name="HDText"
-         top="91"
+         top="133"
          width="200">
             Haze Density
         </text>
-        
-        <slider
+		<slider
          control_name="WLHazeDensity"
          decimal_digits="3"
          follows="left|top"
@@ -165,7 +163,7 @@ width="700">
          layout="topleft"
          left_delta="0"
          max_val="4"
-         name="WLHazeDensity"
+         name="haze_density"
          top_pad="3"
          width="150" />
 	<spinner
@@ -179,6 +177,110 @@ width="700">
          left_pad="0"
          max_val="4"
          name="WLHazeDensity2"
+         top_delta="-6"
+         width="60" />
+		
+		<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="235"
+             name="WLAmbientText"
+             top="7"
+             width="150">
+                Ambient
+            </text>
+            <color_swatch
+             can_apply_immediately="true"
+	 allow_alpha="false"
+             follows="left|top"
+             height="55"
+             label_height="0"
+             layout="topleft"
+             left_delta="7"
+             name="ambient_light"
+             top_pad="6"
+             width="55" />
+			
+			<text
+         type="string"
+         length="1"
+         follows="left|top"
+         font="SansSerif"
+         height="16"
+         layout="topleft"
+         left="235"
+         top="91"
+         name="BDensText"
+         width="200">
+            Moisture Level
+        </text>
+        <slider
+         control_name="WLMoisture"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.001"
+         initial_value="0.25"
+         layout="topleft"
+	 show_text="false"
+         left_delta="0"
+         top_pad="3"
+         name="moisture_level"
+         width="150" />
+		<spinner
+         control_name="WLMoisture"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.001"
+         initial_value="0.25"
+         layout="topleft"
+         left_pad="0"
+         top_delta="-6"
+         name="WLMoisture2"
+         width="60" />
+		<text
+         type="string"
+         length="1"
+         follows="left|top"
+         font="SansSerif"
+         height="16"
+         layout="topleft"
+         left="235"
+         name="HDText"
+         top="133"
+         width="200">
+            Droplet Radius
+        </text>
+		<slider
+         control_name="WLDroplet"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.001"
+	 show_text="false"
+         initial_value="0.7"
+         layout="topleft"
+         left_delta="0"
+         max_val="4"
+         name="droplet_radius"
+         top_pad="3"
+         width="150" />
+	<spinner
+         control_name="WLDroplet"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.01"
+         initial_value="0.7"
+         layout="topleft"
+         left_pad="0"
+         max_val="4"
+         name="WLDroplet2"
          top_delta="-6"
          width="60" />
 
@@ -206,7 +308,7 @@ width="700">
 	  show_text="false"
 	  left_delta="0"
 	  max_val="0.999"
-	  name="WLDensityMult"
+	  name="density_multip"
 	  top_pad="3"
 	  width="150" />
 	 <spinner
@@ -247,7 +349,7 @@ width="700">
 	  max_val="100"
 	  increment="0.01"
 	  show_text="false"
-	  name="WLDistanceMult"
+	  name="distance_multip"
 	  top_pad="3"
 	  width="150" />
 	 <spinner
@@ -287,7 +389,7 @@ width="700">
 	  left_delta="0"
 	  show_text="false"
 	  max_val="4000"
-	  name="WLMaxAltitude"
+	  name="max_alt"
 	  top_pad="3"
 	  width="150" />
 	 <spinner
@@ -303,13 +405,53 @@ width="700">
 	  name="WLMaxAltitude2"
 	  top_delta="-6"
 	  width="60" />
+	 <text
+         type="string"
+         length="1"
+         follows="left|top"
+         font="SansSerif"
+         height="16"
+         layout="topleft"
+         left="470"
+         name="HDText"
+         top="133"
+         width="200">
+            Ice Level
+        </text>
+		<slider
+         control_name="WLIceLevel"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.001"
+	 show_text="false"
+         initial_value="0.7"
+         layout="topleft"
+         left_delta="0"
+         max_val="4"
+         name="ice_level"
+         top_pad="3"
+         width="150" />
+	<spinner
+         control_name="WLIceLevel"
+         decimal_digits="3"
+         follows="left|top"
+         height="10"
+         increment="0.01"
+         initial_value="0.7"
+         layout="topleft"
+         left_pad="0"
+         max_val="4"
+         name="WLIceLevel2"
+         top_delta="-6"
+         width="60" />
         </panel>
         <panel
          border="false"
          bevel_style="none"
          follows="left|top|right|bottom"
          height="196"
-         label="Lighting"
+         label="Sun &amp; Moon"
          layout="topleft"
          left_delta="0"
          name="Lighting"
@@ -326,20 +468,61 @@ width="700">
              name="SLCText"
              top="7"
              width="150">
-                Sun/Moon Color
+                Sun Color
             </text>
             <color_swatch
              can_apply_immediately="true"
-	 allow_alpha="false"
+			 allow_alpha="false"
              follows="left|top"
-             height="50"
+             height="55"
              label_height="0"
              layout="topleft"
              left_delta="7"
              name="WLSunlight"
-             top_pad="6"
-             width="60" />
-            <text
+             top_pad="2"
+             width="55" />
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="123"
+             name="SLCText"
+             top="7"
+             width="150">
+                Sun Image
+            </text>
+			<texture_picker
+			height="78"
+			layout="topleft"
+			left_delta="7"
+			name="sun_image"
+			top_pad="2"
+			width="55"/>
+			
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="10"
+             name="SLCText"
+             top="91"
+             width="150">
+                Moon Image
+            </text>
+			<texture_picker
+			height="78"
+			layout="topleft"
+			left_delta="7"
+			name="moon_image"
+			top_pad="2"
+			width="55"/>
+            <!--<text
              type="string"
              length="1"
              follows="left|top"
@@ -384,32 +567,8 @@ width="700">
              name="WLDayTime"
              top_delta="-46"
              value="6:00 AM"
-             width="75"/> 
-            <text
-             type="string"
-             length="1"
-             follows="left|top"
-             font="SansSerif"
-             height="16"
-             layout="topleft"
-             left="235"
-             name="WLAmbientText"
-             top="7"
-             width="150">
-                Ambient
-            </text>
-            <color_swatch
-             can_apply_immediately="true"
-	 allow_alpha="false"
-             follows="left|top"
-             height="50"
-             label_height="0"
-             layout="topleft"
-             left_delta="7"
-             name="WLAmbient"
-             top_pad="6"
-             width="60" />
-            <text
+             width="75"/> -->
+            <!--<text
              type="string"
              length="1"
              follows="left|top"
@@ -447,8 +606,211 @@ width="700">
 			 min_val="0"
              name="WLEastAngle2"
              top_delta="-6"
-             width="60" />
-
+             width="60" />-->
+				
+				<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="235"
+             name="WLSunVerticalText"
+             top="7"
+             width="200">
+                Sun Position
+            </text>
+				<slider
+             control_name="WLSunX"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.5"
+				 label_width="7"
+             label="X"
+             layout="topleft"
+             left_delta="0"
+             top_pad="3"
+             name="WLSunX"
+             width="196" />
+            <slider
+             control_name="WLSunY"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.5"
+				 label_width="7"
+             label="Y"
+             layout="topleft"
+             left_delta="0"
+             top_pad="6"
+             name="WLSunY"
+             width="196" />
+            <slider
+             control_name="WLCloudDensity"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="1.0"
+				 label_width="7"
+             label="S"
+             layout="topleft"
+             left_delta="0"
+             name="WLSunScale"
+             top_pad="6"
+             width="196" />
+				<!--<sun_moon_trackball
+				name="sun_rotation"
+				follows="left|top"
+				left_delta="10"
+				top_pad="0"
+				height="145"
+				width="145"
+				thumb_mode="sun"/>
+				<slider
+				decimal_digits="2"
+				follows="top|left"
+				height="10"
+				increment="0.01"
+				initial_value="0"
+				layout="topleft"
+				show_text="true"
+				left_delta="0"
+				max_val="50"
+				name="WLSunVertical"
+				top_pad="3"
+				width="196" />-->
+				<check_box
+				control_name="sunbeacon"
+				width="60"
+				height="16"
+				label="Beacon"
+				layout="topleft"
+				name="sunbeacon"
+				left_pad="-67"
+				top_delta="-53"
+				follows="top|left"/>
+				<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="235"
+             name="SunGlowText"
+             top="91"
+             width="200">
+                Glow Focus
+            </text>
+            <slider
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.1"
+             layout="topleft"
+             left_delta="0"
+             max_val="0.5"
+             name="WLGlowB"
+             top_pad="3"
+             width="196" />
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="235"
+             name="SunGlowText"
+             top="133"
+             width="200">
+                Glow Size
+            </text>
+            <slider
+             decimal_digits="2"
+             follows="top|left"
+             height="10"
+             increment="0.01"
+             initial_value="0.25"
+             layout="topleft"
+             left_delta="0"
+             max_val="1.99"
+             min_val="0.01"
+             name="WLGlowR"
+             top_pad="3"
+             width="196" />
+			
+			<text
+             type="string"
+             length="1"
+             follows="left|top"
+             font="SansSerif"
+             height="16"
+             layout="topleft"
+             left="470"
+             name="WLSunVerticalText"
+             top="7"
+             width="200">
+                Moon Position
+            </text>
+				<slider
+             control_name="WLSunX"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.5"
+				 label_width="7"
+             label="X"
+             layout="topleft"
+             left_delta="0"
+             top_pad="3"
+             name="WLMoonX"
+             width="196" />
+            <slider
+             control_name="WLSunY"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="0.5"
+				 label_width="7"
+             label="Y"
+             layout="topleft"
+             left_delta="0"
+             top_pad="6"
+             name="WLMoonY"
+             width="196" />
+            <slider
+             control_name="WLCloudDensity"
+             decimal_digits="2"
+             follows="left|top"
+             height="10"
+             increment="0.01"
+             initial_value="1.0"
+				 label_width="7"
+             label="S"
+             layout="topleft"
+             left_delta="0"
+             name="WLMoonScale"
+             top_pad="6"
+             width="196" />
+			<check_box
+			control_name="moonbeacon"
+			width="60"
+			height="16"
+			label="Beacon"
+			layout="topleft"
+			name="moonbeacon"
+			left_pad="-67"
+			top_delta="-53"
+			follows="top|left"/>
             <text
              type="string"
              length="1"
@@ -458,7 +820,7 @@ width="700">
              layout="topleft"
              left="470"
              name="WLStarText"
-             top="7"
+             top="91"
              width="200">
                 Star Brightness
             </text>
@@ -497,7 +859,7 @@ width="700">
              layout="topleft"
              left="470"
              name="SceneGammaText"
-             top="49"
+             top="133"
              width="200">
                 Scene Gamma
             </text>
@@ -512,7 +874,7 @@ width="700">
 	     show_text="false"
              left_delta="0"
              max_val="10"
-             name="WLGamma"
+             name="scene_gamma"
              top_pad="3"
              width="150" />
 	    <spinner
@@ -528,57 +890,6 @@ width="700">
              name="WLGamma2"
              top_delta="-6"
              width="60" />
-		 <text
-             type="string"
-             length="1"
-             follows="left|top"
-             font="SansSerif"
-             height="16"
-             layout="topleft"
-             left="470"
-             name="SunGlowText"
-             top="91"
-             width="200">
-                Sun Focus
-            </text>
-            <slider
-             decimal_digits="2"
-             follows="left|top"
-             height="10"
-             increment="0.01"
-             initial_value="0.1"
-             layout="topleft"
-             left_delta="0"
-             max_val="0.5"
-             name="WLGlowB"
-             top_pad="3"
-             width="196" />
-			<text
-             type="string"
-             length="1"
-             follows="left|top"
-             font="SansSerif"
-             height="16"
-             layout="topleft"
-             left="470"
-             name="SunGlowText"
-             top="133"
-             width="200">
-                Sun Size
-            </text>
-            <slider
-             decimal_digits="2"
-             follows="top|left"
-             height="10"
-             increment="0.01"
-             initial_value="0.25"
-             layout="topleft"
-             left_delta="0"
-             max_val="1.99"
-             min_val="0.01"
-             name="WLGlowR"
-             top_pad="3"
-             width="196" />
         </panel>
         <panel
          border="false"
@@ -901,11 +1212,11 @@ width="700">
 		visible="false"
 		name="sky_preset_icon"
 		left="9"
-		top_pad="3"/>
+		top_pad="1"/>
 	 <line_editor
      height="20"
      left="11"
-     name="sky_preset_name"
+     name="settings_name"
 	 text_pad_left="5"
      top_delta="1"
      width="165" />

@@ -39,70 +39,73 @@
 
 namespace
 {   
-    // Atmosphere Tab
-    const std::string   FIELD_SKY_AMBIENT_LIGHT("ambient_light");
-    const std::string   FIELD_SKY_BLUE_HORIZON("blue_horizon");
-    const std::string   FIELD_SKY_BLUE_DENSITY("blue_density");
-    const std::string   FIELD_SKY_HAZE_HORIZON("haze_horizon");
-    const std::string   FIELD_SKY_HAZE_DENSITY("haze_density");
-    const std::string   FIELD_SKY_SCENE_GAMMA("scene_gamma");
-    const std::string   FIELD_SKY_DENSITY_MULTIP("density_multip");
-    const std::string   FIELD_SKY_DISTANCE_MULTIP("distance_multip");
-    const std::string   FIELD_SKY_MAX_ALT("max_alt");
+	//BD - Atmosphere
+	const std::string   FIELD_SKY_AMBIENT_LIGHT("ambient_light");
+	const std::string   FIELD_SKY_BLUE_HORIZON("blue_horizon");
+	const std::string   FIELD_SKY_BLUE_DENSITY("blue_density");
+	const std::string   FIELD_SKY_HAZE_HORIZON("haze_horizon");
+	const std::string   FIELD_SKY_HAZE_DENSITY("haze_density");
+	const std::string   FIELD_SKY_SCENE_GAMMA("scene_gamma");
+	const std::string   FIELD_SKY_DENSITY_MULTIP("density_multip");
+	const std::string   FIELD_SKY_DISTANCE_MULTIP("distance_multip");
+	const std::string   FIELD_SKY_MAX_ALT("max_alt");
 
-    const std::string   FIELD_SKY_CLOUD_COLOR("cloud_color");
-    const std::string   FIELD_SKY_CLOUD_COVERAGE("cloud_coverage");
-    const std::string   FIELD_SKY_CLOUD_SCALE("cloud_scale");
-    const std::string   FIELD_SKY_CLOUD_VARIANCE("cloud_variance");
+	const std::string   FIELD_SKY_DENSITY_MOISTURE_LEVEL("moisture_level");
+	const std::string   FIELD_SKY_DENSITY_DROPLET_RADIUS("droplet_radius");
+	const std::string   FIELD_SKY_DENSITY_ICE_LEVEL("ice_level");
 
-    const std::string   FIELD_SKY_CLOUD_SCROLL_XY("cloud_scroll_xy");
-    const std::string   FIELD_SKY_CLOUD_MAP("cloud_map");
-    const std::string   FIELD_SKY_CLOUD_DENSITY_X("cloud_density_x");
-    const std::string   FIELD_SKY_CLOUD_DENSITY_Y("cloud_density_y");
-    const std::string   FIELD_SKY_CLOUD_DENSITY_D("cloud_density_d");
-    const std::string   FIELD_SKY_CLOUD_DETAIL_X("cloud_detail_x");
-    const std::string   FIELD_SKY_CLOUD_DETAIL_Y("cloud_detail_y");
-    const std::string   FIELD_SKY_CLOUD_DETAIL_D("cloud_detail_d");
+	//BD - Sun & Moon
+	const std::string   FIELD_SKY_SUN_MOON_COLOR("sun_moon_color");
+	const std::string   FIELD_SKY_GLOW_FOCUS("glow_focus");
+	const std::string   FIELD_SKY_GLOW_SIZE("glow_size");
+	const std::string   FIELD_SKY_STAR_BRIGHTNESS("star_brightness");
+	const std::string   FIELD_SKY_SUN_POSITION_X("sun_position_x");
+	const std::string   FIELD_SKY_SUN_POSITION_Y("sun_position_y");
+	const std::string   FIELD_SKY_SUN_IMAGE("sun_image");
+	const std::string   FIELD_SKY_SUN_SCALE("sun_scale");
+	const std::string   FIELD_SKY_SUN_BEACON("sunbeacon");
+	const std::string   FIELD_SKY_MOON_BEACON("moonbeacon");
+	const std::string   FIELD_SKY_MOON_POSITION_X("moon_position_x");
+	const std::string   FIELD_SKY_MOON_POSITION_Y("moon_position_y");
+	const std::string   FIELD_SKY_MOON_IMAGE("moon_image");
+	const std::string   FIELD_SKY_MOON_SCALE("moon_scale");
+	const std::string   FIELD_SKY_MOON_BRIGHTNESS("moon_brightness");
 
-    const std::string   FIELD_SKY_SUN_MOON_COLOR("sun_moon_color");
-    const std::string   FIELD_SKY_GLOW_FOCUS("glow_focus");
-    const std::string   FIELD_SKY_GLOW_SIZE("glow_size");
-    const std::string   FIELD_SKY_STAR_BRIGHTNESS("star_brightness");
-    const std::string   FIELD_SKY_SUN_ROTATION("sun_rotation");
-    const std::string   FIELD_SKY_SUN_IMAGE("sun_image");
-    const std::string   FIELD_SKY_SUN_SCALE("sun_scale");
-    const std::string   FIELD_SKY_SUN_BEACON("sunbeacon");
-    const std::string   FIELD_SKY_MOON_BEACON("moonbeacon");
-    const std::string   FIELD_SKY_MOON_ROTATION("moon_rotation");
-    const std::string   FIELD_SKY_MOON_IMAGE("moon_image");
-    const std::string   FIELD_SKY_MOON_SCALE("moon_scale");
-    const std::string   FIELD_SKY_MOON_BRIGHTNESS("moon_brightness");
+	//BD - Clouds
+	const std::string   FIELD_SKY_CLOUD_COLOR("cloud_color");
+	const std::string   FIELD_SKY_CLOUD_COVERAGE("cloud_coverage");
+	const std::string   FIELD_SKY_CLOUD_SCALE("cloud_scale");
+	const std::string   FIELD_SKY_CLOUD_VARIANCE("cloud_variance");
 
-    const std::string   PANEL_SKY_SUN_LAYOUT("sun_layout");
-    const std::string   PANEL_SKY_MOON_LAYOUT("moon_layout");
+	const std::string   FIELD_SKY_CLOUD_SCROLL_X("cloud_scroll_x");
+	const std::string   FIELD_SKY_CLOUD_SCROLL_Y("cloud_scroll_y");
+	const std::string   FIELD_SKY_CLOUD_MAP("cloud_map");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_X("cloud_density_x");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_Y("cloud_density_y");
+	const std::string   FIELD_SKY_CLOUD_DENSITY_D("cloud_density_d");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_X("cloud_detail_x");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_Y("cloud_detail_y");
+	const std::string   FIELD_SKY_CLOUD_DETAIL_D("cloud_detail_d");
 
-    const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL("rayleigh_exponential");
-    const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL_SCALE("rayleigh_exponential_scale");
-    const std::string   FIELD_SKY_DENSITY_RAYLEIGH_LINEAR("rayleigh_linear");
-    const std::string   FIELD_SKY_DENSITY_RAYLEIGH_CONSTANT("rayleigh_constant");
-    const std::string   FIELD_SKY_DENSITY_RAYLEIGH_MAX_ALTITUDE("rayleigh_max_altitude");
+	//BD - Density
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL("rayleigh_exponential");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL_SCALE("rayleigh_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_LINEAR("rayleigh_linear");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_CONSTANT("rayleigh_constant");
+	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_MAX_ALTITUDE("rayleigh_max_altitude");
 
-    const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL("mie_exponential");
-    const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL_SCALE("mie_exponential_scale");
-    const std::string   FIELD_SKY_DENSITY_MIE_LINEAR("mie_linear");
-    const std::string   FIELD_SKY_DENSITY_MIE_CONSTANT("mie_constant");
-    const std::string   FIELD_SKY_DENSITY_MIE_ANISO("mie_aniso_factor");
-    const std::string   FIELD_SKY_DENSITY_MIE_MAX_ALTITUDE("mie_max_altitude");
+	const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL("mie_exponential");
+	const std::string   FIELD_SKY_DENSITY_MIE_EXPONENTIAL_SCALE("mie_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_MIE_LINEAR("mie_linear");
+	const std::string   FIELD_SKY_DENSITY_MIE_CONSTANT("mie_constant");
+	const std::string   FIELD_SKY_DENSITY_MIE_ANISO("mie_aniso_factor");
+	const std::string   FIELD_SKY_DENSITY_MIE_MAX_ALTITUDE("mie_max_altitude");
 
-    const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL("absorption_exponential");
-    const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL_SCALE("absorption_exponential_scale");
-    const std::string   FIELD_SKY_DENSITY_ABSORPTION_LINEAR("absorption_linear");
-    const std::string   FIELD_SKY_DENSITY_ABSORPTION_CONSTANT("absorption_constant");
-    const std::string   FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE("absorption_max_altitude");
-
-    const std::string   FIELD_SKY_DENSITY_MOISTURE_LEVEL("moisture_level");
-    const std::string   FIELD_SKY_DENSITY_DROPLET_RADIUS("droplet_radius");
-    const std::string   FIELD_SKY_DENSITY_ICE_LEVEL("ice_level");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL("absorption_exponential");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL_SCALE("absorption_exponential_scale");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_LINEAR("absorption_linear");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_CONSTANT("absorption_constant");
+	const std::string   FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE("absorption_max_altitude");
 
     const F32 SLIDER_SCALE_SUN_AMBIENT(3.0f);
     const F32 SLIDER_SCALE_BLUE_HORIZON_DENSITY(2.0f);
@@ -134,41 +137,35 @@ LLPanelSettingsSkyAtmosTab::LLPanelSettingsSkyAtmosTab() :
 
 BOOL LLPanelSettingsSkyAtmosTab::postBuild()
 {
-    getChild<LLUICtrl>(FIELD_SKY_AMBIENT_LIGHT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onAmbientLightChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_BLUE_HORIZON)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueHorizonChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_BLUE_DENSITY)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeHorizonChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSceneGammaChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDensityMultipChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDistanceMultipChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_MAX_ALT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMaxAltChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoistureLevelChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDropletRadiusChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onIceLevelChanged(); });
+	//BD - Atmosphere
+	mAmbientLight = getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT);
+	mAmbientLight->setCommitCallback([this](LLUICtrl *, const LLSD &) { onAmbientLightChanged(); });
+	mBlueHorizon = getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON);
+	mBlueHorizon->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueHorizonChanged(); });
+	mBlueDensity = getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY);
+	mBlueDensity->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlueDensityChanged(); });
+	mHazeHorizon = getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON);
+	mHazeHorizon->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeHorizonChanged(); });
+	mHazeDensity = getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY);
+	mHazeDensity->setCommitCallback([this](LLUICtrl *, const LLSD &) { onHazeDensityChanged(); });
+	mSceneGamma = getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA);
+	mSceneGamma->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSceneGammaChanged(); });
+	mDensityMult = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP);
+	mDensityMult->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDensityMultipChanged(); });
+	mDistanceMult = getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP);
+	mDistanceMult->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDistanceMultipChanged(); });
+	mMaxAltitude = getChild<LLUICtrl>(FIELD_SKY_MAX_ALT);
+	mMaxAltitude->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMaxAltChanged(); });
+	mMoisture = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL);
+	mMoisture->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoistureLevelChanged(); });
+	mDroplet = getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS);
+	mDroplet->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDropletRadiusChanged(); });
+	mIceLevel = getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL);
+	mIceLevel->setCommitCallback([this](LLUICtrl *, const LLSD &) { onIceLevelChanged(); });
+
     refresh();
 
     return TRUE;
-}
-
-//virtual
-void LLPanelSettingsSkyAtmosTab::setEnabled(BOOL enabled)
-{
-    LLPanelSettingsSky::setEnabled(enabled);
-
-    // Make sure we have initialized children (initialized)
-    if (getFirstChild())
-    {
-        getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_MAX_ALT)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL)->setEnabled(enabled);
-    }
 }
 
 void LLPanelSettingsSkyAtmosTab::refresh()
@@ -176,135 +173,130 @@ void LLPanelSettingsSkyAtmosTab::refresh()
     if (!mSkySettings)
     {
         setAllChildrenEnabled(FALSE);
-        setEnabled(FALSE);
         return;
     }
 
-    setEnabled(getCanChangeSettings());
     setAllChildrenEnabled(getCanChangeSettings());
 
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT)->set(mSkySettings->getAmbientColor() / SLIDER_SCALE_SUN_AMBIENT);
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON)->set(mSkySettings->getBlueHorizon() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY)->set(mSkySettings->getBlueDensity() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
+	//BD - Atmosphere
+	mAmbientLight->set(mSkySettings->getAmbientColor() / SLIDER_SCALE_SUN_AMBIENT);
+	mBlueHorizon->set(mSkySettings->getBlueHorizon() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
+	mBlueDensity->set(mSkySettings->getBlueDensity() / SLIDER_SCALE_BLUE_HORIZON_DENSITY);
+	mHazeHorizon->setValue(mSkySettings->getHazeHorizon());
+	mHazeDensity->setValue(mSkySettings->getHazeDensity());
+	mSceneGamma->setValue(mSkySettings->getGamma());
 
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setValue(mSkySettings->getHazeHorizon());
-    getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setValue(mSkySettings->getHazeDensity());
-    getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setValue(mSkySettings->getGamma());
-    F32 density_mult = mSkySettings->getDensityMultiplier();
-    density_mult /= SLIDER_SCALE_DENSITY_MULTIPLIER;
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP)->setValue(density_mult);
-    getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP)->setValue(mSkySettings->getDistanceMultiplier());
-    getChild<LLUICtrl>(FIELD_SKY_MAX_ALT)->setValue(mSkySettings->getMaxY());
+	F32 density_mult = mSkySettings->getDensityMultiplier();
+	density_mult /= SLIDER_SCALE_DENSITY_MULTIPLIER;
+	mDensityMult->setValue(density_mult);
+	mDistanceMult->setValue(mSkySettings->getDistanceMultiplier());
+	mMaxAltitude->setValue(mSkySettings->getMaxY());
 
-    F32 moisture_level  = mSkySettings->getSkyMoistureLevel();
-    F32 droplet_radius  = mSkySettings->getSkyDropletRadius();
-    F32 ice_level       = mSkySettings->getSkyIceLevel();
-
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL)->setValue(moisture_level);
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS)->setValue(droplet_radius);
-    getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL)->setValue(ice_level);
+	mMoisture->setValue(mSkySettings->getSkyMoistureLevel());
+	mDroplet->setValue(mSkySettings->getSkyDropletRadius());
+	mIceLevel->setValue(mSkySettings->getSkyIceLevel());
 }
 
 //-------------------------------------------------------------------------
 void LLPanelSettingsSkyAtmosTab::onAmbientLightChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setAmbientColor(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT)->get() * SLIDER_SCALE_SUN_AMBIENT));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setAmbientColor(LLColor3(mAmbientLight->get() * SLIDER_SCALE_SUN_AMBIENT));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onBlueHorizonChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setBlueHorizon(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_HORIZON)->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setBlueHorizon(LLColor3(mBlueHorizon->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onBlueDensityChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setBlueDensity(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_BLUE_DENSITY)->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setBlueDensity(LLColor3(mBlueDensity->get() * SLIDER_SCALE_BLUE_HORIZON_DENSITY));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onHazeHorizonChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setHazeHorizon(getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setHazeHorizon(mHazeHorizon->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onHazeDensityChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setHazeDensity(getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setHazeDensity(mHazeDensity->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onSceneGammaChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setGamma(getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setGamma(mSceneGamma->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onDensityMultipChanged()
 {
-    if (!mSkySettings) return;
-    F32 density_mult = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP)->getValue().asReal();
-    density_mult *= SLIDER_SCALE_DENSITY_MULTIPLIER;
-    mSkySettings->setDensityMultiplier(density_mult);
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	F32 density_mult = mDensityMult->getValue().asReal();
+	density_mult *= SLIDER_SCALE_DENSITY_MULTIPLIER;
+	mSkySettings->setDensityMultiplier(density_mult);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onDistanceMultipChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setDistanceMultiplier(getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setDistanceMultiplier(mDistanceMult->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onMaxAltChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setMaxY(getChild<LLUICtrl>(FIELD_SKY_MAX_ALT)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setMaxY(mMaxAltitude->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onMoistureLevelChanged()
 {
-    if (!mSkySettings) return;
-    F32 moisture_level  = getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL)->getValue().asReal();
-    mSkySettings->setSkyMoistureLevel(moisture_level);
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	F32 moisture_level = mMoisture->getValue().asReal();
+	mSkySettings->setSkyMoistureLevel(moisture_level);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onDropletRadiusChanged()
 {
-    if (!mSkySettings) return;
-    F32 droplet_radius = getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS)->getValue().asReal();
-    mSkySettings->setSkyDropletRadius(droplet_radius);
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	F32 droplet_radius = mDroplet->getValue().asReal();
+	mSkySettings->setSkyDropletRadius(droplet_radius);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyAtmosTab::onIceLevelChanged()
 {
-    if (!mSkySettings) return;
-    F32 ice_level = getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL)->getValue().asReal();
-    mSkySettings->setSkyIceLevel(ice_level);
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	F32 ice_level = mIceLevel->getValue().asReal();
+	mSkySettings->setSkyIceLevel(ice_level);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 //==========================================================================
@@ -315,46 +307,41 @@ LLPanelSettingsSkyCloudTab::LLPanelSettingsSkyCloudTab() :
 
 BOOL LLPanelSettingsSkyCloudTab::postBuild()
 {
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COLOR)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudColorChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudCoverageChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScaleChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudVarianceChanged(); });
+	//BD - Clouds
+	mCloudColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR);
+	mCloudColor->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudColorChanged(); });
+	mCloudCoverage = getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE);
+	mCloudCoverage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudCoverageChanged(); });
+	mCloudScale = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE);
+	mCloudScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScaleChanged(); });
+	mCloudVariance = getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE);
+	mCloudVariance->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudVarianceChanged(); });
 
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_XY)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudMapChanged(); });
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setDefaultImageAssetID(LLSettingsSky::GetDefaultCloudNoiseTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setAllowNoTexture(TRUE);
+	mCloudScrollX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_X);
+	mCloudScrollX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
+	mCloudScrollY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_Y);
+	mCloudScrollY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
+	mCloudImage = getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP);
+	mCloudImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudMapChanged(); });
+	mCloudImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultCloudNoiseTextureId());
+	mCloudImage->setAllowNoTexture(TRUE);
 
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+	mCloudDensityX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X);
+	mCloudDensityX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDensityY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y);
+	mCloudDensityY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDensityD = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D);
+	mCloudDensityD->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDensityChanged(); });
+	mCloudDetailX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X);
+	mCloudDetailX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+	mCloudDetailY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y);
+	mCloudDetailY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
+	mCloudDetailD = getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D);
+	mCloudDetailD->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudDetailChanged(); });
 
     refresh();
 
     return TRUE;
-}
-
-//virtual
-void LLPanelSettingsSkyCloudTab::setEnabled(BOOL enabled)
-{
-    LLPanelSettingsSky::setEnabled(enabled);
-
-    // Make sure we have children (initialized)
-    if (getFirstChild())
-    {
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D)->setEnabled(enabled);
-    }
 }
 
 void LLPanelSettingsSkyCloudTab::refresh()
@@ -362,101 +349,95 @@ void LLPanelSettingsSkyCloudTab::refresh()
     if (!mSkySettings)
     {
         setAllChildrenEnabled(FALSE);
-        setEnabled(FALSE);
         return;
     }
 
-    setEnabled(getCanChangeSettings());
     setAllChildrenEnabled(getCanChangeSettings());
 
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR)->set(mSkySettings->getCloudColor());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->setValue(mSkySettings->getCloudShadow());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->setValue(mSkySettings->getCloudScale());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE)->setValue(mSkySettings->getCloudVariance());
+	//BD - Clouds
+	mCloudColor->set(mSkySettings->getCloudColor());
+	mCloudCoverage->setValue(mSkySettings->getCloudShadow());
+	mCloudScale->setValue(mSkySettings->getCloudScale());
+	mCloudVariance->setValue(mSkySettings->getCloudVariance());
 
-    LLVector2 cloudScroll(mSkySettings->getCloudScrollRate());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_XY)->setValue(cloudScroll.getValue());
+	LLVector2 cloudScroll(mSkySettings->getCloudScrollRate());
+	mCloudScrollX->setValue(cloudScroll[0]);
+	mCloudScrollY->setValue(cloudScroll[1]);
 
-    getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP)->setValue(mSkySettings->getCloudNoiseTextureId());
+	mCloudImage->setValue(mSkySettings->getCloudNoiseTextureId());
 
-    LLVector3 cloudDensity(mSkySettings->getCloudPosDensity1().getValue());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X)->setValue(cloudDensity[0]);
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y)->setValue(cloudDensity[1]);
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D)->setValue(cloudDensity[2]);
+	LLVector3 cloudDensity(mSkySettings->getCloudPosDensity1().getValue());
+	mCloudDensityX->setValue(cloudDensity[0]);
+	mCloudDensityY->setValue(cloudDensity[1]);
+	mCloudDensityD->setValue(cloudDensity[2]);
 
-    LLVector3 cloudDetail(mSkySettings->getCloudPosDensity2().getValue());
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X)->setValue(cloudDetail[0]);
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y)->setValue(cloudDetail[1]);
-    getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D)->setValue(cloudDetail[2]);
+	LLVector3 cloudDetail(mSkySettings->getCloudPosDensity2().getValue());
+	mCloudDetailX->setValue(cloudDetail[0]);
+	mCloudDetailY->setValue(cloudDetail[1]);
+	mCloudDetailD->setValue(cloudDetail[2]);
 }
 
 //-------------------------------------------------------------------------
 void LLPanelSettingsSkyCloudTab::onCloudColorChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setCloudColor(LLColor3(getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR)->get()));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setCloudColor(LLColor3(mCloudColor->get()));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudCoverageChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setCloudShadow(getChild<LLUICtrl>(FIELD_SKY_CLOUD_COVERAGE)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setCloudShadow(mCloudCoverage->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudScaleChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setCloudScale(getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCALE)->getValue().asReal());
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setCloudScale(mCloudScale->getValue().asReal());
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudVarianceChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setCloudVariance(getChild<LLUICtrl>(FIELD_SKY_CLOUD_VARIANCE)->getValue().asReal());
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setCloudVariance(mCloudVariance->getValue().asReal());
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudScrollChanged()
 {
-    if (!mSkySettings) return;
-    LLVector2 scroll(getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_XY)->getValue());
-    mSkySettings->setCloudScrollRate(scroll);
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLVector2 scroll(mCloudScrollX->getValue().asReal(), mCloudScrollY->getValue().asReal());
+	mSkySettings->setCloudScrollRate(scroll);
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudMapChanged()
 {
-    if (!mSkySettings) return;
-    LLTextureCtrl* ctrl = getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP);
-    mSkySettings->setCloudNoiseTextureId(ctrl->getValue().asUUID());
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLTextureCtrl* ctrl = mCloudImage;
+	mSkySettings->setCloudNoiseTextureId(ctrl->getValue().asUUID());
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudDensityChanged()
 {
-    if (!mSkySettings) return;
-    LLColor3 density(getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_X)->getValue().asReal(), 
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_Y)->getValue().asReal(), 
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DENSITY_D)->getValue().asReal());
-    
-    mSkySettings->setCloudPosDensity1(density);
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLColor3 density(mCloudDensityX->getValue().asReal(), mCloudDensityY->getValue().asReal(), mCloudDensityD->getValue().asReal());
+	mSkySettings->setCloudPosDensity1(density);
+	setIsDirty();
 }
 
 void LLPanelSettingsSkyCloudTab::onCloudDetailChanged()
 {
-    if (!mSkySettings) return;
-    LLColor3 detail(getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_X)->getValue().asReal(),
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_Y)->getValue().asReal(),
-        getChild<LLUICtrl>(FIELD_SKY_CLOUD_DETAIL_D)->getValue().asReal());
-
-    mSkySettings->setCloudPosDensity2(detail);
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLColor3 detail(mCloudDetailX->getValue().asReal(), mCloudDetailY->getValue().asReal(), mCloudDetailD->getValue().asReal());
+	mSkySettings->setCloudPosDensity2(detail);
+	setIsDirty();
 }
 
 //==========================================================================
@@ -468,173 +449,180 @@ LLPanelSettingsSkySunMoonTab::LLPanelSettingsSkySunMoonTab() :
 
 BOOL LLPanelSettingsSkySunMoonTab::postBuild()
 {
-    getChild<LLUICtrl>(FIELD_SKY_SUN_MOON_COLOR)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunMoonColorChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onStarBrightnessChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_ROTATION)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_IMAGE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunImageChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunScaleChanged(); });
-    getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE)->setBlankImageAssetID(LLSettingsSky::GetBlankSunTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE)->setDefaultImageAssetID(LLSettingsSky::GetBlankSunTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE)->setAllowNoTexture(TRUE);
-    getChild<LLUICtrl>(FIELD_SKY_MOON_ROTATION)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_MOON_IMAGE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonImageChanged(); });
-    getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE)->setDefaultImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE)->setBlankImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
-    getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE)->setAllowNoTexture(TRUE);
-    getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonScaleChanged(); });
-    getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonBrightnessChanged(); });
+	//BD - Sun & Moon
+	mSunMoonColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_MOON_COLOR);
+	mSunMoonColor->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunMoonColorChanged(); });
+	mGlowFocus = getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS);
+	mGlowFocus->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
+	mGlowSize = getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE);
+	mGlowSize->setCommitCallback([this](LLUICtrl *, const LLSD &) { onGlowChanged(); });
+	mStarBrightness = getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS);
+	mStarBrightness->setCommitCallback([this](LLUICtrl *, const LLSD &) { onStarBrightnessChanged(); });
+	mSunPositionX = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_X);
+	mSunPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
+	mSunPositionY = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_Y);
+	mSunPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
+	mSunImage = getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE);
+	mSunImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunImageChanged(); });
+	mSunScale = getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE);
+	mSunScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunScaleChanged(); });
+	mSunImage->setBlankImageAssetID(LLSettingsSky::GetBlankSunTextureId());
+	mSunImage->setDefaultImageAssetID(LLSettingsSky::GetBlankSunTextureId());
+	mSunImage->setAllowNoTexture(TRUE);
+	mMoonPositionX = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_X);
+	mMoonPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
+	mMoonPositionY = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_Y);
+	mMoonPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
+	mMoonImage = getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE);
+	mMoonImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonImageChanged(); });
+	mMoonImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
+	mMoonImage->setBlankImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
+	mMoonImage->setAllowNoTexture(TRUE);
+	mMoonScale = getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE);
+	mMoonScale->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonScaleChanged(); });
+	mMoonBrightness = getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS);
+	mMoonBrightness->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonBrightnessChanged(); });
+
+	mSunBeacon = getChild<LLUICtrl>(FIELD_SKY_SUN_BEACON);
+	mMoonBeacon = getChild<LLUICtrl>(FIELD_SKY_MOON_BEACON);
 
     refresh();
 
     return TRUE;
 }
 
-//virtual
-void LLPanelSettingsSkySunMoonTab::setEnabled(BOOL enabled)
-{
-    LLPanelSettingsSky::setEnabled(enabled);
-
-    // Make sure we have children
-    if (getFirstChild())
-    {
-        getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS)->setEnabled(enabled);
-        getChildView(PANEL_SKY_SUN_LAYOUT)->setAllChildrenEnabled(TRUE);
-        getChildView(PANEL_SKY_MOON_LAYOUT)->setAllChildrenEnabled(TRUE);
-    }
-}
-
 void LLPanelSettingsSkySunMoonTab::refresh()
 {
     if (!mSkySettings || !getCanChangeSettings())
     {
-        getChildView(PANEL_SKY_SUN_LAYOUT)->setAllChildrenEnabled(FALSE);
-        getChildView(PANEL_SKY_MOON_LAYOUT)->setAllChildrenEnabled(FALSE);
-        getChildView(FIELD_SKY_SUN_BEACON)->setEnabled(TRUE);
-        getChildView(FIELD_SKY_MOON_BEACON)->setEnabled(TRUE);
+        mSunBeacon->setEnabled(TRUE);
+        mMoonBeacon->setEnabled(TRUE);
         
         if (!mSkySettings)
             return;
     }
     else
     {
-        setEnabled(TRUE);
         setAllChildrenEnabled(TRUE);
     }
 
-    getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_MOON_COLOR)->set(mSkySettings->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
+	//BD - Sun & Moon
+	LLColor3 glow(mSkySettings->getGlow());
+	// takes 40 - 0.2 range -> 0 - 1.99 UI range
+	mGlowSize->setValue(2.0 - (glow.mV[0] / SLIDER_SCALE_GLOW_R));
+	mGlowFocus->setValue(glow.mV[2] / SLIDER_SCALE_GLOW_B);
+	mStarBrightness->setValue(mSkySettings->getStarBrightness());
+	mSunMoonColor->set(mSkySettings->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
+	mSunScale->setValue(mSkySettings->getSunScale());
+	mMoonImage->setValue(mSkySettings->getMoonTextureId());
+	mMoonScale->setValue(mSkySettings->getMoonScale());
+	mMoonBrightness->setValue(mSkySettings->getMoonBrightness());
 
-    LLColor3 glow(mSkySettings->getGlow());
-    
-    // takes 40 - 0.2 range -> 0 - 1.99 UI range
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->setValue(2.0 - (glow.mV[0] / SLIDER_SCALE_GLOW_R));
-    getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->setValue(glow.mV[2] / SLIDER_SCALE_GLOW_B);
+	F32 pitch, yaw, roll = 0.f;
+	mSkySettings->getSunRotation().getEulerAngles(&roll, &pitch, &yaw);
+	mSunPositionX->setValue(pitch / F_PI);
+	mSunPositionY->setValue(yaw / F_PI);
 
-    getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->setValue(mSkySettings->getStarBrightness());
-    getChild<LLVirtualTrackball>(FIELD_SKY_SUN_ROTATION)->setRotation(mSkySettings->getSunRotation());
-    getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE)->setValue(mSkySettings->getSunTextureId());
-    getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->setValue(mSkySettings->getSunScale());
-    getChild<LLVirtualTrackball>(FIELD_SKY_MOON_ROTATION)->setRotation(mSkySettings->getMoonRotation());
-    getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE)->setValue(mSkySettings->getMoonTextureId());
-    getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE)->setValue(mSkySettings->getMoonScale());
-    getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS)->setValue(mSkySettings->getMoonBrightness());
+	mSkySettings->getMoonRotation().getEulerAngles(&roll, &pitch, &yaw);
+	mMoonPositionX->setValue(pitch / F_PI);
+	mMoonPositionY->setValue(yaw / F_PI);
 }
 
 //-------------------------------------------------------------------------
 void LLPanelSettingsSkySunMoonTab::onSunMoonColorChanged()
 {
-    if (!mSkySettings) return;
-    LLColor3 color(getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_MOON_COLOR)->get());
+	if (!mSkySettings) return;
+	LLColor3 color(mSunMoonColor->get());
 
-    color *= SLIDER_SCALE_SUN_AMBIENT;
+	color *= SLIDER_SCALE_SUN_AMBIENT;
 
-    mSkySettings->setSunlightColor(color);
-    mSkySettings->update();
-    setIsDirty();
+	mSkySettings->setSunlightColor(color);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onGlowChanged()
 {
-    if (!mSkySettings) return;
-    LLColor3 glow(getChild<LLUICtrl>(FIELD_SKY_GLOW_SIZE)->getValue().asReal(), 0.0f, getChild<LLUICtrl>(FIELD_SKY_GLOW_FOCUS)->getValue().asReal());
+	if (!mSkySettings) return;
+	LLColor3 glow(mGlowSize->getValue().asReal(), 0.0f, mGlowFocus->getValue().asReal());
 
-    // takes 0 - 1.99 UI range -> 40 -> 0.2 range
-    glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R; 
-    glow.mV[2] *= SLIDER_SCALE_GLOW_B;
+	// takes 0 - 1.99 UI range -> 40 -> 0.2 range
+	glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R;
+	glow.mV[2] *= SLIDER_SCALE_GLOW_B;
 
-    mSkySettings->setGlow(glow);
-    mSkySettings->update();
-    setIsDirty();
+	mSkySettings->setGlow(glow);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onStarBrightnessChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setStarBrightness(getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS)->getValue().asReal());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setStarBrightness(mStarBrightness->getValue().asReal());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onSunRotationChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setSunRotation(getChild<LLVirtualTrackball>(FIELD_SKY_SUN_ROTATION)->getRotation());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLVector3 vec3(0.f, mSunPositionX->getValue().asReal() * F_PI, mSunPositionY->getValue().asReal() * F_PI);
+	LLQuaternion rot;
+	rot.setEulerAngles(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	mSkySettings->setSunRotation(rot);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onSunScaleChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setSunScale((getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE)->getValue().asReal()));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setSunScale((mSunScale->getValue().asReal()));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onSunImageChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setSunTextureId(getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE)->getValue().asUUID());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setSunTextureId(mSunImage->getValue().asUUID());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onMoonRotationChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setMoonRotation(getChild<LLVirtualTrackball>(FIELD_SKY_MOON_ROTATION)->getRotation());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	LLVector3 vec3(mMoonPositionY->getValue().asReal() * F_PI, mMoonPositionX->getValue().asReal() * F_PI, 0.f);
+	LLQuaternion rot;
+	rot.setEulerAngles(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	mSkySettings->setMoonRotation(rot);
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onMoonImageChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setMoonTextureId(getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE)->getValue().asUUID());
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setMoonTextureId(mMoonImage->getValue().asUUID());
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onMoonScaleChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setMoonScale((getChild<LLUICtrl>(FIELD_SKY_MOON_SCALE)->getValue().asReal()));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setMoonScale((mMoonScale->getValue().asReal()));
+	mSkySettings->update();
+	setIsDirty();
 }
 
 void LLPanelSettingsSkySunMoonTab::onMoonBrightnessChanged()
 {
-    if (!mSkySettings) return;
-    mSkySettings->setMoonBrightness((getChild<LLUICtrl>(FIELD_SKY_MOON_BRIGHTNESS)->getValue().asReal()));
-    mSkySettings->update();
-    setIsDirty();
+	if (!mSkySettings) return;
+	mSkySettings->setMoonBrightness((mMoonBrightness->getValue().asReal()));
+	mSkySettings->update();
+	setIsDirty();
 }
  
 LLPanelSettingsSkyDensityTab::LLPanelSettingsSkyDensityTab()
@@ -667,44 +655,14 @@ BOOL LLPanelSettingsSkyDensityTab::postBuild()
     return TRUE;
 }
 
-void LLPanelSettingsSkyDensityTab::setEnabled(BOOL enabled)
-{
-    LLPanelSettingsSky::setEnabled(enabled);
-
-    // Make sure we have children
-    if (getFirstChild())
-    {
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_LINEAR)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_CONSTANT)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_MAX_ALTITUDE)->setEnabled(enabled);
-
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_EXPONENTIAL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_EXPONENTIAL_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_LINEAR)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_CONSTANT)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_ANISO)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MIE_MAX_ALTITUDE)->setEnabled(enabled);
-
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ABSORPTION_EXPONENTIAL_SCALE)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ABSORPTION_LINEAR)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ABSORPTION_CONSTANT)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE)->setEnabled(enabled);
-    }
-}
-
 void LLPanelSettingsSkyDensityTab::refresh()
 {
     if (!mSkySettings)
     {
         setAllChildrenEnabled(FALSE);
-        setEnabled(FALSE);
         return;
     }
 
-    setEnabled(getCanChangeSettings());
     setAllChildrenEnabled(getCanChangeSettings());
 
     // Get first (only) profile layer of each type for editing

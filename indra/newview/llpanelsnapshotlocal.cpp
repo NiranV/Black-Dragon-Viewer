@@ -60,6 +60,8 @@ private:
 	/*virtual*/ LLSnapshotModel::ESnapshotType getSnapshotType();
 	/*virtual*/ void updateControls(const LLSD& info);
 
+	S32 mLocalFormat;
+
 	void onFormatComboCommit(LLUICtrl* ctrl);
 	void onQualitySliderCommit(LLUICtrl* ctrl);
 	void onSaveFlyoutCommit(LLUICtrl* ctrl);
@@ -72,6 +74,7 @@ static LLPanelInjector<LLPanelSnapshotLocal> panel_class("llpanelsnapshotlocal")
 
 LLPanelSnapshotLocal::LLPanelSnapshotLocal()
 {
+	mLocalFormat = gSavedSettings.getS32("SnapshotFormat");
 	mCommitCallbackRegistrar.add("Local.Cancel",	boost::bind(&LLPanelSnapshotLocal::cancel,		this));
 }
 
@@ -88,6 +91,10 @@ BOOL LLPanelSnapshotLocal::postBuild()
 // virtual
 void LLPanelSnapshotLocal::onOpen(const LLSD& key)
 {
+	if(gSavedSettings.getS32("SnapshotFormat") != mLocalFormat)
+	{
+		getChild<LLComboBox>("local_format_combo")->selectNthItem(mLocalFormat);
+	}
 	LLPanelSnapshot::onOpen(key);
 }
 
@@ -123,8 +130,10 @@ void LLPanelSnapshotLocal::updateControls(const LLSD& info)
 
 	const bool show_quality_ctrls = (fmt == LLSnapshotModel::SNAPSHOT_FORMAT_JPEG);
 	getChild<LLUICtrl>("image_quality_slider")->setVisible(show_quality_ctrls);
+	getChild<LLUICtrl>("image_quality_level")->setVisible(show_quality_ctrls);
 
 	getChild<LLUICtrl>("image_quality_slider")->setValue(gSavedSettings.getS32("SnapshotQuality"));
+	updateImageQualityLevel();
 
 	const bool have_snapshot = info.has("have-snapshot") ? info["have-snapshot"].asBoolean() : true;
 	getChild<LLUICtrl>("save_btn")->setEnabled(have_snapshot);
@@ -132,19 +141,21 @@ void LLPanelSnapshotLocal::updateControls(const LLSD& info)
 
 void LLPanelSnapshotLocal::onFormatComboCommit(LLUICtrl* ctrl)
 {
+	mLocalFormat = getImageFormat();
 	// will call updateControls()
 	//BD
 	gSavedSettings.setS32("SnapshotFormat", getImageFormat());
-	getParentByType<LLFloater>()->notify(LLSD().with("image-format-change", true));
 }
 
 void LLPanelSnapshotLocal::onQualitySliderCommit(LLUICtrl* ctrl)
 {
+	updateImageQualityLevel();
+
 	LLSliderCtrl* slider = (LLSliderCtrl*)ctrl;
 	S32 quality_val = llfloor((F32)slider->getValue().asReal());
 	LLSD info;
 	info["image-quality-change"] = quality_val;
-	getParentByType<LLFloater>()->notify(info);
+	LLFloaterSnapshot::getInstance()->notify(info);
 }
 
 void LLPanelSnapshotLocal::onSaveFlyoutCommit(LLUICtrl* ctrl)

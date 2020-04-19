@@ -3140,7 +3140,7 @@ void LLViewerObject::updateControlAvatar()
     if (getControlAvatar())
     {
         getControlAvatar()->updateAnimations();
-		if (isSelected())
+        if (isSelected())
         {
             LLSelectMgr::getInstance()->pauseAssociatedAvatars();
         }
@@ -3151,7 +3151,7 @@ void LLViewerObject::linkControlAvatar()
 {
     if (!getControlAvatar() && isRootEdit())
     {
-        LLVOVolume *volp = dynamic_cast<LLVOVolume*>(this);
+        LLVOVolume *volp = asVolume();
         if (!volp)
         {
             LL_WARNS() << "called with null or non-volume object" << LL_ENDL;
@@ -3363,7 +3363,7 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 				LLViewerInventoryItem* item = dynamic_cast<LLViewerInventoryItem*>(it->get());
 				if(item && item->getType() != LLAssetType::AT_CATEGORY)
 				{
-					std::list<LLUUID>::iterator id_it = std::find(pending_lst.begin(), pending_lst.begin(), item->getAssetUUID());
+					std::list<LLUUID>::iterator id_it = std::find(pending_lst.begin(), pending_lst.end(), item->getAssetUUID());
 					if (id_it != pending_lst.end())
 					{
 						pending_lst.erase(id_it);
@@ -3972,7 +3972,9 @@ F32 LLViewerObject::recursiveGetScaledSurfaceArea() const
                  ++child_iter)
             {
                 LLViewerObject* child_obj = *child_iter;
-                LLVOVolume *child = dynamic_cast<LLVOVolume*>( child_obj );
+				if(!child_obj) continue;
+
+                LLVOVolume *child = child_obj->asVolume();
                 if (child && child->getVolume())
                 {
                     const LLVector3& scale = child->getScale();
@@ -4326,7 +4328,7 @@ const LLVector3 LLViewerObject::getRenderPosition() const
             }
         }
 		LLVOAvatar* avatar = getAvatar();
-		if ((avatar) && !getControlAvatar())
+		if ((avatar) && !cav)
 		{
 			return avatar->getPositionAgent();
 		}
@@ -5692,9 +5694,16 @@ bool LLViewerObject::isOwnerInMuteList(LLUUID id)
 	return muted;
 }
 
+// virtual 
 LLVOAvatar* LLViewerObject::asAvatar()
 {
 	return NULL;
+}
+
+// virtual 
+LLVOVolume* LLViewerObject::asVolume()
+{
+	return nullptr;
 }
 
 // If this object is directly or indirectly parented by an avatar,
@@ -5743,7 +5752,7 @@ void LLViewerObject::setParticleSource(const LLPartSysData& particle_parameters,
 			LLViewerTexture* image;
 			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
 			{
-				image = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.tga");
+				image = LLViewerFetchedTexture::sPixieSmallImagep;
 			}
 			else
 			{
@@ -5792,7 +5801,7 @@ void LLViewerObject::unpackParticleSource(const S32 block_num, const LLUUID& own
 			LLViewerTexture* image;
 			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
 			{
-				image = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.j2c");
+				image = LLViewerFetchedTexture::sPixieSmallImagep;
 			}
 			else
 			{
@@ -5839,7 +5848,7 @@ void LLViewerObject::unpackParticleSource(LLDataPacker &dp, const LLUUID& owner_
 			LLViewerTexture* image;
 			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
 			{
-				image = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.j2c");
+				image = LLViewerFetchedTexture::sPixieSmallImagep;
 			}
 			else
 			{

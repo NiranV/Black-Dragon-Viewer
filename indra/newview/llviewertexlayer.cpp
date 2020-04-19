@@ -54,7 +54,7 @@ LLViewerTexLayerSetBuffer::LLViewerTexLayerSetBuffer(LLTexLayerSet* const owner,
 										 S32 width, S32 height) :
 	// ORDER_LAST => must render these after the hints are created.
 	LLTexLayerSetBuffer(owner),
-	LLViewerDynamicTexture( width, height, 4, LLViewerDynamicTexture::ORDER_LAST, TRUE ), 
+	LLViewerDynamicTexture( width, height, 4, LLViewerDynamicTexture::ORDER_LAST, FALSE ), 
 	mNeedsUpdate(TRUE),
 	mNumLowresUpdates(0)
 {
@@ -188,7 +188,7 @@ BOOL LLViewerTexLayerSetBuffer::isReadyToUpdate() const
 
 	// Update if we've hit a timeout.  Unlike for uploads, we can make this timeout fairly small
 	// since render unnecessarily doesn't cost much.
-	const U32 texture_timeout = gSavedSettings.getU32("AvatarBakedLocalTextureUpdateTimeout");
+	static const LLCachedControl<U32> texture_timeout(gSavedSettings, "AvatarBakedLocalTextureUpdateTimeout");
 	if (texture_timeout != 0)
 	{
 		// If we hit our timeout and have textures available at even lower resolution, then update.

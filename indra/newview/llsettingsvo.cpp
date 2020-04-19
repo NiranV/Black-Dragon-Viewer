@@ -492,6 +492,44 @@ LLSettingsSky::ptr_t LLSettingsVOSky::buildFromLegacyPreset(const std::string &n
     return skyp;
 }
 
+/*LLSettingsSky::ptr_t LLSettingsVOSky::buildFromPreset(const std::string &name, const LLSD &oldsettings, LLSD &messages)
+{
+
+	LLSD newsettings = oldsettings;
+	if (newsettings.isUndefined())
+	{
+		messages["REASONS"] = LLTrans::getString("SettingTranslateError", LLSDMap("NAME", name));
+		return LLSettingsSky::ptr_t();
+	}
+
+	newsettings[SETTING_NAME] = name;
+
+	LLSettingsSky::validation_list_t validations = LLSettingsSky::validationList();
+	LLSD results = LLSettingsBase::settingValidation(newsettings, validations);
+	if (!results["success"].asBoolean())
+	{
+		messages["REASONS"] = LLTrans::getString("SettingValidationError", LLSDMap("NAME", name));
+		LL_WARNS("SETTINGS") << "Sky setting validation failed!\n" << results << LL_ENDL;
+		LLSettingsSky::ptr_t();
+	}
+
+	LLSettingsSky::ptr_t skyp = std::make_shared<LLSettingsVOSky>(newsettings);
+
+#ifdef VERIFY_LEGACY_CONVERSION
+	LLSD oldsettings = LLSettingsVOSky::convertToLegacy(skyp, isAdvanced());
+
+	if (!llsd_equals(oldsettings, oldsettings))
+	{
+		LL_WARNS("SKY") << "Conversion to/from legacy does not match!\n"
+			<< "Old: " << oldsettings
+			<< "new: " << oldsettings << LL_ENDL;
+	}
+
+#endif
+
+	return skyp;
+}*/
+
 LLSettingsSky::ptr_t LLSettingsVOSky::buildFromLegacyPresetFile(const std::string &name, const std::string &path, LLSD &messages)
 {
     LLSD legacy_data = read_legacy_preset_data(name, path, messages);
@@ -503,6 +541,21 @@ LLSettingsSky::ptr_t LLSettingsVOSky::buildFromLegacyPresetFile(const std::strin
     }
 
     return buildFromLegacyPreset(LLURI::unescape(name), legacy_data, messages);
+}
+
+//BD - Local Windlights
+LLSettingsSky::ptr_t LLSettingsVOSky::buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages)
+{
+	LLSD data = read_legacy_preset_data(name, path, messages);
+
+	if (!data)
+	{   // messages filled in by read_legacy_preset_data
+		LL_WARNS("SETTINGS") << "Could not load legacy Windlight \"" << name << "\" from " << path << LL_ENDL;
+		return ptr_t();
+	}
+
+	return buildSky(data);
+	//return buildFromPreset(LLURI::unescape(name), legacy_data, messages);
 }
 
 
@@ -650,7 +703,8 @@ void LLSettingsVOSky::updateSettings()
     // After some A/B comparison of relesae vs EEP, tweak to allow strength to fall below 2 
     // at night, for better match. (mSceneLightStrength is a divisor, so lower value means brighter
     // local lights)
-	F32 sun_dynamic_range = llmax(gSavedSettings.getF32("RenderSunDynamicRange"), 0.0001f);
+    static LLCachedControl<F32> render_sun_dyn_range(gSavedSettings, "RenderSunDynamicRange");
+	F32 sun_dynamic_range = llmax(render_sun_dyn_range(), 0.0001f);
     mSceneLightStrength = 2.0f * (0.75f + sun_dynamic_range * dp);
 
     gSky.setSunAndMoonDirectionsCFR(sun_direction, moon_direction);
@@ -704,11 +758,7 @@ void LLSettingsVOSky::applySpecial(void *ptarget, bool force)
     shader->uniform1f(LLShaderMgr::DENSITY_MULTIPLIER, getDensityMultiplier());
     shader->uniform1f(LLShaderMgr::DISTANCE_MULTIPLIER, getDistanceMultiplier());
     
-    F32 g             = getGamma();    
-    F32 display_gamma = gSavedSettings.getF32("RenderDeferredDisplayGamma");
-
-    shader->uniform1f(LLShaderMgr::GAMMA, g);
-    shader->uniform1f(LLShaderMgr::DISPLAY_GAMMA, display_gamma);
+    shader->uniform1f(LLShaderMgr::GAMMA, getGamma());
 }
 
 LLSettingsSky::parammapping_t LLSettingsVOSky::getParameterMap() const
@@ -830,6 +880,20 @@ LLSettingsWater::ptr_t LLSettingsVOWater::buildFromLegacyPresetFile(const std::s
     }
 
     return buildFromLegacyPreset(LLURI::unescape(name), legacy_data, messages);
+}
+
+//BD - Local Windlights
+LLSettingsWater::ptr_t LLSettingsVOWater::buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages)
+{
+	LLSD data = read_legacy_preset_data(name, path, messages);
+
+	if (!data)
+	{   // messages filled in by read_legacy_preset_data
+		LL_WARNS("SETTINGS") << "Could not load legacy Windlight \"" << name << "\" from " << path << LL_ENDL;
+		return ptr_t();
+	}
+
+	return buildWater(data);
 }
 
 

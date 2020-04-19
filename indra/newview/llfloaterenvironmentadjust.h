@@ -36,6 +36,9 @@
 
 class LLButton;
 class LLLineEditor;
+class LLColorSwatchCtrl;
+class LLTextureCtrl;
+class LLComboBox;
 
 /**
  * Floater container for taking a snapshot of the current environment and making minor adjustments.
@@ -57,36 +60,109 @@ public:
 
 private:
     void                        captureCurrentEnvironment();
-
-    void                        onAmbientLightChanged();
-    void                        onBlueHorizonChanged();
-    void                        onBlueDensityChanged();
-    void                        onHazeHorizonChanged();
-    void                        onHazeDensityChanged();
-    void                        onSceneGammaChanged();
-
-    void                        onCloudColorChanged();
-    void                        onCloudCoverageChanged();
-    void                        onCloudScaleChanged();
-    void                        onSunColorChanged();
-
-    void                        onGlowChanged();
-    void                        onStarBrightnessChanged();
-    void                        onSunRotationChanged();
-    void                        onSunScaleChanged();
-
-    void                        onMoonRotationChanged();
-
-    void                        onCloudMapChanged();
     void                        onWaterMapChanged();
 
-    void                        onButtonReset();
+	void                        onEnvironmentUpdated(LLEnvironment::EnvSelection_t env, S32 version);
 
-    void                        onEnvironmentUpdated(LLEnvironment::EnvSelection_t env, S32 version);
+	//BD - Atmosphere
+	void						onAmbientLightChanged();
+	void						onBlueHorizonChanged();
+	void						onBlueDensityChanged();
+	void						onHazeHorizonChanged();
+	void						onHazeDensityChanged();
+	void						onSceneGammaChanged();
+	void						onDensityMultipChanged();
+	void						onDistanceMultipChanged();
+	void						onMaxAltChanged();
+	void						onMoistureLevelChanged();
+	void						onDropletRadiusChanged();
+	void						onIceLevelChanged();
+
+	//BD - Sun & Moon
+	void						onSunMoonColorChanged();
+	void						onGlowChanged();
+	void						onStarBrightnessChanged();
+	void						onSunRotationXChanged();
+	void						onSunRotationYChanged();
+	void						onSunScaleChanged();
+	void						onSunImageChanged();
+	void						onMoonRotationXChanged();
+	void						onMoonRotationYChanged();
+	void						onMoonScaleChanged();
+	void						onMoonBrightnessChanged();
+	void						onMoonImageChanged();
+
+	//BD - Clouds
+	void						onCloudColorChanged();
+	void						onCloudCoverageChanged();
+	void						onCloudScaleChanged();
+	void						onCloudVarianceChanged();
+	void						onCloudScrollChanged();
+	void						onCloudMapChanged();
+	void						onCloudDensityChanged();
+	void						onCloudDetailChanged();
+
+
+	//BD - Windlight Stuff
+	void						onButtonReset();
+	void						onButtonSave();
+	void						onButtonDelete();
+	void						onButtonImport();
+	void						onSelectPreset();
+
+	void						loadSkySettingFromFile(const std::vector<std::string>& filenames);
 
     LLSettingsSky::ptr_t        mLiveSky;
-    LLSettingsWater::ptr_t      mLiveWater;
     LLEnvironment::connection_t mEventConnection;
+
+	//BD - Atmosphere
+	LLColorSwatchCtrl*			mAmbientLight;
+	LLColorSwatchCtrl*			mBlueHorizon;
+	LLColorSwatchCtrl*			mBlueDensity;
+	LLUICtrl*					mHazeHorizon;
+	LLUICtrl*					mHazeDensity;
+	LLUICtrl*					mSceneGamma;
+	LLUICtrl*					mDensityMult;
+	LLUICtrl*					mDistanceMult;
+	LLUICtrl*					mMaxAltitude;
+	LLUICtrl*					mMoisture;
+	LLUICtrl*					mDroplet;
+	LLUICtrl*					mIceLevel;
+
+	//BD - Sun & Moon
+	LLColorSwatchCtrl*			mSunMoonColor;
+	LLUICtrl*					mGlowFocus;
+	LLUICtrl*					mGlowSize;
+	LLUICtrl*					mStarBrightness;
+	LLUICtrl*					mSunPositionX;
+	LLUICtrl*					mSunPositionY;
+	LLTextureCtrl*				mSunImage;
+	LLUICtrl*					mSunScale;
+	LLUICtrl*					mMoonPositionX;
+	LLUICtrl*					mMoonPositionY;
+	LLTextureCtrl*				mMoonImage;
+	LLUICtrl*					mMoonScale;
+	LLUICtrl*					mMoonBrightness;
+
+	//BD - Clouds
+	LLColorSwatchCtrl*			mCloudColor;
+	LLUICtrl*					mCloudCoverage;
+	LLUICtrl*					mCloudScale;
+	LLUICtrl*					mCloudVariance;
+	LLUICtrl*					mCloudScrollX;
+	LLUICtrl*					mCloudScrollY;
+	LLTextureCtrl*				mCloudImage;
+	LLUICtrl*					mCloudDensityX;
+	LLUICtrl*					mCloudDensityY;
+	LLUICtrl*					mCloudDensityD;
+	LLUICtrl*					mCloudDetailX;
+	LLUICtrl*					mCloudDetailY;
+	LLUICtrl*					mCloudDetailD;
+
+	LLComboBox*					mNameCombo;
+
+	LLVector3					mPreviousMoonRot;
+	LLVector3					mPreviousSunRot;
 };
 
 #endif // LL_FLOATERFIXEDENVIRONMENT_H

@@ -193,7 +193,7 @@ private:
  	// Position
 	//--------------------------------------------------------------------
 public:
-    typedef boost::signals2::signal<void(const LLVector3 &position_local, const LLVector3d &position_global)> position_signal_t;
+	typedef boost::signals2::signal<void(const LLVector3 &position_local, const LLVector3d &position_global)> position_signal_t;
 
 	LLVector3		getPosAgentFromGlobal(const LLVector3d &pos_global) const;
 	LLVector3d		getPosGlobalFromAgent(const LLVector3 &pos_agent) const;	
@@ -203,15 +203,15 @@ public:
 	void			updateAgentPosition(const F32 dt, const F32 yaw, const S32 mouse_x, const S32 mouse_y);	
 	void			setPositionAgent(const LLVector3 &center);
 
-    boost::signals2::connection whenPositionChanged(position_signal_t::slot_type fn);
+	boost::signals2::connection whenPositionChanged(position_signal_t::slot_type fn);
 
 protected:
 	void			propagate(const F32 dt); // ! BUG ! Should roll into updateAgentPosition
 private:
 	mutable LLVector3d mPositionGlobal;
 
-    position_signal_t   mOnPositionChanged;
-    LLVector3d          mLastTestGlobal;
+	position_signal_t   mOnPositionChanged;
+	LLVector3d          mLastTestGlobal;
 
   	//--------------------------------------------------------------------
  	// Velocity
@@ -876,7 +876,7 @@ private:
 	// HUD
 	//--------------------------------------------------------------------
 public:
-	const LLColor4	&getEffectColor();
+	const LLColor4	getEffectColor();
 	void			setEffectColor(const LLColor4 &color);
 private:
 	LLUIColor * mEffectColor;

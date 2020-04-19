@@ -322,25 +322,7 @@
                      image_unselected="Toolbar_Middle_Off"
 				     left="1"
 				     top="0"
-<<<<<<< HEAD
 				     width="94" />
-					<button
-    				 follows="bottom|left|right"
-	                 height="25"
-	                 layout="topleft"
-	                 left="1"
-	                 top="0"
-	                 label="Create Group"
-     				 name="btn_create"
-                     image_hover_unselected="Toolbar_Middle_Over"
-                     image_selected="Toolbar_Middle_Selected"
-                     image_unselected="Toolbar_Middle_Off"
-               		 visible="true"
-                 	 tool_tip="Create a new Group"
-                 	 width="94" />	
-=======
-				     width="90" />
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 				</layout_panel>
 		   </layout_stack>
       </panel>

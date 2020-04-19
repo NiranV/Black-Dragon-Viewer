@@ -76,7 +76,6 @@
 #include "llfloatertools.h"
 #include "llfloaterworldmap.h"
 #include "llfloaterbuildoptions.h"
-#include "llfloatersidepanelcontainer.h"
 #include "llavataractions.h"
 #include "lllandmarkactions.h"
 #include "llgroupmgr.h"
@@ -135,7 +134,7 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include "llcleanup.h"
-<<<<<<< HEAD
+#include "llviewershadermgr.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvactions.h"
 #include "rlvhandler.h"
@@ -152,9 +151,6 @@
 #include "piemenu.h"
 
 extern LLViewerJoystick* gJoystick;
-=======
-#include "llviewershadermgr.h"
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -373,7 +369,10 @@ class LLMenuParcelObserver : public LLParcelObserver
 public:
 	LLMenuParcelObserver();
 	~LLMenuParcelObserver();
-	virtual void changed();
+    void changed() override;
+private:
+	LLHandle<LLUICtrl> mLandBuyHandle;
+	LLHandle<LLUICtrl> mLandBuyPassHandle;
 };
 
 static LLMenuParcelObserver* gMenuParcelObserver = NULL;
@@ -382,6 +381,8 @@ static LLUIListener sUIListener;
 
 LLMenuParcelObserver::LLMenuParcelObserver()
 {
+	mLandBuyHandle = gMenuLand->getChild<LLMenuItemCallGL>("Land Buy")->getHandle();
+	mLandBuyPassHandle = gMenuLand->getChild<LLMenuItemCallGL>("Land Buy Pass")->getHandle();
 	LLViewerParcelMgr::getInstance()->addObserver(this);
 }
 
@@ -392,16 +393,17 @@ LLMenuParcelObserver::~LLMenuParcelObserver()
 
 void LLMenuParcelObserver::changed()
 {
+	if (!mLandBuyPassHandle.isDead())
+{
 	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getParcelSelection()->getParcel();
-	gMenuHolder->mLandBuyPass->setEnabled(LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID() == gAgent.getID()));
-	//gMenuHolder->childSetEnabled("Land Buy Pass", LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID()== gAgent.getID()));
+		static_cast<LLMenuItemCallGL*>(mLandBuyPassHandle.get())->setEnabled(LLPanelLandGeneral::enableBuyPass(NULL) && !(parcel->getOwnerID() == gAgent.getID()));
+	}
 	
+	if (!mLandBuyHandle.isDead())
+	{
 	BOOL buyable = enable_buy_land(NULL);
-	gMenuHolder->mLandBuy->setEnabled(buyable);
-	gMenuHolder->mBuyLand->setEnabled(buyable);
-
-	//gMenuHolder->childSetEnabled("Land Buy", buyable);
-	//gMenuHolder->childSetEnabled("Buy Land...", buyable);
+		static_cast<LLMenuItemCallGL*>(mLandBuyHandle.get())->setEnabled(buyable);
+	}
 }
 
 
@@ -436,16 +438,18 @@ void set_underclothes_menu_options()
 void set_merchant_SLM_menu()
 {
     // All other cases (new merchant, not merchant, migrated merchant): show the new Marketplace Listings menu and enable the tool
-	gMenuHolder->mMarketPlaceListings->setVisible(TRUE);
+    gMenuHolder->getChild<LLView>("MarketplaceListings")->setVisible(TRUE);
     LLCommand* command = LLCommandManager::instance().getCommand("marketplacelistings");
 	gToolBarView->enableCommand(command->id(), true);
 }
 
 void check_merchant_status(bool force)
 {
+    if (force)
+{
     // Reset the SLM status: we actually want to check again, that's the point of calling check_merchant_status()
     LLMarketplaceData::instance().setSLMStatus(MarketplaceStatusCodes::MARKET_PLACE_NOT_INITIALIZED);
-
+    }
     // Hide SLM related menu item
     gMenuHolder->getChild<LLView>("MarketplaceListings")->setVisible(FALSE);
 
@@ -581,10 +585,10 @@ void init_menus()
 	// tooltips are on top of EVERYTHING, including menus
 	gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
 
-	gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
-	gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
-	gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
-	gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land");
+	//gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
+	//gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
+	//gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
+	//gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land");
 }
 
 ///////////////////
@@ -1292,7 +1296,9 @@ void set_use_wireframe(bool useWireframe)
 		gUseWireframe = useWireframe;
 // [/RLVa:KB]
 //		gUseWireframe = !(gUseWireframe);
+		gWindowResized = TRUE;
 
+		LLPipeline::updateRenderDeferred();
 		if (gUseWireframe)
 		{
 			gInitialDeferredModeForWireframe = LLPipeline::sRenderDeferred;
@@ -1832,8 +1838,7 @@ class LLAdvancedAnimTenSlower : public view_listener_t
 	{
 		//LL_INFOS() << "LLAdvancedAnimTenSlower" << LL_ENDL;
 		F32 time_factor = LLMotionController::getCurrentTimeFactor();
-		//BD
-		time_factor = llmax(time_factor - 0.1f, 0.0f);	// Lower limit is at 10% of normal speed
+		time_factor = llmax(time_factor - 0.1f, 0.1f);	// Lower limit is at 10% of normal speed
 		set_all_animation_time_factors(time_factor);
 		return true;
 	}
@@ -2047,6 +2052,8 @@ class LLAdvancedRebakeTextures : public view_listener_t
 // [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
 void handle_refresh_attachments()
 {
+	if (isAgentAvatarValid())
+		gAgentAvatarp->rebuildAttachments();
 	LLAttachmentsMgr::instance().refreshAttachments();
 }
 // [/SL:KB]
@@ -2134,6 +2141,7 @@ class LLAdvancedViewerEventRecorder : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
+#if AL_VIEWER_EVENT_RECORDER
 		std::string command = userdata.asString();
 		if ("start playback" == command)
 		{
@@ -2155,6 +2163,7 @@ class LLAdvancedViewerEventRecorder : public view_listener_t
 			LLViewerEventRecorder::instance().setEventLoggingOff();
 			LL_INFOS() << "Event recording stopped" << LL_ENDL;
 		} 
+#endif
 
 		return true;
 	}		
@@ -2842,14 +2851,14 @@ void handle_object_touch()
 
 
 
-static void init_default_item_label(const std::string& item_name)
+static void init_default_item_label(LLUICtrl* ctrl, const std::string& item_name)
 {
-	boost::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
+	auto it = sDefaultItemLabels.find(item_name);
 	if (it == sDefaultItemLabels.end())
 	{
 		// *NOTE: This will not work for items of type LLMenuItemCheckGL because they return boolean value
 		//       (doesn't seem to matter much ATM).
-		LLStringExplicit default_label = gMenuHolder->childGetValue(item_name).asString();
+		LLStringExplicit default_label = ctrl->getValue().asString();
 		if (!default_label.empty())
 		{
 			sDefaultItemLabels.insert(std::pair<std::string, LLStringExplicit>(item_name, default_label));
@@ -2860,7 +2869,7 @@ static void init_default_item_label(const std::string& item_name)
 static LLStringExplicit get_default_item_label(const std::string& item_name)
 {
 	LLStringExplicit res("");
-	boost::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
+	auto it = sDefaultItemLabels.find(item_name);
 	if (it != sDefaultItemLabels.end())
 	{
 		res = it->second;
@@ -2888,8 +2897,8 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
-	std::string item_name = ctrl->getName();
-	init_default_item_label(item_name);
+	const std::string& item_name = ctrl->getName();
+	init_default_item_label(ctrl, item_name);
 
 	// Update label based on the node touch name if available.
 	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -3317,11 +3326,20 @@ class LLAvatarCheckImpostorMode : public view_listener_t
 		switch (mode) 
 		{
 			case 0:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_RENDER_NORMALLY);
+// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
+				return LLRenderMuteList::instance().getSavedVisualMuteSetting(avatar->getID()) == LLVOAvatar::AV_RENDER_NORMALLY;
+// [/RLVa:KB]
+//				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_RENDER_NORMALLY);
 			case 1:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
+// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
+				return LLRenderMuteList::instance().getSavedVisualMuteSetting(avatar->getID()) == LLVOAvatar::AV_DO_NOT_RENDER;
+// [/RLVa:KB]
+//				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
 			case 2:
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
+// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
+				return LLRenderMuteList::instance().getSavedVisualMuteSetting(avatar->getID()) == LLVOAvatar::AV_ALWAYS_RENDER;
+// [/RLVa:KB]
+//				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
 			default:
 				return false;
 		}
@@ -3952,9 +3970,9 @@ bool show_sitdown_self()
 bool enable_sitdown_self()
 {
 // [RLVa:KB] - Checked: 2010-08-28 (RLVa-1.2.1a) | Added: RLVa-1.2.1a
-	return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying() && !gRlvHandler.hasBehaviour(RLV_BHVR_SIT);
+	return show_sitdown_self() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying() && !gRlvHandler.hasBehaviour(RLV_BHVR_SIT);
 // [/RLVa:KB]
-//    return isAgentAvatarValid() && !gAgentAvatarp->isSitting() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying();
+//	return show_sitdown_self() && !gAgentAvatarp->isEditingAppearance() && !gAgent.getFlying();
 }
 
 class LLCheckPanelPeopleTab : public view_listener_t
@@ -4406,6 +4424,13 @@ void handle_reset_view()
 	gSavedSettings.setBOOL("EnableThirdPersonSteering", false);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
+
+// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
+	if (isAgentAvatarValid())
+	{
+		gAgentAvatarp->rebuildAttachments();
+	}
+// [/SL:KB]
 }
 
 class LLViewResetView : public view_listener_t
@@ -4935,6 +4960,9 @@ private:
 	bool handleEvent(const LLSD& userdata)
 	{
 		if (LLSelectMgr::getInstance()->getSelection()->isEmpty()) return true;
+// [RLVa:KB] - Checked: 2010-03-24 (RLVa-1.4.0a) | Modified: RLVa-1.0.0b
+		if ( (rlv_handler_t::isEnabled()) && (!rlvCanDeleteOrReturn()) ) return true;
+// [/RLVa:KB]
 		
 		mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
 
@@ -6472,7 +6500,7 @@ class LLAvatarTogglePicks : public view_listener_t
         {
             instance->setMinimized(FALSE);
             instance->setFocus(TRUE);
-            LLAvatarActions::showPick(gAgent.getID());
+            LLAvatarActions::showPicks(gAgent.getID());
         }
         else if (picks_tab_visible())
         {
@@ -6480,7 +6508,7 @@ class LLAvatarTogglePicks : public view_listener_t
         }
         else
         {
-            LLAvatarActions::showPick(gAgent.getID());
+            LLAvatarActions::showPicks(gAgent.getID());
         }
         return true;
     }
@@ -6494,6 +6522,9 @@ class LLAvatarResetSkeleton: public view_listener_t
 		if(avatar)
         {
             avatar->resetSkeleton(false);
+// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
+			avatar->rebuildAttachments();
+// [/SL:KB]
         }
         return true;
     }
@@ -6503,8 +6534,8 @@ class LLAvatarEnableResetSkeleton: public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
-        if (avatar)
+        LLViewerObject *obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+        if (obj && obj->getAvatar())
         {
             return true;
         }
@@ -6521,6 +6552,9 @@ class LLAvatarResetSkeletonAndAnimations : public view_listener_t
 		if (avatar)
 		{
 			avatar->resetSkeleton(true);
+// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
+			avatar->rebuildAttachments();
+// [/SL:KB]
 		}
 		return true;
 	}
@@ -6531,7 +6565,10 @@ class LLAvatarAddContact : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLVOAvatar* avatar = find_avatar_from_object( LLSelectMgr::getInstance()->getSelection()->getPrimaryObject() );
-		if(avatar)
+//		if(avatar)
+// [RLVa:KB] - Checked: RLVa-1.2.0
+		if ( (avatar) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID())) )
+// [/RLVa:KB]
 		{
 			create_inventory_callingcard(avatar->getID());
 		}
@@ -6630,9 +6667,10 @@ bool enable_object_sit(LLUICtrl* ctrl)
 	bool sitting_on_sel = sitting_on_selection();
 	if (!sitting_on_sel)
 	{
+		const std::string& item_name = ctrl->getName();
+
 		// init default labels
-		std::string item_name = ctrl->getName();
-		init_default_item_label(item_name);
+		init_default_item_label(ctrl, item_name);
 
 		// Update label
 		LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -6925,7 +6963,7 @@ class LLShowAgentProfilePicks : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        LLAvatarActions::showPick(gAgent.getID());
+        LLAvatarActions::showPicks(gAgent.getID());
         return true;
     }
 };
@@ -7578,20 +7616,17 @@ BOOL object_selected_and_point_valid(const LLSD& sdParam)
 		(selection->getFirstRootObject()->getNVPair("AssetContainer") == NULL);
 }
 
-
-// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
-/*
 BOOL object_is_wearable()
 {
 	if (!isAgentAvatarValid())
-	{
-		return FALSE;
-	}
 	if (!object_selected_and_point_valid(LLSD(0)))
 	{
 		return FALSE;
 	}
-	if (!object_selected_and_point_valid())
+//	if (!object_selected_and_point_valid())
+// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
+	if (!object_selected_and_point_valid(LLSD(0)))
+// [/RLVa:KB]
 	{
 		return FALSE;
 	}
@@ -7600,9 +7635,9 @@ BOOL object_is_wearable()
 		return FALSE;
 	}
     if (!gAgentAvatarp->canAttachMoreObjects())
-    {
-        return FALSE;
-    }
+	{
+		return FALSE;
+	}
 	LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 	for (LLObjectSelection::valid_root_iterator iter = LLSelectMgr::getInstance()->getSelection()->valid_root_begin();
 		 iter != LLSelectMgr::getInstance()->getSelection()->valid_root_end(); iter++)
@@ -7615,8 +7650,6 @@ BOOL object_is_wearable()
 	}
 	return FALSE;
 }
-*/
-// [/RLVa:KB]
 
 class LLAttachmentPointFilled : public view_listener_t
 {
@@ -8043,8 +8076,6 @@ class LLAdvancedClickRenderBenchmark: public view_listener_t
 	}
 };
 
-<<<<<<< HEAD
-=======
 // these are used in the gl menus to set control values that require shader recompilation
 class LLToggleShaderControl : public view_listener_t
 {
@@ -8063,12 +8094,11 @@ class LLToggleShaderControl : public view_listener_t
 	}
 };
 
-void menu_toggle_attached_lights(void* user_data)
+/*void menu_toggle_attached_lights(void* user_data)
 {
 	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
-}
+}*/
 
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 void menu_toggle_attached_particles(void* user_data)
 {
 	LLPipeline::sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
@@ -9176,21 +9206,14 @@ class LLWorldEnvSettings : public view_listener_t
 
 	bool handleEvent(const LLSD& userdata)
 	{
-<<<<<<< HEAD
 // [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a) | Modified: RLVa-1.0.0g
 		if (gRlvHandler.hasBehaviour(RLV_BHVR_SETENV))
 			return true;
 // [/RLVa:KB]
 
-		std::string tod = userdata.asString();
-		LLEnvManagerNew &envmgr = LLEnvManagerNew::instance();
-
-		if (tod == "editor")
-=======
 		std::string event_name = userdata.asString();
-		
+
 		if (event_name == "sunrise")
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		{
             LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_SUNRISE);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
@@ -9199,55 +9222,31 @@ class LLWorldEnvSettings : public view_listener_t
 		}
 		else if (event_name == "noon")
 		{
-<<<<<<< HEAD
-			//BD
-			envmgr.setUseCustomSkySettings(false);
-			envmgr.setUseSkyPreset("Sunrise");
-=======
             LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().updateEnvironment();
             defocusEnvFloaters();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
 		else if (event_name == "sunset")
 		{
-<<<<<<< HEAD
-			//BD
-			envmgr.setUseCustomSkySettings(false);
-			envmgr.setUseSkyPreset("Midday");
-=======
             LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_SUNSET);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().updateEnvironment();
             defocusEnvFloaters();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
 		else if (event_name == "midnight")
 		{
-<<<<<<< HEAD
-			//BD
-			envmgr.setUseCustomSkySettings(false);
-			envmgr.setUseSkyPreset("Sunset");
-=======
             LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDNIGHT);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().updateEnvironment();
             defocusEnvFloaters();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
         else if (event_name == "region")
 		{
-<<<<<<< HEAD
-			//BD
-			envmgr.setUseCustomSkySettings(false);
-			envmgr.setUseSkyPreset("Midnight");
-=======
             LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().updateEnvironment();
             defocusEnvFloaters();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		}
         else if (event_name == "pause_clouds")
         {
@@ -9256,25 +9255,22 @@ class LLWorldEnvSettings : public view_listener_t
 		else
                 LLEnvironment::instance().pauseCloudScroll();
         }
-        else if (event_name == "adjust_tool")
+        else if (event_name == "sky_adjust_tool")
 		{
-<<<<<<< HEAD
-			//BD
-			envmgr.setUseCustomSkySettings(false);
-			// reset all environmental settings to track the region defaults, make this reset 'sticky' like the other sun settings.
-			bool use_fixed_sky = false;
-			bool use_region_settings = true;
-			envmgr.setUserPrefs(envmgr.getWaterPresetName(),
-					    envmgr.getSkyPresetName(),
-					    envmgr.getDayCycleName(),
-					    use_fixed_sky, use_region_settings);
-=======
-            LLFloaterReg::showInstance("env_adjust_snapshot");
+            LLFloaterReg::showInstance("env_adjust_sky");
         }
+		else if (event_name == "water_adjust_tool")
+		{
+			LLFloaterReg::showInstance("env_adjust_water");
+		}
         else if (event_name == "my_environs")
-        {
+		{
             LLFloaterReg::showInstance("my_environments");
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+		}
+		//BD
+		else if (event_name == "editor")
+		{
+			LLFloaterReg::showInstance("env_settings");
 		}
 
 		return true;
@@ -9343,51 +9339,24 @@ class LLWorldEnvPreset : public view_listener_t
 		}
 		else if (item == "edit_water")
 		{
-<<<<<<< HEAD
-			LLFloaterReg::showInstance("env_edit_water", "edit");
-		}
-		/*else if (item == "delete_water")
-		{
-			LLFloaterReg::showInstance("env_delete_preset", "water");
-		}*/
-=======
             LLFloaterReg::showInstance("env_fixed_environmentent_water", "edit");
 		}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		else if (item == "new_sky")
 		{
             LLFloaterReg::showInstance("env_fixed_environmentent_sky", "new");
 		}
 		else if (item == "edit_sky")
 		{
-<<<<<<< HEAD
-			LLFloaterReg::showInstance("env_edit_sky", "edit");
-		}
-		/*else if (item == "delete_sky")
-		{
-			LLFloaterReg::showInstance("env_delete_preset", "sky");
-		}*/
-=======
             LLFloaterReg::showInstance("env_fixed_environmentent_sky", "edit");
 		}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		else if (item == "new_day_cycle")
 		{
             LLFloaterReg::showInstance("env_edit_extdaycycle", LLSDMap("edit_context", "inventory"));
 		}
 		else if (item == "edit_day_cycle")
 		{
-<<<<<<< HEAD
-			LLFloaterReg::showInstance("env_edit_day_cycle", "edit");
-		}
-		/*else if (item == "delete_day_cycle")
-		{
-			LLFloaterReg::showInstance("env_delete_preset", "day_cycle");
-		}*/
-=======
 			LLFloaterReg::showInstance("env_edit_extdaycycle", LLSDMap("edit_context", "inventory"));
 		}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		else
 		{
 			LL_WARNS() << "Unknown item selected" << LL_ENDL;
@@ -9540,6 +9509,14 @@ void show_topinfobar_context_menu(LLView* ctrl, S32 x, S32 y)
 	show_topbarinfo_context_menu->buildDrawLabels();
 	show_topbarinfo_context_menu->updateParent(LLMenuGL::sMenuContainer);
 	LLMenuGL::showPopup(ctrl, show_topbarinfo_context_menu, x, y);
+}
+
+namespace
+{
+	bool always_disable_menu()
+	{
+		return false;
+	}
 }
 
 //BD - Right Click Menu
@@ -9806,7 +9783,11 @@ void initialize_menus()
 	// Don't prepend MenuName.Foo because these can be used in any menu.
 	enable.add("IsGodCustomerService", boost::bind(&is_god_customer_service));
 
+#if AL_VIEWER_EVENT_RECORDER
 	enable.add("displayViewerEventRecorderMenuItems",boost::bind(&LLViewerEventRecorder::displayViewerEventRecorderMenuItems,&LLViewerEventRecorder::instance()));
+#else
+	enable.add("displayViewerEventRecorderMenuItems", boost::bind(&always_disable_menu));
+#endif
 
 	view_listener_t::addEnable(new LLUploadCostCalculator(), "Upload.CalculateCosts");
 
@@ -10204,10 +10185,7 @@ void initialize_menus()
 	enable.add("Object.EnableOpen", boost::bind(&enable_object_open));
 	enable.add("Object.EnableTouch", boost::bind(&enable_object_touch, _1));
 	enable.add("Object.EnableDelete", boost::bind(&enable_object_delete));
-//	enable.add("Object.EnableWear", boost::bind(&object_is_wearable));
-// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
-	enable.add("Object.EnableWear", boost::bind(&object_selected_and_point_valid, _2));
-// [/RLVa:KB]
+	enable.add("Object.EnableWear", boost::bind(&object_is_wearable));
 
 	enable.add("Object.EnableStandUp", boost::bind(&enable_object_stand_up));
 	enable.add("Object.EnableSit", boost::bind(&enable_object_sit, _1));
@@ -10289,12 +10267,6 @@ void initialize_menus()
 		enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
 	}
 // [/RLVa:KB]
-
-// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
-	//view_listener_t::addMenu(new LLViewFullscreen(), "View.Fullscreen");
-	//enable.add("View.EnableFullscreen", boost::bind(&view_enable_fullscreen));
-// [/SL:KB]
-
 //	//BD - Re/DeAlpha
 	view_listener_t::addMenu(new BDObjectSetAlpha(), "Object.SetAlphaMode");
 

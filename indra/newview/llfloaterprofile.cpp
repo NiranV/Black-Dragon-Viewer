@@ -280,7 +280,7 @@ public:
 		// handle app/classified/create urls first
 		if (params.size() == 1 && params[0].asString() == "create")
 		{
-			LLAvatarActions::showPick(gAgent.getID());
+			LLAvatarActions::showPicks(gAgent.getID());
 			return true;
 		}
 
@@ -331,7 +331,7 @@ public:
 		// handle app/classified/create urls first
 		if (params.size() == 1 && params[0].asString() == "create")
 		{
-			LLAvatarActions::showClassified(gAgent.getID());
+			LLAvatarActions::showClassifieds(gAgent.getID());
 			return true;
 		}
 
@@ -482,8 +482,8 @@ BOOL LLFloaterProfile::postBuild()
 	mUrlEdit = getChild<LLLineEditor>("url_edit");
 	mLoadButton = getChild<LLUICtrl>("load");
 	mLoadButton->setCommitCallback(boost::bind(&LLFloaterProfile::onCommitLoad, this, _1));
-	mWebProfileButton = getChild<LLButton>("web_profile_popout_btn");
-	mWebProfileButton->setCommitCallback(boost::bind(&LLFloaterProfile::onCommitWebProfile, this));
+	//mWebProfileButton = getChild<LLButton>("web_profile_popout_btn");
+	//mWebProfileButton->setCommitCallback(boost::bind(&LLFloaterProfile::onCommitWebProfile, this));
 
 	//BD - First Life
 	mDescriptionEdit = getChild<LLTextEditor>("fl_description_edit");
@@ -1105,13 +1105,6 @@ void LLFloaterProfile::onCommitLoad(LLUICtrl* ctrl)
 		}
 	}
 }
-
-void LLFloaterProfile::onCommitWebProfile()
-{
-	// open the web profile floater
-	LLAvatarActions::showProfileWeb(mAvatarId);
-}
-
 
 void LLFloaterProfile::onCommitNotes()
 {

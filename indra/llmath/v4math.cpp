@@ -147,25 +147,12 @@ LLVector4 vec3to4(const LLVector3 &vec)
 }
 
 //BD - Vector4
-LLVector4::LLVector4(const LLVector2 &vec)
-{
-	mV[VX] = (F32)vec.mV[VX];
-	mV[VY] = (F32)vec.mV[VY];
-	mV[VZ] = 0;
-	mV[VW] = 0;
-}
-
 LLVector4::LLVector4(const LLVector3d &vec)
 {
 	mV[VX] = (F32)vec.mdV[VX];
 	mV[VY] = (F32)vec.mdV[VY];
 	mV[VZ] = (F32)vec.mdV[VZ];
 	mV[VW] = 0;
-}
-
-LLVector4::LLVector4(const LLSD& sd)
-{
-	setValue(sd);
 }
 
 // static 

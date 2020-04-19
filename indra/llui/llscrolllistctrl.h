@@ -108,10 +108,7 @@ public:
 
 		// layout
 		Optional<S32>	column_padding,
-<<<<<<< HEAD
-=======
 						row_padding,
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 						page_lines,
 						heading_height;
 

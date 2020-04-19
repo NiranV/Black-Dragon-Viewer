@@ -224,6 +224,7 @@ public:
 	BOOL		switchTexture() ;
 
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
+	bool        isDefaultTexture(U32 nChannel) const;
 	void		setDefaultTexture(U32 nChannel, bool fShowDefault) const;
 // [/SL:KB]
 
@@ -236,6 +237,9 @@ public:
 	void setRiggedIndex(U32 type, S32 index);
 
 	static U32 getRiggedDataMask(U32 type);
+
+	void	notifyAboutCreatingTexture(LLViewerTexture *texture);
+	void	notifyAboutMissingAsset(LLViewerTexture *texture);
 
 public: //aligned members
 	LLVector4a		mExtents[2];

@@ -77,6 +77,7 @@
 #include "llpostprocess.h"
 #include "llscenemonitor.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
+#include "rlvhandler.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
 
@@ -111,8 +112,6 @@ U32 gRecentFrameCount = 0; // number of 'recent' frames
 LLFrameTimer gRecentFPSTime;
 LLFrameTimer gRecentMemoryTime;
 LLFrameTimer gAssetStorageLogTime;
-F32 gFPSLogFrequency = 10.0f;
-F32 gMemoryLogFrequency = 600.0f;
 
 // Rendering stuff
 void pre_show_depth_buffer();
@@ -202,14 +201,7 @@ void display_update_camera()
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	viewer_cam->setFar(final_far);
 	gViewerWindow->setup3DRender();
-	
-<<<<<<< HEAD
-	// update all the sky/atmospheric/water settings
-	LLWLParamManager::getInstance()->update(viewer_cam);
-	LLWaterParamManager::getInstance()->update(viewer_cam);
 
-=======
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	// Update land visibility too
 	LLWorld::getInstance()->setLandFarClip(final_far);
 }
@@ -217,15 +209,16 @@ void display_update_camera()
 // Write some stats to LL_INFOS()
 void display_stats()
 {
-	if (gFPSLogFrequency > 0.f && gRecentFPSTime.getElapsedTimeF32() >= gFPSLogFrequency)
+	static const LLCachedControl<F32> fps_log_freq(gSavedSettings, "FPSLogFrequency");
+	if (fps_log_freq > 0.f && gRecentFPSTime.getElapsedTimeF32() >= fps_log_freq)
 	{
-		F32 fps = gRecentFrameCount / gFPSLogFrequency;
+		F32 fps = gRecentFrameCount / fps_log_freq;
 		LL_INFOS() << llformat("FPS: %.02f", fps) << LL_ENDL;
 		gRecentFrameCount = 0;
 		gRecentFPSTime.reset();
 	}
-
-	if (gMemoryLogFrequency > 0.f && gRecentMemoryTime.getElapsedTimeF32() >= gMemoryLogFrequency)
+	static const LLCachedControl<F32> mem_log_freq(gSavedSettings, "MemoryLogFrequency");
+	if (mem_log_freq > 0.f && gRecentMemoryTime.getElapsedTimeF32() >= mem_log_freq)
 	{
 		gMemoryAllocated = U64Bytes(LLMemory::getCurrentRSS());
 		U32Megabytes memory = gMemoryAllocated;
@@ -233,7 +226,7 @@ void display_stats()
 		LLMemory::logMemoryInfo(TRUE) ;
 		gRecentMemoryTime.reset();
 	}
-    F32 asset_storage_log_freq = gSavedSettings.getF32("AssetStorageLogFrequency");
+    static const LLCachedControl<F32> asset_storage_log_freq(gSavedSettings, "AssetStorageLogFrequency");
     if (asset_storage_log_freq > 0.f && gAssetStorageLogTime.getElapsedTimeF32() >= asset_storage_log_freq)
     {
         gAssetStorageLogTime.reset();
@@ -276,18 +269,15 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		return;
 	}
 
-<<<<<<< HEAD
-	//BD
-	LLAppViewer* app_viewer = LLAppViewer::instance();
-	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
-	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
-=======
     if (gResizeShadowTexture)
 	{ //skip render on frames where window has been resized
 		gPipeline.resizeShadowTexture();
 		gResizeShadowTexture = FALSE;
 	}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+	//BD
+	LLAppViewer* app_viewer = LLAppViewer::instance();
+	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
 
 	if (LLPipeline::sRenderDeferred)
 	{ //hack to make sky show up in deferred snapshots
@@ -403,8 +393,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 	LLImageGL::updateStats(gFrameTimeSeconds);
 	
-	LLVOAvatar::sRenderName = gSavedSettings.getS32("AvatarNameTagMode");
-	LLVOAvatar::sRenderGroupTitles = (gSavedSettings.getBOOL("NameTagShowGroupTitles") && gSavedSettings.getS32("AvatarNameTagMode"));
+	static const LLCachedControl<S32> av_name_tag_mode(gSavedSettings, "AvatarNameTagMode");
+	static const LLCachedControl<bool> name_tag_show_grp_title(gSavedSettings, "NameTagShowGroupTitles");
+
+	LLVOAvatar::sRenderName = av_name_tag_mode;
+	LLVOAvatar::sRenderGroupTitles = (name_tag_show_grp_title && av_name_tag_mode);
 	
 	gPipeline.mBackfaceCull = TRUE;
 	gFrameCount++;
@@ -433,7 +426,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		F32 teleport_save_time = TELEPORT_EXPIRY + TELEPORT_EXPIRY_PER_ATTACHMENT * attach_count;
 		F32 teleport_elapsed = gTeleportDisplayTimer.getElapsedTimeF32();
 		F32 teleport_percent = teleport_elapsed * (100.f / teleport_save_time);
-		if( (gAgent.getTeleportState() != LLAgent::TELEPORT_START) && (teleport_percent >= 100.f) )
+		if( (gAgent.getTeleportState() != LLAgent::TELEPORT_START) && (teleport_percent > 100.f) )
 		{
 			// Give up.  Don't keep the UI locked forever.
 			gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
@@ -576,12 +569,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 	if (gDisconnected)
 	{
-<<<<<<< HEAD
 		app_viewer->pingMainloopTimeout("Display:Disconnected");
-		LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
-=======
-		LLAppViewer::instance()->pingMainloopTimeout("Display:Disconnected");
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 		render_ui();
 		swap();
 	}
@@ -719,10 +707,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		LLGLState::checkTextureChannels();
 		LLGLState::checkClientArrays();
 
-		//BD
 		BOOL to_texture = gPipeline.canUseVertexShaders() &&
-						  gPipeline.sRenderGlow ||
-						  gPipeline.RenderDeferred;
+						LLPipeline::sRenderGlow;
 
 		app_viewer->pingMainloopTimeout("Display:Swap");
 		
@@ -923,11 +909,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//	gGL.popMatrix();
 		//}
 
-<<<<<<< HEAD
 		LLPipeline::sUnderWaterRender = under_water;
-=======
-		LLPipeline::sUnderWaterRender = LLViewerCamera::getInstance()->cameraUnderWater() ? TRUE : FALSE;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 		LLGLState::checkStates();
 		LLGLState::checkClientArrays();
@@ -966,7 +948,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		{
 			LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
 
-			if (gSavedSettings.getBOOL("RenderDepthPrePass") && LLGLSLShader::sNoFixedFunction)
+			static LLCachedControl<bool> renderDepthPrePass(gSavedSettings, "RenderDepthPrePass");
+			if (renderDepthPrePass && LLGLSLShader::sNoFixedFunction)
 			{
 				gGL.setColorMask(false, false);
 
@@ -1007,6 +990,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				gGLLastModelView[i] = gGLModelView[i];
 				gGLLastProjection[i] = gGLProjection[i];
 			}
+			stop_glerror();
 		}
 
 		{
@@ -1055,8 +1039,6 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		{
 			gPipeline.renderDeferredLighting(&gPipeline.mScreen);
 		}
-
-		stop_glerror();
 
 		LLPipeline::sUnderWaterRender = FALSE;
 
@@ -1129,7 +1111,8 @@ void render_hud_attachments()
 		hud_cam.setAxes(LLVector3(1,0,0), LLVector3(0,1,0), LLVector3(0,0,1));
 		LLViewerCamera::updateFrustumPlanes(hud_cam, TRUE);
 
-		bool render_particles = gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_PARTICLES) && gSavedSettings.getBOOL("RenderHUDParticles");
+		static LLCachedControl<bool> renderHUDParticles(gSavedSettings, "RenderHUDParticles");
+		bool render_particles = (gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_PARTICLES) && renderHUDParticles);
 		
 		//only render hud objects
 		gPipeline.pushRenderTypeMask();
@@ -1303,12 +1286,7 @@ void render_ui(F32 zoom_factor, int subfield)
 
 	LLGLState::checkStates();
 	
-<<<<<<< HEAD
-	glh::matrix4f saved_view = glh_get_current_modelview();
-	LLSceneMonitor* scene_monitor = LLSceneMonitor::getInstance();
-=======
 	glh::matrix4f saved_view = get_current_modelview();
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	if (!gSnapshot)
 	{
@@ -1317,29 +1295,33 @@ void render_ui(F32 zoom_factor, int subfield)
 		set_current_modelview(copy_matrix(gGLLastModelView));
 	}
 	
-	if(scene_monitor->needsUpdate())
+	if(LLSceneMonitor::getInstance()->needsUpdate())
 	{
         LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_SCENE_MON);
 		gGL.pushMatrix();
 		gViewerWindow->setup2DRender();
-		scene_monitor->compare();
+		LLSceneMonitor::getInstance()->compare();
 		gViewerWindow->setup3DRender();
 		gGL.popMatrix();
 	}
 
 	{
-		//BD
 		BOOL to_texture = gPipeline.canUseVertexShaders() &&
-						  gPipeline.sRenderGlow ||
-						  gPipeline.RenderDeferred;
+							LLPipeline::sRenderGlow;
 
 		if (to_texture)
 		{
 			gPipeline.renderBloom(gSnapshot, zoom_factor, subfield);
 		}
-		
+
 		LL_RECORD_BLOCK_TIME(FTM_RENDER_HUD);
 		render_hud_elements();
+// [RLVa:KB] - Checked: RLVa-2.2 (@setoverlay)
+		if (gRlvHandler.isEnabled())
+		{
+			gRlvHandler.renderOverlay();
+		}
+// [/RLVa:KB]
 		render_hud_attachments();
 	}
 
@@ -1359,6 +1341,10 @@ void render_ui(F32 zoom_factor, int subfield)
 				render_ui_3d();
 				LLGLState::checkStates();
 			}
+			/*else
+			{
+				render_disconnected_background();
+			}*/
 
             LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_2D);
 			render_ui_2d();
@@ -1491,7 +1477,8 @@ void render_ui_3d()
 	}
 
 	// Coordinate axes
-	if (gSavedSettings.getBOOL("ShowAxes"))
+	static LLCachedControl<bool> showAxes(gSavedSettings, "ShowAxes");
+	if (showAxes)
 	{
 		draw_axes();
 	}
@@ -1548,7 +1535,7 @@ void render_ui_2d()
 	}
 	
 
-	if (gSavedSettings.getBOOL("RenderUIBuffer"))
+	if (LLPipeline::RenderUIBuffer)
 	{
 		LLUI* ui_inst = LLUI::getInstance();
 		if (ui_inst->mDirty)

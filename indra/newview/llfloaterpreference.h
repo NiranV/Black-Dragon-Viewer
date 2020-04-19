@@ -56,6 +56,7 @@ class LLProgressBar;
 class LLTabContainer;
 class LLSearchableUI;
 class LLSearchableControl;
+struct skin_t;
 
 typedef std::map<std::string, std::string> notifications_map;
 
@@ -142,23 +143,7 @@ protected:
 	void onDoNotDisturbResponseChanged();
 	// callback for defaults
 	void setHardwareDefaults();
-<<<<<<< HEAD
 	
-=======
-	void setRecommended();
-	// callback for when client modifies a render option
-    void onRenderOptionEnable();
-	// callback for when client turns on impostors
-	void onAvatarImpostorsEnable();
-
-	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
-	void onClickActionChange();
-	// updates click/double-click action settings depending on controls values
-	void updateClickActionSettings();
-	// updates click/double-click action controls depending on values from settings.xml
-	void updateClickActionControls();
-
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
@@ -169,8 +154,6 @@ public:
 	void onClickSetCache();
 	void changeCachePath(const std::vector<std::string>& filenames, std::string proposed_name);
 	void onClickResetCache();
-	void onClickSkin(LLUICtrl* ctrl,const LLSD& userdata);
-	void onSelectSkin();
 	void onClickSetKey();
 	void setKey(KEY key);
 	void setMouse(LLMouseHandler::EClickType click);
@@ -296,6 +279,17 @@ private:
 //	//BD - Expandable Tabs
 	S32 mModifier;
 
+	
+	void loadUserSkins();
+	void reloadSkinList();
+	void onAddSkin();
+	void onRemoveSkin();
+	void callbackRemoveSkin(const LLSD& notification, const LLSD& response);
+	void onApplySkin();
+	void callbackApplySkin(const LLSD& notification, const LLSD& response);
+	void onSelectSkin(const LLSD& data);
+	void refreshSkinInfo(const skin_t& skin);
+
 	static std::string sSkin;
 	notifications_map mNotificationOptions;
 	bool mClickActionDirty; ///< Set to true when the click/double-click options get changed by user.
@@ -309,6 +303,10 @@ private:
 	std::string mDirectoryVisibility;
 	
 	LLAvatarData mAvatarProperties;
+
+	typedef std::map<std::string, skin_t> skinmap_t;
+	skinmap_t mUserSkins;
+	
 	LOG_CLASS(LLFloaterPreference);
 
 	LLFilterEditor *mFilterEdit;
@@ -493,46 +491,6 @@ private:
 	LOG_CLASS(LLPanelPreferenceGraphics);
 };
 
-<<<<<<< HEAD
-=======
-class LLFloaterPreferenceGraphicsAdvanced : public LLFloater
-{
-  public: 
-	LLFloaterPreferenceGraphicsAdvanced(const LLSD& key);
-	~LLFloaterPreferenceGraphicsAdvanced();
-	/*virtual*/ BOOL postBuild();
-	void onOpen(const LLSD& key);
-	void onClickCloseBtn(bool app_quitting);
-	void disableUnavailableSettings();
-	void refreshEnabledGraphics();
-	void refreshEnabledState();
-	void updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box);
-	void updateMaxNonImpostors();
-	void setMaxNonImpostorsText(U32 value, LLTextBox* text_box);
-	void updateMaxComplexity();
-	void setMaxComplexityText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-	void refresh();
-	// callback for when client modifies a render option
-	void onRenderOptionEnable();
-    void onAdvancedAtmosphericsEnable();
-	LOG_CLASS(LLFloaterPreferenceGraphicsAdvanced);
-};
-
-class LLAvatarComplexityControls
-{
-  public: 
-	static void updateMax(LLSliderCtrl* slider, LLTextBox* value_label);
-	static void setText(U32 value, LLTextBox* text_box);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
-	LOG_CLASS(LLAvatarComplexityControls);
-};
-
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 class LLFloaterPreferenceProxy : public LLFloater
 {
 public: 

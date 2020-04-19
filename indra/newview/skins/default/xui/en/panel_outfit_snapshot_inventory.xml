@@ -50,9 +50,7 @@
      width="200"
      type="string"
      word_wrap="true">
-Uploading an image to your inventory costs L$[UPLOAD_COST].
-
-Fee is based on your subscription level. Higher levels are charged lower fees.
+        Uploading an image to your inventory costs L$[UPLOAD_COST].
     </text>
     <button
      follows="right|bottom"
@@ -69,7 +67,7 @@ Fee is based on your subscription level. Higher levels are charged lower fees.
     <button
      follows="left|bottom"
      height="23"
-     label="UPLOAD L$[UPLOAD_COST]"
+     label="UPLOAD L$10"
      layout="topleft"
      left="10"
      name="save_btn"

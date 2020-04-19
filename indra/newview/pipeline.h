@@ -41,9 +41,6 @@
 
 #include <stack>
 
-//BD - Exodus Post Process
-#include "exopostprocess.h"
-
 class LLViewerTexture;
 class LLFace;
 class LLViewerObject;
@@ -116,10 +113,6 @@ public:
     void resizeShadowTexture();
 
 	void releaseGLBuffers();
-	//BD
-	void createGLBuffers(U32 width, U32 height);
-	bool addDeferredAttachments(LLRenderTarget& target);
-
 	void releaseLUTBuffers();
 	void releaseScreenBuffers();
     void releaseShadowBuffers();
@@ -145,7 +138,6 @@ public:
 	//attempt to allocate screen buffers at resX, resY
 	//returns true if allocation successful, false otherwise
 	bool allocateScreenBuffer(U32 resX, U32 resY, U32 samples);
-    bool allocateShadowBuffer(U32 resX, U32 resY);
 
 	void allocatePhysicsBuffer();
 	
@@ -283,7 +275,8 @@ public:
 //	//BD - Motion Blur
 	void renderMotionBlur(U32 type);
 	void renderMotionBlurWithTexture(U32 type);
-	
+	void renderGeomMotionBlur();
+
 	void renderObjects(U32 type, U32 mask, bool texture = true, bool batch_texture = false);
 	void renderMaskedObjects(U32 type, U32 mask, bool texture = true, bool batch_texture = false);
     void renderFullbrightMaskedObjects(U32 type, U32 mask, bool texture = true, bool batch_texture = false);
@@ -304,15 +297,7 @@ public:
 	void renderGeomDeferred(LLCamera& camera);
 	void renderGeomPostDeferred(LLCamera& camera, bool do_occlusion=true);
 	void renderGeomShadow(LLCamera& camera);
-<<<<<<< HEAD
-
-//	//BD - Motion Blur
-	void renderGeomMotionBlur();
-
-	void bindDeferredShader(LLGLSLShader& shader, U32 light_index = 0, U32 noise_map = 0xFFFFFFFF);
-=======
 	void bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_target = nullptr);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 	void setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep);
 
 	void unbindDeferredShader(LLGLSLShader& shader);
@@ -532,7 +517,8 @@ public:
 // 		RENDER_DEBUG_FEATURE_HW_LIGHTING		= 0x0010,
 		RENDER_DEBUG_FEATURE_FLEXIBLE			= 0x0010,
 		RENDER_DEBUG_FEATURE_FOG				= 0x0020,
-		RENDER_DEBUG_FEATURE_FR_INFO			= 0x0080
+		RENDER_DEBUG_FEATURE_FR_INFO			= 0x0080,
+		RENDER_DEBUG_FEATURE_FOOT_SHADOWS		= 0x0100,
 	};
 
 	enum LLRenderDebugMask: U64
@@ -618,27 +604,22 @@ public:
 	static bool				sRenderGlow;
 	static bool				sTextureBindTest;
 	static bool				sRenderFrameTest;
+	static bool				sRenderAttachedLights;
 	static bool				sRenderAttachedParticles;
 	static bool				sRenderDeferred;
 	static bool             sMemAllocationThrottled;
 	static S32				sVisibleLightCount;
 	static F32				sMinRenderSize;
 	static bool				sRenderingHUDs;
-<<<<<<< HEAD
-	//BD
-	static bool				sRenderOtherAttachedLights;
-	static bool				sRenderOwnAttachedLights;
-	static bool				sRenderDeferredLights;
+    static F32              sDistortionWaterClipPlaneMargin;
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 	static bool				sRenderTextures;
 // [/SL:KB]
 
-//	//BD - Exodus Post Process
-	static BOOL             sExodusRenderShaderGamma;
-	static BOOL             sExodusRenderToneMapping;
-=======
-    static F32              sDistortionWaterClipPlaneMargin;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+	//BD
+	static bool                sRenderOtherAttachedLights;
+	static bool                sRenderOwnAttachedLights;
+	static bool                sRenderDeferredLights;
 
 	static LLTrace::EventStatHandle<S64> sStatBatchSize;
 
@@ -657,14 +638,12 @@ public:
 	LLRenderTarget			mHighlight;
 	LLRenderTarget			mPhysicsDisplay;
 
-<<<<<<< HEAD
 //	//BD - Motion Blur
 	LLRenderTarget			mVelocityMap;
-=======
+
     LLCullResult            mSky;
     LLCullResult            mReflectedObjects;
     LLCullResult            mRefractedObjects;
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	//utility buffer for rendering post effects, gets abused by renderDeferredLighting
 	LLPointer<LLVertexBuffer> mDeferredVB;
@@ -674,6 +653,7 @@ public:
 
 	//sun shadow map
 	LLRenderTarget			mShadow[6];
+	LLRenderTarget			mShadowOcclusion[6];
 	std::vector<LLVector3>	mShadowFrustPoints[4];
 	LLVector4				mShadowError;
 	LLVector4				mShadowFOV;
@@ -706,8 +686,7 @@ public:
 
 	//noise map
 	U32					mNoiseMap;
-	//BD
-	//U32				mTrueNoiseMap;
+	U32					mTrueNoiseMap;
 	U32					mLightFunc;
 
 	LLColor4			mSunDiffuse;
@@ -930,14 +909,21 @@ public:
 	static F32 RenderDeferredSunWash;
 	static U32 RenderFSAASamples;
 	static U32 RenderResolutionDivisor;
+// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
+	static F32 RenderResolutionMultiplier;
+// [/SL:KB]
 	static bool RenderUIBuffer;
 	static S32 RenderShadowDetail;
 	static bool RenderDeferredSSAO;
+	static F32 RenderShadowResolutionScale;
 	static bool RenderLocalLights;
 	static bool RenderDelayCreation;
 	static bool RenderAnimateRes;
 	static bool FreezeTime;
 	static S32 DebugBeaconLineWidth;
+	static F32 RenderHighlightBrightness;
+	static LLColor4 RenderHighlightColor;
+	static F32 RenderHighlightThickness;
 	static bool RenderSpotLightsInNondeferred;
 	static LLColor4 PreviewAmbientColor;
 	static LLColor4 PreviewDiffuse0;
@@ -959,6 +945,7 @@ public:
 	static F32 RenderGlowWidth;
 	static F32 RenderGlowStrength;
 	static bool RenderDepthOfField;
+	static bool RenderDepthOfFieldInEditMode;
 	static F32 CameraFocusTransitionTime;
 	static F32 CameraFNumber;
 	static F32 CameraFocalLength;
@@ -968,21 +955,24 @@ public:
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
+	static LLVector3 RenderSSAOEffect;
 	static F32 RenderShadowOffsetError;
-	static LLVector4 RenderShadowBiasError;
+	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
-	static LLVector4 RenderShadowBias;
+	static F32 RenderShadowBias;
 	static F32 RenderSpotShadowOffset;
 	static F32 RenderSpotShadowBias;
     static LLDrawable* RenderSpotLight;
 	static F32 RenderEdgeDepthCutoff;
 	static F32 RenderEdgeNormCutoff;
+	static LLVector3 RenderShadowGaussian;
 	static F32 RenderShadowBlurDistFactor;
 	static bool RenderDeferredAtmospheric;
 	static S32 RenderReflectionDetail;
 	static F32 RenderHighlightFadeTime;
 	static LLVector3 RenderShadowClipPlanes;
 	static LLVector3 RenderShadowOrthoClipPlanes;
+	static LLVector3 RenderShadowNearDist;
 	static F32 RenderFarClip;
 	static LLVector3 RenderShadowSplitExponent;
 	static F32 RenderShadowErrorCutoff;
@@ -992,17 +982,17 @@ public:
 	static F32 CameraDoFResScale;
 	static F32 RenderAutoHideSurfaceAreaLimit;
 
-//	//BD - Special Options
+//    //BD - Special Options
 	static BOOL CameraFreeDoFFocus;
 	static BOOL CameraDoFLocked;
-	static bool RenderDepthOfFieldInEditMode;
+	//static bool RenderDepthOfFieldInEditMode;
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static BOOL RenderHighPrecisionNormals;
 	static BOOL RenderShadowAutomaticDistance;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
-	static F32 RenderSSAOEffect;
+	//static F32 RenderSSAOEffect;
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;
 	static F32 RenderSepiaStrength;
@@ -1013,17 +1003,17 @@ public:
 	static F32 RenderGlobalLightStrength;
 	static LLVector4 RenderShadowFarClipVec;
 
-//	//BD - Shadow Map Allocation
+//    //BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;
 	static LLVector4 RenderShadowResolution;
 
-//	//BD - Volumetric Lighting
+//    //BD - Volumetric Lighting
 	static BOOL RenderGodrays;
 	static U32 RenderGodraysResolution;
 	static F32 RenderGodraysMultiplier;
 	static F32 RenderGodraysFalloffMultiplier;
 
-//	//BD - Motion Blur
+//    //BD - Motion Blur
 	static BOOL RenderMotionBlur;
 	static U32 RenderMotionBlurStrength;
 	static U32 RenderMotionBlurQuality;

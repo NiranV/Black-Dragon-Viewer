@@ -297,7 +297,7 @@ public:
 	bool isLightSpotlight() const         { return mLightTexture.notNull(); }
 	void setParams(const LLVector3& params) { mParams = params; }
 	LLVector3 getParams() const			   { return mParams; }
-
+	
 	//BD
 	void setSpotLightShadow(const bool& shadow) { mHasSpotLightShadow = shadow; }
 	bool hasSpotLightShadow() const         { return mHasSpotLightShadow; }

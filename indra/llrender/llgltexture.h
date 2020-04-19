@@ -141,11 +141,14 @@ public:
 	S32        getDiscardLevel() const;
 	S8         getComponents() const;
 	BOOL       getBoundRecently() const;
-	S32Bytes   getTextureMemory() const ;
+	S64Bytes   getTextureMemory() const ;
 	LLGLenum   getPrimaryFormat() const;
 	BOOL       getIsAlphaMask() const ;
 	LLTexUnit::eTextureType getTarget(void) const ;
-	BOOL       getMask(const LLVector2 &tc);
+// [RLVa:KB] - Checked: RLVa-2.2 (@setoverlay)
+	bool       getMask(const LLVector2 &tc) const;
+// [/RLVa:KB]
+//	BOOL       getMask(const LLVector2 &tc);
 	F32        getTimePassedSinceLastBound();
 	BOOL       getMissed() const ;
 	BOOL       isJustBound()const ;

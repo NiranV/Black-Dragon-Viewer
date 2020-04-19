@@ -102,9 +102,6 @@ public:
 
 	const LLMatrix4&      getWorldMatrix() const		{ return mXform.getWorldMatrix(); }
 	const LLMatrix4&	  getRenderMatrix() const;
-//	//BD - Motion Blur
-	LLMatrix4&			  getLastRenderMatrix();
-
 	void				  setPosition(LLVector3 v) const { }
 	const LLVector3&	  getPosition() const			{ return mXform.getPosition(); }
 	const LLVector3&      getWorldPosition() const		{ return mXform.getPositionW(); }
@@ -115,6 +112,9 @@ public:
 	const LLQuaternion&   getRotation() const			{ return mXform.getRotation(); }
 	F32			          getIntensity() const			{ return llmin(mXform.getScale().mV[0], 4.f); }
 	S32					  getLOD() const				{ return mVObjp ? mVObjp->getLOD() : 1; }
+
+//	//BD - Motion Blur
+	LLMatrix4&			  getLastRenderMatrix();
 
 	void  getMinMax(LLVector3& min,LLVector3& max) const { mXform.getMinMax(min,max); }
 	LLXformMatrix*		getXform() { return &mXform; }

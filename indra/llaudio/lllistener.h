@@ -44,7 +44,7 @@ class LLListener
  protected:
  public:  
 	LLListener();
-	virtual ~LLListener();
+	virtual ~LLListener() = default; 
 
 	virtual void set(const LLVector3& pos, const LLVector3& vel, const LLVector3& up, const LLVector3& at);
 

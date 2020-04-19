@@ -2683,17 +2683,15 @@ void LLViewerParcelMgr::onTeleportFailed()
 	mTeleportFailedSignal();
 }
 
-<<<<<<< HEAD
+bool  LLViewerParcelMgr::getTeleportInProgress()
+{
+    return mTeleportInProgress // case where parcel data arrives after teleport
+        || gAgent.getTeleportState() > LLAgent::TELEPORT_NONE; // For LOCAL, no mTeleportInProgress
+}
+
 // [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
 void LLViewerParcelMgr::onTeleportDone()
 {
 	mTeleportDoneSignal();
 }
 // [/SL:KB]
-=======
-bool  LLViewerParcelMgr::getTeleportInProgress()
-{
-    return mTeleportInProgress // case where parcel data arrives after teleport
-        || gAgent.getTeleportState() > LLAgent::TELEPORT_NONE; // For LOCAL, no mTeleportInProgress
-}
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762

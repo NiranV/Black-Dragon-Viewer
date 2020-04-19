@@ -111,6 +111,7 @@ private:
 			mTop(0),
 			mBars(NULL)
 		{}
+		~TimerBarRow();
 		S32			mBottom,
 					mTop;
 		TimerBar*	mBars;

@@ -113,7 +113,8 @@ U32 LLDrawPoolTerrain::getVertexDataMask()
 void LLDrawPoolTerrain::prerender()
 {
 	mShaderLevel = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_ENVIRONMENT);
-	sDetailMode = gSavedSettings.getS32("RenderTerrainDetail");
+	static const LLCachedControl<S32> render_terrain_detail(gSavedSettings, "RenderTerrainDetail");
+	sDetailMode = render_terrain_detail;
 }
 
 void LLDrawPoolTerrain::beginRenderPass( S32 pass )
@@ -212,7 +213,8 @@ void LLDrawPoolTerrain::render(S32 pass)
 	}
 
 	// Special-case for land ownership feedback
-	if (gSavedSettings.getBOOL("ShowParcelOwners"))
+	static const LLCachedControl<bool> show_parcel_owners(gSavedSettings, "ShowParcelOwners");
+	if (show_parcel_owners)
 	{
 		hilightParcelOwners(false);
 	}
@@ -248,7 +250,8 @@ void LLDrawPoolTerrain::renderDeferred(S32 pass)
 	renderFullShader();
 
 	// Special-case for land ownership feedback
-	if (gSavedSettings.getBOOL("ShowParcelOwners"))
+	static const LLCachedControl<bool> show_parcel_owners(gSavedSettings, "ShowParcelOwners");
+	if (show_parcel_owners)
 	{
 		hilightParcelOwners(true);
 	}

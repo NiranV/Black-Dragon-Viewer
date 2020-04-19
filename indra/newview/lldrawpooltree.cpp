@@ -99,7 +99,8 @@ void LLDrawPoolTree::render(S32 pass)
 	LLGLState test(GL_ALPHA_TEST, LLGLSLShader::sNoFixedFunction ? 0 : 1);
 
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
-	gGL.getTexUnit(sDiffTex)->bind( (LLPipeline::sRenderTextures) ? mTexturep : LLViewerFetchedTexture::sDefaultDiffuseImagep );
+	LLViewerTexture* pTexture = (LLPipeline::sRenderTextures) ? mTexturep : LLViewerFetchedTexture::sDefaultDiffuseImagep;
+	gGL.getTexUnit(sDiffTex)->bind(pTexture);
 // [/SL:KB]
 //	gGL.getTexUnit(sDiffTex)->bind(mTexturep);
 				

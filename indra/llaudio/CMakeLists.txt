@@ -38,11 +38,12 @@ set(llaudio_HEADER_FILES
     llaudioengine.h
     lllistener.h
     llaudiodecodemgr.h
+    llstreamingaudio.h
     llvorbisencode.h
     llwindgen.h
     )
 
-if (FMODSTUDIO)
+if (USE_FMODSTUDIO)
     include_directories(
         ${FMODSTUDIO_INCLUDE_DIR}
         )
@@ -57,7 +58,7 @@ if (FMODSTUDIO)
          lllistener_fmodstudio.h
          llstreamingaudio_fmodstudio.h
          )
-endif (FMODSTUDIO)
+endif (USE_FMODSTUDIO)
 
 if (OPENAL)
   list(APPEND llaudio_SOURCE_FILES
@@ -83,7 +84,6 @@ target_link_libraries(
     ${LLMATH_LIBRARIES}
     ${LLMESSAGE_LIBRARIES}
     ${LLVFS_LIBRARIES}
-    ${LLXML_LIBRARIES}
     ${VORBISENC_LIBRARIES}
     ${VORBISFILE_LIBRARIES}
     ${VORBIS_LIBRARIES}

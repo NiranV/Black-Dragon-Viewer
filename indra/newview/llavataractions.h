@@ -38,7 +38,7 @@ class LLInventoryPanel;
 class LLFloater;
 class LLView;
 
-std::string getProfileURL(const std::string& agent_name);
+std::string getProfileURL(const std::string& agent_name, bool feed_only = false);
 
 /**
  * Friend-related actions (add, remove, offer teleport, etc)
@@ -97,13 +97,14 @@ public:
      * Show avatar profile.
      */
     static void showProfile(const LLUUID& avatar_id);
-    static void showPick(const LLUUID& avatar_id, const LLUUID& pick_id = LLUUID::null);
-	static void showClassified(const LLUUID& avatar_id, const LLUUID& classified_id = LLUUID::null, bool edit = false);
+    static void showPicks(const LLUUID& avatar_id);
+    static void showPick(const LLUUID& avatar_id, const LLUUID& pick_id);
+    static void showClassifieds(const LLUUID& avatar_id);
+    static void showClassified(const LLUUID& avatar_id, const LLUUID& classified_id, bool edit = false);
     static void hideProfile(const LLUUID& avatar_id);
     static bool profileVisible(const LLUUID& avatar_id);
     static bool isPickTabSelected(const LLUUID& avatar_id);
     static LLFloater* getProfileFloater(const LLUUID& avatar_id);
-    static void showProfileWeb(const LLUUID& avatar_id);
 
 	/**
 	 * Show avatar on world map.
@@ -252,7 +253,6 @@ public:
 	 */
 	static void viewChatHistory(const LLUUID& id);
 
-<<<<<<< HEAD
 	//BD
 	/**
 	* Reports the selected avatar
@@ -260,9 +260,6 @@ public:
 	static void report(const LLUUID& id);
 
 	static std::set<LLUUID> getInventorySelectedUUIDs();
-=======
-	static std::set<LLUUID> getInventorySelectedUUIDs(LLInventoryPanel* active_panel = NULL);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	//BD - Empower someone with rights or revoke them.
 	static void empowerFriend(const LLUUID& id, S32 power);

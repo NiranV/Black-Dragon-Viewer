@@ -91,12 +91,13 @@ const U32 KICK_FLAGS_FREEZE		= 1 << 0;
 const U32 KICK_FLAGS_UNFREEZE	= 1 << 1;
 
 
-std::string getProfileURL(const std::string& agent_name)
+std::string getProfileURL(const std::string& agent_name, bool feed_only)
 {
 	std::string url = "[WEB_PROFILE_URL][AGENT_NAME]";
 	LLSD subs;
 	subs["WEB_PROFILE_URL"] = LLGridManager::getInstance()->getWebProfileURL();
 	subs["AGENT_NAME"] = agent_name;
+    subs["FEED_ONLY"] = feed_only ? "/?feed_only=true" : "";
 	url = LLWeb::expandURLSubstitutions(url, subs);
 	LLStringUtil::toLower(url);
 	return url;
@@ -401,22 +402,6 @@ void LLAvatarActions::startConference(const uuid_vec_t& ids, const LLUUID& float
 	make_ui_sound("UISndStartIM");
 }
 
-static const char* get_profile_floater_name(const LLUUID& avatar_id)
-{
-	// Use different floater XML for our profile to be able to save its rect.
-	return avatar_id == gAgentID ? "my_profile_web" : "profile_web";
-}
-
-static void on_avatar_name_show_profile(const LLUUID& agent_id, const LLAvatarName& av_name)
-{
-	std::string url = getProfileURL(av_name.getAccountName());
-
-	// PROFILES: open in webkit window
-	LLFloaterWebContent::Params p;
-	p.url(url).id(agent_id.asString());
-	LLFloaterReg::showInstance(get_profile_floater_name(agent_id), p);
-}
-
 // static
 void LLAvatarActions::showProfile(const LLUUID& avatar_id)
 {
@@ -427,21 +412,24 @@ void LLAvatarActions::showProfile(const LLUUID& avatar_id)
 }
 
 // static
+void LLAvatarActions::showPicks(const LLUUID& avatar_id)
+{
+	if (avatar_id.notNull())
+	{
+		LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
+		if (profilefloater)
+		{
+			profilefloater->showPick();
+		}
+	}
+}
+
+// static
 void LLAvatarActions::showPick(const LLUUID& avatar_id, const LLUUID& pick_id)
 {
 	if (avatar_id.notNull())
 	{
-		LLFloater* floater = LLFloaterReg::getInstance("profile", LLSD().with("id", avatar_id));
-		LLFloaterProfile* profilefloater = NULL;
-		if (floater && floater->getVisible())
-		{
-			profilefloater = dynamic_cast<LLFloaterProfile*>(floater);
-		}
-		else
-		{
-			profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
-		}
-
+		LLFloaterProfile* profilefloater = LLFloaterReg::findTypedInstance<LLFloaterProfile>("profile", LLSD().with("id", avatar_id));
 		if (profilefloater)
 		{
 			profilefloater->showPick(pick_id);
@@ -452,15 +440,28 @@ void LLAvatarActions::showPick(const LLUUID& avatar_id, const LLUUID& pick_id)
 // static
 bool LLAvatarActions::isPickTabSelected(const LLUUID& avatar_id)
 {
-    /*if (avatar_id.notNull())
+    if (avatar_id.notNull())
     {
         LLFloaterProfile* profilefloater = LLFloaterReg::findTypedInstance<LLFloaterProfile>("profile", LLSD().with("id", avatar_id));
         if (profilefloater)
         {
-            return profilefloater->isPickTabSelected();
+            //return profilefloater->isPickTabSelected();
         }
-    }*/
+    }
     return false;
+}
+
+// static
+void LLAvatarActions::showClassifieds(const LLUUID& avatar_id)
+{
+	if (avatar_id.notNull())
+	{
+		LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", avatar_id)));
+		if (profilefloater)
+		{
+			profilefloater->showClassified();
+		}
+	}
 }
 
 // static
@@ -500,15 +501,6 @@ LLFloater* LLAvatarActions::getProfileFloater(const LLUUID& avatar_id)
 {
     LLFloaterProfile* floater = LLFloaterReg::findTypedInstance<LLFloaterProfile>("profile", LLSD().with("id", avatar_id));
     return floater;
-}
-
-// static
-void LLAvatarActions::showProfileWeb(const LLUUID& avatar_id)
-{
-    if (avatar_id.notNull())
-    {
-        LLAvatarNameCache::get(avatar_id, boost::bind(&on_avatar_name_show_profile, _1, _2));
-    }
 }
 
 
@@ -797,10 +789,10 @@ namespace action_give_inventory
 	 * Checks My Inventory visibility.
 	 */
 
-	static bool is_give_inventory_acceptable(LLInventoryPanel* panel = NULL)
+	static bool is_give_inventory_acceptable()
 	{
 		// check selection in the panel
-		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs(panel);
+		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs();
 		if (inventory_selected_uuids.empty()) return false; // nothing selected
 
 		bool acceptable = false;
@@ -865,7 +857,7 @@ namespace action_give_inventory
 		uuid_vec_t mAvatarUuids;
 	};
 
-	static void give_inventory_cb(const LLSD& notification, const LLSD& response, std::set<LLUUID> inventory_selected_uuids)
+	static void give_inventory_cb(const LLSD& notification, const LLSD& response)
 	{
 		S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
 		// if Cancel pressed
@@ -874,6 +866,7 @@ namespace action_give_inventory
 			return;
 		}
 
+		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs();
 		if (inventory_selected_uuids.empty())
 		{
 			return;
@@ -956,11 +949,11 @@ namespace action_give_inventory
 	 * @param avatar_names - avatar names request to be sent.
 	 * @param avatar_uuids - avatar names request to be sent.
 	 */
-	static void give_inventory(const uuid_vec_t& avatar_uuids, const std::vector<LLAvatarName> avatar_names, LLInventoryPanel* panel = NULL)
+	static void give_inventory(const uuid_vec_t& avatar_uuids, const std::vector<LLAvatarName> avatar_names)
 	{
 		llassert(avatar_names.size() == avatar_uuids.size());
 
-		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs(panel);
+		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs();
 		if (inventory_selected_uuids.empty())
 		{
 			return;
@@ -994,7 +987,7 @@ namespace action_give_inventory
 		substitutions["ITEMS"] = items;
 		LLShareInfo::instance().mAvatarNames = avatar_names;
 		LLShareInfo::instance().mAvatarUuids = avatar_uuids;
-		LLNotificationsUtil::add(notification, substitutions, LLSD(), boost::bind(&give_inventory_cb, _1, _2, inventory_selected_uuids));
+		LLNotificationsUtil::add(notification, substitutions, LLSD(), &give_inventory_cb);
 	}
 }
 
@@ -1047,14 +1040,11 @@ void LLAvatarActions::buildResidentsString(const uuid_vec_t& avatar_uuids, std::
 }
 
 //static
-std::set<LLUUID> LLAvatarActions::getInventorySelectedUUIDs(LLInventoryPanel* active_panel)
+std::set<LLUUID> LLAvatarActions::getInventorySelectedUUIDs()
 {
 	std::set<LLFolderViewItem*> inventory_selected;
 
-	if (!active_panel)
-	{
-		active_panel = action_give_inventory::get_active_inventory_panel();
-	}
+	LLInventoryPanel* active_panel = action_give_inventory::get_active_inventory_panel();
 	if (active_panel)
 	{
 		inventory_selected= active_panel->getRootFolder()->getSelectionList();
@@ -1084,16 +1074,15 @@ void LLAvatarActions::shareWithAvatars(LLView * panel)
 {
 	using namespace action_give_inventory;
 
-	LLFloater* root_floater = gFloaterView->getParentFloater(panel);
-	LLInventoryPanel* inv_panel = dynamic_cast<LLInventoryPanel*>(panel);
+    LLFloater* root_floater = gFloaterView->getParentFloater(panel);
 	LLFloaterAvatarPicker* picker =
-		LLFloaterAvatarPicker::show(boost::bind(give_inventory, _1, _2, inv_panel), TRUE, FALSE, FALSE, root_floater->getName());
+		LLFloaterAvatarPicker::show(boost::bind(give_inventory, _1, _2), TRUE, FALSE, FALSE, root_floater->getName());
 	if (!picker)
 	{
 		return;
 	}
 
-	picker->setOkBtnEnableCb(boost::bind(is_give_inventory_acceptable, inv_panel));
+	picker->setOkBtnEnableCb(boost::bind(is_give_inventory_acceptable));
 	picker->openFriendsTab();
     
     if (root_floater)

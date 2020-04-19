@@ -199,6 +199,11 @@ public:
     static LLSettingsSky::ptr_t createSkyFromLegacyPreset(const std::string filename, LLSD &messages);
     static LLSettingsDay::ptr_t createDayCycleFromLegacyPreset(const std::string filename, LLSD &messages);
 
+	//BD - Local Windlights
+	static LLSettingsWater::ptr_t createWaterFromPreset(const std::string filename, LLSD &messages);
+	static LLSettingsSky::ptr_t createSkyFromPreset(const std::string filename, LLSD &messages);
+	//static LLSettingsDay::ptr_t createDayCycleFromPreset(const std::string filename, LLSD &messages);
+
     // Construct a new day cycle based on the environment.  Replacing either the water or the sky tracks.
     LLSettingsDay::ptr_t        createDayCycleFromEnvironment(EnvSelection_t env, LLSettingsBase::ptr_t settings);
 

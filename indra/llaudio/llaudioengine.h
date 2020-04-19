@@ -48,7 +48,7 @@ const F32 ATTACHED_OBJECT_TIMEOUT = 5.0f;
 const F32 DEFAULT_MIN_DISTANCE = 2.0f;
 
 #define MAX_CHANNELS 30
-#define MAX_BUFFERS 60	// Some extra for preloading, maybe?
+#define MAX_BUFFERS 40	// Some extra for preloading, maybe?
 
 // This define is intended to allow us to switch from os based wav
 // file loading to vfs based wav file loading. The problem is that I
@@ -105,7 +105,7 @@ public:
 
 	// Used by the mechanics of the engine
 	//virtual void processQueue(const LLUUID &sound_guid);
-	virtual void setListener(const LLVector3& pos, const LLVector3& vel, const LLVector3& up, const LLVector3& at);
+	virtual void setListener(LLVector3 pos,LLVector3 vel,LLVector3 up,LLVector3 at);
 	virtual void updateWind(LLVector3 direction, F32 camera_height_above_water) = 0;
 	virtual void idle(F32 max_decode_time = 0.f);
 	virtual void updateChannels();
@@ -144,7 +144,7 @@ public:
 	void triggerSound(const LLUUID &sound_id, const LLUUID& owner_id, const F32 gain,
 					  const S32 type = LLAudioEngine::AUDIO_TYPE_NONE,
 					  const LLVector3d &pos_global = LLVector3d::zero);
-	void triggerSound(const SoundData& soundData);
+	void triggerSound(SoundData& soundData);
 
 	bool preloadSound(const LLUUID &id);
 
@@ -202,15 +202,15 @@ protected:
 
 
 	// listener methods
-	virtual void setListenerPos(const LLVector3& vec);
-	virtual void setListenerVelocity(const LLVector3& vec);
-	virtual void orientListener(const LLVector3& up, const LLVector3& at);
-	virtual void translateListener(const LLVector3& vec);
+	virtual void setListenerPos(LLVector3 vec);
+	virtual void setListenerVelocity(LLVector3 vec);
+	virtual void orientListener(LLVector3 up, LLVector3 at);
+	virtual void translateListener(LLVector3 vec);
 
 
-	F64 mapWindVecToGain(const LLVector3& wind_vec);
-	F64 mapWindVecToPitch(const LLVector3& wind_vec);
-	F64 mapWindVecToPan(const LLVector3& wind_vec);
+	F64 mapWindVecToGain(LLVector3 wind_vec);
+	F64 mapWindVecToPitch(LLVector3 wind_vec);
+	F64 mapWindVecToPan(LLVector3 wind_vec);
 
 protected:
 	LLListener *mListenerp;
@@ -466,17 +466,17 @@ struct SoundData
 	S32 type;
 	LLVector3d pos_global;
 
-	SoundData(const LLUUID &audio_uuid_in,
-		const LLUUID& owner_id_in,
-		const F32 gain_in,
-		const S32 type_in = LLAudioEngine::AUDIO_TYPE_NONE,
-		const LLVector3d &pos_global_in = LLVector3d::zero) :
-		audio_uuid(audio_uuid_in),
-		owner_id(owner_id_in),
-		gain(gain_in),
-		type(type_in),
-		pos_global(pos_global_in)
+	SoundData(const LLUUID &audio_uuid, 
+		const LLUUID& owner_id, 
+		const F32 gain, 					  
+		const S32 type = LLAudioEngine::AUDIO_TYPE_NONE,
+		const LLVector3d &pos_global = LLVector3d::zero)
 	{
+		this->audio_uuid = audio_uuid;
+		this->owner_id = owner_id;
+		this->gain = gain;
+		this->type = type;
+		this->pos_global = pos_global;
 	}
 };
 

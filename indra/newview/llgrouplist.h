@@ -127,8 +127,7 @@ private:
 	LLTextBox*	mGroupNameBox;
 	LLUUID		mGroupID;
 	LLGroupIconCtrl* mGroupIcon;
-	LLButton*	mProfileBtn;
-	LLIconCtrl* mSelectedIcon;
+	LLButton*	mInfoBtn;
 
 	std::string	mGroupName;
 	LLStyle::Params mGroupNameStyle;

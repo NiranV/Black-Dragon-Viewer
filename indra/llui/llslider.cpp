@@ -42,6 +42,7 @@ static LLDefaultChildRegistry::Register<LLSlider> r1("slider_bar");
 
 LLSlider::Params::Params()
 :	orientation ("orientation", std::string ("horizontal")),
+	track_color("track_color"),
 	thumb_outline_color("thumb_outline_color"),
 	thumb_center_color("thumb_center_color"),
 	thumb_image("thumb_image"),
@@ -64,6 +65,7 @@ LLSlider::LLSlider(const LLSlider::Params& p)
 :	LLF32UICtrl(p),
 	mMouseOffset( 0 ),
 	mOrientation ((p.orientation() == "horizontal") ? HORIZONTAL : VERTICAL),
+	mTrackColor(p.track_color()),
 	mThumbOutlineColor(p.thumb_outline_color()),
 	mThumbCenterColor(p.thumb_center_color()),
 	mThumbImage(p.thumb_image),
@@ -241,8 +243,11 @@ BOOL LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 		if (mMouseUpSignal)
 			(*mMouseUpSignal)(this, getValueF32());
 
+		handled = TRUE;
 		make_ui_sound("UISndClickRelease");
-
+	}
+	else
+	{
 		handled = TRUE;
 	}
 
@@ -467,16 +472,10 @@ void LLSlider::draw()
 		change_rect.set(track_rect.mLeft, track_rect.mTop, track_rect.mRight, mThumbRect.getCenterY());
 	}
 
-<<<<<<< HEAD
 	trackImage->draw(track_rect, LLColor4::white % alpha);
 	trackHighlightImage->draw(highlight_rect, LLColor4::white % alpha);
 //	//BD - Track Difference Visualization
 	trackChangeImage->draw(change_rect, LLColor4::white % alpha);
-=======
-	LLColor4 color = isInEnabledChain() ? LLColor4::white % alpha : LLColor4::white % (0.6f * alpha);
-	trackImage->draw(track_rect, color);
-	trackHighlightImage->draw(highlight_rect, color);
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 
 	// Thumb
 	if (hasFocus())

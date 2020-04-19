@@ -56,7 +56,7 @@ public:
 	static S32 dataFormatBytes(S32 dataformat, S32 width, S32 height);
 	static S32 dataFormatComponents(S32 dataformat);
 
-	BOOL updateBindStats(S32Bytes tex_mem) const ;
+	BOOL updateBindStats(S64Bytes tex_mem) const ;
 	F32 getTimePassedSinceLastBound();
 	void forceUpdateBindStats(void) const;
 
@@ -69,7 +69,7 @@ public:
 	static void dirtyTexOptions();
 
 	// Sometimes called externally for textures not using LLImageGL (should go away...)	
-	static S32 updateBoundTexMem(const S32Bytes mem, const S32 ncomponents, S32 category) ;
+	static S64 updateBoundTexMem(const S64Bytes mem, const S32 ncomponents, S32 category) ;
 	
 	static bool checkSize(S32 width, S32 height);
 
@@ -153,7 +153,10 @@ public:
 	void setUseMipMaps(BOOL usemips) { mUseMipMaps = usemips; }	
 
 	void updatePickMask(S32 width, S32 height, const U8* data_in);
-	BOOL getMask(const LLVector2 &tc);
+// [RLVa:KB] - Checked: RLVa-2.2 (@setoverlay)
+	BOOL getMask(const LLVector2 &tc) const;
+// [/RLVa:KB]
+//	BOOL getMask(const LLVector2 &tc);
 
 	void checkTexSize(bool forced = false) const ;
 	
@@ -185,7 +188,7 @@ public:
 
 public:
 	// Various GL/Rendering options
-	S32Bytes mTextureMemory;
+	S64Bytes mTextureMemory;
 	mutable F32  mLastBindTime;	// last time this was bound, by discard level
 	
 private:
@@ -247,9 +250,9 @@ public:
 	static F32 sLastFrameTime;
 
 	// Global memory statistics
-	static U64Bytes sGlobalTextureMemory;	// Tracks main memory texmem
-	static U64Bytes sBoundTextureMemory;	// Tracks bound texmem for last completed frame
-	static U64Bytes sCurBoundTextureMemory;	// Tracks bound texmem for current frame
+	static S64Bytes sGlobalTextureMemory;	// Tracks main memory texmem
+	static S64Bytes sBoundTextureMemory;	// Tracks bound texmem for last completed frame
+	static S64Bytes sCurBoundTextureMemory;	// Tracks bound texmem for current frame
 	static U32 sBindCount;					// Tracks number of texture binds for current frame
 	static U32 sUniqueCount;				// Tracks number of unique texture binds for current frame
 	static BOOL sGlobalUseAnisotropic;

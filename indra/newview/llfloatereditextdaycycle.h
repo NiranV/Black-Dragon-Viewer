@@ -215,12 +215,13 @@ private:
     LLButton *                  mClearTrack;
     LLMultiSliderCtrl*	        mTimeSlider;
     LLMultiSliderCtrl*          mFramesSlider;
-    LLView*                     mSkyTabLayoutContainer;
-    LLView*                     mWaterTabLayoutContainer;
     LLTextBox*                  mCurrentTimeLabel;
     LLUUID                      mInventoryId;
     LLInventoryItem *           mInventoryItem;
     LLFlyoutComboBtnCtrl *      mFlyoutControl;
+
+	LLTabContainer*				mSkyTabs;
+	LLTabContainer*				mWaterTabs;
 
     LLHandle<LLFloater>         mInventoryFloater;
     LLHandle<LLFloater>         mTrackFloater;

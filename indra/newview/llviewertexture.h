@@ -178,6 +178,9 @@ protected:
 	void reorganizeFaceList() ;
 	void reorganizeVolumeList() ;
 
+	void notifyAboutMissingAsset();
+	void notifyAboutCreatingTexture();
+
 private:
 	friend class LLBumpImageList;
 	friend class LLUIImageList;
@@ -219,11 +222,11 @@ public:
 	static LLFrameTimer sEvaluationTimer;
 	static F32 sDesiredDiscardBias;
 	static F32 sDesiredDiscardScale;
-	static U64Bytes sBoundTextureMemory;
-	static U64Bytes sTotalTextureMemory;
-	static U32Megabytes sMaxBoundTextureMemory;
-	static U32Megabytes sMaxTotalTextureMem;
-	static S32Bytes sMaxDesiredTextureMem ;
+	static S64Bytes sMaxDesiredTextureMem ;
+	static S64Bytes sBoundTextureMemory;
+	static S64Bytes sTotalTextureMemory;
+	static S32Megabytes sMaxBoundTextureMemory;
+	static S32Megabytes sMaxTotalTextureMem;
 	static S8  sCameraMovingDiscardBias;
 	static F32 sCameraMovingBias;
 	static S32 sMaxSculptRez ;
@@ -529,6 +532,7 @@ public:
 	static LLPointer<LLViewerFetchedTexture> sDefaultImagep; // "Default" texture for error cases, the only case of fetched texture which is generated in local.
 	static LLPointer<LLViewerFetchedTexture> sSmokeImagep; // Old "Default" translucent texture
 	static LLPointer<LLViewerFetchedTexture> sFlatNormalImagep; // Flat normal map denoting no bumpiness on a surface
+	static LLPointer<LLViewerFetchedTexture> sPixieSmallImagep; // Small pixmap for default particle tex
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
 	static LLPointer<LLViewerFetchedTexture> sDefaultDiffuseImagep;
 // [/SL:KB]

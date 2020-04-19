@@ -436,8 +436,6 @@ public:
 	void			calcDisplayScale();
 	static LLRect 	calcScaledRect(const LLRect & rect, const LLVector2& display_scale);
 
-	LLWindow*		mWindow;						// graphical window object
-
 	static std::string getLastSnapshotDir();
 
 private:
@@ -453,7 +451,7 @@ private:
 	LLRect			getChatConsoleRect(); // Get optimal cosole rect.
 
 private:
-
+	LLWindow*		mWindow;						// graphical window object
 	bool			mActive;
 	bool			mUIVisible;
 
@@ -511,7 +509,7 @@ private:
 	LLHandle<LLView> mHintHolder;			// container for hints
 	LLHandle<LLView> mLoginPanelHolder;		// container for login panel
 	LLPopupView*	mPopupView;			// container for transient popups
-
+	
 	class LLDebugText* mDebugText; // Internal class for debug text
 	
 	bool			mResDirty;

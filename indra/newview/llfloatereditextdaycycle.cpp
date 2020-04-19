@@ -214,8 +214,6 @@ BOOL LLFloaterEditExtDayCycle::postBuild()
     mDeleteFrameButton = getChild<LLButton>(BTN_DELFRAME, true);
     mTimeSlider = getChild<LLMultiSliderCtrl>(SLDR_TIME);
     mFramesSlider = getChild<LLMultiSliderCtrl>(SLDR_KEYFRAMES);
-    mSkyTabLayoutContainer = getChild<LLView>(VIEW_SKY_SETTINGS, true);
-    mWaterTabLayoutContainer = getChild<LLView>(VIEW_WATER_SETTINGS, true);
     mCurrentTimeLabel = getChild<LLTextBox>(LBL_CURRENT_TIME, true);
     mImportButton = getChild<LLButton>(BTN_IMPORT, true);
     mLoadFrame = getChild<LLButton>(BTN_LOADFRAME, true);
@@ -245,24 +243,24 @@ BOOL LLFloaterEditExtDayCycle::postBuild()
 
     mTimeSlider->addSlider(0);
 
-    LLTabContainer* tab_container = mSkyTabLayoutContainer->getChild<LLTabContainer>("sky_tabs"); 
-    S32 tab_count = tab_container->getTabCount();
+    mSkyTabs = getChild<LLTabContainer>("sky_tabs"); 
+	S32 tab_count = mSkyTabs->getTabCount();
 
     LLSettingsEditPanel *panel = nullptr;
     
     for (S32 idx = 0; idx < tab_count; ++idx)
     {
-        panel = static_cast<LLSettingsEditPanel *>(tab_container->getPanelByIndex(idx));
+		panel = static_cast<LLSettingsEditPanel *>(mSkyTabs->getPanelByIndex(idx));
         if (panel)
             panel->setOnDirtyFlagChanged([this](LLPanel *, bool val) { onPanelDirtyFlagChanged(val); });
     }
 
-    tab_container = mWaterTabLayoutContainer->getChild<LLTabContainer>("water_tabs");
-    tab_count = tab_container->getTabCount();
+    mWaterTabs = getChild<LLTabContainer>("water_tabs");
+	tab_count = mWaterTabs->getTabCount();
 
     for (S32 idx = 0; idx < tab_count; ++idx)
     {
-        LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(tab_container->getPanelByIndex(idx));
+		LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(mWaterTabs->getPanelByIndex(idx));
         if (panel)
             panel->setOnDirtyFlagChanged([this](LLPanel *, bool val) { onPanelDirtyFlagChanged(val); });
     }
@@ -388,7 +386,7 @@ void LLFloaterEditExtDayCycle::onOpen(const LLSD& key)
 
     for (U32 i = 2; i < LLSettingsDay::TRACK_MAX; i++) //skies #2 through #4
     {
-        getChild<LLButton>(track_tabs[i])->setEnabled(extended_env);
+        //getChild<LLButton>(track_tabs[i])->setEnabled(extended_env);
     }
 
     if (mEditContext == CONTEXT_INVENTORY)
@@ -1163,8 +1161,8 @@ void LLFloaterEditExtDayCycle::selectTrack(U32 track_index, bool force )
     }
 
     bool show_water = (mCurrentTrack == LLSettingsDay::TRACK_WATER);
-    mSkyTabLayoutContainer->setVisible(!show_water);
-    mWaterTabLayoutContainer->setVisible(show_water);
+    mSkyTabs->setVisible(!show_water);
+    mWaterTabs->setVisible(show_water);
 
     updateSlider();
     updateLabels();
@@ -1233,30 +1231,34 @@ void LLFloaterEditExtDayCycle::updateTabs()
 
 void LLFloaterEditExtDayCycle::updateWaterTabs(const LLSettingsWaterPtr_t &p_water)
 {
-    LLView* tab_container = mWaterTabLayoutContainer->getChild<LLView>(TABS_WATER); //can't extract panels directly, since it is in 'tuple'
-    LLPanelSettingsWaterMainTab* panel = dynamic_cast<LLPanelSettingsWaterMainTab*>(tab_container->findChildView("water_panel"));
+    LLPanelSettingsWaterMainTab* panel = dynamic_cast<LLPanelSettingsWaterMainTab*>(mWaterTabs->findChildView("water_settings_panel"));
     if (panel)
     {
         panel->setWater(p_water);
     }
+
+	//BD - Windlight
+	LLPanelSettingsWaterSecondaryTab* sec_panel = dynamic_cast<LLPanelSettingsWaterSecondaryTab*>(mWaterTabs->findChildView("water_image_panel"));
+	if (sec_panel)
+	{
+		sec_panel->setWater(p_water);
+	}
 }
 
 void LLFloaterEditExtDayCycle::updateSkyTabs(const LLSettingsSkyPtr_t &p_sky)
 {
-    LLTabContainer* tab_container = mSkyTabLayoutContainer->getChild<LLTabContainer>(TABS_SKYS); //can't extract panels directly, since they are in 'tuple'
-
     LLPanelSettingsSky* panel;
-    panel = dynamic_cast<LLPanelSettingsSky*>(tab_container->findChildView("atmosphere_panel"));
+    panel = dynamic_cast<LLPanelSettingsSky*>(mSkyTabs->findChildView("atmosphere_panel"));
     if (panel)
     {
         panel->setSky(p_sky);
     }
-    panel = dynamic_cast<LLPanelSettingsSky*>(tab_container->findChildView("clouds_panel"));
+	panel = dynamic_cast<LLPanelSettingsSky*>(mSkyTabs->findChildView("clouds_panel"));
     if (panel)
     {
         panel->setSky(p_sky);
     }
-    panel = dynamic_cast<LLPanelSettingsSky*>(tab_container->findChildView("moon_panel"));
+	panel = dynamic_cast<LLPanelSettingsSky*>(mSkyTabs->findChildView("moon_panel"));
     if (panel)
     {
         panel->setSky(p_sky);
@@ -1565,7 +1567,6 @@ void LLFloaterEditExtDayCycle::synchronizeTabs()
     bool canedit(false);
 
     LLSettingsWater::ptr_t psettingW;
-    LLTabContainer * tabs = mWaterTabLayoutContainer->getChild<LLTabContainer>(TABS_WATER);
     if (mCurrentTrack == LLSettingsDay::TRACK_WATER)
     {
         if (!mEditDay)
@@ -1597,11 +1598,10 @@ void LLFloaterEditExtDayCycle::synchronizeTabs()
     }
     mEditWater = psettingW;
 
-    setTabsData(tabs, psettingW, canedit);
+    setTabsData(mWaterTabs, psettingW, canedit);
 
     LLSettingsSky::ptr_t psettingS;
     canedit = false;
-    tabs = mSkyTabLayoutContainer->getChild<LLTabContainer>(TABS_SKYS);
     if (mCurrentTrack != LLSettingsDay::TRACK_WATER)
     {
         if (!mEditDay)
@@ -1636,7 +1636,7 @@ void LLFloaterEditExtDayCycle::synchronizeTabs()
     doCloseInventoryFloater();
     doCloseTrackFloater();
 
-    setTabsData(tabs, psettingS, canedit);
+    setTabsData(mSkyTabs, psettingS, canedit);
     LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, mEditSky, mEditWater);
     LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 }
@@ -1891,8 +1891,8 @@ void LLFloaterEditExtDayCycle::startPlay()
     gIdleCallbacks.addFunction(onIdlePlay, this);
     mPlayStartFrame = mTimeSlider->getCurSliderValue();
 
-    getChild<LLView>("play_layout", true)->setVisible(FALSE);
-    getChild<LLView>("pause_layout", true)->setVisible(TRUE);
+    getChild<LLView>("play_btn", true)->setVisible(FALSE);
+    getChild<LLView>("pause_btn", true)->setVisible(TRUE);
 }
 
 void LLFloaterEditExtDayCycle::stopPlay()
@@ -1906,8 +1906,8 @@ void LLFloaterEditExtDayCycle::stopPlay()
     F32 frame = mTimeSlider->getCurSliderValue();
     selectFrame(frame, LLSettingsDay::DEFAULT_FRAME_SLOP_FACTOR);
 
-    getChild<LLView>("play_layout", true)->setVisible(TRUE);
-    getChild<LLView>("pause_layout", true)->setVisible(FALSE);
+    getChild<LLView>("play_btn", true)->setVisible(TRUE);
+    getChild<LLView>("pause_btn", true)->setVisible(FALSE);
 }
 
 //static
@@ -1934,22 +1934,20 @@ void LLFloaterEditExtDayCycle::clearDirtyFlag()
 {
     mIsDirty = false;
 
-    LLTabContainer* tab_container = mSkyTabLayoutContainer->getChild<LLTabContainer>("sky_tabs");
-    S32 tab_count = tab_container->getTabCount();
+    S32 tab_count = mSkyTabs->getTabCount();
 
     for (S32 idx = 0; idx < tab_count; ++idx)
     {
-        LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(tab_container->getPanelByIndex(idx));
+		LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(mSkyTabs->getPanelByIndex(idx));
         if (panel)
             panel->clearIsDirty();
     }
 
-    tab_container = mWaterTabLayoutContainer->getChild<LLTabContainer>("water_tabs");
-    tab_count = tab_container->getTabCount();
+    tab_count = mWaterTabs->getTabCount();
 
     for (S32 idx = 0; idx < tab_count; ++idx)
     {
-        LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(tab_container->getPanelByIndex(idx));
+		LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(mWaterTabs->getPanelByIndex(idx));
         if (panel)
             panel->clearIsDirty();
     }

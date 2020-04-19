@@ -1051,7 +1051,8 @@ void LLAgentCamera::cameraOrbitIn(const F32 meters)
 		if (new_distance > max_distance)
 		{
 			// Unless camera is unlocked
-			if (!gSavedSettings.getBOOL("DisableCameraConstraints"))
+            static const LLCachedControl<bool> sDisableCameraConstraints(gSavedSettings, "DisableCameraConstraints");
+			if (!sDisableCameraConstraints)
 			{
 				return;
 			}
@@ -1463,7 +1464,8 @@ void LLAgentCamera::updateCamera()
 		{
 			const F32 SMOOTHING_HALF_LIFE = 0.02f;
 			
-			F32 smoothing = LLSmoothInterpolation::getInterpolant(mCameraPositionSmoothing * SMOOTHING_HALF_LIFE, FALSE);
+			static const LLCachedControl<F32> cam_pos_smoothing(gSavedSettings, "CameraPositionSmoothing");
+			F32 smoothing = LLSmoothInterpolation::getInterpolant(cam_pos_smoothing * SMOOTHING_HALF_LIFE, FALSE);
 					
 			if (!mFocusObject)  // we differentiate on avatar mode 
 			{
@@ -2046,8 +2048,8 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(BOOL *hit_limit)
 		// camera gets pushed out later wrt mCameraFOVZoomFactor...this is "raw" value
 		camera_position_global = focusPosGlobal + mCameraFocusOffset;
 	}
-
-	if (!gSavedSettings.getBOOL("DisableCameraConstraints") && !gAgent.isGodlike())
+	static const LLCachedControl<bool> disable_cam_constraints(gSavedSettings, "DisableCameraConstraints");
+	if (!disable_cam_constraints && !gAgent.isGodlike())
 	{
 		LLViewerRegion* regionp = LLWorld::getInstance()->getRegionFromPosGlobal(camera_position_global);
 		bool constrain = true;
@@ -2254,17 +2256,8 @@ F32 LLAgentCamera::getCameraMinOffGround()
 	{
 		return 0.f;
 	}
-	else
-	{
-		if (gSavedSettings.getBOOL("DisableCameraConstraints"))
-		{
-			return -1000.f;
-		}
-		else
-		{
-			return 0.5f;
-		}
-	}
+	static const LLCachedControl<bool> disable_cam_constraints(gSavedSettings, "DisableCameraConstraints");
+	return disable_cam_constraints ? -1000.f : 0.5f;
 }
 
 

@@ -56,7 +56,7 @@ class RlvObject;
 
 struct RlvException;
 typedef boost::variant<std::string, LLUUID, S32, ERlvBehaviour> RlvExceptionOption;
-typedef boost::variant<int, float, LLVector3, LLUUID> RlvBehaviourModifierValue;
+typedef boost::variant<int, float, bool, LLVector3, LLUUID> RlvBehaviourModifierValue;
 
 class RlvGCTimer;
 
@@ -99,12 +99,15 @@ public:
 	static bool getHideLockedAttach()			{ return rlvGetSetting<bool>(RLV_SETTING_HIDELOCKEDATTACH, false); }
 	static bool getHideLockedInventory()		{ return rlvGetSetting<bool>(RLV_SETTING_HIDELOCKEDINVENTORY, false); }
 	static bool getSharedInvAutoRename()		{ return rlvGetSetting<bool>(RLV_SETTING_SHAREDINVAUTORENAME, true); }
+	static bool getSplitRedirectChat()          { return rlvGetSetting<bool>(RLV_SETTING_SPLITREDIRECTCHAT, false); }
 
 	static bool getLoginLastLocation()			{ return rlvGetPerUserSetting<bool>(RLV_SETTING_LOGINLASTLOCATION, true); }
 	static void updateLoginLastLocation();
 
 	static void initCompatibilityMode(std::string strCompatList);
 	static bool isCompatibilityModeObject(const LLUUID& idRlvObject);
+
+	static bool isAllowedExperience(const LLUUID& idExperience, U8 nMaturity);
 
 	static void initClass();
 	static void onChangedSettingMain(const LLSD& sdValue);
@@ -121,9 +124,11 @@ protected:
 	 */
 protected:
 	static bool s_fCanOOC;
+	static U8   s_nExperienceMinMaturity;
 	static bool s_fLegacyNaming;
 	static bool s_fNoSetEnv;
 	static bool s_fTempAttach;
+	static std::list<std::string> s_BlockedExperiences;
 	static std::list<LLUUID>      s_CompatItemCreators;
 	static std::list<std::string> s_CompatItemNames;
 };
@@ -175,7 +180,7 @@ public:
 	static bool isForceTp()	{ return m_fForceTp; }
 	static void forceTp(const LLVector3d& posDest);									// Ignores restrictions that might otherwise prevent tp'ing
 
-	static void notifyBlocked(const std::string& strNotifcation, const LLSD& sdArgs = LLSD());
+	static void notifyBlocked(const std::string& strNotifcation, const LLSD& sdArgs = LLSD(), bool fLogToChat = false);
 	static void notifyBlockedGeneric()	{ notifyBlocked(RLV_STRING_BLOCKED_GENERIC); }
 	static void notifyBlockedViewXXX(LLAssetType::EType assetType) { notifyBlocked(RLV_STRING_BLOCKED_VIEWXXX, LLSD().with("[TYPE]", LLAssetType::lookup(assetType))); }
 	static void notifyFailedAssertion(const std::string& strAssert, const std::string& strFile, int nLine);
@@ -184,8 +189,8 @@ public:
 	static bool isValidReplyChannel(S32 nChannel, bool fLoopback = false);
 	static bool sendChatReply(S32 nChannel, const std::string& strUTF8Text);
 	static bool sendChatReply(const std::string& strChannel, const std::string& strUTF8Text);
+	static bool sendChatReplySplit(S32 nChannel, const std::string& strUTF8Text, char chSplit = ' ');
 	static void sendIMMessage(const LLUUID& idTo, const std::string& strMsg, char chSplit);
-	static void teleportCallback(U64 hRegion, const LLVector3& posRegion, const LLVector3& vecLookAt);
 protected:
 	static bool m_fForceTp;															// @standtp
 };

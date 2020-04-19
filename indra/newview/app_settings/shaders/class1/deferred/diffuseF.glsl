@@ -24,11 +24,7 @@
  */
 
 /*[EXTRA_CODE_HERE]*/
-<<<<<<< HEAD
-
-=======
  
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
 #ifdef DEFINE_GL_FRAGCOLOR
 out vec4 frag_data[3];
 #else

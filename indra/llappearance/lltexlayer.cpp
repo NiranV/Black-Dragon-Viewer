@@ -482,7 +482,7 @@ void LLTexLayerSet::asLLSD(LLSD& sd) const
 	LLSD layer_list_sd;
 	layer_list_t::const_iterator layer_iter = mLayerList.begin();
 	layer_list_t::const_iterator layer_end  = mLayerList.end();
-	for(; layer_iter != layer_end; ++layer_iter);
+	for(; layer_iter != layer_end; ++layer_iter)
 	{
 		LLSD layer_sd;
 		//LLTexLayerInterface* layer = (*layer_iter);
@@ -763,7 +763,7 @@ BOOL LLTexLayerInfo::parseXml(LLXmlTreeNode* node)
 			BOOL invert = FALSE;
 			static LLStdStringHandle invert_string = LLXmlTree::addAttributeString("invert");
 			maskNode->getFastAttributeBOOL(invert_string, invert);			
-			mMorphNameList.push_back(std::pair<std::string,BOOL>(morph_name,invert));
+			mMorphNameList.emplace_back(std::pair<std::string,BOOL>(morph_name,invert));
 		}
 	}
 

@@ -11,7 +11,6 @@
 project(llwindow)
 
 include(00-Common)
-include(DirectX)
 include(DragDrop)
 include(LLCommon)
 include(LLImage)
@@ -30,7 +29,6 @@ include_directories(
     ${LLVFS_INCLUDE_DIRS}
     ${LLWINDOW_INCLUDE_DIRS}
     ${LLXML_INCLUDE_DIRS}
-    ${DIRECTX_INCLUDE_DIR}
     )
 include_directories(SYSTEM
     ${LLCOMMON_SYSTEM_INCLUDE_DIRS}
@@ -147,6 +145,7 @@ if (WINDOWS)
   list(APPEND llwindow_LINK_LIBRARIES
        comdlg32     # Common Dialogs for ChooseColor
        ole32
+       DXGI
        )
 endif (WINDOWS)
 

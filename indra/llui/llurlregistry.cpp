@@ -41,7 +41,7 @@ LLUrlRegistry::LLUrlRegistry()
 //	// BD - Additional Chat Tags
 //	mUrlEntry.reserve(26);
 // [RLVa:KB] - Checked: 2010-11-01 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-	mUrlEntry.reserve(27);
+	mUrlEntry.reserve(26);
 // [/RLVa:KB]
 
 	// Urls are matched in the order that they were registered
@@ -85,7 +85,6 @@ LLUrlRegistry::LLUrlRegistry()
 	registerUrl(new LLUrlEntryObjectIM());
 	registerUrl(new LLUrlEntryPlace());
 	registerUrl(new LLUrlEntryInventory());
-	registerUrl(new LLUrlEntryObjectIM());
     registerUrl(new LLUrlEntryExperienceProfile());
 	//LLUrlEntrySL and LLUrlEntrySLLabel have more common pattern, 
 	//so it should be registered in the end of list
@@ -126,7 +125,7 @@ static bool matchRegex(const char *text, boost::regex regex, U32 &start, U32 &en
 	{
 		found = boost::regex_search(text, result, regex);
 	}
-	catch (std::runtime_error &)
+	catch (const std::runtime_error &)
 	{
 		return false;
 	}

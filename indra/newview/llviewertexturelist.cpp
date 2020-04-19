@@ -133,6 +133,9 @@ void LLViewerTextureList::doPreloadImages()
 	// Set the default flat normal map
 	LLViewerFetchedTexture::sFlatNormalImagep = LLViewerTextureManager::getFetchedTextureFromFile("flatnormal.tga", FTT_LOCAL_FILE, MIPMAP_NO, LLViewerFetchedTexture::BOOST_BUMP);
 	
+	// Set the default particle image
+	LLViewerFetchedTexture::sPixieSmallImagep = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.j2c", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI);
+
 	image_list->initFromFile();
 	
 	// turn off clamping and bilinear filtering for uv picking images
@@ -556,7 +559,7 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 												   LLGLenum primary_format,
 												   LLHost request_from_host)
 {
-	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", false);
+	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", true);
 
 	LLPointer<LLViewerFetchedTexture> imagep ;
 	switch(texture_type)
@@ -1377,15 +1380,15 @@ S32Megabytes LLViewerTextureList::getMaxVideoRamSetting(bool get_recommended, fl
 	{
 		if (!get_recommended)
 		{
-			max_texmem = (S32Megabytes)512;
+			max_texmem = S32Megabytes(512);
 		}
 		else if (gSavedSettings.getBOOL("NoHardwareProbe")) //did not do hardware detection at startup
 		{
-			max_texmem = (S32Megabytes)512;
+			max_texmem = S32Megabytes(512);
 		}
 		else
 		{
-			max_texmem = (S32Megabytes)128;
+			max_texmem = S32Megabytes(128);
 		}
 
 		LL_WARNS() << "VRAM amount not detected, defaulting to " << max_texmem << " MB" << LL_ENDL;
@@ -1437,28 +1440,28 @@ void LLViewerTextureList::idleUpdateMaxResidentTexMem()
 
 	//BD - Limit our absolute maximum memory  of our available.
 	//     This way we leave some rest for FBO.
-	U32Megabytes max_mem = (U32Megabytes)tot_mem - (U32Megabytes)256;
+	S32Megabytes max_mem = (S32Megabytes)tot_mem - (S32Megabytes)256;
 
 	//BD - Find out how much memory we are currently using for each.
-	U32Megabytes cur_mem = LLViewerTexture::sBoundTextureMemory;
-	U32Megabytes sys_mem = LLViewerTexture::sTotalTextureMemory;
+	S32Megabytes cur_mem = LLViewerTexture::sBoundTextureMemory;
+	S32Megabytes sys_mem = LLViewerTexture::sTotalTextureMemory;
 
-	U32Megabytes new_cur_mem;
-	U32Megabytes new_sys_mem;
+	S32Megabytes new_cur_mem;
+	S32Megabytes new_sys_mem;
 
-	bool base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
+	bool base_max = (max_mem >= (S32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
 
 	//BD - Give system memory first, either 3984MB or whatever our 90% of our real max VRAM is.
 	//     Start out with the currently used memory and add 32 megabytes on top of it.
 	//     Make sure we never exceed our maximum though.
 	//     Fallback to 3984MB when we are not using a NVidia GPU.
-	new_sys_mem = llclamp(sys_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
+	new_sys_mem = llclamp(sys_mem + (S32Megabytes)32, (S32Megabytes)128, base_max ? (S32Megabytes)3984 : max_mem);
 
 	max_mem -= new_sys_mem;
-	base_max = (max_mem >= (U32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
+	base_max = (max_mem >= (S32Megabytes)3984 || !gGLManager.mHasNVXMemInfo);
 
 	//BD - Give the rest memory to scene memory, again up to a total max of 3984MB.
-	new_cur_mem = llclamp(cur_mem + (U32Megabytes)32, (U32Megabytes)128, base_max ? (U32Megabytes)3984 : max_mem);
+	new_cur_mem = llclamp(cur_mem + (S32Megabytes)32, (S32Megabytes)128, base_max ? (S32Megabytes)3984 : max_mem);
 
 	mMaxResidentTexMemInMegaBytes = new_cur_mem;
 	mMaxTotalTextureMemInMegaBytes = new_sys_mem;

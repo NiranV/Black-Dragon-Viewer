@@ -297,6 +297,7 @@ void LLFloaterProperties::refreshFromItem(LLInventoryItem* item)
 			getChild<LLUICtrl>("LabelCreatorName")->setValue(av_name.getUserName());
 		}
 // [/RLVa:KB]
+//		getChild<LLUICtrl>("LabelCreatorName")->setValue(av_name.getUserName());
 	}
 	else
 	{

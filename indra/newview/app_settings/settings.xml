@@ -2,297 +2,6 @@
 <llsd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
-	<!-- RLVa Debugs -->
-	<key>RestrainedLove</key>
-	<map>
-		<key>Comment</key>
-		<string>Toggles RLVa features (requires restart)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RestrainedLoveDebug</key>
-	<map>
-		<key>Comment</key>
-		<string>Toggles RLVa debug mode (displays the commands when in debug mode)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RestrainedLoveCanOOC</key>
-	<map>
-		<key>Comment</key>
-		<string>Allows sending OOC chat when send chat restricted, or seeing OOC chat when receive chat restricted</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RestrainedLoveForbidGiveToRLV</key>
-	<map>
-		<key>Comment</key>
-		<string>When TRUE, forbids to give sub-folders to the #RLV folder</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RestrainedLoveNoSetEnv</key>
-	<map>
-		<key>Comment</key>
-		<string>When TRUE, forbids to set the environment (time of day and Windlight settings) via RLVa. (requires restart)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RestrainedLoveReplaceWhenFolderBeginsWith</key>
-	<map>
-		<key>Comment</key>
-		<string>If a folder name begins with this string, its attach behavior will always be "replace", never "stack". Default is blank (disabled).</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>String</string>
-		<key>Value</key>
-		<string></string>
-	</map>
-	<key>RestrainedLoveShowEllipsis</key>
-	<map>
-		<key>Comment</key>
-		<string>When TRUE, show "..." when someone speaks, while the avatar is prevented from hearing. When FALSE, don't show anything.</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RestrainedLoveStackWhenFolderBeginsWith</key>
-	<map>
-		<key>Comment</key>
-		<string>If a folder name begins with this string, its attach behavior will always be "stack", never "replace". Default is "+".</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>String</string>
-		<key>Value</key>
-		<string>+</string>
-	</map>
-	<key>RLVaCompatibilityModeList</key>
-	<map>
-		<key>Comment</key>
-		<string>Contains a list of creators or partial items names that require compatibility mode handling (see wiki for more information and syntax)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>String</string>
-		<key>Value</key>
-		<string></string>
-	</map>
-	<key>RLVaDebugDeprecateExplicitPoint</key>
-	<map>
-		<key>Comment</key>
-		<string>Ignore attachment point names on inventory items and categories (incomplete)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RLVaDebugHideUnsetDuplicate</key>
-	<map>
-		<key>Comment</key>
-		<string>Suppresses reporting "unset" or "duplicate" command restrictions when RestrainedLoveDebug is TRUE</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RLVaEnableCompositeFolders</key>
-	<map>
-		<key>Comment</key>
-		<string>Enables composite folders for shared inventory</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RLVaEnableIMQuery</key>
-	<map>
-		<key>Comment</key>
-		<string>Enables a limited number of configuration queries via IM (e.g. @version)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaEnableLegacyNaming</key>
-	<map>
-		<key>Comment</key>
-		<string>Enables legacy naming convention for folders</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaEnableSharedWear</key>
-	<map>
-		<key>Comment</key>
-		<string>Attachments in the shared #RLV folder can be force-attached without needing to specify an attachment point</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaEnableTemporaryAttachments</key>
-	<map>
-		<key>Comment</key>
-		<string>Allows temporary attachments (regardless of origin) to issue RLV commands</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaExperimentalCommands</key>
-	<map>
-		<key>Comment</key>
-		<string>Enables the experimental command set</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaHideLockedLayers</key>
-	<map>
-		<key>Comment</key>
-		<string>Hides "remove outfit" restricted worn clothing layers from @getoufit</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RLVaHideLockedAttachments</key>
-	<map>
-		<key>Comment</key>
-		<string>Hides non-detachable worn attachments from @getattach</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>0</boolean>
-	</map>
-	<key>RLVaSharedInvAutoRename</key>
-	<map>
-		<key>Comment</key>
-		<string>Automatically renames shared inventory items when worn</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaShowAssertionFailures</key>
-	<map>
-		<key>Comment</key>
-		<string>Notify the user when an assertion fails</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaTopLevelMenu</key>
-	<map>
-		<key>Comment</key>
-		<string>Show the RLVa specific menu as a top level menu</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>RLVaWearReplaceUnlocked</key>
-	<map>
-		<key>Comment</key>
-		<string>Don't block wear replace when at least one attachment on the target attachment point is non-detachable</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>Boolean</string>
-		<key>Value</key>
-		<boolean>1</boolean>
-	</map>
-	<key>AISCommandFilterMask</key>
-	<map>
-		<key>Comment</key>
-		<string>AIS command filter (death by Kitty if you change this)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>U32</string>
-		<key>Value</key>
-		<integer>65247</integer>
-	</map>
-	<key>ForceMissingType</key>
-	<map>
-		<key>Comment</key>
-		<string>Force this wearable type to be missing from COF</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>U32</string>
-		<key>Value</key>
-		<integer>255</integer>
-	</map>
-	<key>NotificationCanEmbedInIM</key>
-	<map>
-		<key>Comment</key>
-		<string>Controls notification panel embedding in IMs (0 = default, 1 = focused, 2 = never)</string>
-		<key>Persist</key>
-		<integer>1</integer>
-		<key>Type</key>
-		<string>S32</string>
-		<key>Value</key>
-		<integer>0</integer>
-	</map>
- <!-- RLVa Debugs -->
-
-
-
   <key>ImporterDebug</key>
   <map>
     <key>Comment</key>
@@ -449,6 +158,17 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>AISCommandFilterMask</key>
+    <map>
+      <key>Comment</key>
+      <string>AIS command filter (death by Kitty if you change this)</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>65247</integer>
     </map>
     <key>AlertedUnsupportedHardware</key>
     <map>
@@ -1159,6 +879,17 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>BlockAttachmentKillsOnTeleport</key>
+    <map>
+    <key>Comment</key>
+    <string>Ignore all attachment object kills during teleport</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <boolean>1</boolean>
     </map>
     <key>BlockAvatarAppearanceMessages</key>
         <map>
@@ -2263,7 +1994,7 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-  <key>ConnectAsGod</key>
+    <key>ConnectAsGod</key>
     <map>
       <key>Comment</key>
       <string>Log in a god if you have god access.</string>
@@ -4827,6 +4558,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>ForceMissingType</key>
+    <map>
+      <key>Comment</key>
+      <string>Force this wearable type to be missing from COF</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>255</integer>
+    </map>
     <key>FreezeTime</key>
     <map>
       <key>Comment</key>
@@ -7370,6 +7112,17 @@
       <key>Value</key>
       <integer>305</integer>
     </map>
+    <key>NotificationCanEmbedInIM</key>
+    <map>
+      <key>Comment</key>
+      <string>Controls notification panel embedding in IMs (0 = default, 1 = focused, 2 = never)</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>NotificationConferenceIMOptions</key>
     <map>
       <key>Comment</key>
@@ -9210,6 +8963,21 @@
     <integer>1</integer>
   </map>
 
+  <key>RenderShadowNearDist</key>
+  <map>
+    <key>Comment</key>
+    <string>Near clip plane of shadow camera (affects precision of depth shadows).</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>256</real>
+      <real>256</real>
+      <real>256</real>
+    </array>
+  </map>
   <key>RenderShadowClipPlanes</key>
   <map>
     <key>Comment</key>
@@ -9259,6 +9027,17 @@
   <map>
     <key>Comment</key>
     <string>Amount to scale distance to virtual origin of shadow perspective projection.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>2.0</real>
+  </map>
+  <key>RenderShadowSlopeThreshold</key>
+  <map>
+    <key>Comment</key>
+    <string>Cutoff slope value for points to affect perspective shadow generation</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -9323,9 +9102,13 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>-1.0</real>
+    <array>
+      <real>0.80</real>
+      <real>1.00</real>
+      <real>0.00</real>
+    </array>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -9542,7 +9325,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.002</real>
+    <real>-64.0</real>
   </map>
   <key>RenderDeferredSpotShadowOffset</key>
   <map>
@@ -9563,18 +9346,9 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector4</string>
+    <string>F32</string>
     <key>Value</key>
-<<<<<<< HEAD
-	<array>
-		<real>0.0</real>
-		<real>-0.0005</real>
-		<real>-0.001</real>
-		<real>-0.002</real>
-	</array>
-=======
-    <real>-0.004</real>
->>>>>>> 693791f4ffdf5471b16459ba295a50615bbc7762
+	    <real>-0.004</real>
   </map>
   <key>RenderShadowOffset</key>
   <map>
@@ -9594,14 +9368,9 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector4</string>
+    <string>F32</string>
     <key>Value</key>
-	<array>
-		<real>-0.001</real>
-		<real>-0.0005</real>
-		<real>-0.0015</real>
-		<real>-0.0025</real>
-	</array>
+	    <real>-0.007</real>
   </map>
   <key>RenderShadowOffsetError</key>
   <map>
@@ -9716,25 +9485,20 @@
     <real>0.04</real>
   </map>
 
-  <key>RenderShadowResolution</key>
+    <key>RenderShadowResolutionScale</key>
   <map>
     <key>Comment</key>
     <string>Raw shadow width and height of each of the four shadow maps, closest (X), mid (Y), far (Z) furthest. (W)</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector4</string>
+    <string>F32</string>
     <key>Value</key>
-    <array>
-      <real>2048</real>
-      <real>2048</real>
-      <real>1024</real>
-      <real>1024</real>
-    </array>
+    <real>1.0</real>
     <key>MaxValue</key>
-    <real>2048</real>
+    <real>1.0</real>
     <key>MinValue</key>
-    <real>0</real>
+    <real>0.0</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -9961,6 +9725,19 @@
     <real>1.0</real>
     <key>PresetType</key>
     <integer>1</integer>
+  </map>
+    <key>RenderShadowBlurSamples</key>
+  <map>
+    <key>Comment</key>
+    <string>Number of samples to take for each pass of shadow blur (value range 1-16).  Actual number of samples is value * 2 - 1.</string>
+    <key>Persist</key>
+    <real>1.0</real>
+    <key>PresetType</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>4</integer>
   </map>
   <key>RenderShadowBlurDistFactor</key>
   <map>
@@ -10542,6 +10319,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>RenderResolutionMultiplier</key>
+    <map>
+      <key>Comment</key>
+      <string>Multiplier for rendering 3D scene at reduced resolution.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>1.0</real>
+    </map>
     <key>RenderShaderLightingMaxLevel</key>
     <map>
       <key>Comment</key>
@@ -10701,20 +10489,18 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
-      <key>PresetType</key>
-      <integer>1</integer>
     </map>
   <key>RenderUseAdvancedAtmospherics</key>
   <map>
     <key>Comment</key>
     <string>Use fancy precomputed atmospherics and stuff.</string>
     <key>Persist</key>
-    <integer>1</integer>
+      <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
-  </map>
+    </map>
   <key>RenderUseTriStrips</key>
   <map>
     <key>Comment</key>
@@ -11405,6 +11191,17 @@
       <integer>1</integer>
       <key>Type</key>
       <string>U32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>SecondLifeEnterprise</key>
+    <map>
+      <key>Comment</key>
+      <string>Enables Second Life Enterprise features</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
     </map>
@@ -15015,7 +14812,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>600</integer>
     </map>
     <key>WindowHeight</key>
     <map>
@@ -15048,7 +14845,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>800</integer>
     </map>
     <key>WindowWidth</key>
     <map>
@@ -16836,1976 +16633,14 @@
       <integer>0</integer>
     </map>
   
-		
-  <!-- Black Dragon Debugs -->
-
-  <key>DoubleClickActionInventory</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>DoubleClickActionPeople</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-	<key>RenderSnapshotAutoAdjustMultiplier</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-	<key>RenderSnapshotMultiplier</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>1</real>
-  </map>
-	<key>RenderDepthOfFieldHighQuality</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable the old, slow, high quality Depth of Field.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>AllowMouselookGrab</key>
-  <map>
-    <key>Comment</key>
-    <string>Allow grabbing or touching objects in mouselook.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ForceChatSingleLineMode</key>
-  <map>
-    <key>Comment</key>
-    <string>Force Chat editors into single line mode, disabling their auto expanding feature.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>SystemMemory</key>
-    <map>
-    <key>Comment</key>
-    <string>.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>512</integer>
-  </map>
-  <key>AutomaticMemoryManagement</key>
-  <map>
-    <key>Comment</key>
-    <string>Enables automatically scaling system and scene memory according to how much the Viewer currently needs.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>AllowUIHidingInML</key>
-  <map>
-    <key>Comment</key>
-    <string>Allow the UI to hide when going into Mouselook mode</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>UseRealisticMouselook</key>
-  <map>
-    <key>Comment</key>
-    <string>Use a realistic first person view, this prevents your camera from beeing the center of everything and your avatar always beeing locked below you, it allows your Avatar to move around freely in mouselook while your camera will follow it around. Prepare your seatbelts for an awesome shaky View! May break with certain super unrealistic animations.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>UseCinematicCamera</key>
-  <map>
-    <key>Comment</key>
-    <string>Use a cinematic bone tracking camera in third person.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>AvatarRotateThresholdMouselook</key>
-  <map>
-    <key>Comment</key>
-    <string>Angle between avatar facing and camera facing at which avatar turns to face same direction as camera, when in mouselook (degrees)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>120</real>
-  </map>
-  <key>InvertMouseThirdPerson</key>
-  <map>
-    <key>Comment</key>
-    <string>When in third person, moving mouse up looks down and vice verse (FALSE = moving up looks up)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>CameraPresetName</key>
-  <map>
-    <key>Comment</key>
-    <string>Camera preset to use.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>String</string>
-    <key>Value</key>
-    <string>Group View</string>
-  </map>
-  
-  <!-- Pie Menus -->
-	<key>PieMenuPopup</key>
-  <map>
-    <key>Comment</key>
-    <string>Toggle the pie menu popup animation</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-	<key>PieMenuPopupTime</key>
-  <map>
-    <key>Comment</key>
-    <string>Time in seconds the pie menu takes before its popup animation is complete</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.25</real>
-  </map>
-  <key>PieMenuOpacity</key>
-  <map>
-    <key>Comment</key>
-    <string>Opacity for the pie menu background</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>1.0</real>
-  </map>
-  <key>PieMenuFade</key>
-  <map>
-    <key>Comment</key>
-    <string>Fade out for the pie menu background towards the edges</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.15</real>
-  </map>
-  <key>UISndPieMenuAppear</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for opening pie menu (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>8eaed61f-92ff-6485-de83-4dcc938a478e</string>
-  </map>
-  <key>UISndPieMenuHide</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for closing pie menu (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>00000000-0000-0000-0000-000000000000</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight0</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 0 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>d9f73cf8-17b4-6f7a-1565-7951226c305d</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight1</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 1 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>f6ba9816-dcaf-f755-7b67-51b31b6233e5</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight2</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 2 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>7aff2265-d05b-8b72-63c7-dbf96dc2f21f</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight3</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 3 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>09b2184e-8601-44e2-afbb-ce37434b8ba1</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight4</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 4 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>bbe4c7fc-7044-b05e-7b89-36924a67593c</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight5</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 5 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>d166039b-b4f5-c2ec-4911-c85c727b016c</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight6</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 6 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>242af82b-43c2-9a3b-e108-3b0c7e384981</string>
-  </map>
-  <key>UISndPieMenuSliceHighlight7</key>
-  <map>
-	<key>Comment</key>
-	<string>Sound file for selecting pie menu item 7 (uuid for sound asset)</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>String</string>
-	<key>Value</key>
-	<string>c1f334fb-a5be-8fe7-22b3-29631c21cf0b</string>
-  </map>
-  
-	<!-- Login Panel Debugs-->
-  <key>ShowChangelogs</key>
-  <map>
-    <key>Comment</key>
-    <string>Debug option to show/hide the changelogs on the login screen.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-	
-  <!-- Machinima Sidebar Debugs-->
-  <key>MachinimaSidebar</key>
-  <map>
-    <key>Comment</key>
-    <string>Debug option to open the Machinima Sidebar</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  
-  <!-- Preferences Debugs-->
-  <key>RememberPreferencesTabs</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>PrefsViewerVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsBasicVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsLoDVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsPerformanceVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsVertexVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsDeferredVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsDoFVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsAOVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsMotionBlurVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsGodraysVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsToneMappingVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsPostVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>PrefsVignetteVisible</key>
-  <map>
-    <key>Comment</key>
-    <string>Test.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  
-  <!-- Inventory Filters -->
-  <key>InventorySortObjectsByName</key>
-  <map>
-    <key>Comment</key>
-    <string>Weither we should sort the Inventory by Name or not.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>InventorySortObjectsByDate</key>
-  <map>
-    <key>Comment</key>
-    <string>Weither we should sort the Inventory objects by date or not.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>InventorySortFoldersByName</key>
-  <map>
-    <key>Comment</key>
-    <string>Weither we should sort the Inventory folders by Name or not.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>InventorySystemFoldersToTop</key>
-  <map>
-    <key>Comment</key>
-    <string>Move System folders always to the top.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-
-  <!-- Rendering Options -->
-  <key>RenderDepthOfFieldFront</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable blurring the foreground with Depth of Field.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderPostPosterizationSamples</key>
-  <map>
-    <key>Comment</key>
-    <string>Set the number of color shades used for rendering the scene.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderPostGreyscaleStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Set the percentual amount of greyscale's strength, 1.0 means fully greyscale , 0.0 means fully colored</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <integer>0.0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderPostSepiaStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Set the percentual amount of sepia's strength, 1.0 means a full sepia tone, 0.0 means no sepia tone at all.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <integer>0.0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderChromaStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Set the strength of chromatic abberation.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <integer>0.0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderSSAOBlurSize</key>
-  <map>
-    <key>Comment</key>
-    <string>Scale of ssao softening kernel.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>1.0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>EnableThirdPersonSteering</key>
-  <map>
-    <key>Comment</key>
-    <string>Toggles Mouse-steering mode to always on as if you click and hold down your Mouse on your Avatar while moving the Mouse</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>RenderShadowAutomaticDistance</key>
-  <map>
-    <key>Comment</key>
-    <string>Toggles between old automatic shadow clip plane scaling or fully customizable one.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderShadowFarClip</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>200</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderShadowDistance</key>
-  <map>
-    <key>Comment</key>
-    <string>Shadow Far Clip range addition.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector4</string>
-    <key>Value</key>
+    <!-- Black Dragon Debugs -->
+    <key>Include</key>
     <array>
-      <real>2</real>
-      <real>8</real>
-      <real>16</real>
-      <real>64</real>
+      <!-- Black Dragon Debugs -->
+      <string>settings_blackdragon.xml</string>
+      <!-- RLVa Debugs -->
+      <string>settings_rlva.xml</string>
     </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderDepthOfFieldAlphas</key>
-  <map>
-    <key>Comment</key>
-    <string>Use pass 2 in alpha rendering when depth of field is enabled.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderEnableFullbright</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <real>1</real>
-  </map>
-  <key>RenderEnableAlpha</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <real>1</real>
-  </map>
-  <key>RenderShadowType</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderScreenSpaceReflections</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <real>0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderSSRResolution</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>13</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-	<key>RenderSSRBrightness</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>1.0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderHighPrecisionNormals</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <real>0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGlobalLightStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Set the strength of all lights in the world, both spherical and spotlights.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <integer>1.0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  
-  <!-- Misc -->
-  <key>IMWindowSwitchSide</key>
-  <map>
-    <key>Comment</key>
-    <string>Switch IM window tabs to the left side</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>SlowMotionTimeFactor</key>
-  <map>
-    <key>Comment</key>
-    <string>Controls time factor for Slow Motion animations</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.2</real>
-  </map>
-  <key>EnableAutohidingChat</key>
-  <map>
-    <key>Comment</key>
-    <string>Hide the Local Chat floater automatically whenever it loses focus</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>AutohideChatOnReturn</key>
-  <map>
-    <key>Comment</key>
-    <string>Hide the Local Chat floater whenever you press the return key, no matter if the Chat is empty or not</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>AllowWalkingBackwards</key>
-  <map>
-    <key>Comment</key>
-    <string>Allow your Avatar to turn around to face the camera when walking backwards, instead of only when running.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>MovementRotationSpeed</key>
-  <map>
-    <key>Comment</key>
-    <string>Controls rotation speed of your Avatar , smaller values result in eventually breaking turn animations in AO's and a more direct control feeling</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.20</real>
-  </map>
-  <key>RenderInterpolateWindlight</key>
-  <map>
-    <key>Comment</key>
-    <string>Smoothly animate Windlight Preset changes</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>RenderWindlightInterpolateTime</key>
-  <map>
-    <key>Comment</key>
-    <string>Timespan for interpolating between Windlight settings</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>5.0</real>
-  </map>
-  <key>MiniMapChatRing</key>
-  <map>
-    <key>Comment</key>
-    <string>Display range ring on mini map</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowSidebarMinimap</key>
-  <map>
-    <key>Comment</key>
-    <string>Shows Mini Map in Sidebar</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>ShowBigWorldMap</key>
-  <map>
-    <key>Comment</key>
-    <string>Show World Map legend and controls</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>AllowMUpose</key>
-  <map>
-	<key>Comment</key>
-	<string>Allow MU* pose style in chat and IM</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>0</integer>
-  </map>
-  <key>AutoCloseOOC</key>
-  <map>
-	<key>Comment</key>
-	<string>Auto-close OOC chat with '))'</string>
-	<key>Persist</key>
-	<integer>1</integer>
-	<key>Type</key>
-	<string>Boolean</string>
-	<key>Value</key>
-	<integer>1</integer>
-  </map>
-  <key>AvatarRightHander</key>
-  <map>
-    <key>Comment</key>
-    <string>Switch between right and left hand when editing an object.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>CameraFreeDoFFocus</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable using flycam mode like Depth of Field focus point selection via mouse cursor in normal camera mode.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>CameraDoFLocked</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable using flycam mode like Depth of Field focus point selection via mouse cursor in normal camera mode.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>CameraMaxRoll</key>
-  <map>
-    <key>Comment</key>
-    <string>Percentage which to clamp camera roll back towards straight up.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.85</real>
-  </map>
-  <key>CameraMaxRollSitting</key>
-  <map>
-    <key>Comment</key>
-    <string>Percentage which to clamp camera roll back towards straight up while sitting.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.85</real>
-  </map>
-  <key>AllowCameraFlipOnSit</key>
-  <map>
-    <key>Comment</key>
-    <string>Allow the camera to roll and flip upside down while sitting..</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <real>1</real>
-  </map>
-  <key>RenderDeferredEnvironmentMap</key>
-    <map>
-    <key>Comment</key>
-    <string>Toggles rendering the environment map on shiny surfaces in Deferred Rendering.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderProjectorShadowResolution</key>
-  <map>
-    <key>Comment</key>
-    <string>Raw projector shadow width of the two available shadow maps</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector2</string>
-    <key>Value</key>
-    <array>
-      <real>1024</real>
-      <real>1024</real>
-    </array>
-    <key>MaxValue</key>
-    <integer>2048</integer>
-    <key>MinValue</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderForceHighShaderLevel</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>RenderMotionBlurStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>120</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGodrays</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGodraysResolution</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>32</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGodraysMultiplier</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>2.0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGodraysFalloffMultiplier</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>24.0</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderGodraysDirectional</key>
-  <map>
-    <key>Comment</key>
-    <string>Fade out volumetric lighting if we don't face the sun.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderLensFlare</key>
-  <map>
-    <key>Comment</key>
-    <string>This enables and disables Lens Flare effects from the sun.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>DisallowLeftClickSit</key>
-  <map>
-    <key>Comment</key>
-    <string>Dont allow sitting down when left clicking objects.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>DisallowLeftClickGrab</key>
-  <map>
-    <key>Comment</key>
-    <string>Dont allow grabbing objects when left clicking-and-holding objects.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>MiniMapShowLocalCoords</key>
-  <map>
-    <key>Comment</key>
-    <string>Show either entire world coordinates or local sim coordinates on minimap</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>WorldMapShowLegend</key>
-  <map>
-    <key>Comment</key>
-    <string>Show the legend panel on the world map floater</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>RememberSnapshotMode</key>
-  <map>
-    <key>Comment</key>
-    <string>Remember the last used snapshot mode in our snapshot floater</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>RenderOtherAttachedLights</key>
-	<map>
-    <key>Comment</key>
-    <string>Render lighted prims that are attached to other avatars</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-	<key>RenderOwnAttachedLights</key>
-	<map>
-    <key>Comment</key>
-    <string>Render lighted prims that are attached to other avatars</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-	<key>RenderDeferredLights</key>
-	<map>
-    <key>Comment</key>
-    <string>Render lighted prims that are attached to other avatars</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-	<key>RenderSpotLightReflections</key>
-	<map>
-    <key>Comment</key>
-    <string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-	<key>RenderSpotLightImages</key>
-	<map>
-    <key>Comment</key>
-    <string>Render the reflection of spotlight projections on shiny surfaces with environment enabled</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>RenderWaterHeightFudge</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>ShowTopSearchBar</key>
-  <map>
-    <key>Comment</key>
-    <string>Show search bar in navigationbar</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-    
-  <!-- Remappable Keys -->
-  <key>JoystickButtonFlycam</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>7</integer>
-  </map>
-  <key>JoystickButtonJump</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>JoystickButtonFly</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>2</integer>
-  </map>
-  <key>JoystickButtonCrouch</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
-  <key>JoystickButtonRunToggle</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>8</integer>
-  </map>
-  <key>JoystickButtonMouselook</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>9</integer>
-  </map>
-  <key>JoystickButtonZoomIn</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>4</integer>
-  </map>
-  <key>JoystickButtonZoomOut</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>5</integer>
-  </map>
-  <key>JoystickButtonZoomDefault</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>6</integer>
-  </map>
-  <key>JoystickButtonRollLeft</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>-1</integer>
-  </map>
-  <key>JoystickButtonRollRight</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>-1</integer>
-  </map>
-  <key>JoystickInvertPitch</key>
-    <map>
-      <key>Comment</key>
-      <string>Invert pitch axis in all joystick modes.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-  
-  <!-- Windlight Legacy Debugs -->
-  <key>WLGamma</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLMaxAltitude</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLEastAngle</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLDistancMult</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLDensityMult</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLHazeDensity</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>WLHazeHorizon</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  
-  <key>CloudNoiseImageName</key>
-  <map>
-    <key>Comment</key>
-    <string>Cloud Noise image name that should be used for windlight cloud generation</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>String</string>
-    <key>Value</key>
-    <string>Cumolo Nimbus.tga</string>
-  </map>
-  
-  <!-- Catznip -->
-  <key>FullScreenWindow</key>
-  <map>
-    <key>Comment</key>
-    <string>Run SL in a fullscreen window</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  
-  <!-- Tonemapping -->
-  <key>ExodusRenderAutoExposeStep</key>
-  <map>
-    <key>Comment</key>
-    <string>Amount to "correct" exposure by every frame until we've reached the target exposure in ExodusRenderExposureTarget.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.125</real>
-  </map>
-  <key>ExodusRenderExposureTarget</key>
-  <map>
-    <key>Comment</key>
-    <string>Target exposure level for auto exposure. Only applied when ExodusRenderAutoExposure is set to TRUE.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>0.0</real>
-  </map>
-  <key>ExodusRenderAutoExposure</key>
-  <map>
-    <key>Comment</key>
-    <string>Whether or not to enable auto exposure. Note: autoexposure is slightly more expensive, and may not work on all GPUs and drivers.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
-  <key>ExodusRenderToneAdvOptA</key>
-  <map>
-    <key>Comment</key>
-    <string>Advanced tone mapping options. X = Shoulder strength, Y = Linear strength, Z = Linear angle.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>0.19</real>
-      <real>0.40</real>
-      <real>0.18</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderToneAdvOptB</key>
-  <map>
-    <key>Comment</key>
-    <string>Advanced tone mapping options (cont'd). X = Toe strength, Y = Toe numerator, Z = Toe denominator.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>0.24</real>
-      <real>0.02</real>
-      <real>0.18</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderToneAdvOptC</key>
-  <map>
-    <key>Comment</key>
-    <string>Advanced tone mapping options (cont'd). X = Linear white point, Y = Exposure bias.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>6.20</real>
-      <real>2.8</real>
-      <real>0</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderToneExposure</key>
-  <map>
-    <key>Comment</key>
-    <string>Exposure for tone mapping.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>F32</string>
-    <key>Value</key>
-    <real>1.00</real>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderToneMapping</key>
-  <map>
-    <key>Comment</key>
-    <string>This enables and disables Tone Mapping.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderToneMappingTech</key>
-  <map>
-    <key>Comment</key>
-    <string>Tone mapping technique to use. 0 applies Filmic, 1 applies Linear, and 2 applies Reinhard.  Defaults to Reinhard.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>3</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderColorGradeTech</key>
-  <map>
-    <key>Comment</key>
-    <string>Color grading technique to use. 0 applies linear color correction, 1 applies a 1D color gammut LUT, 2 does nothing (yet), -1 disables color grading altogether.  Defaults to linear.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>S32</string>
-    <key>Value</key>
-    <integer>0</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderColorGradeTexture</key>
-  <map>
-    <key>Comment</key>
-    <string>Image to use for color grading post process.  Note: this should always be a gradient with alpha. (UUID texture reference)</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>String</string>
-    <key>Value</key>
-    <string>38c32253-287c-e607-c3d7-a702b4c21363</string>
-  </map>
-  <key>ExodusRenderVignette</key>
-  <map>
-    <key>Comment</key>
-    <string>Amount of vignette to apply (X), power of vignette shading (Y), and multiplier for vignette shading (Z).</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>0.0</real>
-      <real>1.0</real>
-      <real>3.0</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderExposure</key>
-  <map>
-    <key>Comment</key>
-    <string>High Dynamic Range Exposure.  Each value represents a different color channel.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>0.07</real>
-      <real>0.07</real>
-      <real>0.07</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderGamma</key>
-  <map>
-    <key>Comment</key>
-    <string>High Dynamic Range Gamma Correction.  Each value represents a different color channel.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>1.00</real>
-      <real>1.00</real>
-      <real>1.00</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-  <key>ExodusRenderOffset</key>
-  <map>
-    <key>Comment</key>
-    <string>High Dynamic Range Brightness Offset.  Each value represents a different color channel.  Higher values brighten the scene, lower values darken.</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Vector3</string>
-    <key>Value</key>
-    <array>
-      <real>-0.07</real>
-      <real>-0.07</real>
-      <real>-0.07</real>
-    </array>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
-    
-		<key>RenderRiggedMotionBlurQuality</key>
-    <map>
-      <key>Comment</key>
-      <string>Controls what should be included into Motion Blur rendering. 0 = Objects only, 1 = Objects and self, 2 = Everything.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>U32</string>
-      <key>Value</key>
-      <integer>1</integer>
-      <key>PresetType</key>
-      <integer>1</integer>
-    </map>
-    <key>ControlSettingsFile</key>
-    <map>
-      <key>Comment</key>
-      <string>Client control settings file name (per install).</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>controls.xml</string>
-    </map>
-    <key>CefVerboseLog</key>
-    <map>
-      <key>Comment</key>
-      <string>Enable/disable CEF verbose loggingk</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>CefVerboseLog</key>
-    <map>
-      <key>Comment</key>
-      <string>Enable/disable CEF verbose loggingk</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>
-    </map>
-    <key>FastSelectionUpdates</key>
-    <map>
-      <key>Comment</key>
-      <string>Enable/disable updating the selection outlines every few seconds.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    <key>ResetUIScaleOnFirstRun</key>
-    <map>
-      <key>Comment</key>
-      <string>Resets the UI scale factor on first run due to changed display scaling behavior</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>1</integer>        
-    </map>
-    <key>RenderHighlightType</key>
-    <map>
-      <key>Comment</key>
-      <string>Select the selection outline type. </string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>1</integer>
-    </map>
-    
-    <key>CameraFollowJoint</key>
-    <map>
-      <key>Comment</key>
-      <string>Test.</string>
-      <key>Persist</key>
-      <integer>0</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>-1</integer>
-    </map>
-    
-    <!-- Windlight Presets -->
-    <!-- <string>C:/Program Files/Firestorm-Releasex64/app_settings/windlight/skies</string> -->
-    <key>InstallDirFirestorm</key>
-    <map>
-      <key>Comment</key>
-      <string>Installation folder for Firestorm Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>%ProgramFiles%/Firestorm-Releasex64/app_settings/windlight/skies</string>
-    </map>
-    <key>InstallDirAlchemy</key>
-    <map>
-      <key>Comment</key>
-      <string>Installation folder for Alchemy Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>C:/Program Files/Alchemy/app_settings/windlight/skies</string>
-    </map>
-    <key>InstallDirCatznip</key>
-    <map>
-      <key>Comment</key>
-      <string>Installation folder for Catznip Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>C:/Program Files/CatznipViewer/app_settings/windlight/skies</string>
-    </map>
-    <key>InstallDirLinden</key>
-    <map>
-      <key>Comment</key>
-      <string>Installation folder for the Second Life Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>C:/Program Files/SecondLife/app_settings/windlight/skies</string>
-    </map>
-    
-    <key>UserDirFirestorm</key>
-    <map>
-      <key>Comment</key>
-      <string>App user folder for Firestorm Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>%APPDATA%/Firestorm/user_settings/windlight/skies</string>
-    </map>
-    <key>UserDirAlchemy</key>
-    <map>
-      <key>Comment</key>
-      <string>App user folder for Alchemy Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>%APPDATA%/Alchemy/user_settings/windlight/skies</string>
-    </map>
-    <key>UserDirCatznip</key>
-    <map>
-      <key>Comment</key>
-      <string>App user folder for Catznip Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>%APPDATA%/Catznip/user_settings/windlight/skies</string>
-    </map>
-    <key>UserDirLinden</key>
-    <map>
-      <key>Comment</key>
-      <string>App user folder for the Second Life Viewer to look into for new windlight presets.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>%APPDATA%/SecondLife/user_settings/windlight/skies</string>
-    </map>
-    
-    <key>LoadPresetsFirestorm</key>
-    <map>
-      <key>Comment</key>
-      <string>Allow searching for presets in the configured Firestorm folder.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>        
-    </map>
-    <key>LoadPresetsAlchemy</key>
-    <map>
-      <key>Comment</key>
-      <string>Allow searching for presets in the configured Alchemy folder.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>        
-    </map>
-    <key>LoadPresetsCatznip</key>
-    <map>
-      <key>Comment</key>
-      <string>Allow searching for presets in the configured Catznip folder.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>        
-    </map>
-    <key>LoadPresetsSecondLife</key>
-    <map>
-      <key>Comment</key>
-      <string>Allow searching for presets in the configured Second Life folder.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>Boolean</string>
-      <key>Value</key>
-      <integer>0</integer>        
-    </map>
   </map>
 </llsd>
 

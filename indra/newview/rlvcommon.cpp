@@ -84,9 +84,11 @@ void RlvNotifications::onGiveToRLVConfirmation(const LLSD& notification, const L
 bool RlvSettings::s_fCompositeFolders = false;
 #endif // RLV_EXPERIMENTAL_COMPOSITEFOLDERS
 bool RlvSettings::s_fCanOOC = true;
+U8 RlvSettings::s_nExperienceMinMaturity = 0;
 bool RlvSettings::s_fLegacyNaming = true;
 bool RlvSettings::s_fNoSetEnv = false;
 bool RlvSettings::s_fTempAttach = true;
+std::list<std::string> RlvSettings::s_BlockedExperiences;
 std::list<LLUUID> RlvSettings::s_CompatItemCreators;
 std::list<std::string> RlvSettings::s_CompatItemNames;
 
@@ -121,6 +123,11 @@ void RlvSettings::initClass()
 
 		if (gSavedSettings.controlExists(RLV_SETTING_TOPLEVELMENU))
 			gSavedSettings.getControl(RLV_SETTING_TOPLEVELMENU)->getSignal()->connect(boost::bind(&onChangedMenuLevel));
+
+		int nMinMaturity = gSavedSettings.getS32("RLVaExperienceMaturityThreshold");
+		s_nExperienceMinMaturity = (nMinMaturity == 0) ? 0 : ((nMinMaturity == 1) ? SIM_ACCESS_PG : ((nMinMaturity == 2) ? SIM_ACCESS_MATURE : SIM_ACCESS_ADULT));
+		const std::string& strBlockedExperiences = gSavedSettings.getString("RLVaBlockedExperiences");
+		boost::split(s_BlockedExperiences, strBlockedExperiences, boost::is_any_of(";"));
 
 		fInitialized = true;
 	}
@@ -224,6 +231,18 @@ bool RlvSettings::isCompatibilityModeObject(const LLUUID& idRlvObject)
 	return fCompatMode;
 }
 
+bool RlvSettings::isAllowedExperience(const LLUUID& idExperience, U8 nMaturity)
+{
+	// An experience is allowed to interact with RLVa if:
+	//   - temporary attachments can interact with RLVa
+	//   - the user set a minimum maturity and the specified maturity is equal or higher
+	//   - the experience isn't explicitly blocked (NOTE: case-sensitive string comparison)
+	return
+		(getEnableTemporaryAttachments()) &&
+		(s_nExperienceMinMaturity) && (s_nExperienceMinMaturity <= nMaturity) &&
+		(s_BlockedExperiences.end() == std::find(s_BlockedExperiences.begin(), s_BlockedExperiences.end(), idExperience.asString()));
+}
+
 // ============================================================================
 // RlvStrings
 //
@@ -325,6 +344,12 @@ void RlvStrings::saveToFile(const std::string& strFilePath)
 // Checked: 2009-11-11 (RLVa-1.1.0a) | Modified: RLVa-1.1.0a
 const std::string& RlvStrings::getAnonym(const std::string& strName)
 {
+	static const std::string strUnknown = LLTrans::getString("Unknown");
+	if ( (!RlvActions::isRlvEnabled()) || (m_Anonyms.empty()) )
+	{
+		return strUnknown;
+	}
+
 	const char* pszName = strName.c_str(); U32 nHash = 0;
 	
 	// Test with 11,264 SL names showed a 3.33% - 3.82% occurance for each so we *should* get a very even spread
@@ -372,6 +397,12 @@ const char* RlvStrings::getStringFromReturnCode(ERlvCmdRet eRet)
 			return "missing #RLV";
 		case RLV_RET_FAILED_DEPRECATED:
 			return "deprecated and disabled";
+		case RLV_RET_FAILED_NOBEHAVIOUR:
+			return "no active behaviours";
+		case RLV_RET_FAILED_BLOCKED:
+			return "blocked object";
+		case RLV_RET_FAILED_THROTTLED:
+			return "throttled";
 		// The following are identified by the chat verb
 		case RLV_RET_RETAINED:
 		case RLV_RET_SUCCESS:
@@ -543,14 +574,17 @@ bool RlvUtil::isNearbyRegion(const std::string& strRegion)
 }
 
 // Checked: 2011-04-11 (RLVa-1.3.0h) | Modified: RLVa-1.3.0h
-void RlvUtil::notifyBlocked(const std::string& strNotifcation, const LLSD& sdArgs)
+void RlvUtil::notifyBlocked(const std::string& strNotifcation, const LLSD& sdArgs, bool fLogToChat)
 {
 	std::string strMsg = RlvStrings::getString(strNotifcation);
 	LLStringUtil::format(strMsg, sdArgs);
 
 	LLSD sdNotify;
 	sdNotify["MESSAGE"] = strMsg;
-	LLNotificationsUtil::add("SystemMessageTip", sdNotify);
+	if (!fLogToChat)
+		LLNotificationsUtil::add("SystemMessageTip", sdNotify);
+	else
+		LLNotificationsUtil::add("ChatSystemMessageTip", sdNotify);
 }
 
 // Checked: 2010-11-11 (RLVa-1.2.1g) | Added: RLVa-1.2.1g
@@ -606,6 +640,20 @@ bool RlvUtil::sendChatReply(S32 nChannel, const std::string& strUTF8Text)
 	return true;
 }
 
+bool RlvUtil::sendChatReplySplit(S32 nChannel, const std::string& strMsg, char chSplit)
+{
+	std::list<std::string> msgList;
+	utf8str_split(msgList, strMsg, MAX_MSG_STR_LEN, chSplit);
+	for (const std::string& strMsg : msgList)
+	{
+		if (!sendChatReply(nChannel, strMsg))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 void RlvUtil::sendIMMessage(const LLUUID& idRecipient, const std::string& strMsg, char chSplit)
 {
 	const LLUUID idSession = gIMMgr->computeSessionID(IM_NOTHING_SPECIAL, idRecipient);
@@ -629,18 +677,6 @@ void RlvUtil::sendIMMessage(const LLUUID& idRecipient, const std::string& strMsg
 			IM_NOTHING_SPECIAL,
 			idSession);
 		gAgent.sendReliableMessage();
-	}
-}
-
-void RlvUtil::teleportCallback(U64 hRegion, const LLVector3& posRegion, const LLVector3& vecLookAt)
-{
-	if (hRegion)
-	{
-		const LLVector3d posGlobal = from_region_handle(hRegion) + (LLVector3d)posRegion;
-		if (vecLookAt.isExactlyZero())
-			gAgent.teleportViaLocation(posGlobal);
-		else
-			gAgent.teleportViaLocationLookAt(posGlobal, vecLookAt);
 	}
 }
 

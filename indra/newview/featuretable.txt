@@ -41,7 +41,7 @@ RenderFarClip				1	256
 RenderFlexTimeFactor		1	1.0
 RenderFogRatio				1	4.0
 RenderGamma					1	0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderGround				1	1
 RenderMaxPartCount			1	8192
 RenderObjectBump			1	1
@@ -85,7 +85,7 @@ RenderAvatarMaxComplexity          1	25000
 RenderAvatarVP				1	0
 RenderFarClip				1	64
 RenderFlexTimeFactor		1	0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	8
 RenderLocalLights			1	0
 RenderMaxPartCount			1	0
 RenderObjectBump			1	0
@@ -117,7 +117,7 @@ RenderAvatarMaxComplexity          1	35000
 RenderAvatarVP				1	0
 RenderFarClip				1	64
 RenderFlexTimeFactor		1	0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	8
 RenderLocalLights			1	0
 RenderMaxPartCount			1	0
 RenderObjectBump			1	0
@@ -148,7 +148,7 @@ RenderAvatarPhysicsLODFactor 1	0.75
 RenderAvatarVP				1	1
 RenderFarClip				1	96
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	8
 RenderMaxPartCount			1	2048
 RenderObjectBump			1	1
 RenderLocalLights			1	1
@@ -179,7 +179,7 @@ RenderAvatarPhysicsLODFactor 1	1.0
 RenderAvatarVP				1	1
 RenderFarClip				1	128
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderMaxPartCount			1	4096
 RenderObjectBump			1	1
 RenderLocalLights			1	1
@@ -210,7 +210,7 @@ RenderAvatarPhysicsLODFactor 1	1.0
 RenderAvatarVP				1	1
 RenderFarClip				1	128
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderMaxPartCount			1	4096
 RenderObjectBump			1	1
 RenderLocalLights			1	1
@@ -241,7 +241,7 @@ RenderAvatarPhysicsLODFactor 1	1.0
 RenderAvatarVP				1	1
 RenderFarClip				1	128
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderMaxPartCount			1	4096
 RenderObjectBump			1	1
 RenderLocalLights			1	1
@@ -272,7 +272,7 @@ RenderAvatarPhysicsLODFactor 1	1.0
 RenderAvatarVP				1	1
 RenderFarClip				1	128
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderMaxPartCount			1	4096
 RenderObjectBump			1	1
 RenderLocalLights			1	1
@@ -302,7 +302,7 @@ RenderAvatarPhysicsLODFactor 1	1.0
 RenderAvatarVP				1	1
 RenderFarClip				1	256
 RenderFlexTimeFactor		1	1.0
-RenderGlowResolutionPow		1	10
+RenderGlowResolutionPow		1	9
 RenderLocalLights			1	1
 RenderMaxPartCount			1	8192
 RenderObjectBump			1	1

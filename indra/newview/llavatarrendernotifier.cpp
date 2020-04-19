@@ -123,8 +123,11 @@ void LLAvatarRenderNotifier::displayNotification(bool show_over_limit)
     {
         notification_name = "AgentComplexityWithVisibility";
         args["OVERLIMIT_MSG"] = overLimitMessage();
+
+		//BD
 		args["AVATARS"] = LLSD::Integer(mAgentsCount);
 		args["SHOWING"] = LLSD::Integer(mOverLimitAgents);
+
         // remember what the situation was so that we only notify when it has changed
         mAgentsCount = mLatestAgentsCount;
         mOverLimitAgents = mLatestOverLimitAgents;

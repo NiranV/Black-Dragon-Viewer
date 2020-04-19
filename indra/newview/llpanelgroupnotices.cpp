@@ -262,7 +262,7 @@ BOOL LLPanelGroupNotices::postBuild()
 	mCreateInventoryName->setTabStop(FALSE);
 	mCreateInventoryName->setEnabled(FALSE);
 
-	mCreateInventoryIcon = getChild<LLIconCtrl>("create_inv_icon", recurse);
+	mCreateInventoryIcon = getChild<LLIconCtrl>("create_inv_icon",recurse);
 	mCreateInventoryIcon->setVisible(FALSE);
 
 	mBtnSendMessage = getChild<LLButton>("send_notice",recurse);
@@ -280,7 +280,7 @@ BOOL LLPanelGroupNotices::postBuild()
 	mViewInventoryName->setTabStop(FALSE);
 	mViewInventoryName->setEnabled(FALSE);
 
-	mViewInventoryIcon = getChild<LLIconCtrl>("view_inv_icon", recurse);
+	mViewInventoryIcon = getChild<LLIconCtrl>("view_inv_icon",recurse);
 	mViewInventoryIcon->setVisible(FALSE);
 
 	mBtnOpenAttachment = getChild<LLButton>("open_attachment",recurse);
@@ -343,7 +343,7 @@ void LLPanelGroupNotices::setItem(LLPointer<LLInventoryItem> inv_item)
 	mCreateInventoryIcon->setVisible(TRUE);
 
 	std::stringstream ss;
-	ss << "      " << mInventoryItem->getName();
+	ss << "        " << mInventoryItem->getName();
 
 	mCreateInventoryName->setText(ss.str());
 	mBtnRemoveAttachment->setEnabled(TRUE);
@@ -641,7 +641,7 @@ void LLPanelGroupNotices::showNotice(const std::string& subject,
 		mViewInventoryIcon->setVisible(TRUE);
 
 		std::stringstream ss;
-		ss << "      " << inventory_name;
+		ss << "        " << inventory_name;
 
 		mViewInventoryName->setText(ss.str());
 		mBtnOpenAttachment->setEnabled(TRUE);
