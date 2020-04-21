@@ -440,7 +440,7 @@
        height="143"
        layout="topleft"
        left_delta="5"
-       name="WaterNormalMap"
+       name="water_normal_map"
        top_pad="3"
        width="128" />
 	</panel>
