@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1536"
+            height="1443"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -855,68 +855,6 @@ width="345">
                   left="10"
                   name="enable_joystick"
                   width="60" />
-                  <panel
-                  follows="left|top|right"
-                  height="20"
-                  bg_visible="true"
-                  bg_alpha_color="0.10 0.43 0.77 0.28"
-                  layout="topleft"
-                  mouse_opaque="false"
-                  left="2"
-                  name="title"
-                  top_pad="10"
-                  width="323"/>
-                  <text
-                  layout="topleft"
-                  follows="top|left"
-                  type="string"
-                  length="1"
-                  height="12"
-                  left="10"
-                  top_delta="4"
-                  name="title_label"
-                  width="250">
-                  Windlight:
-                  </text>
-                  <check_box
-                  top_pad="15"
-                  height="16"
-                  control_name="UseEnvironmentFromRegion"
-                  halign="center"
-                  label="Use Region Windlight"
-                  layout="topleft"
-                  left="10"
-                  name="UseRegioLight"
-                  width="75" />
-                  <check_box
-                  top_pad="0"
-                  height="16"
-                  control_name="RenderInterpolateWindlight"
-                  halign="center"
-                  label="Allow Windlight Transitions"
-                  layout="topleft"
-                  left_delta="0"
-                  name="WindlightInterpolation"
-                  width="75" />
-                  <slider
-                  control_name="RenderWindlightInterpolateTime"
-                  enabled_control="VertexShaderEnable"
-                  decimal_digits="0"
-                  follows="left|top"
-                  can_edit_text="true"
-                  height="15"
-                  increment="1"
-                  initial_value="5"
-                  label="Transition Time:"
-                  tool_tip="Set how much seconds Windlight transitions between preset selections should take"
-                  label_width="110"
-                  layout="topleft"
-                  left="10"
-                  max_val="20"
-                  min_val="0"
-                  name="RenderWindlightInterpolateTime"
-                  top_pad="3"
-                  width="310" />
                   <panel
                   follows="left|top|right"
                   height="20"
