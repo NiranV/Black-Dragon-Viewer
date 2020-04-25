@@ -1232,14 +1232,15 @@ void LLScrollListCtrl::setCommentText(const std::string& comment_text)
 	getChild<LLTextBox>("comment_text")->setValue(comment_text);
 }
 
-LLScrollListItem* LLScrollListCtrl::addSeparator(EAddPosition pos)
+//BD - UI Improvements
+LLScrollListItem* LLScrollListCtrl::addSeparator(EAddPosition pos, std::string label)
 {
 	LLScrollListItem::Params separator_params;
 	separator_params.enabled(false);
 	LLScrollListCell::Params column_params;
-	column_params.type = "icon";
-	column_params.value = "menu_separator";
-	column_params.color = LLColor4(0.f, 0.f, 0.f, 0.7f);
+	column_params.type = label == "menu_separator" ? "icon" : "text";
+	column_params.value = label;
+	column_params.color = LLColor4(0.3f, 0.63f, 0.97f, 1.0f);
 	column_params.font_halign = LLFontGL::HCENTER;
 	separator_params.columns.add(column_params);
 	return addRow( separator_params, pos );

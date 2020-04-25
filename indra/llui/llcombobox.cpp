@@ -313,9 +313,9 @@ LLScrollListItem* LLComboBox::add(const std::string& name, LLSD value, EAddPosit
 	return item;
 }
 
-LLScrollListItem* LLComboBox::addSeparator(EAddPosition pos)
+LLScrollListItem* LLComboBox::addSeparator(EAddPosition pos, std::string label)
 {
-	return mList->addSeparator(pos);
+	return mList->addSeparator(pos, label);
 }
 
 void LLComboBox::sortByName(BOOL ascending)

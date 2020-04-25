@@ -134,7 +134,7 @@ public:
 	LLScrollListItem*	add(const std::string& name, const LLUUID& id, EAddPosition pos = ADD_BOTTOM, BOOL enabled = TRUE);
 	LLScrollListItem*	add(const std::string& name, void* userdata, EAddPosition pos = ADD_BOTTOM, BOOL enabled = TRUE);
 	LLScrollListItem*	add(const std::string& name, LLSD value, EAddPosition pos = ADD_BOTTOM, BOOL enabled = TRUE);
-	LLScrollListItem*	addSeparator(EAddPosition pos = ADD_BOTTOM);
+	LLScrollListItem*	addSeparator(EAddPosition pos = ADD_BOTTOM, std::string label = "");
 	BOOL			remove( S32 index );	// remove item by index, return TRUE if found and removed
 	void			removeall() { clearRows(); }
 	bool			itemExists(const std::string& name);
