@@ -173,8 +173,74 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="260"
+     height="351"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability to define a label (title) for separators.
+Added: Ability to save presets as inventory items from within Edit Sky/Water windows.
+Added: Reimplemented separate Cloud Scroll locks.
+Added: Holter Rez as Patreon Patron.
+Added: Rienna no Ouji as Patreon Patron.
+Added: Silivren Atheria as Patreon Patron.
+Changed: Tweak Tone Mapping defaults for EEP.
+Changed: Improved notifications when loading a preset fails.
+Changed: Consoliderated newly added save as item and old save locally into a "Save Dropdown" button defaulting to saving locally.
+Changed: Renamed "Reset" button to "Reset To Region Default" to make it clearer what it actually does.
+Changed: Load order of presets to put custom presets back at the top and system presets below that.
+Changed: Slight layout tweaks to windlight floaters to bring sliders all in line.
+Changed: Version to 3.8.1.
+Fixed: SSAO Effect not working.
+Fixed: Attached lights vanishing while sitting down (again).
+Fixed: Screen Space Reflections making basic shiny slightly brighter.
+Fixed: Sun image texture control not updating and showing the currently loaded textures whenever a preset is loaded.
+Fixed: Saving presets fails because the folder doesn't yet exist.
+Fixed: Loading a local preset in "Fixed Environment" makes all further changes not apply.
+Fixed: Sun/Cloud/Moon/Water texture ids are not saved into the local preset even if we have the permissions to do so.
+Fixed: Menu entries in IM tab right-click menu not enabling/disabling when appropiate.
+Fixed: Environment Settings opening Fixed Environment windows instead of the local Edit Sky/Water equivalents resulting in strange behavior.
+Fixed: Cloud Scroll X lock not working.
+Fixed: Outfit Edit clothing entry buttons are appearing in wrong positions and dont work.
+Removed: Defunct Windlight transition and region setting options from Machinima Sidebar.
+Removed: Defunct local Cloud Noise Image dropdown.
+Misc: Added missing files.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="260"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
