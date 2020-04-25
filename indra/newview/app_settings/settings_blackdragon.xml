@@ -1591,9 +1591,9 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>0.19</real>
-      <real>0.40</real>
-      <real>0.18</real>
+      <real>0.225</real>
+      <real>0.5</real>
+      <real>0.185</real>
     </array>
     <key>PresetType</key>
     <integer>1</integer>
@@ -1609,8 +1609,8 @@
     <key>Value</key>
     <array>
       <real>0.24</real>
-      <real>0.02</real>
-      <real>0.18</real>
+      <real>0.018</real>
+      <real>0.197</real>
     </array>
     <key>PresetType</key>
     <integer>1</integer>
@@ -1625,8 +1625,8 @@
     <string>Vector3</string>
     <key>Value</key>
     <array>
-      <real>6.20</real>
-      <real>2.8</real>
+      <real>10.0</real>
+      <real>2.47</real>
       <real>0</real>
     </array>
     <key>PresetType</key>
