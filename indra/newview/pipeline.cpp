@@ -9240,15 +9240,13 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 						LLVOAvatar *av = vobj->getAvatar();
 						if (av)
 						{
-							if (av->isTooComplex() || av->isInMuteList() || dist_vec(av->getPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
-							{
-								continue;
-							}
-						}
-						else
-						{
-							const LLViewerObject *root_obj = drawablep->getParent() ? drawablep->getParent()->getVObj() : vobj;
-							if (root_obj && dist_vec(root_obj->getPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
+							//BD - So apparently av->getPosition() will result in our avatar being on 0 0 0 while sitting,
+							//     i'm unsure whether it is something that comes from somewhere else (maybe the position
+							//     being falsely assumed at 0 0 0 or not properly updated but i know it was recently introduced
+							//     with one of LL's changes. We use the avatar's root bone world position now instead of the
+							//     avatar position because this one will always be accurate unless our avatar is really
+							//     being rendered at 0 0 0 and in that case our camera will probably be janked there as well.
+							if (av->isTooComplex() || av->isInMuteList() || dist_vec(av->mRoot->getWorldPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
 							{
 								continue;
 							}
