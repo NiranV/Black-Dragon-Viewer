@@ -141,8 +141,6 @@ void main()
          float fullbrightification = diffuse.a;
          // the old infinite-sky shiny reflection
          float sa = dot(refnormpersp, light_dir.xyz);
-         float light_gamma = 1.0/1.3;
-         sa = pow(sa, light_gamma);
          
          vec3 dumbshiny = (sunlit)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
          dumbshiny = min(dumbshiny, vec3(1));

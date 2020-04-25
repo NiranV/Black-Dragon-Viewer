@@ -169,8 +169,6 @@ void main()
          float fullbrightification = diffuse.a;
          // the old infinite-sky shiny reflection
          float sa = dot(refnormpersp, light_dir.xyz);
-         float light_gamma = 1.0/1.3;
-         sa = pow(sa, light_gamma);
          
          // screen-space cheapish fakey reflection map
          vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
