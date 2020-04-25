@@ -9102,13 +9102,9 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector3</string>
+    <string>F32</string>
     <key>Value</key>
-    <array>
-      <real>0.80</real>
-      <real>1.00</real>
-      <real>0.00</real>
-    </array>
+    <real>-1.0</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>

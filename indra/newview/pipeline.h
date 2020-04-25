@@ -955,7 +955,6 @@ public:
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
-	static LLVector3 RenderSSAOEffect;
 	static F32 RenderShadowOffsetError;
 	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
@@ -982,7 +981,8 @@ public:
 	static F32 CameraDoFResScale;
 	static F32 RenderAutoHideSurfaceAreaLimit;
 
-//    //BD - Special Options
+//  //BD - Special Options
+	static F32 RenderSSAOEffect;
 	static BOOL CameraFreeDoFFocus;
 	static BOOL CameraDoFLocked;
 	//static bool RenderDepthOfFieldInEditMode;
@@ -992,7 +992,6 @@ public:
 	static BOOL RenderShadowAutomaticDistance;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
-	//static F32 RenderSSAOEffect;
 	static F32 RenderSSAOBlurSize;
 	static F32 RenderChromaStrength;
 	static F32 RenderSepiaStrength;

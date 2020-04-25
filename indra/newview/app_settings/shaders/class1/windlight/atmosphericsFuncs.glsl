@@ -37,7 +37,7 @@ uniform float distance_multiplier;
 uniform float max_y;
 uniform vec4 glow;
 uniform float scene_light_strength;
-uniform mat3 ssao_effect_mat;
+uniform float ssao_effect;
 uniform int no_atmo;
 uniform float sun_moon_glow_factor;
 
@@ -138,7 +138,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
      */
     if (use_ao)
     {
-        tmpAmbient = vec4(mix(ssao_effect_mat * tmpAmbient.rgb, tmpAmbient.rgb, ambFactor), tmpAmbient.a);
+        tmpAmbient = vec4(mix(ssao_effect * tmpAmbient.rgb, tmpAmbient.rgb, ambFactor), tmpAmbient.a);
     }
 
     //haze color

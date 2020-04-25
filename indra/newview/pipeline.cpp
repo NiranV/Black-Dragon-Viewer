@@ -187,7 +187,6 @@ F32 LLPipeline::RenderShadowBlurSize;
 F32 LLPipeline::RenderSSAOScale;
 U32 LLPipeline::RenderSSAOMaxScale;
 F32 LLPipeline::RenderSSAOFactor;
-LLVector3 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderShadowOffsetError;
 F32 LLPipeline::RenderShadowBiasError;
 F32 LLPipeline::RenderShadowOffset;
@@ -216,6 +215,7 @@ F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 //BD - Special Options
+F32 LLPipeline::RenderSSAOEffect;
 BOOL LLPipeline::CameraFreeDoFFocus;
 BOOL LLPipeline::CameraDoFLocked;
 //bool LLPipeline::RenderDepthOfFieldInEditMode;
@@ -225,7 +225,6 @@ BOOL LLPipeline::RenderHighPrecisionNormals;
 BOOL LLPipeline::RenderShadowAutomaticDistance;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
-//F32 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOBlurSize;
 F32 LLPipeline::RenderChromaStrength;
 F32 LLPipeline::RenderSepiaStrength;
@@ -1310,7 +1309,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOScale = gSavedSettings.getF32("RenderSSAOScale");
 	RenderSSAOMaxScale = gSavedSettings.getU32("RenderSSAOMaxScale");
 	RenderSSAOFactor = gSavedSettings.getF32("RenderSSAOFactor");
-	RenderSSAOEffect = gSavedSettings.getVector3("RenderSSAOEffect");
 	RenderShadowOffsetError = gSavedSettings.getF32("RenderShadowOffsetError");
 	RenderShadowBiasError = gSavedSettings.getF32("RenderShadowBiasError");
 	RenderShadowOffset = gSavedSettings.getF32("RenderShadowOffset");
@@ -1339,6 +1337,7 @@ void LLPipeline::refreshCachedSettings()
 
 
 //	//BD - Special Options
+	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
 	RenderLocalLights = sRenderOtherAttachedLights || sRenderOwnAttachedLights || sRenderDeferredLights;
 	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	CameraDoFLocked = gSavedSettings.getBOOL("CameraDoFLocked");
@@ -8856,15 +8855,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR_INV, 1.0/ssao_factor);
 
-	LLVector3 ssao_effect = RenderSSAOEffect;
-	F32 matrix_diag = (ssao_effect[0] + 2.0*ssao_effect[1])/3.0;
-	F32 matrix_nondiag = (ssao_effect[0] - ssao_effect[1])/3.0;
-	// This matrix scales (proj of color onto <1/rt(3),1/rt(3),1/rt(3)>) by
-	// value factor, and scales remainder by saturation factor
-	F32 ssao_effect_mat[] = {	matrix_diag, matrix_nondiag, matrix_nondiag,
-								matrix_nondiag, matrix_diag, matrix_nondiag,
-								matrix_nondiag, matrix_nondiag, matrix_diag};
-	shader.uniformMatrix3fv(LLShaderMgr::DEFERRED_SSAO_EFFECT_MAT, 1, GL_FALSE, ssao_effect_mat);
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, RenderSSAOEffect);
 
 	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
 	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/3000.f;
@@ -9258,9 +9249,9 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 						{
 							const LLViewerObject *root_obj = drawablep->getParent() ? drawablep->getParent()->getVObj() : vobj;
 							if (root_obj && dist_vec(root_obj->getPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
-					{
-						continue;
-					}
+							{
+								continue;
+							}
 						}
 					}
 
