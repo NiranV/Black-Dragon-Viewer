@@ -508,7 +508,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="droplet_radius"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     <slider
     decimal_digits="3"
@@ -525,7 +525,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="ice_level"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     
     <text

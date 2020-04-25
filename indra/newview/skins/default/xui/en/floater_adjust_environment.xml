@@ -228,7 +228,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="droplet_radius"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             <slider
             decimal_digits="3"
@@ -245,7 +245,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="ice_level"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             
             <text
@@ -481,7 +481,7 @@ width="700">
             label="Y"
             layout="topleft"
             left_delta="0"
-            top_pad="1"
+            top_pad="5"
             name="sun_position_y"
             width="196" />
             <slider
@@ -498,7 +498,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="sun_scale"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             <check_box
             control_name="sunbeacon"
@@ -508,7 +508,7 @@ width="700">
             layout="topleft"
             name="sunbeacon"
             left_pad="-67"
-            top_delta="-53"
+            top_delta="-61"
             follows="top|left"/>
             <text
             type="string"
@@ -607,7 +607,7 @@ width="700">
             label="Y"
             layout="topleft"
             left_delta="0"
-            top_pad="1"
+            top_pad="5"
             name="moon_position_y"
             width="196" />
             <slider
@@ -624,7 +624,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="moon_scale"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             <check_box
             control_name="moonbeacon"
@@ -634,7 +634,7 @@ width="700">
             layout="topleft"
             name="moonbeacon"
             left_pad="-67"
-            top_delta="-53"
+            top_delta="-61"
             follows="top|left"/>
             <text
             type="string"
@@ -792,7 +792,7 @@ width="700">
             max_val="1"
             min_val="0"
             left_delta="0"
-            top_pad="1"
+            top_pad="5"
             name="cloud_density_y"
             width="196" />
             <slider
@@ -809,7 +809,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="cloud_density_d"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             
             <text
@@ -823,7 +823,7 @@ width="700">
             name="WLCloudCoverageText"
             top="7"
             width="220">
-            Clouds Coverage/Scale/Variance
+            Cloud Coverage/Scale/Variance
             </text>
             <slider
             decimal_digits="2"
@@ -855,7 +855,7 @@ width="700">
             max_val="3"
             min_val="0.01"
             name="cloud_scale"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             <slider
             decimal_digits="2"
@@ -870,7 +870,7 @@ width="700">
             label_width="8"
             layout="topleft"
             left_delta="0"
-            top_pad="1"
+            top_pad="5"
             name="cloud_variance"
             width="196" />
             
@@ -917,7 +917,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="cloud_detail_y"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             <slider
             decimal_digits="2"
@@ -933,7 +933,7 @@ width="700">
             layout="topleft"
             left_delta="0"
             name="cloud_detail_d"
-            top_pad="1"
+            top_pad="5"
             width="196" />
             
             <text

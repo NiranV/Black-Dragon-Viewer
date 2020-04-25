@@ -212,7 +212,7 @@ width="700">
 			layout="topleft"
 			max_val="10"
 			name="water_normal_scale_y"
-			top_pad="1"
+			top_pad="5"
 			width="196"/>
 			<slider
 			decimal_digits="1"
@@ -225,7 +225,7 @@ width="700">
 			layout="topleft"
 			max_val="10"
 			name="water_normal_scale_z"
-			top_pad="1"
+			top_pad="5"
 			width="196"/>
 			
 			<text
@@ -388,7 +388,7 @@ width="700">
 			max_val="4"
 			min_val="-4"
 			name="water_wave1_y"
-			top_pad="1"
+			top_pad="5"
 			width="196"/>
 			
 			<text
@@ -430,7 +430,7 @@ width="700">
 			max_val="4"
 			min_val="-4"
 			name="water_wave2_y"
-			top_pad="1"
+			top_pad="5"
 			width="196" />
 			
 			<text

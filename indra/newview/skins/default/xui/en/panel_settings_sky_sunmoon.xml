@@ -118,7 +118,7 @@ width="698">
     label="Y"
     layout="topleft"
     left_delta="0"
-    top_pad="1"
+    top_pad="5"
     name="sun_position_y"
     width="196" />
     <slider
@@ -135,7 +135,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="sun_scale"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     <check_box
     control_name="sunbeacon"
@@ -145,7 +145,7 @@ width="698">
     layout="topleft"
     name="sunbeacon"
     left_pad="-67"
-    top_delta="-53"
+    top_delta="-61"
     follows="top|left"/>
     <text
     type="string"
@@ -244,7 +244,7 @@ width="698">
     label="Y"
     layout="topleft"
     left_delta="0"
-    top_pad="1"
+    top_pad="5"
     name="moon_position_y"
     width="196" />
     <slider
@@ -261,7 +261,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="moon_scale"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     <check_box
     control_name="moonbeacon"
@@ -271,7 +271,7 @@ width="698">
     layout="topleft"
     name="moonbeacon"
     left_pad="-67"
-    top_delta="-53"
+    top_delta="-61"
     follows="top|left"/>
     <text
     type="string"

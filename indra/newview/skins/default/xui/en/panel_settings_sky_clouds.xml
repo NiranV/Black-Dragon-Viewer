@@ -98,7 +98,7 @@ width="698">
     max_val="1"
     min_val="0"
     left_delta="0"
-    top_pad="1"
+    top_pad="5"
     name="cloud_density_y"
     width="196" />
     <slider
@@ -115,7 +115,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="cloud_density_d"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     
     <text
@@ -161,7 +161,7 @@ width="698">
     max_val="3"
     min_val="0.01"
     name="cloud_scale"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     <slider
     decimal_digits="2"
@@ -176,7 +176,7 @@ width="698">
     label_width="8"
     layout="topleft"
     left_delta="0"
-    top_pad="1"
+    top_pad="5"
     name="cloud_variance"
     width="196" />
     
@@ -223,7 +223,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="cloud_detail_y"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     <slider
     decimal_digits="2"
@@ -239,7 +239,7 @@ width="698">
     layout="topleft"
     left_delta="0"
     name="cloud_detail_d"
-    top_pad="1"
+    top_pad="5"
     width="196" />
     
     <text
@@ -275,7 +275,7 @@ width="698">
     label="   Lock"
     layout="topleft"
     left_pad="-67"
-    name="WLCloudLockX"
+    name="cloud_lock_x"
     top_delta="-21"
     width="200" />
     <text
