@@ -118,8 +118,8 @@
    top_delta="0"
    width="27" >
   <button.commit_callback
-	  function="World.EnvPreset"
-	  parameter="edit_sky" />
+	  function="Floater.ToggleOrBringToFront"
+	  parameter="env_adjust_sky" />
   </button>
   <!--<icon
 		follows="left|top|right"
@@ -180,7 +180,7 @@
    top_delta="0"
    width="27" >
   <button.commit_callback
-	  function="World.EnvPreset"
+	  function="Floater.ToggleOrBringToFront"
 	  parameter="env_edit_extdaycycle" />
   </button>
     <text
@@ -228,8 +228,8 @@
    top_delta="0"
    width="27" >
   <button.commit_callback
-	  function="World.EnvPreset"
-	  parameter="edit_water" />
+	  function="Floater.ToggleOrBringToFront"
+	  parameter="env_adjust_water" />
   </button>
   <check_box
    layout="topleft"
