@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+border="false"
+follows="all"
+label="Image"
+layout="topleft"
+mouse_opaque="false"
+name="panel_settings_water_image"
+top="0"
+width="300">
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left="10"
+    height="16"
+    name="BHText"
+    top="7"
+    width="215">
+    Big Wave Direction
+    </text>    
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    label="X"
+    height="16"
+    layout="topleft"             
+    max_val="4"
+    min_val="-4"
+    name="water_wave1_x"
+    top_pad="1"
+    width="196"/>    
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    height="16"
+    label="Y"
+    layout="topleft"
+    max_val="4"
+    min_val="-4"
+    name="water_wave1_y"
+    top_pad="5"
+    width="196"/>
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left="10"
+    height="16"
+    name="BHText2"
+    top="91"
+    width="215">
+    Little Wave Direction
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    label="X"
+    height="16"
+    layout="topleft"
+    max_val="4"
+    min_val="-4"
+    name="water_wave2_x"
+    top_pad="1"
+    width="196" />
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    height="16"
+    label="Y"
+    layout="topleft"
+    max_val="4"
+    min_val="-4"
+    name="water_wave2_y"
+    top_pad="5"
+    width="196" />
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="235"
+    name="BHText3"
+    top="7"
+    width="215">
+    Normal Map
+    </text>
+    <texture_picker
+    height="78"
+    layout="topleft"
+    left_delta="7"
+    name="water_normal_map"
+    top_pad="2"
+    width="55"/>
+</panel>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel
+border="false"
+bevel_style="none"
+follows="left|top|right|bottom"
+label="Settings"
+layout="topleft"
+height="180"
+left="1"
+mouse_opaque="false"
+name="panel_settings_water_settings"
+top="0"
+width="698">
+    <text
+    follows="left|top|right"
+    height="16"
+    font="SansSerif"
+    layout="topleft"
+    left="10"    
+    name="water_color_label"
+    top="7"
+    width="215">
+    Water Fog Color
+    </text>
+    <color_swatch
+    can_apply_immediately="true"
+    follows="left|top"
+    height="55"
+    label_height="0"
+    layout="topleft"
+    left_delta="7"
+    name="water_fog_color"
+    top_pad="2"
+    width="55" />
+    
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left="10"
+    height="16"
+    top="91"
+    name="water_fog_density_label"
+    width="215">
+    Fog Density Exponent
+    </text>
+    <slider
+    decimal_digits="1"
+    follows="left|top"
+    height="16"
+    initial_value="0"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    max_val="10"
+    name="water_fog_density"
+    top_pad="1"
+    width="196"/>
+    
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left="10"
+    height="16"
+    top="133"
+    name="underwater_fog_modifier_label"
+    width="215">
+    Underwater Fog Modifier
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    initial_value="0"
+    can_edit_text="true"
+    layout="topleft"
+    increment="0.01"
+    left_delta="0"
+    max_val="2"
+    name="water_underwater_mod"
+    top_pad="1"
+    width="196"/>
+    
+    <!--======== II conlumn of controls ========-->    
+    
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left="235"
+    name="HDText"
+    height="16"
+    top="7"
+    width="215">
+    Fresnel Scale
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    name="water_fresnel_scale"
+    top_pad="1"
+    width="196"/>
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    layout="topleft"
+    left_delta="0"
+    height="16"
+    name="FresnelOffsetText"
+    top="49"
+    width="215">
+    Fresnel Offset
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="top|left"
+    height="16"
+    increment="0.01"
+    initial_value="0.7"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    name="water_fresnel_offset"
+    top_pad="1"
+    width="196"/>
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="235"
+    name="BDensText"
+    top="91"
+    width="215">
+    Reflection Wavelet Scale
+    </text>
+    <slider
+    decimal_digits="1"
+    follows="left|top"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    layout="topleft"
+    height="16"
+    label="1"
+    left_delta="0"
+    max_val="10"
+    name="water_normal_scale_x"
+    top_pad="1"
+    width="196"/>
+    <slider
+    decimal_digits="1"
+    follows="left|top"
+    label="2"
+    height="16"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    layout="topleft"
+    max_val="10"
+    name="water_normal_scale_y"
+    top_pad="5"
+    width="196"/>
+    <slider
+    decimal_digits="1"
+    follows="left|top"
+    initial_value="0.7"
+    can_edit_text="true"
+    label_width="8"
+    height="16"
+    label="3"
+    layout="topleft"
+    max_val="10"
+    name="water_normal_scale_z"
+    top_pad="5"
+    width="196"/>
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left="470"
+    name="DensMultText"
+    top="7"
+    width="215">
+    Refract Scale Above
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    increment="0.01"
+    height="16"
+    initial_value="0.1"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    name="water_scale_above"
+    top_pad="1"
+    width="196" />
+    
+    <text
+    type="string"
+    length="1"
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left_delta="0"
+    name="WaterScaleBelowText"
+    top="49"
+    width="215">
+    Refract Scale Below
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    increment="0.01"
+    can_edit_text="true"
+    initial_value="0"
+    layout="topleft"
+    left_delta="0"
+    name="water_scale_below"
+    top_pad="1"
+    width="196"/>
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left_delta="0"
+    name="MaxAltText"
+    top="91"
+    width="215">
+    Blur Multiplier
+    </text>
+    <slider
+    follows="left|top"
+    height="16"
+    increment="0.001"
+    initial_value="0"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    min_val="-0.5"
+    max_val="0.5"
+    name="water_blur_multip"
+    top_pad="1"
+    width="196"/>
+    
+    <text
+    follows="left|top|right"
+    font="SansSerif"
+    height="16"
+    layout="topleft"
+    left_delta="0"
+    name="MaxAltText"
+    top="133"
+    width="215">
+    Water Height
+    </text>
+    <slider
+    control_name="RenderWaterHeightFudge"
+    follows="left|top"
+    height="16"
+    increment="0.01"
+    initial_value="0"
+    can_edit_text="true"
+    layout="topleft"
+    left_delta="0"
+    max_val="256.0"
+    name="RenderWaterHeightFudge"
+    top_pad="1"
+    width="196"/>
+    <button
+    follows="left|top"
+    height="15"
+    is_toggle="false"
+    label="⌊default⌉"
+    image_selected="Transparent"
+    image_unselected="Transparent"
+    layout="topleft"
+    left_pad="-55"
+    top_delta="-17"
+    name="DefaultWaterHeight"
+    width="60"/>
+</panel>
