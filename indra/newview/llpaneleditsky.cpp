@@ -514,6 +514,7 @@ void LLPanelSettingsSkySunMoonTab::refresh()
 	mStarBrightness->setValue(mSkySettings->getStarBrightness());
 	mSunMoonColor->set(mSkySettings->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
 	mSunScale->setValue(mSkySettings->getSunScale());
+	mSunImage->setValue(mSkySettings->getSunTextureId());
 	mMoonImage->setValue(mSkySettings->getMoonTextureId());
 	mMoonScale->setValue(mSkySettings->getMoonScale());
 	mMoonBrightness->setValue(mSkySettings->getMoonBrightness());

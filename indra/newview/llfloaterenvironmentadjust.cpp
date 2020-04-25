@@ -319,6 +319,7 @@ void LLFloaterEnvironmentAdjust::refresh()
 	mStarBrightness->setValue(mLiveSky->getStarBrightness());
 	mSunMoonColor->set(mLiveSky->getSunlightColor() / SLIDER_SCALE_SUN_AMBIENT);
 	mSunScale->setValue(mLiveSky->getSunScale());
+	mSunImage->setValue(mLiveSky->getSunTextureId());
 	mMoonImage->setValue(mLiveSky->getMoonTextureId());
 	mMoonScale->setValue(mLiveSky->getMoonScale());
 	mMoonBrightness->setValue(mLiveSky->getMoonBrightness());
