@@ -31,6 +31,7 @@
 #include "llsettingsbase.h"
 #include "llsettingssky.h"
 #include "llenvironment.h"
+#include "llflyoutcombobtn.h"
 
 #include "boost/signals2.hpp"
 
@@ -63,6 +64,11 @@ private:
 
 	void                        onEnvironmentUpdated(LLEnvironment::EnvSelection_t env, S32 version);
 
+	void						onButtonApply(LLUICtrl *ctrl, const LLSD &data);
+	void						onSaveAsCommit(const LLSD& notification, const LLSD& response, const LLSettingsBase::ptr_t &settings);
+	void						onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results);
+	virtual void				doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings);
+
 	//BD - Settings
 	void						onFogColorChanged();
 	void						onFogDensityChanged();
@@ -93,6 +99,8 @@ private:
     LLSettingsWater::ptr_t      mLiveWater;
     LLEnvironment::connection_t mEventConnection;
 
+	bool						mWaterImageChanged;
+
 	//BD - Settings
 	LLColorSwatchCtrl *			mClrFogColor;
 	LLUICtrl*					mFogDensity;
@@ -114,6 +122,7 @@ private:
 	LLUICtrl*					mWave2Y;
 
 	LLComboBox*					mNameCombo;
+	LLFlyoutComboBtnCtrl *      mFlyoutControl;
 };
 
 #endif // LL_FLOATERFIXEDENVIRONMENT_H

@@ -67,8 +67,7 @@ public:
 	void loadPresetsFromDir(LLComboBox* combo, std::string folder = "skies");
 	bool doLoadPreset(const std::string& path);
 	void loadAllPresets(LLSD& presets);
-	static std::string getSysDir(std::string folder);
-	static std::string getUserDir(std::string folder);
+	static std::string getWindlightDir(std::string folder, bool system = false);
 	bool checkPermissions(LLUUID uuid);
 	void onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settings);
 	void addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t settings);

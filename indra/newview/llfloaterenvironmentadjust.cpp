@@ -46,6 +46,8 @@
 #include "llinventorymodel.h"
 #include "llinventoryfunctions.h"
 #include "llagent.h"
+#include "lltrans.h"
+#include "llflyoutcombobtn.h"
 
 
 //=========================================================================
@@ -125,12 +127,19 @@ namespace
 	const std::string   FIELD_SKY_DENSITY_ABSORPTION_CONSTANT("absorption_constant");
 	const std::string   FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE("absorption_max_altitude");
 
+	const std::string	ACTION_SAVELOCAL("save_as_local_setting");
+	const std::string	ACTION_SAVEAS("save_as_new_settings");
+
 	const std::string   BTN_RESET("reset");
 	const std::string   BTN_SAVE("save");
 	const std::string   BTN_DELETE("delete");
 	const std::string   BTN_IMPORT("import");
 
 	const std::string   EDITOR_NAME("sky_preset_combo");
+
+	const std::string	BUTTON_NAME_COMMIT("btn_commit");
+	const std::string	BUTTON_NAME_FLYOUT("btn_flyout");
+	const std::string	XML_FLYOUTMENU_FILE("menu_save_settings_adjust.xml");
 
 	const F32 SLIDER_SCALE_SUN_AMBIENT(3.0f);
 	const F32 SLIDER_SCALE_BLUE_HORIZON_DENSITY(2.0f);
@@ -244,8 +253,11 @@ BOOL LLFloaterEnvironmentAdjust::postBuild()
 
     getChild<LLUICtrl>(BTN_RESET)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonReset(); });
 	getChild<LLUICtrl>(BTN_DELETE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonDelete(); });
-	getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
+	//getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
 	getChild<LLUICtrl>(BTN_IMPORT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
+
+	mFlyoutControl = new LLFlyoutComboBtnCtrl(this, BTN_SAVE, BUTTON_NAME_FLYOUT, XML_FLYOUTMENU_FILE, false);
+	mFlyoutControl->setAction([this](LLUICtrl *ctrl, const LLSD &data) { onButtonApply(ctrl, data); });
 
 	mNameCombo = getChild<LLComboBox>(EDITOR_NAME);
 	mNameCombo->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
@@ -389,6 +401,9 @@ void LLFloaterEnvironmentAdjust::captureCurrentEnvironment()
     environment.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
     environment.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 
+	mSunImageChanged = false;
+	mCloudImageChanged = false;
+	mMoonImageChanged = false;
 }
 
 void LLFloaterEnvironmentAdjust::onButtonReset()
@@ -597,6 +612,7 @@ void LLFloaterEnvironmentAdjust::onSunImageChanged()
 	if (!mLiveSky) return;
 	mLiveSky->setSunTextureId(mSunImage->getValue().asUUID());
 	mLiveSky->update();
+	mSunImageChanged = true;
 }
 
 void LLFloaterEnvironmentAdjust::onMoonRotationXChanged()
@@ -645,6 +661,7 @@ void LLFloaterEnvironmentAdjust::onMoonImageChanged()
 	if (!mLiveSky) return;
 	mLiveSky->setMoonTextureId(mMoonImage->getValue().asUUID());
 	mLiveSky->update();
+	mMoonImageChanged = true;
 }
 
 void LLFloaterEnvironmentAdjust::onMoonScaleChanged()
@@ -700,8 +717,8 @@ void LLFloaterEnvironmentAdjust::onCloudScrollChanged()
 void LLFloaterEnvironmentAdjust::onCloudMapChanged()
 {
 	if (!mLiveSky) return;
-	LLTextureCtrl* ctrl = mCloudImage;
-	mLiveSky->setCloudNoiseTextureId(ctrl->getValue().asUUID());
+	mLiveSky->setCloudNoiseTextureId(mCloudImage->getValue().asUUID());
+	mCloudImageChanged = true;
 }
 
 void LLFloaterEnvironmentAdjust::onCloudDensityChanged()
@@ -718,14 +735,127 @@ void LLFloaterEnvironmentAdjust::onCloudDetailChanged()
 	mLiveSky->setCloudPosDensity2(detail);
 }
 
+void LLFloaterEnvironmentAdjust::onButtonApply(LLUICtrl *ctrl, const LLSD &data)
+{
+	std::string ctrl_action = ctrl->getName();
+
+	std::string local_desc;
+	LLSettingsBase::ptr_t setting_clone;
+	bool is_local = false; // because getString can be empty
+	if (mLiveSky)
+	{
+		setting_clone = mLiveSky->buildClone();
+		if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveSky->getSunTextureId()))
+		{
+			local_desc = LLTrans::getString("EnvironmentSun");
+			is_local = true;
+		}
+		else if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveSky->getMoonTextureId()))
+		{
+			local_desc = LLTrans::getString("EnvironmentMoon");
+			is_local = true;
+		}
+		else if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveSky->getCloudNoiseTextureId()))
+		{
+			local_desc = LLTrans::getString("EnvironmentCloudNoise");
+			is_local = true;
+		}
+		else if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveSky->getBloomTextureId()))
+		{
+			local_desc = LLTrans::getString("EnvironmentBloom");
+			is_local = true;
+		}
+	}
+
+	if (is_local)
+	{
+		LLSD args;
+		args["FIELD"] = local_desc;
+		LLNotificationsUtil::add("WLLocalTextureFixedBlock", args);
+		return;
+	}
+
+	if (ctrl_action == ACTION_SAVELOCAL)
+	{
+		onButtonSave();
+	}
+	else if (ctrl_action == ACTION_SAVEAS)
+	{
+		LLSD args;
+		args["DESC"] = mLiveSky->getName();
+		LLNotificationsUtil::add("SaveSettingAs", args, LLSD(), boost::bind(&LLFloaterEnvironmentAdjust::onSaveAsCommit, this, _1, _2, setting_clone));
+	}
+	/*else if ((ctrl_action == ACTION_APPLY_LOCAL) ||
+		(ctrl_action == ACTION_APPLY_PARCEL) ||
+		(ctrl_action == ACTION_APPLY_REGION))
+	{
+		doApplyEnvironment(ctrl_action, setting_clone);
+	}*/
+	else
+	{
+		LL_WARNS("ENVIRONMENT") << "Unknown settings action '" << ctrl_action << "'" << LL_ENDL;
+	}
+}
+
+void LLFloaterEnvironmentAdjust::onSaveAsCommit(const LLSD& notification, const LLSD& response, const LLSettingsBase::ptr_t &settings)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	if (0 == option)
+	{
+		std::string settings_name = response["message"].asString();
+
+		LLInventoryObject::correctInventoryName(settings_name);
+		if (settings_name.empty())
+		{
+			// Ideally notification should disable 'OK' button if name won't fit our requirements,
+			// for now either display notification, or use some default name
+			settings_name = "Unnamed";
+		}
+
+		doApplyCreateNewInventory(settings_name, settings);
+	}
+}
+
+void LLFloaterEnvironmentAdjust::doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings)
+{
+	LLUUID parent_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_SETTINGS);
+	// This method knows what sort of settings object to create.
+	LLSettingsVOBase::createInventoryItem(settings, parent_id, settings_name,
+		[this](LLUUID asset_id, LLUUID inventory_id, LLUUID, LLSD results) { onInventoryCreated(asset_id, inventory_id, results); });
+}
+
+void LLFloaterEnvironmentAdjust::onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results)
+{
+	LL_WARNS("ENVIRONMENT") << "Inventory item " << inventory_id << " has been created with asset " << asset_id << " results are:" << results << LL_ENDL;
+
+	if (inventory_id.isNull() || !results["success"].asBoolean())
+	{
+		LLNotificationsUtil::add("CantCreateInventory");
+		return;
+	}
+}
+
 //BD - Windlight Stuff
 //=====================================================================================================
 void LLFloaterEnvironmentAdjust::onButtonSave()
 {
 	if (!mLiveSky) return;
-	gDragonLibrary.savePreset(mNameCombo->getValue(), mLiveSky);
+
+	LLSettingsSky::ptr_t sky = mLiveSky->buildClone();
+
+	//BD - Using local window saved booleans is not the safest method of checking
+	//     but should work just fine for now until i change the actual windlight settings
+	//     item to track whether the UUID's have changed or not.
+	if (mSunImageChanged && !gDragonLibrary.checkPermissions(mSunImage->getImageItemID()))
+		sky->setSunTextureId(LLUUID::null);
+	if (mMoonImageChanged && !gDragonLibrary.checkPermissions(mMoonImage->getImageItemID()))
+		sky->setMoonTextureId(LLUUID::null);
+	if (mCloudImageChanged && !gDragonLibrary.checkPermissions(mCloudImage->getImageItemID()))
+		sky->setCloudNoiseTextureId(LLUUID::null);
+
+	gDragonLibrary.savePreset(mNameCombo->getValue(), sky);
 	gDragonLibrary.loadPresetsFromDir(mNameCombo, "skies");
-	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveSky);
+	gDragonLibrary.addInventoryPresets(mNameCombo, sky);
 }
 
 void LLFloaterEnvironmentAdjust::onButtonDelete()

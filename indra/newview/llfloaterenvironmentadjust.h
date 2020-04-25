@@ -31,6 +31,7 @@
 #include "llsettingsbase.h"
 #include "llsettingssky.h"
 #include "llenvironment.h"
+#include "llflyoutcombobtn.h"
 
 #include "boost/signals2.hpp"
 
@@ -63,6 +64,11 @@ private:
     void                        onWaterMapChanged();
 
 	void                        onEnvironmentUpdated(LLEnvironment::EnvSelection_t env, S32 version);
+
+	void						onButtonApply(LLUICtrl *ctrl, const LLSD &data);
+	void						onSaveAsCommit(const LLSD& notification, const LLSD& response, const LLSettingsBase::ptr_t &settings);
+	void						onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results);
+	virtual void				doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings);
 
 	//BD - Atmosphere
 	void						onAmbientLightChanged();
@@ -115,6 +121,10 @@ private:
     LLSettingsSky::ptr_t        mLiveSky;
     LLEnvironment::connection_t mEventConnection;
 
+	bool						mSunImageChanged;
+	bool						mCloudImageChanged;
+	bool						mMoonImageChanged;
+
 	//BD - Atmosphere
 	LLColorSwatchCtrl*			mAmbientLight;
 	LLColorSwatchCtrl*			mBlueHorizon;
@@ -160,6 +170,7 @@ private:
 	LLUICtrl*					mCloudDetailD;
 
 	LLComboBox*					mNameCombo;
+	LLFlyoutComboBtnCtrl *      mFlyoutControl;
 
 	LLVector3					mPreviousMoonRot;
 	LLVector3					mPreviousSunRot;

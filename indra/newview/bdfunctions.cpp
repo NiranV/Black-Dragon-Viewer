@@ -464,17 +464,19 @@ struct SortItemPtrsByName
 
 bool BDFunctions::checkPermissions(LLUUID uuid)
 {
-	const LLInventoryItem *item = gInventory.getItem(uuid);
-	if (!item)
-		return false;
+	LLViewerInventoryItem *item = gInventory.getItem(uuid);
+	if (item)
+	{
+		LLPermissions perms = item->getPermissions();
+		if (perms.allowOperationBy(PERM_TRANSFER, gAgent.getID())
+			&& perms.allowOperationBy(PERM_MODIFY, gAgent.getID())
+			&& perms.allowOperationBy(PERM_COPY, gAgent.getID()))
+		{
+			return true;
+		}
+	}
 
-	LLPermissions perms = item->getPermissions();
-	if (!perms.allowTransferTo(gAgentID)
-		&& !perms.allowModifyBy(gAgentID)
-		&& !perms.allowCopyBy(gAgentID))
-		return false;
-
-	return true;
+	return false;
 }
 
 void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t settings)
@@ -483,7 +485,7 @@ void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t s
 
 	LLSettingsType::type_e type = settings->getSettingsType() == "sky" ? LLSettingsType::ST_SKY : LLSettingsType::ST_WATER;
 
-	// Get all inventory items that are animations
+	// Get all inventory items that are settings
 	LLViewerInventoryCategory::cat_array_t cats;
 	LLViewerInventoryItem::item_array_t items;
 	LLIsTypeWithPermissions is_copyable_animation(LLAssetType::AT_SETTINGS,
@@ -496,28 +498,33 @@ void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t s
 		LLInventoryModel::EXCLUDE_TRASH,
 		is_copyable_animation);
 
-	// Copy into something we can sort
-	std::vector<LLViewerInventoryItem*> animations;
+	//BD - Copy into something we can sort
+	std::vector<LLViewerInventoryItem*> presets;
 
 	S32 i;
 	S32 count = items.size();
 	for (i = 0; i < count; ++i)
 	{
-		animations.push_back(items.at(i));
+		presets.push_back(items.at(i));
 	}
 
-	// Do the sort
-	std::sort(animations.begin(), animations.end(), SortItemPtrsByName());
+	//BD - Do the sort
+	std::sort(presets.begin(), presets.end(), SortItemPtrsByName());
 
-	combo->addSeparator();
+	//BD - Add the inventory presets separator if we found some.
+	if (count > 0)
+	{
+		combo->addSeparator(ADD_BOTTOM, "Inventory Presets");
+	}
 
-	// And load up the combobox
 	std::vector<LLViewerInventoryItem*>::iterator it;
-	for (it = animations.begin(); it != animations.end(); ++it)
+	for (it = presets.begin(); it != presets.end(); ++it)
 	{
 		LLViewerInventoryItem* item = *it;
 		if (item->getSettingsType() == type)
+		{
 			combo->add(item->getName(), item->getUUID(), ADD_BOTTOM);
+		}
 	}
 }
 
@@ -617,39 +624,10 @@ void BDFunctions::savePreset(std::string name, LLSettingsBase::ptr_t settings)
 	LLSD Params;
 	std::string folder;
 	Params = settings->getSettings();
-	if (settings->getSettingsType() == "sky")
-	{
-		folder = "skies";
-		LLSettingsSky::ptr_t sky = std::static_pointer_cast<LLSettingsSky>(settings);
-		if (sky)
-		{
-			//BD - Remove sun/cloud/moon texture information from preset if we don't have
-			//     permissions to include them.
-			if (!checkPermissions(sky->getMoonTextureId()))
-				Params.erase("moon_id");
-
-			if (!checkPermissions(sky->getSunTextureId()))
-				Params.erase("sun_id");
-
-			if (!checkPermissions(sky->getCloudNoiseTextureId()))
-				Params.erase("cloud_id");
-		}
-	}
-	else
-	{
-		folder = "water";
-		LLSettingsWater::ptr_t water = std::static_pointer_cast<LLSettingsWater>(settings);
-		if (water)
-		{
-			//BD - Remove water texture information from preset if we don't have
-			//     permissions to include them.
-			if (!checkPermissions(water->getNormalMapID()))
-				Params.erase("normal_map");
-		}
-	}
+	folder = settings->getSettingsType() == "sky" ? "skies" : "water";
 
 	// make an empty llsd
-	std::string pathName(getUserDir(folder) + escapeString(name) + ".xml");
+	std::string pathName(getWindlightDir(folder) + escapeString(name) + ".xml");
 
 	Params["version"] = "eep";
 
@@ -673,7 +651,7 @@ void BDFunctions::deletePreset(std::string name, std::string folder)
 	}
 	else
 	{
-		std::string path_name(getUserDir(folder));
+		std::string path_name(getWindlightDir(folder));
 		std::string escaped_name = escapeString(name);
 
 		if (gDirUtilp->deleteFilesInDir(path_name, escaped_name + ".xml") < 1)
@@ -689,32 +667,11 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 	if (!combo || folder.empty()) return;
 
 	bool is_sky = folder == "skies";
+	bool success = false;
 	combo->clearRows();
-	std::string dir = getSysDir(folder);
+
+	std::string dir = getWindlightDir(folder);
 	std::string file;
-	if (!dir.empty() || gDirUtilp->fileExists(dir))
-	{
-		LLDirIterator dir_iter(dir, "*.xml");
-		while (dir_iter.next(file))
-		{
-			std::string path = gDirUtilp->add(dir, file);
-			std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
-			combo->add(name);
-			if (is_sky)
-				mDefaultSkyPresets[name] = name;
-			else
-				mDefaultWaterPresets[name] = name;
-
-			if (!doLoadPreset(path))
-			{
-				LL_WARNS() << "Error loading sky preset from " << path << LL_ENDL;
-			}
-		}
-	}
-
-	combo->addSeparator();
-
-	dir = getUserDir(folder);
 	if (!dir.empty() || gDirUtilp->fileExists(dir))
 	{
 		LLDirIterator dir_it(dir, "*.xml");
@@ -722,12 +679,49 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 		{
 			std::string path = gDirUtilp->add(dir, file);
 			std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
-			combo->add(name);
 
+			//BD - Skip adding if we couldn't load it.
 			if (!doLoadPreset(path))
 			{
 				LL_WARNS() << "Error loading sky preset from " << path << LL_ENDL;
+				continue;
 			}
+
+			combo->add(name);
+			success = true;
+		}
+	}
+
+	//BD - Add the user presets separator if we found user presets.
+	if (success)
+	{
+		combo->addSeparator(ADD_TOP, "User Presets");
+	}
+
+	//BD - We assume they are always there.
+	combo->addSeparator(ADD_BOTTOM, "System Presets");
+
+	dir = getWindlightDir(folder, true);
+	if (!dir.empty() || gDirUtilp->fileExists(dir))
+	{
+		LLDirIterator dir_iter(dir, "*.xml");
+		while (dir_iter.next(file))
+		{
+			std::string path = gDirUtilp->add(dir, file);
+			std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
+
+			//BD - Skip adding if we couldn't load it.
+			if (!doLoadPreset(path))
+			{
+				LL_WARNS() << "Error loading sky preset from " << path << LL_ENDL;
+				continue;
+			}
+
+			combo->add(name);
+			if (is_sky)
+				mDefaultSkyPresets[name] = name;
+			else
+				mDefaultWaterPresets[name] = name;
 		}
 	}
 }
@@ -755,19 +749,26 @@ bool BDFunctions::doLoadPreset(const std::string& path)
 
 //BD - Multiple Viewer Presets
 // static
-std::string BDFunctions::getSysDir(std::string folder)
+std::string BDFunctions::getWindlightDir(std::string folder, bool system)
 {
 	if (folder.empty()) return NULL;
 
-	std::string sys_dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight", folder, "");
+	ELLPath path_enum = system ? LL_PATH_APP_SETTINGS : LL_PATH_USER_SETTINGS;
+
+	//BD - Check for the top level folder first
+	std::string sys_dir = gDirUtilp->getExpandedFilename(path_enum, "windlight");
+	if (!gDirUtilp->fileExists(sys_dir))
+	{
+		LLFile::mkdir(sys_dir);
+	}
+
+	sys_dir = gDirUtilp->getExpandedFilename(path_enum, "windlight", folder);
+	if (!gDirUtilp->fileExists(sys_dir))
+	{
+		LL_WARNS("Windlight") << "Couldn't find folder: " << sys_dir << " - creating one." << LL_ENDL;
+		LLFile::mkdir(sys_dir);
+	}
+
+	sys_dir = gDirUtilp->getExpandedFilename(path_enum, "windlight", folder, "");
 	return sys_dir;
-}
-
-// static
-std::string BDFunctions::getUserDir(std::string folder)
-{
-	if (folder.empty()) return NULL;
-
-	std::string	user_dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight", folder, "");
-	return user_dir;
 }

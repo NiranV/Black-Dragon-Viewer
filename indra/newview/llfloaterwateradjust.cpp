@@ -46,6 +46,8 @@
 #include "llinventorymodel.h"
 #include "llinventoryfunctions.h"
 #include "llagent.h"
+#include "lltrans.h"
+#include "llflyoutcombobtn.h"
 
 
 //=========================================================================
@@ -78,12 +80,19 @@ namespace
 	const std::string   FIELD_WATER_WAVE2_X("water_wave2_x");
 	const std::string   FIELD_WATER_WAVE2_Y("water_wave2_y");
 
+	const std::string	ACTION_SAVELOCAL("save_as_local_setting");
+	const std::string	ACTION_SAVEAS("save_as_new_settings");
+
 	const std::string   BTN_RESET("reset");
 	const std::string   BTN_SAVE("save");
 	const std::string   BTN_DELETE("delete");
 	const std::string   BTN_IMPORT("import");
 
 	const std::string   EDITOR_NAME("water_preset_combo");
+
+	const std::string	BUTTON_NAME_COMMIT("btn_commit");
+	const std::string	BUTTON_NAME_FLYOUT("btn_flyout");
+	const std::string	XML_FLYOUTMENU_FILE("menu_save_settings_adjust.xml");
 
 	const F32 SLIDER_SCALE_SUN_AMBIENT(3.0f);
 	const F32 SLIDER_SCALE_BLUE_HORIZON_DENSITY(2.0f);
@@ -147,8 +156,11 @@ BOOL LLFloaterWaterAdjust::postBuild()
 
 	getChild<LLUICtrl>(BTN_RESET)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonReset(); });
 	getChild<LLUICtrl>(BTN_DELETE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonDelete(); });
-	getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
+	//getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
 	getChild<LLUICtrl>(BTN_IMPORT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
+
+	mFlyoutControl = new LLFlyoutComboBtnCtrl(this, BTN_SAVE, BUTTON_NAME_FLYOUT, XML_FLYOUTMENU_FILE, false);
+	mFlyoutControl->setAction([this](LLUICtrl *ctrl, const LLSD &data) { onButtonApply(ctrl, data); });
 
 	mNameCombo = getChild<LLComboBox>(EDITOR_NAME);
 	mNameCombo->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
@@ -244,6 +256,7 @@ void LLFloaterWaterAdjust::captureCurrentEnvironment()
     environment.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
     environment.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 
+	mWaterImageChanged = false;
 }
 
 void LLFloaterWaterAdjust::onButtonReset()
@@ -340,6 +353,7 @@ void LLFloaterWaterAdjust::onNormalMapChanged()
 	if (!mLiveWater) return;
 	mLiveWater->setNormalMapID(mTxtNormalMap->getImageAssetID());
 	LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, mLiveWater, FLOATER_ENVIRONMENT_UPDATE);
+	mWaterImageChanged = true;
 }
 
 void LLFloaterWaterAdjust::onLargeWaveChanged()
@@ -362,15 +376,114 @@ void LLFloaterWaterAdjust::onSmallWaveChanged()
 	mLiveWater->setWave2Dir(vect);
 }
 
+void LLFloaterWaterAdjust::onButtonApply(LLUICtrl *ctrl, const LLSD &data)
+{
+	std::string ctrl_action = ctrl->getName();
+
+	std::string local_desc;
+	LLSettingsBase::ptr_t setting_clone;
+	bool is_local = false; // because getString can be empty
+	if (mLiveWater)
+	{
+		setting_clone = mLiveWater->buildClone();
+		// LLViewerFetchedTexture and check for FTT_LOCAL_FILE or check LLLocalBitmapMgr
+		if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveWater->getNormalMapID()))
+		{
+			local_desc = LLTrans::getString("EnvironmentNormalMap");
+			is_local = true;
+		}
+		else if (LLLocalBitmapMgr::getInstance()->isLocal(mLiveWater->getTransparentTextureID()))
+		{
+			local_desc = LLTrans::getString("EnvironmentTransparent");
+			is_local = true;
+		}
+	}
+
+	if (is_local)
+	{
+		LLSD args;
+		args["FIELD"] = local_desc;
+		LLNotificationsUtil::add("WLLocalTextureFixedBlock", args);
+		return;
+	}
+
+	if (ctrl_action == ACTION_SAVELOCAL)
+	{
+		onButtonSave();
+	}
+	else if (ctrl_action == ACTION_SAVEAS)
+	{
+		LLSD args;
+		args["DESC"] = mLiveWater->getName();
+		LLNotificationsUtil::add("SaveSettingAs", args, LLSD(), boost::bind(&LLFloaterWaterAdjust::onSaveAsCommit, this, _1, _2, setting_clone));
+	}
+	/*else if ((ctrl_action == ACTION_APPLY_LOCAL) ||
+	(ctrl_action == ACTION_APPLY_PARCEL) ||
+	(ctrl_action == ACTION_APPLY_REGION))
+	{
+	doApplyEnvironment(ctrl_action, setting_clone);
+	}*/
+	else
+	{
+		LL_WARNS("ENVIRONMENT") << "Unknown settings action '" << ctrl_action << "'" << LL_ENDL;
+	}
+}
+
+void LLFloaterWaterAdjust::onSaveAsCommit(const LLSD& notification, const LLSD& response, const LLSettingsBase::ptr_t &settings)
+{
+	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+	if (0 == option)
+	{
+		std::string settings_name = response["message"].asString();
+
+		LLInventoryObject::correctInventoryName(settings_name);
+		if (settings_name.empty())
+		{
+			// Ideally notification should disable 'OK' button if name won't fit our requirements,
+			// for now either display notification, or use some default name
+			settings_name = "Unnamed";
+		}
+
+		doApplyCreateNewInventory(settings_name, settings);
+	}
+}
+
+void LLFloaterWaterAdjust::doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings)
+{
+	LLUUID parent_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_SETTINGS);
+	// This method knows what sort of settings object to create.
+	LLSettingsVOBase::createInventoryItem(settings, parent_id, settings_name,
+		[this](LLUUID asset_id, LLUUID inventory_id, LLUUID, LLSD results) { onInventoryCreated(asset_id, inventory_id, results); });
+}
+
+void LLFloaterWaterAdjust::onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results)
+{
+	LL_WARNS("ENVIRONMENT") << "Inventory item " << inventory_id << " has been created with asset " << asset_id << " results are:" << results << LL_ENDL;
+
+	if (inventory_id.isNull() || !results["success"].asBoolean())
+	{
+		LLNotificationsUtil::add("CantCreateInventory");
+		return;
+	}
+}
 
 //BD - Windlight Stuff
 //=====================================================================================================
 void LLFloaterWaterAdjust::onButtonSave()
 {
 	if (!mLiveWater) return;
-	gDragonLibrary.savePreset(mNameCombo->getValue(), mLiveWater);
+
+	LLSettingsWater::ptr_t water = mLiveWater->buildClone();
+
+	//BD - Using local window saved booleans is not the safest method of checking
+	//     but should work just fine for now until i change the actual windlight settings
+	//     item to track whether the UUID's have changed or not.
+	if (mWaterImageChanged && !gDragonLibrary.checkPermissions(mTxtNormalMap->getImageItemID()))
+		water->setNormalMapID(LLUUID::null);
+
+	gDragonLibrary.savePreset(mNameCombo->getValue(), water);
 	gDragonLibrary.loadPresetsFromDir(mNameCombo, "water");
-	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveWater);
+	gDragonLibrary.addInventoryPresets(mNameCombo, water);
 }
 
 void LLFloaterWaterAdjust::onButtonDelete()

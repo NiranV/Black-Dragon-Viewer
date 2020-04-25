@@ -82,6 +82,7 @@ namespace
     const std::string BUTTON_NAME_LOAD("btn_load");
 
     const std::string ACTION_SAVE("save_settings");
+	const std::string ACTION_SAVELOCAL("save_as_local_setting");
     const std::string ACTION_SAVEAS("save_as_new_settings");
     const std::string ACTION_COMMIT("commit_changes");
     const std::string ACTION_APPLY_LOCAL("apply_local");
@@ -158,7 +159,7 @@ BOOL LLFloaterFixedEnvironment::postBuild()
 	//BD
 	//getChild<LLUICtrl>(BTN_RESET)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonReset(); });
 	getChild<LLUICtrl>(BTN_DELETE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonDelete(); });
-	getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
+	//getChild<LLUICtrl>(BTN_SAVE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onButtonSave(); });
 
     mFlyoutControl = new LLFlyoutComboBtnCtrl(this, BUTTON_NAME_COMMIT, BUTTON_NAME_FLYOUT, XML_FLYOUTMENU_FILE, false);
     mFlyoutControl->setAction([this](LLUICtrl *ctrl, const LLSD &data) { onButtonApply(ctrl, data); });
@@ -475,6 +476,10 @@ void LLFloaterFixedEnvironment::onButtonApply(LLUICtrl *ctrl, const LLSD &data)
     {
         doApplyUpdateInventory(setting_clone);
     }
+	else if (ctrl_action == ACTION_SAVELOCAL)
+	{
+		onButtonSave();
+	}
     else if (ctrl_action == ACTION_SAVEAS)
     {
         LLSD args;
@@ -933,11 +938,101 @@ void LLFloaterFixedEnvironment::onButtonDelete()
 
 void LLFloaterFixedEnvironment::onSelectPreset()
 {
-	gDragonLibrary.onSelectPreset(mTxtName, mSettings);
-
 	//BD - Don't use the escaped string.
 	mSettings->setName(mTxtName->getValue().asString());
-	setDirtyFlag();
 
-	refresh();
+	std::string type = mSettings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : "water";
+
+	//BD - First attempt to load it as inventory item.
+	if (mTxtName->getValue().isUUID())
+	{
+		LLUUID uuid = mTxtName->getValue();
+		LLViewerInventoryItem* item = gInventory.getItem(uuid);
+		if (item)
+		{
+			LLSettingsVOBase::getSettingsAsset(item->getAssetUUID(), [this](LLUUID asset_id, LLSettingsBase::ptr_t settings, S32 status, LLExtStat) { loadItem(settings); });
+			//BD - Assume loading was successful.
+			return;
+		}
+	}
+
+	//BD - Loading as inventory item failed so it must be a local preset.
+	std::string name = gDragonLibrary.escapeString(mTxtName->getValue().asString());
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name + ".xml");
+	if (!loadPreset(dir, type))
+	{
+		//BD - Last attempt, try to find it in user_settings.
+		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name + ".xml");
+		if (!loadPreset(dir, type))
+		{
+			LLNotificationsUtil::add("BDCantLoadPreset");
+			LL_WARNS("Windlight") << "Failed to load sky preset from:" << dir << LL_ENDL;
+		}
+	}
+}
+
+void LLFloaterFixedEnvironment::loadItem(LLSettingsBase::ptr_t settings)
+{
+	if (!settings) return;
+
+	setDirtyFlag();
+	LLEnvironment &env(LLEnvironment::instance());
+	std::string type = settings->getSettingsType();
+	if (type == "sky")
+	{
+		env.setEnvironment(LLEnvironment::ENV_EDIT, std::static_pointer_cast<LLSettingsSky>(settings));
+		setEditSettings(std::static_pointer_cast<LLSettingsSky>(settings));
+	}
+	else
+	{
+		env.setEnvironment(LLEnvironment::ENV_EDIT, std::static_pointer_cast<LLSettingsWater>(settings));
+		setEditSettings(std::static_pointer_cast<LLSettingsWater>(settings));
+	}
+	env.updateEnvironment(LLEnvironment::TRANSITION_FAST, true);
+}
+
+bool LLFloaterFixedEnvironment::loadPreset(std::string filename, std::string type)
+{
+	if (filename.empty()) return false;
+
+	llifstream xml_file;
+	xml_file.open(filename);
+	if (!xml_file)
+		return false;
+
+	LLSD params_data;
+	LLPointer<LLSDParser> parser = new LLSDXMLParser();
+	if (parser->parse(xml_file, params_data, LLSDSerialize::SIZE_UNLIMITED) == LLSDParser::PARSE_FAILURE)
+	{
+		xml_file.close();
+		LLNotificationsUtil::add("BDCantParsePreset");
+		return false;
+	}
+	xml_file.close();
+
+	LLSD messages;
+	LLSettingsBase::ptr_t settings;
+	if (type == "sky")
+	{
+		settings = !params_data.has("version") ? LLEnvironment::instance().createSkyFromLegacyPreset(filename, messages)
+												: LLEnvironment::instance().createSkyFromPreset(filename, messages);
+	}
+	else
+	{
+		settings = !params_data.has("version") ? LLEnvironment::instance().createWaterFromLegacyPreset(filename, messages)
+												: LLEnvironment::instance().createWaterFromPreset(filename, messages);
+	}
+
+	if (!settings)
+	{
+		LLNotificationsUtil::add("WLImportFail", messages);
+		return false;
+	}
+
+	loadInventoryItem(LLUUID::null);
+
+	loadItem(settings);
+
+	return true;
 }

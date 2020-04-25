@@ -136,6 +136,8 @@ private:
 	void                    onButtonSave();
 	void                    onButtonDelete();
 	void					onSelectPreset();
+	bool					loadPreset(std::string filename, std::string type);
+	void					loadItem(LLSettingsBase::ptr_t settings);
 };
 
 class LLFloaterFixedEnvironmentWater : public LLFloaterFixedEnvironment
