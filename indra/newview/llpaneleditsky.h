@@ -116,6 +116,8 @@ private:
     void                    onCloudMapChanged();
     void                    onCloudDensityChanged();
     void                    onCloudDetailChanged();
+	void					onCloudScrollXLocked(bool lock);
+	void					onCloudScrollYLocked(bool lock);
 
 	//BD - Clouds
 	LLColorSwatchCtrl* mCloudColor;
@@ -131,6 +133,8 @@ private:
 	LLUICtrl* mCloudDetailX;
 	LLUICtrl* mCloudDetailY;
 	LLUICtrl* mCloudDetailD;
+	LLUICtrl* mCloudScrollLockX;
+	LLUICtrl* mCloudScrollLockY;
 };
 
 class LLPanelSettingsSkySunMoonTab : public LLPanelSettingsSky

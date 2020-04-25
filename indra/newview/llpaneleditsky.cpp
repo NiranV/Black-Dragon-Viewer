@@ -86,6 +86,8 @@ namespace
 	const std::string   FIELD_SKY_CLOUD_DETAIL_X("cloud_detail_x");
 	const std::string   FIELD_SKY_CLOUD_DETAIL_Y("cloud_detail_y");
 	const std::string   FIELD_SKY_CLOUD_DETAIL_D("cloud_detail_d");
+	const std::string   FIELD_SKY_CLOUD_LOCK_X("cloud_lock_x");
+	const std::string   FIELD_SKY_CLOUD_LOCK_Y("cloud_lock_y");
 
 	//BD - Density
 	const std::string   FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL("rayleigh_exponential");
@@ -321,6 +323,10 @@ BOOL LLPanelSettingsSkyCloudTab::postBuild()
 	mCloudScrollX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
 	mCloudScrollY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_SCROLL_Y);
 	mCloudScrollY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudScrollChanged(); });
+	mCloudScrollLockX = getChild<LLUICtrl>(FIELD_SKY_CLOUD_LOCK_X);
+	mCloudScrollLockX->setCommitCallback([this](LLUICtrl *ctrl, const LLSD &) { onCloudScrollXLocked(ctrl->getValue()); });
+	mCloudScrollLockY = getChild<LLUICtrl>(FIELD_SKY_CLOUD_LOCK_Y);
+	mCloudScrollLockY->setCommitCallback([this](LLUICtrl *ctrl, const LLSD &) { onCloudScrollYLocked(ctrl->getValue()); });
 	mCloudImage = getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP);
 	mCloudImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onCloudMapChanged(); });
 	mCloudImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultCloudNoiseTextureId());
@@ -363,6 +369,11 @@ void LLPanelSettingsSkyCloudTab::refresh()
 	LLVector2 cloudScroll(mSkySettings->getCloudScrollRate());
 	mCloudScrollX->setValue(cloudScroll[0]);
 	mCloudScrollY->setValue(cloudScroll[1]);
+	LLEnvironment &environment(LLEnvironment::instance());
+	mCloudScrollX->setEnabled(!environment.mCloudScrollXLocked);
+	mCloudScrollY->setEnabled(!environment.mCloudScrollYLocked);
+	mCloudScrollLockX->setValue(environment.mCloudScrollXLocked);
+	mCloudScrollLockY->setValue(environment.mCloudScrollYLocked);
 
 	mCloudImage->setValue(mSkySettings->getCloudNoiseTextureId());
 
@@ -437,6 +448,20 @@ void LLPanelSettingsSkyCloudTab::onCloudDetailChanged()
 	if (!mSkySettings) return;
 	LLColor3 detail(mCloudDetailX->getValue().asReal(), mCloudDetailY->getValue().asReal(), mCloudDetailD->getValue().asReal());
 	mSkySettings->setCloudPosDensity2(detail);
+	setIsDirty();
+}
+
+void LLPanelSettingsSkyCloudTab::onCloudScrollXLocked(bool lock)
+{
+	LLEnvironment::instance().pauseCloudScrollX(lock);
+	refresh();
+	setIsDirty();
+}
+
+void LLPanelSettingsSkyCloudTab::onCloudScrollYLocked(bool lock)
+{
+	LLEnvironment::instance().pauseCloudScrollY(lock);
+	refresh();
 	setIsDirty();
 }
 
@@ -625,6 +650,7 @@ void LLPanelSettingsSkySunMoonTab::onMoonBrightnessChanged()
 	mSkySettings->update();
 	setIsDirty();
 }
+
  
 LLPanelSettingsSkyDensityTab::LLPanelSettingsSkyDensityTab()
 {    

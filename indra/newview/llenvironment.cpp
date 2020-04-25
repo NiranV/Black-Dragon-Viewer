@@ -818,7 +818,10 @@ LLEnvironment::LLEnvironment():
     mCurrentTrack(1),
     mEditorCounter(0),
     mShowSunBeacon(false),
-    mShowMoonBeacon(false)
+    mShowMoonBeacon(false),
+	//BD - Windlight
+	mCloudScrollXLocked(false),
+	mCloudScrollYLocked(false)
 {
 }
 
@@ -1532,7 +1535,10 @@ void LLEnvironment::updateCloudScroll()
     if (mCurrentEnvironment->getSky() && !mCloudScrollPaused)
     {
         LLVector2 cloud_delta = static_cast<F32>(delta_t)* (mCurrentEnvironment->getSky()->getCloudScrollRate()) / 100.0;
-        mCloudScrollDelta += cloud_delta;
+		if (!mCloudScrollXLocked)
+			mCloudScrollDelta.mV[0] += cloud_delta.mV[0];
+		if (!mCloudScrollYLocked)
+			mCloudScrollDelta.mV[1] += cloud_delta.mV[1];
     }
 
 }

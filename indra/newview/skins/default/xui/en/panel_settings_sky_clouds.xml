@@ -312,7 +312,7 @@ width="698">
     layout="topleft"
     top_delta="-21"
     left_pad="-67"
-    name="WLCloudLockY"
+    name="cloud_lock_y"
     width="200" />
     
     

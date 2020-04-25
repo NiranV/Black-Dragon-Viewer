@@ -164,6 +164,13 @@ public:
     void                        resumeCloudScroll()         { mCloudScrollPaused = false; }
     bool                        isCloudScrollPaused() const { return mCloudScrollPaused; }
 
+	//BD - Windlight
+	void                        pauseCloudScrollX(bool lock)	{ mCloudScrollXLocked = lock; }
+	void                        pauseCloudScrollY(bool lock)	{ mCloudScrollYLocked = lock; }
+
+	bool						mCloudScrollXLocked;
+	bool						mCloudScrollYLocked;
+
     F32                         getCamHeight() const;
     F32                         getWaterHeight() const;
     bool                        getIsSunUp() const;
