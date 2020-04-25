@@ -969,7 +969,7 @@ width="700">
             label="   Lock"
             layout="topleft"
             left_pad="-67"
-            name="WLCloudLockX"
+            name="cloud_lock_x"
             top_delta="-21"
             width="200" />
             <text
