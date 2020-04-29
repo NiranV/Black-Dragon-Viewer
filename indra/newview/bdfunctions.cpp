@@ -549,12 +549,12 @@ void BDFunctions::onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settin
 	}
 
 	//BD - Loading as inventory item failed so it must be a local preset.
-	std::string name = gDragonLibrary.escapeString(combo->getValue().asString());
-	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name + ".xml");
+	std::string name = combo->getValue().asString();
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name);
 	if (!loadPreset(dir, settings))
 	{
-		//BD - Last attempt, try to find it in user_settings.
-		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name + ".xml");
+		//BD - Next attempt, try to find it in user_settings.
+		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name);
 		if (!loadPreset(dir, settings))
 		{
 			LLNotificationsUtil::add("BDCantLoadPreset");
@@ -687,7 +687,7 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 				continue;
 			}
 
-			combo->add(name);
+			combo->add(name, file, ADD_BOTTOM, true);
 			success = true;
 		}
 	}
@@ -717,7 +717,7 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 				continue;
 			}
 
-			combo->add(name);
+			combo->add(name, file, ADD_BOTTOM, true);
 			if (is_sky)
 				mDefaultSkyPresets[name] = name;
 			else
