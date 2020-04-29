@@ -9,27 +9,40 @@
         height="465"
         name="my_environments"
         help_topic="my_environments"
-        title="MY ENVIRONMENTS"
-        background_visible="true"
+        title="My Environments"
         label="Places"
         layout="topleft"
         min_height="350"
         min_width="265"
         width="313">
+    <icon
+  follows="all"
+  height="300"
+  color="1 1 1 1"
+  image_name="Panel_Background"
+  layout="topleft"
+  name="vicon"
+  mouse_opaque="false"
+  visible="true"
+  width="296"
+  top="59"
+  bottom="-7"
+  left="9"/>
     <layout_stack 
             follows="all"
             layout="topleft"
-            left="5"
-            top="20"
-            right="-5"
-            bottom="-5"
+            left="10"
+            top="16"
+            border_size="-6"
+            right="-1"
+            bottom="-3"
             orientation="vertical">
         <layout_panel
-                border="true"
+                border="false"
                 bevel_style="in"
                 auto_resize="false"
                 tab_group="1"
-                height="54"
+                height="50"
                 name="filter_panel"
                 label="Filters"
                 font="SansSerifBold">
@@ -81,15 +94,17 @@
                     name="chk_water"
                     top_delta="0"
                     width="60" />
-          <filter_editor
-                  follows="left|top|right"
-                  height="23"
-                  label="Filter Environments"
-                  layout="topleft"
-                  left="4"
-                  name="flt_search"
-                  top_pad="6"
-                  right="-4" />
+            <check_box
+                    follows="left|bottom"
+                    height="14"
+                    initial_value="false"
+                    label="Show All Folders"
+                    layout="topleft"
+                    name="chk_showfolders"
+                    top="25"
+                    left="5"
+                    width="200" />
+          
         </layout_panel>
         <layout_panel
                 auto_resize="true"
@@ -98,19 +113,7 @@
                 name="list_panel"
                 label="Environments"
                 font="SansSerifBold">
-            <panel
-                    name="pnl_inv_wrap"
-                    label="pnl_inv_wrap"
-                    follows="all"
-                    layout="topleft"
-                    left="2"
-                    top="2"
-                    right="-2"
-                    bottom="-2"
-                    background_visible="true"
-                    bg_alpha_color="DkGray2"
-                    border="true">
-                <asset_filtered_inv_panel
+                <!--<asset_filtered_inv_panel
                        left="0"
                        top="0"
                        right="-1"
@@ -118,25 +121,23 @@
                        allow_multi_select="false"
                        follows="all"
                        layout="topleft"
-                       name="pnl_settings"
-                       filter_asset_type="settings"/>
-            </panel>
-        </layout_panel>
-        <layout_panel
-                auto_resize="false"
-                user_resize="false"
-                tab_group="1"
-                height="15">
-            <check_box
-                    follows="left|bottom"
-                    height="14"
-                    initial_value="false"
-                    label="Show All Folders"
-                    layout="topleft"
-                    name="chk_showfolders"
-                    top="2"
-                    left_delta="-1"
-                    width="200" />
+                       name="pnl_settings2"
+                       filter_asset_type="settings"/>-->
+                <inventory_panel
+                bg_opaque_image="Panel_Background"
+                folder_view.use_ellipses="true"
+                background_visible="false"
+                border="false"
+                bevel_style="none"
+                follows="all"
+                label="My Inventory"
+                layout="topleft"
+                left="15"
+                name="pnl_settings"
+                allow_multi_select="false"
+                sort_order_setting="InventorySortOrder"
+                top="0"
+                width="297"/>
         </layout_panel>
         <layout_panel
                 auto_resize="false"
@@ -145,7 +146,7 @@
                 name="pnl_control"
                 font="SansSerifBold">
             <panel
-                    background_visible="true"
+                    background_visible="false"
                     bevel_style="none"
                     top_pad="1"
                     follows="top|left|right"
@@ -156,44 +157,65 @@
                     name="pnl_bottom">
                 <menu_button
                         follows="bottom|left"
-                        height="18"
-                        image_disabled="OptionsMenu_Disabled"
-                        image_selected="OptionsMenu_Press"
-                        image_unselected="OptionsMenu_Off"
+                        height="25"
+                        image_overlay="OptionsMenu_Disabled"
+                        image_selected="Toolbar_Middle_Selected"
+                        image_unselected="Toolbar_Middle_Off"
                         layout="topleft"
-                        left="10"
+                        left="1"
                         menu_filename="menu_settings_gear.xml"
                         name="btn_gear"
-                        top="5"
+                        top="0"
                         tool_tip="More options"
-                        width="18" />
+                        width="30" />
                 <menu_button
                         follows="bottom|left"
                         font="SansSerifBigBold"
-                        height="18"
-                        image_selected="AddItem_Press"
-                        image_unselected="AddItem_Off"
-                        image_disabled="AddItem_Disabled"
+                        height="25"
+                        image_overlay="AddItem_Off"
+                        image_selected="Toolbar_Middle_Selected"
+                        image_unselected="Toolbar_Middle_Off"
                         layout="topleft"
-                        left_pad="5"
+                        left_pad="1"
                         menu_filename="menu_settings_add.xml"
                         name="btn_newsettings"
                         tool_tip="Make new setting"
                         top_delta="0"
-                        width="18" />
+                        width="30" />
+                <icon
+           follows="bottom|left|right"
+           height="25"
+           image_name="Toolbar_Middle_Off"
+           layout="topleft"
+           left_pad="1"
+           top="0"
+           name="dummy_icon"
+           width="199" />
+                <filter_editor
+                  follows="left|top|right"
+                  height="22"
+                  label="Filter Environments"
+                  background_image="TextField_Off"
+			background_image_disabled="TextField_Disabled"
+			background_image_focused="TextField_Active"
+                  layout="topleft"
+                  left_delta="1"
+                  name="flt_search"
+                  top_delta="1"
+                  width="197"/>
                 <button
                         follows="bottom|right"
                         font="SansSerifBigBold"
-                        height="18"
-                        image_selected="TrashItem_Press"
-                        image_unselected="TrashItem_Off"
-                        image_disabled="TrashItem_Disabled"
+                        height="25"
+                        image_overlay="TrashItem_Off"
+                        image_selected="Toolbar_Middle_Selected"
+                        image_unselected="Toolbar_Middle_Off"
                         layout="topleft"
                         name="btn_del"
-                        right="-5"
+                        right="-9"
                         tool_tip="Remove selected item"
-                        top_delta="0"
-                        width="18" />
+                        top_delta="-1"
+                        width="30" />
             </panel>
         </layout_panel>
     </layout_stack>
