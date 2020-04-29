@@ -49,69 +49,6 @@ vec3 getNorm(vec2 pos_screen);
 
 void main() 
 {
-    /*kern_[0] = vec3(0.500, 1, 0.50);
-    kern_[1] = vec3(0.333, 1, 1.200);
-    kern_[2] = vec3(0.151, 1, 2.480);
-    kern_[3] = vec3(0.100, 1, 3.000);
-    kern_[4] = vec3(0.090, 1, 4.200);
-    kern_[5] = vec3(0.070, 1, 4.800);
-    kern_[6] = vec3(0.040, 1, 5.800);
-    kern_[7] = vec3(0.020, 1, 6.800);
-    
-    vec2 tc = vary_fragcoord.xy;
-    vec3 norm = getNorm(tc);
-    vec3 pos = getPosition(tc).xyz;
-    vec4 ccol = texture2DRect(lightMap, tc).rgba;
-    
-    vec2 dlt = kern_scale * delta / (1.0+norm.xy*norm.xy);
-    dlt /= max(-pos.z*dist_factor, 1.0);
-    
-    vec2 defined_weight = kern_[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
-    vec4 col = defined_weight.xyxx * ccol;
-
-    // relax tolerance according to distance to avoid speckling artifacts, as angles and distances are a lot more abrupt within a small screen area at larger distances
-    float pointplanedist_tolerance_pow2 = pos.z*pos.z*0.00005;
-
-    // perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
-    float tc_mod = 0.5*(tc.x + tc.y); // mod(tc.x+tc.y,2)
-    tc_mod -= floor(tc_mod);
-    tc_mod *= 2.0;
-    tc += ( (tc_mod - 0.5) * kern_[1].z * dlt * 0.5 );
-
-    for (int i = 1; i < 8; i++)
-    {
-        vec2 samptc = tc + kern_[i].z*dlt;
-        vec3 samppos = getPosition(samptc).xyz; 
-
-        float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-        
-        if (d*d <= pointplanedist_tolerance_pow2)
-        {
-            col += texture2DRect(lightMap, samptc)*kern_[i].xyxx;
-            defined_weight += kern_[i].xy;
-        }
-    }
-
-    for (int i = 1; i < 8; i++)
-    {
-        vec2 samptc = tc - kern_[i].z*dlt;
-        vec3 samppos = getPosition(samptc).xyz; 
-
-        float d = dot(norm.xyz, samppos.xyz-pos.xyz);// dist from plane
-        
-        if (d*d <= pointplanedist_tolerance_pow2)
-        {
-            col += texture2DRect(lightMap, samptc)*kern_[i].xyxx;
-            defined_weight += kern_[i].xy;
-        }
-    }
-
-    col /= defined_weight.xyxx;
-    col.y *= col.y;
-    
-    frag_color = col;
-    */
-    
     vec2 tc = vary_fragcoord.xy;
     vec3 norm = getNorm(tc);
     vec3 pos = getPosition(tc).xyz;
