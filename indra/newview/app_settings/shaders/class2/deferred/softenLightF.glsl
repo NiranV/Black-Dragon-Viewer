@@ -301,7 +301,6 @@ void main()
          
          // add the two types of shiny together
          vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 + dumbshiny);
-         bloom = dot(spec_contrib, spec_contrib) / 6;
          dumbshiny = sunlit*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
          spec_contrib = dumbshiny * spec.rgb;
          color.rgb = mix(color.rgb + ssshiny, diffuse.rgb, fullbrightification);

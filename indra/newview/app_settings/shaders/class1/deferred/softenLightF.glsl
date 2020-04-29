@@ -56,8 +56,6 @@ VARYING vec2 vary_fragcoord;
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
-uniform float chroma_str;
-
 vec3 getNorm(vec2 pos_screen);
 vec4 getPositionWithDepth(vec2 pos_screen, float depth);
 
@@ -75,6 +73,32 @@ vec3 srgb_to_linear(vec3 c);
 vec4 applyWaterFogView(vec3 pos, vec4 color);
 #endif
 
+vec2 ref2d;
+vec3 refcol;
+vec3 best_refn;
+vec3 best_refcol;
+vec3 reflight;
+float best_refshad;
+float best_refapprop;
+float total_refapprop;
+float rnd;
+float bloomdamp;
+float rnd2;
+float gnfrac;
+float rd;
+float rdpow2;
+float refdist;
+float refdepth;
+
+uniform float chroma_str;
+uniform int ssr_res;
+uniform float ssr_brightness;
+
+float rand(vec2 co)
+{
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 void main() 
 {
     vec2 tc = vary_fragcoord.xy;
@@ -90,6 +114,11 @@ void main()
     da = pow(da, light_gamma);
     
     vec4 diffuse = texture2DRect(diffuseRect, tc);
+    
+    vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
+
+    vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
+    scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
 
     vec2 fromCentre = vec2(0.0);
     if(chroma_str > 0.0)
@@ -101,11 +130,7 @@ void main()
     diffuse.b= texture2DRect(diffuseRect, tc-fromCentre).b;
     diffuse.r= texture2DRect(diffuseRect, tc+fromCentre).r;
     diffuse.ga= texture2DRect(diffuseRect, tc).ga;
-    
-    //convert to gamma space
-    //diffuse.rgb = linear_to_srgb(diffuse.rgb);
 
-    vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
     vec3 color = vec3(0);
     float bloom = 0.0;
     {
@@ -141,9 +166,6 @@ void main()
          float fullbrightification = diffuse.a;
          // the old infinite-sky shiny reflection
          float sa = dot(refnormpersp, light_dir.xyz);
-         
-         vec3 dumbshiny = (sunlit)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
-         dumbshiny = min(dumbshiny, vec3(1));
          
          // screen-space cheapish fakey reflection map
          vec3 refnorm = normalize(reflect(vec3(0,0,-1), norm.xyz));
@@ -248,18 +270,45 @@ void main()
          ssshiny *= spec.rgb;
          ssshiny *= ssr_brightness;
          
+         
+#if 1 //EEP         
+         vec3 npos = -normalize(pos.xyz);
+      
+         vec3 h = normalize(light_dir.xyz+npos);
+         float nh = dot(norm.xyz, h);
+         float nv = dot(norm.xyz, npos);
+         float vh = dot(npos, h);
+         //float sa2 = nh;
+         float fres = pow(1 - dot(h, npos), 5)*0.4+0.5;
+    
+         float gtdenom = 2 * nh;
+         float gt = max(0, min(gtdenom * nv / vh, gtdenom * da / vh));
+          
+         if (nh > 0.0)
+         {
+            float scontrib = fres*texture2D(lightFunc, vec2(nh, spec.a)).r*gt/(nh*da);
+            vec3 sp = sun_contrib*scontrib / 6.0;
+            sp = clamp(sp, vec3(0), vec3(1));
+            color.rgb = mix(color.rgb + ssshiny, diffuse.rgb, fullbrightification);
+            bloom += dot(sp, sp) / 4.0;
+            color.rgb += sp * spec.rgb;
+         }
+#else //PRODUCTION
+         vec3 dumbshiny = (sunlit)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
+         dumbshiny = min(dumbshiny, vec3(1));
+         
          // add the two types of shiny together
          vec3 spec_contrib = (ssshiny * (1.0 - fullbrightification) * 0.5 + dumbshiny);
-         bloom = spec.a * dot(spec_contrib, spec_contrib) * 0.25 * (1.0 - bloomdamp);
          dumbshiny = sunlit*scol_ambocc.r*(texture2D(lightFunc, vec2(sa, spec.a)).r);
          spec_contrib = dumbshiny * spec.rgb;
          color.rgb = mix(color.rgb + ssshiny, diffuse.rgb, fullbrightification);
+         bloom = dot(spec_contrib, spec_contrib) / 6;
          color.rgb += spec_contrib;
+#endif
         }
 #else
         if (spec.a > 0.0) // specular reflection
         {
-
 #if 1 //EEP
             vec3 npos = -normalize(pos.xyz);
 
@@ -283,6 +332,9 @@ void main()
                 color += sp * spec.rgb;
             }
 #else //PRODUCTION
+            vec3 dumbshiny = (sunlit)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
+            dumbshiny = min(dumbshiny, vec3(1));
+            
             float sa = dot(refnormpersp, light_dir.xyz);
             vec3 dumbshiny = sunlit*(texture2D(lightFunc, vec2(sa, spec.a)).r);
             
