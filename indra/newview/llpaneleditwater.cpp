@@ -34,6 +34,10 @@
 #include "llxyvector.h"
 #include "llviewercontrol.h"
 
+//BD
+#include "llagent.h"
+#include "llviewerregion.h"
+
 namespace
 {
 	//BD - Settings
@@ -51,6 +55,8 @@ namespace
 	const std::string   FIELD_WATER_SCALE_ABOVE("water_scale_above");
 	const std::string   FIELD_WATER_SCALE_BELOW("water_scale_below");
 	const std::string   FIELD_WATER_BLUR_MULTIP("water_blur_multip");
+
+	const std::string   BTN_DEFAULT_WATER_HEIGHT("default_water_height");
 
 	//BD - Image
 	const std::string   FIELD_WATER_NORMAL_MAP("water_normal_map");
@@ -109,6 +115,8 @@ BOOL LLPanelSettingsWaterMainTab::postBuild()
 	mScaleBelow->setCommitCallback([this](LLUICtrl *, const LLSD &) { onScaleBelowChanged(); });
 	mBlurMult = getChild<LLUICtrl>(FIELD_WATER_BLUR_MULTIP);
 	mBlurMult->setCommitCallback([this](LLUICtrl *, const LLSD &) { onBlurMultipChanged(); });
+
+	getChild<LLUICtrl>(BTN_DEFAULT_WATER_HEIGHT)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onDefaultWaterHeight(); });
 
     refresh();
 
@@ -206,6 +214,13 @@ void LLPanelSettingsWaterMainTab::onBlurMultipChanged()
     setIsDirty();
 }
 
+void LLPanelSettingsWaterMainTab::onDefaultWaterHeight()
+{
+	if (!mWaterSettings) return;
+	F32 water_height = gAgent.getRegion()->getOriginalWaterHeight();
+	gAgent.getRegion()->setWaterHeightLocal(water_height);
+	gSavedSettings.setF32("RenderWaterHeightFudge", water_height);
+}
 
 
 //BD - Image Tab

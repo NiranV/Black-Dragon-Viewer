@@ -295,6 +295,6 @@ width="698">
     layout="topleft"
     left_pad="-55"
     top_delta="-17"
-    name="DefaultWaterHeight"
+    name="default_water_height"
     width="60"/>
 </panel>

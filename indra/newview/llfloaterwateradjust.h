@@ -81,6 +81,8 @@ private:
 	void						onScaleBelowChanged();
 	void						onBlurMultipChanged();
 
+	void						onDefaultWaterHeight();
+
 	//BD - Image
 	void						onNormalMapChanged();
 

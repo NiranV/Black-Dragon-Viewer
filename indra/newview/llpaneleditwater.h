@@ -83,6 +83,8 @@ private:
     void                    onScaleBelowChanged();
     void                    onBlurMultipChanged();
 
+	void					onDefaultWaterHeight();
+
 	LLColorSwatchCtrl *     mClrFogColor;
 	LLUICtrl*				mFogDensity;
 	LLUICtrl*				mUnderwaterMod;
