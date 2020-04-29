@@ -135,6 +135,7 @@ private:
 	void                    onButtonReset();
 	void                    onButtonSave();
 	void                    onButtonDelete();
+	void                    onTextNameFocusLoss();
 	void					onSelectPreset();
 	bool					loadPreset(std::string filename, std::string type);
 	void					loadItem(LLSettingsBase::ptr_t settings);

@@ -151,6 +151,7 @@ BOOL LLFloaterFixedEnvironment::postBuild()
     mTab = getChild<LLTabContainer>(CONTROL_TAB_AREA);
     mTxtName = getChild<LLComboBox>(FIELD_SETTINGS_NAME);
 	mTxtName->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
+	mTxtName->setFocusLostCallback(boost::bind(&LLFloaterFixedEnvironment::onTextNameFocusLoss, this));
 
     getChild<LLButton>(BUTTON_NAME_IMPORT)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
     getChild<LLButton>(BUTTON_NAME_CANCEL)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onClickCloseBtn(); });
@@ -919,10 +920,17 @@ void LLFloaterFixedEnvironmentSky::loadSkySettingFromFile(const std::vector<std:
 
 //BD - Windlight Stuff
 //=====================================================================================================
+void LLFloaterFixedEnvironment::onTextNameFocusLoss()
+{
+	//BD - Don't use the escaped string.
+	mSettings->setName(mTxtName->getValue().asString());
+}
+
 void LLFloaterFixedEnvironment::onButtonSave()
 {
 	std::string folder = mSettings->getSettingsType() == "sky" ? "skies" : "water";
-	gDragonLibrary.savePreset(mTxtName->getValue(), mSettings);
+
+	gDragonLibrary.savePreset(mSettings->getName(), mSettings);
 	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
 	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
 }
@@ -938,8 +946,7 @@ void LLFloaterFixedEnvironment::onButtonDelete()
 
 void LLFloaterFixedEnvironment::onSelectPreset()
 {
-	//BD - Don't use the escaped string.
-	mSettings->setName(mTxtName->getValue().asString());
+	onTextNameFocusLoss();
 
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
