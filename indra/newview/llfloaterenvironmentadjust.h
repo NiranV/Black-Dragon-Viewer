@@ -110,7 +110,6 @@ private:
 	void						onCloudScrollXLocked(bool lock);
 	void						onCloudScrollYLocked(bool lock);
 
-
 	//BD - Windlight Stuff
 	void						onButtonReset();
 	void						onButtonSave();
