@@ -40,7 +40,7 @@ uniform float dist_factor;
 uniform float blur_size;
 uniform vec2 delta;
 vec3 kern_[8];
-uniform float kern_scale;
+uniform vec2 kern_scale;
 
 VARYING vec2 vary_fragcoord;
 
@@ -126,7 +126,7 @@ void main()
     kern_[6] = vec3(0.040, 1, 5.800);
     kern_[7] = vec3(0.020, 1, 6.800);
     
-    vec2 dlt = kern_scale * (vec2(1.5,1.5)-norm.xy*norm.xy);
+    vec2 dlt = kern_scale.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
     dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
     dlt /= max(pos.z, 1.0);
     
@@ -143,7 +143,7 @@ void main()
     for (int i = 8-1; i > 0; i--)
     {
       vec2 w = kern_[i].xy;
-      w.y = kern_scale;
+      w.y = kern_scale.y;
       vec2 samptc = (tc + kern_[i].z * dlt);
       vec3 samppos = getPosition(samptc).xyz; 
       vec3 sampnorm = getNorm(samptc).xyz;
@@ -163,7 +163,7 @@ void main()
     for (int i = 8-1; i > 0; i--)
     {
       vec2 w = kern_[i].xy;
-      w.y = kern_scale;
+      w.y = kern_scale.y;
       vec2 samptc = (tc - kern_[i].z * dlt);
       vec3 samppos = getPosition(samptc).xyz; 
       vec3 sampnorm = getNorm(samptc).xyz;

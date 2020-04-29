@@ -703,6 +703,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlobalLightStrength");
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
+	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 
 //    //BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
@@ -1351,6 +1352,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
 	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
 	RenderShadowFarClipVec = gSavedSettings.getVector4("RenderShadowDistance");
+	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
@@ -9079,7 +9081,7 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
 			gDeferredBlurLightProgram.uniform3fv(sKern, kern_length, gauss[0].mV);
-			gDeferredBlurLightProgram.uniform1f(sKernScale, blur_size * (kern_length/2.f - 0.5f));
+			gDeferredBlurLightProgram.uniform2f(sKernScale, blur_size * (kern_length/2.f - 0.5f), RenderSSAOBlurSize);
 		
 			{
 				LLGLDisable blend(GL_BLEND);
