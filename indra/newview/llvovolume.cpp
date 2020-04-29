@@ -3954,24 +3954,24 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
 	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
 	//     noticeably.
-	static const U32 ARC_PARTICLE_COST = 16;
+	static const U32 ARC_PARTICLE_COST = 8; //16
 	//BD - Textures don't directly influence performance impact on a large scale but allocating a lot of textures
 	//     and filling the Viewer memory as well as texture memory grinds at the Viewer's overall performance, the
 	//     lost performance does not fully recover when leaving the area in question, textures overall have a lingering
 	//     performance impact that slowly drives down the Viewer's performance, we should punish them much harder.
 	//     Textures are not free after all and not everyone can have 2+GB texture memory for SL.
-	static const U32 ARC_TEXTURE_COST = 5;
+	static const U32 ARC_TEXTURE_COST = 2.5; //5
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
-	static const U32 ARC_LIGHT_COST = 512;
+	static const U32 ARC_LIGHT_COST = 256; //512
 	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
 	//     work of any good framerate.
-	static const U32 ARC_PROJECTOR_COST = 16384;
+	static const U32 ARC_PROJECTOR_COST = 8192; //16384
 	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
 	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
 	//     those alone will significantly draw resources both RAM and FPS.
-	static const U32 ARC_MEDIA_FACE_COST = 100000; // static cost per media-enabled face 
+	static const U32 ARC_MEDIA_FACE_COST = 50000; //100000 - static cost per media-enabled face 
 
 	// per-prim multipliers
 	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
@@ -3987,7 +3987,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
 	//static const F32 ARC_INVISI_COST = 1.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 4.0f;
+	static const F32 ARC_WEIGHTED_MESH = 2.0f; //4.0
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
 	static const F32 ARC_ANIM_TEX_COST = 1.f;
@@ -4158,7 +4158,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}
 
 	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
-	shame = num_triangles / 5;
+	shame = num_triangles / 5; //5
 	shame = shame < 2.f ? 2.f : shame;
 
 	vovolume->setRenderComplexityBase((S32)shame);
@@ -4282,18 +4282,18 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
 	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
 	//     noticeably.
-	static const U32 ARC_PARTICLE_COST = 16;
+	static const U32 ARC_PARTICLE_COST = 8; //16
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
-	static const U32 ARC_LIGHT_COST = 512;
+	static const U32 ARC_LIGHT_COST = 256; //512
 	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
 	//     work of any good framerate.
-	static const U32 ARC_PROJECTOR_COST = 16384;
+	static const U32 ARC_PROJECTOR_COST = 8192; //16384
 	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
 	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
 	//     those alone will significantly draw resources both RAM and FPS.
-	static const U32 ARC_MEDIA_FACE_COST = 100000; // static cost per media-enabled face 
+	static const U32 ARC_MEDIA_FACE_COST = 50000; //100000 - static cost per media-enabled face 
 
 	// per-prim multipliers
 	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
@@ -4309,7 +4309,7 @@ void LLVOVolume::getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32
 	//BD - Invisible prims are not rendered anymore in Black Dragon.
 	//static const F32 ARC_INVISI_COST = 1.0f;
 	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
-	static const F32 ARC_WEIGHTED_MESH = 4.0f;
+	static const F32 ARC_WEIGHTED_MESH = 2.0f; //4.0
 
 	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
 	static const F32 ARC_ANIM_TEX_COST = 1.f;
