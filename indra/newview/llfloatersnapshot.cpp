@@ -43,6 +43,7 @@
 #include "lltoolfocus.h"
 #include "lltoolmgr.h"
 #include "llwebprofile.h"
+#include "llscrolllistctrl.h"
 
 ///----------------------------------------------------------------------------
 /// Local function declarations, constants, enums, and typedefs
@@ -225,6 +226,13 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 			}
 		}
 
+		//BD
+		bool unlock = gSavedSettings.getBOOL("SnapshotResolutionUnlock");
+		LLComboBox* res_combo = floater->getChild<LLComboBox>("local_size_combo");
+		res_combo->getItemByLabel("6144x3160 (6K)")->setEnabled(unlock);
+		res_combo->getItemByLabel("7680x4320 (8K)")->setEnabled(unlock);
+		res_combo->getItemByLabel("11520x6480 (12K)")->setEnabled(unlock);
+
 		// Clamp snapshot resolution to window size when showing UI or HUD in snapshot.
 		if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
 		{
@@ -246,8 +254,9 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 		}
 		else
 		{
-			width_ctrl->setMaxValue(MAX_SNAPSHOT_IMAGE_SIZE);
-			height_ctrl->setMaxValue(MAX_SNAPSHOT_IMAGE_SIZE);
+			//BD
+			width_ctrl->setMaxValue(unlock ? 11520 : 3840);
+			height_ctrl->setMaxValue(unlock ? 11520 : 3840);
 		}
 	}
 		
@@ -393,6 +402,15 @@ void LLFloaterSnapshotBase::ImplBase::onClickMultiplierCheck(LLUICtrl *ctrl, voi
 		{
 			previewp->updateSnapshot(TRUE);
 		}
+		view->impl->updateControls(view);
+	}
+}
+
+void LLFloaterSnapshotBase::ImplBase::onClickResolutionUnlock(LLUICtrl *ctrl, void* data)
+{
+	LLFloaterSnapshot *view = (LLFloaterSnapshot *)data;
+	if (view)
+	{
 		view->impl->updateControls(view);
 	}
 }
@@ -900,6 +918,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	//BD
 	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
 	childSetCommitCallback("autoscale_check", ImplBase::onClickMultiplierCheck, this);
+	childSetCommitCallback("unlock_resolutions", ImplBase::onClickResolutionUnlock, this);
 
     getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
     getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
@@ -939,10 +958,6 @@ BOOL LLFloaterSnapshot::postBuild()
 	getChild<LLComboBox>("texture_size_combo")->selectNthItem(0);
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
 
-	//BD - Exception for local, select custom by default, current window is the same anyway.
-	LLComboBox* combo = getChild<LLComboBox>("local_size_combo");
-	combo->selectNthItem(combo->getItemCount() - 1);
-
 	//BD
 	impl->mSnapshotFreezeWorld = false;
 
@@ -950,6 +965,11 @@ BOOL LLFloaterSnapshot::postBuild()
 	impl->mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
 	impl->updateControls(this);
+
+	//BD - Exception for local, select custom by default, current window is the same anyway.
+	LLComboBox* combo = getChild<LLComboBox>("local_size_combo");
+	combo->selectNthItem(combo->getItemCount() - 1);
+
 	impl->setAdvanced(gSavedSettings.getBOOL("AdvanceSnapshot"));
 	impl->updateLayout(this);
 

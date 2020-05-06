@@ -1184,3 +1184,14 @@ const std::string LLIconsComboBox::getSelectedItemLabel(S32 column) const
 
 	return LLComboBox::getSelectedItemLabel(mLabelColumnIndex);
 }
+
+//BD - UI Improvements
+LLScrollListItem* LLComboBox::getItemByLabel(std::string label)
+{
+	return mList->getItemByLabel(label);
+}
+
+LLScrollListItem* LLComboBox::getItem(const LLSD& sd)
+{
+	return mList->getItem(sd);
+}

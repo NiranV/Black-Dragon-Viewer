@@ -34,6 +34,7 @@
 #include "llsnapshotmodel.h"
 
 class LLSpinCtrl;
+class LLComboBox;
 class LLSnapshotLivePreview;
 class LLFloaterBigPreview;
 
@@ -108,6 +109,7 @@ public:
 	//BD
 	static void onClickMultiplierCheck(LLUICtrl *ctrl, void* data);
 	static void onCommitFreezeWorld(LLUICtrl* ctrl, void* data);
+	static void onClickResolutionUnlock(LLUICtrl* ctrl, void* data);
 
 	virtual LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true) = 0;
 	virtual LLSnapshotModel::ESnapshotType getActiveSnapshotType(LLFloaterSnapshotBase* floater);

@@ -79,13 +79,21 @@
          name="1920x1080"
          value="[i1920,i1080]" />
         <combo_box.item
-         label="4096x2160 (UHD)"
-         name="4096x2160"
-         value="[i4096,i2160]" />
+         label="3840x2160 (4K)"
+         name="3840x2160"
+         value="[i3840,i2160]" />
         <combo_box.item
-         label="6016x3316 (6K)"
-         name="6016x3316"
-         value="[i6016,i3316]" />
+         label="6144x3160 (6K)"
+         name="6144x3160"
+         value="[i6144,i3160]" />
+        <combo_box.item
+         label="7680x4320 (8K)"
+         name="7680x4320"
+         value="[i7680,i4320]" />
+        <combo_box.item
+         label="11520x6480 (12K)"
+         name="11520x6480"
+         value="[i11520,i6480]" />
         <combo_box.item
          label="Custom"
          name="Custom"
@@ -122,7 +130,24 @@
      top_delta="0"
      width="54" />
     <check_box
-     top_pad="12"
+     top_pad="7"
+     height="16"
+     follows="left|top"
+     control_name="SnapshotResolutionUnlock"
+     label="Allow High Resolutions"
+     layout="topleft"
+     left="10"
+     name="unlock_resolutions">
+     <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+      <check_box.commit_callback
+         function="Dragon.TriggerWarn"
+         parameter="SnapshotResolutionUnlock"/>
+       </check_box>
+    <check_box
+     top_pad="1"
+     height="16"
      follows="left|top"
      label="Constrain proportions"
      layout="topleft"

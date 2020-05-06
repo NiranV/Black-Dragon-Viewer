@@ -192,6 +192,10 @@ public:
 	virtual BOOL	operateOnSelection(EOperation op);
 	virtual BOOL	operateOnAll(EOperation op);
 
+	//BD - UI Improvements
+	LLScrollListItem*	getItemByLabel(std::string label);
+	LLScrollListItem*	getItem(const LLSD& sd);
+
 	//========================================================================
 	
 	void			setLeftTextPadding(S32 pad);

@@ -11740,6 +11740,18 @@ It has an unexplainable, random crash that can occur when you Right-Click that i
   
   <notification
    icon="alertmodal.tga"
+   name="SnapshotResolutionUnlock"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+Any resolution above 4K is is considered unsupported and unsafe and the Viewer might crash when you try to take a snapshot at these resolutions.
+
+&lt;b&gt;DO NOT USE if you want a stable experience!&lt;/b&gt;
+  <tag>warning</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
    name="UIScaleFactor_Max"
    type="alert">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
