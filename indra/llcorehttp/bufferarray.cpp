@@ -147,7 +147,11 @@ size_t BufferArray::append(const void * src, size_t len)
         {
             block = Block::alloc(BLOCK_ALLOC_SIZE);
         }
+<<<<<<< HEAD
         catch (const std::bad_alloc&)
+=======
+        catch (std::bad_alloc&)
+>>>>>>> Linden_Release/master
         {
             LLMemory::logMemoryInfo(TRUE);
 

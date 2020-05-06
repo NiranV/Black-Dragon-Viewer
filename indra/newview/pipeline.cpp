@@ -9218,6 +9218,7 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 						}
 					}
 
+<<<<<<< HEAD
 					const LLViewerObject *vobj = drawablep->getVObj();
 					if (vobj)
 					{
@@ -9236,9 +9237,26 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 							}
 						}
 					}
+=======
+                    const LLViewerObject *vobj = drawablep->getVObj();
+                    if (vobj)
+                    {
+                        LLVOAvatar *av = vobj->getAvatar();
+                        if (av && (av->isTooComplex() || av->isInMuteList()))
+                        {
+                            continue;
+                        }
+                    }
+
+                    const LLVector3 position = drawablep->getPositionAgent();
+                    if (dist_vec(position, LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip + volume->getLightRadius())
+                    {
+                        continue;
+                    }
+>>>>>>> Linden_Release/master
 
 					LLVector4a center;
-					center.load3(drawablep->getPositionAgent().mV);
+					center.load3(position.mV);
 					const F32* c = center.getF32ptr();
 					F32 s = volume->getLightRadius()*1.5f;
 

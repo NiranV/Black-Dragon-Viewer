@@ -125,7 +125,11 @@ void LLHTTPNode::get(LLHTTPNode::ResponsePtr response, const LLSD& context) cons
 	{
 		response->result(simpleGet());
 	}
+<<<<<<< HEAD
 	catch (const NotImplemented&)
+=======
+	catch (NotImplemented&)
+>>>>>>> Linden_Release/master
 	{
 		response->methodNotAllowed();
 	}
@@ -138,7 +142,11 @@ void LLHTTPNode::put(LLHTTPNode::ResponsePtr response, const LLSD& context, cons
 	{
 		response->result(simplePut(input));
 	}
+<<<<<<< HEAD
 	catch (const NotImplemented&)
+=======
+	catch (NotImplemented&)
+>>>>>>> Linden_Release/master
 	{
 		response->methodNotAllowed();
 	}
@@ -151,7 +159,11 @@ void LLHTTPNode::post(LLHTTPNode::ResponsePtr response, const LLSD& context, con
 	{
 		response->result(simplePost(input));
 	}
+<<<<<<< HEAD
 	catch (const NotImplemented&)
+=======
+	catch (NotImplemented&)
+>>>>>>> Linden_Release/master
 	{
 		response->methodNotAllowed();
 	}
@@ -164,7 +176,11 @@ void LLHTTPNode::del(LLHTTPNode::ResponsePtr response, const LLSD& context) cons
     {
 	response->result(simpleDel(context));
     }
+<<<<<<< HEAD
     catch (const NotImplemented&)
+=======
+    catch (NotImplemented&)
+>>>>>>> Linden_Release/master
     {
 	response->methodNotAllowed();
     }

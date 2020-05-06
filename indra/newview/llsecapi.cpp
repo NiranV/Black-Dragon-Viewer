@@ -64,7 +64,11 @@ void initializeSecHandler()
 		{
 			handler->init();
 		}
+<<<<<<< HEAD
 		catch (const LLProtectedDataException& e)
+=======
+		catch (LLProtectedDataException& e)
+>>>>>>> Linden_Release/master
 		{
 			exception_msg = e.what();
 		}
