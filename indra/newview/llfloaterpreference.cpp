@@ -2173,6 +2173,9 @@ void LLFloaterPreference::refreshPresets()
 	LLComboBox* combo = getChild<LLComboBox>("camera_preset_name");
 	combo->removeall();
 
+	//BD - Add a separator.
+	combo->addSeparator(ADD_BOTTOM, "System Presets");
+
 	//BD - Look through our defaults first.
 	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "camera");
 	std::string file;
@@ -2214,7 +2217,7 @@ void LLFloaterPreference::refreshPresets()
 	}
 
 	//BD - Add a separator.
-	combo->addSeparator(ADD_BOTTOM);
+	combo->addSeparator(ADD_BOTTOM, "User Presets");
 
 	//BD - Go through all custom presets.
 	dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
