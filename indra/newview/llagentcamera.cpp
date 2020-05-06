@@ -1527,8 +1527,8 @@ void LLAgentCamera::updateCamera()
 	
 	mCameraCurrentFOVZoomFactor = lerp(mCameraCurrentFOVZoomFactor, mCameraFOVZoomFactor, LLSmoothInterpolation::getInterpolant(FOV_ZOOM_HALF_LIFE));
 
-		// Move the camera
-		mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
+	// Move the camera
+	mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
 
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	viewer_cam->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
@@ -1576,7 +1576,7 @@ void LLAgentCamera::updateCamera()
 			}
 			LLVector3 at_axis = LLVector3(1.0, 0.0, 0.0) * agent_rot;
 			LLVector3 poi = gAgentAvatarp->mHeadp->getWorldPosition() + at_axis;
-			viewer_cam->updateCameraLocation(head_pos + mCameraOffsetInitial["Mouselook"], mCameraUpVector, poi + mCameraOffsetInitial["Mouselook"]);
+			viewer_cam->updateCameraLocation(head_pos + mCameraOffsetInitial["Mouselook"], mCameraUpVector, poi + (LLVector3)mFocusOffsetInitial["Mouselook"]);
 		}
 		else
 		{
