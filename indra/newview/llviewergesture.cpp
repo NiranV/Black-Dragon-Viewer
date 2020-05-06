@@ -43,8 +43,6 @@
 #include "llagent.h"
 #include "llfloaterimnearbychat.h"
 
-#include "alchatcommand.h"
-
 // Globals
 LLViewerGestureList gGestureList;
 

@@ -55,7 +55,6 @@
 #include "llfloaterimnearbychat.h"
 #include "llappearancemgr.h"
 #include "llgesturelistener.h"
-#include "alchatcommand.h"
 
 // [RLVa:KB] - Checked: RLVa-2.0.0
 #include "rlvactions.h"

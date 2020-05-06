@@ -36,7 +36,6 @@
 #include "message.h"
 #include "llfocusmgr.h"
 
-#include "alchatcommand.h"
 #include "llagent.h"
 #include "llbutton.h"
 #include "llcombobox.h"
