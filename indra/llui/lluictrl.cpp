@@ -498,7 +498,15 @@ bool LLUICtrl::setControlValue(const LLSD& value)
 {
 	if (mControlVariable)
 	{
-		mControlVariable->set(value);
+		if (mControlVariable->isType(TYPE_U32)
+			|| mControlVariable->isType(TYPE_S32))
+		{
+			mControlVariable->setValue(value.asInteger());
+		}
+		else
+		{
+			mControlVariable->set(value);
+		}
 		return true;
 	}
 	return false;
