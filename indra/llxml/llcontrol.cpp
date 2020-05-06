@@ -601,15 +601,6 @@ LLControlVariable* LLControlGroup::declareLLSD(const std::string& name, const LL
 	return declareControl(name, TYPE_LLSD, initial_val, comment, persist);
 }
 
-void LLControlGroup::incrCount(const std::string& name)
-{
-	if (0.0 == start_time)
-	{
-		start_time = LLTimer::getTotalSeconds();
-	}
-	getCount[name] = getCount[name].asInteger() + 1;
-}
-
 //BD - Vector2
 LLControlVariable* LLControlGroup::declareVec2(const std::string& name, const LLVector2 &initial_val, const std::string& comment, LLControlVariable::ePersist persist)
 {
@@ -620,6 +611,15 @@ LLControlVariable* LLControlGroup::declareVec2(const std::string& name, const LL
 LLControlVariable* LLControlGroup::declareVec4(const std::string& name, const LLVector4 &initial_val, const std::string& comment, LLControlVariable::ePersist persist)
 {
 	return declareControl(name, TYPE_VEC4, initial_val.getValue(), comment, persist);
+}
+
+void LLControlGroup::incrCount(const std::string& name)
+{
+	if (0.0 == start_time)
+	{
+		start_time = LLTimer::getTotalSeconds();
+	}
+	getCount[name] = getCount[name].asInteger() + 1;
 }
 
 BOOL LLControlGroup::getBOOL(const std::string& name)

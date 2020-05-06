@@ -582,8 +582,7 @@ bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t setting
 
 	llifstream xml_file;
 	xml_file.open(filename);
-	if (!xml_file)
-		return false;
+	if (!xml_file) return false;
 
 	LLSD params_data;
 	LLPointer<LLSDParser> parser = new LLSDXMLParser();
