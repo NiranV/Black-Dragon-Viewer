@@ -1416,6 +1416,9 @@ BOOL LLFloaterPreference::postBuild()
 		gSavedSettings.setBOOL("PrefsVignetteVisible", false);
 	}
 
+	//BD - Bone Camera
+	mJointComboBox = getChild<LLComboBox>("joint_combo");
+
 //	//BD - Avatar Rendering Settings
 	mAvatarSettingsList = getChild<LLNameListCtrl>("render_settings_list");
 	mAvatarSettingsList->setRightMouseDownCallback(boost::bind(&LLFloaterPreference::onAvatarListRightClick, this, _1, _2, _3));
@@ -2809,6 +2812,15 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	// if user is logged in and we haven't initialized do not disturb mode response yet, do it
 	if (!initialized && LLStartUp::getStartupState() == STATE_STARTED)
 	{
+//		//BD - Bone Camera
+		mJointComboBox->clear();
+		//LLJoint* joint;
+		mJointComboBox->add("None", -1);
+		for (auto joint : gAgentAvatarp->getSkeleton())
+		{
+			mJointComboBox->add(joint->getName(), joint->mJointNum);
+		}
+
 		// Special approach is used for do not disturb response localization, because "DoNotDisturbModeResponse" is
 		// in non-localizable xml, and also because it may be changed by user and in this case it shouldn't be localized.
 		// To keep track of whether do not disturb response is default or changed by user additional setting DoNotDisturbResponseChanged

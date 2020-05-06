@@ -362,6 +362,9 @@ private:
 	LLButton*		mLoadBtn;
 	LLButton*		mDeleteBtn;
 
+	//BD - Bone Camera
+	LLComboBox*			mJointComboBox;
+
 	LLUICtrl*	mRenderSpotLightReflections;
 	LLUICtrl*	mRenderSpotLightImages;
 	LLUICtrl*	mRenderShadowAutomaticDistance;

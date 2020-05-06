@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="707"
+  height="766"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -286,6 +286,40 @@
    <button.commit_callback
    function="Pref.Default"/>
    </button>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="ObjectLOD"
+   top_pad="10"
+   width="160">
+   Bone Camera:
+   </text>
+   <combo_box
+   follows="top|left"
+   left_pad="0"
+   height="23"
+   control_name="CameraFollowJoint"
+   name="joint_combo"
+   top_delta="-4"
+   width="188">
+   <combo_box.item
+   label="Select a bone to follow"
+   name="item0"/>
+   <combo_box.combo_button
+   image_unselected="ToolbarDropDown_Off"
+   image_selected="ToolbarDropDown_Press"
+   image_disabled="ToolbarDropDown_Off" />
+   <combo_box.drop_down_button
+   image_unselected="ToolbarDropDown_Off"
+   image_selected="ToolbarDropDown_Press"
+   image_pressed="ToolbarDropDown_Press" 
+   image_pressed_selected="ToolbarDropDown_Press"
+   image_disabled="ToolbarDropDown_Off" />
+   </combo_box>
    <icon
    follows="top|right"
    height="1"
