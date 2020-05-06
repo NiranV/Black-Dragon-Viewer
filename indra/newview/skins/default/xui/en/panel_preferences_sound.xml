@@ -20,7 +20,7 @@ width="510">
  height="407">
   <panel
   follows="top|left|right"
-  height="620"
+  height="635"
   label="Sounds"
   layout="topleft"
   left="0"
@@ -51,11 +51,10 @@ width="510">
    <slider
    control_name="AudioLevelMaster"
    follows="left|top"
-   font.style="BOLD"
    height="14"
    increment="0.025"
    initial_value="0.5"
-   label="Master volume"
+   label="Master Volume"
    label_width="150"
    layout="topleft"
    left="10"
@@ -79,17 +78,30 @@ width="510">
    name="mute_audio"
    tab_stop="false"
    width="16" />
+   <text
+   type="string"
+   length="1"
+   follows="right|top"
+   height="12"
+   layout="topleft"
+   left="25"
+   halign="center"
+   name="separator_label"
+   top_pad="7"
+   width="450">
+   Advanced Volume Controls
+   </text>
    <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="4"/>
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="0"/>
    <slider
    control_name="AudioLevelUI"
    disabled_control="MuteAudio"

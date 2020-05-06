@@ -240,6 +240,30 @@
    <button.commit_callback
    function="Pref.Default"/>
    </button>
+   <text
+   type="string"
+   length="1"
+   follows="right|top"
+   height="12"
+   layout="topleft"
+   left="25"
+   halign="center"
+   name="separator_label"
+   top_pad="7"
+   width="450">
+   Cinematic Camera
+   </text>
+   <icon
+   follows="top|right"
+   height="1"
+   image_name="Prefs_Separator"
+   color="1 1 1 1"
+   layout="topleft"
+   name="separator"
+   mouse_opaque="false"
+   width="450"
+   left="25"
+   top_pad="0"/>
    <check_box
    control_name="UseCinematicCamera"
    follows="left|top"
@@ -320,6 +344,19 @@
    image_pressed_selected="ToolbarDropDown_Press"
    image_disabled="ToolbarDropDown_Off" />
    </combo_box>
+   <text
+   type="string"
+   length="1"
+   follows="right|top"
+   height="12"
+   layout="topleft"
+   left="25"
+   halign="center"
+   name="separator_label"
+   top_pad="7"
+   width="450">
+   Misc
+   </text>
    <icon
    follows="top|right"
    height="1"
@@ -330,7 +367,7 @@
    mouse_opaque="false"
    width="450"
    left="25"
-   top_pad="4"/>
+   top_pad="0"/>
    <check_box
    control_name="EditCameraMovement"
    height="16"
@@ -802,17 +839,6 @@
    function="Pref.CameraArray"
    parameter="Z"/>
    </slider>
-   <icon
-   follows="top|right"
-   height="1"
-   image_name="Prefs_Separator"
-   color="1 1 1 1"
-   layout="topleft"
-   name="separator"
-   mouse_opaque="false"
-   width="450"
-   left="25"
-   top_pad="4"/>
    <slider
    decimal_digits="3"
    can_edit_text="true"
