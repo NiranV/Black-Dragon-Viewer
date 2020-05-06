@@ -291,9 +291,12 @@ void LLFloaterEnvironmentAdjust::onOpen(const LLSD& key)
 
 void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
 {
-    LLEnvironment::instance().revertBeaconsState();
+	if (!mLiveSky)
+	{
+		LLEnvironment::instance().revertBeaconsState();
+		mLiveSky.reset();
+	}
     mEventConnection.disconnect();
-    mLiveSky.reset();
     LLFloater::onClose(app_quitting);
 }
 
@@ -748,12 +751,14 @@ void LLFloaterEnvironmentAdjust::onCloudDetailChanged()
 
 void LLFloaterEnvironmentAdjust::onCloudScrollXLocked(bool lock)
 {
+	if (!mLiveSky) return;
 	LLEnvironment::instance().pauseCloudScrollX(lock);
 	refresh();
 }
 
 void LLFloaterEnvironmentAdjust::onCloudScrollYLocked(bool lock)
 {
+	if (!mLiveSky) return;
 	LLEnvironment::instance().pauseCloudScrollY(lock);
 	refresh();
 }
@@ -896,6 +901,7 @@ void LLFloaterEnvironmentAdjust::onButtonImport()
 
 void LLFloaterEnvironmentAdjust::loadSkySettingFromFile(const std::vector<std::string>& filenames)
 {
+	if (!mLiveSky) return;
 	if (filenames.size() < 1) return;
 	std::string filename = filenames[0];
 	gDragonLibrary.loadPreset(filename, mLiveSky);

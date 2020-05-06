@@ -180,17 +180,20 @@ void LLFloaterWaterAdjust::onOpen(const LLSD& key)
 
     mEventConnection = LLEnvironment::instance().setEnvironmentChanged([this](LLEnvironment::EnvSelection_t env, S32 version){ onEnvironmentUpdated(env, version); });
 
-    LLFloater::onOpen(key);
+	LLFloater::onOpen(key);
     refresh();
+
 	gDragonLibrary.loadPresetsFromDir(mNameCombo, "water");
 	gDragonLibrary.addInventoryPresets(mNameCombo, mLiveWater);
 }
 
 void LLFloaterWaterAdjust::onClose(bool app_quitting)
 {
-    LLEnvironment::instance().revertBeaconsState();
-    mEventConnection.disconnect();
-    mLiveWater.reset();
+	if (!mLiveWater)
+	{
+		mLiveWater.reset();
+	}
+	mEventConnection.disconnect();
     LLFloater::onClose(app_quitting);
 }
 
@@ -514,6 +517,7 @@ void LLFloaterWaterAdjust::onButtonImport()
 
 void LLFloaterWaterAdjust::loadWaterSettingFromFile(const std::vector<std::string>& filenames)
 {
+	if (!mLiveWater) return;
 	if (filenames.size() < 1) return;
 	std::string filename = filenames[0];
 	gDragonLibrary.loadPreset(filename, mLiveWater);
