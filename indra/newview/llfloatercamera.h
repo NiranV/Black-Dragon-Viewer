@@ -130,7 +130,7 @@ private:
 	ECameraControlMode mCurrMode;
 	std::map<ECameraControlMode, LLButton*> mMode2Button;
 
-	//BD
+	//BD - Bone Camera
 	LLComboBox*			mJointComboBox;
 };
 

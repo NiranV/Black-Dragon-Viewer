@@ -636,9 +636,8 @@ void LLFloaterCamera::updateState()
 	if (show_camera_modes)
 	{
 		mJointComboBox->clear();
-		LLJoint* joint;
 		mJointComboBox->add("None", -1);
-		for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+		for (auto joint : gAgentAvatarp->getSkeleton())
 		{
 			mJointComboBox->add(joint->getName(), joint->mJointNum);
 		}
