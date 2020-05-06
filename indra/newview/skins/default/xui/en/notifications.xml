@@ -11730,9 +11730,11 @@ Preset could not be removed, either it or its folder does not exist or you are n
    type="alert">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
-The Pie Menu is marked as a dangerous feature.
+The Pie Menu is still marked as a dangerous feature.
 
 It has an unexplainable, random crash that can occur when you Right-Click that i couldn't fix yet and you will definitely experience it.
+
+Should you still experience crashing please report it to me.
 
 &lt;b&gt;DO NOT USE if you want a stable experience!&lt;/b&gt;
   <tag>warning</tag>
