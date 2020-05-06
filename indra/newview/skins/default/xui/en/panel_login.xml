@@ -173,8 +173,64 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="351"
+     height="218"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Diego Cabral Da Camera as Patreon Patron.
+Added: Zero as Patreon Patron.
+Changed: Allow snapshot resolutions up to 12k for those who can take them.
+Changed: My Environments layout.
+Changed: Tweaked SSAO noise generation.
+Changed: Lowered complexity values across the board by ~50%. Make them less ridiculous but still punishing. Might need further tweaks.
+Changed: Version to 3.8.2.
+Fixed: Fixed Environment not saving the preset as the typed name if we the name entry didn't lose focus yet and commit the name.
+Fixed: Defaulting Water Height doesn't work.
+Fixed: My Environments not showing any environments.
+Fixed: SSR in shader level 1 (shadows, ssao and blur light disabled).
+Fixed: SSAO Blur Size setting not working.
+Fixed: Half-escaped-half-non-escaped named presets not being readable/loadable.
+Misc: Cleanup.
+Misc: Bring soften light shaders up to date.
+Misc: Cleaned up code by removing unnecessary files.
+Misc: Cleanup blurLightF.glsl shader file.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="351"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
