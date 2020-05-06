@@ -48,13 +48,13 @@
              layout="topleft"
              left="5"
              name="checkbox fullbright"
-             top_pad="5"
+             top_pad="2"
              width="81" />
              <slider
             decimal_digits="2"
             can_edit_text="true"
             follows="left|top"
-            height="16"
+            height="14"
             increment="0.01"
             initial_value="0"
             label="Glow"
@@ -65,7 +65,7 @@
             min_val="0"
             name="glow"
             text_width="32"
-            top_delta="0"
+            top_delta="3"
             width="175"/>
              <view_border
     bevel_style="none"
@@ -153,7 +153,7 @@
             decimal_digits="0"
             can_edit_text="true"
             follows="left|top"
-            height="15"
+            height="14"
             increment="1"
             initial_value="55"
             label="Mask Cutoff"
@@ -164,13 +164,13 @@
             min_val="0"
             name="maskcutoff"
             text_width="32"
-            top_pad="1"
+            top_pad="2"
             width="175" />
             <slider
             decimal_digits="0"
             can_edit_text="true"
             follows="left|top"
-            height="15"
+            height="14"
             increment="1"
             initial_value="0"
             label="Alpha %"
@@ -181,7 +181,7 @@
             min_val="0"
             name="ColorTrans"
             text_width="32"
-            top_pad="3"
+            top_pad="4"
             width="175" />
             <!--<spinner
              decimal_digits="0"
@@ -434,7 +434,7 @@
             decimal_digits="0"
             can_edit_text="true"
             follows="left|top"
-            height="15"
+            height="14"
             increment="1"
             initial_value="51"
             label="Glossiness"
@@ -445,13 +445,13 @@
             min_val="0"
             name="glossiness"
             text_width="32"
-            top_pad="1"
+            top_pad="2"
             width="175"/>
             <slider
             decimal_digits="0"
             can_edit_text="true"
             follows="left|top"
-            height="15"
+            height="14"
             increment="1"
             initial_value="0"
             label="Environment"
@@ -462,7 +462,7 @@
             min_val="0"
             name="environment"
             text_width="32"
-            top_pad="3"
+            top_pad="4"
             width="175"/>
             <!--<spinner
              decimal_digits="0"
