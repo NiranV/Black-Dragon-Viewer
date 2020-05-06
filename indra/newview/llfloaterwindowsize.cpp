@@ -54,7 +54,6 @@ BOOL LLFloaterWindowSize::postBuild()
 {
 	//BD
     center();
-    initWindowSizeControls();
     getChild<LLUICtrl>("set_btn")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClickSet, this));
     getChild<LLUICtrl>("cancel_btn")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClickCancel, this));
     setDefaultBtn("set_btn");
@@ -67,6 +66,8 @@ BOOL LLFloaterWindowSize::postBuild()
 	getChild<LLButton>("1280 x 720")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick720, this));
 	getChild<LLButton>("1440 x 900")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick900, this));
 	getChild<LLButton>("1540 x 960")->setCommitCallback(boost::bind(&LLFloaterWindowSize::onClick960, this));
+
+	initWindowSizeControls();
 
     return TRUE;
 }
