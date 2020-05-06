@@ -1450,6 +1450,41 @@ void LLAgentCamera::updateCamera()
 		gAgent.setShowAvatar(TRUE);
 	}
 
+	//BD
+	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
+//	//BD - Cinematic Head Tracking
+	if (isAgentAvatarValid()
+		&& mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
+	{
+//		//BD - Revert any rolling we might have accumulated otherwise it will accumulate
+		//     against our Cinematic Head Tracking camera roll. This is also the perfect
+		//     place to revert our roll, simply go back to third person to "reset".
+		mCameraRollAngle = 0.f;
+		if (mFollowJoint != -1)
+		{
+			LLJoint* joint = gAgentAvatarp->getCharacterJoint(mFollowJoint);
+			if (joint)
+			{
+				LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
+				focus_agent = joint->getWorldPosition() + (LLVector3)getFocusOffsetInitial() * avatarRotationForFollowCam;
+			}
+		}
+		else if (mCinematicCamera)
+		{
+			LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() -
+				LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() +
+				LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
+			LLVector3 head_offset = gAgentAvatarp->mHeadp->getWorldPosition() - head_pos;
+			focus_agent += head_offset; // + at_axis + focus_agent;
+
+//			//BD - Camera Rolling
+			//     This can be clamped via the camera max roll option up to the point it is
+			//     completely disabled, this is only for the cinematic camera.
+			mCameraUpVector += (LLVector3::z_axis * gAgentAvatarp->mHeadp->getWorldRotation());
+			mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, gAgentAvatarp->isSitting() ? mCameraMaxRollSitting : mCameraMaxRoll);
+		}
+	}
+
 	// smoothing
 	if (TRUE)
 	{
@@ -1491,59 +1526,9 @@ void LLAgentCamera::updateCamera()
 	}
 	
 	mCameraCurrentFOVZoomFactor = lerp(mCameraCurrentFOVZoomFactor, mCameraFOVZoomFactor, LLSmoothInterpolation::getInterpolant(FOV_ZOOM_HALF_LIFE));
-	//BD
-	LLVector3 offset = LLVector3(0,0,0);
-	LLVector3 focus_agent = gAgent.getPosAgentFromGlobal(mFocusGlobal);
-//	//BD - Cinematic Head Tracking
-	if (isAgentAvatarValid()
-		&& mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
-	{
-//		//BD - Revert any rolling we might have accumulated otherwise it will accumulate
-		//     against our Cinematic Head Tracking camera roll. This is also the perfect
-		//     place to revert our roll, simply go back to third person to "reset".
-		mCameraRollAngle = 0.f;
-		if (mCinematicCamera)
-		{
-			LLVector3 head_pos = gAgentAvatarp->mHeadp->getWorldPosition() -
-				LLVector3(0.08f, 0.f, 0.05f) * gAgentAvatarp->mHeadp->getWorldRotation() +
-				LLVector3(0.1f, 0.f, 0.f) * gAgentAvatarp->mPelvisp->getWorldRotation();
-			LLVector3 head_offset = gAgentAvatarp->mHeadp->getWorldPosition() - head_pos;
-			focus_agent += head_offset; // + at_axis + focus_agent;
 
-//			//BD - Camera Rolling
-			//     This can be clamped via the camera max roll option up to the point it is
-			//     completely disabled, this is only for the cinematic camera.
-			mCameraUpVector += (LLVector3::z_axis * gAgentAvatarp->mHeadp->getWorldRotation());
-			if (gAgentAvatarp->isSitting())
-			{
-				mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRollSitting);
-			}
-			else
-			{
-				mCameraUpVector = lerp(mCameraUpVector, LLVector3::z_axis, mCameraMaxRoll);
-			}
-		}
-		else if (mFollowJoint != -1)
-		{
-			LLJoint* joint = gAgentAvatarp->getCharacterJoint(mFollowJoint);
-			if (joint)
-			{
-				LLQuaternion avatarRotationForFollowCam = gAgentAvatarp->isSitting() ? gAgentAvatarp->getRenderRotation() : gAgent.getFrameAgent().getQuaternion();
-				focus_agent = joint->getWorldPosition();
-				offset = focus_agent + getCameraOffsetInitial() * avatarRotationForFollowCam;
-			}
-		}
-	}
-	//BD
-	if (mFollowJoint >= 0 && mFocusOnAvatar && mCameraMode == CAMERA_MODE_THIRD_PERSON)
-	{
-		mCameraPositionAgent = offset;
-	}
-	else
-	{
 		// Move the camera
 		mCameraPositionAgent = gAgent.getPosAgentFromGlobal(camera_pos_global);
-	}
 
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
 	viewer_cam->updateCameraLocation(mCameraPositionAgent, mCameraUpVector, focus_agent);
@@ -2187,6 +2172,11 @@ bool LLAgentCamera::clampCameraPosition(LLVector3d& posCamGlobal, const LLVector
 LLVector3 LLAgentCamera::getCameraOffsetInitial()
 {
 	return mCameraOffsetInitial[mCameraPresetName];
+}
+
+LLVector3d LLAgentCamera::getFocusOffsetInitial()
+{
+	return mFocusOffsetInitial[mCameraPresetName];
 }
 
 F32 LLAgentCamera::getCameraMaxZoomDistance()
