@@ -6043,7 +6043,6 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 								}
 							}
 							else if (gPipeline.canUseVertexShaders()
-								&& LLPipeline::sRenderBump 
 								&& te->getShiny() 
 								&& can_be_shiny)
 							{
@@ -6225,8 +6224,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 							facep->mLastUpdateTime = gFrameTimeSeconds;
 						}
 
-						if (gPipeline.canUseWindLightShadersOnObjects()
-							&& LLPipeline::sRenderBump)
+						if (gPipeline.canUseWindLightShadersOnObjects())
 						{
 							if (LLPipeline::sRenderDeferred && te->getMaterialParams().notNull()  && !te->getMaterialID().isNull())
 							{
@@ -6288,14 +6286,14 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 						}
 						else
 						{
-							if (te->getBumpmap() && LLPipeline::sRenderBump)
+							if (te->getBumpmap())
 							{ //needs normal + tangent
 								if (bump_count < MAX_FACE_COUNT)
 								{
 									sBumpFaces[bump_count++] = facep;
 								}
 							}
-							else if ((te->getShiny() && LLPipeline::sRenderBump) ||
+							else if ((te->getShiny()) ||
 								!(te->getFullbright() || bake_sunlight))
 							{ //needs normal
 								if (simple_count < MAX_FACE_COUNT)
@@ -7059,7 +7057,6 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 					registerFace(group, facep, LLRenderPass::PASS_ALPHA);
 				}
 				else if (gPipeline.canUseVertexShaders()
-					&& LLPipeline::sRenderBump 
 					&& te->getShiny() 
 					&& can_be_shiny)
 				{
@@ -7094,7 +7091,6 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 				}
 			}
 			else if (gPipeline.canUseVertexShaders()
-				&& LLPipeline::sRenderBump 
 				&& te->getShiny() 
 				&& can_be_shiny)
 			{ //shiny
@@ -7148,14 +7144,14 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 					{
 						registerFace(group, facep, LLRenderPass::PASS_FULLBRIGHT);
 					}
-					if (LLPipeline::sRenderDeferred && !hud_group && LLPipeline::sRenderBump && use_legacy_bump)
+					if (LLPipeline::sRenderDeferred && !hud_group && use_legacy_bump)
 					{ //if this is the deferred render and a bump map is present, register in post deferred bump
 						registerFace(group, facep, LLRenderPass::PASS_POST_BUMP);
 					}
 				}
 				else
 				{
-					if (LLPipeline::sRenderDeferred && LLPipeline::sRenderBump && use_legacy_bump)
+					if (LLPipeline::sRenderDeferred && use_legacy_bump)
 					{ //non-shiny or fullbright deferred bump
 						registerFace(group, facep, LLRenderPass::PASS_BUMP);
 					}
@@ -7176,8 +7172,7 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 				
 				if (!gPipeline.canUseVertexShaders() && 
 					!is_alpha && 
-					te->getShiny() && 
-					LLPipeline::sRenderBump)
+					te->getShiny())
 				{ //shiny as an extra pass when shaders are disabled
 					registerFace(group, facep, LLRenderPass::PASS_SHINY);
 				}
@@ -7189,7 +7184,7 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 				llassert((mask & LLVertexBuffer::MAP_NORMAL) || fullbright);
 				facep->setPoolType((fullbright) ? LLDrawPool::POOL_FULLBRIGHT : LLDrawPool::POOL_SIMPLE);
 				
-				if (!force_simple && LLPipeline::sRenderBump && use_legacy_bump)
+				if (!force_simple && use_legacy_bump)
 				{
 					registerFace(group, facep, LLRenderPass::PASS_BUMP);
 				}

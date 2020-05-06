@@ -483,8 +483,8 @@ void LLViewerShaderMgr::setShaders()
     bool canRenderDeferred       = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred");
     bool hasWindLightShaders     = LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders");
     S32 shadow_detail            = gSavedSettings.getS32("RenderShadowDetail");
-    bool useRenderDeferred       = canRenderDeferred && gSavedSettings.getBOOL("RenderDeferred") && gSavedSettings.getBOOL("RenderAvatarVP");
-    bool doingWindLight          = hasWindLightShaders && gSavedSettings.getBOOL("WindLightUseAtmosShaders");
+    bool useRenderDeferred       = canRenderDeferred && gSavedSettings.getBOOL("RenderDeferred");
+    bool doingWindLight          = hasWindLightShaders;
 
     //using shaders, disable fixed function
     LLGLSLShader::sNoFixedFunction = true;
@@ -659,47 +659,24 @@ void LLViewerShaderMgr::setShaders()
             mShaderLevel[SHADER_AVATAR] = 3;
             mMaxAvatarShaderLevel = 3;
                 
-            if (gSavedSettings.getBOOL("RenderAvatarVP") && loadShadersObject())
+            if (loadShadersObject())
             { //hardware skinning is enabled and rigged attachment shaders loaded correctly
-                BOOL avatar_cloth = gSavedSettings.getBOOL("RenderAvatarCloth");
 
                 // cloth is a class3 shader
-                S32 avatar_class = avatar_cloth ? 3 : 1;
+                S32 avatar_class = 3;
                 
                 // Set the actual level
                 mShaderLevel[SHADER_AVATAR] = avatar_class;
 
                 loaded = loadShadersAvatar();
                 llassert(loaded);
-
-                if (mShaderLevel[SHADER_AVATAR] != avatar_class)
-                {
-                    if (mShaderLevel[SHADER_AVATAR] == 0)
-                    {
-                        gSavedSettings.setBOOL("RenderAvatarVP", FALSE);
-                    }
-                    if(llmax(mShaderLevel[SHADER_AVATAR]-1,0) >= 3)
-                    {
-                        avatar_cloth = true;
-                    }
-                    else
-                    {
-                        avatar_cloth = false;
-                    }
-                    gSavedSettings.setBOOL("RenderAvatarCloth", avatar_cloth);
-                }
             }
             else
             { //hardware skinning not possible, neither is deferred rendering
                 mShaderLevel[SHADER_AVATAR] = 0;
                 mShaderLevel[SHADER_DEFERRED] = 0;
 
-                if (gSavedSettings.getBOOL("RenderAvatarVP"))
-                {
-                    gSavedSettings.setBOOL("RenderDeferred", FALSE);
-                    gSavedSettings.setBOOL("RenderAvatarCloth", FALSE);
-                    gSavedSettings.setBOOL("RenderAvatarVP", FALSE);
-                }
+                gSavedSettings.setBOOL("RenderDeferred", FALSE);
 
                 loadShadersAvatar(); // unloads
 
@@ -707,18 +684,6 @@ void LLViewerShaderMgr::setShaders()
                 llassert(loaded);
             }
         }
-
-        if (!loaded)
-        { //some shader absolutely could not load, try to fall back to a simpler setting
-            if (gSavedSettings.getBOOL("WindLightUseAtmosShaders"))
-            { //disable windlight and try again
-                gSavedSettings.setBOOL("WindLightUseAtmosShaders", FALSE);
-                LL_WARNS() << "Falling back to no windlight shaders." << LL_ENDL;
-                reentrance = false;
-                setShaders();
-                return;
-            }
-        }       
 
         llassert(loaded);
 
@@ -5285,7 +5250,7 @@ BOOL LLViewerShaderMgr::resetDeferredShaders()
 {
 	bool canRenderDeferred = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred");
 	S32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
-	bool useRenderDeferred = canRenderDeferred && gSavedSettings.getBOOL("RenderDeferred") && gSavedSettings.getBOOL("RenderAvatarVP");
+	bool useRenderDeferred = canRenderDeferred && gSavedSettings.getBOOL("RenderDeferred");
 
 	//using shaders, disable fixed function
 	LLGLSLShader::sNoFixedFunction = true;

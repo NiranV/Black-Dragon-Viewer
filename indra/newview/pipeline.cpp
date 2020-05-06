@@ -135,8 +135,6 @@
 bool gShiftFrame = false;
 
 //cached settings
-bool LLPipeline::RenderAvatarVP;
-bool LLPipeline::WindLightUseAtmosShaders;
 bool LLPipeline::RenderDeferred;
 F32 LLPipeline::RenderDeferredSunWash;
 U32 LLPipeline::RenderFSAASamples;
@@ -371,7 +369,6 @@ bool	LLPipeline::sDelayVBUpdate = true;
 bool	LLPipeline::sAutoMaskAlphaDeferred = true;
 bool	LLPipeline::sAutoMaskAlphaNonDeferred = false;
 bool	LLPipeline::sDisableShaders = false;
-bool	LLPipeline::sRenderBump = true;
 bool	LLPipeline::sBakeSunlight = false;
 bool	LLPipeline::sNoAlpha = false;
 bool	LLPipeline::sUseTriStrips = true;
@@ -487,7 +484,6 @@ void LLPipeline::init()
 	gOctreeMaxCapacity = gSavedSettings.getU32("OctreeMaxNodeCapacity");
 	gOctreeMinSize = gSavedSettings.getF32("OctreeMinimumNodeSize");
 	sDynamicLOD = gSavedSettings.getBOOL("RenderDynamicLOD");
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
 	sUseTriStrips = gSavedSettings.getBOOL("RenderUseTriStrips");
 	LLVertexBuffer::sUseStreamDraw = gSavedSettings.getBOOL("RenderUseStreamVBO");
 	LLVertexBuffer::sUseVAO = gSavedSettings.getBOOL("RenderUseVAO");
@@ -586,8 +582,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderAvatarMaxNonImpostors");
 	connectRefreshCachedSettingsSafe("RenderDelayVBUpdate");
 	connectRefreshCachedSettingsSafe("UseOcclusion");
-	connectRefreshCachedSettingsSafe("RenderAvatarVP");
-	connectRefreshCachedSettingsSafe("WindLightUseAtmosShaders");
 	connectRefreshCachedSettingsSafe("RenderDeferred");
 	connectRefreshCachedSettingsSafe("RenderDeferredSunWash");
 	connectRefreshCachedSettingsSafe("RenderFSAASamples");
@@ -1216,20 +1210,11 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 }
 
 //static
-void LLPipeline::updateRenderBump()
-{
-	sRenderBump = gSavedSettings.getBOOL("RenderObjectBump");
-}
-
-//static
 void LLPipeline::updateRenderDeferred()
 {
 	bool deferred = (bool(RenderDeferred && 
 					 LLRenderTarget::sUseFBO &&
-					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&	 
-					 LLPipeline::sRenderBump &&
-					 RenderAvatarVP &&
-					 WindLightUseAtmosShaders)) &&
+					 LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred"))) &&
 					!gUseWireframe;
 
 //	//BD - Exodus Post Process
@@ -1259,8 +1244,6 @@ void LLPipeline::refreshCachedSettings()
 			&& gSavedSettings.getBOOL("UseOcclusion") 
 			&& gGLManager.mHasOcclusionQuery) ? 2 : 0;
 	
-	RenderAvatarVP = gSavedSettings.getBOOL("RenderAvatarVP");
-	WindLightUseAtmosShaders = gSavedSettings.getBOOL("WindLightUseAtmosShaders");
 	RenderDeferred = gSavedSettings.getBOOL("RenderDeferred");
 	RenderDeferredSunWash = gSavedSettings.getF32("RenderDeferredSunWash");
 	RenderFSAASamples = gSavedSettings.getU32("RenderFSAASamples");
@@ -7696,7 +7679,6 @@ void LLPipeline::doResetVertexBuffers(bool forced)
 
 	LLVertexBuffer::unbind();	
 	
-	updateRenderBump();
 	updateRenderDeferred();
 
 	sUseTriStrips = gSavedSettings.getBOOL("RenderUseTriStrips");

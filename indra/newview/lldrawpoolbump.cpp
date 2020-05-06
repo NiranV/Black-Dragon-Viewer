@@ -202,7 +202,6 @@ void LLDrawPoolBump::prerender()
 // static
 S32 LLDrawPoolBump::numBumpPasses()
 {
-	if (LLPipeline::sRenderBump)
 	{
 		if (mShaderLevel > 1)
 		{
@@ -223,10 +222,6 @@ S32 LLDrawPoolBump::numBumpPasses()
 		{
 			return 2;
 		}
-	}
-    else
-	{
-		return 0;
 	}
 }
 
@@ -827,14 +822,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 
 S32 LLDrawPoolBump::getNumDeferredPasses()
 { 
-	if (LLPipeline::sRenderBump)
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
+	return 1;
 }
 
 void LLDrawPoolBump::beginDeferredPass(S32 pass)

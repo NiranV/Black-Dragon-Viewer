@@ -419,7 +419,6 @@ public:
 	static bool getRenderHighlights();
 	static void setRenderHighlightTextureChannel(LLRender::eTexIndex channel); // sets which UV setup to display in highlight overlay
 
-	static void updateRenderBump();
 	static void updateRenderDeferred();
 	static void refreshCachedSettings();
 
@@ -587,7 +586,6 @@ public:
 	static bool				sAutoMaskAlphaDeferred;
 	static bool				sAutoMaskAlphaNonDeferred;
 	static bool				sDisableShaders; // if true, rendering will be done without shaders
-	static bool				sRenderBump;
 	static bool				sBakeSunlight;
 	static bool				sNoAlpha;
 	static bool				sUseTriStrips;
@@ -903,8 +901,6 @@ public:
 	LLVector3 PrevDoFFocusPoint;
 
 	//cached settings
-	static bool WindLightUseAtmosShaders;
-	static bool RenderAvatarVP;
 	static bool RenderDeferred;
 	static F32 RenderDeferredSunWash;
 	static U32 RenderFSAASamples;
