@@ -88,12 +88,10 @@ private:
 	void						onSunMoonColorChanged();
 	void						onGlowChanged();
 	void						onStarBrightnessChanged();
-	void						onSunRotationXChanged();
-	void						onSunRotationYChanged();
+	void						onSunRotationChanged();
 	void						onSunScaleChanged();
 	void						onSunImageChanged();
-	void						onMoonRotationXChanged();
-	void						onMoonRotationYChanged();
+	void						onMoonRotationChanged();
 	void						onMoonScaleChanged();
 	void						onMoonBrightnessChanged();
 	void						onMoonImageChanged();

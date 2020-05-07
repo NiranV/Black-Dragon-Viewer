@@ -197,9 +197,9 @@ BOOL LLFloaterEnvironmentAdjust::postBuild()
 	mStarBrightness = getChild<LLUICtrl>(FIELD_SKY_STAR_BRIGHTNESS);
 	mStarBrightness->setCommitCallback([this](LLUICtrl *, const LLSD &) { onStarBrightnessChanged(); });
 	mSunPositionX = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_X);
-	mSunPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationXChanged(); });
+	mSunPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
 	mSunPositionY = getChild<LLUICtrl>(FIELD_SKY_SUN_POSITION_Y);
-	mSunPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationYChanged(); });
+	mSunPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunRotationChanged(); });
 	mSunImage = getChild<LLTextureCtrl>(FIELD_SKY_SUN_IMAGE);
 	mSunImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSunImageChanged(); });
 	mSunScale = getChild<LLUICtrl>(FIELD_SKY_SUN_SCALE);
@@ -208,9 +208,9 @@ BOOL LLFloaterEnvironmentAdjust::postBuild()
 	mSunImage->setDefaultImageAssetID(LLSettingsSky::GetBlankSunTextureId());
 	mSunImage->setAllowNoTexture(TRUE);
 	mMoonPositionX = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_X);
-	mMoonPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationXChanged(); });
+	mMoonPositionX->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
 	mMoonPositionY = getChild<LLUICtrl>(FIELD_SKY_MOON_POSITION_Y);
-	mMoonPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationYChanged(); });
+	mMoonPositionY->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonRotationChanged(); });
 	mMoonImage = getChild<LLTextureCtrl>(FIELD_SKY_MOON_IMAGE);
 	mMoonImage->setCommitCallback([this](LLUICtrl *, const LLSD &) { onMoonImageChanged(); });
 	mMoonImage->setDefaultImageAssetID(LLSettingsSky::GetDefaultMoonTextureId());
@@ -572,42 +572,15 @@ void LLFloaterEnvironmentAdjust::onStarBrightnessChanged()
 	mLiveSky->update();
 }
 
-void LLFloaterEnvironmentAdjust::onSunRotationXChanged()
+void LLFloaterEnvironmentAdjust::onSunRotationChanged()
 {
 	if (!mLiveSky) return;
 
-	LLVector3 vec3;
-	F32 old_value;
-	LLQuaternion rot = mLiveSky->getSunRotation();
-
-	F32 val = mSunPositionX->getValue().asReal() * F_PI;
-	old_value = mPreviousSunRot.mV[VY];
-	mPreviousSunRot.mV[VY] = val;
-	val -= old_value;
-	vec3.mV[VY] = val;
-
-	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
-	rot = LLQuaternion(rot_mat)*rot;
-
-	mLiveSky->setSunRotation(rot);
-	mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onSunRotationYChanged()
-{
-	if (!mLiveSky) return;
-	LLVector3 vec3;
-	F32 old_value;
-	LLQuaternion rot = mLiveSky->getSunRotation();
-
-	F32 val = mSunPositionY->getValue().asReal() * F_PI;
-	old_value = mPreviousSunRot.mV[VZ];
-	mPreviousSunRot.mV[VZ] = val;
-	val -= old_value;
-	vec3.mV[VZ] = val;
-
-	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
-	rot = LLQuaternion(rot_mat)*rot;
+	LLQuaternion rot;
+	LLQuaternion delta;
+	rot.setAngleAxis(mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis(mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot *= delta;
 
 	mLiveSky->setSunRotation(rot);
 	mLiveSky->update();
@@ -628,42 +601,15 @@ void LLFloaterEnvironmentAdjust::onSunImageChanged()
 	mSunImageChanged = true;
 }
 
-void LLFloaterEnvironmentAdjust::onMoonRotationXChanged()
+void LLFloaterEnvironmentAdjust::onMoonRotationChanged()
 {
 	if (!mLiveSky) return;
 
-	LLVector3 vec3;
-	F32 old_value;
-	LLQuaternion rot = mLiveSky->getMoonRotation();
-
-	F32 val = mMoonPositionX->getValue().asReal() * F_PI;
-	old_value = mPreviousMoonRot.mV[VY];
-	mPreviousMoonRot.mV[VY] = val;
-	val -= old_value;
-	vec3.mV[VY] = val;
-
-	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
-	rot = LLQuaternion(rot_mat)*rot;
-
-	mLiveSky->setMoonRotation(rot);
-	mLiveSky->update();
-}
-
-void LLFloaterEnvironmentAdjust::onMoonRotationYChanged()
-{
-	if (!mLiveSky) return;
-	LLVector3 vec3;
-	F32 old_value;
-	LLQuaternion rot = mLiveSky->getMoonRotation();
-
-	F32 val = mMoonPositionY->getValue().asReal() * F_PI;
-	old_value = mPreviousMoonRot.mV[VZ];
-	mPreviousMoonRot.mV[VZ] = val;
-	val -= old_value;
-	vec3.mV[VZ] = val;
-
-	LLMatrix3 rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
-	rot = LLQuaternion(rot_mat)*rot;
+	LLQuaternion rot;
+	LLQuaternion delta;
+	rot.setAngleAxis(mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis(mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot *= delta;
 
 	mLiveSky->setMoonRotation(rot);
 	mLiveSky->update();

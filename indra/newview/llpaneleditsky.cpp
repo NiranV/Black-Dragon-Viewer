@@ -592,9 +592,13 @@ void LLPanelSettingsSkySunMoonTab::onStarBrightnessChanged()
 void LLPanelSettingsSkySunMoonTab::onSunRotationChanged()
 {
 	if (!mSkySettings) return;
-	LLVector3 vec3(0.f, mSunPositionX->getValue().asReal() * F_PI, mSunPositionY->getValue().asReal() * F_PI);
+	
 	LLQuaternion rot;
-	rot.setEulerAngles(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	LLQuaternion delta;
+	rot.setAngleAxis(mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis(mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot *= delta;
+
 	mSkySettings->setSunRotation(rot);
 	mSkySettings->update();
 	setIsDirty();
@@ -619,9 +623,13 @@ void LLPanelSettingsSkySunMoonTab::onSunImageChanged()
 void LLPanelSettingsSkySunMoonTab::onMoonRotationChanged()
 {
 	if (!mSkySettings) return;
-	LLVector3 vec3(mMoonPositionY->getValue().asReal() * F_PI, mMoonPositionX->getValue().asReal() * F_PI, 0.f);
+
 	LLQuaternion rot;
-	rot.setEulerAngles(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	LLQuaternion delta;
+	rot.setAngleAxis(mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis(mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot *= delta;
+
 	mSkySettings->setMoonRotation(rot);
 	mSkySettings->update();
 	setIsDirty();
