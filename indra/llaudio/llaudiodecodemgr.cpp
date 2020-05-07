@@ -271,11 +271,7 @@ BOOL LLVorbisDecodeState::initDecode()
 		mWAVBuffer.reserve(size_guess);
 		mWAVBuffer.resize(WAV_HEADER_SIZE);
 	}
-<<<<<<< HEAD
-	catch (const std::bad_alloc&)
-=======
 	catch (std::bad_alloc&)
->>>>>>> Linden_Release/master
 	{
 		LL_WARNS("AudioEngine") << "Out of memory when trying to alloc buffer: " << size_guess << LL_ENDL;
 		delete mInFilep;

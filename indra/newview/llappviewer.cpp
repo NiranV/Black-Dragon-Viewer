@@ -1147,11 +1147,7 @@ bool LLAppViewer::init()
 	try {
 		initializeSecHandler();
 	}
-<<<<<<< HEAD
-	catch (const LLProtectedDataException&)
-=======
 	catch (LLProtectedDataException&)
->>>>>>> Linden_Release/master
 	{
 	  LLNotificationsUtil::add("CorruptedProtectedDataStore");
 	}
@@ -1395,11 +1391,7 @@ bool LLAppViewer::frame()
 		{
 			LOG_UNHANDLED_EXCEPTION("");
 		}
-<<<<<<< HEAD
-		catch (const std::bad_alloc&)
-=======
 		catch (std::bad_alloc&)
->>>>>>> Linden_Release/master
 		{
 			LLMemory::logMemoryInfo(TRUE);
 			LLFloaterMemLeak* mem_leak_instance = LLFloaterReg::findTypedInstance<LLFloaterMemLeak>("mem_leaking");

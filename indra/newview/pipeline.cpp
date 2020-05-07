@@ -9218,7 +9218,6 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 						}
 					}
 
-<<<<<<< HEAD
 					const LLViewerObject *vobj = drawablep->getVObj();
 					if (vobj)
 					{
@@ -9231,29 +9230,18 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 							//     with one of LL's changes. We use the avatar's root bone world position now instead of the
 							//     avatar position because this one will always be accurate unless our avatar is really
 							//     being rendered at 0 0 0 and in that case our camera will probably be janked there as well.
-							if (av->isTooComplex() || av->isInMuteList() || dist_vec(av->mRoot->getWorldPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip)
+							if (av && (av->isTooComplex() || av->isInMuteList() || dist_vec(av->mRoot->getWorldPosition(), LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip))
 							{
 								continue;
 							}
 						}
 					}
-=======
-                    const LLViewerObject *vobj = drawablep->getVObj();
-                    if (vobj)
-                    {
-                        LLVOAvatar *av = vobj->getAvatar();
-                        if (av && (av->isTooComplex() || av->isInMuteList()))
-                        {
-                            continue;
-                        }
-                    }
 
                     const LLVector3 position = drawablep->getPositionAgent();
                     if (dist_vec(position, LLViewerCamera::getInstance()->getOrigin()) > RenderFarClip + volume->getLightRadius())
                     {
                         continue;
                     }
->>>>>>> Linden_Release/master
 
 					LLVector4a center;
 					center.load3(position.mV);

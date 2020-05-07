@@ -597,11 +597,7 @@ LLSD HttpCoroJSONHandler::handleSuccess(LLCore::HttpResponse * response, LLCore:
     {
         bas >> jsonRoot;
     }
-<<<<<<< HEAD
-    catch (const std::runtime_error& e)
-=======
     catch (std::runtime_error& e)
->>>>>>> Linden_Release/master
     {   // deserialization failed.  Record the reason and pass back an empty map for markup.
         status = LLCore::HttpStatus(499, std::string(e.what()));
         return result;
@@ -629,11 +625,7 @@ LLSD HttpCoroJSONHandler::parseBody(LLCore::HttpResponse *response, bool &succes
     {
         bas >> jsonRoot;
     }
-<<<<<<< HEAD
-    catch (const std::runtime_error&)
-=======
     catch (std::runtime_error&)
->>>>>>> Linden_Release/master
     {   
         success = false;
         return LLSD();

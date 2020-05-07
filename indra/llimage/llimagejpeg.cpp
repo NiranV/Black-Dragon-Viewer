@@ -315,11 +315,7 @@ bool LLImageJPEG::decode(LLImageRaw* raw_image, F32 decode_time)
 		jpeg_destroy_decompress(&cinfo);
 	}
 
-<<<<<<< HEAD
-	catch (const std::bad_alloc&)
-=======
 	catch (std::bad_alloc&)
->>>>>>> Linden_Release/master
 	{
 		setLastError( "Out of memory");
 		jpeg_destroy_decompress(&cinfo);

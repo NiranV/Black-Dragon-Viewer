@@ -1922,11 +1922,7 @@ EMeshProcessingResult LLMeshRepoThread::lodReceived(const LLVolumeParams& mesh_p
 		std::string mesh_string((char*)data, data_size);
 		stream.str(mesh_string);
 	}
-<<<<<<< HEAD
-	catch (const std::bad_alloc&)
-=======
 	catch (std::bad_alloc&)
->>>>>>> Linden_Release/master
 	{
 		// out of memory, we won't be able to process this mesh
 		return MESH_OUT_OF_MEMORY;
