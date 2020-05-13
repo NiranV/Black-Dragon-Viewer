@@ -253,17 +253,17 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
     // actions:
 
     // 0. nothing - exit
-    if (("noaction" == user_preferences ||
-    		ON_TOP_AND_ITEM_IS_SELECTED == conversations_floater_status)
-    	    && session_floater->isMessagePaneExpanded())
+    if (("noaction" == user_preferences 
+		|| ON_TOP_AND_ITEM_IS_SELECTED == conversations_floater_status)
+    	&& session_floater->isMessagePaneExpanded())
     {
     	return;
     }
 
     // 1. open floater and [optional] surface it
-    if ("openconversations" == user_preferences &&
-    		(CLOSED == conversations_floater_status
-    				|| NOT_ON_TOP == conversations_floater_status))
+    if ("openconversations" == user_preferences 
+		&& (CLOSED == conversations_floater_status
+    	|| NOT_ON_TOP == conversations_floater_status))
     {
     	if(!gAgent.isDoNotDisturb())
         {
@@ -291,19 +291,18 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 			}
 		}
-        else
-        {
+		else
+		{
 			store_dnd_message = true;
-	        }
-
+		}
     }
 
     // 2. Flash line item
     if ("openconversations" == user_preferences
-    		|| ON_TOP == conversations_floater_status
-    		|| ("toast" == user_preferences && ON_TOP != conversations_floater_status)
+    	|| ON_TOP == conversations_floater_status
+    	|| ("toast" == user_preferences && ON_TOP != conversations_floater_status)
 		|| ("flash" == user_preferences && (CLOSED == conversations_floater_status
-				 	 	 	 	 	 	|| NOT_ON_TOP == conversations_floater_status))
+		|| NOT_ON_TOP == conversations_floater_status))
 		|| is_dnd_msg)
     {
     	if(!LLMuteList::getInstance()->isMuted(participant_id))
@@ -314,23 +313,24 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 			}
 			else
 			{
-				if (is_dnd_msg && (ON_TOP == conversations_floater_status || 
-									NOT_ON_TOP == conversations_floater_status || 
-									CLOSED == conversations_floater_status))
+				if (is_dnd_msg 
+					&& (ON_TOP == conversations_floater_status 
+					|| NOT_ON_TOP == conversations_floater_status 
+					|| CLOSED == conversations_floater_status))
 				{
 					im_box->highlightConversationItemWidget(session_id, true);
 				}
 				else
 				{
-    		im_box->flashConversationItemWidget(session_id, true);
-    	}
-    }
+    				im_box->flashConversationItemWidget(session_id, true);
+    			}
+			}
 		}
 	}
 
     // 3. Flash FUI button
-    if (("toast" == user_preferences || "flash" == user_preferences) &&
-    		(CLOSED == conversations_floater_status
+    if (("toast" == user_preferences || "flash" == user_preferences) 
+		&& (CLOSED == conversations_floater_status
 		|| NOT_ON_TOP == conversations_floater_status)
 		&& !is_session_focused
 		&& !is_dnd_msg //prevent flashing FUI button because the conversation floater will have already opened
@@ -348,15 +348,14 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 			{
 				store_dnd_message = true;
 			}
-    }
+		}
 	}
 
     // 4. Toast
-    if ((("toast" == user_preferences) &&
-		(ON_TOP_AND_ITEM_IS_SELECTED != conversations_floater_status) &&
-		(!session_floater->isTornOff() || !LLFloater::isVisible(session_floater)))
-    		    || !session_floater->isMessagePaneExpanded())
-
+    if ((("toast" == user_preferences) 
+		&& (ON_TOP_AND_ITEM_IS_SELECTED != conversations_floater_status) 
+		&& (!session_floater->isTornOff() || !LLFloater::isVisible(session_floater)))
+		|| !session_floater->isMessagePaneExpanded())
     {
         //Show IM toasts (upper right toasts)
         // Skip toasting for system messages and for nearby chat
@@ -370,10 +369,10 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
 				}
 				else
 				{
-            LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
-        }
-    }
-}
+					LLAvatarNameCache::get(participant_id, boost::bind(&on_avatar_name_cache_toast, _1, _2, msg));
+				}
+			}
+		}
 	}
 	if (store_dnd_message)
 	{
