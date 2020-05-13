@@ -1310,6 +1310,9 @@ void LLFloaterEditExtDayCycle::updateButtons()
     mDeleteFrameButton->setEnabled(can_manipulate && isRemovingFrameAllowed());
     mLoadFrame->setEnabled(can_manipulate);
 
+	mSkyTabs->setAllChildrenEnabled(isRemovingFrameAllowed());
+	mWaterTabs->setAllChildrenEnabled(isRemovingFrameAllowed());
+
     // update track buttons
     bool extended_env = LLEnvironment::instance().isExtendedEnvironmentEnabled();
     for (S32 track = 0; track < LLSettingsDay::TRACK_MAX; ++track)
