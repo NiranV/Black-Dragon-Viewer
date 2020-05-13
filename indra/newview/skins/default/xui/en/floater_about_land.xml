@@ -2349,7 +2349,6 @@ Only large parcels can be listed in search.
           filename="panel_region_experiences.xml">
        </panel>
     <panel
-          border="true"
           follows="all"
           label="Environment"
           bg_alpha_image="Panel_Background"
