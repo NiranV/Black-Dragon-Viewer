@@ -1054,7 +1054,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 			mFXAABuffer.release();
 		}
 		
-		if (shadow_detail > 0 || ssao || RenderDepthOfField || samples > 0)
+		if (shadow_detail > 0 || ssao || RenderDepthOfField || samples > 0 || RenderDeferredBlurLight)
 		{ //only need mDeferredLight for shadows OR ssao OR dof OR fxaa
 			if (!mDeferredLight.allocate(resX, resY, GL_RGBA, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE)) return false;
 		}
@@ -8983,7 +8983,7 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
 
 		//BD
 		if (RenderDeferredSSAO 
-			|| RenderShadowDetail > 0 
+			|| RenderShadowDetail > 0
 			|| RenderDeferredBlurLight)
 		{
             deferred_light_target->bindTarget();
@@ -9030,7 +9030,8 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget* screen_target)
             deferred_light_target->flush();
 		}
 		
-		//BD
+		//BD - Only soften the direct lighting map if theres something to soften such as shadows or SSAO
+		//     otherwise we crash.
 		if (RenderDeferredBlurLight)
 		{ //soften direct lighting lightmap
 			LL_RECORD_BLOCK_TIME(FTM_SOFTEN_SHADOW);
