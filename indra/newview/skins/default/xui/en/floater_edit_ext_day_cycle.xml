@@ -61,47 +61,17 @@
                         <button
                                 follows="left|top"
                                 height="20"
-                                label="Sky 4"
+                                label="Water"
                                 layout="topleft"
     image_selected="TabTop_Middle_Selected"
     image_unselected="TabTop_Middle_Off"
                                 top_pad="5"
                                 left="0"
-                                name="sky4_track"
-                                width="140"> 
+                                name="water_track"
+                                width="138"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
-                                    parameter="4" />
-                        </button>
-                        <button
-                                follows="left|top"
-                                height="20"
-                                label="Sky 3"
-                                layout="topleft"
-    image_selected="TabTop_Middle_Selected"
-    image_unselected="TabTop_Middle_Off"
-                                top_delta="0"
-                                left_pad="0"
-                                name="sky3_track"
-                                width="136"> 
-                            <button.commit_callback
-                                    function="DayCycle.Track"
-                                    parameter="3" />
-                        </button>
-                        <button
-                                follows="left|top"
-                                height="20"
-                                label="Sky 2"
-                                layout="topleft"
-    image_selected="TabTop_Middle_Selected"
-    image_unselected="TabTop_Middle_Off"
-                                top_delta="0"
-                                left_pad="0"
-                                name="sky2_track"
-                                width="136"> 
-                            <button.commit_callback
-                                    function="DayCycle.Track"
-                                    parameter="2" />
+                                    parameter="0" />
                         </button>
                         <button
                                 follows="left|top"
@@ -121,18 +91,50 @@
                         <button
                                 follows="left|top"
                                 height="20"
-                                label="Water"
+                                label="Sky 2"
                                 layout="topleft"
     image_selected="TabTop_Middle_Selected"
     image_unselected="TabTop_Middle_Off"
                                 top_delta="0"
                                 left_pad="0"
-                                name="water_track"
-                                width="138"> 
+                                name="sky2_track"
+                                width="136"> 
                             <button.commit_callback
                                     function="DayCycle.Track"
-                                    parameter="0" />
+                                    parameter="2" />
                         </button>
+                        <button
+                                follows="left|top"
+                                height="20"
+                                label="Sky 3"
+                                layout="topleft"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
+                                name="sky3_track"
+                                width="136"> 
+                            <button.commit_callback
+                                    function="DayCycle.Track"
+                                    parameter="3" />
+                        </button>
+                        <button
+                                follows="left|top"
+                                height="20"
+                                label="Sky 4"
+                                layout="topleft"
+    image_selected="TabTop_Middle_Selected"
+    image_unselected="TabTop_Middle_Off"
+                                top_delta="0"
+                                left_pad="0"
+                                name="sky4_track"
+                                width="140"> 
+                            <button.commit_callback
+                                    function="DayCycle.Track"
+                                    parameter="4" />
+                        </button>
+                        
+                        
                     </panel>
                     <panel name="timeline"
                             follows="left|top"
@@ -211,12 +213,12 @@
                                 follows="bottom"
                                 height="10"
                                 increment="0.005"
-                                overlap_threshold="0.026"
-                                loop_overlap="true"
+                                overlap_threshold="0.01"
+                                loop_overlap="false"
                                 initial_value="0"
                                 layout="topleft"
                                 left="10"
-                                max_sliders="20"
+                                max_sliders="24"
                                 max_val="1"
                                 name="WLDayCycleFrames"
                                 show_text="false"
