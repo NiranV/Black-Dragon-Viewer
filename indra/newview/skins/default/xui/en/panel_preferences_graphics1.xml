@@ -2939,7 +2939,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  width="515">
       <slider  
       control_name="RenderGlowIterations"
-      enabled_control="RenderDeferred"
       decimal_digits="0"
       follows="left|top"
       layout="topleft"
@@ -2975,7 +2974,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider  
       control_name="RenderGlowStrength"
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       height="14"
@@ -3010,7 +3008,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider  
       control_name="RenderGlowMinLuminance"
-      enabled_control="RenderDeferred"
       decimal_digits="1"
       enabled="true"
       follows="left|top"
@@ -3047,7 +3044,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider  
       control_name="RenderGlowWarmthAmount"
-      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="14"
@@ -3082,7 +3078,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider  
       control_name="RenderGlowWidth"
-      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="14"
@@ -3117,7 +3112,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       </button>
       <slider  
       control_name="RenderGlowMaxExtractAlpha"
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -3176,7 +3170,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   top_pad="0"/>
       
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       layout="topleft"
@@ -3199,7 +3192,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -3221,7 +3213,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       parameter="RenderGlowLumWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -3300,7 +3291,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
   top_pad="0"/>
       
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       layout="topleft"
@@ -3323,7 +3313,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -3345,7 +3334,6 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       parameter="RenderGlowWarmthWeights"/>
       </slider>
       <slider  
-      enabled_control="RenderDeferred"
       decimal_digits="3"
       follows="left|top"
       can_edit_text="true"
@@ -3928,10 +3916,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 1024x = 4MB VRAM usage                
 2048x = 16MB VRAM usage                
 4096x = 64MB VRAM usage                
-6144x = 112MB VRAM usage&lt;/blue&gt;"
+6144x = 112MB VRAM usage
+8192x = 256MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
-      max_val="6144"
+      max_val="8192"
       min_val="256"
       name="RenderShadowResolution_X"
       top_delta="1">
@@ -3956,10 +3945,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 1024x = 4MB VRAM usage                
 2048x = 16MB VRAM usage                
 4096x = 64MB VRAM usage                
-6144x = 112MB VRAM usage&lt;/blue&gt;"
+6144x = 112MB VRAM usage
+8192x = 256MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
-      max_val="6144"
+      max_val="8192"
       min_val="256"
       name="RenderShadowResolution_Y"
       top_pad="2">
@@ -3984,10 +3974,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 1024x = 4MB VRAM usage                
 2048x = 16MB VRAM usage                
 4096x = 64MB VRAM usage                
-6144x = 112MB VRAM usage&lt;/blue&gt;"
+6144x = 112MB VRAM usage
+8192x = 256MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
-      max_val="6144"
+      max_val="8192"
       min_val="256"
       name="RenderShadowResolution_Z"
       top_pad="2">
@@ -4012,10 +4003,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 1024x = 4MB VRAM usage                
 2048x = 16MB VRAM usage                
 4096x = 64MB VRAM usage                
-6144x = 112MB VRAM usage&lt;/blue&gt;"
+6144x = 112MB VRAM usage
+8192x = 256MB VRAM usage&lt;/blue&gt;"
       layout="topleft"
       left="10"
-      max_val="6144"
+      max_val="8192"
       min_val="256"
       name="RenderShadowResolution_W"
       top_pad="2">
@@ -4451,7 +4443,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="UseSSAO"
    top_delta="1"
    width="115" />
-     
+     <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
      
      </layout_panel>
       <layout_panel
@@ -4671,6 +4675,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      name="UseDoF"
      top_delta="1"
      width="115" />
+ <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
  </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -4694,6 +4711,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    width="115"/>
  <check_box
    control_name="RenderDepthOfFieldFront"
+   enabled_control="RenderDeferred"
    height="16"
    initial_value="false"
    label="Enable Foreground Blur in Depth of Field"
@@ -4958,6 +4976,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="MotionBlur"
    top_delta="1"
    width="115" />
+   <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -5171,6 +5202,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="RenderGodrays"
    top_delta="1"
    width="115" />
+   <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -5345,15 +5389,36 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       function="Pref.Tab"
       parameter="post_layout_panel"/>
    </button>
+   <check_box
+   enabled_control="RenderDeferred"
+   height="16"
+   initial_value="false"
+   label="Post Processing Effects"
+   layout="topleft"
+   left_delta="-12"
+   name="PostProcessing"
+   top_delta="1"
+   width="115">
+      <check_box.check_button 
+      image_unselected="Transparent"
+      image_selected="Transparent"
+      image_disabled="Transparent"
+      image_disabled_selected="Transparent"
+      image_pressed="Transparent"
+      image_pressed_selected="Transparent" />
+   </check_box>
    <text
+   invisibility_control="RenderDeferred"
    name="post_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
-   left="10" 
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
    height="12"
    width="220">
-   Post Processing Effects:
+   Requires Deferred Rendering
    </text>
    </layout_panel>
       <layout_panel
@@ -5556,7 +5621,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="ToneMapping"
    top_delta="1"
    width="115" />
-
+ <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
