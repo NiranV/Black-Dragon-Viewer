@@ -6019,7 +6019,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 								pool->addRiggedFace(facep, mask);
 							}
 
-							if(vobj->isAnimatedObject() && vobj->isRiggedMesh())
+							if(rigged)
 							{
 								pool->updateRiggedVertexBuffers(vobj->getAvatar());
 							}
