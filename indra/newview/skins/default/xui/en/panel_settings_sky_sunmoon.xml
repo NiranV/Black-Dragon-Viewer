@@ -87,7 +87,7 @@ width="698">
     name="WLSunVerticalText"
     top="7"
     width="200">
-    Sun Position
+    Sun Angle
     </text>
     <slider
     decimal_digits="3"
@@ -99,7 +99,7 @@ width="698">
     max_val="1"
     min_val="-1"
     label_width="8"
-    label="X"
+    label="N"
     layout="topleft"
     left_delta="0"
     top_pad="1"
@@ -115,7 +115,7 @@ width="698">
     max_val="1"
     min_val="-1"
     label_width="8"
-    label="Y"
+    label="E"
     layout="topleft"
     left_delta="0"
     top_pad="5"

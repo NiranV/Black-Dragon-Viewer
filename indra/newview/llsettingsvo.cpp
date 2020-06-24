@@ -1166,6 +1166,21 @@ LLSettingsDay::ptr_t LLSettingsVODay::buildFromLegacyPresetFile(const std::strin
     return buildFromLegacyPreset(LLURI::unescape(name), path, legacy_data, messages);
 }
 
+//BD - Local Windlights
+LLSettingsDay::ptr_t LLSettingsVODay::buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages)
+{
+	LLSD data = read_legacy_preset_data(name, path, messages);
+
+	if (!data)
+	{   // messages filled in by read_legacy_preset_data
+		LL_WARNS("SETTINGS") << "Could not load legacy Windlight \"" << name << "\" from " << path << LL_ENDL;
+		return ptr_t();
+	}
+
+	return buildDay(data);
+	//return buildFromPreset(LLURI::unescape(name), legacy_data, messages);
+}
+
 
 
 LLSettingsDay::ptr_t LLSettingsVODay::buildFromLegacyMessage(const LLUUID &regionId, LLSD daycycle, LLSD skydefs, LLSD waterdef)

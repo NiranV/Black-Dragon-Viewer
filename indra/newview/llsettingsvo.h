@@ -180,6 +180,9 @@ public:
     virtual ptr_t   buildClone() const SETTINGS_OVERRIDE;
     virtual ptr_t   buildDeepCloneAndUncompress() const SETTINGS_OVERRIDE;
 
+	//BD - Local Windlights
+	static ptr_t buildFromPresetFile(const std::string &name, const std::string &path, LLSD &messages);
+
     static LLSD     convertToLegacy(const ptr_t &);
     
     virtual LLSettingsSkyPtr_t      getDefaultSky() const override;

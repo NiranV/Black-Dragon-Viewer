@@ -483,7 +483,8 @@ void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t s
 {
 	if (!combo || !settings) return;
 
-	LLSettingsType::type_e type = settings->getSettingsType() == "sky" ? LLSettingsType::ST_SKY : LLSettingsType::ST_WATER;
+	std::string type_str = settings->getSettingsType();
+	LLSettingsType::type_e type = type_str == "sky" ? LLSettingsType::ST_SKY : type_str == "water" ? LLSettingsType::ST_WATER : LLSettingsType::ST_DAYCYCLE;
 
 	// Get all inventory items that are settings
 	LLViewerInventoryCategory::cat_array_t cats;
@@ -501,9 +502,8 @@ void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t s
 	//BD - Copy into something we can sort
 	std::vector<LLViewerInventoryItem*> presets;
 
-	S32 i;
 	S32 count = items.size();
-	for (i = 0; i < count; ++i)
+	for (S32 i = 0; i < count; ++i)
 	{
 		presets.push_back(items.at(i));
 	}
@@ -533,7 +533,7 @@ void BDFunctions::onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settin
 	if (!combo || !settings) return;
 
 	std::string type = settings->getSettingsType();
-	std::string folder = type == "sky" ? "skies" : "water";
+	std::string folder = type == "sky" ? "skies" : type == "water" ? "water" : "days";
 
 	//BD - First attempt to load it as inventory item.
 	if (combo->getValue().isUUID())
@@ -550,15 +550,15 @@ void BDFunctions::onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settin
 
 	//BD - Loading as inventory item failed so it must be a local preset.
 	std::string name = combo->getValue().asString();
-	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name);
+	std::string dir = gDirUtilp->add(getWindlightDir(folder, true), name);
 	if (!loadPreset(dir, settings))
 	{
 		//BD - Next attempt, try to find it in user_settings.
-		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name);
+		dir = gDirUtilp->add(getWindlightDir(folder, false), name);
 		if (!loadPreset(dir, settings))
 		{
 			LLNotificationsUtil::add("BDCantLoadPreset");
-			LL_WARNS("Windlight") << "Failed to load sky preset from:" << dir << LL_ENDL;
+			LL_WARNS("Windlight") << "Failed to load windlight preset from:" << dir << LL_ENDL;
 		}
 	}
 }
@@ -571,7 +571,9 @@ void BDFunctions::loadItem(LLSettingsBase::ptr_t settings)
 	std::string type = settings->getSettingsType();
 	if (type == "sky")
 		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsSky>(settings));
-	else
+	else if (type == "daycycle")
+		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsDay>(settings));
+	else if (type == "water")
 		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsWater>(settings));
 	env.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 }
@@ -599,7 +601,9 @@ bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t setting
 	std::string type = settings->getSettingsType();
 	if (type == "sky")
 		settings = !params_data.has("version") ? env.createSkyFromLegacyPreset(filename, messages) : env.createSkyFromPreset(filename, messages);
-	else
+	else if (type == "daycycle")
+		settings = !params_data.has("version") ? env.createDayCycleFromLegacyPreset(filename, messages) : env.createDayCycleFromPreset(filename, messages);
+	else if (type == "water")
 		settings = !params_data.has("version") ? env.createWaterFromLegacyPreset(filename, messages) : env.createWaterFromPreset(filename, messages);
 
 	if (!settings)
@@ -620,10 +624,9 @@ void BDFunctions::savePreset(std::string name, LLSettingsBase::ptr_t settings)
 {
 	if (!settings || name.empty()) return;
 
-	LLSD Params;
-	std::string folder;
-	Params = settings->getSettings();
-	folder = settings->getSettingsType() == "sky" ? "skies" : "water";
+	LLSD Params = settings->getSettings();
+	std::string type = settings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : type == "water" ? "water" : "days";
 
 	// make an empty llsd
 	std::string pathName(getWindlightDir(folder) + escapeString(name) + ".xml");
@@ -643,7 +646,8 @@ void BDFunctions::deletePreset(std::string name, std::string folder)
 
 	// Don't allow deleting system presets.
 	if ((folder == "skies" && gDragonLibrary.mDefaultSkyPresets.has(name))
-		|| (folder == "water" && gDragonLibrary.mDefaultWaterPresets.has(name)))
+		|| (folder == "water" && gDragonLibrary.mDefaultWaterPresets.has(name))
+		|| (folder == "days" && gDragonLibrary.mDefaultDayCyclePresets.has(name)))
 	{
 		LLNotificationsUtil::add("WLNoEditDefault");
 		return;
@@ -656,7 +660,7 @@ void BDFunctions::deletePreset(std::string name, std::string folder)
 		if (gDirUtilp->deleteFilesInDir(path_name, escaped_name + ".xml") < 1)
 		{
 			LLNotificationsUtil::add("BDCantRemovePreset");
-			LL_WARNS("WindLight") << "Error removing sky preset " << name << " from disk" << LL_ENDL;
+			LL_WARNS("WindLight") << "Error removing windlight preset " << name << " from disk" << LL_ENDL;
 		}
 	}
 }
@@ -665,7 +669,6 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 {
 	if (!combo || folder.empty()) return;
 
-	bool is_sky = folder == "skies";
 	bool success = false;
 	combo->clearRows();
 
@@ -682,7 +685,7 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 			//BD - Skip adding if we couldn't load it.
 			if (!doLoadPreset(path))
 			{
-				LL_WARNS() << "Error loading sky preset from " << path << LL_ENDL;
+				LL_WARNS() << "Error loading windlight preset from: " << path << LL_ENDL;
 				continue;
 			}
 
@@ -712,14 +715,16 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 			//BD - Skip adding if we couldn't load it.
 			if (!doLoadPreset(path))
 			{
-				LL_WARNS() << "Error loading sky preset from " << path << LL_ENDL;
+				LL_WARNS() << "Error loading windlight preset from: " << path << LL_ENDL;
 				continue;
 			}
 
 			combo->add(name, file, ADD_BOTTOM, true);
-			if (is_sky)
+			if (folder == "skies")
 				mDefaultSkyPresets[name] = name;
-			else
+			else if (folder == "days")
+				mDefaultDayCyclePresets[name] = name;
+			else if (folder == "water")
 				mDefaultWaterPresets[name] = name;
 		}
 	}
@@ -736,7 +741,7 @@ bool BDFunctions::doLoadPreset(const std::string& path)
 		return false;
 	}
 
-	LL_DEBUGS("AppInit", "Shaders") << "Loading sky " << name << LL_ENDL;
+	LL_DEBUGS("AppInit", "Shaders") << "Loading preset: "  << name << LL_ENDL;
 
 	LLSD params_data;
 	LLPointer<LLSDParser> parser = new LLSDXMLParser();

@@ -2240,6 +2240,21 @@ LLSettingsSky::ptr_t LLEnvironment::createSkyFromPreset(const std::string filena
 	return sky;
 }
 
+LLSettingsDay::ptr_t LLEnvironment::createDayCycleFromPreset(const std::string filename, LLSD &messages)
+{
+	std::string name(gDirUtilp->getBaseFileName(filename, true));
+	std::string path(gDirUtilp->getDirName(filename));
+
+	LLSettingsDay::ptr_t day = LLSettingsVODay::buildFromPresetFile(name, path, messages);
+	if (!day)
+	{
+		messages["NAME"] = name;
+		messages["FILE"] = filename;
+	}
+	return day;
+}
+//======================================================================
+
 
 LLSettingsDay::ptr_t LLEnvironment::createDayCycleFromEnvironment(EnvSelection_t env, LLSettingsBase::ptr_t settings)
 {

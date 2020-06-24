@@ -72,6 +72,7 @@ private:
 
 	LLSettingsSky::ptr_t		mLiveSky;
 	LLSettingsWater::ptr_t		mLiveWater;
+	LLSettingsDay::ptr_t		mLiveDay;
 };
 
 #endif // LL_LLFLOATERENVIRONMENTSETTINGS_H

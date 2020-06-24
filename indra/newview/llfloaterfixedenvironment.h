@@ -106,6 +106,9 @@ protected:
     bool                    mCanMod;
     bool                    mCanTrans;
 
+	//BD
+	bool					mIsLocalEdit;
+
     void                    onInventoryCreated(LLUUID asset_id, LLUUID inventory_id);
     void                    onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results);
     void                    onInventoryUpdated(LLUUID asset_id, LLUUID inventory_id, LLSD results);

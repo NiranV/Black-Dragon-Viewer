@@ -23,7 +23,6 @@
    layout="topleft"
    control_name="UseDayCycle"
    left="10"
-   enabled="false"
    follows="top|left"
    label="Use Day Cycle instead of fixed Sky"
    name="sky_dayc_settings_check"
@@ -119,7 +118,7 @@
    width="27" >
   <button.commit_callback
 	  function="Floater.ToggleOrBringToFront"
-	  parameter="env_adjust_sky" />
+	  parameter="env_fixed_environmentent_sky" />
   </button>
   <!--<icon
 		follows="left|top|right"
@@ -229,7 +228,7 @@
    width="27" >
   <button.commit_callback
 	  function="Floater.ToggleOrBringToFront"
-	  parameter="env_adjust_water" />
+	  parameter="env_fixed_environmentent_water" />
   </button>
   <check_box
    layout="topleft"

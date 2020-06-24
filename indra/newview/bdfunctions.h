@@ -79,6 +79,7 @@ public:
 
 	LLSD mDefaultSkyPresets;
 	LLSD mDefaultWaterPresets;
+	LLSD mDefaultDayCyclePresets;
 
 	//BD - Cached Settings
 	//     llvoavatar.cpp

@@ -53,7 +53,7 @@ LLFloaterEnvironmentSettings::LLFloaterEnvironmentSettings(const LLSD &key)
 BOOL LLFloaterEnvironmentSettings::postBuild()
 {
 	//BD
-	mRegionSettingsButton = getChild<LLButton>("region_settings_radio_group");
+	mRegionSettingsButton = getChild<LLButton>("estate_btn");
 	mRegionSettingsButton->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::onSwitchRegionSettings, this));
 
 	//BD
@@ -82,6 +82,7 @@ void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 	LLEnvironment &env(LLEnvironment::instance());
 	mLiveSky = env.getCurrentSky();
 	mLiveWater = env.getCurrentWater();
+	mLiveDay = env.getCurrentDay();
 
 	//BD - Refresh all presets.
 	refresh();
@@ -89,7 +90,11 @@ void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 
 void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 {
-	LLSettingsDay::ptr_t day_cycle = LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+	LLEnvironment &env(LLEnvironment::instance());
+	env.clearEnvironment(LLEnvironment::ENV_LOCAL);
+	env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+	env.updateEnvironment();
+	mLiveDay = env.getCurrentDay();
 }
 
 void LLFloaterEnvironmentSettings::onSelectWaterPreset()
@@ -106,6 +111,8 @@ void LLFloaterEnvironmentSettings::onSelectSkyPreset()
 
 void LLFloaterEnvironmentSettings::onSelectDayCyclePreset()
 {
+	//BD
+	gDragonLibrary.onSelectPreset(mDayCyclePresetCombo, mLiveDay);
 }
 
 void LLFloaterEnvironmentSettings::onBtnCancel()
@@ -130,6 +137,7 @@ void LLFloaterEnvironmentSettings::refresh()
 	// Populate the combo boxes with appropriate lists of available presets.
 	gDragonLibrary.loadPresetsFromDir(mWaterPresetCombo, "water");
 	gDragonLibrary.loadPresetsFromDir(mSkyPresetCombo, "skies");
+	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
 
 	// Select the current presets in combo boxes.
 	LLSettingsWater::ptr_t water = env.getEnvironmentFixedWater(LLEnvironment::ENV_LOCAL);
@@ -197,4 +205,5 @@ void LLFloaterEnvironmentSettings::populateSkyPresetsList()
 
 void LLFloaterEnvironmentSettings::populateDayCyclePresetsList()
 {
+	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
 }

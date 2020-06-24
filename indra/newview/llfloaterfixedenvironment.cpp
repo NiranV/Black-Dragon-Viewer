@@ -137,7 +137,9 @@ LLFloaterFixedEnvironment::LLFloaterFixedEnvironment(const LLSD &key) :
     mIsDirty(false),
     mCanCopy(false),
     mCanMod(false),
-    mCanTrans(false)
+    mCanTrans(false),
+	//BD
+	mIsLocalEdit(false)
 {
 }
 
@@ -177,12 +179,19 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
     }
 
     loadInventoryItem(invid);
-    LL_INFOS("SETTINGS") << "Setting edit inventory item to " << mInventoryId << "." << LL_ENDL;
+	if (!mInventoryItem)
+		LL_INFOS("SETTINGS") << "Environment Edit opened with no UUID, assuming this is local edit." << LL_ENDL;
+	else
+		LL_INFOS("SETTINGS") << "Setting edit inventory item to " << mInventoryId << "." << LL_ENDL;
+
+	mIsLocalEdit = !mInventoryItem;
 
     updateEditEnvironment();
     syncronizeTabs();
     refresh();
-    LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
+
+	if (!mIsLocalEdit)
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
 
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
@@ -195,11 +204,14 @@ void LLFloaterFixedEnvironment::onClose(bool app_quitting)
 {
     doCloseInventoryFloater(app_quitting);
 
-    LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-    LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
+	if (!mIsLocalEdit)
+	{
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+		LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
 
-    mSettings.reset();
-    syncronizeTabs();
+		mSettings.reset();
+		syncronizeTabs();
+	}
 }
 
 void LLFloaterFixedEnvironment::onFocusReceived()
@@ -963,16 +975,16 @@ void LLFloaterFixedEnvironment::onSelectPreset()
 	}
 
 	//BD - Loading as inventory item failed so it must be a local preset.
-	std::string name = gDragonLibrary.escapeString(mTxtName->getValue().asString());
-	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name + ".xml");
+	std::string name = mTxtName->getValue().asString();
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name);
 	if (!loadPreset(dir, type))
 	{
-		//BD - Last attempt, try to find it in user_settings.
-		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name + ".xml");
+		//BD - Next attempt, try to find it in user_settings.
+		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name);
 		if (!loadPreset(dir, type))
 		{
 			LLNotificationsUtil::add("BDCantLoadPreset");
-			LL_WARNS("Windlight") << "Failed to load sky preset from:" << dir << LL_ENDL;
+			LL_WARNS("Windlight") << "Failed to load " << type <<  " preset from:" << dir << LL_ENDL;
 		}
 	}
 }
