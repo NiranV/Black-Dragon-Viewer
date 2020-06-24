@@ -173,8 +173,85 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="218"
+     height="494"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Bone Camera dropdown to Preferences - Camera.
+Added: Functions to get items out of combobox lists.
+Added: More preset resolutions to snapshot window.
+Added: Warning when enabling snapshot resolutions above 4K.
+Changed: Simplified bone camera dropdown fill code.
+Changed: Disable all snapshot resolutions above 4K unless the user specifically enables them and sees the warning.
+Changed: Make camera presets dropdown use the new labeled separators.
+Changed: Allow 1024x1024 texture upload from snapshot window.
+Changed: Fixed several wrong offsets for slider labels in Edit - Texture.
+Changed: Pie Menu warning notification to better reflect that Pie Menus have changed but might still crash.
+Changed: Label the separator lines in Preferences - Sound and Camera like those found in Preferences - Display.
+Changed: Increased size of Sun/Moon beacon width to make them easier to see.
+Changed: Make fullbright once again subject to atmospheric haze.
+Changed: Disable daycycle edit controls when there is no preset currently selected to edit.
+Changed: Layout of "Environment" tab in About Land.
+Changed: Swapped around ordering of daycycle preset tabs to start with the lowest on the left and the highest on the right.
+Changed: Version to 3.8.3.
+Removed: Several legacy debug settings that can no longer be found in Preferences but need to be enabled to make Deferred work. Fixes Deferred failing after graphics initialization fail.
+Fixed: Checkbox label being offseted in height compared to the checkbox check.
+Fixed: Bone camera not being subject to camera smoothing.
+Fixed: Cinematic Camera not being subject to camera smoothing.
+Fixed: Camera freaking out when Cinematic Camera and Bone Camera are enabled at the same time.
+Fixed: Bone Camera not being subject to the currently selected preset's Focus Offset.
+Fixed: Mouselook preset not using the Focus Offset values.
+Fixed: Radiobuttons giving out integers as LLSD resulting in settings using these being saved as strings.
+Fixed: Crash on opening Window Size window.
+Fixed: Compile.
+Fixed: Sun/Moon position sliders make the sun rotate diagonally.
+Fixed: Open Conversations option for Friend IM Behavior doesn't work.
+Fixed: Crash when logging in or enabling Deferred while FXAA, SSAO and Shadows are off and Light Softening is on.
+Fixed: "Environment" tab in About Land options not working and still showing the old windlight preset selection.
+Misc: Cleanup some unnecessary includes.
+Misc: Harden water and sky editor against potential crashes.
+Misc: Cleanup in several code files.
+Misc: Comment out some code from RLVa that is no longer used.
+Misc: Cleanup some About Viewer text.
+Misc: Cleaned up and made some IM related code a bit more readable.
+Merge with Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.2
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="218"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
