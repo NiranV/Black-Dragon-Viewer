@@ -9342,9 +9342,14 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector4</string>
     <key>Value</key>
-	    <real>-0.004</real>
+	    <array>
+        <real>0.0</real>
+        <real>-0.0005</real>
+        <real>-0.001</real>
+        <real>-0.002</real>
+      </array>
   </map>
   <key>RenderShadowOffset</key>
   <map>

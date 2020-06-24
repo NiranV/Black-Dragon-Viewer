@@ -36,7 +36,7 @@ uniform vec2 shadow_res;
 uniform vec2 proj_shadow_res;
 uniform mat4 shadow_matrix[6];
 uniform vec4 shadow_clip;
-uniform float shadow_bias;
+uniform vec4 shadow_bias;
 
 uniform float spot_shadow_bias;
 uniform float spot_shadow_offset;
@@ -75,11 +75,11 @@ vec4 computeMoments(float depth, float a)
     return vec4(m1, m2, a, max(dx, dy));
 }
 
-float vsmDirectionalSample(vec4 stc, float depth, sampler2D shadowMap, mat4 shadowMatrix)
+float vsmDirectionalSample(vec4 stc, float depth, sampler2D shadowMap, mat4 shadowMatrix, float bias)
 {
     vec4 lpos = shadowMatrix * stc;
     vec4 moments = texture2D(shadowMap, lpos.xy);
-    return ChebyshevUpperBound(moments.rg, depth - shadow_bias * 256.0f, 0.125, 0.9);
+    return ChebyshevUpperBound(moments.rg, depth - bias * 256.0f, 0.125, 0.9);
 }
 
 float vsmSpotSample(vec4 stc, float depth, sampler2D shadowMap, mat4 shadowMatrix)
@@ -118,22 +118,22 @@ float sampleDirectionalShadow(vec3 pos, vec3 norm, vec2 pos_screen)
 
     if (spos.z < near_split.z)
     {
-        shadow += vsmDirectionalSample(spos, depth, shadowMap3, shadow_matrix[3]);
+        shadow += vsmDirectionalSample(spos, depth, shadowMap3, shadow_matrix[3], shadow_bias.w);
         weight += 1.0f;
     }
     if (spos.z < near_split.y)
     {
-        shadow += vsmDirectionalSample(spos, depth, shadowMap2, shadow_matrix[2]);
+        shadow += vsmDirectionalSample(spos, depth, shadowMap2, shadow_matrix[2], shadow_bias.z);
         weight += 1.0f;
     }
     if (spos.z < near_split.x)
     {
-        shadow += vsmDirectionalSample(spos, depth, shadowMap1, shadow_matrix[1]);
+        shadow += vsmDirectionalSample(spos, depth, shadowMap1, shadow_matrix[1], shadow_bias.y);
         weight += 1.0f;
     }
     if (spos.z > far_split.x)
     {
-        shadow += vsmDirectionalSample(spos, depth, shadowMap0, shadow_matrix[0]);
+        shadow += vsmDirectionalSample(spos, depth, shadowMap0, shadow_matrix[0], shadow_bias.x);
         weight += 1.0f;
     }
 
