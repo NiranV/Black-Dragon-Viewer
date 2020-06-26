@@ -230,17 +230,16 @@
 	  function="Floater.ToggleOrBringToFront"
 	  parameter="env_fixed_environmentent_water" />
   </button>
-  <check_box
-   layout="topleft"
-   control_name="RenderInterpolateWindlight"
-   enabled="false"
-   left="10"
+  <text
+  name="transition_label"
    follows="top|left"
-   label="Use Windlight Transitions"
-   name="RenderInterpolateWindlight"
-   top="133"
    height="16"
-   width="100"/>
+  layout="topleft"
+  left="15"
+  top="133"
+  width="175">
+  		Windlight Transition Time
+  </text>
  <slider
          control_name="RenderWindlightInterpolateTime"
          enabled_control="RenderInterpolateWindlight"
@@ -253,7 +252,7 @@
          max_val="30"
          layout="topleft"
          left_delta="0"
-         top_pad="4"
+         top_pad="0"
          name="RenderWindlightInterpolateTime"
          width="196" />
   </panel>
