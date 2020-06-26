@@ -619,7 +619,7 @@ width="700">
              name="WLSunVerticalText"
              top="7"
              width="200">
-                Sun Position
+                Sun Angle / Size
             </text>
 				<slider
              control_name="WLSunX"
@@ -629,7 +629,7 @@ width="700">
              increment="0.01"
              initial_value="0.5"
 				 label_width="7"
-             label="X"
+             label="N"
              layout="topleft"
              left_delta="0"
              top_pad="3"
@@ -643,7 +643,7 @@ width="700">
              increment="0.01"
              initial_value="0.5"
 				 label_width="7"
-             label="Y"
+             label="E"
              layout="topleft"
              left_delta="0"
              top_pad="6"
@@ -757,7 +757,7 @@ width="700">
              name="WLSunVerticalText"
              top="7"
              width="200">
-                Moon Position
+                Moon Angle / Size
             </text>
 				<slider
              control_name="WLSunX"
@@ -767,7 +767,7 @@ width="700">
              increment="0.01"
              initial_value="0.5"
 				 label_width="7"
-             label="X"
+             label="N"
              layout="topleft"
              left_delta="0"
              top_pad="3"
@@ -781,7 +781,7 @@ width="700">
              increment="0.01"
              initial_value="0.5"
 				 label_width="7"
-             label="Y"
+             label="E"
              layout="topleft"
              left_delta="0"
              top_pad="6"
