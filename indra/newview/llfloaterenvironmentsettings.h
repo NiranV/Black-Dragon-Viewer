@@ -48,6 +48,7 @@ public:
 
 private:
 	void onSwitchRegionSettings();
+	void onChangeToRegion();
 
 	void onSelectWaterPreset();
 	void onSelectSkyPreset();
@@ -56,7 +57,6 @@ private:
 	void onBtnCancel();
 
 	void refresh(); /// update controls with user prefs
-	void apply();
 
 	void populateWaterPresetsList();
 	void populateSkyPresetsList();

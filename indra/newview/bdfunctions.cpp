@@ -575,7 +575,7 @@ void BDFunctions::loadItem(LLSettingsBase::ptr_t settings)
 		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsDay>(settings));
 	else if (type == "water")
 		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsWater>(settings));
-	env.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
+	env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 }
 
 bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t settings)
@@ -614,7 +614,7 @@ bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t setting
 
 	env.setEnvironment(LLEnvironment::ENV_LOCAL, settings, -2);
 	env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-	env.updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
+	env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 
 	return true;
 }
@@ -627,6 +627,10 @@ void BDFunctions::savePreset(std::string name, LLSettingsBase::ptr_t settings)
 	LLSD Params = settings->getSettings();
 	std::string type = settings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : type == "water" ? "water" : "days";
+
+	//BD - Make sure whatever string we get is a name only and doesn't contain a file ending.
+	//     Next make sure whatever string we get is unescaped.
+	name = gDirUtilp->getBaseFileName(LLURI::unescape(name), true);
 
 	// make an empty llsd
 	std::string pathName(getWindlightDir(folder) + escapeString(name) + ".xml");

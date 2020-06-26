@@ -83,6 +83,7 @@
   </text>
   <combo_box
    follows="top|left"
+   disabled_control="UseDayCycle"
    left_delta="0"
    height="23"
    name="sky_settings_preset_combo"
@@ -146,9 +147,6 @@
    height="23"
    top_pad="1"
    width="182">
-      <combo_box.item
-       label="-Select a preset-"
-       name="item0"/>
       <combo_box.item
        label="-Select a preset-"
        name="item0"/>
@@ -232,8 +230,8 @@
   </button>
   <text
   name="transition_label"
-   follows="top|left"
-   height="16"
+  follows="top|left"
+  height="16"
   layout="topleft"
   left="15"
   top="133"

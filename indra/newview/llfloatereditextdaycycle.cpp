@@ -308,7 +308,7 @@ void LLFloaterEditExtDayCycle::onOpen(const LLSD& key)
         mCanCopy = true;
         mCanMod = true;
         mCanTrans = true;
-		LLSettingsDay::ptr_t day_cycle = LLEnvironment::instance().getCurrentDay();
+		LLSettingsDay::ptr_t day_cycle = LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL);
 		if (day_cycle)
 			setEditDayCycle(day_cycle);
     }

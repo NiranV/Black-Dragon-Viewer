@@ -58,7 +58,7 @@ BOOL LLFloaterEnvironmentSettings::postBuild()
 
 	//BD
 	mDayCycleSettingsCheck = getChild<LLCheckBoxCtrl>("sky_dayc_settings_check");
-	mDayCycleSettingsCheck->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::apply, this));
+	mDayCycleSettingsCheck->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::onChangeToRegion, this));
 
 	mWaterPresetCombo = getChild<LLComboBox>("water_settings_preset_combo");
 	mWaterPresetCombo->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::onSelectWaterPreset, this));
@@ -70,8 +70,6 @@ BOOL LLFloaterEnvironmentSettings::postBuild()
 	mDayCyclePresetCombo->setCommitCallback(boost::bind(&LLFloaterEnvironmentSettings::onSelectDayCyclePreset, this));
 
 	childSetCommitCallback("cancel_btn", boost::bind(&LLFloaterEnvironmentSettings::onBtnCancel, this), NULL);
-
-	//LLEnvironment::instance().setEnvironmentChanged();
 
 	return TRUE;
 }
@@ -91,45 +89,112 @@ void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 {
 	LLEnvironment &env(LLEnvironment::instance());
-	env.clearEnvironment(LLEnvironment::ENV_LOCAL);
-	env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-	env.updateEnvironment();
-	mLiveDay = env.getCurrentDay();
+	if (mRegionSettingsButton->getValue().asBoolean())
+	{
+		env.clearEnvironment(LLEnvironment::ENV_LOCAL);
+		env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+		env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+		mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+	}
+	else
+	{
+		if (mLiveSky && mSkyPresetCombo->getValue())
+		{
+			//BD - When switching to skies, load and apply whatever sky
+			//     we currently have selected.
+			onSelectSkyPreset();
+		}
+		else
+		{
+			//BD - If we dont have a sky preset simply use the default midday.
+			env.setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
+			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+			mLiveSky = env.getCurrentSky();
+		}
+	}
+}
+
+void LLFloaterEnvironmentSettings::onChangeToRegion()
+{
+	LLEnvironment &env(LLEnvironment::instance());
+	if (mDayCycleSettingsCheck->getValue().asBoolean())
+	{
+		if (mLiveDay && mDayCyclePresetCombo->getValue())
+		{
+			//BD - When switching to daycycles, load and apply whatever daycycle
+			//     we currently have selected.
+			onSelectDayCyclePreset();
+		}
+		else
+		{
+			env.clearEnvironment(LLEnvironment::ENV_LOCAL);
+			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+			mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+		}
+	}
+	else
+	{
+		if (mLiveSky && mSkyPresetCombo->getValue())
+		{
+			//BD - When switching to skies, load and apply whatever sky
+			//     we currently have selected.
+			onSelectSkyPreset();
+		}
+		else
+		{
+			
+			//BD - If we dont have a sky preset simply use the default midday.
+			env.setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
+			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+		}
+	}
 }
 
 void LLFloaterEnvironmentSettings::onSelectWaterPreset()
 {
 	//BD
 	gDragonLibrary.onSelectPreset(mWaterPresetCombo, mLiveWater);
+	gSavedSettings.setString("WaterPresetName", mWaterPresetCombo->getValue());
+
+	refresh();
 }
 
 void LLFloaterEnvironmentSettings::onSelectSkyPreset()
 {
 	//BD
 	gDragonLibrary.onSelectPreset(mSkyPresetCombo, mLiveSky);
+	gSavedSettings.setString("SkyPresetName", mSkyPresetCombo->getValue());
+
+	refresh();
 }
 
 void LLFloaterEnvironmentSettings::onSelectDayCyclePreset()
 {
 	//BD
 	gDragonLibrary.onSelectPreset(mDayCyclePresetCombo, mLiveDay);
+	gSavedSettings.setString("DayCycleName", mDayCyclePresetCombo->getValue());
+
+	refresh();
 }
 
 void LLFloaterEnvironmentSettings::onBtnCancel()
 {
 	// Revert environment to user preferences.
-	LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-	LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
+	LLEnvironment &env(LLEnvironment::instance());
+	env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+	env.clearEnvironment(LLEnvironment::ENV_EDIT);
 	closeFloater();
 }
 
 void LLFloaterEnvironmentSettings::refresh()
 {
 	//LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
-	LLEnvironment &env(LLEnvironment::instance());
-	LLSettingsSky::ptr_t sky = env.getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL);
-	LLSettingsDay::ptr_t day_cycle = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
-	bool use_region_settings = !sky;
+	bool use_region_settings = false;
+	if (LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_REGION))
+		use_region_settings = true;
 
 	//BD - Set up radio buttons according to user preferences.
 	mRegionSettingsButton->setValue(use_region_settings);
@@ -138,59 +203,13 @@ void LLFloaterEnvironmentSettings::refresh()
 	gDragonLibrary.loadPresetsFromDir(mWaterPresetCombo, "water");
 	gDragonLibrary.loadPresetsFromDir(mSkyPresetCombo, "skies");
 	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
-
 	// Select the current presets in combo boxes.
-	LLSettingsWater::ptr_t water = env.getEnvironmentFixedWater(LLEnvironment::ENV_LOCAL);
-	if (water)
-		mWaterPresetCombo->selectByValue(water->getName());
-	if (sky)
-		mSkyPresetCombo->selectByValue(sky->getName());
-	if (day_cycle)
-		mDayCyclePresetCombo->selectByValue(day_cycle->getName());
-}
-
-void LLFloaterEnvironmentSettings::apply()
-{
-	// Update environment with the user choice.
-	//BD
-	//LLEnvironment &env(LLEnvironment::instance());
-	//LLSettingsSky::ptr_t sky = env.getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL);
-	//LLSettingsDay::ptr_t day = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
-	//bool use_region_settings	= !sky;
-	//bool use_fixed_sky			= !day;
-	//bool windlight_transition	= gSavedSettings.getBOOL("RenderInterpolateWindlight");
-	//std::string water_preset	= mWaterPresetCombo->getValue().asString();
-	//std::string sky_preset		= mSkyPresetCombo->getValue().asString();
-	//std::string day_cycle		= mDayCyclePresetCombo->getValue().asString();
-
-	//LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
-	/*if (use_region_settings)
-	{
-		env.clearEnvironment(LLEnvironment::ENV_LOCAL);
-		env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-		env.updateEnvironment();
-		//BD - Animated Windlight Transition
-		//env_mgr.setUseRegionSettings(true, windlight_transition);
-	}
-	else
-	{
-		if(use_fixed_sky)
-		{
-			//BD - Animated Windlight Transition
-			gDragonLibrary.loadPreset(day_cycle, mLiveDay);
-			env_mgr.setUseDayCycle(day_cycle, windlight_transition);
-		}
-		else
-		{
-			//BD - Animated Windlight Transition
-			gDragonLibrary.loadPreset(sky_preset, mLiveSky);
-			//env_mgr.setUseSkyPreset(sky_preset, windlight_transition);
-		}
-
-		//BD - Animated Windlight Transition
-		gDragonLibrary.loadPreset(water_preset, mLiveWater);
-		//env_mgr.setUseWaterPreset(water_preset, windlight_transition);
-	}*/
+	if (mLiveWater)
+		mWaterPresetCombo->setValue(gSavedSettings.getString("WaterPresetName"));
+	if (mLiveSky)
+		mSkyPresetCombo->setValue(gSavedSettings.getString("SkyPresetName"));
+	if (mLiveDay)
+		mDayCyclePresetCombo->setValue(gSavedSettings.getString("DayCycleName"));
 }
 
 void LLFloaterEnvironmentSettings::populateWaterPresetsList()

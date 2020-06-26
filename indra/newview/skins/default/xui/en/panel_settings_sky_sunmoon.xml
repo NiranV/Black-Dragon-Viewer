@@ -87,7 +87,7 @@ width="698">
     name="WLSunVerticalText"
     top="7"
     width="200">
-    Sun Angle
+    Sun Angle / Scale
     </text>
     <slider
     decimal_digits="3"
@@ -213,7 +213,7 @@ width="698">
     name="WLSunVerticalText"
     top="7"
     width="200">
-    Moon Position
+    Moon Angle / Scale
     </text>
     <slider
     decimal_digits="2"
