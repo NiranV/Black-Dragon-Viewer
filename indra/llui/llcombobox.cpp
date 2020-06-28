@@ -800,11 +800,19 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 	{
 		if ((key == KEY_DOWN || key == KEY_UP) && mask == MASK_SHIFT)
 		{
-			S32 index = mList->getFirstSelectedIndex();
-			if (key == KEY_UP && index > 0)
-				--index;
-			else if (key == KEY_DOWN && index < mList->getItemCount())
-				++index;
+			//BD - Get the current label, try to find it in our list and if we do
+			//     get its index, this is a surefire way to get the current index
+			//     otherwise when using mAllowTextEntry is enabled it won't work
+			const std::string& full_string = mTextEntry->getText();
+			if (mList->selectItemByLabel(full_string, FALSE))
+				mLastSelectedIndex = mList->getFirstSelectedIndex();
+			else
+				mLastSelectedIndex = 0;
+
+			if (key == KEY_UP && mLastSelectedIndex > 0)
+				--mLastSelectedIndex;
+			else if (key == KEY_DOWN && mLastSelectedIndex < mList->getItemCount())
+				++mLastSelectedIndex;
 
 			//BD - Don't show list when we simply select the next/previous entry.
 			return mList->handleKeyHere(key, mask);
