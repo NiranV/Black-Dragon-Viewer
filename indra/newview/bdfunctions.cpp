@@ -550,15 +550,24 @@ void BDFunctions::onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settin
 
 	//BD - Loading as inventory item failed so it must be a local preset.
 	std::string name = combo->getValue().asString();
-	std::string dir = gDirUtilp->add(getWindlightDir(folder, true), name);
+	//BD - Make sure whatever string we get is a name only and doesn't contain a file ending.
+	//     Next make sure whatever string we get is unescaped.
+	//     We do this to make sure that whever is passed here will always be the unescaped
+	//     basic name string which we can then add to and manipulate the way we need it.
+	//     This also fixes a weird behavior with dropdowns that report their label as value
+	//     when using SHIFT + Up/Down instead of the actual value (if there is any) that it 
+	//     would normally report when selecting an item out of the list.
+	name = gDirUtilp->getBaseFileName(LLURI::unescape(name), true);
+
+	std::string dir = gDirUtilp->add(getWindlightDir(folder, true), escapeString(name) + ".xml");
 	if (!loadPreset(dir, settings))
 	{
 		//BD - Next attempt, try to find it in user_settings.
-		dir = gDirUtilp->add(getWindlightDir(folder, false), name);
+		dir = gDirUtilp->add(getWindlightDir(folder, false), escapeString(name) + ".xml");
 		if (!loadPreset(dir, settings))
 		{
 			LLNotificationsUtil::add("BDCantLoadPreset");
-			LL_WARNS("Windlight") << "Failed to load windlight preset from:" << dir << LL_ENDL;
+			LL_WARNS("Windlight") << "Failed to load windlight preset from: " << dir << LL_ENDL;
 		}
 	}
 }

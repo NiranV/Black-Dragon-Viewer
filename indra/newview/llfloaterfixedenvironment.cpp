@@ -960,8 +960,6 @@ void LLFloaterFixedEnvironment::onButtonDelete()
 
 void LLFloaterFixedEnvironment::onSelectPreset()
 {
-	//onTextNameFocusLoss();
-
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
 
@@ -980,11 +978,23 @@ void LLFloaterFixedEnvironment::onSelectPreset()
 
 	//BD - Loading as inventory item failed so it must be a local preset.
 	std::string name = mTxtName->getValue().asString();
-	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "windlight/" + folder, name);
+
+	//BD - Make sure whatever string we get is a name only and doesn't contain a file ending.
+	//     Next make sure whatever string we get is unescaped.
+	//     We do this to make sure that whever is passed here will always be the unescaped
+	//     basic name string which we can then add to and manipulate the way we need it.
+	//     This also fixes a weird behavior with dropdowns that report their label as value
+	//     when using SHIFT + Up/Down instead of the actual value (if there is any) that it 
+	//     would normally report when selecting an item out of the list.
+	name = gDirUtilp->getBaseFileName(LLURI::unescape(name), true);
+
+	name = gDragonLibrary.escapeString(name);
+
+	std::string dir = gDirUtilp->add(gDragonLibrary.getWindlightDir(folder, true), name + ".xml");
 	if (!loadPreset(dir, type))
 	{
 		//BD - Next attempt, try to find it in user_settings.
-		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "windlight/" + folder, name);
+		dir = gDirUtilp->add(gDragonLibrary.getWindlightDir(folder, false), name + ".xml");
 		if (!loadPreset(dir, type))
 		{
 			LLNotificationsUtil::add("BDCantLoadPreset");
