@@ -240,7 +240,6 @@
   </text>
  <slider
          control_name="RenderWindlightInterpolateTime"
-         enabled_control="RenderInterpolateWindlight"
          decimal_digits="0"
          follows="left|top"
          height="16"
