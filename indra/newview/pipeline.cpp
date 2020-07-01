@@ -9899,6 +9899,9 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
         glh::matrix4f projection = get_current_projection();
 		glh::matrix4f mat;
 
+		S32 light_detail = gPipeline.mLightingDetail;
+		gPipeline.setLightingDetail(0);
+
         S32 detail = RenderReflectionDetail;
 
         F32 water_height      = gAgent.getRegion()->getWaterHeight(); 
@@ -10013,6 +10016,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 							}
 						}
 					}
+
 
                     LLGLUserClipPlane clip_plane(plane, mReflectionModelView, projection);
 					LLGLDisable cull(GL_CULL_FACE);
@@ -10145,6 +10149,8 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 		}
 
 		LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
+
+		gPipeline.setLightingDetail(light_detail);
 	}
 }
 
