@@ -311,6 +311,21 @@ void LLFloaterEditExtDayCycle::onOpen(const LLSD& key)
 		LLSettingsDay::ptr_t day_cycle = LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL);
 		if (day_cycle)
 			setEditDayCycle(day_cycle);
+		else
+		{
+			day_cycle = LLEnvironment::instance().getCurrentDay();
+			if (day_cycle)
+				setEditDayCycle(day_cycle);
+			else
+			{
+				LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_LOCAL);
+				LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+				LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+				day_cycle = LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+				if (day_cycle)
+					setEditDayCycle(day_cycle);
+			}
+		}
     }
 
     mDayLength.value(0);
