@@ -95,6 +95,7 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 		env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 		env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 		mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+		refresh();
 	}
 	else
 	{
@@ -111,6 +112,7 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 			mLiveSky = env.getCurrentSky();
+			refresh();
 		}
 	}
 }
@@ -132,6 +134,7 @@ void LLFloaterEnvironmentSettings::onChangeToRegion()
 			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 			mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+			refresh();
 		}
 	}
 	else
@@ -149,6 +152,7 @@ void LLFloaterEnvironmentSettings::onChangeToRegion()
 			env.setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
 			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+			refresh();
 		}
 	}
 }
@@ -193,7 +197,7 @@ void LLFloaterEnvironmentSettings::refresh()
 {
 	//LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
 	bool use_region_settings = false;
-	if (LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_REGION))
+	if (LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL))
 		use_region_settings = true;
 
 	//BD - Set up radio buttons according to user preferences.
