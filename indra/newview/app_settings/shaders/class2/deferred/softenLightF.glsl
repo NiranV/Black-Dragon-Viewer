@@ -102,24 +102,20 @@ float rand(vec2 co)
 
 void main() 
 {
-    vec2 tc = vary_fragcoord.xy;
-    float depth = texture2DRect(depthMap, tc.xy).r;
-    vec4 pos = getPositionWithDepth(tc, depth);
-    vec4 norm = texture2DRect(normalMap, tc);
+    vec2  tc           = vary_fragcoord.xy;
+    float depth        = texture2DRect(depthMap, tc.xy).r;
+    vec4  pos          = getPositionWithDepth(tc, depth);
+    vec4  norm         = texture2DRect(normalMap, tc);
     float envIntensity = norm.z;
-    norm.xyz = getNorm(tc);
-    
-    vec3 light_dir = (sun_up_factor == 1) ? sun_dir : moon_dir;
-    float da = clamp(dot(norm.xyz, light_dir.xyz), 0.0, 1.0);
-    float light_gamma = 1.0/1.3;
-    da = pow(da, light_gamma);
-    
-    vec4 diffuse = texture2DRect(diffuseRect, tc);
-    
-    vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
+    norm.xyz           = getNorm(tc);
 
-    vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
-    scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
+    vec3  light_dir   = (sun_up_factor == 1) ? sun_dir : moon_dir;
+    float da          = clamp(dot(norm.xyz, light_dir.xyz), 0.0, 1.0);
+    float light_gamma = 1.0 / 1.3;
+    da                = pow(da, light_gamma);
+
+    vec4 diffuse = texture2DRect(diffuseRect, tc);
+    vec4 spec    = texture2DRect(specularRect, vary_fragcoord.xy);
     
     vec2 fromCentre = vec2(0.0);
     if(chroma_str > 0.0)
@@ -132,36 +128,33 @@ void main()
     diffuse.r = texture2DRect(diffuseRect, tc+fromCentre).r;
     diffuse.ga = texture2DRect(diffuseRect, tc).ga;
     
-    float scol = max(scol_ambocc.r, diffuse.a); 
+    vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
+    scol_ambocc      = pow(scol_ambocc, vec2(light_gamma));
+    float scol       = max(scol_ambocc.r, diffuse.a);
+    float ambocc     = scol_ambocc.g;
 
-    float ambocc = scol_ambocc.g;
-
-    vec3 color = vec3(0);
+    vec3  color = vec3(0);
     float bloom = 0.0;
-    {
-        vec3 sunlit;
-        vec3 amblit;
-        vec3 additive;
-        vec3 atten;
-    
-        calcAtmosphericVars(pos.xyz, light_dir, ambocc, sunlit, amblit, additive, atten, true);
 
-        color.rgb = amblit;
+    vec3 sunlit;
+    vec3 amblit;
+    vec3 additive;
+    vec3 atten;
+    calcAtmosphericVars(pos.xyz, light_dir, ambocc, sunlit, amblit, additive, atten, true);
 
-        float ambient = min(abs(dot(norm.xyz, sun_dir.xyz)), 1.0);
-        ambient *= 0.5;
-        ambient *= ambient;
-        ambient = (1.0 - ambient);
+    color.rgb = amblit;
 
-        color.rgb *= ambient;
+    float ambient = min(abs(dot(norm.xyz, sun_dir.xyz)), 1.0);
+    ambient *= 0.5;
+    ambient *= ambient;
+    ambient = (1.0 - ambient);
+    color.rgb *= ambient;
 
-        vec3 sun_contrib = min(da, scol) * sunlit;
+    vec3 sun_contrib = min(da, scol) * sunlit;
+    color.rgb += sun_contrib;
+    color.rgb *= diffuse.rgb;
 
-        color.rgb += sun_contrib;
-
-        color.rgb *= diffuse.rgb;
-
-        vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
+    vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
 
 #if USE_SSR
         if (spec.a > 0.0) // specular reflection
@@ -273,7 +266,7 @@ void main()
          ssshiny *= spec.rgb;
          ssshiny *= ssr_brightness;
          
-#if 1 //EEP         
+/* #if 1 //EEP         
          vec3 npos = -normalize(pos.xyz);
       
          vec3 h = normalize(light_dir.xyz+npos);
@@ -295,7 +288,7 @@ void main()
             bloom += dot(sp, sp) / 4.0;
             color.rgb += sp * spec.rgb;
          }
-#else //PRODUCTION
+#else */ //PRODUCTION
          vec3 dumbshiny = (sunlit)*(scol * 0.25)*(0.5 * texture2D(lightFunc, vec2(sa, spec.a)).r);
          dumbshiny = min(dumbshiny, vec3(1));
          
@@ -306,13 +299,13 @@ void main()
          color.rgb = mix(color.rgb + ssshiny, diffuse.rgb, fullbrightification);
          bloom = dot(spec_contrib, spec_contrib) / 6;
          color.rgb += spec_contrib;
-#endif
+//#endif
         }
 #else
         if (spec.a > 0.0) // specular reflection
         {
 
-#if 1 //EEP
+/*#if 1 //EEP
             vec3 npos = -normalize(pos.xyz);
       
             //vec3 ref = dot(pos+lv, norm);
@@ -334,15 +327,15 @@ void main()
                 bloom += dot(sp, sp) / 4.0;
                 color += sp * spec.rgb;
             }
-#else //PRODUCTION
+#else*/ //PRODUCTION
             float sa = dot(refnormpersp, light_dir.xyz);
-            vec3 dumbshiny = sunlit*(texture2D(lightFunc, vec2(sa, spec.a)).r);
+            vec3 dumbshiny = sunlit*scol*(texture2D(lightFunc, vec2(sa, spec.a)).r);
             
             // add the two types of shiny together
             vec3 spec_contrib = dumbshiny * spec.rgb;
             bloom = dot(spec_contrib, spec_contrib) / 6;
             color.rgb += spec_contrib;
-#endif
+//#endif
         }
 #endif
        
@@ -368,7 +361,6 @@ void main()
             color = fogged.rgb;
             bloom = fogged.a;
         #endif
-    }
 
 // linear debuggables
 //color.rgb = vec3(final_da);
