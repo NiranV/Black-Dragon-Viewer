@@ -153,7 +153,6 @@ BOOL LLFloaterFixedEnvironment::postBuild()
     mTab = getChild<LLTabContainer>(CONTROL_TAB_AREA);
     mTxtName = getChild<LLComboBox>(FIELD_SETTINGS_NAME);
 	mTxtName->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
-	//mTxtName->setFocusLostCallback(boost::bind(&LLFloaterFixedEnvironment::onTextNameFocusLoss, this));
 
     getChild<LLButton>(BUTTON_NAME_IMPORT)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onButtonImport(); });
     getChild<LLButton>(BUTTON_NAME_CANCEL)->setClickedCallback([this](LLUICtrl *, const LLSD &) { onClickCloseBtn(); });
@@ -188,8 +187,10 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
     updateEditEnvironment();
     syncronizeTabs();
     refresh();
-
-	LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
+	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
+	if (mIsLocalEdit)
+		environment = LLEnvironment::ENV_LOCAL;
+	LLEnvironment::instance().setSelectedEnvironment(environment, LLEnvironment::TRANSITION_FAST);
 
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
@@ -216,8 +217,11 @@ void LLFloaterFixedEnvironment::onFocusReceived()
 {
     if (isInVisibleChain())
     {
+		LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
+		if (mIsLocalEdit)
+			environment = LLEnvironment::ENV_LOCAL;
         updateEditEnvironment();
-        LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
+		LLEnvironment::instance().setSelectedEnvironment(environment, LLEnvironment::TRANSITION_FAST);
     }
 }
 
@@ -793,10 +797,14 @@ BOOL LLFloaterFixedEnvironmentWater::postBuild()
 
 void LLFloaterFixedEnvironmentWater::updateEditEnvironment(void)
 {
+	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
 	if (mIsLocalEdit)
+	{
 		mSettings = LLEnvironment::instance().getCurrentWater();
+		environment = LLEnvironment::ENV_LOCAL;
+	}
 
-	LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, 
+	LLEnvironment::instance().setEnvironment(environment, 
 		std::static_pointer_cast<LLSettingsWater>(mSettings));
 }
 
@@ -875,10 +883,14 @@ BOOL LLFloaterFixedEnvironmentSky::postBuild()
 
 void LLFloaterFixedEnvironmentSky::updateEditEnvironment(void)
 {
+	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
 	if (mIsLocalEdit)
+	{
 		mSettings = LLEnvironment::instance().getCurrentSky();
+		environment = LLEnvironment::ENV_LOCAL;
+	}
 
-	LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, 
+	LLEnvironment::instance().setEnvironment(environment, 
 		std::static_pointer_cast<LLSettingsSky>(mSettings));
 }
 
@@ -1063,7 +1075,18 @@ bool LLFloaterFixedEnvironment::loadPreset(std::string filename, std::string typ
 
 	loadInventoryItem(LLUUID::null);
 
-	loadItem(settings);
+	LLEnvironment &env(LLEnvironment::instance());
+	if (type == "sky")
+	{
+		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsSky>(settings));
+		setEditSettings(std::static_pointer_cast<LLSettingsSky>(settings));
+	}
+	else
+	{
+		env.setEnvironment(LLEnvironment::ENV_LOCAL, std::static_pointer_cast<LLSettingsWater>(settings));
+		setEditSettings(std::static_pointer_cast<LLSettingsWater>(settings));
+	}
+	env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
 
 	return true;
 }
