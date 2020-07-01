@@ -741,7 +741,7 @@ void LLPanelPermissions::refresh()
 		if (objectp->permCopy()) 		flag_mask |= PERM_COPY;
 		if (objectp->permTransfer()) 	flag_mask |= PERM_TRANSFER;
 
-		getChild<LLUICtrl>("F:")->setValue("F:" + mask_to_string(flag_mask));
+		getChild<LLUICtrl>("F:")->setValue("F: " + mask_to_string(flag_mask));
 		getChildView("F:")->setVisible(								TRUE);
 	}
 	else
