@@ -3703,7 +3703,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
                         </radio_item>
                         <radio_item
                         height="16"
-                        label="Projectors"
+                        label="Sun, Moon and Projectors"
                         value="2"
 								tool_tip="&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Performance  		
 &lt;icon&gt;Stat_Dot4&lt;/icon&gt; Graphics         
