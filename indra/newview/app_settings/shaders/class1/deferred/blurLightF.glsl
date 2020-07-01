@@ -54,13 +54,13 @@ void main()
     vec3 pos = getPosition(tc).xyz;
     vec4 ccol = texture2DRect(lightMap, tc).rgba;
    
-    kern_[0] = vec3(0.500, 1, 0.50);
+    kern_[0] = vec3(0.500, 1, 0.60);
     kern_[1] = vec3(0.333, 1, 1.200);
-    kern_[2] = vec3(0.151, 1, 2.480);
-    kern_[3] = vec3(0.100, 1, 3.000);
-    kern_[4] = vec3(0.090, 1, 4.200);
-    kern_[5] = vec3(0.070, 1, 4.800);
-    kern_[6] = vec3(0.040, 1, 5.800);
+    kern_[2] = vec3(0.151, 1, 2.00);
+    kern_[3] = vec3(0.100, 1, 2.800);
+    kern_[4] = vec3(0.090, 1, 3.600);
+    kern_[5] = vec3(0.070, 1, 4.40);
+    kern_[6] = vec3(0.040, 1, 5.200);
     kern_[7] = vec3(0.020, 1, 6.800);
     
     vec2 dlt = kern_scale.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
@@ -80,7 +80,7 @@ void main()
     for (int i = 8-1; i > 0; i--)
     {
       vec2 w = kern_[i].xy;
-      w.y = kern_scale.y;
+      w.y *= kern_scale.y;
       vec2 samptc = (tc + kern_[i].z * dlt);
       vec3 samppos = getPosition(samptc).xyz; 
       vec3 sampnorm = getNorm(samptc).xyz;
@@ -100,7 +100,7 @@ void main()
     for (int i = 8-1; i > 0; i--)
     {
       vec2 w = kern_[i].xy;
-      w.y = kern_scale.y;
+      w.y *= kern_scale.y;
       vec2 samptc = (tc - kern_[i].z * dlt);
       vec3 samppos = getPosition(samptc).xyz; 
       vec3 sampnorm = getNorm(samptc).xyz;
