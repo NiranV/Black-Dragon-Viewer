@@ -348,7 +348,7 @@
      follows="left|top"
 	 left="8"
 	 top="29"
-	 height="70"
+	 height="78"
      layout="topleft"
 	 name="edit_radio_group">
         <radio_item
@@ -834,7 +834,7 @@
      top="0"
      width="290">
     <radio_group
-     height="103"
+     height="110"
      layout="topleft"
      control_name="RadioLandBrushAction"
      left="8"
