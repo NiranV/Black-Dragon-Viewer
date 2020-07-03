@@ -9078,7 +9078,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>3000</integer>
+    <integer>800</integer>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
