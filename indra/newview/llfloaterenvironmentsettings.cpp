@@ -77,10 +77,18 @@ BOOL LLFloaterEnvironmentSettings::postBuild()
 // virtual
 void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 {
+	//BD - Get our current environment presets, initialize defaults if we don't have one
+	//     to make sure we have something, otherwise loading presets is not going to work.
 	LLEnvironment &env(LLEnvironment::instance());
 	mLiveSky = env.getCurrentSky();
+	if (mLiveSky)
+		mLiveSky->defaults();
 	mLiveWater = env.getCurrentWater();
+	if (mLiveWater)
+		mLiveWater->defaults();
 	mLiveDay = env.getCurrentDay();
+	if (mLiveDay)
+		mLiveDay->defaults();
 
 	//BD - Refresh all presets.
 	refresh();
@@ -94,26 +102,12 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 		env.clearEnvironment(LLEnvironment::ENV_LOCAL);
 		env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 		env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
-		mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+		mLiveDay = env.getCurrentDay();
 		refresh();
 	}
 	else
 	{
-		if (mLiveSky && mSkyPresetCombo->getValue())
-		{
-			//BD - When switching to skies, load and apply whatever sky
-			//     we currently have selected.
-			onSelectSkyPreset();
-		}
-		else
-		{
-			//BD - If we dont have a sky preset simply use the default midday.
-			env.setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
-			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
-			mLiveSky = env.getCurrentSky();
-			refresh();
-		}
+		onChangeToRegion();
 	}
 }
 
@@ -133,7 +127,7 @@ void LLFloaterEnvironmentSettings::onChangeToRegion()
 			env.clearEnvironment(LLEnvironment::ENV_LOCAL);
 			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 			env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
-			mLiveDay = env.getEnvironmentDay(LLEnvironment::ENV_LOCAL);
+			mLiveDay = env.getCurrentDay();
 			refresh();
 		}
 	}
@@ -197,7 +191,8 @@ void LLFloaterEnvironmentSettings::refresh()
 {
 	//LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
 	bool use_region_settings = false;
-	if (LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL))
+	LLSettingsSky::ptr_t sky = LLEnvironment::instance().getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL);
+	if (!sky)
 		use_region_settings = true;
 
 	//BD - Set up radio buttons according to user preferences.
