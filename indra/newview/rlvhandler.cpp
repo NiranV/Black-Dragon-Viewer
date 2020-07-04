@@ -154,7 +154,6 @@ void RlvHandler::cleanup()
 	// Nothing to clean if we're not enabled (or already cleaned up)
 	if (!m_fEnabled)
 		return;
->>>>>>> RLVa/rlva/development
 
 	//
 	// Clean up any restrictions that are still active
@@ -862,16 +861,17 @@ void RlvHandler::setActiveGroupRole(const LLUUID& idGroup, const std::string& st
 // @setcam family
 void RlvHandler::setCameraOverride(bool fOverride)
 {
-	if ( (fOverride) && (CAMERA_RLV_SETCAM_VIEW != gAgentCamera.getCameraPreset()) )
+	if ( (fOverride) && ("RLVa View" != gAgentCamera.getCameraPreset()) )
 	{
 		m_strCameraPresetRestore = gSavedSettings.getString("PresetCameraActive");
-		gAgentCamera.switchCameraPreset(CAMERA_RLV_SETCAM_VIEW);
+		gAgentCamera.switchCameraPreset("RLVa View");
 	}
-	else if ( (!fOverride) && (CAMERA_RLV_SETCAM_VIEW == gAgentCamera.getCameraPreset() && (!RlvActions::isCameraPresetLocked())) )
+	else if ( (!fOverride) && ("RLVa View" == gAgentCamera.getCameraPreset() && (!RlvActions::isCameraPresetLocked())) )
 	{
 		// We need to clear it or it won't reset properly
 		gSavedSettings.setString("PresetCameraActive", LLStringUtil::null);
-		LLFloaterCamera::switchToPreset(m_strCameraPresetRestore);
+		//LLFloaterCamera::switchToPreset(m_strCameraPresetRestore);
+		gAgentCamera.switchCameraPreset(m_strCameraPresetRestore);
 		m_strCameraPresetRestore.clear();
 	}
 }

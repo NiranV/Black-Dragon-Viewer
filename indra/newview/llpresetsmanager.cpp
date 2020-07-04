@@ -329,7 +329,8 @@ bool LLPresetsManager::savePreset(const std::string& subdirectory, std::string n
 			gSavedSettings.setU32("RenderAvatarMaxComplexity", paramsData["RenderAvatarMaxComplexity"]["Value"].asInteger());
 		}
 	}
-	else
+	//BD
+	/*else
 	{
 		ECameraPreset new_camera_preset = (ECameraPreset)gSavedSettings.getU32("CameraPresetType");
 		bool new_camera_offsets = false;
@@ -377,7 +378,7 @@ bool LLPresetsManager::savePreset(const std::string& subdirectory, std::string n
 		{
 			gSavedSettings.setU32("CameraPresetType", new_camera_preset);
 		}
-	}
+	}*/
 
 	std::string pathName(getPresetsDir(subdirectory) + gDirUtilp->getDirDelimiter() + LLURI::escape(name) + ".xml");
 

@@ -147,10 +147,7 @@ protected:
 	void clearOverlayImage();                                                                   // @setoverlay=n
 	void setActiveGroup(const LLUUID& idGroup);                                                 // @setgroup=force
 	void setActiveGroupRole(const LLUUID& idGroup, const std::string& strRole);                 // @setgroup=force
-<<<<<<< HEAD
-=======
 	void setCameraOverride(bool fOverride);                                                     // @setcam family
->>>>>>> RLVa/rlva/development
 	void setOverlayImage(const LLUUID& idTexture);                                              // @setoverlay=n
 
 	void onIMQueryListResponse(const LLSD& sdNotification, const LLSD sdResponse);
@@ -177,10 +174,7 @@ protected:
 
 	// Externally invoked event handlers
 public:
-<<<<<<< HEAD
-=======
 	void cleanup();
->>>>>>> RLVa/rlva/development
 	void onActiveGroupChanged();
 	void onAttach(const LLViewerObject* pAttachObj, const LLViewerJointAttachment* pAttachPt);
 	void onDetach(const LLViewerObject* pAttachObj, const LLViewerJointAttachment* pAttachPt);
@@ -194,11 +188,7 @@ public:
 	static void cleanupClass();
 	static void onIdleStartup(void* pParam);
 protected:
-<<<<<<< HEAD
-	void getAttachmentResourcesCoro(const std::string strUrl);
-=======
 	void getAttachmentResourcesCoro(const std::string& strUrl);
->>>>>>> RLVa/rlva/development
 	void onTeleportCallback(U64 hRegion, const LLVector3& posRegion, const LLVector3& vecLookAt, const LLUUID& idRlvObj);
 
 	/*

@@ -951,7 +951,6 @@ void LLAgentCamera::cameraOrbitOver(const F32 angle)
 	}
 }
 
-<<<<<<< HEAD
 //BD - Camera Rolling
 //-----------------------------------------------------------------------------
 // cameraRollOver()
@@ -2304,7 +2303,7 @@ LLVector3d LLAgentCamera::getFocusOffsetInitial()
 // [RLVa:KB] - @setcam_eyeoffsetscale
 F32 LLAgentCamera::getCameraOffsetScale() const
 {
-	return gSavedSettings.getF32( (ECameraPreset::CAMERA_RLV_SETCAM_VIEW != mCameraPreset) ? "CameraOffsetScale" : "CameraOffsetScaleRLVa");
+	return gSavedSettings.getF32(("RLVa View" != mCameraPresetName) ? "CameraOffsetScale" : "CameraOffsetScaleRLVa");
 }
 // [/RLVa:KB]
 

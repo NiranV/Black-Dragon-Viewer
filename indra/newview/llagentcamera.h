@@ -109,7 +109,8 @@ public:
 	/** Initial focus offsets */
 	std::map<std::string, LLVector3d>	mFocusOffsetInitial;
 
-private:
+	void setInitSitRot(LLQuaternion sit_rot) { mInitSitRot = sit_rot; };
+
 	/** Determines default camera offset depending on the current camera preset */
 	LLVector3 getCameraOffsetInitial();
 	/** Determines default camera offset depending on the current camera preset */
@@ -119,30 +120,21 @@ private:
 
 // [RLVa:KB] - @setcam family
 	/** Determines default camera offset scale depending on the current camera preset */
-	ECameraPreset getCameraPreset() const { return mCameraPreset; }
+	//ECameraPreset getCameraPreset() const { return mCameraPreset; }
+	std::string getCameraPreset() const { return mCameraPresetName; }
 // [/RLVa:KB]
-	void switchCameraPreset(ECameraPreset preset);
-	/** Determines default camera offset depending on the current camera preset */
-	LLVector3 getCameraOffsetInitial();
 // [RLVa:KB] - @setcam_eyeoffsetscale
 	/** Determines default camera offset scale depending on the current camera preset */
 	F32 getCameraOffsetScale() const;
 // [/RLVa:KB]
-	/** Determines default focus offset depending on the current camera preset */
-	LLVector3d getFocusOffsetInitial();
 
 	LLVector3 getCurrentCameraOffset();
 	LLVector3d getCurrentFocusOffset();
 	LLQuaternion getCurrentAvatarRotation();
 	bool isJoystickCameraUsed();
-	void setInitSitRot(LLQuaternion sit_rot) { mInitSitRot = sit_rot; };
 	void rotateToInitSitRot();
 
 private:
-	/** Determines maximum camera distance from target for mouselook, opposite to LAND_MIN_ZOOM */
-	F32 getCameraMaxZoomDistance();
-
-
 	/** Initial camera offset */
 //	LLPointer<LLControlVariable> mCameraOffsetInitial;
 // [RLVa:KB] - @setcam_eyeoffset

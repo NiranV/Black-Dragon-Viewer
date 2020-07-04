@@ -164,9 +164,6 @@ BOOL LLStatusBar::postBuild()
 //	//BD - Statusbar Framerate Count
 	mFPSText = getChild<LLTextBox>("FPSText");
 
-	mIconPresets = getChild<LLIconCtrl>( "presets_icon" );
-	mIconPresets->setMouseEnterCallback(boost::bind(&LLStatusBar::onMouseEnterPresets, this));
-
 	//BD
 	mMediaEnabled = (gSavedSettings.getBOOL("AudioStreamingMusic") || gSavedSettings.getBOOL("AudioStreamingMedia"));
 	gSavedSettings.getControl("AudioStreamingMedia")->getSignal()->connect(boost::bind(&LLStatusBar::setMediaEnabled, this, _2));

@@ -4140,7 +4140,7 @@ BOOL LLPanelPreferenceGraphics::postBuild()
 
 	LLPresetsManager* presetsMgr = LLPresetsManager::getInstance();
     presetsMgr->setPresetListChangeCallback(boost::bind(&LLPanelPreferenceGraphics::onPresetsListChange, this));
-    presetsMgr->createMissingDefault(); // a no-op after the first time, but that's ok
+    presetsMgr->createMissingDefault(PRESETS_GRAPHIC); // a no-op after the first time, but that's ok
     
 	return LLPanelPreference::postBuild();
 }

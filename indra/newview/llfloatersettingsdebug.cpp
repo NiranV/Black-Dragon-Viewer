@@ -159,23 +159,18 @@ void LLFloaterSettingsDebug::onCommitSettings()
 		vectord.mdV[VZ] = mValZ->getValue().asReal();
 		controlp->set(vectord.getValue());
 		break;
-	case TYPE_RECT:
+	  case TYPE_QUAT:
+		quat.mQ[VX] = mValX->getValue().asReal();
+		quat.mQ[VY] = mValY->getValue().asReal();
+		quat.mQ[VZ] = mValZ->getValue().asReal();
+		quat.mQ[VS] = mValW->getValue().asReal();
+		controlp->set(quat.getValue());
+		break;
+	  case TYPE_RECT:
 		rect.mLeft = mValX->getValue().asInteger();
 		rect.mRight = mValY->getValue().asInteger();
 		rect.mBottom = mValZ->getValue().asInteger();
 		rect.mTop = mValW->getValue().asInteger();
-	  case TYPE_QUAT:
-		quat.mQ[VX] = getChild<LLUICtrl>("val_spinner_1")->getValue().asReal();
-		quat.mQ[VY] = getChild<LLUICtrl>("val_spinner_2")->getValue().asReal();
-		quat.mQ[VZ] = getChild<LLUICtrl>("val_spinner_3")->getValue().asReal();
-		quat.mQ[VS] = getChild<LLUICtrl>("val_spinner_4")->getValue().asReal();;
-		controlp->set(quat.getValue());
-		break;
-	  case TYPE_RECT:
-		rect.mLeft = getChild<LLUICtrl>("val_spinner_1")->getValue().asInteger();
-		rect.mRight = getChild<LLUICtrl>("val_spinner_2")->getValue().asInteger();
-		rect.mBottom = getChild<LLUICtrl>("val_spinner_3")->getValue().asInteger();
-		rect.mTop = getChild<LLUICtrl>("val_spinner_4")->getValue().asInteger();
 		controlp->set(rect.getValue());
 		break;
 	case TYPE_COL4:
@@ -405,33 +400,33 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			  LLQuaternion q;
 			  q.setValue(sd);
-			  spinner1->setVisible(TRUE);
-			  spinner1->setLabel(std::string("X"));
-			  spinner2->setVisible(TRUE);
-			  spinner2->setLabel(std::string("Y"));
-			  spinner3->setVisible(TRUE);
-			  spinner3->setLabel(std::string("Z"));
-			  spinner4->setVisible(TRUE);
-			  spinner4->setLabel(std::string("S"));
-			  if (!spinner1->hasFocus())
+			  mValX->setVisible(TRUE);
+			  mValX->setLabel(std::string("X"));
+			  mValY->setVisible(TRUE);
+			  mValY->setLabel(std::string("Y"));
+			  mValZ->setVisible(TRUE);
+			  mValZ->setLabel(std::string("Z"));
+			  mValW->setVisible(TRUE);
+			  mValW->setLabel(std::string("S"));
+			  if (!mValX->hasFocus())
 			  {
-				  spinner1->setPrecision(4);
-				  spinner1->setValue(q.mQ[VX]);
+				  mValX->setPrecision(4);
+				  mValX->setValue(q.mQ[VX]);
 			  }
-			  if (!spinner2->hasFocus())
+			  if (!mValY->hasFocus())
 			  {
-				  spinner2->setPrecision(4);
-				  spinner2->setValue(q.mQ[VY]);
+				  mValY->setPrecision(4);
+				  mValY->setValue(q.mQ[VY]);
 			  }
-			  if (!spinner3->hasFocus())
+			  if (!mValZ->hasFocus())
 			  {
-				  spinner3->setPrecision(4);
-				  spinner3->setValue(q.mQ[VZ]);
+				  mValZ->setPrecision(4);
+				  mValZ->setValue(q.mQ[VZ]);
 			  }
-			  if (!spinner4->hasFocus())
+			  if (!mValW->hasFocus())
 			  {
-				  spinner4->setPrecision(4);
-				  spinner4->setValue(q.mQ[VS]);
+				  mValW->setPrecision(4);
+				  mValW->setValue(q.mQ[VS]);
 			  }
 			  break;
 		  }
@@ -484,12 +479,6 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			mValW->setMaxValue((F32)S32_MAX);
 			mValW->setIncrement(1.f);
 			break;
-		  }
-		  //BD - LLSD
-		  case TYPE_LLSD:
-		  {
-			  //BD - We do nothing here, we just want it to fill the comment properly.
-			  break;
 		  }
 		  case TYPE_COL4:
 		  {
@@ -580,12 +569,12 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  }
 // [RLVa:KB] - Patch: RLVa-2.1.0
 		  case TYPE_LLSD:
-			  {
-				  std::ostringstream strLLSD;
-				  LLSDSerialize::toPrettyNotation(sd, strLLSD);
-				  mComment->setText(strLLSD.str());
-			  }
+		  {
+			  std::ostringstream strLLSD;
+			  LLSDSerialize::toPrettyNotation(sd, strLLSD);
+			  mComment->setText(strLLSD.str());
 			  break;
+		  }
 // [/RLVa:KB]
 		  default:
 			mComment->setText(std::string("unknown"));
