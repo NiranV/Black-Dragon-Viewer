@@ -503,6 +503,7 @@ set(viewer_SOURCE_FILES
     llpanelprimmediacontrols.cpp
     llpanelprofileclassifieds.cpp
     llpanelprofilepicks.cpp
+    llpanelpulldown.cpp
     llpanelsnapshot.cpp
     llpanelsnapshotinventory.cpp
     llpanelsnapshotlocal.cpp
@@ -1150,6 +1151,7 @@ set(viewer_HEADER_FILES
     llpanelprimmediacontrols.h
     llpanelprofileclassifieds.h
     llpanelprofilepicks.h
+    llpanelpulldown.h
     llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
