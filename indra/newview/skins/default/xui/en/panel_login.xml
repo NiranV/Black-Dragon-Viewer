@@ -173,8 +173,101 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="494"
+     height="702"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Basic daycycle local preset support.
+Added: Daniel Nichols as Patreon Patron.
+Added: Goldeelox Littlepaws as Patreon Patron.
+Added: Holger Gilruth as Patreon Patron.
+Added: Jay as Patreon Patron.
+Added: Martin Yeats as Patreon Patron.
+Added Nitska Bastet as Patreon Patron.
+Added: Samantha marie as Patreon Patron.
+Added: Naomii Amore as Patreon Patron.
+Added: Tha H as Patreon Patron.
+Added: "Requires Deferred Rendering" labels on main shader toggles that require it.
+Added: Thalia Heckroth inworld store link to login page.
+Added: Bring back a bunch of old Water presets.
+Added: Bring back a whole host of old Sky presets.
+Added: Bring back a couple Daycycle presets.
+Changed: Use Fixed Environment instead of separate Edit Sky/Water windows to circumvent a random crash.
+Changed: Relabeled Sun Position to Sun Angle to make it clearer that Position is the same option as Angle from pre-EEP.
+Changed: Holter Rez Patreon amount.
+Changed: Reimplemented and improved shadow precision on different altitudes and in general.
+Changed: Make main menu use Fixed Environment windows as well.
+Changed: Maximum shadow resolution to 8K up from 6K and updated their tooltips.
+Changed: Relabel Moon Position to Moon Angle to clarify that this is the same as Sun Angle just for the moon.
+Changed: Removed WIndlight Transition check, transitions are now always active.
+Changed: Allow changing windlight transition times via option.
+Changed: Ddisable Sky Preset dropdown when we switch to Day Cycles.
+Changed: Applied Sun/Moon Angle label changes to Fixed Environment editors.
+Changed: Make Windlight Transition time no longer dependent on the Windlight Transition option.
+Changed: Reduce amount of cases in which animated mesh attachments, specifically bits vanish on close examination.
+Changed: Clarify that with "Projector" shadows we actually include Sun and Moon as well.
+Changed: Tweaked SSAO and Shadow softening kernel.
+Changed: Enabled Debug Permissions by default.
+Changed: Revert specular calculation to pre-EEP.
+Changed: Debug Permission "Flag" label, added a space for better formatting.
+Changed: Version to 3.8.4.
+Fixed: Rigged mesh shadows flickering when parts of it swap through alpha states.
+Fixed: Several windlight options falsely disabling when Deferred is turned off.
+Fixed: Presets potentially getting saved as Name.xml.xml under certain conditions.
+Fixed: Use Day Cycle option and made it properly apply a Day Cycle on switch (preferably the selected one).
+Fixed: Use Region Default button and properly made it apply the region Day Cycle or the currently selected Sky Preset if toggling it off.
+Fixed: Preset dropdowns in Environment Settings don't remember which preset is currently selected.
+Fixed: Crash when opening Day Cycle editor.
+Fixed: Several issues with loading presets both from Environment Settings and Fixed Environment.
+Fixed: A long standing problem with dropdowns with text entry that prevented SHIFT + Up/Down to work properly.
+Fixed: Crash when dropdown without text entry field is cycled through with Shift + Up/Down.
+Fixed: Region Settings button in Environment Settings not updating when breaking out of the Region daycycle.
+Fixed: (Potential) Crash when opening the daycycle editor but it cant find a daycycle to go off of. Create a basic one if necessary.
+Fixed: Local lights and projectors not reflecting on the water surface.
+Fixed: Attached lights causing a weird illumination along the shorelines when getting closer.
+Fixed: Fixed Environment changes not staying across sessions.
+Fixed: Borked preset name for Weird-O daycycle.
+Fixed: Compile.
+Fixed: Missing include in CMakeLists.txt.
+Merged RLVa.
+Merged Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.3
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="494"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
@@ -3782,7 +3875,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="94"
+ height="104"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
