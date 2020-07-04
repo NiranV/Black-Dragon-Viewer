@@ -1,0 +1,44 @@
+<llsd>
+    <array>
+        <array>
+            <real>0</real>
+            <string>E-12AM</string>
+        </array>
+        <array>
+            <real>0.12499994784593582</real>
+            <string>E-3AM</string>
+        </array>
+        <array>
+            <real>0.20833325386047363</real>
+            <string>E-5AM</string>
+        </array>
+        <array>
+            <real>0.24999989569187164</real>
+            <string>E-6AM B</string>
+        </array>
+        <array>
+            <real>0.37499985098838806</real>
+            <string>E-9AM B</string>
+        </array>
+        <array>
+            <real>0.49999979138374329</real>
+            <string>E-12AM C</string>
+        </array>
+        <array>
+            <real>0.62499970197677612</real>
+            <string>E-3PM B</string>
+        </array>
+        <array>
+            <real>0.74999970197677612</real>
+            <string>E-6PM B</string>
+        </array>
+        <array>
+            <real>0.79166632890701294</real>
+            <string>E-7PM C</string>
+        </array>
+        <array>
+            <real>0.87499958276748657</real>
+            <string>E-9PM</string>
+        </array>
+    </array>
+</llsd>
