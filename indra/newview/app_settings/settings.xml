@@ -1564,6 +1564,17 @@
       <key>Value</key>
       <real>1.0</real>
     </map>
+    <key>CameraZoomFraction</key>
+    <map>
+      <key>Comment</key>
+      <string>Mousewheel driven fraction of zoom</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.9</real>
+    </map>
     <key>CameraPosOnLogout</key>
     <map>
       <key>Comment</key>
@@ -16433,7 +16444,7 @@
   <key>FMODProfilerEnable</key>
   <map>
     <key>Comment</key>
-    <string>Enable profiler tool if using FMOD Ex</string>
+    <string>Enable profiler tool if using FMOD Ex or FMOD Studio</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16444,7 +16455,7 @@
   <key>FMODDecodeBufferSize</key>
   <map>
     <key>Comment</key>
-    <string>Sets the streaming decode buffer size (in milliseconds)</string>
+    <string>Sets the streaming decode buffer size (in milliseconds) for FMOD Ex or FMOD Studio</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16466,7 +16477,7 @@
   <key>FMODStreamBufferSize</key>
   <map>
     <key>Comment</key>
-    <string>Sets the streaming buffer size (in milliseconds)</string>
+    <string>Sets the streaming buffer size (in milliseconds) for FMOD Ex or FMOD Studio</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -16609,6 +16620,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>HoverHeightAffectsCamera</key>
+    <map>
+      <key>Comment</key>
+      <string>Camera view is affected by Hover Height setting</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+     </map>
     <key>IndirectMaxComplexity</key>
     <map>
       <key>Comment</key>

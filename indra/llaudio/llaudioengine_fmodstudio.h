@@ -96,8 +96,8 @@ public:
 class LLAudioChannelFMODSTUDIO final : public LLAudioChannel
 {
 public:
-	LLAudioChannelFMODSTUDIO(FMOD::System *audioengine);
-	virtual ~LLAudioChannelFMODSTUDIO();
+    LLAudioChannelFMODSTUDIO(FMOD::System *audioengine);
+    virtual ~LLAudioChannelFMODSTUDIO();
 
 protected:
 	/*virtual*/ void play() final override;
@@ -121,8 +121,8 @@ protected:
 class LLAudioBufferFMODSTUDIO final : public LLAudioBuffer
 {
 public:
-	LLAudioBufferFMODSTUDIO(FMOD::System *audioengine);
-	virtual ~LLAudioBufferFMODSTUDIO();
+    LLAudioBufferFMODSTUDIO(FMOD::System *audioengine);
+    virtual ~LLAudioBufferFMODSTUDIO();
 
 	/*virtual*/ bool loadWAV(const std::string& filename) final override;
 	/*virtual*/ U32 getLength() final override;

@@ -42,6 +42,11 @@
 #include "llslider.h"
 #include "llfirstuse.h"
 #include "llhints.h"
+#include "lltabcontainer.h"
+#include "llvoavatarself.h"
+// [RLVa:KB] - @setcam
+#include "rlvactions.h"
+// [/RLVa:KB]
 
 //BD - Bone Camera
 #include "llvoavatarself.h"
@@ -686,7 +691,7 @@ void LLFloaterCamera::onClickCameraItem(const LLSD& param)
 	{
 		LLFloaterCamera* camera_floater = LLFloaterCamera::findInstance();
 		if (camera_floater)
-		camera_floater->switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
+			camera_floater->switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
 	}
 }
 
@@ -694,6 +699,13 @@ void LLFloaterCamera::switchToPreset()
 {
 	LLScrollListItem* item = mPresetsScroll->getFirstSelected();
 	if (!item) return;
+
+// [RLVa:KB] - @setcam family
+	if (RlvActions::isCameraPresetLocked())
+	{
+		return;
+	}
+// [/RLVa:KB]
 
 	sFreeCamera = false;
 	clear_camera_tool();

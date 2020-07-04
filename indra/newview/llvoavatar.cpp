@@ -7527,7 +7527,8 @@ void LLVOAvatar::sitOnObject(LLViewerObject *sit_object)
 	mRoot->updateWorldMatrixChildren();
 
 	stopMotion(ANIM_AGENT_BODY_NOISE);
-
+	
+	gAgentCamera.setInitSitRot(gAgent.getFrameAgent().getQuaternion());
 }
 
 //-----------------------------------------------------------------------------
@@ -7706,12 +7707,12 @@ void LLVOAvatar::rebuildAttachments()
 	{
 		for (LLViewerObject* pAttachObj : kvpAttachPt.second->mAttachedObjects)
 		{
-			if (LLVOVolume* pAttachVol = (pAttachObj->isMesh()) ? pAttachObj->asVolume() : nullptr)
+			if (LLVOVolume* pAttachVol = (pAttachObj->isMesh()) ? dynamic_cast<LLVOVolume*>(pAttachObj) : nullptr)
 			{
 				pAttachVol->forceLOD(3);
 				for (LLViewerObject* pChildObj : pAttachObj->getChildren())
 				{
-					if (LLVOVolume* pChildVol = (pChildObj->isMesh()) ? pChildObj->asVolume() : nullptr)
+					if (LLVOVolume* pChildVol = (pChildObj->isMesh()) ? dynamic_cast<LLVOVolume*>(pChildObj) : nullptr)
 						pAttachVol->forceLOD(3);
 				}
 			}

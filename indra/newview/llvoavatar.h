@@ -432,6 +432,7 @@ public:
 	bool		isVisuallyMuted();
 	bool 		isInMuteList() const;
 	bool		isInBuddyList() const;
+	bool 		isInMuteList();
 // [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
 	bool        isRlvSilhouette();
 // [/RLVa:KB]
@@ -488,6 +489,8 @@ public:
 	mutable F64			mCachedMuteListUpdateTime;
 	mutable bool		mCachedInBuddyList;
 	mutable F64			mCachedBuddyListUpdateTime;
+	bool		mCachedInMuteList;
+	F64			mCachedMuteListUpdateTime;
 // [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
 	mutable bool mCachedIsRlvSilhouette = false;
 	mutable F64  mCachedRlvSilhouetteUpdateTime = 0.f;

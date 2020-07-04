@@ -2694,9 +2694,9 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b35adcf74d22c128045aa87aade74736</string>
+              <string>545954e46a316e469f6b68ecbcb76573</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/hg/repo/openjpeg_3p-update-openjpeg/rev/297018/arch/CYGWIN/installer/openjpeg-1.4.297018-windows-297018.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/openjpeg-1.5.2.171271050-windows-171271050.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
@@ -2706,9 +2706,9 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>47c09d96ae84fa4518b639cd93ba45b3</string>
+              <string>a68103651741c8b66356153ee5668d6b</string>
               <key>url</key>
-              <string>https://bitbucket.org/NiranV/fmodex/downloads/openjpeg-1.4.201412051021-windows-x64-201412051021.tar.bz2</string>
+              <string>http://viewer.catznip.com/downloads/packages/openjpeg-1.5.2.171271046-windows64-171271046.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows64</string>

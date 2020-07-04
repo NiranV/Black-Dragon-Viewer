@@ -66,13 +66,20 @@ LLPanelPresetsPulldown::LLPanelPresetsPulldown()
 
 BOOL LLPanelPresetsPulldown::postBuild()
 {
+	LLPresetsManager* presetsMgr = LLPresetsManager::getInstance();
+    presetsMgr->setPresetListChangeCallback(boost::bind(&LLPanelPresetsPulldown::populatePanel, this));
+	// Make sure there is a default preference file
+    presetsMgr->createMissingDefault(PRESETS_GRAPHIC);
+
 	populatePanel();
 
-	return LLPanel::postBuild();
+	return LLPanelPulldown::postBuild();
 }
 
 void LLPanelPresetsPulldown::populatePanel()
 {
+	LLPresetsManager::getInstance()->loadPresetNamesFromDir(PRESETS_GRAPHIC, mPresetNames, DEFAULT_TOP);
+
 	LLScrollListCtrl* scroll = getChild<LLScrollListCtrl>("preset_list");
 	scroll->clearRows();
 
@@ -225,20 +232,4 @@ void LLPanelPresetsPulldown::onGraphicsButtonClick()
 
 	// bring up the prefs floater
 	gDragonLibrary.openPreferences("display");
-}
-
-//virtual
-void LLPanelPresetsPulldown::draw()
-{
-	F32 alpha = mHoverTimer.getStarted() 
-		? clamp_rescale(mHoverTimer.getElapsedTimeF32(), sAutoCloseFadeStartTimeSec, sAutoCloseTotalTimeSec, 1.f, 0.f)
-		: 1.0f;
-	LLViewDrawContext context(alpha);
-
-	LLPanel::draw();
-
-	if (alpha == 0.f)
-	{
-		setVisible(FALSE);
-	}
 }

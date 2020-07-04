@@ -3,9 +3,9 @@
  * @brief Description of LISTENER class abstracting the audio support
  * as an FMOD Studio implementation (windows and Linux)
  *
- * $LicenseInfo:firstyear=2002&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2020&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2010, Linden Research, Inc.
+ * Copyright (C) 2020, Linden Research, Inc.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,8 +39,8 @@ namespace FMOD
 //Interfaces
 class LLListener_FMODSTUDIO final : public LLListener
 {
- public:  
-	LLListener_FMODSTUDIO(FMOD::System *system);
+public:
+    LLListener_FMODSTUDIO(FMOD::System *system);
 	virtual ~LLListener_FMODSTUDIO() = default;
 
 	void translate(const LLVector3& offset) final override;
@@ -53,10 +53,10 @@ class LLListener_FMODSTUDIO final : public LLListener
 	F32 getDopplerFactor() final override;
 	void setRolloffFactor(F32 factor) final override;
 	F32 getRolloffFactor() final override;
- protected:
-	 FMOD::System *mSystem;
-	 F32 mDopplerFactor;
-	 F32 mRolloffFactor;
+protected:
+    FMOD::System *mSystem;
+    F32 mDopplerFactor;
+    F32 mRolloffFactor;
 };
 
 #endif

@@ -4,16 +4,17 @@
  can_minimize="true"
  can_close="true"
  min_width="515"
- height="29"
+ height="59"
+ can_resize="false"
+ width="515"
  layout="topleft"
  name="HoverHeight"
  single_instance="true"
  help_topic="hover_height"
  save_rect="true"
  save_visibility="true"
- title="Set Hover Height"
- width="515">
-     <slider
+ title="Set Hover Height">
+      <slider
      enabled="false"
      control_name="HoverHeightSlider"
      decimal_digits="3"
@@ -29,4 +30,13 @@
      name="HoverHeightSlider"
      top="5"
      can_edit_text="true"/>
+  <check_box
+     control_name="HoverHeightAffectsCamera"
+     follows="all"
+     height="15"
+     label="Bind Camera view"
+     layout="topleft"
+     name="BindCameraCheck"
+     top_pad="3"
+     width="237"/>
 </floater>

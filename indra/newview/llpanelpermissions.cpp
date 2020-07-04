@@ -425,35 +425,37 @@ void LLPanelPermissions::refresh()
 	// Update creator text field
 	mCreator->setEnabled(TRUE);
 	std::string creator_app_link;
-	//LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_app_link);
-
 // [RLVa:KB] - Checked: 2010-11-02 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-	BOOL creators_identical = FALSE;
+	const bool creators_identical = LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_app_link);
+	std::string owner_app_link;
+	const bool owners_identical = LLSelectMgr::getInstance()->selectGetOwner(mOwnerID, owner_app_link);
 // [/RLVa:KB]
-// [RLVa:KB] - Checked: 2010-11-02 (RLVa-1.2.2a) | Modified: RLVa-1.2.2a
-	creators_identical = LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_app_link);
-// [/RLVa:KB]
-//	LLSelectMgr::getInstance()->selectGetCreator(mCreatorID, creator_name);
 
+	LLAvatarName av_name;
+// [RLVa:KB] - Checked: RLVa-2.0.1
+	// Only anonymize the creator if all of the selection was created by the same avie who's also the owner or they're a nearby avie
+	if ( (RlvActions::isRlvEnabled()) && (creators_identical) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, mCreatorID)) && ( (mCreatorID == mOwnerID) || (RlvUtil::isNearbyAgent(mCreatorID))) )
+	{
+		creator_app_link = LLSLURL("agent", mCreatorID, "rlvanonym").getSLURLString();
+	}
+	mLabelCreatorName->setText(creator_app_link);
+// [/RLVa:KB]
 	mLabelCreatorName->setEnabled(TRUE);
 
 	// Update owner text field
 	mOwner->setEnabled(TRUE);
 
-	std::string owner_app_link;
-	const BOOL owners_identical = select_mgr->selectGetOwner(mOwnerID, owner_app_link);
+//	std::string owner_app_link;
+//	const BOOL owners_identical = LLSelectMgr::getInstance()->selectGetOwner(mOwnerID, owner_app_link);
+
 
 	LLUUID owner_id = mOwnerID;
 	if (select_mgr->selectIsGroupOwned())
 	{
 		// Group owned already displayed by selectGetOwner
-		LLGroupMgr* group_mgr = LLGroupMgr::getInstance();
-		LLGroupMgrGroupData* group_data = group_mgr->getGroupData(mOwnerID);
-		if (!group_data || group_data && !group_data->isGroupPropertiesDataComplete())
-		{
-			// Triggers refresh
-			group_mgr->sendGroupPropertiesRequest(mOwnerID);
-		}
+// [RLVa:KB] - Checked: RLVa-2.0.1
+		mLabelOwnerName->setValue(owner_app_link);
+// [/RLVa:KB]
 	}
 	else
 	{
@@ -491,6 +493,14 @@ void LLPanelPermissions::refresh()
 	std::string owner_slurl = LLSLURL("agent", owner_id, "inspect").getSLURLString();
 	mLabelOwnerName->setValue(owner_slurl);
 // [/RLVa:KB]
+
+//	style_params.link_href = owner_app_link;
+// [RLVa:KB] - Checked: RLVa-2.0.1
+	if ( (RlvActions::isRlvEnabled()) && (owners_identical) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, mOwnerID)) )
+	{
+		owner_app_link = LLSLURL("agent", mOwnerID, "rlvanonym").getSLURLString();
+	}
+	mLabelOwnerName->setText(owner_app_link);
 
 	// update group text field
 	mGroup->setEnabled(TRUE);
