@@ -151,9 +151,9 @@ bool LLPipeline::RenderDelayCreation;
 bool LLPipeline::RenderAnimateRes;
 bool LLPipeline::FreezeTime;
 S32 LLPipeline::DebugBeaconLineWidth;
-F32 LLPipeline::RenderHighlightBrightness;
-LLColor4 LLPipeline::RenderHighlightColor;
-F32 LLPipeline::RenderHighlightThickness;
+//F32 LLPipeline::RenderHighlightBrightness;
+//LLColor4 LLPipeline::RenderHighlightColor;
+//F32 LLPipeline::RenderHighlightThickness;
 bool LLPipeline::RenderSpotLightsInNondeferred;
 LLColor4 LLPipeline::PreviewAmbientColor;
 LLColor4 LLPipeline::PreviewDiffuse0;
@@ -599,9 +599,9 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("FreezeTime");
 	connectRefreshCachedSettingsSafe("DebugBeaconLineWidth");
 	connectRefreshCachedSettingsSafe("RenderHighlightBrightness");
-	connectRefreshCachedSettingsSafe("RenderHighlightColor");
-	connectRefreshCachedSettingsSafe("RenderHighlightThickness");
-	connectRefreshCachedSettingsSafe("RenderSpotLightsInNondeferred");
+	//connectRefreshCachedSettingsSafe("RenderHighlightColor");
+	//connectRefreshCachedSettingsSafe("RenderHighlightThickness");
+	//connectRefreshCachedSettingsSafe("RenderSpotLightsInNondeferred");
 	connectRefreshCachedSettingsSafe("PreviewAmbientColor");
 	connectRefreshCachedSettingsSafe("PreviewDiffuse0");
 	connectRefreshCachedSettingsSafe("PreviewSpecular0");
@@ -1259,9 +1259,9 @@ void LLPipeline::refreshCachedSettings()
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
 	FreezeTime = gSavedSettings.getBOOL("FreezeTime");
 	DebugBeaconLineWidth = gSavedSettings.getS32("DebugBeaconLineWidth");
-	RenderHighlightBrightness = gSavedSettings.getF32("RenderHighlightBrightness");
-	RenderHighlightColor = gSavedSettings.getColor4("RenderHighlightColor");
-	RenderHighlightThickness = gSavedSettings.getF32("RenderHighlightThickness");
+	//RenderHighlightBrightness = gSavedSettings.getF32("RenderHighlightBrightness");
+	//RenderHighlightColor = gSavedSettings.getColor4("RenderHighlightColor");
+	//RenderHighlightThickness = gSavedSettings.getF32("RenderHighlightThickness");
 	RenderSpotLightsInNondeferred = gSavedSettings.getBOOL("RenderSpotLightsInNondeferred");
 	PreviewAmbientColor = gSavedSettings.getColor4("PreviewAmbientColor");
 	PreviewDiffuse0 = gSavedSettings.getColor4("PreviewDiffuse0");
@@ -4306,6 +4306,7 @@ void render_hud_elements()
 
 void LLPipeline::renderHighlights()
 {
+	/*
 	assertInitialized();
 
 	// Draw 3D UI elements here (before we clear the Z buffer in POOL_HUD)
@@ -4530,6 +4531,7 @@ void LLPipeline::renderHighlights()
 			gHighlightSpecularProgram.unbind();
 		}
 	}
+	*/
 }
 
 //debug use
