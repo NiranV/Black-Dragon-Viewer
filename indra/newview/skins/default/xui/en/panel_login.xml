@@ -173,8 +173,59 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="702"
+     height="159"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Changed: Relabeled Moon position sliders to "North" and "East" angle for consistency.
+Changed: Hide all Environment Editor "save" button menu entries that are not valid for the current situation.
+Changed: Show either "Save" for editing inventory presets or "Save to Disk" for local preset edits.
+Changed: "Save" to "Save (Item)" , "Save Locally" to "Save To Disk (File)" and "Save As" to "Save As (Item)" to make tell the user more clearly what each save option does.
+Changed: Increased the dropdown button width to make space for the longer save labels.
+Changed: Version to 3.8.5.
+Fixed: Typo in login changelog.
+Fixed: Presets not refreshing and displaying a check anymore when selecting them.
+Fixed: Several more cases, including inventory items and window closure still using their own environment transition times.
+Fixed: Toolbar buttons opening the wrong Environment Editor windows.
+Fixed: (For-ported) Water specularity changing sometimes at certain camera angles.
+Fixed: Up/Down Arrow key not working anymore in dropdown lists with text entry.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.4
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="702"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
