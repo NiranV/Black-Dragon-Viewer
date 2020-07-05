@@ -316,9 +316,9 @@
   label_ref="Command_Water_Label"
   tooltip_ref="Command_Water_Tooltip"
   execute_function="Floater.Toggle"
-  execute_parameters="env_adjust_water"
+  execute_parameters="env_fixed_environmentent_water"
   is_running_function="Floater.IsOpen"
-  is_running_parameters="env_adjust_water"/>
+  is_running_parameters="env_fixed_environmentent_water"/>
   <command
   name="windlight"
   available_in_toybox="true"
@@ -336,9 +336,9 @@
   label_ref="Command_Sky_Label"
   tooltip_ref="Command_Sky_Tooltip"
   execute_function="Floater.Toggle"
-  execute_parameters="env_adjust_sky"
+  execute_parameters="env_fixed_environmentent_sky"
   is_running_function="Floater.IsOpen"
-  is_running_parameters="env_adjust_sky"/>
+  is_running_parameters="env_fixed_environmentent_sky"/>
   <command
   name="poser"
   available_in_toybox="true"
