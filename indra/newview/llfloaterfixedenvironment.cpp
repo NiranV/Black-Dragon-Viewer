@@ -239,10 +239,12 @@ void LLFloaterFixedEnvironment::refresh()
 
     bool is_inventory_avail = canUseInventory();
 
-    mFlyoutControl->setMenuItemEnabled(ACTION_SAVE, is_inventory_avail && mCanMod && !mInventoryId.isNull());
-    mFlyoutControl->setMenuItemEnabled(ACTION_SAVEAS, is_inventory_avail && mCanCopy);
-    mFlyoutControl->setMenuItemEnabled(ACTION_APPLY_PARCEL, canApplyParcel());
-    mFlyoutControl->setMenuItemEnabled(ACTION_APPLY_REGION, canApplyRegion());
+	bool visible = is_inventory_avail && mCanMod && !mInventoryId.isNull();
+	mFlyoutControl->setSelectedItem(!visible ? ACTION_SAVELOCAL : ACTION_SAVE);
+    mFlyoutControl->setMenuItemVisible(ACTION_SAVE, visible);
+    mFlyoutControl->setMenuItemVisible(ACTION_SAVEAS, is_inventory_avail && mCanCopy);
+    mFlyoutControl->setMenuItemVisible(ACTION_APPLY_PARCEL, canApplyParcel());
+    mFlyoutControl->setMenuItemVisible(ACTION_APPLY_REGION, canApplyRegion());
 
     mTxtName->setValue(mSettings->getName());
     mTxtName->setEnabled(mCanMod);
