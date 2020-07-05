@@ -190,7 +190,7 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
 	if (mIsLocalEdit)
 		environment = LLEnvironment::ENV_LOCAL;
-	LLEnvironment::instance().setSelectedEnvironment(environment, LLEnvironment::TRANSITION_FAST);
+	LLEnvironment::instance().setSelectedEnvironment(environment, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
@@ -205,7 +205,7 @@ void LLFloaterFixedEnvironment::onClose(bool app_quitting)
 
 	if (!mIsLocalEdit)
 	{
-		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 		LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
 
 		mSettings.reset();
@@ -221,7 +221,7 @@ void LLFloaterFixedEnvironment::onFocusReceived()
 		if (mIsLocalEdit)
 			environment = LLEnvironment::ENV_LOCAL;
         updateEditEnvironment();
-		LLEnvironment::instance().setSelectedEnvironment(environment, LLEnvironment::TRANSITION_FAST);
+		LLEnvironment::instance().setSelectedEnvironment(environment, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
     }
 }
 

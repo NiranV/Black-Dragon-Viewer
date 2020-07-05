@@ -434,7 +434,7 @@ void LLFloaterEditExtDayCycle::onClose(bool app_quitting)
     LLEnvironment::instance().revertBeaconsState();
     if (!app_quitting)
     {
-        LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::TRANSITION_FAST);
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
         LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
         mEditDay.reset();
     }
@@ -445,7 +445,7 @@ void LLFloaterEditExtDayCycle::onFocusReceived()
     if (isInVisibleChain())
     {
         updateEditEnvironment();
-        LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, LLEnvironment::TRANSITION_FAST);
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
     }
 }
 

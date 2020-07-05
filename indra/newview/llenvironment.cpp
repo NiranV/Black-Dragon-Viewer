@@ -2959,7 +2959,7 @@ bool LLEnvironment::loadFromSettings()
             {
                 // Settings were loaded from file without having an asset, needs update
                 // otherwise update will be done by asset callback
-                updateEnvironment(TRANSITION_DEFAULT, true);
+				updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
             }
         });
         // bail early, everything have to be done at callback
@@ -2980,7 +2980,7 @@ bool LLEnvironment::loadFromSettings()
     {
         // Settings were loaded from file without having an asset, needs update
         // otherwise update will be done by asset callback
-        updateEnvironment(TRANSITION_DEFAULT, true);
+		updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
     }
     return valid;
 }
