@@ -73,6 +73,20 @@ BOOL LLPanelPresetsPulldown::postBuild()
 	return LLPanelPulldown::postBuild();
 }
 
+/*virtual*/
+void LLPanelPresetsPulldown::onVisibilityChange(BOOL new_visibility)
+{
+	populatePanel();
+	if (new_visibility)
+	{
+		mHoverTimer.start(); // timer will be stopped when mouse hovers over panel
+	}
+	else
+	{
+		mHoverTimer.stop();
+	}
+}
+
 void LLPanelPresetsPulldown::populatePanel()
 {
 	LLPresetsManager::getInstance()->loadPresetNamesFromDir(PRESETS_GRAPHIC, mPresetNames, DEFAULT_TOP);

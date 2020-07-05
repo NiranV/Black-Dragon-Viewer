@@ -37,6 +37,7 @@ class LLPanelPresetsPulldown : public LLPanelPulldown
  public:
 	LLPanelPresetsPulldown();
 	/*virtual*/ BOOL postBuild();
+	/*virtual*/ void onVisibilityChange(BOOL new_visibility);
 	void populatePanel();
 	
  private:
