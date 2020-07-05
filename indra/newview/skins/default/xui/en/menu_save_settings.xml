@@ -7,7 +7,7 @@
         width="120">
     <menu_item_check
             name="save_settings" 
-            label="Save">
+            label="Save (Item)">
         <menu_item_check.on_check
                 function="FlyoutCombo.Button.Check"
                 userdata="save" />
@@ -17,7 +17,7 @@
     </menu_item_check>
     <menu_item_check
             name="save_as_local_setting" 
-            label="Save Locally">
+            label="Save To Disk (File)">
         <menu_item_check.on_check
                 function="FlyoutCombo.Button.Check"
                 userdata="save_local" />
@@ -27,7 +27,7 @@
     </menu_item_check>
     <menu_item_check 
             name="save_as_new_settings" 
-            label="Save As">
+            label="Save As (Item)">
         <menu_item_check.on_check
                 function="FlyoutCombo.Button.Check"
                 userdata="saveas" />
