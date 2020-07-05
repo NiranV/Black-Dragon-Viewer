@@ -206,7 +206,7 @@ Changed: Maximum shadow resolution to 8K up from 6K and updated their tooltips.
 Changed: Relabel Moon Position to Moon Angle to clarify that this is the same as Sun Angle just for the moon.
 Changed: Removed WIndlight Transition check, transitions are now always active.
 Changed: Allow changing windlight transition times via option.
-Changed: Ddisable Sky Preset dropdown when we switch to Day Cycles.
+Changed: Disable Sky Preset dropdown when we switch to Day Cycles.
 Changed: Applied Sun/Moon Angle label changes to Fixed Environment editors.
 Changed: Make Windlight Transition time no longer dependent on the Windlight Transition option.
 Changed: Reduce amount of cases in which animated mesh attachments, specifically bits vanish on close examination.
