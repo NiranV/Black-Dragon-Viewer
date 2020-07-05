@@ -247,7 +247,7 @@ width="700">
     left_pad="-7"
     top_delta="0"
     name="btn_commit"
-    width="80"/>
+    width="120"/>
     <button
     follows="bottom|right"
     height="22"
@@ -288,7 +288,7 @@ width="700">
     follows="left|bottom|right"
     image_name="Toolbar_Middle_Off"
     height="23"
-    width="169"
+    width="129"
     layout="topleft"
     name="sky_preset_icon"
     left_pad="1"
