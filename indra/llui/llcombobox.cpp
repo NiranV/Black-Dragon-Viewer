@@ -798,23 +798,16 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 	BOOL result = FALSE;
 	if (hasFocus())
 	{
+		//BD - Get the current label, try to find it in our list and if we do
+		//     get its index, this is a surefire way to get the current index
+		//     otherwise when using mAllowTextEntry is enabled it won't work
+		if (!mAllowTextEntry || (mAllowTextEntry && mList->selectItemByLabel(mTextEntry->getText(), FALSE)))
+			mLastSelectedIndex = mList->getFirstSelectedIndex();
+		else
+			mLastSelectedIndex = 0;
+
 		if ((key == KEY_DOWN || key == KEY_UP) && mask == MASK_SHIFT)
 		{
-			//BD - Get the current label, try to find it in our list and if we do
-			//     get its index, this is a surefire way to get the current index
-			//     otherwise when using mAllowTextEntry is enabled it won't work
-			std::string full_string;
-			if (mAllowTextEntry)
-			{
-				full_string = mTextEntry->getText();
-				if (mList->selectItemByLabel(full_string, FALSE))
-					mLastSelectedIndex = mList->getFirstSelectedIndex();
-				else
-					mLastSelectedIndex = 0;
-			}
-			else
-				mLastSelectedIndex = mList->getFirstSelectedIndex();
-
 			if (key == KEY_UP && mLastSelectedIndex > 0)
 				--mLastSelectedIndex;
 			else if (key == KEY_DOWN && mLastSelectedIndex < mList->getItemCount())
@@ -831,11 +824,11 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 			return TRUE;
 		}
 		//give list a chance to pop up and handle key
-		LLScrollListItem* last_selected_item = mList->getLastSelectedItem();
-		if (last_selected_item)
+		mLastSelectedIndex = mList->getFirstSelectedIndex();
+		if (mList->getFirstSelected())
 		{
 			// highlight the original selection before potentially selecting a new item
-			mList->mouseOverHighlightNthItem(mList->getItemIndex(last_selected_item));
+			mList->mouseOverHighlightNthItem(mLastSelectedIndex);
 		}
 		result = mList->handleKeyHere(key, mask);
 
@@ -854,7 +847,7 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 			return FALSE;
 		}
 		// if selection has changed, pop open list
-		else if (mList->getLastSelectedItem() != last_selected_item 
+		else if (mList->getFirstSelectedIndex() != mLastSelectedIndex
 					|| ((key == KEY_DOWN || key == KEY_UP)
 						&& mList->getCanSelect()
 						&& !mList->isEmpty()))
