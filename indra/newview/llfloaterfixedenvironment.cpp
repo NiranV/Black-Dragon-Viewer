@@ -170,8 +170,8 @@ BOOL LLFloaterFixedEnvironment::postBuild()
 
 void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 {
+	mSettings = nullptr;
     LLUUID invid;
-
     if (key.has(KEY_INVENTORY_ID))
     {
         invid = key[KEY_INVENTORY_ID].asUUID();
@@ -184,44 +184,24 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 		LL_INFOS("SETTINGS") << "Setting edit inventory item to " << mInventoryId << "." << LL_ENDL;
 
 	mIsLocalEdit = !mInventoryItem;
-    updateEditEnvironment();
-    syncronizeTabs();
-    refresh();
-	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
-	if (mIsLocalEdit)
-		environment = LLEnvironment::ENV_LOCAL;
-	LLEnvironment::instance().setSelectedEnvironment(environment, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+	updateEditEnvironment();
+	LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 
-	std::string type = mSettings->getSettingsType();
-	std::string folder = type == "sky" ? "skies" : "water";
-	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
-	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
-
+	syncronizeTabs();
+	refresh();
 }
 
 void LLFloaterFixedEnvironment::onClose(bool app_quitting)
 {
     doCloseInventoryFloater(app_quitting);
-
-	if (!mIsLocalEdit)
-	{
-		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
-		LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
-
-		mSettings.reset();
-		syncronizeTabs();
-	}
 }
 
 void LLFloaterFixedEnvironment::onFocusReceived()
 {
     if (isInVisibleChain())
     {
-		LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
-		if (mIsLocalEdit)
-			environment = LLEnvironment::ENV_LOCAL;
         updateEditEnvironment();
-		LLEnvironment::instance().setSelectedEnvironment(environment, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
     }
 }
 
@@ -246,9 +226,18 @@ void LLFloaterFixedEnvironment::refresh()
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_PARCEL, canApplyParcel());
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_REGION, canApplyRegion());
 
-    mTxtName->setValue(mSettings->getName());
+	std::string type = mSettings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : "water";
+	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
+	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
+
+	std::string debug = type == "sky" ? "SkyPresetName" : "WaterPresetName";
+	std::string preset_name = mIsLocalEdit ? gSavedSettings.getString(debug) : mSettings->getName();
+	mTxtName->setLabel(preset_name);
+	mTxtName->setValue(preset_name);
     mTxtName->setEnabled(mCanMod);
 
+	syncronizeTabs();
     S32 count = mTab->getTabCount();
 
     for (S32 idx = 0; idx < count; ++idx)
@@ -394,10 +383,6 @@ void LLFloaterFixedEnvironment::onAssetLoaded(LLUUID asset_id, LLSettingsBase::p
         return;
     }
 
-    mSettings = settings;
-    if (mInventoryItem)
-        mSettings->setName(mInventoryItem->getName());
-
     if (mCanCopy)
         settings->clearFlag(LLSettingsBase::FLAG_NOCOPY);
     else
@@ -413,10 +398,9 @@ void LLFloaterFixedEnvironment::onAssetLoaded(LLUUID asset_id, LLSettingsBase::p
     else
         settings->setFlag(LLSettingsBase::FLAG_NOTRANS);
 
-    updateEditEnvironment();
-    syncronizeTabs();
-    refresh();
-	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+	mSettings = settings;
+	if (mInventoryItem)
+		mSettings->setName(mInventoryItem->getName());
 }
 
 void LLFloaterFixedEnvironment::onButtonImport()
@@ -885,15 +869,14 @@ BOOL LLFloaterFixedEnvironmentSky::postBuild()
 
 void LLFloaterFixedEnvironmentSky::updateEditEnvironment(void)
 {
-	LLEnvironment::EnvSelection_t environment = LLEnvironment::ENV_EDIT;
+	LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_EDIT);
 	if (mIsLocalEdit)
 	{
 		mSettings = LLEnvironment::instance().getCurrentSky();
-		environment = LLEnvironment::ENV_LOCAL;
 	}
 
-	LLEnvironment::instance().setEnvironment(environment, 
-		std::static_pointer_cast<LLSettingsSky>(mSettings));
+	LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, std::static_pointer_cast<LLSettingsSky>(mSettings));
+	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
 }
 
 void LLFloaterFixedEnvironmentSky::onOpen(const LLSD& key)
@@ -1015,6 +998,9 @@ void LLFloaterFixedEnvironment::onSelectPreset()
 			LL_WARNS("Windlight") << "Failed to load " << type <<  " preset from:" << dir << LL_ENDL;
 		}
 	}
+
+	std::string control = type == "sky" ? "SkyPresetName" : "WaterPresetName";
+	gSavedSettings.setString(control, mTxtName->getValue());
 }
 
 void LLFloaterFixedEnvironment::loadItem(LLSettingsBase::ptr_t settings)
