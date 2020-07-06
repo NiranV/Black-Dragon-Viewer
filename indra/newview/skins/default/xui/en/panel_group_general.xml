@@ -81,12 +81,12 @@ Hover your mouse over the options for more help.
      follows="top|right"
      height="10"
      layout="topleft"
-     left_pad="26"
-     halign="left"
+     left_pad="10"
+     halign="center"
      name="join_cost_text"
      top_delta="-5"
      visible="true"
-     width="48">
+     width="70">
       Free
     </text>
     <button
@@ -95,8 +95,8 @@ Hover your mouse over the options for more help.
    layout="topleft"
    follows="top|right"
    top_delta="3"
-   left_delta="-19"
-   halign="left"
+   left_delta="0"
+   halign="center"
    visible="true"
    pad_bottom="0"
    image_selected="Transparent"
