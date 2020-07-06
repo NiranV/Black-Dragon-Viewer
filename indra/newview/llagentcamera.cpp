@@ -55,6 +55,8 @@
 #include "rlvhandler.h"
 // [/RLVa:KB]
 
+//BD - Unlimited Camera Presets
+#include "bdfunctions.h"
 //BD - Always-on Mouse-steering
 #include "lltoolfocus.h"
 //BD - Unlimited Camera Presets
@@ -2303,7 +2305,9 @@ LLVector3d LLAgentCamera::getFocusOffsetInitial()
 // [RLVa:KB] - @setcam_eyeoffsetscale
 F32 LLAgentCamera::getCameraOffsetScale() const
 {
-	return gSavedSettings.getF32(("RLVa View" != mCameraPresetName) ? "CameraOffsetScale" : "CameraOffsetScaleRLVa");
+	//return gSavedSettings.getF32(("RLVa View" != mCameraPresetName) ? "CameraOffsetScale" : "CameraOffsetScaleRLVa");
+	//BD - Currently we don't support offset scaling at all.
+	return gSavedSettings.getF32("CameraOffsetScale");
 }
 // [/RLVa:KB]
 
@@ -3350,6 +3354,82 @@ void LLAgentCamera::loadSavedCamera()
 		}
 	}
 }
+
+//BD - Unlimited Camera Presets
+void LLAgentCamera::onCameraArray(LLVector3 vec, std::string preset_name)
+{
+	gAgentCamera.mCameraOffsetInitial[preset_name] = vec;
+}
+
+void LLAgentCamera::onFocusArray(LLVector3d vec, std::string preset_name)
+{
+	gAgentCamera.mFocusOffsetInitial[preset_name] = vec;
+}
+
+void LLAgentCamera::onAddCameraPreset(bool refresh, std::string preset_name)
+{
+	//BD - First and foremost before we do anything, check if the folder exists.
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	if (!gDirUtilp->fileExists(pathname))
+	{
+		LL_WARNS("Camera") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
+		LLFile::mkdir(pathname);
+	}
+
+	//BD - Get the name and make sure its not empty.
+	std::string name = preset_name;
+	if (name.empty())
+	{
+		LL_WARNS("Camera") << "No name given for camera preset." << LL_ENDL;
+		return;
+	}
+
+	LLSD record;
+	llofstream file;
+
+	if (refresh)
+	{
+		//BD - Creates a basic empty camera preset for us to edit.
+		record["camera_offset"] = LLVector3(-3.f, 0.f, 0.f).getValue();
+		record["focus_offset"] = LLVector3d(0.3f, 0.f, 0.75f).getValue();
+	}
+	else
+	{
+		//BD - We're editing an already existing.
+		LLVector3 camera = gAgentCamera.mCameraOffsetInitial[name];
+		LLVector3d focus = gAgentCamera.mFocusOffsetInitial[name];
+		record["camera_offset"] = camera.getValue();
+		record["focus_offset"] = focus.getValue();
+	}
+
+	//BD - Hide custom presets of RLVa View, RLVa will be using this.
+	if (name == "RLVa View")
+		record["hidden"] = true;
+
+	//BD - Write the camera preset and save it into our folder.
+	std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera", gDragonLibrary.escapeString(name) + ".xml");
+	file.open(full_path.c_str());
+	LLSDSerialize::toXML(record, file);
+	file.close();
+
+	//BD - Switch to the newly created camera preset so we can start editing it right away.
+	if (refresh)
+		gAgentCamera.switchCameraPreset(name);
+}
+
+void LLAgentCamera::onRemoveCameraPreset(std::string preset_name)
+{
+	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
+	std::string name = preset_name;
+	if (preset_name.empty())
+		name = gSavedSettings.getString("CameraPresetName");
+
+	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
+		LL_WARNS("Camera") << "Cannot remove camera preset file: " << name << LL_ENDL;
+
+	gAgentCamera.initializeCameraPresets();
+}
+
 
 
 // EOF

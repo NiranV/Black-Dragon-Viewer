@@ -100,6 +100,10 @@ public:
 	//BD - Unlimited Camera Presets
 	void initializeCameraPresets();
 	void switchCameraPreset(std::string preset_name);
+	void onAddCameraPreset(bool refresh = false, std::string preset_name = "");
+	void onRemoveCameraPreset(std::string preset_name = "");
+	void onCameraArray(LLVector3 vec, std::string preset_name);
+	void onFocusArray(LLVector3d vec, std::string preset_name);
 
 	//BD - Unlimited Camera Presets
 	/** Camera preset in Third Person Mode */

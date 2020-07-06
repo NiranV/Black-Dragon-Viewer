@@ -196,7 +196,7 @@ public:
 	void refreshMemoryControls();
 
 //	//BD - Unlimited Camera Presets
-	void onAddCameraPreset(bool refresh = false);
+	void onAddCameraPreset(bool refresh = false, std::string preset_name = "");
 	void onRemoveCameraPreset();
 	void onChangeCameraPreset();
 	void onCameraPresetReset(const LLSD& param);

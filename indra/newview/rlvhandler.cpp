@@ -863,13 +863,13 @@ void RlvHandler::setCameraOverride(bool fOverride)
 {
 	if ( (fOverride) && ("RLVa View" != gAgentCamera.getCameraPreset()) )
 	{
-		m_strCameraPresetRestore = gSavedSettings.getString("PresetCameraActive");
+		m_strCameraPresetRestore = gSavedSettings.getString("CameraPresetName");
 		gAgentCamera.switchCameraPreset("RLVa View");
 	}
 	else if ( (!fOverride) && ("RLVa View" == gAgentCamera.getCameraPreset() && (!RlvActions::isCameraPresetLocked())) )
 	{
 		// We need to clear it or it won't reset properly
-		gSavedSettings.setString("PresetCameraActive", LLStringUtil::null);
+		//gSavedSettings.setString("PresetCameraActive", LLStringUtil::null);
 		//LLFloaterCamera::switchToPreset(m_strCameraPresetRestore);
 		gAgentCamera.switchCameraPreset(m_strCameraPresetRestore);
 		m_strCameraPresetRestore.clear();
@@ -2152,11 +2152,14 @@ void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_EYEOFFSET>::onValueChange()
 {
 	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSET))
 	{
-		LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+		//LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetRLVaView");
 		if (pBhvrModifier->hasValue())
-			pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
+			gAgentCamera.onCameraArray(pBhvrModifier->getValue<LLVector3>(), "RLVa View");
+			//pControl->setValue(pBhvrModifier->getValue<LLVector3>().getValue());
 		else
-			pControl->resetToDefault();
+			//pControl->resetToDefault();
+			gAgentCamera.onRemoveCameraPreset("RLVa View");
+
 	}
 }
 
@@ -2166,11 +2169,12 @@ void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_EYEOFFSETSCALE>::onValueCha
 {
 	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_EYEOFFSETSCALE))
 	{
-		LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetScaleRLVa");
+		//BD - Currently we don't support offset scaling at all.
+		/*LLControlVariable* pControl = gSavedSettings.getControl("CameraOffsetScaleRLVa");
 		if (pBhvrModifier->hasValue())
 			pControl->setValue(pBhvrModifier->getValue<float>());
 		else
-			pControl->resetToDefault();
+			pControl->resetToDefault();*/
 	}
 }
 
@@ -2180,11 +2184,13 @@ void RlvBehaviourModifierHandler<RLV_MODIFIER_SETCAM_FOCUSOFFSET>::onValueChange
 {
 	if (RlvBehaviourModifier* pBhvrModifier = RlvBehaviourDictionary::instance().getModifier(RLV_MODIFIER_SETCAM_FOCUSOFFSET))
 	{
-		LLControlVariable* pControl = gSavedSettings.getControl("FocusOffsetRLVaView");
+		//LLControlVariable* pControl = gSavedSettings.getControl("FocusOffsetRLVaView");
 		if (pBhvrModifier->hasValue())
-			pControl->setValue(pBhvrModifier->getValue<LLVector3d>().getValue());
+			gAgentCamera.onFocusArray(pBhvrModifier->getValue<LLVector3d>(), "RLVa View");
+			//pControl->setValue(pBhvrModifier->getValue<LLVector3d>().getValue());
 		else
-			pControl->resetToDefault();
+			gAgentCamera.onRemoveCameraPreset("RLVa View");
+			//pControl->resetToDefault();
 	}
 }
 
@@ -2773,6 +2779,7 @@ ERlvCmdRet RlvForceCamEyeFocusOffsetHandler::onCommand(const RlvCommand& rlvCmd)
 		return RLV_RET_FAILED_LOCK;
 
 	LLControlVariable* pEyeOffsetControl = gSavedSettings.getControl("CameraOffsetRLVaView");
+	//BD - Currently we don't support offset scaling at all.
 	LLControlVariable* pEyeOffsetScaleControl = gSavedSettings.getControl("CameraOffsetScaleRLVa");
 	LLControlVariable* pFocusOffsetControl = gSavedSettings.getControl("FocusOffsetRLVaView");
 
