@@ -200,8 +200,11 @@ void LLFloaterEnvironmentSettings::refresh()
 
 	// Populate the combo boxes with appropriate lists of available presets.
 	gDragonLibrary.loadPresetsFromDir(mWaterPresetCombo, "water");
+	gDragonLibrary.addInventoryPresets(mWaterPresetCombo, mLiveWater);
 	gDragonLibrary.loadPresetsFromDir(mSkyPresetCombo, "skies");
+	gDragonLibrary.addInventoryPresets(mSkyPresetCombo, mLiveSky);
 	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
+	gDragonLibrary.addInventoryPresets(mDayCyclePresetCombo, mLiveDay);
 	// Select the current presets in combo boxes.
 	if (mLiveWater)
 		mWaterPresetCombo->setValue(gSavedSettings.getString("WaterPresetName"));
@@ -214,14 +217,17 @@ void LLFloaterEnvironmentSettings::refresh()
 void LLFloaterEnvironmentSettings::populateWaterPresetsList()
 {
 	gDragonLibrary.loadPresetsFromDir(mWaterPresetCombo, "water");
+	gDragonLibrary.addInventoryPresets(mWaterPresetCombo, mLiveWater);
 }
 
 void LLFloaterEnvironmentSettings::populateSkyPresetsList()
 {
 	gDragonLibrary.loadPresetsFromDir(mSkyPresetCombo, "skies");
+	gDragonLibrary.addInventoryPresets(mSkyPresetCombo, mLiveSky);
 }
 
 void LLFloaterEnvironmentSettings::populateDayCyclePresetsList()
 {
 	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
+	gDragonLibrary.addInventoryPresets(mDayCyclePresetCombo, mLiveDay);
 }
