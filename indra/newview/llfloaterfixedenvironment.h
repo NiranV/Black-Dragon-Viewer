@@ -31,6 +31,7 @@
 #include "llsettingsbase.h"
 #include "llflyoutcombobtn.h"
 #include "llinventory.h"
+#include "llenvironment.h"
 
 #include "boost/signals2.hpp"
 
@@ -108,6 +109,7 @@ protected:
 
 	//BD
 	bool					mIsLocalEdit;
+	LLEnvironment::EnvSelection_t	mEnvironment;
 
     void                    onInventoryCreated(LLUUID asset_id, LLUUID inventory_id);
     void                    onInventoryCreated(LLUUID asset_id, LLUUID inventory_id, LLSD results);
