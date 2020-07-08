@@ -4330,7 +4330,7 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
   <!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">3.8.7</string>
+	<string name="VIEWER_VERSION_LOCAL">3.8.8</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Enhancing Dragon</string>
 	
   <string name="UnmuteText">Show Text</string>
