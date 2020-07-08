@@ -855,7 +855,6 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 			showList();
 		}
 	}
-	LL_WARNS("UI") << mLastSelectedIndex << LL_ENDL;
 	return result;
 }
 
