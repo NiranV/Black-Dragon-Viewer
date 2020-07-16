@@ -796,7 +796,9 @@ void LLFloaterFixedEnvironmentWater::updateEditEnvironment(void)
 
 	LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsWater>(mSettings));
 	LLEnvironment::instance().setSelectedEnvironment(mEnvironment);
-	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+	//BD - This needs to stay instant otherwise changing the settings will be done with a transition
+	//     potentially breaking the entire floater due to in-transition changes.
+	LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 }
 
 void LLFloaterFixedEnvironmentWater::onOpen(const LLSD& key)
@@ -880,7 +882,9 @@ void LLFloaterFixedEnvironmentSky::updateEditEnvironment(void)
 
 	LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsSky>(mSettings));
 	LLEnvironment::instance().setSelectedEnvironment(mEnvironment);
-	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+	//BD - This needs to stay instant otherwise changing the settings will be done with a transition
+	//     potentially breaking the entire floater due to in-transition changes.
+	LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_INSTANT);
 }
 
 void LLFloaterFixedEnvironmentSky::onOpen(const LLSD& key)
@@ -1024,6 +1028,11 @@ void LLFloaterFixedEnvironment::loadItem(LLSettingsBase::ptr_t settings)
 
 	mIsLocalEdit = false;
 	gSavedSettings.setString(mSettings->getSettingsType() == "sky" ? "SkyPresetName" : "WaterPresetName", mSettings->getName());
+
+	LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsSky>(mSettings));
+	LLEnvironment::instance().setSelectedEnvironment(mEnvironment);
+	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
+
 	updateEditEnvironment();
 	refresh();
 }
