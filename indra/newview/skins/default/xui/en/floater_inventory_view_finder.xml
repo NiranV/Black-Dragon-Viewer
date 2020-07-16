@@ -2,7 +2,7 @@
 <floater
  legacy_header_height="18"
  can_minimize="false"
- height="466"
+ height="470"
  layout="topleft"
  name="Inventory Finder"
  help_topic="inventory_finder"
@@ -216,10 +216,10 @@
      height="16"
      image_name="Inv_Settings"
      layout="topleft"
-     left="8"
+     left="10"
      mouse_opaque="true"
      name="icon_settings"
-     top="242"
+     top_pad="1"
      width="16" />
     <check_box
      height="16"
@@ -312,7 +312,7 @@
      layout="topleft"
      left_delta="0"
      name="- OR -"
-     top="370"
+     top_pad="3"
      width="144">
         - OR -
     </text>
@@ -320,7 +320,7 @@
      height="16"
      layout="topleft"
      name="date_search_direction"
-     top="388"
+     top_pad="-1"
      left="10"
      width="270">
      <radio_item
