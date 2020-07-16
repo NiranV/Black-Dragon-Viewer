@@ -90,6 +90,11 @@ void LLFloaterEnvironmentSettings::onOpen(const LLSD& key)
 	if (mLiveDay)
 		mLiveDay->defaults();
 
+	// Populate the combo boxes with appropriate lists of available presets.
+	populateSkyPresetsList();
+	populateDayCyclePresetsList();
+	populateWaterPresetsList();
+
 	//BD - Refresh all presets.
 	refresh();
 }
@@ -198,13 +203,6 @@ void LLFloaterEnvironmentSettings::refresh()
 	//BD - Set up radio buttons according to user preferences.
 	mRegionSettingsButton->setValue(use_region_settings);
 
-	// Populate the combo boxes with appropriate lists of available presets.
-	gDragonLibrary.loadPresetsFromDir(mWaterPresetCombo, "water");
-	gDragonLibrary.addInventoryPresets(mWaterPresetCombo, mLiveWater);
-	gDragonLibrary.loadPresetsFromDir(mSkyPresetCombo, "skies");
-	gDragonLibrary.addInventoryPresets(mSkyPresetCombo, mLiveSky);
-	gDragonLibrary.loadPresetsFromDir(mDayCyclePresetCombo, "days");
-	gDragonLibrary.addInventoryPresets(mDayCyclePresetCombo, mLiveDay);
 	// Select the current presets in combo boxes.
 	if (mLiveWater)
 		mWaterPresetCombo->setValue(gSavedSettings.getString("WaterPresetName"));

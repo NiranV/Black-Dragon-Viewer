@@ -188,7 +188,8 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 	mIsLocalEdit = !mInventoryItem;
 	updateEditEnvironment();
 
-	syncronizeTabs();
+	//syncronizeTabs();
+	populatePresetsList();
 	refresh();
 }
 
@@ -226,12 +227,7 @@ void LLFloaterFixedEnvironment::refresh()
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_PARCEL, canApplyParcel());
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_REGION, canApplyRegion());
 
-	std::string type = mSettings->getSettingsType();
-	std::string folder = type == "sky" ? "skies" : "water";
-	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
-	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
-
-	std::string debug = type == "sky" ? "SkyPresetName" : "WaterPresetName";
+	std::string debug = mSettings->getSettingsType() == "sky" ? "SkyPresetName" : "WaterPresetName";
 	std::string preset_name = mIsLocalEdit ? gSavedSettings.getString(debug) : mSettings->getName();
 	mTxtName->setLabel(preset_name);
 	mTxtName->setValue(preset_name);
@@ -249,6 +245,17 @@ void LLFloaterFixedEnvironment::refresh()
             panel->refresh();
         }
     }
+}
+
+void LLFloaterFixedEnvironment::populatePresetsList()
+{
+	if (!mSettings)
+		return;
+
+	std::string type = mSettings->getSettingsType();
+	std::string folder = type == "sky" ? "skies" : "water";
+	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
+	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
 }
 
 void LLFloaterFixedEnvironment::syncronizeTabs()
@@ -939,8 +946,7 @@ void LLFloaterFixedEnvironment::onButtonSave()
 	std::string folder = mSettings->getSettingsType() == "sky" ? "skies" : "water";
 
 	gDragonLibrary.savePreset(mTxtName->getValue(), mSettings);
-	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
-	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
+	populatePresetsList();
 }
 
 void LLFloaterFixedEnvironment::onButtonDelete()
@@ -948,8 +954,7 @@ void LLFloaterFixedEnvironment::onButtonDelete()
 	std::string type = mSettings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : "water";
 	gDragonLibrary.deletePreset(mTxtName->getValue(), folder);
-	gDragonLibrary.loadPresetsFromDir(mTxtName, folder);
-	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
+	populatePresetsList();
 }
 
 void LLFloaterFixedEnvironment::onSelectPreset()
