@@ -3921,6 +3921,16 @@
              function="Floater.Toggle"
              parameter="poser" />
         </menu_item_check>
+   <!--<menu_item_check
+        label="Animator"
+        name="Animator">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="animator" />
+            <menu_item_check.on_click
+             function="Floater.Toggle"
+             parameter="animator" />
+        </menu_item_check>-->
    <menu_item_check
         label="Recorder"
         name="Recorder">

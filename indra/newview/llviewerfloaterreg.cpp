@@ -158,6 +158,7 @@
 #include "llsyswellwindow.h"
 
 //BD
+#include "bdfloateranimator.h"
 #include "bdfloateranimations.h"
 #include "bdfloatercomplexity.h"
 #include "bdfloatercamera.h"
@@ -391,6 +392,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("world_map", "floater_world_map.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterWorldMap>);	
 
 	//BD
+	LLFloaterReg::add("animator", "floater_animator.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimator>);
 	LLFloaterReg::add("object_manipulation", "floater_object_list.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterObjects>);
 	LLFloaterReg::add("animation_control", "floater_animation_control.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterAnimations>);
 	LLFloaterReg::add("complexity", "floater_complexity.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterComplexity>);
