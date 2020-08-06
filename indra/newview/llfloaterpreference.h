@@ -163,13 +163,19 @@ public:
 	void onClickDisablePopup();	
 	void resetAllIgnored();
 	void setAllIgnored();
-	void onClickLogPath();
+	void onClickChatLogPath();
 	void changeLogPath(const std::vector<std::string>& filenames, std::string proposed_name);
 	bool moveTranscriptsAndLog();
 	void enableHistory();
 	void setPersonalInfo(const std::string& visibility, bool im_via_email, bool is_verified_email);
 	void refreshEnabledState();
 	void refresh();	// Refresh enable/disable
+
+	//BD
+	void onDeleteLogs();
+
+	//BD
+	void onClickResetChatLog();
 
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
@@ -208,8 +214,11 @@ public:
 //	//BD - Warning System
 	void refreshWarnings();
 
-//	//BD - Open Log Path
+//	//BD - Open Path
 	void openLog();
+	void openChatLog();
+	void openCache();
+	void onOpen(std::string path);
 
 //	//BD - Expandable Tabs
 	void toggleTabs();

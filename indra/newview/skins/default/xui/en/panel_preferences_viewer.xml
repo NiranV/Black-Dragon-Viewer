@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="813"
+	      height="889"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -655,21 +655,20 @@ width="510">
    left="10"
    name="Cache:"
    top_delta="4"
-   width="100">
-    Cache Location:
+   width="200">
+    Viewer Folder Locations:
   </text>
   <line_editor
    control_name="CacheLocationTopFolder"
    border_style="line"
    border_thickness="1"
    follows="left|top"
-   font="SansSerif"
    height="23"
    layout="topleft"
    left="10"
    name="cache_location"
    top_pad="15"
-   width="299" />
+   width="329" />
   <button
    follows="left|top"
    height="23"
@@ -685,33 +684,156 @@ width="510">
    function="Pref.SetCache" />
   </button>
   <button
+ follows="left|top"
+ height="23"
+ label="Open"
+ label_selected="Open"
+ tool_tip="This button opens the currently set Cache location."
+ layout="topleft"
+ left_pad="5"
+ name="open_log_path_button"
+ top_delta="0"
+ width="55">
+ <commit_callback
+ function="Pref.OpenCache" />
+ </button>
+  <button
     follows="left|top"
     height="23"
-    label="Reset"
-    label_selected="Default Location"
+    image_overlay="Refresh_Off"
     tool_tip="This button resets the cache path to its default location."
     layout="topleft"
     left_pad="5"
     name="default_cache_location"
     top_delta="0"
-    width="80">
+    width="25">
     <button.commit_callback
      function="Pref.ResetCache" />
   </button>
   <button
    follows="left|top"
    height="23"
-   label="Clear"
-   label_selected="Clear Cache"
+   image_overlay="TrashItem_Off"
    tool_tip="This button forces a cache purge the next time the Viewer is run. It is highly recommended to do manual cache purges to make sure absolutely everything is properly purged."
    layout="topleft"
    left_pad="5"
    name="clear_cache"
    top_delta="0"
-   width="60">
+   width="25">
   <button.commit_callback
    function="Pref.ClearCache" />
   </button>
+  
+  <line_editor
+ bottom="366"
+ enabled="false"
+ control_name="InstantMessageLogPath"
+ follows="top|left"
+ halign="right"
+ height="23"
+ layout="topleft"
+ left="10"
+ mouse_opaque="false"
+ name="chatlog_path_string"
+ top_pad="15"
+ width="329"/>
+ <button
+ follows="left|top"
+ height="23"
+ label="..."
+ label_selected="..."
+ tool_tip="This option sets the path all logs and transcripts should be saved to on your hard drive."
+ layout="topleft"
+ left_pad="1"
+ name="chatlog_path_button"
+ top_delta="0"
+ width="25">
+ <commit_callback
+ function="Pref.ChatLogPath" />
+ </button>
+ <button
+ follows="left|top"
+ height="23"
+ label="Open"
+ label_selected="Open"
+ tool_tip="This button opens the currently set chatlog path."
+ layout="topleft"
+ left_pad="5"
+ name="open_log_path_button"
+ top_delta="0"
+ width="55">
+ <commit_callback
+ function="Pref.OpenChatLog" />
+ </button>
+ <button
+  follows="left|top"
+  height="23"
+  image_overlay="Refresh_Off"
+  tool_tip="This button resets the chatlog path to its default location."
+  layout="topleft"
+  left_pad="5"
+  name="default_chatlog_location"
+  top_delta="0"
+  width="25">
+  <button.commit_callback
+   function="Pref.ResetChatLog" />
+  </button>
+ <button
+ enabled="false"
+ follows="top|left"
+ height="23"
+ tool_tip="This option deletes all chatlogs saved for the current account."
+ image_overlay="TrashItem_Off"
+ layout="topleft"
+ left_pad="5"
+ top_delta="0"
+ name="delete_transcripts"
+ width="25">
+ <button.commit_callback
+ function="Pref.DeleteChatLogs" />
+ </button>
+ 
+ <line_editor
+ bottom="366"
+ enabled="false"
+ control_name="LogsLogPath"
+ follows="top|left"
+ halign="right"
+ height="23"
+ layout="topleft"
+ left="10"
+ mouse_opaque="false"
+ name="log_path_string"
+ top_pad="15"
+ width="389"/>
+ <button
+ follows="left|top"
+ height="23"
+ label="Open"
+ label_selected="Open"
+ tool_tip="This button opens the currently set viewer log path."
+ layout="topleft"
+ left_pad="1"
+ name="open_log_path_button"
+ top_delta="0"
+ width="55">
+ <commit_callback
+ function="Pref.OpenLog" />
+ </button>
+ <button
+ follows="top|left"
+ height="23"
+ tool_tip="This option deletes all viewer logs."
+ image_overlay="TrashItem_Off"
+ layout="topleft"
+ left_pad="5"
+ top_delta="0"
+ name="delete_logs"
+ width="25">
+ <button.commit_callback
+ function="Pref.DeleteLogs" />
+ </button>
+ 
   <panel
  follows="left|top|right"
  height="20"

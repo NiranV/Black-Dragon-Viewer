@@ -113,6 +113,7 @@
 #include "bdfloatercamera.h"
 //BD
 #include "lldateutil.h"
+#include "llcontrol.h"
 
 #include "llweb.h"
 #include "llfloatertexturefetchdebugger.h"
@@ -827,6 +828,9 @@ bool LLAppViewer::init()
 
 	if (!initConfiguration())
 		return false;
+
+	//BD - Set the current log path so we can see and open it in preferences.
+	gSavedSettings.setString("LogsLogPath", gDirUtilp->add(gDirUtilp->getOSUserAppDir(), "logs"));
 
 	LLViewerJoystick::getInstance()->init(true);
 

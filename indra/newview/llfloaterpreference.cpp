@@ -1067,16 +1067,13 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.Cancel",					boost::bind(&LLFloaterPreference::onBtnCancel, this));
 	mCommitCallbackRegistrar.add("Pref.OK",						boost::bind(&LLFloaterPreference::onBtnOK, this));
 	
-	mCommitCallbackRegistrar.add("Pref.ClearCache",				boost::bind(&LLFloaterPreference::onClickClearCache, this));
 	mCommitCallbackRegistrar.add("Pref.WebClearCache",			boost::bind(&LLFloaterPreference::onClickBrowserClearCache, this));
-	mCommitCallbackRegistrar.add("Pref.SetCache",				boost::bind(&LLFloaterPreference::onClickSetCache, this));
-	mCommitCallbackRegistrar.add("Pref.ResetCache",				boost::bind(&LLFloaterPreference::onClickResetCache, this));
 	mCommitCallbackRegistrar.add("Pref.VoiceSetKey",			boost::bind(&LLFloaterPreference::onClickSetKey, this));
 	mCommitCallbackRegistrar.add("Pref.VoiceSetMiddleMouse",	boost::bind(&LLFloaterPreference::onClickSetMiddleMouse, this));
 	mCommitCallbackRegistrar.add("Pref.SetSounds",				boost::bind(&LLFloaterPreference::onClickSetSounds, this));
 	mCommitCallbackRegistrar.add("Pref.ClickEnablePopup",		boost::bind(&LLFloaterPreference::onClickEnablePopup, this));
 	mCommitCallbackRegistrar.add("Pref.ClickDisablePopup",		boost::bind(&LLFloaterPreference::onClickDisablePopup, this));	
-	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
+	
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
@@ -1087,8 +1084,18 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.PermsDefault",           boost::bind(&LLFloaterPreference::onClickPermsDefault, this));
 	mCommitCallbackRegistrar.add("Pref.RememberedUsernames",    boost::bind(&LLFloaterPreference::onClickRememberedUsernames, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
-	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
-	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
+
+	//BD - Logs
+	mCommitCallbackRegistrar.add("Pref.DeleteLogs",				boost::bind(&LLFloaterPreference::onDeleteLogs, this));
+	//BD - Chatlogs
+	mCommitCallbackRegistrar.add("Pref.ChatLogPath",			boost::bind(&LLFloaterPreference::onClickChatLogPath, this));
+	//mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
+	mCommitCallbackRegistrar.add("Pref.ResetChatLog",			boost::bind(&LLFloaterPreference::onClickResetChatLog, this));
+	mCommitCallbackRegistrar.add("Pref.DeleteChatLogs",			boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
+	//BD - Cache
+	mCommitCallbackRegistrar.add("Pref.ClearCache",				boost::bind(&LLFloaterPreference::onClickClearCache, this));
+	mCommitCallbackRegistrar.add("Pref.SetCache",				boost::bind(&LLFloaterPreference::onClickSetCache, this));
+	mCommitCallbackRegistrar.add("Pref.ResetCache",				boost::bind(&LLFloaterPreference::onClickResetCache, this));
 
 	mCommitCallbackRegistrar.add("Pref.UpdateFilter",			boost::bind(&LLFloaterPreference::onUpdateFilterTerm, this, false));
 
@@ -1112,8 +1119,10 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClickAction, this));
 	mCommitCallbackRegistrar.add("Pref.ChangeMode", boost::bind(&LLFloaterPreference::refreshKeys, this));
 
-//	//BD - Open Log Path
+//	//BD - Open Paths
+	mCommitCallbackRegistrar.add("Pref.OpenChatLog", boost::bind(&LLFloaterPreference::openChatLog, this));
 	mCommitCallbackRegistrar.add("Pref.OpenLog", boost::bind(&LLFloaterPreference::openLog, this));
+	mCommitCallbackRegistrar.add("Pref.OpenCache", boost::bind(&LLFloaterPreference::openCache, this));
 
 //	//BD - Expandable Tabs
 	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
@@ -1235,8 +1244,6 @@ BOOL LLFloaterPreference::postBuild()
 	getChild<LLUICtrl>("cache_location")->setEnabled(FALSE); // make it read-only but selectable (STORM-227)
 	std::string cache_location = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "");
 	setCacheLocation(cache_location);
-
-	getChild<LLUICtrl>("log_path_string")->setEnabled(FALSE); // make it read-only but selectable
 
 	getChild<LLUICtrl>("language_radio")->setCommitCallback(boost::bind(&LLFloaterPreference::onLanguageChange, this));
 
@@ -1676,9 +1683,25 @@ void LLFloaterPreference::onClickSetAnyKey()
 }
 
 //BD - Open Log Path
+void LLFloaterPreference::openChatLog()
+{
+	onOpen(gDirUtilp->getChatLogsDir());
+}
+
 void LLFloaterPreference::openLog()
 {
-	std::string path = gDirUtilp->getChatLogsDir();
+	onOpen(gDirUtilp->add(gDirUtilp->getOSUserAppDir(), "logs"));
+}
+
+void LLFloaterPreference::openCache()
+{
+	onOpen(gDirUtilp->getCacheDir());
+}
+
+void LLFloaterPreference::onOpen(std::string path)
+{
+	if (path.empty())
+		return;
 	LLWString url_wstring = utf8str_to_wstring(path);
 	llutf16string url_utf16 = wstring_to_utf16str(url_wstring);
 	SHELLEXECUTEINFO sei = { sizeof(sei) };
@@ -3398,13 +3421,22 @@ void LLFloaterPreference::setAllIgnored()
 	}
 }
 
-void LLFloaterPreference::onClickLogPath()
+void LLFloaterPreference::onClickChatLogPath()
 {
 	std::string proposed_name(gSavedPerAccountSettings.getString("InstantMessageLogPath"));	 
 	mPriorInstantMessageLogPath.clear();
 	
 
 	(new LLDirPickerThread(boost::bind(&LLFloaterPreference::changeLogPath, this, _1, _2), proposed_name))->getFile();
+}
+
+void LLFloaterPreference::onClickResetChatLog()
+{
+	if (gSavedPerAccountSettings.getString("InstantMessageLogPath") != gDirUtilp->getChatLogsDir())
+	{
+		gSavedPerAccountSettings.setString("InstantMessageLogPath", gDirUtilp->getChatLogsDir());
+		moveTranscriptsAndLog();
+	}
 }
 
 void LLFloaterPreference::changeLogPath(const std::vector<std::string>& filenames, std::string proposed_name)
@@ -3651,6 +3683,11 @@ void LLFloaterPreference::onClickPermsDefault()
 void LLFloaterPreference::onClickRememberedUsernames()
 {
     LLFloaterReg::showInstance("forget_username");
+}
+
+void LLFloaterPreference::onDeleteLogs()
+{
+	gDirUtilp->deleteFilesInDir(gDirUtilp->add(gDirUtilp->getOSUserAppDir(), "logs"), "*.log");
 }
 
 void LLFloaterPreference::onDeleteTranscripts()
