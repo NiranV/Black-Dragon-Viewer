@@ -90,7 +90,6 @@
              width="64" />
             <color_swatch
              can_apply_immediately="true"
-             allow_alpha="false"
              follows="left|top"
              height="80"
              label=""
@@ -365,7 +364,6 @@
              width="64" />
             <color_swatch
              can_apply_immediately="true"
-             allow_alpha="false"
              follows="left|top"
              height="80"
              layout="topleft"
