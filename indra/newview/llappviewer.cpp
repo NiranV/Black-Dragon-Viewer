@@ -2182,9 +2182,12 @@ bool LLAppViewer::cleanup()
 	// realtime, or might throw an exception.
 	LLSingletonBase::cleanupAll();
 
+	//BD - Make it clear that we are logged off cleanly, this should make reading the logs a bit easier for me.
 	// The logging subsystem depends on an LLSingleton. Any logging after
 	// LLSingletonBase::deleteAll() won't be recorded.
-	LL_INFOS() << "Goodbye!" << LL_ENDL;
+	LL_INFOS() << "======================================================================================" << LL_ENDL;
+	LL_INFOS() << "=====================================|Goodbye!|=======================================" << LL_ENDL;
+	LL_INFOS() << "======================================================================================" << LL_ENDL;
 
 	// This calls every remaining LLSingleton's deleteSingleton() method.
 	// No class destructor should perform any cleanup that might take
@@ -2352,6 +2355,12 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 
 	// Set the log file to SecondLife.log
 	LLError::logToFile(log_file);
+
+	//BD - Make it clear that we are starting a new session here, this should make reading the logs a bit easier for me.
+	LL_INFOS() << "======================================================================================" << LL_ENDL;
+	LL_INFOS() << "==============================|STARTING A NEW SESSION|================================" << LL_ENDL;
+	LL_INFOS() << "======================================================================================" << LL_ENDL;
+
 	if (!duration_log_msg.empty())
 	{
 		LL_WARNS("MarkerFile") << duration_log_msg << LL_ENDL;
