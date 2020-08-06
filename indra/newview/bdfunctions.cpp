@@ -550,25 +550,11 @@ void BDFunctions::onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settin
 
 	//BD - Loading as inventory item failed so it must be a local preset.
 	std::string name = combo->getValue().asString();
-	//BD - Make sure whatever string we get is a name only and doesn't contain a file ending.
-	//     Next make sure whatever string we get is unescaped.
-	//     We do this to make sure that whever is passed here will always be the unescaped
-	//     basic name string which we can then add to and manipulate the way we need it.
-	//     This also fixes a weird behavior with dropdowns that report their label as value
-	//     when using SHIFT + Up/Down instead of the actual value (if there is any) that it 
-	//     would normally report when selecting an item out of the list.
-	name = gDirUtilp->getBaseFileName(LLURI::unescape(name), true);
 
-	std::string dir = gDirUtilp->add(getWindlightDir(folder, true), escapeString(name) + ".xml");
-	if (!loadPreset(dir, settings))
+	if (!loadPreset(name, settings))
 	{
-		//BD - Next attempt, try to find it in user_settings.
-		dir = gDirUtilp->add(getWindlightDir(folder, false), escapeString(name) + ".xml");
-		if (!loadPreset(dir, settings))
-		{
-			LLNotificationsUtil::add("BDCantLoadPreset");
-			LL_WARNS("Windlight") << "Failed to load windlight preset from: " << dir << LL_ENDL;
-		}
+		LLNotificationsUtil::add("BDCantLoadPreset");
+		LL_WARNS("Windlight") << "Failed to load windlight preset from: " << name << LL_ENDL;
 	}
 }
 
@@ -657,20 +643,23 @@ void BDFunctions::deletePreset(std::string name, std::string folder)
 {
 	if (name.empty() || folder.empty()) return;
 
+	//BD - Check whether we are in the system presets folder which means we are trying
+	//     to delete one.
+	std::string filename = gDirUtilp->getBaseFileName(name, false);
+	std::string sys_dir = getWindlightDir(folder, true);
+	gDirUtilp->append(sys_dir, filename);
+
 	// Don't allow deleting system presets.
-	if ((folder == "skies" && gDragonLibrary.mDefaultSkyPresets.has(name))
-		|| (folder == "water" && gDragonLibrary.mDefaultWaterPresets.has(name))
-		|| (folder == "days" && gDragonLibrary.mDefaultDayCyclePresets.has(name)))
+	if (sys_dir == name)
 	{
 		LLNotificationsUtil::add("WLNoEditDefault");
 		return;
 	}
 	else
 	{
-		std::string path_name(getWindlightDir(folder));
-		std::string escaped_name = escapeString(name);
-
-		if (gDirUtilp->deleteFilesInDir(path_name, escaped_name + ".xml") < 1)
+		//BD - We assume its the user_settings folder since we never allow deleting
+		//     system presets and we shouldn't get here if we intended to delete one.
+		if (gDirUtilp->deleteFilesInDir(getWindlightDir(folder), filename) < 1)
 		{
 			LLNotificationsUtil::add("BDCantRemovePreset");
 			LL_WARNS("WindLight") << "Error removing windlight preset " << name << " from disk" << LL_ENDL;
@@ -702,7 +691,7 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 				continue;
 			}
 
-			combo->add(name, file, ADD_BOTTOM, true);
+			combo->add(name, path, ADD_BOTTOM, true);
 			success = true;
 		}
 	}
@@ -732,7 +721,7 @@ void BDFunctions::loadPresetsFromDir(LLComboBox* combo, std::string folder)
 				continue;
 			}
 
-			combo->add(name, file, ADD_BOTTOM, true);
+			combo->add(name, path, ADD_BOTTOM, true);
 			if (folder == "skies")
 				mDefaultSkyPresets[name] = name;
 			else if (folder == "days")
