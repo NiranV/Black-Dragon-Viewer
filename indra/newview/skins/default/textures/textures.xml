@@ -760,8 +760,10 @@ with the same filename but different name
   
   <texture name="Prefs_Separator" file_name="widgets/prefs_separator.png"/>
   
-  <texture name="Caution_Widget" file_name="icons/caution_widget.png"/>
-  <texture name="Default_Widget" file_name="icons/default_widget.png"/>
+  <texture name="Caution_Widget" file_name="icons/Caution_Widget.png"/>
+  <texture name="Default_Widget" file_name="icons/Default_Widget.png"/>
+  <texture name="Caution_Widget_Mini" file_name="icons/Caution_Widget_Mini.png"/>
+  <texture name="Default_Widget_Mini" file_name="icons/Default_Widget_Mini.png"/>
   
   <texture name="Caret_Top_Icon" file_name="toolbar_icons/caret_top.png" preload="true" scale.left="1" scale.top="27" scale.right="15" scale.bottom="5" />
   

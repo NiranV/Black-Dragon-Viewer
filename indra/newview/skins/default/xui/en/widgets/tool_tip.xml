@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <tool_tip name="tooltip"
           max_width="200"
-          padding="10"
           wrap="true"
+          padding="10"
           font="SansSerif"
           mouse_opaque="false" 
           bg_opaque_image="Toast_Background"
