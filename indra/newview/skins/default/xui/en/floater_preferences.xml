@@ -222,15 +222,9 @@ width="669">
   <panel
   class="panel_preference"
   filename="panel_preferences_chat.xml"
-  label="Chat"
+  label="Chat &amp; Instant Messages"
   layout="topleft"
   name="chat" />
-  <panel
-  class="panel_preference_privacy"
-  filename="panel_preferences_im.xml"
-  label="IM &amp; Groupchat"
-  layout="topleft"
-  name="instant" />
   <panel
   class="panel_preference"
   filename="panel_preferences_camera.xml"

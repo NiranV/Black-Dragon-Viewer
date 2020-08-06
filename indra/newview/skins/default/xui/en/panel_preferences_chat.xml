@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="828"
+  height="978"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -1183,6 +1183,157 @@ width="510">
    image_pressed_selected="Checkbox_On_Press" />
    </radio_item>
    </radio_group>
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="515"/>
+   <text
+   name="show_ims_in_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Instant Message Options:
+   </text>
+   <check_box
+   height="16"
+   label="Email me IMs when I'm offline"
+   layout="topleft"
+   left_delta="0"
+   name="send_im_to_email"
+   tool_tip="This option toggles whether the currently logged in account should receive all messages while offline as mails ontop of receiving them inworld. This option will circumvent the offline instant message limit by sending all overflowing messages via mail too, it will not stop all messages above the limit from not being delivered inworld. &lt;red&gt;This option requires you to verify your E-Mail in order to work.&lt;/red&gt;"
+   top_pad="15"
+   width="400" />
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="515"/>
+   <text
+   name="misc_label"
+   follows="left|top"
+   layout="topleft"
+   left="10"
+   height="12"
+   width="350"
+   top_delta="4">
+   Toast &amp; IM Appearance Options:
+   </text>
+   <slider
+   control_name="ToastFadingTime"
+   decimal_digits="0"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="1"
+   label="Toast Fade Time:"
+   label_width="150"
+   tool_tip="This option controls the amount of time in s (seconds) toasts (small messages in the right bottom corner) need to fade out after they got transparent (started to fade)."
+   layout="topleft"
+   left="10"
+   max_val="10"
+   min_val="0"
+   name="ToastFadingTime"
+   top_pad="14"/>
+   <button
+   follows="left|top"
+   control_name="ToastFadingTime"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
+   <slider
+   control_name="ToastGap"
+   decimal_digits="0"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="1"
+   label="Toast Gap:"
+   label_width="150"
+   tool_tip="This option sets the amount of space in pixels between each toast."
+   layout="topleft"
+   left="10"
+   max_val="25"
+   min_val="0"
+   name="ToastGap"
+   top_pad="1"/>
+   <button
+   follows="left|top"
+   control_name="ToastGap"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
+   <slider
+   control_name="ChannelBottomPanelMargin"
+   decimal_digits="0"
+   can_edit_text="true"
+   follows="left|top"
+   height="15"
+   increment="1"
+   initial_value="35"
+   label="Toast Margin:"
+   label_width="150"
+   tool_tip="This option sets the amount of space in pixels between system and instant message toasts and the bottom of the screen. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
+   layout="topleft"
+   left="10"
+   max_val="100"
+   min_val="0"
+   name="ChannelBottomPanelMargin"
+   top_pad="1" />
+   <button
+   follows="left|top"
+   control_name="ChannelBottomPanelMargin"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
     
    <!--<button
    height="23"
