@@ -298,7 +298,27 @@ void LLToolTip::initFromParams(const LLToolTip::Params& p)
 	}
 	else
 	{
-		mTextBox->setText(p.message());
+		//BD - UI Improvements
+		//     Allow linebreaks whenever we find a | in our tooltip.
+		//     This allows segmenting and properly organizing tooltips.
+		std::string msg = p.message();
+		std::string prev_msg;
+		while (true)
+		{
+			std::size_t pos = msg.find("|");
+			if (pos != std::string::npos)
+			{
+				prev_msg = msg.substr(0, pos);
+				msg = msg.substr(pos + 1);
+				mTextBox->appendText(prev_msg, false);
+				mTextBox->appendLineBreakSegment(LLStyle::Params());
+			}
+			else
+			{
+				mTextBox->appendText(msg, false);
+				break;
+			}
+		}
 	}
 
 	S32 text_width = llmin(p.max_width(), mTextBox->getTextPixelWidth() + 1);
