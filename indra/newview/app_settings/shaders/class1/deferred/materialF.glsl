@@ -379,6 +379,7 @@ void main()
 
     color = mix(color.rgb, diffcol.rgb, diffuse.a);
     
+#if USE_ENV_MAP
     if (envIntensity > 0.0)
     {
         //add environmentmap
@@ -393,6 +394,7 @@ void main()
         cur_glare *= envIntensity*4.0;
         glare += cur_glare;
     }
+#endif
 
     color = atmosFragLighting(color, additive, atten);
     color = scaleSoftClipFrag(color);

@@ -915,6 +915,13 @@ static bool handleGodraysChanged(const LLSD& newvalue)
 	return LLViewerShaderMgr::instance()->loadShadersGodrays(success);
 }
 
+static bool handleEnvironmentMapChanged(const LLSD& newvalue)
+{
+	BOOL success = gPipeline.sRenderDeferred;
+	success = LLViewerShaderMgr::instance()->loadShadersSSR(success);
+	return LLViewerShaderMgr::instance()->loadShadersMaterials(success);
+}
+
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
 	BOOL success = gPipeline.sRenderDeferred;
@@ -1177,7 +1184,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
-	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleEnvironmentMapChanged, _2));
 	gSavedSettings.getControl("RenderHighPrecisionNormals")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 
 	//BD - Rendering (Main Toggles)
