@@ -57,7 +57,9 @@ LLSliderCtrl::LLSliderCtrl(const LLSliderCtrl::Params& p)
 	mTextEnabledColor(p.text_color()),
 	mTextDisabledColor(p.text_disabled_color()),
 	mLabelWidth(p.label_width),
-	mEditorCommitSignal(NULL)
+	mEditorCommitSignal(NULL),
+	//BD - UI Improvements
+	mAllowPrecisionOverride(p.precision_override)
 {
 	S32 top = getRect().getHeight();
 	S32 bottom = 0;
@@ -212,7 +214,8 @@ void LLSliderCtrl::onEditorGainFocus( LLFocusableElement* caller, void *userdata
 
 void LLSliderCtrl::setValue(F32 v, BOOL from_event)
 {
-	mSlider->setValue( v, from_event );
+	//BD - UI Improvements
+	mSlider->setValue( v, from_event, mAllowPrecisionOverride );
 	mValue = mSlider->getValueF32();
 	updateText();
 }

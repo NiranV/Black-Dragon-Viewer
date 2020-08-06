@@ -107,15 +107,20 @@ LLSlider::~LLSlider()
 	delete mMouseUpSignal;
 }
 
-void LLSlider::setValue(F32 value, BOOL from_event)
+//BD - UI Improvements
+void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override)
 {
 	value = llclamp( value, mMinValue, mMaxValue );
 
-	// Round to nearest increment (bias towards rounding down)
-	value -= mMinValue;
-	value += mIncrement/2.0001f;
-	value -= fmod(value, mIncrement);
-	value += mMinValue;
+	//BD - UI Improvements
+	if (!precision_override)
+	{
+		// Round to nearest increment (bias towards rounding down)
+		value -= mMinValue;
+		value += mIncrement / 2.0001f;
+		value -= fmod(value, mIncrement);
+		value += mMinValue;
+	}
 
 	if (!from_event && getValueF32() != value)
 	{

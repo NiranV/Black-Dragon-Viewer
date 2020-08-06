@@ -48,6 +48,9 @@ public:
 		Optional<bool>			is_volume_slider;
 		Optional<S32>			decimal_digits;
 
+		//BD - UI Improvements
+		Optional<bool>			precision_override;
+
 		Optional<LLUIColor>		text_color,
 								text_disabled_color;
 
@@ -74,7 +77,9 @@ public:
 			slider_label("slider_label"),
 			mouse_down_callback("mouse_down_callback"),
 			mouse_up_callback("mouse_up_callback"),
-			orientation("orientation", std::string ("horizontal"))
+			orientation("orientation", std::string ("horizontal")),
+			//BD - UI Improvements
+			precision_override("precision_override")
 		{}
 	};
 protected:
@@ -168,6 +173,9 @@ private:
 
 	LLUIColor	mTextEnabledColor;
 	LLUIColor	mTextDisabledColor;
+
+	//BD - UI Improvements
+	BOOL			mAllowPrecisionOverride;
 
 	commit_signal_t*	mEditorCommitSignal;
 };
