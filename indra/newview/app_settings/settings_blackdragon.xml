@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>LogsLogPath</key>
+  <map>
+    <key>Comment</key>
+    <string>Path to your log files.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>String</string>
+    <key>Value</key>
+    <string />
+  </map>
   <key>SnapshotResolutionUnlock</key>
   <map>
     <key>Comment</key>
