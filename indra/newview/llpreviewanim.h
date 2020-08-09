@@ -40,6 +40,9 @@ public:
 	void draw();
 	void cleanup();
 	void play(const LLSD& param);
+	void time(LLUICtrl* time, const LLSD& param);
+
+	F32 nTime;
 	
 protected:
 	

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="94"
+ height="113"
  layout="topleft"
  name="preview_anim"
- width="283">
+ width="285">
     <floater.string
      name="Title">
         Animation: [NAME]
@@ -89,4 +89,21 @@
         function="PreviewAnim.Play"
         parameter="Locally" /> 
     </button>
+    <slider  
+      decimal_digits="3"
+      follows="left|top"
+      can_edit_text="true"
+      height="14"
+      top_pad="4"
+      increment="0.001" 
+      initial_value="0.00"
+      width="268"
+      left="7"
+      min_value="-60"
+      mouse_opaque="true"
+      name="time"
+      show_text="true">
+      <slider.commit_callback
+      function="PreviewAnim.Time"/>
+      </slider>
 </floater>

@@ -38,13 +38,19 @@
 #include "lluictrlfactory.h"
 #include "lluictrlfactory.h"
 #include "lldatapacker.h"
+//BD
+#include "llmotion.h"
 
 extern LLAgent gAgent;
+
+const S32 NUM_JOINT_SIGNATURE_STRIDES = LL_CHARACTER_MAX_ANIMATED_JOINTS / 4;
 
 LLPreviewAnim::LLPreviewAnim(const LLSD& key)
 	: LLPreview( key )
 {
 	mCommitCallbackRegistrar.add("PreviewAnim.Play", boost::bind(&LLPreviewAnim::play, this, _2));
+
+	mCommitCallbackRegistrar.add("PreviewAnim.Time", boost::bind(&LLPreviewAnim::time, this, _1, _2));
 }
 
 // virtual
@@ -53,8 +59,10 @@ BOOL LLPreviewAnim::postBuild()
 	const LLInventoryItem* item = getItem();
 	if(item)
 	{
-		gAgentAvatarp->createMotion(item->getAssetUUID()); // preload the animation
+		LLMotion* motion = gAgentAvatarp->createMotion(item->getAssetUUID()); // preload the animation
 		getChild<LLUICtrl>("desc")->setValue(item->getDescription());
+
+		getChild<LLSliderCtrl>("time")->setMaxValue(motion->getDuration());
 	}
 
 	childSetCommitCallback("desc", LLPreview::onText, this);
@@ -130,6 +138,25 @@ void LLPreviewAnim::play(const LLSD& param)
 				btn_other->setEnabled(true);
 			}
 		}
+	}
+}
+
+void LLPreviewAnim::time(LLUICtrl* ctrl, const LLSD& param)
+{
+	const LLInventoryItem *item = getItem();
+	LLUUID itemID = item->getAssetUUID();
+	LLMotion* motion = gAgentAvatarp->findMotion(itemID);
+	if (motion)
+	{
+		/*U8 last_joint_signature[LL_CHARACTER_MAX_ANIMATED_JOINTS];
+		memset(&last_joint_signature, 0, sizeof(U8) * LL_CHARACTER_MAX_ANIMATED_JOINTS);
+
+		for (S32 i = 0; i < NUM_JOINT_SIGNATURE_STRIDES; i++)
+		{
+			*((U32*)&last_joint_signature[i * 4]) = *(U32*)&(motion->mJointSignature[0][i * 4]);
+		}
+		motion->onUpdate(ctrl->getValue().asReal(), last_joint_signature);*/
+		motion->activate(ctrl->getValue().asReal());
 	}
 }
 
