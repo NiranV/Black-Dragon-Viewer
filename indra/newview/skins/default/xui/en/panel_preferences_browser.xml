@@ -112,7 +112,8 @@ width="510">
       height="16"
       initial_value="true"
       control_name="BrowserPluginsEnabled"
-	tool_tip="This option allows the internal browser to use plugins. &lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
+	tool_tip="This option allows the internal browser to use plugins.
+||&lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
       label="Enable plugins"
       left_delta="0"
       mouse_opaque="true"
@@ -143,7 +144,8 @@ width="510">
       layout="topleft"
       height="16"
       initial_value="true"
-	tool_tip="This option enables the internal browser to use the javascript bridge for executing javascripts on opened webpages. &lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
+	tool_tip="This option enables the internal browser to use the javascript bridge for executing javascripts on opened webpages.
+||&lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
       enabled_control="BrowserJavascriptEnabled"
       control_name="BrowserEnableJSObject"
       label="Enable Javascript Bridge"
@@ -176,7 +178,8 @@ width="510">
       initial_value="false"
       control_name="AutoLoadWebProfiles"
       label="Auto load all Webprofiles without asking"
-	tool_tip="This option allows opening all webprofiles without asking the user first. &lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
+	tool_tip="This option allows opening all webprofiles without asking the user first.
+||&lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
       left_delta="0"
       mouse_opaque="true"
       name="AutoLoadWebProfiles"
