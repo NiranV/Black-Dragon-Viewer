@@ -197,7 +197,6 @@ public:
 	void renderOneWireframeDots(const LLColor4& color);
 	void renderOneWireframeWire(const LLColor4& color);
 	void renderOneWireframeDragon(const LLColor4& color);
-	void renderOneWireframeBeacon(const LLColor4& color);
 
 public:
 	BOOL			mIndividualSelection;		// For root objects and objects individually selected

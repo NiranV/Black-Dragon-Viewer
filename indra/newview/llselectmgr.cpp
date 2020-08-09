@@ -6512,10 +6512,6 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 	{
 		renderOneWireframeWire(color);
 	}
-	else
-	{
-		renderOneWireframeBeacon(color);
-	}
 }
 
 void LLSelectNode::renderOneWireframeDefault(const LLColor4& color)
@@ -6788,70 +6784,6 @@ void LLSelectNode::renderOneWireframeWire(const LLColor4& color)
 		glPointSize(1.f);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		pushWireframe(drawable);
-	}
-
-	glLineWidth(1.f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	gGL.popMatrix();
-	if (shader)
-	{
-		shader->bind();
-	}
-}
-
-void LLSelectNode::renderOneWireframeBeacon(const LLColor4& color)
-{
-	LLViewerObject* objectp = getObject();
-	if (!objectp)
-	{
-		return;
-	}
-
-	LLDrawable* drawable = objectp->mDrawable;
-	if (!drawable)
-	{
-		return;
-	}
-	LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
-	if (shader)
-	{
-		gDebugProgram.bind();
-	}
-	gGL.matrixMode(LLRender::MM_MODELVIEW);
-	gGL.pushMatrix();
-	BOOL is_hud_object = objectp->isHUDAttachment();
-	if (drawable->isActive())
-	{
-		gGL.loadMatrix(gGLModelView);
-		gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
-	}
-	else if (!is_hud_object)
-	{
-		gGL.loadIdentity();
-		gGL.multMatrix(gGLModelView);
-		LLVector3 trans = objectp->getRegion()->getOriginAgent();
-		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
-	}
-
-	glPolygonMode(GL_FRONT, GL_POINT);
-	gGL.flush();
-	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
-	{
-		LLGLDisable depth(0);
-		LLGLEnable stencil(0);
-
-		//modify wireframe into outline selection mode
-		glStencilFunc(GL_GEQUAL, 2, 0xffff);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
-		glPolygonOffset(3.f, 3.f);
-		
-		glLineWidth(4.f);
-		glPointSize(1.f);
-		glPolygonMode(GL_BACK, GL_LINE);
-		
 		pushWireframe(drawable);
 	}
 

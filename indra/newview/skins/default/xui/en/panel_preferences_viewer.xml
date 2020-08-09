@@ -297,25 +297,6 @@ width="510">
                         </radio_item>
                         <radio_item
                         height="16"
-                        label="Beacon"
-                        halign="right"
-                        value="4"
-                        tool_tip="This option changes the selection outline to highlight the selection surface as if it was lit up."
-                        layout="topleft"
-                        name="3"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
                         label="Black Dragon"
                         value="1"
                         tool_tip="This option changes the selection outline to have an outline and small dots on vertices, highlighting transparent with wireframe."
