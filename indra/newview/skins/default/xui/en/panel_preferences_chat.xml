@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="978"
+  height="1088"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -39,86 +39,6 @@ width="510">
    left="1"
    name="title"
    top="0"
-   width="492"/>
-   <text
-   layout="topleft"
-   follows="top|left"
-   type="string"
-   length="1"
-   height="12"
-   left="10"
-   top_delta="4"
-   name="send_label"
-   width="250">
-   Chat Sending Options:
-   </text>
-   
-   <check_box
-   control_name="CloseChatOnReturn"
-   follows="left|top"
-   height="16"
-   label="Return deselects Local Chat window"
-   tool_tip="This option toggles whether the local chat should be deselected after hitting return (sending a message) or not. In combination with 'Hide Local Chat window on focus loss' this will do the same as the 'Hide Local Chat' option."
-   layout="topleft"
-   left="10"
-   name="CloseChatOnReturn"
-   top_pad="15"
-   width="100" />
-   <check_box
-   control_name="AutohideChatOnReturn"
-   follows="left|top"
-   layout="topleft"
-   top_pad="0"
-   height="16"
-   label="Return hides Local Chat window"
-   tool_tip="This option toggles whether the local chat should be closed (hidden) after hitting return (sending a message) or not. This option imitates a chat behavior similar to old Viewers and will only work if local chat is separated and collapsed to a chat bar."
-   left_delta="0"
-   name="AutohideChatbar"
-   width="100" />
-   <check_box
-   control_name="AllowMUpose"
-   height="16"
-   initial_value="true"
-   label="Allow MU* pose style in Local Chat and IM"
-   tool_tip="This option toggles whether ':' at the start of a chat message will turn into '/me' style emoting when send or not."
-   layout="topleft"
-   left_delta="0"
-   name="AllowMUpose"
-   top_pad="0"
-   width="256" />
-   <check_box
-   control_name="AutoCloseOOC"
-   height="16"
-   initial_value="true"
-   label="Auto-close OOC chat (i.e. add '))')"
-   tool_tip="This option toggles whether Out-Of-Character chat should be closed automatically or not. This option will close all your '((' and '(' chat parts automatically at the end when sending a message."
-   layout="topleft"
-   left_delta="0"
-   name="AutoCloseOOC"
-   top_pad="0"
-   width="256" />
-   <check_box
-   control_name="PlayChatAnim"
-   height="16"
-   initial_value="true"
-   label="Play chatting animation when sending in Local Chat"
-   tool_tip="This option toggles the visibility of the head bobbing animation when sending a message in local chat."
-   layout="topleft"
-   left="10"
-   name="play_chat_animation"
-   top_pad="0"
-   width="400" />
-   
-   <panel
-   follows="left|top|right"
-   height="20"
-   bg_visible="true"
-   bg_alpha_color="0.10 0.43 0.77 0.28"
-   layout="topleft"
-   mouse_opaque="false"
-   left="1"
-   name="title"
-   top_pad="10"
    width="492"/>
    <text
    type="string"
@@ -251,6 +171,207 @@ width="510">
    left="1"
    name="title"
    top_pad="10"
+   width="492"/>
+   <text
+   layout="topleft"
+   follows="top|left"
+   type="string"
+   length="1"
+   height="12"
+   left="10"
+   top_delta="4"
+   name="send_label"
+   width="250">
+   Chat Sending Options:
+   </text>
+   
+   <check_box
+   control_name="CloseChatOnReturn"
+   follows="left|top"
+   height="16"
+   label="Return deselects Local Chat window"
+   tool_tip="This option toggles whether the local chat should be deselected after hitting return (sending a message) or not. In combination with 'Hide Local Chat window on focus loss' this will do the same as the 'Hide Local Chat' option."
+   layout="topleft"
+   left="10"
+   name="CloseChatOnReturn"
+   top_pad="15"
+   width="100" />
+   <check_box
+   control_name="AutohideChatOnReturn"
+   follows="left|top"
+   layout="topleft"
+   top_pad="0"
+   height="16"
+   label="Return hides Local Chat window"
+   tool_tip="This option toggles whether the local chat should be closed (hidden) after hitting return (sending a message) or not. This option imitates a chat behavior similar to old Viewers and will only work if local chat is separated and collapsed to a chat bar."
+   left_delta="0"
+   name="AutohideChatbar"
+   width="100" />
+   <check_box
+   control_name="AllowMUpose"
+   height="16"
+   initial_value="true"
+   label="Allow MU* pose style in Local Chat and IM"
+   tool_tip="This option toggles whether ':' at the start of a chat message will turn into '/me' style emoting when send or not."
+   layout="topleft"
+   left_delta="0"
+   name="AllowMUpose"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="AutoCloseOOC"
+   height="16"
+   initial_value="true"
+   label="Auto-close OOC chat (i.e. add '))')"
+   tool_tip="This option toggles whether Out-Of-Character chat should be closed automatically or not. This option will close all your '((' and '(' chat parts automatically at the end when sending a message."
+   layout="topleft"
+   left_delta="0"
+   name="AutoCloseOOC"
+   top_pad="0"
+   width="256" />
+   <check_box
+   control_name="PlayChatAnim"
+   height="16"
+   initial_value="true"
+   label="Play chatting animation when sending in Local Chat"
+   tool_tip="This option toggles the visibility of the head bobbing animation when sending a message in local chat."
+   layout="topleft"
+   left="10"
+   name="play_chat_animation"
+   top_pad="0"
+   width="400" />
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="10"
+   width="508"/>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   mouse_opaque="false"
+   name="Logs:"
+   top_delta="4"
+   width="350">
+   Chatlog Options:
+   </text>
+   
+   <check_box
+   control_name="LogInventoryDecline"
+   height="16"
+   label="Log in system chat whenever an inventory offer is declined"
+   tool_tip="This option toggles whether any declined inventory offers should be logged to the corresponding conversation tab or not."
+   layout="topleft"
+   left="10"
+   name="log_inventory_chat"
+   top_pad="15"
+   width="350"/>
+   <check_box
+   control_name="LogShowHistory"
+   height="16"
+   label="Show a part of the last conversation in history if available"
+   tool_tip="This option toggles whether a snipped of the last conversation should be displayed in a conversation tab."
+   layout="topleft"
+   left="10"
+   name="log_show_history"
+   top_pad="0"
+   width="350"/>
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="logs_text"
+   top_pad="8"
+   width="160">
+   Logs To Save:
+   </text>
+   <radio_group
+   control_name="KeepConversationLogTranscripts"
+   height="19"
+   layout="topleft"
+   left="10"
+   name="conversation_log_radio"
+   top_pad="5"
+   width="600">
+    <radio_item
+    height="16"
+    label="Nothing"
+    value="0"
+    tool_tip="This option disables saving any logs or transcripts."
+    layout="topleft"
+    name="Nothing"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Logs"
+    tool_tip="This option limits the Viewer to saving only logs of conversations."
+    value="1"
+    layout="topleft"
+    name="Logs"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+    <radio_item
+    height="16"
+    label="Logs and Transcripts"
+    halign="right"
+    value="2"
+    tool_tip="This option allows the Viewer to save all logs and transcripts of conversations."
+    layout="topleft"
+    name="LogsTranscripts"
+    left_pad="10"
+    top_delta="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
+   </radio_group>
+   
+   <panel
+   follows="left|top|right"
+   height="20"
+   bg_visible="true"
+   bg_alpha_color="0.10 0.43 0.77 0.28"
+   layout="topleft"
+   mouse_opaque="false"
+   left="1"
+   name="title"
+   top_pad="7"
    width="492"/>
    <text
    type="string"
