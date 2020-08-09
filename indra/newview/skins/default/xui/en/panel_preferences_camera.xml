@@ -327,6 +327,7 @@
    left_pad="0"
    height="23"
    control_name="CameraFollowJoint"
+   tool_tip="This option fixes the camera to your specified skeleton bone using your camera preset offsets. Not compatible with 'Cinematic Camera Headtracking'."
    name="joint_combo"
    top_delta="-4"
    width="188">
