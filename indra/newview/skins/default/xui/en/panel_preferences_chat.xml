@@ -1432,7 +1432,8 @@ width="510">
    initial_value="35"
    label="Toast Margin:"
    label_width="150"
-   tool_tip="This option sets the amount of space in pixels between system and instant message toasts and the bottom of the screen. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
+   tool_tip="This option sets the amount of space in pixels between system and instant message toasts and the bottom of the screen.
+||&lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
    layout="topleft"
    left="10"
    max_val="100"
