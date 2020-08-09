@@ -77,8 +77,8 @@ width="510">
    label="Default"
    value="default"
    tool_tip="This option sets the interface language to your system's default.  
-&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-                                                   Changing this option needs a restart."
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart."
    layout="topleft"
    name="System Default Language"
    top="0"
@@ -98,8 +98,8 @@ width="510">
    label="English"
    value="en"
    tool_tip="This option sets the interface language to english.  
-                          &lt;icon&gt;Popup_Caution&lt;/icon&gt;
-                                                   Changing this option needs a restart."
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart."
    layout="topleft"
    name="English"
    left_pad="10"
@@ -121,8 +121,8 @@ width="510">
    halign="right"
    value="de"
    tool_tip="This option sets the interface language to german.  
-                        &lt;icon&gt;Popup_Caution&lt;/icon&gt;
-                                                   Changing this option needs a restart."
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart."
    layout="topleft"
    name="Deutsch(German)"
    left_pad="10"
@@ -448,8 +448,6 @@ width="510">
     top="0"
     width="70">
     <radio_item.check_button
-    image_overlay="Default_Widget"
-    image_overlay_alignment="left"
     image_unselected="Checkbox_Off"
     image_selected="Checkbox_On"
     image_disabled="Checkbox_Off_Disabled"
@@ -660,7 +658,8 @@ width="510">
    layout="topleft"
    left="10"
    top_pad="15"
-   tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it. &lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
+   tool_tip="This option controls whether the Viewer should attempt to log you in automatically whenever you start it.
+||&lt;red&gt;This option does not work with RLVa enabled.&lt;/red&gt;"
    name="Auto_login"
    width="200" />
    <check_box
