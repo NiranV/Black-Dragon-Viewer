@@ -147,7 +147,9 @@ width="510">
 	    initial_value="true"
 	    label="Use Action Wheel"
 	    layout="topleft"
-		tool_tip="This option toggles whether you want to use the right click action wheel (aka Pie Menu) or not. Warning this feature is known to cause random crashes on right click use at your own risk."
+		tool_tip="This option toggles whether you want to use the right click action wheel (aka Pie Menu) or not.
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This feature is known to cause random crashes on right click use at your own risk."
 	    left="10"
 	    name="UsePieMenu"
 	    top_delta="1"
