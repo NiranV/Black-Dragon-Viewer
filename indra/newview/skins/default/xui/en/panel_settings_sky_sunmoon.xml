@@ -216,10 +216,10 @@ width="698">
     Moon Angle / Scale
     </text>
     <slider
-    decimal_digits="2"
+    decimal_digits="3"
     follows="left|top"
     height="16"
-    increment="0.01"
+    increment="0.001"
     initial_value="0.5"
     can_edit_text="true"
     label_width="8"
@@ -232,10 +232,10 @@ width="698">
     name="moon_position_x"
     width="196" />
     <slider
-    decimal_digits="2"
+    decimal_digits="3"
     follows="left|top"
     height="16"
-    increment="0.01"
+    increment="0.001"
     initial_value="0.5"
     can_edit_text="true"
     max_val="1"

@@ -571,7 +571,7 @@ width="698">
     Distance Multiplier
     </text>
     <slider
-    decimal_digits="2"
+    decimal_digits="3"
     follows="left|top"
     height="16"
     initial_value="1.0"
@@ -579,7 +579,7 @@ width="698">
     min_val="0.05"
     max_val="1000"
     left_delta="0"
-    increment="0.01"
+    increment="0.001"
     show_text="true"
     can_edit_text="true"
     name="distance_multip"
