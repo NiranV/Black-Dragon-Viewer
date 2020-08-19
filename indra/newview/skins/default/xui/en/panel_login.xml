@@ -173,8 +173,91 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="65"
+     height="572"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability to override clamping to increments in sliders, allowing to input any value inbetween increments into the text field.
+Added: Viewer log location display to preferences.
+Added: Buttons to open the cache, log and chatlog folders directly to make navigating and retrieving logs from users easier.
+Added: Button to delete all Viewer logs.
+Added: Manual linebreak support to tooltips.
+Added: Viewer Log Path debug.
+Added: First attempt at a timeline feature for animations. Allows fast forwarding and reversing animations to any given point in time.
+Added: Headers for the viewer location inputs.
+Added: Missing tooltip for bone camera to Preferences - Camera.
+Added: Info to About - Black Dragon whether Automatic Memory Management is enabled or not.
+Changed: Disallow overriding increments for shadow resolution in Machinima Sidebar.
+Changed: Disallow overriding increments for shadow resolution in Preferences.
+Changed: Moved Chat log location from Privacy to Viewer tab.
+Changed: Massively overhauled all tooltips in Preferences - Display.
+Changed: Moved IM options to Preferences - Chat and renamed the tab to Chat &amp; Instant Messages.
+Changed: Improved alpha overlay for color pickers to make it better visible across all shapes of color pickers.
+Changed: As per suggestion, make Edit floater color pickers use the alpha overlay to reduce confusion of the current color.
+Changed: Hover height window height after LL added a new option to it.
+Changed: Overhauled all tooltips in Preferences - Viewer with the new linebreak capabilities.
+Changed: Overhauled all tooltips in Preferences - Interface with the new linebreak capabilities.
+Changed: Overhauled all tooltips in Preferences - RLVa with the new linebreak capabilities.
+Changed: Overhauled all tooltips in Preferences - General with the new linebreak capabilities.
+Changed: Overhauled all tooltips in Preferences - Browser with the new linebreak capabilities.
+Changed: Moved Chat Log path to Preferences - Chat.
+Changed: Moved Chat sending options down below General Chat options.
+Changed: Overhauled all tooltips in Preferences - Chat with the new linebreak capabilities.
+Changed: Improved slider hover handling to prevent the value from changing immediately when clicking the thumb without moving the mouse.
+Changed: Enabled precision override for all sliders.
+Changed: Set memory settings and sliders automatically to whatever Automatic Memory Management sets them, prevents memory suddenly being set very low when disabling it.
+Changed: Improved Pie menu multi-line slices, simplified them and made them reposition properly depending on the lines.
+Changed: Increased decimal digit count on Moon Position and Distance Multiplier sliders.
+Changed: Version to 3.8.10.
+Fixed: Saving presets with the same name as default presets saves the unmodified default preset instead.
+Fixed: Loading presets named exactly like default presets loads the original default preset instead of the user created one.
+Fixed: Render Environment Map option not working anymore.
+Fixed: Reverted water reflection generation back to pre-EEP to fix reflection clipping issues, camera rotation issues and several other smaller issues.
+Fixed: Profile - Notes scroll bar and text editor being cut off at the bottom.
+Fixed: (POTENTIAL) Crash on startup when the sky/water preset we're trying to load is invalid.
+Fixed: Windlight import not working and potentially importing new (already converted) presets as old ones resulting in a broken sky.
+Fixed: Alpha masked surfaces not reflecting in water reflections.
+Removed: Broken option for "Beacon" selection outlines.
+Removed: Defunct Pie Menu Opacity and Fade options.
+Misc: Make the start of each logging session more obvious.
+Misc: Cleaned up and organized llfloaterpreference.cpp/h a bit.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.8.9
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="65"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
