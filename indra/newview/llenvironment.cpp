@@ -2574,6 +2574,10 @@ void LLEnvironment::DayInstance::setSky(const LLSettingsSky::ptr_t &psky)
 {
     mInitialized = false;
 
+	//BD
+	if (!psky)
+		return;
+
     bool different_sky = mSky != psky;
     
     mSky = psky;
@@ -2592,6 +2596,10 @@ void LLEnvironment::DayInstance::setSky(const LLSettingsSky::ptr_t &psky)
 void LLEnvironment::DayInstance::setWater(const LLSettingsWater::ptr_t &pwater)
 {
     mInitialized = false;
+
+	//BD
+	if (!pwater)
+		return;
 
     bool different_water = mWater != pwater;
     mWater = pwater;
