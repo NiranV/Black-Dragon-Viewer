@@ -3293,6 +3293,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["RENDER_QUALITY"] = (F32)gSavedSettings.getU32("RenderQualityPerformance");
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
 	//BD
+	info["AUTO_MEM"] = gSavedSettings.getBOOL("AutomaticMemoryManagement") ? "Enabled" : "Disabled";
 	info["TEXTURE_MEMORY"] = (S32)gTextureList.getMaxTotalTextureMem().value();
 	info["SCENE_MEMORY"] = (S32)gTextureList.getMaxResidentTexMem().value();
 

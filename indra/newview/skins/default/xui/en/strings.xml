@@ -61,6 +61,7 @@ Bandwidth: [NET_BANDWITH]kbit/s
 LOD factor: [LOD_FACTOR]
 Render quality: [RENDER_QUALITY]
 Advanced Lighting Model: [GPU_SHADERS]
+Automatic Memory Managment: [AUTO_MEM]
 Texture memory: [TEXTURE_MEMORY]MB
 Scene memory: [SCENE_MEMORY]MB
 VFS (cache) creation time: [VFS_TIME]
