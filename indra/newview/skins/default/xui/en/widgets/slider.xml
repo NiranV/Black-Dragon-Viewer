@@ -4,7 +4,7 @@
         font="SansSerifSmall"
         volume="false"
         mouse_opaque="true"
-        precision_override="false"
+        precision_override="true"
         text_width="42"
         width="348"
         show_text="true" 
