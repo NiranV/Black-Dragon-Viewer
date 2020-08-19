@@ -191,8 +191,9 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 		if ( mOrientation == HORIZONTAL )
 		{
 			S32 thumb_half_width = mThumbImage->getWidth()/2;
-			S32 left_edge = thumb_half_width;
-			S32 right_edge = getRect().getWidth() - (thumb_half_width);
+			//BD - UI Improvements
+			S32 left_edge = thumb_half_width + mMouseOffset;
+			S32 right_edge = getRect().getWidth() - (thumb_half_width) + mMouseOffset;
 
 			x += mMouseOffset;
 			x = llclamp( x, left_edge, right_edge );
@@ -200,13 +201,14 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 			F32 t = F32(x - left_edge) / (right_edge - left_edge);
 			//BD - UI Improvements
 			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
-			setValueAndCommit(val);
+			if (mInitPos.mV[VX] != x)
+				setValueAndCommit(val);
 		}
 		else // mOrientation == VERTICAL
 		{
 			S32 thumb_half_height = mThumbImage->getHeight()/2;
-			S32 top_edge = thumb_half_height;
-			S32 bottom_edge = getRect().getHeight() - (thumb_half_height);
+			S32 top_edge = thumb_half_height + mMouseOffset;
+			S32 bottom_edge = getRect().getHeight() - (thumb_half_height) + mMouseOffset;
 
 			y += mMouseOffset;
 			y = llclamp(y, top_edge, bottom_edge);
@@ -214,7 +216,8 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 			F32 t = F32(y - top_edge) / (bottom_edge - top_edge);
 			//BD - UI Improvements
 			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
-			setValueAndCommit(val);
+			if (mInitPos.mV[VX] != y)
+				setValueAndCommit(val);
 		}
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
@@ -278,37 +281,32 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 		// Find the offset of the actual mouse location from the center of the thumb.
 		if (mThumbRect.pointInRect(x, y))
 		{
-			mMouseOffset = (mOrientation == HORIZONTAL)
-				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x
-				: (mThumbRect.mBottom + mThumbImage->getHeight() / 2) - y;
-		}
-		else
-		{
-			mMouseOffset = 0;
-		}
+			//BD - Figure out how far we are from the center of the thumb.
+			S32 mMouseOffset = (mOrientation == HORIZONTAL) 
+				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x 
+				: (mThumbRect.mBottom + mThumbImage->getHeight()) - y;
 
-		//BD - If this is our first click on the widget don't immediately change our value
-		//     depending on the position, center the mouse on the thumb to give the user
-		//     a chance of selecting the slider without changing the value.
-		if (!hasMouseCapture())
-		{
-			S32 mouse_x_warp = 0;
-			S32 mouse_y_warp = 0;
-			LLUI::getInstance()->getMousePositionScreen(&mouse_x_warp, &mouse_y_warp);
-
-			if (mOrientation == HORIZONTAL)
+			//BD - If this is our first click on the widget don't immediately change our value
+			//     depending on the position, center the mouse on the thumb to give the user
+			//     a chance of selecting the slider without changing the value.
+			if (!hasMouseCapture())
 			{
-				mouse_x_warp += mMouseOffset;
-			}
-			else
-			{
-				mouse_y_warp += mMouseOffset;
-			}
+				if (mOrientation == HORIZONTAL)
+				{
+					x += mMouseOffset;
+				}
+				else
+				{
+					y += mMouseOffset;
+				}
 
-			LLUI::getInstance()->setMousePositionScreen(mouse_x_warp, mouse_y_warp);
+				LLUI::getInstance()->setMousePositionLocal(this, x, y);
 
-			mMouseOffset = 0;
+				mInitPos = LLVector2(x,y);
+			}
 		}
+
+		mMouseOffset = 0;
 
 		mOriginalValue = getValueF32();
 

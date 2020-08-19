@@ -106,6 +106,7 @@ private:
 	bool			mApplyImmediately;
 	bool			mRightMousePressed;
 	F32				mOriginalValue;
+	LLVector2		mInitPos;
 
 	LLPointer<LLUIImage>	mThumbImage;
 	LLPointer<LLUIImage>	mThumbImagePressed;
