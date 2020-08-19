@@ -6,7 +6,7 @@ name="Attachment Pie">
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
-        label="Appearance; ;My"
+        label="My;Appearance"
         layout="topleft"
         name="Change Outfit">
             <pie_slice.on_click
@@ -31,7 +31,7 @@ name="Attachment Pie">
             function="Advanced.EnableAppearanceToXML"/>
         </pie_slice>
         <pie_slice
-        label="Textures;;Debug"
+        label="Debug;Textures"
         name="Debug...">
             <pie_slice.on_click
             function="Avatar.Debug" />
@@ -39,7 +39,7 @@ name="Attachment Pie">
             function="IsGodCustomerService"/>
         </pie_slice>
         <pie_slice
-        label="Particle;Owner;Block"
+        label="Block;Particle;Owner"
         name="Mute Particle">
             <pie_slice.on_click
             function="Particle.Mute" />
@@ -47,14 +47,14 @@ name="Attachment Pie">
             function="EnableMuteParticle" />
         </pie_slice>
         <pie_slice
-        label="Avatar;UUID;Copy"
+        label="Copy;Avatar;UUID"
         enabled="true"
         name="Copy Avatar UUID">
             <pie_slice.on_click
             function="Avatar.GetUUID" />
         </pie_slice>
         <pie_slice
-        label="Avatar;SLURL;Copy"
+        label="Copy;Avatar;SLURL"
         name="CopySLURL"
         enabled="true">
             <pie_slice.on_click
@@ -107,7 +107,7 @@ name="Attachment Pie">
         function="EnableEdit" />
     </pie_slice>
     <pie_slice
-    label="Skeleton;;Reset"
+    label="Reset;Skeleton"
     name="Reset Skeleton">
         <pie_slice.on_click
         function="Avatar.ResetSkeleton" />
@@ -117,7 +117,7 @@ name="Attachment Pie">
     label="More">
         <pie_separator name="seperator"/>
         <pie_slice
-        label="My;Shape;Edit"
+        label="Edit;My;Shape"
         layout="topleft"
         name="Edit My Shape">
             <pie_slice.on_click
@@ -127,7 +127,7 @@ name="Attachment Pie">
         </pie_slice>
         <pie_separator name="seperator"/>
         <pie_slice
-        label="My;Outfit;Edit" 
+        label="Edit;My;Outfit" 
         layout="topleft"
         name="Edit Outfit">
             <pie_slice.on_click
@@ -145,7 +145,7 @@ name="Attachment Pie">
         </pie_slice>
         <pie_separator name="seperator"/>
         <pie_slice
-        label="Height; ;Hover"
+        label="Hover;Height"
         enabled="true"
         name="Hover Height">
             <pie_slice.on_click

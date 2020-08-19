@@ -270,13 +270,13 @@ void PieMenu::draw()
 	LLColor4 selectedColor = LLUIColorTable::instance().getColor("PieMenuSelectedColor");
 	LLColor4 textColor = LLUIColorTable::instance().getColor("PieMenuTextColor");
 	LLColor4 bgColor = LLUIColorTable::instance().getColor("PieMenuBgColor");
-	LLColor4 borderColor = bgColor % 0.3f;
+	LLColor4 borderColor = bgColor % 0.5f;
 
 	// on first click, make the menu fade out to indicate "borderless" operation
-	if (mFirstClick)
+	/*if (mFirstClick)
 	{
 		borderColor %= 0.f;
-	}
+	}*/
 
 	S32 steps = 100;
 
@@ -424,31 +424,30 @@ void PieMenu::draw()
 			}
 		}
 
-		for (label_count = 0; label_count < 2; label_count++)
+		//BD - Count through our linebreaks and write down the labels in each line.
+		while (true)
 		{
 			std::size_t pos = label[label_count].find(";");
 			if (pos != std::string::npos)
 			{
 				label[label_count + 1] = label[label_count].substr(pos + 1);
 				label[label_count] = label[label_count].substr(0, pos);
+				label_count++;
+			}
+			else
+			{
+				break;
 			}
 		}
 
 		// draw the slice labels around the center
-		if (!label[0].empty())
+		for (S32 i = 0; i <= label_count; i++)
 		{
-			mFont->renderUTF8(label[0], 0, PIE_X[num], PIE_Y[num], itemColor,
-				LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
-		}
-		if (!label[1].empty())
-		{
-			mFont->renderUTF8(label[1], 0, PIE_X[num], PIE_Y[num] - 13, itemColor,
-				LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
-		}
-		if (!label[2].empty())
-		{
-			mFont->renderUTF8(label[2], 0, PIE_X[num], PIE_Y[num] + 13, itemColor,
-				LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+			if (!label[i].empty())
+			{
+				mFont->renderUTF8(label[i], 0, PIE_X[num], PIE_Y[num] + (7*label_count) - (14 * i), itemColor,
+					LLFontGL::HCENTER, LLFontGL::VCENTER, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW_SOFT);
+			}
 		}
 
 		// next slice

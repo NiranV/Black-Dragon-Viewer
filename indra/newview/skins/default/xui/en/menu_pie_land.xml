@@ -14,7 +14,7 @@ name="Land Pie">
     </pie_slice>
     <pie_slice
     enabled="false"
-    label="This;Land;Buy"
+    label="Buy;This;Land"
     name="Land Buy">
         <pie_slice.on_click
         function="Land.Buy" />
@@ -22,7 +22,7 @@ name="Land Pie">
         function="World.EnableBuyLand" />
     </pie_slice>
     <pie_slice
-    label="Land; ;About"
+    label="About;Land"
     name="About Land">
         <pie_slice.on_click
         function="Floater.Show"
@@ -33,7 +33,7 @@ name="Land Pie">
     </pie_slice>
     <pie_slice
     enabled="false"
-    label="Terrain; ;Edit"
+    label="Edit;Terrain"
     name="Edit Terrain">
         <pie_slice.on_click
         function="Land.Edit" />
@@ -51,7 +51,7 @@ name="Land Pie">
     </pie_slice>
     <pie_slice
     enabled="false"
-    label="Particle;Owner;Block"
+    label="Block;Particle;Owner"
     name="Mute Particle">
         <pie_slice.on_click
         function="Particle.Mute" />

@@ -7,7 +7,7 @@ name="Self Pie">
     layout="topleft"
     name="Pie Object Manage">
         <pie_slice
-        label="Appearance; ;My"
+        label="My;Appearance"
         layout="topleft"
         name="Change Outfit">
             <pie_slice.on_click
@@ -32,7 +32,7 @@ name="Self Pie">
             function="Advanced.EnableAppearanceToXML"/>
         </pie_slice>
         <pie_slice
-        label="Textures;;Debug"
+        label="Debug;Textures"
         name="Debug...">
             <pie_slice.on_click
             function="Avatar.Debug" />
@@ -41,7 +41,7 @@ name="Self Pie">
         </pie_slice>
         <pie_slice
         enabled="false"
-        label="Particle;Owner;Block"
+        label="Block;Particle;Owner"
         name="Mute Particle">
             <pie_slice.on_click
             function="Particle.Mute" />
@@ -49,14 +49,14 @@ name="Self Pie">
             function="EnableMuteParticle" />
         </pie_slice>
         <pie_slice
-        label="Avatar;UUID;Copy"
+        label="Copy;Avatar;UUID"
         enabled="true"
         name="Copy Avatar UUID">
             <pie_slice.on_click
             function="Avatar.GetUUID" />
         </pie_slice>
         <pie_slice
-        label="Avatar;SLURL;Copy"
+        label="Copy;Avatar;SLURL"
         name="CopySLURL"
         enabled="true">
             <pie_slice.on_click
@@ -72,7 +72,7 @@ name="Self Pie">
         </pie_slice>
     </pie_menu>
     <pie_slice
-    label="My;Shape;Edit"
+    label="Edit;My;Shape"
     layout="topleft"
     name="Edit My Shape">
     <pie_slice.on_click
@@ -266,7 +266,7 @@ name="Self Pie">
             name="Enhanced Skeleton" >
                 <pie_slice
                 enabled="false"
-                label="Ring;Finger;Right"
+                label="Right;Ring;Finger"
                 name="Right Ring Finger">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -277,7 +277,7 @@ name="Self Pie">
                 </pie_slice>
                 <pie_slice
                 enabled="false"
-                label="Wing;;Right"
+                label="Right;Wing"
                 name="Right Wing">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -299,7 +299,7 @@ name="Self Pie">
                 </pie_slice>
                 <pie_slice
                 enabled="false"
-                label="Wing;;Left"
+                label="Left;Wing"
                 name="Left Wing">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -310,7 +310,7 @@ name="Self Pie">
                 </pie_slice>
                 <pie_slice
                 enabled="false"
-                label="Ring;Finger;Left"
+                label="Left;Ring;Finger"
                 name="Left Ring Finger">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -321,7 +321,7 @@ name="Self Pie">
                 </pie_slice>
                 <pie_slice
                 enabled="false"
-                label="Base;;Tail"
+                label="Tail;Base"
                 name="Tail Base">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -335,7 +335,7 @@ name="Self Pie">
                 name="More" >
                     <pie_slice
                     enabled="false"
-                    label="Left;Ear;Alt"
+                    label="Alt;Left;Ear"
                     name="Alt Left Ear">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -346,7 +346,7 @@ name="Self Pie">
                     </pie_slice>
                     <pie_slice
                     enabled="false"
-                    label="Right;Ear;Alt"
+                    label="Alt;Right;Ear"
                     name="Alt Right Ear">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -357,7 +357,7 @@ name="Self Pie">
                     </pie_slice>
                     <pie_slice
                     enabled="false"
-                    label="Left;Eye;Alt"
+                    label="Alt;Left;Eye"
                     name="Alt Left Eye">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -368,7 +368,7 @@ name="Self Pie">
                     </pie_slice>
                     <pie_slice
                     enabled="false"
-                    label="Right;Eye;Alt"
+                    label="Alt;Right;Eye"
                     name="Alt Right Eye">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -401,7 +401,7 @@ name="Self Pie">
                     </pie_slice>
                     <pie_slice
                     enabled="false"
-                    label="Hind;Foot;Left"
+                    label="Left;Hind;Foot"
                     name="Left Hind Foot">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -412,7 +412,7 @@ name="Self Pie">
                     </pie_slice>
                     <pie_slice
                     enabled="false"
-                    label="Hind;Foot;Right"
+                    label="Right;Hind;Foot"
                     name="Right Hind Foot">
                         <pie_slice.on_click
                         function="Attachment.Detach"
@@ -424,7 +424,7 @@ name="Self Pie">
                 </pie_menu>
                 <pie_slice
                 enabled="false"
-                label="Tip;;Tail"
+                label="Tail;Tip"
                 name="Tail Tip">
                     <pie_slice.on_click
                     function="Attachment.Detach"
@@ -442,7 +442,7 @@ name="Self Pie">
         name="Pie Object Detach HUD" />
     </pie_menu>
     <pie_slice
-    label="My;Outfit;Edit" 
+    label="Edit;My;Outfit" 
     layout="topleft"
     name="Edit Outfit">
         <pie_slice.on_click
@@ -459,13 +459,13 @@ name="Self Pie">
         parameter="agent" />
     </pie_slice>
     <pie_slice
-    label="Skeleton;;Reset"
+    label="Reset;Skeleton"
     name="Reset Skeleton">
         <pie_slice.on_click
         function="Avatar.ResetSkeleton" />
     </pie_slice>
     <pie_slice
-    label="Height; ;Hover"
+    label="Hover;Height"
     enabled="true"
     name="Hover Height">
         <pie_slice.on_click

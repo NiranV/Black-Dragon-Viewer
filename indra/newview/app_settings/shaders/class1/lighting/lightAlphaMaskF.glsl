@@ -40,13 +40,13 @@ VARYING vec2 vary_texcoord0;
 void default_lighting() 
 {
 	vec4 color = diffuseLookup(vary_texcoord0.xy);
-	
-	color *= vertex_color;
 
 	if (color.a < minimum_alpha)
 	{
 		discard;
 	}
+ 
+ color *= vertex_color;
 
 	color.rgb = atmosLighting(color.rgb);
 

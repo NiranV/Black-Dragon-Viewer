@@ -34,7 +34,7 @@ name="Object Pie">
       </pie_slice>
       <pie_slice
       enabled="false"
-      label="Particle;Owner;Block"
+      label="Block;Particle;Owner"
       name="Mute Particle">
          <pie_slice.on_click
          function="Particle.Mute" />
@@ -83,7 +83,7 @@ name="Object Pie">
       label="Attach"
       name="Pie Object Attach" >
          <pie_menu
-         label="Skeleton;;Enhanced"
+         label="Enhanced;Skeleton"
          name="Enhanced Skeleton" >
             <pie_slice
             enabled="false"
@@ -98,7 +98,7 @@ name="Object Pie">
             </pie_slice>
             <pie_slice
             enabled="false"
-            label="Wing;;Right"
+            label="Right;Wing"
             name="Right Wing">
                <pie_slice.on_click
                function="Object.AttachToAvatar"
@@ -120,7 +120,7 @@ name="Object Pie">
             </pie_slice>
             <pie_slice
             enabled="false"
-            label="Wing;;Left"
+            label="Left;Wing"
             name="Left Wing">
                <pie_slice.on_click
                function="Object.AttachToAvatar"
@@ -131,7 +131,7 @@ name="Object Pie">
             </pie_slice>
             <pie_slice
             enabled="false"
-            label="Ring;Finger;Left"
+            label="Left;Ring;Finger"
             name="Left Ring Finger">
                <pie_slice.on_click
                function="Object.AttachToAvatar"
@@ -142,7 +142,7 @@ name="Object Pie">
             </pie_slice>
             <pie_slice
             enabled="false"
-            label="Base;;Tail"
+            label="Tail;Base"
             name="Tail Base">
                <pie_slice.on_click
                function="Object.AttachToAvatar"
@@ -156,7 +156,7 @@ name="Object Pie">
             name="More" >
                <pie_slice
                enabled="false"
-               label="Left;Ear;Alt"
+               label="Alt;Left;Ear"
                name="Alt Left Ear">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -167,7 +167,7 @@ name="Object Pie">
                </pie_slice>
                <pie_slice
                enabled="false"
-               label="Right;Ear;Alt"
+               label="Alt;Right;Ear"
                name="Alt Right Ear">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -178,7 +178,7 @@ name="Object Pie">
                </pie_slice>
                <pie_slice
                enabled="false"
-               label="Left;Eye;Alt"
+               label="Alt;Left;Eye"
                name="Alt Left Eye">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -189,7 +189,7 @@ name="Object Pie">
                </pie_slice>
                <pie_slice
                enabled="false"
-               label="Right;Eye;Alt"
+               label="Alt;Right;Eye"
                name="Alt Right Eye">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -222,7 +222,7 @@ name="Object Pie">
                </pie_slice>
                <pie_slice
                enabled="false"
-               label="Hind;Foot;Left"
+               label="Left;Hind;Foot"
                name="Left Hind Foot">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -233,7 +233,7 @@ name="Object Pie">
                </pie_slice>
                <pie_slice
                enabled="false"
-               label="Hind;Foot;Right"
+               label="Right;Hind;Foot"
                name="Right Hind Foot">
                   <pie_slice.on_click
                   function="Object.AttachToAvatar"
@@ -245,7 +245,7 @@ name="Object Pie">
             </pie_menu>
             <pie_slice
             enabled="false"
-            label="Tip;;Tail"
+            label="Tail;Tip"
             name="Tail Tip">
                <pie_slice.on_click
                function="Object.AttachToAvatar"
@@ -313,7 +313,7 @@ name="Object Pie">
       
       <pie_slice
       enabled="true"
-      label="Object;UUID;Copy"
+      label="Copy;Object;UUID"
       name="Copy Object UUID">
          <pie_slice.on_click
          function="Object.GetUUID" />
@@ -321,7 +321,7 @@ name="Object Pie">
       <pie_separator name="seperator"/>
       <pie_slice
       enabled="false"
-      label="Profile; ;Object"
+      label="Object;Profile"
       name="Object Profile">
          <pie_slice.on_click
          function="Object.Inspect" />
@@ -364,7 +364,7 @@ name="Object Pie">
       </pie_slice>
       <pie_slice
       enabled="false"
-      label="In;Linksets;Show"
+      label="Show;In;Linksets"
       name="Show_in_linksets">
          <pie_slice.on_click
          function="Pathfinding.Linksets.Select" />
