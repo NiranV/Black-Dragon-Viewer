@@ -1116,49 +1116,49 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.RefreshMemoryControls",	boost::bind(&LLFloaterPreference::refreshMemoryControls, this));
 
 //	//BD - Unlimited Camera Presets
-	mCommitCallbackRegistrar.add("Pref.AddCameraPreset", boost::bind(&LLFloaterPreference::onAddCameraPreset, this, true, ""));
-	mCommitCallbackRegistrar.add("Pref.RemoveCameraPreset", boost::bind(&LLFloaterPreference::onRemoveCameraPreset, this));
-	mCommitCallbackRegistrar.add("Pref.ChangeCameraPreset", boost::bind(&LLFloaterPreference::onChangeCameraPreset, this));
-	mCommitCallbackRegistrar.add("Pref.ResetCameraPreset", boost::bind(&LLFloaterPreference::onCameraPresetReset, this, _2));
-	mCommitCallbackRegistrar.add("Pref.CameraArray", boost::bind(&LLFloaterPreference::onCameraArray, this, _1, _2));
-	mCommitCallbackRegistrar.add("Pref.FocusArray", boost::bind(&LLFloaterPreference::onFocusArray, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.AddCameraPreset",		boost::bind(&LLFloaterPreference::onAddCameraPreset, this, true, ""));
+	mCommitCallbackRegistrar.add("Pref.RemoveCameraPreset",		boost::bind(&LLFloaterPreference::onRemoveCameraPreset, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeCameraPreset",		boost::bind(&LLFloaterPreference::onChangeCameraPreset, this));
+	mCommitCallbackRegistrar.add("Pref.ResetCameraPreset",		boost::bind(&LLFloaterPreference::onCameraPresetReset, this, _2));
+	mCommitCallbackRegistrar.add("Pref.CameraArray",			boost::bind(&LLFloaterPreference::onCameraArray, this, _1, _2));
+	mCommitCallbackRegistrar.add("Pref.FocusArray",				boost::bind(&LLFloaterPreference::onFocusArray, this, _1, _2));
 
 //	//BD - Custom Keyboard Layout
-	mCommitCallbackRegistrar.add("Pref.ExportControls", boost::bind(&LLFloaterPreference::onExportControls, this));
-	mCommitCallbackRegistrar.add("Pref.UnbindAll", boost::bind(&LLFloaterPreference::onUnbindControls, this));
-	mCommitCallbackRegistrar.add("Pref.DefaultControls", boost::bind(&LLFloaterPreference::onDefaultControls, this));
-	mCommitCallbackRegistrar.add("Pref.AddBind", boost::bind(&LLFloaterPreference::onClickSetAnyKey, this));
-	mCommitCallbackRegistrar.add("Pref.RemoveBind", boost::bind(&LLFloaterPreference::onRemoveBind, this));
-	mCommitCallbackRegistrar.add("Pref.ChangeBind", boost::bind(&LLFloaterPreference::onListClickAction, this));
-	mCommitCallbackRegistrar.add("Pref.ChangeMode", boost::bind(&LLFloaterPreference::refreshKeys, this));
+	mCommitCallbackRegistrar.add("Pref.ExportControls",			boost::bind(&LLFloaterPreference::onExportControls, this));
+	mCommitCallbackRegistrar.add("Pref.UnbindAll",				boost::bind(&LLFloaterPreference::onUnbindControls, this));
+	mCommitCallbackRegistrar.add("Pref.DefaultControls",		boost::bind(&LLFloaterPreference::onDefaultControls, this));
+	mCommitCallbackRegistrar.add("Pref.AddBind",				boost::bind(&LLFloaterPreference::onClickSetAnyKey, this));
+	mCommitCallbackRegistrar.add("Pref.RemoveBind",				boost::bind(&LLFloaterPreference::onRemoveBind, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeBind",				boost::bind(&LLFloaterPreference::onListClickAction, this));
+	mCommitCallbackRegistrar.add("Pref.ChangeMode",				boost::bind(&LLFloaterPreference::refreshKeys, this));
 
 //	//BD - Open Paths
-	mCommitCallbackRegistrar.add("Pref.OpenChatLog", boost::bind(&LLFloaterPreference::openChatLog, this));
-	mCommitCallbackRegistrar.add("Pref.OpenLog", boost::bind(&LLFloaterPreference::openLog, this));
-	mCommitCallbackRegistrar.add("Pref.OpenCache", boost::bind(&LLFloaterPreference::openCache, this));
+	mCommitCallbackRegistrar.add("Pref.OpenChatLog",			boost::bind(&LLFloaterPreference::openChatLog, this));
+	mCommitCallbackRegistrar.add("Pref.OpenLog",				boost::bind(&LLFloaterPreference::openLog, this));
+	mCommitCallbackRegistrar.add("Pref.OpenCache",				boost::bind(&LLFloaterPreference::openCache, this));
 
 //	//BD - Expandable Tabs
-	mCommitCallbackRegistrar.add("Pref.Tab", boost::bind(&LLFloaterPreference::toggleTabs, this));
+	mCommitCallbackRegistrar.add("Pref.Tab",					boost::bind(&LLFloaterPreference::toggleTabs, this));
 
 //	//BD - Revert to Default
-	mCommitCallbackRegistrar.add("Pref.Default", boost::bind(&LLFloaterPreference::resetToDefault, this, _1));
+	mCommitCallbackRegistrar.add("Pref.Default",				boost::bind(&LLFloaterPreference::resetToDefault, this, _1));
 
 //	//BD - Input/Output resizer
-	mCommitCallbackRegistrar.add("Pref.InputOutput", boost::bind(&LLFloaterPreference::inputOutput, this));
+	mCommitCallbackRegistrar.add("Pref.InputOutput",			boost::bind(&LLFloaterPreference::inputOutput, this));
 
 //	//BD - Quick Graphics Presets
-	mCommitCallbackRegistrar.add("Pref.PrefDelete", boost::bind(&LLFloaterPreference::deleteGraphicPreset, this));
-	mCommitCallbackRegistrar.add("Pref.PrefSave", boost::bind(&LLFloaterPreference::saveGraphicPreset, this));
-	mCommitCallbackRegistrar.add("Pref.PrefLoad", boost::bind(&LLFloaterPreference::loadGraphicPreset, this));
+	mCommitCallbackRegistrar.add("Pref.PrefDelete",				boost::bind(&LLFloaterPreference::deleteGraphicPreset, this));
+	mCommitCallbackRegistrar.add("Pref.PrefSave",				boost::bind(&LLFloaterPreference::saveGraphicPreset, this));
+	mCommitCallbackRegistrar.add("Pref.PrefLoad",				boost::bind(&LLFloaterPreference::loadGraphicPreset, this));
 
 //	//BD - Avatar Rendering Settings
 	mContextMenu = new LLSettingsContextMenu(this);
-	mCommitCallbackRegistrar.add("Settings.AddNewEntry", boost::bind(&LLFloaterPreference::onClickAdd, this, _2));
-	mCommitCallbackRegistrar.add("Settings.SetRendering", boost::bind(&LLFloaterPreference::onCustomAction, this, _2));
+	mCommitCallbackRegistrar.add("Settings.AddNewEntry",		boost::bind(&LLFloaterPreference::onClickAdd, this, _2));
+	mCommitCallbackRegistrar.add("Settings.SetRendering",		boost::bind(&LLFloaterPreference::onCustomAction, this, _2));
 	LLRenderMuteList::getInstance()->addObserver(&sAvatarRenderMuteListObserver);
 
 	//BD
-	mCommitCallbackRegistrar.add("Pref.VoiceSetNone", boost::bind(&LLFloaterPreference::onClickSetNone, this));
+	mCommitCallbackRegistrar.add("Pref.VoiceSetNone",			boost::bind(&LLFloaterPreference::onClickSetNone, this));
 
 	LLConversationLog::instance().addObserver(this);
 	LLAvatarPropertiesProcessor::getInstance()->addObserver(gAgent.getID(), this);
@@ -2060,6 +2060,11 @@ void LLFloaterPreference::refreshMemoryControls()
 	{
 		mSystemMemory->setMaxValue(max_mem);
 		mSceneMemory->setMaxValue(max_mem);
+		if (gSavedSettings.getBOOL("AutomaticMemoryManagement"))
+		{
+			mSystemMemory->setValue(total_mem);
+			mSceneMemory->setValue(bound_mem);
+		}
 	}
 
 	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
