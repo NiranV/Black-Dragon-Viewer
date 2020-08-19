@@ -822,24 +822,8 @@ void LLFloaterFixedEnvironmentWater::doImportFromDisk()
 
 void LLFloaterFixedEnvironmentWater::loadWaterSettingFromFile(const std::vector<std::string>& filenames)
 {
-    LLSD messages;
     if (filenames.size() < 1) return;
-    std::string filename = filenames[0];
-    LL_DEBUGS("ENVEDIT") << "Selected file: " << filename << LL_ENDL;
-    LLSettingsWater::ptr_t legacywater = LLEnvironment::createWaterFromLegacyPreset(filename, messages);
-
-    if (!legacywater)
-    {   
-        LLNotificationsUtil::add("WLImportFail", messages);
-        return;
-    }
-
-    loadInventoryItem(LLUUID::null);
-
-    setDirtyFlag();
-    LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, legacywater);
-    setEditSettings(legacywater);
-	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
+	loadPreset(filenames[0], "water");
 }
 
 //=========================================================================
@@ -916,34 +900,11 @@ void LLFloaterFixedEnvironmentSky::doImportFromDisk()
 void LLFloaterFixedEnvironmentSky::loadSkySettingFromFile(const std::vector<std::string>& filenames)
 {
     if (filenames.size() < 1) return;
-    std::string filename = filenames[0];
-    LLSD messages;
-
-    LL_INFOS("ENVEDIT") << "Selected file: " << filename << LL_ENDL;
-    LLSettingsSky::ptr_t legacysky = LLEnvironment::createSkyFromLegacyPreset(filename, messages);
-
-    if (!legacysky)
-    {   
-        LLNotificationsUtil::add("WLImportFail", messages);
-
-        return;
-    }
-
-    loadInventoryItem(LLUUID::null);
-
-    setDirtyFlag();
-    LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_EDIT, legacysky);
-    setEditSettings(legacysky);
-	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")), true);
+	loadPreset(filenames[0], "sky");
 }
 
 //BD - Windlight Stuff
 //=====================================================================================================
-void LLFloaterFixedEnvironment::onTextNameFocusLoss()
-{
-	//BD - Don't use the escaped string.
-	//mSettings->setName(mTxtName->getValue().asString());
-}
 
 void LLFloaterFixedEnvironment::onButtonSave()
 {

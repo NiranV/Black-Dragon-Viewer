@@ -70,6 +70,9 @@ public:
 
     virtual BOOL            isDirty() const override            { return getIsDirty(); }
 
+	//BD - Windlight Stuff
+	bool					loadPreset(std::string filename, std::string type);
+
 protected:
     typedef std::function<void()> on_confirm_fn;
 
@@ -140,10 +143,8 @@ private:
 	void                    onButtonReset();
 	void                    onButtonSave();
 	void                    onButtonDelete();
-	void                    onTextNameFocusLoss();
 	void					onSelectPreset();
 	void					populatePresetsList();
-	bool					loadPreset(std::string filename, std::string type);
 	void					loadItem(LLSettingsBase::ptr_t settings);
 };
 
