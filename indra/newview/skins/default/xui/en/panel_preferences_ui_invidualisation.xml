@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="900"
+     height="870"
      name="ui_panel"
      top="0"
      left="0"
@@ -161,70 +161,6 @@ width="510">
          function="Dragon.TriggerWarn"
          parameter="UsePieMenu"/>
        </check_box>
-	    <slider
-	    control_name="PieMenuOpacity"
-	    follows="left|top"
-		can_edit_text="true"
-	    height="15"
-	    increment="0.05"
-	    initial_value="0.0"
-	    label="Action Wheel Opacity:"
-		tool_tip="This option controls the opacity of the right-click action wheel background."
-	    layout="topleft"
-	    left="10"
-	    label_width="150"
-	    max_val="1.0"
-	    min_val="0.0"
-	    name="pie_menu_opacity"
-	    top_pad="10"/>
-		<button
- follows="left|top"
- control_name="PieMenuOpacity"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-	    <slider
-	    control_name="PieMenuFade"
-	    follows="left|top"
-		can_edit_text="true"
-	    height="15"
-	    increment="0.05"
-	    initial_value="0.0"
-	    label="Background Fade-out:"
-		tool_tip="This option controls the strength at which the action wheel background opacity should fade out towards the outer edges."
-	    layout="topleft"
-	    label_width="150"
-		left="10"
-	    max_val="1.0"
-	    min_val="0.0"
-	    name="pie_menu_fade_out"
-	    top_pad="1"/>
-		<button
- follows="left|top"
- control_name="PieMenuFade"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
 		
 		<slider
 	    control_name="PieMenuPopupTime"
@@ -241,7 +177,7 @@ width="510">
 	    max_val="0.5"
 	    min_val="0.0"
 	    name="pie_menu_popup_time"
-	    top_pad="1"/>
+	    top_pad="13"/>
 		<button
  follows="left|top"
  control_name="PieMenuPopupTime"
