@@ -171,11 +171,11 @@ public:
 	void refreshEnabledState();
 	void refresh();	// Refresh enable/disable
 
-	//BD
-	void onDeleteLogs();
-
-	//BD
-	void onClickResetChatLog();
+	void updateList();
+	void fillList();
+	void onFilterEdit(const std::string& search_string);
+	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
+	void onClickAdd(const LLSD& userdata);
 
 	void onCommitMediaEnabled();
 	void onCommitMusicEnabled();
@@ -197,6 +197,16 @@ public:
 	void buildPopupLists();
 	static void refreshSkin(void* data);
 	void selectPanel(const LLSD& name);
+
+	std::string createTimestamp(S32 datetime);
+
+	static void triggerUpdate();
+
+	//BD
+	void onClickSetNone();
+	void refreshEnabledGraphics();
+	void onDeleteLogs();
+	void onClickResetChatLog();
 
 //	//BD - Memory Allocation
 	void refreshMemoryControls();
@@ -234,9 +244,7 @@ public:
 	void onAddBind(KEY key, MASK mask, std::string action);
 	void onRemoveBind();
 	void onReplaceBind(KEY key, MASK mask);
-
 	void onListClickAction();
-
 	void onClickSetAnyKey();
 
 	//BD - Toggle Input/Output Panel.
@@ -250,32 +258,16 @@ public:
 
 //	//BD - Avatar Rendering Settings
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
+	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
+	void setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 new_setting);
+	void onCustomAction(const LLSD& userdata);
+	uuid_vec_t getRenderSettingUUIDs();
 
 //	//BD - Presets
 	void saveGraphicPreset();
 	void loadGraphicPreset();
 	void deleteGraphicPreset();
 	void refreshGraphicPresets();
-
-	//BD
-	void onClickSetNone();
-	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
-	void refreshEnabledGraphics();
-
-
-	void updateList();
-	void fillList();
-	void onFilterEdit(const std::string& search_string);
-	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
-	void onClickAdd(const LLSD& userdata);
-	//BD - Allow mass changing.
-	void setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 new_setting);
-	void onCustomAction(const LLSD& userdata);
-	uuid_vec_t getRenderSettingUUIDs();
-
-	std::string createTimestamp(S32 datetime);
-
-	static void triggerUpdate();
 
 private:
 
@@ -284,10 +276,6 @@ private:
 	void updateDeleteTranscriptsButton();
 
 	static bool loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map);
-	
-//	//BD - Expandable Tabs
-	S32 mModifier;
-
 	
 	void loadUserSkins();
 	void reloadSkinList();
@@ -371,7 +359,10 @@ private:
 	LLButton*		mLoadBtn;
 	LLButton*		mDeleteBtn;
 
-	//BD - Bone Camera
+//	//BD - Expandable Tabs
+	S32 mModifier;
+
+//	//BD - Bone Camera
 	LLComboBox*			mJointComboBox;
 
 	LLUICtrl*	mRenderSpotLightReflections;

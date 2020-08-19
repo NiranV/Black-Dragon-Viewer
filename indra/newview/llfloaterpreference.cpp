@@ -1085,6 +1085,19 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.RememberedUsernames",    boost::bind(&LLFloaterPreference::onClickRememberedUsernames, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
 
+	mCommitCallbackRegistrar.add("Pref.AddSkin",				boost::bind(&LLFloaterPreference::onAddSkin, this));
+	mCommitCallbackRegistrar.add("Pref.RemoveSkin",				boost::bind(&LLFloaterPreference::onRemoveSkin, this));
+	mCommitCallbackRegistrar.add("Pref.ApplySkin",				boost::bind(&LLFloaterPreference::onApplySkin, this));
+	mCommitCallbackRegistrar.add("Pref.SelectSkin",				boost::bind(&LLFloaterPreference::onSelectSkin, this, _2));
+
+	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
+	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
+	gSavedSettings.getControl("UseDisplayNames")->getCommitSignal()->connect(boost::bind(&handleDisplayNamesOptionChanged, _2));
+
+	gSavedSettings.getControl("AppearanceCameraMovement")->getCommitSignal()->connect(boost::bind(&handleAppearanceCameraMovementChanged, _2));
+
+	sSkin = gSavedSettings.getString("SkinCurrent");
+
 	//BD - Logs
 	mCommitCallbackRegistrar.add("Pref.DeleteLogs",				boost::bind(&LLFloaterPreference::onDeleteLogs, this));
 	//BD - Chatlogs
@@ -1147,22 +1160,8 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	//BD
 	mCommitCallbackRegistrar.add("Pref.VoiceSetNone", boost::bind(&LLFloaterPreference::onClickSetNone, this));
 
-	//BD
 	LLConversationLog::instance().addObserver(this);
 	LLAvatarPropertiesProcessor::getInstance()->addObserver(gAgent.getID(), this);
-
-	sSkin = gSavedSettings.getString("SkinCurrent");
-
-	mCommitCallbackRegistrar.add("Pref.AddSkin", boost::bind(&LLFloaterPreference::onAddSkin, this));
-	mCommitCallbackRegistrar.add("Pref.RemoveSkin", boost::bind(&LLFloaterPreference::onRemoveSkin, this));
-	mCommitCallbackRegistrar.add("Pref.ApplySkin", boost::bind(&LLFloaterPreference::onApplySkin, this));
-	mCommitCallbackRegistrar.add("Pref.SelectSkin", boost::bind(&LLFloaterPreference::onSelectSkin, this, _2));
-
-	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
-	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
-	gSavedSettings.getControl("UseDisplayNames")->getCommitSignal()->connect(boost::bind(&handleDisplayNamesOptionChanged, _2));
-
-	gSavedSettings.getControl("AppearanceCameraMovement")->getCommitSignal()->connect(boost::bind(&handleAppearanceCameraMovementChanged, _2));
 }
 
 void LLFloaterPreference::processProperties( void* pData, EAvatarProcessorType type )
