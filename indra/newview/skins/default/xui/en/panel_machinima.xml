@@ -67,7 +67,11 @@ width="345">
                   control_name="RenderDeferred"
                   height="16"
                   label="Deferred Rendering"
-                  tool_tip="Toggles Deferred Rendering adding shadows cast by and on Prims, Avatars and the World aswell as uses a new lighting which allows Projected Lights/Textures which can also drop shadows. Vertex Shader, Atmospheric Shader, Post Process Glow and Hardware Skinning are needed to use this!"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+||This option toggles Deferred Rendering, improves and softens lighting, allows infinite light sources, directional projector lights, realtime shadows, Screen Space Ambient Occlusion (SSAO) and more. This option is absolutely required for any of the advanced effects and tweaks to be visible."
                   layout="topleft"
                   left="10"
                   name="Deferred"
@@ -102,6 +106,11 @@ width="345">
                         layout="topleft"
                         name="0"
                         top="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option prevents everything from being reflected in water reflections."
                         width="100">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -119,6 +128,11 @@ width="345">
                         left_delta="17"
                         name="0"
                         top_pad="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option allows the terrain to be reflected in water reflections."
                         width="57">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -136,6 +150,11 @@ width="345">
                         name="2"
                         left_pad="10"
                         top_delta="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option allows the terrain and objects to be reflected in water reflections."
                         width="62">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -153,6 +172,11 @@ width="345">
                         name="2"
                         left_pad="10"
                         top_delta="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option allows the terrain, objects and avatars to be reflected in water reflections."
                         width="40">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -170,6 +194,11 @@ width="345">
                         name="2"
                         left_pad="10"
                         top_delta="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option allows everything to be reflected in water reflections."
                         width="50">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -269,7 +298,11 @@ width="345">
                   enabled_control="RenderDeferred"
                   height="16"
                   label="Light Softening"
-                  tool_tip="Toggles Shadow, SSAO and Light Softening, blurs shadows and ssao to make them look smooth, might have a slight impact on overall look of the lighting in deferred without Shadows or SSAO enabled."
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low &lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles blurring for the light image used in Deferred Rendering. Affects whether shadows and SSAO are softened."
                   layout="topleft"
                   left_pad="0"
                   name="UseBlurLight"
@@ -316,6 +349,11 @@ width="345">
                         label="No Shadows"
                         value="0"
                         layout="topleft"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option disables all realtime shadows."
                         name="0"
                         top="0"
                         width="20">
@@ -335,6 +373,11 @@ width="345">
                         left_delta="17"
                         name="0"
                         top_pad="0"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option allows only the sun and moon to cast a global shadow."
                         width="84">
                               <radio_item.check_button
                               image_unselected="Checkbox_Off_Disabled"
@@ -346,10 +389,15 @@ width="345">
                         </radio_item>
                         <radio_item
                         height="16"
-                        label="Projectors"
+                        label="Sun, Moon and Projectors"
                         value="2"
                         layout="topleft"
                         name="2"
+                        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+||This option allows projectors to cast shadows. Includes sun and moon shadows."
                         left_pad="11"
                         top_delta="0"
                         width="50">
@@ -424,7 +472,11 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="Volumetric Lighting"
-                  tool_tip="Toggles if experimental volumetric light should be rendered, causing godrays in certain circumstances"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles experimental volumetric lighting. This effect will create godrays if certain atmospheric criteria are met."
                   layout="topleft"
                   left_pad="0"
                   name="Godrays"
@@ -463,7 +515,7 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="Directional Volumetric Lighting"
-                  tool_tip="Toggle if Volumtric Lighting should fade out the further you look away from the Sun. Mimics original Godrays behavior a bit."
+                  tool_tip="This option controls whether Volumtric Lighting should fade out when looking away from the sun."
                   layout="topleft"
                   left_pad="0"
                   name="RenderGodraysDirectional"
@@ -488,7 +540,11 @@ width="345">
                   enabled_control="RenderDeferred"
                   height="16"
                   label="Screen Space Ambient Occlusion"
-                  tool_tip="Toggles SSAO which adds small dark edges and transitions to close objects making them look more realistic."
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles Screen Space Ambient Occlusion (SSAO) emulating indirect lighting and the lack thereof giving objects a more realistic, less flat look."
                   layout="topleft"
                   left_pad="0"
                   name="UseSSAO"
@@ -513,7 +569,11 @@ width="345">
                   height="16"
                   initial_value="true"
                   label="Screen Space Reflections"
-                  tool_tip="Toggles Screen Space Reflections on shiny surfaces creating very realistic reflective surfaces but will need a monstrous PC"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles cheap looking but performance costly reflections based on a copy what you see on screen."
                   layout="topleft"
                   left_pad="0"
                   name="RenderScreenSpaceReflections"
@@ -538,7 +598,11 @@ width="345">
                   enabled_control="RenderDeferred"
                   height="16"
                   label="Depth of Field"
-                  tool_tip="Toggles a camera like Depth of Field effect on or off, often used to blur out distance or things that shouldnt be in focus"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles Depth of Field on or off, it is often used to blur out the background or unfocused parts of the scene."
                   layout="topleft"
                   left_pad="0"
                   name="UseDoF"
@@ -577,7 +641,7 @@ width="345">
                   height="16"
                   initial_value="true"
                   label="Include Alphas into Depth"
-                  tool_tip="Toggle if the Viewer should include alphas and particles into the depth map (can cause some erratic behavior with Depth of Field blurring on Alphas and Volumetric Lighting on Alphas). If disabled this will cause Depth of Field and Volumetric Lighting to ignore Alphas entirely and they will change their lighting back to as if Depth of Field is disabled."
+                  tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
                   layout="topleft"
                   left_pad="0"
                   name="RenderDepthOfFieldAlphas"
@@ -616,7 +680,11 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="High Quality Depth of Field"
-                  tool_tip="Toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles between the old, slow, high quality Depth of Field and the new, faster, lower quality Depth of Field."
                   layout="topleft"
                   left_pad="0"
                   name="RenderDepthOfFieldHighQuality"
@@ -738,7 +806,11 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="Motion Blur"
-                  tool_tip="Toggles if fast movement should be blurred"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option toggles whether the Viewer should blur fast movement."
                   layout="topleft"
                   left_pad="0"
                   name="MotionBlur"
@@ -764,7 +836,9 @@ width="345">
                   height="16"
                   initial_value="false"
                   label="Lens Flare"
-                  tool_tip="Toggles if lens flare post effects should be rendered when facing the sun"
+                  tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
+&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
+&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles a lens reflection of the sun in your camera on or off."
                   layout="topleft"
                   left_pad="0"
                   name="LensFlare"
@@ -907,7 +981,11 @@ width="345">
       can_edit_text="true"
       label="Distance Closest:"
       label_width="110"
-      tool_tip="This option controls the space in meters the first and closest shadowmap covers. Affects precision of shadows in the first of four areas all shadows cover."
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option roughly controls the space in meters all shadowmaps cover. Affects precision of shadows in all four areas all shadows cover."
       layout="topleft"
       left="10"
       max_val="256"
@@ -949,7 +1027,11 @@ width="345">
       can_edit_text="true"
       label="Distance Close:"
       label_width="110"
-      tool_tip="This option controls the space in meters the second shadowmap covers. Affects precision of shadows in the second of four areas all shadows cover."
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the space in meters the second shadowmap covers. Affects precision of shadows in the second of four areas all shadows cover."
       layout="topleft"
       left="10"
       max_val="256"
@@ -970,7 +1052,11 @@ width="345">
       can_edit_text="true"
       label="Distance Far:"
       label_width="110"
-      tool_tip="This option controls the space in meters the third shadowmap covers. Affects precision of shadows in the third of four areas all shadows cover."
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the space in meters the third shadowmap covers. Affects precision of shadows in the third of four areas all shadows cover."
       layout="topleft"
       left="10"
       max_val="256"
@@ -991,7 +1077,11 @@ width="345">
       can_edit_text="true"
       label="Distance Very Far:"
       label_width="110"
-      tool_tip="This option controls the space in meters the fourth and last shadowmap covers. Affects precision of shadows in the last of four areas all shadows cover."
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the space in meters the fourth and last shadowmap covers. Affects precision of shadows in the last of four areas all shadows cover."
       layout="topleft"
       left="10"
       max_val="256"
@@ -1017,8 +1107,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderShadowResolution_X"
                   top_pad="7"
                   width="310">
@@ -1039,8 +1140,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderShadowResolution_Y"
                   top_pad="1"
                   width="310">
@@ -1061,8 +1173,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderShadowResolution_Z"
                   top_pad="1"
                   width="310">
@@ -1083,8 +1206,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderShadowResolution_W"
                   top_pad="1"
                   width="310">
@@ -1105,8 +1239,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderProjectorShadowResolution_X"
                   top_pad="7"
                   width="310">
@@ -1126,8 +1271,19 @@ width="345">
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="6144"
+                  max_val="8192"
                   min_val="256"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
                   name="RenderProjectorShadowResolution_Y"
                   top_pad="1"
                   width="310">
@@ -1425,6 +1581,11 @@ width="345">
                   left="10"
                   max_val="64"
                   min_val="2"
+                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the amount of iterations the screen space reflection shader should go through. More iterations mean finer grained reflections but also much higher performance impact."
                   name="RenderSSRResolution"
                   top_pad="15"
                   width="310" />
@@ -1444,6 +1605,7 @@ width="345">
                   left="10"
                   max_val="10"
                   min_val="0.0"
+                  tool_tip="This option controls the brightness of reflections on shiny surfaces from Screen Space Reflections."
                   name="RenderSSRBrightness"
                   top_pad="1"
                   width="310" />
