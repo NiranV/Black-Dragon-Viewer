@@ -973,7 +973,14 @@ void LLFloaterFixedEnvironment::loadItem(LLSettingsBase::ptr_t settings)
 	mIsLocalEdit = false;
 	gSavedSettings.setString(mSettings->getSettingsType() == "sky" ? "SkyPresetName" : "WaterPresetName", mSettings->getName());
 
-	LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsSky>(mSettings));
+	if (type == "sky")
+	{
+		LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsSky>(mSettings));
+	}
+	else
+	{
+		LLEnvironment::instance().setEnvironment(mEnvironment, std::static_pointer_cast<LLSettingsWater>(mSettings));
+	}
 	LLEnvironment::instance().setSelectedEnvironment(mEnvironment);
 	LLEnvironment::instance().updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
 
