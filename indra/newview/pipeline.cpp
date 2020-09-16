@@ -9984,8 +9984,6 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 			glCullFace(GL_FRONT);
 
-			static LLCullResult ref_result;
-
 			if (LLDrawPoolWater::sNeedsReflectionUpdate)
 			{
 				//initial sky pass (no user clip plane)
@@ -9996,9 +9994,8 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 						LLPipeline::RENDER_TYPE_CLOUDS,
 						LLPipeline::END_RENDER_TYPES);
 
-					static LLCullResult result;
-					updateCull(camera, result);
-					stateSort(camera, result);
+					updateCull(camera, mSky);
+					stateSort(camera, mSky);
 
 					renderGeom(camera, TRUE);
 
@@ -10034,21 +10031,13 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 					LLGLUserClipPlane clip_plane(plane, mat, projection);
 					LLGLDisable cull(GL_CULL_FACE);
-					updateCull(camera, ref_result, -water_clip, &plane);
-					stateSort(camera, ref_result);
-				}
+					updateCull(camera, mReflectedObjects, -water_clip, &plane);
+					stateSort(camera, mReflectedObjects);
+					renderGeom(camera);
 
-				if (LLDrawPoolWater::sNeedsDistortionUpdate)
-				{
-					if (RenderReflectionDetail > 0)
-					{
-						gPipeline.grabReferences(ref_result);
-						LLGLUserClipPlane clip_plane(plane, mat, projection);
-
-						renderGeom(camera);
-					}
+					gPipeline.popRenderTypeMask();
+					mWaterRef.flush();
 				}
-				gPipeline.popRenderTypeMask();
 			}
 			glCullFace(GL_BACK);
 			gGL.popMatrix();
@@ -10067,7 +10056,6 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				LLPipeline::RENDER_TYPE_VOIDWATER,
 				LLPipeline::RENDER_TYPE_GROUND,
 				END_RENDER_TYPES);
-			stop_glerror();
 
 			LLPipeline::sUnderWaterRender = !camera_underwater;
 
