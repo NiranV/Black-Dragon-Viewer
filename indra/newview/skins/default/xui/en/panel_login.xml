@@ -4189,7 +4189,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="104"
+ height="120"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
@@ -4228,6 +4228,7 @@ Luane's World - [https://marketplace.secondlife.com/stores/170473 Marketplace] -
 Vesta Corporation: Robotic Division - [https://maps.secondlife.com/secondlife/Horizons%20Mars/238/241/1401 Inworld Store]
 babyCo - [http://maps.secondlife.com/secondlife/Angel%20Eyes/59/123/26 Inworld Store]
 Thalia Heckroth - [http://maps.secondlife.com/secondlife/Fingal/128/84/23 Inworld Store]
+Petrichor - [https://marketplace.secondlife.com/stores/25375 Marketplace] - [https://maps.secondlife.com/secondlife/Lune/82/219/1201 Inworld Store]
   </text>
  </panel>
  
