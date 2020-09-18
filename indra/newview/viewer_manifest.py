@@ -516,10 +516,7 @@ class WindowsManifest(ViewerManifest):
 
             # Get fmodex dll, continue if missing
             try:
-                if(self.address_size == 64):
-                    self.path("fmodex64.dll")
-                else:
-                    self.path("fmodex.dll")
+                self.path("fmod.dll")
             except:
                 print "Skipping fmodex audio library(assuming other audio engine)"
 
