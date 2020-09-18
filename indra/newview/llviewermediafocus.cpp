@@ -372,17 +372,18 @@ BOOL LLViewerMediaFocus::handleUnicodeChar(llwchar uni_char, BOOL called_from_pa
 	return true;
 }
 
+
 //BD - UI Improvements
 BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	BOOL retval = FALSE;
 	LLViewerMediaImpl* media_impl = getFocusedMediaImpl();
-	if(media_impl && media_impl->hasMedia())
+	if (media_impl && media_impl->hasMedia())
 	{
-        // the scrollEvent() API's x and y are not the same as handleScrollWheel's x and y.
-        // The latter is the position of the mouse at the time of the event
-        // The former is the 'scroll amount' in x and y, respectively.
-        // All we have for 'scroll amount' here is 'clicks'.
+		// the scrollEvent() API's x and y are not the same as handleScrollWheel's x and y.
+		// The latter is the position of the mouse at the time of the event
+		// The former is the 'scroll amount' in x and y, respectively.
+		// All we have for 'scroll amount' here is 'clicks'.
 		// We're also not passed the keyboard modifier mask, but we can get that from gKeyboard.
 		//BD - UI Improvements
 		media_impl->scrollWheel(x, y, 0, clicks, gKeyboard->currentMask(TRUE));
@@ -390,6 +391,30 @@ BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 	}
 	return retval;
 }
+
+/*BOOL LLViewerMediaFocus::handleScrollWheel(const LLVector2& texture_coords, S32 clicks_x, S32 clicks_y)
+{
+    BOOL retval = FALSE;
+    LLViewerMediaImpl* media_impl = getFocusedMediaImpl();
+    if (media_impl && media_impl->hasMedia())
+    {
+        media_impl->scrollWheel(texture_coords, clicks_x, clicks_y, gKeyboard->currentMask(TRUE));
+        retval = TRUE;
+    }
+    return retval;
+}
+
+BOOL LLViewerMediaFocus::handleScrollWheel(S32 x, S32 y, S32 clicks_x, S32 clicks_y)
+{
+	BOOL retval = FALSE;
+	LLViewerMediaImpl* media_impl = getFocusedMediaImpl();
+	if(media_impl && media_impl->hasMedia())
+	{
+		media_impl->scrollWheel(x, y, clicks_x, clicks_y, gKeyboard->currentMask(TRUE));
+		retval = TRUE;
+	}
+	return retval;
+}*/
 
 void LLViewerMediaFocus::update()
 {

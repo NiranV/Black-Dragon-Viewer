@@ -63,6 +63,11 @@ LLFloaterJoystick::LLFloaterJoystick(const LLSD& data)
 {
 	mCommitCallbackRegistrar.add("Joystick.Refresh", boost::bind(&LLFloaterJoystick::refreshAll, this));
 
+    if (!gJoystick->getInstance()->isJoystickInitialized())
+    {
+		gJoystick->getInstance()->init(false);
+    }
+
 	initFromSettings();
 }
 

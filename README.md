@@ -1,6 +1,5 @@
 Black Dragon Viewer
 ====================
-
 This project manages the source code for the
 [Black Dragon](https://niranv-sl.blogspot.de/) Viewer.
 

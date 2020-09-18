@@ -213,6 +213,7 @@ BOOL LLToolPie::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	return LLTool::handleRightMouseUp(x, y, mask);
 }
 
+<<<<<<< HEAD
 //BD - UI Improvements
 BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
@@ -221,8 +222,35 @@ BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 
 BOOL LLToolPie::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
+	return LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks, mask);
 }
+
+/*BOOL LLToolPie::handleScrollWheelAny(S32 x, S32 y, S32 clicks_x, S32 clicks_y)
+{
+    BOOL res = FALSE;
+    // mHoverPick should have updated on its own and we should have a face
+    // in LLViewerMediaFocus in case of media, so just reuse mHoverPick
+    if (mHoverPick.mUVCoords.mV[VX] >= 0.f && mHoverPick.mUVCoords.mV[VY] >= 0.f)
+    {
+        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(mHoverPick.mUVCoords, clicks_x, clicks_y);
+    }
+    else
+    {
+        // this won't provide correct coordinates in case of object selection
+        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks_x, clicks_y);
+    }
+    return res;
+}
+
+BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks)
+{
+    return handleScrollWheelAny(x, y, 0, clicks);
+}
+
+BOOL LLToolPie::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
+{
+    return handleScrollWheelAny(x, y, clicks, 0);
+}*/
 
 // True if you selected an object.
 BOOL LLToolPie::handleLeftClickPick()

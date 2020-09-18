@@ -278,7 +278,10 @@ void LLVOVolume::markDead()
 {
 	if (!mDead)
 	{
-		LLSculptIDSize::instance().rem(getVolume()->getParams().getSculptID());
+        if (getVolume())
+        {
+            LLSculptIDSize::instance().rem(getVolume()->getParams().getSculptID());
+        }
 
 		if(getMDCImplCount() > 0)
 		{
@@ -2125,7 +2128,7 @@ void LLVOVolume::setNumTEs(const U8 num_tes)
 	}
 	else if(old_num_tes > num_tes && mMediaImplList.size() > num_tes) //old faces removed
 	{
-		U8 end = mMediaImplList.size() ;
+		U8 end = (U8)(mMediaImplList.size()) ;
 		for(U8 i = num_tes; i < end ; i++)
 		{
 			removeMediaImpl(i) ;				

@@ -70,9 +70,10 @@ if (WINDOWS)
         "${CMAKE_CXX_FLAGS_RELEASE} /clang:-Ofast /clang:-ffast-math /Oi /Ot /Gy /Zi /MD /Ob2 /Oy- /Zc:inline /EHsc /fp:fast -D_ITERATOR_DEBUG_LEVEL=0")
   endif()
 
-  if (ADDRESS_SIZE EQUAL 32)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
-  endif (ADDRESS_SIZE EQUAL 32)
+  # Without PreferredToolArchitecture=x64, as of 2020-06-26 the 32-bit
+  # compiler on our TeamCity build hosts has started running out of virtual
+  # memory for the precompiled header file.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /p:PreferredToolArchitecture=x64")
 
 
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /DEBUG /IGNORE:4099")
@@ -154,9 +155,9 @@ if (WINDOWS)
       set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /favor:INTEL64")
   endif()
 
-  if (NOT VS_DISABLE_FATAL_WARNINGS)
-    set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /WX")
-  endif (NOT VS_DISABLE_FATAL_WARNINGS)
+  #if (NOT VS_DISABLE_FATAL_WARNINGS)
+  #  set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /WX")
+  #endif (NOT VS_DISABLE_FATAL_WARNINGS)
 
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GLOBAL_CXX_FLAGS}" CACHE STRING "C++ compiler debug options" FORCE)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} ${GLOBAL_CXX_FLAGS}" CACHE STRING "C++ compiler release-with-debug options" FORCE)

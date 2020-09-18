@@ -773,7 +773,7 @@ LLSD LLFloaterReporter::gatherReport()
 
 	std::ostringstream details;
 
-	details << "V" << LLVersionInfo::getVersion() << std::endl << std::endl;	// client version moved to body of email for abuse reports
+	details << "V" << LLVersionInfo::instance().getVersion() << std::endl << std::endl;	// client version moved to body of email for abuse reports
 
 	std::string object_name = getChild<LLUICtrl>("object_name")->getValue().asString();
 	if (!object_name.empty() && !mOwnerName.empty())
@@ -791,7 +791,7 @@ LLSD LLFloaterReporter::gatherReport()
 	std::string version_string;
 	version_string = llformat(
 			"%s %s %s %s %s",
-			LLVersionInfo::getShortVersion().c_str(),
+			LLVersionInfo::instance().getShortVersion().c_str(),
 			platform,
 			gSysCPU.getFamily().c_str(),
 			gGLManager.mGLRenderer.c_str(),
@@ -938,7 +938,7 @@ void LLFloaterReporter::takeNewSnapshot()
 
 	// Take a screenshot, but don't draw this floater.
 	setVisible(FALSE);
-	if( !gViewerWindow->rawSnapshot(mImageRaw, IMAGE_WIDTH, IMAGE_HEIGHT, TRUE, FALSE, TRUE, FALSE))
+    if (!gViewerWindow->rawSnapshot(mImageRaw, IMAGE_WIDTH, IMAGE_HEIGHT, TRUE, FALSE, gSavedSettings.getBOOL("RenderHUDInSnapshot"), TRUE, FALSE))
 	{
 		LL_WARNS() << "Unable to take screenshot" << LL_ENDL;
 		setVisible(TRUE);

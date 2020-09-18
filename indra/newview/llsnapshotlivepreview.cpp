@@ -386,6 +386,15 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
                      mPreviewImage->getComponents());
         raw->copy(mPreviewImage);
 
+        // Scale to the thumbnail size
+        if (!raw->scale(mThumbnailWidth, mThumbnailHeight))
+        {
+            raw = NULL ;
+        }
+    }
+    
+	if (raw)
+	{
         // Filter the thumbnail
         // Note: filtering needs to be done *before* the scaling to power of 2 or the effect is distorted
         if (getFilter() != "")
@@ -513,6 +522,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 				previewp->mKeepAspectRatio,//gSavedSettings.getBOOL("KeepAspectForSnapshot"),
                 previewp->getSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE,
 				previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
+				gSavedSettings.getBOOL("RenderHUDInSnapshot"),
 				FALSE,
 				previewp->mSnapshotBufferType,
 				previewp->getMaxImageSize()))

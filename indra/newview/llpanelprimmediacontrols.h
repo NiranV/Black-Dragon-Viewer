@@ -51,6 +51,9 @@ public:
 	//BD - UI Improvements
 	virtual BOOL handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
+	//virtual BOOL handleScrollWheel(S32 x, S32 y, S32 clicks);
+	//virtual BOOL handleScrollHWheel(S32 x, S32 y, S32 clicks);
+
 	virtual BOOL handleMouseDown(S32 x, S32 y, MASK mask);
 	virtual BOOL handleMouseUp(S32 x, S32 y, MASK mask);
 	virtual BOOL handleKeyHere(KEY key, MASK mask);

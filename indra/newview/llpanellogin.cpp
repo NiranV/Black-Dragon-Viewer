@@ -424,6 +424,10 @@ void LLPanelLogin::addFavoritesToStartLocation()
 		}
 		break;
 	}
+	if (combo->getValue().asString().empty())
+	{
+		combo->selectFirstItem();
+	}
 }
 
 LLPanelLogin::~LLPanelLogin()
@@ -1140,9 +1144,10 @@ void LLPanelLogin::onSelectServer()
 		{
 			std::string location = mFavoritesCombo->getValue().asString();
 			LLSLURL slurl(location); // generata a slurl from the location combo contents
-			if (   slurl.getType() == LLSLURL::LOCATION
-				&& slurl.getGrid() != LLGridManager::getInstance()->getGrid()
-				)
+			if (location.empty()
+				|| (slurl.getType() == LLSLURL::LOCATION
+				    && slurl.getGrid() != LLGridManager::getInstance()->getGrid())
+				   )
 			{
 				// the grid specified by the location is not this one, so clear the combo
 				mFavoritesCombo->setCurrentByIndex(0); // last location on the new grid
