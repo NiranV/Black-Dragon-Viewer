@@ -115,6 +115,7 @@ set(viewer_SOURCE_FILES
     bdpaneldrawdistance.cpp
     bdfunctions.cpp
     bdfloateranimations.cpp
+    bdfloateranimator.cpp
     bdfloatercamera.cpp
     bdfloatercomplexity.cpp
     bdfloaterobjects.cpp
@@ -767,6 +768,7 @@ set(viewer_HEADER_FILES
     bdfunctions.h
     bdfloatercamera.h
     bdfloateranimations.h
+    bdfloateranimator.h
     bdfloatercomplexity.h
     bdfloaterobjects.h
     bdfloaterposer.h
