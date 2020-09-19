@@ -73,7 +73,7 @@ if (WINDOWS)
   # Without PreferredToolArchitecture=x64, as of 2020-06-26 the 32-bit
   # compiler on our TeamCity build hosts has started running out of virtual
   # memory for the precompiled header file.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /p:PreferredToolArchitecture=x64")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /p:PreferredToolArchitecture=x64")
 
 
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /DEBUG /IGNORE:4099")
