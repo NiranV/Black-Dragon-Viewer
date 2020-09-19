@@ -213,7 +213,6 @@ BOOL LLToolPie::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	return LLTool::handleRightMouseUp(x, y, mask);
 }
 
-<<<<<<< HEAD
 //BD - UI Improvements
 BOOL LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {

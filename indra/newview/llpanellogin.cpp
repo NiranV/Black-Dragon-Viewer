@@ -331,8 +331,8 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	getChild<LLButton>("forgot_password_text")->setCommitCallback(boost::bind(&LLPanelLogin::onClickForgotPassword, this));
 	getChild<LLButton>("create_new_account_text")->setCommitCallback(boost::bind(&LLPanelLogin::onClickNewAccount, this));
 
-	std::string channel = LLVersionInfo::getChannel();
-	std::string version = llformat("%s (%d)", LLVersionInfo::getShortVersion().c_str(), LLVersionInfo::getBuild());
+	std::string channel = LLVersionInfo::instance().getChannel();
+	std::string version = llformat("%s (%d)", LLVersionInfo::instance().getShortVersion().c_str(), LLVersionInfo::instance().getBuild());
 	LLButton* channel_text = getChild<LLButton>("channel_text");
 	channel_text->setLabelArg("[CHANNEL]", channel);
 	channel_text->setLabelArg("[VERSION]", version);
@@ -424,9 +424,9 @@ void LLPanelLogin::addFavoritesToStartLocation()
 		}
 		break;
 	}
-	if (combo->getValue().asString().empty())
+	if (mFavoritesCombo->getValue().asString().empty())
 	{
-		combo->selectFirstItem();
+		mFavoritesCombo->selectFirstItem();
 	}
 }
 
