@@ -4002,11 +4002,12 @@ bool LLAgent::teleportCore(bool is_local)
 		//release geometry from old location
 		gPipeline.resetVertexBuffers();
 		LLSpatialPartition::sTeleportRequested = TRUE;
+
+//		//BD - Derender
+		//	   Clear Derender List only when we actually teleport away.
+		gObjectList.mDerenderList.clear();
 	}
 	make_ui_sound("UISndTeleportOut");
-
-//	//BD - Derender
-	gObjectList.mDerenderList.clear();
 	
 	// MBW -- Let the voice client know a teleport has begun so it can leave the existing channel.
 	// This was breaking the case of teleporting within a single sim.  Backing it out for now.
