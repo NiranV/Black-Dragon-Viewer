@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>AllowReturnInInventory</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow Return to execute the default inventory item action when an inventory item is selected.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>LogsLogPath</key>
   <map>
     <key>Comment</key>

@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="870"
+     height="886"
      name="ui_panel"
      top="0"
      left="0"
@@ -842,6 +842,17 @@ width="510">
 	    layout="topleft"
 	    left_delta="0"
 	    name="InventoryOutboxMakeVisible"
+	    top_pad="0"
+	    width="256" />
+  <check_box
+	    control_name="AllowReturnInInventory"
+	    height="16"
+	    initial_value="false"
+	    label="Allow 'Return' key to execute the default inventory item action"
+		tool_tip="This option toggles whether the Viewer should open/attach/wear/add/preview a selected item in Inventory when pressing the return key."
+	    layout="topleft"
+	    left_delta="0"
+	    name="AllowReturnInInventory"
 	    top_pad="0"
 	    width="256" />
   <text

@@ -1709,7 +1709,7 @@ BOOL LLInventoryPanel::handleKeyHere( KEY key, MASK mask )
 	{
 	case KEY_RETURN:
 		// Open selected items if enter key hit on the inventory panel
-		if (mask == MASK_NONE)
+		if (mask == MASK_NONE && gSavedSettings.getBOOL("AllowReturnInInventory"))
 		{
 
 // @TODO$: Rider: This code is dead with Outbox, however should something similar be 
