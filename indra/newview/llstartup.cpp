@@ -1906,11 +1906,6 @@ bool idle_startup()
 		LLMuteList::getInstance()->requestFromServer(gAgent.getID());
 		set_startup_status(0.66f, LLTrans::getString("InventorySend"), "Requesting Money Balance");
 		display_startup();
-		// Get L$ and ownership credit information
-		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
-		//BD
-		LLSidepanelInventory::sendMoneyBalanceRequest();
-		display_startup();
 		// request all group information
 		LL_INFOS() << "Requesting Agent Data" << LL_ENDL;
 		gAgent.sendAgentDataUpdateRequest();
@@ -1919,6 +1914,11 @@ bool idle_startup()
 		// Create the inventory views
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
+		display_startup();
+		// Get L$ and ownership credit information
+		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
+		//BD
+		LLSidepanelInventory::sendMoneyBalanceRequest();
 		set_startup_status(0.68f, LLTrans::getString("InventorySend"), "Checking RLVa");
 		display_startup();
 
