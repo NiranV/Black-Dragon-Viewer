@@ -141,6 +141,7 @@ void LLPreviewAnim::play(const LLSD& param)
 	}
 }
 
+//BD
 void LLPreviewAnim::time(LLUICtrl* ctrl, const LLSD& param)
 {
 	const LLInventoryItem *item = getItem();
@@ -148,14 +149,6 @@ void LLPreviewAnim::time(LLUICtrl* ctrl, const LLSD& param)
 	LLMotion* motion = gAgentAvatarp->findMotion(itemID);
 	if (motion)
 	{
-		/*U8 last_joint_signature[LL_CHARACTER_MAX_ANIMATED_JOINTS];
-		memset(&last_joint_signature, 0, sizeof(U8) * LL_CHARACTER_MAX_ANIMATED_JOINTS);
-
-		for (S32 i = 0; i < NUM_JOINT_SIGNATURE_STRIDES; i++)
-		{
-			*((U32*)&last_joint_signature[i * 4]) = *(U32*)&(motion->mJointSignature[0][i * 4]);
-		}
-		motion->onUpdate(ctrl->getValue().asReal(), last_joint_signature);*/
 		motion->activate(ctrl->getValue().asReal());
 	}
 }
