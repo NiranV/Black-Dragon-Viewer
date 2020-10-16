@@ -1915,7 +1915,7 @@ void LLFloaterPreference::refreshEverything()
 		}
 	}
 
-	if (mTabContainer->getCurrentPanelIndex() == 9)
+	if (mTabContainer->getCurrentPanelIndex() == 8)
 	{
 		BOOL has_first_selected = (getChildRef<LLScrollListCtrl>("disabled_popups").getFirstSelected() != NULL);
 		gSavedSettings.setBOOL("FirstSelectedDisabledPopups", has_first_selected);
@@ -1924,7 +1924,7 @@ void LLFloaterPreference::refreshEverything()
 		gSavedSettings.setBOOL("FirstSelectedEnabledPopups", has_first_selected);
 	}
 
-	if (mTabContainer->getCurrentPanelIndex() == 10)
+	if (mTabContainer->getCurrentPanelIndex() == 12)
 	{
 		getChild<LLButton>("open_log_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
 	}
