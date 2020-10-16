@@ -7,7 +7,6 @@
  legacy_header_height="18"
  close_pressed_image="Transparent"
  close_image="Transparent"
- can_close="false"
  can_minimize="false"
  can_resize="true"
  min_height="510"
