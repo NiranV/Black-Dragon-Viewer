@@ -865,7 +865,8 @@ void LLMotionController::updateMotions(bool force_update)
 		}
 		else
 		{
-			mAnimTime = llmax(mAnimTime, update_time);
+			//BD - Keep this, otherwise playing animations backwards doesn't work.
+			mAnimTime = update_time;
 		}
 	}
 
