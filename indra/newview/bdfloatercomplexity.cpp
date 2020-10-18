@@ -165,6 +165,14 @@ void BDFloaterComplexity::calcARC()
 	S32Bytes texture_memory;
 
 	U32 cost = 0;
+	U32 objects = 0;
+	U32 texture_count = 0;
+	U32 faces = 0;
+	U32 particles = 0;
+	U32 lights = 0;
+	U32 projectors = 0;
+	U32 media = 0;
+	U32 animeshs = 0;
 	//BD - We need U64 here, i saw F32 exploding with the insane triangle counts some people got.
 	//     Since this the absolute total count of vertices/triangles they might also go beyond
 	//     4.294.967.295 and explode too hence why we use 64bits here.
@@ -232,6 +240,7 @@ void BDFloaterComplexity::calcARC()
 								S32Bytes attachment_memory_usage;
 
 								U32 flexible_cost = 0;
+								U32 faces_cost = 0;
 								U32 particle_cost = 0;
 								U32 light_cost = 0;
 								U32 projector_cost = 0;
@@ -243,6 +252,9 @@ void BDFloaterComplexity::calcARC()
 								U32 shiny_cost = 0;
 								U32 glow_cost = 0;
 								U32 animated_cost = 0;
+								U32 face_count = 0;
+								U32 link_count = 0;
+
 
 								checkObject(volume, textures,
 									attachment_volume_cost, attachment_base_cost,
@@ -254,6 +266,9 @@ void BDFloaterComplexity::calcARC()
 									glow_cost, animated_cost);
 
 								attachment_total_cost = attachment_volume_cost;
+
+								link_count++;
+								face_count = volume->getNumFaces();
 
 								for (LLViewerObject* child_obj : volume->getChildren())
 								{
@@ -269,6 +284,19 @@ void BDFloaterComplexity::calcARC()
 											glow_cost, animated_cost);
 
 										attachment_total_cost += attachment_volume_cost;
+										link_count++;
+										face_count += child->getNumFaces();
+										if (child->isParticleSource())
+											particles++;
+										if (child->isAnimatedObject())
+											animeshs++;
+										if (child->getIsLight())
+											lights++;
+										if (child->getHasShadow())
+											projectors++;
+										//BD - This isn't accurate, it only counts objects with media, not media faces.
+										if (child->hasMedia())
+											media++;
 									}
 								}
 
@@ -281,6 +309,7 @@ void BDFloaterComplexity::calcARC()
 										attachment_memory_usage += (texture->getTextureMemory() / 1024);
 									}
 									attachment_texture_cost += volume_texture.second;
+									++texture_count;
 								}
 
 								//BD - Final results.
@@ -292,6 +321,19 @@ void BDFloaterComplexity::calcARC()
 									cost += attachment_final_cost;
 									vertices += attachment_total_vertices;
 									triangles += attachment_total_triangles;
+									faces += face_count;
+									objects += link_count;
+									if (volume->isParticleSource())
+										particles++;
+									if (volume->isAnimatedObject())
+										animeshs++;
+									if (volume->getIsLight())
+										lights++;
+									if (volume->getHasShadow())
+										projectors++;
+									//BD - This isn't accurate, it only counts objects with media, not media faces.
+									if (volume->hasMedia())
+										media++;
 								}
 
 								//BD - Write our results into the list.
@@ -309,38 +351,44 @@ void BDFloaterComplexity::calcARC()
 								row["columns"][3]["value"] = LLSD::Integer(attachment_total_vertices);
 								row["columns"][4]["column"] = "flexible";
 								row["columns"][4]["value"] = LLSD::Integer(flexible_cost);
-								row["columns"][5]["column"] = "particle";
-								row["columns"][5]["value"] = LLSD::Integer(particle_cost);
-								row["columns"][6]["column"] = "light";
-								row["columns"][6]["value"] = LLSD::Integer(light_cost);
-								row["columns"][7]["column"] = "projector";
-								row["columns"][7]["value"] = LLSD::Integer(projector_cost);
-								row["columns"][8]["column"] = "alpha";
-								row["columns"][8]["value"] = LLSD::Integer(alpha_cost);
-								row["columns"][9]["column"] = "bumpmap";
-								row["columns"][9]["value"] = LLSD::Integer(bump_cost);
-								row["columns"][10]["column"] = "shiny";
-								row["columns"][10]["value"] = LLSD::Integer(shiny_cost);
-								row["columns"][11]["column"] = "glow";
-								row["columns"][11]["value"] = LLSD::Integer(glow_cost);
-								row["columns"][12]["column"] = "animated";
-								row["columns"][12]["value"] = LLSD::Integer(animated_cost);
-								row["columns"][13]["column"] = "rigged";
-								row["columns"][13]["value"] = LLSD::Integer(rigged_cost);
-								row["columns"][14]["column"] = "animesh";
-								row["columns"][14]["value"] = LLSD::Integer(animesh_cost);
-								row["columns"][15]["column"] = "media";
-								row["columns"][15]["value"] = LLSD::Integer(media_cost);
-								row["columns"][16]["column"] = "base_arc";
-								row["columns"][16]["value"] = LLSD::Integer(attachment_base_cost);
-								row["columns"][17]["column"] = "memory";
-								row["columns"][17]["value"] = attachment_memory_usage.value();
-								row["columns"][18]["column"] = "uuid";
-								row["columns"][18]["value"] = volume->getAttachmentItemID();
-								row["columns"][19]["column"] = "memory_arc";
-								row["columns"][19]["value"] = LLSD::Integer(attachment_texture_cost);
-								row["columns"][20]["column"] = "total_arc";
-								row["columns"][20]["value"] = LLSD::Integer(attachment_total_cost);
+								row["columns"][5]["column"] = "faces";
+								row["columns"][5]["value"] = LLSD::Integer(faces_cost);
+								row["columns"][6]["column"] = "particle";
+								row["columns"][6]["value"] = LLSD::Integer(particle_cost);
+								row["columns"][7]["column"] = "light";
+								row["columns"][7]["value"] = LLSD::Integer(light_cost);
+								row["columns"][8]["column"] = "projector";
+								row["columns"][8]["value"] = LLSD::Integer(projector_cost);
+								row["columns"][9]["column"] = "alpha";
+								row["columns"][9]["value"] = LLSD::Integer(alpha_cost);
+								row["columns"][10]["column"] = "bumpmap";
+								row["columns"][10]["value"] = LLSD::Integer(bump_cost);
+								row["columns"][11]["column"] = "shiny";
+								row["columns"][11]["value"] = LLSD::Integer(shiny_cost);
+								row["columns"][12]["column"] = "glow";
+								row["columns"][12]["value"] = LLSD::Integer(glow_cost);
+								row["columns"][13]["column"] = "animated";
+								row["columns"][13]["value"] = LLSD::Integer(animated_cost);
+								row["columns"][14]["column"] = "rigged";
+								row["columns"][14]["value"] = LLSD::Integer(rigged_cost);
+								row["columns"][15]["column"] = "animesh";
+								row["columns"][15]["value"] = LLSD::Integer(animesh_cost);
+								row["columns"][16]["column"] = "media";
+								row["columns"][16]["value"] = LLSD::Integer(media_cost);
+								row["columns"][17]["column"] = "base_arc";
+								row["columns"][17]["value"] = LLSD::Integer(attachment_base_cost);
+								row["columns"][18]["column"] = "memory";
+								row["columns"][18]["value"] = attachment_memory_usage.value();
+								row["columns"][19]["column"] = "uuid";
+								row["columns"][19]["value"] = volume->getAttachmentItemID();
+								row["columns"][20]["column"] = "memory_arc";
+								row["columns"][20]["value"] = LLSD::Integer(attachment_texture_cost);
+								row["columns"][21]["column"] = "total_arc";
+								row["columns"][21]["value"] = LLSD::Integer(attachment_total_cost);
+								row["columns"][22]["column"] = "links";
+								row["columns"][22]["value"] = LLSD::Integer(link_count);
+								row["columns"][23]["column"] = "faces";
+								row["columns"][23]["value"] = LLSD::Integer(face_count);
 								LLScrollListItem* element = mARCScroll->addElement(row);
 								element->setUserdata(attached_object);
 							}
@@ -356,6 +404,98 @@ void BDFloaterComplexity::calcARC()
 	mTotalTriangleCount->setValue(LLSD::Integer(triangles));
 	mTotalCost->setValue(LLSD::Integer(cost));
 	mTextureCost->setValue(texture_memory.value());
+
+	
+	//BD - Now write a performance report.
+	getChild<LLUICtrl>("complexity_count")->setTextArg("[COMPLEXITY_COUNT]", llformat("%d", LLSD::Integer(cost)));
+	getChild<LLUICtrl>("poly_count")->setTextArg("[TRI_COUNT]", llformat("%d", LLSD::Integer(triangles)));
+	getChild<LLUICtrl>("texture_mem_count")->setTextArg("[TEX_MEM_COUNT]", llformat("%.1f", F32(texture_memory.value()) / 1024.f));
+	getChild<LLUICtrl>("tex_count")->setTextArg("[TEX_COUNT]", llformat("%.d", texture_count));
+	getChild<LLUICtrl>("object_count")->setTextArg("[OBJ_COUNT]", llformat("%d", objects));
+	getChild<LLUICtrl>("face_count")->setTextArg("[FACE_COUNT]", llformat("%d", faces));
+	getChild<LLUICtrl>("particle_count")->setTextArg("[PART_COUNT]", llformat("%d", particles));
+	getChild<LLUICtrl>("light_count")->setTextArg("[LIGHT_COUNT]", llformat("%d", lights));
+	getChild<LLUICtrl>("projector_count")->setTextArg("[PROJ_COUNT]", llformat("%d", projectors));
+	getChild<LLUICtrl>("media_count")->setTextArg("[MEDIA_COUNT]", llformat("%d", media));
+	getChild<LLUICtrl>("animesh_count")->setTextArg("[ANIMESH_COUNT]", llformat("%d", animeshs));
+
+	//BD - Now color the report depending on their estimated "goodness"
+	F32 red, green = 1.0f;
+	F32 final_red = 0.0f;
+	//BD - The first 30000 complexity are free.
+	red = 1.0f * ((F32(cost) - 30000.f) / 120000.f);
+	final_red += red;
+	getChild<LLUICtrl>("complexity_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	//BD - The first 20000 triangles are free.
+	red = 1.0f * ((F32(triangles) - 20000.f) / 60000.f);
+	final_red += red;
+	getChild<LLUICtrl>("poly_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	//BD - The first 36MB texture memory are free, this assumes the free 9 textures below are 1024x1024.
+	red = 1.0f * ((F32(texture_memory.value()) - (36.f * 1024.f)) / (60.f * 1024.f));
+	final_red += red;
+	getChild<LLUICtrl>("texture_mem_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	//BD - The first 9 textures are free. Accomodating for 3 1024x1024 body textures and specular and normal maps each.
+	red = 1.0f * ((F32(texture_count) - 9.f) / 23.f);
+	final_red += red;
+	getChild<LLUICtrl>("tex_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	//BD - The first 8 objects are free. Assuming head, upper and lower body, clothing and underwear for upper/lower body and a trinket.
+	red = 1.0f * ((F32(objects) - 8.f) / 32.f);
+	final_red += red;
+	getChild<LLUICtrl>("object_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	//BD - The first 64 faces are free. Giving us 8 faces per free object.
+	red = 1.0f * ((F32(faces) - 64.f) / 320.f);
+	final_red += red;
+	getChild<LLUICtrl>("face_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	red = 1.0f * F32(particles);
+	final_red += red;
+	getChild<LLUICtrl>("particle_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	red = 1.0f * (F32(lights) / 16.f);
+	final_red += red;
+	getChild<LLUICtrl>("light_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	red = 1.0f * (F32(projectors) / 2.f);
+	final_red += red;
+	getChild<LLUICtrl>("projector_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	red = 1.0f * F32(media);
+	final_red += red;
+	getChild<LLUICtrl>("media_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	red = 1.0f * F32(animeshs);
+	final_red += red;
+	getChild<LLUICtrl>("animesh_rating")->setColor(LLColor3(red, green - red, 0.0f));
+
+	final_red /= 11.f;
+	getChild<LLUICtrl>("final_rating")->setColor(LLColor3(final_red, green - final_red, 0.0f));
+	std::string str;
+	//BD - 90%+ is perfect
+	if (final_red <= 0.1f)
+		str = getString("perfect");
+	//BD - 80% - 90% is still very good
+	else if (final_red <= 0.2f)
+		str = getString("verygood");
+	//BD - 65% - 80% is still good
+	else if (final_red <= 0.35f)
+		str = getString("good");
+	//BD - 35% - 65% is okay
+	else if (final_red <= 0.65f)
+		str = getString("ok");
+	//BD - 20% - 35% is bad
+	else if (final_red <= 0.8f)
+		str = getString("bad");
+	//BD - less than 20% is very bad
+	else
+		str = getString("verybad");
+
+	getChild<LLUICtrl>("final_verdict")->setTextArg("[VERDICT]", llformat("%s", str.c_str()));
+
 }
 
 //BD - This function calculates any input object and spits out everything we need to know about it.
@@ -379,25 +519,26 @@ void BDFloaterComplexity::onSelectEntry()
 		getChild<LLUICtrl>("label_final_arc")->setValue(item->getColumn(1)->getValue());
 		getChild<LLUICtrl>("label_polygons")->setValue(item->getColumn(2)->getValue());
 		getChild<LLUICtrl>("label_vertices")->setValue(item->getColumn(3)->getValue());
-		getChild<LLUICtrl>("label_vram")->setValue(item->getColumn(17)->getValue());
+		getChild<LLUICtrl>("label_vram")->setValue(item->getColumn(18)->getValue());
 
 		//BD - Write down all ARC values.
 		getChild<LLUICtrl>("label_flexi")->setValue(item->getColumn(4)->getValue());
-		getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(5)->getValue());
-		getChild<LLUICtrl>("label_light")->setValue(item->getColumn(6)->getValue());
-		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(7)->getValue());
-		getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(8)->getValue());
-		getChild<LLUICtrl>("label_bump")->setValue(item->getColumn(9)->getValue());
-		getChild<LLUICtrl>("label_shiny")->setValue(item->getColumn(10)->getValue());
-		getChild<LLUICtrl>("label_glow")->setValue(item->getColumn(11)->getValue());
-		getChild<LLUICtrl>("label_animated")->setValue(item->getColumn(12)->getValue());
-		getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(13)->getValue());
-		getChild<LLUICtrl>("label_animesh")->setValue(item->getColumn(14)->getValue());
-		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(15)->getValue());
-		getChild<LLUICtrl>("label_base_arc")->setValue(item->getColumn(16)->getValue());
-		getChild<LLUICtrl>("label_uuid")->setValue(item->getColumn(18)->getValue());
-		getChild<LLUICtrl>("label_texture_arc")->setValue(item->getColumn(19)->getValue());
-		getChild<LLUICtrl>("label_total_arc")->setValue(item->getColumn(20)->getValue());
+		getChild<LLUICtrl>("label_faces")->setValue(item->getColumn(5)->getValue());
+		getChild<LLUICtrl>("label_particles")->setValue(item->getColumn(6)->getValue());
+		getChild<LLUICtrl>("label_light")->setValue(item->getColumn(7)->getValue());
+		getChild<LLUICtrl>("label_projector")->setValue(item->getColumn(8)->getValue());
+		getChild<LLUICtrl>("label_alpha")->setValue(item->getColumn(9)->getValue());
+		getChild<LLUICtrl>("label_bump")->setValue(item->getColumn(10)->getValue());
+		getChild<LLUICtrl>("label_shiny")->setValue(item->getColumn(11)->getValue());
+		getChild<LLUICtrl>("label_glow")->setValue(item->getColumn(12)->getValue());
+		getChild<LLUICtrl>("label_animated")->setValue(item->getColumn(13)->getValue());
+		getChild<LLUICtrl>("label_rigged")->setValue(item->getColumn(14)->getValue());
+		getChild<LLUICtrl>("label_animesh")->setValue(item->getColumn(15)->getValue());
+		getChild<LLUICtrl>("label_media")->setValue(item->getColumn(16)->getValue());
+		getChild<LLUICtrl>("label_base_arc")->setValue(item->getColumn(17)->getValue());
+		getChild<LLUICtrl>("label_uuid")->setValue(item->getColumn(19)->getValue());
+		getChild<LLUICtrl>("label_texture_arc")->setValue(item->getColumn(20)->getValue());
+		getChild<LLUICtrl>("label_total_arc")->setValue(item->getColumn(21)->getValue());
 	}
 }
 

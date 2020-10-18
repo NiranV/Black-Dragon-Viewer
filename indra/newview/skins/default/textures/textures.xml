@@ -737,6 +737,8 @@ with the same filename but different name
   
   <!-- Back Dragon textures-->
   
+  <texture name="Performance_Rating" file_name="icons/perf_rating.png"/>
+  
   <texture name="Inv_Shape" file_name="icons/Inv_Shape.png"/>
   
   <texture name="icon_avatar_online" file_name="icons/icon_avatar_online.png"/>

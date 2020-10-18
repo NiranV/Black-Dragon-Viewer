@@ -11,6 +11,24 @@ min_width="632"
 min_height="360"
 title="Advanced Complexity Information"
 width="684">
+	<string name="perfect">
+Your avatar is perfectly optimized.
+</string>
+<string name="verygood">
+Your avatar is very well optimized, there's little to nothing anymore that could be improved.
+</string>
+<string name="good">
+Your avatar is decently optimized, there are a few things that could still be improved, check the above breakdown which parts could be improved.
+</string>
+<string name="ok">
+Your avatar is ok, there's a good bunch of things that could be improved to help performance and reduce its impact on yourself and others.
+</string>
+<string name="bad">
+Your avatar is badly optimized, there are a lot of things that need working on, your potential performance impact is too high.
+</string>
+<string name="verybad">
+Your avatar is not optimized at all, you should consider working on the avatar a lot more, optimizing at least the critical parts if available.
+</string>
 	<panel
     follows="all"
 	background_visible="false"
@@ -33,6 +51,418 @@ width="684">
 	width="671"
 	top="0"
 	left="0"/>
+		<tab_container
+				follows="all"
+				halign="center"
+				height="392"
+				layout="topleft"
+				left="130"
+				name="joints_tabs"
+				tab_height="20"
+				tab_group="1"
+				tab_position="top"
+				top="4"
+				width="350">
+					<panel
+					follows="all"
+					background_visible="false"
+					height="392"
+					layout="topleft"
+					left="0"
+					title="Complexity Breakdown"
+					name="joints_panel"
+					top="0"
+					width="350">
+						<scroll_container
+		color="Transparent"
+		follows="all"
+		layout="topleft"
+		mouse_opaque="false"
+		left="0"
+		name="arc_scroll_container"
+		opaque="true"
+		scrollable="false"
+		height="391"
+		width="350"
+		top="2">
+			<panel
+			follows="all"
+			height="377"
+			background_visible="false"
+			layout="topleft"
+			mouse_opaque="false"
+			left="0"
+			name="title"
+			top="0"
+			width="1190">
+				<scroll_list
+				column_padding="2"
+				draw_heading="true"
+				height="380"
+				follows="all"
+				layout="topleft"
+				mouse_wheel_opaque="false"
+				left="0"
+				width="1192"
+				multi_select="true"
+				name="arc_scroll"
+				top="0">
+				   <scroll_list.columns
+					label="Attachment"
+					name="name"
+				  relative_width="0.17"  />
+				   <scroll_list.columns
+					label="Complexity"
+					name="arc"
+				  relative_width="0.06"  />
+				   <scroll_list.columns
+					label="Polygons"
+					name="triangles"
+				  relative_width="0.06"  />
+				   <scroll_list.columns
+					label="Vertices"
+					name="vertices"
+				  relative_width="0.06"  />
+				   <scroll_list.columns
+					label="Flexible"
+					name="flexible"
+				  relative_width="0.05"  />
+							<scroll_list.columns
+					label="Faces"
+					name="faces"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Particles"
+					name="particle"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Lights"
+					name="light"
+				  relative_width="0.04"  />
+				   <scroll_list.columns
+					label="Projectors"
+					name="projector"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Alphas"
+					name="alpha"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Normmap"
+					name="bumpmap"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Specmap"
+					name="shiny"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Glow"
+					name="glow"
+				  relative_width="0.04"  />
+				   <scroll_list.columns
+					label="Animated"
+					name="animated"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Rigged"
+					name="rigged"
+				  relative_width="0.05"  />
+							<scroll_list.columns
+					label="Animesh"
+					name="animesh"
+				  relative_width="0.05"  />
+				   <scroll_list.columns
+					label="Media"
+					name="media"
+				  relative_width="0.04"  />
+				   <scroll_list.columns
+					label="Base"
+					name="base_arc"
+				  relative_width="0.00"  />
+				   <scroll_list.columns
+					label="Memory"
+					name="memory"
+				  relative_width="0.00"  />
+				   <scroll_list.columns
+					label="UUID"
+					name="uuid"
+				  relative_width="0.00"  />
+			   </scroll_list>
+		</panel>
+	</scroll_container>
+						
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="299"
+					layout="topleft"
+					left="0"
+					title="Performance Report"
+					name="cv_panel"
+					top="0"
+					width="481">
+						
+
+						
+						<text
+ name="complexity_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="10">
+[COMPLEXITY_COUNT] / 150000 Complexity
+ </text>
+						<text
+ name="poly_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="280"
+ top_pad="7">
+[TRI_COUNT] / 80000 Polygons
+ </text>
+						<text
+ name="object_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="250"
+ top_pad="7">
+[OBJ_COUNT] / 40 Object
+ </text>
+						<text
+ name="face_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="244"
+ top_pad="7">
+[FACE_COUNT] / 320 Faces
+ </text>
+						<text
+ name="texture_mem_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="320"
+ top_pad="7">
+[TEX_MEM_COUNT] MB / 96 MB Texture Memory
+ </text>
+						<text
+ name="tex_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="259"
+ top_pad="7">
+[TEX_COUNT] / 32 Textures
+ </text>
+						<text
+ name="particle_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="295"
+ top_pad="7">
+[PART_COUNT] / 1 Particle Emitters
+ </text>
+						<text
+ name="light_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="246"
+ top_pad="7">
+[LIGHT_COUNT] / 16 Lights
+ </text>
+						<text
+ name="projector_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="261"
+ top_pad="7">
+[PROJ_COUNT] / 2 Projectors
+ </text>
+						<text
+ name="media_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="241"
+ top_pad="7">
+[MEDIA_COUNT] / 1 Media
+ </text>
+						<text
+ name="animesh_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="255"
+ top_pad="7">
+[ANIMESH_COUNT] / 1 Animesh
+ </text>
+						
+						<text
+ name="final_verdict"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="40"
+ width="410"
+	wrap="true"
+ top_pad="7">
+[VERDICT]
+ </text>
+						
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="complexity_rating"
+	mouse_opaque="false"
+	width="18"
+	top="7"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="poly_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="object_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="face_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="texture_mem_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="tex_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="particle_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="light_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="projector_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="media_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="animesh_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="final_rating"
+	mouse_opaque="false"
+	width="18"
+	top_pad="1"
+	left="0"/>
+						
+					</panel>
+				</tab_container>
 		<scroll_list
  column_padding="2"
  draw_heading="true"
@@ -53,119 +483,7 @@ width="684">
      name="uuid"
    relative_width="0.00"  />
 </scroll_list>
-		<scroll_container
-		color="Transparent"
-		follows="all"
-		layout="topleft"
-		mouse_opaque="false"
-		left_pad="-1"
-		name="arc_scroll_container"
-		opaque="true"
-		scrollable="false"
-		height="394"
-		width="346"
-		top="2">
-			<panel
-			follows="all"
-			height="380"
-			background_visible="false"
-			layout="topleft"
-			mouse_opaque="false"
-			left="0"
-			name="title"
-			top="0"
-			width="1100">
-				<scroll_list
-				column_padding="2"
-				draw_heading="true"
-				height="380"
-				follows="all"
-				layout="topleft"
-				mouse_wheel_opaque="false"
-				left="0"
-				width="1102"
-				multi_select="true"
-				name="arc_scroll"
-				top="0">
-				   <scroll_list.columns
-					label="Attachment"
-					name="name"
-				  relative_width="0.19"  />
-				   <scroll_list.columns
-					label="Complexity"
-					name="arc"
-				  relative_width="0.06"  />
-				   <scroll_list.columns
-					label="Polygons"
-					name="triangles"
-				  relative_width="0.06"  />
-				   <scroll_list.columns
-					label="Vertices"
-					name="vertices"
-				  relative_width="0.06"  />
-				   <scroll_list.columns
-					label="Flexible"
-					name="flexible"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Particles"
-					name="particle"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Lights"
-					name="light"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Projectors"
-					name="projector"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Alphas"
-					name="alpha"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Normalmap"
-					name="bumpmap"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Specmap"
-					name="shiny"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Glow"
-					name="glow"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Animated"
-					name="animated"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Rigged"
-					name="rigged"
-				  relative_width="0.05"  />
-							<scroll_list.columns
-					label="Animesh"
-					name="animesh"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Media"
-					name="media"
-				  relative_width="0.05"  />
-				   <scroll_list.columns
-					label="Base"
-					name="base_arc"
-				  relative_width="0.00"  />
-				   <scroll_list.columns
-					label="Memory"
-					name="memory"
-				  relative_width="0.00"  />
-				   <scroll_list.columns
-					label="UUID"
-					name="uuid"
-				  relative_width="0.00"  />
-			   </scroll_list>
-		</panel>
-	</scroll_container>
+		
  <button
  height="21"
  follows="bottom|left"
@@ -176,7 +494,7 @@ width="684">
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
  width="132"
- top_pad="1"
+ top_pad="-1"
  left="2">
    <button.commit_callback
    function="ARC.AvatarRefresh"/>
@@ -496,6 +814,49 @@ width="684">
  </text>
  <text
  name="label_flexi"
+ text_color="HTMLLinkColor"
+ follows="right|top"
+ layout="topleft"
+ left_pad="50"
+ halign="right"
+ height="12"
+ width="20"
+ top_delta="0">
+	---
+ </text>
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left_pad="2"
+ halign="right"
+ height="12"
+ width="10"
+ top_delta="0">
+	+
+ </text>
+	</layout_panel>
+	<layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  height="12"
+	  visible="true"
+	  auto_resize="false"
+	  name="panel_faces"
+	  width="200">
+	<text
+ name="label_arc"
+ follows="right|top"
+ layout="topleft"
+ left="77"
+ halign="right"
+ height="12"
+ width="20"
+ top="0">
+	Faces:
+ </text>
+ <text
+ name="label_faces"
  text_color="HTMLLinkColor"
  follows="right|top"
  layout="topleft"
