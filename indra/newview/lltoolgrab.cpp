@@ -150,6 +150,8 @@ BOOL LLToolGrabBase::handleMouseDown(S32 x, S32 y, MASK mask)
 //	//BD - Allow Mouselook Grab
 	if ((gAgentCamera.cameraMouselook()
 		&& gSavedSettings.getBOOL("AllowMouselookGrab")))
+	// leftButtonGrabbed() checks if controls are reserved by scripts, but does not take masks into account
+	//if (!gAgent.leftButtonGrabbed() || ((mask & DEFAULT_GRAB_MASK) != 0 && !gAgentCamera.cameraMouselook()))
 	{
 		if (!gAgent.leftButtonGrabbed())
 		{

@@ -3525,40 +3525,43 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im
 	mGotPersonalInfo = true;
 	mOriginalIMViaEmail = im_via_email;
 	mDirectoryVisibility = visibility;
-	
+
 	if (visibility == VISIBILITY_DEFAULT)
 	{
 		mOriginalHideOnlineStatus = false;
-		getChildView("online_visibility")->setEnabled(TRUE); 	 
+		getChildView("online_visibility")->setEnabled(TRUE);
 	}
 	else if (visibility == VISIBILITY_HIDDEN)
 	{
 		mOriginalHideOnlineStatus = true;
-		getChildView("online_visibility")->setEnabled(TRUE); 	 
+		getChildView("online_visibility")->setEnabled(TRUE);
 	}
 	else
 	{
 		mOriginalHideOnlineStatus = true;
 	}
-	
+
 	getChild<LLUICtrl>("online_searchresults")->setEnabled(TRUE);
 	getChildView("friends_online_notify_checkbox")->setEnabled(TRUE);
-	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus); 	 
+	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus);
 	getChild<LLUICtrl>("online_visibility")->setLabelArg("[DIR_VIS]", mDirectoryVisibility);
 	getChildView("send_im_to_email")->setEnabled(is_verified_email);
+}
 
-    std::string tooltip;
-    if (!is_verified_email)
-        tooltip = getString("email_unverified_tooltip");
+void LLFloaterPreference::updateMaxComplexity()
+{
+	// Called when the IndirectMaxComplexity control changes
+    LLAvatarComplexityControls::updateMax(
+        getChild<LLSliderCtrl>("IndirectMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText"));
 
-    getChildView("send_im_to_email")->setToolTip(tooltip);
-
-    // *TODO: Show or hide verify email text here based on is_verified_email
-    getChild<LLUICtrl>("send_im_to_email")->setValue(im_via_email);
-	getChildView("favorites_on_login_check")->setEnabled(TRUE);
-	getChildView("log_path_button")->setEnabled(TRUE);
-	getChildView("chat_font_size")->setEnabled(TRUE);
-	getChildView("conversation_log_radio")->setEnabled(TRUE);
+    LLFloaterPreferenceGraphicsAdvanced* floater_graphics_advanced = LLFloaterReg::findTypedInstance<LLFloaterPreferenceGraphicsAdvanced>("prefs_graphics_advanced");
+    if (floater_graphics_advanced)
+    {
+        LLAvatarComplexityControls::updateMax(
+            floater_graphics_advanced->getChild<LLSliderCtrl>("IndirectMaxComplexity"),
+            floater_graphics_advanced->getChild<LLTextBox>("IndirectMaxComplexityText"));
+    }
 }
 
 bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map)
@@ -3598,6 +3601,36 @@ bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map
     }
 
     return true;
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::updateMaxComplexity()
+{
+	// Called when the IndirectMaxComplexity control changes
+    LLAvatarComplexityControls::updateMax(
+        getChild<LLSliderCtrl>("IndirectMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText"));
+
+    LLFloaterPreference* floater_preferences = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
+    if (floater_preferences)
+    {
+        LLAvatarComplexityControls::updateMax(
+            floater_preferences->getChild<LLSliderCtrl>("IndirectMaxComplexity"),
+            floater_preferences->getChild<LLTextBox>("IndirectMaxComplexityText"));
+    }
+}
+
+void LLFloaterPreference::onChangeMaturity()
+{
+	U8 sim_access = gSavedSettings.getU32("PreferredMaturity");
+
+	getChild<LLIconCtrl>("rating_icon_general")->setVisible(sim_access == SIM_ACCESS_PG
+															|| sim_access == SIM_ACCESS_MATURE
+															|| sim_access == SIM_ACCESS_ADULT);
+
+	getChild<LLIconCtrl>("rating_icon_moderate")->setVisible(sim_access == SIM_ACCESS_MATURE
+															|| sim_access == SIM_ACCESS_ADULT);
+
+	getChild<LLIconCtrl>("rating_icon_adult")->setVisible(sim_access == SIM_ACCESS_ADULT);
 }
 
 std::string get_category_path(LLUUID cat_id)
@@ -3983,9 +4016,13 @@ void LLPanelPreference::showMultipleViewersWarning(LLUICtrl* checkbox, const LLS
 
 void LLPanelPreference::showFriendsOnlyWarning(LLUICtrl* checkbox, const LLSD& value)
 {
-	if (checkbox && checkbox->getValue())
+	if (checkbox)
 	{
-		LLNotificationsUtil::add("FriendsAndGroupsOnly");
+		gSavedPerAccountSettings.setBOOL("VoiceCallsFriendsOnly", checkbox->getValue().asBoolean());
+		if (checkbox->getValue())
+		{
+			LLNotificationsUtil::add("FriendsAndGroupsOnly");
+		}
 	}
 }
 
@@ -4073,7 +4110,6 @@ class LLPanelPreferencePrivacy : public LLPanelPreference
 public:
 	LLPanelPreferencePrivacy()
 	{
-		mAccountIndependentSettings.push_back("VoiceCallsFriendsOnly");
 		mAccountIndependentSettings.push_back("AutoDisengageMic");
 	}
 

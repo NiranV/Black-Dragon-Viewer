@@ -73,58 +73,12 @@ if (WINDOWS)
   # Without PreferredToolArchitecture=x64, as of 2020-06-26 the 32-bit
   # compiler on our TeamCity build hosts has started running out of virtual
   # memory for the precompiled header file.
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /p:PreferredToolArchitecture=x64")
-
-
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /DEBUG /IGNORE:4099")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEBUG /IGNORE:4099")
-
-  set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:LIBCMT")
-  set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /NODEFAULTLIB:MSVCRT")
-  set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /NODEFAULTLIB:LIBCMT")
-  set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /NODEFAULTLIB:MSVCRT")
-  
-  if (USE_LTO)
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-      if(INCREMENTAL_LINK)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LTCG:incremental")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LTCG:incremental")
-        set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} /LTCG")
-      else(INCREMENTAL_LINK)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LTCG")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /LTCG")
-        set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} /LTCG")
-      endif(INCREMENTAL_LINK)
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /OPT:REF /OPT:ICF /INCREMENTAL:NO")
-      set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /OPT:REF /OPT:ICF /INCREMENTAL:NO")
-      set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /GL /Gy /Gw")
-    elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-      if(INCREMENTAL_LINK)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto=thin -fwhole-program-vtables /clang:-fforce-emit-vtables")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto=thin -fwhole-program-vtables /clang:-fforce-emit-vtables")
-      else(INCREMENTAL_LINK)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto=full -fwhole-program-vtables /clang:-fforce-emit-vtables")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto=full -fwhole-program-vtables /clang:-fforce-emit-vtables")
-      endif(INCREMENTAL_LINK)
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /OPT:REF /OPT:ICF")
-      set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /OPT:REF /OPT:ICF")
-    endif()
-  elseif (INCREMENTAL_LINK)
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /INCREMENTAL")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /INCREMENTAL")
-  else ()
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /OPT:REF /OPT:ICF /INCREMENTAL:NO")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /OPT:REF /OPT:ICF /INCREMENTAL:NO")
-  endif ()
-
-  if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    # This is a massive hack and makes me sad. clang-cl fails to find its own builtins library :/ x64 only for now.
-    set(CLANG_RT_NAMES clang_rt.builtins-x86_64)
-    find_library(CLANG_RT NAMES ${CLANG_RT_NAMES} 
-                PATHS [HKEY_LOCAL_MACHINE\\SOFTWARE\\LLVM\\LLVM]/lib/clang/${CMAKE_CXX_COMPILER_VERSION}/lib/windows 
-                [HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\LLVM\\LLVM]/lib/clang/${CMAKE_CXX_COMPILER_VERSION}/lib/windows)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /defaultlib:\"${CLANG_RT}\"")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /defaultlib:\"${CLANG_RT}\"")
+  # CP changed to only append the flag for 32bit builds - on 64bit builds,
+  # locally at least, the build output is spammed with 1000s of 'D9002'
+  # warnings about this switch being ignored.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  
+  if( ADDRESS_SIZE EQUAL 32 )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()
 
   set(GLOBAL_CXX_FLAGS 

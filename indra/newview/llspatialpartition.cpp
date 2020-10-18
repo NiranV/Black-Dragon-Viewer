@@ -559,7 +559,9 @@ void LLSpatialGroup::shift(const LLVector4a &offset)
 	if (!getSpatialPartition()->mRenderByGroup && 
 		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_TREE &&
 		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_TERRAIN &&
-		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_BRIDGE)
+		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_BRIDGE &&
+		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_AVATAR &&
+		getSpatialPartition()->mPartitionType != LLViewerRegion::PARTITION_CONTROL_AV)
 	{
 		setState(GEOM_DIRTY);
 		gPipeline.markRebuild(this, TRUE);
@@ -3455,7 +3457,7 @@ public:
 						U8 index = facep->getTextureIndex();
 						if (facep->mDrawInfo)
 						{
-							if (index < 255)
+							if (index < FACE_DO_NOT_BATCH_TEXTURES)
 							{
 								if (facep->mDrawInfo->mTextureList.size() <= index)
 								{

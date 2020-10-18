@@ -482,6 +482,7 @@ void LLSliderCtrl::onTabInto()
 	{
 		mEditor->onTabInto(); 
 	}
+    LLF32UICtrl::onTabInto();
 }
 
 void LLSliderCtrl::reportInvalidData()

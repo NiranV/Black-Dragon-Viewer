@@ -311,6 +311,27 @@ void LLSelectMgr::updateEffects()
 	}
 }
 
+void LLSelectMgr::resetObjectOverrides()
+{
+    resetObjectOverrides(getSelection());
+}
+
+void LLSelectMgr::resetObjectOverrides(LLObjectSelectionHandle selected_handle)
+{
+    struct f : public LLSelectedNodeFunctor
+    {
+        virtual bool apply(LLSelectNode* node)
+        {
+            node->mLastPositionLocal.setVec(0, 0, 0);
+            node->mLastRotation = LLQuaternion();
+            node->mLastScale.setVec(0, 0, 0);
+            return true;
+        }
+    } func;
+
+    selected_handle->applyToNodes(&func);
+}
+
 void LLSelectMgr::overrideObjectUpdates()
 {
 	//override any position updates from simulator on objects being edited
@@ -3956,11 +3977,11 @@ BOOL LLSelectMgr::selectGetAggregateTexturePermissions(LLAggregatePermissions& r
 	return TRUE;
 }
 
-BOOL LLSelectMgr::isSelfAvatarSelected()
+BOOL LLSelectMgr::isMovableAvatarSelected()
 {
 	if (mAllowSelectAvatar)
 	{
-		return (getSelection()->getObjectCount() == 1) && (getSelection()->getFirstRootObject() == gAgentAvatarp);
+		return (getSelection()->getObjectCount() == 1) && (getSelection()->getFirstRootObject()->isAvatar()) && getSelection()->getFirstMoveableNode(TRUE);
 	}
 	return FALSE;
 }
@@ -5213,18 +5234,27 @@ void LLSelectMgr::sendListToRegions(LLObjectSelectionHandle selected_handle,
 
 	bool link_operation = message_name == "ObjectLink";
 
-	//clear update override data (allow next update through)
-	struct f : public LLSelectedNodeFunctor
-	{
-		virtual bool apply(LLSelectNode* node)
-		{
-			node->mLastPositionLocal.setVec(0,0,0);
-			node->mLastRotation = LLQuaternion();
-			node->mLastScale.setVec(0,0,0);
-			return true;
-		}
-	} func;
-	selected_handle->applyToNodes(&func);
+    if (mAllowSelectAvatar)
+    {
+        if (selected_handle->getObjectCount() == 1
+            && selected_handle->getFirstObject() != NULL
+            && selected_handle->getFirstObject()->isAvatar())
+        {
+            // Server doesn't move avatars at the moment, it is a local debug feature,
+            // but server does update position regularly, so do not drop mLastPositionLocal
+            // Position override for avatar gets reset in LLAgentCamera::resetView().
+        }
+        else
+        {
+            // drop mLastPositionLocal (allow next update through)
+            resetObjectOverrides(selected_handle);
+        }
+    }
+    else
+    {
+        //clear update override data (allow next update through)
+        resetObjectOverrides(selected_handle);
+    }
 
 	std::queue<LLSelectNode*> nodes_to_send;
 
@@ -7165,27 +7195,31 @@ void LLSelectMgr::pauseAssociatedAvatars()
         if (!object)
             continue;
 
+        LLVOAvatar* parent_av = NULL;
+        if (mSelectedObjects->mSelectType == SELECT_TYPE_ATTACHMENT)
+        {
+            // Selection can be obsolete, confirm that this is an attachment
+            // and find parent avatar
+            parent_av = object->getAvatarAncestor();
+        }
+
 		//BD - Don't pause us when we select others. Pause everyone selected
 		//     when selection outlines are set to not update.
-		LLVOAvatar* avatar = object->getAvatarAncestor();
-		if (!avatar)
+		if (!parent_av->isSelf() && LLSelectMgr::sSelectionUpdate)
 			continue;
 
-		if (!avatar->isSelf() && LLSelectMgr::sSelectionUpdate)
-			continue;
+        // Can be both an attachment and animated object
+        if (parent_av)
+        {
+            // It's an attachment. Pause the avatar it's attached to.
+            mPauseRequests.push_back(parent_av->requestPause());
+        }
 
-		if (object->isAnimatedObject())
-		{
-			LLControlAvatar* c_avatar = object->getControlAvatar();
-			if (!c_avatar)
-				continue;
-
-			//BD - Is an animated object attachment. Stop the animated object.
-			mPauseRequests.push_back(c_avatar->requestPause());
-		}
-
-		//BD - Is an animated object. Stop it.
-		mPauseRequests.push_back(avatar->requestPause());
+        if (object->isAnimatedObject() && object->getControlAvatar())
+        {
+            // It's an animated object. Pause the control avatar.
+            mPauseRequests.push_back(object->getControlAvatar()->requestPause());
+        }
     }
 }
 

@@ -844,32 +844,38 @@ void LLPanelFace::updateUI(bool force_set_values)
 			{
 				if (identical_diffuse)
 				{
+					mTextureCtrl->setTentative(FALSE);
 					mTextureCtrl->setEnabled(editable);
 					mTextureCtrl->setImageAssetID(id);
 					mLabelAlpha->setReadOnly(!(editable && mIsAlpha && transparency <= 0.f));
 					//BD
 					mComboAlpha->setEnabled(editable && mIsAlpha && transparency <= 0.f);
 					mMaskCutoff->setEnabled(editable && mIsAlpha);
+					mTextureCtrl->setBakeTextureEnabled(TRUE);
 				}
 				else if (id.isNull())
 				{
 					// None selected
+					mTextureCtrl->setTentative(FALSE);
 					mTextureCtrl->setEnabled(FALSE);
 					mTextureCtrl->setImageAssetID(LLUUID::null);
 					mLabelAlpha->setReadOnly(TRUE);
 					//BD
 					mComboAlpha->setEnabled(FALSE);
 					mMaskCutoff->setEnabled(FALSE);
+					mTextureCtrl->setBakeTextureEnabled(false);
 				}
 				else
 				{
 					// Tentative: multiple selected with different textures
+					mTextureCtrl->setTentative(TRUE);
 					mTextureCtrl->setEnabled(editable);
 					mTextureCtrl->setImageAssetID(id);
 					mLabelAlpha->setReadOnly(!(editable && mIsAlpha && transparency <= 0.f));
 					//BD
 					mComboAlpha->setEnabled(editable && mIsAlpha && transparency <= 0.f);
 					mMaskCutoff->setEnabled(editable && mIsAlpha);
+					mTextureCtrl->setBakeTextureEnabled(TRUE);
 				}
 			}
 
@@ -897,6 +903,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 			bool enabled = (editable && isIdenticalPlanarTexgen());
 			mCheckAlignPlanar->setValue(align_planar && enabled);
 			mCheckAlignPlanar->setEnabled(enabled);
+			childSetEnabled("button align textures", enabled && LLSelectMgr::getInstance()->getSelection()->getObjectCount() > 1);
 
 			if (align_planar && enabled)
 			{

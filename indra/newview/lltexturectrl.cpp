@@ -148,7 +148,7 @@ void LLFloaterTexturePicker::setImageID(const LLUUID& image_id, bool set_selecti
 		if (LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::isBakedImageId(mImageAssetID))
 		{
 			//BD - TODO: Remove and force bake tab always on.
-			if (mTabModes->getCurrentPanelIndex() != 2)
+			if (mBakeTextureEnabled && mTabModes->getCurrentPanelIndex() != 2)
 			{
 				mTabModes->selectTab(2);
 				onModeSelect(0,this);
@@ -355,7 +355,7 @@ BOOL LLFloaterTexturePicker::postBuild()
 	}
 	mTentativeLabel = getChild<LLTextBox>("Multiple");
 
-	mResolutionLabel = getChild<LLTextBox>("unknown");
+	mResolutionLabel = getChild<LLTextBox>("size_lbl");
 
 
 	childSetAction("Default",LLFloaterTexturePicker::onBtnSetToDefault,this);
@@ -439,6 +439,7 @@ BOOL LLFloaterTexturePicker::postBuild()
 	getChild<LLUICtrl>("l_bake_use_texture_ctrl")->setCommitCallback(onBakeTextureSelect, this);
 	getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setCommitCallback(onHideBaseMeshRegionCheck, this);
 
+	setBakeTextureEnabled(TRUE);
 	return TRUE;
 }
 
@@ -820,7 +821,14 @@ void LLFloaterTexturePicker::onSelectionChange(const std::deque<LLFolderViewItem
 void LLFloaterTexturePicker::onModeSelect(LLUICtrl* ctrl, void *userdata)
 {
 	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*)userdata;
-	int mode = self->mTabModes->getCurrentPanelIndex();
+	int index = self->mTabModes->getCurrentPanelIndex();
+
+	self->getChild<LLButton>("Default")->setVisible(index == 0 ? TRUE : FALSE);
+	self->getChild<LLButton>("Blank")->setVisible(index == 0 ? TRUE : FALSE);
+	self->getChild<LLButton>("None")->setVisible(index == 0 ? TRUE : FALSE);
+	self->getChild<LLButton>("Pipette")->setVisible(index == 0 ? TRUE : FALSE);
+	self->getChild<LLFilterEditor>("inventory search editor")->setVisible(index == 0 ? TRUE : FALSE);
+	self->getChild<LLInventoryPanel>("inventory panel")->setVisible(index == 0 ? TRUE : FALSE);
 
 	if (mode == 2)
 	{
@@ -1038,6 +1046,29 @@ void LLFloaterTexturePicker::setLocalTextureEnabled(BOOL enabled)
 {
 	//BD
 	mTabModes->enableTabButton(1, enabled);
+}
+
+void LLFloaterTexturePicker::setBakeTextureEnabled(BOOL enabled)
+{
+	BOOL changed = (enabled != mBakeTextureEnabled);
+
+	mBakeTextureEnabled = enabled;
+	mModeSelector->setEnabledByValue(2, enabled);
+
+	if (!mBakeTextureEnabled && (mModeSelector->getValue().asInteger() == 2))
+	{
+		mModeSelector->selectByValue(0);
+	}
+	
+	if (changed && mBakeTextureEnabled && LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::isBakedImageId(mImageAssetID))
+	{
+		if (mModeSelector->getValue().asInteger() != 2)
+		{
+			mModeSelector->selectByValue(2);
+		}
+	}
+	onModeSelect(0, this);
+>>>>>>> Linden_Release/master
 }
 
 void LLFloaterTexturePicker::onTextureSelect( const LLTextureEntry& te )
@@ -1278,6 +1309,10 @@ void LLTextureCtrl::showPicker(BOOL take_focus)
 			texture_floaterp->setOnFloaterCommitCallback(boost::bind(&LLTextureCtrl::onFloaterCommit, this, _1, _2));
 			texture_floaterp->setSetImageAssetIDCallback(boost::bind(&LLTextureCtrl::setImageAssetID, this, _1));
 		}
+		if (texture_floaterp)
+		{
+			texture_floaterp->setBakeTextureEnabled(TRUE);
+		}
 
 		LLFloater* root_floater = gFloaterView->getParentFloater(this);
 		if (root_floater)
@@ -1468,6 +1503,15 @@ void LLTextureCtrl::setImageAssetID( const LLUUID& asset_id )
 			floaterp->setImageID( asset_id );
 			floaterp->resetDirty();
 		}
+	}
+}
+
+void LLTextureCtrl::setBakeTextureEnabled(BOOL enabled)
+{
+	LLFloaterTexturePicker* floaterp = (LLFloaterTexturePicker*)mFloaterHandle.get();
+	if (floaterp)
+	{
+		floaterp->setBakeTextureEnabled(enabled);
 	}
 }
 

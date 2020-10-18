@@ -82,6 +82,10 @@ if(WINDOWS)
       list(APPEND release_files fmod.dll)
     endif (USE_FMODSTUDIO)
 
+    if (OPENAL)
+        list(APPEND release_files openal32.dll alut.dll)
+    endif (OPENAL)
+
     #*******************************
     # Copy MS C runtime dlls, required for packaging.
     if (MSVC80)

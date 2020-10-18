@@ -586,10 +586,22 @@ with the same filename but different name
 
   <texture name="TabTop_Right_Off" file_name="containers/TabTop_Right_Off.png" preload="false"  scale.left="2" scale.top="4" scale.right="68" scale.bottom="9" />
   <texture name="TabTop_Right_Selected" file_name="containers/TabTop_Right_Selected.png" preload="false"  scale.left="2" scale.top="4" scale.right="68" scale.bottom="1" />
+  <texture name="TabTop_Right_Flashing" file_name="containers/TabTop_Right_Flashing.png" preload="false"  scale.left="8" scale.top="8" scale.right="62" scale.bottom="9" />
   <texture name="TabTop_Middle_Off" file_name="containers/TabTop_Middle_Off.png" preload="false" scale.left="2" scale.top="4" scale.right="68" scale.bottom="9" />
   <texture name="TabTop_Middle_Selected" file_name="containers/TabTop_Middle_Selected.png" preload="false" scale.left="2" scale.top="4" scale.right="68" scale.bottom="1" />
   <texture name="TabTop_Left_Off" file_name="containers/TabTop_Left_Off.png" preload="false" scale.left="2" scale.top="4" scale.right="68" scale.bottom="9" />
   <texture name="TabTop_Left_Selected" file_name="containers/TabTop_Left_Selected.png" preload="false" scale.left="2" scale.top="4" scale.right="68" scale.bottom="1" />
+  
+  <texture name="TabIcon_Close_Off" file_name="taskpanel/TabIcon_Close_Off.png" preload="false" />
+  <texture name="TabIcon_Home_Selected" file_name="taskpanel/TabIcon_Home_Selected.png" preload="false" />
+  <texture name="TabIcon_Me_Off" file_name="taskpanel/TabIcon_Me_Off.png" preload="false" />
+  <texture name="TabIcon_Open_Off" file_name="taskpanel/TabIcon_Open_Off.png" preload="false" />
+  <texture name="TabIcon_People_Off" file_name="taskpanel/TabIcon_People_Off.png" preload="false" />
+  <texture name="TabIcon_Places_Off" file_name="taskpanel/TabIcon_Places_Off.png" preload="false" />
+  <texture name="TabIcon_Things_Off" file_name="taskpanel/TabIcon_Things_Off.png" preload="false" />
+
+  <texture name="TaskPanel_Tab_Off" file_name="taskpanel/TaskPanel_Tab_Off.png" preload="false" scale.left="4" scale.top="29" scale.right="36" scale.bottom="4" />
+  <texture name="TaskPanel_Tab_Selected" file_name="taskpanel/TaskPanel_Tab_Selected.png" preload="false" scale.left="5" scale.top="30" scale.right="36" scale.bottom="5" />
 
   <texture name="TextField_Search_Disabled" file_name="widgets/TextField_Search_Disabled.png" preload="true" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
   <texture name="TextField_Off" file_name="widgets/TextField_Off.png" preload="true" scale.left="2" scale.top="21" scale.right="254" scale.bottom="2" />
