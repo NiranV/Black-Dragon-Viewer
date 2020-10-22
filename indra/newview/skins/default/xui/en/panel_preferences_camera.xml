@@ -32,7 +32,7 @@
   width="495">
    <panel
    follows="left|top|right"
-   height="20"
+   height="21"
    bg_visible="true"
    bg_alpha_color="0.10 0.43 0.77 0.28"
    layout="topleft"
@@ -48,7 +48,7 @@
    left="10"
    height="12"
    width="350"
-   top_delta="4">
+   top_delta="5">
    Camera Options:
    </text>
    <button

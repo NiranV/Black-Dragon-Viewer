@@ -32,7 +32,7 @@ width="510">
   width="495">
    <panel
    follows="left|top|right"
-   height="20"
+   height="21"
    bg_visible="true"
    bg_alpha_color="0.10 0.43 0.77 0.28"
    layout="topleft"
@@ -48,7 +48,7 @@ width="510">
    height="12"
    name="personal_options"
    width="120"
-   top_delta="4">
+   top_delta="5">
    Personal Options:
    </text>
    

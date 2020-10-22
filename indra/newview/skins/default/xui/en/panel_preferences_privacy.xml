@@ -22,7 +22,7 @@ layout="topleft"
 mouse_opaque="false"
 left="1"
 name="title"
-top="0"
+top="1"
 width="508"/>
  <text
  type="string"

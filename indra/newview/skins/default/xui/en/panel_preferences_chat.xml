@@ -31,7 +31,7 @@ width="510">
   width="495">
    <panel
    follows="left|top|right"
-   height="20"
+   height="21"
    bg_visible="true"
    bg_alpha_color="0.10 0.43 0.77 0.28"
    layout="topleft"
@@ -47,7 +47,7 @@ width="510">
    length="1"
    height="12"
    left="10"
-   top_delta="4"
+   top_delta="5"
    name="chat_options_label"
    width="120">
    General Chat Options:
@@ -77,7 +77,7 @@ width="510">
    layout="topleft"
    left="10"
    name="ChatAutocompleteGestures"
-   top_pad="15"
+   top_pad="13"
    width="256" />
    <check_box
    control_name="EnableAutohidingChat"

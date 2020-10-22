@@ -10,43 +10,43 @@ name="Display panel"
 top="0"
 width="510">
  <layout_stack
-   follows="all"
-   height="408"
-   layout="topleft"
-   left="0"
-   border_size="-1"
-   mouse_opaque="false"
-   name="display_multi_stack"
-   orientation="vertical"
-   top="0"
-   width="510">
-      <layout_panel
-	  follows="all"
-	  layout="topleft"
-	  height="387"
-	  auto_resize="true"
-	  name="display_multi_layout"
-	  width="510">
-   <scroll_container
- color="Transparent"
  follows="all"
+ height="408"
  layout="topleft"
- mouse_opaque="false"
  left="0"
- name="gfx_scroll"
- opaque="true"
- height="386"
- width="509"
- top="0">
-  <panel
+ border_size="-1"
+ mouse_opaque="false"
+ name="display_multi_stack"
+ orientation="vertical"
+ top="0"
+ width="510">
+  <layout_panel
+  follows="all"
   layout="topleft"
-  follows="left|top|right"
-  height="255"
-  name="gfx_scroll_panel"
-  top="0"
-  mouse_opaque="false"
-  left="0"
-  width="495">
+  height="387"
+  auto_resize="true"
+  name="display_multi_layout"
+  width="510">
+   <scroll_container
+   color="Transparent"
+   follows="all"
+   layout="topleft"
+   mouse_opaque="false"
+   left="0"
+   name="gfx_scroll"
+   opaque="true"
+   height="386"
+   width="509"
+   top="0">
+    <panel
+    layout="topleft"
+    follows="left|top|right"
+    height="267"
+    name="gfx_scroll_panel"
+    top="0"
+    mouse_opaque="false"
+    left="0"
+    width="495">
    <layout_stack
    follows="top|left|right"
    height="3457"
@@ -61,14 +61,14 @@ width="510">
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="title_layout_panel"
 	  width="515">
    <button
 		 follows="left|top"
          control_name="PrefsViewerVisible"
-		 height="20"
+		 height="21"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
    image_overlay_selected="MinusItem_Off"
@@ -89,7 +89,7 @@ width="510">
    name="general_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
+   top_delta="5" 
    left="10" 
    height="12"
    width="220">
@@ -542,13 +542,13 @@ width="510">
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="title_layout_panel"
 	  width="515">
  <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsLoDVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -570,7 +570,7 @@ width="510">
    name="lod_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
+   top_delta="5" 
    left="10" 
    height="12"
    width="220">
@@ -2359,13 +2359,13 @@ width="510">
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="title_layout_panel"
 	  width="515">
    <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsPerformanceVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -2387,7 +2387,7 @@ width="510">
    name="performance_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
+   top_delta="5" 
    left="10" 
    height="12"
    width="220">
@@ -3060,14 +3060,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
       visible="true"
 	  name="title_layout_panel"
 	  width="515">
    <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsVertexVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -3089,7 +3089,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="vertex_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
+   top_delta="5" 
    left="10" 
    height="12"
    width="220">
@@ -3560,13 +3560,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="deferred_layout"
 	  width="515">
    <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsDeferredVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -3597,7 +3597,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="Deferred"
-   top_delta="1"
+   top_delta="2"
    width="115" />
       </layout_panel>
       <layout_panel
@@ -4636,13 +4636,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="ao_layout"
 	  width="515">
      <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsAOVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -4674,7 +4674,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="UseSSAO"
-   top_delta="1"
+   top_delta="2"
    width="115" />
      <text
    invisibility_control="RenderDeferred"
@@ -4869,14 +4869,14 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="dof_layout"
 	  width="515">
  
  <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsDoFVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -4908,7 +4908,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      layout="topleft"
      left="5"
      name="UseDoF"
-     top_delta="1"
+     top_delta="2"
      width="115" />
  <text
    invisibility_control="RenderDeferred"
@@ -5177,13 +5177,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="motionblur_layout"
 	  width="515">
       <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsMotionBlurVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -5215,7 +5215,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="MotionBlur"
-   top_delta="1"
+   top_delta="2"
    width="115" />
    <text
    invisibility_control="RenderDeferred"
@@ -5414,13 +5414,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="godrays_layout"
 	  width="515">
    <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsGodraysVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -5451,7 +5451,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="RenderGodrays"
-   top_delta="1"
+   top_delta="2"
    width="115" />
    <text
    invisibility_control="RenderDeferred"
@@ -5618,13 +5618,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="post_layout"
 	  width="515">
    <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsPostVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -5650,7 +5650,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left_delta="-12"
    name="PostProcessing"
-   top_delta="1"
+   top_delta="2"
    width="115">
       <check_box.check_button 
       image_unselected="Transparent"
@@ -5836,13 +5836,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="tonemapping_layout"
 	  width="515">
      <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsToneMappingVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -5872,7 +5872,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    layout="topleft"
    left="5"
    name="ToneMapping"
-   top_delta="1"
+   top_delta="2"
    width="115" />
  <text
    invisibility_control="RenderDeferred"
@@ -6662,13 +6662,13 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <layout_panel
 	  follows="top|left|right"
 	  layout="topleft"
-	  height="26"
+	  height="27"
 	  auto_resize="false"
 	  name="vignette_layout"
 	  width="515">
       <button
 		 follows="left|top"
-		 height="20"
+		 height="21"
          control_name="PrefsVignetteVisible"
 		 image_bottom_pad="0"
 		 image_overlay="AddItem_Off"
@@ -6690,7 +6690,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="vignette_label"
    follows="left|top"
    layout="topleft"
-   top_delta="4" 
+   top_delta="5" 
    left="10" 
    height="12"
    width="220">

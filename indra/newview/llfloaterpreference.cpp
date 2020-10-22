@@ -1743,7 +1743,7 @@ void LLFloaterPreference::toggleTabs()
 	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
 		mModifier += (mDisplayTabs[11]->getRect().getHeight() - 5);
 
-	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (255 + mModifier));
+	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (267 + mModifier));
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
 	mGFXStack->translate(0, mModifier);
 }
