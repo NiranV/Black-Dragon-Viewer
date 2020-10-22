@@ -266,15 +266,6 @@ void LLFloaterBuyCurrencyUI::onClickCancel()
 	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
-void LLFloaterBuyCurrencyUI::onClickErrorWeb()
-{
-	LLWeb::loadURL(mManager.errorURI());
-	closeFloater();
-	// Update L$ balance
-	//BD
-	LLSidepanelInventory::sendMoneyBalanceRequest();
-}
-
 // static
 void LLFloaterBuyCurrency::buyCurrency()
 {

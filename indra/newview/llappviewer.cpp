@@ -1275,8 +1275,8 @@ bool LLAppViewer::init()
 	LLVoiceChannel::setCurrentVoiceChannelChangedCallback(boost::bind(&LLFloaterIMContainer::onCurrentChannelChanged, _1), true);
 	/*----------------------------------------------------------------------*/
 
-	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
-	onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
+	//gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
+	//onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
 
 	//BD
 	gJoystick->setNeedsReset(true);
@@ -3198,7 +3198,6 @@ LLSD LLAppViewer::getViewerInfo() const
 		if (RlvActions::canShowLocation())
 		{
 // [/RLVa:KB]
-			LLVector3d pos = gAgent.getPositionGlobal();
 			LLVector3d pos = gAgent.getPositionGlobal();
 			info["POSITION"] = ll_sd_from_vector3d(pos);
 			info["POSITION_LOCAL"] = ll_sd_from_vector3(gAgent.getPosAgentFromGlobal(pos));

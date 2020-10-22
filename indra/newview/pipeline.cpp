@@ -8037,7 +8037,7 @@ void LLPipeline::renderFinalize()
 	if (LLPipeline::sRenderDeferred)
 	{
 
-		bool dof_enabled = !LLViewerCamera::getInstance()->cameraUnderWater() &&
+		bool dof_enabled = !viewer_cam->cameraUnderWater() &&
 			(RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
 			RenderDepthOfField;
 
@@ -8062,10 +8062,10 @@ void LLPipeline::renderFinalize()
 			//BD
 			LLVector3 prev_focus_point;
 
-			LLViewerObject *obj = LLViewerMediaFocus::getInstance()->getFocusedObject();
+			LLViewerObject *obj = media_focus->getFocusedObject();
 			if (obj && obj->mDrawable && obj->isSelected())
 			{ // focus on selected media object
-				S32 face_idx = LLViewerMediaFocus::getInstance()->getFocusedFace();
+				S32 face_idx = media_focus->getFocusedFace();
 				if (obj && obj->mDrawable)
 				{
 					LLFace *face = obj->mDrawable->getFace(face_idx);
@@ -8120,11 +8120,11 @@ void LLPipeline::renderFinalize()
 				}
 			}
 
-			LLVector3 eye = LLViewerCamera::getInstance()->getOrigin();
+			LLVector3 eye = viewer_cam->getOrigin();
 			F32 target_distance = 16.f;
 			if (!focus_point.isExactlyZero())
 			{
-				target_distance = LLViewerCamera::getInstance()->getAtAxis() * (focus_point - eye);
+				target_distance = viewer_cam->getAtAxis() * (focus_point - eye);
 			}
 
 			if (transition_time >= 1.f && fabsf(current_distance - target_distance) / current_distance > 0.01f)
@@ -8150,7 +8150,7 @@ void LLPipeline::renderFinalize()
 			F32 fnumber = CameraFNumber;
 			F32 default_focal_length = CameraFocalLength;
 
-			F32 fov = LLViewerCamera::getInstance()->getView();
+			F32 fov = viewer_cam->getView();
 
 			const F32 default_fov = CameraFieldOfView * F_PI / 180.f;
 

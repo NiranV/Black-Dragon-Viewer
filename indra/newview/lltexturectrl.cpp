@@ -830,7 +830,7 @@ void LLFloaterTexturePicker::onModeSelect(LLUICtrl* ctrl, void *userdata)
 	self->getChild<LLFilterEditor>("inventory search editor")->setVisible(index == 0 ? TRUE : FALSE);
 	self->getChild<LLInventoryPanel>("inventory panel")->setVisible(index == 0 ? TRUE : FALSE);
 
-	if (mode == 2)
+	if (index == 2)
 	{
 		self->stopUsingPipette();
 
@@ -1053,22 +1053,21 @@ void LLFloaterTexturePicker::setBakeTextureEnabled(BOOL enabled)
 	BOOL changed = (enabled != mBakeTextureEnabled);
 
 	mBakeTextureEnabled = enabled;
-	mModeSelector->setEnabledByValue(2, enabled);
+	mTabModes->enableTabButton(2, enabled);
 
-	if (!mBakeTextureEnabled && (mModeSelector->getValue().asInteger() == 2))
+	if (!mBakeTextureEnabled && (mTabModes->getCurrentPanelIndex() == 2))
 	{
-		mModeSelector->selectByValue(0);
+		mTabModes->selectTab(0);
 	}
 	
 	if (changed && mBakeTextureEnabled && LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::isBakedImageId(mImageAssetID))
 	{
-		if (mModeSelector->getValue().asInteger() != 2)
+		if (mTabModes->getCurrentPanelIndex()  != 2)
 		{
-			mModeSelector->selectByValue(2);
+			mTabModes->selectTab(2);
 		}
 	}
 	onModeSelect(0, this);
->>>>>>> Linden_Release/master
 }
 
 void LLFloaterTexturePicker::onTextureSelect( const LLTextureEntry& te )

@@ -324,9 +324,6 @@ private:
 	LLQuad mQ;
 } LL_ALIGN_POSTFIX(16);
 
-static_assert(std::is_trivial<LLVector4a>::value, "LLVector4a must be a trivial type");
-static_assert(std::is_standard_layout<LLVector4a>::value, "LLVector4a must be a standard layout type");
-
 inline void update_min_max(LLVector4a& min, LLVector4a& max, const LLVector4a& p)
 {
 	min.setMin(min, p);

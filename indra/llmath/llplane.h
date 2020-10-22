@@ -104,7 +104,4 @@ private:
 	LLVector4a mV;
 } LL_ALIGN_POSTFIX(16);
 
-static_assert(std::is_trivial<LLPlane>::value, "LLPlane must be a trivial type");
-static_assert(std::is_standard_layout<LLPlane>::value, "LLPlane must be a standard layout type");
-
 #endif // LL_LLPLANE_H

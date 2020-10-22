@@ -74,7 +74,7 @@ inline bool Check_FMOD_Error(FMOD_RESULT result, const char *string)
 	return true;
 }
 
-bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata)
+bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, const std::string &app_title)
 {
 	U32 version;
 	FMOD_RESULT result;
@@ -86,7 +86,7 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata)
 		return false;
 
 	//will call LLAudioEngine_FMODSTUDIO::allocateListener, which needs a valid mSystem pointer.
-	LLAudioEngine::init(num_channels, userdata);	
+	LLAudioEngine::init(num_channels, userdata, app_title);	
 	
 	result = mSystem->getVersion(&version);
 	Check_FMOD_Error(result, "FMOD::System::getVersion");

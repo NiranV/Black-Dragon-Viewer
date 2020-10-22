@@ -38,7 +38,7 @@ class LLAudioEngine_OpenAL : public LLAudioEngine
 {
 	public:
 		LLAudioEngine_OpenAL();
-		virtual ~LLAudioEngine_OpenAL() = default;
+		virtual ~LLAudioEngine_OpenAL();
 
         virtual bool init(const S32 num_channels, void *user_data, const std::string &app_title);
         virtual std::string getDriverName(bool verbose);

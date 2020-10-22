@@ -46,8 +46,6 @@ LLAudioEngine_OpenAL::LLAudioEngine_OpenAL()
 {
 }
 
-// virtual
-bool LLAudioEngine_OpenAL::init(const S32 num_channels, void* userdata)
 LLAudioEngine_OpenAL::~LLAudioEngine_OpenAL()
 {
 }

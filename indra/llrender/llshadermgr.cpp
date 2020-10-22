@@ -1365,6 +1365,7 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("alpha_ramp");
 
 	mReservedUniforms.push_back("origin");
+	mReservedUniforms.push_back("display_gamma");
 
     mReservedUniforms.push_back("inscatter");
     mReservedUniforms.push_back("sun_size");
