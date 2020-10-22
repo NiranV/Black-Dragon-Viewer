@@ -7203,14 +7203,14 @@ void LLSelectMgr::pauseAssociatedAvatars()
             parent_av = object->getAvatarAncestor();
         }
 
-		//BD - Don't pause us when we select others. Pause everyone selected
-		//     when selection outlines are set to not update.
-		if (!parent_av->isSelf() && LLSelectMgr::sSelectionUpdate)
-			continue;
-
         // Can be both an attachment and animated object
         if (parent_av)
         {
+			//BD - Don't pause us when we select others. Pause everyone selected
+			//     when selection outlines are set to not update.
+			if (!parent_av->isSelf() && LLSelectMgr::sSelectionUpdate)
+				continue;
+
             // It's an attachment. Pause the avatar it's attached to.
             mPauseRequests.push_back(parent_av->requestPause());
         }
