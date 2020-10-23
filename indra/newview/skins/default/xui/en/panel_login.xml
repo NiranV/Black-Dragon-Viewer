@@ -182,6 +182,64 @@ width="996">
      bg_writeable_color="Black_50" 
      width="1200"
      word_wrap="false">
+Added: Per suggestion an option to turn off "Return" triggering the default inventory action when an item is selected.
+Added: Simple performance report tab to Advanced Complexity Window.
+Added: Face count to complexity calculation.
+Added: Alexa Starlight as Patreon Patron.
+Added: Kaymayhem as Patreon Patron.
+Added: Seren Villiers as Patreon Patron.
+Changed: Make notification for unticking "Remember Account" more clear and change the pointers to the correct preferences tab.
+Changed: Move requesting balance to after the Inventory is opened and initialized.
+Changed: Version to 3.9.1.
+Fixed: Profile can't be closed via CTRL + W.
+Fixed: Animations cannot be played backwards anymore.
+Fixed: Derender list being cleared when double-click teleporting or teleporting inside the same region.
+Fixed: Notification "move" buttons not working anymore.
+Fixed: Crash when failing to cache an image.
+Fixed: Compile.
+Fixed: Crash when selecting HUD objects.
+Fixed: Preferences title inconsistencies.
+Misc: Cleaned up llpreviewanim.cpp a bit.
+Merge Linden Release. (357 Changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="247"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
 Added: Potato as Patreon Patron.
 Added: Sparklebottom Lasertits as Patreon Patron.
 Added: Narcissus as Patreon Patron.
