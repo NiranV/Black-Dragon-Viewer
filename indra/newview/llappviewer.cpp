@@ -1705,6 +1705,11 @@ bool LLAppViewer::cleanup()
 	//ditch LLVOAvatarSelf instance
 	gAgentAvatarp = NULL;
 
+	//BD - Stop the plugin read thread if it's running.
+	//     Do it here to decrease the chance of the plugin becoming unresponsive
+	//     or inaccessible making it impossible for the Viewer to completely quit.
+	LLPluginProcessParent::setUseReadThread(false);
+
     LLNotifications::instance().clear();
 
 	// workaround for DEV-35406 crash on shutdown
@@ -2007,9 +2012,6 @@ bool LLAppViewer::cleanup()
 	LLLocationHistory::getInstance()->save();
 
 	LLAvatarIconIDCache::getInstance()->save();
-
-	// Stop the plugin read thread if it's running.
-	LLPluginProcessParent::setUseReadThread(false);
 
 	LL_INFOS() << "Shutting down Threads" << LL_ENDL;
 
