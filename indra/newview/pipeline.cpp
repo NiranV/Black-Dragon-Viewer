@@ -8036,11 +8036,6 @@ void LLPipeline::renderFinalize()
 
 	if (LLPipeline::sRenderDeferred)
 	{
-
-		bool dof_enabled = !viewer_cam->cameraUnderWater() &&
-			(RenderDepthOfFieldInEditMode || !LLToolMgr::getInstance()->inBuildMode()) &&
-			RenderDepthOfField;
-
 		bool multisample = RenderFSAASamples > 1 && mFXAABuffer.isComplete();
 
 //		//BD - Exodus Post Process
@@ -8048,7 +8043,7 @@ void LLPipeline::renderFinalize()
 
 		gViewerWindow->setup3DViewport();
 
-		if (dof_enabled)
+		if (RenderDepthOfField)
 		{
 			LLGLSLShader *shader = &gDeferredPostProgram;
 			LLGLDisable blend(GL_BLEND);
@@ -10327,13 +10322,13 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 
         {
             LL_RECORD_BLOCK_TIME(FTM_SHADOW_ALPHA_MASKED);
-		renderMaskedObjects(LLRenderPass::PASS_ALPHA_MASK, mask, TRUE, TRUE);
+			renderMaskedObjects(LLRenderPass::PASS_ALPHA_MASK, mask, TRUE, TRUE);
         }
 
         {
             LL_RECORD_BLOCK_TIME(FTM_SHADOW_ALPHA_BLEND);
-		gDeferredShadowAlphaMaskProgram.setMinimumAlpha(0.598f);
-		renderObjects(LLRenderPass::PASS_ALPHA, mask, TRUE, TRUE);
+			gDeferredShadowAlphaMaskProgram.setMinimumAlpha(0.598f);
+			renderObjects(LLRenderPass::PASS_ALPHA, mask, TRUE, TRUE);
         }
 
         {
@@ -10347,20 +10342,20 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 		mask = mask & ~LLVertexBuffer::MAP_TEXTURE_INDEX;
 
         {
-            LL_RECORD_BLOCK_TIME(FTM_SHADOW_ALPHA_TREE);
-		gDeferredTreeShadowProgram.bind();
-            gDeferredTreeShadowProgram.uniform1i(LLShaderMgr::SUN_UP_FACTOR, environment.getIsSunUp() ? 1 : 0);
-		renderMaskedObjects(LLRenderPass::PASS_NORMSPEC_MASK, mask);
-		renderMaskedObjects(LLRenderPass::PASS_MATERIAL_ALPHA_MASK, mask);
-		renderMaskedObjects(LLRenderPass::PASS_SPECMAP_MASK, mask);
-		renderMaskedObjects(LLRenderPass::PASS_NORMMAP_MASK, mask);
+			LL_RECORD_BLOCK_TIME(FTM_SHADOW_ALPHA_TREE);
+			gDeferredTreeShadowProgram.bind();
+			gDeferredTreeShadowProgram.uniform1i(LLShaderMgr::SUN_UP_FACTOR, environment.getIsSunUp() ? 1 : 0);
+			renderMaskedObjects(LLRenderPass::PASS_NORMSPEC_MASK, mask);
+			renderMaskedObjects(LLRenderPass::PASS_MATERIAL_ALPHA_MASK, mask);
+			renderMaskedObjects(LLRenderPass::PASS_SPECMAP_MASK, mask);
+			renderMaskedObjects(LLRenderPass::PASS_NORMMAP_MASK, mask);
         }
 		
         {
             LL_RECORD_BLOCK_TIME(FTM_SHADOW_ALPHA_GRASS);
-		gDeferredTreeShadowProgram.setMinimumAlpha(0.598f);
-		renderObjects(LLRenderPass::PASS_GRASS, LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0, TRUE);
-	}
+			gDeferredTreeShadowProgram.setMinimumAlpha(0.598f);
+			renderObjects(LLRenderPass::PASS_GRASS, LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0, TRUE);
+		}
     }
 
 	//glCullFace(GL_BACK);
