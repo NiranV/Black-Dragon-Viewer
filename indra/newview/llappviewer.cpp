@@ -715,7 +715,9 @@ LLAppViewer::LLAppViewer()
 	mPeriodicSlowFrame(LLCachedControl<bool>(gSavedSettings,"Periodic Slow Frame", FALSE)),
 	mFastTimerLogThread(NULL),
 	mSettingsLocationList(NULL),
-	mIsFirstRun(false)
+	mIsFirstRun(false),
+	//BD - FPS Limiter
+	mMinMicroSecPerFrame(0.f)
 {
 	if(NULL != sInstance)
 	{
@@ -1281,6 +1283,11 @@ bool LLAppViewer::init()
 	//BD
 	gJoystick->setNeedsReset(true);
 
+	/*----------------------------------------------------------------------*/
+	//BD - FPS Limiter
+	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
+	onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
+
 	return true;
 }
 
@@ -1529,6 +1536,22 @@ bool LLAppViewer::doFrame()
 				gGLActive = TRUE;
 
 				display();
+
+				//BD - FPS Limiter
+				static U64 last_call = 0;
+				if (!gTeleportDisplay) // SL-10625...throttle early, throttle often with Intel
+				{
+					// Frame/draw throttling
+					U64 elapsed_time = LLTimer::getTotalTime() - last_call;
+					if (elapsed_time < mMinMicroSecPerFrame)
+					{
+						LL_RECORD_BLOCK_TIME(FTM_SLEEP);
+						// llclamp for when time function gets funky
+						U64 sleep_time = llclamp(mMinMicroSecPerFrame - elapsed_time, (U64)1, (U64)1e6);
+						micro_sleep(sleep_time, 0);
+					}
+				}
+				last_call = LLTimer::getTotalTime();
 
 				pingMainloopTimeout("Main:Snapshot");
 				LLFloaterSnapshot::update(); // take snapshots
@@ -5566,6 +5589,20 @@ void LLAppViewer::disconnectViewer()
 	// Pass the connection state to LLUrlEntryParcel not to attempt
 	// parcel info requests while disconnected.
 	LLUrlEntryParcel::setDisconnected(gDisconnected);
+}
+
+//BD - FPS Limiter
+bool LLAppViewer::onChangeFrameLimit(LLSD const & evt)
+{
+	if (evt.asInteger() > 0)
+	{
+		mMinMicroSecPerFrame = (U64)(1000000.0f / F32(evt.asInteger()));
+	}
+	else
+	{
+		mMinMicroSecPerFrame = 0;
+	}
+	return false;
 }
 
 void LLAppViewer::forceErrorLLError()
