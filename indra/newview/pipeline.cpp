@@ -1173,7 +1173,7 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 						//BD - Resizing it should be sufficient.
 						mShadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
 
-						mShadowOcclusion[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
+						mShadowOcclusion[i].resize(U32(scale.mV[i]) / occlusion_divisor, U32(scale.mV[i]) / occlusion_divisor);
 					}
 				}
 			}
@@ -1194,7 +1194,7 @@ void LLPipeline::allocateShadowMaps(bool allocate)
 						//BD - Resizing it should be sufficient.
 						mShadow[i].resize(U32(proj_scale.mV[i - 4]), U32(proj_scale.mV[i - 4]));
 
-						mShadowOcclusion[i].resize(U32(proj_scale.mV[i - 4]), U32(proj_scale.mV[i - 4]));
+						mShadowOcclusion[i].resize(U32(proj_scale.mV[i - 4]) / occlusion_divisor, U32(proj_scale.mV[i - 4]) / occlusion_divisor);
 					}
 				}
 			}
