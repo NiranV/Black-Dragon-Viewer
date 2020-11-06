@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>FramePerSecondLimit</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls upper limit of frames per second</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>AllowReturnInInventory</key>
   <map>
     <key>Comment</key>
