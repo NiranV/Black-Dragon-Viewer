@@ -1926,7 +1926,10 @@ void LLFloaterPreference::refreshEverything()
 
 	if (mTabContainer->getCurrentPanelIndex() == 12)
 	{
-		getChild<LLButton>("open_log_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
+		getChild<LLUICtrl>("open_transcript_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
+		getChild<LLUICtrl>("default_chatlog_location")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
+		getChild<LLUICtrl>("chatlog_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
+		getChild<LLUICtrl>("chatlog_path_string")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
 	}
 }
 

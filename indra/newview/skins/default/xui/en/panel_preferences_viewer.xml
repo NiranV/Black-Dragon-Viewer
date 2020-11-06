@@ -767,7 +767,7 @@ width="510">
  tool_tip="This button opens the currently set chatlog path."
  layout="topleft"
  left_pad="5"
- name="open_log_path_button"
+ name="open_transcript_path_button"
  top_delta="0"
  width="55">
  <commit_callback
