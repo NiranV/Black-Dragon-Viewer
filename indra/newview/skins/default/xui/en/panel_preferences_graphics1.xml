@@ -4928,7 +4928,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDoFVisible"
 	  layout="topleft"
-	  height="187"
+	  height="200"
 	  auto_resize="false"
 	  name="dof_layout_panel"
 	  width="515">
@@ -4954,6 +4954,18 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    left="10"
    tool_tip="This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
    name="RenderDepthOfFieldFront"
+   top_pad="0"
+   width="115"/>
+ <check_box
+   control_name="RenderDepthOfFieldInEditMode"
+   enabled_control="RenderDeferred"
+   height="16"
+   initial_value="false"
+   label="Enable Depth of Field in Build mode"
+   layout="topleft"
+   left="10"
+   tool_tip="This option toggles whether Depth of Field should be rendered while the Build window is open."
+   name="RenderDepthOfFieldInEditMode"
    top_pad="0"
    width="115"/>
  <check_box
