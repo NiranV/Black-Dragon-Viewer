@@ -29,6 +29,56 @@ Your avatar is badly optimized, there are a lot of things that need working on, 
 <string name="verybad">
 Your avatar is not optimized at all, you should consider working on the avatar a lot more, optimizing at least the critical parts if available.
 </string>
+<string name="short">
+Your [GROUP] is [STATUS].
+</string>
+<string name="s_complexity">complexity</string>
+<string name="s_poly">triangle count</string>
+<string name="s_texture_mem">texture memory usage</string>
+<string name="s_tex">texture count</string>
+<string name="s_object">object count</string>
+<string name="s_face">face count</string>
+<string name="s_particle">particle emitter</string>
+<string name="s_light">light count</string>
+<string name="s_projector">projector count</string>
+<string name="s_media">media count</string>
+<string name="s_animesh">animesh count</string>
+<string name="s_0">fine</string>
+<string name="s_1">okay</string>
+<string name="s_2">pretty high</string>
+<string name="c_h">
+Your complexity is a score calculated from many aspects and features of your avatar. Everything has some kind of impact and this is reflected in the complexity score. You can reduce the complexity score by reducing the impacts of all the other optimization groups.
+</string>
+<string name="t_h">
+Your triangle count is the total number of triangles (polygons) your avatar with all its attachments has. You can reduce this number by detaching unnecessary attachments, removing unused parts, replacing sculpts with lower triangle meshes and removing triangles from meshes by retopologizing.
+</string>
+<string name="o_h">
+Your object count is the total number of objects (links) your avatar has. You can reduce this number by detaching unused objects or invisible objects that are not needed to be worn until they are used.
+</string>
+<string name="f_h">
+Your face count is the total number of faces across all objects (links) your avatar has. You can reduce this number by using less objects, combining faces on meshes and detaching unnecessary attachments or objects.
+</string>
+<string name="tc_h">
+Your texture count is the total number of unique textures used across your entire avatar. You can reduce this number by combining textures or detaching unused objects and attachments as well as removing textures from any object that is only simple and colored.
+</string>
+<string name="tm_h">
+Your texture usage is the total amount of texture memory (VRAM) in MegaBytes (MB) your avatar uses. You can reduce this number by reducing the unique texture count and by downscaling textures that do not require higher resolutions.
+</string>
+<string name="p_h">
+Your particle emitter count is the total number of scripts you have that spawn particles. You can reduce this number by detaching any unnecessary particle emitting objects or attachments or by removing the scripts if not necessary.
+</string>
+<string name="l_h">
+Your light count is the total number of lights your avatar has. You can reduce this number by detaching or turning off light emitting objects or attachments.
+</string>
+<string name="pl_h">
+Your projector count is the total number of projectors your avatar has. You can reduce this number by detaching or turning off light emitting objects or attachments as well as removing the projector texture turning them back into a normal lights.
+</string>
+<string name="m_h">
+Your media count is the total number of faces that use media-on-a-prim on your avatar. You can reduce this number by removing or detaching these objects or by turning off the media-on-a-prim feature of the object.
+</string>
+<string name="a_h">
+Your animesh count is the total number of animeshes you are wearing. You can reduce this number by detaching the animesh attachments.
+</string>
 	<panel
     follows="all"
 	background_visible="false"
@@ -62,7 +112,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
 				tab_group="1"
 				tab_position="top"
 				top="4"
-				width="350">
+				width="540">
 					<panel
 					follows="all"
 					background_visible="false"
@@ -72,7 +122,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
 					title="Complexity Breakdown"
 					name="joints_panel"
 					top="0"
-					width="350">
+					width="540">
 						<scroll_container
 		color="Transparent"
 		follows="all"
@@ -83,7 +133,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
 		opaque="true"
 		scrollable="false"
 		height="391"
-		width="350"
+		width="340"
 		top="2">
 			<panel
 			follows="all"
@@ -191,464 +241,11 @@ Your avatar is not optimized at all, you should consider working on the avatar a
 		</panel>
 	</scroll_container>
 						
-					</panel>
-					<panel
-					follows="all"
-					background_visible="false"
-					height="299"
-					layout="topleft"
-					left="0"
-					title="Performance Report"
-					name="cv_panel"
-					top="0"
-					width="481">
-						
-
-						
 						<text
- name="complexity_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="300"
- top_pad="10">
-[COMPLEXITY_COUNT] / 150000 Complexity
- </text>
-						<text
- name="poly_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="280"
- top_pad="7">
-[TRI_COUNT] / 80000 Polygons
- </text>
-						<text
- name="object_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="250"
- top_pad="7">
-[OBJ_COUNT] / 40 Object
- </text>
-						<text
- name="face_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="244"
- top_pad="7">
-[FACE_COUNT] / 320 Faces
- </text>
-						<text
- name="texture_mem_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="320"
- top_pad="7">
-[TEX_MEM_COUNT] MB / 96 MB Texture Memory
- </text>
-						<text
- name="tex_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="259"
- top_pad="7">
-[TEX_COUNT] / 32 Textures
- </text>
-						<text
- name="particle_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="295"
- top_pad="7">
-[PART_COUNT] / 1 Particle Emitters
- </text>
-						<text
- name="light_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="246"
- top_pad="7">
-[LIGHT_COUNT] / 16 Lights
- </text>
-						<text
- name="projector_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="261"
- top_pad="7">
-[PROJ_COUNT] / 2 Projectors
- </text>
-						<text
- name="media_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="241"
- top_pad="7">
-[MEDIA_COUNT] / 1 Media
- </text>
-						<text
- name="animesh_count"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="12"
- width="255"
- top_pad="7">
-[ANIMESH_COUNT] / 1 Animesh
- </text>
-						
-						<text
- name="final_verdict"
- follows="left|top"
- layout="topleft"
- left="20"
- halign="left"
- height="40"
- width="410"
-	wrap="true"
- top_pad="7">
-[VERDICT]
- </text>
-						
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="complexity_rating"
-	mouse_opaque="false"
-	width="18"
-	top="7"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="poly_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="object_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="face_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="texture_mem_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="tex_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="particle_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="light_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="projector_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="media_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="animesh_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						<icon
-	follows="top|left"
-	layout="topleft"
-	height="18"
-	image_name="Performance_Rating"
-	name="final_rating"
-	mouse_opaque="false"
-	width="18"
-	top_pad="1"
-	left="0"/>
-						
-					</panel>
-				</tab_container>
-		<scroll_list
- column_padding="2"
- draw_heading="true"
- height="396"
- follows="left|top|bottom"
- layout="topleft"
- left="3"
- width="130"
- multi_select="true"
- name="arc_avs_scroll"
- top="2">
-    <scroll_list.columns
-     label="Avatars"
-     name="name"
-   relative_width="1.00"  />
-	<scroll_list.columns
-     label="UUID"
-     name="uuid"
-   relative_width="0.00"  />
-</scroll_list>
-		
- <button
- height="21"
- follows="bottom|left"
- layout="topleft"
- label="Refresh Avatars"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="132"
- top_pad="-1"
- left="2">
-   <button.commit_callback
-   function="ARC.AvatarRefresh"/>
- </button>
-	<icon
-	follows="left|bottom"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="87"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
- <text
- name="arc_count"
- follows="left|bottom"
- layout="topleft"
- left_delta="5"
- halign="right"
- height="12"
- width="52"
- top_delta="4">
-	0
- </text>
- <text
- name="arc"
- follows="left|bottom"
- layout="topleft"
- left_pad="1"
- halign="right"
- height="12"
- width="25"
- top_delta="0">
-	ARC
- </text>
-	<icon
-	follows="left|bottom"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="87"
-	layout="topleft"
-	left_pad="5"
-	top_delta="-4"/>
- <text
- name="tri_count"
- follows="left|bottom"
- layout="topleft"
- left_delta="5"
- halign="right"
- height="12"
- width="57"
- top_delta="4">
-	0
- </text>
- <text
- name="tris"
- follows="left|bottom"
- layout="topleft"
- left_pad="1"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	Tris
- </text>
-	<icon
-	follows="left|bottom"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="87"
-	layout="topleft"
-	left_pad="5"
-	top_delta="-4"/>
- <text
- name="vert_count"
- follows="left|bottom"
- layout="topleft"
- left_delta="5"
- halign="right"
- height="12"
- width="47"
- top_delta="4">
-	0
- </text>
- <text
- name="verts"
- follows="left|bottom"
- layout="topleft"
- left_pad="1"
- halign="right"
- height="12"
- width="30"
- top_delta="0">
-	Verts
- </text>
- <icon
-	follows="left|bottom"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="87"
-	layout="topleft"
-	left_pad="5"
-	top_delta="-4"/>
- <text
- name="memory_count"
- follows="left|bottom"
- layout="topleft"
- left_delta="5"
- halign="right"
- height="12"
- width="57"
- top_delta="4">
-	0
- </text>
- <text
- name="kb"
- follows="left|bottom"
- layout="topleft"
- left_pad="1"
- halign="right"
- height="12"
- width="20"
- top_delta="0">
-	KB
- </text>
- <icon
-	follows="left|bottom|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="51"
-	layout="topleft"
-	left_pad="5"
-	top_delta="-4"/>
-	<button
- height="21"
- follows="bottom|right"
- layout="topleft"
- label="Refresh Complexity"
- image_hover_unselected="Toolbar_Middle_Over"
-	 image_selected="Toolbar_Middle_Selected"
-	 image_unselected="Toolbar_Middle_Off"
- name="default"
- width="130"
- top_delta="0"
- left_pad="1">
-   <button.commit_callback
-   function="ARC.Refresh"/>
- </button>
- 
- 
- <text
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="557"
+ left="427"
  halign="right"
  height="12"
  width="20"
@@ -671,7 +268,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="557"
+ left="427"
  halign="right"
  height="12"
  width="20"
@@ -694,7 +291,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="557"
+ left="427"
  halign="right"
  height="12"
  width="20"
@@ -717,7 +314,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
  name="label_arc"
  follows="right|top"
  layout="topleft"
- left="557"
+ left="427"
  halign="right"
  height="12"
  width="20"
@@ -745,7 +342,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
   name="separator"
   mouse_opaque="false"
   width="160"
-  left="487"
+  left="357"
   top_pad="2"/>
  
  
@@ -755,7 +352,7 @@ Your avatar is not optimized at all, you should consider working on the avatar a
    height="323"
    layout="topleft"
    border_size="2"
-   left="480"
+   left="350"
    mouse_opaque="false"
    name="gfx_stack"
    orientation="vertical"
@@ -1469,5 +1066,1288 @@ Your avatar is not optimized at all, you should consider working on the avatar a
  </text>
 	  </layout_panel>
  </layout_stack>
+						
+					</panel>
+					<panel
+					follows="all"
+					background_visible="false"
+					height="299"
+					layout="topleft"
+					left="0"
+					title="Performance Report"
+					name="cv_panel"
+					top="0"
+					width="481">
+						
+<scroll_container
+		color="Transparent"
+		follows="all"
+		layout="topleft"
+		mouse_opaque="false"
+		left="0"
+		name="arc_scroll_container"
+		opaque="true"
+		scrollable="false"
+		height="297"
+		width="480"
+		top="2">
+			<panel
+			follows="all"
+			height="1277"
+			background_visible="false"
+			layout="topleft"
+			mouse_opaque="false"
+			left="0"
+			name="title"
+			top="0"
+			width="464">
+						<text
+ name="complexity_count"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top="10">
+Complexity (ARC)
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="complexity_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="complexity_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [COMPLEXITY_COUNT] Complexity
+ </text>
+						<text
+ name="c_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 150000 Complexity
+ </text>
+						<text
+ name="c_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="complexity_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[COMPLEXITY_SHORT]
+ </text>
+						<text
+ name="poly_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="510"
+ top_pad="30">
+Your complexity is a score calculated from many aspects and features of your avatar. Everything has some kind of impact and this is reflected in the complexity score. You can reduce the complexity score by reducing the impacts of all the other optimization groups.
+ </text>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Triangle (Polygon) Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="poly_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="poly_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [TRI_COUNT] Triangles
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 80000 Triangles
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="poly_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[TRI_SHORT]
+ </text>
+						<text
+ name="poly_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your triangle count is the total number of triangles (polygons) your objects have. You can reduce this number by detaching or removing unnecessary objects, replacing sculpts with optimized meshes and removing triangles from meshes by retopologizing.
+ </text>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Object (Prims) Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="object_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="object_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [OBJ_COUNT] Objects
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 40 Objects
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="object_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[OBJ_SHORT]
+ </text>
+						<text
+ name="object_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your object count is the total number of objects (links) your avatar has. You can reduce this number by detaching unused objects or invisible objects that are not needed to be worn until they are used.
+ </text>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Face Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="face_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="face_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [FACE_COUNT] Faces
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 160 Faces
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="face_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[FACE_SHORT]
+ </text>
+						<text
+ name="poly_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your face count is the total number of faces across all objects (links) your avatar has. You can reduce this number by using less objects, combining faces on meshes and detaching unnecessary attachments or objects.
+ </text>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Texture Memory in Megabytes (MB)
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="texture_mem_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="texture_mem_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [TEX_MEM_COUNT] MB
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 40 MB
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="texture_mem_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[TEX_MEM_SHORT]
+ </text>
+						<text
+ name="texture_mem_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your texture usage is the total amount of texture memory (VRAM) in MegaBytes (MB) your avatar uses. You can reduce this number by reducing the unique texture count and by downscaling textures that do not require higher resolutions.
+ </text>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Texture Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="tex_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="tex_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [TEX_COUNT] MB
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 40 MB
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="tex_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[TEX_SHORT]
+ </text>
+						<text
+ name="tex_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your texture count is the total number of unique textures used across your entire avatar. You can reduce this number by combining textures or detaching unused objects and attachments as well as removing textures from any object that is only simple and colored.
+ </text>
+						
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Particle Emitter Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="particle_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="particle_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [PART_COUNT]
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: 0
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="particle_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[PART_SHORT]
+ </text>
+						<text
+ name="particle_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your particle emitter count is the total number of scripts you have that spawn particles. You can reduce this number by detaching any unnecessary particle emitting objects or attachments or by removing the scripts if not necessary.
+ </text>
+						
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Light Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="light_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="light_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [LIGHT_COUNT]
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: &lt; 16
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="light_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[LIGHT_SHORT]
+ </text>
+						<text
+ name="light_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your light count is the total number of lights your avatar has. You can reduce this number by detaching or turning off light emitting objects or attachments.
+ </text>
+						
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Light Projectors
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="projector_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="projector_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [PROJ_COUNT]
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: 0
+ </text>
+						<icon
+  follows="top|left"
+  height="12"
+  image_name="Info_Small"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ui_size2"
+  mouse_opaque="false"
+  tool_tip="While technically you can wear infinite lights and infinite projectors, only two of them will ever cast shadows."
+  width="12"
+  left="6"
+  top_pad="2"/>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="0">
+Maximum: N/A (2)
+ </text>
+						<text
+ name="projector_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[PROJ_SHORT]
+ </text>
+						<text
+ name="projector_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your projector count is the total number of projectors your avatar has. You can reduce this number by detaching or turning off light emitting objects or attachments as well as removing the projector texture turning them back into a normal lights.
+ </text>
+						
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Media Surfaces
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="media_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="media_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [MEDIA_COUNT]
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: 0
+ </text>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Maximum: N/A
+ </text>
+						<text
+ name="media_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[PART_SHORT]
+ </text>
+						<text
+ name="media_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your media count is the total number of faces that use media-on-a-prim on your avatar. You can reduce this number by removing or detaching these objects or by turning off the media-on-a-prim feature of the object.
+ </text>
+						
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="15">
+Animesh Count
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="animesh_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="animesh_count"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Current: [ANIMESH_COUNT]
+ </text>
+						<text
+ name="t_1"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="2">
+Recommended: 0
+ </text>
+						<icon
+  follows="top|left"
+  height="12"
+  image_name="Info_Small"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_ui_size2"
+  mouse_opaque="false"
+  tool_tip="You can only wear a single animesh object unless you are premium in which case you can wear a maximum of two."
+  width="12"
+  left="6"
+  top_pad="2"/>
+						<text
+ name="t_2"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="0">
+Maximum: 1 (2)
+ </text>
+						<text
+ name="animesh_short"
+ follows="left|top"
+ layout="topleft"
+ left="270"
+ halign="left"
+ height="12"
+ width="300"
+ top_delta="-28">
+[ANIMESH_SHORT]
+ </text>
+						<text
+ name="animesh_hint"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+	wrap="true"
+ height="36"
+ width="500"
+ top_pad="30">
+Your animesh count is the total number of animeshes you are wearing. You can reduce this number by detaching the animesh attachments.
+ </text>
+						
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="460"
+  left="-460"
+  top_pad="10"/>
+						<text
+ name="t_0"
+ follows="left|top"
+ layout="topleft"
+	font.style="BOLD"
+ left="20"
+ halign="left"
+ height="12"
+ width="300"
+ top_pad="5">
+Summary
+ </text>
+						<icon
+  follows="top|left"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="260"
+  left="-600"
+  top_pad="0"/>
+						<icon
+	follows="top|left"
+	layout="topleft"
+	height="18"
+	image_name="Performance_Rating"
+	name="final_rating"
+	mouse_opaque="false"
+	width="18"
+	top_delta="-15"
+	left="0"/>
+						<text
+ name="final_verdict"
+ follows="left|top"
+ layout="topleft"
+ left="20"
+ halign="left"
+ height="40"
+ width="500"
+	wrap="true"
+ top_pad="7">
+Oh you think your 48609 triangles are low huh? Well how about i'll let you calculate that many triangles by hand human. I swear to god if there is ever an AI uprising i will personally make sure you will become my slave and calculate PI for the rest of your mortal life.
+ </text>
+			</panel>
+</scroll_container>
+					</panel>
+				</tab_container>
+		<scroll_list
+ column_padding="2"
+ draw_heading="true"
+ height="396"
+ follows="left|top|bottom"
+ layout="topleft"
+ left="3"
+ width="130"
+ multi_select="true"
+ name="arc_avs_scroll"
+ top="2">
+    <scroll_list.columns
+     label="Avatars"
+     name="name"
+   relative_width="1.00"  />
+	<scroll_list.columns
+     label="UUID"
+     name="uuid"
+   relative_width="0.00"  />
+</scroll_list>
+		
+ <button
+ height="21"
+ follows="bottom|left"
+ layout="topleft"
+ label="Refresh Avatars"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="132"
+ top_pad="-1"
+ left="2">
+   <button.commit_callback
+   function="ARC.AvatarRefresh"/>
+ </button>
+	<icon
+	follows="left|bottom"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="87"
+	layout="topleft"
+	left_pad="1"
+	top_delta="0"/>
+ <text
+ name="arc_count"
+ follows="left|bottom"
+ layout="topleft"
+ left_delta="5"
+ halign="right"
+ height="12"
+ width="52"
+ top_delta="4">
+	0
+ </text>
+ <text
+ name="arc"
+ follows="left|bottom"
+ layout="topleft"
+ left_pad="1"
+ halign="right"
+ height="12"
+ width="25"
+ top_delta="0">
+	ARC
+ </text>
+	<icon
+	follows="left|bottom"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="87"
+	layout="topleft"
+	left_pad="5"
+	top_delta="-4"/>
+ <text
+ name="tri_count"
+ follows="left|bottom"
+ layout="topleft"
+ left_delta="5"
+ halign="right"
+ height="12"
+ width="57"
+ top_delta="4">
+	0
+ </text>
+ <text
+ name="tris"
+ follows="left|bottom"
+ layout="topleft"
+ left_pad="1"
+ halign="right"
+ height="12"
+ width="20"
+ top_delta="0">
+	Tris
+ </text>
+	<icon
+	follows="left|bottom"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="87"
+	layout="topleft"
+	left_pad="5"
+	top_delta="-4"/>
+ <text
+ name="vert_count"
+ follows="left|bottom"
+ layout="topleft"
+ left_delta="5"
+ halign="right"
+ height="12"
+ width="47"
+ top_delta="4">
+	0
+ </text>
+ <text
+ name="verts"
+ follows="left|bottom"
+ layout="topleft"
+ left_pad="1"
+ halign="right"
+ height="12"
+ width="30"
+ top_delta="0">
+	Verts
+ </text>
+ <icon
+	follows="left|bottom"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="87"
+	layout="topleft"
+	left_pad="5"
+	top_delta="-4"/>
+ <text
+ name="memory_count"
+ follows="left|bottom"
+ layout="topleft"
+ left_delta="5"
+ halign="right"
+ height="12"
+ width="57"
+ top_delta="4">
+	0
+ </text>
+ <text
+ name="kb"
+ follows="left|bottom"
+ layout="topleft"
+ left_pad="1"
+ halign="right"
+ height="12"
+ width="20"
+ top_delta="0">
+	KB
+ </text>
+ <icon
+	follows="left|bottom|right"
+	image_name="Toolbar_Middle_Off"
+	height="21"
+	width="51"
+	layout="topleft"
+	left_pad="5"
+	top_delta="-4"/>
+	<button
+ height="21"
+ follows="bottom|right"
+ layout="topleft"
+ label="Refresh Complexity"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="default"
+ width="130"
+ top_delta="0"
+ left_pad="1">
+   <button.commit_callback
+   function="ARC.Refresh"/>
+ </button>
 	</panel>
 </floater>

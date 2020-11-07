@@ -43,6 +43,7 @@ private:
 	void calcARC();
 	void checkObject(LLVOVolume* vovolume, LLVOVolume::texture_cost_t &textures,
 					U32 &volume_cost, U32 &base_cost, U64 &total_triangles, U64 &total_vertices);
+	void rateAvatarGroup(std::string type, F32 rating);
 	void onSelectEntry();
 	void onSelectAttachment();
 

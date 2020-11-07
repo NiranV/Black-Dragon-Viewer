@@ -406,7 +406,7 @@ void BDFloaterComplexity::calcARC()
 	mTextureCost->setValue(texture_memory.value());
 
 	
-	//BD - Now write a performance report.
+	//BD - Fill in the numbers for all performance categories.
 	getChild<LLUICtrl>("complexity_count")->setTextArg("[COMPLEXITY_COUNT]", llformat("%d", LLSD::Integer(cost)));
 	getChild<LLUICtrl>("poly_count")->setTextArg("[TRI_COUNT]", llformat("%d", LLSD::Integer(triangles)));
 	getChild<LLUICtrl>("texture_mem_count")->setTextArg("[TEX_MEM_COUNT]", llformat("%.1f", F32(texture_memory.value()) / 1024.f));
@@ -420,82 +420,82 @@ void BDFloaterComplexity::calcARC()
 	getChild<LLUICtrl>("animesh_count")->setTextArg("[ANIMESH_COUNT]", llformat("%d", animeshs));
 
 	//BD - Now color the report depending on their estimated "goodness"
-	F32 red, green = 1.0f;
+	F32 red = 1.0f;
 	F32 final_red = 0.0f;
-	//BD - The first 30000 complexity are free.
-	red = 1.0f * ((F32(cost) - 30000.f) / 120000.f);
-	final_red += red;
-	getChild<LLUICtrl>("complexity_rating")->setColor(LLColor3(red, green - red, 0.0f));
 
-	//BD - The first 20000 triangles are free.
-	red = 1.0f * ((F32(triangles) - 20000.f) / 60000.f);
+	red = 1.0f * (F32(cost) / 300000.f);
 	final_red += red;
-	getChild<LLUICtrl>("poly_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("complexity", red);
 
-	//BD - The first 36MB texture memory are free, this assumes the free 9 textures below are 1024x1024.
-	red = 1.0f * ((F32(texture_memory.value()) - (36.f * 1024.f)) / (60.f * 1024.f));
+	red = 1.0f * (F32(triangles) / 160000.f);
 	final_red += red;
-	getChild<LLUICtrl>("texture_mem_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("poly", red);
 
-	//BD - The first 9 textures are free. Accomodating for 3 1024x1024 body textures and specular and normal maps each.
-	red = 1.0f * ((F32(texture_count) - 9.f) / 23.f);
+	red = 1.0f * (F32(texture_memory.value()) / (80.f * 1024.f));
 	final_red += red;
-	getChild<LLUICtrl>("tex_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("texture_mem", red);
 
-	//BD - The first 8 objects are free. Assuming head, upper and lower body, clothing and underwear for upper/lower body and a trinket.
-	red = 1.0f * ((F32(objects) - 8.f) / 32.f);
+	red = 1.0f * (F32(texture_count) / 64.f);
 	final_red += red;
-	getChild<LLUICtrl>("object_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("tex", red);
 
-	//BD - The first 64 faces are free. Giving us 8 faces per free object.
-	red = 1.0f * ((F32(faces) - 64.f) / 320.f);
+	red = 1.0f * (F32(objects) / 80.f);
 	final_red += red;
-	getChild<LLUICtrl>("face_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("object", red);
+
+	red = 1.0f * (F32(faces) / 320.f);
+	final_red += red;
+	rateAvatarGroup("face", red);
 
 	red = 1.0f * F32(particles);
 	final_red += red;
-	getChild<LLUICtrl>("particle_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("particle", red);
 
-	red = 1.0f * (F32(lights) / 16.f);
+	red = 1.0f * (F32(lights) / 32.f);
 	final_red += red;
-	getChild<LLUICtrl>("light_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("light", red);
 
-	red = 1.0f * (F32(projectors) / 2.f);
+	red = 1.0f * F32(projectors);
 	final_red += red;
-	getChild<LLUICtrl>("projector_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("projector", red);
 
 	red = 1.0f * F32(media);
 	final_red += red;
-	getChild<LLUICtrl>("media_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("media", red);
 
 	red = 1.0f * F32(animeshs);
 	final_red += red;
-	getChild<LLUICtrl>("animesh_rating")->setColor(LLColor3(red, green - red, 0.0f));
+	rateAvatarGroup("animesh", red);
 
 	final_red /= 11.f;
-	getChild<LLUICtrl>("final_rating")->setColor(LLColor3(final_red, green - final_red, 0.0f));
-	std::string str;
-	//BD - 90%+ is perfect
-	if (final_red <= 0.1f)
-		str = getString("perfect");
-	//BD - 80% - 90% is still very good
-	else if (final_red <= 0.2f)
-		str = getString("verygood");
-	//BD - 65% - 80% is still good
-	else if (final_red <= 0.35f)
-		str = getString("good");
-	//BD - 35% - 65% is okay
-	else if (final_red <= 0.65f)
-		str = getString("ok");
-	//BD - 20% - 35% is bad
-	else if (final_red <= 0.8f)
-		str = getString("bad");
-	//BD - less than 20% is very bad
+	getChild<LLUICtrl>("final_rating")->setColor(LLColor3(final_red, 1.0f - final_red, 0.0f));
+	
+
+	//getChild<LLUICtrl>("final_verdict")->setTextArg("[VERDICT]", llformat("%s", str.c_str()));
+
+}
+
+void BDFloaterComplexity::rateAvatarGroup(std::string type, F32 rating)
+{
+	getChild<LLUICtrl>(type + "_rating")->setColor(LLColor3(rating, 1.0f - rating, 0.0f));
+	LLUICtrl* ctrl = getChild<LLUICtrl>(type + "_short");
+	ctrl->setValue(getString("short"));
+	
+	//BD - Fill in the performance group we are about to rate.
+	std::string str = getString("s_" + type);
+	ctrl->setTextArg("[GROUP]", str);
+
+	//BD - Now figure out and fill in the rating of the above group.
+	//     0% - 33% is good
+	if (rating <= 0.33f)
+		str = getString("s_0");
+	//BD - 34% - 50% is okay
+	else if (rating <= 0.5f)
+		str = getString("s_1");
+	//BD - 51% - 100% is bad
 	else
-		str = getString("verybad");
-
-	getChild<LLUICtrl>("final_verdict")->setTextArg("[VERDICT]", llformat("%s", str.c_str()));
-
+		str = getString("s_2");
+	ctrl->setTextArg("[STATUS]", str);
 }
 
 //BD - This function calculates any input object and spits out everything we need to know about it.
