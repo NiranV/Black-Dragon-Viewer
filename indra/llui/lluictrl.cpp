@@ -736,7 +736,8 @@ void LLUICtrl::resetDirty()
 // virtual
 void LLUICtrl::onTabInto()
 {
-    onUpdateScrollToChild(this);
+	//BD
+    //onUpdateScrollToChild(this);
 }
 
 // virtual
