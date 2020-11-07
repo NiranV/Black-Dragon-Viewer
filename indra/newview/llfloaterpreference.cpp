@@ -2797,7 +2797,12 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 		// do not disturb response message.
 		gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onDoNotDisturbResponseChanged, this));
 	}
-	gAgent.sendAgentUserInfoRequest();
+
+	//BD - Send user info request only after we've logged in, it doesn't make sense doing it prior anyway.
+	if (LLStartUp::getStartupState() == STATE_STARTED)
+	{
+		gAgent.sendAgentUserInfoRequest();
+	}
 
 	/////////////////////////// From LLPanelGeneral //////////////////////////
 	// if we have no agent, we can't let them choose anything
@@ -3549,6 +3554,7 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im
 	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus);
 	getChild<LLUICtrl>("online_visibility")->setLabelArg("[DIR_VIS]", mDirectoryVisibility);
 	getChildView("send_im_to_email")->setEnabled(is_verified_email);
+	getChild<LLUICtrl>("send_im_to_email")->setValue(mOriginalIMViaEmail);
 }
 
 bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map)
