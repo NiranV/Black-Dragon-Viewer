@@ -230,6 +230,9 @@ private:
     LLTrackBlenderLoopingManual::ptr_t  mWaterBlender;
     LLSettingsSky::ptr_t        mScratchSky;
     LLSettingsWater::ptr_t      mScratchWater;
+	//BD
+	LLSettingsDay::ptr_t		mScratchDay;
+
     LLSettingsBase::ptr_t       mCurrentEdit;
     LLSettingsSky::ptr_t        mEditSky;
     LLSettingsWater::ptr_t      mEditWater;

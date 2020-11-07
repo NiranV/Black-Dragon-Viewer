@@ -161,22 +161,24 @@ private:
 //=========================================================================
 
 LLFloaterEditExtDayCycle::LLFloaterEditExtDayCycle(const LLSD &key) :
-    LLFloater(key),
-    mFlyoutControl(nullptr),
-    mDayLength(0),
-    mCurrentTrack(1),
-    mShiftCopyEnabled(false),
-    mTimeSlider(nullptr),
-    mFramesSlider(nullptr),
-    mCurrentTimeLabel(nullptr),
-    mImportButton(nullptr),
-    mInventoryId(),
-    mInventoryItem(nullptr),
-    mLoadFrame(nullptr),
-    mSkyBlender(),
-    mWaterBlender(),
-    mScratchSky(),
-    mScratchWater(),
+	LLFloater(key),
+	mFlyoutControl(nullptr),
+	mDayLength(0),
+	mCurrentTrack(1),
+	mShiftCopyEnabled(false),
+	mTimeSlider(nullptr),
+	mFramesSlider(nullptr),
+	mCurrentTimeLabel(nullptr),
+	mImportButton(nullptr),
+	mInventoryId(),
+	mInventoryItem(nullptr),
+	mLoadFrame(nullptr),
+	mSkyBlender(),
+	mWaterBlender(),
+	mScratchSky(),
+	mScratchWater(),
+	//BD
+	mScratchDay(),
     mIsPlaying(false),
     mIsDirty(false),
     mCanSave(false),
@@ -193,6 +195,8 @@ LLFloaterEditExtDayCycle::LLFloaterEditExtDayCycle(const LLSD &key) :
 
     mScratchSky = LLSettingsVOSky::buildDefaultSky();
     mScratchWater = LLSettingsVOWater::buildDefaultWater();
+	//BD
+	mScratchDay = LLSettingsVODay::buildDefaultDayCycle();
 
     mEditSky = mScratchSky;
     mEditWater = mScratchWater;
@@ -324,7 +328,10 @@ void LLFloaterEditExtDayCycle::onOpen(const LLSD& key)
 				day_cycle = LLEnvironment::instance().getEnvironmentDay(LLEnvironment::ENV_LOCAL);
 				if (day_cycle)
 					setEditDayCycle(day_cycle);
-			}
+				//BD - Fix crash due to empty daycycle when we haven't had any set up yet and open the daycycle editor.
+				else
+					setEditDayCycle(mScratchDay);
+			}	
 		}
     }
 
