@@ -287,7 +287,7 @@ void LLPanelFace::sendBump(U32 bumpiness)
 {
 	if (bumpiness < BUMPY_TEXTURE)
 	{
-		LL_DEBUGS("Materials") << "clearing bumptexture control" << LL_ENDL;
+		// _LL_DEBUGS("Materials") << "clearing bumptexture control" << LL_ENDL;
 		mBumpyTextureCtrl->clear();
 		mBumpyTextureCtrl->setImageAssetID(LLUUID());
 	}
@@ -1239,7 +1239,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 
 			if (material && editable)
 			{
-				LL_DEBUGS("Materials") << material->asLLSD() << LL_ENDL;
+				// _LL_DEBUGS("Materials") << material->asLLSD() << LL_ENDL;
 
 				U32 alpha_mode = material->getDiffuseAlphaMode();
 
@@ -1376,7 +1376,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 
 void LLPanelFace::refresh()
 {
-	LL_DEBUGS("Materials") << LL_ENDL;
+	// _LL_DEBUGS("Materials") << LL_ENDL;
 	getState();
 }
 
@@ -1488,7 +1488,7 @@ void LLPanelFace::onCommitTexGen(LLUICtrl* ctrl, void* userdata)
 void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_shiny_combobox)
 {
 	LLUUID shiny_texture_ID = mShinyTextureCtrl->getImageAssetID();
-	LL_DEBUGS("Materials") << "Shiny texture selected: " << shiny_texture_ID << LL_ENDL;
+	// _LL_DEBUGS("Materials") << "Shiny texture selected: " << shiny_texture_ID << LL_ENDL;
 
 	if (mess_with_shiny_combobox)
 	{
@@ -1524,12 +1524,12 @@ void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_sh
 void LLPanelFace::updateBumpyControls(bool is_setting_texture, bool mess_with_combobox)
 {
 	LLUUID bumpy_texture_ID = mBumpyTextureCtrl->getImageAssetID();
-	LL_DEBUGS("Materials") << "texture: " << bumpy_texture_ID << (mess_with_combobox ? "" : " do not") << " update combobox" << LL_ENDL;
+	// _LL_DEBUGS("Materials") << "texture: " << bumpy_texture_ID << (mess_with_combobox ? "" : " do not") << " update combobox" << LL_ENDL;
 
 	if (mess_with_combobox)
 	{
 		LLUUID bumpy_texture_ID = mBumpyTextureCtrl->getImageAssetID();
-		LL_DEBUGS("Materials") << "texture: " << bumpy_texture_ID << (mess_with_combobox ? "" : " do not") << " update combobox" << LL_ENDL;
+		// _LL_DEBUGS("Materials") << "texture: " << bumpy_texture_ID << (mess_with_combobox ? "" : " do not") << " update combobox" << LL_ENDL;
 
 		if (!bumpy_texture_ID.isNull() && is_setting_texture)
 		{
@@ -1649,19 +1649,19 @@ void LLPanelFace::onSelectTexture(const LLSD& data)
 
 void LLPanelFace::onCloseTexturePicker(const LLSD& data)
 {
-	LL_DEBUGS("Materials") << data << LL_ENDL;
+	// _LL_DEBUGS("Materials") << data << LL_ENDL;
 	updateUI();
 }
 
 void LLPanelFace::onCommitSpecularTexture(const LLSD& data)
 {
-	LL_DEBUGS("Materials") << data << LL_ENDL;
+	// _LL_DEBUGS("Materials") << data << LL_ENDL;
 	sendShiny(SHINY_TEXTURE);
 }
 
 void LLPanelFace::onCommitNormalTexture(const LLSD& data)
 {
-	LL_DEBUGS("Materials") << data << LL_ENDL;
+	// _LL_DEBUGS("Materials") << data << LL_ENDL;
 	LLUUID nmap_id = getCurrentNormalMap();
 	sendBump(nmap_id.isNull() ? 0 : BUMPY_TEXTURE);
 }
@@ -1688,13 +1688,13 @@ void LLPanelFace::onCancelNormalTexture(const LLSD& data)
 
 void LLPanelFace::onSelectSpecularTexture(const LLSD& data)
 {
-	LL_DEBUGS("Materials") << data << LL_ENDL;
+	// _LL_DEBUGS("Materials") << data << LL_ENDL;
 	sendShiny(SHINY_TEXTURE);
 }
 
 void LLPanelFace::onSelectNormalTexture(const LLSD& data)
 {
-	LL_DEBUGS("Materials") << data << LL_ENDL;
+	// _LL_DEBUGS("Materials") << data << LL_ENDL;
 	LLUUID nmap_id = getCurrentNormalMap();
 	sendBump(nmap_id.isNull() ? 0 : BUMPY_TEXTURE);
 }
@@ -1976,7 +1976,7 @@ void LLPanelFace::onCommitPlanarAlign(LLUICtrl* ctrl, void* userdata)
 
 void LLPanelFace::onTextureSelectionChanged(LLInventoryItem* itemp)
 {
-	LL_DEBUGS("Materials") << "item asset " << itemp->getAssetUUID() << LL_ENDL;
+	// _LL_DEBUGS("Materials") << "item asset " << itemp->getAssetUUID() << LL_ENDL;
 	//BD
 	U32 mattype = mRadioMaterialType->getSelectedIndex();
 	std::string which_control = "texture control";
@@ -1990,7 +1990,7 @@ void LLPanelFace::onTextureSelectionChanged(LLInventoryItem* itemp)
 		break;
 		// no default needed
 	}
-	LL_DEBUGS("Materials") << "control " << which_control << LL_ENDL;
+	// _LL_DEBUGS("Materials") << "control " << which_control << LL_ENDL;
 	LLTextureCtrl* texture_ctrl = getChild<LLTextureCtrl>(which_control);
 	if (texture_ctrl)
 	{

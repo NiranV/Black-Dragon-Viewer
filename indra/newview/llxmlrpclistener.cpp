@@ -388,14 +388,14 @@ private:
         XMLRPC_REQUEST response = mTransaction->response();
         if (! response)
         {
-            LL_DEBUGS("LLXMLRPCListener") << "No response" << LL_ENDL;
+            // _LL_DEBUGS("LLXMLRPCListener") << "No response" << LL_ENDL;
             return LLSD();
         }
 
         XMLRPC_VALUE param = XMLRPC_RequestGetData(response);
         if (! param)
         {
-            LL_DEBUGS("LLXMLRPCListener") << "Response contains no data" << LL_ENDL;
+            // _LL_DEBUGS("LLXMLRPCListener") << "Response contains no data" << LL_ENDL;
             return LLSD();
         }
 
@@ -419,24 +419,24 @@ private:
              current = XMLRPC_VectorNext(param))
         {
             std::string key(XMLRPC_GetValueID(current));
-            LL_DEBUGS("LLXMLRPCListener") << "key: " << key_pfx << key << LL_ENDL;
+            // _LL_DEBUGS("LLXMLRPCListener") << "key: " << key_pfx << key << LL_ENDL;
             XMLRPC_VALUE_TYPE_EASY type = XMLRPC_GetValueTypeEasy(current);
             if (xmlrpc_type_string == type)
             {
                 LLSD::String val(XMLRPC_GetValueString(current));
-                LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                // _LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                 responses.insert(key, val);
             }
             else if (xmlrpc_type_int == type)
             {
                 LLSD::Integer val(XMLRPC_GetValueInt(current));
-                LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                // _LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                 responses.insert(key, val);
             }
             else if (xmlrpc_type_double == type)
             {
                 LLSD::Real val(XMLRPC_GetValueDouble(current));
-                LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                // _LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                 responses.insert(key, val);
             }
             else if (xmlrpc_type_array == type)

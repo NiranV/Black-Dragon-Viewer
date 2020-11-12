@@ -561,7 +561,7 @@ bool handleLoginLocationChanged()
 	 * panel immediately changes to match your new preference.
 	 */
 	std::string new_login_location = gSavedSettings.getString("LoginLocation");
-	LL_DEBUGS("AppInit")<<new_login_location<<LL_ENDL;
+	// _LL_DEBUGS("AppInit")<<new_login_location<<LL_ENDL;
 	LLStartUp::setStartSLURL(LLSLURL(new_login_location));
 	return true;
 }

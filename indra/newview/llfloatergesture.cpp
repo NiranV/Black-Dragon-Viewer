@@ -136,12 +136,12 @@ void LLFloaterGesture::done()
 	//this method can be called twice: for GestureFolder and once after loading all sudir of GestureFolder
 	if (gInventory.isCategoryComplete(mGestureFolderID))
 	{
-		LL_DEBUGS("Gesture")<< "mGestureFolderID loaded" << LL_ENDL;
+		// _LL_DEBUGS("Gesture")<< "mGestureFolderID loaded" << LL_ENDL;
 		// we load only gesture folder without childred.
 		LLInventoryModel::cat_array_t* categories;
 		LLInventoryModel::item_array_t* items;
 		uuid_vec_t unloaded_folders;
-		LL_DEBUGS("Gesture")<< "Get subdirs of Gesture Folder...." << LL_ENDL;
+		// _LL_DEBUGS("Gesture")<< "Get subdirs of Gesture Folder...." << LL_ENDL;
 		gInventory.getDirectDescendentsOf(mGestureFolderID, categories, items);
 		if (categories->empty())
 		{
@@ -149,25 +149,25 @@ void LLFloaterGesture::done()
 			LL_INFOS("Gesture")<< "Gesture dos NOT contains sub-directories."<< LL_ENDL;
 			return;
 		}
-		LL_DEBUGS("Gesture")<< "There are " << categories->size() << " Folders "<< LL_ENDL;
+		// _LL_DEBUGS("Gesture")<< "There are " << categories->size() << " Folders "<< LL_ENDL;
 		for (LLInventoryModel::cat_array_t::iterator it = categories->begin(); it != categories->end(); it++)
 		{
 			if (!gInventory.isCategoryComplete(it->get()->getUUID()))
 			{
 				unloaded_folders.push_back(it->get()->getUUID());
-				LL_DEBUGS("Gesture")<< it->get()->getName()<< " Folder added to fetchlist"<< LL_ENDL;
+				// _LL_DEBUGS("Gesture")<< it->get()->getName()<< " Folder added to fetchlist"<< LL_ENDL;
 			}
 
 		}
 		if (!unloaded_folders.empty())
 		{
-			LL_DEBUGS("Gesture")<< "Fetching subdirectories....." << LL_ENDL;
+			// _LL_DEBUGS("Gesture")<< "Fetching subdirectories....." << LL_ENDL;
 			setFetchIDs(unloaded_folders);
 			startFetch();
 		}
 		else
 		{
-			LL_DEBUGS("Gesture")<< "All Gesture subdirectories have been loaded."<< LL_ENDL;
+			// _LL_DEBUGS("Gesture")<< "All Gesture subdirectories have been loaded."<< LL_ENDL;
 			gInventory.removeObserver(this);
 			buildGestureList();
 		}
@@ -265,7 +265,7 @@ void LLFloaterGesture::buildGestureList()
 	S32 scroll_pos = mGestureList->getScrollPos();
 	uuid_vec_t selected_items;
 	getSelectedIds(selected_items);
-	LL_DEBUGS("Gesture")<< "Rebuilding gesture list "<< LL_ENDL;
+	// _LL_DEBUGS("Gesture")<< "Rebuilding gesture list "<< LL_ENDL;
 	mGestureList->deleteAllItems();
 
 	LLGestureMgr::item_map_t::const_iterator it;
@@ -386,7 +386,7 @@ void LLFloaterGesture::addGesture(const LLUUID& item_id , LLMultiGesture* gestur
 		element["columns"][3]["font"]["style"] = font_style;
 	}
 
-	LL_DEBUGS("Gesture") << "Added gesture [" << item_name << "]" << LL_ENDL;
+	// _LL_DEBUGS("Gesture") << "Added gesture [" << item_name << "]" << LL_ENDL;
 
 	LLScrollListItem* sl_item = list->addElement(element, ADD_BOTTOM);
 	if(sl_item)
@@ -453,7 +453,7 @@ void LLFloaterGesture::onClickPlay()
 	const LLUUID& item_id = mGestureList->getCurrentID();
 	if(item_id.isNull()) return;
 
-	LL_DEBUGS("Gesture")<<" Trying to play gesture id: "<< item_id <<LL_ENDL;
+	// _LL_DEBUGS("Gesture")<<" Trying to play gesture id: "<< item_id <<LL_ENDL;
 	if(!LLGestureMgr::instance().isGestureActive(item_id))
 	{
 		// we need to inform server about gesture activating to be consistent with LLPreviewGesture and  LLGestureComboList.
@@ -465,7 +465,7 @@ void LLFloaterGesture::onClickPlay()
 		if (item)
 		{
 			LLGestureMgr::instance().activateGestureWithAsset(item_id, item->getAssetUUID(), inform_server, deactivate_similar);
-			LL_DEBUGS("Gesture")<< "Activating gesture with inventory ID: " << item_id <<LL_ENDL;
+			// _LL_DEBUGS("Gesture")<< "Activating gesture with inventory ID: " << item_id <<LL_ENDL;
 		}
 	}
 	else
@@ -604,8 +604,8 @@ void LLFloaterGesture::onCopyPasteAction(const LLSD& command)
 			{
 				LLStringUtil::format_map_t string_args;
 				string_args["[COPY_NAME]"] = item->getName();
-				LL_DEBUGS("Gesture")<< "Copying gesture " << item->getName() << "  "<< item->getUUID() << " into "
-										<< gesture_dir->getName() << "  "<< gesture_dir->getUUID() << LL_ENDL;
+				/*// _LL_DEBUGS("Gesture")<< "Copying gesture " << item->getName() << "  "<< item->getUUID() << " into "
+										<< gesture_dir->getName() << "  "<< gesture_dir->getUUID() << LL_ENDL;*/
 				copy_inventory_item(gAgent.getID(), item->getPermissions().getOwner(), item->getUUID(), 
 						gesture_dir->getUUID(), getString("copy_name", string_args), cb);
 			}
@@ -701,7 +701,7 @@ void LLFloaterGesture::addToCurrentOutFit()
 
 void LLFloaterGesture::playGesture(LLUUID item_id)
 {
-	LL_DEBUGS("Gesture")<<"Playing gesture "<< item_id<<LL_ENDL;
+	// _LL_DEBUGS("Gesture")<<"Playing gesture "<< item_id<<LL_ENDL;
 
 	if (LLGestureMgr::instance().isGesturePlaying(item_id))
 	{

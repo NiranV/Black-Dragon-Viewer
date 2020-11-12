@@ -152,8 +152,8 @@ void LLViewerAssetStorage::storeAssetData(
     F64Seconds timeout)
 {
     LLAssetID asset_id = tid.makeAssetID(gAgent.getSecureSessionID());
-    LL_DEBUGS("AssetStorage") << "LLViewerAssetStorage::storeAssetData (legacy) " << tid << ":" << LLAssetType::lookup(asset_type)
-                              << " ASSET_ID: " << asset_id << LL_ENDL;
+    /*// _LL_DEBUGS("AssetStorage") << "LLViewerAssetStorage::storeAssetData (legacy) " << tid << ":" << LLAssetType::lookup(asset_type)
+                              << " ASSET_ID: " << asset_id << LL_ENDL;*/
     
     if (mUpstreamHost.isOk())
     {
@@ -284,9 +284,9 @@ void LLViewerAssetStorage::storeAssetData(
     }
     
     LLAssetID asset_id = tid.makeAssetID(gAgent.getSecureSessionID());
-    LL_DEBUGS("AssetStorage") << "LLViewerAssetStorage::storeAssetData (legacy)" << asset_id << ":" << LLAssetType::lookup(asset_type) << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "LLViewerAssetStorage::storeAssetData (legacy)" << asset_id << ":" << LLAssetType::lookup(asset_type) << LL_ENDL;
 
-    LL_DEBUGS("AssetStorage") << "ASSET_ID: " << asset_id << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "ASSET_ID: " << asset_id << LL_ENDL;
 
     S32 size = 0;
     LLFILE* fp = LLFile::fopen(filename, "rb");
@@ -390,7 +390,7 @@ void LLViewerAssetStorage::queueRequestHttp(
     BOOL duplicate,
     BOOL is_priority)
 {
-    LL_DEBUGS("ViewerAsset") << "Request asset via HTTP " << uuid << " type " << LLAssetType::lookup(atype) << LL_ENDL;
+    // _LL_DEBUGS("ViewerAsset") << "Request asset via HTTP " << uuid << " type " << LLAssetType::lookup(atype) << LL_ENDL;
 
     bool with_http = true;
     LLViewerAssetRequest *req = new LLViewerAssetRequest(uuid, atype, with_http);
@@ -498,7 +498,7 @@ void LLViewerAssetStorage::assetRequestCoro(
 		return;
     }
     std::string url = getAssetURL(mViewerAssetUrl, uuid,atype);
-    LL_DEBUGS("ViewerAsset") << "request url: " << url << LL_ENDL;
+    // _LL_DEBUGS("ViewerAsset") << "request url: " << url << LL_ENDL;
 
     LLCore::HttpRequest::policy_t httpPolicy(LLAppCoreHttp::AP_TEXTURE);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
@@ -520,13 +520,13 @@ void LLViewerAssetStorage::assetRequestCoro(
     LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
     if (!status)
     {
-        LL_DEBUGS("ViewerAsset") << "request failed, status " << status.toTerseString() << LL_ENDL;
+        // _LL_DEBUGS("ViewerAsset") << "request failed, status " << status.toTerseString() << LL_ENDL;
         result_code = LL_ERR_ASSET_REQUEST_FAILED;
         ext_status = LLExtStat::NONE;
     }
     else
     {
-        LL_DEBUGS("ViewerAsset") << "request succeeded, url " << url << LL_ENDL;
+        // _LL_DEBUGS("ViewerAsset") << "request succeeded, url " << url << LL_ENDL;
 
         const LLSD::Binary &raw = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS_RAW].asBinary();
 

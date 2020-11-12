@@ -258,11 +258,11 @@ S32 LLAvatarTracker::addBuddyList(const LLAvatarTracker::buddy_map_t& buds)
 			LLAvatarNameCache::get(agent_id, &av_name);
 
 			addChangedMask(LLFriendObserver::ADD, agent_id);
-			LL_DEBUGS() << "Added buddy " << agent_id
+			/*// _LL_DEBUGS() << "Added buddy " << agent_id
 					<< ", " << (mBuddyInfo[agent_id]->isOnline() ? "Online" : "Offline")
 					<< ", TO: " << mBuddyInfo[agent_id]->getRightsGrantedTo()
 					<< ", FROM: " << mBuddyInfo[agent_id]->getRightsGrantedFrom()
-					<< LL_ENDL;
+					<< LL_ENDL;*/
 		}
 		else
 		{
@@ -293,7 +293,7 @@ void LLAvatarTracker::copyBuddyList(buddy_map_t& buddies) const
 
 void LLAvatarTracker::terminateBuddy(const LLUUID& id)
 {
-	LL_DEBUGS() << "LLAvatarTracker::terminateBuddy()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLAvatarTracker::terminateBuddy()" << LL_ENDL;
 	LLRelationship* buddy = get_ptr_in_map(mBuddyInfo, id);
 	if(!buddy) return;
 	mBuddyInfo.erase(id);
@@ -331,7 +331,7 @@ void LLAvatarTracker::setBuddyOnline(const LLUUID& id, bool is_online)
 	{
 		info->online(is_online);
 		addChangedMask(LLFriendObserver::ONLINE, id);
-		LL_DEBUGS() << "Set buddy " << id << (is_online ? " Online" : " Offline") << LL_ENDL;
+		// _LL_DEBUGS() << "Set buddy " << id << (is_online ? " Online" : " Offline") << LL_ENDL;
 	}
 	else
 	{
@@ -627,14 +627,14 @@ void LLAvatarTracker::agentFound(const LLUUID& prey,
 // 	static
 void LLAvatarTracker::processOnlineNotification(LLMessageSystem* msg, void**)
 {
-	LL_DEBUGS() << "LLAvatarTracker::processOnlineNotification()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLAvatarTracker::processOnlineNotification()" << LL_ENDL;
 	instance().processNotify(msg, true);
 }
 
 // 	static
 void LLAvatarTracker::processOfflineNotification(LLMessageSystem* msg, void**)
 {
-	LL_DEBUGS() << "LLAvatarTracker::processOfflineNotification()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLAvatarTracker::processOfflineNotification()" << LL_ENDL;
 	instance().processNotify(msg, false);
 }
 
@@ -687,7 +687,7 @@ void LLAvatarTracker::processChange(LLMessageSystem* msg)
 
 void LLAvatarTracker::processChangeUserRights(LLMessageSystem* msg, void**)
 {
-	LL_DEBUGS() << "LLAvatarTracker::processChangeUserRights()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLAvatarTracker::processChangeUserRights()" << LL_ENDL;
 	instance().processChange(msg);
 }
 
@@ -696,7 +696,7 @@ void LLAvatarTracker::processNotify(LLMessageSystem* msg, bool online)
 	S32 count = msg->getNumberOfBlocksFast(_PREHASH_AgentBlock);
 	BOOL chat_notify = gSavedSettings.getBOOL("ChatOnlineNotification");
 
-	LL_DEBUGS() << "Received " << count << " online notifications **** " << LL_ENDL;
+	// _LL_DEBUGS() << "Received " << count << " online notifications **** " << LL_ENDL;
 	if(count > 0)
 	{
 		LLUUID agent_id;

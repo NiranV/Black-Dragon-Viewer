@@ -984,7 +984,7 @@ void LLFloaterEditExtDayCycle::onFrameSliderCallback(const LLSD &data)
                 // handleKeyUp will do the move if user releases key too early.
                 if (!(mEditDay->getSettingsNearKeyframe(sliderpos, mCurrentTrack, LLSettingsDay::DEFAULT_FRAME_SLOP_FACTOR)).second)
                 {
-                    LL_DEBUGS("ENVDAYEDIT") << "Copying frame from " << it->second.mFrame << " to " << sliderpos << LL_ENDL;
+                    // _LL_DEBUGS("ENVDAYEDIT") << "Copying frame from " << it->second.mFrame << " to " << sliderpos << LL_ENDL;
                     LLSettingsBase::ptr_t new_settings;
 
                     // mEditDay still remembers old position, add copy at new position
@@ -1433,7 +1433,7 @@ void LLFloaterEditExtDayCycle::removeCurrentSliderFrame()
     keymap_t::iterator iter = mSliderKeyMap.find(sldr);
     if (iter != mSliderKeyMap.end())
     {
-        LL_DEBUGS("ENVDAYEDIT") << "Removing frame from " << iter->second.mFrame << LL_ENDL;
+        // _LL_DEBUGS("ENVDAYEDIT") << "Removing frame from " << iter->second.mFrame << LL_ENDL;
         LLSettingsBase::Seconds seconds(iter->second.mFrame);
         mEditDay->removeTrackKeyframe(mCurrentTrack, seconds);
         mSliderKeyMap.erase(iter);
@@ -1875,7 +1875,7 @@ void LLFloaterEditExtDayCycle::loadSettingFromFile(const std::vector<std::string
     LLSD messages;
     if (filenames.size() < 1) return;
     std::string filename = filenames[0];
-    LL_DEBUGS("ENVDAYEDIT") << "Selected file: " << filename << LL_ENDL;
+    // _LL_DEBUGS("ENVDAYEDIT") << "Selected file: " << filename << LL_ENDL;
     LLSettingsDay::ptr_t legacyday = LLEnvironment::createDayCycleFromLegacyPreset(filename, messages);
 
     if (!legacyday)

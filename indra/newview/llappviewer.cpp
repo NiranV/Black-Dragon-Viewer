@@ -1206,7 +1206,7 @@ bool LLAppViewer::init()
 	// Iterate over --leap command-line options. But this is a bit tricky: if
 	// there's only one, it won't be an array at all.
 	LLSD LeapCommand(gSavedSettings.getLLSD("LeapCommand"));
-	LL_DEBUGS("InitInfo") << "LeapCommand: " << LeapCommand << LL_ENDL;
+	// _LL_DEBUGS("InitInfo") << "LeapCommand: " << LeapCommand << LL_ENDL;
 	if (LeapCommand.isDefined() && ! LeapCommand.isArray())
 	{
 		// If LeapCommand is actually a scalar value, make an array of it.
@@ -2852,7 +2852,7 @@ bool LLAppViewer::initConfiguration()
 	std::string nextLoginLocation = gSavedSettings.getString( "NextLoginLocation" );
 	if ( !nextLoginLocation.empty() )
 	{
-		LL_DEBUGS("AppInit")<<"set start from NextLoginLocation: "<<nextLoginLocation<<LL_ENDL;
+		// _LL_DEBUGS("AppInit")<<"set start from NextLoginLocation: "<<nextLoginLocation<<LL_ENDL;
 		LLStartUp::setStartSLURL(LLSLURL(nextLoginLocation));
 	}
 	else if (   (   clp.hasOption("login") || clp.hasOption("autologin"))
@@ -2861,7 +2861,7 @@ bool LLAppViewer::initConfiguration()
 		// If automatic login from command line with --login switch
 		// init StartSLURL location.
 		std::string start_slurl_setting = gSavedSettings.getString("LoginLocation");
-		LL_DEBUGS("AppInit") << "start slurl setting '" << start_slurl_setting << "'" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "start slurl setting '" << start_slurl_setting << "'" << LL_ENDL;
 		LLStartUp::setStartSLURL(LLSLURL(start_slurl_setting));
 	}
 	else
@@ -3752,7 +3752,7 @@ void LLAppViewer::handleViewerCrash()
 #endif
 
 	char *minidump_file = pApp->getMiniDumpFilename();
-    LL_DEBUGS("CRASHREPORT") << "minidump file name " << minidump_file << LL_ENDL;
+    // _LL_DEBUGS("CRASHREPORT") << "minidump file name " << minidump_file << LL_ENDL;
 	if(minidump_file && minidump_file[0] != 0)
 	{
 		gDebugInfo["Dynamic"]["MinidumpPath"] = minidump_file;
@@ -3771,7 +3771,7 @@ void LLAppViewer::handleViewerCrash()
 	{
 		std::string filename;
 		filename = gDirUtilp->getExpandedFilename(LL_PATH_DUMP, "stats.log");
-        LL_DEBUGS("CRASHREPORT") << "recording stats " << filename << LL_ENDL;
+        // _LL_DEBUGS("CRASHREPORT") << "recording stats " << filename << LL_ENDL;
 		llofstream file(filename.c_str(), std::ios_base::binary);
 		if(file.good())
 		{
@@ -3830,11 +3830,11 @@ bool LLAppViewer::markerIsSameVersion(const std::string& marker_name) const
 		{
 			sameVersion = true;
 		}
-		LL_DEBUGS("MarkerFile") << "Compare markers for '" << marker_name << "': "
+		/*// _LL_DEBUGS("MarkerFile") << "Compare markers for '" << marker_name << "': "
 								<< "\n   mine '" << my_version    << "'"
 								<< "\n marker '" << marker_string << "'"
 								<< "\n " << ( sameVersion ? "same" : "different" ) << " version"
-								<< LL_ENDL;
+								<< LL_ENDL;*/
 		marker_file.close();
 	}
 	return sameVersion;
@@ -3859,7 +3859,7 @@ void LLAppViewer::processMarkerFiles()
 		marker_is_same_version = markerIsSameVersion(mMarkerFileName);
 
 		// now test to see if this file is locked by a running process (try to open for write)
-		LL_DEBUGS("MarkerFile") << "Checking exec marker file for lock..." << LL_ENDL;
+		// _LL_DEBUGS("MarkerFile") << "Checking exec marker file for lock..." << LL_ENDL;
 		mMarkerFile.open(mMarkerFileName, LL_APR_WB);
 		apr_file_t* fMarker = mMarkerFile.getFileHandle() ;
 		if (!fMarker)
@@ -3879,7 +3879,7 @@ void LLAppViewer::processMarkerFiles()
 			{
 				// No other instances; we've locked this file now, so record our version; delete on quit.
 				recordMarkerVersion(mMarkerFile);
-				LL_DEBUGS("MarkerFile") << "Exec marker file existed but was not locked; rewritten." << LL_ENDL;
+				// _LL_DEBUGS("MarkerFile") << "Exec marker file existed but was not locked; rewritten." << LL_ENDL;
 			}
 		}
 
@@ -3907,11 +3907,11 @@ void LLAppViewer::processMarkerFiles()
 
 		if (s == APR_SUCCESS && mMarkerFile.getFileHandle())
 		{
-			LL_DEBUGS("MarkerFile") << "Exec marker file '"<< mMarkerFileName << "' created." << LL_ENDL;
+			// _LL_DEBUGS("MarkerFile") << "Exec marker file '"<< mMarkerFileName << "' created." << LL_ENDL;
 			if (APR_SUCCESS == apr_file_lock(mMarkerFile.getFileHandle(), APR_FLOCK_NONBLOCK | APR_FLOCK_EXCLUSIVE))
 			{
 				recordMarkerVersion(mMarkerFile);
-				LL_DEBUGS("MarkerFile") << "Exec marker file locked." << LL_ENDL;
+				// _LL_DEBUGS("MarkerFile") << "Exec marker file locked." << LL_ENDL;
 			}
 			else
 			{
@@ -3998,7 +3998,7 @@ void LLAppViewer::removeMarkerFiles()
 		{
 			mMarkerFile.close() ;
 			LLAPRFile::remove( mMarkerFileName );
-			LL_DEBUGS("MarkerFile") << "removed exec marker '"<<mMarkerFileName<<"'"<< LL_ENDL;
+			// _LL_DEBUGS("MarkerFile") << "removed exec marker '"<<mMarkerFileName<<"'"<< LL_ENDL;
 		}
 		else
 		{
@@ -4009,7 +4009,7 @@ void LLAppViewer::removeMarkerFiles()
 		{
 			mLogoutMarkerFile.close();
 			LLAPRFile::remove( mLogoutMarkerFileName );
-			LL_DEBUGS("MarkerFile") << "removed logout marker '"<<mLogoutMarkerFileName<<"'"<< LL_ENDL;
+			// _LL_DEBUGS("MarkerFile") << "removed logout marker '"<<mLogoutMarkerFileName<<"'"<< LL_ENDL;
 		}
 		else
 		{
@@ -4423,7 +4423,7 @@ bool LLAppViewer::initCache()
 			{
 				sscanf(found_file.substr(start_pos+1).c_str(), "%d", &old_salt);
 			}
-			LL_DEBUGS("AppCache") << "Default vfs data file not present, found: " << old_vfs_data_file << " Old salt: " << old_salt << LL_ENDL;
+			// _LL_DEBUGS("AppCache") << "Default vfs data file not present, found: " << old_vfs_data_file << " Old salt: " << old_salt << LL_ENDL;
 		}
 	}
 
@@ -4462,7 +4462,7 @@ bool LLAppViewer::initCache()
 
 	if (resize_vfs)
 	{
-		LL_DEBUGS("AppCache") << "Removing old vfs and re-sizing" << LL_ENDL;
+		// _LL_DEBUGS("AppCache") << "Removing old vfs and re-sizing" << LL_ENDL;
 
 		LLFile::remove(old_vfs_data_file);
 		LLFile::remove(old_vfs_index_file);
@@ -4470,8 +4470,8 @@ bool LLAppViewer::initCache()
 	else if (old_salt != new_salt)
 	{
 		// move the vfs files to a new name before opening
-		LL_DEBUGS("AppCache") << "Renaming " << old_vfs_data_file << " to " << new_vfs_data_file << LL_ENDL;
-		LL_DEBUGS("AppCache") << "Renaming " << old_vfs_index_file << " to " << new_vfs_index_file << LL_ENDL;
+		// _LL_DEBUGS("AppCache") << "Renaming " << old_vfs_data_file << " to " << new_vfs_data_file << LL_ENDL;
+		// _LL_DEBUGS("AppCache") << "Renaming " << old_vfs_index_file << " to " << new_vfs_index_file << LL_ENDL;
 		LLFile::rename(old_vfs_data_file, new_vfs_data_file);
 		LLFile::rename(old_vfs_index_file, new_vfs_index_file);
 	}

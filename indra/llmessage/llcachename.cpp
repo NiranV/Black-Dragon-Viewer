@@ -464,7 +464,7 @@ BOOL LLCacheName::getGroupName(const LLUUID& id, std::string& group)
 		// COUNTER-HACK to combat James' HACK in exportFile()...
 		// this group name was loaded from a name cache that did not
 		// bother to save the group name ==> we must ask for it
-		LL_DEBUGS() << "LLCacheName queuing HACK group request: " << id << LL_ENDL;
+		// _LL_DEBUGS() << "LLCacheName queuing HACK group request: " << id << LL_ENDL;
 		entry = NULL;
 	}
 
@@ -673,8 +673,8 @@ void LLCacheName::processPending()
 
 	if(!impl.mUpstreamHost.isOk())
 	{
-		LL_DEBUGS() << "LLCacheName::processPending() - bad upstream host."
-				 << LL_ENDL;
+		/*// _LL_DEBUGS() << "LLCacheName::processPending() - bad upstream host."
+				 << LL_ENDL;*/
 		return;
 	}
 

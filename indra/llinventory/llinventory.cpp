@@ -409,23 +409,23 @@ U32 LLInventoryItem::getCRC32() const
 	// *NOTE: We currently do not validate the name or description,
 	// but if they change in transit, it's no big deal.
 	U32 crc = mUUID.getCRC32();
-	//LL_DEBUGS() << "1 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "1 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mParentUUID.getCRC32();
-	//LL_DEBUGS() << "2 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "2 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mPermissions.getCRC32();
-	//LL_DEBUGS() << "3 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "3 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mAssetUUID.getCRC32();
-	//LL_DEBUGS() << "4 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "4 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mType;
-	//LL_DEBUGS() << "5 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "5 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mInventoryType;
-	//LL_DEBUGS() << "6 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "6 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mFlags;
-	//LL_DEBUGS() << "7 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "7 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += mSaleInfo.getCRC32();
-	//LL_DEBUGS() << "8 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "8 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	crc += (U32)mCreationDate;
-	//LL_DEBUGS() << "9 crc: " << std::hex << crc << std::dec << LL_ENDL;
+	//// _LL_DEBUGS() << "9 crc: " << std::hex << crc << std::dec << LL_ENDL;
 	return crc;
 }
 
@@ -589,7 +589,7 @@ BOOL LLInventoryItem::unpackMessage(LLMessageSystem* msg, const char* block, S32
 #ifdef CRC_CHECK
 	if(local_crc == remote_crc)
 	{
-		LL_DEBUGS() << "crc matches" << LL_ENDL;
+		// _LL_DEBUGS() << "crc matches" << LL_ENDL;
 		return TRUE;
 	}
 	else
@@ -756,7 +756,7 @@ BOOL LLInventoryItem::importFile(LLFILE* fp)
 	if((LLInventoryType::IT_NONE == mInventoryType)
 	   || !inventory_and_asset_types_match(mInventoryType, mType))
 	{
-		LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
+		// _LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
 		mInventoryType = LLInventoryType::defaultForAssetType(mType);
 	}
 
@@ -964,7 +964,7 @@ BOOL LLInventoryItem::importLegacyStream(std::istream& input_stream)
 	if((LLInventoryType::IT_NONE == mInventoryType)
 	   || !inventory_and_asset_types_match(mInventoryType, mType))
 	{
-		LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
+		// _LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
 		mInventoryType = LLInventoryType::defaultForAssetType(mType);
 	}
 
@@ -1203,7 +1203,7 @@ bool LLInventoryItem::fromLLSD(const LLSD& sd, bool is_new)
 	if((LLInventoryType::IT_NONE == mInventoryType)
 	   || !inventory_and_asset_types_match(mInventoryType, mType))
 	{
-		LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
+		// _LL_DEBUGS() << "Resetting inventory type for " << mUUID << LL_ENDL;
 		mInventoryType = LLInventoryType::defaultForAssetType(mType);
 	}
 
@@ -1286,7 +1286,7 @@ void LLInventoryItem::unpackBinaryBucket(U8* bin_bucket, S32 bin_bucket_size)
 	item_buffer[bin_bucket_size] = '\0';
 	std::string str(&item_buffer[0]);
 
-	LL_DEBUGS() << "item buffer: " << str << LL_ENDL;
+	// _LL_DEBUGS() << "item buffer: " << str << LL_ENDL;
 
 	// Tokenize the string.
 	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
@@ -1323,7 +1323,7 @@ void LLInventoryItem::unpackBinaryBucket(U8* bin_bucket, S32 bin_bucket_size)
 	perm.init(creator_id, owner_id, last_owner_id, group_id);
 	perm.initMasks(mask_base, mask_owner, mask_group, mask_every, mask_next);
 	setPermissions(perm);
-	//LL_DEBUGS() << "perm: " << perm << LL_ENDL;
+	//// _LL_DEBUGS() << "perm: " << perm << LL_ENDL;
 
 	LLUUID asset_id((*(iter++)).c_str());
 	setAssetUUID(asset_id);

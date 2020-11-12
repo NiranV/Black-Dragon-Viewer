@@ -354,7 +354,7 @@ void LLJoint::setPosition( const LLVector3& requested_pos, bool apply_attachment
         if (pos != active_override && do_debug_joint(getName()))
         {
             LLScopedContextString str("setPosition");
-            LL_DEBUGS("Avatar") << " joint " << getName() << " requested_pos " << requested_pos
+            // _LL_DEBUGS("Avatar") << " joint " << getName() << " requested_pos " << requested_pos
                                 << " overriden by attachment " << active_override << LL_ENDL;
         }
 #endif
@@ -366,9 +366,9 @@ void LLJoint::setPosition( const LLVector3& requested_pos, bool apply_attachment
         LLScopedContextString str("setPosition");
         LLCallStack cs;
         LLContextStatus con_status;
-        LL_DEBUGS("Avatar") << " joint " << getName() << " set pos " << pos << LL_ENDL;
-        LL_DEBUGS("Avatar") << "CONTEXT:\n" << "====================\n" << con_status << "====================" << LL_ENDL;
-        LL_DEBUGS("Avatar") << "STACK:\n" << "====================\n" << cs << "====================" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << " joint " << getName() << " set pos " << pos << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "CONTEXT:\n" << "====================\n" << con_status << "====================" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "STACK:\n" << "====================\n" << cs << "====================" << LL_ENDL;
 	}
 #endif
     if (pos != getPosition())
@@ -403,7 +403,7 @@ void showJointPosOverrides( const LLJoint& joint, const std::string& note, const
         std::ostringstream os;
         os << joint.m_posBeforeOverrides;
         joint.m_attachmentPosOverrides.showJointVector3Overrides(os);
-        LL_DEBUGS("Avatar") << av_info << " joint " << joint.getName() << " " << note << " " << os.str() << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << av_info << " joint " << joint.getName() << " " << note << " " << os.str() << LL_ENDL;
 }
 
 void showJointScaleOverrides( const LLJoint& joint, const std::string& note, const std::string& av_info )
@@ -411,7 +411,7 @@ void showJointScaleOverrides( const LLJoint& joint, const std::string& note, con
         std::ostringstream os;
         os << joint.m_scaleBeforeOverrides;
         joint.m_attachmentScaleOverrides.showJointVector3Overrides(os);
-        LL_DEBUGS("Avatar") << av_info << " joint " << joint.getName() << " " << note << " " << os.str() << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << av_info << " joint " << joint.getName() << " " << note << " " << os.str() << LL_ENDL;
 }
 
 bool LLJoint::aboveJointPosThreshold(const LLVector3& pos) const
@@ -445,7 +445,7 @@ void LLJoint::addAttachmentPosOverride( const LLVector3& pos, const LLUUID& mesh
 	{
 		if (do_debug_joint(getName()))
 		{
-			LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " saving m_posBeforeOverrides " << getPosition() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " saving m_posBeforeOverrides " << getPosition() << LL_ENDL;
 		}
 		m_posBeforeOverrides = getPosition();
 	}
@@ -458,7 +458,7 @@ void LLJoint::addAttachmentPosOverride( const LLVector3& pos, const LLUUID& mesh
         active_override_changed = true; 
         if (do_debug_joint(getName()))
         {
-            LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " addAttachmentPosOverride for mesh " << mesh_id << " pos " << pos << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " addAttachmentPosOverride for mesh " << mesh_id << " pos " << pos << LL_ENDL;
         }
         updatePos(av_info);
     }
@@ -487,8 +487,8 @@ void LLJoint::removeAttachmentPosOverride( const LLUUID& mesh_id, const std::str
             active_override_changed = true;
             if (do_debug_joint(getName()))
             {
-                LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
-                                    << " removeAttachmentPosOverride for " << mesh_id << LL_ENDL;
+                /*// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
+                                    << " removeAttachmentPosOverride for " << mesh_id << LL_ENDL;*/
                 showJointPosOverrides(*this, "remove", av_info);
             }
             updatePos(av_info);
@@ -558,12 +558,12 @@ void LLJoint::showAttachmentPosOverrides(const std::string& av_info) const
     {
 		LLVector3OverrideMap::map_type::const_iterator it = m_attachmentPosOverrides.getMap().begin();
         std::string highlight = (has_active_override && (it->second == active_override)) ? "*" : "";
-        LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
-                            << " has single attachment pos override " << highlight << "" << it->second << " default " << mDefaultPosition << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
+                            << " has single attachment pos override " << highlight << "" << it->second << " default " << mDefaultPosition << LL_ENDL;*/
     }
     else if (count>1)
     {
-        LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " has " << count << " attachment pos overrides" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " has " << count << " attachment pos overrides" << LL_ENDL;
 		std::set<LLVector3> distinct_offsets;
         LLVector3OverrideMap::map_type::const_iterator it = m_attachmentPosOverrides.getMap().begin();
         for (; it != m_attachmentPosOverrides.getMap().end(); ++it)
@@ -572,17 +572,17 @@ void LLJoint::showAttachmentPosOverrides(const std::string& av_info) const
         }
         if (distinct_offsets.size()>1)
         {
-            LL_DEBUGS("Avatar") << "CONFLICTS, " << distinct_offsets.size() << " different values" << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "CONFLICTS, " << distinct_offsets.size() << " different values" << LL_ENDL;
         }
         else
         {
-            LL_DEBUGS("Avatar") << "no conflicts" << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "no conflicts" << LL_ENDL;
         }
         std::set<LLVector3>::iterator dit = distinct_offsets.begin();
         for ( ; dit != distinct_offsets.end(); ++dit)
         {
             std::string highlight = (has_active_override && *dit == active_override) ? "*" : "";
-            LL_DEBUGS("Avatar") << "  POS " << highlight << "" << (*dit) << " default " << mDefaultPosition << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "  POS " << highlight << "" << (*dit) << " default " << mDefaultPosition << LL_ENDL;
         }
 	}
 }
@@ -598,7 +598,7 @@ void LLJoint::updatePos(const std::string& av_info)
 	{
         if (do_debug_joint(getName()))
         {
-            LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updatePos, winner of " << m_attachmentPosOverrides.count() << " is mesh " << mesh_id << " pos " << found_pos << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updatePos, winner of " << m_attachmentPosOverrides.count() << " is mesh " << mesh_id << " pos " << found_pos << LL_ENDL;
         }
 		pos = found_pos;
 	}
@@ -606,7 +606,7 @@ void LLJoint::updatePos(const std::string& av_info)
 	{
         if (do_debug_joint(getName()))
         {
-            LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updatePos, winner is posBeforeOverrides " << m_posBeforeOverrides << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updatePos, winner is posBeforeOverrides " << m_posBeforeOverrides << LL_ENDL;
         }
 		pos = m_posBeforeOverrides;
 	}
@@ -624,7 +624,7 @@ void LLJoint::updateScale(const std::string& av_info)
 	{
         if (do_debug_joint(getName()))
         {
-            LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updateScale, winner of " << m_attachmentScaleOverrides.count() << " is mesh " << mesh_id << " scale " << found_scale << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updateScale, winner of " << m_attachmentScaleOverrides.count() << " is mesh " << mesh_id << " scale " << found_scale << LL_ENDL;
         }
 		scale = found_scale;
 	}
@@ -632,7 +632,7 @@ void LLJoint::updateScale(const std::string& av_info)
 	{
         if (do_debug_joint(getName()))
         {
-            LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updateScale, winner is scaleBeforeOverrides " << m_scaleBeforeOverrides << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " updateScale, winner is scaleBeforeOverrides " << m_scaleBeforeOverrides << LL_ENDL;
         }
 		scale = m_scaleBeforeOverrides;
 	}
@@ -652,14 +652,14 @@ void LLJoint::addAttachmentScaleOverride( const LLVector3& scale, const LLUUID& 
 	{
 		if (do_debug_joint(getName()))
 		{
-			LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " saving m_scaleBeforeOverrides " << getScale() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " saving m_scaleBeforeOverrides " << getScale() << LL_ENDL;
 		}
 		m_scaleBeforeOverrides = getScale();
 	}
 	m_attachmentScaleOverrides.add(mesh_id,scale);
 	if (do_debug_joint(getName()))
 	{
-		LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " addAttachmentScaleOverride for mesh " << mesh_id << " scale " << scale << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " addAttachmentScaleOverride for mesh " << mesh_id << " scale " << scale << LL_ENDL;
 	}
 	updateScale(av_info);
 }
@@ -677,8 +677,8 @@ void LLJoint::removeAttachmentScaleOverride( const LLUUID& mesh_id, const std::s
 	{
 		if (do_debug_joint(getName()))
 		{
-			LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
-								<< " removeAttachmentScaleOverride for " << mesh_id << LL_ENDL;
+			/*// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
+								<< " removeAttachmentScaleOverride for " << mesh_id << LL_ENDL;*/
 			showJointScaleOverrides(*this, "remove", av_info);
 		}
 		updateScale(av_info);
@@ -719,12 +719,12 @@ void LLJoint::showAttachmentScaleOverrides(const std::string& av_info) const
     {
 		LLVector3OverrideMap::map_type::const_iterator it = m_attachmentScaleOverrides.getMap().begin();
         std::string highlight = (has_active_override && (it->second == active_override)) ? "*" : "";
-        LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
-                            << " has single attachment scale override " << highlight << "" << it->second << " default " << mDefaultScale << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName()
+                            << " has single attachment scale override " << highlight << "" << it->second << " default " << mDefaultScale << LL_ENDL;*/
     }
     else if (count>1)
     {
-        LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " has " << count << " attachment scale overrides" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "av " << av_info << " joint " << getName() << " has " << count << " attachment scale overrides" << LL_ENDL;
 		std::set<LLVector3> distinct_offsets;
         LLVector3OverrideMap::map_type::const_iterator it = m_attachmentScaleOverrides.getMap().begin();
         for (; it != m_attachmentScaleOverrides.getMap().end(); ++it)
@@ -733,17 +733,17 @@ void LLJoint::showAttachmentScaleOverrides(const std::string& av_info) const
         }
         if (distinct_offsets.size()>1)
         {
-            LL_DEBUGS("Avatar") << "CONFLICTS, " << distinct_offsets.size() << " different values" << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "CONFLICTS, " << distinct_offsets.size() << " different values" << LL_ENDL;
         }
         else
         {
-            LL_DEBUGS("Avatar") << "no conflicts" << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "no conflicts" << LL_ENDL;
         }
         std::set<LLVector3>::iterator dit = distinct_offsets.begin();
         for ( ; dit != distinct_offsets.end(); ++dit)
         {
             std::string highlight = (has_active_override && *dit == active_override) ? "*" : "";
-            LL_DEBUGS("Avatar") << "  POS " << highlight << "" << (*dit) << " default " << mDefaultScale << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "  POS " << highlight << "" << (*dit) << " default " << mDefaultScale << LL_ENDL;
         }
 	}
 }
@@ -901,7 +901,7 @@ void LLJoint::setScale( const LLVector3& requested_scale, bool apply_attachment_
         if (scale != active_override && do_debug_joint(getName()))
         {
             LLScopedContextString str("setScale");
-            LL_DEBUGS("Avatar") << " joint " << getName() << " requested_scale " << requested_scale
+            // _LL_DEBUGS("Avatar") << " joint " << getName() << " requested_scale " << requested_scale
                                 << " overriden by attachment " << active_override << LL_ENDL;
         }
 #endif
@@ -913,9 +913,9 @@ void LLJoint::setScale( const LLVector3& requested_scale, bool apply_attachment_
         LLScopedContextString str("setScale");
         LLCallStack cs;
         LLContextStatus con_status;
-        LL_DEBUGS("Avatar") << " joint " << getName() << " set scale " << scale << LL_ENDL;
-        LL_DEBUGS("Avatar") << "CONTEXT:\n" << "====================\n" << con_status << LL_ENDL;
-        LL_DEBUGS("Avatar") << "STACK:\n" << "====================\n" << cs << "====================" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << " joint " << getName() << " set scale " << scale << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "CONTEXT:\n" << "====================\n" << con_status << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "STACK:\n" << "====================\n" << cs << "====================" << LL_ENDL;
 	}
 #endif
     mXform.setScale(scale);

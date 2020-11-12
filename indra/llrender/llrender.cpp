@@ -276,11 +276,11 @@ bool LLTexUnit::bind(LLTexture* texture, bool for_rendering, bool forceBind)
 		{
 			if (texture)
 			{
-				LL_DEBUGS() << "NULL LLTexUnit::bind GL image" << LL_ENDL;
+				// _LL_DEBUGS() << "NULL LLTexUnit::bind GL image" << LL_ENDL;
 			}
 			else
 			{
-				LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
+				// _LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
 			}
 			return false;
 		}
@@ -300,7 +300,7 @@ bool LLTexUnit::bind(LLImageGL* texture, bool for_rendering, bool forceBind)
 
 	if(!texture)
 	{
-		LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
+		// _LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
 		return false;
 	}
 
@@ -1830,7 +1830,7 @@ LLTexUnit* LLRender::getTexUnit(U32 index)
 	}
 	else 
 	{
-		LL_DEBUGS() << "Non-existing texture unit layer requested: " << index << LL_ENDL;
+		// _LL_DEBUGS() << "Non-existing texture unit layer requested: " << index << LL_ENDL;
 		return mDummyTexUnit;
 	}
 }

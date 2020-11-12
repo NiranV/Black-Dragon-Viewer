@@ -185,8 +185,8 @@ void LLAssetInfo::setFromNameValue( const LLNameValue& nv )
     setName( buf );
     buf.assign( str, pos2, std::string::npos );
     setDescription( buf );
-    LL_DEBUGS("AssetStorage") << "uuid: " << mUuid << LL_ENDL;
-    LL_DEBUGS("AssetStorage") << "creator: " << mCreatorID << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "uuid: " << mUuid << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "creator: " << mCreatorID << LL_ENDL;
 }
 
 ///----------------------------------------------------------------------------
@@ -376,7 +376,7 @@ LLAssetStorage::~LLAssetStorage()
 
 void LLAssetStorage::setUpstream(const LLHost &upstream_host)
 {
-    LL_DEBUGS("AppInit") << "AssetStorage: Setting upstream provider to " << upstream_host << LL_ENDL;
+    // _LL_DEBUGS("AppInit") << "AssetStorage: Setting upstream provider to " << upstream_host << LL_ENDL;
     
     mUpstreamHost = upstream_host;
 }
@@ -489,9 +489,9 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
                                   void *user_data, 
                                   BOOL is_priority)
 {
-    LL_DEBUGS("AssetStorage") << "LLAssetStorage::getAssetData() - " << uuid << "," << LLAssetType::lookup(type) << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "LLAssetStorage::getAssetData() - " << uuid << "," << LLAssetType::lookup(type) << LL_ENDL;
 
-    LL_DEBUGS("AssetStorage") << "ASSET_TRACE requesting " << uuid << " type " << LLAssetType::lookup(type) << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "ASSET_TRACE requesting " << uuid << " type " << LLAssetType::lookup(type) << LL_ENDL;
 
     if (user_data)
     {
@@ -501,7 +501,7 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
 
     if (mShutDown)
     {
-        LL_DEBUGS("AssetStorage") << "ASSET_TRACE cancelled " << uuid << " type " << LLAssetType::lookup(type) << " shutting down" << LL_ENDL;
+        // _LL_DEBUGS("AssetStorage") << "ASSET_TRACE cancelled " << uuid << " type " << LLAssetType::lookup(type) << " shutting down" << LL_ENDL;
 
         if (callback)
         {
@@ -525,7 +525,7 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
     // Try static VFS first.
     if (findInStaticVFSAndInvokeCallback(uuid,type,callback,user_data))
     {
-        LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << uuid << " found in static VFS" << LL_ENDL;
+        // _LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << uuid << " found in static VFS" << LL_ENDL;
         return;
     }
 
@@ -543,7 +543,7 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
             callback(mVFS, uuid, type, user_data, LL_ERR_NOERR, LLExtStat::VFS_CACHED);
         }
 
-        LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << uuid << " found in VFS" << LL_ENDL;
+        // _LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << uuid << " found in VFS" << LL_ENDL;
     }
     else
     {
@@ -577,8 +577,8 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
         }
         if (duplicate)
         {
-            LL_DEBUGS("AssetStorage") << "Adding additional non-duplicate request for asset " << uuid 
-                                      << "." << LLAssetType::lookup(type) << LL_ENDL;
+            /*// _LL_DEBUGS("AssetStorage") << "Adding additional non-duplicate request for asset " << uuid 
+                                      << "." << LLAssetType::lookup(type) << LL_ENDL;*/
         }
         
         _queueDataRequest(uuid, type, callback, user_data, duplicate, is_priority);     
@@ -629,10 +629,10 @@ void LLAssetStorage::downloadCompleteCallback(
     LLBaseDownloadRequest* user_data,
     LLExtStat ext_status)
 {
-    LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << file_id << " downloadCompleteCallback" << LL_ENDL;
+    // _LL_DEBUGS("AssetStorage") << "ASSET_TRACE asset " << file_id << " downloadCompleteCallback" << LL_ENDL;
 
-    LL_DEBUGS("AssetStorage") << "LLAssetStorage::downloadCompleteCallback() for " << file_id
-                              << "," << LLAssetType::lookup(file_type) << LL_ENDL;
+    /*// _LL_DEBUGS("AssetStorage") << "LLAssetStorage::downloadCompleteCallback() for " << file_id
+                              << "," << LLAssetType::lookup(file_type) << LL_ENDL;*/
     LLAssetRequest* req = (LLAssetRequest*)user_data;
     if(!req)
     {
@@ -708,7 +708,7 @@ void LLAssetStorage::getEstateAsset(
     void *user_data, 
     BOOL is_priority)
 {
-    LL_DEBUGS() << "LLAssetStorage::getEstateAsset() - " << asset_id << "," << LLAssetType::lookup(atype) << ", estatetype " << etype << LL_ENDL;
+    // _LL_DEBUGS() << "LLAssetStorage::getEstateAsset() - " << asset_id << "," << LLAssetType::lookup(atype) << ", estatetype " << etype << LL_ENDL;
 
     //
     // Probably will get rid of this early out?
@@ -781,7 +781,7 @@ void LLAssetStorage::getEstateAsset(
             tpvf.setAsset(asset_id, atype);
             tpvf.setCallback(downloadEstateAssetCompleteCallback, req);
 
-            LL_DEBUGS("AssetStorage") << "Starting transfer for " << asset_id << LL_ENDL;
+            // _LL_DEBUGS("AssetStorage") << "Starting transfer for " << asset_id << LL_ENDL;
             LLTransferTargetChannel *ttcp = gTransferManager.getTargetChannel(source_host, LLTCT_ASSET);
             ttcp->requestTransfer(spe, tpvf, 100.f + (is_priority ? 1.f : 0.f));
         }
@@ -854,7 +854,7 @@ void LLAssetStorage::getInvItemAsset(
     void *user_data, 
     BOOL is_priority)
 {
-    LL_DEBUGS() << "LLAssetStorage::getInvItemAsset() - " << asset_id << "," << LLAssetType::lookup(atype) << LL_ENDL;
+    // _LL_DEBUGS() << "LLAssetStorage::getInvItemAsset() - " << asset_id << "," << LLAssetType::lookup(atype) << LL_ENDL;
 
     bool exists = false; 
     U32 size = 0;
@@ -916,16 +916,16 @@ void LLAssetStorage::getInvItemAsset(
             spi.setInvItem(owner_id, task_id, item_id);
             spi.setAsset(asset_id, atype);
 
-            LL_DEBUGS("ViewerAsset") << "requesting inv item id " << item_id << " asset_id " << asset_id << " type " << LLAssetType::lookup(atype) << LL_ENDL;
+            // _LL_DEBUGS("ViewerAsset") << "requesting inv item id " << item_id << " asset_id " << asset_id << " type " << LLAssetType::lookup(atype) << LL_ENDL;
             
             // Set our destination file, and the completion callback.
             LLTransferTargetParamsVFile tpvf;
             tpvf.setAsset(asset_id, atype);
             tpvf.setCallback(downloadInvItemCompleteCallback, req);
 
-            LL_DEBUGS("AssetStorage") << "Starting transfer for inventory asset "
+            /*// _LL_DEBUGS("AssetStorage") << "Starting transfer for inventory asset "
                                       << item_id << " owned by " << owner_id << "," << task_id
-                                      << LL_ENDL;
+                                      << LL_ENDL;*/
             LLTransferTargetChannel *ttcp = gTransferManager.getTargetChannel(source_host, LLTCT_ASSET);
             ttcp->requestTransfer(spi, tpvf, 100.f + (is_priority ? 1.f : 0.f));
         }
@@ -1267,9 +1267,9 @@ bool LLAssetStorage::deletePendingRequest(LLAssetStorage::ERequestType rt,
     request_list_t* requests = getRequestList(rt);
     if (deletePendingRequestImpl(requests, asset_type, asset_id))
     {
-        LL_DEBUGS("AssetStorage") << "Asset " << getRequestName(rt) << " request for "
+        /*// _LL_DEBUGS("AssetStorage") << "Asset " << getRequestName(rt) << " request for "
                                   << asset_id << "." << LLAssetType::lookup(asset_type)
-                                  << " removed from pending queue." << LL_ENDL;
+                                  << " removed from pending queue." << LL_ENDL;*/
         return true;
     }
     return false;
@@ -1373,7 +1373,7 @@ void LLAssetStorage::getAssetData(const LLUUID uuid,
             user_data == ((LLLegacyAssetRequest *)tmp->mUserData)->mUserData)
         {
             // this is a duplicate from the same subsystem - throw it away
-            LL_DEBUGS("AssetStorage") << "Discarding duplicate request for UUID " << uuid << LL_ENDL;
+            // _LL_DEBUGS("AssetStorage") << "Discarding duplicate request for UUID " << uuid << LL_ENDL;
             return;
         }
     }
@@ -1460,7 +1460,7 @@ void LLAssetStorage::reportMetric( const LLUUID& asset_id, const LLAssetType::ET
 {
     if( !metric_recipient )
     {
-        LL_DEBUGS("AssetStorage") << "Couldn't store LLAssetStoreage::reportMetric - no metrics_recipient" << LL_ENDL;
+        // _LL_DEBUGS("AssetStorage") << "Couldn't store LLAssetStoreage::reportMetric - no metrics_recipient" << LL_ENDL;
         return;
     }
 

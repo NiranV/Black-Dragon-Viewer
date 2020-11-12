@@ -457,7 +457,7 @@ LLURI LLURI::buildHTTP(const std::string& prefix,
 			 it != path.endArray();
 			 ++it)
 		{
-			LL_DEBUGS() << "PATH: inserting " << it->asString() << LL_ENDL;
+			// _LL_DEBUGS() << "PATH: inserting " << it->asString() << LL_ENDL;
 			result.mEscapedPath += "/" + escapePathComponent(it->asString());
 		}
 	}
@@ -682,7 +682,7 @@ LLSD LLURI::queryMap() const
 // static
 LLSD LLURI::queryMap(std::string escaped_query_string)
 {
-	LL_DEBUGS() << "LLURI::queryMap query params: " << escaped_query_string << LL_ENDL;
+	// _LL_DEBUGS() << "LLURI::queryMap query params: " << escaped_query_string << LL_ENDL;
 
 	LLSD result = LLSD::emptyArray();
 	while(!escaped_query_string.empty())
@@ -708,12 +708,12 @@ LLSD LLURI::queryMap(std::string escaped_query_string)
 		{
 			std::string key = unescape(tuple.substr(0,key_end));
 			std::string value = unescape(tuple.substr(key_end+1));
-			LL_DEBUGS() << "inserting key " << key << " value " << value << LL_ENDL;
+			// _LL_DEBUGS() << "inserting key " << key << " value " << value << LL_ENDL;
 			result[key] = value;
 		}
 		else
 		{
-			LL_DEBUGS() << "inserting key " << unescape(tuple) << " value true" << LL_ENDL;
+			// _LL_DEBUGS() << "inserting key " << unescape(tuple) << " value true" << LL_ENDL;
 		    result[unescape(tuple)] = true;
 		}
 	}

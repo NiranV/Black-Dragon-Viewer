@@ -698,7 +698,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		// could disable it here.
 		show_highlight = true;
 		// cursor set by media object
-		LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+		// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 	}
 	//BD
 	/*else if (!mMouseOutsideSlop 
@@ -736,7 +736,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 			show_highlight = true;
 			ECursorType cursor = cursorFromObject(click_action_object);
 			gViewerWindow->setCursor(cursor);
-			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 // [RLVa:KB] - Checked: RLVa-1.1.0
 		else if ( (object) && (RlvActions::isRlvEnabled()) && (!RlvActions::canTouch(object, mHoverPick.mObjectOffset)) )
@@ -750,19 +750,19 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		{
 			show_highlight = true;
 			gViewerWindow->setCursor(UI_CURSOR_TOOLGRAB);
-			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 		else if ((!object || !object->isAttachment() || object->getClickAction() != CLICK_ACTION_DISABLED)
 				 && ((object && object->flagHandleTouch()) || (parent && parent->flagHandleTouch())))
 		{
 			show_highlight = true;
 			gViewerWindow->setCursor(UI_CURSOR_HAND);
-			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 		else
 		{
 			gViewerWindow->setCursor(UI_CURSOR_ARROW);
-			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 	}
 
@@ -863,11 +863,11 @@ BOOL LLToolPie::handleMouseUp(S32 x, S32 y, MASK mask)
         }
         else
         {
-            LL_DEBUGS("maint5901") << "walk target was "
+            /*// _LL_DEBUGS("maint5901") << "walk target was "
                                    << (mPick.mPosGlobal.isExactlyZero() ? "zero" : "not zero")
                                    << ", pick type was " << (mPick.mPickType == LLPickInfo::PICK_LAND ? "land" : "not land")
                                    << ", pick object was " << mPick.mObjectID
-                                   << LL_ENDL;
+                                   << LL_ENDL;*/
             // we didn't click to walk, so restore the original target
             mPick = savedPick;
         }

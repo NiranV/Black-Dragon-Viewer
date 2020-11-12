@@ -33,7 +33,7 @@
 PieSeparator::PieSeparator(const PieSeparator::Params& p) :
 	LLUICtrl(p)
 {
-	LL_DEBUGS("Pie") << "PieSeparator::PieSeparator()" << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieSeparator::PieSeparator()" << LL_ENDL;
 }
 
 // pick up parameters from the XUI definition

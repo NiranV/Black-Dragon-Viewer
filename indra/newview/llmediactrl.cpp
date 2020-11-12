@@ -975,19 +975,19 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 	{
 		case MEDIA_EVENT_CONTENT_UPDATED:
 		{
-			// LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CONTENT_UPDATED " << LL_ENDL;
+			// // _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CONTENT_UPDATED " << LL_ENDL;
 		};
 		break;
 		
 		case MEDIA_EVENT_TIME_DURATION_UPDATED:
 		{
-			// LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_TIME_DURATION_UPDATED, time is " << self->getCurrentTime() << " of " << self->getDuration() << LL_ENDL;
+			// // _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_TIME_DURATION_UPDATED, time is " << self->getCurrentTime() << " of " << self->getDuration() << LL_ENDL;
 		};
 		break;
 		
 		case MEDIA_EVENT_SIZE_CHANGED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_SIZE_CHANGED " << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_SIZE_CHANGED " << LL_ENDL;
 			LLRect r = getRect();
 			reshape( r.getWidth(), r.getHeight(), FALSE );
 		};
@@ -995,20 +995,20 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 		
 		case MEDIA_EVENT_CURSOR_CHANGED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CURSOR_CHANGED, new cursor is " << self->getCursorName() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CURSOR_CHANGED, new cursor is " << self->getCursorName() << LL_ENDL;
 		}
 		break;
 			
 		case MEDIA_EVENT_NAVIGATE_BEGIN:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_BEGIN, url is " << self->getNavigateURI() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_BEGIN, url is " << self->getNavigateURI() << LL_ENDL;
 			hideNotification();
 		};
 		break;
 		
 		case MEDIA_EVENT_NAVIGATE_COMPLETE:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_COMPLETE, result string is: " << self->getNavigateResultString() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_COMPLETE, result string is: " << self->getNavigateResultString() << LL_ENDL;
 			if(mHidingInitialLoad)
 			{
 				mHidingInitialLoad = false;
@@ -1018,25 +1018,25 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 
 		case MEDIA_EVENT_PROGRESS_UPDATED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PROGRESS_UPDATED, loading at " << self->getProgressPercent() << "%" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PROGRESS_UPDATED, loading at " << self->getProgressPercent() << "%" << LL_ENDL;
 		};
 		break;
 
 		case MEDIA_EVENT_STATUS_TEXT_CHANGED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_STATUS_TEXT_CHANGED, new status text is: " << self->getStatusText() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_STATUS_TEXT_CHANGED, new status text is: " << self->getStatusText() << LL_ENDL;
 		};
 		break;
 
 		case MEDIA_EVENT_LOCATION_CHANGED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_LOCATION_CHANGED, new uri is: " << self->getLocation() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_LOCATION_CHANGED, new uri is: " << self->getLocation() << LL_ENDL;
 		};
 		break;
 
 		case MEDIA_EVENT_NAVIGATE_ERROR_PAGE:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_ERROR_PAGE" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAVIGATE_ERROR_PAGE" << LL_ENDL;
 			if ( mErrorPageURL.length() > 0 )
 			{
 				navigateTo(mErrorPageURL, HTTP_CONTENT_TEXT_HTML);
@@ -1050,7 +1050,7 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 			std::string url = self->getClickURL();
 			std::string target = self->isOverrideClickTarget() ? self->getOverrideClickTarget() : self->getClickTarget();
 			std::string uuid = self->getClickUUID();
-			LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_CLICK_LINK_HREF, target is \"" << target << "\", uri is " << url << LL_ENDL;
+			// _LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_CLICK_LINK_HREF, target is \"" << target << "\", uri is " << url << LL_ENDL;
 
 			// try as slurl first
 			if (!LLURLDispatcher::dispatch(url, "clicked", NULL, mTrusted))
@@ -1078,43 +1078,43 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 
 		case MEDIA_EVENT_CLICK_LINK_NOFOLLOW:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLICK_LINK_NOFOLLOW, uri is " << self->getClickURL() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLICK_LINK_NOFOLLOW, uri is " << self->getClickURL() << LL_ENDL;
 		};
 		break;
 
 		case MEDIA_EVENT_PLUGIN_FAILED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PLUGIN_FAILED" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PLUGIN_FAILED" << LL_ENDL;
 		};
 		break;
 
 		case MEDIA_EVENT_PLUGIN_FAILED_LAUNCH:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PLUGIN_FAILED_LAUNCH" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PLUGIN_FAILED_LAUNCH" << LL_ENDL;
 		};
 		break;
 		
 		case MEDIA_EVENT_NAME_CHANGED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAME_CHANGED" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_NAME_CHANGED" << LL_ENDL;
 		};
 		break;
 		
 		case MEDIA_EVENT_CLOSE_REQUEST:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLOSE_REQUEST" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CLOSE_REQUEST" << LL_ENDL;
 		}
 		break;
 		
 		case MEDIA_EVENT_PICK_FILE_REQUEST:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PICK_FILE_REQUEST" << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_PICK_FILE_REQUEST" << LL_ENDL;
 		}
 		break;
 		
 		case MEDIA_EVENT_GEOMETRY_CHANGE:
 		{
-			LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_GEOMETRY_CHANGE, uuid is " << self->getClickUUID() << LL_ENDL;
+			// _LL_DEBUGS("Media") << "Media event:  MEDIA_EVENT_GEOMETRY_CHANGE, uuid is " << self->getClickUUID() << LL_ENDL;
 		}
 		break;
 
@@ -1138,7 +1138,7 @@ void LLMediaCtrl::handleMediaEvent(LLPluginClassMedia* self, EMediaEvent event)
 
 		case MEDIA_EVENT_LINK_HOVERED:
 		{
-			LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_LINK_HOVERED, hover text is: " << self->getHoverText() << LL_ENDL;
+			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_LINK_HOVERED, hover text is: " << self->getHoverText() << LL_ENDL;
 			mHoverTextChanged = true;
 		};
 		break;

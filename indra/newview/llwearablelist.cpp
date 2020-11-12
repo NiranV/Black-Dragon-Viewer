@@ -81,7 +81,7 @@ void LLWearableList::getAsset(const LLAssetID& assetID, const std::string& weara
 	LLViewerWearable* instance = get_if_there(mList, assetID, (LLViewerWearable*)NULL );
 	if( instance )
 	{
-		LL_DEBUGS("Avatar") << "wearable " << assetID << " found in LLWearableList" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "wearable " << assetID << " found in LLWearableList" << LL_ENDL;
 		asset_arrived_callback( instance, userdata );
 	}
 	else
@@ -104,8 +104,8 @@ void LLWearableList::processGetAssetReply( const char* filename, const LLAssetID
 	LLViewerWearable* wearable = get_if_there(LLWearableList::instance().mList, uuid, (LLViewerWearable*)NULL);
 	if (wearable)
 	{
-		LL_DEBUGS("Wearable") << "processGetAssetReply()" << LL_ENDL;
-		LL_DEBUGS("Wearable") << wearable << LL_ENDL;
+		// _LL_DEBUGS("Wearable") << "processGetAssetReply()" << LL_ENDL;
+		// _LL_DEBUGS("Wearable") << wearable << LL_ENDL;
 
 		if(data->mCallback)
 		{
@@ -199,8 +199,8 @@ void LLWearableList::processGetAssetReply( const char* filename, const LLAssetID
 	if (wearable) // success
 	{
 		LLWearableList::instance().mList[ uuid ] = wearable;
-		LL_DEBUGS("Wearable") << "processGetAssetReply()" << LL_ENDL;
-		LL_DEBUGS("Wearable") << wearable << LL_ENDL;
+		// _LL_DEBUGS("Wearable") << "processGetAssetReply()" << LL_ENDL;
+		// _LL_DEBUGS("Wearable") << wearable << LL_ENDL;
 	}
 	else
 	{
@@ -233,7 +233,7 @@ void LLWearableList::processGetAssetReply( const char* filename, const LLAssetID
 
 LLViewerWearable* LLWearableList::createCopy(const LLViewerWearable* old_wearable, const std::string& new_name)
 {
-	LL_DEBUGS() << "LLWearableList::createCopy()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLWearableList::createCopy()" << LL_ENDL;
 
 	LLViewerWearable *wearable = generateNewWearable();
 	wearable->copyDataFrom(old_wearable);
@@ -252,7 +252,7 @@ LLViewerWearable* LLWearableList::createCopy(const LLViewerWearable* old_wearabl
 
 LLViewerWearable* LLWearableList::createNewWearable( LLWearableType::EType type, LLAvatarAppearance *avatarp )
 {
-	LL_DEBUGS() << "LLWearableList::createNewWearable()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLWearableList::createNewWearable()" << LL_ENDL;
 
 	LLViewerWearable *wearable = generateNewWearable();
 	wearable->setType( type, avatarp );

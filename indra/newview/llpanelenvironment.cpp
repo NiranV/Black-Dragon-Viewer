@@ -1032,7 +1032,7 @@ void LLPanelEnvironmentInfo::onEnvironmentChanged(LLEnvironment::EnvSelection_t 
         return;
     }
 
-    LL_DEBUGS("ENVPANEL") << "Received environment update " << mCurEnvVersion << " " << new_version << LL_ENDL;
+    // _LL_DEBUGS("ENVPANEL") << "Received environment update " << mCurEnvVersion << " " << new_version << LL_ENDL;
 
     // Environment comes from different sources, from environment update callbacks,
     // from hovers (causes callbacks on version change) and from personal requests
@@ -1106,7 +1106,7 @@ void LLPanelEnvironmentInfo::onEnvironmentReceived(S32 parcel_id, LLEnvironment:
     {
         // Server provided version, use it
         mCurEnvVersion = mCurrentEnvironment->mEnvVersion;
-        LL_DEBUGS("ENVPANEL") << " Setting environment version: " << mCurEnvVersion << " for parcel id: " << parcel_id << LL_ENDL;
+        // _LL_DEBUGS("ENVPANEL") << " Setting environment version: " << mCurEnvVersion << " for parcel id: " << parcel_id << LL_ENDL;
     }
     // Backup: Version was not provided for some reason
     else

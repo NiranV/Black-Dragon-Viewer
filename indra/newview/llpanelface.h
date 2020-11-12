@@ -330,13 +330,13 @@ private:
 
 					if (!is_need_material)
 					{
-						LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
+						// _LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
 						LLMaterialMgr::getInstance()->remove(object->getID(),face);
 						new_material = NULL;
 					}
 					else
 					{
-						LL_DEBUGS("Materials") << "Putting material on object " << object->getID() << " face " << face << ", material: " << new_material->asLLSD() << LL_ENDL;
+						// _LL_DEBUGS("Materials") << "Putting material on object " << object->getID() << " face " << face << ", material: " << new_material->asLLSD() << LL_ENDL;
 						LLMaterialMgr::getInstance()->put(object->getID(),face,*new_material);
 					}
 

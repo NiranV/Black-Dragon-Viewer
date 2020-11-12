@@ -244,7 +244,7 @@ void LLDrawPoolWLSky::renderStars(void) const
 	// If star brightness is not set, exit
 	if( star_alpha.mV[3] < 0.001 )
 	{
-		LL_DEBUGS("SKY") << "star_brightness below threshold." << LL_ENDL;
+		// _LL_DEBUGS("SKY") << "star_brightness below threshold." << LL_ENDL;
 		return;
 	}
 
@@ -307,7 +307,7 @@ void LLDrawPoolWLSky::renderStarsDeferred(void) const
 	// If start_brightness is not set, exit
 	if(star_alpha < 0.001f)
 	{
-		LL_DEBUGS("SKY") << "star_brightness below threshold." << LL_ENDL;
+		// _LL_DEBUGS("SKY") << "star_brightness below threshold." << LL_ENDL;
 		return;
 	}
 

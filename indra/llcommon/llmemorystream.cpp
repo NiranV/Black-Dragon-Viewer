@@ -45,7 +45,7 @@ void LLMemoryStreamBuf::reset(const U8* start, S32 length)
 
 int LLMemoryStreamBuf::underflow()
 {
-	//LL_DEBUGS() << "LLMemoryStreamBuf::underflow()" << LL_ENDL;
+	//// _LL_DEBUGS() << "LLMemoryStreamBuf::underflow()" << LL_ENDL;
 	if(gptr() < egptr())
 	{
 		return *gptr();

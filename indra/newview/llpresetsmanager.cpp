@@ -85,7 +85,7 @@ void LLPresetsManager::createMissingDefault(const std::string& subdirectory)
 	}
 	else
 	{
-		LL_DEBUGS() << "default preset exists; no-op" << LL_ENDL;
+		// _LL_DEBUGS() << "default preset exists; no-op" << LL_ENDL;
 	}
 }
 
@@ -162,7 +162,7 @@ void LLPresetsManager::loadPresetNamesFromDir(const std::string& subdirectory, p
 		{
 			std::string path = gDirUtilp->add(dir, file);
 			std::string name = LLURI::unescape(gDirUtilp->getBaseFileName(path, /*strip_exten = */ true));
-			LL_DEBUGS() << "  Found preset '" << name << "'" << LL_ENDL;
+			// _LL_DEBUGS() << "  Found preset '" << name << "'" << LL_ENDL;
 
 			if (IS_CAMERA)
 			{
@@ -297,7 +297,7 @@ bool LLPresetsManager::savePreset(const std::string& subdirectory, std::string n
 		{
 			gSavedSettings.setString("PresetGraphicActive", name);
 			instance->getControlNames(name_list);
-			LL_DEBUGS() << "saving preset '" << name << "'; " << name_list.size() << " names" << LL_ENDL;
+			// _LL_DEBUGS() << "saving preset '" << name << "'; " << name_list.size() << " names" << LL_ENDL;
 			name_list.push_back("PresetGraphicActive");
 		}
 		else
@@ -394,7 +394,7 @@ bool LLPresetsManager::savePreset(const std::string& subdirectory, std::string n
 			presetsXML.close();
 			saved = true;
             
-			LL_DEBUGS() << "saved preset '" << name << "'; " << paramsData.size() << " parameters" << LL_ENDL;
+			// _LL_DEBUGS() << "saved preset '" << name << "'; " << paramsData.size() << " parameters" << LL_ENDL;
 
 			if (IS_GRAPHIC)
 			{
@@ -461,7 +461,7 @@ void LLPresetsManager::loadPreset(const std::string& subdirectory, std::string n
 
 	std::string full_path(getPresetsDir(subdirectory) + gDirUtilp->getDirDelimiter() + LLURI::escape(name) + ".xml");
 
-    LL_DEBUGS() << "attempting to load preset '"<<name<<"' from '"<<full_path<<"'" << LL_ENDL;
+    // _LL_DEBUGS() << "attempting to load preset '"<<name<<"' from '"<<full_path<<"'" << LL_ENDL;
 
 	mIgnoreChangedSignal = true;
 	if(gSavedSettings.loadFromFile(full_path, false, true) > 0)

@@ -111,7 +111,7 @@ public:
 	 */
 	bool localizeInventoryObjectName(std::string& object_name)
 	{
-		LL_DEBUGS(LOG_LOCAL) << "Searching for localization: " << object_name << LL_ENDL;
+		// _LL_DEBUGS(LOG_LOCAL) << "Searching for localization: " << object_name << LL_ENDL;
 
 		std::map<std::string, std::string>::const_iterator dictionary_iter = mInventoryItemsDict.find(object_name);
 
@@ -119,7 +119,7 @@ public:
 		if(found)
 		{
 			object_name = dictionary_iter->second;
-			LL_DEBUGS(LOG_LOCAL) << "Found, new name is: " << object_name << LL_ENDL;
+			// _LL_DEBUGS(LOG_LOCAL) << "Found, new name is: " << object_name << LL_ENDL;
 		}
 		return found;
 	}
@@ -686,7 +686,7 @@ bool LLViewerInventoryCategory::fetch()
 	if((VERSION_UNKNOWN == getVersion())
 	   && mDescendentsRequested.hasExpired())	//Expired check prevents multiple downloads.
 	{
-		LL_DEBUGS(LOG_INV) << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
+		// _LL_DEBUGS(LOG_INV) << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
 		const F32 FETCH_TIMER_EXPIRY = 10.0f;
 		mDescendentsRequested.reset();
 		mDescendentsRequested.setTimerExpirySec(FETCH_TIMER_EXPIRY);
@@ -1309,7 +1309,7 @@ void link_inventory_array(const LLUUID& category,
 		links.append(link);
 
 #ifndef LL_RELEASE_FOR_DOWNLOAD
-		LL_DEBUGS(LOG_INV) << "Linking Object [ name:" << baseobj->getName() 
+		// _LL_DEBUGS(LOG_INV) << "Linking Object [ name:" << baseobj->getName() 
 						   << " UUID:" << baseobj->getUUID() 
 						   << " ] into Category [ name:" << cat_name 
 						   << " UUID:" << category << " ] " << LL_ENDL;
@@ -1391,7 +1391,7 @@ void update_inventory_category(
 	LLPointer<LLInventoryCallback> cb)
 {
 	LLPointer<LLViewerInventoryCategory> obj = gInventory.getCategory(cat_id);
-	LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (obj ? obj->getName() : "(NOT FOUND)") << LL_ENDL;
+	// _LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (obj ? obj->getName() : "(NOT FOUND)") << LL_ENDL;
 	if(obj)
 	{
 		if (LLFolderType::lookupIsProtectedType(obj->getPreferredType()))
@@ -1433,7 +1433,7 @@ void remove_inventory_item(
 	}
 	else
 	{
-		LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << "(NOT FOUND)" << LL_ENDL;
+		// _LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << "(NOT FOUND)" << LL_ENDL;
 	}
 }
 
@@ -1445,7 +1445,7 @@ void remove_inventory_item(
 	if(obj)
 	{
 		const LLUUID item_id(obj->getUUID());
-		LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << obj->getName() << LL_ENDL;
+		// _LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << obj->getName() << LL_ENDL;
         if (AISAPI::isAvailable())
 		{
             AISAPI::completion_t cr = (cb) ? boost::bind(&doInventoryCb, cb, _1) : AISAPI::completion_t();
@@ -1513,7 +1513,7 @@ void remove_inventory_category(
 	const LLUUID& cat_id,
 	LLPointer<LLInventoryCallback> cb)
 {
-	LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] " << LL_ENDL;
+	// _LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] " << LL_ENDL;
 	LLPointer<LLViewerInventoryCategory> obj = gInventory.getCategory(cat_id);
 	if(obj)
 	{
@@ -1559,7 +1559,7 @@ void purge_descendents_of(const LLUUID& id, LLPointer<LLInventoryCallback> cb)
 	LLInventoryModel::EHasChildren children = gInventory.categoryHasChildren(id);
 	if(children == LLInventoryModel::CHILDREN_NO)
 	{
-		LL_DEBUGS(LOG_INV) << "No descendents to purge for " << id << LL_ENDL;
+		// _LL_DEBUGS(LOG_INV) << "No descendents to purge for " << id << LL_ENDL;
 		return;
 	}
 	LLPointer<LLViewerInventoryCategory> cat = gInventory.getCategory(id);
@@ -1606,7 +1606,7 @@ void purge_descendents_of(const LLUUID& id, LLPointer<LLInventoryCallback> cb)
 		else // no cap
 		{
 			// Fast purge
-			LL_DEBUGS(LOG_INV) << "purge_descendents_of fast case " << cat->getName() << LL_ENDL;
+			// _LL_DEBUGS(LOG_INV) << "purge_descendents_of fast case " << cat->getName() << LL_ENDL;
 
 			// send it upstream
 			LLMessageSystem* msg = gMessageSystem;
@@ -1806,8 +1806,8 @@ void slam_inventory_folder(const LLUUID& folder_id,
 						   const LLSD& contents,
 						   LLPointer<LLInventoryCallback> cb)
 {
-    LL_DEBUGS(LOG_INV) << "using AISv3 to slam folder, id " << folder_id
-                       << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;
+    /*// _LL_DEBUGS(LOG_INV) << "using AISv3 to slam folder, id " << folder_id
+                       << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;*/
 
     AISAPI::completion_t cr = boost::bind(&doInventoryCb, cb, _1);
     AISAPI::SlamFolder(folder_id, contents, cr);

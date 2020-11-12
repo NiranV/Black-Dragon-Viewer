@@ -664,11 +664,11 @@ GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shade
 
         */
 
- 		LL_DEBUGS("ShaderLoading") << "Looking in " << open_file_name << LL_ENDL;
+ 		// _LL_DEBUGS("ShaderLoading") << "Looking in " << open_file_name << LL_ENDL;
 		file = LLFile::fopen(open_file_name, "r");		/* Flawfinder: ignore */
 		if (file)
 		{
-			LL_DEBUGS("ShaderLoading") << "Loading file: " << open_file_name << " (Want class " << gpu_class << ")" << LL_ENDL;            
+			// _LL_DEBUGS("ShaderLoading") << "Loading file: " << open_file_name << " (Want class " << gpu_class << ")" << LL_ENDL;            
 			break; // done
 		}
 	}

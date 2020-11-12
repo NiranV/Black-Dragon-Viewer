@@ -258,7 +258,7 @@ void LLInventoryModelBackgroundFetch::start(const LLUUID& id, BOOL recursive)
 	if (cat || (id.isNull() && ! isEverythingFetched()))
 	{
 		// it's a folder, do a bulk fetch
-		LL_DEBUGS(LOG_INV) << "Start fetching category: " << id << ", recursive: " << recursive << LL_ENDL;
+		// _LL_DEBUGS(LOG_INV) << "Start fetching category: " << id << ", recursive: " << recursive << LL_ENDL;
 
 		mBackgroundFetchActive = TRUE;
 		mFolderFetchActive = true;

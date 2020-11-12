@@ -226,7 +226,7 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 	request_params["extended_errors"] = true; // request message_id and message_args
 
     // log request_params _before_ adding the credentials   
-    LL_DEBUGS("LLLogin") << "Login parameters: " << LLSDOStreamer<LLSDNotationFormatter>(request_params) << LL_ENDL;
+    // _LL_DEBUGS("LLLogin") << "Login parameters: " << LLSDOStreamer<LLSDNotationFormatter>(request_params) << LL_ENDL;
 
     // Copy the credentials into the request after logging the rest
     LLSD credentials(user_credential->getLoginParams());
@@ -254,7 +254,7 @@ void LLLoginInstance::constructAuthParams(LLPointer<LLCredential> user_credentia
 
 bool LLLoginInstance::handleLoginEvent(const LLSD& event)
 {
-	LL_DEBUGS("LLLogin") << "LoginListener called!: \n" << event << LL_ENDL;
+	// _LL_DEBUGS("LLLogin") << "LoginListener called!: \n" << event << LL_ENDL;
 
 	if(!(event.has("state") && event.has("change") && event.has("progress")))
 	{
@@ -294,9 +294,9 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
 
     std::string reason_response = response["reason"].asString();
     std::string message_response = response["message"].asString();
-    LL_DEBUGS("LLLogin") << "reason " << reason_response
+    /*// _LL_DEBUGS("LLLogin") << "reason " << reason_response
                          << " message " << message_response
-                         << LL_ENDL;
+                         << LL_ENDL;*/
     // For the cases of critical message or TOS agreement,
     // start the TOS dialog. The dialog response will be handled
     // by the LLLoginInstance::handleTOSResponse() callback.

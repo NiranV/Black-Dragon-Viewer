@@ -3535,8 +3535,8 @@ void LLPipeline::markRebuild(LLDrawable *drawablep, LLDrawable::EDrawableFlags f
             {
                 std::string vobj_name = llformat("Vol%p", vol_obj);
                 F32 est_tris = vol_obj->getEstTrianglesMax();
-                LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " markRebuild, tris " << est_tris 
-                                                    << " priority " << (S32) priority << " flag " << std::hex << flag << LL_ENDL; 
+                /*// _LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " markRebuild, tris " << est_tris 
+                                                    << " priority " << (S32) priority << " flag " << std::hex << flag << LL_ENDL; */
             }
         }
     
@@ -11476,18 +11476,18 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
         LL_WARNS_ONCE("AvatarRenderPipeline") << "Avatar is " << (avatar ? "not drawable" : "null") << LL_ENDL;
 		return;
 	}
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " is drawable" << LL_ENDL;
+    // _LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " is drawable" << LL_ENDL;
 
 	assertInitialized();
 
 	bool visually_muted = avatar->isVisuallyMuted();		
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
+    /*// _LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
                               << " is " << ( visually_muted ? "" : "not ") << "visually muted"
-                              << LL_ENDL;
+                              << LL_ENDL;*/
 	bool too_complex = avatar->isTooComplex();		
-    LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
+    /*// _LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID()
                               << " is " << ( too_complex ? "" : "not ") << "too complex"
-                              << LL_ENDL;
+                              << LL_ENDL;*/
 
 	pushRenderTypeMask();
 	
@@ -11746,12 +11746,12 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		if (visually_muted)
 		{	// Visually muted avatar
             LLColor4 muted_color(avatar->getMutedAVColor());
-            LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " MUTED set solid color " << muted_color << LL_ENDL;
+            // _LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " MUTED set solid color " << muted_color << LL_ENDL;
 			gGL.diffuseColor4fv( muted_color.mV );
 		}
 		else
 		{ //grey muted avatar
-            LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " MUTED set grey" << LL_ENDL;
+            // _LL_DEBUGS_ONCE("AvatarRenderPipeline") << "Avatar " << avatar->getID() << " MUTED set grey" << LL_ENDL;
 			gGL.diffuseColor4fv(LLColor4::pink.mV );
 		}
 

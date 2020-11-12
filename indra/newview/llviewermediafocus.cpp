@@ -224,7 +224,7 @@ LLVector3d LLViewerMediaFocus::setCameraZoom(LLViewerObject* object, LLVector3 n
 		F32 aspect_ratio = getBBoxAspectRatio(bbox, normal, &height, &width, &depth);
 		F32 camera_aspect = LLViewerCamera::getInstance()->getAspect();
 		
-		LL_DEBUGS() << "normal = " << normal << ", aspect_ratio = " << aspect_ratio << ", camera_aspect = " << camera_aspect << LL_ENDL;
+		// _LL_DEBUGS() << "normal = " << normal << ", aspect_ratio = " << aspect_ratio << ", camera_aspect = " << camera_aspect << LL_ENDL;
 
 		// We will normally use the side of the volume aligned with the short side of the screen (i.e. the height for 
 		// a screen in a landscape aspect ratio), however there is an edge case where the aspect ratio of the object is 
@@ -242,14 +242,14 @@ LLVector3d LLViewerMediaFocus::setCameraZoom(LLViewerObject* object, LLVector3 n
 			angle_of_view = llmax(0.1f, LLViewerCamera::getInstance()->getView() * LLViewerCamera::getInstance()->getAspect());
 			distance = width * 0.5 * padding_factor / tan(angle_of_view * 0.5f );
 
-			LL_DEBUGS() << "using width (" << width << "), angle_of_view = " << angle_of_view << ", distance = " << distance << LL_ENDL;
+			// _LL_DEBUGS() << "using width (" << width << "), angle_of_view = " << angle_of_view << ", distance = " << distance << LL_ENDL;
 		}
 		else
 		{
 			angle_of_view = llmax(0.1f, LLViewerCamera::getInstance()->getView());
 			distance = height * 0.5 * padding_factor / tan(angle_of_view * 0.5f );
 
-			LL_DEBUGS() << "using height (" << height << "), angle_of_view = " << angle_of_view << ", distance = " << distance << LL_ENDL;
+			// _LL_DEBUGS() << "using height (" << height << "), angle_of_view = " << angle_of_view << ", distance = " << distance << LL_ENDL;
 		}
 
 		distance += depth * 0.5;
@@ -495,7 +495,7 @@ F32 LLViewerMediaFocus::getBBoxAspectRatio(const LLBBox& bbox, const LLVector3& 
 	F32 dot1 = 0.f;
 	F32 dot2 = 0.f;
 	
-	LL_DEBUGS() << "bounding box local size = " << bbox_max << ", local_normal = " << local_normal << LL_ENDL;
+	// _LL_DEBUGS() << "bounding box local size = " << bbox_max << ", local_normal = " << local_normal << LL_ENDL;
 
 	// The largest component of the localized normal vector is the depth component
 	// meaning that the other two are the legs of the rectangle.
@@ -508,21 +508,21 @@ F32 LLViewerMediaFocus::getBBoxAspectRatio(const LLBBox& bbox, const LLVector3& 
 	
 	if(XgtY && XgtZ)
 	{
-		LL_DEBUGS() << "x component of normal is longest, using y and z" << LL_ENDL;
+		// _LL_DEBUGS() << "x component of normal is longest, using y and z" << LL_ENDL;
 		comp1.mV[VY] = bbox_max.mV[VY];
 		comp2.mV[VZ] = bbox_max.mV[VZ];
 		*depth = bbox_max.mV[VX];
 	}
 	else if(!XgtY && YgtZ)
 	{
-		LL_DEBUGS() << "y component of normal is longest, using x and z" << LL_ENDL;
+		// _LL_DEBUGS() << "y component of normal is longest, using x and z" << LL_ENDL;
 		comp1.mV[VX] = bbox_max.mV[VX];
 		comp2.mV[VZ] = bbox_max.mV[VZ];
 		*depth = bbox_max.mV[VY];
 	}
 	else
 	{
-		LL_DEBUGS() << "z component of normal is longest, using x and y" << LL_ENDL;
+		// _LL_DEBUGS() << "z component of normal is longest, using x and y" << LL_ENDL;
 		comp1.mV[VX] = bbox_max.mV[VX];
 		comp2.mV[VY] = bbox_max.mV[VY];
 		*depth = bbox_max.mV[VZ];
@@ -536,19 +536,19 @@ F32 LLViewerMediaFocus::getBBoxAspectRatio(const LLBBox& bbox, const LLVector3& 
 		*height = comp1.length();
 		*width = comp2.length();
 
-		LL_DEBUGS() << "comp1 = " << comp1 << ", height = " << *height << LL_ENDL;
-		LL_DEBUGS() << "comp2 = " << comp2 << ", width = " << *width << LL_ENDL;
+		// _LL_DEBUGS() << "comp1 = " << comp1 << ", height = " << *height << LL_ENDL;
+		// _LL_DEBUGS() << "comp2 = " << comp2 << ", width = " << *width << LL_ENDL;
 	}
 	else
 	{
 		*height = comp2.length();
 		*width = comp1.length();
 
-		LL_DEBUGS() << "comp2 = " << comp2 << ", height = " << *height << LL_ENDL;
-		LL_DEBUGS() << "comp1 = " << comp1 << ", width = " << *width << LL_ENDL;
+		// _LL_DEBUGS() << "comp2 = " << comp2 << ", height = " << *height << LL_ENDL;
+		// _LL_DEBUGS() << "comp1 = " << comp1 << ", width = " << *width << LL_ENDL;
 	}
 	
-	LL_DEBUGS() << "returning " << (*width / *height) << LL_ENDL;
+	// _LL_DEBUGS() << "returning " << (*width / *height) << LL_ENDL;
 
 	// Return the aspect ratio.
 	return *width / *height;

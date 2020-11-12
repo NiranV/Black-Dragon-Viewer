@@ -1018,7 +1018,7 @@ void LLPanelLandGeneral::onClickRelease(void*)
 // static
 void LLPanelLandGeneral::onClickReclaim(void*)
 {
-	LL_DEBUGS() << "LLPanelLandGeneral::onClickReclaim()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelLandGeneral::onClickReclaim()" << LL_ENDL;
 	LLViewerParcelMgr::getInstance()->reclaimParcel();
 }
 
@@ -1697,8 +1697,8 @@ void LLPanelLandObjects::processParcelObjectOwnersReply(LLMessageSystem *msg, vo
 		item_params.columns.add().value(LLDate((time_t)most_recent_time)).font(FONT).column("mostrecent").type("date");
 
 		self->mOwnerList->addNameItemRow(item_params);
-		LL_DEBUGS() << "object owner " << owner_id << " (" << (is_group_owned ? "group" : "agent")
-				<< ") owns " << object_count << " objects." << LL_ENDL;
+		/*// _LL_DEBUGS() << "object owner " << owner_id << " (" << (is_group_owned ? "group" : "agent")
+				<< ") owns " << object_count << " objects." << LL_ENDL;*/
 	}
 
 	// check for no results
@@ -3381,7 +3381,7 @@ void LLPanelLandEnvironment::refreshFromSource()
     setNoSelection(false);
     if (isSameRegion())
     {
-        LL_DEBUGS("ENVIRONMENT") << "Requesting environment for parcel " << parcel->getLocalID() << ", known version " << mCurEnvVersion << LL_ENDL;
+        // _LL_DEBUGS("ENVIRONMENT") << "Requesting environment for parcel " << parcel->getLocalID() << ", known version " << mCurEnvVersion << LL_ENDL;
         setCrossRegion(false);
 
         LLHandle<LLPanel> that_h = getHandle();

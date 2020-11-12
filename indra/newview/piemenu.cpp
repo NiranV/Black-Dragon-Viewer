@@ -57,7 +57,7 @@ PieMenu::PieMenu(const LLMenuGL::Params& p) :
 	LLMenuGL(p),
 	mCurrentSegment(-1)
 {
-	LL_DEBUGS("Pie") << "PieMenu::PieMenu()" << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieMenu::PieMenu()" << LL_ENDL;
 
 	// radius, so we need this *2
 	reshape(PIE_OUTER_SIZE * 2, PIE_OUTER_SIZE * 2, FALSE);
@@ -155,7 +155,7 @@ void PieMenu::show(S32 x, S32 y, LLView* spawning_view)
 	// play a sound
 	make_ui_sound("UISndPieMenuAppear");
 
-	LL_DEBUGS("Pie") << "PieMenu::show(): " << x << " " << y << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieMenu::show(): " << x << " " << y << LL_ENDL;
 
 	// make sure the menu is always the correct size
 	reshape(PIE_OUTER_SIZE * 2, PIE_OUTER_SIZE * 2, FALSE);
@@ -227,7 +227,7 @@ void PieMenu::hide()
 	// make a sound when hiding
 	make_ui_sound("UISndPieMenuHide");
 
-	LL_DEBUGS("Pie") << "Clearing selections" << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "Clearing selections" << LL_ENDL;
 
 	mCurrentSegment = -1;
 	mSlices = &mMySlices;
@@ -335,7 +335,7 @@ void PieMenu::draw()
 				currentSlice->setEnabled(slice_visible);
 				if (!slice_visible)
 				{
-					//LL_DEBUGS(Pie) << label[0] << " is not visible" << LL_ENDL;
+					//// _LL_DEBUGS(Pie) << label[0] << " is not visible" << LL_ENDL;
 					currentSlice->setEnabled(false);
 				}
 
@@ -388,7 +388,7 @@ void PieMenu::draw()
 				currentSlice->updateEnabled();
 				if (!currentSlice->getEnabled())
 				{
-					//LL_DEBUGS(Pie) << label[0] << " is disabled" << LL_ENDL;
+					//// _LL_DEBUGS(Pie) << label[0] << " is disabled" << LL_ENDL;
 					itemColor %= 0.3f;
 				}
 			}
@@ -476,13 +476,13 @@ void PieMenu::draw()
 
 BOOL PieMenu::appendContextSubMenu(PieMenu* menu)
 {
-	LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu()" << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu()" << LL_ENDL;
 	if (!menu)
 	{
 		return FALSE;
 	}
 
-	LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu() appending " << menu->getLabel() << " to " << getLabel() << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu() appending " << menu->getLabel() << " to " << getLabel() << LL_ENDL;
 
 	// add the submenu to the list of items
 	mSlices->push_back(menu);

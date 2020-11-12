@@ -205,7 +205,7 @@ void LLPreviewNotecard::refreshFromInventory(const LLUUID& new_item_id)
 		mItemUUID = new_item_id;
 		setKey(LLSD(new_item_id));
 	}
-	LL_DEBUGS() << "LLPreviewNotecard::refreshFromInventory()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPreviewNotecard::refreshFromInventory()" << LL_ENDL;
 	loadAsset();
 }
 

@@ -270,7 +270,7 @@ void LLPanelGroup::onBtnGroupChatClicked(void* user_data)
 
 void LLPanelGroup::onBtnJoin()
 {
-	LL_DEBUGS() << "joining group: " << mID << LL_ENDL;
+	// _LL_DEBUGS() << "joining group: " << mID << LL_ENDL;
 	LLGroupActions::join(mID);
 }
 

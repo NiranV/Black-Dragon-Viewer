@@ -164,7 +164,7 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 		{
 			std::string name = item->getColumn(1)->getValue().asString();
 
-            LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
+            // _LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
 			//BD
 			gSavedSettings.loadPreset(1, gDragonLibrary.escapeString(name));
 			gSavedSettings.setString("PresetGraphicActive", name);
@@ -172,12 +172,12 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 		}
         else
         {
-            LL_DEBUGS() << "none selected" << LL_ENDL;
+            // _LL_DEBUGS() << "none selected" << LL_ENDL;
         }
 	}
     else
     {
-        LL_DEBUGS() << "no scroll" << LL_ENDL;
+        // _LL_DEBUGS() << "no scroll" << LL_ENDL;
     }
 }
 

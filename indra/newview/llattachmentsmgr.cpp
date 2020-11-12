@@ -90,13 +90,13 @@ void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
 
     if (mAttachmentRequests.wasRequestedRecently(item_id))
     {
-        LL_DEBUGS("Avatar") << "ATT not adding attachment to mPendingAttachments, recent request is already pending: "
-                            << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "ATT not adding attachment to mPendingAttachments, recent request is already pending: "
+                            << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
         return;
     }
 
-	LL_DEBUGS("Avatar") << "ATT adding attachment to mPendingAttachments "
-						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+	/*// _LL_DEBUGS("Avatar") << "ATT adding attachment to mPendingAttachments "
+						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
 
 	AttachmentsInfo attachment;
 	attachment.mItemID = item_id;
@@ -135,8 +135,8 @@ void LLAttachmentsMgr::onAttachmentRequested(const LLUUID& item_id)
 // [/SL:KB]
 
 	LLViewerInventoryItem *item = gInventory.getItem(item_id);
-	LL_DEBUGS("Avatar") << "ATT attachment was requested "
-						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+	/*// _LL_DEBUGS("Avatar") << "ATT attachment was requested "
+						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
     mAttachmentRequests.addTime(item_id);
 }
 
@@ -214,8 +214,8 @@ void LLAttachmentsMgr::requestAttachments(attachments_vec_t& attachment_requests
 		obj_count = MAX_OBJECTS_TO_SEND;
 	}
 
-	LL_DEBUGS("Avatar") << "ATT [RezMultipleAttachmentsFromInv] attaching multiple from attachment_requests,"
-		" total obj_count " << obj_count << LL_ENDL;
+	/*// _LL_DEBUGS("Avatar") << "ATT [RezMultipleAttachmentsFromInv] attaching multiple from attachment_requests,"
+		" total obj_count " << obj_count << LL_ENDL;*/
 
 	LLUUID compound_msg_id;
 	compound_msg_id.generate();
@@ -244,8 +244,8 @@ void LLAttachmentsMgr::requestAttachments(attachments_vec_t& attachment_requests
 		LLViewerInventoryItem* item = gInventory.getItem(attachment.mItemID);
 		if (item)
         {
-            LL_DEBUGS("Avatar") << "ATT requesting from attachment_requests " << item->getName()
-                                << " " << item->getLinkedUUID() << LL_ENDL;
+            /*// _LL_DEBUGS("Avatar") << "ATT requesting from attachment_requests " << item->getName()
+                                << " " << item->getLinkedUUID() << LL_ENDL;*/
             S32 attachment_pt = attachment.mAttachmentPt;
             if (attachment.mAdd) 
                 attachment_pt |= ATTACHMENT_ADD;
@@ -288,21 +288,21 @@ void LLAttachmentsMgr::linkRecentlyArrivedAttachments()
         if (mAttachmentRequests.empty())
         {
             // Not waiting for any more.
-            LL_DEBUGS("Avatar") << "ATT all pending attachments have arrived after "
-                                << mCOFLinkBatchTimer.getElapsedTimeF32() << " seconds" << LL_ENDL;
+            /*// _LL_DEBUGS("Avatar") << "ATT all pending attachments have arrived after "
+                                << mCOFLinkBatchTimer.getElapsedTimeF32() << " seconds" << LL_ENDL;*/
         }
         else if (mCOFLinkBatchTimer.getElapsedTimeF32() > COF_LINK_BATCH_TIME)
         {
-            LL_DEBUGS("Avatar") << "ATT " << mAttachmentRequests.size()
-                                << " pending attachments have not arrived, but wait time exceeded" << LL_ENDL;
+            /*// _LL_DEBUGS("Avatar") << "ATT " << mAttachmentRequests.size()
+                                << " pending attachments have not arrived, but wait time exceeded" << LL_ENDL;*/
         }
         else
         {
             return;
         }
 
-        LL_DEBUGS("Avatar") << "ATT checking COF linkability for " << mRecentlyArrivedAttachments.size()
-                            << " recently arrived items" << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "ATT checking COF linkability for " << mRecentlyArrivedAttachments.size()
+                            << " recently arrived items" << LL_ENDL;*/
 
         uuid_vec_t ids_to_link;
         for (std::set<LLUUID>::iterator it = mRecentlyArrivedAttachments.begin();
@@ -314,8 +314,8 @@ void LLAttachmentsMgr::linkRecentlyArrivedAttachments()
             {
                 LLUUID item_id = *it;
                 LLViewerInventoryItem *item = gInventory.getItem(item_id);
-                LL_DEBUGS("Avatar") << "ATT adding COF link for attachment "
-                                    << (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;
+                /*// _LL_DEBUGS("Avatar") << "ATT adding COF link for attachment "
+                                    << (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;*/
                 ids_to_link.push_back(item_id);
             }
         }
@@ -387,7 +387,7 @@ LLAttachmentsMgr::LLItemRequestTimes::LLItemRequestTimes(const std::string& op_n
 void LLAttachmentsMgr::LLItemRequestTimes::addTime(const LLUUID& inv_item_id)
 {
     LLInventoryItem *item = gInventory.getItem(inv_item_id);
-    LL_DEBUGS("Avatar") << "ATT " << mOpName << " adding request time " << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "ATT " << mOpName << " adding request time " << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;
 	LLTimer current_time;
 	(*this)[inv_item_id] = current_time;
 }
@@ -398,8 +398,8 @@ void LLAttachmentsMgr::LLItemRequestTimes::removeTime(const LLUUID& inv_item_id)
 	S32 remove_count = (*this).erase(inv_item_id);
     if (remove_count)
     {
-        LL_DEBUGS("Avatar") << "ATT " << mOpName << " removing request time "
-                            << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "ATT " << mOpName << " removing request time "
+                            << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;*/
     }
 }
 
@@ -489,7 +489,7 @@ void LLAttachmentsMgr::onAttachmentArrived(const LLUUID& inv_item_id)
     if (expected && mAttachmentRequests.empty())
     {
         // mAttachmentRequests just emptied out
-        LL_DEBUGS("Avatar") << "ATT all active attachment requests have completed" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "ATT all active attachment requests have completed" << LL_ENDL;
     }
     if (mRecentlyArrivedAttachments.empty())
     {
@@ -515,12 +515,12 @@ void LLAttachmentsMgr::onDetachCompleted(const LLUUID& inv_item_id)
     LLInventoryItem *item = gInventory.getItem(inv_item_id);
     if (mDetachRequests.getTime(inv_item_id, timer))
     {
-        LL_DEBUGS("Avatar") << "ATT detach completed after " << timer.getElapsedTimeF32()
-                            << " seconds for " << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;
+        /*// _LL_DEBUGS("Avatar") << "ATT detach completed after " << timer.getElapsedTimeF32()
+                            << " seconds for " << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;*/
         mDetachRequests.removeTime(inv_item_id);
         if (mDetachRequests.empty())
         {
-            LL_DEBUGS("Avatar") << "ATT all detach requests have completed" << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "ATT all detach requests have completed" << LL_ENDL;
         }
     }
     else
@@ -529,7 +529,7 @@ void LLAttachmentsMgr::onDetachCompleted(const LLUUID& inv_item_id)
                    << (item ? item->getName() : "UNKNOWN") << " id " << inv_item_id << LL_ENDL;
     }
 
-//    LL_DEBUGS("Avatar") << "ATT detached item flagging as questionable for COF link checking "
+//    // _LL_DEBUGS("Avatar") << "ATT detached item flagging as questionable for COF link checking "
 //                        << (item ? item->getName() : "UNKNOWN") << " id " << inv_item_id << LL_ENDL;
 //    mQuestionableCOFLinks.addTime(inv_item_id);
 }
@@ -587,7 +587,7 @@ bool LLAttachmentsMgr::isAttachmentStateComplete() const
 //                bool is_wearing_attachment = isAgentAvatarValid() && gAgentAvatarp->isWearingAttachment(item_id);
 //                if (is_wearing_attachment && is_flagged_questionable)
 //                {
-//                    LL_DEBUGS("Avatar") << "ATT was flagged questionable but is now " 
+//                    // _LL_DEBUGS("Avatar") << "ATT was flagged questionable but is now " 
 //                                        << (is_wearing_attachment ? "attached " : "") 
 //                                        <<"removing flag after "
 //                                        << timer.getElapsedTimeF32() << " item "
@@ -608,7 +608,7 @@ bool LLAttachmentsMgr::isAttachmentStateComplete() const
 //            {
 //                if (LLAppearanceMgr::instance().isLinkedInCOF(item_id))
 //                {
-//                    LL_DEBUGS("Avatar") << "ATT Linked in COF but not attached or requested, deleting link after "
+//                    // _LL_DEBUGS("Avatar") << "ATT Linked in COF but not attached or requested, deleting link after "
 //                                        << curr_it->second.getElapsedTimeF32() << " seconds for " 
 //                                        << (inv_item ? inv_item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
 //                    LLAppearanceMgr::instance().removeCOFItemLinks(item_id);
@@ -638,7 +638,7 @@ void LLAttachmentsMgr::spamStatusInfo()
             const LLViewerInventoryItem* inv_item = item_array.at(i).get();
             if (inv_item->getType() == LLAssetType::AT_OBJECT)
             {
-                LL_DEBUGS("Avatar") << "item_id: " << inv_item->getUUID()
+                // _LL_DEBUGS("Avatar") << "item_id: " << inv_item->getUUID()
                                     << " linked_item_id: " << inv_item->getLinkedUUID()
                                     << " name: " << inv_item->getName()
                                     << " parent: " << inv_item->getParentUUID()

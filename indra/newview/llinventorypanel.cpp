@@ -1083,9 +1083,9 @@ LLFolderViewItem* LLInventoryPanel::buildNewViews(const LLUUID& id, LLInventoryO
 			if (objectp->getType() >= LLAssetType::AT_COUNT)
   			{
 				// Example: Happens when we add assets of new, not yet supported type to library
-				LL_DEBUGS() << "LLInventoryPanel::buildNewViews called with unknown objectp->mType : "
+				/*// _LL_DEBUGS() << "LLInventoryPanel::buildNewViews called with unknown objectp->mType : "
 				<< ((S32) objectp->getType()) << " name " << objectp->getName() << " UUID " << objectp->getUUID()
-				<< LL_ENDL;
+				<< LL_ENDL;*/
 
 				LLInventoryItem* item = (LLInventoryItem*)objectp;
 				if (item)
@@ -1751,7 +1751,7 @@ void LLInventoryPanel::openInventoryPanelAndSetSelection(BOOL auto_open, const L
 
 	if (active_panel)
 	{
-		LL_DEBUGS("Messaging") << "Highlighting" << obj_id  << LL_ENDL;
+		// _LL_DEBUGS("Messaging") << "Highlighting" << obj_id  << LL_ENDL;
 
 		if (reset_filter)
 		{

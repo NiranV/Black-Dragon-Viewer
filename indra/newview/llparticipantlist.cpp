@@ -121,7 +121,7 @@ private:
 			const LLUUID& participant_id = *it;
 			if (!LLVoiceClient::getInstance()->isParticipantAvatar(participant_id))
 			{
-				LL_DEBUGS("Avaline") << "Avaline caller found among voice participants: " << participant_id << LL_ENDL;
+				// _LL_DEBUGS("Avaline") << "Avaline caller found among voice participants: " << participant_id << LL_ENDL;
 
 				if (mAvalineFoundCallback)
 				{
@@ -149,11 +149,11 @@ private:
 		while (it != mAvalineCallers.end())
 		{
 			const LLUUID participant_id = *it;
-			LL_DEBUGS("Avaline") << "Check avaline caller: " << participant_id << LL_ENDL;
+			// _LL_DEBUGS("Avaline") << "Check avaline caller: " << participant_id << LL_ENDL;
 			bool not_found = participant_uuids.find(participant_id) == participants_it_end;
 			if (not_found)
 			{
-				LL_DEBUGS("Avaline") << "Watched Avaline caller is not found among voice participants: " << participant_id << LL_ENDL;
+				// _LL_DEBUGS("Avaline") << "Watched Avaline caller is not found among voice participants: " << participant_id << LL_ENDL;
 
 				// notify Participant List
 				if (mAvalineRemovedCallback)
@@ -270,7 +270,7 @@ void LLParticipantList::onAvalineCallerFound(const LLUUID& participant_id)
 
 void LLParticipantList::onAvalineCallerRemoved(const LLUUID& participant_id)
 {
-	LL_DEBUGS("Avaline") << "Removing avaline caller from the list: " << participant_id << LL_ENDL;
+	// _LL_DEBUGS("Avaline") << "Removing avaline caller from the list: " << participant_id << LL_ENDL;
 
 	mSpeakerMgr->removeAvalineSpeaker(participant_id);
 }

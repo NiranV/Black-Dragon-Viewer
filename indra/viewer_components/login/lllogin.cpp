@@ -119,14 +119,14 @@ private:
 
 void LLLogin::Impl::connect(const std::string& uri, const LLSD& login_params)
 {
-    LL_DEBUGS("LLLogin") << " connect with  uri '" << uri << "', login_params " << login_params << LL_ENDL;
+    // _LL_DEBUGS("LLLogin") << " connect with  uri '" << uri << "', login_params " << login_params << LL_ENDL;
 	
     // Launch a coroutine with our login_() method. Run the coroutine until
     // its first wait; at that point, return here.
     std::string coroname = 
         LLCoros::instance().launch("LLLogin::Impl::login_",
                                    boost::bind(&Impl::loginCoro, this, uri, login_params));
-    LL_DEBUGS("LLLogin") << " connected with  uri '" << uri << "', login_params " << login_params << LL_ENDL;	
+    // _LL_DEBUGS("LLLogin") << " connected with  uri '" << uri << "', login_params " << login_params << LL_ENDL;	
 }
 
 namespace {
@@ -148,8 +148,8 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
     }
     try
     {
-        LL_DEBUGS("LLLogin") << "Entering coroutine " << LLCoros::getName()
-                             << " with uri '" << uri << "', parameters " << printable_params << LL_ENDL;
+        /*// _LL_DEBUGS("LLLogin") << "Entering coroutine " << LLCoros::getName()
+                             << " with uri '" << uri << "', parameters " << printable_params << LL_ENDL;*/
 
         LLEventPump& xmlrpcPump(LLEventPumps::instance().obtain("LLXMLRPCTransaction"));
         // EXT-4193: use a DIFFERENT reply pump than for the SRV request. We used
@@ -195,7 +195,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
                 sendProgressEvent("offline", "downloading");
             }
 
-            LL_DEBUGS("LLLogin") << "Auth Response: " << mAuthResponse << LL_ENDL;
+            // _LL_DEBUGS("LLLogin") << "Auth Response: " << mAuthResponse << LL_ENDL;
             status = mAuthResponse["status"].asString();
 
             // Okay, we've received our final status event for this
@@ -252,7 +252,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
                 // consume the posted event.
                 LLCoros::OverrideConsuming oc(true);
                 // Timeout should produce the isUndefined() object passed here.
-                LL_DEBUGS("LLLogin") << "Login failure, waiting for sync from updater" << LL_ENDL;
+                // _LL_DEBUGS("LLLogin") << "Login failure, waiting for sync from updater" << LL_ENDL;
                 LLSD updater = llcoro::suspendUntilEventOnWithTimeout(sSyncPoint, 10, LLSD());
                 if (updater.isUndefined())
                 {
@@ -261,7 +261,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
                 }
                 else
                 {
-                    LL_DEBUGS("LLLogin") << "Got responses from updater and login.cgi" << LL_ENDL;
+                    // _LL_DEBUGS("LLLogin") << "Got responses from updater and login.cgi" << LL_ENDL;
                 }
                 // Let the fail.login handler deal with empty updater response.
                 LLSD responses(mAuthResponse["responses"]);
@@ -277,7 +277,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
         // if below.
         if( status == "Started")
         {
-            LL_DEBUGS("LLLogin") << mAuthResponse << LL_ENDL;
+            // _LL_DEBUGS("LLLogin") << mAuthResponse << LL_ENDL;
             continue;
         }
 |*==========================================================================*/

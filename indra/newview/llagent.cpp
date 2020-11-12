@@ -916,7 +916,7 @@ void LLAgent::standUp()
 
 void LLAgent::changeParcels()
 {
-	LL_DEBUGS("AgentLocation") << "Calling ParcelChanged callbacks" << LL_ENDL;
+	// _LL_DEBUGS("AgentLocation") << "Calling ParcelChanged callbacks" << LL_ENDL;
 	// Notify anything that wants to know about parcel changes
 	mParcelChangedSignal();
 }
@@ -1022,7 +1022,7 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 	LLFloaterMove::sUpdateMovementStatus();
 // [/RLVa:KB]
 
-	LL_DEBUGS("AgentLocation") << "Calling RegionChanged callbacks" << LL_ENDL;
+	// _LL_DEBUGS("AgentLocation") << "Calling RegionChanged callbacks" << LL_ENDL;
 	mRegionChangedSignal();
 }
 
@@ -1111,12 +1111,12 @@ void LLAgent::sendReliableMessage()
 {
 	if (gDisconnected)
 	{
-		LL_DEBUGS() << "Trying to send message when disconnected!" << LL_ENDL;
+		// _LL_DEBUGS() << "Trying to send message when disconnected!" << LL_ENDL;
 		return;
 	}
 	if (!mRegionp)
 	{
-		LL_DEBUGS() << "LLAgent::sendReliableMessage No region for agent yet, not sending message!" << LL_ENDL;
+		// _LL_DEBUGS() << "LLAgent::sendReliableMessage No region for agent yet, not sending message!" << LL_ENDL;
 		return;
 	}
 	gMessageSystem->sendReliable(mRegionp->getHost());
@@ -4444,7 +4444,7 @@ void LLAgent::setTeleportState(ETeleportState state)
             " for previously failed teleport.  Ignore!" << LL_ENDL;
         return;
     }
-    LL_DEBUGS("Teleport") << "Setting teleport state to " << state << " Previous state: " << mTeleportState << LL_ENDL;
+    // _LL_DEBUGS("Teleport") << "Setting teleport state to " << state << " Previous state: " << mTeleportState << LL_ENDL;
 	mTeleportState = state;
 	if (mTeleportState > TELEPORT_NONE && gSavedSettings.getBOOL("FreezeTime"))
 	{
@@ -4478,7 +4478,7 @@ void LLAgent::setTeleportState(ETeleportState state)
 
 void LLAgent::stopCurrentAnimations()
 {
-    LL_DEBUGS("Avatar") << "Stopping current animations" << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "Stopping current animations" << LL_ENDL;
 
 	// This function stops all current overriding animations on this
 	// avatar, propagating this change back to the server.
@@ -4497,7 +4497,7 @@ void LLAgent::stopCurrentAnimations()
 				// don't cancel a ground-sit anim, as viewers
 				// use this animation's status in
 				// determining whether we're sitting. ick.
-                LL_DEBUGS("Avatar") << "sit or do-not-disturb animation will not be stopped" << LL_ENDL;
+                // _LL_DEBUGS("Avatar") << "sit or do-not-disturb animation will not be stopped" << LL_ENDL;
 			}
 			else
 			{

@@ -1718,7 +1718,7 @@ void BDFloaterAnimator::onKeyTimeMoved()
 
 	// check to see if a key exists
 	BDPoseKey key = mSliderToKey[cur_sldr].keyframe;
-	//LL_DEBUGS() << "Setting key time: " << time24 << LL_ENDL;
+	//// _LL_DEBUGS() << "Setting key time: " << time24 << LL_ENDL;
 	mSliderToKey[cur_sldr].time = time24;
 
 	// if it exists, turn on check box
@@ -1742,7 +1742,7 @@ void BDFloaterAnimator::onKeyTimeChanged()
 	F32 time = mKeySlider->getCurSliderValue() / 60;
 
 	// now set the key's time in the sliderToKey map
-	//LL_DEBUGS() << "Setting key time: " << time << LL_ENDL;
+	//// _LL_DEBUGS() << "Setting key time: " << time << LL_ENDL;
 	mSliderToKey[cur_sldr].time = time;
 
 	//applyTrack();

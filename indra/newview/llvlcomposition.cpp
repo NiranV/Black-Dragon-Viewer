@@ -290,7 +290,7 @@ BOOL LLVLComposition::generateTexture(const F32 x, const F32 y,
 				{
 					mDetailTextures[i]->destroyRawImage() ;
 				}
-				LL_DEBUGS("Terrain") << "cached raw data for terrain detail texture is not ready yet: " << mDetailTextures[i]->getID() << " Discard: " << ddiscard << LL_ENDL;
+				// _LL_DEBUGS("Terrain") << "cached raw data for terrain detail texture is not ready yet: " << mDetailTextures[i]->getID() << " Discard: " << ddiscard << LL_ENDL;
 				return FALSE;
 			}
 

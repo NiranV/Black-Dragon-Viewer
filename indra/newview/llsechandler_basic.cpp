@@ -533,9 +533,9 @@ void  LLBasicCertificateVector::insert(iterator _iter,
 		}
         else
         {
-            LL_DEBUGS("SECAPI") << "Certificate already in vector: "
+            /*// _LL_DEBUGS("SECAPI") << "Certificate already in vector: "
                                 << "'" << cert_info << "'"
-                                << LL_ENDL;
+                                << LL_ENDL;*/
         }
 
 	}
@@ -598,17 +598,17 @@ void LLBasicCertificateStore::load_from_file(const std::string& filename)
                                       validation_params,
                                       0);
                         add(new_cert);
-                        LL_DEBUGS("SECAPI") << "Loaded valid cert for "
+                        /*// _LL_DEBUGS("SECAPI") << "Loaded valid cert for "
                                             << "Name '" << cert_string_name_from_X509_NAME(X509_get_subject_name(cert_x509)) << "'";
                         std::string skeyid(_subject_key_identifier(cert_x509));
                         LL_CONT << " Id '" << skeyid << "'"
-                                << LL_ENDL;
+                                << LL_ENDL;*/
                         loaded++;
                     }
                     catch (const LLCertException& cert_exception)
                     {
                         LLSD cert_info(cert_exception.getCertData());
-                        LL_DEBUGS("SECAPI_BADCERT","SECAPI") << "invalid certificate (" << cert_exception.what() << "): " << cert_info << LL_ENDL;
+                        // _LL_DEBUGS("SECAPI_BADCERT","SECAPI") << "invalid certificate (" << cert_exception.what() << "): " << cert_info << LL_ENDL;
                         rejected++;
                     }
                     catch (...)
@@ -1057,8 +1057,8 @@ void LLBasicCertificateStore::validate(int validation_policy,
 			LLTHROW(LLInvalidCertificate(current_cert_info));
 		}
 		
-		LL_DEBUGS("SECAPI") << "Validating the hostname " << validation_params[CERT_HOSTNAME].asString() << 
-		     "against the cert CN " << current_cert_info[CERT_SUBJECT_NAME][CERT_NAME_CN].asString() << LL_ENDL;
+		/*// _LL_DEBUGS("SECAPI") << "Validating the hostname " << validation_params[CERT_HOSTNAME].asString() << 
+		     "against the cert CN " << current_cert_info[CERT_SUBJECT_NAME][CERT_NAME_CN].asString() << LL_ENDL;*/
 		if(!_cert_hostname_wildcard_match(validation_params[CERT_HOSTNAME].asString(),
 										  current_cert_info[CERT_SUBJECT_NAME][CERT_NAME_CN].asString()))
 		{
@@ -1077,11 +1077,11 @@ void LLBasicCertificateStore::validate(int validation_policy,
     std::string subject_name(cert_string_name_from_X509_NAME(X509_get_subject_name(cert_x509)));
     std::string skeyid(_subject_key_identifier(cert_x509));
 
-    LL_DEBUGS("SECAPI") << "attempting to validate cert "
+    /*// _LL_DEBUGS("SECAPI") << "attempting to validate cert "
                         << " for '" << (validation_params.has(CERT_HOSTNAME) ? validation_params[CERT_HOSTNAME].asString() : "(unknown hostname)") << "'"
                         << " as subject name '" << subject_name << "'"
                         << " subject key id '" << skeyid << "'"
-                        << LL_ENDL;
+                        << LL_ENDL;*/
 
 	X509_free( cert_x509 );
 	cert_x509 = NULL;
@@ -1113,10 +1113,10 @@ void LLBasicCertificateStore::validate(int validation_policy,
 			}
 		}
 		// successfully found in cache
-		LL_DEBUGS("SECAPI") << "Valid cert for '" << validation_params[CERT_HOSTNAME].asString() << "'"
+		/*// _LL_DEBUGS("SECAPI") << "Valid cert for '" << validation_params[CERT_HOSTNAME].asString() << "'"
                             << " skeyid '" << skeyid << "'"
                             << " found in cache"
-                            << LL_ENDL;
+                            << LL_ENDL;*/
 		return;
 	}
 	if(current_cert_info.isUndefined())
@@ -1162,7 +1162,7 @@ void LLBasicCertificateStore::validate(int validation_policy,
 		if(found_store_cert != end())
 		{
 			mTrustedCertCache[skeyid] = std::pair<LLDate, LLDate>(from_time, to_time);
-            LL_DEBUGS("SECAPI") << "Valid cert "
+            /*// _LL_DEBUGS("SECAPI") << "Valid cert "
                                 << " for '" << (validation_params.has(CERT_HOSTNAME) ? validation_params[CERT_HOSTNAME].asString() : "(unknown hostname)") << "'";
             X509* cert_x509 = (*found_store_cert)->getOpenSSLX509();
             std::string found_cert_subject_name(cert_string_name_from_X509_NAME(X509_get_subject_name(cert_x509)));
@@ -1170,7 +1170,7 @@ void LLBasicCertificateStore::validate(int validation_policy,
             LL_CONT << " as '" << found_cert_subject_name << "'"
                     << " skeyid '" << current_cert_info[CERT_SUBJECT_KEY_IDENTFIER].asString() << "'"
                     << " found in cert store"
-                    << LL_ENDL;	
+                    << LL_ENDL;	*/
 			return;
 		}
 		
@@ -1208,12 +1208,12 @@ void LLBasicCertificateStore::validate(int validation_policy,
 			}			
 			// successfully validated.
 			mTrustedCertCache[skeyid] = std::pair<LLDate, LLDate>(from_time, to_time);		
-            LL_DEBUGS("SECAPI") << "Verified and cached cert for '" << validation_params[CERT_HOSTNAME].asString() << "'"
+            /*// _LL_DEBUGS("SECAPI") << "Verified and cached cert for '" << validation_params[CERT_HOSTNAME].asString() << "'"
                                 << " as '" << subject_name << "'"
                                 << " id '" << skeyid << "'"
                                 << " using CA '" << cert_search_params[CERT_SUBJECT_NAME_STRING] << "'"
                                 << " with id '" <<  cert_search_params[CERT_SUBJECT_KEY_IDENTFIER].asString() << "' found in cert store"
-                                << LL_ENDL;	
+                                << LL_ENDL;	*/
 			return;
 		}
 		previous_cert = (*current_cert);
@@ -1233,9 +1233,9 @@ void LLBasicCertificateStore::validate(int validation_policy,
 	}
     else
     {
-        LL_DEBUGS("SECAPI") << "! Caching untrusted cert for '" << subject_name << "'"
+        /*// _LL_DEBUGS("SECAPI") << "! Caching untrusted cert for '" << subject_name << "'"
                             << " skeyid '" << skeyid << "' in cert store because ! VALIDATION_POLICY_TRUSTED"
-                            << LL_ENDL;	
+                            << LL_ENDL;	*/
         mTrustedCertCache[skeyid] = std::pair<LLDate, LLDate>(from_time, to_time);	
     }
 }
@@ -1639,7 +1639,7 @@ void LLSecAPIBasicHandler::saveCredential(LLPointer<LLCredential> cred, bool sav
 	{
 		credential["authenticator"] = cred->getAuthenticator();
 	}
-	LL_DEBUGS("SECAPI") << "Saving Credential " << cred->getGrid() << ":" << cred->userID() << " " << save_authenticator << LL_ENDL;
+	// _LL_DEBUGS("SECAPI") << "Saving Credential " << cred->getGrid() << ":" << cred->userID() << " " << save_authenticator << LL_ENDL;
 	setProtectedData(DEFAULT_CREDENTIAL_STORAGE, cred->getGrid(), credential);
 	//*TODO: If we're saving Agni credentials, should we write the
 	// credentials to the legacy password.dat/etc?
@@ -1752,7 +1752,7 @@ void LLSecAPIBasicHandler::addToCredentialMap(const std::string& storage, LLPoin
     {
         credential["authenticator"] = cred->getAuthenticator();
     }
-    LL_DEBUGS("SECAPI") << "Saving Credential " << cred->getGrid() << ":" << cred->userID() << " " << save_authenticator << LL_ENDL;
+    // _LL_DEBUGS("SECAPI") << "Saving Credential " << cred->getGrid() << ":" << cred->userID() << " " << save_authenticator << LL_ENDL;
     addToProtectedMap(storage, cred->getGrid(), user_id, credential);
 
     _writeProtectedData();

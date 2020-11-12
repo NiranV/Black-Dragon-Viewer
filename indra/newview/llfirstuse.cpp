@@ -131,7 +131,7 @@ void LLFirstUse::firstUseNotification(const std::string& control_var, bool enabl
 		static const LLCachedControl<bool> enable_ui_hints(gSavedSettings, "EnableUIHints");
 		if (enable_ui_hints)
 		{
-			LL_DEBUGS("LLFirstUse") << "Trigger first use notification " << notification_name << LL_ENDL;
+			// _LL_DEBUGS("LLFirstUse") << "Trigger first use notification " << notification_name << LL_ENDL;
 
 			// if notification doesn't already exist and this notification hasn't been disabled...
 			if (gWarningSettings.getBOOL(control_var))
@@ -142,7 +142,7 @@ void LLFirstUse::firstUseNotification(const std::string& control_var, bool enabl
 	}	
 	else
 	{
-		LL_DEBUGS("LLFirstUse") << "Disabling first use notification " << notification_name << LL_ENDL;
+		// _LL_DEBUGS("LLFirstUse") << "Disabling first use notification " << notification_name << LL_ENDL;
 		LLNotifications::instance().cancelByName(notification_name);
 		// redundantly clear settings var here, in case there are no notifications to cancel
 		gWarningSettings.setBOOL(control_var, FALSE);

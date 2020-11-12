@@ -998,7 +998,7 @@ void LLMeshRepoThread::run()
                     }
                     else
                     {
-                        LL_DEBUGS() << "mHeaderReqQ failed: " << req.mMeshParams << LL_ENDL;
+                        // _LL_DEBUGS() << "mHeaderReqQ failed: " << req.mMeshParams << LL_ENDL;
                     }
                 }
             }
@@ -1040,7 +1040,7 @@ void LLMeshRepoThread::run()
 					{
 						LLMutexLock locker(mMutex);
 						mSkinUnavailableQ.push(req);
-						LL_DEBUGS() << "mSkinReqQ failed: " << req.mId << LL_ENDL;
+						// _LL_DEBUGS() << "mSkinReqQ failed: " << req.mId << LL_ENDL;
 					}
 				}
 			}
@@ -1082,7 +1082,7 @@ void LLMeshRepoThread::run()
 					}
 					else
 					{
-						LL_DEBUGS() << "mDecompositionRequests failed: " << req.mId << LL_ENDL;
+						// _LL_DEBUGS() << "mDecompositionRequests failed: " << req.mId << LL_ENDL;
 					}
 				}
 			}
@@ -1118,7 +1118,7 @@ void LLMeshRepoThread::run()
 					}
 					else
 					{
-						LL_DEBUGS() << "mPhysicsShapeRequests failed: " << req.mId << LL_ENDL;
+						// _LL_DEBUGS() << "mPhysicsShapeRequests failed: " << req.mId << LL_ENDL;
 					}
 				}
 			}
@@ -1242,13 +1242,13 @@ void LLMeshRepoThread::constructUrl(LLUUID mesh_id, std::string * url)
 		{
 			LL_WARNS_ONCE(LOG_MESH) << "Current region does not have ViewerAsset capability!  Cannot load meshes. Region id: "
 									<< gAgent.getRegion()->getRegionID() << LL_ENDL;
-			LL_DEBUGS_ONCE(LOG_MESH) << "Cannot load mesh " << mesh_id << " due to missing capability." << LL_ENDL;
+			// _LL_DEBUGS_ONCE(LOG_MESH) << "Cannot load mesh " << mesh_id << " due to missing capability." << LL_ENDL;
 		}
 	}
 	else
 	{
 		LL_WARNS_ONCE(LOG_MESH) << "Current region is not loaded so there is no capability to load from! Cannot load meshes." << LL_ENDL;
-		LL_DEBUGS_ONCE(LOG_MESH) << "Cannot load mesh " << mesh_id << " due to missing capability." << LL_ENDL;
+		// _LL_DEBUGS_ONCE(LOG_MESH) << "Cannot load mesh " << mesh_id << " due to missing capability." << LL_ENDL;
 	}
 
 	*url = std::move(res_url);
@@ -1984,7 +1984,7 @@ bool LLMeshRepoThread::skinInfoReceived(const LLUUID& mesh_id, U8* data, S32 dat
 		LLMeshSkinInfo info(skin);
 		info.mMeshID = mesh_id;
 
-		// LL_DEBUGS(LOG_MESH) << "info pelvis offset" << info.mPelvisOffset << LL_ENDL;
+		// // _LL_DEBUGS(LOG_MESH) << "info pelvis offset" << info.mPelvisOffset << LL_ENDL;
 		{
 			LLMutexLock lock(mMutex);
 			mSkinInfoQ.emplace(std::move(info));
@@ -2641,7 +2641,7 @@ void LLMeshUploadThread::generateHulls()
 
 void LLMeshUploadThread::doWholeModelUpload()
 {
-	LL_DEBUGS(LOG_MESH) << "Starting model upload.  Instances:  " << mInstance.size() << LL_ENDL;
+	// _LL_DEBUGS(LOG_MESH) << "Starting model upload.  Instances:  " << mInstance.size() << LL_ENDL;
 
 	if (mWholeModelUploadURL.empty())
 	{
@@ -2651,7 +2651,7 @@ void LLMeshUploadThread::doWholeModelUpload()
 	else
 	{
 		generateHulls();
-		LL_DEBUGS(LOG_MESH) << "Hull generation completed." << LL_ENDL;
+		// _LL_DEBUGS(LOG_MESH) << "Hull generation completed." << LL_ENDL;
 
 		mModelData = LLSD::emptyMap();
 		wholeModelToLLSD(mModelData, true);
@@ -2679,7 +2679,7 @@ void LLMeshUploadThread::doWholeModelUpload()
 		{
 			U32 sleep_time(10);
 		
-			LL_DEBUGS(LOG_MESH) << "POST request issued." << LL_ENDL;
+			// _LL_DEBUGS(LOG_MESH) << "POST request issued." << LL_ENDL;
 			
 			mHttpRequest->update(0);
 			while (! LLApp::isQuitting() && ! finished() && ! isDiscarded())
@@ -2691,11 +2691,11 @@ void LLMeshUploadThread::doWholeModelUpload()
 
 			if (isDiscarded())
 			{
-				LL_DEBUGS(LOG_MESH) << "Mesh upload operation discarded." << LL_ENDL;
+				// _LL_DEBUGS(LOG_MESH) << "Mesh upload operation discarded." << LL_ENDL;
 			}
 			else
 			{
-				LL_DEBUGS(LOG_MESH) << "Mesh upload operation completed." << LL_ENDL;
+				// _LL_DEBUGS(LOG_MESH) << "Mesh upload operation completed." << LL_ENDL;
 			}
 		}
 	}
@@ -2739,7 +2739,7 @@ void LLMeshUploadThread::requestWholeModelFee()
 		}
 		if (isDiscarded())
 		{
-			LL_DEBUGS(LOG_MESH) << "Mesh fee query operation discarded." << LL_ENDL;
+			// _LL_DEBUGS(LOG_MESH) << "Mesh fee query operation discarded." << LL_ENDL;
 		}
 	}
 }
@@ -3890,9 +3890,9 @@ void LLMeshRepository::notifyLoadedMeshes()
 				region_name = gAgent.getRegion()->getName();
 				const std::string mesh_cap(gAgent.getRegion()->getViewerAssetUrl());
 				mThread->setGetMeshCap(mesh_cap);
-				LL_DEBUGS(LOG_MESH) << "Retrieving caps for region '" << region_name
+				/*// _LL_DEBUGS(LOG_MESH) << "Retrieving caps for region '" << region_name
 									<< "', ViewerAsset cap:  " << mesh_cap
-									<< LL_ENDL;
+									<< LL_ENDL;*/
 			}
 		}
 		
@@ -4666,11 +4666,11 @@ F32 LLMeshCostData::getRadiusWeightedTris(F32 radius)
 
 F32 LLMeshCostData::getEstTrisForStreamingCost()
 {
-    LL_DEBUGS("StreamingCost") << "tris_by_lod: "
+    /*// _LL_DEBUGS("StreamingCost") << "tris_by_lod: "
                                << mEstTrisByLOD[0] << ", "
                                << mEstTrisByLOD[1] << ", "
                                << mEstTrisByLOD[2] << ", "
-                               << mEstTrisByLOD[3] << LL_ENDL;
+                               << mEstTrisByLOD[3] << LL_ENDL;*/
 
     F32 charged_tris = mEstTrisByLOD[3];
     F32 allowed_tris = mEstTrisByLOD[3];
@@ -4684,7 +4684,7 @@ F32 LLMeshCostData::getEstTrisForStreamingCost()
         F32 excess_tris = mEstTrisByLOD[i]-allowed_tris;
         if (excess_tris>0.f)
         {
-            LL_DEBUGS("StreamingCost") << "excess tris in lod[" << i << "] " << excess_tris << " allowed " << allowed_tris <<  LL_ENDL;
+            // _LL_DEBUGS("StreamingCost") << "excess tris in lod[" << i << "] " << excess_tris << " allowed " << allowed_tris <<  LL_ENDL;
             charged_tris += excess_tris;
         }
     }

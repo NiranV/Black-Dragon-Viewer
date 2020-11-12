@@ -160,7 +160,7 @@ void LLAppCoreHttp::init()
     std::string ca_file = gDirUtilp->getCAFile();
     if ( LLFile::isfile(ca_file) )
     {
-        LL_DEBUGS("Init") << "Setting CA File to " << ca_file << LL_ENDL;
+        // _LL_DEBUGS("Init") << "Setting CA File to " << ca_file << LL_ENDL;
         status = LLCore::HttpRequest::setStaticPolicyOption(LLCore::HttpRequest::PO_CA_FILE,
                                                             LLCore::HttpRequest::GLOBAL_POLICY_ID,
                                                             ca_file, NULL);
@@ -440,9 +440,9 @@ void LLAppCoreHttp::refreshSettings(bool initial)
 				}
 				else
 				{
-					LL_DEBUGS("Init") << "Changed " << init_data[i].mUsage
+					/*// _LL_DEBUGS("Init") << "Changed " << init_data[i].mUsage
 									  << " pipelining.  New value:  " << new_depth
-									  << LL_ENDL;
+									  << LL_ENDL;*/
 					mHttpClasses[app_policy].mPipelined = to_pipeline;
 				}
 			}
@@ -503,9 +503,9 @@ void LLAppCoreHttp::refreshSettings(bool initial)
 				}
 				else
 				{
-					LL_DEBUGS("Init") << "Changed " << init_data[i].mUsage
+					/*// _LL_DEBUGS("Init") << "Changed " << init_data[i].mUsage
 									  << " concurrency.  New value:  " << setting
-									  << LL_ENDL;
+									  << LL_ENDL;*/
 					mHttpClasses[app_policy].mConnLimit = setting;
 					if (initial && setting != init_data[i].mDefault)
 					{

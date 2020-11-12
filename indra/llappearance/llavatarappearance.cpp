@@ -472,13 +472,13 @@ void LLAvatarAppearance::compareJointStateMaps(joint_state_map_t& last_state,
             const std::string& key = it->first;
             if (last_state[key] != curr_state[key])
             {
-                LL_DEBUGS("AvatarBodySize") << "BodySize change " << key << " " << last_state[key] << "->" << curr_state[key] << LL_ENDL;
+                // _LL_DEBUGS("AvatarBodySize") << "BodySize change " << key << " " << last_state[key] << "->" << curr_state[key] << LL_ENDL;
                 diff_count++;
             }
         }
         if (diff_count > 0)
         {
-            LL_DEBUGS("AvatarBodySize") << "Total of BodySize changes " << diff_count << LL_ENDL;
+            // _LL_DEBUGS("AvatarBodySize") << "Total of BodySize changes " << diff_count << LL_ENDL;
         }
         
     }
@@ -622,11 +622,11 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 {
 	LLJoint* joint = NULL;
 
-    LL_DEBUGS("BVH") << "bone info: name " << info->mName
+    /*// _LL_DEBUGS("BVH") << "bone info: name " << info->mName
                      << " isJoint " << info->mIsJoint
                      << " volume_num " << volume_num
                      << " joint_num " << joint_num
-                     << LL_ENDL;
+                     << LL_ENDL;*/
 
 	if (info->mIsJoint)
 	{
@@ -716,7 +716,7 @@ BOOL LLAvatarAppearance::allocateCharacterJoints( U32 num )
 //-----------------------------------------------------------------------------
 BOOL LLAvatarAppearance::buildSkeleton(const LLAvatarSkeletonInfo *info)
 {
-    LL_DEBUGS("BVH") << "numBones " << info->mNumBones << " numCollisionVolumes " << info->mNumCollisionVolumes << LL_ENDL;
+    // _LL_DEBUGS("BVH") << "numBones " << info->mNumBones << " numCollisionVolumes " << info->mNumCollisionVolumes << LL_ENDL;
 
 	// allocate joints
 	if (!allocateCharacterJoints(info->mNumBones))
@@ -839,7 +839,7 @@ void LLAvatarAppearance::buildCharacter()
 	stop_glerror();
 
 // 	gPrintMessagesThisFrame = TRUE;
-	LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
+	// _LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
 
 	if (!status)
 	{

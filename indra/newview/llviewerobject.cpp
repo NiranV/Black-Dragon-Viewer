@@ -155,7 +155,7 @@ static LLTrace::BlockTimerStatHandle FTM_CREATE_OBJECT("Create Object");
 // static
 LLViewerObject *LLViewerObject::createObject(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp, S32 flags)
 {
-    LL_DEBUGS("ObjectUpdate") << "creating " << id << LL_ENDL;
+    // _LL_DEBUGS("ObjectUpdate") << "creating " << id << LL_ENDL;
     dumpStack("ObjectUpdateStack");
     
 	LLViewerObject *res = NULL;
@@ -1135,9 +1135,9 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 					 const EObjectUpdateType update_type,
 					 LLDataPacker *dp)
 {
-	LL_DEBUGS_ONCE("SceneLoadTiming") << "Received viewer object data" << LL_ENDL;
+	// _LL_DEBUGS_ONCE("SceneLoadTiming") << "Received viewer object data" << LL_ENDL;
 
-    LL_DEBUGS("ObjectUpdate") << " mesgsys " << mesgsys << " dp " << dp << " id " << getID() << " update_type " << (S32) update_type << LL_ENDL;
+    // _LL_DEBUGS("ObjectUpdate") << " mesgsys " << mesgsys << " dp " << dp << " id " << getID() << " update_type " << (S32) update_type << LL_ENDL;
     dumpStack("ObjectUpdateStack");
 
 	U32 retval = 0x0;
@@ -2061,7 +2061,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 				{
                     if (((LLViewerObject*)sent_parentp)->isAvatar())
                     {
-                        //LL_DEBUGS("Avatar") << "ATT got object update for attachment " << LL_ENDL; 
+                        //// _LL_DEBUGS("Avatar") << "ATT got object update for attachment " << LL_ENDL; 
                     }
                     
 					//
@@ -2505,7 +2505,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 		// Don't clear invisibility flag on update if still orphaned!
 		if (mDrawable->isState(LLDrawable::FORCE_INVISIBLE) && !mOrphaned)
 		{
-// 			LL_DEBUGS() << "Clearing force invisible: " << mID << ":" << getPCodeString() << ":" << getPositionAgent() << LL_ENDL;
+// 			// _LL_DEBUGS() << "Clearing force invisible: " << mID << ":" << getPCodeString() << ":" << getPositionAgent() << LL_ENDL;
 			mDrawable->clearState(LLDrawable::FORCE_INVISIBLE);
 			gPipeline.markRebuild( mDrawable, LLDrawable::REBUILD_ALL, TRUE );
 		}
@@ -2703,9 +2703,9 @@ void LLViewerObject::interpolateLinearMotion(const F64SecondsImplicit& frame_tim
 			{
 				// Was clipped, so this means we hit a edge where there is no region to enter
 				LLVector3 clip_pos = mRegionp->getPosRegionFromGlobal(clip_pos_global);
-				LL_DEBUGS("Interpolate") << "Hit empty region edge, clipped predicted position to "
+				/*// _LL_DEBUGS("Interpolate") << "Hit empty region edge, clipped predicted position to "
 										 << clip_pos
-										 << " from " << new_pos << LL_ENDL;
+										 << " from " << new_pos << LL_ENDL;*/
 				new_pos = clip_pos;
 				
 				// Stop motion and get server update for bouncing on the edge
@@ -2723,14 +2723,14 @@ void LLViewerObject::interpolateLinearMotion(const F64SecondsImplicit& frame_tim
 					// Workaround: we can't accurately figure out time when we cross border
 					// so just write down time 'after the fact', it is far from optimal in
 					// case of lags, but for lags sMaxUpdateInterpolationTime will kick in first
-					LL_DEBUGS("Interpolate") << "Predicted region crossing, new position " << new_pos << LL_ENDL;
+					// _LL_DEBUGS("Interpolate") << "Predicted region crossing, new position " << new_pos << LL_ENDL;
 					mRegionCrossExpire = frame_time + sMaxRegionCrossingInterpolationTime;
 				}
 				else if (frame_time > mRegionCrossExpire)
 				{
 					// Predicting crossing over 1s, stop motion
 					// Stop motion
-					LL_DEBUGS("Interpolate") << "Predicting region crossing for too long, stopping at " << new_pos << LL_ENDL;
+					// _LL_DEBUGS("Interpolate") << "Predicting region crossing for too long, stopping at " << new_pos << LL_ENDL;
 					new_v.clear();
 					setAcceleration(LLVector3::zero);
 					mRegionCrossExpire = 0;
@@ -2890,7 +2890,7 @@ void LLViewerObject::saveScript(
 	 * XXXPAM Investigate not making this copy.  Seems unecessary, but I'm unsure about the
 	 * interaction with doUpdateInventory() called below.
 	 */
-	LL_DEBUGS() << "LLViewerObject::saveScript() " << item->getUUID() << " " << item->getAssetUUID() << LL_ENDL;
+	// _LL_DEBUGS() << "LLViewerObject::saveScript() " << item->getUUID() << " " << item->getAssetUUID() << LL_ENDL;
 
 	LLPointer<LLViewerInventoryItem> task_item =
 		new LLViewerInventoryItem(item->getUUID(), mID, item->getPermissions(),
@@ -2922,7 +2922,7 @@ void LLViewerObject::saveScript(
 void LLViewerObject::moveInventory(const LLUUID& folder_id,
 								   const LLUUID& item_id)
 {
-	LL_DEBUGS() << "LLViewerObject::moveInventory " << item_id << LL_ENDL;
+	// _LL_DEBUGS() << "LLViewerObject::moveInventory " << item_id << LL_ENDL;
 	LLMessageSystem* msg = gMessageSystem;
 	msg->newMessageFast(_PREHASH_MoveTaskInventory);
 	msg->nextBlockFast(_PREHASH_AgentData);
@@ -3128,13 +3128,13 @@ void LLViewerObject::updateControlAvatar()
     if (should_have_control_avatar && !has_control_avatar)
     {
         std::string vobj_name = llformat("Vol%p", root);
-        LL_DEBUGS("AnimatedObjects") << vobj_name << " calling linkControlAvatar()" << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << vobj_name << " calling linkControlAvatar()" << LL_ENDL;
         root->linkControlAvatar();
     }
     if (!should_have_control_avatar && has_control_avatar)
     {
         std::string vobj_name = llformat("Vol%p", root);
-        LL_DEBUGS("AnimatedObjects") << vobj_name << " calling unlinkControlAvatar()" << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << vobj_name << " calling unlinkControlAvatar()" << LL_ENDL;
         root->unlinkControlAvatar();
     }
     if (getControlAvatar())
@@ -3158,9 +3158,9 @@ void LLViewerObject::linkControlAvatar()
             return;
         }
         mControlAvatar = LLControlAvatar::createControlAvatar(volp);
-        LL_DEBUGS("AnimatedObjects") << volp->getID() 
+        /*// _LL_DEBUGS("AnimatedObjects") << volp->getID() 
                                      << " created control av for " 
-                                     << (S32) (1+volp->numChildren()) << " prims" << LL_ENDL;
+                                     << (S32) (1+volp->numChildren()) << " prims" << LL_ENDL;*/
     }
     LLControlAvatar *cav = getControlAvatar();
     if (cav)
@@ -3220,12 +3220,12 @@ struct LLFilenameAndTask
 	LLFilenameAndTask()
 	{
 		++sCount;
-		LL_DEBUGS() << "Constructing LLFilenameAndTask: " << sCount << LL_ENDL;
+		// _LL_DEBUGS() << "Constructing LLFilenameAndTask: " << sCount << LL_ENDL;
 	}
 	~LLFilenameAndTask()
 	{
 		--sCount;
-		LL_DEBUGS() << "Destroying LLFilenameAndTask: " << sCount << LL_ENDL;
+		// _LL_DEBUGS() << "Destroying LLFilenameAndTask: " << sCount << LL_ENDL;
 	}
 private:
 	LLFilenameAndTask(const LLFilenameAndTask& rhs);
@@ -3290,7 +3290,7 @@ void LLViewerObject::processTaskInv(LLMessageSystem* msg, void** user_data)
 
         if (ft->mFilename.empty())
         {
-            LL_DEBUGS() << "Task has no inventory" << LL_ENDL;
+            // _LL_DEBUGS() << "Task has no inventory" << LL_ENDL;
             // mock up some inventory to make a drop target.
             if (object->mInventory)
             {
@@ -3344,11 +3344,11 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 		&& ft->mSerial >= object->mInventorySerialNum)
 	{
 		object->mInventorySerialNum = ft->mSerial;
-		LL_DEBUGS() << "Receiving inventory task file for serial " << object->mInventorySerialNum << " taskid: " << ft->mTaskID << LL_ENDL;
+		// _LL_DEBUGS() << "Receiving inventory task file for serial " << object->mInventorySerialNum << " taskid: " << ft->mTaskID << LL_ENDL;
 		if (ft->mSerial < object->mExpectedInventorySerialNum)
 		{
 			// User managed to change something while inventory was loading
-			LL_DEBUGS() << "Processing file that is potentially out of date for task: " << ft->mTaskID << LL_ENDL;
+			// _LL_DEBUGS() << "Processing file that is potentially out of date for task: " << ft->mTaskID << LL_ENDL;
 		}
 
 		if (object->loadTaskInvFile(ft->mFilename))
@@ -3383,8 +3383,8 @@ void LLViewerObject::processTaskInvFile(void** user_data, S32 error_code, LLExtS
 	{
 		// This Occurs When two requests were made, and the first one
 		// has already handled it.
-		LL_DEBUGS() << "Problem loading task inventory. Return code: "
-				 << error_code << LL_ENDL;
+		/*// _LL_DEBUGS() << "Problem loading task inventory. Return code: "
+				 << error_code << LL_ENDL;*/
 	}
 	delete ft;
 }
@@ -4172,7 +4172,7 @@ BOOL LLViewerObject::removeNVPair(const std::string& name)
 {
 	char* canonical_name = gNVNameTable.addString(name);
 
-	LL_DEBUGS() << "LLViewerObject::removeNVPair(): " << name << LL_ENDL;
+	// _LL_DEBUGS() << "LLViewerObject::removeNVPair(): " << name << LL_ENDL;
 
 	name_value_map_t::iterator iter = mNameValuePairs.find(canonical_name);
 	if (iter != mNameValuePairs.end())
@@ -4198,7 +4198,7 @@ BOOL LLViewerObject::removeNVPair(const std::string& name)
 		}
 		else
 		{
-			LL_DEBUGS() << "removeNVPair - No region for object" << LL_ENDL;
+			// _LL_DEBUGS() << "removeNVPair - No region for object" << LL_ENDL;
 		}
 	}
 	return FALSE;
@@ -5239,10 +5239,10 @@ S32 LLViewerObject::setTEMaterialID(const U8 te, const LLMaterialID& pMaterialID
 	}
 	//else if (pMaterialID != tep->getMaterialID())
 	{
-		LL_DEBUGS("Material") << "Changing texture entry for te " << (S32)te
+		/*// _LL_DEBUGS("Material") << "Changing texture entry for te " << (S32)te
 							 << ", object " << mID
 							 << ", material " << pMaterialID
-							 << LL_ENDL;
+							 << LL_ENDL;*/
 		retval = LLPrimitive::setTEMaterialID(te, pMaterialID);
 		refreshMaterials();
 	}
@@ -5260,10 +5260,10 @@ S32 LLViewerObject::setTEMaterialParams(const U8 te, const LLMaterialPtr pMateri
 	}
 
 	retval = LLPrimitive::setTEMaterialParams(te, pMaterialParams);
-	LL_DEBUGS("Material") << "Changing material params for te " << (S32)te
+	/*// _LL_DEBUGS("Material") << "Changing material params for te " << (S32)te
 							<< ", object " << mID
 			               << " (" << retval << ")"
-							<< LL_ENDL;
+							<< LL_ENDL;*/
 	setTENormalMap(te, (pMaterialParams) ? pMaterialParams->getNormalID() : LLUUID::null);
 	setTESpecularMap(te, (pMaterialParams) ? pMaterialParams->getSpecularID() : LLUUID::null);
 

@@ -1566,7 +1566,7 @@ BOOL LLFloater::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 // virtual
 BOOL LLFloater::handleMouseUp(S32 x, S32 y, MASK mask)
 {
-	LL_DEBUGS() << "LLFloater::handleMouseUp calling LLPanel (really LLView)'s handleMouseUp (first initialized xui to: " << getPathname() << " )" << LL_ENDL;
+	// _LL_DEBUGS() << "LLFloater::handleMouseUp calling LLPanel (really LLView)'s handleMouseUp (first initialized xui to: " << getPathname() << " )" << LL_ENDL;
 	BOOL handled = LLPanel::handleMouseUp(x,y,mask); // Not implemented in LLPanel so this actually calls LLView
 
 #if AL_VIEWER_EVENT_RECORDER
@@ -3477,7 +3477,7 @@ bool LLFloater::buildFromFile(const std::string& filename)
 	
 	bool res = true;
 	
-	LL_DEBUGS() << "Building floater " << filename << LL_ENDL;
+	// _LL_DEBUGS() << "Building floater " << filename << LL_ENDL;
 	LLUICtrlFactory::instance().pushFileName(filename);
 	{
 		if (!getFactoryMap().empty())

@@ -142,7 +142,7 @@ void LLExperienceCache::importFile(std::istream& istr)
         mCache[public_key] = it->second;
     }
 
-    LL_DEBUGS("ExperienceCache") << "importFile() loaded " << mCache.size() << LL_ENDL;
+    // _LL_DEBUGS("ExperienceCache") << "importFile() loaded " << mCache.size() << LL_ENDL;
 }
 
 void LLExperienceCache::exportFile(std::ostream& ostr) const
@@ -287,8 +287,8 @@ void LLExperienceCache::requestExperiencesCoro(LLCoreHttpUtil::HttpCoroutineAdap
         const LLSD& row = *it;
         LLUUID public_key = row[EXPERIENCE_ID].asUUID();
 
-        LL_DEBUGS("ExperienceCache") << "Received result for " << public_key
-            << " display '" << row[LLExperienceCache::NAME].asString() << "'" << LL_ENDL;
+        /*// _LL_DEBUGS("ExperienceCache") << "Received result for " << public_key
+            << " display '" << row[LLExperienceCache::NAME].asString() << "'" << LL_ENDL;*/
 
         processExperience(public_key, row);
     }
@@ -467,7 +467,7 @@ bool LLExperienceCache::fetch(const LLUUID& key, bool refresh/* = true*/)
 {
 	if(!key.isNull() && !isRequestPending(key) && (refresh || mCache.find(key)==mCache.end()))
 	{
-		LL_DEBUGS("ExperienceCache") << " queue request for " << EXPERIENCE_ID << " " << key << LL_ENDL;
+		// _LL_DEBUGS("ExperienceCache") << " queue request for " << EXPERIENCE_ID << " " << key << LL_ENDL;
 
         mRequestQueue.insert(key);
 		return true;

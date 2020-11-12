@@ -129,7 +129,7 @@ LLPanelGroupRoles::~LLPanelGroupRoles()
 
 BOOL LLPanelGroupRoles::postBuild()
 {
-	LL_DEBUGS() << "LLPanelGroupRoles::postBuild()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRoles::postBuild()" << LL_ENDL;
 
 	mSubTabContainer = getChild<LLTabContainer>("roles_tab_container");
 
@@ -568,7 +568,7 @@ void LLPanelGroupSubTab::buildActionCategory(LLScrollListCtrl* ctrl,
 											 BOOL filter,
 											 BOOL is_owner_role)
 {
-	LL_DEBUGS() << "Building role list for: " << action_set->mActionSetData->mName << LL_ENDL;
+	// _LL_DEBUGS() << "Building role list for: " << action_set->mActionSetData->mName << LL_ENDL;
 	// See if the allow mask matches anything in this category.
 	if (show_all || (allowed_by_some & action_set->mActionSetData->mPowerBit))
 	{
@@ -873,7 +873,7 @@ void LLPanelGroupMembersSubTab::onMemberSelect(LLUICtrl* ctrl, void* user_data)
 
 void LLPanelGroupMembersSubTab::handleMemberSelect()
 {
-	LL_DEBUGS() << "LLPanelGroupMembersSubTab::handleMemberSelect" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupMembersSubTab::handleMemberSelect" << LL_ENDL;
 
 	mAssignedRolesList->deleteAllItems();
 	mAllowedActionsList->deleteAllItems();
@@ -2056,7 +2056,7 @@ void LLPanelGroupRolesSubTab::activate()
 
 void LLPanelGroupRolesSubTab::deactivate()
 {
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::deactivate()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::deactivate()" << LL_ENDL;
 
 	LLPanelGroupSubTab::deactivate();
 	mFirstOpen = FALSE;
@@ -2064,7 +2064,7 @@ void LLPanelGroupRolesSubTab::deactivate()
 
 bool LLPanelGroupRolesSubTab::needsApply(std::string& mesg)
 {
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::needsApply()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::needsApply()" << LL_ENDL;
 
 	LLGroupMgrGroupData* gdatap = LLGroupMgr::getInstance()->getGroupData(mGroupID);
 	if(!gdatap)
@@ -2080,7 +2080,7 @@ bool LLPanelGroupRolesSubTab::needsApply(std::string& mesg)
 
 bool LLPanelGroupRolesSubTab::apply(std::string& mesg)
 {
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::apply()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::apply()" << LL_ENDL;
 
 	saveRoleChanges(true);
 	mFirstOpen = FALSE;
@@ -2143,7 +2143,7 @@ bool LLPanelGroupRolesSubTab::matchesSearchFilter(std::string rolename, std::str
 
 void LLPanelGroupRolesSubTab::update(LLGroupChange gc)
 {
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::update()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::update()" << LL_ENDL;
 
 	if (mGroupID.isNull()) return;
 
@@ -2243,7 +2243,7 @@ void LLPanelGroupRolesSubTab::onRoleSelect(LLUICtrl* ctrl, void* user_data)
 void LLPanelGroupRolesSubTab::handleRoleSelect()
 {
 	BOOL can_delete = TRUE;
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleRoleSelect()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleRoleSelect()" << LL_ENDL;
 
 	mAssignedMembersList->deleteAllItems();
 	mAllowedActionsList->deleteAllItems();
@@ -2391,7 +2391,7 @@ void LLPanelGroupRolesSubTab::handleActionCheck(LLUICtrl* ctrl, bool force)
 	if (!check)
 		return;
 	
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleActionSelect()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleActionSelect()" << LL_ENDL;
 
 	LLGroupMgrGroupData* gdatap = LLGroupMgr::getInstance()->getGroupData(mGroupID);
 	if (!gdatap) 
@@ -2588,7 +2588,7 @@ void LLPanelGroupRolesSubTab::onMemberVisibilityChange(LLUICtrl* ctrl, void* use
 
 void LLPanelGroupRolesSubTab::handleMemberVisibilityChange(bool value)
 {
-	LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleMemberVisibilityChange()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupRolesSubTab::handleMemberVisibilityChange()" << LL_ENDL;
 
 	LLGroupMgrGroupData* gdatap = LLGroupMgr::getInstance()->getGroupData(mGroupID);
 	if (!gdatap) 
@@ -2872,27 +2872,27 @@ void LLPanelGroupActionsSubTab::activate()
 
 void LLPanelGroupActionsSubTab::deactivate()
 {
-	LL_DEBUGS() << "LLPanelGroupActionsSubTab::deactivate()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupActionsSubTab::deactivate()" << LL_ENDL;
 
 	LLPanelGroupSubTab::deactivate();
 }
 
 bool LLPanelGroupActionsSubTab::needsApply(std::string& mesg)
 {
-	LL_DEBUGS() << "LLPanelGroupActionsSubTab::needsApply()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupActionsSubTab::needsApply()" << LL_ENDL;
 
 	return false;
 }
 
 bool LLPanelGroupActionsSubTab::apply(std::string& mesg)
 {
-	LL_DEBUGS() << "LLPanelGroupActionsSubTab::apply()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupActionsSubTab::apply()" << LL_ENDL;
 	return true;
 }
 
 void LLPanelGroupActionsSubTab::update(LLGroupChange gc)
 {
-	LL_DEBUGS() << "LLPanelGroupActionsSubTab::update()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupActionsSubTab::update()" << LL_ENDL;
 
 	if (mGroupID.isNull()) return;
 

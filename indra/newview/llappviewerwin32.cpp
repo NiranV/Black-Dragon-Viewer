@@ -723,7 +723,7 @@ bool LLAppViewerWin32::initHardwareTest()
 
 		LLSplashScreen::update(LLTrans::getString("StartupDetectingHardware"));
 
-		LL_DEBUGS("AppInit") << "Attempting to poll DirectX for hardware info" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "Attempting to poll DirectX for hardware info" << LL_ENDL;
 		gDXHardware.setWriteDebugFunc(write_debug_dx);
 		BOOL probe_ok = gDXHardware.getInfo(vram_only);
 
@@ -748,7 +748,7 @@ bool LLAppViewerWin32::initHardwareTest()
 			}
 			gWarningSettings.setBOOL("AboutDirectX9", FALSE);
 		}
-		LL_DEBUGS("AppInit") << "Done polling DirectX for hardware info" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "Done polling DirectX for hardware info" << LL_ENDL;
 
 		// Only probe once after installation
 		gSavedSettings.setBOOL("ProbeHardwareOnStartup", FALSE);
@@ -879,16 +879,16 @@ bool LLAppViewerWin32::sendURLToOtherInstance(const std::string& url)
 
 	if (other_window != NULL)
 	{
-		LL_DEBUGS() << "Found other window with the name '" << getWindowTitle() << "'" << LL_ENDL;
+		// _LL_DEBUGS() << "Found other window with the name '" << getWindowTitle() << "'" << LL_ENDL;
 		COPYDATASTRUCT cds;
 		const S32 SLURL_MESSAGE_TYPE = 0;
 		cds.dwData = SLURL_MESSAGE_TYPE;
 		cds.cbData = url.length() + 1;
 		cds.lpData = (void*)url.c_str();
 
-		LRESULT msg_result = SendMessage(other_window, WM_COPYDATA, NULL, (LPARAM)&cds);
-		LL_DEBUGS() << "SendMessage(WM_COPYDATA) to other window '" 
-				 << getWindowTitle() << "' returned " << msg_result << LL_ENDL;
+		//LRESULT msg_result = SendMessage(other_window, WM_COPYDATA, NULL, (LPARAM)&cds);
+		/*// _LL_DEBUGS() << "SendMessage(WM_COPYDATA) to other window '" 
+				 << getWindowTitle() << "' returned " << msg_result << LL_ENDL;*/
 		return true;
 	}
 	return false;

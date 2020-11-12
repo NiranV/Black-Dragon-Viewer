@@ -207,7 +207,7 @@ std::string LLCoros::logname()
 
 void LLCoros::setStackSize(S32 stacksize)
 {
-    LL_DEBUGS("LLCoros") << "Setting coroutine stack size to " << stacksize << LL_ENDL;
+    // _LL_DEBUGS("LLCoros") << "Setting coroutine stack size to " << stacksize << LL_ENDL;
     mStackSize = stacksize;
 }
 

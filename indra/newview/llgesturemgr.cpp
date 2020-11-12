@@ -1337,7 +1337,7 @@ void LLGestureMgr::removeObserver(LLGestureManagerObserver* observer)
 // from the list.
 void LLGestureMgr::notifyObservers()
 {
-	LL_DEBUGS() << "LLGestureMgr::notifyObservers" << LL_ENDL;
+	// _LL_DEBUGS() << "LLGestureMgr::notifyObservers" << LL_ENDL;
 
 	for(std::vector<LLGestureManagerObserver*>::iterator iter = mObservers.begin(); 
 		iter != mObservers.end(); 

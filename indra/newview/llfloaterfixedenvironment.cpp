@@ -581,7 +581,7 @@ void LLFloaterFixedEnvironment::doApplyCreateNewInventory(std::string settings_n
 
 void LLFloaterFixedEnvironment::doApplyUpdateInventory(const LLSettingsBase::ptr_t &settings)
 {
-    LL_DEBUGS("ENVEDIT") << "Update inventory for " << mInventoryId << LL_ENDL;
+    // _LL_DEBUGS("ENVEDIT") << "Update inventory for " << mInventoryId << LL_ENDL;
     if (mInventoryId.isNull())
     {
         LLSettingsVOBase::createInventoryItem(settings, gInventory.findCategoryUUIDForType(LLFolderType::FT_SETTINGS), std::string(),

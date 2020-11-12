@@ -243,8 +243,8 @@ void BlockTimer::incrementalUpdateTimerTree()
 {
 				// since ancestors have already been visited, re-parenting won't affect tree traversal
 			//step up tree, bringing our descendants with us
-			LL_DEBUGS("FastTimers") << "Moving " << timerp->getName() << " from child of " << timerp->getParent()->getName() <<
-				" to child of " << timerp->getParent()->getParent()->getName() << LL_ENDL;
+			/*// _LL_DEBUGS("FastTimers") << "Moving " << timerp->getName() << " from child of " << timerp->getParent()->getName() <<
+				" to child of " << timerp->getParent()->getParent()->getName() << LL_ENDL;*/
 			timerp->setParent(timerp->getParent()->getParent());
 				accumulator.mParent = timerp->getParent();
 				accumulator.mMoveUpTree = false;
@@ -347,11 +347,11 @@ void BlockTimer::logStats()
 		static S32 call_count = 0;
 		if (call_count % 100 == 0)
 		{
-			LL_DEBUGS("FastTimers") << "countsPerSecond: " << countsPerSecond() << LL_ENDL;
-			LL_DEBUGS("FastTimers") << "LLProcessorInfo().getCPUFrequency() " << LLProcessorInfo().getCPUFrequency() << LL_ENDL;
-			LL_DEBUGS("FastTimers") << "getCPUClockCount32() " << getCPUClockCount32() << LL_ENDL;
-			LL_DEBUGS("FastTimers") << "getCPUClockCount64() " << getCPUClockCount64() << LL_ENDL;
-			LL_DEBUGS("FastTimers") << "elapsed sec " << ((F64)getCPUClockCount64() / (F64HertzImplicit)LLProcessorInfo().getCPUFrequency()) << LL_ENDL;
+			// _LL_DEBUGS("FastTimers") << "countsPerSecond: " << countsPerSecond() << LL_ENDL;
+			// _LL_DEBUGS("FastTimers") << "LLProcessorInfo().getCPUFrequency() " << LLProcessorInfo().getCPUFrequency() << LL_ENDL;
+			// _LL_DEBUGS("FastTimers") << "getCPUClockCount32() " << getCPUClockCount32() << LL_ENDL;
+			// _LL_DEBUGS("FastTimers") << "getCPUClockCount64() " << getCPUClockCount64() << LL_ENDL;
+			// _LL_DEBUGS("FastTimers") << "elapsed sec " << ((F64)getCPUClockCount64() / (F64HertzImplicit)LLProcessorInfo().getCPUFrequency()) << LL_ENDL;
 		}
 		call_count++;
 

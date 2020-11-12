@@ -72,7 +72,7 @@ LLIOPipe::LLIOPipe() :
 
 LLIOPipe::~LLIOPipe()
 {
-	//LL_DEBUGS() << "destroying LLIOPipe" << LL_ENDL;
+	//// _LL_DEBUGS() << "destroying LLIOPipe" << LL_ENDL;
 }
 
 //virtual 

@@ -208,7 +208,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 		if (width_ctrl->getValue().asInteger() == 0)
 		{
 			S32 w = gViewerWindow->getWindowWidthRaw();
-			LL_DEBUGS() << "Initializing width spinner (" << width_ctrl->getName() << "): " << w << LL_ENDL;
+			// _LL_DEBUGS() << "Initializing width spinner (" << width_ctrl->getName() << "): " << w << LL_ENDL;
 			width_ctrl->setValue(w);
 			if (getActiveSnapshotType(floater) == LLSnapshotModel::SNAPSHOT_TEXTURE)
 			{
@@ -218,7 +218,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 		if (height_ctrl->getValue().asInteger() == 0)
 		{
 			S32 h = gViewerWindow->getWindowHeightRaw();
-			LL_DEBUGS() << "Initializing height spinner (" << height_ctrl->getName() << "): " << h << LL_ENDL;
+			// _LL_DEBUGS() << "Initializing height spinner (" << height_ctrl->getName() << "): " << h << LL_ENDL;
 			height_ctrl->setValue(h);
 			if (getActiveSnapshotType(floater) == LLSnapshotModel::SNAPSHOT_TEXTURE)
 			{
@@ -265,7 +265,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 	BOOL got_snap = previewp && previewp->getSnapshotUpToDate();
 
 	// *TODO: Separate maximum size for Web images from postcards
-	LL_DEBUGS() << "Is snapshot up-to-date? " << got_snap << LL_ENDL;
+	// _LL_DEBUGS() << "Is snapshot up-to-date? " << got_snap << LL_ENDL;
 
 	LLLocale locale(LLLocale::USER_LOCALE);
 	std::string bytes_string;
@@ -324,7 +324,7 @@ void LLFloaterSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
 		info["have-snapshot"] = got_snap;
 		current_panel->updateControls(info);
 	}
-	LL_DEBUGS() << "finished updating controls" << LL_ENDL;
+	// _LL_DEBUGS() << "finished updating controls" << LL_ENDL;
 }
 
 //virtual
@@ -366,7 +366,7 @@ void LLFloaterSnapshotBase::ImplBase::onClickNewSnapshot(void* data)
 	if (previewp)
 	{
 		floater->impl->setStatus(ImplBase::STATUS_READY);
-		LL_DEBUGS() << "updating snapshot" << LL_ENDL;
+		// _LL_DEBUGS() << "updating snapshot" << LL_ENDL;
 		previewp->mForceUpdateSnapshot = TRUE;
 	}
 }
@@ -473,7 +473,7 @@ void LLFloaterSnapshot::Impl::applyKeepAspectCheck(LLFloaterSnapshotBase* view, 
 			previewp->getSize(w, h) ;
 			updateSpinners(view, previewp, w, h, TRUE); // may change w and h
 
-			LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+			// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
 			previewp->setSize(w, h) ;
 			previewp->updateSnapshot(TRUE);
 		}
@@ -615,7 +615,7 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 		if (width == 0 || height == 0)
 		{
 			// take resolution from current window size
-			LL_DEBUGS() << "Setting preview res from window: " << gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
+			// _LL_DEBUGS() << "Setting preview res from window: " << gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
 			previewp->setSize(gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw());
 		}
 		else if (width == -1 || height == -1)
@@ -625,7 +625,7 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 			LLPanelSnapshot* spanel = getActivePanel(view);
 			if (spanel)
 			{
-				LL_DEBUGS() << "Loading typed res from panel " << spanel->getName() << LL_ENDL;
+				// _LL_DEBUGS() << "Loading typed res from panel " << spanel->getName() << LL_ENDL;
 				new_width = spanel->getTypedPreviewWidth();
 				new_height = spanel->getTypedPreviewHeight();
 
@@ -638,10 +638,10 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 			}
 			else
 			{
-				LL_DEBUGS() << "No custom res chosen, setting preview res from window: "
+				/*// _LL_DEBUGS() << "No custom res chosen, setting preview res from window: "
 					<< gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
 				new_width = gViewerWindow->getWindowWidthRaw();
-				new_height = gViewerWindow->getWindowHeightRaw();
+				new_height = gViewerWindow->getWindowHeightRaw();*/
 			}
 
 			llassert(new_width > 0 && new_height > 0);
@@ -650,7 +650,7 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 		else
 		{
 			// use the resolution from the selected pre-canned drop-down choice
-			LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
+			// _LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
 			previewp->setSize(width, height);
 		}
 
@@ -687,12 +687,12 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 			previewp->setSize(width, height);
 
 			// hide old preview as the aspect ratio could be wrong
-			LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+			// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
 			// Don't update immediately, give window chance to redraw
 			getPreviewView()->updateSnapshot(TRUE, FALSE, 1.f);
 			if(do_update)
 			{
-				LL_DEBUGS() << "Will update controls" << LL_ENDL;
+				// _LL_DEBUGS() << "Will update controls" << LL_ENDL;
 				updateControls(view);
 			}
 		}
@@ -730,7 +730,7 @@ void LLFloaterSnapshot::Impl::onImageFormatChange(LLFloaterSnapshotBase* view)
 {
 	if (view)
 	{
-		LL_DEBUGS() << "image format changed, updating snapshot" << LL_ENDL;
+		// _LL_DEBUGS() << "image format changed, updating snapshot" << LL_ENDL;
 		getPreviewView()->updateSnapshot(TRUE);
 		updateControls(view);
 	}
@@ -812,7 +812,7 @@ void LLFloaterSnapshot::Impl::updateSpinners(LLFloaterSnapshotBase* view, LLSnap
 
 void LLFloaterSnapshot::Impl::applyCustomResolution(LLFloaterSnapshotBase* view, S32 w, S32 h)
 {
-	LL_DEBUGS() << "applyCustomResolution(" << w << ", " << h << ")" << LL_ENDL;
+	// _LL_DEBUGS() << "applyCustomResolution(" << w << ", " << h << ")" << LL_ENDL;
 	if (!view) return;
 
 	LLSnapshotLivePreview* previewp = getPreviewView();
@@ -831,7 +831,7 @@ void LLFloaterSnapshot::Impl::applyCustomResolution(LLFloaterSnapshotBase* view,
 			comboSetCustom(view, "postcard_size_combo");
 			comboSetCustom(view, "texture_size_combo");
 			comboSetCustom(view, "local_size_combo");
-			LL_DEBUGS() << "applied custom resolution, updating thumbnail" << LL_ENDL;
+			// _LL_DEBUGS() << "applied custom resolution, updating thumbnail" << LL_ENDL;
 			previewp->updateSnapshot(TRUE);
 		}
 	}
@@ -1036,7 +1036,7 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 	LLSnapshotLivePreview* preview = getPreviewView();
 	if(preview)
 	{
-		LL_DEBUGS() << "opened, updating snapshot" << LL_ENDL;
+		// _LL_DEBUGS() << "opened, updating snapshot" << LL_ENDL;
 		preview->setAllowFullScreenPreview(TRUE);
 		preview->updateSnapshot(TRUE);
 	}
@@ -1231,7 +1231,7 @@ BOOL LLFloaterSnapshotBase::ImplBase::updatePreviewList(bool initialized)
 		return FALSE;
 
 	BOOL changed = FALSE;
-	LL_DEBUGS() << "npreviews: " << LLSnapshotLivePreview::sList.size() << LL_ENDL;
+	// _LL_DEBUGS() << "npreviews: " << LLSnapshotLivePreview::sList.size() << LL_ENDL;
 	for (std::set<LLSnapshotLivePreview*>::iterator iter = LLSnapshotLivePreview::sList.begin();
 		iter != LLSnapshotLivePreview::sList.end(); ++iter)
 	{
@@ -1245,7 +1245,7 @@ void LLFloaterSnapshotBase::ImplBase::updateLivePreview()
 {
 	if (ImplBase::updatePreviewList(true) && mFloater)
 	{
-		LL_DEBUGS() << "changed" << LL_ENDL;
+		// _LL_DEBUGS() << "changed" << LL_ENDL;
 		updateControls(mFloater);
 	}
 }
@@ -1279,7 +1279,7 @@ LLFloaterSnapshot* LLFloaterSnapshot::getInstance()
 // virtual
 void LLFloaterSnapshot::saveTexture()
 {
-	LL_DEBUGS() << "saveTexture" << LL_ENDL;
+	// _LL_DEBUGS() << "saveTexture" << LL_ENDL;
 
 	LLSnapshotLivePreview* previewp = getPreviewView();
 	if (!previewp)
@@ -1293,7 +1293,7 @@ void LLFloaterSnapshot::saveTexture()
 
 void LLFloaterSnapshot::saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb)
 {
-	LL_DEBUGS() << "saveLocal" << LL_ENDL;
+	// _LL_DEBUGS() << "saveLocal" << LL_ENDL;
 	LLSnapshotLivePreview* previewp = getPreviewView();
 	llassert(previewp != NULL);
 	if (previewp)

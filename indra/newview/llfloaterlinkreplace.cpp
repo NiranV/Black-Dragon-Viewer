@@ -218,12 +218,12 @@ void LLFloaterLinkReplace::onStartClickedResponse(const LLSD& notification, cons
 void LLFloaterLinkReplace::linkCreatedCallback(LLHandle<LLFloaterLinkReplace> floater_handle, const LLUUID& old_item_id, const LLUUID& target_item_id,
 												bool needs_wearable_ordering_update, bool needs_description_update, const LLUUID& outfit_folder_id)
 {
-	LL_DEBUGS() << "Inventory link replace:" << LL_NEWLINE
+	/*// _LL_DEBUGS() << "Inventory link replace:" << LL_NEWLINE
 		<< " - old_item_id = " << old_item_id.asString() << LL_NEWLINE
 		<< " - target_item_id = " << target_item_id.asString() << LL_NEWLINE
 		<< " - order update = " << (needs_wearable_ordering_update ? "true" : "false") << LL_NEWLINE
 		<< " - description update = " << (needs_description_update ? "true" : "false") << LL_NEWLINE
-		<< " - outfit_folder_id = " << outfit_folder_id.asString() << LL_ENDL;
+		<< " - outfit_folder_id = " << outfit_folder_id.asString() << LL_ENDL;*/
 
 	// If we are replacing an object, bodypart or gesture link within an outfit folder,
 	// we need to change the actual description of the link itself. LLAppearanceMgr *should*
@@ -251,7 +251,7 @@ void LLFloaterLinkReplace::linkCreatedCallback(LLHandle<LLFloaterLinkReplace> fl
 				item->getType() == LLAssetType::AT_GESTURE)
 				&& !item->getActualDescription().empty())
 			{
-				LL_DEBUGS() << "Updating description for " << item->getName() << LL_ENDL;
+				// _LL_DEBUGS() << "Updating description for " << item->getName() << LL_ENDL;
 
 				LLSD updates;
 				updates["desc"] = "";
@@ -306,13 +306,13 @@ void LLFloaterLinkReplace::decreaseOpenItemCount()
 		LLStringUtil::format_map_t args;
 		args["NUM"] = llformat("%d", mRemainingItems);
 		mStatusText->setText(getString("ItemsRemaining", args));
-		LL_DEBUGS() << "Inventory link replace: " << mRemainingItems << " links remaining..." << LL_ENDL;
+		// _LL_DEBUGS() << "Inventory link replace: " << mRemainingItems << " links remaining..." << LL_ENDL;
 	}
 }
 
 BOOL LLFloaterLinkReplace::tick()
 {
-	LL_DEBUGS() << "Calling tick - remaining items = " << mRemainingInventoryItems.size() << LL_ENDL;
+	// _LL_DEBUGS() << "Calling tick - remaining items = " << mRemainingInventoryItems.size() << LL_ENDL;
 
 	LLInventoryModel::item_array_t current_batch;
 
@@ -350,9 +350,9 @@ void LLFloaterLinkReplace::processBatch(LLInventoryModel::item_array_t items)
 			// Other items in the COF need a description update (description of the actual link item must be empty)
 			bool needs_description_update = is_outfit_folder && target_item->getType() != LLAssetType::AT_CLOTHING;
 
-			LL_DEBUGS() << "is_outfit_folder = " << (is_outfit_folder ? "true" : "false") << LL_NEWLINE
+			/*// _LL_DEBUGS() << "is_outfit_folder = " << (is_outfit_folder ? "true" : "false") << LL_NEWLINE
 				<< "needs_wearable_ordering_update = " << (needs_wearable_ordering_update ? "true" : "false") << LL_NEWLINE
-				<< "needs_description_update = " << (needs_description_update ? "true" : "false") << LL_ENDL;
+				<< "needs_description_update = " << (needs_description_update ? "true" : "false") << LL_ENDL;*/
 
 			LLInventoryObject::const_object_list_t obj_array;
 			obj_array.push_back(LLConstPointer<LLInventoryObject>(target_item));

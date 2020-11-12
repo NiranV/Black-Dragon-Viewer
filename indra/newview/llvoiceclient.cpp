@@ -154,7 +154,7 @@ void LLVoiceClient::userAuthorized(const std::string& user_id, const LLUUID &age
 	// In the future, we should change this to allow voice module registration
 	// with a table lookup of sorts.
 	std::string voice_server = gSavedSettings.getString("VoiceServerType");
-	LL_DEBUGS("Voice") << "voice server type " << voice_server << LL_ENDL;
+	// _LL_DEBUGS("Voice") << "voice server type " << voice_server << LL_ENDL;
 	if(voice_server == "vivox")
 	{
 		mVoiceModule = (LLVoiceModuleInterface *)LLVivoxVoiceClient::getInstance();
@@ -991,7 +991,7 @@ void LLSpeakerVolumeStorage::storeSpeakerVolume(const LLUUID& speaker_id, F32 vo
 		mSpeakersData[speaker_id] = volume;
 
 		// Enable this when debugging voice slider issues.  It's way to spammy even for debug-level logging.
-		// LL_DEBUGS("Voice") << "Stored volume = " << volume <<  " for " << id << LL_ENDL;
+		// // _LL_DEBUGS("Voice") << "Stored volume = " << volume <<  " for " << id << LL_ENDL;
 	}
 	else
 	{
@@ -1009,7 +1009,7 @@ bool LLSpeakerVolumeStorage::getSpeakerVolume(const LLUUID& speaker_id, F32& vol
 		volume = it->second;
 
 		// Enable this when debugging voice slider issues.  It's way to spammy even for debug-level logging.
-		// LL_DEBUGS("Voice") << "Retrieved stored volume = " << volume <<  " for " << id << LL_ENDL;
+		// // _LL_DEBUGS("Voice") << "Retrieved stored volume = " << volume <<  " for " << id << LL_ENDL;
 
 		return true;
 	}
@@ -1022,7 +1022,7 @@ void LLSpeakerVolumeStorage::removeSpeakerVolume(const LLUUID& speaker_id)
 	mSpeakersData.erase(speaker_id);
 
 	// Enable this when debugging voice slider issues.  It's way to spammy even for debug-level logging.
-	// LL_DEBUGS("Voice") << "Removing stored volume for  " << id << LL_ENDL;
+	// // _LL_DEBUGS("Voice") << "Removing stored volume for  " << id << LL_ENDL;
 }
 
 /* static */ F32 LLSpeakerVolumeStorage::transformFromLegacyVolume(F32 volume_in)

@@ -197,7 +197,7 @@ void accept_friendship_coro(std::string url, LLSD notification)
         }
         else
         {
-            LL_DEBUGS("Friendship") << "Adding friend to list" << httpResults << LL_ENDL;
+            // _LL_DEBUGS("Friendship") << "Adding friend to list" << httpResults << LL_ENDL;
             // add friend to recent people list
             LLRecentPeople::instance().add(payload["from_id"]);
 
@@ -240,7 +240,7 @@ void decline_friendship_coro(std::string url, LLSD notification, S32 option)
         }
         else
         {
-            LL_DEBUGS("Friendship") << "Friendship declined" << httpResults << LL_ENDL;
+            // _LL_DEBUGS("Friendship") << "Friendship declined" << httpResults << LL_ENDL;
             if (option == 1)
             {
                 LLNotificationsUtil::add("FriendshipDeclinedByMe",
@@ -276,16 +276,16 @@ bool friendship_offer_callback(const LLSD& notification, const LLSD& response)
 
 		    // This will also trigger an onlinenotification if the user is online
             std::string url = gAgent.getRegionCapability("AcceptFriendship");
-            LL_DEBUGS("Friendship") << "Cap string: " << url << LL_ENDL;
+            // _LL_DEBUGS("Friendship") << "Cap string: " << url << LL_ENDL;
             if (!url.empty() && payload.has("online") && payload["online"].asBoolean() == false)
             {
-                LL_DEBUGS("Friendship") << "Accepting friendship via capability" << LL_ENDL;
+                // _LL_DEBUGS("Friendship") << "Accepting friendship via capability" << LL_ENDL;
                 LLCoros::instance().launch("LLMessageSystem::acceptFriendshipOffer",
                     boost::bind(accept_friendship_coro, url, notification));
             }
             else if (payload.has("session_id") && payload["session_id"].asUUID().notNull())
             {
-                LL_DEBUGS("Friendship") << "Accepting friendship via viewer message" << LL_ENDL;
+                // _LL_DEBUGS("Friendship") << "Accepting friendship via viewer message" << LL_ENDL;
                 msg->newMessageFast(_PREHASH_AcceptFriendship);
                 msg->nextBlockFast(_PREHASH_AgentData);
                 msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
@@ -315,16 +315,16 @@ bool friendship_offer_callback(const LLSD& notification, const LLSD& response)
 			    // We no longer notify other viewers, but we DO still send
                 // the rejection to the simulator to delete the pending userop.
                 std::string url = gAgent.getRegionCapability("DeclineFriendship");
-                LL_DEBUGS("Friendship") << "Cap string: " << url << LL_ENDL;
+                // _LL_DEBUGS("Friendship") << "Cap string: " << url << LL_ENDL;
                 if (!url.empty() && payload.has("online") && payload["online"].asBoolean() == false)
                 {
-                    LL_DEBUGS("Friendship") << "Declining friendship via capability" << LL_ENDL;
+                    // _LL_DEBUGS("Friendship") << "Declining friendship via capability" << LL_ENDL;
                     LLCoros::instance().launch("LLMessageSystem::declineFriendshipOffer",
                         boost::bind(decline_friendship_coro, url, notification, option));
                 }
                 else if (payload.has("session_id") && payload["session_id"].asUUID().notNull())
                 {
-                    LL_DEBUGS("Friendship") << "Declining friendship via viewer message" << LL_ENDL;
+                    // _LL_DEBUGS("Friendship") << "Declining friendship via viewer message" << LL_ENDL;
                     msg->newMessageFast(_PREHASH_DeclineFriendship);
                     msg->nextBlockFast(_PREHASH_AgentData);
                     msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
@@ -436,7 +436,7 @@ void send_complete_agent_movement(const LLHost& sim_host)
 void process_logout_reply(LLMessageSystem* msg, void**)
 {
 	// The server has told us it's ok to quit.
-	LL_DEBUGS("Messaging") << "process_logout_reply" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "process_logout_reply" << LL_ENDL;
 
 	LLUUID agent_id;
 	msg->getUUID("AgentData", "AgentID", agent_id);
@@ -481,7 +481,7 @@ void process_layer_data(LLMessageSystem *mesgsys, void **user_data)
 {
 	LLViewerRegion *regionp = LLWorld::getInstance()->getRegion(mesgsys->getSender());
 
-	LL_DEBUGS_ONCE("SceneLoadTiming") << "Received layer data" << LL_ENDL;
+	// _LL_DEBUGS_ONCE("SceneLoadTiming") << "Received layer data" << LL_ENDL;
 
 	if(!regionp)
 	{
@@ -792,7 +792,7 @@ void response_group_invitation_coro(std::string url, LLUUID group_id, bool notif
         }
         else
         {
-            LL_DEBUGS("GroupInvite") << "Successfully sent response to group " << group_id << " invitation" << LL_ENDL;
+            // _LL_DEBUGS("GroupInvite") << "Successfully sent response to group " << group_id << " invitation" << LL_ENDL;
             if (notify_and_update)
             {
                 LLNotificationsUtil::add("JoinGroupSuccess");
@@ -836,7 +836,7 @@ void send_join_group_response(LLUUID group_id, LLUUID transaction_id, bool accep
 
         if (!url.empty())
         {
-            LL_DEBUGS("GroupInvite") << "Capability url: " << url << LL_ENDL;
+            // _LL_DEBUGS("GroupInvite") << "Capability url: " << url << LL_ENDL;
             LLCoros::instance().launch("LLMessageSystem::acceptGroupInvitation",
                 boost::bind(response_group_invitation_coro, url, group_id, accept_invite));
         }
@@ -848,7 +848,7 @@ void send_join_group_response(LLUUID group_id, LLUUID transaction_id, bool accep
     }
     else
     {
-        LL_DEBUGS("GroupInvite") << "Replying to group invite via IM message" << LL_ENDL;
+        // _LL_DEBUGS("GroupInvite") << "Replying to group invite via IM message" << LL_ENDL;
 
         EInstantMessage type = accept_invite ? IM_GROUP_INVITATION_ACCEPT : IM_GROUP_INVITATION_DECLINE;
 
@@ -969,7 +969,7 @@ static void highlight_inventory_objects_in_panel(const std::vector<LLUUID>& item
 			continue;
 		}
 
-		LL_DEBUGS("Inventory_Move") << "Highlighting inventory item: " << item->getName() << ", " << item_id  << LL_ENDL;
+		// _LL_DEBUGS("Inventory_Move") << "Highlighting inventory item: " << item->getName() << ", " << item_id  << LL_ENDL;
 		LLFolderView* fv = inventory_panel->getRootFolder();
 		if (fv)
 		{
@@ -981,7 +981,7 @@ static void highlight_inventory_objects_in_panel(const std::vector<LLUUID>& item
 				{
 					// Parent folders can be different in case of 2 consecutive drag and drop
 					// operations when the second one is started before the first one completes.
-					LL_DEBUGS("Inventory_Move") << "Open folder: " << fv_folder->getName() << LL_ENDL;
+					// _LL_DEBUGS("Inventory_Move") << "Open folder: " << fv_folder->getName() << LL_ENDL;
 					fv_folder->setOpen(TRUE);
 					if (fv_folder->isSelected())
 					{
@@ -1083,7 +1083,7 @@ private:
 		// if selection is not changed since watch started lets hightlight new items.
 		if (active_panel && !isSelectionChanged())
 		{
-			LL_DEBUGS("Inventory_Move") << "Selecting new items..." << LL_ENDL;
+			// _LL_DEBUGS("Inventory_Move") << "Selecting new items..." << LL_ENDL;
 			active_panel->clearSelection();
 			highlight_inventory_objects_in_panel(mAddedItems, active_panel);
 		}
@@ -1118,8 +1118,8 @@ private:
 		std::set_symmetric_difference(mSelectedItems.begin(), mSelectedItems.end(),
 			selected_items.begin(), selected_items.end(), std::inserter(different_items, different_items.begin()));
 
-		LL_DEBUGS("Inventory_Move") << "Selected firstly: " << mSelectedItems.size()
-			<< ", now: " << selected_items.size() << ", difference: " << different_items.size() << LL_ENDL;
+		/*// _LL_DEBUGS("Inventory_Move") << "Selected firstly: " << mSelectedItems.size()
+			<< ", now: " << selected_items.size() << ", difference: " << different_items.size() << LL_ENDL;*/
 
 		return different_items.size() > 0;
 	}
@@ -1251,7 +1251,7 @@ protected:
 					const LLUUID& asset_uuid = added_item->getAssetUUID();
 					if (gInventoryMoveObserver->isAssetWatched(asset_uuid))
 					{
-						LL_DEBUGS("Inventory_Move") << "Found asset UUID: " << asset_uuid << LL_ENDL;
+						// _LL_DEBUGS("Inventory_Move") << "Found asset UUID: " << asset_uuid << LL_ENDL;
 						was_moved = true;
 					}
 				}
@@ -1333,7 +1333,7 @@ public:
 
 	virtual void done()
 	{
-		LL_DEBUGS("Messaging") << "LLDiscardAgentOffer::done()" << LL_ENDL;
+		// _LL_DEBUGS("Messaging") << "LLDiscardAgentOffer::done()" << LL_ENDL;
 
 		// We're invoked from LLInventoryModel::notifyObservers().
 		// If we now try to remove the inventory item, it will cause a nested
@@ -1372,14 +1372,14 @@ bool check_offer_throttle(const std::string& from_name, bool check_only)
 	
 	if(gThrottleTimer.checkExpirationAndReset(OFFER_THROTTLE_TIME))
 	{
-		LL_DEBUGS("Messaging") << "Throttle Expired" << LL_ENDL;
+		// _LL_DEBUGS("Messaging") << "Throttle Expired" << LL_ENDL;
 		throttle_count=1;
 		throttle_logged=false;
 		return true;
 	}
 	else //has not expired
 	{
-		LL_DEBUGS("Messaging") << "Throttle Not Expired, Count: " << throttle_count << LL_ENDL;
+		// _LL_DEBUGS("Messaging") << "Throttle Not Expired, Count: " << throttle_count << LL_ENDL;
 		// When downloading the initial inventory we get a lot of new items
 		// coming in and can't tell that from spam.
 		if (LLStartUp::getStartupState() >= STATE_STARTED
@@ -1470,7 +1470,7 @@ void open_inventory_offer(const uuid_vec_t& objects, const std::string& from_nam
 			// Special handling for various types.
 			if (check_offer_throttle(from_name, false)) // If we are throttled, don't display
 			{
-				LL_DEBUGS("Messaging") << "Highlighting inventory item: " << item->getUUID()  << LL_ENDL;
+				// _LL_DEBUGS("Messaging") << "Highlighting inventory item: " << item->getUUID()  << LL_ENDL;
 				// If we opened this ourselves, focus it
 				const BOOL take_focus = from_name.empty() ? TAKE_FOCUS_YES : TAKE_FOCUS_NO;
 				switch(asset_type)
@@ -1539,7 +1539,7 @@ void open_inventory_offer(const uuid_vec_t& objects, const std::string& from_nam
 						LLFloaterReg::showInstance("preview_sound", LLSD(obj_id), take_focus);
 						break;
 					default:
-						LL_DEBUGS("Messaging") << "No preview method for previewable asset type : " << LLAssetType::lookupHumanReadable(asset_type)  << LL_ENDL;
+						// _LL_DEBUGS("Messaging") << "No preview method for previewable asset type : " << LLAssetType::lookupHumanReadable(asset_type)  << LL_ENDL;
 						break;
 				}
 			}
@@ -1838,8 +1838,8 @@ bool LLOfferInfo::inventory_offer_callback(const LLSD& notification, const LLSD&
 	{
 	case IOR_SHOW:
 		// we will want to open this item when it comes back.
-		LL_DEBUGS("Messaging") << "Initializing an opener for tid: " << mTransactionID
-				 << LL_ENDL;
+		/*// _LL_DEBUGS("Messaging") << "Initializing an opener for tid: " << mTransactionID
+				 << LL_ENDL;*/
 		switch (mIM)
 		{
 		case IM_INVENTORY_OFFERED:
@@ -2447,7 +2447,7 @@ static LLNotificationFunctorRegistration callingcard_offer_cb_reg("OfferCallingC
 void process_offer_callingcard(LLMessageSystem* msg, void**)
 {
 	// someone has offered to form a friendship
-	LL_DEBUGS("Messaging") << "callingcard offer" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "callingcard offer" << LL_ENDL;
 
 	LLUUID source_id;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, source_id);
@@ -2978,7 +2978,7 @@ void process_teleport_start(LLMessageSystem *msg, void**)
 		LL_WARNS("Messaging") << "Got TeleportStart, but teleport already in progress. TeleportFlags=" << teleport_flags << LL_ENDL;
 	}
 
-	LL_DEBUGS("Messaging") << "Got TeleportStart with TeleportFlags=" << teleport_flags << ". gTeleportDisplay: " << gTeleportDisplay << ", gAgent.mTeleportState: " << gAgent.getTeleportState() << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "Got TeleportStart with TeleportFlags=" << teleport_flags << ". gTeleportDisplay: " << gTeleportDisplay << ", gAgent.mTeleportState: " << gAgent.getTeleportState() << LL_ENDL;
 
 	// *NOTE: The server sends two StartTeleport packets when you are teleporting to a LM
 	LLViewerMessage::getInstance()->mTeleportStartedSignal();
@@ -3041,7 +3041,7 @@ void process_teleport_progress(LLMessageSystem* msg, void**)
 	}
 	std::string buffer;
 	msg->getString("Info", "Message", buffer);
-	LL_DEBUGS("Messaging") << "teleport progress: " << buffer << " flags: " << teleport_flags << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "teleport progress: " << buffer << " flags: " << teleport_flags << LL_ENDL;
 
 	//Sorta hacky...default to using simulator raw messages
 	//if we don't find the coresponding mapping in our progress mappings
@@ -3153,7 +3153,7 @@ BOOL LLPostTeleportNotifiers::tick()
 // We're going to pretend to be a new agent
 void process_teleport_finish(LLMessageSystem* msg, void**)
 {
-	LL_DEBUGS("Messaging") << "Got teleport location message" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "Got teleport location message" << LL_ENDL;
 	LLUUID agent_id;
 	msg->getUUIDFast(_PREHASH_Info, _PREHASH_AgentID, agent_id);
 	if (agent_id != gAgent.getID())
@@ -3269,8 +3269,8 @@ void process_teleport_finish(LLMessageSystem* msg, void**)
 	gAgent.setTeleportState( LLAgent::TELEPORT_MOVING );
 	gAgent.setTeleportMessage(LLAgent::sTeleportProgressMessages["contacting"]);
 
-	LL_DEBUGS("CrossingCaps") << "Calling setSeedCapability from process_teleport_finish(). Seed cap == "
-			<< seedCap << LL_ENDL;
+	/*// _LL_DEBUGS("CrossingCaps") << "Calling setSeedCapability from process_teleport_finish(). Seed cap == "
+			<< seedCap << LL_ENDL;*/
 	regionp->setSeedCapability(seedCap);
 
 	// Don't send camera updates to the new region until we're
@@ -3316,7 +3316,7 @@ void process_agent_movement_complete(LLMessageSystem* msg, void**)
 		return;
 	}
 
-	LL_DEBUGS("Messaging") << "process_agent_movement_complete()" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "process_agent_movement_complete()" << LL_ENDL;
 
 	// *TODO: check timestamp to make sure the movement compleation
 	// makes sense.
@@ -3513,8 +3513,8 @@ void process_crossed_region(LLMessageSystem* msg, void**)
 
 	LLViewerRegion* regionp = LLWorld::getInstance()->addRegion(region_handle, sim_host);
 
-	LL_DEBUGS("CrossingCaps") << "Calling setSeedCapability from process_crossed_region(). Seed cap == "
-			<< seedCap << LL_ENDL;
+	/*// _LL_DEBUGS("CrossingCaps") << "Calling setSeedCapability from process_crossed_region(). Seed cap == "
+			<< seedCap << LL_ENDL;*/
 	regionp->setSeedCapability(seedCap);
 }
 
@@ -3759,7 +3759,7 @@ void send_agent_update(BOOL force_send, BOOL send_reliable)
 			gAgent.sendReliableMessage();
 		}
 
-//		LL_DEBUGS("Messaging") << "agent " << avatar_pos_agent << " cam " << camera_pos_agent << LL_ENDL;
+//		// _LL_DEBUGS("Messaging") << "agent " << avatar_pos_agent << " cam " << camera_pos_agent << LL_ENDL;
 
 		// Copy the old data 
 		last_head_rot = head_rotation;
@@ -3987,12 +3987,12 @@ void process_kill_object(LLMessageSystem *mesgsys, void **user_data)
 		LLViewerObjectList::getUUIDFromLocal(id, local_id, ip, port); 
 		if (id == LLUUID::null)
 		{
-			LL_DEBUGS("Messaging") << "Unknown kill for local " << local_id << LL_ENDL;
+			// _LL_DEBUGS("Messaging") << "Unknown kill for local " << local_id << LL_ENDL;
 			continue;
 		}
 		else
 		{
-			LL_DEBUGS("Messaging") << "Kill message for local " << local_id << LL_ENDL;
+			// _LL_DEBUGS("Messaging") << "Kill message for local " << local_id << LL_ENDL;
 		}
 
 		if (id == gAgentID)
@@ -4059,7 +4059,7 @@ void process_time_synch(LLMessageSystem *mesgsys, void **user_data)
 
 	LLWorld::getInstance()->setSpaceTimeUSec(space_time_usec);
 
-	LL_DEBUGS("WindlightSync") << "Sun phase: " << phase << " rad = " << fmodf(phase / F_TWO_PI + 0.25, 1.f) * 24.f << " h" << LL_ENDL;
+	// _LL_DEBUGS("WindlightSync") << "Sun phase: " << phase << " rad = " << fmodf(phase / F_TWO_PI + 0.25, 1.f) * 24.f << " h" << LL_ENDL;
 
 	/* LAPRAS
         We decode these parts of the message but ignore them
@@ -4323,7 +4323,7 @@ void process_avatar_animation(LLMessageSystem *mesgsys, void **user_data)
 	S32 num_blocks = mesgsys->getNumberOfBlocksFast(_PREHASH_AnimationList);
 	S32 num_source_blocks = mesgsys->getNumberOfBlocksFast(_PREHASH_AnimationSourceList);
 
-	LL_DEBUGS("Messaging", "Motion") << "Processing " << num_blocks << " Animations" << LL_ENDL;
+	// _LL_DEBUGS("Messaging", "Motion") << "Processing " << num_blocks << " Animations" << LL_ENDL;
 
 	//clear animation flags
 	avatarp->mSignaledAnimations.clear();
@@ -4375,14 +4375,14 @@ void process_avatar_animation(LLMessageSystem *mesgsys, void **user_data)
 						avatarp->mAnimationSources.insert(LLVOAvatar::AnimationSourceMap::value_type(object_id, animation_id));
 					}
 				}
-				LL_DEBUGS("Messaging", "Motion") << "Anim sequence ID: " << anim_sequence_id
+				/*// _LL_DEBUGS("Messaging", "Motion") << "Anim sequence ID: " << anim_sequence_id
 									<< " Animation id: " << animation_id
-									<< " From block: " << object_id << LL_ENDL;
+									<< " From block: " << object_id << LL_ENDL;*/
 			}
 			else
 			{
-				LL_DEBUGS("Messaging", "Motion") << "Anim sequence ID: " << anim_sequence_id
-									<< " Animation id: " << animation_id << LL_ENDL;
+				/*// _LL_DEBUGS("Messaging", "Motion") << "Anim sequence ID: " << anim_sequence_id
+									<< " Animation id: " << animation_id << LL_ENDL;*/
 			}
 		}
 	}
@@ -4411,38 +4411,38 @@ void process_object_animation(LLMessageSystem *mesgsys, void **user_data)
 	
 	mesgsys->getUUIDFast(_PREHASH_Sender, _PREHASH_ID, uuid);
 
-    LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for object " << uuid << LL_ENDL;
+    // _LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for object " << uuid << LL_ENDL;
 
     signaled_animation_map_t signaled_anims;
 	S32 num_blocks = mesgsys->getNumberOfBlocksFast(_PREHASH_AnimationList);
-	LL_DEBUGS("AnimatedObjectsNotify") << "processing object animation requests, num_blocks " << num_blocks << " uuid " << uuid << LL_ENDL;
+	// _LL_DEBUGS("AnimatedObjectsNotify") << "processing object animation requests, num_blocks " << num_blocks << " uuid " << uuid << LL_ENDL;
     for( S32 i = 0; i < num_blocks; i++ )
     {
         mesgsys->getUUIDFast(_PREHASH_AnimationList, _PREHASH_AnimID, animation_id, i);
         mesgsys->getS32Fast(_PREHASH_AnimationList, _PREHASH_AnimSequenceID, anim_sequence_id, i);
         signaled_anims[animation_id] = anim_sequence_id;
-        LL_DEBUGS("AnimatedObjectsNotify") << "added signaled_anims animation request for object " 
-                                    << uuid << " animation id " << animation_id << LL_ENDL;
+        /*// _LL_DEBUGS("AnimatedObjectsNotify") << "added signaled_anims animation request for object " 
+                                    << uuid << " animation id " << animation_id << LL_ENDL;*/
     }
     LLObjectSignaledAnimationMap::instance().getMap()[uuid] = signaled_anims;
     
     LLViewerObject *objp = gObjectList.findObject(uuid);
     if (!objp)
     {
-		LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for unknown object " << uuid << LL_ENDL;
+		// _LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for unknown object " << uuid << LL_ENDL;
         return;
     }
     
 	LLVOVolume *volp = objp->asVolume();
     if (!volp)
     {
-		LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for non-volume object " << uuid << LL_ENDL;
+		// _LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for non-volume object " << uuid << LL_ENDL;
         return;
     }
 
     if (!volp->isAnimatedObject())
     {
-		LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for non-animated object " << uuid << LL_ENDL;
+		// _LL_DEBUGS("AnimatedObjectsNotify") << "Received animation state for non-animated object " << uuid << LL_ENDL;
         return;
     }
 
@@ -4450,7 +4450,7 @@ void process_object_animation(LLMessageSystem *mesgsys, void **user_data)
     LLControlAvatar *avatarp = volp->getControlAvatar();
     if (!avatarp)
     {
-        LL_DEBUGS("AnimatedObjectsNotify") << "Received animation request for object with no control avatar, ignoring " << uuid << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjectsNotify") << "Received animation request for object with no control avatar, ignoring " << uuid << LL_ENDL;
         return;
     }
     
@@ -4841,10 +4841,10 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 	const S32 POP_FRONT_SIZE = 12;
 	if(recent.size() > MAX_LOOKBACK)
 	{
-		LL_DEBUGS("Messaging") << "Removing oldest transaction records" << LL_ENDL;
+		// _LL_DEBUGS("Messaging") << "Removing oldest transaction records" << LL_ENDL;
 		recent.erase(recent.begin(), recent.begin() + POP_FRONT_SIZE);
 	}
-	//LL_DEBUGS("Messaging") << "Pushing back transaction " << tid << LL_ENDL;
+	//// _LL_DEBUGS("Messaging") << "Pushing back transaction " << tid << LL_ENDL;
 	recent.push_back(tid);
 
 	if (msg->has("TransactionInfo"))
@@ -5782,7 +5782,7 @@ void process_frozen_message(LLMessageSystem *msgsystem, void **user_data)
 // do some extra stuff once we get our economy data
 void process_economy_data(LLMessageSystem *msg, void** /*user_data*/)
 {
-	LL_DEBUGS("Benefits") << "Received economy data, not currently used" << LL_ENDL;
+	// _LL_DEBUGS("Benefits") << "Received economy data, not currently used" << LL_ENDL;
 }
 
 void notify_cautioned_script_question(const LLSD& notification, const LLSD& response, S32 orig_questions, BOOL granted)
@@ -6220,7 +6220,7 @@ void container_inventory_arrived(LLViewerObject* object,
 								 S32 serial_num,
 								 void* data)
 {
-	LL_DEBUGS("Messaging") << "container_inventory_arrived()" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "container_inventory_arrived()" << LL_ENDL;
 	if( gAgentCamera.cameraMouselook() )
 	{
 		gAgentCamera.changeCameraToDefault();
@@ -7253,7 +7253,7 @@ void onCovenantLoadComplete(LLVFS *vfs,
 					LLAssetType::EType type,
 					void* user_data, S32 status, LLExtStat ext_status)
 {
-	LL_DEBUGS("Messaging") << "onCovenantLoadComplete()" << LL_ENDL;
+	// _LL_DEBUGS("Messaging") << "onCovenantLoadComplete()" << LL_ENDL;
 	std::string covenant_text;
 	if(0 == status)
 	{

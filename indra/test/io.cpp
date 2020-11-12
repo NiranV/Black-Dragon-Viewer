@@ -937,10 +937,10 @@ namespace tut
 	template<> template<>
 	void fitness_test_object::test<1>()
 	{
-		LL_DEBUGS() << "fitness_test_object::test<1>()" << LL_ENDL;
+		// _LL_DEBUGS() << "fitness_test_object::test<1>()" << LL_ENDL;
 
 		// Set up the server
-		//LL_DEBUGS() << "fitness_test_object::test<1> - setting up server."
+		//// _LL_DEBUGS() << "fitness_test_object::test<1> - setting up server."
 		//	 << LL_ENDL;
 		LLPumpIO::chain_t chain;
 		typedef LLCloneIOFactory<LLPipeStringInjector> emitter_t;
@@ -956,18 +956,18 @@ namespace tut
 		mPump->addChain(chain, NEVER_CHAIN_EXPIRY_SECS);
 
 		// We need to tickle the pump a little to set up the listen()
-		//LL_DEBUGS() << "fitness_test_object::test<1> - initializing server."
+		//// _LL_DEBUGS() << "fitness_test_object::test<1> - initializing server."
 		//	 << LL_ENDL;
 		pump_loop(mPump, 0.1f);
 
 		// Set up the client
-		//LL_DEBUGS() << "fitness_test_object::test<1> - connecting client."
+		//// _LL_DEBUGS() << "fitness_test_object::test<1> - connecting client."
 		//	 << LL_ENDL;
 		LLSocket::ptr_t client = LLSocket::create(mPool, LLSocket::STREAM_TCP);
 		LLHost server_host("127.0.0.1", SERVER_LISTEN_PORT);
 		bool connected = client->blockingConnect(server_host);
 		ensure("Connected to server", connected);
-		LL_DEBUGS() << "connected" << LL_ENDL;
+		// _LL_DEBUGS() << "connected" << LL_ENDL;
 
 		// We have connected, since the socket reader does not block,
 		// the first call to read data will return EAGAIN, so we need
@@ -987,7 +987,7 @@ namespace tut
 	template<> template<>
 	void fitness_test_object::test<2>()
 	{
-		LL_DEBUGS() << "fitness_test_object::test<2>()" << LL_ENDL;
+		// _LL_DEBUGS() << "fitness_test_object::test<2>()" << LL_ENDL;
 
 		// Set up the server
 		LLPumpIO::chain_t chain;
@@ -1010,7 +1010,7 @@ namespace tut
 		LLHost server_host("127.0.0.1", SERVER_LISTEN_PORT);
 		bool connected = client->blockingConnect(server_host);
 		ensure("Connected to server", connected);
-		LL_DEBUGS() << "connected" << LL_ENDL;
+		// _LL_DEBUGS() << "connected" << LL_ENDL;
 
 		// We have connected, since the socket reader does not block,
 		// the first call to read data will return EAGAIN, so we need
@@ -1030,7 +1030,7 @@ namespace tut
 	template<> template<>
 	void fitness_test_object::test<3>()
 	{
-		LL_DEBUGS() << "fitness_test_object::test<3>()" << LL_ENDL;
+		// _LL_DEBUGS() << "fitness_test_object::test<3>()" << LL_ENDL;
 
 		// Set up the server
 		LLPumpIO::chain_t chain;
@@ -1053,7 +1053,7 @@ namespace tut
 		LLHost server_host("127.0.0.1", SERVER_LISTEN_PORT);
 		bool connected = client->blockingConnect(server_host);
 		ensure("Connected to server", connected);
-		LL_DEBUGS() << "connected" << LL_ENDL;
+		// _LL_DEBUGS() << "connected" << LL_ENDL;
 
 		// We have connected, since the socket reader does not block,
 		// the first call to read data will return EAGAIN, so we need
@@ -1073,7 +1073,7 @@ namespace tut
 	template<> template<>
 	void fitness_test_object::test<4>()
 	{
-		LL_DEBUGS() << "fitness_test_object::test<4>()" << LL_ENDL;
+		// _LL_DEBUGS() << "fitness_test_object::test<4>()" << LL_ENDL;
 
 		// Set up the server
 		LLPumpIO::chain_t chain;
@@ -1096,7 +1096,7 @@ namespace tut
 		LLHost server_host("127.0.0.1", SERVER_LISTEN_PORT);
 		bool connected = client->blockingConnect(server_host);
 		ensure("Connected to server", connected);
-		LL_DEBUGS() << "connected" << LL_ENDL;
+		// _LL_DEBUGS() << "connected" << LL_ENDL;
 
 		// We have connected, since the socket reader does not block,
 		// the first call to read data will return EAGAIN, so we need
@@ -1132,18 +1132,18 @@ namespace tut
 		pump_loop(mPump, 0.1f);
 		U32 count = mPump->runningChains();
 		ensure_equals("server chain onboard", count, 1);
-		LL_DEBUGS() << "** Server is up." << LL_ENDL;
+		// _LL_DEBUGS() << "** Server is up." << LL_ENDL;
 
 		// Set up the client
 		LLSocket::ptr_t client = LLSocket::create(mPool, LLSocket::STREAM_TCP);
 		LLHost server_host("127.0.0.1", SERVER_LISTEN_PORT);
 		bool connected = client->blockingConnect(server_host);
 		ensure("Connected to server", connected);
-		LL_DEBUGS() << "connected" << LL_ENDL;
+		// _LL_DEBUGS() << "connected" << LL_ENDL;
 		pump_loop(mPump,0.1f);
 		count = mPump->runningChains();
 		ensure_equals("server chain onboard", count, 2);
-		LL_DEBUGS() << "** Client is connected." << LL_ENDL;
+		// _LL_DEBUGS() << "** Client is connected." << LL_ENDL;
 
 		// We have connected, since the socket reader does not block,
 		// the first call to read data will return EAGAIN, so we need
@@ -1159,20 +1159,20 @@ namespace tut
 		pump_loop(mPump,0.1f);
 		count = mPump->runningChains();
 		// ensure_equals("client chain onboard", count, 3); commented out because it fails frequently - appears to be timing sensitive
-		LL_DEBUGS() << "** request should have been sent." << LL_ENDL;
+		// _LL_DEBUGS() << "** request should have been sent." << LL_ENDL;
 
 		// pump for long enough the the client socket closes, and the
 		// server socket should not be closed yet.
 		pump_loop(mPump,0.2f);
 		count = mPump->runningChains();
 		ensure_equals("client chain timed out ", count, 2);
-		LL_DEBUGS() << "** client chain should be closed." << LL_ENDL;
+		// _LL_DEBUGS() << "** client chain should be closed." << LL_ENDL;
 
 		// At this point, the socket should be closed by the timeout
 		pump_loop(mPump,1.0f);
 		count = mPump->runningChains();
 		ensure_equals("accepted socked close", count, 1);
-		LL_DEBUGS() << "** Sleeper should have timed out.." << LL_ENDL;
+		// _LL_DEBUGS() << "** Sleeper should have timed out.." << LL_ENDL;
 	}
 }
 

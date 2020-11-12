@@ -1742,7 +1742,7 @@ BOOL LLWorldMapView::handleHover( S32 x, S32 y, MASK mask )
 		{
 			gViewerWindow->setCursor( UI_CURSOR_CROSS );
 		}
-		LL_DEBUGS("UserInput") << "hover handled by LLWorldMapView" << LL_ENDL;		
+		// _LL_DEBUGS("UserInput") << "hover handled by LLWorldMapView" << LL_ENDL;		
 		return TRUE;
 	}
 }

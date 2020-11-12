@@ -441,7 +441,7 @@ void LLPanelGroupNotices::refreshNotices()
 {
 	onClickRefreshNotices(this);
 	/*
-	LL_DEBUGS() << "LLPanelGroupNotices::onClickGetPastNotices" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupNotices::onClickGetPastNotices" << LL_ENDL;
 	
 	mNoticesList->deleteAllItems();
 
@@ -465,7 +465,7 @@ void LLPanelGroupNotices::clearNoticeList()
 
 void LLPanelGroupNotices::onClickRefreshNotices(void* data)
 {
-	LL_DEBUGS() << "LLPanelGroupNotices::onClickGetPastNotices" << LL_ENDL;
+	// _LL_DEBUGS() << "LLPanelGroupNotices::onClickGetPastNotices" << LL_ENDL;
 	LLPanelGroupNotices* self = (LLPanelGroupNotices*)data;
 	
 	self->clearNoticeList();
@@ -609,7 +609,7 @@ void LLPanelGroupNotices::onSelectNotice(LLUICtrl* ctrl, void* data)
 	msg->addUUID("GroupNoticeID",item->getUUID());
 	gAgent.sendReliableMessage();
 
-	LL_DEBUGS() << "Item " << item->getUUID() << " selected." << LL_ENDL;
+	// _LL_DEBUGS() << "Item " << item->getUUID() << " selected." << LL_ENDL;
 }
 
 void LLPanelGroupNotices::showNotice(const std::string& subject,

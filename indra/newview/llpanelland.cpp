@@ -200,7 +200,7 @@ void LLPanelLandInfo::refresh()
 		else
 		{
 			mBtnJoinLand->setEnabled(FALSE);
-			LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
+			// _LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
 		}
 
 		mBtnAboutLand->setEnabled(TRUE);

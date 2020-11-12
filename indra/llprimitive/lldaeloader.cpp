@@ -1480,7 +1480,7 @@ void LLDAELoader::processDomModel(LLModel* model, DAE* dae, daeElement* root, do
             }
 			else
 			{
-                LL_DEBUGS("Mesh")<<"Possibly misnamed/missing joint [" <<lookingForJoint.c_str()<<"] "<<LL_ENDL;
+                // _LL_DEBUGS("Mesh")<<"Possibly misnamed/missing joint [" <<lookingForJoint.c_str()<<"] "<<LL_ENDL;
 			}
 		}
 
@@ -1935,7 +1935,7 @@ daeElement* LLDAELoader::getChildFromElement( daeElement* pElement, std::string 
 	{
 		return pChildOfElement;
 	}
-	LL_DEBUGS("Mesh")<< "Could not find a child [" << name << "] for the element: \"" << pElement->getAttribute("id") << "\"" << LL_ENDL;
+	// _LL_DEBUGS("Mesh")<< "Could not find a child [" << name << "] for the element: \"" << pElement->getAttribute("id") << "\"" << LL_ENDL;
     return NULL;
 }
 

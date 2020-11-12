@@ -696,7 +696,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	mExpiryTime(0.0f),
 	mCurrentAction(0)
 {
-	LL_DEBUGS("AvatarRender") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
+	// _LL_DEBUGS("AvatarRender") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
 
 	//VTResume();  // VTune
 	setHoverOffset(LLVector3(0.0, 0.0, 0.0));
@@ -705,7 +705,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	const BOOL needsSendToSim = false; // currently, this HUD effect doesn't need to pack and unpack data to do its job
 	mVoiceVisualizer = ( LLVoiceVisualizer *)LLHUDManager::getInstance()->createViewerEffect( LLHUDObject::LL_HUD_EFFECT_VOICE_VISUALIZER, needsSendToSim );
 
-	LL_DEBUGS("Avatar","Message") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
+	// _LL_DEBUGS("Avatar","Message") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
 	mPelvisp = NULL;
 
 	mDirtyMesh = 2;	// Dirty geometry, need to regenerate.
@@ -814,7 +814,7 @@ LLVOAvatar::~LLVOAvatar()
 
 	logPendingPhases();
 	
-	LL_DEBUGS("Avatar") << "LLVOAvatar Destructor (0x" << this << ") id:" << mID << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "LLVOAvatar Destructor (0x" << this << ") id:" << mID << LL_ENDL;
 
 	std::for_each(mAttachmentPoints.begin(), mAttachmentPoints.end(), DeletePairedPointer());
 	mAttachmentPoints.clear();
@@ -826,7 +826,7 @@ LLVOAvatar::~LLVOAvatar()
 
 	getPhases().clearPhases();
 	
-	LL_DEBUGS() << "LLVOAvatar Destructor end" << LL_ENDL;
+	// _LL_DEBUGS() << "LLVOAvatar Destructor end" << LL_ENDL;
 }
 
 void LLVOAvatar::markDead()
@@ -2028,7 +2028,7 @@ void LLVOAvatar::resetVisualParams()
 //-----------------------------------------------------------------------------
 void LLVOAvatar::resetSkeleton(bool reset_animations)
 {
-    LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
     if (!isControlAvatar() && !mLastProcessedAppearance)
     {
         LL_WARNS() << "Can't reset avatar; no appearance message has been received yet." << LL_ENDL;
@@ -2120,7 +2120,7 @@ void LLVOAvatar::resetSkeleton(bool reset_animations)
         }
     }
     
-    LL_DEBUGS("Avatar") << avString() << " reset ends" << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << avString() << " reset ends" << LL_ENDL;
 }
 
 //-----------------------------------------------------------------------------
@@ -2407,7 +2407,7 @@ LLViewerFetchedTexture *LLVOAvatar::getBakedTextureImage(const U8 te, const LLUU
 			LL_WARNS() << "unable to determine URL for te " << te << " uuid " << uuid << LL_ENDL;
 			return NULL;
 		}
-		LL_DEBUGS("Avatar") << avString() << "get server-bake image from URL " << url << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << avString() << "get server-bake image from URL " << url << LL_ENDL;
 		result = LLViewerTextureManager::getFetchedTextureFromUrl(
 			url, FTT_SERVER_BAKE, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE, 0, 0, uuid);
 		if (result->isMissingAsset())
@@ -4591,49 +4591,49 @@ void LLVOAvatar::debugBodySize() const
 
 	// some of the joints have not been cached
 	LLVector3 skull = mSkullp->getPosition();
-    LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
 	//LLVector3 skull_scale = mSkullp->getScale();
 
 	LLVector3 neck = mNeckp->getPosition();
 	LLVector3 neck_scale = mNeckp->getScale();
-    LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
 
 	LLVector3 chest = mChestp->getPosition();
 	LLVector3 chest_scale = mChestp->getScale();
-    LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
 
 	// the rest of the joints have been cached
 	LLVector3 head = mHeadp->getPosition();
 	LLVector3 head_scale = mHeadp->getScale();
-    LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
 
 	LLVector3 torso = mTorsop->getPosition();
 	LLVector3 torso_scale = mTorsop->getScale();
-    LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
 
 	LLVector3 hip = mHipLeftp->getPosition();
 	LLVector3 hip_scale = mHipLeftp->getScale();
-    LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
 
 	LLVector3 knee = mKneeLeftp->getPosition();
 	LLVector3 knee_scale = mKneeLeftp->getScale();
-    LL_DEBUGS("Avatar") << "knee pos " << knee << " knee_scale " << knee_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "knee pos " << knee << " knee_scale " << knee_scale << LL_ENDL;
 
 	LLVector3 ankle = mAnkleLeftp->getPosition();
 	LLVector3 ankle_scale = mAnkleLeftp->getScale();
-    LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
 
 	LLVector3 foot  = mFootLeftp->getPosition();
-    LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
 
 	F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
-    LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
 
 	F32 new_pelvis_to_foot = hip.mV[VZ] * pelvis_scale.mV[VZ] -
         knee.mV[VZ] * hip_scale.mV[VZ] -
         ankle.mV[VZ] * knee_scale.mV[VZ] -
         foot.mV[VZ] * ankle_scale.mV[VZ];
-    LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
 
 	LLVector3 new_body_size;
 	new_body_size.mV[VZ] = new_pelvis_to_foot +
@@ -4649,7 +4649,7 @@ void LLVOAvatar::debugBodySize() const
 	new_body_size.mV[VX] = DEFAULT_AGENT_DEPTH;
 	new_body_size.mV[VY] = DEFAULT_AGENT_WIDTH;
 
-    LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
 }
    
 //------------------------------------------------------------------------
@@ -4704,7 +4704,7 @@ void LLVOAvatar::updateVisibility()
 			LLNameValue* firstname = getNVPair("FirstName");
 			if (firstname)
 			{
-				LL_DEBUGS("Avatar") << avString() << " updating visibility" << LL_ENDL;
+				// _LL_DEBUGS("Avatar") << avString() << " updating visibility" << LL_ENDL;
 			}
 			else
 			{
@@ -4793,7 +4793,7 @@ void LLVOAvatar::updateVisibility()
 
     if ( visible != mVisible )
     {
-        LL_DEBUGS("AvatarRender") << "visible was " << mVisible << " now " << visible << LL_ENDL;
+        // _LL_DEBUGS("AvatarRender") << "visible was " << mVisible << " now " << visible << LL_ENDL;
     }
 	mVisible = visible;
 }
@@ -4908,7 +4908,7 @@ U32 LLVOAvatar::renderSkinned()
 		LLNameValue* firstname = getNVPair("FirstName");
 		if (firstname)
 		{
-			LL_DEBUGS("Avatar") << avString() << " in render" << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << " in render" << LL_ENDL;
 		}
 		else
 		{
@@ -5370,7 +5370,7 @@ void LLVOAvatar::releaseOldTextures()
 	S32Bytes new_total_mem = totalTextureMemForUUIDS(new_texture_ids);
 
 	//S32 old_total_mem = totalTextureMemForUUIDS(mTextureIDs);
-	//LL_DEBUGS("Avatar") << getFullname() << " old_total_mem: " << old_total_mem << " new_total_mem (L/B): " << new_total_mem << " (" << new_local_mem <<", " << new_baked_mem << ")" << LL_ENDL;  
+	//// _LL_DEBUGS("Avatar") << getFullname() << " old_total_mem: " << old_total_mem << " new_total_mem (L/B): " << new_total_mem << " (" << new_local_mem <<", " << new_baked_mem << ")" << LL_ENDL;  
 	if (!isSelf() && new_total_mem > new_baked_mem)
 	{
 			LL_WARNS() << "extra local textures stored for non-self av" << LL_ENDL;
@@ -5979,13 +5979,13 @@ LLUUID LLVOAvatar::remapMotionID(const LLUUID& id)
 //-----------------------------------------------------------------------------
 BOOL LLVOAvatar::startMotion(const LLUUID& id, F32 time_offset)
 {
-	LL_DEBUGS("Motion") << "motion requested " << id.asString() << " " << gAnimLibrary.animationName(id) << LL_ENDL;
+	// _LL_DEBUGS("Motion") << "motion requested " << id.asString() << " " << gAnimLibrary.animationName(id) << LL_ENDL;
 
 	LLUUID remap_id = remapMotionID(id);
 
 	if (remap_id != id)
 	{
-		LL_DEBUGS("Motion") << "motion resultant " << remap_id.asString() << " " << gAnimLibrary.animationName(remap_id) << LL_ENDL;
+		// _LL_DEBUGS("Motion") << "motion resultant " << remap_id.asString() << " " << gAnimLibrary.animationName(remap_id) << LL_ENDL;
 	}
 
 	if (isSelf() && remap_id == ANIM_AGENT_AWAY)
@@ -6001,13 +6001,13 @@ BOOL LLVOAvatar::startMotion(const LLUUID& id, F32 time_offset)
 //-----------------------------------------------------------------------------
 BOOL LLVOAvatar::stopMotion(const LLUUID& id, BOOL stop_immediate)
 {
-	LL_DEBUGS("Motion") << "Motion requested " << id.asString() << " " << gAnimLibrary.animationName(id) << LL_ENDL;
+	// _LL_DEBUGS("Motion") << "Motion requested " << id.asString() << " " << gAnimLibrary.animationName(id) << LL_ENDL;
 
 	LLUUID remap_id = remapMotionID(id);
 	
 	if (remap_id != id)
 	{
-		LL_DEBUGS("Motion") << "motion resultant " << remap_id.asString() << " " << gAnimLibrary.animationName(remap_id) << LL_ENDL;
+		// _LL_DEBUGS("Motion") << "motion resultant " << remap_id.asString() << " " << gAnimLibrary.animationName(remap_id) << LL_ENDL;
 	}
 
 	if (isSelf())
@@ -6192,7 +6192,7 @@ void LLVOAvatar::rebuildAttachmentOverrides()
 #ifdef ENABLE_DEBUG
     LLScopedContextString str("rebuildAttachmentOverrides " + getFullname());
 
-    LL_DEBUGS("AnimatedObjects") << "rebuilding" << LL_ENDL;
+    // _LL_DEBUGS("AnimatedObjects") << "rebuilding" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
 #endif
     
@@ -6204,8 +6204,8 @@ void LLVOAvatar::rebuildAttachmentOverrides()
         LLVOVolume *volp = static_cast<LLControlAvatar*>(this)->mRootVolp;
         if (volp)
         {
-            LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
-                                << (S32) (1+volp->numChildren()) << LL_ENDL;
+            /*// _LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
+                                << (S32) (1+volp->numChildren()) << LL_ENDL;*/
             addAttachmentOverridesForObject(volp);
         }
     }
@@ -6244,7 +6244,7 @@ void LLVOAvatar::updateAttachmentOverrides()
 #ifdef ENABLE_DEBUG
     LLScopedContextString str("updateAttachmentOverrides " + getFullname());
 
-    LL_DEBUGS("AnimatedObjects") << "updating" << LL_ENDL;
+    // _LL_DEBUGS("AnimatedObjects") << "updating" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
 #endif
 
@@ -6257,8 +6257,8 @@ void LLVOAvatar::updateAttachmentOverrides()
 		LLVOVolume *volp = control_av->mRootVolp;
         if (volp)
         {
-            LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
-                                << (S32) (1+volp->numChildren()) << LL_ENDL;
+            /*// _LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
+                                << (S32) (1+volp->numChildren()) << LL_ENDL;*/
             addAttachmentOverridesForObject(volp, &meshes_seen);
         }
     }
@@ -6368,7 +6368,7 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 #ifdef ENABLE_DEBUG
     LLScopedContextString str("addAttachmentOverridesForObject " + getFullname());
     
-    LL_DEBUGS("AnimatedObjects") << "adding" << LL_ENDL;
+    // _LL_DEBUGS("AnimatedObjects") << "adding" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
 #endif
     
@@ -6393,11 +6393,11 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 	}
 
 	LLViewerObject *root_object = (LLViewerObject*)vobj->getRoot();
-    LL_DEBUGS("AnimatedObjects") << "trying to add attachment overrides for root object " << root_object->getID() << " prim is " << vobj << LL_ENDL;
+    // _LL_DEBUGS("AnimatedObjects") << "trying to add attachment overrides for root object " << root_object->getID() << " prim is " << vobj << LL_ENDL;
 	if (vobj->isMesh() &&
 		((vobj->getVolume() && !vobj->getVolume()->isMeshAssetLoaded()) || !gMeshRepo.meshRezEnabled()))
 	{
-        LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " mesh asset not loaded" << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " mesh asset not loaded" << LL_ENDL;
 		return;
 	}
 	const LLMeshSkinInfo*  pSkinData = nullptr;
@@ -6422,15 +6422,15 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
             bool mesh_overrides_loaded = (mActiveOverrideMeshes.find(mesh_id) != mActiveOverrideMeshes.end());
             if (mesh_overrides_loaded)
             {
-                LL_DEBUGS("AnimatedObjects") << "skipping add attachment overrides for " << mesh_id 
+                /*// _LL_DEBUGS("AnimatedObjects") << "skipping add attachment overrides for " << mesh_id 
                                              << " to root object " << root_object->getID()
                                              << ", already loaded"
-                                             << LL_ENDL;
+                                             << LL_ENDL;*/
             }
             else
             {
-                LL_DEBUGS("AnimatedObjects") << "adding attachment overrides for " << mesh_id 
-                                             << " to root object " << root_object->getID() << LL_ENDL;
+                /*// _LL_DEBUGS("AnimatedObjects") << "adding attachment overrides for " << mesh_id 
+                                             << " to root object " << root_object->getID() << LL_ENDL;*/
             }
 			bool fullRig = (jointCnt>=JOINT_COUNT_REQUIRED_FOR_FULLRIG) ? true : false;								
 			if ( fullRig && !mesh_overrides_loaded )
@@ -6484,7 +6484,7 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 	}
     else
     {
-        LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " not mesh or no pSkinData" << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " not mesh or no pSkinData" << LL_ENDL;
     }
 					
 	//Rebuild body data if we altered joints/pelvis
@@ -6548,7 +6548,7 @@ void LLVOAvatar::showAttachmentOverrides(bool verbose) const
     }
     else
     {
-        LL_DEBUGS("Avatar") << getFullname() << " no attachment positions defined for any joints" << "\n" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << getFullname() << " no attachment positions defined for any joints" << "\n" << LL_ENDL;
     }
     if (scale_names.size())
     {
@@ -6602,8 +6602,8 @@ void LLVOAvatar::showAttachmentOverrides(bool verbose) const
 
     if (count)
     {
-        LL_DEBUGS("Avatar") << avString() << " end of pos, scale overrides" << LL_ENDL;
-        LL_DEBUGS("Avatar") << "=================================" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << avString() << " end of pos, scale overrides" << LL_ENDL;
+        // _LL_DEBUGS("Avatar") << "=================================" << LL_ENDL;
     }
 }
 
@@ -7149,7 +7149,7 @@ void LLVOAvatar::addChild(LLViewerObject *childp)
 	{
 	    const LLUUID& item_id = childp->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
-		LL_DEBUGS("Avatar") << "ATT attachment child added " << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "ATT attachment child added " << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
 
 	}
 
@@ -7232,8 +7232,8 @@ const LLViewerJointAttachment *LLVOAvatar::attachObject(LLViewerObject *viewer_o
 	{
 		const LLUUID& item_id = viewer_object->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
-		LL_DEBUGS("Avatar") << "ATT attaching object "
-							<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;	
+		/*// _LL_DEBUGS("Avatar") << "ATT attaching object "
+							<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;	*/
 	}
 	LLViewerJointAttachment* attachment = getTargetAttachmentPoint(viewer_object);
 
@@ -7364,8 +7364,8 @@ void LLVOAvatar::lazyAttach()
 				{
 					const LLUUID& item_id = cur_attachment->getAttachmentItemID();
 					LLViewerInventoryItem *item = gInventory.getItem(item_id);
-					LL_DEBUGS("Avatar") << "ATT attaching object "
-						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+					/*// _LL_DEBUGS("Avatar") << "ATT attaching object "
+						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
 				}
 				if (!attachObject(cur_attachment))
 				{	// Drop it
@@ -7484,7 +7484,7 @@ BOOL LLVOAvatar::detachObject(LLViewerObject *viewer_object)
 
 			updateMeshVisibility();
 
-			LL_DEBUGS() << "Detaching object " << viewer_object->mID << " from " << attachment->getName() << LL_ENDL;
+			// _LL_DEBUGS() << "Detaching object " << viewer_object->mID << " from " << attachment->getName() << LL_ENDL;
 			return TRUE;
 		}
 	}
@@ -7864,7 +7864,7 @@ void LLVOAvatar::updateRezzedStatusTimers(S32 rez_status)
 
 	if (rez_status != mLastRezzedStatus)
 	{
-		LL_DEBUGS("Avatar") << avString() << "rez state change: " << mLastRezzedStatus << " -> " << rez_status << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << avString() << "rez state change: " << mLastRezzedStatus << " -> " << rez_status << LL_ENDL;
 
 		if (mLastRezzedStatus == -1 && rez_status != -1)
 		{
@@ -7915,17 +7915,17 @@ void LLVOAvatar::startPhase(const std::string& phase_name)
 	F32 elapsed = 0.0;
 	bool completed = false;
 	bool found = getPhases().getPhaseValues(phase_name, elapsed, completed);
-	//LL_DEBUGS("Avatar") << avString() << " phase state " << phase_name
+	//// _LL_DEBUGS("Avatar") << avString() << " phase state " << phase_name
 	//					<< " found " << found << " elapsed " << elapsed << " completed " << completed << LL_ENDL;
 	if (found)
 	{
 		if (!completed)
 		{
-			LL_DEBUGS("Avatar") << avString() << "no-op, start when started already for " << phase_name << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "no-op, start when started already for " << phase_name << LL_ENDL;
 			return;
 		}
 	}
-	LL_DEBUGS("Avatar") << "started phase " << phase_name << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "started phase " << phase_name << LL_ENDL;
 	getPhases().startPhase(phase_name);
 }
 
@@ -7940,13 +7940,13 @@ void LLVOAvatar::stopPhase(const std::string& phase_name, bool err_check)
 			getPhases().stopPhase(phase_name);
 			completed = true;
 			logMetricsTimerRecord(phase_name, elapsed, completed);
-			LL_DEBUGS("Avatar") << avString() << "stopped phase " << phase_name << " elapsed " << elapsed << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "stopped phase " << phase_name << " elapsed " << elapsed << LL_ENDL;
 		}
 		else
 		{
 			if (err_check)
 			{
-				LL_DEBUGS("Avatar") << "no-op, stop when stopped already for " << phase_name << LL_ENDL;
+				// _LL_DEBUGS("Avatar") << "no-op, stop when stopped already for " << phase_name << LL_ENDL;
 			}
 		}
 	}
@@ -7954,7 +7954,7 @@ void LLVOAvatar::stopPhase(const std::string& phase_name, bool err_check)
 	{
 		if (err_check)
 		{
-			LL_DEBUGS("Avatar") << "no-op, stop when not started for " << phase_name << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "no-op, stop when not started for " << phase_name << LL_ENDL;
 		}
 	}
 }
@@ -8066,13 +8066,13 @@ void LLVOAvatar::updateRuthTimer(bool loading)
 	const F32 LOADING_TIMEOUT__SECONDS = 120.f;
 	if (mRuthTimer.getElapsedTimeF32() > LOADING_TIMEOUT__SECONDS)
 	{
-		LL_DEBUGS("Avatar") << avString()
+		/*// _LL_DEBUGS("Avatar") << avString()
 				<< "Ruth Timer timeout: Missing texture data for '" << getFullname() << "' "
 				<< "( Params loaded : " << !visualParamWeightsAreDefault() << " ) "
 				<< "( Lower : " << isTextureDefined(TEX_LOWER_BAKED) << " ) "
 				<< "( Upper : " << isTextureDefined(TEX_UPPER_BAKED) << " ) "
 				<< "( Head : " << isTextureDefined(TEX_HEAD_BAKED) << " )."
-				<< LL_ENDL;
+				<< LL_ENDL;*/
 		
 		LLAvatarPropertiesProcessor::getInstance()->sendAvatarTexturesRequest(getID());
 		mRuthTimer.reset();
@@ -8690,7 +8690,7 @@ void LLVOAvatar::releaseComponentTextures()
 
 void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 {	
-	LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
 	for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearanceDictionary::getInstance()->getTextures().begin();
 		 iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
 		 ++iter)
@@ -8700,23 +8700,23 @@ void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 		const LLViewerTexture* te_image = getImage(iter->first,0);
 		if( !te_image )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
 		}
 		else if( te_image->getID().isNull() )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT_AVATAR )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
 		}
 		else
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
 		}
 	}
 }
@@ -8801,7 +8801,7 @@ LLBBox LLVOAvatar::getHUDBBox() const
 //-----------------------------------------------------------------------------
 void LLVOAvatar::onFirstTEMessageReceived()
 {
-	LL_DEBUGS("Avatar") << avString() << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << avString() << LL_ENDL;
 	if( !mFirstTEMessageReceived )
 	{
 		mFirstTEMessageReceived = TRUE;
@@ -8830,7 +8830,7 @@ void LLVOAvatar::onFirstTEMessageReceived()
 					image->setLoadedCallback( onBakedTextureMasksLoaded, MORPH_MASK_REQUESTED_DISCARD, TRUE, TRUE, new LLTextureMaskData( mID ), 
 						src_callback_list, paused);
 				}
-				LL_DEBUGS("Avatar") << avString() << "layer_baked, setting onInitialBakedTextureLoaded as callback" << LL_ENDL;
+				// _LL_DEBUGS("Avatar") << avString() << "layer_baked, setting onInitialBakedTextureLoaded as callback" << LL_ENDL;
 				image->setLoadedCallback( onInitialBakedTextureLoaded, MAX_DISCARD_LEVEL, FALSE, FALSE, new LLUUID( mID ), 
 					src_callback_list, paused );
 				if (image->getDiscardLevel() < 0 && !paused)
@@ -8927,7 +8927,7 @@ void LLVOAvatar::dumpAppearanceMsgParams( const std::string& dump_prefix,
 	}
 	else
 	{
-		LL_DEBUGS("Avatar") << "dumping appearance message to " << fullpath << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "dumping appearance message to " << fullpath << LL_ENDL;
 	}
 
 	apr_file_printf(file, "<header>\n");
@@ -8971,7 +8971,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 		U8 av_u8;
 		mesgsys->getU8Fast(_PREHASH_AppearanceData, _PREHASH_AppearanceVersion, av_u8, 0);
 		contents.mAppearanceVersion = av_u8;
-		//LL_DEBUGS("Avatar") << "appversion set by AppearanceData field: " << contents.mAppearanceVersion << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << "appversion set by AppearanceData field: " << contents.mAppearanceVersion << LL_ENDL;
 		mesgsys->getS32Fast(_PREHASH_AppearanceData, _PREHASH_CofVersion, contents.mCOFVersion, 0);
 		// For future use:
 		//mesgsys->getU32Fast(_PREHASH_AppearanceData, _PREHASH_Flags, appearance_flags, 0);
@@ -8983,7 +8983,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 	{
 		LLVector3 hover;
 		mesgsys->getVector3Fast(_PREHASH_AppearanceHover, _PREHASH_HoverHeight, hover);
-		//LL_DEBUGS("Avatar") << avString() << " hover received " << hover.mV[ VX ] << "," << hover.mV[ VY ] << "," << hover.mV[ VZ ] << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << avString() << " hover received " << hover.mV[ VX ] << "," << hover.mV[ VY ] << "," << hover.mV[ VZ ] << LL_ENDL;
 		contents.mHoverOffset = hover;
 		contents.mHoverOffsetWasSet = true;
 	}
@@ -8993,7 +8993,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 	bool drop_visual_params_debug = gSavedSettings.getBOOL("BlockSomeAvatarAppearanceVisualParams") && (ll_rand(2) == 0); // pretend that ~12% of AvatarAppearance messages arrived without a VisualParam block, for testing
 	if( num_blocks > 1 && !drop_visual_params_debug)
 	{
-		//LL_DEBUGS("Avatar") << avString() << " handle visual params, num_blocks " << num_blocks << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << avString() << " handle visual params, num_blocks " << num_blocks << LL_ENDL;
 		
 		LLVisualParam* param = getFirstVisualParam();
 		llassert(param); // if this ever fires, we should do the same as when num_blocks<=1
@@ -9031,7 +9031,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 											 getVisualParamCountInGroup(VISUAL_PARAM_GROUP_TRANSMIT_NOT_TWEAKABLE); // don't worry about VISUAL_PARAM_GROUP_TWEAKABLE_NO_TRANSMIT
 		if (num_blocks != expected_tweakable_count)
 		{
-			LL_DEBUGS("Avatar") << "Number of params in AvatarAppearance msg (" << num_blocks << ") does not match number of tweakable params in avatar xml file (" << expected_tweakable_count << ").  Processing what we can.  object: " << getID() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "Number of params in AvatarAppearance msg (" << num_blocks << ") does not match number of tweakable params in avatar xml file (" << expected_tweakable_count << ").  Processing what we can.  object: " << getID() << LL_ENDL;
 		}
 	}
 	else
@@ -9042,7 +9042,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 		}
 		else
 		{
-			LL_DEBUGS("Avatar") << "AvatarAppearance msg received without any parameters, object: " << getID() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "AvatarAppearance msg received without any parameters, object: " << getID() << LL_ENDL;
 		}
 	}
 
@@ -9054,7 +9054,7 @@ void LLVOAvatar::parseAppearanceMessage(LLMessageSystem* mesgsys, LLAppearanceMe
 		{
 			S32 index = it - contents.mParams.begin();
 			contents.mParamAppearanceVersion = ll_round(contents.mParamWeights[index]);
-			//LL_DEBUGS("Avatar") << "appversion req by appearance_version param: " << contents.mParamAppearanceVersion << LL_ENDL;
+			//// _LL_DEBUGS("Avatar") << "appversion req by appearance_version param: " << contents.mParamAppearanceVersion << LL_ENDL;
 		}
 	}
 }
@@ -9083,7 +9083,7 @@ bool resolve_appearance_version(const LLAppearanceMessageContents& contents, S32
 	{
 		appearance_version = 1;
 	}
-	//LL_DEBUGS("Avatar") << "appearance version info - field " << contents.mAppearanceVersion
+	//// _LL_DEBUGS("Avatar") << "appearance version info - field " << contents.mAppearanceVersion
 	//					<< " param: " << contents.mParamAppearanceVersion
 	//					<< " final: " << appearance_version << LL_ENDL;
 	return true;
@@ -9094,7 +9094,7 @@ bool resolve_appearance_version(const LLAppearanceMessageContents& contents, S32
 //-----------------------------------------------------------------------------
 void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 {
-	LL_DEBUGS("Avatar") << "starts" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "starts" << LL_ENDL;
 	
 	bool enable_verbose_dumps = gSavedSettings.getBOOL("DebugAvatarAppearanceMessage");
 	std::string dump_prefix = getFullname() + "_" + (isSelf()?"s":"o") + "_";
@@ -9136,9 +9136,9 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 
         S32 aisCOFVersion(LLAppearanceMgr::instance().getCOFVersion());
 
-        LL_DEBUGS("Avatar") << "handling self appearance message #" << thisAppearanceVersion <<
+        /*// _LL_DEBUGS("Avatar") << "handling self appearance message #" << thisAppearanceVersion <<
             " (highest seen #" << mLastUpdateReceivedCOFVersion <<
-            ") (AISCOF=#" << aisCOFVersion << ")" << LL_ENDL;
+            ") (AISCOF=#" << aisCOFVersion << ")" << LL_ENDL;*/
 
         if (mLastUpdateReceivedCOFVersion >= thisAppearanceVersion)
         {
@@ -9149,7 +9149,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
         }
         if (isEditingAppearance())
         {
-            LL_DEBUGS("Avatar") << "Editing appearance.  Dropping appearance update." << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << "Editing appearance.  Dropping appearance update." << LL_ENDL;
             return;
         }
 
@@ -9163,7 +9163,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 		// appearance version, which may cause us to look for baked
 		// textures in the wrong place and flag them as missing
 		// assets.
-		LL_DEBUGS("Avatar") << "ignoring appearance message due to lack of params" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "ignoring appearance message due to lack of params" << LL_ENDL;
 		return;
 	}
 
@@ -9204,14 +9204,14 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 			&& mBakedTextureDatas[baked_index].mLastTextureID != IMG_DEFAULT
 			&& baked_index != BAKED_SKIRT && baked_index != BAKED_LEFT_ARM && baked_index != BAKED_LEFT_LEG && baked_index != BAKED_AUX1 && baked_index != BAKED_AUX2 && baked_index != BAKED_AUX3)
 		{
-			LL_DEBUGS("Avatar") << avString() << " baked_index " << (S32) baked_index << " using mLastTextureID " << mBakedTextureDatas[baked_index].mLastTextureID << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << avString() << " baked_index " << (S32) baked_index << " using mLastTextureID " << mBakedTextureDatas[baked_index].mLastTextureID << LL_ENDL;
 			setTEImage(mBakedTextureDatas[baked_index].mTextureIndex, 
 				LLViewerTextureManager::getFetchedTexture(mBakedTextureDatas[baked_index].mLastTextureID, FTT_DEFAULT, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE));
 		}
 		else
 		{
-			LL_DEBUGS("Avatar") << avString() << " baked_index " << (S32) baked_index << " using texture id "
-								<< getTE(mBakedTextureDatas[baked_index].mTextureIndex)->getID() << LL_ENDL;
+			/*// _LL_DEBUGS("Avatar") << avString() << " baked_index " << (S32) baked_index << " using texture id "
+								<< getTE(mBakedTextureDatas[baked_index].mTextureIndex)->getID() << LL_ENDL;*/
 		}
 	}
 
@@ -9221,7 +9221,7 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 	BOOL is_first_appearance_message = !mFirstAppearanceMessageReceived;
 	mFirstAppearanceMessageReceived = TRUE;
 
-	//LL_DEBUGS("Avatar") << avString() << "processAvatarAppearance start " << mID
+	//// _LL_DEBUGS("Avatar") << avString() << "processAvatarAppearance start " << mID
     //                    << " first? " << is_first_appearance_message << " self? " << isSelf() << LL_ENDL;
 
 	if (is_first_appearance_message )
@@ -9235,7 +9235,7 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 	// Apply visual params
 	if( num_params > 1)
 	{
-		//LL_DEBUGS("Avatar") << avString() << " handle visual params, num_params " << num_params << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << avString() << " handle visual params, num_params " << num_params << LL_ENDL;
 		BOOL params_changed = FALSE;
 		BOOL interp_params = FALSE;
 		S32 params_changed_count = 0;
@@ -9252,7 +9252,7 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 
 				if(is_first_appearance_message || slam_params)
 				{
-					//LL_DEBUGS("Avatar") << "param slam " << i << " " << newWeight << LL_ENDL;
+					//// _LL_DEBUGS("Avatar") << "param slam " << i << " " << newWeight << LL_ENDL;
 					param->setWeight(newWeight);
 				}
 				else
@@ -9266,10 +9266,10 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 											 getVisualParamCountInGroup(VISUAL_PARAM_GROUP_TRANSMIT_NOT_TWEAKABLE); // don't worry about VISUAL_PARAM_GROUP_TWEAKABLE_NO_TRANSMIT
 		if (num_params != expected_tweakable_count)
 		{
-			LL_DEBUGS("Avatar") << "Number of params in AvatarAppearance msg (" << num_params << ") does not match number of tweakable params in avatar xml file (" << expected_tweakable_count << ").  Processing what we can.  object: " << getID() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "Number of params in AvatarAppearance msg (" << num_params << ") does not match number of tweakable params in avatar xml file (" << expected_tweakable_count << ").  Processing what we can.  object: " << getID() << LL_ENDL;
 		}
 
-		LL_DEBUGS("Avatar") << "Changed " << params_changed_count << " params" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "Changed " << params_changed_count << " params" << LL_ENDL;
 		if (params_changed)
 		{
 			if (interp_params)
@@ -9290,7 +9290,7 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 	else
 	{
 		// AvatarAppearance message arrived without visual params
-		LL_DEBUGS("Avatar") << avString() << "no visual params" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << avString() << "no visual params" << LL_ENDL;
 
 		const F32 LOADING_TIMEOUT_SECONDS = 60.f;
 		// this isn't really a problem if we already have a non-default shape
@@ -9313,7 +9313,7 @@ void LLVOAvatar::applyParsedAppearanceMessage(LLAppearanceMessageContents& conte
 		// Got an update for some other avatar
 		// Ignore updates for self, because we have a more authoritative value in the preferences.
 		setHoverOffset(contents.mHoverOffset);
-		LL_DEBUGS("Avatar") << avString() << "setting hover to " << contents.mHoverOffset[2] << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << avString() << "setting hover to " << contents.mHoverOffset[2] << LL_ENDL;
 	}
 
 	if (!contents.mHoverOffsetWasSet && !isSelf())
@@ -9496,7 +9496,7 @@ void LLVOAvatar::onInitialBakedTextureLoaded( BOOL success, LLViewerFetchedTextu
 
 	if (selfp)
 	{
-		//LL_DEBUGS("Avatar") << selfp->avString() << "discard_level " << discard_level << " success " << success << " final " << final << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << selfp->avString() << "discard_level " << discard_level << " success " << success << " final " << final << LL_ENDL;
 	}
 
 	if (!success && selfp)
@@ -9514,14 +9514,14 @@ void LLVOAvatar::onBakedTextureLoaded(BOOL success,
 									  LLViewerFetchedTexture *src_vi, LLImageRaw* src, LLImageRaw* aux_src,
 									  S32 discard_level, BOOL final, void* userdata)
 {
-	//LL_DEBUGS("Avatar") << "onBakedTextureLoaded: " << src_vi->getID() << LL_ENDL;
+	//// _LL_DEBUGS("Avatar") << "onBakedTextureLoaded: " << src_vi->getID() << LL_ENDL;
 
 	LLUUID id = src_vi->getID();
 	LLUUID *avatar_idp = (LLUUID *)userdata;
 	LLVOAvatar *selfp = (LLVOAvatar *)gObjectList.findObject(*avatar_idp);
 	if (selfp)
 	{	
-		//LL_DEBUGS("Avatar") << selfp->avString() << "discard_level " << discard_level << " success " << success << " final " << final << " id " << src_vi->getID() << LL_ENDL;
+		//// _LL_DEBUGS("Avatar") << selfp->avString() << "discard_level " << discard_level << " success " << success << " final " << final << " id " << src_vi->getID() << LL_ENDL;
 	}
 
 	if (selfp && !success)
@@ -9549,7 +9549,7 @@ void LLVOAvatar::useBakedTexture( const LLUUID& id )
 		LLViewerTexture* image_baked = getImage( mBakedTextureDatas[i].mTextureIndex, 0 );
 		if (id == image_baked->getID())
 		{
-			//LL_DEBUGS("Avatar") << avString() << " i " << i << " id " << id << LL_ENDL;
+			//// _LL_DEBUGS("Avatar") << avString() << " i " << i << " id " << id << LL_ENDL;
 			mBakedTextureDatas[i].mIsLoaded = true;
 			mBakedTextureDatas[i].mLastTextureID = id;
 			mBakedTextureDatas[i].mIsUsed = true;
@@ -9628,7 +9628,7 @@ void dump_sequential_xml(const std::string outprefix, const LLSD& content)
 	std::string fullpath = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,outfilename);
 	llofstream ofs(fullpath.c_str(), std::ios_base::out);
 	ofs << LLSDOStreamer<LLSDXMLFormatter>(content, LLSDFormatter::OPTIONS_PRETTY);
-	LL_DEBUGS("Avatar") << "results saved to: " << fullpath << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "results saved to: " << fullpath << LL_ENDL;
 }
 
 void LLVOAvatar::getSortedJointNames(S32 joint_type, std::vector<std::string>& result) const
@@ -9970,7 +9970,7 @@ void LLVOAvatar::cullAvatarsByPixelArea()
 		if (inst->mCulled != culled)
 		{
 			inst->mCulled = culled;
-			LL_DEBUGS() << "avatar " << inst->getID() << (culled ? " start culled" : " start not culled" ) << LL_ENDL;
+			// _LL_DEBUGS() << "avatar " << inst->getID() << (culled ? " start culled" : " start not culled" ) << LL_ENDL;
 			inst->updateMeshTextures();
 		}
 
@@ -10119,8 +10119,8 @@ void showRigInfoTabExtents(LLVOAvatar *avatar, LLJointRiggingInfoTab& tab, S32& 
         {
             count_rigged++;
             LLJoint *joint = avatar->getJoint(i);
-            LL_DEBUGS("RigSpam") << "joint " << i << " name " << joint->getName() << " box " 
-                                 << tab[i].getRiggedExtents()[0] << ", " << tab[i].getRiggedExtents()[1] << LL_ENDL;
+            /*// _LL_DEBUGS("RigSpam") << "joint " << i << " name " << joint->getName() << " box " 
+                                 << tab[i].getRiggedExtents()[0] << ", " << tab[i].getRiggedExtents()[1] << LL_ENDL;*/
             if ((!tab[i].getRiggedExtents()[0].equals3(zero_vec)) ||
                 (!tab[i].getRiggedExtents()[1].equals3(zero_vec)))
             {
@@ -10198,7 +10198,7 @@ void LLVOAvatar::updateRiggingInfo()
 {
     LL_RECORD_BLOCK_TIME(FTM_AVATAR_RIGGING_INFO_UPDATE);
 
-    LL_DEBUGS("RigSpammish") << getFullname() << " updating rig tab" << LL_ENDL;
+    // _LL_DEBUGS("RigSpammish") << getFullname() << " updating rig tab" << LL_ENDL;
 
     std::vector<LLVOVolume*> volumes;
 
@@ -10240,11 +10240,11 @@ void LLVOAvatar::updateRiggingInfo()
 
     //LL_INFOS() << "done update rig count is " << countRigInfoTab(mJointRiggingInfoTab) << LL_ENDL;
 #if ENABLE_DEBUG
-    LL_DEBUGS("RigSpammish") << getFullname() << " after update rig tab:" << LL_ENDL;
+    // _LL_DEBUGS("RigSpammish") << getFullname() << " after update rig tab:" << LL_ENDL;
 
     S32 joint_count, box_count;
     showRigInfoTabExtents(this, mJointRiggingInfoTab, joint_count, box_count);
-    LL_DEBUGS("RigSpammish") << "uses " << joint_count << " joints " << " nonzero boxes: " << box_count << LL_ENDL;
+    // _LL_DEBUGS("RigSpammish") << "uses " << joint_count << " joints " << " nonzero boxes: " << box_count << LL_ENDL;
 #endif
 }
 
@@ -10355,10 +10355,10 @@ void LLVOAvatar::updateImpostorRendering(U32 newMaxNonImpostorsValue)
 	sUseImpostors = (0 != sMaxNonImpostors);
     if ( oldflg != sUseImpostors )
     {
-        LL_DEBUGS("AvatarRender")
+        /*// _LL_DEBUGS("AvatarRender")
             << "was " << (oldflg ? "use" : "don't use" ) << " impostors (max " << oldmax << "); "
             << "now " << (sUseImpostors ? "use" : "don't use" ) << " impostors (max " << sMaxNonImpostors << "); "
-            << LL_ENDL;
+            << LL_ENDL;*/
     }
 }
 
@@ -10436,7 +10436,7 @@ void LLVOAvatar::idleUpdateDebugInfo()
 
 void LLVOAvatar::updateVisualComplexity()
 {
-	LL_DEBUGS("AvatarRender") << "avatar " << getID() << " appearance changed" << LL_ENDL;
+	// _LL_DEBUGS("AvatarRender") << "avatar " << getID() << " appearance changed" << LL_ENDL;
 	// Set the cache time to in the past so it's updated ASAP
 	mVisualComplexityStale = true;
 }
@@ -10505,13 +10505,13 @@ void LLVOAvatar::accountRenderComplexityForObject(
 								}*/
 							}
                             attachment_total_cost = attachment_volume_cost + attachment_texture_cost + attachment_children_cost;
-                            LL_DEBUGS("ARCdetail") << "Attachment costs " << attached_object->getAttachmentItemID()
+                            /*// _LL_DEBUGS("ARCdetail") << "Attachment costs " << attached_object->getAttachmentItemID()
                                                    << " total: " << attachment_total_cost
                                                    << ", volume: " << attachment_volume_cost
                                                    << ", textures: " << attachment_texture_cost
                                                    << ", " << volume->numChildren()
                                                    << " children: " << attachment_children_cost
-                                                   << LL_ENDL;
+                                                   << LL_ENDL;*/
                             // Limit attachment complexity to avoid signed integer flipping of the wearer's ACI
 							cost += (U32)llclamp(attachment_total_cost, MIN_ATTACHMENT_COMPLEXITY, MAX_ATTACHMENT_COMPLEXITY);
 						}
@@ -10628,7 +10628,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 				}
 			}
 		}
-        LL_DEBUGS("ARCdetail") << "Avatar body parts complexity: " << cost << LL_ENDL;
+        // _LL_DEBUGS("ARCdetail") << "Avatar body parts complexity: " << cost << LL_ENDL;
 
         mAttachmentVisibleTriangleCount = 0;
         mAttachmentEstTriangleCount = 0.f;
@@ -10689,7 +10689,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 				   && (all_textures.find(image_id) == all_textures.end()))
 				{
 					// attachment texture not previously seen.
-					LL_DEBUGS("ARCdetail") << "attachment_texture: " << image_id.asString() << LL_ENDL;
+					// _LL_DEBUGS("ARCdetail") << "attachment_texture: " << image_id.asString() << LL_ENDL;
 					all_textures.insert(image_id);
 				}
 			}
@@ -10709,7 +10709,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 					continue;
 				if (all_textures.find(image_id) == all_textures.end())
 				{
-					LL_DEBUGS("ARCdetail") << "local_texture: " << texture_dict->mName << ": " << image_id << LL_ENDL;
+					// _LL_DEBUGS("ARCdetail") << "local_texture: " << texture_dict->mName << ": " << image_id << LL_ENDL;
 					all_textures.insert(image_id);
 				}
 			}
@@ -10717,17 +10717,17 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 
         if ( cost != mVisualComplexity )
         {
-            LL_DEBUGS("AvatarRender") << "Avatar "<< getID()
+            /*// _LL_DEBUGS("AvatarRender") << "Avatar "<< getID()
                                       << " complexity updated was " << mVisualComplexity << " now " << cost
                                       << " reported " << mReportedVisualComplexity
-                                      << LL_ENDL;
+                                      << LL_ENDL;*/
         }
         else
         {
-            LL_DEBUGS("AvatarRender") << "Avatar "<< getID()
+            /*// _LL_DEBUGS("AvatarRender") << "Avatar "<< getID()
                                       << " complexity updated no change " << mVisualComplexity
                                       << " reported " << mReportedVisualComplexity
-                                      << LL_ENDL;
+                                      << LL_ENDL;*/
         }
 		mVisualComplexity = cost;
 		mVisualComplexityStale = false;
@@ -10818,7 +10818,7 @@ void LLVOAvatar::calcMutedAVColor()
 
     if (mMutedAVColor != new_color) 
     {
-        LL_DEBUGS("AvatarRender") << "avatar "<< av_id << change_msg << std::setprecision(3) << new_color << LL_ENDL;
+        // _LL_DEBUGS("AvatarRender") << "avatar "<< av_id << change_msg << std::setprecision(3) << new_color << LL_ENDL;
         mMutedAVColor = new_color;
     }
 }

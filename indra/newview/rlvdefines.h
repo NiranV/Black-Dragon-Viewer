@@ -45,7 +45,7 @@ const S32 RLVa_IMPL_ID = 13;
 // Defining these makes it easier if we ever need to change our tag
 #define RLV_WARNS		LL_WARNS("RLV")
 #define RLV_INFOS		LL_INFOS("RLV")
-#define RLV_DEBUGS		LL_DEBUGS("RLV")
+#define RLV_DEBUGS		// _LL_DEBUGS("RLV")
 #define RLV_ENDL		LL_ENDL
 #define RLV_VERIFY(f)	if (!(f)) { RlvUtil::notifyFailedAssertion(#f, __FILE__, __LINE__); }
 

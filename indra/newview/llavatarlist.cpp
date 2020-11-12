@@ -232,7 +232,7 @@ void LLAvatarList::setDirty(bool val /*= true*/, bool force_refresh /*= false*/)
 
 void LLAvatarList::addAvalineItem(const LLUUID& item_id, const LLUUID& session_id, const std::string& item_name)
 {
-	LL_DEBUGS("Avaline") << "Adding avaline item into the list: " << item_name << "|" << item_id << ", session: " << session_id << LL_ENDL;
+	// _LL_DEBUGS("Avaline") << "Adding avaline item into the list: " << item_name << "|" << item_id << ", session: " << session_id << LL_ENDL;
 	LLAvalineListItem* item = new LLAvalineListItem(/*hide_number=*/false);
 	item->setAvatarId(item_id, session_id, true, false);
 	item->setName(item_name);
@@ -709,13 +709,13 @@ void LLAvalineListItem::setName(const std::string& name)
 		if (mAvalineCallersNums.find(uuid) == mAvalineCallersNums.end())
 		{
 			mAvalineCallersNums[uuid] = ++order;
-			LL_DEBUGS("Avaline") << "Set name for new avaline caller: " << uuid << ", order: " << order << LL_ENDL;
+			// _LL_DEBUGS("Avaline") << "Set name for new avaline caller: " << uuid << ", order: " << order << LL_ENDL;
 		}
 		LLStringUtil::format_map_t args;
 		args["[ORDER]"] = llformat("%u", mAvalineCallersNums[uuid]);
 		std::string hidden_name = LLTrans::getString("AvalineCaller", args);
 
-		LL_DEBUGS("Avaline") << "Avaline caller: " << uuid << ", name: " << hidden_name << LL_ENDL;
+		// _LL_DEBUGS("Avaline") << "Avaline caller: " << uuid << ", name: " << hidden_name << LL_ENDL;
 		LLAvatarListItem::setAvatarName(hidden_name);
 		LLAvatarListItem::setAvatarToolTip(hidden_name);
 	}

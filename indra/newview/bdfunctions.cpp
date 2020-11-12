@@ -743,7 +743,7 @@ bool BDFunctions::doLoadPreset(const std::string& path)
 		return false;
 	}
 
-	LL_DEBUGS("AppInit", "Shaders") << "Loading preset: "  << name << LL_ENDL;
+	// _LL_DEBUGS("AppInit", "Shaders") << "Loading preset: "  << name << LL_ENDL;
 
 	LLSD params_data;
 	LLPointer<LLSDParser> parser = new LLSDXMLParser();

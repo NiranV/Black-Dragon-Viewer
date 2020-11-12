@@ -334,8 +334,8 @@ LLSD LLSDArgsMapper::map(const LLSD& argsmap) const
                 // our names array. Caller typically receives a map containing
                 // the function name, cruft such as reqid, etc. Ignore keys
                 // not defined in _indexes.
-                LL_DEBUGS("LLSDArgsMapper") << _function << " ignoring "
-                                            << mi->first << "=" << mi->second << LL_ENDL;
+                /*// _LL_DEBUGS("LLSDArgsMapper") << _function << " ignoring "
+                                            << mi->first << "=" << mi->second << LL_ENDL;*/
                 continue;
             }
             LLSD::Integer pos = ixit->second;

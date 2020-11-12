@@ -108,7 +108,7 @@ void LLFloaterVoiceEffect::refreshEffectList()
 		return;
 	}
 
-	LL_DEBUGS("Voice")<< "Rebuilding Voice Morph list."<< LL_ENDL;
+	// _LL_DEBUGS("Voice")<< "Rebuilding Voice Morph list."<< LL_ENDL;
 
 	// Preserve selected items and scroll position
 	S32 scroll_pos = mVoiceEffectList->getScrollPos();
@@ -240,7 +240,7 @@ void LLFloaterVoiceEffect::onVoiceEffectChanged(bool effect_list_updated)
 
 void LLFloaterVoiceEffect::onClickRecord()
 {
-	LL_DEBUGS("Voice") << "Record clicked" << LL_ENDL;
+	// _LL_DEBUGS("Voice") << "Record clicked" << LL_ENDL;
 	LLVoiceEffectInterface* effect_interface = LLVoiceClient::instance().getVoiceEffectInterface();
 	if (effect_interface)
 	{
@@ -251,7 +251,7 @@ void LLFloaterVoiceEffect::onClickRecord()
 
 void LLFloaterVoiceEffect::onClickPlay()
 {
-	LL_DEBUGS("Voice") << "Play clicked" << LL_ENDL;
+	// _LL_DEBUGS("Voice") << "Play clicked" << LL_ENDL;
 	if (!mVoiceEffectList)
 	{
 		return;
@@ -269,7 +269,7 @@ void LLFloaterVoiceEffect::onClickPlay()
 
 void LLFloaterVoiceEffect::onClickStop()
 {
-	LL_DEBUGS("Voice") << "Stop clicked" << LL_ENDL;
+	// _LL_DEBUGS("Voice") << "Stop clicked" << LL_ENDL;
 	LLVoiceEffectInterface* effect_interface = LLVoiceClient::instance().getVoiceEffectInterface();
 	if (effect_interface)
 	{

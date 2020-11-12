@@ -259,7 +259,7 @@ int LLCrashLoggerWindows::processingLoop() {
 	int retries = 0;
 	const int max_retries = 60;
 
-	LL_DEBUGS("CRASHREPORT") << "Entering processing loop for OOP server" << LL_ENDL;
+	// _LL_DEBUGS("CRASHREPORT") << "Entering processing loop for OOP server" << LL_ENDL;
 
 	LLSD options = getOptionData( LLApp::PRIORITY_COMMAND_LINE );
 
@@ -280,7 +280,7 @@ int LLCrashLoggerWindows::processingLoop() {
 		{
 			if (mClientsConnected == 0) 
 			{
-				LL_DEBUGS("CRASHREPORT") << "Waiting for client to connect." << LL_ENDL;
+				// _LL_DEBUGS("CRASHREPORT") << "Waiting for client to connect." << LL_ENDL;
 				++retries;
 			}
 			else

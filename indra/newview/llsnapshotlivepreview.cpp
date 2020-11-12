@@ -146,7 +146,7 @@ F32 LLSnapshotLivePreview::getImageAspect()
 
 void LLSnapshotLivePreview::updateSnapshot(BOOL new_snapshot, BOOL new_thumbnail, F32 delay)
 {
-	LL_DEBUGS() << "updateSnapshot: mSnapshotUpToDate = " << getSnapshotUpToDate() << LL_ENDL;
+	// _LL_DEBUGS() << "updateSnapshot: mSnapshotUpToDate = " << getSnapshotUpToDate() << LL_ENDL;
 
 	// Update snapshot if requested.
 	if (new_snapshot)
@@ -274,7 +274,7 @@ void LLSnapshotLivePreview::reshape(S32 width, S32 height, BOOL called_from_pare
 	LLView::reshape(width, height, called_from_parent);
 	if (old_rect.getWidth() != width || old_rect.getHeight() != height)
 	{
-		LL_DEBUGS() << "window reshaped, updating thumbnail" << LL_ENDL;
+		// _LL_DEBUGS() << "window reshaped, updating thumbnail" << LL_ENDL;
 		if (mViewContainer && mViewContainer->isInVisibleChain())
 		{
 			// We usually resize only on window reshape, so give it a chance to redraw, assign delay
@@ -502,7 +502,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 	// time to produce a snapshot
 	if(!previewp->getSnapshotUpToDate())
 	{
-		LL_DEBUGS() << "producing snapshot" << LL_ENDL;
+		// _LL_DEBUGS() << "producing snapshot" << LL_ENDL;
 		if (!previewp->mPreviewImage)
 		{
 			previewp->mPreviewImage = new LLImageRaw;
@@ -545,7 +545,7 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		//BD
 		previewp->mSnapshotDelayTimer.stop();
 		previewp->mSnapshotActive = FALSE;
-		LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
+		// _LL_DEBUGS() << "done creating snapshot" << LL_ENDL;
 	}
     
 	if (!previewp->getThumbnailUpToDate())
@@ -595,7 +595,7 @@ LLPointer<LLImageRaw> LLSnapshotLivePreview::getEncodedImage()
         if (getSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
 		{
             // We don't store the intermediate formatted image in mFormattedImage in the J2C case 
-			LL_DEBUGS() << "Encoding new image of format J2C" << LL_ENDL;
+			// _LL_DEBUGS() << "Encoding new image of format J2C" << LL_ENDL;
 			LLPointer<LLImageJ2C> formatted = new LLImageJ2C;
             // Copy the preview
 			LLPointer<LLImageRaw> scaled = new LLImageRaw(
@@ -686,7 +686,7 @@ LLPointer<LLImageFormatted>	LLSnapshotLivePreview::getFormattedImage()
         
         // Create the new formatted image of the appropriate format.
         LLSnapshotModel::ESnapshotFormat format = getSnapshotFormat();
-        LL_DEBUGS() << "Encoding new image of format " << format << LL_ENDL;
+        // _LL_DEBUGS() << "Encoding new image of format " << format << LL_ENDL;
             
         switch (format)
         {
@@ -711,7 +711,7 @@ LLPointer<LLImageFormatted>	LLSnapshotLivePreview::getFormattedImage()
 
 void LLSnapshotLivePreview::setSize(S32 w, S32 h)
 {
-	LL_DEBUGS() << "setSize(" << w << ", " << h << ")" << LL_ENDL;
+	// _LL_DEBUGS() << "setSize(" << w << ", " << h << ")" << LL_ENDL;
 	setWidth(w);
 	setHeight(h);
 }
@@ -733,7 +733,7 @@ void LLSnapshotLivePreview::getSize(S32& w, S32& h) const
 
 void LLSnapshotLivePreview::saveTexture(BOOL outfit_snapshot, std::string name)
 {
-	LL_DEBUGS() << "saving texture: " << mPreviewImage->getWidth() << "x" << mPreviewImage->getHeight() << LL_ENDL;
+	// _LL_DEBUGS() << "saving texture: " << mPreviewImage->getWidth() << "x" << mPreviewImage->getHeight() << LL_ENDL;
 	// gen a new uuid for this asset
 	LLTransactionID tid;
 	tid.generate();
@@ -761,7 +761,7 @@ void LLSnapshotLivePreview::saveTexture(BOOL outfit_snapshot, std::string name)
 	}
 
 	scaled->biasedScaleToPowerOfTwo(MAX_TEXTURE_SIZE);
-	LL_DEBUGS() << "scaled texture to " << scaled->getWidth() << "x" << scaled->getHeight() << LL_ENDL;
+	// _LL_DEBUGS() << "scaled texture to " << scaled->getWidth() << "x" << scaled->getHeight() << LL_ENDL;
 
 	if (formatted->encode(scaled, 0.0f))
 	{

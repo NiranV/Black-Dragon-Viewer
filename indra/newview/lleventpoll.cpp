@@ -145,7 +145,7 @@ namespace Details
         int errorCount = 0;
         int counter = mCounter; // saved on the stack for logging. 
 
-        LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> entering coroutine." << LL_ENDL;
+        // _LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> entering coroutine." << LL_ENDL;
 
         mAdapter = httpAdapter;
 
@@ -157,13 +157,13 @@ namespace Details
             request["ack"] = acknowledge;
             request["done"] = mDone;
 
-//          LL_DEBUGS("LLEventPollImpl::eventPollCoro") << "<" << counter << "> request = "
+//          // _LL_DEBUGS("LLEventPollImpl::eventPollCoro") << "<" << counter << "> request = "
 //              << LLSDXMLStreamer(request) << LL_ENDL;
 
-            LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> posting and yielding." << LL_ENDL;
+            // _LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> posting and yielding." << LL_ENDL;
             LLSD result = httpAdapter->postAndSuspend(mHttpRequest, url, request);
 
-//          LL_DEBUGS("LLEventPollImpl::eventPollCoro") << "<" << counter << "> result = "
+//          // _LL_DEBUGS("LLEventPollImpl::eventPollCoro") << "<" << counter << "> result = "
 //              << LLSDXMLStreamer(result) << LL_ENDL;
 
             LLSD httpResults = result["http_result"];
@@ -173,7 +173,7 @@ namespace Details
             {
                 if (status == LLCore::HttpStatus(LLCore::HttpStatus::EXT_CURL_EASY, CURLE_OPERATION_TIMEDOUT))
                 {   // A standard timeout response we get this when there are no events.
-                    LL_DEBUGS("LLEventPollImpl") << "All is very quiet on target server. It may have gone idle?" << LL_ENDL;
+                    // _LL_DEBUGS("LLEventPollImpl") << "All is very quiet on target server. It may have gone idle?" << LL_ENDL;
                     errorCount = 0;
                     continue;
                 }
@@ -255,7 +255,7 @@ namespace Details
             }
 
             // was LL_INFOS() but now that CoarseRegionUpdate is TCP @ 1/second, it'd be too verbose for viewer logs. -MG
-            LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> " << events.size() << "events (id " << acknowledge << ")" << LL_ENDL;
+            // _LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> " << events.size() << "events (id " << acknowledge << ")" << LL_ENDL;
 
             LLSD::array_const_iterator i = events.beginArray();
             LLSD::array_const_iterator end = events.endArray();
@@ -267,7 +267,7 @@ namespace Details
                 }
             }
         }
-        LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> Leaving coroutine." << LL_ENDL;
+        // _LL_DEBUGS("LLEventPollImpl") << " <" << counter << "> Leaving coroutine." << LL_ENDL;
     }
 
 }

@@ -609,7 +609,7 @@ void upload_error(const std::string& error_message, const std::string& label, co
 	LLNotificationsUtil::add(label, args);
 	if(LLFile::remove(filename) == -1)
 	{
-		LL_DEBUGS() << "unable to remove temp file" << LL_ENDL;
+		// _LL_DEBUGS() << "unable to remove temp file" << LL_ENDL;
 	}
 	LLFilePicker::instance().reset();						
 }

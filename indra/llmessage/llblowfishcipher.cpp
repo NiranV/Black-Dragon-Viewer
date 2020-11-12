@@ -70,10 +70,10 @@ U32 LLBlowfishCipher::encrypt(const U8* src, U32 src_len, U8* dst, U32 dst_len)
     int blocksize = EVP_CIPHER_CTX_block_size(&context);
     int keylen = EVP_CIPHER_CTX_key_length(&context);
     int iv_length = EVP_CIPHER_CTX_iv_length(&context);
-    LL_DEBUGS() << "LLBlowfishCipher blocksize " << blocksize
+    /*// _LL_DEBUGS() << "LLBlowfishCipher blocksize " << blocksize
 		<< " keylen " << keylen
 		<< " iv_len " << iv_length
-		<< LL_ENDL;
+		<< LL_ENDL;*/
 
 	int output_len = 0;
 	int temp_len = 0;

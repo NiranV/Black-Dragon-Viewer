@@ -902,7 +902,7 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
 
 void LLInvFVBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLInvFVBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLInvFVBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 	if(isItemInTrash())
@@ -3470,7 +3470,7 @@ void LLFolderBridge::copyOutfitToClipboard()
 
 void LLFolderBridge::openItem()
 {
-	LL_DEBUGS() << "LLFolderBridge::openItem()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLFolderBridge::openItem()" << LL_ENDL;
 	LLInventoryModel* model = getInventoryModel();
 	if(!model) return;
 	if(mUUID.isNull()) return;
@@ -4378,7 +4378,7 @@ void LLFolderBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
-	LL_DEBUGS() << "LLFolderBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLFolderBridge::buildContextMenu()" << LL_ENDL;
 
 	LLInventoryModel* model = getInventoryModel();
 	if(!model) return;
@@ -5524,7 +5524,7 @@ bool LLTextureBridge::canSaveTexture(void)
 
 void LLTextureBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLTextureBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLTextureBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 	if(isItemInTrash())
@@ -5597,7 +5597,7 @@ void LLSoundBridge::openSoundPreview(void* which)
 
 void LLSoundBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLSoundBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLSoundBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
@@ -5678,7 +5678,7 @@ void LLLandmarkBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
-	LL_DEBUGS() << "LLLandmarkBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLLandmarkBridge::buildContextMenu()" << LL_ENDL;
     if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -5976,7 +5976,7 @@ void LLCallingCardBridge::openItem()
 
 void LLCallingCardBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLCallingCardBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLCallingCardBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
@@ -6126,7 +6126,7 @@ void LLNotecardBridge::openItem()
 
 void LLNotecardBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLNotecardBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLNotecardBridge::buildContextMenu()" << LL_ENDL;
     
     if (isMarketplaceListingsFolder())
     {
@@ -6267,7 +6267,7 @@ BOOL LLGestureBridge::removeItem()
 
 void LLGestureBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLGestureBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLGestureBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 	if(isItemInTrash())
@@ -6330,7 +6330,7 @@ void LLAnimationBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
-	LL_DEBUGS() << "LLAnimationBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLAnimationBridge::buildContextMenu()" << LL_ENDL;
     if (isMarketplaceListingsFolder())
     {
 		addMarketplaceContextMenuOptions(flags, items, disabled_items);
@@ -6624,7 +6624,7 @@ bool confirm_attachment_rez(const LLSD& notification, const LLSD& response)
 			U8 attachment_pt = notification["payload"]["attachment_point"].asInteger();
 			BOOL is_add = notification["payload"]["is_add"].asBoolean();
 
-			LL_DEBUGS("Avatar") << "ATT calling addAttachmentRequest " << (itemp ? itemp->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << "ATT calling addAttachmentRequest " << (itemp ? itemp->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
 			LLAttachmentsMgr::instance().addAttachmentRequest(item_id, attachment_pt, is_add);
 		}
 	}
@@ -6884,7 +6884,7 @@ void LLWearableBridge::openItem()
 
 void LLWearableBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-	LL_DEBUGS() << "LLWearableBridge::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLWearableBridge::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 	if(isItemInTrash())
@@ -7156,7 +7156,7 @@ std::string LLLinkItemBridge::sPrefix("Link: ");
 void LLLinkItemBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
 	// *TODO: Translate
-	LL_DEBUGS() << "LLLink::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLLink::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 
@@ -7230,7 +7230,7 @@ void LLSettingsBridge::performAction(LLInventoryModel* model, std::string action
         }
         S32 parcel_id = parcel->getLocalID();
 
-        LL_DEBUGS("ENVIRONMENT") << "Applying asset ID " << asset_id << " to parcel " << parcel_id << LL_ENDL;
+        // _LL_DEBUGS("ENVIRONMENT") << "Applying asset ID " << asset_id << " to parcel " << parcel_id << LL_ENDL;
         LLEnvironment::instance().updateParcel(parcel_id, asset_id, name, LLEnvironment::NO_TRACK, -1, -1, flags);
         LLEnvironment::instance().setSharedEnvironment();
     }
@@ -7252,7 +7252,7 @@ void LLSettingsBridge::openItem()
 
 void LLSettingsBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-    LL_DEBUGS() << "LLSettingsBridge::buildContextMenu()" << LL_ENDL;
+    // _LL_DEBUGS() << "LLSettingsBridge::buildContextMenu()" << LL_ENDL;
     menuentry_vec_t items;
     menuentry_vec_t disabled_items;
 
@@ -7352,7 +7352,7 @@ LLUIImagePtr LLLinkFolderBridge::getIcon() const
 void LLLinkFolderBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
 	// *TODO: Translate
-	LL_DEBUGS() << "LLLink::buildContextMenu()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLLink::buildContextMenu()" << LL_ENDL;
 	menuentry_vec_t items;
 	menuentry_vec_t disabled_items;
 

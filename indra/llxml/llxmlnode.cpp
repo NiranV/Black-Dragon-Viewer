@@ -654,7 +654,7 @@ bool LLXMLNode::updateNode(
 bool LLXMLNode::parseFile(const std::string& filename, LLXMLNodePtr& node, LLXMLNode* defaults_tree)
 {
 	// Read file
-	LL_DEBUGS("XMLNode") << "parsing XML file: " << filename << LL_ENDL;
+	// _LL_DEBUGS("XMLNode") << "parsing XML file: " << filename << LL_ENDL;
 	LLFILE* fp = LLFile::fopen(filename, "rb");		/* Flawfinder: ignore */
 	if (fp == NULL)
 	{
@@ -1733,7 +1733,7 @@ U32 LLXMLNode::getBoolValue(U32 expected_length, BOOL *array)
 #if LL_DEBUG
 	if (ret_length != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getBoolValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getBoolValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << ret_length << LL_ENDL;
 	}
@@ -1786,7 +1786,7 @@ U32 LLXMLNode::getByteValue(U32 expected_length, U8 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getByteValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getByteValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -1839,7 +1839,7 @@ U32 LLXMLNode::getIntValue(U32 expected_length, S32 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getIntValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getIntValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -1893,7 +1893,7 @@ U32 LLXMLNode::getUnsignedValue(U32 expected_length, U32 *array, Encoding encodi
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getUnsignedValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getUnsignedValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -1947,7 +1947,7 @@ U32 LLXMLNode::getLongValue(U32 expected_length, U64 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getLongValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getLongValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -1993,7 +1993,7 @@ U32 LLXMLNode::getFloatValue(U32 expected_length, F32 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getFloatValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getFloatValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -2038,7 +2038,7 @@ U32 LLXMLNode::getDoubleValue(U32 expected_length, F64 *array, Encoding encoding
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getDoubleValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getDoubleValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}
@@ -2086,7 +2086,7 @@ U32 LLXMLNode::getStringValue(U32 expected_length, std::string *array)
 #if LL_DEBUG
 	if (num_returned_strings != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getStringValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getStringValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << num_returned_strings << LL_ENDL;
 	}
@@ -2131,7 +2131,7 @@ U32 LLXMLNode::getUUIDValue(U32 expected_length, LLUUID *array)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		LL_DEBUGS() << "LLXMLNode::getUUIDValue() failed for node named '" 
+		// _LL_DEBUGS() << "LLXMLNode::getUUIDValue() failed for node named '" 
 			<< mName->mString << "' -- expected " << expected_length << " but "
 			<< "only found " << i << LL_ENDL;
 	}

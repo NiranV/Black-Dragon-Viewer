@@ -268,7 +268,7 @@ void LLPanelGroupGeneral::onClickInfo(void *userdata)
 
 	if ( !self ) return;
 
-	LL_DEBUGS() << "open group info: " << self->mGroupID << LL_ENDL;
+	// _LL_DEBUGS() << "open group info: " << self->mGroupID << LL_ENDL;
 
 	LLGroupActions::show(self->mGroupID);
 

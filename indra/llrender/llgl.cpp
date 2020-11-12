@@ -563,7 +563,7 @@ bool LLGLManager::initGL()
 		{
 			std::string ext((const char*) glGetStringi(GL_EXTENSIONS, i));
 			str << ext << " ";
-			LL_DEBUGS("GLExtensions") << ext << LL_ENDL;
+			// _LL_DEBUGS("GLExtensions") << ext << LL_ENDL;
 		}
 		
 		{
@@ -951,7 +951,7 @@ void LLGLManager::printGLInfoString()
 #if !LL_MESA_HEADLESS
 	std::string all_exts= ll_safe_string(((const char *)gGLHExts.mSysExts));
 	LLStringUtil::replaceChar(all_exts, ' ', '\n');
-	LL_DEBUGS("RenderInit") << "GL_EXTENSIONS:\n" << all_exts << LL_ENDL;
+	// _LL_DEBUGS("RenderInit") << "GL_EXTENSIONS:\n" << all_exts << LL_ENDL;
 #endif
 }
 
@@ -1246,7 +1246,7 @@ void LLGLManager::initExtensions()
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*) &mGLMaxTextureSize);
 
 #if (LL_WINDOWS || LL_LINUX || LL_SOLARIS) && !LL_MESA_HEADLESS
-	LL_DEBUGS("RenderInit") << "GL Probe: Getting symbols" << LL_ENDL;
+	// _LL_DEBUGS("RenderInit") << "GL Probe: Getting symbols" << LL_ENDL;
 	if (mHasVertexBufferObject)
 	{
 		glBindBufferARB = (PFNGLBINDBUFFERARBPROC)GLH_EXT_GET_PROC_ADDRESS("glBindBufferARB");
@@ -1508,7 +1508,7 @@ void LLGLManager::initExtensions()
 		glGetVertexAttribPointervARB = (PFNGLGETVERTEXATTRIBPOINTERVARBPROC) GLH_EXT_GET_PROC_ADDRESS("glgetVertexAttribPointervARB");
 		glIsProgramARB = (PFNGLISPROGRAMARBPROC) GLH_EXT_GET_PROC_ADDRESS("glIsProgramARB");
 	}
-	LL_DEBUGS("RenderInit") << "GL Probe: Got symbols" << LL_ENDL;
+	// _LL_DEBUGS("RenderInit") << "GL Probe: Got symbols" << LL_ENDL;
 #endif
 
 	mInited = TRUE;

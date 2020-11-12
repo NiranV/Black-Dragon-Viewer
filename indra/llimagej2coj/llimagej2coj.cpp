@@ -70,21 +70,21 @@ sample error callback expecting a LLFILE* client object
 */
 void error_callback(const char* msg, void*)
 {
-	LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
+	// _LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
 }
 /**
 sample warning callback expecting a LLFILE* client object
 */
 void warning_callback(const char* msg, void*)
 {
-	LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
+	// _LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
 }
 /**
 sample debug callback expecting no client object
 */
 void info_callback(const char* msg, void*)
 {
-	LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
+	// _LL_DEBUGS() << "LLImageJ2COJ: " << chomp(msg) << LL_ENDL;
 }
 
 // Divide a by 2 to the power of b and round upwards
@@ -176,7 +176,7 @@ bool LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 	// dereference the array.
 	if(!image || !image->numcomps)
 	{
-		LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed to decode image!" << LL_ENDL;
+		// _LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed to decode image!" << LL_ENDL;
 		if (image)
 		{
 			opj_image_destroy(image);
@@ -253,7 +253,7 @@ bool LLImageJ2COJ::decodeImpl(LLImageJ2C &base, LLImageRaw &raw_image, F32 decod
 		}
 		else // Some rare OpenJPEG versions have this bug.
 		{
-			LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed to decode image! (NULL comp data - OpenJPEG bug)" << LL_ENDL;
+			// _LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed to decode image! (NULL comp data - OpenJPEG bug)" << LL_ENDL;
 			opj_image_destroy(image);
 			base.decodeFailed();
 			return true; // done
@@ -386,7 +386,7 @@ bool LLImageJ2COJ::encodeImpl(LLImageJ2C &base, const LLImageRaw &raw_image, con
 	if (!bSuccess)
 	{
 		opj_cio_close(cio);
-		LL_DEBUGS("Texture") << "Failed to encode image." << LL_ENDL;
+		// _LL_DEBUGS("Texture") << "Failed to encode image." << LL_ENDL;
 		return false;
 	}
 	codestream_length = cio_tell(cio);

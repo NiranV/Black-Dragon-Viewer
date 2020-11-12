@@ -981,7 +981,7 @@ void LLFilePicker::add_to_selectedfiles(gpointer data, gpointer user_data)
 	if (filename_utf8)
 	{
 		picker->mFiles.push_back(std::string(filename_utf8));
-		LL_DEBUGS() << "ADDED FILE " << filename_utf8 << LL_ENDL;
+		// _LL_DEBUGS() << "ADDED FILE " << filename_utf8 << LL_ENDL;
 		g_free(filename_utf8);
 	}
 
@@ -993,7 +993,7 @@ void LLFilePicker::chooser_responder(GtkWidget *widget, gint response, gpointer 
 {
 	LLFilePicker* picker = (LLFilePicker*)user_data;
 
-	LL_DEBUGS() << "GTK DIALOG RESPONSE " << response << LL_ENDL;
+	// _LL_DEBUGS() << "GTK DIALOG RESPONSE " << response << LL_ENDL;
 
 	if (response == GTK_RESPONSE_ACCEPT)
 	{

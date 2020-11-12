@@ -78,7 +78,7 @@ void ll_debug_poll_fd(const char* msg, const apr_pollfd_t* poll)
 #if LL_DEBUG_POLL_FILE_DESCRIPTORS
 	if(!poll)
 	{
-		LL_DEBUGS() << "Poll -- " << (msg?msg:"") << ": no pollfd." << LL_ENDL;
+		// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << ": no pollfd." << LL_ENDL;
 		return;
 	}
 	if(poll->desc.s)
@@ -86,12 +86,12 @@ void ll_debug_poll_fd(const char* msg, const apr_pollfd_t* poll)
 		apr_os_sock_t os_sock;
 		if(APR_SUCCESS == apr_os_sock_get(&os_sock, poll->desc.s))
 		{
-			LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " on fd " << os_sock
+			// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " on fd " << os_sock
 				 << " at " << poll->desc.s << LL_ENDL;
 		}
 		else
 		{
-			LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " no fd "
+			// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " no fd "
 				 << " at " << poll->desc.s << LL_ENDL;
 		}
 	}
@@ -100,18 +100,18 @@ void ll_debug_poll_fd(const char* msg, const apr_pollfd_t* poll)
 		apr_os_file_t os_file;
 		if(APR_SUCCESS == apr_os_file_get(&os_file, poll->desc.f))
 		{
-			LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " on fd " << os_file
+			// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " on fd " << os_file
 				 << " at " << poll->desc.f << LL_ENDL;
 		}
 		else
 		{
-			LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " no fd "
+			// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << " no fd "
 				 << " at " << poll->desc.f << LL_ENDL;
 		}
 	}
 	else
 	{
-		LL_DEBUGS() << "Poll -- " << (msg?msg:"") << ": no descriptor." << LL_ENDL;
+		// _LL_DEBUGS() << "Poll -- " << (msg?msg:"") << ": no descriptor." << LL_ENDL;
 	}
 #endif	
 }
@@ -195,10 +195,10 @@ bool LLPumpIO::addChain(const chain_t& chain, F32 timeout, bool has_curl_request
 	info.mData->setThreaded(has_curl_request);
 	LLLinkInfo link;
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-	LL_DEBUGS() << "LLPumpIO::addChain() " << chain[0] << " '"
+	// _LL_DEBUGS() << "LLPumpIO::addChain() " << chain[0] << " '"
 		<< typeid(*(chain[0])).name() << "'" << LL_ENDL;
 #else
-	LL_DEBUGS() << "LLPumpIO::addChain() " << chain[0] <<LL_ENDL;
+	// _LL_DEBUGS() << "LLPumpIO::addChain() " << chain[0] <<LL_ENDL;
 #endif
 	chain_t::const_iterator it = chain.begin();
 	chain_t::const_iterator end = chain.end();
@@ -226,10 +226,10 @@ bool LLPumpIO::addChain(
 	if(links.empty()) return false;
 
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-	LL_DEBUGS() << "LLPumpIO::addChain() " << links[0].mPipe << " '"
+	// _LL_DEBUGS() << "LLPumpIO::addChain() " << links[0].mPipe << " '"
 		<< typeid(*(links[0].mPipe)).name() << "'" << LL_ENDL;
 #else
-	LL_DEBUGS() << "LLPumpIO::addChain() " << links[0].mPipe << LL_ENDL;
+	// _LL_DEBUGS() << "LLPumpIO::addChain() " << links[0].mPipe << LL_ENDL;
 #endif
 	LLChainInfo info;
 	info.setTimeoutSeconds(timeout);
@@ -295,12 +295,12 @@ bool LLPumpIO::setConditional(LLIOPipe* pipe, const apr_pollfd_t* poll)
 	if(!pipe) return false;
 	ll_debug_poll_fd("Set conditional", poll);
 
-	LL_DEBUGS() << "Setting conditionals (" << (poll ? events_2_string(poll->reqevents) :"null")
+	/*// _LL_DEBUGS() << "Setting conditionals (" << (poll ? events_2_string(poll->reqevents) :"null")
 		 << ") "
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
 		 << "on pipe " << typeid(*pipe).name() 
 #endif
-		 << " at " << pipe << LL_ENDL;
+		 << " at " << pipe << LL_ENDL;*/
 
 	// remove any matching poll file descriptors for this pipe.
 	LLIOPipe::ptr_t pipe_ptr(pipe);
@@ -457,7 +457,7 @@ void LLPumpIO::pump(const S32& poll_timeout)
 		if(!mPendingChains.empty())
 		{
 			PUMP_DEBUG;
-			//LL_DEBUGS() << "Pushing " << mPendingChains.size() << "." << LL_ENDL;
+			//// _LL_DEBUGS() << "Pushing " << mPendingChains.size() << "." << LL_ENDL;
 			std::copy(
 				mPendingChains.begin(),
 				mPendingChains.end(),
@@ -527,7 +527,7 @@ void LLPumpIO::pump(const S32& poll_timeout)
 	signal_client_t::iterator not_signalled = signalled_client.end();
 
 	// Process everything as appropriate
-	//LL_DEBUGS() << "Running chain count: " << mRunningChains.size() << LL_ENDL;
+	//// _LL_DEBUGS() << "Running chain count: " << mRunningChains.size() << LL_ENDL;
 	running_chains_t::iterator run_chain = mRunningChains.begin();
 	bool process_this_chain = false;
 	while( run_chain != mRunningChains.end() )
@@ -559,13 +559,13 @@ void LLPumpIO::pump(const S32& poll_timeout)
 				// it timed out and no one handled it, so we need to
 				// retire the chain
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-				LL_DEBUGS() << "Removing chain "
+				// _LL_DEBUGS() << "Removing chain "
 						<< (*run_chain).mChainLinks[0].mPipe
 						<< " '"
 						<< typeid(*((*run_chain).mChainLinks[0].mPipe)).name()
 						<< "' because it timed out." << LL_ENDL;
 #else
-//				LL_DEBUGS() << "Removing chain "
+//				// _LL_DEBUGS() << "Removing chain "
 //						<< (*run_chain).mChainLinks[0].mPipe
 //						<< " because we reached the end." << LL_ENDL;
 #endif
@@ -592,12 +592,12 @@ void LLPumpIO::pump(const S32& poll_timeout)
 		{
 			// if there are no conditionals, just process this chain.
 			process_this_chain = true;
-			//LL_DEBUGS() << "no conditionals - processing" << LL_ENDL;
+			//// _LL_DEBUGS() << "no conditionals - processing" << LL_ENDL;
 		}
 		else
 		{
 			PUMP_DEBUG;
-			//LL_DEBUGS() << "checking conditionals" << LL_ENDL;
+			//// _LL_DEBUGS() << "checking conditionals" << LL_ENDL;
 			// Check if this run chain was signalled. If any file
 			// descriptor is ready for something, then go ahead and
 			// process this chian.
@@ -674,12 +674,12 @@ void LLPumpIO::pump(const S32& poll_timeout)
 		if((*run_chain).mHead == (*run_chain).mChainLinks.end())
 		{
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-			LL_DEBUGS() << "Removing chain " << (*run_chain).mChainLinks[0].mPipe
+			// _LL_DEBUGS() << "Removing chain " << (*run_chain).mChainLinks[0].mPipe
 					<< " '"
 					<< typeid(*((*run_chain).mChainLinks[0].mPipe)).name()
 					<< "' because we reached the end." << LL_ENDL;
 #else
-//			LL_DEBUGS() << "Removing chain " << (*run_chain).mChainLinks[0].mPipe
+//			// _LL_DEBUGS() << "Removing chain " << (*run_chain).mChainLinks[0].mPipe
 //					<< " because we reached the end." << LL_ENDL;
 #endif
 
@@ -793,7 +793,7 @@ void LLPumpIO::cleanup()
 {
 	if(mPollset)
 	{
-//		LL_DEBUGS() << "cleaning up pollset" << LL_ENDL;
+//		// _LL_DEBUGS() << "cleaning up pollset" << LL_ENDL;
 		apr_pollset_destroy(mPollset);
 		mPollset = NULL;
 	}
@@ -807,10 +807,10 @@ void LLPumpIO::cleanup()
 
 void LLPumpIO::rebuildPollset()
 {
-//	LL_DEBUGS() << "LLPumpIO::rebuildPollset()" << LL_ENDL;
+//	// _LL_DEBUGS() << "LLPumpIO::rebuildPollset()" << LL_ENDL;
 	if(mPollset)
 	{
-		//LL_DEBUGS() << "destroying pollset" << LL_ENDL;
+		//// _LL_DEBUGS() << "destroying pollset" << LL_ENDL;
 		apr_pollset_destroy(mPollset);
 		mPollset = NULL;
 	}
@@ -821,7 +821,7 @@ void LLPumpIO::rebuildPollset()
 	{
 		size += (*run_it).mDescriptors.size();
 	}
-	//LL_DEBUGS() << "found " << size << " descriptors." << LL_ENDL;
+	//// _LL_DEBUGS() << "found " << size << " descriptors." << LL_ENDL;
 	if(size)
 	{
 		// Recycle the memory pool
@@ -1076,7 +1076,7 @@ bool LLPumpIO::handleChainError(
 	do
 	{
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-		LL_DEBUGS() << "Passing error to " << typeid(*((*rit).mPipe)).name()
+		// _LL_DEBUGS() << "Passing error to " << typeid(*((*rit).mPipe)).name()
 				 << "." << LL_ENDL;
 #endif
 		error = (*rit).mPipe->handleError(error, this);
@@ -1091,7 +1091,7 @@ bool LLPumpIO::handleChainError(
 		case LLIOPipe::STATUS_BREAK:
 		case LLIOPipe::STATUS_NEED_PROCESS:
 #if LL_DEBUG_PIPE_TYPE_IN_PUMP
-			LL_DEBUGS() << "Pipe " << typeid(*((*rit).mPipe)).name()
+			// _LL_DEBUGS() << "Pipe " << typeid(*((*rit).mPipe)).name()
 					 << " returned code to stop error handler." << LL_ENDL;
 #endif
 			keep_going = false;

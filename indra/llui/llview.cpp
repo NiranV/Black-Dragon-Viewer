@@ -168,7 +168,7 @@ LLView::~LLView()
 	//LL_INFOS() << "Deleting view " << mName << ":" << (void*) this << LL_ENDL;
 	if (LLView::sIsDrawing)
 	{
-		LL_DEBUGS() << "Deleting view " << mName << " during UI draw() phase" << LL_ENDL;
+		// _LL_DEBUGS() << "Deleting view " << mName << " during UI draw() phase" << LL_ENDL;
 	}
 // 	llassert(LLView::sIsDrawing == FALSE);
 	
@@ -644,7 +644,7 @@ void LLView::onVisibilityChange ( BOOL new_visibility )
 			// Consider changing returns to confirm success and know which widget grabbed it
 			// For now assume success and log at highest xui possible 
 			// NOTE we log actual state - which may differ if it somehow failed to set visibility
-			LL_DEBUGS() << "LLView::handleVisibilityChange	 - now: " << getVisible()  << " xui: " << viewp->getPathname() << " name: " << viewp->getName() << LL_ENDL;
+			// _LL_DEBUGS() << "LLView::handleVisibilityChange	 - now: " << getVisible()  << " xui: " << viewp->getPathname() << " name: " << viewp->getName() << LL_ENDL;
 		
 		}
 #endif
@@ -753,8 +753,8 @@ LLView* LLView::childrenHandleMouseEvent(const METHOD& method, S32 x, S32 y, XDA
 		if ((viewp->*method)( local_x, local_y, extra )
 			|| (allow_mouse_block && viewp->blockMouseEvent( local_x, local_y )))
 		{
-			LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x	<< "local/global y " << local_y << " " << y << LL_ENDL;
-			LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
+			// _LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x	<< "local/global y " << local_y << " " << y << LL_ENDL;
+			// _LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
 
 				LLViewerEventRecorder::instance().updateMouseEventInfo(x,y,-55,-55,getPathname()); 
 
@@ -785,8 +785,8 @@ LLView* LLView::childrenHandleScrollEvent(const METHOD& method, S32 x, S32 y, S3
 		if ((viewp->*method)(local_x, local_y, clicks, mask)
 			|| (allow_mouse_block && viewp->blockMouseEvent(local_x, local_y)))
 		{
-			LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  " << local_x << " " << x << "local/global y " << local_y << " " << y << LL_ENDL;
-			LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
+			// _LL_DEBUGS() << "LLView::childrenHandleMouseEvent calling updatemouseeventinfo - local_x|global x  " << local_x << " " << x << "local/global y " << local_y << " " << y << LL_ENDL;
+			// _LL_DEBUGS() << "LLView::childrenHandleMouseEvent  getPathname for viewp result: " << viewp->getPathname() << "for this view: " << getPathname() << LL_ENDL;
 
 			LLViewerEventRecorder::instance().updateMouseEventInfo(x, y, -55, -55, getPathname());
 
@@ -972,7 +972,7 @@ BOOL LLView::handleKey(KEY key, MASK mask, BOOL called_from_parent)
 			handled = handleKeyHere( key, mask );
 			if (handled)
 			{
-				LL_DEBUGS() << "Key handled by " << getName() << LL_ENDL;
+				// _LL_DEBUGS() << "Key handled by " << getName() << LL_ENDL;
 			}
 		}
 	}
@@ -1004,7 +1004,7 @@ BOOL LLView::handleKeyUp(KEY key, MASK mask, BOOL called_from_parent)
 			handled = handleKeyUpHere(key, mask);
 			if (handled)
 			{
-				LL_DEBUGS() << "Key handled by " << getName() << LL_ENDL;
+				// _LL_DEBUGS() << "Key handled by " << getName() << LL_ENDL;
 			}
 		}
 	}

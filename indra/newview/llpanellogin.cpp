@@ -275,13 +275,13 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
     {
         if (!grid_choice->first.empty() && current_grid != grid_choice->first)
         {
-            LL_DEBUGS("AppInit") << "adding " << grid_choice->first << LL_ENDL;
+            // _LL_DEBUGS("AppInit") << "adding " << grid_choice->first << LL_ENDL;
 			mGridCombo->add(grid_choice->second, grid_choice->first);
         }
     }
 	mGridCombo->sortByName();
 
-    LL_DEBUGS("AppInit") << "adding current " << current_grid << LL_ENDL;
+    // _LL_DEBUGS("AppInit") << "adding current " << current_grid << LL_ENDL;
 	mGridCombo->add(LLGridManager::getInstance()->getGridLabel(),
         current_grid,
         ADD_TOP);
@@ -401,12 +401,12 @@ void LLPanelLogin::addFavoritesToStartLocation()
 		S32 res = LLStringUtil::compareInsensitive(user_defined_name, iter->first);
 		if (res != 0)
 		{
-			LL_DEBUGS() << "Skipping favorites for " << iter->first << LL_ENDL;
+			// _LL_DEBUGS() << "Skipping favorites for " << iter->first << LL_ENDL;
 			continue;
 		}
 
 		mFavoritesCombo->addSeparator();
-		LL_DEBUGS() << "Loading favorites for " << iter->first << LL_ENDL;
+		// _LL_DEBUGS() << "Loading favorites for " << iter->first << LL_ENDL;
 		LLSD user_llsd = iter->second;
 		for (LLSD::array_const_iterator iter1 = user_llsd.beginArray();
 			iter1 != user_llsd.endArray(); ++iter1)
@@ -710,7 +710,7 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 {
 	if (!sInstance) return;
 
-	LL_DEBUGS("AppInit") << new_start_slurl.asString() << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << new_start_slurl.asString() << LL_ENDL;
 
 	/*
 	* Determine whether or not the new_start_slurl modifies the grid.
@@ -769,13 +769,13 @@ void LLPanelLogin::onUpdateStartSLURL(const LLSLURL& new_start_slurl)
 
 void LLPanelLogin::setLocation(const LLSLURL& slurl)
 {
-	LL_DEBUGS("AppInit") << "setting Location " << slurl.asString() << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << "setting Location " << slurl.asString() << LL_ENDL;
 	LLStartUp::setStartSLURL(slurl); // calls onUpdateStartSLURL, above
 }
 
 void LLPanelLogin::autologinToLocation(const LLSLURL& slurl)
 {
-	LL_DEBUGS("AppInit") << "automatically logging into Location " << slurl.asString() << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << "automatically logging into Location " << slurl.asString() << LL_ENDL;
 	LLStartUp::setStartSLURL(slurl); // calls onUpdateStartSLURL, above
 
 	if (sInstance)
@@ -820,7 +820,7 @@ void LLPanelLogin::onClickConnect()
 		LLSD combo_val = sInstance->mGridCombo->getSelectedValue();
 
 		// the grid definitions may come from a user-supplied grids.xml, so they may not be good
-		LL_DEBUGS("AppInit")<<"grid "<<combo_val.asString()<<LL_ENDL;
+		// _LL_DEBUGS("AppInit")<<"grid "<<combo_val.asString()<<LL_ENDL;
 		try
 		{
 			LLGridManager::getInstance()->setGridChoice(combo_val.asString());
@@ -1164,7 +1164,7 @@ void LLPanelLogin::onLocationSLURL()
 {
 	//LLComboBox* location_combo = getChild<LLComboBox>("start_location_combo");
 	std::string location = mFavoritesCombo->getValue().asString();
-	LL_DEBUGS("AppInit") << location << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << location << LL_ENDL;
 
 	LLStartUp::setStartSLURL(location); // calls onUpdateStartSLURL, above 
 }

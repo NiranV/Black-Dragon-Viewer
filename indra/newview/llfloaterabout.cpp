@@ -151,7 +151,7 @@ BOOL LLFloaterAbout::postBuild()
 	}
 	else // not logged in
 	{
-		LL_DEBUGS("ViewerInfo") << "cannot display region info when not connected" << LL_ENDL;
+		// _LL_DEBUGS("ViewerInfo") << "cannot display region info when not connected" << LL_ENDL;
 		setSupportText(LLTrans::getString("NotConnected"));
 	}
 

@@ -48,8 +48,8 @@ LLAccountingCostManager::LLAccountingCostManager()
 void LLAccountingCostManager::accountingCostCoro(std::string url,
     eSelectionType selectionType, const LLHandle<LLAccountingCostObserver> observerHandle)
 {
-    LL_DEBUGS("LLAccountingCostManager") << "Entering coroutine " << LLCoros::getName()
-        << " with url '" << url << LL_ENDL;
+    /*// _LL_DEBUGS("LLAccountingCostManager") << "Entering coroutine " << LLCoros::getName()
+        << " with url '" << url << LL_ENDL;*/
 
     LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
@@ -177,7 +177,7 @@ void LLAccountingCostManager::fetchCosts( eSelectionType selectionType,
         std::string coroname = 
             LLCoros::instance().launch("LLAccountingCostManager::accountingCostCoro",
             boost::bind(&LLAccountingCostManager::accountingCostCoro, this, url, selectionType, observer_handle));
-        LL_DEBUGS() << coroname << " with  url '" << url << LL_ENDL;
+        // _LL_DEBUGS() << coroname << " with  url '" << url << LL_ENDL;
 
 	}
 	else

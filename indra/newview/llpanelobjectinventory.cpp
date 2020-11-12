@@ -287,7 +287,7 @@ LLUIImagePtr LLTaskInvFVBridge::getIcon() const
 void LLTaskInvFVBridge::openItem()
 {
 	// no-op.
-	LL_DEBUGS() << "LLTaskInvFVBridge::openItem()" << LL_ENDL;
+	// _LL_DEBUGS() << "LLTaskInvFVBridge::openItem()" << LL_ENDL;
 }
 
 BOOL LLTaskInvFVBridge::isItemRenameable() const

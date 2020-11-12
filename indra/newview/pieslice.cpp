@@ -49,7 +49,7 @@ PieSlice::PieSlice(const PieSlice::Params& p) :
 	mCheckEnableOnce(p.check_enable_once),
 	mDoUpdateEnabled(true)
 {
-	LL_DEBUGS("Pie") << "PieSlice::PieSlice(): " << mLabel << " " << mAutohide << " " << mCheckEnableOnce << LL_ENDL;
+	// _LL_DEBUGS("Pie") << "PieSlice::PieSlice(): " << mLabel << " " << mAutohide << " " << mCheckEnableOnce << LL_ENDL;
 }
 
 // initialize parameters

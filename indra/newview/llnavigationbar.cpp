@@ -664,7 +664,7 @@ void	LLNavigationBar::showTeleportHistoryMenu(LLUICtrl* btn_ctrl)
 	// Don't show the popup if teleport history is empty.
 	if (LLTeleportHistory::getInstance()->isEmpty())
 	{
-		LL_DEBUGS() << "Teleport history is empty, will not show the menu." << LL_ENDL;
+		// _LL_DEBUGS() << "Teleport history is empty, will not show the menu." << LL_ENDL;
 		return;
 	}
 	

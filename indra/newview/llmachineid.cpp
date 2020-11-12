@@ -46,8 +46,8 @@ public:
     LLComInitialize()
     {
         mHR = CoInitializeEx(0, COINIT_MULTITHREADED);
-        if (FAILED(mHR))
-            LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << hex << mHR << LL_ENDL;
+        //if (FAILED(mHR))
+            // _LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << hex << mHR << LL_ENDL;
     }
 
     ~LLComInitialize()
@@ -152,7 +152,7 @@ S32 LLMachineID::init()
             return 1;                // Program has failed.
         }
 
-        LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
+        // _LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
 
 
         // Step 5: --------------------------------------------------
@@ -266,7 +266,7 @@ S32 LLMachineID::init()
         has_static_unique_id = true;
 
         LL_INFOS("AppInit") << "UniqueID: 0x";
-        // Code between here and LL_ENDL is not executed unless the LL_DEBUGS
+        // Code between here and LL_ENDL is not executed unless the // _LL_DEBUGS
         // actually produces output
         for (size_t i = 0; i < len; ++i)
         {

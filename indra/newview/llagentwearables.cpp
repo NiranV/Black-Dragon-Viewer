@@ -856,7 +856,7 @@ void LLAgentWearables::createStandardWearables()
 // remove this function once the SH-3455 changesets are universally deployed.
 void LLAgentWearables::sendDummyAgentWearablesUpdate()
 {
-	LL_DEBUGS("Avatar") << "sendAgentWearablesUpdate()" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "sendAgentWearablesUpdate()" << LL_ENDL;
 
 	// Send the AgentIsNowWearing 
 	gMessageSystem->newMessageFast(_PREHASH_AgentIsNowWearing);
@@ -1057,9 +1057,9 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 		if (!new_wearable || !curr_wearable ||
 			new_wearable->getAssetID() != curr_wearable->getAssetID())
 		{
-			LL_DEBUGS("Avatar") << "mismatch, type " << type << " index " << index
+			/*// _LL_DEBUGS("Avatar") << "mismatch, type " << type << " index " << index
 								<< " names " << (curr_wearable ? curr_wearable->getName() : "NONE")  << ","
-								<< " names " << (new_wearable ? new_wearable->getName() : "NONE")  << LL_ENDL;
+								<< " names " << (new_wearable ? new_wearable->getName() : "NONE")  << LL_ENDL;*/
 			mismatched++;
 			continue;
 		}
@@ -1070,29 +1070,29 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 		if (curr_wearable->getName() != new_item->getName() ||
 			curr_wearable->getItemID() != new_item->getUUID())
 		{
-			LL_DEBUGS("Avatar") << "mismatch on name or inventory id, names "
+			/*// _LL_DEBUGS("Avatar") << "mismatch on name or inventory id, names "
 								<< curr_wearable->getName() << " vs " << new_item->getName()
 								<< " item ids " << curr_wearable->getItemID() << " vs " << new_item->getUUID()
-								<< LL_ENDL;
+								<< LL_ENDL;*/
 			update_inventory = TRUE;
 			continue;
 		}
 		// If we got here, everything matches.
 		matched++;
 	}
-	LL_DEBUGS("Avatar") << "matched " << matched << " mismatched " << mismatched << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "matched " << matched << " mismatched " << mismatched << LL_ENDL;
 	for (S32 j=0; j<LLWearableType::WT_COUNT; j++)
 	{
 		LLWearableType::EType type = (LLWearableType::EType) j;
 		if (getWearableCount(type) != type_counts[j])
 		{
-			LL_DEBUGS("Avatar") << "count mismatch for type " << j << " current " << getWearableCount(j) << " requested " << type_counts[j] << LL_ENDL; 
+			// _LL_DEBUGS("Avatar") << "count mismatch for type " << j << " current " << getWearableCount(j) << " requested " << type_counts[j] << LL_ENDL; 
 			mismatched++;
 		}
 	}
 	if (mismatched == 0 && !update_inventory)
 	{
-		LL_DEBUGS("Avatar") << "no changes, bailing out" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "no changes, bailing out" << LL_ENDL;
 		notifyLoadingFinished();
 		return;
 	}
@@ -1149,7 +1149,7 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 
 	if (mismatched == 0)
 	{
-		LL_DEBUGS("Avatar") << "inventory updated, wearable assets not changed, bailing out" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "inventory updated, wearable assets not changed, bailing out" << LL_ENDL;
 		notifyLoadingFinished();
 		return;
 	}
@@ -1191,7 +1191,7 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 
 	gAgentAvatarp->dumpAvatarTEs("setWearableOutfit");
 
-	LL_DEBUGS("Avatar") << "setWearableOutfit() end" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "setWearableOutfit() end" << LL_ENDL;
 }
 
 
@@ -1218,7 +1218,7 @@ void LLAgentWearables::setWearableOutfit(const LLInventoryItem::item_array_t& it
 //			if ((old_wearable->getAssetID() == new_wearable->getAssetID()) &&
 //				(old_item_id == new_item->getUUID()))
 //			{
-//				LL_DEBUGS() << "No change to wearable asset and item: " << LLWearableType::getTypeName(type) << LL_ENDL;
+//				// _LL_DEBUGS() << "No change to wearable asset and item: " << LLWearableType::getTypeName(type) << LL_ENDL;
 //				return;
 //			}
 //			
@@ -1474,7 +1474,7 @@ void LLAgentWearables::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remo
 	if (objects_to_remove.empty())
 		return;
 
-	LL_DEBUGS("Avatar") << "ATT [ObjectDetach] removing " << objects_to_remove.size() << " objects" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "ATT [ObjectDetach] removing " << objects_to_remove.size() << " objects" << LL_ENDL;
 	gMessageSystem->newMessage("ObjectDetach");
 	gMessageSystem->nextBlockFast(_PREHASH_AgentData);
 	gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
@@ -1490,7 +1490,7 @@ void LLAgentWearables::userRemoveMultipleAttachments(llvo_vec_t& objects_to_remo
 		gMessageSystem->addU32Fast(_PREHASH_ObjectLocalID, objectp->getLocalID());
 		const LLUUID& item_id = objectp->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
-		LL_DEBUGS("Avatar") << "ATT removing object, item is " << (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "ATT removing object, item is " << (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;
         LLAttachmentsMgr::instance().onDetachRequested(item_id);
 	}
 	gMessageSystem->sendReliable(gAgent.getRegionHost());
@@ -1502,7 +1502,7 @@ void LLAgentWearables::userAttachMultipleAttachments(LLInventoryModel::item_arra
 	S32 obj_count = obj_item_array.size();
 	if (obj_count > 0)
 	{
-		LL_DEBUGS("Avatar") << "ATT attaching multiple, total obj_count " << obj_count << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "ATT attaching multiple, total obj_count " << obj_count << LL_ENDL;
 	}
 
     for(LLInventoryModel::item_array_t::const_iterator it = obj_item_array.begin();

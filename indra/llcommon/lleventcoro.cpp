@@ -176,9 +176,9 @@ postAndSuspendSetup(const std::string& callerName,
                 auto& statsd = status["status"];
                 if (statsd.asString() != "running")
                 {
-                    LL_DEBUGS("lleventcoro") << listenerName
+                    /*// _LL_DEBUGS("lleventcoro") << listenerName
                                              << " spotted status " << statsd
-                                             << ", throwing Stopping" << LL_ENDL;
+                                             << ", throwing Stopping" << LL_ENDL;*/
                     try
                     {
                         promise.set_exception(
@@ -210,8 +210,9 @@ postAndSuspendSetup(const std::string& callerName,
                 }
                 catch(boost::fibers::promise_already_satisfied & ex)
                 {
-                    LL_DEBUGS("lleventcoro") << "promise already satisfied in '"
-                        << listenerName << "': "  << ex.what() << LL_ENDL;
+                    /*LL_DEBUGS("lleventcoro") << "promise already satisfied in '"
+                        << listenerName << "': "  << ex.what() << LL_ENDL;*/
+					ex.what();
                     // We could not propagate the result value to the
                     // listener.
                     return false;
@@ -226,17 +227,17 @@ postAndSuspendSetup(const std::string& callerName,
         // request event.
         LLSD modevent(event);
         storeToLLSDPath(modevent, replyPumpNamePath, replyPump.getName());
-        LL_DEBUGS("lleventcoro") << callerName << ": coroutine " << listenerName
+        /*// _LL_DEBUGS("lleventcoro") << callerName << ": coroutine " << listenerName
                                  << " posting to " << requestPump.getName()
-                                 << LL_ENDL;
+                                 << LL_ENDL;*/
 
         // *NOTE:Mani - Removed because modevent could contain user's hashed passwd.
         //                         << ": " << modevent << LL_ENDL;
         requestPump.post(modevent);
     }
-    LL_DEBUGS("lleventcoro") << callerName << ": coroutine " << listenerName
+    /*// _LL_DEBUGS("lleventcoro") << callerName << ": coroutine " << listenerName
                              << " about to wait on LLEventPump " << replyPump.getName()
-                             << LL_ENDL;
+                             << LL_ENDL;*/
     return { connection, stopper };
 }
 
@@ -260,8 +261,8 @@ LLSD llcoro::postAndSuspend(const LLSD& event, const LLEventPumpOrPumpName& requ
     // calling get() on the future makes us wait for it
     LLCoros::TempStatus st(STRINGIZE("waiting for " << replyPump.getPump().getName()));
     LLSD value(future.get());
-    LL_DEBUGS("lleventcoro") << "postAndSuspend(): coroutine " << listenerName
-                             << " resuming with " << value << LL_ENDL;
+    /*// _LL_DEBUGS("lleventcoro") << "postAndSuspend(): coroutine " << listenerName
+                             << " resuming with " << value << LL_ENDL;*/
     // returning should disconnect the connection
     return value;
 }
@@ -298,9 +299,9 @@ LLSD llcoro::postAndSuspendWithTimeout(const LLSD& event,
     // if the future is NOT yet ready, return timeoutResult instead
     if (status == boost::fibers::future_status::timeout)
     {
-        LL_DEBUGS("lleventcoro") << "postAndSuspendWithTimeout(): coroutine " << listenerName
+        /*// _LL_DEBUGS("lleventcoro") << "postAndSuspendWithTimeout(): coroutine " << listenerName
                                  << " timed out after " << timeout << " seconds,"
-                                 << " resuming with " << timeoutResult << LL_ENDL;
+                                 << " resuming with " << timeoutResult << LL_ENDL;*/
         return timeoutResult;
     }
     else
@@ -309,8 +310,8 @@ LLSD llcoro::postAndSuspendWithTimeout(const LLSD& event,
 
         // future is now ready, no more waiting
         LLSD value(future.get());
-        LL_DEBUGS("lleventcoro") << "postAndSuspendWithTimeout(): coroutine " << listenerName
-                                 << " resuming with " << value << LL_ENDL;
+        /*// _LL_DEBUGS("lleventcoro") << "postAndSuspendWithTimeout(): coroutine " << listenerName
+                                 << " resuming with " << value << LL_ENDL;*/
         // returning should disconnect the connection
         return value;
     }

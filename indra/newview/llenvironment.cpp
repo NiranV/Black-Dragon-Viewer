@@ -1652,21 +1652,21 @@ void LLEnvironment::recordEnvironment(S32 parcel_id, LLEnvironment::EnvironmentI
             mTrackAltitudes = envinfo->mAltitudes;
         }
 
-        LL_DEBUGS("ENVIRONMENT") << "Altitudes set to {" << mTrackAltitudes[0] << ", "<< mTrackAltitudes[1] << ", " << mTrackAltitudes[2] << ", " << mTrackAltitudes[3] << LL_ENDL;
+        // _LL_DEBUGS("ENVIRONMENT") << "Altitudes set to {" << mTrackAltitudes[0] << ", "<< mTrackAltitudes[1] << ", " << mTrackAltitudes[2] << ", " << mTrackAltitudes[3] << LL_ENDL;
     }
     else
     {
         LLParcel *parcel = LLViewerParcelMgr::instance().getAgentParcel();
-        LL_DEBUGS("ENVIRONMENT") << "Have parcel environment #" << envinfo->mParcelId << LL_ENDL;
+        // _LL_DEBUGS("ENVIRONMENT") << "Have parcel environment #" << envinfo->mParcelId << LL_ENDL;
         if (parcel && (parcel->getLocalID() != parcel_id))
         {
-            LL_DEBUGS("ENVIRONMENT") << "Requested parcel #" << parcel_id << " agent is on " << parcel->getLocalID() << LL_ENDL;
+            // _LL_DEBUGS("ENVIRONMENT") << "Requested parcel #" << parcel_id << " agent is on " << parcel->getLocalID() << LL_ENDL;
             return;
         }
 
         if (!envinfo->mDayCycle)
         {
-            LL_DEBUGS("ENVIRONMENT") << "Clearing environment on parcel #" << parcel_id << LL_ENDL;
+            // _LL_DEBUGS("ENVIRONMENT") << "Clearing environment on parcel #" << parcel_id << LL_ENDL;
             clearEnvironment(ENV_PARCEL);
         }
         else if (envinfo->mDayCycle->isTrackEmpty(LLSettingsDay::TRACK_WATER)
@@ -1862,7 +1862,7 @@ void LLEnvironment::coroRequestEnvironment(S32 parcel_id, LLEnvironment::environ
     if (url.empty())
         return;
 
-    LL_DEBUGS("ENVIRONMENT") << "Requesting for parcel_id=" << parcel_id << LL_ENDL;
+    // _LL_DEBUGS("ENVIRONMENT") << "Requesting for parcel_id=" << parcel_id << LL_ENDL;
 
     if (parcel_id != INVALID_PARCEL_ID)
     {
@@ -2941,7 +2941,7 @@ bool LLEnvironment::loadFromSettings()
 
     if (!env_data.isMap() || env_data.emptyMap())
     {
-        LL_DEBUGS("ENVIRONMENT") << "Empty map loaded from: " << user_filepath << LL_ENDL;
+        // _LL_DEBUGS("ENVIRONMENT") << "Empty map loaded from: " << user_filepath << LL_ENDL;
         return false;
     }
 

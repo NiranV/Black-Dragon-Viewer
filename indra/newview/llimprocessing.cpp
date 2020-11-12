@@ -551,7 +551,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
 
                 buffer = message;
 
-                LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+                // _LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
                 // add to IM panel, but do not bother the user
                 gIMMgr->addMessage(
@@ -600,7 +600,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                 }
                 buffer = saved + message;
 
-                LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+                // _LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
                 bool mute_im = is_muted;
                 if (accept_im_from_only_friend && !is_friend && !is_linden)
@@ -1182,7 +1182,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
 
                 buffer = message;
 
-                LL_DEBUGS("Messaging") << "message in dnd; session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+                // _LL_DEBUGS("Messaging") << "message in dnd; session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
                 // add to IM panel, but do not bother the user
                 gIMMgr->addMessage(
@@ -1209,7 +1209,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
 
                 buffer = saved + message;
 
-                LL_DEBUGS("Messaging") << "standard message session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+                // _LL_DEBUGS("Messaging") << "standard message session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
 
                 gIMMgr->addMessage(
                     session_id,
@@ -1241,7 +1241,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
         case IM_DO_NOT_DISTURB_AUTO_RESPONSE:
             if (is_muted)
             {
-                LL_DEBUGS("Messaging") << "Ignoring do-not-disturb response from " << from_id << LL_ENDL;
+                // _LL_DEBUGS("Messaging") << "Ignoring do-not-disturb response from " << from_id << LL_ENDL;
                 return;
             }
             else

@@ -86,7 +86,7 @@ BOOL LLFloaterAutoReplaceSettings::postBuild(void)
 {
 	// get copies of the current settings that we will operate on
 	mEnabled  = gSavedSettings.getBOOL("AutoReplace");
-	LL_DEBUGS("AutoReplace") << ( mEnabled ? "enabled" : "disabled") << LL_ENDL;
+	// _LL_DEBUGS("AutoReplace") << ( mEnabled ? "enabled" : "disabled") << LL_ENDL;
 
 	mSettings = LLAutoReplace::getInstance()->getSettings();
 	
@@ -192,12 +192,12 @@ void LLFloaterAutoReplaceSettings::onSelectList()
 	if (selected.isDefined())
 	{
 		mSelectedListName = selected.asString();
-		LL_DEBUGS("AutoReplace")<<"selected list '"<<mSelectedListName<<"'"<<LL_ENDL;
+		// _LL_DEBUGS("AutoReplace")<<"selected list '"<<mSelectedListName<<"'"<<LL_ENDL;
 	}
 	else
 	{
 		mSelectedListName.clear();
-		LL_DEBUGS("AutoReplace")<<"unselected"<<LL_ENDL;
+		// _LL_DEBUGS("AutoReplace")<<"unselected"<<LL_ENDL;
 	}
 
 	updateListNamesControls();
@@ -214,7 +214,7 @@ void LLFloaterAutoReplaceSettings::onSelectEntry()
 	if (selectedRow.isDefined())
 	{
 		mPreviousKeyword = selectedRow.asString();
-		LL_DEBUGS("AutoReplace")<<"selected entry '"<<mPreviousKeyword<<"'"<<LL_ENDL;	
+		// _LL_DEBUGS("AutoReplace")<<"selected entry '"<<mPreviousKeyword<<"'"<<LL_ENDL;	
 		mKeyword->setValue(selectedRow);
 		std::string replacement = mSettings.replacementFor(mPreviousKeyword, mSelectedListName );
 		mReplacement->setValue(replacement);
@@ -225,7 +225,7 @@ void LLFloaterAutoReplaceSettings::onSelectEntry()
 	{
 		// no entry selection, so the entry panel should be off
 		disableReplacementEntry();		
-		LL_DEBUGS("AutoReplace")<<"no row selected"<<LL_ENDL;
+		// _LL_DEBUGS("AutoReplace")<<"no row selected"<<LL_ENDL;
 	}
 }
 
@@ -269,7 +269,7 @@ void LLFloaterAutoReplaceSettings::updateReplacementsList()
 
 void LLFloaterAutoReplaceSettings::enableReplacementEntry()
 {
-	LL_DEBUGS("AutoReplace")<<LL_ENDL;
+	// _LL_DEBUGS("AutoReplace")<<LL_ENDL;
 	mKeyword->setEnabled(true);
 	mReplacement->setEnabled(true);
 	getChild<LLButton>("autoreplace_save_entry")->setEnabled(true);
@@ -278,7 +278,7 @@ void LLFloaterAutoReplaceSettings::enableReplacementEntry()
 
 void LLFloaterAutoReplaceSettings::disableReplacementEntry()
 {
-	LL_DEBUGS("AutoReplace")<<LL_ENDL;
+	// _LL_DEBUGS("AutoReplace")<<LL_ENDL;
 	mPreviousKeyword.clear();
 	mKeyword->clear();
 	mKeyword->setEnabled(false);
@@ -293,7 +293,7 @@ void LLFloaterAutoReplaceSettings::onAutoReplaceToggled()
 {
 	// set our local copy of the flag, copied to the global preference in onOk
 	mEnabled = childGetValue("autoreplace_enable").asBoolean();
-	LL_DEBUGS("AutoReplace")<< "autoreplace_enable " << ( mEnabled ? "on" : "off" ) << LL_ENDL;
+	// _LL_DEBUGS("AutoReplace")<< "autoreplace_enable " << ( mEnabled ? "on" : "off" ) << LL_ENDL;
 }
 
 // called when the List Up button is pressed
@@ -418,7 +418,7 @@ void LLFloaterAutoReplaceSettings::onNewList()
 
 bool LLFloaterAutoReplaceSettings::callbackNewListName(const LLSD& notification, const LLSD& response)
 {
-	LL_DEBUGS("AutoReplace")<<"called"<<LL_ENDL;
+	// _LL_DEBUGS("AutoReplace")<<"called"<<LL_ENDL;
 	
 	LLSD newList = notification["payload"]["list"];
 
@@ -529,7 +529,7 @@ void LLFloaterAutoReplaceSettings::onDeleteList()
 	}
 	else
 	{
-		LL_DEBUGS("AutoReplace")<<"no list selected for delete"<<LL_ENDL;
+		// _LL_DEBUGS("AutoReplace")<<"no list selected for delete"<<LL_ENDL;
 	}
 }
 
@@ -561,7 +561,7 @@ void LLFloaterAutoReplaceSettings::onAddEntry()
 
 void LLFloaterAutoReplaceSettings::onSaveEntry()
 {
-	LL_DEBUGS("AutoReplace")<<"called"<<LL_ENDL;
+	// _LL_DEBUGS("AutoReplace")<<"called"<<LL_ENDL;
 	
 	if ( ! mPreviousKeyword.empty() )
 	{

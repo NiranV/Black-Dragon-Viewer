@@ -9416,7 +9416,7 @@ class LLUploadCostCalculator : public view_listener_t
 		{
 			asset_type_str = fields[1];
 		}
-		LL_DEBUGS("Benefits") << "userdata " << userdata << " menu_name " << menu_name << " asset_type_str " << asset_type_str << LL_ENDL;
+		// _LL_DEBUGS("Benefits") << "userdata " << userdata << " menu_name " << menu_name << " asset_type_str " << asset_type_str << LL_ENDL;
 		calculateCost(asset_type_str);
 		gMenuHolder->childSetLabelArg(menu_name, "[COST]", mCostStr);
 

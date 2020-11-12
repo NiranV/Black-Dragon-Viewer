@@ -698,7 +698,7 @@ BOOL LLTemplateMessageReader::decodeData(const U8* buffer, const LLHost& sender 
 	if (mCurrentRMessageData->mMemberBlocks.empty()
 		&& !mCurrentRMessageTemplate->mMemberBlocks.empty())
 	{
-		LL_DEBUGS() << "Empty message '" << mCurrentRMessageTemplate->mName << "' (no blocks)" << LL_ENDL;
+		// _LL_DEBUGS() << "Empty message '" << mCurrentRMessageTemplate->mName << "' (no blocks)" << LL_ENDL;
 		return FALSE;
 	}
 
@@ -744,9 +744,9 @@ BOOL LLTemplateMessageReader::decodeData(const U8* buffer, const LLHost& sender 
 
 				if(decode_time > LLMessageReader::getTimeDecodesSpamThreshold())
 				{
-					LL_DEBUGS() << "--------- Message " << mCurrentRMessageTemplate->mName << " decode took " << decode_time << " seconds. (" <<
+					/*// _LL_DEBUGS() << "--------- Message " << mCurrentRMessageTemplate->mName << " decode took " << decode_time << " seconds. (" <<
 						mCurrentRMessageTemplate->mMaxDecodeTimePerMsg << " max, " <<
-						(mCurrentRMessageTemplate->mTotalDecodeTime / mCurrentRMessageTemplate->mTotalDecoded) << " avg)" << LL_ENDL;
+						(mCurrentRMessageTemplate->mTotalDecodeTime / mCurrentRMessageTemplate->mTotalDecoded) << " avg)" << LL_ENDL;*/
 				}
 			}
 		}
@@ -764,7 +764,7 @@ BOOL LLTemplateMessageReader::validateMessage(const U8* buffer,
 	if(valid)
 	{
 		mCurrentRMessageTemplate->mReceiveCount++;
-		//LL_DEBUGS() << "MessageRecvd:"
+		//// _LL_DEBUGS() << "MessageRecvd:"
 		//						 << mCurrentRMessageTemplate->mName 
 		//						 << " from " << sender << LL_ENDL;
 	}

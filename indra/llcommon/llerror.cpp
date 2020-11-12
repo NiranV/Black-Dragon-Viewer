@@ -335,8 +335,8 @@ namespace LLError
 		if (is_available())
 		{
 			// in Python, " or ".join(vector) -- but in C++, a PITB
-			LL_DEBUGS() << "Did not see 'class' or 'struct' prefix on '"
-				<< name << "'" << LL_ENDL;
+			/*// _LL_DEBUGS() << "Did not see 'class' or 'struct' prefix on '"
+				<< name << "'" << LL_ENDL;*/
 		}
 		return name;
 

@@ -184,7 +184,7 @@ public:
 			mTimeStream.clear();
 		}
 
-		LL_DEBUGS("LLChatLogParser")
+		/*// _LL_DEBUGS("LLChatLogParser")
 			<< " log_date: "
 			<< log_date
 			<< " today: "
@@ -193,7 +193,7 @@ public:
 			<< days_alive
 			<< " new time: "
 			<< time_str
-			<< LL_ENDL;
+			<< LL_ENDL;*/
 	}
 
 

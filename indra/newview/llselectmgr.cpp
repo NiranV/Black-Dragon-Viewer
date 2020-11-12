@@ -2237,7 +2237,7 @@ void LLSelectMgr::selectionRemoveMaterial()
 		{
 			if (object->permModify())
 			{
-			        LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
+			        // _LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
 				LLMaterialMgr::getInstance()->remove(object->getID(),face);
 				object->setTEMaterialParams(face, NULL);
 			}

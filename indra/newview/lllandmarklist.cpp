@@ -159,7 +159,7 @@ void LLLandmarkList::processGetAssetReply(
 	}
 	else
 	{
-		// SJB: No use case for a notification here. Use LL_DEBUGS() instead
+		// SJB: No use case for a notification here. Use // _LL_DEBUGS() instead
 		if( LL_ERR_ASSET_REQUEST_NOT_IN_DATABASE == status )
 		{
 			LL_WARNS("Landmarks") << "Missing Landmark" << LL_ENDL;

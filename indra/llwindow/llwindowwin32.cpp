@@ -714,7 +714,7 @@ LLWindowWin32::~LLWindowWin32()
 
 void LLWindowWin32::show()
 {
-    LL_DEBUGS("Window") << "Setting window to show" << LL_ENDL;
+    // _LL_DEBUGS("Window") << "Setting window to show" << LL_ENDL;
 	ShowWindow(mWindowHandle, SW_SHOW);
 	SetForegroundWindow(mWindowHandle);
 	SetFocus(mWindowHandle);
@@ -802,7 +802,7 @@ void LLWindowWin32::setFullscreenWindow(BOOL fFullscreen)
 // Usually called from LLWindowManager::destroyWindow()
 void LLWindowWin32::close()
 {
-	LL_DEBUGS("Window") << "Closing LLWindowWin32" << LL_ENDL;
+	// _LL_DEBUGS("Window") << "Closing LLWindowWin32" << LL_ENDL;
 	// Is window is already closed?
 	if (!mWindowHandle)
 	{
@@ -836,7 +836,7 @@ void LLWindowWin32::close()
 		gGLManager.shutdownGL();
 	}
 
-	LL_DEBUGS("Window") << "Releasing Context" << LL_ENDL;
+	// _LL_DEBUGS("Window") << "Releasing Context" << LL_ENDL;
 	if (mhRC)
 	{
 		if (!wglMakeCurrent(NULL, NULL))
@@ -864,7 +864,7 @@ void LLWindowWin32::close()
 		mhDC = NULL;
 	}
 
-	LL_DEBUGS("Window") << "Destroying Window" << LL_ENDL;
+	// _LL_DEBUGS("Window") << "Destroying Window" << LL_ENDL;
 
 	// Make sure we don't leave a blank toolbar button.
 	ShowWindow(mWindowHandle, SW_HIDE);
@@ -1213,12 +1213,12 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 	mPostQuit = FALSE;
 
 	// create window
-    LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
+    /*// _LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
         << " Y: " << window_rect.top
         << " Width: " << (window_rect.right - window_rect.left)
         << " Height: " << (window_rect.bottom - window_rect.top)
         << " Fullscreen: " << mFullscreen
-        << LL_ENDL;
+        << LL_ENDL;*/
 	DestroyWindow(mWindowHandle);
 	mWindowHandle = CreateWindowEx(dw_ex_style,
 		mWindowClassName,
@@ -1587,19 +1587,19 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 			{
 			case WGL_SWAP_EXCHANGE_ARB:
 				mSwapMethod = SWAP_METHOD_EXCHANGE;
-				LL_DEBUGS("Window") << "Swap Method: Exchange" << LL_ENDL;
+				// _LL_DEBUGS("Window") << "Swap Method: Exchange" << LL_ENDL;
 				break;
 			case WGL_SWAP_COPY_ARB:
 				mSwapMethod = SWAP_METHOD_COPY;
-				LL_DEBUGS("Window") << "Swap Method: Copy" << LL_ENDL;
+				// _LL_DEBUGS("Window") << "Swap Method: Copy" << LL_ENDL;
 				break;
 			case WGL_SWAP_UNDEFINED_ARB:
 				mSwapMethod = SWAP_METHOD_UNDEFINED;
-				LL_DEBUGS("Window") << "Swap Method: Undefined" << LL_ENDL;
+				// _LL_DEBUGS("Window") << "Swap Method: Undefined" << LL_ENDL;
 				break;
 			default:
 				mSwapMethod = SWAP_METHOD_UNDEFINED;
-				LL_DEBUGS("Window") << "Swap Method: Unknown" << LL_ENDL;
+				// _LL_DEBUGS("Window") << "Swap Method: Unknown" << LL_ENDL;
 				break;
 			}
 		}		
@@ -1712,12 +1712,12 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 	// Disable vertical sync for swap
 	if (disable_vsync && wglSwapIntervalEXT)
 	{
-		LL_DEBUGS("Window") << "Disabling vertical sync" << LL_ENDL;
+		// _LL_DEBUGS("Window") << "Disabling vertical sync" << LL_ENDL;
 		wglSwapIntervalEXT(0);
 	}
 	else
 	{
-		LL_DEBUGS("Window") << "Keeping vertical sync" << LL_ENDL;
+		// _LL_DEBUGS("Window") << "Keeping vertical sync" << LL_ENDL;
 	}
 
 	SetWindowLongPtr(mWindowHandle, GWLP_USERDATA, (LONG_PTR)this);
@@ -2956,7 +2956,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
     else
     {
         // (NULL == window_imp)
-        LL_DEBUGS("Window") << "No window implementation to handle message with, message code: " << U32(u_msg) << LL_ENDL;
+        // _LL_DEBUGS("Window") << "No window implementation to handle message with, message code: " << U32(u_msg) << LL_ENDL;
     }
 
 	// pass unhandled messages down to Windows
@@ -3217,7 +3217,7 @@ BOOL LLWindowWin32::restoreGamma()
 {
 	if (mCustomGammaSet != FALSE)
 	{
-        LL_DEBUGS("Window") << "Restoring gamma" << LL_ENDL;
+        // _LL_DEBUGS("Window") << "Restoring gamma" << LL_ENDL;
 		mCustomGammaSet = FALSE;
 		return SetDeviceGammaRamp(mhDC, mPrevGammaRamp);
 	}
@@ -3233,7 +3233,7 @@ BOOL LLWindowWin32::setGamma(const F32 gamma)
 	{
         if (!gGLManager.mIsIntel) // skip for Intel GPUs (see SL-11341)
         {
-            LL_DEBUGS("Window") << "Getting the previous gamma ramp to restore later" << LL_ENDL;
+            // _LL_DEBUGS("Window") << "Getting the previous gamma ramp to restore later" << LL_ENDL;
             if(GetDeviceGammaRamp(mhDC, mPrevGammaRamp) == FALSE)
             {
                 LL_WARNS("Window") << "Failed to get the previous gamma ramp" << LL_ENDL;
@@ -3243,7 +3243,7 @@ BOOL LLWindowWin32::setGamma(const F32 gamma)
 		mCustomGammaSet = TRUE;
 	}
 
-	LL_DEBUGS("Window") << "Setting gamma to " << gamma << LL_ENDL;
+	// _LL_DEBUGS("Window") << "Setting gamma to " << gamma << LL_ENDL;
 
 	for ( int i = 0; i < 256; ++i )
 	{
@@ -3410,7 +3410,7 @@ BOOL LLWindowWin32::setFullscreenResolution()
 // protected
 BOOL LLWindowWin32::resetDisplayResolution()
 {
-	LL_DEBUGS("Window") << "resetDisplayResolution START" << LL_ENDL;
+	// _LL_DEBUGS("Window") << "resetDisplayResolution START" << LL_ENDL;
 
 	LONG cds_result = ChangeDisplaySettings(NULL, 0);
 
@@ -3421,7 +3421,7 @@ BOOL LLWindowWin32::resetDisplayResolution()
 		LL_WARNS("Window") << "resetDisplayResolution failed" << LL_ENDL;
 	}
 
-	LL_DEBUGS("Window") << "resetDisplayResolution END" << LL_ENDL;
+	// _LL_DEBUGS("Window") << "resetDisplayResolution END" << LL_ENDL;
 
 	return success;
 }

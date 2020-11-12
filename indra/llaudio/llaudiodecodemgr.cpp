@@ -199,7 +199,7 @@ BOOL LLVorbisDecodeState::initDecode()
 	vfs_callbacks.close_func = vfs_close;
 	vfs_callbacks.tell_func = vfs_tell;
 
-	LL_DEBUGS("AudioEngine") << "Initing decode from vfile: " << mUUID << LL_ENDL;
+	// _LL_DEBUGS("AudioEngine") << "Initing decode from vfile: " << mUUID << LL_ENDL;
 
 	mInFilep = new LLVFile(gVFS, mUUID, LLAssetType::AT_SOUND);
 	if (!mInFilep || !mInFilep->getSize())
@@ -526,7 +526,7 @@ BOOL LLVorbisDecodeState::finishDecode()
 	LLVFile output(gVFS, mUUID, LLAssetType::AT_SOUND_WAV);
 	output.write(&mWAVBuffer[0], mWAVBuffer.size());
 #endif
-	LL_DEBUGS("AudioEngine") << "Finished decode for " << getUUID() << LL_ENDL;
+	// _LL_DEBUGS("AudioEngine") << "Finished decode for " << getUUID() << LL_ENDL;
 
 	return TRUE;
 }
@@ -648,7 +648,7 @@ void LLAudioDecodeMgr::Impl::processQueue(const F32 num_secs)
 					continue;
 				}
 
-				LL_DEBUGS() << "Decoding " << uuid << " from audio queue!" << LL_ENDL;
+				// _LL_DEBUGS() << "Decoding " << uuid << " from audio queue!" << LL_ENDL;
 
 				std::string uuid_str;
 				std::string d_path;
@@ -691,18 +691,18 @@ BOOL LLAudioDecodeMgr::addDecodeRequest(const LLUUID &uuid)
 	if (gAudiop && gAudiop->hasDecodedFile(uuid))
 	{
 		// Already have a decoded version, don't need to decode it.
-		LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has decoded file already" << LL_ENDL;
+		// _LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has decoded file already" << LL_ENDL;
 		return TRUE;
 	}
 
 	if (gAssetStorage->hasLocalAsset(uuid, LLAssetType::AT_SOUND))
 	{
 		// Just put it on the decode queue.
-		LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has local asset file already" << LL_ENDL;
+		// _LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has local asset file already" << LL_ENDL;
 		mImpl->mDecodeQueue.push_back(uuid);
 		return TRUE;
 	}
 
-	LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " no file available" << LL_ENDL;
+	// _LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " no file available" << LL_ENDL;
 	return FALSE;
 }

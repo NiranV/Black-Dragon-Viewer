@@ -95,10 +95,10 @@ void LLEstateInfoModel::update(const strings_t& strings)
 	mFlags		= strtoul(strings[3].c_str(), NULL, 10);
 	mSunHour	= ((F32)(strtod(strings[4].c_str(), NULL)))/1024.0f;
 
-	LL_DEBUGS("WindlightSync") << "Received estate info: "
+	/*// _LL_DEBUGS("WindlightSync") << "Received estate info: "
 		<< "is_sun_fixed = " << getUseFixedSun()
-		<< ", sun_hour = " << getSunHour() << LL_ENDL;
-	LL_DEBUGS() << getInfoDump() << LL_ENDL;
+		<< ", sun_hour = " << getSunHour() << LL_ENDL;*/
+	// _LL_DEBUGS() << getInfoDump() << LL_ENDL;
 
 	// Update region owner.
 	LLViewerRegion* regionp = gAgent.getRegion();
@@ -153,10 +153,10 @@ void LLEstateInfoModel::commitEstateInfoCapsCoro(std::string url)
 
     body["invoice"] = LLFloaterRegionInfo::getLastInvoice();
 
-    LL_DEBUGS("WindlightSync") << "Sending estate caps: "
+    /*// _LL_DEBUGS("WindlightSync") << "Sending estate caps: "
         << "is_sun_fixed = " << getUseFixedSun()
-        << ", sun_hour = " << getSunHour() << LL_ENDL;
-    LL_DEBUGS() << body << LL_ENDL;
+        << ", sun_hour = " << getSunHour() << LL_ENDL;*/
+    // _LL_DEBUGS() << body << LL_ENDL;
 
     LLSD result = httpAdapter->postAndSuspend(httpRequest, url, body);
 
@@ -183,10 +183,10 @@ void LLEstateInfoModel::commitEstateInfoCapsCoro(std::string url)
 // strings[3] = str((S32)(sun_hour * 1024.f))
 void LLEstateInfoModel::commitEstateInfoDataserver()
 {
-	LL_DEBUGS("WindlightSync") << "Sending estate info: "
+	/*// _LL_DEBUGS("WindlightSync") << "Sending estate info: "
 		<< "is_sun_fixed = " << getUseFixedSun()
-		<< ", sun_hour = " << getSunHour() << LL_ENDL;
-	LL_DEBUGS() << getInfoDump() << LL_ENDL;
+		<< ", sun_hour = " << getSunHour() << LL_ENDL;*/
+	// _LL_DEBUGS() << getInfoDump() << LL_ENDL;
 
 	LLMessageSystem* msg = gMessageSystem;
 	msg->newMessage("EstateOwnerMessage");

@@ -442,7 +442,7 @@ private:
 		}
 		/*virtual*/ void changed(U32 mask)
 		{
-			LL_DEBUGS() << "Inventory changed: " << mask << LL_ENDL;
+			// _LL_DEBUGS() << "Inventory changed: " << mask << LL_ENDL;
 
 			static bool synchronize_friends_folders = true;
 			if (synchronize_friends_folders)
@@ -458,9 +458,9 @@ private:
 			// That means LLInventoryObserver::STRUCTURE is present in MASK instead of LLInventoryObserver::REMOVE
 			if ((CALLINGCARD_ADDED & mask) == CALLINGCARD_ADDED)
 			{
-				LL_DEBUGS() << "Calling card added: count: " << gInventory.getChangedIDs().size() 
+				/*// _LL_DEBUGS() << "Calling card added: count: " << gInventory.getChangedIDs().size() 
 					<< ", first Inventory ID: "<< (*gInventory.getChangedIDs().begin())
-					<< LL_ENDL;
+					<< LL_ENDL;*/
 
 				bool friendFound = false;
 				std::set<LLUUID> changedIDs = gInventory.getChangedIDs();
@@ -475,7 +475,7 @@ private:
 
 				if (friendFound)
 				{
-					LL_DEBUGS() << "friend found, panel should be updated" << LL_ENDL;
+					// _LL_DEBUGS() << "friend found, panel should be updated" << LL_ENDL;
 					mUpdater->changed(LLFriendObserver::ADD);
 				}
 			}
@@ -813,12 +813,12 @@ void LLPanelPeople::updateFriendList()
 
 	if (buddies_uuids.size() > 0)
 	{
-		LL_DEBUGS() << "Friends added to the list: " << buddies_uuids.size() << LL_ENDL;
+		// _LL_DEBUGS() << "Friends added to the list: " << buddies_uuids.size() << LL_ENDL;
 		all_friendsp = buddies_uuids;
 	}
 	else
 	{
-		LL_DEBUGS() << "No friends found" << LL_ENDL;
+		// _LL_DEBUGS() << "No friends found" << LL_ENDL;
 	}
 
 	mAllFriendList->setDirty(true, !mAllFriendList->filterHasMatches());

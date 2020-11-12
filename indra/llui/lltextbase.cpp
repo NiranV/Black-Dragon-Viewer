@@ -1580,7 +1580,7 @@ void LLTextBase::reflow()
 		// use an even number of iterations to avoid user visible oscillation of the layout
 		if(++reflow_count > 2)
 		{
-			LL_DEBUGS() << "Breaking out of reflow due to possible infinite loop in " << getName() << LL_ENDL;
+			// _LL_DEBUGS() << "Breaking out of reflow due to possible infinite loop in " << getName() << LL_ENDL;
 			break;
 		}
 	
@@ -2312,7 +2312,7 @@ void LLTextBase::setFont(const LLFontGL* font)
 
 void LLTextBase::needsReflow(S32 index)
 {
-	LL_DEBUGS() << "reflow on object " << (void*)this << " index = " << mReflowIndex << ", new index = " << index << LL_ENDL;
+	// _LL_DEBUGS() << "reflow on object " << (void*)this << " index = " << mReflowIndex << ", new index = " << index << LL_ENDL;
 	mReflowIndex = llmin(mReflowIndex, index);
 }
 

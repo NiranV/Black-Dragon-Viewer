@@ -98,7 +98,7 @@ void LLFloaterOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floate
     BOOL got_snap = previewp && previewp->getSnapshotUpToDate();
 
     // *TODO: Separate maximum size for Web images from postcards
-    LL_DEBUGS() << "Is snapshot up-to-date? " << got_snap << LL_ENDL;
+    // _LL_DEBUGS() << "Is snapshot up-to-date? " << got_snap << LL_ENDL;
 
     LLLocale locale(LLLocale::USER_LOCALE);
     std::string bytes_string;
@@ -135,7 +135,7 @@ void LLFloaterOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floate
         info["have-snapshot"] = got_snap;
         current_panel->updateControls(info);
     }
-    LL_DEBUGS() << "finished updating controls" << LL_ENDL;
+    // _LL_DEBUGS() << "finished updating controls" << LL_ENDL;
 }
 
 // virtual
@@ -191,13 +191,13 @@ void LLFloaterOutfitSnapshot::Impl::updateResolution(void* data)
         llassert(width > 0 && height > 0);
 
         // use the resolution from the selected pre-canned drop-down choice
-        LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
+        // _LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
         previewp->setSize(width, height);
 
         if (original_width != width || original_height != height)
         {
             // hide old preview as the aspect ratio could be wrong
-            LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+            // _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
             previewp->updateSnapshot(TRUE);
         }
     }
@@ -284,7 +284,7 @@ void LLFloaterOutfitSnapshot::onOpen(const LLSD& key)
     LLSnapshotLivePreview* preview = getPreviewView();
     if (preview)
     {
-        LL_DEBUGS() << "opened, updating snapshot" << LL_ENDL;
+        // _LL_DEBUGS() << "opened, updating snapshot" << LL_ENDL;
         preview->updateSnapshot(TRUE);
     }
     focusFirstItem(FALSE);
@@ -333,7 +333,7 @@ LLFloaterOutfitSnapshot* LLFloaterOutfitSnapshot::getInstance()
 // virtual
 void LLFloaterOutfitSnapshot::saveTexture()
 {
-    LL_DEBUGS() << "saveTexture" << LL_ENDL;
+    // _LL_DEBUGS() << "saveTexture" << LL_ENDL;
 
     LLSnapshotLivePreview* previewp = getPreviewView();
     if (!previewp)

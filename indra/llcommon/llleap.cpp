@@ -161,7 +161,7 @@ public:
     // Normally we'd expect to arrive here only via done()
     virtual ~LLLeapImpl()
     {
-        LL_DEBUGS("LLLeap") << "destroying LLLeap(\"" << mDesc << "\")" << LL_ENDL;
+        // _LL_DEBUGS("LLLeap") << "destroying LLLeap(\"" << mDesc << "\")" << LL_ENDL;
         // Restore original FatalFunction
         LLError::setFatalFunction(mPrevFatalFunction);
     }
@@ -231,7 +231,7 @@ public:
         }
 |*==========================================================================*/
 
-        LL_DEBUGS("EventHost") << "Sending: " << buffer.tellp() << ':';
+        /*// _LL_DEBUGS("EventHost") << "Sending: " << buffer.tellp() << ':';
         std::string::size_type truncate(80);
         if (buffer.tellp() <= truncate)
         {
@@ -241,7 +241,7 @@ public:
         {
             LL_CONT << buffer.str().substr(0, truncate) << "...";
         }
-        LL_CONT << LL_ENDL;
+        LL_CONT << LL_ENDL;*/
 
         LLProcess::WritePipe& childin(mChild->getWritePipe(LLProcess::STDIN));
         childin.get_ostream() << buffer.tellp() << ':' << buffer.str() << std::flush;
@@ -276,8 +276,8 @@ public:
                 // Saw length prefix, saw colon, life is good. Now wait for
                 // that length of data to arrive.
                 mExpect = expect;
-                LL_DEBUGS("LLLeap") << "got length, waiting for "
-                                    << mExpect << " bytes of data" << LL_ENDL;
+                /*// _LL_DEBUGS("LLLeap") << "got length, waiting for "
+                                    << mExpect << " bytes of data" << LL_ENDL;*/
                 // Block calls to this method; resetting mBlocker unblocks
                 // calls to the other method.
                 mBlocker.reset(new LLEventPump::Blocker(mStdoutConnection));
@@ -309,8 +309,8 @@ public:
         if (childout.size() >= mExpect)
         {
             // Ready to rock and roll.
-            LL_DEBUGS("LLLeap") << "needed " << mExpect << " bytes, got "
-                                << childout.size() << ", parsing LLSD" << LL_ENDL;
+            /*// _LL_DEBUGS("LLLeap") << "needed " << mExpect << " bytes, got "
+                                << childout.size() << ", parsing LLSD" << LL_ENDL;*/
             LLSD data;
             LLPointer<LLSDParser> parser(new LLSDNotationParser());
             S32 parse_status(parser->parse(childout.get_istream(), data, mExpect));

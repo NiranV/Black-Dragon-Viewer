@@ -66,27 +66,27 @@ void LLChicletBar::log(LLView* panel, const std::string& descr)
 {
 	if (NULL == panel) return;
 	LLView* layout = panel->getParent();
-	LL_DEBUGS("ChicletBarRects") << descr << ": "
+	/*// _LL_DEBUGS("ChicletBarRects") << descr << ": "
 		<< "panel: " << panel->getName()
 		<< ", rect: " << panel->getRect()
 		<< " layout: " << layout->getName()
 		<< ", rect: " << layout->getRect()
-		<< LL_ENDL;
+		<< LL_ENDL;*/
 }
 
 void LLChicletBar::reshape(S32 width, S32 height, BOOL called_from_parent)
 {
 	static S32 debug_calling_number = 0;
-	LL_DEBUGS() << "**************************************** " << ++debug_calling_number << LL_ENDL;
+	// _LL_DEBUGS() << "**************************************** " << ++debug_calling_number << LL_ENDL;
 
 	S32 current_width = getRect().getWidth();
 	S32 delta_width = width - current_width;
-	LL_DEBUGS() << "Reshaping: "
+	/*// _LL_DEBUGS() << "Reshaping: "
 		<< ", width: " << width
 		<< ", cur width: " << current_width
 		<< ", delta_width: " << delta_width
 		<< ", called_from_parent: " << called_from_parent
-		<< LL_ENDL;
+		<< LL_ENDL;*/
 
 	if (mChicletPanel)			log(mChicletPanel, "before");
 
@@ -142,7 +142,7 @@ void LLChicletBar::reshape(S32 width, S32 height, BOOL called_from_parent)
 
 	if (should_be_reshaped)
 	{
-		LL_DEBUGS() << "Reshape all children with width: " << width << LL_ENDL;
+		// _LL_DEBUGS() << "Reshape all children with width: " << width << LL_ENDL;
 		LLPanel::reshape(width, height, called_from_parent);
 	}
 
@@ -161,23 +161,23 @@ S32 LLChicletBar::processWidthDecreased(S32 delta_width)
 		// we have some space to decrease chiclet panel
 		S32 shrink_by = llmin(-delta_width, chiclet_panel_shrink_headroom);
 
-		LL_DEBUGS() << "delta_width: " << delta_width
+		/*// _LL_DEBUGS() << "delta_width: " << delta_width
 			<< ", panel_delta_min: " << chiclet_panel_shrink_headroom
 			<< ", shrink_by: " << shrink_by
-			<< LL_ENDL;
+			<< LL_ENDL;*/
 
 		// is chiclet panel wide enough to process resizing?
 		delta_width += chiclet_panel_shrink_headroom;
 
 		still_should_be_processed = delta_width < 0;
 
-		LL_DEBUGS() << "Shrinking chiclet panel by " << shrink_by << " px" << LL_ENDL;
+		// _LL_DEBUGS() << "Shrinking chiclet panel by " << shrink_by << " px" << LL_ENDL;
 		mChicletPanel->getParent()->reshape(mChicletPanel->getParent()->getRect().getWidth() - shrink_by, mChicletPanel->getParent()->getRect().getHeight());
 		log(mChicletPanel, "after processing panel decreasing via chiclet panel");
 
-		LL_DEBUGS() << "RS_CHICLET_PANEL"
+		/*// _LL_DEBUGS() << "RS_CHICLET_PANEL"
 			<< ", delta_width: " << delta_width
-			<< LL_ENDL;
+			<< LL_ENDL;*/
 	}
 
 	S32 extra_shrink_width = 0;

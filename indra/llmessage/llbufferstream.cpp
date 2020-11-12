@@ -54,7 +54,7 @@ LLBufferStreamBuf::~LLBufferStreamBuf()
 // virtual
 int LLBufferStreamBuf::underflow()
 {
-	//LL_DEBUGS() << "LLBufferStreamBuf::underflow()" << LL_ENDL;
+	//// _LL_DEBUGS() << "LLBufferStreamBuf::underflow()" << LL_ENDL;
 	if(!mBuffer)
 	{
 		return EOF;

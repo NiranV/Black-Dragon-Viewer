@@ -258,7 +258,7 @@ BOOL LLKeyboard::handleTranslatedKeyUp(KEY translated_key, U32 translated_mask)
 		handled = mCallbacks->handleTranslatedKeyUp(translated_key, translated_mask);
 	}
 	
-	LL_DEBUGS("UserInput") << "keyup -" << translated_key << "-" << LL_ENDL;
+	// _LL_DEBUGS("UserInput") << "keyup -" << translated_key << "-" << LL_ENDL;
 
 	return handled;
 }

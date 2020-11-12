@@ -73,7 +73,7 @@ protected:
 
 void LLCrashLoggerHandler::onSuccess(LLCore::HttpResponse * response, const LLSD &content)
 {
-    LL_DEBUGS("CRASHREPORT") << "Request to " << response->getRequestURL() << "succeeded" << LL_ENDL;
+    // _LL_DEBUGS("CRASHREPORT") << "Request to " << response->getRequestURL() << "succeeded" << LL_ENDL;
     gBreak = true;
     gSent = true;
 }
@@ -286,7 +286,7 @@ void LLCrashLogger::gatherFiles()
         std::string file = (*itr).second;
         if (!file.empty())
         {
-            LL_DEBUGS("CRASHREPORT") << "trying to read " << itr->first << ": " << file << LL_ENDL;
+            // _LL_DEBUGS("CRASHREPORT") << "trying to read " << itr->first << ": " << file << LL_ENDL;
             llifstream f(file.c_str());
             if(f.is_open())
             {
@@ -312,7 +312,7 @@ void LLCrashLogger::gatherFiles()
         }
         else
         {
-            LL_DEBUGS("CRASHREPORT") << "empty file in list for " << itr->first << LL_ENDL;
+            // _LL_DEBUGS("CRASHREPORT") << "empty file in list for " << itr->first << LL_ENDL;
         }
 	}
 	
@@ -356,17 +356,17 @@ void LLCrashLogger::gatherFiles()
                     }
                     else
                     {
-                        LL_DEBUGS("CRASHREPORT") << "MDMP not found in " << fullname << LL_ENDL;
+                        // _LL_DEBUGS("CRASHREPORT") << "MDMP not found in " << fullname << LL_ENDL;
                     }
                 }
                 else
                 {
-                    LL_DEBUGS("CRASHREPORT") << "failed to open " << fullname << LL_ENDL;
+                    // _LL_DEBUGS("CRASHREPORT") << "failed to open " << fullname << LL_ENDL;
                 }
             }
             else
             {
-                LL_DEBUGS("CRASHREPORT") << "Name does not match minidump name pattern " << *iter << LL_ENDL;
+                // _LL_DEBUGS("CRASHREPORT") << "Name does not match minidump name pattern " << *iter << LL_ENDL;
             }            
         }
     }
@@ -453,7 +453,7 @@ bool LLCrashLogger::sendCrashLog(std::string dump_dir)
                                                            "BlackDragonCrashReport");
     std::string report_file = dump_path + ".log";
 
-    LL_DEBUGS("CRASHREPORT") << "sending " << report_file << LL_ENDL;
+    // _LL_DEBUGS("CRASHREPORT") << "sending " << report_file << LL_ENDL;
 
 	gatherFiles();
     
@@ -559,7 +559,7 @@ void LLCrashLogger::updateApplication(const std::string& message)
 
 bool LLCrashLogger::init()
 {
-    LL_DEBUGS("CRASHREPORT") << LL_ENDL;
+    // _LL_DEBUGS("CRASHREPORT") << LL_ENDL;
     
     LLCore::LLHttp::initialize();
 

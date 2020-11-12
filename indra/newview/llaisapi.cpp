@@ -96,7 +96,7 @@ void AISAPI::CreateInventory(const LLUUID& parentId, const LLSD& newInventory, c
     tid.generate();
 
     std::string url = cap + std::string("/category/") + parentId.asString() + "?tid=" + tid.asString();
-    LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
 
     // I may be suffering from golden hammer here, but the first part of this bind 
     // is actually a static cast for &HttpCoroutineAdapter::postAndSuspend so that 
@@ -170,7 +170,7 @@ void AISAPI::RemoveCategory(const LLUUID &categoryId, completion_t callback)
     }
 
     std::string url = cap + std::string("/category/") + categoryId.asString();
-    LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
 
     invokationFn_t delFn = boost::bind(
         // Humans ignore next line.  It is just a cast to specify which LLCoreHttpUtil::HttpCoroutineAdapter routine overload.
@@ -203,7 +203,7 @@ void AISAPI::RemoveItem(const LLUUID &itemId, completion_t callback)
     }
 
     std::string url = cap + std::string("/item/") + itemId.asString();
-    LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
 
     invokationFn_t delFn = boost::bind(
         // Humans ignore next line.  It is just a cast to specify which LLCoreHttpUtil::HttpCoroutineAdapter routine overload.
@@ -234,7 +234,7 @@ void AISAPI::CopyLibraryCategory(const LLUUID& sourceId, const LLUUID& destId, b
         return;
     }
 
-    LL_DEBUGS("Inventory") << "Copying library category: " << sourceId << " => " << destId << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "Copying library category: " << sourceId << " => " << destId << LL_ENDL;
 
     LLUUID tid;
     tid.generate();
@@ -279,7 +279,7 @@ void AISAPI::PurgeDescendents(const LLUUID &categoryId, completion_t callback)
     }
 
     std::string url = cap + std::string("/category/") + categoryId.asString() + "/children";
-    LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
 
     invokationFn_t delFn = boost::bind(
         // Humans ignore next line.  It is just a cast to specify which LLCoreHttpUtil::HttpCoroutineAdapter routine overload.
@@ -382,7 +382,7 @@ void AISAPI::InvokeAISCommandCoro(LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t ht
 
     httpOptions->setTimeout(LLCoreHttpUtil::HTTP_REQUEST_EXPIRY_SECS);
 
-    LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
+    // _LL_DEBUGS("Inventory") << "url: " << url << LL_ENDL;
 
     LLSD result = invoke(httpAdapter, httpRequest, url, body, httpOptions, httpHeaders);
     LLSD httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
@@ -671,7 +671,7 @@ void AISUpdate::parseLink(const LLSD& link_map)
 			new_link->setPermissions(default_perms);
 			LLSaleInfo default_sale_info;
 			new_link->setSaleInfo(default_sale_info);
-			//LL_DEBUGS("Inventory") << "creating link from llsd: " << ll_pretty_print_sd(link_map) << LL_ENDL;
+			//// _LL_DEBUGS("Inventory") << "creating link from llsd: " << ll_pretty_print_sd(link_map) << LL_ENDL;
 			mItemsCreated[item_id] = new_link;
 			mCatDescendentDeltas[parent_id]++;
 		}
@@ -710,7 +710,7 @@ void AISUpdate::parseCategory(const LLSD& category_map)
         }
         else
         {
-            LL_DEBUGS() << "No owner provided, folder might be assigned wrong owner" << LL_ENDL;
+            // _LL_DEBUGS() << "No owner provided, folder might be assigned wrong owner" << LL_ENDL;
             new_cat = new LLViewerInventoryCategory(LLUUID::null);
         }
     }
@@ -738,16 +738,16 @@ void AISUpdate::parseCategory(const LLSD& category_map)
 			if (category_map.has("version"))
 			{
 				S32 version = category_map["version"].asInteger();
-				LL_DEBUGS("Inventory") << "Setting version to " << version
-									   << " for new category " << category_id << LL_ENDL;
+				/*// _LL_DEBUGS("Inventory") << "Setting version to " << version
+									   << " for new category " << category_id << LL_ENDL;*/
 				new_cat->setVersion(version);
 			}
 			uuid_int_map_t::const_iterator lookup_it = mCatDescendentsKnown.find(category_id);
 			if (mCatDescendentsKnown.end() != lookup_it)
 			{
 				S32 descendent_count = lookup_it->second;
-				LL_DEBUGS("Inventory") << "Setting descendents count to " << descendent_count 
-									   << " for new category " << category_id << LL_ENDL;
+				/*// _LL_DEBUGS("Inventory") << "Setting descendents count to " << descendent_count 
+									   << " for new category " << category_id << LL_ENDL;*/
 				new_cat->setDescendentCount(descendent_count);
 			}
 			mCategoriesCreated[category_id] = new_cat;
@@ -827,7 +827,7 @@ void AISUpdate::parseEmbeddedLinks(const LLSD& links)
 		const LLSD& link_map = (*linkit).second;
 		if (mItemIds.end() == mItemIds.find(link_id))
 		{
-			LL_DEBUGS("Inventory") << "Ignoring link not in items list " << link_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Ignoring link not in items list " << link_id << LL_ENDL;
 		}
 		else
 		{
@@ -859,7 +859,7 @@ void AISUpdate::parseEmbeddedItems(const LLSD& items)
 		const LLSD& item_map = (*itemit).second;
 		if (mItemIds.end() == mItemIds.find(item_id))
 		{
-			LL_DEBUGS("Inventory") << "Ignoring item not in items list " << item_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Ignoring item not in items list " << item_id << LL_ENDL;
 		}
 		else
 		{
@@ -891,7 +891,7 @@ void AISUpdate::parseEmbeddedCategories(const LLSD& categories)
 		const LLSD& category_map = (*categoryit).second;
 		if (mCategoryIds.end() == mCategoryIds.find(category_id))
 		{
-			LL_DEBUGS("Inventory") << "Ignoring category not in categories list " << category_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Ignoring category not in categories list " << category_id << LL_ENDL;
 		}
 		else
 		{
@@ -906,20 +906,20 @@ void AISUpdate::doUpdate()
 	for (std::map<LLUUID,S32>::const_iterator catit = mCatDescendentDeltas.begin();
 		 catit != mCatDescendentDeltas.end(); ++catit)
 	{
-		LL_DEBUGS("Inventory") << "descendant accounting for " << catit->first << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "descendant accounting for " << catit->first << LL_ENDL;
 
 		const LLUUID cat_id(catit->first);
 		// Don't account for update if we just created this category.
 		if (mCategoriesCreated.find(cat_id) != mCategoriesCreated.end())
 		{
-			LL_DEBUGS("Inventory") << "Skipping version increment for new category " << cat_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Skipping version increment for new category " << cat_id << LL_ENDL;
 			continue;
 		}
 
 		// Don't account for update unless AIS told us it updated that category.
 		if (mCatVersionsUpdated.find(cat_id) == mCatVersionsUpdated.end())
 		{
-			LL_DEBUGS("Inventory") << "Skipping version increment for non-updated category " << cat_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Skipping version increment for non-updated category " << cat_id << LL_ENDL;
 			continue;
 		}
 
@@ -929,16 +929,16 @@ void AISUpdate::doUpdate()
 		{
 			S32 descendent_delta = catit->second;
 			S32 old_count = cat->getDescendentCount();
-			LL_DEBUGS("Inventory") << "Updating descendant count for "
+			/*// _LL_DEBUGS("Inventory") << "Updating descendant count for "
 								   << cat->getName() << " " << cat_id
 								   << " with delta " << descendent_delta << " from "
-								   << old_count << " to " << (old_count+descendent_delta) << LL_ENDL;
+								   << old_count << " to " << (old_count+descendent_delta) << LL_ENDL;*/
 			LLInventoryModel::LLCategoryUpdate up(cat_id, descendent_delta);
 			gInventory.accountForUpdate(up);
 		}
 		else
 		{
-			LL_DEBUGS("Inventory") << "Skipping version accounting for unknown category " << cat_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "Skipping version accounting for unknown category " << cat_id << LL_ENDL;
 		}
 	}
 
@@ -950,7 +950,7 @@ void AISUpdate::doUpdate()
 		LLPointer<LLViewerInventoryCategory> new_category = create_it->second;
 
 		gInventory.updateCategory(new_category, LLInventoryObserver::CREATE);
-		LL_DEBUGS("Inventory") << "created category " << category_id << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "created category " << category_id << LL_ENDL;
 	}
 
 	// UPDATE CATEGORIES
@@ -971,7 +971,7 @@ void AISUpdate::doUpdate()
 			new_category->setVersion(curr_cat->getVersion());
 			new_category->setDescendentCount(curr_cat->getDescendentCount());
 			gInventory.updateCategory(new_category);
-			LL_DEBUGS("Inventory") << "updated category " << new_category->getName() << " " << category_id << LL_ENDL;
+			// _LL_DEBUGS("Inventory") << "updated category " << new_category->getName() << " " << category_id << LL_ENDL;
 		}
 	}
 
@@ -985,7 +985,7 @@ void AISUpdate::doUpdate()
 		// FIXME risky function since it calls updateServer() in some
 		// cases.  Maybe break out the update/create cases, in which
 		// case this is create.
-		LL_DEBUGS("Inventory") << "created item " << item_id << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "created item " << item_id << LL_ENDL;
 		gInventory.updateItem(new_item, LLInventoryObserver::CREATE);
 	}
 	
@@ -998,8 +998,8 @@ void AISUpdate::doUpdate()
 		// FIXME risky function since it calls updateServer() in some
 		// cases.  Maybe break out the update/create cases, in which
 		// case this is update.
-		LL_DEBUGS("Inventory") << "updated item " << item_id << LL_ENDL;
-		//LL_DEBUGS("Inventory") << ll_pretty_print_sd(new_item->asLLSD()) << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "updated item " << item_id << LL_ENDL;
+		//// _LL_DEBUGS("Inventory") << ll_pretty_print_sd(new_item->asLLSD()) << LL_ENDL;
 		gInventory.updateItem(new_item);
 	}
 
@@ -1007,7 +1007,7 @@ void AISUpdate::doUpdate()
 	for (uuid_list_t::const_iterator del_it = mObjectsDeletedIds.begin();
 		 del_it != mObjectsDeletedIds.end(); ++del_it)
 	{
-		LL_DEBUGS("Inventory") << "deleted item " << *del_it << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "deleted item " << *del_it << LL_ENDL;
 		gInventory.onObjectDeletedFromServer(*del_it, false, false, false);
 	}
 
@@ -1020,7 +1020,7 @@ void AISUpdate::doUpdate()
 		const LLUUID id = ucv_it->first;
 		S32 version = ucv_it->second;
 		LLViewerInventoryCategory *cat = gInventory.getCategory(id);
-		LL_DEBUGS("Inventory") << "cat version update " << cat->getName() << " to version " << cat->getVersion() << LL_ENDL;
+		// _LL_DEBUGS("Inventory") << "cat version update " << cat->getName() << " to version " << cat->getVersion() << LL_ENDL;
 		if (cat->getVersion() != version)
 		{
 			LL_WARNS() << "Possible version mismatch for category " << cat->getName()

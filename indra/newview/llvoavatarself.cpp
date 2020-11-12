@@ -189,7 +189,7 @@ LLVOAvatarSelf::LLVOAvatarSelf(const LLUUID& id,
 {
 	mMotionController.mIsSelf = TRUE;
 
-	LL_DEBUGS() << "Marking avatar as self " << id << LL_ENDL;
+	// _LL_DEBUGS() << "Marking avatar as self " << id << LL_ENDL;
 }
 
 // Called periodically for diagnostics, return true when done.
@@ -293,13 +293,13 @@ bool LLVOAvatarSelf::checkStuckAppearance()
 	
 	if (gAgentWearables.isCOFChangeInProgress())
 	{
-		LL_DEBUGS("Avatar") << "checking for stuck appearance" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "checking for stuck appearance" << LL_ENDL;
 		F32 change_time = gAgentWearables.getCOFChangeTime();
-		LL_DEBUGS("Avatar") << "change in progress for " << change_time << " seconds" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "change in progress for " << change_time << " seconds" << LL_ENDL;
 		S32 active_hp = LLAppearanceMgr::instance().countActiveHoldingPatterns();
-		LL_DEBUGS("Avatar") << "active holding patterns " << active_hp << " seconds" << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "active holding patterns " << active_hp << " seconds" << LL_ENDL;
 		S32 active_copies = LLAppearanceMgr::instance().getActiveCopyOperations();
-		LL_DEBUGS("Avatar") << "active copy operations " << active_copies << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "active copy operations " << active_copies << LL_ENDL;
 
 		if ((change_time > CONDITIONAL_UNSTICK_INTERVAL && active_copies == 0) ||
 			(change_time > UNCONDITIONAL_UNSTICK_INTERVAL))
@@ -2255,7 +2255,7 @@ bool LLVOAvatarSelf::getIsCloud() const
 			}
 		}
 
-		LL_DEBUGS() << "Avatar de-clouded" << LL_ENDL;
+		// _LL_DEBUGS() << "Avatar de-clouded" << LL_ENDL;
 	}
 	return false;
 }
@@ -2379,7 +2379,7 @@ void LLVOAvatarSelf::dumpAllTextures() const
 		if (!layerset_buffer) continue;
 		vd_text += verboseDebugDumpLocalTextureDataInfo(layerset);
 	}
-	LL_DEBUGS("Avatar") << vd_text << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << vd_text << LL_ENDL;
 }
 
 const std::string LLVOAvatarSelf::debugDumpLocalTextureDataInfo(const LLViewerTexLayerSet* layerset) const
@@ -2498,7 +2498,7 @@ void LLVOAvatarSelf::appearanceChangeMetricsCoro(std::string url)
 
     mPendingTimerRecords.clear();
 
-    LL_DEBUGS("Avatar") << avString() << "message: " << ll_pretty_print_sd(msg) << LL_ENDL;
+    // _LL_DEBUGS("Avatar") << avString() << "message: " << ll_pretty_print_sd(msg) << LL_ENDL;
 
     gPendingMetricsUploads++;
 
@@ -2638,7 +2638,7 @@ BOOL LLVOAvatarSelf::canGrabBakedTexture(EBakedTextureIndex baked_index) const
 	// Check if the texture hasn't been baked yet.
 	if (!isTextureDefined(tex_index, 0))
 	{
-		LL_DEBUGS() << "getTEImage( " << (U32) tex_index << " )->getID() == IMG_DEFAULT_AVATAR" << LL_ENDL;
+		// _LL_DEBUGS() << "getTEImage( " << (U32) tex_index << " )->getID() == IMG_DEFAULT_AVATAR" << LL_ENDL;
 		return FALSE;
 	}
 
@@ -2657,7 +2657,7 @@ BOOL LLVOAvatarSelf::canGrabBakedTexture(EBakedTextureIndex baked_index) const
 		const ETextureIndex t_index = (*iter);
 		LLWearableType::EType wearable_type = LLAvatarAppearanceDictionary::getTEWearableType(t_index);
 		U32 count = gAgentWearables.getWearableCount(wearable_type);
-		LL_DEBUGS() << "Checking index " << (U32) t_index << " count: " << count << LL_ENDL;
+		// _LL_DEBUGS() << "Checking index " << (U32) t_index << " count: " << count << LL_ENDL;
 		
 		for (U32 wearable_index = 0; wearable_index < count; ++wearable_index)
 		{
@@ -2679,7 +2679,7 @@ BOOL LLVOAvatarSelf::canGrabBakedTexture(EBakedTextureIndex baked_index) const
 													asset_id_matches);
 
 					BOOL can_grab = FALSE;
-					LL_DEBUGS() << "item count for asset " << texture_id << ": " << items.size() << LL_ENDL;
+					// _LL_DEBUGS() << "item count for asset " << texture_id << ": " << items.size() << LL_ENDL;
 					if (items.size())
 					{
 						// search for full permissions version
@@ -2779,11 +2779,11 @@ void LLVOAvatarSelf::outputRezDiagnostics() const
 	}
 
 	const F32 final_time = mDebugSelfLoadTimer.getElapsedTimeF32();
-	LL_DEBUGS("Avatar") << "REZTIME: Myself rez stats:" << LL_ENDL;
-	LL_DEBUGS("Avatar") << "\t Time from avatar creation to load wearables: " << (S32)mDebugTimeWearablesLoaded << LL_ENDL;
-	LL_DEBUGS("Avatar") << "\t Time from avatar creation to de-cloud: " << (S32)mDebugTimeAvatarVisible << LL_ENDL;
-	LL_DEBUGS("Avatar") << "\t Time from avatar creation to de-cloud for others: " << (S32)final_time << LL_ENDL;
-	LL_DEBUGS("Avatar") << "\t Load time for each texture: " << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "REZTIME: Myself rez stats:" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "\t Time from avatar creation to load wearables: " << (S32)mDebugTimeWearablesLoaded << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "\t Time from avatar creation to de-cloud: " << (S32)mDebugTimeAvatarVisible << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "\t Time from avatar creation to de-cloud for others: " << (S32)final_time << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "\t Load time for each texture: " << LL_ENDL;
 	for (U32 i = 0; i < LLAvatarAppearanceDefines::TEX_NUM_INDICES; ++i)
 	{
 		std::stringstream out;
@@ -2808,13 +2808,13 @@ void LLVOAvatarSelf::outputRezDiagnostics() const
 		// Don't print out non-existent textures.
 		if (j != 0)
 		{
-			LL_DEBUGS("Avatar") << out.str() << LL_ENDL;
+			// _LL_DEBUGS("Avatar") << out.str() << LL_ENDL;
 		}
 	}
-	LL_DEBUGS("Avatar") << "\t Time points for each upload (start / finish)" << LL_ENDL;
+	// _LL_DEBUGS("Avatar") << "\t Time points for each upload (start / finish)" << LL_ENDL;
 	for (U32 i = 0; i < LLAvatarAppearanceDefines::BAKED_NUM_INDICES; ++i)
 	{
-		LL_DEBUGS("Avatar") << "\t\t (" << i << ") \t" << (S32)mDebugBakedTextureTimes[i][0] << " / " << (S32)mDebugBakedTextureTimes[i][1] << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << "\t\t (" << i << ") \t" << (S32)mDebugBakedTextureTimes[i][0] << " / " << (S32)mDebugBakedTextureTimes[i][1] << LL_ENDL;
 	}
 
 	for (LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::BakedTextures::const_iterator baked_iter = LLAvatarAppearanceDefines::LLAvatarAppearanceDictionary::getInstance()->getBakedTextures().begin();
@@ -2826,7 +2826,7 @@ void LLVOAvatarSelf::outputRezDiagnostics() const
 		if (!layerset) continue;
 		const LLViewerTexLayerSetBuffer *layerset_buffer = layerset->getViewerComposite();
 		if (!layerset_buffer) continue;
-		LL_DEBUGS("Avatar") << layerset_buffer->dumpTextureInfo() << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << layerset_buffer->dumpTextureInfo() << LL_ENDL;
 	}
 
 	dumpAllTextures();
@@ -2834,10 +2834,10 @@ void LLVOAvatarSelf::outputRezDiagnostics() const
 
 void LLVOAvatarSelf::outputRezTiming(const std::string& msg) const
 {
-	LL_DEBUGS("Avatar")
+	/*// _LL_DEBUGS("Avatar")
 		<< avString()
 		<< llformat("%s. Time from avatar creation: %.2f", msg.c_str(), mDebugSelfLoadTimer.getElapsedTimeF32())
-		<< LL_ENDL;
+		<< LL_ENDL;*/
 }
 
 void LLVOAvatarSelf::reportAvatarRezTime() const
@@ -3034,7 +3034,7 @@ void LLVOAvatarSelf::sendHoverHeight() const
 		const LLVector3& hover_offset = getHoverOffset();
 		update["hover_height"] = hover_offset[2];
 
-		LL_DEBUGS("Avatar") << avString() << "sending hover height value " << hover_offset[2] << LL_ENDL;
+		// _LL_DEBUGS("Avatar") << avString() << "sending hover height value " << hover_offset[2] << LL_ENDL;
 
         // *TODO: - this class doesn't really do anything, could just use a base
         // class responder if nothing else gets added. 
@@ -3089,7 +3089,7 @@ void LLVOAvatarSelf::deleteScratchTextures()
 
 	if( sScratchTexBytes.value() )
 	{
-		LL_DEBUGS() << "Clearing Scratch Textures " << (S32Kilobytes)sScratchTexBytes << LL_ENDL;
+		// _LL_DEBUGS() << "Clearing Scratch Textures " << (S32Kilobytes)sScratchTexBytes << LL_ENDL;
 
 		delete_and_clear(sScratchTexNames);
 		LLImageGL::sGlobalTextureMemory -= sScratchTexBytes;

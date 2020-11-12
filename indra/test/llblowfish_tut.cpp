@@ -72,7 +72,7 @@ namespace tut
 			std::string good;
 			good.resize(256);
 			size_t got = fread(&good[0], 1, 256, fp);
-			LL_DEBUGS() << "matchFile read " << got << LL_ENDL;
+			// _LL_DEBUGS() << "matchFile read " << got << LL_ENDL;
 			fclose(fp);
 			good.resize(got);
 		

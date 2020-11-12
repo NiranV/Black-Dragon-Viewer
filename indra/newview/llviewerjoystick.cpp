@@ -231,7 +231,7 @@ void LLViewerJoystick::init(bool autoenable)
 	{
 		if (mNdofDev)
 		{
-			LL_DEBUGS("joystick") << "ndof_create() returned: " << mNdofDev << LL_ENDL;
+			// _LL_DEBUGS("joystick") << "ndof_create() returned: " << mNdofDev << LL_ENDL;
 			// Different joysticks will return different ranges of raw values.
 			// Since we want to handle every device in the same uniform way, 
 			// we initialize the mNdofDev struct and we set the range 
@@ -250,7 +250,7 @@ void LLViewerJoystick::init(bool autoenable)
 			// just have the absolute values instead.
 			mNdofDev->absolute = 1;
 
-			LL_DEBUGS("joystick") << "ndof_init_first() received: " << mNdofDev << LL_ENDL;
+			// _LL_DEBUGS("joystick") << "ndof_init_first() received: " << mNdofDev << LL_ENDL;
 			// init & use the first suitable NDOF device found on the USB chain
 			if (ndof_init_first(mNdofDev, NULL))
 			{
@@ -262,7 +262,7 @@ void LLViewerJoystick::init(bool autoenable)
 			{
 				mDriverState = JDS_INITIALIZED;
 			}
-			LL_DEBUGS("joystick") << "ndof_init_first() left: " << mNdofDev << LL_ENDL;
+			// _LL_DEBUGS("joystick") << "ndof_init_first() left: " << mNdofDev << LL_ENDL;
 		}
 		else
 		{

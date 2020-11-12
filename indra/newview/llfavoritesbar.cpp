@@ -1672,7 +1672,7 @@ void LLFavoritesOrderStorage::getSLURL(const LLUUID& asset_id)
 		boost::bind(&LLFavoritesOrderStorage::onLandmarkLoaded, this, asset_id, _1));
 	if (lm)
 	{
-        LL_DEBUGS("FavoritesBar") << "landmark for " << asset_id << " already loaded" << LL_ENDL;
+        // _LL_DEBUGS("FavoritesBar") << "landmark for " << asset_id << " already loaded" << LL_ENDL;
 		onLandmarkLoaded(asset_id, lm);
 	}
 	return;
@@ -1929,7 +1929,7 @@ void LLFavoritesOrderStorage::onLandmarkLoaded(const LLUUID& asset_id, LLLandmar
 {
 	if (landmark)
     {
-        LL_DEBUGS("FavoritesBar") << "landmark for " << asset_id << " loaded" << LL_ENDL;
+        // _LL_DEBUGS("FavoritesBar") << "landmark for " << asset_id << " loaded" << LL_ENDL;
         LLVector3d pos_global;
         if (!landmark->getGlobalPos(pos_global))
         {
@@ -1940,7 +1940,7 @@ void LLFavoritesOrderStorage::onLandmarkLoaded(const LLUUID& asset_id, LLLandmar
 
         if (!pos_global.isExactlyZero())
         {
-        	LL_DEBUGS("FavoritesBar") << "requesting slurl for landmark " << asset_id << LL_ENDL;
+        	// _LL_DEBUGS("FavoritesBar") << "requesting slurl for landmark " << asset_id << LL_ENDL;
         	LLLandmarkActions::getSLURLfromPosGlobal(pos_global,
 			boost::bind(&LLFavoritesOrderStorage::storeFavoriteSLURL, this, asset_id, _1));
         }
@@ -1949,7 +1949,7 @@ void LLFavoritesOrderStorage::onLandmarkLoaded(const LLUUID& asset_id, LLLandmar
 
 void LLFavoritesOrderStorage::storeFavoriteSLURL(const LLUUID& asset_id, std::string& slurl)
 {
-	LL_DEBUGS("FavoritesBar") << "Saving landmark SLURL '" << slurl << "' for " << asset_id << LL_ENDL;
+	// _LL_DEBUGS("FavoritesBar") << "Saving landmark SLURL '" << slurl << "' for " << asset_id << LL_ENDL;
 	mSLURLs[asset_id] = slurl;
 }
 

@@ -444,21 +444,21 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 	{
 		const RlvCommand& rlvCmdTmp = rlvCmd; // Reference to the temporary with limited variable scope since we don't want it to leak below
 
-		RLV_DEBUGS << "[" << rlvCmdTmp.getObjectID() << "]: " << rlvCmdTmp.asString() << RLV_ENDL;
+		//RLV_DEBUGS << "[" << rlvCmdTmp.getObjectID() << "]: " << rlvCmdTmp.asString() << RLV_ENDL;
 
 		if ( (isBlockedObject(rlvCmdTmp.getObjectID())) && (RLV_TYPE_REMOVE != rlvCmdTmp.getParamType()) && (RLV_TYPE_CLEAR != rlvCmdTmp.getParamType()) )
 		{
-			RLV_DEBUGS << "\t-> blocked object" << RLV_ENDL;
+			//RLV_DEBUGS << "\t-> blocked object" << RLV_ENDL;
 			return RLV_RET_FAILED_BLOCKED;
 		}
 		if (!rlvCmdTmp.isValid())
 		{
-			RLV_DEBUGS << "\t-> invalid syntax" << RLV_ENDL;
+			//RLV_DEBUGS << "\t-> invalid syntax" << RLV_ENDL;
 			return RLV_RET_FAILED_SYNTAX;
 		}
 		if (rlvCmdTmp.isBlocked())
 		{
-			RLV_DEBUGS << "\t-> blocked command" << RLV_ENDL;
+			//RLV_DEBUGS << "\t-> blocked command" << RLV_ENDL;
 			return RLV_RET_FAILED_DISABLED;
 		}
 	}
@@ -478,7 +478,7 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 				if ( (m_Behaviours[eBhvr]) && ( (RLV_BHVR_SETCAM == eBhvr) || (RLV_BHVR_SETDEBUG == eBhvr) || (RLV_BHVR_SETENV == eBhvr) ) )
 				{
 					// Some restrictions can only be held by one single object to avoid deadlocks
-					RLV_DEBUGS << "\t- " << rlvCmd.get().getBehaviour() << " is already set by another object => discarding" << RLV_ENDL;
+					//RLV_DEBUGS << "\t- " << rlvCmd.get().getBehaviour() << " is already set by another object => discarding" << RLV_ENDL;
 					eRet = RLV_RET_FAILED_LOCK;
 					break;
 				}
@@ -496,7 +496,7 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 					rlvCmd = itObj->second.addCommand(rlvCmd, fAdded);
 				}
 
-				RLV_DEBUGS << "\t- " << ( (fAdded) ? "adding behaviour" : "skipping duplicate" ) << RLV_ENDL;
+				//RLV_DEBUGS << "\t- " << ( (fAdded) ? "adding behaviour" : "skipping duplicate" ) << RLV_ENDL;
 
 				if (fAdded) {	// If FALSE then this was a duplicate, there's no need to handle those
 					if (!m_pGCTimer)
@@ -521,8 +521,8 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 				if (itObj != m_Objects.end())
 					fRemoved = itObj->second.removeCommand(rlvCmd);
 
-				RLV_DEBUGS << "\t- " << ( (fRemoved) ? "removing behaviour"
-													 : "skipping remove (unset behaviour or unknown object)") << RLV_ENDL;
+				/*RLV_DEBUGS << "\t- " << ( (fRemoved) ? "removing behaviour"
+													 : "skipping remove (unset behaviour or unknown object)") << RLV_ENDL;*/
 
 				if (fRemoved) {	// Don't handle non-sensical removes
 					eRet = processAddRemCommand(rlvCmd);
@@ -530,7 +530,7 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 
 					if (0 == itObj->second.m_Commands.size())
 					{
-						RLV_DEBUGS << "\t- command list empty => removing " << idCurObj << RLV_ENDL;
+						//RLV_DEBUGS << "\t- command list empty => removing " << idCurObj << RLV_ENDL;
 						RlvBehaviourDictionary::instance().clearModifiers(idCurObj);
 						m_Objects.erase(itObj);
 					}
@@ -559,7 +559,7 @@ ERlvCmdRet RlvHandler::processCommand(std::reference_wrapper<const RlvCommand> r
 
 	m_OnCommand(rlvCmd, eRet, !fFromObj);
 
-	RLV_DEBUGS << "\t--> command " << ((eRet & RLV_RET_SUCCESS) ? "succeeded" : "failed") << RLV_ENDL;
+	//RLV_DEBUGS << "\t--> command " << ((eRet & RLV_RET_SUCCESS) ? "succeeded" : "failed") << RLV_ENDL;
 
 	m_CurCommandStack.pop(); m_CurObjectStack.pop();
 	return eRet;

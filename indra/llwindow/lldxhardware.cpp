@@ -245,7 +245,7 @@ std::string LLDXHardware::getDriverVersionWMI()
 
 	if (FAILED(hres))
 	{
-		LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << hres << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << hres << LL_ENDL;
 		return std::string();                  // Program has failed.
 	}
 
@@ -273,7 +273,7 @@ std::string LLDXHardware::getDriverVersionWMI()
 		return std::string();                // Program has failed.
 	}
 
-	LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
 
 	// Set security levels on the proxy -------------------------
 	hres = CoSetProxyBlanket(
@@ -639,7 +639,7 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 	mVRAM = 0;
 
 	// CoCreate a IDxDiagProvider*
-	LL_DEBUGS("AppInit") << "CoCreateInstance IID_IDxDiagProvider" << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << "CoCreateInstance IID_IDxDiagProvider" << LL_ENDL;
 	hr = CoCreateInstance(CLSID_DxDiagProvider,
 		NULL,
 		CLSCTX_INPROC_SERVER,
@@ -666,14 +666,14 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		dx_diag_init_params.bAllowWHQLChecks = TRUE;
 		dx_diag_init_params.pReserved = NULL;
 
-		LL_DEBUGS("AppInit") << "dx_diag_providerp->Initialize" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "dx_diag_providerp->Initialize" << LL_ENDL;
 		hr = dx_diag_providerp->Initialize(&dx_diag_init_params);
 		if (FAILED(hr))
 		{
 			goto LCleanup;
 		}
 
-		LL_DEBUGS("AppInit") << "dx_diag_providerp->GetRootContainer" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "dx_diag_providerp->GetRootContainer" << LL_ENDL;
 		hr = dx_diag_providerp->GetRootContainer(&dx_diag_rootp);
 		if (FAILED(hr) || !dx_diag_rootp)
 		{
@@ -683,7 +683,7 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		HRESULT hr;
 
 		// Get display driver information
-		LL_DEBUGS("AppInit") << "dx_diag_rootp->GetChildContainer" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "dx_diag_rootp->GetChildContainer" << LL_ENDL;
 		hr = dx_diag_rootp->GetChildContainer(L"DxDiag_DisplayDevices", &devices_containerp);
 		if (FAILED(hr) || !devices_containerp)
 		{
@@ -702,7 +702,7 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		// Get device 0
 		// By default 0 device is the primary one, howhever in case of various hybrid graphics
 		// like itegrated AMD and PCI AMD GPUs system might switch.
-		LL_DEBUGS("AppInit") << "devices_containerp->GetChildContainer" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "devices_containerp->GetChildContainer" << LL_ENDL;
 		hr = devices_containerp->GetChildContainer(L"0", &device_containerp);
 		if (FAILED(hr) || !device_containerp)
 		{
@@ -763,7 +763,7 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		// This call may take some time while dxdiag gathers the info.
 		DWORD num_devices = 0;
 		WCHAR wszContainer[256];
-		LL_DEBUGS("AppInit") << "dx_diag_rootp->GetChildContainer DxDiag_SystemDevices" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "dx_diag_rootp->GetChildContainer DxDiag_SystemDevices" << LL_ENDL;
 		hr = dx_diag_rootp->GetChildContainer(L"DxDiag_SystemDevices", &system_device_containerp);
 		if (FAILED(hr))
 		{
@@ -776,7 +776,7 @@ BOOL LLDXHardware::getInfo(BOOL vram_only)
 		goto LCleanup;
 		}
 
-		LL_DEBUGS("AppInit") << "DX9 iterating over devices" << LL_ENDL;
+		// _LL_DEBUGS("AppInit") << "DX9 iterating over devices" << LL_ENDL;
 		S32 device_num = 0;
 		for (device_num = 0; device_num < (S32)num_devices; device_num++)
 		{

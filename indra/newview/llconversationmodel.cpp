@@ -393,7 +393,7 @@ void LLConversationItemSession::setDistance(const LLUUID& participant_id, F64 di
 
 void LLConversationItemSession::buildContextMenu(LLMenuGL& menu, U32 flags)
 {
-    LL_DEBUGS() << "LLConversationItemParticipant::buildContextMenu()" << LL_ENDL;
+    // _LL_DEBUGS() << "LLConversationItemParticipant::buildContextMenu()" << LL_ENDL;
     menuentry_vec_t items;
     menuentry_vec_t disabled_items;
     if((flags & ITEM_IN_MULTI_SELECTION) && (this->getType() != CONV_SESSION_NEARBY))

@@ -468,7 +468,7 @@ BOOL LLScriptEdCore::postBuild()
 
 void LLScriptEdCore::processKeywords()
 {
-	LL_DEBUGS("SyntaxLSL") << "Processing keywords" << LL_ENDL;
+	// _LL_DEBUGS("SyntaxLSL") << "Processing keywords" << LL_ENDL;
 	mEditor->clearSegments();
 	mEditor->initKeywords();
 	mEditor->loadKeywords();
@@ -1718,8 +1718,8 @@ void LLPreviewLSL::saveIfNeeded(bool sync /*= true*/)
 void LLPreviewLSL::onLoadComplete( LLVFS *vfs, const LLUUID& asset_uuid, LLAssetType::EType type,
 								   void* user_data, S32 status, LLExtStat ext_status)
 {
-	LL_DEBUGS() << "LLPreviewLSL::onLoadComplete: got uuid " << asset_uuid
-		 << LL_ENDL;
+	/*// _LL_DEBUGS() << "LLPreviewLSL::onLoadComplete: got uuid " << asset_uuid
+		 << LL_ENDL;*/
 	LLUUID* item_uuid = (LLUUID*)user_data;
 	LLPreviewLSL* preview = LLFloaterReg::findTypedInstance<LLPreviewLSL>("preview_script", *item_uuid);
 	if( preview )
@@ -1849,7 +1849,7 @@ void LLLiveLSLEditor::callbackLSLCompileSucceeded(const LLUUID& task_id,
 												  const LLUUID& item_id,
 												  bool is_script_running)
 {
-	LL_DEBUGS() << "LSL Bytecode saved" << LL_ENDL;
+	// _LL_DEBUGS() << "LSL Bytecode saved" << LL_ENDL;
 	mScriptEd->mErrorList->setCommentText(LLTrans::getString("CompileSuccessful"));
 	mScriptEd->mErrorList->setCommentText(LLTrans::getString("SaveComplete"));
 	getChild<LLCheckBoxCtrl>("running")->set(is_script_running);
@@ -1860,7 +1860,7 @@ void LLLiveLSLEditor::callbackLSLCompileSucceeded(const LLUUID& task_id,
 // virtual
 void LLLiveLSLEditor::callbackLSLCompileFailed(const LLSD& compile_errors)
 {
-	LL_DEBUGS() << "Compile failed!" << LL_ENDL;
+	// _LL_DEBUGS() << "Compile failed!" << LL_ENDL;
 	for(LLSD::array_const_iterator line = compile_errors.beginArray();
 		line < compile_errors.endArray();
 		line++)
@@ -1993,8 +1993,8 @@ void LLLiveLSLEditor::onLoadComplete(LLVFS *vfs, const LLUUID& asset_id,
 									 LLAssetType::EType type,
 									 void* user_data, S32 status, LLExtStat ext_status)
 {
-	LL_DEBUGS() << "LLLiveLSLEditor::onLoadComplete: got uuid " << asset_id
-		 << LL_ENDL;
+	/*// _LL_DEBUGS() << "LLLiveLSLEditor::onLoadComplete: got uuid " << asset_id
+		 << LL_ENDL;*/
 	LLSD* floater_key = (LLSD*)user_data;
 	
 	LLLiveLSLEditor* instance = LLFloaterReg::findTypedInstance<LLLiveLSLEditor>("preview_scriptedit", *floater_key);

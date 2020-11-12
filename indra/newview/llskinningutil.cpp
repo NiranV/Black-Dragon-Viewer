@@ -111,7 +111,7 @@ void LLSkinningUtil::scrubInvalidJoints(LLVOAvatar *avatar, LLMeshSkinInfo* skin
         // needed for handling of any legacy bad data.
         if (!avatar->getJoint(skin->mJointNames[j]))
         {
-            LL_DEBUGS("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint " << skin->mJointNames[j] << LL_ENDL;
+            // _LL_DEBUGS("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint " << skin->mJointNames[j] << LL_ENDL;
             LL_WARNS_ONCE("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint" << skin->mJointNames[j] << LL_ENDL;
             skin->mJointNames[j] = "mPelvis";
             skin->mJointNumsInitialized = false; // force update after names change.
@@ -368,7 +368,7 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
                         }
                     }
                 }
-                //LL_DEBUGS("RigSpammish") << "built rigging info for vf " << &vol_face 
+                //// _LL_DEBUGS("RigSpammish") << "built rigging info for vf " << &vol_face 
                 //                         << " num_verts " << vol_face.mNumVertices
                 //                         << " active joints " << active_joints.size()
                 //                         << " active verts " << active_verts
@@ -380,12 +380,12 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
 #if DEBUG_SKINNING
         if (vol_face.mJointRiggingInfoTab.size()!=0)
         {
-            LL_DEBUGS("RigSpammish") << "we have rigging info for vf " << &vol_face 
+            // _LL_DEBUGS("RigSpammish") << "we have rigging info for vf " << &vol_face 
                                      << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
         else
         {
-            LL_DEBUGS("RigSpammish") << "no rigging info for vf " << &vol_face 
+            // _LL_DEBUGS("RigSpammish") << "no rigging info for vf " << &vol_face 
                                      << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
 #endif

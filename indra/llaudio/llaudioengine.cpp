@@ -596,7 +596,7 @@ LLAudioBuffer * LLAudioEngine::getFreeBuffer()
 
 	if (buffer_id >= 0)
 	{
-		LL_DEBUGS() << "Taking over unused buffer " << buffer_id << LL_ENDL;
+		// _LL_DEBUGS() << "Taking over unused buffer " << buffer_id << LL_ENDL;
 		//LL_INFOS() << "Flushing unused buffer!" << LL_ENDL;
 		mBuffers[buffer_id]->mAudioDatap->mBufferp = NULL;
 		delete mBuffers[buffer_id];
@@ -678,7 +678,7 @@ void LLAudioEngine::cleanupBuffer(LLAudioBuffer *bufferp)
 
 bool LLAudioEngine::preloadSound(const LLUUID &uuid)
 {
-	LL_DEBUGS("AudioEngine")<<"( "<<uuid<<" )"<<LL_ENDL;
+	// _LL_DEBUGS("AudioEngine")<<"( "<<uuid<<" )"<<LL_ENDL;
 
 	getAudioData(uuid);	// We don't care about the return value, this is just to make sure
 									// that we have an entry, which will mean that the audio engine knows about this
@@ -994,7 +994,7 @@ void LLAudioEngine::cleanupAudioSource(LLAudioSource *asp)
 	}
 	else
 	{
-		LL_DEBUGS("AudioEngine") << "Cleaning up audio sources for "<< asp->getID() <<LL_ENDL;
+		// _LL_DEBUGS("AudioEngine") << "Cleaning up audio sources for "<< asp->getID() <<LL_ENDL;
 	delete asp;
 	mAllSources.erase(iter);
 }
@@ -1025,7 +1025,7 @@ bool LLAudioEngine::hasLocalFile(const LLUUID &uuid)
 {
 	// See if it's in the VFS.
 	bool have_local = gVFS->getExists(uuid, LLAssetType::AT_SOUND);
-	LL_DEBUGS("AudioEngine") << "sound uuid "<<uuid<<" exists in VFS"<<LL_ENDL;
+	// _LL_DEBUGS("AudioEngine") << "sound uuid "<<uuid<<" exists in VFS"<<LL_ENDL;
 	return have_local;
 }
 
@@ -1705,7 +1705,7 @@ void LLAudioChannel::setSource(LLAudioSource *sourcep)
 	}
 	else
 	{
-		LL_DEBUGS("AudioEngine") << "( id: " << sourcep->getID() << ")" << LL_ENDL;
+		// _LL_DEBUGS("AudioEngine") << "( id: " << sourcep->getID() << ")" << LL_ENDL;
 
 	if (sourcep == mCurrentSourcep)
 	{

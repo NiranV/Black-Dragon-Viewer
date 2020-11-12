@@ -1098,7 +1098,7 @@ S32 LLPrimitive::unpackTEField(U8 *cur_ptr, U8 *buffer_end, U8 *data_ptr, U8 dat
 	
 	while ((cur_ptr < buffer_end) && (*cur_ptr != 0))
 	{
-		LL_DEBUGS("TEFieldDecode") << "TE exception" << LL_ENDL;
+		// _LL_DEBUGS("TEFieldDecode") << "TE exception" << LL_ENDL;
 		i = 0;
 		while (*cur_ptr & 0x80)
 		{
@@ -1113,10 +1113,10 @@ S32 LLPrimitive::unpackTEField(U8 *cur_ptr, U8 *buffer_end, U8 *data_ptr, U8 dat
 			if (i & 0x01)
 			{
 				htolememcpy(data_ptr+(j*data_size),cur_ptr,type,data_size);
-				LL_DEBUGS("TEFieldDecode") << "Assigning " ;
+				/*// _LL_DEBUGS("TEFieldDecode") << "Assigning " ;
 				char foo[64];
 				sprintf(foo,"%x %x",*(data_ptr+(j*data_size)), *(data_ptr+(j*data_size)+1));
-				LL_CONT << foo << " to face " << j << LL_ENDL;
+				LL_CONT << foo << " to face " << j << LL_ENDL;*/
 			}
 			i = i >> 1;
 		}

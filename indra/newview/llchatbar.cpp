@@ -610,17 +610,17 @@ void LLChatBar::sendChatFromViewer(const LLWString &wtext, EChatType type, BOOL 
 	{
 		if (type == CHAT_TYPE_WHISPER)
 		{
-			LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
+			// _LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_WHISPER, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_NORMAL)
 		{
-			LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
+			// _LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_TALK, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_SHOUT)
 		{
-			LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
+			// _LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_SHOUT, ANIM_REQUEST_START);
 		}
 		else
@@ -633,7 +633,7 @@ void LLChatBar::sendChatFromViewer(const LLWString &wtext, EChatType type, BOOL 
 	{
 		if (type != CHAT_TYPE_START && type != CHAT_TYPE_STOP)
 		{
-			LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
+			// _LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
 		}
 	}
 

@@ -918,9 +918,9 @@ LLMemoryInfo& LLMemoryInfo::refresh()
 {
 	mStatsMap = loadStatsMap();
 
-	LL_DEBUGS("LLMemoryInfo") << "Populated mStatsMap:\n";
+	/*// _LL_DEBUGS("LLMemoryInfo") << "Populated mStatsMap:\n";
 	LLSDSerialize::toPrettyXML(mStatsMap, LL_CONT);
-	LL_ENDL;
+	LL_ENDL;*/
 
 	return *this;
 }
@@ -1115,7 +1115,7 @@ LLSD LLMemoryInfo::loadStatsMap()
 		std::string line;
 		while (std::getline(meminfo, line))
 		{
-			LL_DEBUGS("LLMemoryInfo") << line << LL_ENDL;
+			// _LL_DEBUGS("LLMemoryInfo") << line << LL_ENDL;
 			if (regex_match_no_exc(line, matched, stat_rx))
 			{
 				// e.g. "MemTotal:		4108424 kB"

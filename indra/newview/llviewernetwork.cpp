@@ -88,7 +88,7 @@ LLGridManager::LLGridManager()
 	// an attacker.  Don't want someone snagging a password.
 	std::string grid_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
 														   "grids.xml");
-	LL_DEBUGS("GridManager")<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<LL_ENDL;
 
 	initialize(grid_file);
 
@@ -184,7 +184,7 @@ void LLGridManager::initialize(const std::string& grid_file)
 	}
 	else
 	{
-		LL_DEBUGS("GridManager")<<"no grid file specified"<<LL_ENDL;
+		// _LL_DEBUGS("GridManager")<<"no grid file specified"<<LL_ENDL;
 	}
 
 	// load a grid from the command line.
@@ -303,20 +303,20 @@ bool LLGridManager::addGrid(LLSD& grid_data)
 					grid_data[GRID_LOGIN_IDENTIFIER_TYPES].append(CRED_IDENTIFIER_TYPE_ACCOUNT);
 				}
 
-				LL_DEBUGS("GridManager") <<grid<<"\n"
+				/*// _LL_DEBUGS("GridManager") <<grid<<"\n"
 										 <<"  id:          "<<grid_data[GRID_ID_VALUE].asString()<<"\n"
 										 <<"  label:       "<<grid_data[GRID_LABEL_VALUE].asString()<<"\n"
 										 <<"  login page:  "<<grid_data[GRID_LOGIN_PAGE_VALUE].asString()<<"\n"
 										 <<"  helper page: "<<grid_data[GRID_HELPER_URI_VALUE].asString()<<"\n"
 										 <<"  web profile: "<<grid_data[GRID_WEB_PROFILE_VALUE].asString()<<"\n";
-				/* still in LL_DEBUGS */ 
-				for (LLSD::array_const_iterator login_uris = grid_data[GRID_LOGIN_URI_VALUE].beginArray();
+				/* still in // _LL_DEBUGS */ 
+				/*for (LLSD::array_const_iterator login_uris = grid_data[GRID_LOGIN_URI_VALUE].beginArray();
 					 login_uris != grid_data[GRID_LOGIN_URI_VALUE].endArray();
 					 login_uris++)
 				{
 					LL_CONT << "  login uri:   "<<login_uris->asString()<<"\n";
 				}
-				LL_CONT << LL_ENDL;
+				LL_CONT << LL_ENDL;*/
 				mGridList[grid] = grid_data;
 				added = true;
 			}
@@ -400,7 +400,7 @@ std::map<std::string, std::string> LLGridManager::getKnownGrids()
 void LLGridManager::setGridChoice(const std::string& grid)
 {
 	// Set the grid choice based on a string.
-	LL_DEBUGS("GridManager")<<"requested "<<grid<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"requested "<<grid<<LL_ENDL;
  	std::string grid_name = getGrid(grid); // resolved either the name or the id to the name
 
 	if(!grid_name.empty())
@@ -460,7 +460,7 @@ std::string LLGridManager::getGridLabel(const std::string& grid)
 	{
 		LL_WARNS("GridManager")<<"invalid grid '"<<grid<<"'"<<LL_ENDL;
 	}
-	LL_DEBUGS("GridManager")<<"returning "<<grid_label<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning "<<grid_label<<LL_ENDL;
 	return grid_label;
 }
 
@@ -476,7 +476,7 @@ std::string LLGridManager::getGridId(const std::string& grid)
 	{
 		LL_WARNS("GridManager")<<"invalid grid '"<<grid<<"'"<<LL_ENDL;
 	}
-	LL_DEBUGS("GridManager")<<"returning "<<grid_id<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning "<<grid_id<<LL_ENDL;
 	return grid_id;
 }
 
@@ -524,7 +524,7 @@ std::string LLGridManager::getHelperURI(const std::string& grid)
 		LL_WARNS("GridManager")<<"invalid grid '"<<grid<<"'"<<LL_ENDL;
 	}
 
-	LL_DEBUGS("GridManager")<<"returning "<<helper_uri<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning "<<helper_uri<<LL_ENDL;
 	return helper_uri;
 }
 
@@ -546,7 +546,7 @@ std::string LLGridManager::getLoginPage(const std::string& grid)
 std::string LLGridManager::getLoginPage()
 {
 	std::string login_page = mGridList[mGrid][GRID_LOGIN_PAGE_VALUE].asString();
-	LL_DEBUGS("GridManager")<<"returning "<<login_page<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning "<<login_page<<LL_ENDL;
 	return login_page;
 }
 
@@ -658,7 +658,7 @@ std::string LLGridManager::getSLURLBase(const std::string& grid)
 			grid_base = llformat(DEFAULT_SLURL_BASE, grid_name.c_str());
 		}
 	}
-	LL_DEBUGS("GridManager")<<"returning '"<<grid_base<<"'"<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning '"<<grid_base<<"'"<<LL_ENDL;
 	return grid_base;
 }
 
@@ -678,6 +678,6 @@ std::string LLGridManager::getAppSLURLBase(const std::string& grid)
 			grid_base = llformat(DEFAULT_APP_SLURL_BASE, grid_name.c_str());
 		}
 	}
-	LL_DEBUGS("GridManager")<<"returning '"<<grid_base<<"'"<<LL_ENDL;
+	// _LL_DEBUGS("GridManager")<<"returning '"<<grid_base<<"'"<<LL_ENDL;
 	return grid_base;
 }

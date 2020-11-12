@@ -257,8 +257,8 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
             LL_WARNS("AppInit", "Capabilities") << "Attempting to get capabilities for region that no longer exists!" << LL_ENDL;
             return; // this error condition is not recoverable.
         }
-        LL_DEBUGS("AppInit", "Capabilities") << "requesting seed caps for handle " << regionHandle 
-                                             << " name " << regionp->getName() << LL_ENDL;
+        /*// _LL_DEBUGS("AppInit", "Capabilities") << "requesting seed caps for handle " << regionHandle 
+                                             << " name " << regionp->getName() << LL_ENDL;*/
 
         std::string url = regionp->getCapability("Seed");
         if (url.empty())
@@ -292,7 +292,7 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
         LL_INFOS("AppInit", "Capabilities") << "Requesting seed from " << url 
                                             << " region name " << regionp->getName()
                                             << " (attempt #" << mSeedCapAttempts + 1 << ")" << LL_ENDL;
-		LL_DEBUGS("AppInit", "Capabilities") << "Capabilities requested: " << capabilityNames << LL_ENDL;
+		// _LL_DEBUGS("AppInit", "Capabilities") << "Capabilities requested: " << capabilityNames << LL_ENDL;
 
         regionp = NULL;
         result = httpAdapter->postAndSuspend(httpRequest, url, capabilityNames);
@@ -342,8 +342,8 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
         {
             regionp->setCapability(iter->first, iter->second);
 
-            LL_DEBUGS("AppInit", "Capabilities")
-                << "Capability '" << iter->first << "' is '" << iter->second << "'" << LL_ENDL;
+            /*// _LL_DEBUGS("AppInit", "Capabilities")
+                << "Capability '" << iter->first << "' is '" << iter->second << "'" << LL_ENDL;*/
         }
 
 #if 0
@@ -351,8 +351,8 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
 #endif
 
         regionp->setCapabilitiesReceived(true);
-        LL_DEBUGS("AppInit", "Capabilities") << "received caps for handle " << regionHandle 
-                                             << " region name " << regionp->getName() << LL_ENDL;
+        /*// _LL_DEBUGS("AppInit", "Capabilities") << "received caps for handle " << regionHandle 
+                                             << " region name " << regionp->getName() << LL_ENDL;*/
 
         if (STATE_SEED_GRANTED_WAIT == LLStartUp::getStartupState())
         {
@@ -478,7 +478,7 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCompleteCoro(U64 regionHandle)
         }
         else
         {
-            LL_DEBUGS("CrossingCaps") << "Sim sent multiple base cap grants with matching sizes." << LL_ENDL;
+            // _LL_DEBUGS("CrossingCaps") << "Sim sent multiple base cap grants with matching sizes." << LL_ENDL;
         }
         mSecondCapabilitiesTracker.clear();
     } 
@@ -2225,8 +2225,8 @@ void LLViewerRegion::getInfo(LLSD& info)
 
 void LLViewerRegion::requestSimulatorFeatures()
 {
-    LL_DEBUGS("SimulatorFeatures") << "region " << getName() << " ptr " << this
-                                   << " trying to request SimulatorFeatures" << LL_ENDL;
+    /*// _LL_DEBUGS("SimulatorFeatures") << "region " << getName() << " ptr " << this
+                                   << " trying to request SimulatorFeatures" << LL_ENDL;*/
     // kick off a request for simulator features
     std::string url = getCapability("SimulatorFeatures");
     if (!url.empty())
@@ -2483,7 +2483,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 		// we've seen this object before
 		if (entry->getCRC() == crc)
 		{
-            LL_DEBUGS("AnimatedObjects") << " got dupe for local_id " << local_id << LL_ENDL;
+            // _LL_DEBUGS("AnimatedObjects") << " got dupe for local_id " << local_id << LL_ENDL;
             dumpStack("AnimatedObjectsStack");
 
 			// Record a hit
@@ -2492,7 +2492,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 		}
 		else //CRC changed
 		{
-            LL_DEBUGS("AnimatedObjects") << " got update for local_id " << local_id << LL_ENDL;
+            // _LL_DEBUGS("AnimatedObjects") << " got update for local_id " << local_id << LL_ENDL;
             dumpStack("AnimatedObjectsStack");
 
 			// Update the cache entry
@@ -2505,7 +2505,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 	}
 	else
 	{
-        LL_DEBUGS("AnimatedObjects") << " got first notification for local_id " << local_id << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << " got first notification for local_id " << local_id << LL_ENDL;
         dumpStack("AnimatedObjectsStack");
 
 		// we haven't seen this object before
@@ -2680,7 +2680,7 @@ void LLViewerRegion::requestCacheMisses()
 		msg->addU8Fast(_PREHASH_CacheMissType, (*iter).mType);
 		msg->addU32Fast(_PREHASH_ID, (*iter).mID);
 
-        LL_DEBUGS("AnimatedObjects") << "Requesting cache missed object " << (*iter).mID << LL_ENDL;
+        // _LL_DEBUGS("AnimatedObjects") << "Requesting cache missed object " << (*iter).mID << LL_ENDL;
         
 		blocks++;
 
@@ -3346,17 +3346,17 @@ void LLViewerRegion::resetMaterialsCapThrottle()
 				<< requests_per_sec << " per second"
 				<< LL_ENDL;
 		}
-		LL_DEBUGS("Materials") << "region '" << getName()
+		/*// _LL_DEBUGS("Materials") << "region '" << getName()
 							   << "' RenderMaterialsCapability " << requests_per_sec
-							   << LL_ENDL;
+							   << LL_ENDL;*/
 	}
 	else
 	{
-		LL_DEBUGS("Materials")
+		/*// _LL_DEBUGS("Materials")
 			<< "region '" << getName()
 			<< "' did not return RenderMaterialsCapability, using default "
 			<< requests_per_sec << " per second"
-			<< LL_ENDL;
+			<< LL_ENDL;*/
 	}
 	
 	mMaterialsCapThrottleTimer.resetWithExpiry( 1.0f / requests_per_sec );

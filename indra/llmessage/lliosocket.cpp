@@ -77,7 +77,7 @@ void ll_debug_socket(const char* msg, apr_socket_t* apr_sock)
 #if LL_DEBUG_SOCKET_FILE_DESCRIPTORS
 	if(!apr_sock)
 	{
-		LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << ": no socket." << LL_ENDL;
+		// _LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << ": no socket." << LL_ENDL;
 		return;
 	}
 	// *TODO: Why doesn't this work?
@@ -85,12 +85,12 @@ void ll_debug_socket(const char* msg, apr_socket_t* apr_sock)
 	int os_sock;
 	if(APR_SUCCESS == apr_os_sock_get(&os_sock, apr_sock))
 	{
-		LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << " on fd " << os_sock
+		// _LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << " on fd " << os_sock
 			<< " at " << apr_sock << LL_ENDL;
 	}
 	else
 	{
-		LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << " no fd "
+		// _LL_DEBUGS("Socket") << "Socket -- " << (msg?msg:"") << " no fd "
 			<< " at " << apr_sock << LL_ENDL;
 	}
 #endif
@@ -172,13 +172,13 @@ LLSocket::ptr_t LLSocket::create(apr_pool_t* pool, EType type, U16 port, const c
 			rv.reset();
 			return rv;
 		}
-		LL_DEBUGS() << "Bound " << ((DATAGRAM_UDP == type) ? "udp" : "tcp")
-				 << " socket to port: " << sa->port << LL_ENDL;
+		/*// _LL_DEBUGS() << "Bound " << ((DATAGRAM_UDP == type) ? "udp" : "tcp")
+				 << " socket to port: " << sa->port << LL_ENDL;*/
 		if(STREAM_TCP == type)
 		{
 			// If it's a stream based socket, we need to tell the OS
 			// to keep a queue of incoming connections for ACCEPT.
-			LL_DEBUGS() << "Setting listen state for socket." << LL_ENDL;
+			// _LL_DEBUGS() << "Setting listen state for socket." << LL_ENDL;
 			status = apr_socket_listen(
 				socket,
 				LL_DEFAULT_LISTEN_BACKLOG);
@@ -297,7 +297,7 @@ LLIOSocketReader::LLIOSocketReader(LLSocket::ptr_t socket) :
 
 LLIOSocketReader::~LLIOSocketReader()
 {
-	//LL_DEBUGS() << "Destroying LLIOSocketReader" << LL_ENDL;
+	//// _LL_DEBUGS() << "Destroying LLIOSocketReader" << LL_ENDL;
 }
 
 static LLTrace::BlockTimerStatHandle FTM_PROCESS_SOCKET_READER("Socket Reader");
@@ -322,8 +322,8 @@ LLIOPipe::EStatus LLIOSocketReader::process_impl(
 		if(pump)
 		{
 			PUMP_DEBUG;
-			LL_DEBUGS() << "Initializing poll descriptor for LLIOSocketReader."
-					 << LL_ENDL;
+			/*// _LL_DEBUGS() << "Initializing poll descriptor for LLIOSocketReader."
+					 << LL_ENDL;*/
 			apr_pollfd_t poll_fd;
 			poll_fd.p = NULL;
 			poll_fd.desc_type = APR_POLL_SOCKET;
@@ -350,7 +350,7 @@ LLIOPipe::EStatus LLIOSocketReader::process_impl(
 		status = apr_socket_recv(mSource->getSocket(), read_buf, &len);
 		buffer->append(channels.out(), (U8*)read_buf, len);
 	} while((APR_SUCCESS == status) && (READ_BUFFER_SIZE == len));
-	LL_DEBUGS() << "socket read status: " << status << LL_ENDL;
+	// _LL_DEBUGS() << "socket read status: " << status << LL_ENDL;
 	LLIOPipe::EStatus rv = STATUS_OK;
 
 	PUMP_DEBUG;
@@ -397,7 +397,7 @@ LLIOSocketWriter::LLIOSocketWriter(LLSocket::ptr_t socket) :
 
 LLIOSocketWriter::~LLIOSocketWriter()
 {
-	//LL_DEBUGS() << "Destroying LLIOSocketWriter" << LL_ENDL;
+	//// _LL_DEBUGS() << "Destroying LLIOSocketWriter" << LL_ENDL;
 }
 
 static LLTrace::BlockTimerStatHandle FTM_PROCESS_SOCKET_WRITER("Socket Writer");
@@ -421,8 +421,8 @@ LLIOPipe::EStatus LLIOSocketWriter::process_impl(
 		if(pump)
 		{
 			PUMP_DEBUG;
-			LL_DEBUGS() << "Initializing poll descriptor for LLIOSocketWriter."
-					 << LL_ENDL;
+			/*// _LL_DEBUGS() << "Initializing poll descriptor for LLIOSocketWriter."
+					 << LL_ENDL;*/
 			apr_pollfd_t poll_fd;
 			poll_fd.p = NULL;
 			poll_fd.desc_type = APR_POLL_SOCKET;
@@ -548,7 +548,7 @@ LLIOServerSocket::LLIOServerSocket(
 
 LLIOServerSocket::~LLIOServerSocket()
 {
-	//LL_DEBUGS() << "Destroying LLIOServerSocket" << LL_ENDL;
+	//// _LL_DEBUGS() << "Destroying LLIOServerSocket" << LL_ENDL;
 }
 
 void LLIOServerSocket::setResponseTimeout(F32 timeout_secs)
@@ -578,8 +578,8 @@ LLIOPipe::EStatus LLIOServerSocket::process_impl(
 		// This segment sets up the pump so that we do not call
 		// process again until we have an incoming read, aka connect()
 		// from a remote host.
-		LL_DEBUGS() << "Initializing poll descriptor for LLIOServerSocket."
-				 << LL_ENDL;
+		/*// _LL_DEBUGS() << "Initializing poll descriptor for LLIOServerSocket."
+				 << LL_ENDL;*/
 		apr_pollfd_t poll_fd;
 		poll_fd.p = NULL;
 		poll_fd.desc_type = APR_POLL_SOCKET;
@@ -594,7 +594,7 @@ LLIOPipe::EStatus LLIOServerSocket::process_impl(
 
 	// we are initialized, and told to process, so we must have a
 	// socket waiting for a connection.
-	LL_DEBUGS() << "accepting socket" << LL_ENDL;
+	// _LL_DEBUGS() << "accepting socket" << LL_ENDL;
 
 	PUMP_DEBUG;
 	apr_pool_t* new_pool = NULL;
@@ -684,7 +684,7 @@ LLIODataSocket::LLIODataSocket(
 	if(ll_apr_warn_status(status)) return;
 	if(sa->port)
 	{
-		LL_DEBUGS() << "Bound datagram socket to port: " << sa->port << LL_ENDL;
+		// _LL_DEBUGS() << "Bound datagram socket to port: " << sa->port << LL_ENDL;
 		mPort = sa->port;
 	}
 	else

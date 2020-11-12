@@ -72,7 +72,7 @@ void LLAgentPilot::load()
 	}
 	else
 	{
-		LL_DEBUGS() << "no autopilot file found" << LL_ENDL;
+		// _LL_DEBUGS() << "no autopilot file found" << LL_ENDL;
 		return;
 	}
 }
@@ -88,8 +88,8 @@ void LLAgentPilot::loadTxt(const std::string& filename)
 
 	if (!file)
 	{
-		LL_DEBUGS() << "Couldn't open " << filename
-			<< ", aborting agentpilot load!" << LL_ENDL;
+		/*// _LL_DEBUGS() << "Couldn't open " << filename
+			<< ", aborting agentpilot load!" << LL_ENDL;*/
 		return;
 	}
 	else
@@ -129,8 +129,8 @@ void LLAgentPilot::loadXML(const std::string& filename)
 
 	if (!file)
 	{
-		LL_DEBUGS() << "Couldn't open " << filename
-			<< ", aborting agentpilot load!" << LL_ENDL;
+		/*// _LL_DEBUGS() << "Couldn't open " << filename
+			<< ", aborting agentpilot load!" << LL_ENDL;*/
 		return;
 	}
 	else

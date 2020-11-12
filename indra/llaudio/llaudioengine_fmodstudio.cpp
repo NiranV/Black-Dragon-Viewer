@@ -79,7 +79,7 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 	U32 version;
 	FMOD_RESULT result;
 
-	LL_DEBUGS("AppInit") << "LLAudioEngine_FMODSTUDIO::init() initializing FMOD" << LL_ENDL;
+	// _LL_DEBUGS("AppInit") << "LLAudioEngine_FMODSTUDIO::init() initializing FMOD" << LL_ENDL;
 
 	result = FMOD::System_Create(&mSystem);
 	if(Check_FMOD_Error(result, "FMOD::System_Create"))
@@ -133,11 +133,11 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 	{
 		if (NULL == getenv("LL_BAD_FMOD_PULSEAUDIO")) /*Flawfinder: ignore*/
 		{
-			LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
+			// _LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
 			if((result = mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO)) == FMOD_OK &&
 				(result = mSystem->init(num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, const_cast<char*>(mAppName.c_str()))) == FMOD_OK)
 			{
-				LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY"	<< LL_ENDL;
+				// _LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY"	<< LL_ENDL;
 				audio_ok = true;
 			}
 			else 
@@ -147,18 +147,18 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 		} 
 		else 
 		{
-			LL_DEBUGS("AppInit") << "PulseAudio audio output SKIPPED" << LL_ENDL;
+			// _LL_DEBUGS("AppInit") << "PulseAudio audio output SKIPPED" << LL_ENDL;
 		}	
 	}
 	if (!audio_ok)
 	{
 		if (NULL == getenv("LL_BAD_FMOD_ALSA"))		/*Flawfinder: ignore*/
 		{
-			LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
+			// _LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
 			if((result = mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA)) == FMOD_OK &&
 			    (result = mSystem->init(num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, 0)) == FMOD_OK)
 			{
-				LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
+				// _LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
 				audio_ok = true;
 			} 
 			else 
@@ -168,7 +168,7 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 		} 
 		else 
 		{
-			LL_DEBUGS("AppInit") << "ALSA audio output SKIPPED" << LL_ENDL;
+			// _LL_DEBUGS("AppInit") << "ALSA audio output SKIPPED" << LL_ENDL;
 		}
 	}
 	if (!audio_ok)
@@ -489,7 +489,7 @@ bool LLAudioChannelFMODSTUDIO::updateBuffer()
 	}
 	else
 	{
-		LL_DEBUGS() << "No source buffer!" << LL_ENDL;
+		// _LL_DEBUGS() << "No source buffer!" << LL_ENDL;
 		return false;
 	}
 

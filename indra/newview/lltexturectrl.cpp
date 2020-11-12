@@ -290,7 +290,7 @@ BOOL LLFloaterTexturePicker::handleDragAndDrop(
 	}
 
 	handled = TRUE;
-	LL_DEBUGS("UserInput") << "dragAndDrop handled by LLFloaterTexturePicker " << getName() << LL_ENDL;
+	// _LL_DEBUGS("UserInput") << "dragAndDrop handled by LLFloaterTexturePicker " << getName() << LL_ENDL;
 
 	return handled;
 }
@@ -1441,9 +1441,9 @@ void LLTextureCtrl::onFloaterCommit(ETexturePickOp op, LLUUID id)
 			else
 			{
 			mImageItemID = floaterp->findItemID(floaterp->getAssetID(), FALSE);
-			LL_DEBUGS() << "mImageItemID: " << mImageItemID << LL_ENDL;
+			// _LL_DEBUGS() << "mImageItemID: " << mImageItemID << LL_ENDL;
 			mImageAssetID = floaterp->getAssetID();
-			LL_DEBUGS() << "mImageAssetID: " << mImageAssetID << LL_ENDL;
+			// _LL_DEBUGS() << "mImageAssetID: " << mImageAssetID << LL_ENDL;
 			}
 
 			if (op == TEXTURE_SELECT && mOnSelectCallback)
@@ -1553,7 +1553,7 @@ BOOL LLTextureCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask,
 	}
 
 	handled = TRUE;
-	LL_DEBUGS("UserInput") << "dragAndDrop handled by LLTextureCtrl " << getName() << LL_ENDL;
+	// _LL_DEBUGS("UserInput") << "dragAndDrop handled by LLTextureCtrl " << getName() << LL_ENDL;
 
 	return handled;
 }

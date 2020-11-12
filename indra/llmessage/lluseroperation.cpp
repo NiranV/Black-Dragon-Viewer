@@ -160,7 +160,7 @@ void LLUserOperationMgr::deleteExpiredOperations()
 		op = (*it).second;
 		if(op && op->isExpired())
 		{
-			LL_DEBUGS() << "expiring: " << (*it).first << LL_ENDL;
+			// _LL_DEBUGS() << "expiring: " << (*it).first << LL_ENDL;
 			op->expire();
 			mUserOperationList.erase(it++);
 			delete op;

@@ -1273,7 +1273,7 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 		++validitems;
 	}
 
-	LL_DEBUGS("Settings") << "Loaded " << validitems << " settings from " << filename << LL_ENDL;
+	// _LL_DEBUGS("Settings") << "Loaded " << validitems << " settings from " << filename << LL_ENDL;
 	return validitems;
 }
 

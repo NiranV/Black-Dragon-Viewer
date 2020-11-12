@@ -108,7 +108,7 @@ const int LL_ERR_NOERR = 0;
 	Messages can be logged to one of four increasing levels of concern,
 	using one of four "streams":
 
-		LL_DEBUGS("StringTag")	- debug messages that are normally suppressed
+		// _LL_DEBUGS("StringTag")	- debug messages that are normally suppressed
 		LL_INFOS("StringTag")	- informational messages that are normal shown
 		LL_WARNS("StringTag")	- warning messages that signal a problem
 		LL_ERRS("StringTag")	- error messages that are major, unrecoverable failures
@@ -168,7 +168,7 @@ const int LL_ERR_NOERR = 0;
 	
 	Lastly, logging is now very efficient in both compiled code and execution
 	when skipped.  There is no need to wrap messages, even debugging ones, in
-	#ifdef _DEBUG constructs.  LL_DEBUGS("StringTag") messages are compiled into all builds,
+	#ifdef _DEBUG constructs.  // _LL_DEBUGS("StringTag") messages are compiled into all builds,
 	even release.  Which means you can use them to help debug even when deployed
 	to a real grid.
 */
@@ -354,7 +354,7 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 // See top of file for common usage.
 /////////////////////////////////
 
-// Instead of using LL_DEBUGS(), LL_INFOS() et al., it may be tempting to
+// Instead of using // _LL_DEBUGS(), LL_INFOS() et al., it may be tempting to
 // directly code the lllog() macro so you can pass in the LLError::ELevel as a
 // variable. DON'T DO IT! The reason is that the first time control passes
 // through lllog(), it initializes a local static LLError::CallSite with that
