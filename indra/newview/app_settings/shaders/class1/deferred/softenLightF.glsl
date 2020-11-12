@@ -198,7 +198,12 @@ void main()
           rd = guessnumfp / ssr_res;
           rdpow2 = rd * rd;
           refdist = (-2.5/(-1.0+pos.z))*(1.0-(norm.z*norm.z))*(screen_res.y * (rdpow2));// / (-depth) ;
-          ref2d = (orig_ref2d + (1.0 - spec.a)*0.25*vec2(0.0)) * refdist;
+#if USE_RAND
+          float rnd2 = rand(vec2(guessnum+rnd, tc.x));
+          ref2d = (orig_ref2d + spec.a*0.25*vec2(rnd2-0.5)) * refdist;
+#else
+          ref2d = (orig_ref2d + spec.a*vec2(0.0)) * refdist;
+#endif
           ref2d += tc.xy; // use as offset from destination
           
           if (ref2d.y < 0.0 || ref2d.y > screen_res.y ||

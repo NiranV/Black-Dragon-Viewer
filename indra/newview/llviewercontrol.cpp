@@ -1189,6 +1189,7 @@ void settings_setup_listeners()
 
 	//BD - Rendering (Main Toggles)
 	gSavedSettings.getControl("RenderScreenSpaceReflections")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
+	gSavedSettings.getControl("RenderSSRRoughness")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
 	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));

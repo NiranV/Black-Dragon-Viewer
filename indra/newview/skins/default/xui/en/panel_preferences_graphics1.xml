@@ -3604,7 +3604,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="608"
+	  height="625"
 	  auto_resize="false"
       visible="false"
 	  name="deferred_layout_panel"
@@ -4561,6 +4561,22 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      left="10"
      name="RenderScreenSpaceReflections"
      top_delta="0"
+     width="115" />
+     <check_box
+     control_name="RenderSSRRoughness"
+     enabled_control="RenderDeferred"
+     height="16"
+     initial_value="true"
+     label="Include Roughness into Reflections"
+     tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option toggles whether Screen Space Reflections should scatter the reflection randomly based on the material roughness (glossiness) or not. This will drastically affect the performance of SSR even with lower SSR Resolution."
+     layout="topleft"
+     left="10"
+     name="RenderSSRRoughness"
+     top_pad="1"
      width="115" />
       <slider
       control_name="RenderSSRResolution"

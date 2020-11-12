@@ -2278,6 +2278,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		//BD - Screen Space Reflections
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("USE_RAND", (bool)gSavedSettings.getBOOL("RenderSSRRoughness") ? "1" : "0");
 		gDeferredSoftenProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
@@ -2328,6 +2329,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 
 		//BD - Screen Space Reflections
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("USE_RAND", (bool)gSavedSettings.getBOOL("RenderSSRRoughness") ? "1" : "0");
 		gDeferredSoftenProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
 
         if (ambient_kill)
@@ -4539,6 +4541,7 @@ BOOL LLViewerShaderMgr::loadShadersSSR(bool success)
 		gDeferredSoftenProgram.mShaderFiles.push_back(make_pair("deferred/softenLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		//BD - Screen Space Reflections
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("USE_RAND", (bool)gSavedSettings.getBOOL("RenderSSRRoughness") ? "1" : "0");
 		gDeferredSoftenProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
 
 		gDeferredSoftenProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
@@ -4589,6 +4592,7 @@ BOOL LLViewerShaderMgr::loadShadersSSR(bool success)
 
 		//BD - Screen Space Reflections
 		gDeferredSoftenProgram.addPermutation("USE_SSR", (bool)gSavedSettings.getBOOL("RenderScreenSpaceReflections") ? "1" : "0");
+		gDeferredSoftenProgram.addPermutation("USE_RAND", (bool)gSavedSettings.getBOOL("RenderSSRRoughness") ? "1" : "0");
 		gDeferredSoftenProgram.addPermutation("USE_ENV_MAP", (bool)gSavedSettings.getBOOL("RenderDeferredEnvironmentMap") ? "1" : "0");
 
 		if (ambient_kill)
