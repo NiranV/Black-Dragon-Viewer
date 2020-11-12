@@ -438,6 +438,11 @@ void LLFastTimerView::draw()
 		drawBars();
 		drawLineGraph();
 	}
+	else
+	{
+		//BD - Force a color update since it didn't work for some reason.
+		mNeedColorUpdate = true;
+	}
 	printLineStats();
 	LLView::draw();
 
