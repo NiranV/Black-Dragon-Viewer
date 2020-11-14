@@ -173,8 +173,71 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="247"
+     height="312"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Cliff Hofmann as Patreon patron.
+Added: Kodaijin as Patreon patron.
+Added: Num Bing as Patreon patron.
+Added: Trenton Maedor as Patreon patron.
+Added: Allow Depth of Field in Edit mode option to preferences.
+Added: Option to toggle considering roughness in SSR calculations.
+Added: Belec as Patreon Patron.
+Changed: Vastly improved and extended the complexity performance report.
+Changed: Disabled all debug logs.
+Changed: Final performance report verdict to give a rough summary again.
+Changed: Version to 3.9.2.
+Fixed: (POTENTIAL) Move Plugin Read Thread killing further to the front of the shutdown process in an attempt to reduce or fix the times the Viewer stays alive when quitting from login.
+Fixed: Undo fix that fixed the FPS limiter working for anything but Intel GPU's.
+Fixed: Huge VRAM usage difference when touching shadow resolution controls after starting the Viewer. Saves up to 600MB+ depending on shadow resolution.
+Fixed: Depth of Field not working underwater anymore.
+Fixed: Viewer Location buttons being falsely greyed out when they shouldn't and others not being greyed out when they should.
+Fixed: Places - Landmarks scrolling around wildly the first few clicks into the window.
+Fixed: Crash when touching day cycle editor controls after opening it when there hasn't been any active day cycle yet in this session.
+Fixed: Email offline IM's disables itself every time you open and close the preferences window from the login screen.
+Fixed: Turn off OpenAL usage, we have FmodStudio, also i think this breaks streams.
+Fixed: Case where fasttimers view would stay empty because the colors weren't generated the first time opening.
+Misc: Put an end to annoying one-liners.
+Misc: Move FPS Limiter option to Black Dragon settings now that its officially gone.
+Misc: As per Drake's suggestion, turn off this evil debugLoggingEnabled call.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="247"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
