@@ -469,9 +469,27 @@ void BDFloaterComplexity::calcARC()
 
 	final_red /= 11.f;
 	getChild<LLUICtrl>("final_rating")->setColor(LLColor3(final_red, 1.0f - final_red, 0.0f));
-	
+	std::string str;
+	//BD - 90%+ is perfect
+	if (final_red <= 0.1f)
+		str = getString("perfect");
+	//BD - 80% - 90% is still very good
+	else if (final_red <= 0.2f)
+		str = getString("verygood");
+	//BD - 65% - 80% is still good
+	else if (final_red <= 0.35f)
+		str = getString("good");
+	//BD - 35% - 65% is okay
+	else if (final_red <= 0.65f)
+		str = getString("ok");
+	//BD - 20% - 35% is bad
+	else if (final_red <= 0.8f)
+		str = getString("bad");
+	//BD - less than 20% is very bad
+	else
+		str = getString("verybad");
 
-	//getChild<LLUICtrl>("final_verdict")->setTextArg("[VERDICT]", llformat("%s", str.c_str()));
+	getChild<LLUICtrl>("final_verdict")->setTextArg("[VERDICT]", llformat("%s", str.c_str()));
 
 }
 
