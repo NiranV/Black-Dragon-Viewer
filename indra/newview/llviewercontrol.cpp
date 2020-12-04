@@ -912,6 +912,7 @@ static bool handleSSRChanged(const LLSD& newvalue)
 static bool handleGodraysChanged(const LLSD& newvalue)
 {
 	BOOL success = gPipeline.sRenderDeferred;
+	success = LLViewerShaderMgr::instance()->loadShadersDOF(success);
 	return LLViewerShaderMgr::instance()->loadShadersGodrays(success);
 }
 
@@ -1195,7 +1196,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
-	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 //	//BD - Motion Blur
 	gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 //	//BD - Depth of Field
