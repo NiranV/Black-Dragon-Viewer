@@ -161,9 +161,12 @@ bool LLScrollbar::setDocPos(S32 pos, BOOL update_thumb)
 		{
 			updateThumbRect();
 		}
-		return true;
+		//BD
+		//return true;
 	}
-	return false;
+	//BD - Always return true to prevent accidentally letting scrolling fall through
+	//     to other parts of the Viewer (such as the camera).
+	return true;
 }
 
 void LLScrollbar::setDocSize(S32 size)
