@@ -886,7 +886,7 @@ bool LLAppViewerWin32::sendURLToOtherInstance(const std::string& url)
 		cds.cbData = url.length() + 1;
 		cds.lpData = (void*)url.c_str();
 
-		//LRESULT msg_result = SendMessage(other_window, WM_COPYDATA, NULL, (LPARAM)&cds);
+		LRESULT msg_result = SendMessage(other_window, WM_COPYDATA, NULL, (LPARAM)&cds);
 		/*// _LL_DEBUGS() << "SendMessage(WM_COPYDATA) to other window '" 
 				 << getWindowTitle() << "' returned " << msg_result << LL_ENDL;*/
 		return true;
