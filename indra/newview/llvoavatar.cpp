@@ -4591,29 +4591,29 @@ void LLVOAvatar::debugBodySize() const
 
 	// some of the joints have not been cached
 	LLVector3 skull = mSkullp->getPosition();
-    // _LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
+    LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
 	//LLVector3 skull_scale = mSkullp->getScale();
 
 	LLVector3 neck = mNeckp->getPosition();
 	LLVector3 neck_scale = mNeckp->getScale();
-    // _LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
 
 	LLVector3 chest = mChestp->getPosition();
 	LLVector3 chest_scale = mChestp->getScale();
-    // _LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
 
 	// the rest of the joints have been cached
 	LLVector3 head = mHeadp->getPosition();
 	LLVector3 head_scale = mHeadp->getScale();
-    // _LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
 
 	LLVector3 torso = mTorsop->getPosition();
 	LLVector3 torso_scale = mTorsop->getScale();
-    // _LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
 
 	LLVector3 hip = mHipLeftp->getPosition();
 	LLVector3 hip_scale = mHipLeftp->getScale();
-    // _LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
 
 	LLVector3 knee = mKneeLeftp->getPosition();
 	LLVector3 knee_scale = mKneeLeftp->getScale();
@@ -4621,19 +4621,19 @@ void LLVOAvatar::debugBodySize() const
 
 	LLVector3 ankle = mAnkleLeftp->getPosition();
 	LLVector3 ankle_scale = mAnkleLeftp->getScale();
-    // _LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
 
 	LLVector3 foot  = mFootLeftp->getPosition();
-    // _LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
+    LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
 
 	F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
-    // _LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
+    LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
 
 	F32 new_pelvis_to_foot = hip.mV[VZ] * pelvis_scale.mV[VZ] -
         knee.mV[VZ] * hip_scale.mV[VZ] -
         ankle.mV[VZ] * knee_scale.mV[VZ] -
         foot.mV[VZ] * ankle_scale.mV[VZ];
-    // _LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
+    LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
 
 	LLVector3 new_body_size;
 	new_body_size.mV[VZ] = new_pelvis_to_foot +
@@ -4649,7 +4649,7 @@ void LLVOAvatar::debugBodySize() const
 	new_body_size.mV[VX] = DEFAULT_AGENT_DEPTH;
 	new_body_size.mV[VY] = DEFAULT_AGENT_WIDTH;
 
-    // _LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
+    LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
 }
    
 //------------------------------------------------------------------------
@@ -6392,7 +6392,7 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 		return;
 	}
 
-	LLViewerObject *root_object = (LLViewerObject*)vobj->getRoot();
+	//LLViewerObject *root_object = (LLViewerObject*)vobj->getRoot();
     // _LL_DEBUGS("AnimatedObjects") << "trying to add attachment overrides for root object " << root_object->getID() << " prim is " << vobj << LL_ENDL;
 	if (vobj->isMesh() &&
 		((vobj->getVolume() && !vobj->getVolume()->isMeshAssetLoaded()) || !gMeshRepo.meshRezEnabled()))
@@ -7145,13 +7145,13 @@ BOOL LLVOAvatar::setParent(LLViewerObject* parent)
 void LLVOAvatar::addChild(LLViewerObject *childp)
 {
 	childp->extractAttachmentItemID(); // find the inventory item this object is associated with.
-	if (isSelf())
+	/*if (isSelf())
 	{
 	    const LLUUID& item_id = childp->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
-		// _LL_DEBUGS("Avatar") << "ATT attachment child added " << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+		LL_DEBUGS("Avatar") << "ATT attachment child added " << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
 
-	}
+	}*/
 
 	LLViewerObject::addChild(childp);
 	if (childp->mDrawable)
@@ -7228,13 +7228,13 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(LLViewerObject* vi
 //-----------------------------------------------------------------------------
 const LLViewerJointAttachment *LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 {
-	if (isSelf())
+	/*if (isSelf())
 	{
 		const LLUUID& item_id = viewer_object->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
-		/*// _LL_DEBUGS("Avatar") << "ATT attaching object "
-							<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;	*/
-	}
+		LL_DEBUGS("Avatar") << "ATT attaching object "
+							<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+	}*/
 	LLViewerJointAttachment* attachment = getTargetAttachmentPoint(viewer_object);
 
 	if (!attachment || !attachment->addObject(viewer_object))
@@ -7360,13 +7360,13 @@ void LLVOAvatar::lazyAttach()
 		{
 			if (cur_attachment->mDrawable)
 			{
-				if (isSelf())
+				/*if (isSelf())
 				{
 					const LLUUID& item_id = cur_attachment->getAttachmentItemID();
 					LLViewerInventoryItem *item = gInventory.getItem(item_id);
-					/*// _LL_DEBUGS("Avatar") << "ATT attaching object "
-						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
-				}
+					LL_DEBUGS("Avatar") << "ATT attaching object "
+						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
+				}*/
 				if (!attachObject(cur_attachment))
 				{	// Drop it
 					LL_WARNS() << "attachObject() failed for "
@@ -8690,7 +8690,7 @@ void LLVOAvatar::releaseComponentTextures()
 
 void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 {	
-	// _LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
+	LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
 	for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearanceDictionary::getInstance()->getTextures().begin();
 		 iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
 		 ++iter)
@@ -8700,23 +8700,23 @@ void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 		const LLViewerTexture* te_image = getImage(iter->first,0);
 		if( !te_image )
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
 		}
 		else if( te_image->getID().isNull() )
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT )
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT_AVATAR )
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
 		}
 		else
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
 		}
 	}
 }
@@ -9134,7 +9134,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
         // we must prevent rolling this one backwards backwards or processing 
         // stale versions.
 
-        S32 aisCOFVersion(LLAppearanceMgr::instance().getCOFVersion());
+        //S32 aisCOFVersion(LLAppearanceMgr::instance().getCOFVersion());
 
         /*// _LL_DEBUGS("Avatar") << "handling self appearance message #" << thisAppearanceVersion <<
             " (highest seen #" << mLastUpdateReceivedCOFVersion <<
@@ -10118,7 +10118,7 @@ void showRigInfoTabExtents(LLVOAvatar *avatar, LLJointRiggingInfoTab& tab, S32& 
         if (tab[i].isRiggedTo())
         {
             count_rigged++;
-            LLJoint *joint = avatar->getJoint(i);
+            //LLJoint *joint = avatar->getJoint(i);
             /*// _LL_DEBUGS("RigSpam") << "joint " << i << " name " << joint->getName() << " box " 
                                  << tab[i].getRiggedExtents()[0] << ", " << tab[i].getRiggedExtents()[1] << LL_ENDL;*/
             if ((!tab[i].getRiggedExtents()[0].equals3(zero_vec)) ||
@@ -10340,7 +10340,7 @@ const U32 LLVOAvatar::IMPOSTORS_OFF = 66; /* Must equal the maximum allowed the 
 // static
 void LLVOAvatar::updateImpostorRendering(U32 newMaxNonImpostorsValue)
 {
-	U32  oldmax = sMaxNonImpostors;
+	//U32  oldmax = sMaxNonImpostors;
 	bool oldflg = sUseImpostors;
 	
 	if (IMPOSTORS_OFF <= newMaxNonImpostorsValue)
@@ -10699,7 +10699,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 			 iter != LLAvatarAppearanceDictionary::getInstance()->getTextures().end();
 				 ++iter)
 			{
-			    const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
+			    //const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
 				// TODO: MULTI-WEARABLE: handle multiple textures for self
 				const LLViewerTexture* te_image = getImage(iter->first,0);
 				if (!te_image)

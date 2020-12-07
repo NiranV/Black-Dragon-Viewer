@@ -65,7 +65,7 @@ void LLChicletBar::showWellButton(const std::string& well_name, bool visible)
 void LLChicletBar::log(LLView* panel, const std::string& descr)
 {
 	if (NULL == panel) return;
-	LLView* layout = panel->getParent();
+	//LLView* layout = panel->getParent();
 	/*// _LL_DEBUGS("ChicletBarRects") << descr << ": "
 		<< "panel: " << panel->getName()
 		<< ", rect: " << panel->getRect()

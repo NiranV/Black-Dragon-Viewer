@@ -3811,7 +3811,7 @@ void LLAppearanceMgr::updateClothingOrderingInfo(LLUUID cat_id,
 		LLSD updates;
 		const LLUUID& item_id = it->first;
 		const std::string& new_order_str = it->second;
-		LLViewerInventoryItem *item = gInventory.getItem(item_id);
+		//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 		/*// _LL_DEBUGS("Avatar") << item->getName() << " updating desc to: " << new_order_str
 			<< " (was: " << item->getActualDescription() << ")" << LL_ENDL;*/
 		updates["desc"] = new_order_str;
@@ -4525,7 +4525,7 @@ void dumpAttachmentSet(const std::set<LLUUID>& atts, const std::string& msg)
 
 void LLAppearanceMgr::registerAttachment(const LLUUID& item_id)
 {
-	LLViewerInventoryItem *item = gInventory.getItem(item_id);
+	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 	/*// _LL_DEBUGS("Avatar") << "ATT registering attachment "
 						<< (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;*/
 	gInventory.addChangedMask(LLInventoryObserver::LABEL, item_id);
@@ -4537,7 +4537,7 @@ void LLAppearanceMgr::registerAttachment(const LLUUID& item_id)
 
 void LLAppearanceMgr::unregisterAttachment(const LLUUID& item_id)
 {
-	LLViewerInventoryItem *item = gInventory.getItem(item_id);
+	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 	/*// _LL_DEBUGS("Avatar") << "ATT unregistering attachment "
 						<< (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;*/
 	gInventory.addChangedMask(LLInventoryObserver::LABEL, item_id);

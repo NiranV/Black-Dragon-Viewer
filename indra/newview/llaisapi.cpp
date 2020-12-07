@@ -928,7 +928,7 @@ void AISUpdate::doUpdate()
 		if (cat)
 		{
 			S32 descendent_delta = catit->second;
-			S32 old_count = cat->getDescendentCount();
+			//S32 old_count = cat->getDescendentCount();
 			/*// _LL_DEBUGS("Inventory") << "Updating descendant count for "
 								   << cat->getName() << " " << cat_id
 								   << " with delta " << descendent_delta << " from "

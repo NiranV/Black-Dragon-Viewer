@@ -86,7 +86,7 @@ void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
                                             const BOOL add, const BOOL fRlvForce /*=FALSE*/)
 // [/RLVa:KB]
 {
-	LLViewerInventoryItem *item = gInventory.getItem(item_id);
+	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 
     if (mAttachmentRequests.wasRequestedRecently(item_id))
     {
@@ -134,7 +134,7 @@ void LLAttachmentsMgr::onAttachmentRequested(const LLUUID& item_id)
 		return;
 // [/SL:KB]
 
-	LLViewerInventoryItem *item = gInventory.getItem(item_id);
+	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 	/*// _LL_DEBUGS("Avatar") << "ATT attachment was requested "
 						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
     mAttachmentRequests.addTime(item_id);
@@ -313,7 +313,7 @@ void LLAttachmentsMgr::linkRecentlyArrivedAttachments()
                 !LLAppearanceMgr::instance().isLinkedInCOF(*it))
             {
                 LLUUID item_id = *it;
-                LLViewerInventoryItem *item = gInventory.getItem(item_id);
+                //LLViewerInventoryItem *item = gInventory.getItem(item_id);
                 /*// _LL_DEBUGS("Avatar") << "ATT adding COF link for attachment "
                                     << (item ? item->getName() : "UNKNOWN") << " " << item_id << LL_ENDL;*/
                 ids_to_link.push_back(item_id);
@@ -386,7 +386,7 @@ LLAttachmentsMgr::LLItemRequestTimes::LLItemRequestTimes(const std::string& op_n
 
 void LLAttachmentsMgr::LLItemRequestTimes::addTime(const LLUUID& inv_item_id)
 {
-    LLInventoryItem *item = gInventory.getItem(inv_item_id);
+    //LLInventoryItem *item = gInventory.getItem(inv_item_id);
     // _LL_DEBUGS("Avatar") << "ATT " << mOpName << " adding request time " << (item ? item->getName() : "UNKNOWN") << " " << inv_item_id << LL_ENDL;
 	LLTimer current_time;
 	(*this)[inv_item_id] = current_time;
@@ -394,7 +394,7 @@ void LLAttachmentsMgr::LLItemRequestTimes::addTime(const LLUUID& inv_item_id)
 
 void LLAttachmentsMgr::LLItemRequestTimes::removeTime(const LLUUID& inv_item_id)
 {
-    LLInventoryItem *item = gInventory.getItem(inv_item_id);
+    //LLInventoryItem *item = gInventory.getItem(inv_item_id);
 	S32 remove_count = (*this).erase(inv_item_id);
     if (remove_count)
     {

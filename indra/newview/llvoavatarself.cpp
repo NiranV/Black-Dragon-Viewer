@@ -296,7 +296,7 @@ bool LLVOAvatarSelf::checkStuckAppearance()
 		// _LL_DEBUGS("Avatar") << "checking for stuck appearance" << LL_ENDL;
 		F32 change_time = gAgentWearables.getCOFChangeTime();
 		// _LL_DEBUGS("Avatar") << "change in progress for " << change_time << " seconds" << LL_ENDL;
-		S32 active_hp = LLAppearanceMgr::instance().countActiveHoldingPatterns();
+		//S32 active_hp = LLAppearanceMgr::instance().countActiveHoldingPatterns();
 		// _LL_DEBUGS("Avatar") << "active holding patterns " << active_hp << " seconds" << LL_ENDL;
 		S32 active_copies = LLAppearanceMgr::instance().getActiveCopyOperations();
 		// _LL_DEBUGS("Avatar") << "active copy operations " << active_copies << LL_ENDL;
