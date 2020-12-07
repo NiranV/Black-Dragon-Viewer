@@ -59,7 +59,7 @@ Looking for people to hang out with? Try the [secondlife:///app/worldmap World M
 	<menu_bar
    height="18"
    layout="topleft"
-   follows="top|left|right"
+   follows="top|left"
    bg_color="Black_25"
    bg_visible="false"
    left="6"
