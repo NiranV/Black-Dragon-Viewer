@@ -148,7 +148,7 @@ void LLProgressView::setStartupComplete()
 	mFadeToWorldTimer.start();
 }
 
-void LLProgressView::setVisible(BOOL visible)
+void LLProgressView::setVisible(BOOL visible, BOOL logout)
 {
     if (!visible && mFadeFromLoginTimer.getStarted())
     {
@@ -162,6 +162,11 @@ void LLProgressView::setVisible(BOOL visible)
 	// showing progress view
 	else if (visible && (!getVisible() || mFadeToWorldTimer.getStarted()))
 	{
+		if (logout)
+		{
+			getChild<LLIconCtrl>("loading_bg")->setVisible(false);
+			LLPanel::setBackgroundVisible(true);
+		}
 		setFocus(TRUE);
 		mFadeToWorldTimer.stop();
 		LLPanel::setVisible(TRUE);
@@ -224,6 +229,9 @@ void LLProgressView::draw()
 	//BD
 	F32 alpha;
 
+	//BD
+	setTip();
+
 	if (mFadeFromLoginTimer.getStarted())
 	{
 		//BD
@@ -278,10 +286,6 @@ void LLProgressView::draw()
 		return;
 	}
 
-	//BD
-	setTip();
-
-	// draw children
 	LLPanel::draw();
 }
 

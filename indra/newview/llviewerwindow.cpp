@@ -5338,14 +5338,21 @@ void LLViewerWindow::revealIntroPanel()
 		//BD
 		//mProgressView->revealIntroPanel();
 	}
-}
+	}
 
-void LLViewerWindow::setShowProgress(const BOOL show)
+void LLViewerWindow::setShowProgress(const BOOL show, BOOL logout)
 {
 	if (mProgressView)
 	{
-		// ## Zi: Fade teleport screens
-		mProgressView->fade(show);
+		if (logout)
+		{
+			mProgressView->setVisible(show, logout);
+		}
+		else
+		{
+			// ## Zi: Fade teleport screens
+			mProgressView->fade(show);
+		}
 	}
 }
 

@@ -57,7 +57,7 @@ public:
 
 	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
-	/*virtual*/ void setVisible(BOOL visible);
+	/*virtual*/ void setVisible(BOOL visible, BOOL logout = false);
 
 	void setPercent(const F32 percent);
 

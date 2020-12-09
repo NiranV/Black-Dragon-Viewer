@@ -5269,7 +5269,7 @@ void LLAppViewer::idleShutdown()
 		sendLogoutRequest();
 
 		// Wait for a LogoutReply message
-		gViewerWindow->setShowProgress(TRUE);
+		gViewerWindow->setShowProgress(TRUE, TRUE);
 		gViewerWindow->setProgressPercent(100.f);
 		gViewerWindow->setProgressString(LLTrans::getString("LoggingOut"));
 		return;

@@ -304,7 +304,7 @@ public:
 	BOOL            getCursorHidden() { return mCursorHidden; }
 	void			moveCursorToCenter();								// move to center of window
 													
-	void			setShowProgress(const BOOL show);
+	void			setShowProgress(const BOOL show, BOOL logout = false);
 	BOOL			getShowProgress() const;
 	void			setProgressString(const std::string& string);
 	void			setProgressPercent(const F32 percent);
