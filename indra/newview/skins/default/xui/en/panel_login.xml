@@ -173,8 +173,68 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="312"
+     height="273"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Catalina Staheli as Patreon patron.
+Added: Raia Aurelia as Patreon patron.
+Added: Caitlin as Patreon patron.
+Added: Option to mirror all rotations done to one bone to the opposite side one to the Poser window.
+Added: Option to disable leaving other rotation sliders alone and faking rotation values resulting in wrong default positions to the Poser window.
+Added: Button to refresh the avatar list to the Poser window.
+Changed: Let scrolling not fall through to the camera when we reach the end of a scrolllist.
+Changed: Skip transition of progress screen on logout to hide rendering shutdown (pink world) like in other Viewers.
+Changed: Version to 3.9.3.
+Fixed: Viewer does not open place profiles anymore when an SLURL command is sent to it from the browser.
+Fixed: Toggling Depth of Field while Volumetric Lighting is on can double the glow strength.
+Fixed: Vignette options in Preferences - Display are cut off.
+Fixed: Several compiler warnings about unused code.
+Fixed: People and Inventory menus vanishing under certain conditions when resizing the window.
+Fixed: Object Object Occlusion freaking out and making objects above the surface blink constantly when the camera is below water.
+Fixed: Object Object Occlusion freaking out and making objects pushed below the water surface when the camera is above water blink.
+Fixed: Poser Avatar list never refreshing as intended and being halfway broken most of the time.
+Fixed: Voice call window docking tongue pointing into the wrong direction and being at the top instead of the bottom when the voice button is in the top toolbar.
+Misc: Improved out-commented code and re-enabled debugging code that is actually meant to debug.
+Misc: Comment out unused reveal intro panel code, we don't have one.
+Misc: Fixed more compile warnings.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.2
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="312"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
