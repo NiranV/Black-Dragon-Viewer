@@ -79,6 +79,14 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	//BD - Reset all selected bones scales back to their default.
 	mCommitCallbackRegistrar.add("Joint.ResetJointScale", boost::bind(&BDFloaterPoser::onJointScaleReset, this));
 
+	//BD - Toggle Mirror Mode on/off.
+	mCommitCallbackRegistrar.add("Joint.ToggleMirror", boost::bind(&BDFloaterPoser::toggleMirrorMode, this, _1));
+	//BD - Toggle Easy Rotation on/off.
+	mCommitCallbackRegistrar.add("Joint.EasyRotations", boost::bind(&BDFloaterPoser::toggleEasyRotations, this, _1));
+
+	//BD - Refresh the avatar list.
+	mCommitCallbackRegistrar.add("Poser.RefreshAvatars", boost::bind(&BDFloaterPoser::onAvatarsRefresh, this));
+
 	//BD - Add a new entry to the animation creator.
 	mCommitCallbackRegistrar.add("Anim.Add", boost::bind(&BDFloaterPoser::onAnimAdd, this, _2));
 	//BD - Move the selected entry one row up.
@@ -145,6 +153,9 @@ BOOL BDFloaterPoser::postBuild()
 
 	//BD - Misc
 	mDelayRefresh = false;
+
+	mMirrorMode = false;
+	mEasyRotations = true;
 
 	mStartPosingBtn = getChild<LLButton>("activate");
 	mLoadPosesBtn = getChild<LLMenuButton>("load_poses");
@@ -954,28 +965,91 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	//BD - Rotations are only supported by joints so far, everything
 	//     else snaps back instantly.
 	LLScrollListItem* item = mJointScrolls[JOINTS]->getFirstSelected();
-	if (item)
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			//BD - Neat yet quick and direct way of rotating our bones.
-			//     No more need to include bone rotation orders.
-			F32 val = ctrl->getValue().asReal();
-			S32 axis = param.asInteger();
-			LLScrollListCell* cell[3] = { item->getColumn(COL_ROT_X), item->getColumn(COL_ROT_Y), item->getColumn(COL_ROT_Z) };
-			LLQuaternion rot_quat = joint->getTargetRotation();
-			LLMatrix3 rot_mat;
-			F32 old_value;
-			LLVector3 vec3;
+	if (!item)
+		return;
 
-			old_value = cell[axis]->getValue().asReal();
-			cell[axis]->setValue(ll_round(val, 0.001f));
-			val -= old_value;
-			vec3.mV[axis] = val;
-			rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
-			rot_quat = LLQuaternion(rot_mat)*rot_quat;
-			joint->setTargetRotation(rot_quat);
+	LLJoint* joint = (LLJoint*)item->getUserdata();
+	if (!joint)
+		return;
+
+	//BD - Neat yet quick and direct way of rotating our bones.
+	//     No more need to include bone rotation orders.
+	F32 val = ctrl->getValue().asReal();
+	S32 axis = param.asInteger();
+	LLScrollListCell* cell[3] = { item->getColumn(COL_ROT_X), item->getColumn(COL_ROT_Y), item->getColumn(COL_ROT_Z) };
+	LLQuaternion rot_quat = joint->getTargetRotation();
+	LLMatrix3 rot_mat;
+	F32 old_value;
+	F32 new_value;
+	LLVector3 vec3;
+
+	old_value = cell[axis]->getValue().asReal();
+	cell[axis]->setValue(ll_round(val, 0.001f));
+	new_value = val - old_value;
+	vec3.mV[axis] = new_value;
+	rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+	rot_quat = LLQuaternion(rot_mat)*rot_quat;
+	joint->setTargetRotation(rot_quat);
+	if (!mEasyRotations)
+	{
+		rot_quat.getEulerAngles(&vec3.mV[VX], &vec3.mV[VY], &vec3.mV[VZ]);
+		S32 i = 0;
+		while (i < 3)
+		{
+			if (i != axis)
+			{
+				cell[i]->setValue(ll_round(vec3.mV[i], 0.001f));
+				mRotationSliders[i]->setValue(item->getColumn(i + 2)->getValue());
+			}
+			++i;
+		}
+	}
+	
+	//BD - If we are in Mirror mode, try to find the opposite bone of our currently
+	//     selected one, for now this simply means we take the name and replace "Left"
+	//     with "Right" and vise versa since all bones are conveniently that way.
+	//     TODO: Do this when creating the joint list so we don't try to find the joint
+	//     over and over again.
+	if (mMirrorMode)
+	{
+		LLJoint* mirror_joint = nullptr;
+		std::string mirror_joint_name = joint->getName();
+		S32 idx = joint->getName().find("Left");
+		if (idx != -1)
+			mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+
+		idx = joint->getName().find("Right");
+		if (idx != -1)
+			mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+
+		if (mirror_joint_name != joint->getName())
+		{
+			mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+		}
+
+		if (mirror_joint)
+		{
+			//BD - For the opposite joint we invert X and Z axis, everything else is directly applied
+			//     exactly like we do it in our currently selected joint.
+			if (axis != 1)
+				val = -val;
+
+			LLQuaternion inv_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
+			mirror_joint->setTargetRotation(inv_quat);
+
+			//BD - We also need to find the opposite joint's list entry and change its values to reflect
+			//     the new ones, doing this here is still better than causing a complete refresh.
+			LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+			if (item2)
+			{
+				LLScrollListCell* cell2[3] = { item2->getColumn(COL_ROT_X), item2->getColumn(COL_ROT_Y), item2->getColumn(COL_ROT_Z) };
+				S32 i = 0;
+				while (i < 3)
+				{
+					cell2[i]->setValue(ll_round(item->getColumn(i + 2)->getValue(), 0.001f));
+					++i;
+				}
+			}
 		}
 	}
 }
@@ -1113,6 +1187,48 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 
 						quat.setEulerAngles(0, 0, 0);
 						joint->setTargetRotation(quat);
+
+						//BD - If we are in Mirror mode, try to find the opposite bone of our currently
+						//     selected one, for now this simply means we take the name and replace "Left"
+						//     with "Right" and vise versa since all bones are conveniently that way.
+						//     TODO: Do this when creating the joint list so we don't try to find the joint
+						//     over and over again.
+						if (mMirrorMode)
+						{
+							LLJoint* mirror_joint = nullptr;
+							std::string mirror_joint_name = joint->getName();
+							S32 idx = joint->getName().find("Left");
+							if (idx != -1)
+								mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+
+							idx = joint->getName().find("Right");
+							if (idx != -1)
+								mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+
+							if (mirror_joint_name != joint->getName())
+							{
+								mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+							}
+
+							if (mirror_joint)
+							{
+								//BD - We also need to find the opposite joint's list entry and change its values to reflect
+								//     the new ones, doing this here is still better than causing a complete refresh.
+								LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+								if (item2)
+								{
+									col_rot_x = item2->getColumn(COL_ROT_X);
+									col_rot_y = item2->getColumn(COL_ROT_Y);
+									col_rot_z = item2->getColumn(COL_ROT_Z);
+
+									col_rot_x->setValue(0.000f);
+									col_rot_y->setValue(0.000f);
+									col_rot_z->setValue(0.000f);
+
+									mirror_joint->setTargetRotation(quat);
+								}
+							}
+						}
 					}
 
 					//BD - Resetting positions next.
@@ -1191,6 +1307,48 @@ void BDFloaterPoser::onJointRotationReset()
 
 				quat.setEulerAngles(0, 0, 0);
 				joint->setTargetRotation(quat);
+
+				//BD - If we are in Mirror mode, try to find the opposite bone of our currently
+				//     selected one, for now this simply means we take the name and replace "Left"
+				//     with "Right" and vise versa since all bones are conveniently that way.
+				//     TODO: Do this when creating the joint list so we don't try to find the joint
+				//     over and over again.
+				if (mMirrorMode)
+				{
+					LLJoint* mirror_joint = nullptr;
+					std::string mirror_joint_name = joint->getName();
+					S32 idx = joint->getName().find("Left");
+					if (idx != -1)
+						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+
+					idx = joint->getName().find("Right");
+					if (idx != -1)
+						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+
+					if (mirror_joint_name != joint->getName())
+					{
+						mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+					}
+
+					if (mirror_joint)
+					{
+						//BD - We also need to find the opposite joint's list entry and change its values to reflect
+						//     the new ones, doing this here is still better than causing a complete refresh.
+						LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+						if (item2)
+						{
+							col_x = item2->getColumn(COL_ROT_X);
+							col_y = item2->getColumn(COL_ROT_Y);
+							col_z = item2->getColumn(COL_ROT_Z);
+
+							col_x->setValue(0.000f);
+							col_y->setValue(0.000f);
+							col_z->setValue(0.000f);
+
+							mirror_joint->setTargetRotation(quat);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -2070,60 +2228,75 @@ void BDFloaterPoser::onAvatarsSelect()
 
 void BDFloaterPoser::onAvatarsRefresh()
 {
-	bool skip_creation = false;
 	//BD - Flag all items first, we're going to unflag them when they are valid.
-	for (auto item : mAvatarScroll->getAllData())
+	for (LLScrollListItem* item : mAvatarScroll->getAllData())
 	{
 		if (item)
 		{
-			//BD - Automatically flag all animesh, they might have vanished.
-			//     Our own avatar is never flagged, it does not need to be removed as it remains
-			//     valid throughout an entire session once created.
-			if (item->getColumn(3)->getValue().asBoolean())
-			{
-				item->setFlagged(TRUE);
-			}
-			else
-			{
-				skip_creation = true;
-			}
-		}
-	}
-
-	//BD - Add our own avatar first at all times, only if we haven't already.
-	if (!skip_creation)
-	{
-		for (auto character : LLCharacter::sInstances)
-		{
-			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
-			if (avatar && avatar->isSelf())
-			{
-				LLSD own_row;
-				LLAvatarName av_name;
-				LLAvatarNameCache::get(avatar->getID(), &av_name);
-				own_row["columns"][0]["column"] = "icon";
-				own_row["columns"][0]["type"] = "icon";
-				own_row["columns"][0]["value"] = getString("icon_category");
-				own_row["columns"][1]["column"] = "name";
-				own_row["columns"][1]["value"] = av_name.getDisplayName();
-				own_row["columns"][2]["column"] = "uuid";
-				own_row["columns"][2]["value"] = avatar->getID();
-				own_row["columns"][3]["column"] = "control_avatar";
-				own_row["columns"][3]["value"] = false;
-				LLScrollListItem* item = mAvatarScroll->addElement(own_row);
-				item->setUserdata(avatar);
-
-				//BD - We're just here to find ourselves, break out immediately when we are done.
-				break;
-			}
+			item->setFlagged(TRUE);
 		}
 	}
 
 	bool create_new = true;
+	for (LLCharacter* character : LLCharacter::sInstances)
+	{
+		create_new = true;
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
+		if (avatar && !avatar->isControlAvatar()
+			&& avatar->isSelf())
+		{
+			LLUUID uuid = avatar->getID();
+			for (LLScrollListItem* item : mAvatarScroll->getAllData())
+			{
+				if (avatar == item->getUserdata())
+				{
+					item->setFlagged(FALSE);
+					//BD - When we refresh it might happen that we don't have a name for someone
+					//     yet, when this happens the list entry won't be purged and rebuild as
+					//     it will be updated with this part, so we have to update the name in
+					//     case it was still being resolved last time we refreshed and created the
+					//     initial list entry. This prevents the name from missing forever.
+					if (item->getColumn(1)->getValue().asString().empty())
+					{
+						LLAvatarName av_name;
+						LLAvatarNameCache::get(uuid, &av_name);
+						item->getColumn(1)->setValue(av_name.getDisplayName());
+					}
+
+					create_new = false;
+					break;
+				}
+			}
+
+			if (create_new)
+			{
+				LLAvatarName av_name;
+				LLAvatarNameCache::get(uuid, &av_name);
+
+				LLSD row;
+				row["columns"][0]["column"] = "icon";
+				row["columns"][0]["type"] = "icon";
+				row["columns"][0]["value"] = getString("icon_category");
+				row["columns"][1]["column"] = "name";
+				row["columns"][1]["value"] = av_name.getDisplayName();
+				row["columns"][2]["column"] = "uuid";
+				row["columns"][2]["value"] = avatar->getID();
+				row["columns"][3]["column"] = "control_avatar";
+				row["columns"][3]["value"] = false;
+				LLScrollListItem* item = mAvatarScroll->addElement(row);
+				item->setUserdata(avatar);
+
+				//BD - We're just here to find ourselves, break out immediately when we are done.
+				//break;
+			}
+		}
+	}
+
 	//BD - Animesh Support
 	//     Search through all control avatars.
 	for (auto character : LLControlAvatar::sInstances)
 	{
+		create_new = true;
 		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
 		if (avatar && !avatar->isDead() && (avatar->getRegion() == gAgent.getRegion()))
 		{
@@ -2161,10 +2334,12 @@ void BDFloaterPoser::onAvatarsRefresh()
 		}
 	}
 
-	//BD - Clear our list of invalid items.
+	//BD - Now safely delete all items so we can start adding the missing ones.
 	mAvatarScroll->deleteFlaggedItems();
-}
 
+	//BD - Make sure we don't have a scrollbar unless we need it.
+	mAvatarScroll->updateLayout();
+}
 
 
 ////////////////////////////////

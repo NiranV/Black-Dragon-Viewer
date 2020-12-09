@@ -110,7 +110,7 @@ width="678">
 			width="163">
 				<icon
 				follows="top|left"
-				height="403"
+				height="300"
 				color="1 1 1 1"
 				image_name="Panel_Background"
 				layout="topleft"
@@ -123,13 +123,13 @@ width="678">
 				<scroll_list
 				column_padding="0"
 				draw_heading="true"
-				height="402"
+				height="279"
 				enable_sort="false"
 				follows="left|top|right"
 				layout="topleft"
 				left="1"
 				tool_tip="Select the targeted avatar or animesh."
-				width="153"
+				width="154"
 				multi_select="false"
 				name="avatar_scroll"
 				top="20">
@@ -146,6 +146,60 @@ width="678">
 				name="uuid"
 				relative_width="0.0"  />
 				</scroll_list>
+				<button
+				height="21"
+				follows="top|left"
+				layout="topleft"
+				label="Refresh Avatars"
+				image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+				name="refresh"
+				width="151"
+				top_pad="-1"
+				left="2">
+				<button.commit_callback
+				function="Poser.RefreshAvatars"/>
+				</button>
+				
+				<icon
+				follows="top|left"
+				height="100"
+				color="1 1 1 1"
+				image_name="Panel_Background"
+				layout="topleft"
+				name="vicon"
+				mouse_opaque="false"
+				visible="true"
+				width="155"
+				top_pad="4"
+				left="0"/>
+				<check_box
+				height="16"
+				initial_value="false"
+				label="Mirror Changes"
+				tool_tip="This option toggles whether all changes to rotations should be mirrored to the opposide side's bone as well. Left Arm will mirror to Right Arm and so on."
+				layout="topleft"
+				left="5"
+				name="Mirror"
+				top_delta="5"
+				width="115">
+				<check_box.commit_callback
+                    function="Joint.ToggleMirror"/>
+				</check_box>
+				<check_box
+				height="16"
+				initial_value="true"
+				label="Easy Rotations"
+				tool_tip="This option toggles whether the poser should display and use simplified rotation axis. This essentially means that when moving any axis, all other axis stay untouched, this can bring the rotations out of place so that 0 0 0 no longer is the default resting position depending on in which order bones were moved. Disabling this option will allow the other axis to be dynamically changed to represent the actual rotations which means sliders you are not touching will change with the slider you are currently moving. This is disabled by default as it may look confusing to the user. It is highly recommended that if you use this you start zeroing out Z then Y and lastly X in this order, otherwise you will not be able to zero out all axis unless you reset the bone rotation."
+				layout="topleft"
+				left="5"
+				name="EasyRotations"
+				top_pad="1"
+				width="115">
+				<check_box.commit_callback
+                    function="Joint.EasyRotations"/>
+				</check_box>
 			</panel>
 		</layout_panel>
 		<layout_panel
@@ -421,7 +475,7 @@ width="678">
 				button_flash_enable="true"
 				flash_color="0.7 0.7 1 1"
 				button_flash_count="64"
- button_flash_rate="0.5"
+				button_flash_rate="0.5"
 				name="activate"
 				width="100"
 				top_pad="-1"

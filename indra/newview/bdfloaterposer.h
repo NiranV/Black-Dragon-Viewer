@@ -176,6 +176,10 @@ private:
 	//BD - Misc
 	void onUpdateLayout();
 
+	//BD - Mirror Bone
+	void toggleMirrorMode(LLUICtrl* ctrl) { mMirrorMode = ctrl->getValue().asBoolean(); }
+	void toggleEasyRotations(LLUICtrl* ctrl) { mEasyRotations = ctrl->getValue().asBoolean(); }
+
 	//BD - Animesh
 	void onAvatarsRefresh();
 	void onAvatarsSelect();
@@ -206,6 +210,10 @@ private:
 
 	//BD - Misc
 	bool									mDelayRefresh;
+	bool									mEasyRotations;
+	
+	//BD - Mirror Bone
+	bool									mMirrorMode;
 
 	//BD - Animesh
 	LLScrollListCtrl*						mAvatarScroll;
