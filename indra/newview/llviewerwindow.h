@@ -311,7 +311,8 @@ public:
 	void			setProgressMessage(const std::string& msg);
 	void			setProgressCancelButtonVisible( BOOL b, const std::string& label = LLStringUtil::null );
 	LLProgressView *getProgressView() const;
-	void			revealIntroPanel();
+	//BD
+	//void			revealIntroPanel();
 	void			setStartupComplete();
 
 	void			updateObjectUnderCursor();

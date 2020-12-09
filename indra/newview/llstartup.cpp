@@ -1022,7 +1022,7 @@ bool idle_startup()
 		gViewerWindow->setShowProgress(TRUE);
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, LLTrans::getString("Quit"));
 
-		gViewerWindow->revealIntroPanel();
+		//gViewerWindow->revealIntroPanel();
 
 		// Poke the VFS, which could potentially block for a while if
 		// Windows XP is acting up

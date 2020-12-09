@@ -5331,14 +5331,14 @@ void LLViewerWindow::setup3DViewport(S32 x_offset, S32 y_offset)
 	glViewport(gGLViewport[0], gGLViewport[1], gGLViewport[2], gGLViewport[3]);
 }
 
-void LLViewerWindow::revealIntroPanel()
+//BD
+/*void LLViewerWindow::revealIntroPanel()
 {
 	if (mProgressView)
 	{
-		//BD
-		//mProgressView->revealIntroPanel();
+		mProgressView->revealIntroPanel();
 	}
-	}
+}*/
 
 void LLViewerWindow::setShowProgress(const BOOL show, BOOL logout)
 {
