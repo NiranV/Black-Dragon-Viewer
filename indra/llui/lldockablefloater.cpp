@@ -249,6 +249,10 @@ const LLUIImagePtr& LLDockableFloater::getDockTongue(LLDockControl::DocAt dock_s
 	case LLDockControl::RIGHT:
 		mDockTongue = LLUI::getUIImage("Flyout_Right");
 		break;
+	//BD
+	case LLDockControl::BOTTOM:
+		mDockTongue = LLUI::getUIImage("Flyout_Bottom");
+		break;
 	default:
 		mDockTongue = LLUI::getUIImage("Flyout_Pointer");
 		break;
