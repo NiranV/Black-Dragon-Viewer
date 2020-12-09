@@ -57,7 +57,9 @@ public:
 
 	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
-	/*virtual*/ void setVisible(BOOL visible, BOOL logout = false);
+
+	//BD
+	void setProgressVisible(BOOL visible, BOOL logout = false);
 
 	void setPercent(const F32 percent);
 
@@ -68,7 +70,7 @@ public:
 	void setMessage(const std::string& string);
 	
 	// turns on (under certain circumstances) the into video after login
-	void revealIntroPanel();
+	//void revealIntroPanel();
 
 	void fade(BOOL in);		// ## Zi: Fade teleport screens
 

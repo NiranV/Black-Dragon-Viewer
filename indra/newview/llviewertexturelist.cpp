@@ -1250,7 +1250,7 @@ void LLViewerTextureList::decodeAllImages(F32 max_time)
 	}
 	max_time -= timer.getElapsedTimeF32();
 	max_time = llmax(max_time, .001f);
-	F32 create_time = updateImagesCreateTextures(max_time);
+	/*F32 create_time = */updateImagesCreateTextures(max_time);
 	
 	/*// _LL_DEBUGS("ViewerImages") << "decodeAllImages() took " << timer.getElapsedTimeF32() << " seconds. " 
 	<< " fetch_pending " << fetch_pending

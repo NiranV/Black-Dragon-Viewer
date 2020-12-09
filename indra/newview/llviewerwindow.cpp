@@ -5346,7 +5346,7 @@ void LLViewerWindow::setShowProgress(const BOOL show, BOOL logout)
 	{
 		if (logout)
 		{
-			mProgressView->setVisible(show, logout);
+			mProgressView->setProgressVisible(show, logout);
 		}
 		else
 		{

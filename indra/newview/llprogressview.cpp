@@ -148,7 +148,7 @@ void LLProgressView::setStartupComplete()
 	mFadeToWorldTimer.start();
 }
 
-void LLProgressView::setVisible(BOOL visible, BOOL logout)
+void LLProgressView::setProgressVisible(BOOL visible, BOOL logout)
 {
     if (!visible && mFadeFromLoginTimer.getStarted())
     {
