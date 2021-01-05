@@ -2678,6 +2678,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gVolumetricLightProgram.addPermutation("GODRAYS_FADE", (bool)gSavedSettings.getBOOL("RenderGodraysDirectional") ? "1" : "0");
 		gVolumetricLightProgram.addPermutation("HAS_NO_DOF", (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? "0" : "1");
+		gVolumetricLightProgram.mFeatures.hasAtmospherics = true;
 		gVolumetricLightProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 		success = gVolumetricLightProgram.createShader(NULL, NULL);
 	}
@@ -4484,6 +4485,7 @@ BOOL LLViewerShaderMgr::loadShadersGodrays(bool success)
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER_ARB));
 		gVolumetricLightProgram.addPermutation("GODRAYS_FADE", (bool)gSavedSettings.getBOOL("RenderGodraysDirectional") ? "1" : "0");
 		gVolumetricLightProgram.addPermutation("HAS_NO_DOF", (bool)gSavedSettings.getBOOL("RenderDepthOfField") ? "0" : "1");
+		gVolumetricLightProgram.mFeatures.hasAtmospherics = true;
 		gVolumetricLightProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 		success = gVolumetricLightProgram.createShader(NULL, NULL);
 	}
