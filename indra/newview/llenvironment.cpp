@@ -1559,6 +1559,9 @@ void LLEnvironment::updateGLVariablesForSettings(LLGLSLShader *shader, const LLS
 {
     LL_RECORD_BLOCK_TIME(FTM_SHADER_PARAM_UPDATE);
 
+	if (!psetting)
+		return;
+
     //_WARNS("RIDER") << "----------------------------------------------------------------" << LL_ENDL;
     LLSettingsBase::parammapping_t params = psetting->getParameterMap();
     for (auto &it: params)
