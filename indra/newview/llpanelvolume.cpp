@@ -301,18 +301,10 @@ void LLPanelVolume::getState( )
 		selection->getRootObjectCount() == 1;
 
 	// Select Single Message
-	if (single_volume)
-	{
-		mEditObject->setVisible(true);
-		mEditObject->setEnabled(true);
-		mSelectSingle->setVisible(false);
-	}
-	else
-	{	
-		mEditObject->setVisible(false);
-		mSelectSingle->setVisible(true);
-		mSelectSingle->setEnabled(true);
-	}
+	mEditObject->setVisible(single_volume);
+	mEditObject->setEnabled(single_volume);
+	mSelectSingle->setVisible(!single_volume);
+	mSelectSingle->setEnabled(!single_volume);
 	
 	// Light properties
 	BOOL is_light = volobjp && volobjp->getIsLight();
@@ -320,43 +312,36 @@ void LLPanelVolume::getState( )
 	mCheckLight->setEnabled(editable && single_volume && volobjp);
 
 	//BD
-	BOOL has_shadow = volobjp && volobjp->getHasShadow();
+	BOOL light_enabled = is_light && editable && single_volume;
+	BOOL projector_enabled = is_light && volobjp->getLightTextureID().notNull();
+	BOOL has_shadow = projector_enabled && volobjp->getHasShadow();
 	mCheckShadow->setValue(has_shadow);
-	mCheckShadow->setEnabled(/*editable && single_volume &&*/ volobjp && volobjp->getLightTextureID().notNull());
-	
-	if (is_light && editable && single_volume)
+	mCheckShadow->setEnabled(projector_enabled);
+
+	mLightColorSwatch->setEnabled(light_enabled);
+	mLightColorSwatch->setValid(light_enabled);
+	mLightColorSwatch->set(volobjp->getLightSRGBBaseColor());
+
+	mLightTextureCtrl->setEnabled(light_enabled);
+	mLightTextureCtrl->setValid(light_enabled);
+	mLightTextureCtrl->setImageAssetID(volobjp->getLightTextureID());
+
+	//BD
+	mLabelLights->setReadOnly(!light_enabled);
+
+	mLightIntensity->setEnabled(light_enabled);
+	mLightRadius->setEnabled(light_enabled);
+	mLightFalloff->setEnabled(light_enabled);
+
+	mLightFoV->setEnabled(projector_enabled);
+	mLightFocus->setEnabled(projector_enabled);
+	mLightAmbiance->setEnabled(projector_enabled);
+
+	if (light_enabled)
 	{
-		LLColorSwatchCtrl* LightColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
-		if(LightColorSwatch)
-		{
-			LightColorSwatch->setEnabled( TRUE );
-			LightColorSwatch->setValid( TRUE );
-			LightColorSwatch->set(volobjp->getLightSRGBBaseColor());
-		}
-
-		mLightTextureCtrl->setEnabled(TRUE);
-		mLightTextureCtrl->setValid(TRUE);
-		mLightTextureCtrl->setImageAssetID(volobjp->getLightTextureID());
-
-		//BD
-		mLabelLights->setReadOnly(false);
-
-		mLightIntensity->setEnabled(true);
-		mLightRadius->setEnabled(true);
-		mLightFalloff->setEnabled(true);
-
-		mLightFoV->setEnabled(true);
-		mLightFocus->setEnabled(true);
-		mLightAmbiance->setEnabled(true);
-		
 		mLightIntensity->setValue(volobjp->getLightIntensity());
 		mLightRadius->setValue(volobjp->getLightRadius());
 		mLightFalloff->setValue(volobjp->getLightFalloff());
-
-		LLVector3 params = volobjp->getSpotLightParams();
-		mLightFoV->setValue(params.mV[0]);
-		mLightFocus->setValue(params.mV[1]);
-		mLightAmbiance->setValue(params.mV[2]);
 
 		mLightSavedColor = volobjp->getLightSRGBBaseColor();
 	}
@@ -365,22 +350,14 @@ void LLPanelVolume::getState( )
 		mLightIntensity->clear();
 		mLightRadius->clear();
 		mLightFalloff->clear();
+	}
 
-		mLightColorSwatch->setEnabled( FALSE );
-		mLightColorSwatch->setValid(FALSE);
-
-		mLightTextureCtrl->setEnabled(FALSE);
-		mLightTextureCtrl->setValid(FALSE);
-		//BD
-		mLabelLights->setReadOnly(true);
-
-		mLightIntensity->setEnabled(false);
-		mLightRadius->setEnabled(false);
-		mLightFalloff->setEnabled(false);
-
-		mLightFoV->setEnabled(false);
-		mLightFocus->setEnabled(false);
-		mLightAmbiance->setEnabled(false);
+	if (projector_enabled)
+	{
+		LLVector3 params = volobjp->getSpotLightParams();
+		mLightFoV->setValue(params.mV[0]);
+		mLightFocus->setValue(params.mV[1]);
+		mLightAmbiance->setValue(params.mV[2]);
 	}
 
     // Animated Mesh
@@ -445,26 +422,19 @@ void LLPanelVolume::getState( )
 	{
 		mCheckFlexible->setEnabled(false);
 	}
-	if (is_flexible && editable && single_volume)
+
+	bool spin_enabled = is_flexible && editable && single_volume;
+	mSpinFlexSections->setEnabled(spin_enabled);
+	mSpinFlexGravity->setEnabled(spin_enabled);
+	mSpinFlexTension->setEnabled(spin_enabled);
+	mSpinFlexFriction->setEnabled(spin_enabled);
+	mSpinFlexWind->setEnabled(spin_enabled);
+	mSpinFlexForceX->setEnabled(spin_enabled);
+	mSpinFlexForceY->setEnabled(spin_enabled);
+	mSpinFlexForceZ->setEnabled(spin_enabled);
+
+	if (spin_enabled)
 	{
-		mSpinFlexSections->setVisible(true);
-		mSpinFlexGravity->setVisible(true);
-		mSpinFlexTension->setVisible(true);
-		mSpinFlexFriction->setVisible(true);
-		mSpinFlexWind->setVisible(true);
-		mSpinFlexForceX->setVisible(true);
-		mSpinFlexForceY->setVisible(true);
-		mSpinFlexForceZ->setVisible(true);
-
-		mSpinFlexSections->setEnabled(true);
-		mSpinFlexGravity->setEnabled(true);
-		mSpinFlexTension->setEnabled(true);
-		mSpinFlexFriction->setEnabled(true);
-		mSpinFlexWind->setEnabled(true);
-		mSpinFlexForceX->setEnabled(true);
-		mSpinFlexForceY->setEnabled(true);
-		mSpinFlexForceZ->setEnabled(true);
-
 		LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
 		
 		mSpinFlexSections->setValue((F32)attributes->getSimulateLOD());
@@ -486,15 +456,6 @@ void LLPanelVolume::getState( )
 		mSpinFlexForceX->clear();
 		mSpinFlexForceY->clear();
 		mSpinFlexForceZ->clear();
-
-		mSpinFlexSections->setEnabled(false);
-		mSpinFlexGravity->setEnabled(false);
-		mSpinFlexTension->setEnabled(false);
-		mSpinFlexFriction->setEnabled(false);
-		mSpinFlexWind->setEnabled(false);
-		mSpinFlexForceX->setEnabled(false);
-		mSpinFlexForceY->setEnabled(false);
-		mSpinFlexForceZ->setEnabled(false);
 	}
 	
 	// Material properties
