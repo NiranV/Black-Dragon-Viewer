@@ -192,30 +192,24 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 		{
 			S32 thumb_half_width = mThumbImage->getWidth()/2;
 			//BD - UI Improvements
-			S32 left_edge = thumb_half_width + mMouseOffset;
-			S32 right_edge = getRect().getWidth() - (thumb_half_width) + mMouseOffset;
-
-			x += mMouseOffset;
-			x = llclamp( x, left_edge, right_edge );
+			S32 left_edge = thumb_half_width;
+			S32 right_edge = getRect().getWidth() - (thumb_half_width);
 
 			F32 t = F32(x - left_edge) / (right_edge - left_edge);
 			//BD - UI Improvements
-			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
+			F32 val = llclamp(t * (mMaxValue - mMinValue) + mMinValue, mMinValue, mMaxValue);
 			if (mInitPos.mV[VX] != x)
 				setValueAndCommit(val);
 		}
 		else // mOrientation == VERTICAL
 		{
 			S32 thumb_half_height = mThumbImage->getHeight()/2;
-			S32 top_edge = thumb_half_height + mMouseOffset;
-			S32 bottom_edge = getRect().getHeight() - (thumb_half_height) + mMouseOffset;
-
-			y += mMouseOffset;
-			y = llclamp(y, top_edge, bottom_edge);
+			S32 top_edge = thumb_half_height;
+			S32 bottom_edge = getRect().getHeight() - (thumb_half_height);
 
 			F32 t = F32(y - top_edge) / (bottom_edge - top_edge);
 			//BD - UI Improvements
-			F32 val = t * (mMaxValue - mMinValue) + mMinValue;
+			F32 val = llclamp(t * (mMaxValue - mMinValue) + mMinValue, mMinValue, mMaxValue);
 			if (mInitPos.mV[VX] != y)
 				setValueAndCommit(val);
 		}
