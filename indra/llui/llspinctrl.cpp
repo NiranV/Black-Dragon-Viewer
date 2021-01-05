@@ -184,6 +184,10 @@ void LLSpinCtrl::onUpBtn( const LLSD& data )
 			{
 				val += (mIncrement * 10);
 			}
+			else if (MASK_CONTROL & mask)
+			{
+				val += (mIncrement / 10);
+			}
 			else
 			{
 				val += mIncrement;
@@ -223,6 +227,10 @@ void LLSpinCtrl::onDownBtn( const LLSD& data )
 			F32 val = cur_val;
 			MASK mask = gKeyboard->currentMask(FALSE);
 			if (MASK_SHIFT & mask)
+			{
+				val -= (mIncrement * 10);
+			}
+			else if (MASK_CONTROL & mask)
 			{
 				val -= (mIncrement / 10);
 			}
