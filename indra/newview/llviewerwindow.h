@@ -532,6 +532,7 @@ public:
 	LLPanel* mNavBarContainer;
 	LLPanel* mMachinimaSidebar;
 	LLPanel* mChicletContainer;
+	LLPanel* mStateManagementContainer;
 
 	LLView* mFloaterSnapRegion;
 

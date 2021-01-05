@@ -2508,7 +2508,6 @@ void LLAgentCamera::changeCameraToDefault()
 	if (gSavedSettings.getBOOL("HideUIControls"))
 	{
 		gViewerWindow->setUIVisibility(false);
-		LLPanelStandStopFlying::getInstance()->setVisible(false);
 	}
 }
 

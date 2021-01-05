@@ -35,6 +35,9 @@
 #include "rlvhandler.h"
 #include "rlvextensions.h"
 
+//BD
+#include "bdstatus.h"
+
 // ============================================================================
 
 // Checked: 2010-02-28 (RLVa-1.4.0a) | Added: RLVa-1.2.0a
@@ -238,11 +241,11 @@ void RlvUIEnabler::onToggleUnsit()
 {
 	bool fEnable = !gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT);
 
-	LLPanelStandStopFlying* pPanelStand = LLPanelStandStopFlying::getInstance();
-	RLV_ASSERT(pPanelStand);
-	if (pPanelStand)
+	//BD
+	RLV_ASSERT(gDragonStatus);
+	if (gDragonStatus)
 	{
-		LLButton* pBtnStand = pPanelStand->findChild<LLButton>("stand_btn");
+		LLButton* pBtnStand = gDragonStatus->findChild<LLButton>("sitting_btn");
 		RLV_ASSERT(pBtnStand);
 		if (pBtnStand)
 			pBtnStand->setEnabled(fEnable);

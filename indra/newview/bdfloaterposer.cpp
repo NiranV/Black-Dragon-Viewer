@@ -40,6 +40,7 @@
 #include "bdanimator.h"
 #include "bdfunctions.h"
 #include "bdposingmotion.h"
+#include "bdstatus.h"
 
 
 BDFloaterPoser::BDFloaterPoser(const LLSD& key)
@@ -525,6 +526,7 @@ void BDFloaterPoser::onPoseStart()
 		if (avatar->isSelf())
 		{
 			gAgent.stopFidget();
+			gDragonStatus->setPosing(true);
 		}
 		avatar->startMotion(ANIM_BD_POSING_MOTION);
 	}
@@ -536,6 +538,11 @@ void BDFloaterPoser::onPoseStart()
 		//BD - Clear posing when we're done now that we've safely endangered getting spaghetified.
 		avatar->clearPosing();
 		avatar->stopMotion(ANIM_BD_POSING_MOTION);
+
+		if (avatar->isSelf())
+		{
+			gDragonStatus->setPosing(false);
+		}
 	}
 	//BD - Wipe the joint list.
 	onJointRefresh();

@@ -218,6 +218,7 @@
 //BD
 #include "bdsidebar.h"
 #include "bdfunctions.h"
+#include "bdstatus.h"
 
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
@@ -1809,6 +1810,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	mNavBarContainer(NULL),
 	mMachinimaSidebar(NULL),
 	mChicletContainer(NULL),
+	mStateManagementContainer(NULL),
 	mFloaterSnapRegion(NULL)
 {
 	// gKeyboard is still NULL, so it doesn't do LLWindowListener any good to
@@ -2219,6 +2221,18 @@ void LLViewerWindow::initWorldUI()
 		mNavBarContainer->setVisible(TRUE);
 	}
 
+	//BD
+	if (!mStateManagementContainer)
+		mStateManagementContainer = gToolBarView->getChild<LLPanel>("state_management_buttons_container");
+
+	if (mStateManagementContainer)
+	{
+		gDragonStatus = new BDStatus(mStateManagementContainer->getLocalRect());
+		gDragonStatus->setShape(mStateManagementContainer->getLocalRect());
+		mStateManagementContainer->addChild(gDragonStatus);
+		mStateManagementContainer->setVisible(TRUE);
+	}
+
 	if ( gHUDView == NULL )
 	{
 		LLRect hud_rect = full_window;
@@ -2231,13 +2245,6 @@ void LLViewerWindow::initWorldUI()
 		getRootView()->addChild(gHUDView);
 		getRootView()->sendChildToBack(gHUDView);
 	}
-
-	LLPanel* panel_ssf_container = getRootView()->getChild<LLPanel>("state_management_buttons_container");
-
-	LLPanelStandStopFlying* panel_stand_stop_flying	= LLPanelStandStopFlying::getInstance();
-	panel_ssf_container->addChild(panel_stand_stop_flying);
-
-	panel_ssf_container->setVisible(TRUE);
 
 	LLMenuOptionPathfindingRebakeNavmesh::getInstance()->initialize();
 

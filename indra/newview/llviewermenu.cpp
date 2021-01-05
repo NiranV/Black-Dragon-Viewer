@@ -4549,7 +4549,6 @@ class LLViewToggleUI : public view_listener_t
 		if (option == 0) // OK
 		{
 			gViewerWindow->setUIVisibility(gSavedSettings.getBOOL("HideUIControls"));
-			LLPanelStandStopFlying::getInstance()->setVisible(gSavedSettings.getBOOL("HideUIControls"));
 			gSavedSettings.setBOOL("HideUIControls",!gSavedSettings.getBOOL("HideUIControls"));
 		}
 	}

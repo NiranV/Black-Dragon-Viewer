@@ -104,6 +104,7 @@
 //BD
 #include "lltoolfocus.h"
 #include "bdsidebar.h"
+#include "bdstatus.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -855,6 +856,9 @@ void LLAgent::setFlying(BOOL fly, BOOL fail_sound)
 	// Update Movement Controls according to Fly mode
 	LLFloaterMove::setFlyingMode(fly);
 
+	//BD
+	gDragonStatus->setFlying(fly);
+
 	mbFlagsDirty = TRUE;
 }
 
@@ -910,6 +914,9 @@ void LLAgent::standUp()
 	if ( (!rlv_handler_t::isEnabled()) || (RlvActions::canStand()) )
 	{
 		setControlFlags(AGENT_CONTROL_STAND_UP);
+
+		//BD
+		gDragonStatus->setSitting(false);
 	}
 // [/RLVa:KB]
 }
@@ -1266,6 +1273,9 @@ void LLAgent::sitDown()
 // [/RLVa:KB]
 
 	setControlFlags(AGENT_CONTROL_SIT_ON_GROUND);
+
+	//BD
+	gDragonStatus->setSitting(true);
 }
 
 
@@ -2182,8 +2192,6 @@ void LLAgent::endAnimationUpdateUI()
 
 		LLChicletBar::getInstance()->setVisible(TRUE);
 
-		LLPanelStandStopFlying::getInstance()->setVisible(TRUE);
-
 		LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
 
 		LLFloaterCamera::onLeavingMouseLook();
@@ -2307,8 +2315,6 @@ void LLAgent::endAnimationUpdateUI()
 			gSideBar->setVisibleForMouselook(false);
 
 			LLChicletBar::getInstance()->setVisible(FALSE);
-
-			LLPanelStandStopFlying::getInstance()->setVisible(FALSE);
 
 			// clear out camera lag effect
 			gAgentCamera.clearCameraLag();
@@ -3308,6 +3314,9 @@ void LLAgent::sendWalkRun()
 		msgsys->addBOOLFast(_PREHASH_AlwaysRun, BOOL(getRunning()) );
 // [/RLVa:KB]
 		sendReliableMessage();
+
+		//BD
+		gDragonStatus->setRunning(getRunning());
 	}
 }
 

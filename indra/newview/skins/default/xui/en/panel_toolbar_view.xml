@@ -166,7 +166,7 @@ visible="true">
 									<panel
 									bottom="100"
 									follows="left|right|bottom"
-									height="25"
+									height="23"
 									left="0"
 									mouse_opaque="false"
 									tab_stop="false"

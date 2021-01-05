@@ -143,6 +143,17 @@ BOOL LLFloaterMove::postBuild()
 
 	initMovementMode();
 
+	//BD
+	mStandButton = getChild<LLButton>("stand_btn");
+	mStopFlyingButton = getChild<LLButton>("stop_fly_btn");
+
+	mStandButton->setCommitCallback(boost::bind(&LLFloaterMove::onStandButtonClick, this));
+	mStandButton->setCommitCallback(boost::bind(&LLFloaterMove::enableInstance));
+	mStopFlyingButton->setCommitCallback(boost::bind(&LLFloaterMove::onStopFlyingButtonClick, this));
+
+	mStandButton->setVisible(FALSE);
+	mStopFlyingButton->setVisible(FALSE);
+
 //	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateFlyingStatus);
 // [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
 	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateMovementStatus);
@@ -160,21 +171,6 @@ void LLFloaterMove::setVisible(BOOL visible)
 	{
 		LLFloater::setVisible(visible);
 		return;
-	}
-
-	if (visible)
-	{
-		LLFirstUse::notMoving(false);
-		// Attach the Stand/Stop Flying panel.
-		LLPanelStandStopFlying* ssf_panel = LLPanelStandStopFlying::getInstance();
-		ssf_panel->reparent(this);
-		const LLRect& mode_actions_rect = mModeActionsPanel->getRect();
-		ssf_panel->setOrigin(mode_actions_rect.mLeft, mode_actions_rect.mBottom);
-	}
-	else
-	{
-		// Detach the Stand/Stop Flying panel.
-		LLPanelStandStopFlying::getInstance()->reparent(NULL);
 	}
 
 	LLFloater::setVisible(visible);
@@ -208,14 +204,15 @@ void LLFloaterMove::setFlyingMode(BOOL fly)
 			&& (!avatar_object->isDead())
 			&& avatar_object->isSitting();
 		instance->showModeButtons(!fly && !is_sitting);
-	}
-	if (fly)
-	{
-		LLPanelStandStopFlying::setStandStopFlyingMode(LLPanelStandStopFlying::SSFM_STOP_FLYING);
-	}
-	else
-	{
-		LLPanelStandStopFlying::clearStandStopFlyingMode(LLPanelStandStopFlying::SSFM_STOP_FLYING);
+
+		if (fly)
+		{
+			instance->setStandStopFlyingMode(SSFM_STOP_FLYING);
+		}
+		else
+		{
+			instance->clearStandStopFlyingMode(SSFM_STOP_FLYING);
+		}
 	}
 }
 //static
@@ -244,18 +241,22 @@ void LLFloaterMove::setAlwaysRunModeImpl(bool run)
 //static
 void LLFloaterMove::setSittingMode(BOOL bSitting)
 {
-	if (bSitting)
+	LLFloaterMove* instance = LLFloaterReg::findTypedInstance<LLFloaterMove>("moveview");
+	if (instance)
 	{
-		LLPanelStandStopFlying::setStandStopFlyingMode(LLPanelStandStopFlying::SSFM_STAND);
-	}
-	else
-	{
-		LLPanelStandStopFlying::clearStandStopFlyingMode(LLPanelStandStopFlying::SSFM_STAND);
-
-		// show "Stop Flying" button if needed. EXT-871
-		if (gAgent.getFlying())
+		if (bSitting)
 		{
-			LLPanelStandStopFlying::setStandStopFlyingMode(LLPanelStandStopFlying::SSFM_STOP_FLYING);
+			instance->setStandStopFlyingMode(SSFM_STAND);
+		}
+		else
+		{
+			instance->clearStandStopFlyingMode(SSFM_STAND);
+
+			// show "Stop Flying" button if needed. EXT-871
+			if (gAgent.getFlying())
+			{
+				instance->setStandStopFlyingMode(SSFM_STOP_FLYING);
+			}
 		}
 	}
 	enableInstance();
@@ -534,56 +535,29 @@ void LLFloaterMove::setModeButtonToggleState(const EMovementMode mode)
 	mModeControlButtonMap[mode]->setToggleState(TRUE);
 }
 
-
-
-/************************************************************************/
-/*                        LLPanelStandStopFlying                        */
-/************************************************************************/
-LLPanelStandStopFlying::LLPanelStandStopFlying() :
-	mStandButton(NULL),
-	mStopFlyingButton(NULL),
-	mAttached(false)
-{
-	// make sure we have the only instance of this class
-	static bool b = true;
-	llassert_always(b);
-	b=false;
-}
-
-// static
-LLPanelStandStopFlying* LLPanelStandStopFlying::getInstance()
-{
-	static LLPanelStandStopFlying* panel = getStandStopFlyingPanel();
-	return panel;
-}
-
 //static
-void LLPanelStandStopFlying::setStandStopFlyingMode(EStandStopFlyingMode mode)
+void LLFloaterMove::setStandStopFlyingMode(EStandStopFlyingMode mode)
 {
-	LLPanelStandStopFlying* panel = getInstance();
-
 	if (mode == SSFM_STAND)
 	{
 		LLFirstUse::sit();
 		LLFirstUse::notMoving(false);
 	}
-	panel->mStandButton->setVisible(SSFM_STAND == mode);
-	panel->mStopFlyingButton->setVisible(SSFM_STOP_FLYING == mode);
+	mStandButton->setVisible(SSFM_STAND == mode);
+	mStopFlyingButton->setVisible(SSFM_STOP_FLYING == mode);
 
-	//visibility of it should be updated after updating visibility of the buttons
-	panel->setVisible(TRUE);
 }
 
+
 //static
-void LLPanelStandStopFlying::clearStandStopFlyingMode(EStandStopFlyingMode mode)
+void LLFloaterMove::clearStandStopFlyingMode(EStandStopFlyingMode mode)
 {
-	LLPanelStandStopFlying* panel = getInstance();
 	switch(mode) {
 	case SSFM_STAND:
-		panel->mStandButton->setVisible(FALSE);
+		mStandButton->setVisible(FALSE);
 		break;
 	case SSFM_STOP_FLYING:
-		panel->mStopFlyingButton->setVisible(FALSE);
+		mStopFlyingButton->setVisible(FALSE);
 		break;
 	default:
 		LL_ERRS() << "Unexpected EStandStopFlyingMode is passed: " << mode << LL_ENDL;
@@ -591,125 +565,7 @@ void LLPanelStandStopFlying::clearStandStopFlyingMode(EStandStopFlyingMode mode)
 
 }
 
-BOOL LLPanelStandStopFlying::postBuild()
-{
-	mStandButton = getChild<LLButton>("stand_btn");
-	mStandButton->setCommitCallback(boost::bind(&LLPanelStandStopFlying::onStandButtonClick, this));
-	mStandButton->setCommitCallback(boost::bind(&LLFloaterMove::enableInstance));
-	mStandButton->setVisible(FALSE);
-	LLHints::getInstance()->registerHintTarget("stand_btn", mStandButton->getHandle());
-	
-	mStopFlyingButton = getChild<LLButton>("stop_fly_btn");
-	//mStopFlyingButton->setCommitCallback(boost::bind(&LLFloaterMove::setFlyingMode, FALSE));
-	mStopFlyingButton->setCommitCallback(boost::bind(&LLPanelStandStopFlying::onStopFlyingButtonClick, this));
-	mStopFlyingButton->setVisible(FALSE);
-
-	gViewerWindow->setOnWorldViewRectUpdated(boost::bind(&LLPanelStandStopFlying::updatePosition, this));
-	
-	return TRUE;
-}
-
-//virtual
-void LLPanelStandStopFlying::setVisible(BOOL visible)
-{
-	//we dont need to show the panel if these buttons are not activated
-	if (gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK) visible = false;
-
-	if (visible)
-	{
-		updatePosition();
-	}
-
-	// do not change parent visibility in case panel is attached into Move Floater: EXT-3632, EXT-4646
-	if (!mAttached) 
-	{
-		//change visibility of parent layout_panel to animate in/out. EXT-2504
-		if (getParent()) getParent()->setVisible(visible);
-	}
-
-	// also change own visibility to avoid displaying the panel in mouselook (broken when EXT-2504 was implemented).
-	// See EXT-4718.
-	LLPanel::setVisible(visible);
-}
-
-BOOL LLPanelStandStopFlying::handleToolTip(S32 x, S32 y, MASK mask)
-{
-	LLToolTipMgr::instance().unblockToolTips();
-
-	if (mStandButton->getVisible())
-	{
-		LLToolTipMgr::instance().show(mStandButton->getToolTip());
-	}
-	else if (mStopFlyingButton->getVisible())
-	{
-		LLToolTipMgr::instance().show(mStopFlyingButton->getToolTip());
-	}
-
-	return LLPanel::handleToolTip(x, y, mask);
-}
-
-void LLPanelStandStopFlying::reparent(LLFloaterMove* move_view)
-{
-	LLPanel* parent = dynamic_cast<LLPanel*>(getParent());
-	if (!parent)
-	{
-		LL_WARNS() << "Stand/stop flying panel parent is unset, already attached?: " << mAttached << ", new parent: " << (move_view == NULL ? "NULL" : "Move Floater") << LL_ENDL;
-		return;
-	}
-
-	if (move_view != NULL)
-	{
-		llassert(move_view != parent); // sanity check
-	
-		// Save our original container.
-		if (!mOriginalParent.get())
-			mOriginalParent = parent->getHandle();
-
-		// Attach to movement controls.
-		parent->removeChild(this);
-		move_view->addChild(this);
-		// Origin must be set by movement controls.
-		mAttached = true;
-	}
-	else
-	{
-		if (!mOriginalParent.get())
-		{
-			LL_WARNS() << "Original parent of the stand / stop flying panel not found" << LL_ENDL;
-			return;
-		}
-
-		// Detach from movement controls. 
-		parent->removeChild(this);
-		mOriginalParent.get()->addChild(this);
-		// update parent with self visibility (it is changed in setVisible()). EXT-4743
-		mOriginalParent.get()->setVisible(getVisible());
-
-		mAttached = false;
-		updatePosition(); // don't defer until next draw() to avoid flicker
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Private Section
-//////////////////////////////////////////////////////////////////////////
-
-//static
-LLPanelStandStopFlying* LLPanelStandStopFlying::getStandStopFlyingPanel()
-{
-	LLPanelStandStopFlying* panel = new LLPanelStandStopFlying();
-	panel->buildFromFile("panel_stand_stop_flying.xml");
-
-	panel->setVisible(FALSE);
-	//LLUI::getInstance()->getRootView()->addChild(panel);
-
-	LL_INFOS() << "Build LLPanelStandStopFlying panel" << LL_ENDL;
-
-	panel->updatePosition();
-	return panel;
-}
-
-void LLPanelStandStopFlying::onStandButtonClick()
+void LLFloaterMove::onStandButtonClick()
 {
 // [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
 	if ( (!RlvActions::isRlvEnabled()) || (RlvActions::canStand()) )
@@ -722,46 +578,11 @@ void LLPanelStandStopFlying::onStandButtonClick()
 // [/RLVa:KB]
 //	LLSelectMgr::getInstance()->deselectAllForStandingUp();
 //	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
-
-	setFocus(FALSE); 
 }
 
-void LLPanelStandStopFlying::onStopFlyingButtonClick()
+void LLFloaterMove::onStopFlyingButtonClick()
 {
 	gAgent.setFlying(FALSE);
-
-	setFocus(FALSE); // EXT-482
-}
-
-/**
- * Updates position of the Stand & Stop Flying panel to be center aligned with Move button.
- */
-void LLPanelStandStopFlying::updatePosition()
-{
-	if (mAttached) return;
-
-	S32 bottom_tb_center = 0;
-	if (LLToolBar* toolbar_bottom = gToolBarView->getToolbar(LLToolBarEnums::TOOLBAR_BOTTOM))
-	{
-		bottom_tb_center = toolbar_bottom->getRect().getCenterX();
-	}
-
-	S32 left_tb_width = 0;
-	if (LLToolBar* toolbar_left = gToolBarView->getToolbar(LLToolBarEnums::TOOLBAR_LEFT))
-	{
-		left_tb_width = toolbar_left->getRect().getWidth();
-	}
-
-	if (gToolBarView != NULL && gToolBarView->getToolbar(LLToolBarEnums::TOOLBAR_LEFT)->hasButtons())
-	{
-		S32 x_pos = bottom_tb_center - getRect().getWidth() / 2 - left_tb_width;
-		setOrigin( x_pos, 0);
-	}
-	else 
-	{
-		S32 x_pos = bottom_tb_center - getRect().getWidth() / 2;
-		setOrigin( x_pos, 0);
-	}
 }
 
 // EOF

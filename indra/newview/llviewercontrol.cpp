@@ -88,6 +88,7 @@
 #include "llviewerobjectlist.h"
 #include "bdsidebar.h"
 #include "bdfunctions.h"
+#include "bdstatus.h"
 #include "llheadrotmotion.h"
 
 // Third party library includes
@@ -686,6 +687,10 @@ bool toggle_freeze_world(const LLSD& newvalue)
 	// freeze/thaw everything else
 	gSavedSettings.setBOOL("FreezeTime", val);
 	gDragonLibrary.mUseFreezeWorld = val;
+	
+	//BD
+	gDragonStatus->setWorldFrozen(val);
+
 	return true;
 }
 
@@ -719,6 +724,19 @@ static bool handleRenderOwnAttachedLightsChanged(const LLSD& newvalue)
 static bool handleRenderDeferredLightsChanged(const LLSD& newvalue)
 {
 	LLPipeline::sRenderDeferredLights = gSavedSettings.getBOOL("RenderDeferredLights");
+	return true;
+}
+
+//BD - Camera
+static bool handleFreeDoFChanged(const LLSD& newvalue)
+{
+	gDragonStatus->setFreeDoF(newvalue.asBoolean());
+	return true;
+}
+
+static bool handleLockDoFChanged(const LLSD& newvalue)
+{
+	gDragonStatus->setLockedDoF(newvalue.asBoolean());
 	return true;
 }
 
@@ -1215,6 +1233,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("CameraPositionSmoothing")->getSignal()->connect(boost::bind(&handleCameraSmoothing, _2));
 	gSavedSettings.getControl("PitchFromMousePosition")->getSignal()->connect(boost::bind(&handleEyeConstrainsChanged, _2));
 	gSavedSettings.getControl("YawFromMousePosition")->getSignal()->connect(boost::bind(&handleHeadConstrainsChanged, _2));
+	gSavedSettings.getControl("CameraFreeDoFFocus")->getSignal()->connect(boost::bind(&handleFreeDoFChanged, _2));
+	gSavedSettings.getControl("CameraDoFLocked")->getSignal()->connect(boost::bind(&handleLockDoFChanged, _2));
 //	//BD - Third Person Steering Mode
 	gSavedSettings.getControl("EnableThirdPersonSteering")->getSignal()->connect(boost::bind(&handleMouseSteeringChanged, _2));
 //	//BD - Camera Rolling
