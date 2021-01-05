@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="766"
+  height="767"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
