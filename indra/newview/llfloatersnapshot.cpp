@@ -639,9 +639,9 @@ void LLFloaterSnapshot::Impl::updateResolution(LLUICtrl* ctrl, void* data, BOOL 
 			else
 			{
 				/*// _LL_DEBUGS() << "No custom res chosen, setting preview res from window: "
-					<< gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
+					<< gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;*/
 				new_width = gViewerWindow->getWindowWidthRaw();
-				new_height = gViewerWindow->getWindowHeightRaw();*/
+				new_height = gViewerWindow->getWindowHeightRaw();
 			}
 
 			llassert(new_width > 0 && new_height > 0);
