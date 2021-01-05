@@ -3813,7 +3813,9 @@ void LLViewerWindow::updateMouseDelta()
 		fdx = fdx + ((F32) dx - fdx) * llmin(gFrameIntervalSeconds.value()*amount,1.f);
 		fdy = fdy + ((F32) dy - fdy) * llmin(gFrameIntervalSeconds.value()*amount,1.f);
 
-		mCurrentMouseDelta.set(ll_round(fdx), ll_round(fdy));
+		//BD - Do not round our mouse delta, it will result in ignoring all 1-2 pixel movements entirely.
+		//mCurrentMouseDelta.set(ll_round(fdx), ll_round(fdy));
+		mCurrentMouseDelta.set(fdx, fdy);
 		mouse_vel.setVec(fdx,fdy);
 	}
 	else

@@ -63,7 +63,7 @@ BOOL gCameraBtnZoom = TRUE;
 BOOL gCameraBtnOrbit = FALSE;
 BOOL gCameraBtnPan = FALSE;
 
-const S32 SLOP_RANGE = 4;
+const S32 SLOP_RANGE = 1;
 //BD - Right Click Steering
 const S32 SLOP_RANGE_RIGHT = 24;
 
@@ -398,7 +398,10 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 {
 	S32 dx = gViewerWindow->getCurrentMouseDX();
 	S32 dy = gViewerWindow->getCurrentMouseDY();
-	
+	//BD - Scale our camera movement according to our camera zoom to make finer movements
+	//     while zoomed in.
+	F32 zoom_factor = llclamp(LLViewerCamera::getInstance()->getView(), 0.2f, 1.f);
+
 //	//BD - Third Person Steering
 	if (hasMouseCapture() && mValidClickPoint || 
 		(gAgentCamera.mThirdPersonSteeringMode &&
@@ -456,7 +459,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			// Orbit tool
 			if (hasMouseCapture())
 			{
-				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
+				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled() * zoom_factor;
 
 				if (dx != 0)
 				{
@@ -492,7 +495,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 				F32 dist = (F32) camera_to_focus.normVec();
 
 				// Fudge factor for pan
-				F32 meters_per_pixel = 3.f * dist / gViewerWindow->getWorldViewWidthScaled();
+				F32 meters_per_pixel = 3.f * dist / gViewerWindow->getWorldViewWidthScaled() * zoom_factor;
 
 				if (dx != 0)
 				{
@@ -514,7 +517,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			if (hasMouseCapture())
 			{
 
-				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
+				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled() * zoom_factor;
 
 				if (dx != 0)
 				{
@@ -569,7 +572,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 				F32 dist = (F32)camera_to_focus.normVec();
 
 				// Fudge factor for pan
-				F32 meters_per_pixel = 3.f * dist / gViewerWindow->getWorldViewWidthScaled();
+				F32 meters_per_pixel = 3.f * dist / gViewerWindow->getWorldViewWidthScaled() * zoom_factor;
 
 				if (dx != 0)
 				{
@@ -587,7 +590,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 			}
 			else
 			{
-				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled();
+				const F32 RADIANS_PER_PIXEL = 360.f * DEG_TO_RAD / gViewerWindow->getWorldViewWidthScaled() * zoom_factor;
 
 				if (dx != 0)
 				{
