@@ -59,6 +59,7 @@
 #include "llinventorymodel.h"
 #include "lllandmarkactions.h"
 #include "lllandmarklist.h"
+#include "lllayoutstack.h"
 #include "llpanellandmarkinfo.h"
 #include "llpanellandmarks.h"
 #include "llpanelpick.h"
@@ -280,9 +281,6 @@ BOOL LLPanelPlaces::postBuild()
 	mShowOnMapBtn = getChild<LLButton>("map_btn");
 	mShowOnMapBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onShowOnMapButtonClicked, this));
 
-	mEditBtn = getChild<LLButton>("edit_btn");
-	mEditBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
-
 	mSaveBtn = getChild<LLButton>("save_btn");
 	mSaveBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onSaveButtonClicked, this));
 
@@ -351,6 +349,9 @@ BOOL LLPanelPlaces::postBuild()
 
 	LLComboBox* folder_combo = mLandmarkInfo->getChild<LLComboBox>("folder_combo");
 	folder_combo->setCommitCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
+
+	LLButton* edit_btn = mLandmarkInfo->getChild<LLButton>("edit_btn");
+	edit_btn->setCommitCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
 
 	createTabs();
 	updateVerbs();
@@ -529,7 +530,6 @@ void LLPanelPlaces::setItem(LLInventoryItem* item)
 	BOOL is_landmark_editable = gInventory.isObjectDescendentOf(mItem->getUUID(), gInventory.getRootFolderID()) &&
 								mItem->getPermissions().allowModifyBy(gAgent.getID());
 
-	mEditBtn->setEnabled(is_landmark_editable);
 	mSaveBtn->setEnabled(is_landmark_editable);
 
 	if (is_landmark_editable)
@@ -1211,6 +1211,13 @@ void LLPanelPlaces::updateVerbs()
 	mSaveBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCancelBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
+
+	bool show_options_btn = is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn;
+	mOverflowBtn->setVisible(show_options_btn);
+	getChild<LLLayoutPanel>("lp_options")->setVisible(show_options_btn);
+	getChild<LLLayoutPanel>("lp2")->setVisible(!show_options_btn);
+
+	mPlaceInfoBtn->setEnabled(!is_create_landmark_visible && !isLandmarkEditModeOn && have_3d_pos);
 
 	if (is_place_info_visible)
 	{

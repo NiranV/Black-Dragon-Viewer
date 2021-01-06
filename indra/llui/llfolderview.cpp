@@ -334,9 +334,9 @@ static LLTrace::BlockTimerStatHandle FTM_FILTER("Filter Folder View");
 void LLFolderView::filter( LLFolderViewFilter& filter )
 {
 	LL_RECORD_BLOCK_TIME(FTM_FILTER);
-	static const LLUICachedControl<S32> filter_item_max_time_visible("FilterItemsMaxTimePerFrameVisible", 10);
-	static const LLUICachedControl<S32> filter_item_max_time_unvisible("FilterItemsMaxTimePerFrameUnvisible", 1);
-	filter.resetTime(llclamp(mParentPanel.get()->getVisible() ? static_cast<S32>(filter_item_max_time_visible) : static_cast<S32>(filter_item_max_time_unvisible), 1, 100));
+    static LLCachedControl<S32> filter_visible(*LLUI::getInstance()->mSettingGroups["config"], "FilterItemsMaxTimePerFrameVisible", 10);
+    static LLCachedControl<S32> filter_hidden(*LLUI::getInstance()->mSettingGroups["config"], "FilterItemsMaxTimePerFrameUnvisible", 1);
+    filter.resetTime(llclamp(mParentPanel.get()->getVisible() ? filter_visible() : filter_hidden(), 1, 100));
 
     // Note: we filter the model, not the view
 	getViewModelItem()->filter(filter);

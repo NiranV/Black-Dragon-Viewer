@@ -73,10 +73,11 @@ LLSearchableUI::LLPanelData::~LLPanelData()
 
 bool LLSearchableUI::LLPanelData::hightlightAndHide(LLWString const &aFilter)
 {
-	for (tSearchableItemList::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
-	{
+	for( tSearchableItemList::iterator itr = mChildren.begin(); itr  != mChildren.end(); ++itr )
 		(*itr)->setNotHighlighted();
-	}
+
+	for (tPanelDataList::iterator itr = mChildPanel.begin(); itr != mChildPanel.end(); ++itr)
+		(*itr)->setNotHighlighted();
 
 	if (aFilter.empty())
 	{
@@ -97,7 +98,16 @@ bool LLSearchableUI::LLPanelData::hightlightAndHide(LLWString const &aFilter)
 	return bVisible;
 }
 
-bool LLSearchableUI::LLTabContainerData::hightlightAndHide(LLWString const &aFilter)
+void LLSearchableUI::PanelData::setNotHighlighted()
+{
+	for (tSearchableItemList::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
+		(*itr)->setNotHighlighted();
+
+	for (tPanelDataList::iterator itr = mChildPanel.begin(); itr != mChildPanel.end(); ++itr)
+		(*itr)->setNotHighlighted();
+}
+
+bool LLSearchableUI::LLTabContainerData::::hightlightAndHide(LLWString const &aFilter)
 {
 	for (tSearchableItemList::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
 	{

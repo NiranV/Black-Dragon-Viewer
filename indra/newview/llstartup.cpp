@@ -1270,9 +1270,6 @@ bool idle_startup()
 		gAgentCamera.init();
 		set_startup_status(0.08f, LLTrans::getString("WorldInit"), "Setting Underclothes Menus");
 		display_startup();
-		set_underclothes_menu_options();
-		set_startup_status(0.09f, LLTrans::getString("WorldInit"), "Loading Color Table");
-		display_startup();
 
 		// Since we connected, save off the settings so the user doesn't have to
 		// type the name/password again if we crash.

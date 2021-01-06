@@ -67,6 +67,7 @@ public:
 
 		virtual ~LLPanelData();
 
+		void setNotHighlighted();
 		virtual bool hightlightAndHide(LLWString const &aFilter);
 	};
 

@@ -78,8 +78,6 @@ private:
 	LLPanel*			mForSalePanel;
 	LLPanel*			mYouAreHerePanel;
 
-	LLTextBox*			mParcelOwner;
-
 	LLIconCtrl*			mParcelRatingIcon;
 	LLTextBox*			mParcelRatingText;
 	LLIconCtrl*			mVoiceIcon;
