@@ -48,6 +48,10 @@ width="669">
  Fly
  </string>
  <string
+ name="toggle_crouch">
+ Crouch (Toggle)
+ </string>
+ <string
  name="stop_moving">
  Stop Movement
  </string>

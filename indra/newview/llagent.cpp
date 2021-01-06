@@ -862,6 +862,42 @@ void LLAgent::setFlying(BOOL fly, BOOL fail_sound)
 	mbFlagsDirty = TRUE;
 }
 
+void LLAgent::setCrouching(BOOL crouch)
+{
+	if (isAgentAvatarValid())
+	{
+		// *HACK: Don't allow to start the flying mode if we got ANIM_AGENT_STANDUP signal
+		// because in this case we won't get a signal to start avatar flying animation and
+		// it will be walking with flying mode "ON" indication. However we allow to switch
+		// the flying mode off if we get ANIM_AGENT_STANDUP signal. See process_avatar_animation().
+		// See EXT-2781.
+		if (crouch && gAgentAvatarp->mSignaledAnimations.find(ANIM_AGENT_STANDUP) != gAgentAvatarp->mSignaledAnimations.end())
+		{
+			return;
+		}
+
+		// don't allow taking off while sitting
+		if (crouch && gAgentAvatarp->isSitting())
+		{
+			return;
+		}
+	}
+
+	if (crouch)
+	{
+		setControlFlags(AGENT_CONTROL_UP_NEG);
+	}
+	else
+	{
+		clearControlFlags(AGENT_CONTROL_UP_NEG);
+	}
+
+	gAgentAvatarp->setCrouching(crouch);
+
+	//BD
+	gDragonStatus->setCrouching(crouch);
+}
+
 
 // UI based mechanism of setting fly state
 //-----------------------------------------------------------------------------
@@ -882,6 +918,8 @@ void LLAgent::toggleFlying()
 
 	gAgent.setFlying( fly );
 	gAgentCamera.resetView();
+	if (fly)
+		gAgent.setCrouching(false);
 }
 
 // static
@@ -893,6 +931,25 @@ bool LLAgent::enableFlying()
 		sitting = gAgentAvatarp->isSitting();
 	}
 	return !sitting;
+}
+
+//BD - Crouching Toggle
+void LLAgent::toggleCrouching()
+{
+	BOOL crouch = !gAgent.isCrouching();
+
+	gAgent.setCrouching(crouch);
+}
+
+//BD
+bool LLAgent::isCrouching()
+{
+	BOOL crouching = FALSE;
+	if (isAgentAvatarValid())
+	{
+		crouching = gAgentAvatarp->isCrouching();
+	}
+	return crouching;
 }
 
 // static

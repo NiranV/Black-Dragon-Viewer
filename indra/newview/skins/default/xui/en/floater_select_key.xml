@@ -152,6 +152,10 @@
   name="push_down"
   value="push_down" />
   <combo_box.item
+  label="Crouch (Toggle)"
+  name="toggle_crouch"
+  value="toggle_crouch" />
+  <combo_box.item
   label="Fly"
   name="toggle_fly"
   value="toggle_fly" />
@@ -286,6 +290,10 @@
   name="push_down"
   value="push_down" />
   <combo_box.item
+  label="Crouch (Toggle)"
+  name="toggle_crouch"
+  value="toggle_crouch" />
+  <combo_box.item
   label="Fly"
   name="toggle_fly"
   value="toggle_fly" />
@@ -379,6 +387,10 @@
   label="Crouch"
   name="push_down"
   value="push_down" />
+  <combo_box.item
+  label="Crouch (Toggle)"
+  name="toggle_crouch"
+  value="toggle_crouch" />
   <combo_box.item
   label="Fly"
   name="toggle_fly"

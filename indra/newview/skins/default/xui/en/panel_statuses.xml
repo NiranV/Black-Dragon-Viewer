@@ -112,7 +112,7 @@
   auto_resize="false"
   background_visible="true"
   bg_alpha_color="0 0 0 0.5"
-  visible="true"
+  visible="false"
   name="crouching_layout"
   width="110">
     <button

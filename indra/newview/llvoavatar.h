@@ -968,9 +968,14 @@ public:
 	BOOL			isSitting(){return mIsSitting;}
 	void 			sitOnObject(LLViewerObject *sit_object);
 	void 			getOffObject();
+	//BD - Toggle Crouching
+	void			setCrouching(bool crouch) { mIsCrouching = crouch; }
+	bool			isCrouching() { return mIsCrouching; }
 private:
 	// set this property only with LLVOAvatar::sitDown method
 	BOOL 			mIsSitting;
+	//BD - Toggle Crouching
+	bool			mIsCrouching;
 	// position backup in case of missing data
 	LLVector3		mLastRootPos;
 

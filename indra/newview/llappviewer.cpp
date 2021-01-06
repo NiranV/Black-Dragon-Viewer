@@ -4860,6 +4860,12 @@ void LLAppViewer::idle()
 			gAgent.moveYaw(-1.f);
 		}*/
 
+		//BD - Toggle Crouching
+		if (gAgent.isCrouching())
+		{
+			gAgent.moveUp(-1.f, false);
+		}
+
 		{
 			LL_RECORD_BLOCK_TIME(FTM_AGENT_AUTOPILOT);
 			// Handle automatic walking towards points

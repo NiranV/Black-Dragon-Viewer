@@ -65,6 +65,9 @@ LLViewerKeyboard gViewerKeyboard;
 
 void agent_jump( EKeystate s )
 {
+	//BD - Toggle Crouching
+	gAgent.setCrouching(false);
+
 	static BOOL first_fly_attempt(TRUE);
 	if (KEYSTATE_UP == s)
 	{
@@ -308,7 +311,7 @@ void agent_toggle_fly( EKeystate s )
 	// Only catch the edge
 	if (KEYSTATE_DOWN == s )
 	{
-		LLAgent::toggleFlying();
+		gAgent.toggleFlying();
 	}
 }
 
@@ -634,6 +637,15 @@ void start_gesture( EKeystate s )
 	}
 }
 
+//BD - Toggle Crouching
+void toggle_crouch(EKeystate s)
+{
+	if (KEYSTATE_DOWN == s)
+	{
+		gAgent.toggleCrouching();
+	}
+}
+
 #define REGISTER_KEYBOARD_ACTION(KEY, ACTION) LLREGISTER_STATIC(LLKeyboardActionRegistry, KEY, ACTION);
 REGISTER_KEYBOARD_ACTION("jump", agent_jump);
 REGISTER_KEYBOARD_ACTION("push_down", agent_push_down);
@@ -679,6 +691,8 @@ REGISTER_KEYBOARD_ACTION("start_gesture", start_gesture);
 REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
 REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
 REGISTER_KEYBOARD_ACTION("roll_reset", camera_roll_reset);
+//BD - Toggle Crouching
+REGISTER_KEYBOARD_ACTION("toggle_crouch", toggle_crouch);
 #undef REGISTER_KEYBOARD_ACTION
 
 LLViewerKeyboard::LLViewerKeyboard()

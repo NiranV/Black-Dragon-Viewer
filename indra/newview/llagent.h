@@ -350,7 +350,7 @@ private:
 	S32				mCurrentFidget;
 
 	//--------------------------------------------------------------------
-	// Fly
+	// BD - Movement
 	//--------------------------------------------------------------------
 public:
 	BOOL			getFlying() const;
@@ -359,6 +359,10 @@ public:
 	static bool		enableFlying();
 	BOOL			canFly(); 			// Does this parcel allow you to fly?
 	static bool		isSitting();
+	//BD - Toggle Crouching
+	void			setCrouching(BOOL crouch);
+	static void		toggleCrouching();
+	static bool		isCrouching();
 
 	//--------------------------------------------------------------------
 	// Voice
