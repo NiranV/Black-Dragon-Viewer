@@ -173,8 +173,78 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="273"
+     height="403"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Belen Sotelo as Patreon patron.
+Added: Dash Riprock as Patreon patron.
+Added: KT Syakumi as Patreon patron.
+Added: Ral as Patreon patron.
+Added: Valentine Wolfram as Patreon patron.
+Added: Ability to toggle crouch and map controls to toggling crouch via the Keybinding system.
+Added: Flippy Dainox as Patreon patron.
+Added: Foxcity as Patreon patron.
+Changed: Improved responsiveness of small scale mouse movements for camera movement.
+Changed: Replaced stand-stop-flying status buttons with a full BD status container showing several statuses in addition to just sitting and flying.
+Changed: Version to 3.9.4.
+Fixed: Inconsistent behavior of CTRL/Shift when using as modifier for mass/precision controls on spinners.
+Fixed: Potential crashfix for startup crash due to invalid environment asset.
+Fixed: Logs getting spammed with warnings when taking snapshots.
+Fixed: UI vanishing when refreshing the snapshot after taking one with Remember Snapshot mode enabled.
+Fixed: Camera only being able to jump large distances when zoomed in and moving the mouse ever so slightly. Make the camera scale its movement with zoom level.
+Fixed: Sliders in Environment Editor becoming increasingly harder to slide all the way to either end especially at lower framerates.
+Fixed: Altitude based windlights not being triggered.
+Fixed: Projector light settings in Edit - Features being available when the light is no projector.
+Fixed: Even more compile warnings of unused declarations.
+Fixed: Shaders being dirtied causing slow code execution when it shouldn't. Thanks to Drake.
+Fixed: Volumetric Lighting being broken due it requiring the shaders being dirtied but Volumetric Lighting not being classified as needing atmospherics thus not triggering a dirty.
+Fixed: Login screen video subtitles appearing when using the german UI, causing the subtitles to interfere with the bottom login panel and making it hard to read.
+Fixed: Scrollpanel inconsistencies in a couple preferences tabs.
+Fixed: Compile.
+Fixed: Outdated deferredUtil.glsl shader.
+Fixed: Shininess being broken since EEP. Fix by Drake.
+Fixed: Impostors not being properly lit.
+Removed: All language files from non-english/german languages that were added over time with code merges.
+Misc: Added bdstatus.cpp/h to CMakeLists.txt and fixed linking errors.
+Merged Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.3
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="273"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
