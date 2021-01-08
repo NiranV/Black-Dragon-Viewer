@@ -121,6 +121,7 @@ set(viewer_SOURCE_FILES
     bdfloaterobjects.cpp
     bdfloaterposer.cpp
     bdsidebar.cpp
+    bdstatus.cpp
     bdposingmotion.cpp
     exopostprocess.cpp
     piemenu.cpp
@@ -774,6 +775,7 @@ set(viewer_HEADER_FILES
     bdfloaterobjects.h
     bdfloaterposer.h
     bdsidebar.h
+    bdstatus.h
     bdposingmotion.h
     exopostprocess.h
     piemenu.h
