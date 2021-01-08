@@ -36,9 +36,6 @@ out vec4 frag_color;
 
 uniform sampler2DRect diffuseRect;
 uniform sampler2DRect specularRect;
-uniform sampler2DRect depthMap;
-uniform sampler2DRect normalMap;
-uniform samplerCube environmentMap;
 uniform sampler2DRect lightMap;
 uniform sampler2D noiseMap;
 uniform sampler2D projectionMap;
@@ -71,7 +68,7 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
-vec3 getNorm(vec2 pos_screen);
+vec3 getNormWithEnvIntensity(vec2 screenpos, out float envIntensity);
 vec3 srgb_to_linear(vec3 c);
 
 uniform float global_light_strength;
@@ -162,11 +159,9 @@ void main()
 		shadow = clamp(shadow, 0.0, 1.0);        
 	}
 	
-	vec3 norm = texture2DRect(normalMap, frag.xy).xyz;
-	float envIntensity = norm.z;
-	norm = getNorm(frag.xy);
-	
-	norm = normalize(norm);
+	float envIntensity;
+	vec3 norm = getNormWithEnvIntensity(frag.xy, envIntensity);
+
 	float l_dist = -dot(lv, proj_n);
 	
 	vec4 proj_tc = (proj_mat * vec4(pos.xyz, 1.0));
@@ -191,7 +186,7 @@ void main()
 	lv = normalize(lv);
 	float da = dot(norm, lv);
 		
-	vec3 diff_tex = srgb_to_linear(texture2DRect(diffuseRect, frag.xy).rgb);
+	vec3 diff_tex = texture2DRect(diffuseRect, frag.xy).rgb;
 	vec4 spec = texture2DRect(specularRect, frag.xy);
 	vec3 dlit = vec3(0, 0, 0);
 

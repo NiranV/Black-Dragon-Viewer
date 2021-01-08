@@ -56,7 +56,6 @@ VARYING vec2 vary_fragcoord;
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
-vec3 getNorm(vec2 pos_screen);
 vec4 getPositionWithDepth(vec2 pos_screen, float depth);
 
 void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, out vec3 sunlit, out vec3 amblit, out vec3 additive, out vec3 atten, bool use_ao);
@@ -66,6 +65,7 @@ vec3  scaleSoftClipFrag(vec3 l);
 vec3  fullbrightAtmosTransportFrag(vec3 light, vec3 additive, vec3 atten);
 vec3  fullbrightScaleSoftClip(vec3 light);
 
+vec3 decode_normal(vec2 enc);
 vec3 linear_to_srgb(vec3 c);
 vec3 srgb_to_linear(vec3 c);
 
@@ -106,7 +106,7 @@ void main()
     vec4  pos          = getPositionWithDepth(tc, depth);
     vec4  norm         = texture2DRect(normalMap, tc);
     float envIntensity = norm.z;
-    norm.xyz           = getNorm(tc);
+    norm.xyz           = decode_normal(norm.xy);
 
     vec3  light_dir   = (sun_up_factor == 1) ? sun_dir : moon_dir;
     float da          = clamp(dot(norm.xyz, light_dir.xyz), 0.0, 1.0);
@@ -114,7 +114,6 @@ void main()
     da                = pow(da, light_gamma);
 
     vec4 diffuse = texture2DRect(diffuseRect, tc);
-    vec4 spec    = texture2DRect(specularRect, vary_fragcoord.xy);
     
     vec2 fromCentre = vec2(0.0);
     if(chroma_str > 0.0)
@@ -122,10 +121,16 @@ void main()
         fromCentre = (tc / screen_res) - vec2(0.5);
         float radius = length(fromCentre);
         fromCentre = (chroma_str * (radius*radius)) / vec2(1);
+        
+        diffuse.b = texture2DRect(diffuseRect, tc-fromCentre).b;
+        diffuse.r = texture2DRect(diffuseRect, tc+fromCentre).r;
+        diffuse.ga = texture2DRect(diffuseRect, tc).ga;
     }
-    diffuse.b = texture2DRect(diffuseRect, tc-fromCentre).b;
-    diffuse.r = texture2DRect(diffuseRect, tc+fromCentre).r;
-    diffuse.ga = texture2DRect(diffuseRect, tc).ga;
+    
+    //convert to gamma space
+    diffuse.rgb = linear_to_srgb(diffuse.rgb);
+
+    vec4 spec    = texture2DRect(specularRect, vary_fragcoord.xy);
 
     vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
     scol_ambocc      = pow(scol_ambocc, vec2(light_gamma));
@@ -220,7 +225,7 @@ void main()
            refapprop = min(refapprop, angleapprop);
            float refshad = texture2DRect(lightMap, ref2d).r;
            refshad = pow(refshad, light_gamma);
-           vec3 refn = getNorm(ref2d);
+           vec3 refn = decode_normal(ref2d);
            
            // darken reflections from points which face away from the reflected ray - our guess was a back-face
            //refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));

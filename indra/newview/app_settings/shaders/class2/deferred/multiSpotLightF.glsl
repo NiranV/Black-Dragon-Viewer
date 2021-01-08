@@ -72,7 +72,7 @@ uniform vec2 screen_res;
 uniform mat4 inv_proj;
 
 vec3 srgb_to_linear(vec3 cs);
-vec3 getNorm(vec2 pos_screen);
+vec3 getNormWithEnvIntensity(vec2 screenpos, out float envIntensity);
 
 uniform float global_light_strength;
 
@@ -162,13 +162,9 @@ void main()
         shadow = clamp(shadow, 0.0, 1.0);        
     }
     
-    vec3 norm = texture2DRect(normalMap, frag.xy).xyz;
-    
-    float envIntensity = norm.z;
+    float envIntensity;
+    vec3 norm = getNormWithEnvIntensity(frag.xy, envIntensity);
 
-    norm = getNorm(frag.xy);
-    
-    norm = normalize(norm);
     float l_dist = -dot(lv, proj_n);
     
     vec4 proj_tc = (proj_mat * vec4(pos.xyz, 1.0));
@@ -193,11 +189,6 @@ void main()
     float da = dot(norm, lv);
         
     vec3 diff_tex = texture2DRect(diffuseRect, frag.xy).rgb;
-    // SL-12005 Projector light pops as we get closer, more objectionable than being in wrong color space.
-    //          We can't switch to linear here unless we do it everywhere*
-    // *gbuffer IS sRGB, convert to linear since this shader outputs linear
-    diff_tex.rgb = srgb_to_linear(diff_tex.rgb);
- 
     vec4 spec = texture2DRect(specularRect, frag.xy);
 
     vec3 dlit = vec3(0, 0, 0);

@@ -40,9 +40,6 @@ out vec4 frag_color;
 
 uniform sampler2DRect diffuseRect;
 uniform sampler2DRect specularRect;
-uniform sampler2DRect depthMap;
-uniform sampler2DRect normalMap;
-uniform samplerCube environmentMap;
 uniform sampler2D noiseMap;
 uniform sampler2D projectionMap;
 uniform sampler2D lightFunc;
@@ -71,7 +68,7 @@ VARYING vec4 vary_fragcoord;
 uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
-vec3 getNorm(vec2 pos_screen);
+vec3 getNormWithEnvIntensity(vec2 screenpos, out float envIntensity);
 vec3 srgb_to_linear(vec3 c);
 
 uniform float global_light_strength;
@@ -151,8 +148,8 @@ void main()
 		discard;
 	}
 		
-	float envIntensity = texture2DRect(normalMap, frag.xy).z;
-	vec3 norm = getNorm(frag.xy);
+	float envIntensity;
+	vec3 norm = getNormWithEnvIntensity(frag.xy, envIntensity);
 
 	float l_dist = -dot(lv, proj_n);
 	
@@ -184,10 +181,6 @@ void main()
 		
 		
 	vec3 diff_tex = texture2DRect(diffuseRect, frag.xy).rgb;
-    // SL-12005 Projector light pops as we get closer, more objectionable than being in wrong color space.
-    //          We can't switch to linear here unless we do it everywhere*
-	// *gbuffer is sRGB, convert to linear whenever sampling from it
-    diff_tex.rgb = srgb_to_linear(diff_tex.rgb);
 
 	vec3 dlit = vec3(0, 0, 0);
 	
@@ -228,7 +221,6 @@ void main()
 	
 	
 	vec4 spec = texture2DRect(specularRect, frag.xy);
-	
 	if (spec.a > 0.0)
 	{
 		dlit *= min(da*6.0, 1.0) * dist_atten;
