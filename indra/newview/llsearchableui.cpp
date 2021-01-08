@@ -98,7 +98,7 @@ bool LLSearchableUI::LLPanelData::hightlightAndHide(LLWString const &aFilter)
 	return bVisible;
 }
 
-void LLSearchableUI::PanelData::setNotHighlighted()
+void LLSearchableUI::LLPanelData::setNotHighlighted()
 {
 	for (tSearchableItemList::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
 		(*itr)->setNotHighlighted();
@@ -107,7 +107,7 @@ void LLSearchableUI::PanelData::setNotHighlighted()
 		(*itr)->setNotHighlighted();
 }
 
-bool LLSearchableUI::LLTabContainerData::::hightlightAndHide(LLWString const &aFilter)
+bool LLSearchableUI::LLTabContainerData::hightlightAndHide(LLWString const &aFilter)
 {
 	for (tSearchableItemList::iterator itr = mChildren.begin(); itr != mChildren.end(); ++itr)
 	{

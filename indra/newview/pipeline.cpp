@@ -6409,14 +6409,8 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				continue;
 			}
 
-            LLVOAvatar * av = light->getAvatar();
-            if (av && (av->isTooComplex() || av->isInMuteList()))
-            {
-                // avatars that are already in the list will be removed by removeMutedAVsLights
-                continue;
-            }
-
 			//BD
+			LLVOAvatar * av = light->getAvatar();
 			if (light->isAttachment())
 			{
 				//BD
@@ -6435,6 +6429,17 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 				}
 			}
 
+			if (av && (av->isTooComplex() || av->isInMuteList()))
+			{
+				// avatars that are already in the list will be removed by removeMutedAVsLights
+				continue;
+			}
+
+			F32 dist = calc_light_dist(light, cam_pos, max_dist);
+			if (dist >= max_dist)
+			{
+				continue;
+			}
 			new_nearby_lights.insert(Light(drawable, dist, 0.f));
             if (!LLPipeline::sRenderDeferred && new_nearby_lights.size() > (U32)MAX_LOCAL_LIGHTS)
 			{
@@ -6590,12 +6595,12 @@ void LLPipeline::setupHWLights(LLDrawPool* pool)
 			}
 
 			//BD
+			LLVOAvatar* av = light->getAvatar();
 			if (light->isAttachment())
 			{
 				//BD
-				LLVOAvatar* avatar = light->getAvatarAncestor();
-				if ((!sRenderOtherAttachedLights && (avatar != gAgentAvatarp))
-					|| (!sRenderOwnAttachedLights && (avatar == gAgentAvatarp)))
+				if ((!sRenderOtherAttachedLights && (av != gAgentAvatarp))
+					|| (!sRenderOwnAttachedLights && (av == gAgentAvatarp)))
 				{
 					continue;
 				}

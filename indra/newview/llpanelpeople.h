@@ -41,6 +41,7 @@ class LLMenuButton;
 class LLTabContainer;
 class LLNetMap;
 class LLBlockList;
+class LLMenuItemBranchGL;
 
 class LLPanelPeople 
 	: public LLPanel

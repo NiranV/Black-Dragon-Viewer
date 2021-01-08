@@ -490,16 +490,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		case LLAgent::TELEPORT_ARRIVING:
 			// Make the user wait while content "pre-caches"
 			{
-				F32 arrival_fraction = (gTeleportArrivalTimer.getElapsedTimeF32() / teleport_arrival_delay());
-				if( arrival_fraction > 1.f )
-				{
-					arrival_fraction = 1.f;
-					//LLFirstUse::useTeleport();
-					LL_INFOS("Teleport") << "arrival_fraction is " << arrival_fraction << " changing state to TELEPORT_NONE" << LL_ENDL;
-					gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-				}
+				//LLFirstUse::useTeleport();
+				LL_INFOS("Teleport") << " changing state to TELEPORT_NONE" << LL_ENDL;
+				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 				gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
-				gViewerWindow->setProgressPercent(  arrival_fraction * 10.f + 90.f);
+				gViewerWindow->setProgressPercent(100.f);
 				gViewerWindow->setProgressString(message);
 			}
 			break;
@@ -508,15 +503,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			// Short delay when teleporting in the same sim (progress screen active but not shown - did not
 			// fall-through from TELEPORT_START)
 			{
-				if( gTeleportDisplayTimer.getElapsedTimeF32() > teleport_local_delay() )
-				{
-					//LLFirstUse::useTeleport();
-					LL_INFOS("Teleport") << "State is local and gTeleportDisplayTimer " << gTeleportDisplayTimer.getElapsedTimeF32()
-										 << " exceeds teleport_local_delete " << teleport_local_delay
-										 << "; setting state to TELEPORT_NONE"
-										 << LL_ENDL;
-					gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-				}
+				//LLFirstUse::useTeleport();
+				LL_INFOS("Teleport") << "setting state to TELEPORT_NONE" << LL_ENDL;
+				gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
 			}
 			break;
 
