@@ -144,7 +144,7 @@ void BDStatus::onRunningButtonClick()
 
 void BDStatus::onCrouchingButtonClick()
 {
-	//gAgent.clearCrouching();
+	gAgent.setCrouching(false);
 
 	setFocus(FALSE);
 }
