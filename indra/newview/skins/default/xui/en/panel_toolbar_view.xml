@@ -165,6 +165,7 @@ visible="true">
 									width="160"/>
 									<panel
 									bottom="100"
+									visibility_control="ShowStatusButtonContainer"
 									follows="left|right|bottom"
 									height="23"
 									left="0"

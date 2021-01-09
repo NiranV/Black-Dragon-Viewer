@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="886"
+     height="906"
      name="ui_panel"
      top="0"
      left="0"
@@ -631,6 +631,18 @@ width="510">
 	    left="10"
 	    name="ScriptsCanShowUI"
 	    top_pad="15"
+	    width="256" />
+     
+     <check_box
+	    control_name="ShowStatusButtonContainer"
+	    height="16"
+	    initial_value="true"
+	    label="Show Status Button Container"
+		tool_tip="This option toggles whether the Viewer should display status buttons at the bottom indicating affecting statuses such as sitting, running and flying."
+	    layout="topleft"
+	    left="10"
+	    name="ShowStatusButtonContainer"
+	    top_pad="0"
 	    width="256" />
 		
   <check_box
