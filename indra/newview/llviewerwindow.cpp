@@ -1148,10 +1148,11 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 	x = ll_round((F32)x / mDisplayScale.mV[VX]);
 	y = ll_round((F32)y / mDisplayScale.mV[VY]);
 
-	//BD - Check if we are in Mouselook or if we are holding the ALT key.
-	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
-		|| gAgentCamera.getCameraMode() == CAMERA_MODE_CUSTOMIZE_AVATAR
-		|| gKeyboard->currentMask(false) == MASK_ALT)
+	//BD - Redirect mouselook right-clicks to ToolPie this will effectively eat
+	//     the right-click and not show the right click menu. Everything else should
+	//     be redirected to ToolCamera since it handles a fallthrough to ToolPie in
+	//     case we didn't move outside the right-click slope threshold.
+	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
 	{
 		return LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
 	}
@@ -1165,9 +1166,11 @@ BOOL LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 
 BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
-	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
-		|| gAgentCamera.getCameraMode() == CAMERA_MODE_CUSTOMIZE_AVATAR
-		|| gKeyboard->currentMask(false) == MASK_ALT)
+	//BD - Redirect mouselook right-clicks to ToolPie this will effectively eat
+	//     the right-click and not show the right click menu. Everything else should
+	//     be redirected to ToolCamera since it handles a fallthrough to ToolPie in
+	//     case we didn't move outside the right-click slope threshold.
+	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
 	{
 		return handleAnyMouseClick(window,pos,mask,LLMouseHandler::CLICK_RIGHT,FALSE);
 	}
