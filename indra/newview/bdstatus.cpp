@@ -152,14 +152,14 @@ void BDStatus::onCrouchingButtonClick()
 void BDStatus::onFreeDoFButtonClick()
 {
 	gPipeline.CameraDoFLocked = FALSE;
-
+	setFreeDoF(false);
 	setFocus(FALSE);
 }
 
 void BDStatus::onLockedDoFButtonClick()
 {
 	gPipeline.CameraFreeDoFFocus = FALSE;
-
+	setLockedDoF(false);
 	setFocus(FALSE);
 }
 
