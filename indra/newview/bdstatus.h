@@ -69,7 +69,6 @@ private:
 	void onWorldFrozenButtonClick();
 	void onPosingButtonClick();
 
-	//BD
 	LLButton* mSittingButton;
 	LLButton* mFlyingButton;
 	LLButton* mRunningButton;
@@ -78,6 +77,17 @@ private:
 	LLButton* mLockedDoFButton;
 	LLButton* mWorldFrozenButton;
 	LLButton* mPosingButton;
+
+	LLLayoutPanel* mSittingLayout;
+	LLLayoutPanel* mFlyingLayout;
+	LLLayoutPanel* mRunningLayout;
+	LLLayoutPanel* mCrouchingLayout;
+	LLLayoutPanel* mFreeDoFLayout;
+	LLLayoutPanel* mLockedDoFLayout;
+	LLLayoutPanel* mWorldFrozenLayout;
+	LLLayoutPanel* mPosingLayout;
+
+	bool mSitting;
 };
 
 extern BDStatus *gDragonStatus;

@@ -990,9 +990,6 @@ void LLAgent::standUp()
 	if ( (!rlv_handler_t::isEnabled()) || (RlvActions::canStand()) )
 	{
 		setControlFlags(AGENT_CONTROL_STAND_UP);
-
-		//BD
-		gDragonStatus->setSitting(false);
 	}
 // [/RLVa:KB]
 }
@@ -1354,9 +1351,6 @@ void LLAgent::sitDown()
 // [/RLVa:KB]
 
 	setControlFlags(AGENT_CONTROL_SIT_ON_GROUND);
-
-	//BD
-	gDragonStatus->setSitting(true);
 }
 
 

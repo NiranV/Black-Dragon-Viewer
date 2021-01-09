@@ -38,7 +38,13 @@ BDStatus::~BDStatus()
 }
 
 void BDStatus::draw()
-{ 
+{
+	bool sitting = gAgent.isSitting();
+	if (!mSitting && sitting)
+		setSitting(true);
+	else if(mSitting && !sitting)
+		setSitting(false);
+
 	LLPanel::draw(); 
 }
 
@@ -46,48 +52,51 @@ void BDStatus::draw()
 void BDStatus::setSitting(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("sitting_layout")->setVisible(toggle);
+	{
+		gDragonStatus->mSittingLayout->setVisible(toggle);
+		gDragonStatus->mSitting = toggle;
+	}
 }
 
 void BDStatus::setFlying(bool toggle)
 {
 	if(gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("flying_layout")->setVisible(toggle);
+		gDragonStatus->mFlyingLayout->setVisible(toggle);
 }
 
 void BDStatus::setRunning(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("running_layout")->setVisible(toggle);
+		gDragonStatus->mRunningLayout->setVisible(toggle);
 }
 
 void BDStatus::setCrouching(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("crouching_layout")->setVisible(toggle);
+		gDragonStatus->mCrouchingLayout->setVisible(toggle);
 }
 
 void BDStatus::setFreeDoF(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("free_dof_layout")->setVisible(toggle);
+		gDragonStatus->mFreeDoFLayout->setVisible(toggle);
 }
 
 void BDStatus::setLockedDoF(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("locked_dof_layout")->setVisible(toggle);
+		gDragonStatus->mLockedDoFLayout->setVisible(toggle);
 }
 
 void BDStatus::setWorldFrozen(bool toggle)
 {
 	if (gDragonStatus)
-		gDragonStatus->findChild<LLLayoutPanel>("world_frozen_layout")->setVisible(toggle);
+		gDragonStatus->mWorldFrozenLayout->setVisible(toggle);
 }
 
 void BDStatus::setPosing(bool toggle)
 {
-	gDragonStatus->findChild<LLLayoutPanel>("posing_layout")->setVisible(toggle);
+	gDragonStatus->mPosingLayout->setVisible(toggle);
 }
 
 BOOL BDStatus::postBuild()
@@ -100,6 +109,15 @@ BOOL BDStatus::postBuild()
 	mLockedDoFButton = getChild<LLButton>("locked_dof_btn");
 	mWorldFrozenButton = getChild<LLButton>("world_frozen_btn");
 	mPosingButton = getChild<LLButton>("posing_btn");
+
+	mSittingLayout = getChild<LLLayoutPanel>("sitting_layout");
+	mFlyingLayout = getChild<LLLayoutPanel>("flying_layout");
+	mRunningLayout = getChild<LLLayoutPanel>("running_layout");
+	mCrouchingLayout = getChild<LLLayoutPanel>("crouching_layout");
+	mFreeDoFLayout = getChild<LLLayoutPanel>("free_dof_layout");
+	mLockedDoFLayout = getChild<LLLayoutPanel>("locked_dof_layout");
+	mWorldFrozenLayout = getChild<LLLayoutPanel>("world_frozen_layout");
+	mPosingLayout = getChild<LLLayoutPanel>("posing_layout");
 
 	mSittingButton->setCommitCallback(boost::bind(&BDStatus::onSittingButtonClick, this));
 	mFlyingButton->setCommitCallback(boost::bind(&BDStatus::onFlyingButtonClick, this));
