@@ -258,4 +258,24 @@
          top="2"
          width="31" />
     </panel>
+    <button
+        follows="left|bottom"
+        height="21"
+        label="Stand"
+        layout="topleft"
+        left="6"
+        name="stand_btn"
+        tool_tip="Click here to stand up."
+        top_delta="2"
+        width="93" />
+       <button
+        follows="left|bottom"
+        height="21"
+        label="Stop Flying"
+        layout="topleft"
+        left="6"
+        name="stop_fly_btn"
+        tool_tip="Stop flying"
+        top_delta="0"
+        width="93" />
 </floater>

@@ -545,7 +545,6 @@ void LLFloaterMove::setStandStopFlyingMode(EStandStopFlyingMode mode)
 	}
 	mStandButton->setVisible(SSFM_STAND == mode);
 	mStopFlyingButton->setVisible(SSFM_STOP_FLYING == mode);
-
 }
 
 
