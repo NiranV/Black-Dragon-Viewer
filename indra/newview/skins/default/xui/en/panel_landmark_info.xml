@@ -6,7 +6,7 @@
  layout="topleft"
  left="0"
  min_height="350"
- name="landmark_info"
+ name="panel_landmark_info"
  top="20"
  width="300">
     <string

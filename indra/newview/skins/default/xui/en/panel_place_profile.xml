@@ -6,7 +6,7 @@
  layout="topleft"
  left="0"
  min_height="350"
- name="place_profile"
+ name="panel_place_profile"
  top="20"
  width="300">
     <string
@@ -302,8 +302,9 @@
              text_color="white"
              top_pad="-2"
              use_ellipses="true"
-             value="SampleRegion"
-             width="280" />
+             width="280" >
+             Region: [REGIONAMEPOS]
+            </text>
             <text
              parse_urls="false"
              follows="left|top|right"
@@ -313,7 +314,7 @@
              name="parcel_title"
              top_pad="4"
              use_ellipses="true"
-             value="SampleParcel, Name Long (145, 228, 26)"
+             value="SampleParcel"
              width="285" />
             <expandable_text
              follows="left|top"
@@ -339,7 +340,7 @@
              height="14"
              layout="topleft"
              left_pad="-3"
-             name="owner_value"
+             name="parcel_owner"
              top_delta="0"
              value="Alex Superduperlongenamenton"
              use_ellipses="true" 
