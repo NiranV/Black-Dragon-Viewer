@@ -317,6 +317,7 @@ private:
 	S32				mRequests;
 
 	bool			mSelfProfile;
+	bool			mIsOnline;
 
 	bool			mPropertiesLoaded;
 	bool			mWebLoaded;

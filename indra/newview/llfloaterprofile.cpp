@@ -419,6 +419,7 @@ BOOL LLFloaterProfile::postBuild()
 	mPanelFirstlife = findChild<LLPanel>(PANEL_FIRSTLIFE);
 	mPanelNotes = findChild<LLPanel>(PANEL_NOTES);
 
+	mIsOnline = false;
 	mStatusText = getChild<LLTextBox>("status");
 	mGroupList = getChild<LLGroupList>("group_list");
 	mShowInSearchCheckbox = getChild<LLCheckBoxCtrl>("show_in_search_checkbox");
@@ -824,10 +825,11 @@ void LLFloaterProfile::processOnlineStatus(bool online)
 	//const LLRelationship* relationship = LLAvatarTracker::instance().getBuddyInfo(mAvatarId);
 
 	//BD - Always show online status, just default it to "offline" if someone hides it. We might want to
-	//     add a "unknown" status.
+	//     add an "unknown" status.
 	//     Show us ourselves as online because we need to be online to see our profile, obviously.
 	std::string status = getString(online || mSelfProfile ? "status_online" : "status_offline");
 
+	mIsOnline = online;
 	mStatusText->setValue(status);
 	mStatusText->setColor(online ?
 		LLUIColorTable::instance().getColor("StatusUserOnline") :
@@ -1269,20 +1271,11 @@ void LLFloaterProfile::updateBtns()
 	mTabContainer->getPanelByIndex(2)->setEnabled(mSelfProfile);
 
 	LLUUID av_id = mAvatarId;
+	//Disable "Add Friend" button for friends.
+	mAddFriendButton->setEnabled(!LLAvatarActions::isFriend(av_id));
+
 	bool is_buddy_online = LLAvatarTracker::instance().isBuddyOnline(mAvatarId);
-
-	if (LLAvatarActions::isFriend(av_id))
-	{
-		mTeleportButton->setEnabled(is_buddy_online);
-		//Disable "Add Friend" button for friends.
-		mAddFriendButton->setEnabled(false);
-	}
-	else
-	{
-		mTeleportButton->setEnabled(is_buddy_online);
-		mAddFriendButton->setEnabled(true);
-	}
-
+	mTeleportButton->setEnabled(mIsOnline || is_buddy_online);
 	mShowOnMapButton->setEnabled((is_buddy_online && is_agent_mappable(av_id)) || gAgent.isGodlike());
 	bool is_blocked = LLAvatarActions::isBlocked(av_id);
 	mBlockButton->setVisible(LLAvatarActions::canBlock(av_id) && !is_blocked);
