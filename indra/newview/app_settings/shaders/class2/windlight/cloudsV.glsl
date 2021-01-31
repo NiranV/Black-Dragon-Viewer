@@ -106,6 +106,7 @@ void main()
     }
     if (rel_pos.y < 0.)
     {
+        altitude_blend_factor = 0;  // SL-11589 Fix clouds drooping below horizon
         rel_pos *= (-32000. / rel_pos.y);
     }
 
@@ -166,6 +167,7 @@ void main()
         (blue_horizon * blue_weight * (sunlight + tmpAmbient) + (haze_horizon * haze_weight) * (sunlight * haze_glow + tmpAmbient));
 
     // CLOUDS
+    sunlight = sunlight_color;
     off_axis = 1.0 / max(1e-6, lightnorm.y * 2.);
     sunlight *= exp(-light_atten * off_axis);
 
