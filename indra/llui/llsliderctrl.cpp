@@ -215,8 +215,13 @@ void LLSliderCtrl::onEditorGainFocus( LLFocusableElement* caller, void *userdata
 void LLSliderCtrl::setValue(F32 v, BOOL from_event)
 {
 	//BD - UI Improvements
-	mSlider->setValue( v, from_event, mAllowPrecisionOverride );
-	mValue = mSlider->getValueF32();
+	//     Prevent the slider from being changed while we are dragging it but do
+	//     apply the value internally.
+	if (!mSlider->hasMouseCapture())
+	{
+		mSlider->setValue(v, from_event, mAllowPrecisionOverride);
+	}
+	mValue = v;
 	updateText();
 }
 
@@ -271,13 +276,17 @@ void LLSliderCtrl::updateText()
 
 		std::string format = llformat("%%.%df", mPrecision);
 		std::string text = llformat(format.c_str(), displayed_value);
-		if( mEditor )
+		if( mEditor)
 		{
-			// Setting editor text here to "" before using actual text is here because if text which
-			// is set is the same as the one which is actually typed into lineeditor, LLLineEditor::setText()
-			// will exit at it's beginning, so text for revert on escape won't be saved. (EXT-8536)
-			mEditor->setText( LLStringUtil::null );
-			mEditor->setText( text );
+			//BD - Prevent the editor from being changed while we are editing it.
+			if (!mEditor->hasFocus())
+			{
+				// Setting editor text here to "" before using actual text is here because if text which
+				// is set is the same as the one which is actually typed into lineeditor, LLLineEditor::setText()
+				// will exit at it's beginning, so text for revert on escape won't be saved. (EXT-8536)
+				mEditor->setText(LLStringUtil::null);
+				mEditor->setText(text);
+			}
 		}
 		else
 		{
