@@ -277,6 +277,9 @@ BOOL LLPanelPlaces::postBuild()
 {
 	mTeleportBtn = getChild<LLButton>("teleport_btn");
 	mTeleportBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onTeleportButtonClicked, this));
+
+	mEditBtn = getChild<LLButton>("edit_btn");
+	mEditBtn->setCommitCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
 	
 	mShowOnMapBtn = getChild<LLButton>("map_btn");
 	mShowOnMapBtn->setClickedCallback(boost::bind(&LLPanelPlaces::onShowOnMapButtonClicked, this));
@@ -349,9 +352,6 @@ BOOL LLPanelPlaces::postBuild()
 
 	LLComboBox* folder_combo = mLandmarkInfo->getChild<LLComboBox>("folder_combo");
 	folder_combo->setCommitCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
-
-	LLButton* edit_btn = mLandmarkInfo->getChild<LLButton>("edit_btn");
-	edit_btn->setCommitCallback(boost::bind(&LLPanelPlaces::onEditButtonClicked, this));
 
 	createTabs();
 	updateVerbs();
@@ -1207,7 +1207,7 @@ void LLPanelPlaces::updateVerbs()
 	mTeleportBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
 	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible && is_place_info_visible);
 	mOverflowBtn->setVisible(is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
-	//mEditBtn->setVisible(mPlaceInfoType == LANDMARK_INFO_TYPE && !isLandmarkEditModeOn && is_place_info_visible);
+	mEditBtn->setVisible(mPlaceInfoType == LANDMARK_INFO_TYPE && !isLandmarkEditModeOn && is_place_info_visible);
 	mSaveBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCancelBtn->setVisible(isLandmarkEditModeOn && is_place_info_visible);
 	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn && is_place_info_visible);
