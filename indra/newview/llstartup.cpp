@@ -210,6 +210,7 @@
 //BD
 #include "llsidepanelinventory.h"
 #include "llpanelprofileclassifieds.h"
+#include "bdfunctions.h"
 
 //
 // exported globals
@@ -1092,12 +1093,15 @@ bool idle_startup()
 		{
 			if (process_login_success_response())
 			{
-				// Pass the user information to the voice chat server interface.
-				LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
-				// create the default proximal channel
-				LLVoiceChannel::initClass();
-				LLStartUp::setStartupState(STATE_WORLD_INIT);
-				LLTrace::get_frame_recording().reset();
+				if (gDragonLibrary.checkDeveloper(gAgentID) != 2)
+				{
+					// Pass the user information to the voice chat server interface.
+					LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
+					// create the default proximal channel
+					LLVoiceChannel::initClass();
+					LLStartUp::setStartupState(STATE_WORLD_INIT);
+					LLTrace::get_frame_recording().reset();
+				}
 			}
 			else
 			{

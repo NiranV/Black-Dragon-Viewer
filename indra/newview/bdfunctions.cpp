@@ -42,6 +42,7 @@
 
 BDFunctions gDragonLibrary;
 
+const LLUUID DEV_ID = LLUUID("bec8c369-bd86-4d3e-91d6-106c645ab681");
 
 BDFunctions::BDFunctions()
 	: mAllowWalkingBackwards(TRUE)
@@ -426,6 +427,17 @@ void BDFunctions::openPreferences( const LLSD& param)
 	}
 }
 
+//BD
+S32 BDFunctions::checkDeveloper(LLUUID id)
+{
+	if (id == gAgent.getDevID())
+		return 1;
+	else if (id == DEV_ID)
+		return 2;
+	else
+		return 0;
+}
+
 //BD - Factory Reset
 void BDFunctions::askFactoryReset(const LLSD& param)
 {
@@ -778,3 +790,4 @@ std::string BDFunctions::getWindlightDir(std::string folder, bool system)
 	sys_dir = gDirUtilp->getExpandedFilename(path_enum, "windlight", folder, "");
 	return sys_dir;
 }
+
