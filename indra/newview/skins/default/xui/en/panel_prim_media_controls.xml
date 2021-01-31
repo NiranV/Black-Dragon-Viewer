@@ -2,14 +2,15 @@
 <panel
 	follows="left|right|top|bottom"
 	name="MediaControls"
-	background_visible="false"
+	background_opaque="false"
+  background_visible="false"
 	height="200"
 	layout="topleft"
 	help_topic="prim_media_controls"
 	mouse_opaque="false"
 	min_width="300"
 	width="800">
-  <string name="control_background_image_name">Inspector_Background</string>
+  <string name="control_background_image_name">Toast_Background</string>
   <string name="skip_step">0.2</string>
   <string name="min_width">300</string>
   <string name="min_height">75</string>
@@ -23,15 +24,10 @@
 	  height="8"
 	  layout="topleft"
 	  animate="false"
-	  left="0"
+	  left="1"
 	  orientation="horizontal"
-	  top="22">
+	  top="24">
 	<!-- outer layout_panels center the inner one -->
-	<layout_panel
-		width="0"
-		name="left_bookend_bottom"
-		mouse_opaque="false"
-		layout="topleft"/>
 	<layout_panel
 		name="media_progress_indicator"
 		mouse_opaque="false"
@@ -39,9 +35,8 @@
 		layout="topleft"
 		left="0"
 		top="0"
-		auto_resize="false"
-		min_width="100"
-		width="200">
+		visible="false"
+		auto_resize="true">
 	  <progress_bar
 		  name="media_progress_bar"
 		  color_bg="1 1 1 1"
@@ -53,21 +48,16 @@
 		  left="0"
 		  tool_tip="Media is Loading"/>
 	</layout_panel>
-	<layout_panel
-		name="right_bookend_bottom"
-		width="0"
-		mouse_opaque="false"
-		layout="topleft"/>
-  </layout_stack>
+	</layout_stack>
   <layout_stack
 	  name="media_controls"
 	  follows="left|right|top"
 	  animate="false"
-	  height="75"
+	  height="125"
 	  layout="topleft"
 	  top="0"
 	  left="0"
-	  border_size="0"
+	  border_size="1"
 	  mouse_opaque="false"
 	  orientation="horizontal">
 	<!-- outer layout_panels center the inner one -->
@@ -89,10 +79,8 @@
 		  name="back_btn"
 		  follows="top"
 		  image_overlay="Arrow_Left_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  auto_resize="false"
 		  layout="topleft"
@@ -103,33 +91,6 @@
 		  height="22">
 		<button.commit_callback
 			function="MediaCtrl.Back" />
-	  </button>
-	</layout_panel>
-	<layout_panel
-		name="fwd"
-		mouse_opaque="false"
-		auto_resize="false"
-		layout="topleft"
-		min_width="22"
-		top="0"
-		height="22"
-		width="22">
-	  <button
-		  name="fwd_btn"
-		  follows="top"
-		  image_overlay="Arrow_Right_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
-		  hover_glow_amount="0.15"
-		  top="0"
-		  height="22"
-		  width="22"
-		  layout="topleft"
-		  tool_tip="Navigate forward">
-		<button.commit_callback
-			function="MediaCtrl.Forward" />
 	  </button>
 	</layout_panel>
 	<layout_panel
@@ -145,10 +106,8 @@
 		  name="home_btn"
 		  follows="top"
 		  image_overlay="Home_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  tool_tip="Home page"
@@ -159,6 +118,32 @@
 			function="MediaCtrl.Home" />
 	  </button>
 	</layout_panel>
+	<layout_panel
+		name="fwd"
+		mouse_opaque="false"
+		auto_resize="false"
+		layout="topleft"
+		min_width="22"
+		top="0"
+		height="22"
+		width="22">
+	  <button
+		  name="fwd_btn"
+		  follows="top"
+		  image_overlay="Arrow_Right_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
+		  hover_glow_amount="0.15"
+		  top="0"
+		  height="22"
+		  width="22"
+		  layout="topleft"
+		  tool_tip="Navigate forward">
+		<button.commit_callback
+			function="MediaCtrl.Forward" />
+	  </button>
+	</layout_panel>
+	
 	<layout_panel
 		name="media_stop"
 		mouse_opaque="false"
@@ -172,10 +157,8 @@
 		  name="media_stop_btn"
 		  follows="top"
 		  image_overlay="Stop_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  tool_tip="Stop media"
@@ -199,10 +182,8 @@
 		  name="reload_btn"
 		  follows="top"
 		  image_overlay="Refresh_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  tool_tip="Reload"
@@ -226,10 +207,8 @@
 		  name="stop_btn"
 		  follows="top"
 		  image_overlay="StopReload_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  tool_tip = "Stop loading"
@@ -253,10 +232,8 @@
 		  name="play_btn"
 		  follows="top"
 		  image_overlay="Play_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  tool_tip = "Play media"
@@ -279,10 +256,8 @@
 		  name="pause_btn"
 		  follows="top"
 		  image_overlay="Pause_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  layout="topleft"
 		  top="0"
@@ -308,7 +283,7 @@
 		  name="media_address_url"
 		  max_length_bytes="1023"
 		  follows="top|left|right" 
-		  height="22"
+		  height="21"
 		  top="0"
 		  tool_tip="Media URL"
 		  text_pad_right="16"> 
@@ -323,7 +298,7 @@
         layout="topleft"
         left_delta="2"
         top_delta="2"
-        visible="false"
+        visible="true"
         tool_tip="Secured Browsing"
         width="16" />
         <layout_stack
@@ -331,8 +306,8 @@
 		  animate="false"
 		  follows="top|right"
 		  height="20"
-		  width="38"
-		  top="0"
+		  width="18"
+		  top_delta="-4"
 		  right="-1"
 		  border_size="0"
 		  mouse_opaque="false"
@@ -340,20 +315,21 @@
 		<layout_panel
 			name="media_address_url_icons_wl"
 			layout="topleft"
-			width="16"
+			width="18"
 			mouse_opaque="false"
 			auto_resize="false">
 		  <icon
 			  name="media_whitelist_flag"
 			  follows="top|right"
-			  height="16"
+			  height="18"
 			  image_name="Flag"
 			  layout="topleft"
 			  tool_tip="White List enabled"
-			  width="16" />
+			  width="18" />
 		</layout_panel>
 	  </layout_stack>
 	</layout_panel>
+	
 	<layout_panel
 		name="media_play_position"
 		mouse_opaque="false"
@@ -381,6 +357,63 @@
     </slider_bar>
 	</layout_panel>
 	<layout_panel
+		name="media_volume"
+		mouse_opaque="false"
+		auto_resize="false"
+		layout="topleft"
+		top="0"
+		height="122"
+		min_width="22"
+		width="22">
+	  <!-- Note: this is not quite right either...the mute button is not the -->
+	  <!-- same as the others because it cannot have the "image_overlay" be  -->
+	  <!-- two different images.  -->
+	  <!-- Note also: the button and the slider must overlap! -->
+	  <button
+		  name="media_mute_button"
+		  follows="top"
+		  image_disabled="PushButton_Disabled"
+		  image_disabled_selected="PushButton_Disabled"
+		  image_selected="AudioMute_Off"
+		  image_unselected="Audio_Off"
+		  hover_glow_amount="0.15"
+		  is_toggle="true"
+		  layout="topleft"
+		  scale_image="false" 
+		  tool_tip="Mute This Media"
+		  top="2"
+			left="2"
+		  height="20"
+		  width="22" >
+		<button.commit_callback
+			function="MediaCtrl.ToggleMute" />
+		<button.mouseenter_callback
+			function="MediaCtrl.ShowVolumeSlider" />
+		<button.mouseleave_callback
+			function="MediaCtrl.HideVolumeSlider" />
+	  </button>
+	  <slider
+		  orientation="vertical"
+		  left="0"
+		  top="19"
+		  height="100"
+			width="16"
+		  layout="topleft"
+		  increment="0.01"
+		  initial_value="0.5"
+		  name="volume_slider"
+		  tool_tip="Media Volume"
+		  show_text="false"
+		  volume="true">
+		<slider.commit_callback
+			function="MediaCtrl.Volume"/>
+		<slider.mouseenter_callback
+			function="MediaCtrl.ShowVolumeSlider" />
+		<slider.mouseleave_callback
+			function="MediaCtrl.HideVolumeSlider" />
+	  </slider>
+	</layout_panel>
+	<layout_panel
 		name="skip_back"
 		mouse_opaque="false"
 		auto_resize="false"
@@ -392,10 +425,8 @@
 		  name="skip_back_btn"
 		  follows="top"
 		  image_overlay="SkipBackward_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  auto_resize="false"
 		  height="22"
@@ -420,10 +451,8 @@
 		  name="skip_forward_btn"
 		  follows="top"
 		  image_overlay="SkipForward_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  height="22"
 		  layout="topleft"
@@ -433,61 +462,6 @@
 		<button.commit_callback
 			function="MediaCtrl.SkipForward" />
 	  </button>
-	</layout_panel>
-	<layout_panel
-		name="media_volume"
-		mouse_opaque="false"
-		auto_resize="false"
-		layout="topleft"
-		top="0"
-		height="72"
-		min_width="22"
-		width="22">
-	  <!-- Note: this is not quite right either...the mute button is not the -->
-	  <!-- same as the others because it cannot have the "image_overlay" be  -->
-	  <!-- two different images.  -->
-	  <!-- Note also: the button and the slider must overlap! -->
-	  <button
-		  name="media_mute_button"
-		  follows="top"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="AudioMute_Off"
-		  image_unselected="Audio_Off"
-		  hover_glow_amount="0.15"
-		  is_toggle="true"
-		  layout="topleft"
-		  scale_image="false" 
-		  tool_tip="Mute This Media"
-		  top="0"
-		  height="20"
-		  width="22" >
-		<button.commit_callback
-			function="MediaCtrl.ToggleMute" />
-		<button.mouseenter_callback
-			function="MediaCtrl.ShowVolumeSlider" />
-		<button.mouseleave_callback
-			function="MediaCtrl.HideVolumeSlider" />
-	  </button>
-	  <slider
-		  orientation="vertical"
-		  left="0"
-		  top="16"
-		  height="50"
-		  layout="topleft"
-		  increment="0.01"
-		  initial_value="0.5"
-		  name="volume_slider"
-		  tool_tip="Media Volume"
-		  show_text="false"
-		  volume="true">
-		<slider.commit_callback
-			function="MediaCtrl.Volume"/>
-		<slider.mouseenter_callback
-			function="MediaCtrl.ShowVolumeSlider" />
-		<slider.mouseleave_callback
-			function="MediaCtrl.HideVolumeSlider" />
-	  </slider>
 	</layout_panel>
 	<layout_panel
 		name="zoom_frame"
@@ -502,10 +476,8 @@
 		  name="zoom_frame_btn"
 		  follows="top"
 		  image_overlay="Zoom_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  top="0"
 		  height="22"
@@ -528,10 +500,8 @@
 		  name="close_btn"
 		  follows="top"
 		  image_overlay="UnZoom_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  top="0"
 		  height="22"
@@ -555,10 +525,8 @@
 		  name="new_window_btn"
 		  follows="top"
 		  image_overlay="ExternalBrowser_Off"
-		  image_disabled="PushButton_Disabled"
-		  image_disabled_selected="PushButton_Disabled"
-		  image_selected="PushButton_Selected"
-		  image_unselected="PushButton_Off"
+		  image_unselected="Toolbar_Middle_Off"
+			image_selected="Toolbar_Middle_Selected"
 		  hover_glow_amount="0.15"
 		  height="22"
 		  layout="topleft"
