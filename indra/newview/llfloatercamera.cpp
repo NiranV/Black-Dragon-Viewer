@@ -595,7 +595,9 @@ void LLFloaterCamera::updateState()
 			}
 
 			//BD - Skip if this preset is meant to be invisible. This is for RLVa.
-			if (preset["hidden"].isDefined())
+			//     Also skip Mouselook preset. We do not set "hidden" to true because
+			//     it would hide the Mouselook preset from the preset editor.
+			if (preset["hidden"].isDefined() || name == "Mouselook")
 			{
 				continue;
 			}
@@ -609,9 +611,7 @@ void LLFloaterCamera::updateState()
 			mPresetsScroll->addElement(row);
 		}
 
-		//BD - Separate defaults from custom ones.
-		mPresetsScroll->addSeparator(ADD_BOTTOM);
-
+		bool first_time = true;
 		//BD - Add our custom presets at the bottom, just like with windlights.
 		dir = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "camera");
 		LLDirIterator dir_iter_user(dir, "*.xml");
@@ -624,6 +624,13 @@ void LLFloaterCamera::updateState()
 			//     in the list.
 			if (!mPresetsScroll->findChild<LLScrollListItem>(name))
 			{
+				if (first_time)
+				{
+					//BD - Separate defaults from custom ones.
+					mPresetsScroll->addSeparator(ADD_BOTTOM);
+					first_time = false;
+				}
+
 				LLSD row;
 				row["columns"][0]["column"] = "icon";
 				row["columns"][0]["type"] = "icon";
