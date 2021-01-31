@@ -18,7 +18,10 @@
 
 #include "bdstatus.h"
 
+#include "bdposingmotion.h"
+
 #include "llagent.h"
+#include "llvoavatarself.h"
 #include "llselectmgr.h"
 #include "pipeline.h"
 #include "llviewercontrol.h"
@@ -190,7 +193,9 @@ void BDStatus::onWorldFrozenButtonClick()
 
 void BDStatus::onPosingButtonClick()
 {
+	gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
 	gAgent.clearPosing();
+	setPosing(false);
 
 	setFocus(FALSE);
 }
