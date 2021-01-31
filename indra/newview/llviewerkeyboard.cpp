@@ -244,7 +244,10 @@ void agent_turn_left( EKeystate s )
 
 	if(gAgent.isMovementLocked()) return;
 
-	if (LLToolCamera::getInstance()->mouseSteerMode())
+	//BD - Treat Third Person Steering and Right-Mouse steering the same as Left-Click Steering.
+	if (LLToolCamera::getInstance()->mouseSteerMode() ||
+		gAgentCamera.mThirdPersonSteeringMode ||
+		LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		agent_slide_left(s);
 	}
@@ -274,7 +277,9 @@ void agent_turn_right( EKeystate s )
 
 	if(gAgent.isMovementLocked()) return;
 
-	if (LLToolCamera::getInstance()->mouseSteerMode())
+	if (LLToolCamera::getInstance()->mouseSteerMode() ||
+		gAgentCamera.mThirdPersonSteeringMode ||
+		LLToolCamera::getInstance()->hasMouseCapture())
 	{
 		agent_slide_right(s);
 	}
