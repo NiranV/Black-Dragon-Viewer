@@ -49,7 +49,7 @@ width="510">
     width="495">
    <layout_stack
    follows="top|left|right"
-   height="3487"
+   height="3507"
    layout="topleft"
    border_size="-5"
    left="0"
@@ -581,7 +581,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsLoDVisible"
 	  layout="topleft"
-	  height="545"
+	  height="565"
       visible="false"
 	  auto_resize="false"
 	  name="lod_layout_panel"
@@ -1771,6 +1771,27 @@ width="510">
    name="MipMaps"
    top_pad="7"
    width="115" />
+ <check_box
+   control_name="RenderWaterLightReflections"
+   enabled_control="RenderDeferred"
+   height="16"
+   initial_value="true"
+   label="Render Accurate Light Reflections"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option toggles whether the Viewer should use specularity on water for light reflections, allowing lights to reflect on water and shadows to occlude sunlight reflections. Note that this will however introduce an issue with water sunlight reflections glowing through fullbright objects similar to how the sunglare on shiny objects glow through fullbright objects."
+   layout="topleft"
+   left="10"
+   name="RenderWaterLightReflections"
+   top_pad="0"
+   width="115">
+  <check_box.check_button
+         image_overlay="Caution_Widget"
+         image_overlay_alignment="left"/>
+ </check_box>
    <text
  type="string"
  length="1"

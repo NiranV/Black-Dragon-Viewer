@@ -2243,6 +2243,7 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredWaterProgram.mShaderFiles.clear();
 		gDeferredWaterProgram.mShaderFiles.push_back(make_pair("deferred/waterV.glsl", GL_VERTEX_SHADER_ARB));
 		gDeferredWaterProgram.mShaderFiles.push_back(make_pair("deferred/waterF.glsl", GL_FRAGMENT_SHADER_ARB));
+		gDeferredWaterProgram.addPermutation("LIGHT_REFLECT", (bool)gSavedSettings.getBOOL("RenderWaterLightReflections") ? "1" : "0");
 		gDeferredWaterProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 		gDeferredWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
 		success = gDeferredWaterProgram.createShader(NULL, NULL);

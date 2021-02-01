@@ -1176,6 +1176,7 @@ void settings_setup_listeners()
 	//BD - Windlight
 	//gSavedSettings.getControl("UseEnvironmentFromRegion")->getSignal()->connect(boost::bind(&handleUseRegioLight, _2));
 	//gSavedSettings.getControl("CloudNoiseImageName")->getSignal()->connect(boost::bind(&handleCloudNoiseChanged, _2));
+	gSavedSettings.getControl("RenderWaterLightReflections")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 
 	//BD - System
 	gSavedSettings.getControl("SlowMotionTimeFactor")->getSignal()->connect(boost::bind(&handleTimeFactorChanged, _2));
