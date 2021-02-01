@@ -162,7 +162,7 @@ void main()
 	
 	vec4 pos = vary_position;
 
-#if LIGHT_REFLECT == 1
+#if LIGHT_REFLECT == 0
 	color.rgb += spec * specular;
 #endif
 
@@ -179,8 +179,8 @@ void main()
  //       SL-12975 (unfix pre-EEP broken alpha)
  frag_data[0] = vec4(color.rgb, color);  // Effectively, color.rgbr
 
-#if LIGHT_REFLECT == 0
- frag_data[1] = vec4(0.5, 0.5, 0.5, 0.75);		// speccolor, spec
+#if LIGHT_REFLECT == 1
+ frag_data[1] = vec4(0.55, 0.55, 0.55, 0.55);		// speccolor, spec
 #else
  frag_data[1] = vec4(0);		// speccolor, spec
 #endif
