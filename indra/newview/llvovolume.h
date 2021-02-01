@@ -140,6 +140,8 @@ public:
 	const LLMatrix3&	getRelativeXformInvTrans() const		{ return mRelativeXformInvTrans; }
 	/*virtual*/	const LLMatrix4	getRenderMatrix() const;
 				typedef std::map<LLUUID, S32> texture_cost_t;
+				U32 	getOriginalRenderCost(texture_cost_t &textures) const;
+				//BD - Altered Complexity Calculation
 				U32 	getRenderCost(texture_cost_t &textures) const;
     /*virtual*/	F32		getEstTrianglesMax() const;
     /*virtual*/	F32		getEstTrianglesStreamingCost() const;

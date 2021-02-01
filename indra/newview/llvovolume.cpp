@@ -3944,6 +3944,294 @@ const LLMatrix4 LLVOVolume::getRenderMatrix() const
 // total cost is returned value + 5 * size of the resulting set.
 // Cannot include cost of textures, as they may be re-used in linked
 // children, and cost should only be increased for unique textures  -Nyx
+U32 LLVOVolume::getOriginalRenderCost(texture_cost_t &textures) const
+{
+	/*****************************************************************
+	 * This calculation should not be modified by third party viewers,
+	 * since it is used to limit rendering and should be uniform for
+	 * everyone. If you have suggested improvements, submit them to
+	 * the official viewer for consideration.
+	 *****************************************************************/
+
+	 // Get access to params we'll need at various points.  
+	 // Skip if this is object doesn't have a volume (e.g. is an avatar).
+	BOOL has_volume = (getVolume() != NULL);
+	LLVolumeParams volume_params;
+	LLPathParams path_params;
+	LLProfileParams profile_params;
+
+	U32 num_triangles = 0;
+
+	// per-prim costs
+	static const U32 ARC_PARTICLE_COST = 1; // determined experimentally
+	static const U32 ARC_PARTICLE_MAX = 2048; // default values
+	static const U32 ARC_TEXTURE_COST = 16; // multiplier for texture resolution - performance tested
+	static const U32 ARC_LIGHT_COST = 500; // static cost for light-producing prims 
+	static const U32 ARC_MEDIA_FACE_COST = 1500; // static cost per media-enabled face 
+
+
+	// per-prim multipliers
+	static const F32 ARC_GLOW_MULT = 1.5f; // tested based on performance
+	static const F32 ARC_BUMP_MULT = 1.25f; // tested based on performance
+	static const F32 ARC_FLEXI_MULT = 5; // tested based on performance
+	static const F32 ARC_SHINY_MULT = 1.6f; // tested based on performance
+	static const F32 ARC_INVISI_COST = 1.2f; // tested based on performance
+	static const F32 ARC_WEIGHTED_MESH = 1.2f; // tested based on performance
+
+	static const F32 ARC_PLANAR_COST = 1.0f; // tested based on performance to have negligible impact
+	static const F32 ARC_ANIM_TEX_COST = 4.f; // tested based on performance
+	static const F32 ARC_ALPHA_COST = 4.f; // 4x max - based on performance
+
+	F32 shame = 0;
+
+	U32 invisi = 0;
+	U32 shiny = 0;
+	U32 glow = 0;
+	U32 alpha = 0;
+	U32 flexi = 0;
+	U32 animtex = 0;
+	U32 particles = 0;
+	U32 bump = 0;
+	U32 planar = 0;
+	U32 weighted_mesh = 0;
+	U32 produces_light = 0;
+	U32 media_faces = 0;
+
+	const LLDrawable* drawablep = mDrawable;
+	U32 num_faces = drawablep->getNumFaces();
+
+	if (has_volume)
+	{
+		volume_params = getVolume()->getParams();
+		path_params = volume_params.getPathParams();
+		profile_params = volume_params.getProfileParams();
+
+		LLMeshCostData costs;
+		if (getCostData(costs))
+		{
+			if (isAnimatedObject() && isRiggedMesh())
+			{
+				// Scaling here is to make animated object vs
+				// non-animated object ARC proportional to the
+				// corresponding calculations for streaming cost.
+				num_triangles = (ANIMATED_OBJECT_COST_PER_KTRI * 0.001 * costs.getEstTrisForStreamingCost()) / 0.06;
+			}
+			else
+			{
+				F32 radius = getScale().length()*0.5f;
+				num_triangles = costs.getRadiusWeightedTris(radius);
+			}
+		}
+	}
+
+	if (num_triangles <= 0)
+	{
+		num_triangles = 4;
+	}
+
+	if (isSculpted())
+	{
+		if (isMesh())
+		{
+			// base cost is dependent on mesh complexity
+			// note that 3 is the highest LOD as of the time of this coding.
+			S32 size = gMeshRepo.getMeshSize(volume_params.getSculptID(), getLOD());
+			if (size > 0)
+			{
+				if (isRiggedMesh())
+				{
+					// weighted attachment - 1 point for every 3 bytes
+					weighted_mesh = 1;
+				}
+			}
+			else
+			{
+				// something went wrong - user should know their content isn't render-free
+				return 0;
+			}
+		}
+		else
+		{
+			const LLSculptParams *sculpt_params = (LLSculptParams *)getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+			LLUUID sculpt_id = sculpt_params->getSculptTexture();
+			if (textures.find(sculpt_id) == textures.end())
+			{
+				LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
+				if (texture)
+				{
+					S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (texture->getFullHeight() / 128.f + texture->getFullWidth() / 128.f));
+					textures.insert(texture_cost_t::value_type(sculpt_id, texture_cost));
+				}
+			}
+		}
+	}
+
+	if (isFlexible())
+	{
+		flexi = 1;
+	}
+	if (isParticleSource())
+	{
+		particles = 1;
+	}
+
+	if (getIsLight())
+	{
+		produces_light = 1;
+	}
+
+	for (S32 i = 0; i < num_faces; ++i)
+	{
+		const LLFace* face = drawablep->getFace(i);
+		if (!face) continue;
+		const LLTextureEntry* te = face->getTextureEntry();
+		const LLViewerTexture* img = face->getTexture();
+
+		if (img)
+		{
+			if (textures.find(img->getID()) == textures.end())
+			{
+				S32 texture_cost = 256 + (S32)(ARC_TEXTURE_COST * (img->getFullHeight() / 128.f + img->getFullWidth() / 128.f));
+				textures.insert(texture_cost_t::value_type(img->getID(), texture_cost));
+			}
+		}
+
+		if (face->getPoolType() == LLDrawPool::POOL_ALPHA)
+		{
+			alpha = 1;
+		}
+		else if (img && img->getPrimaryFormat() == GL_ALPHA)
+		{
+			invisi = 1;
+		}
+		if (face->hasMedia())
+		{
+			media_faces++;
+		}
+
+		if (te)
+		{
+			if (te->getBumpmap())
+			{
+				// bump is a multiplier, don't add per-face
+				bump = 1;
+			}
+			if (te->getShiny())
+			{
+				// shiny is a multiplier, don't add per-face
+				shiny = 1;
+			}
+			if (te->getGlow() > 0.f)
+			{
+				// glow is a multiplier, don't add per-face
+				glow = 1;
+			}
+			if (face->mTextureMatrix != NULL)
+			{
+				animtex = 1;
+			}
+			if (te->getTexGen())
+			{
+				planar = 1;
+			}
+		}
+	}
+
+	// shame currently has the "base" cost of 1 point per 15 triangles, min 2.
+	shame = num_triangles * 5.f;
+	shame = shame < 2.f ? 2.f : shame;
+
+	// multiply by per-face modifiers
+	if (planar)
+	{
+		shame *= planar * ARC_PLANAR_COST;
+	}
+
+	if (animtex)
+	{
+		shame *= animtex * ARC_ANIM_TEX_COST;
+	}
+
+	if (alpha)
+	{
+		shame *= alpha * ARC_ALPHA_COST;
+	}
+
+	if (invisi)
+	{
+		shame *= invisi * ARC_INVISI_COST;
+	}
+
+	if (glow)
+	{
+		shame *= glow * ARC_GLOW_MULT;
+	}
+
+	if (bump)
+	{
+		shame *= bump * ARC_BUMP_MULT;
+	}
+
+	if (shiny)
+	{
+		shame *= shiny * ARC_SHINY_MULT;
+	}
+
+
+	// multiply shame by multipliers
+	if (weighted_mesh)
+	{
+		shame *= weighted_mesh * ARC_WEIGHTED_MESH;
+	}
+
+	if (flexi)
+	{
+		shame *= flexi * ARC_FLEXI_MULT;
+	}
+
+
+	// add additional costs
+	if (particles)
+	{
+		const LLPartSysData *part_sys_data = &(mPartSourcep->mPartSysData);
+		const LLPartData *part_data = &(part_sys_data->mPartData);
+		U32 num_particles = (U32)(part_sys_data->mBurstPartCount * llceil(part_data->mMaxAge / part_sys_data->mBurstRate));
+		num_particles = num_particles > ARC_PARTICLE_MAX ? ARC_PARTICLE_MAX : num_particles;
+		F32 part_size = (llmax(part_data->mStartScale[0], part_data->mEndScale[0]) + llmax(part_data->mStartScale[1], part_data->mEndScale[1])) / 2.f;
+		shame += num_particles * part_size * ARC_PARTICLE_COST;
+	}
+
+	if (produces_light)
+	{
+		shame += ARC_LIGHT_COST;
+	}
+
+	if (media_faces)
+	{
+		shame += media_faces * ARC_MEDIA_FACE_COST;
+	}
+
+	// Streaming cost for animated objects includes a fixed cost
+	// per linkset. Add a corresponding charge here translated into
+	// triangles, but not weighted by any graphics properties.
+	if (isAnimatedObject() && isRootEdit())
+	{
+		shame += (ANIMATED_OBJECT_BASE_COST / 0.06) * 5.0f;
+	}
+
+	if (shame > mRenderComplexity_current)
+	{
+		mRenderComplexity_current = (S32)shame;
+	}
+
+	return (U32)shame;
+}
+
+//BD - Altered Complexity Calculation
+// Returns a base cost and adds textures to passed in set.
+// total cost is returned value + 5 * size of the resulting set.
+// Cannot include cost of textures, as they may be re-used in linked
+// children, and cost should only be increased for unique textures  -Nyx
 U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 {
     /*****************************************************************
@@ -3967,24 +4255,24 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
 	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
 	//     noticeably.
-	static const U32 ARC_PARTICLE_COST = 8; //16
+	static const U32 ARC_PARTICLE_COST = 4; //16
 	//BD - Textures don't directly influence performance impact on a large scale but allocating a lot of textures
 	//     and filling the Viewer memory as well as texture memory grinds at the Viewer's overall performance, the
 	//     lost performance does not fully recover when leaving the area in question, textures overall have a lingering
 	//     performance impact that slowly drives down the Viewer's performance, we should punish them much harder.
 	//     Textures are not free after all and not everyone can have 2+GB texture memory for SL.
-	static const U32 ARC_TEXTURE_COST = 2.5; //5
+	static const U32 ARC_TEXTURE_COST = 1.25; //5
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
-	static const U32 ARC_LIGHT_COST = 256; //512
+	static const U32 ARC_LIGHT_COST = 128; //512
 	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
 	//     work of any good framerate.
-	static const U32 ARC_PROJECTOR_COST = 8192; //16384
+	static const U32 ARC_PROJECTOR_COST = 4096; //16384
 	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
 	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
 	//     those alone will significantly draw resources both RAM and FPS.
-	static const U32 ARC_MEDIA_FACE_COST = 50000; //100000 - static cost per media-enabled face 
+	static const U32 ARC_MEDIA_FACE_COST = 25000; //100000 - static cost per media-enabled face 
 
 	// per-prim multipliers
 	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
@@ -4171,7 +4459,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}
 
 	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
-	shame = num_triangles / 5; //5
+	shame = num_triangles / 10; //5
 	shame = shame < 2.f ? 2.f : shame;
 
 	vovolume->setRenderComplexityBase((S32)shame);

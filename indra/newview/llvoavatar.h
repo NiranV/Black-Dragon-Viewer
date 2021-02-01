@@ -291,15 +291,24 @@ public:
 	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font, const bool use_ellipses = false);
 	void 			idleUpdateRenderComplexity();
 	void 			idleUpdateDebugInfo();
-    void 			accountRenderComplexityForObject(const LLViewerObject *attached_object,
+    void 			accountRenderOriginalComplexityForObject(const LLViewerObject *attached_object,
                                                      /*const F32 max_attachment_complexity,*/
                                                      LLVOVolume::texture_cost_t& textures,
                                                      U32& cost,
                                                      hud_complexity_list_t& hud_complexity_list);
+	void			calculateUpdateOriginalRenderComplexity();
+	//BD - Altered Complexity Calculation
+	void 			accountRenderComplexityForObject(const LLViewerObject *attached_object,
+													/*const F32 max_attachment_complexity,*/
+													LLVOVolume::texture_cost_t& textures,
+													U32& cost,
+													hud_complexity_list_t& hud_complexity_list);
 	void			calculateUpdateRenderComplexity();
 	static const U32 VISUAL_COMPLEXITY_UNKNOWN;
 	void			updateVisualComplexity();
 	
+	U32				getOriginalVisualComplexity()	{ return mOriginalVisualComplexity;		};		// Numbers calculated here by rendering AV
+	//BD - Altered Complexity Calculation
 	U32				getVisualComplexity()			{ return mVisualComplexity;				};		// Numbers calculated here by rendering AV
 	F32				getAttachmentSurfaceArea()		{ return mAttachmentSurfaceArea;		};		// estimated surface area of attachments
 
@@ -474,6 +483,8 @@ public:
 	S32	 		mUpdatePeriod;
 	S32  		mNumInitFaces; //number of faces generated when creating the avatar drawable, does not inculde splitted faces due to long vertex buffer.
 
+	mutable U32  mOriginalVisualComplexity;
+	//BD - Altered Complexity Calculation
 	// the isTooComplex method uses these mutable values to avoid recalculating too frequently
 	mutable U32  mVisualComplexity;
 	mutable bool mVisualComplexityStale;
