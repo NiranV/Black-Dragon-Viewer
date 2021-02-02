@@ -173,8 +173,68 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="104"
+     height="273"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Aimee Stubbs as Patreon patron.
+Added: Avalia as Patreon patron.
+Added: Option to toggle specularity on water surface, allowing it to reflect water but exhibit the glow-though-fullbright issue.
+Changed: Do not add a preset separator to camera presets if there are no custom presets.
+Changed: Make the Viewer report the original LL complexity calculation values to the server to prevent surprisingly getting banned by scripted ban tools based on complexity.
+Changed: Version to 3.9.6.
+Fixed: Sliders getting blocked/reverted while we are dragging them or typing into the text field.
+Fixed: Edit button in Places not working, not hiding and being shown in the wrong panel.
+Fixed: Mouselook preset falsely appearing in the camera presets dropdown.
+Fixed: Teleport button in profile doesn't enable when it should.
+Fixed: Posing status button not stopping posing.
+Fixed: Turn does not swap to Strafe when in Third Person Steering Mode or Right-Click drag mode.
+Fixed: Depth Snapshots weirdly zooming in when taking snapshots at unusual screen ratios.
+Fixed: Clouds being unusually dim and lacking definition. Fix by Drake (forported from Official)
+Fixed: Several wrong names of widgets in Places, resulting in several widgets not working or showing dummy text.
+Fixed: Deferred Rendering not working when not at least SSAO or Shadows are on.
+Fixed: Media-on-a-prim controls being broken and the volume control not appearing.
+Fixed: Sparkling sun light reflection on water glowing through fullbright objects.
+Misc: More Developer checks.
+Misc: On behalf of Drake's recommendation, ported a bunch of his EEP fixes early.
+Removed: Broken default LL camera presets.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.5
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="104"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
