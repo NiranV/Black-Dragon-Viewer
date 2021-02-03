@@ -487,7 +487,7 @@ void LLSidepanelAppearance::setWearablesLoading(bool val)
 {
 	getChildView("wearables_loading_indicator")->setVisible( val);
 	//BD
-	if(!getChildView("outfit_edit")->getVisible())
+	if(!getChildView("panel_outfit_edit")->getVisible())
 		getChildView("edit_outfit_btn")->setVisible( !val);
 	mCoFLoading = val;
 

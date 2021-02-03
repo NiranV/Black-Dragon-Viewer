@@ -312,7 +312,6 @@
         follows="left|top"
         decimal_digits="0"
         increment="1"
-        control_name="Edit Cost"
         name="Edit Cost"
         left_pad="-7"
         width="86"

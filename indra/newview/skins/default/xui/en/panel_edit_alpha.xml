@@ -31,7 +31,6 @@
       top="0"
       width="313" >
        <check_box
-        control_name="LowerAlphaTextureInvisible"
         follows="left|top"
         height="16"
         layout="topleft"
@@ -56,7 +55,6 @@
        </texture_picker>
 
        <check_box
-        control_name="UpperAlphaTextureInvisible"
         follows="left|top"
         height="16"
         layout="topleft"
@@ -81,7 +79,6 @@
        </texture_picker>
 
        <check_box
-        control_name="HeadAlphaTextureInvisible"
         follows="left|top"
         height="16"
         layout="topleft"
@@ -106,7 +103,6 @@
        </texture_picker>
 
        <check_box
-        control_name="Eye AlphaTextureInvisible"
         follows="left|top"
         height="16"
         layout="topleft"
@@ -131,7 +127,6 @@
        </texture_picker>
 
        <check_box
-        control_name="HairAlphaTextureInvisible"
         follows="left|top"
         height="16"
         layout="topleft"

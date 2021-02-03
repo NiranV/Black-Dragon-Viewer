@@ -71,8 +71,7 @@
         width="15"
         follows="top|right|bottom"
         name="scroll_vert"
-        orientation="vertical"
-        step_size="16"/>
+        orientation="vertical"/>
     </layout_panel>
     <layout_panel name="timers_panel"
                   auto_resize="true"

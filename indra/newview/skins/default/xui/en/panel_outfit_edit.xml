@@ -138,6 +138,7 @@ width="320">
             left="3"
             top="0"
             mouse_opaque="false"
+            name="outfit_name_and_status"
             value="Now editing..."
             use_ellipses="true" /> 
             <text

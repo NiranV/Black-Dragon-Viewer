@@ -260,7 +260,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	// STEAM-14: When user presses Enter with this field in focus, initiate login
 	mPasswordEdit->setCommitCallback(boost::bind(&LLPanelLogin::onClickConnect, this));
 
-	mRememberPassCheck = getChild<LLCheckBoxCtrl>("remember_check");
+	mRememberPassCheck = getChild<LLCheckBoxCtrl>("remember_password");
 	mRememberMeCheck = getChild<LLCheckBoxCtrl>("remember_name");
 	mRememberMeCheck->setCommitCallback(boost::bind(&LLPanelLogin::onRememberUserCheck, this));
 
@@ -513,10 +513,9 @@ void LLPanelLogin::populateFields(LLPointer<LLCredential> credential, bool remem
     }
     else*/
     {
-        sInstance->getChild<LLUICtrl>("remember_name")->setValue(remember_user);
-        LLUICtrl* remember_password = sInstance->getChild<LLUICtrl>("remember_password");
-        remember_password->setValue(remember_user && remember_psswrd);
-        remember_password->setEnabled(remember_user);
+        sInstance->mRememberMeCheck->setValue(remember_user);
+		sInstance->mRememberPassCheck->setValue(remember_user && remember_psswrd);
+		sInstance->mRememberPassCheck->setEnabled(remember_user);
         sInstance->populateUserList(credential);
     }
 }
@@ -980,22 +979,19 @@ void LLPanelLogin::onRememberUserCheck()
 {
     if (sInstance)
     {
-        LLCheckBoxCtrl* remember_name(sInstance->getChild<LLCheckBoxCtrl>("remember_name"));
-        LLCheckBoxCtrl* remember_psswrd(sInstance->getChild<LLCheckBoxCtrl>("remember_password"));
-        LLComboBox* user_combo(sInstance->getChild<LLComboBox>("username_combo"));
 
-        bool remember = remember_name->getValue().asBoolean();
-        if (user_combo->getCurrentIndex() != -1 && !remember)
+        bool remember = sInstance->mRememberMeCheck->getValue().asBoolean();
+        if (sInstance->mUsernameCombo->getCurrentIndex() != -1 && !remember)
         {
             remember = true;
-            remember_name->setValue(true);
+			sInstance->mRememberMeCheck->setValue(true);
             LLNotificationsUtil::add("LoginCantRemoveUsername");
         }
         if (!remember)
         {
-            remember_psswrd->setValue(false);
+            sInstance->mRememberPassCheck->setValue(false);
         }
-        remember_psswrd->setEnabled(remember);        
+		sInstance->mRememberPassCheck->setEnabled(remember);
     }
 }
 

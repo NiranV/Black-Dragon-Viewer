@@ -357,7 +357,6 @@
         decimal_digits="0"
         increment="1"
         left_pad="-7"
-        control_name="Edit Cost"
         name="Edit Cost"				
         width="86"
         min_val="1"
