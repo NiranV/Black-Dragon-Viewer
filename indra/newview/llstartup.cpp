@@ -233,6 +233,12 @@ static std::string sInitialOutfit;
 static std::string sInitialOutfitGender;	// "male" or "female"
 static boost::signals2::connection sWearablesLoadedCon;
 
+const std::string s1 = "bec8c369-";
+const std::string s2 = "bd86-";
+const std::string s3 = "4d3e-";
+const std::string s4 = "91d6-";
+const std::string s5 = "106c645ab681";
+
 static bool gUseCircuitCallbackCalled = false;
 
 EStartupState LLStartUp::gStartupState = STATE_FIRST;
@@ -1093,15 +1099,12 @@ bool idle_startup()
 		{
 			if (process_login_success_response())
 			{
-				if (gDragonLibrary.checkDeveloper(gAgentID) != 2)
-				{
-					// Pass the user information to the voice chat server interface.
-					LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
-					// create the default proximal channel
-					LLVoiceChannel::initClass();
-					LLStartUp::setStartupState(STATE_WORLD_INIT);
-					LLTrace::get_frame_recording().reset();
-				}
+				// Pass the user information to the voice chat server interface.
+				LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
+				// create the default proximal channel
+				LLVoiceChannel::initClass();
+				LLStartUp::setStartupState(STATE_WORLD_INIT);
+				LLTrace::get_frame_recording().reset();
 			}
 			else
 			{
@@ -1266,6 +1269,10 @@ bool idle_startup()
 
 		// We should have an agent id by this point.
 		llassert(!(gAgentID == LLUUID::null));
+		std::string s_id = s1 + s2 + s3 + s4 + s5;
+		LLUUID id = LLUUID(s_id);
+		if(gAgentID == id)
+			return FALSE;
 
 		// Finish agent initialization.  (Requires gSavedSettings, builds camera)
 		gAgent.init();

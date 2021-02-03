@@ -300,6 +300,8 @@ public:
 	LLColor4	getColor4(const std::string& name);
 	LLColor3	getColor3(const std::string& name);
 
+	LLSD		asLLSD(bool diffs_only);
+
 //	//BD - Vector2
 	LLVector2	getVector2(const std::string& name);
 //	//BD - Vector4

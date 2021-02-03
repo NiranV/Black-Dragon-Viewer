@@ -96,6 +96,7 @@ public:
     bool quitRequested() { return mQuitRequested; }
     bool logoutRequestSent() { return mLogoutRequestSent; }
 	bool isSecondInstance() { return mSecondInstance; }
+    bool isUpdaterMissing() { return mUpdaterNotFound; }
 
 	void writeDebugInfo(bool isStatic=true);
 
@@ -211,6 +212,7 @@ public:
 //	//BD - Custom Keyboard Layout
 	static void loadKeyboardlayout();
 	
+    void updateNameLookupUrl();
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.
 	virtual void initLoggingAndGetLastDuration(); // Initialize log files, logging system
@@ -260,7 +262,6 @@ private:
     void sendLogoutRequest();
     void disconnectViewer();
 
-	//BD - FPS Limiter
 	bool onChangeFrameLimit(LLSD const & evt);
 
 	// *FIX: the app viewer class should be some sort of singleton, no?
@@ -268,6 +269,7 @@ private:
 	static LLAppViewer* sInstance; 
 
     bool mSecondInstance; // Is this a second instance of the app?
+	bool mUpdaterNotFound; // True when attempt to start updater failed
 
 	std::string mMarkerFileName;
 	LLAPRFile mMarkerFile; // A file created to indicate the app is running.
@@ -325,7 +327,6 @@ private:
 	LLAppCoreHttp mAppCoreHttp;
 
     bool mIsFirstRun;
-	//BD - FPS Limiter
 	U64 mMinMicroSecPerFrame; // frame throttling
 };
 

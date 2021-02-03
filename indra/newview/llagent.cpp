@@ -1006,6 +1006,18 @@ boost::signals2::connection LLAgent::addParcelChangedCallback(parcel_changed_cal
 	return mParcelChangedSignal.connect(cb);
 }
 
+// static
+void LLAgent::capabilityReceivedCallback(const LLUUID &region_id)
+{
+    LLViewerRegion* region = gAgent.getRegion();
+    if (region && region->getRegionID() == region_id)
+    {
+        region->requestSimulatorFeatures();
+        LLAppViewer::instance()->updateNameLookupUrl();
+    }
+}
+
+
 //-----------------------------------------------------------------------------
 // setRegion()
 //-----------------------------------------------------------------------------
@@ -1054,10 +1066,11 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
             if (regionp->capabilitiesReceived())
             {
                 regionp->requestSimulatorFeatures();
+                LLAppViewer::instance()->updateNameLookupUrl();
             }
             else
             {
-                regionp->setCapabilitiesReceivedCallback(boost::bind(&LLViewerRegion::requestSimulatorFeatures, regionp));
+                regionp->setCapabilitiesReceivedCallback(LLAgent::capabilityReceivedCallback);
             }
 
 		}
@@ -1076,6 +1089,15 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 
 			// Update all of the regions.
 			LLWorld::getInstance()->updateAgentOffset(mAgentOriginGlobal);
+
+            if (regionp->capabilitiesReceived())
+            {
+                LLAppViewer::instance()->updateNameLookupUrl();
+            }
+            else
+            {
+                regionp->setCapabilitiesReceivedCallback([](const LLUUID &region_id) {LLAppViewer::instance()->updateNameLookupUrl(); });
+            }
 		}
 
 		// Pass new region along to metrics components that care about this level of detail.

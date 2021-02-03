@@ -105,6 +105,9 @@ public:
 	virtual ~LLViewerJoystick();
 
 	void init(bool autoenable);
+	void initDevice(LLSD &guid);
+	void initDevice(void * preffered_device /*LPDIRECTINPUTDEVICE8*/);
+	void initDevice(void * preffered_device /*LPDIRECTINPUTDEVICE8*/, std::string &name, LLSD &guid);
 	void terminate();
 
 	void updateStatus();
@@ -130,11 +133,14 @@ public:
 
 	void refreshEverything();
 
-	std::string getDescription();
-
 	long					mBtn[16];
 	F32						mAxes[6];
 	
+	bool isDeviceUUIDSet();
+	LLSD getDeviceUUID(); //unconverted, OS dependent value wrapped into LLSD, for comparison/search
+	std::string getDeviceUUIDString(); // converted readable value for settings
+	std::string getDescription();
+
 protected:
 	void updateEnabled(bool autoenable);
 	void handleRun(F32 inc);
@@ -145,6 +151,7 @@ protected:
 	void agentYaw(F32 yaw_inc);
 	void agentJump();
 	void resetDeltas(S32 axis[]);
+	void loadDeviceIdFromSettings();
 #if LIB_NDOF
 	static NDOF_HotPlugResult HotPlugAddCallback(NDOF_Device *dev);
 	static void HotPlugRemovalCallback(NDOF_Device *dev);
@@ -157,6 +164,7 @@ private:
 	bool					mCameraUpdated;
 	bool 					mOverrideCamera;
 	U32						mJoystickRun;
+	LLSD					mLastDeviceUUID; // _GUID as U8 binary map, integer 1 for no device/ndof's device
 	
 	static F32				sLastDelta[MAX_AXES];
 	static F32				sDelta[MAX_AXES];

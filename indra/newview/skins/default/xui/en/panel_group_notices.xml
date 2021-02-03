@@ -90,7 +90,8 @@ You can turn off Notices on the General tab.
         <scroll_list.columns
          label="Date"
          name="date"
-         width="60" />
+         sort_column="sort"
+         width="100" />
         <scroll_list.columns
          name="sort"
          width="-1" />

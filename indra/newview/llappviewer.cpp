@@ -303,7 +303,7 @@ extern BOOL gHiDPISupport;
 ////////////////////////////////////////////////////////////
 // All from the last globals push...
 
-F32 gSimLastTime; // Used in LLAppViewer::init and send_stats()
+F32 gSimLastTime; // Used in LLAppViewer::init and send_viewer_stats()
 F32 gSimFrames;
 
 BOOL gShowObjectUpdates = FALSE;
@@ -704,6 +704,7 @@ LLAppViewer::LLAppViewer()
 	mPurgeUserDataOnExit(false),
 	mSecondInstance(false),
 	//BD
+	//mUpdaterNotFound(false),
 	//mSavedFinalSnapshot(false),
 	mSavePerAccountSettings(false),		// don't save settings on logout unless login succeeded.
 	mQuitRequested(false),
@@ -717,7 +718,6 @@ LLAppViewer::LLAppViewer()
 	mFastTimerLogThread(NULL),
 	mSettingsLocationList(NULL),
 	mIsFirstRun(false),
-	//BD - FPS Limiter
 	mMinMicroSecPerFrame(0.f)
 {
 	if(NULL != sInstance)
@@ -835,8 +835,6 @@ bool LLAppViewer::init()
 	//BD - Set the current log path so we can see and open it in preferences.
 	gSavedSettings.setString("LogsLogPath", gDirUtilp->add(gDirUtilp->getOSUserAppDir(), "logs"));
 
-	LLViewerJoystick::getInstance()->init(true);
-
 	LL_INFOS("InitInfo") << "Configuration initialized." << LL_ENDL ;
 
 	//set the max heap size.
@@ -949,8 +947,6 @@ bool LLAppViewer::init()
 
 	/////////////////////////////////////////////////
 
-	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
-
 	LLViewerFloaterReg::registerFloaters();
 
 	/////////////////////////////////////////////////
@@ -1024,6 +1020,12 @@ bool LLAppViewer::init()
 	gGLActive = TRUE;
 	initWindow();
 	LL_INFOS("InitInfo") << "Window is initialized." << LL_ENDL ;
+
+	//BD - Joystick needs to be initialized after Window otherwise we crash.
+	LLViewerJoystick::getInstance()->init(true);
+
+	//BD - This needs to happen after Joystick initialization as it depends on it.
+	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
 
 	// initWindow also initializes the Feature List, so now we can initialize this global.
 	LLCubeMap::sUseCubeMaps = LLFeatureManager::getInstance()->isFeatureAvailable("RenderCubeMap");
@@ -1180,36 +1182,56 @@ bool LLAppViewer::init()
 
 	gGLActive = FALSE;
 
-/*	LLProcess::Params updater;
-	updater.desc = "updater process";
-	// Because it's the updater, it MUST persist beyond the lifespan of the
-	// viewer itself.
-	updater.autokill = false;
+#if LL_RELEASE_FOR_DOWNLOAD
+    /*if (!gSavedSettings.getBOOL("CmdLineSkipUpdater"))
+    {
+		LLProcess::Params updater;
+		updater.desc = "updater process";
+		// Because it's the updater, it MUST persist beyond the lifespan of the
+		// viewer itself.
+		updater.autokill = false;
+		std::string updater_file;
 #if LL_WINDOWS
-	updater.executable = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, "SLVersionChecker.exe");
+		updater_file = "SLVersionChecker.exe";
+		updater.executable = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, updater_file);
 #elif LL_DARWIN
-	// explicitly run the system Python interpreter on SLVersionChecker.py
-	updater.executable = "python";
-	updater.args.add(gDirUtilp->add(gDirUtilp->getAppRODataDir(), "updater", "SLVersionChecker.py"));
+		// explicitly run the system Python interpreter on SLVersionChecker.py
+		updater.executable = "python";
+		updater_file = "SLVersionChecker.py";
+		updater.args.add(gDirUtilp->add(gDirUtilp->getAppRODataDir(), "updater", updater_file));
 #else
-	updater.executable = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, "SLVersionChecker");
+		updater_file = "SLVersionChecker";
+		updater.executable = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, updater_file);
 #endif
-	// add LEAP mode command-line argument to whichever of these we selected
-	updater.args.add("leap");
-	// UpdaterServiceSettings
-	updater.args.add(stringize(gSavedSettings.getU32("UpdaterServiceSetting")));
-	// channel
-	updater.args.add(LLVersionInfo::instance().getChannel());
-	// testok
-	updater.args.add(stringize(gSavedSettings.getBOOL("UpdaterWillingToTest")));
-	// ForceAddressSize
-	updater.args.add(stringize(gSavedSettings.getU32("ForceAddressSize")));
+		// add LEAP mode command-line argument to whichever of these we selected
+		updater.args.add("leap");
+		// UpdaterServiceSettings
+		updater.args.add(stringize(gSavedSettings.getU32("UpdaterServiceSetting")));
+		// channel
+		updater.args.add(LLVersionInfo::instance().getChannel());
+		// testok
+		updater.args.add(stringize(gSavedSettings.getBOOL("UpdaterWillingToTest")));
+		// ForceAddressSize
+		updater.args.add(stringize(gSavedSettings.getU32("ForceAddressSize")));
 
-#if LL_WINDOWS && !LL_RELEASE_FOR_DOWNLOAD && !LL_SEND_CRASH_REPORTS
-	// This is neither a release package, nor crash-reporting enabled test build
-	// try to run version updater, but don't bother if it fails (file might be missing)
-	LLLeap *leap_p = LLLeap::create(updater, false);
-	if (!leap_p)
+        try
+        {
+            // Run the updater. An exception from launching the updater should bother us.
+            LLLeap::create(updater, true);
+            mUpdaterNotFound = false;
+        }
+        catch (...)
+        {
+            LLUIString details = LLNotifications::instance().getGlobalString("LLLeapUpdaterFailure");
+            details.setArg("[UPDATER_APP]", updater_file);
+            OSMessageBox(
+                details.getString(),
+                LLStringUtil::null,
+                OSMB_OK);
+            mUpdaterNotFound = true;
+        }
+	}
+	else
 	{
 		LL_WARNS("LLLeap") << "Failed to run LLLeap" << LL_ENDL;
 	}
@@ -1218,29 +1240,36 @@ bool LLAppViewer::init()
 	LLLeap::create(updater, true);
 #endif
 
-	// Iterate over --leap command-line options. But this is a bit tricky: if
-	// there's only one, it won't be an array at all.
-	LLSD LeapCommand(gSavedSettings.getLLSD("LeapCommand"));
-	// _LL_DEBUGS("InitInfo") << "LeapCommand: " << LeapCommand << LL_ENDL;
-	if (LeapCommand.isDefined() && ! LeapCommand.isArray())
-	{
-		// If LeapCommand is actually a scalar value, make an array of it.
-		// Have to do it in two steps because LeapCommand.append(LeapCommand)
-		// trashes content! :-P
-		LLSD item(LeapCommand);
-		LeapCommand.append(item);
-	}
-	BOOST_FOREACH(const std::string& leap, llsd::inArray(LeapCommand))
-	{
-		LL_INFOS("InitInfo") << "processing --leap \"" << leap << '"' << LL_ENDL;
-		// We don't have any better description of this plugin than the
-		// user-specified command line. Passing "" causes LLLeap to derive a
-		// description from the command line itself.
-		// Suppress LLLeap::Error exception: trust LLLeap's own logging. We
-		// don't consider any one --leap command mission-critical, so if one
-		// fails, log it, shrug and carry on.
-		LLLeap::create("", leap, false); // exception=false
-	}*/
+    if (mUpdaterNotFound)
+    {
+        LL_WARNS("InitInfo") << "Failed to launch updater. Skipping Leap commands." << LL_ENDL;
+    }
+    else
+    {
+        // Iterate over --leap command-line options. But this is a bit tricky: if
+        // there's only one, it won't be an array at all.
+        LLSD LeapCommand(gSavedSettings.getLLSD("LeapCommand"));
+        LL_DEBUGS("InitInfo") << "LeapCommand: " << LeapCommand << LL_ENDL;
+        if (LeapCommand.isDefined() && !LeapCommand.isArray())
+        {
+            // If LeapCommand is actually a scalar value, make an array of it.
+            // Have to do it in two steps because LeapCommand.append(LeapCommand)
+            // trashes content! :-P
+            LLSD item(LeapCommand);
+            LeapCommand.append(item);
+        }
+        BOOST_FOREACH(const std::string& leap, llsd::inArray(LeapCommand))
+        {
+            LL_INFOS("InitInfo") << "processing --leap \"" << leap << '"' << LL_ENDL;
+            // We don't have any better description of this plugin than the
+            // user-specified command line. Passing "" causes LLLeap to derive a
+            // description from the command line itself.
+            // Suppress LLLeap::Error exception: trust LLLeap's own logging. We
+            // don't consider any one --leap command mission-critical, so if one
+            // fails, log it, shrug and carry on.
+            LLLeap::create("", leap, false); // exception=false
+        }
+    }*/
 
 	if (gSavedSettings.getBOOL("QAMode") && gSavedSettings.getS32("QAModeEventHostPort") > 0)
 	{
@@ -1248,6 +1277,8 @@ bool LLAppViewer::init()
 							 << "lleventhost no longer supported as a dynamic library"
 							 << LL_ENDL;
 	}
+
+#endif //LL_RELEASE_FOR_DOWNLOAD
 
 	LLTextUtil::TextHelpers::iconCallbackCreationFunction = create_text_segment_icon_from_url_match;
 
@@ -1299,7 +1330,6 @@ bool LLAppViewer::init()
 	gJoystick->setNeedsReset(true);
 
 	/*----------------------------------------------------------------------*/
-	//BD - FPS Limiter
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
 	onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
 
@@ -1552,11 +1582,10 @@ bool LLAppViewer::doFrame()
 
 				display();
 
-				//BD - FPS Limiter
 				static U64 last_call = 0;
-				if (!gTeleportDisplay) // SL-10625...throttle early, throttle often with Intel
+				if (!gTeleportDisplay)
 				{
-					// Frame/draw throttling
+					// Frame/draw throttling, controlled by FramePerSecondLimit
 					U64 elapsed_time = LLTimer::getTotalTime() - last_call;
 					if (elapsed_time < mMinMicroSecPerFrame)
 					{
@@ -1941,8 +1970,6 @@ bool LLAppViewer::cleanup()
 
 	SUBSYSTEM_CLEANUP(LLAvatarAppearance);
 
-	SUBSYSTEM_CLEANUP(LLAvatarAppearance);
-
 	SUBSYSTEM_CLEANUP(LLPostProcess);
 
 	LLTracker::cleanupInstance();
@@ -2141,6 +2168,7 @@ bool LLAppViewer::cleanup()
 	LLUIImageList::getInstance()->cleanUp();
 
 	// This should eventually be done in LLAppViewer
+	SUBSYSTEM_CLEANUP(LLImage);
 	SUBSYSTEM_CLEANUP(LLVFSThread);
 	SUBSYSTEM_CLEANUP(LLLFSThread);
 
@@ -2184,6 +2212,7 @@ bool LLAppViewer::cleanup()
 		LLWeb::loadURLExternal( gLaunchFileOnQuit, false );
 		LL_INFOS() << "File launched." << LL_ENDL;
 	}
+	// make sure nothing uses applyProxySettings by this point.
 	LL_INFOS() << "Cleaning up LLProxy." << LL_ENDL;
 	SUBSYSTEM_CLEANUP(LLProxy);
     LLCore::LLHttp::cleanup();
@@ -2243,7 +2272,7 @@ bool LLAppViewer::initThreads()
 {
 	static const bool enable_threads = true;
 
-	LLImage::initParamSingleton(gSavedSettings.getBOOL("TextureNewByteRange"),gSavedSettings.getS32("TextureReverseByteRange"));
+	LLImage::initClass(gSavedSettings.getBOOL("TextureNewByteRange"),gSavedSettings.getS32("TextureReverseByteRange"));
 
 	LLVFSThread::initClass(enable_threads && false);
 	LLLFSThread::initClass(enable_threads && false);
@@ -3244,9 +3273,9 @@ LLSD LLAppViewer::getViewerInfo() const
 			info["REGION"] = gAgent.getRegion()->getName();
 
 			boost::regex regex("\\.(secondlife|lindenlab)\\..*");
-			info["HOSTNAME"] = boost::regex_replace(gAgent.getRegion()->getHost().getHostName(), regex, "");
+			info["HOSTNAME"] = boost::regex_replace(gAgent.getRegion()->getSimHostName(), regex, "");
 			info["HOSTIP"] = gAgent.getRegion()->getHost().getString();
-//			info["SERVER_VERSION"] = gLastVersionChannel;
+			info["SERVER_VERSION"] = gLastVersionChannel;
 			LLSLURL slurl;
 			LLAgentUI::buildSLURL(slurl);
 			info["SLURL"] = slurl.getSLURLString();
@@ -3256,7 +3285,6 @@ LLSD LLAppViewer::getViewerInfo() const
 		{
 			info["REGION"] = RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
 		}
-		info["SERVER_VERSION"] = gLastVersionChannel;
 // [/RLVa:KB]
 	}
 
@@ -3718,7 +3746,7 @@ void LLAppViewer::handleViewerCrash()
 
 	if(gAgent.getRegion())
 	{
-		gDebugInfo["Dynamic"]["CurrentSimHost"] = gAgent.getRegionHost().getHostName();
+		gDebugInfo["Dynamic"]["CurrentSimHost"] = gAgent.getRegion()->getSimHostName();
 		gDebugInfo["Dynamic"]["CurrentRegion"] = gAgent.getRegion()->getName();
 
 		const LLVector3& loc = gAgent.getPositionAgent();
@@ -4110,7 +4138,9 @@ void LLAppViewer::requestQuit()
 		gFloaterView->closeAllChildren(true);
 	}
 
-	send_stats();
+	// Send preferences once, when exiting
+	bool include_preferences = true;
+	send_viewer_stats(include_preferences);
 
 	gLogoutTimer.reset();
 	mQuitRequested = true;
@@ -4934,7 +4964,8 @@ void LLAppViewer::idle()
 		if (viewer_stats_timer.getElapsedTimeF32() >= SEND_STATS_PERIOD && !gDisconnected)
 		{
 			LL_INFOS() << "Transmitting sessions stats" << LL_ENDL;
-			send_stats();
+			bool include_preferences = false;
+			send_viewer_stats(include_preferences);
 			viewer_stats_timer.reset();
 		}
 
@@ -5349,11 +5380,56 @@ void LLAppViewer::sendLogoutRequest()
 	}
 }
 
+void LLAppViewer::updateNameLookupUrl()
+{
+    LLViewerRegion* region = gAgent.getRegion();
+    if (!region || !region->capabilitiesReceived())
+    {
+        return;
+    }
+
+    LLAvatarNameCache *name_cache = LLAvatarNameCache::getInstance();
+    bool had_capability = LLAvatarNameCache::getInstance()->hasNameLookupURL();
+    std::string name_lookup_url;
+    name_lookup_url.reserve(128); // avoid a memory allocation below
+    name_lookup_url = region->getCapability("GetDisplayNames");
+    bool have_capability = !name_lookup_url.empty();
+    if (have_capability)
+    {
+        // we have support for display names, use it
+        U32 url_size = name_lookup_url.size();
+        // capabilities require URLs with slashes before query params:
+        // https://<host>:<port>/cap/<uuid>/?ids=<blah>
+        // but the caps are granted like:
+        // https://<host>:<port>/cap/<uuid>
+        if (url_size > 0 && name_lookup_url[url_size - 1] != '/')
+        {
+            name_lookup_url += '/';
+        }
+        name_cache->setNameLookupURL(name_lookup_url);
+    }
+    else
+    {
+        // Display names not available on this region
+        name_cache->setNameLookupURL(std::string());
+    }
+
+    // Error recovery - did we change state?
+    if (had_capability != have_capability)
+    {
+        // name tags are persistant on screen, so make sure they refresh
+        LLVOAvatar::invalidateNameTags();
+    }
+}
+
 void LLAppViewer::idleNameCache()
 {
 	// Neither old nor new name cache can function before agent has a region
 	LLViewerRegion* region = gAgent.getRegion();
-	if (!region) return;
+    if (!region)
+    {
+        return;
+    }
 
 	// deal with any queued name requests and replies.
 	gCacheName->processPending();
@@ -5361,47 +5437,12 @@ void LLAppViewer::idleNameCache()
 	// Can't run the new cache until we have the list of capabilities
 	// for the agent region, and can therefore decide whether to use
 	// display names or fall back to the old name system.
-	if (!region->capabilitiesReceived()) return;
+    if (!region->capabilitiesReceived())
+    {
+        return;
+    }
 
-	// Agent may have moved to a different region, so need to update cap URL
-	// for name lookups.  Can't do this in the cap grant code, as caps are
-	// granted to neighbor regions before the main agent gets there.  Can't
-	// do it in the move-into-region code because cap not guaranteed to be
-	// granted yet, for example on teleport.
-	LLAvatarNameCache *name_cache = LLAvatarNameCache::getInstance();
-	bool had_capability = LLAvatarNameCache::getInstance()->hasNameLookupURL();
-	std::string name_lookup_url;
-	name_lookup_url.reserve(128); // avoid a memory allocation below
-	name_lookup_url = region->getCapability("GetDisplayNames");
-	bool have_capability = !name_lookup_url.empty();
-	if (have_capability)
-	{
-		// we have support for display names, use it
-	    U32 url_size = name_lookup_url.size();
-	    // capabilities require URLs with slashes before query params:
-	    // https://<host>:<port>/cap/<uuid>/?ids=<blah>
-	    // but the caps are granted like:
-	    // https://<host>:<port>/cap/<uuid>
-	    if (url_size > 0 && name_lookup_url[url_size-1] != '/')
-	    {
-		    name_lookup_url += '/';
-	    }
-		name_cache->setNameLookupURL(name_lookup_url);
-	}
-	else
-	{
-		// Display names not available on this region
-		name_cache->setNameLookupURL( std::string() );
-	}
-
-	// Error recovery - did we change state?
-	if (had_capability != have_capability)
-	{
-		// name tags are persistant on screen, so make sure they refresh
-		LLVOAvatar::invalidateNameTags();
-	}
-
-	name_cache->idle();
+    LLAvatarNameCache::getInstance()->idle();
 }
 
 //
@@ -5612,7 +5653,6 @@ void LLAppViewer::disconnectViewer()
 	LLUrlEntryParcel::setDisconnected(gDisconnected);
 }
 
-//BD - FPS Limiter
 bool LLAppViewer::onChangeFrameLimit(LLSD const & evt)
 {
 	if (evt.asInteger() > 0)
@@ -5763,7 +5803,7 @@ void LLAppViewer::handleLoginComplete()
 
 	if(gAgent.getRegion())
 	{
-		gDebugInfo["CurrentSimHost"] = gAgent.getRegionHost().getHostName();
+		gDebugInfo["CurrentSimHost"] = gAgent.getRegion()->getSimHostName();
 		gDebugInfo["CurrentRegion"] = gAgent.getRegion()->getName();
 	}
 

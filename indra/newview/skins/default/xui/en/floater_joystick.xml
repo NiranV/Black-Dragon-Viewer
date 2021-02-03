@@ -10,6 +10,10 @@
      name="NoDevice">
         No Device detected
     </floater.string>
+    <floater.string
+    name="JoystickDisabled">
+        None
+    </floater.string>
     <icon
 				follows="top|left"
 				height="464"
@@ -53,34 +57,41 @@
  name="title"
  top="0"
  width="482"/>
-    <check_box
-     control_name="JoystickEnabled"
-     halign="left"
-     label="Enable Controller:"
-     layout="topleft"
-     height="14"
-     left="5"
-     top_delta="3"
-     name="enable_joystick"
-     width="120" >
-     <check_box.commit_callback
-     function="Joystick.Refresh"/>
-     </check_box>
-     <text
-     top_delta="1"
+   <text
+     top_delta="4"
      follows="left|top"
      layout="topleft"
+     left="10"
+     name="select_joystick"
+     height="14"
+     width="100" >
+    Select Controller:
+   </text>
+    <combo_box
+     allow_text_entry="false"
+     follows="left|top"
+     layout="topleft"
+     name="joystick_combo"
+     height="21"
+     top="0"
      left_pad="10"
-     name="joystick_type"
-     height="12"
-     width="380" />  
+     width="300">
+            <combo_box.drop_down_button
+            image_unselected="Transparent"
+            image_selected="Transparent"
+            image_pressed="Transparent" 
+            image_pressed_selected="Transparent"
+            image_disabled="Transparent" />
+            <combo_box.commit_callback
+            function="Joystick.Refresh"/>
+    </combo_box>
     <check_box
      control_name="JoystickAvatarEnabled"
      halign="top|left"
      label="Use Flycam for Avatar Movement"
      layout="topleft"
      left="10"
-     top_pad="15"
+     top_pad="10"
      name="JoystickAvatarEnabled"
      height="16"
      width="60" >

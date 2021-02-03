@@ -31,6 +31,7 @@
 #include "llstatview.h"
 
 class LLCheckBoxCtrl;
+class LLComboBox;
 
 class LLFloaterJoystick : public LLFloater
 {
@@ -48,6 +49,11 @@ public:
 	static  void setXboxDefaults();
 
 	void refreshAll();
+    void addDevice(std::string &name, LLSD& value);
+
+protected:
+
+	void refreshListOfDevices();
 
 private:
 	void initFromSettings();
@@ -62,6 +68,7 @@ private:
 private:
 	// Device prefs
 	bool mJoystickEnabled;
+	LLSD mJoystickId;
 	S32 mJoystickAxis[7];
 	bool m3DCursor;
 	bool mAutoLeveling;
@@ -82,8 +89,10 @@ private:
 	F32 mFlycamFeathering;
 
 	// Controls that can disable the flycam
-	LLCheckBoxCtrl	*mCheckJoystickEnabled;
 	LLCheckBoxCtrl	*mCheckFlycamEnabled;
+	LLComboBox		*mJoysticksCombo;
+
+    bool mHasDeviceList;
 
 	// stats view 
 	LLStatBar* mAxisStatsBar[6];
