@@ -712,11 +712,6 @@ void LLVOVolume::updateTextureVirtualSize(bool forced)
 	LL_RECORD_BLOCK_TIME(FTM_VOLUME_TEXTURES);
 	// Update the pixel area of all faces
 
-    if (mDrawable.isNull())
-    {
-        return;
-    }
-
 	if(!forced)
 	{
 		if(!isVisible())
@@ -2401,8 +2396,7 @@ bool LLVOVolume::notifyAboutCreatingTexture(LLViewerTexture *texture)
 	//setup new materials
 	for(map_te_material::const_iterator it = new_material.begin(), end = new_material.end(); it != end; ++it)
 	{
-		// These are placeholder materials, they shouldn't be sent to server
-		LLMaterialMgr::getInstance()->setLocalMaterial(getRegion()->getRegionID(), it->second);
+		LLMaterialMgr::getInstance()->put(getID(), it->first, *it->second);
 		LLViewerObject::setTEMaterialParams(it->first, it->second);
 	}
 
@@ -4412,16 +4406,21 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 		const LLFace* face = drawablep->getFace(i);
 		if (!face) continue;
 		const LLTextureEntry* te = face->getTextureEntry();
-		const LLViewerTexture* img = face->getTexture();
 
-		if (img)
+		S32 j = 0;
+		while (j < LLRender::NUM_TEXTURE_CHANNELS)
 		{
-			if (textures.find(img->getID()) == textures.end())
+			const LLViewerTexture* img = face->getTexture(j);
+			if (img)
 			{
-				S32 texture_cost = 256 + (S32)((ARC_TEXTURE_COST * (img->getFullHeight() * img->getFullWidth())) / 1024);
-				textures.insert(texture_cost_t::value_type(img->getID(), texture_cost));
-				vovolume->mRenderComplexityTextures += texture_cost;
+				if (textures.find(img->getID()) == textures.end())
+				{
+					S32 texture_cost = 256 + (S32)((ARC_TEXTURE_COST * (img->getFullHeight() * img->getFullWidth())) / 1024);
+					textures.insert(texture_cost_t::value_type(img->getID(), texture_cost));
+					vovolume->mRenderComplexityTextures += texture_cost;
+				}
 			}
+			++j;
 		}
 
 		if (face->getPoolType() == LLDrawPool::POOL_ALPHA)
