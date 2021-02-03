@@ -151,9 +151,9 @@ bool LLPipeline::RenderDelayCreation;
 bool LLPipeline::RenderAnimateRes;
 bool LLPipeline::FreezeTime;
 S32 LLPipeline::DebugBeaconLineWidth;
-//F32 LLPipeline::RenderHighlightBrightness;
-//LLColor4 LLPipeline::RenderHighlightColor;
-//F32 LLPipeline::RenderHighlightThickness;
+F32 LLPipeline::RenderHighlightBrightness;
+LLColor4 LLPipeline::RenderHighlightColor;
+F32 LLPipeline::RenderHighlightThickness;
 bool LLPipeline::RenderSpotLightsInNondeferred;
 LLColor4 LLPipeline::PreviewAmbientColor;
 LLColor4 LLPipeline::PreviewDiffuse0;
@@ -216,7 +216,6 @@ LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 F32 LLPipeline::RenderSSAOEffect;
 BOOL LLPipeline::CameraFreeDoFFocus;
 BOOL LLPipeline::CameraDoFLocked;
-//bool LLPipeline::RenderDepthOfFieldInEditMode;
 BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 BOOL LLPipeline::RenderHighPrecisionNormals;
@@ -599,9 +598,9 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("FreezeTime");
 	connectRefreshCachedSettingsSafe("DebugBeaconLineWidth");
 	connectRefreshCachedSettingsSafe("RenderHighlightBrightness");
-	//connectRefreshCachedSettingsSafe("RenderHighlightColor");
-	//connectRefreshCachedSettingsSafe("RenderHighlightThickness");
-	//connectRefreshCachedSettingsSafe("RenderSpotLightsInNondeferred");
+	connectRefreshCachedSettingsSafe("RenderHighlightColor");
+	connectRefreshCachedSettingsSafe("RenderHighlightThickness");
+	connectRefreshCachedSettingsSafe("RenderSpotLightsInNondeferred");
 	connectRefreshCachedSettingsSafe("PreviewAmbientColor");
 	connectRefreshCachedSettingsSafe("PreviewDiffuse0");
 	connectRefreshCachedSettingsSafe("PreviewSpecular0");
@@ -686,7 +685,6 @@ void LLPipeline::init()
 //    //BD - Special Options
 	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
 	connectRefreshCachedSettingsSafe("CameraDoFLocked");
-	connectRefreshCachedSettingsSafe("RenderDepthOfFieldInEditMode");
 	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
 	connectRefreshCachedSettingsSafe("RenderSnapshotAutoAdjustMultiplier");
 	connectRefreshCachedSettingsSafe("RenderHighPrecisionNormals");
@@ -1258,9 +1256,9 @@ void LLPipeline::refreshCachedSettings()
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
 	FreezeTime = gSavedSettings.getBOOL("FreezeTime");
 	DebugBeaconLineWidth = gSavedSettings.getS32("DebugBeaconLineWidth");
-	//RenderHighlightBrightness = gSavedSettings.getF32("RenderHighlightBrightness");
-	//RenderHighlightColor = gSavedSettings.getColor4("RenderHighlightColor");
-	//RenderHighlightThickness = gSavedSettings.getF32("RenderHighlightThickness");
+	RenderHighlightBrightness = gSavedSettings.getF32("RenderHighlightBrightness");
+	RenderHighlightColor = gSavedSettings.getColor4("RenderHighlightColor");
+	RenderHighlightThickness = gSavedSettings.getF32("RenderHighlightThickness");
 	RenderSpotLightsInNondeferred = gSavedSettings.getBOOL("RenderSpotLightsInNondeferred");
 	PreviewAmbientColor = gSavedSettings.getColor4("PreviewAmbientColor");
 	PreviewDiffuse0 = gSavedSettings.getColor4("PreviewDiffuse0");
@@ -1324,7 +1322,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderLocalLights = sRenderOtherAttachedLights || sRenderOwnAttachedLights || sRenderDeferredLights;
 	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	CameraDoFLocked = gSavedSettings.getBOOL("CameraDoFLocked");
-	RenderDepthOfFieldInEditMode = gSavedSettings.getBOOL("RenderDepthOfFieldInEditMode");
 	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");
 	RenderSnapshotAutoAdjustMultiplier = gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier");
 	RenderHighPrecisionNormals = gSavedSettings.getBOOL("RenderHighPrecisionNormals");
@@ -4303,7 +4300,6 @@ void render_hud_elements()
 
 void LLPipeline::renderHighlights()
 {
-	/*
 	assertInitialized();
 
 	// Draw 3D UI elements here (before we clear the Z buffer in POOL_HUD)
@@ -4330,10 +4326,10 @@ void LLPipeline::renderHighlights()
 
 		gGL.setColorMask(false, false);
 
-        if (LLGLSLShader::sNoFixedFunction)
-        {
-            gHighlightProgram.bind();
-        }
+		if (LLGLSLShader::sNoFixedFunction)
+		{
+			gHighlightProgram.bind();
+		}
 
 		for (std::set<HighlightItem>::iterator iter = mHighlightSet.begin(); iter != mHighlightSet.end(); ++iter)
 		{
@@ -4343,7 +4339,7 @@ void LLPipeline::renderHighlights()
 
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		glStencilFunc(GL_NOTEQUAL, 0, 0xFFFFFFFF);
-		
+
 		//gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
 
 		gGL.pushMatrix();
@@ -4357,11 +4353,11 @@ void LLPipeline::renderHighlights()
 		LLVector2 tc1;
 		LLVector2 tc2;
 
-		tc1.setVec(0,0);
-		tc2.setVec(2,2);
+		tc1.setVec(0, 0);
+		tc2.setVec(2, 2);
 
 		gGL.begin(LLRender::TRIANGLES);
-				
+
 		F32 scale = RenderHighlightBrightness;
 		LLColor4 color = RenderHighlightColor;
 		F32 thickness = RenderHighlightThickness;
@@ -4381,28 +4377,28 @@ void LLPipeline::renderHighlights()
 			{
 				for (S32 j = 0; j < 8; ++j)
 				{
-					LLVector2 tc(i-4+0.5f, j-4+0.5f);
+					LLVector2 tc(i - 4 + 0.5f, j - 4 + 0.5f);
 
-					F32 dist = 1.f-(tc.length()/sqrtf(32.f));
-					dist *= scale/64.f;
+					F32 dist = 1.f - (tc.length() / sqrtf(32.f));
+					dist *= scale / 64.f;
 
 					tc *= thickness;
-					tc.mV[0] = (tc.mV[0])/mHighlight.getWidth();
-					tc.mV[1] = (tc.mV[1])/mHighlight.getHeight();
+					tc.mV[0] = (tc.mV[0]) / mHighlight.getWidth();
+					tc.mV[1] = (tc.mV[1]) / mHighlight.getHeight();
 
 					gGL.color4f(color.mV[0],
-								color.mV[1],
-								color.mV[2],
-								color.mV[3]*dist);
-					
-					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc2.mV[1]);
-					gGL.vertex2f(-1,3);
-					
-					gGL.texCoord2f(tc.mV[0]+tc1.mV[0], tc.mV[1]+tc1.mV[1]);
-					gGL.vertex2f(-1,-1);
-					
-					gGL.texCoord2f(tc.mV[0]+tc2.mV[0], tc.mV[1]+tc1.mV[1]);
-					gGL.vertex2f(3,-1);
+						color.mV[1],
+						color.mV[2],
+						color.mV[3] * dist);
+
+					gGL.texCoord2f(tc.mV[0] + tc1.mV[0], tc.mV[1] + tc2.mV[1]);
+					gGL.vertex2f(-1, 3);
+
+					gGL.texCoord2f(tc.mV[0] + tc1.mV[0], tc.mV[1] + tc1.mV[1]);
+					gGL.vertex2f(-1, -1);
+
+					gGL.texCoord2f(tc.mV[0] + tc2.mV[0], tc.mV[1] + tc1.mV[1]);
+					gGL.vertex2f(3, -1);
 				}
 			}
 		}
@@ -4412,20 +4408,20 @@ void LLPipeline::renderHighlights()
 		gGL.popMatrix();
 		gGL.matrixMode(LLRender::MM_MODELVIEW);
 		gGL.popMatrix();
-		
+
 		//gGL.setSceneBlendType(LLRender::BT_ALPHA);
 	}
 
 	if ((LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_INTERFACE) > 0))
 	{
 		gHighlightProgram.bind();
-		gGL.diffuseColor4f(1,1,1,0.5f);
+		gGL.diffuseColor4f(1, 1, 1, 0.5f);
 	}
-	
+
 	if (hasRenderDebugFeatureMask(RENDER_DEBUG_FEATURE_SELECTED) && !mFaceSelectImagep)
-		{
-			mFaceSelectImagep = LLViewerTextureManager::getFetchedTexture(IMG_FACE_SELECT);
-		}
+	{
+		mFaceSelectImagep = LLViewerTextureManager::getFetchedTexture(IMG_FACE_SELECT);
+	}
 
 	if (hasRenderDebugFeatureMask(RENDER_DEBUG_FEATURE_SELECTED) && (sRenderHighlightTextureChannel == LLRender::DIFFUSE_MAP))
 	{
@@ -4441,7 +4437,7 @@ void LLPipeline::renderHighlights()
 				LL_ERRS() << "Bad face on selection" << LL_ENDL;
 				return;
 			}
-			
+
 			facep->renderSelected(mFaceSelectImagep, color);
 		}
 	}
@@ -4450,7 +4446,7 @@ void LLPipeline::renderHighlights()
 	{
 		// Paint 'em red!
 		color.setVec(1.f, 0.f, 0.f, 0.5f);
-		
+
 		int count = mHighlightFaces.size();
 		for (S32 i = 0; i < count; i++)
 		{
@@ -4475,7 +4471,7 @@ void LLPipeline::renderHighlights()
 		if ((LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_INTERFACE) > 0))
 		{
 			gHighlightNormalProgram.bind();
-			gGL.diffuseColor4f(1,1,1,0.5f);
+			gGL.diffuseColor4f(1, 1, 1, 0.5f);
 		}
 
 		mFaceSelectImagep->addTextureStats((F32)MAX_IMAGE_AREA);
@@ -4505,7 +4501,7 @@ void LLPipeline::renderHighlights()
 		if ((LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_INTERFACE) > 0))
 		{
 			gHighlightSpecularProgram.bind();
-			gGL.diffuseColor4f(1,1,1,0.5f);
+			gGL.diffuseColor4f(1, 1, 1, 0.5f);
 		}
 
 		mFaceSelectImagep->addTextureStats((F32)MAX_IMAGE_AREA);
@@ -4528,7 +4524,6 @@ void LLPipeline::renderHighlights()
 			gHighlightSpecularProgram.unbind();
 		}
 	}
-	*/
 }
 
 //debug use

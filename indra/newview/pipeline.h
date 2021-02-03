@@ -918,9 +918,9 @@ public:
 	static bool RenderAnimateRes;
 	static bool FreezeTime;
 	static S32 DebugBeaconLineWidth;
-	//static F32 RenderHighlightBrightness;
-	//static LLColor4 RenderHighlightColor;
-	//static F32 RenderHighlightThickness;
+	static F32 RenderHighlightBrightness;
+	static LLColor4 RenderHighlightColor;
+	static F32 RenderHighlightThickness;
 	static bool RenderSpotLightsInNondeferred;
 	static LLColor4 PreviewAmbientColor;
 	static LLColor4 PreviewDiffuse0;
@@ -982,7 +982,6 @@ public:
 	static F32 RenderSSAOEffect;
 	static BOOL CameraFreeDoFFocus;
 	static BOOL CameraDoFLocked;
-	//static bool RenderDepthOfFieldInEditMode;
 	static BOOL RenderDeferredBlurLight;
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static BOOL RenderHighPrecisionNormals;

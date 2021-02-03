@@ -9557,6 +9557,46 @@
     <real>0.1</real>
   </map>
 
+  <key>RenderHighlightBrightness</key>
+  <map>
+    <key>Comment</key>
+    <string>Brightness of mouseover highlights.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>4.0</real>
+  </map>
+
+  <key>RenderHighlightThickness</key>
+  <map>
+    <key>Comment</key>
+    <string>Thickness of mouseover highlights.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.6</real>
+  </map>
+
+  <key>RenderHighlightColor</key>
+  <map>
+    <key>Comment</key>
+    <string>Brightness of mouseover highlights.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Color4</string>
+    <key>Value</key>
+    <array>
+      <real>0.4</real>
+      <real>0.98</real>
+      <real>0.93</real>
+      <real>1.0</real>
+    </array>
+  </map>
 
   <key>RenderSpecularPrecision</key>
   <map>
