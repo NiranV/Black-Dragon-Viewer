@@ -4871,7 +4871,7 @@ FOXCITY - [https://marketplace.secondlife.com/stores/11069 Marketplace] - [https
     left_delta="0"
     label="remember password"
     top_pad="6"
-    name="remember_check"
+    name="remember_password"
     width="200"/>
     <combo_box
     allow_text_entry="true"
