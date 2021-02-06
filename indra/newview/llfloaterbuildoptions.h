@@ -36,6 +36,7 @@
 #include "llselectmgr.h"
 
 class LLObjectSelection;
+class LLComboBox;
 
 typedef LLSafeHandle<LLObjectSelection> LLObjectSelectionHandle;
 
@@ -48,6 +49,11 @@ public:
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
 
+	static void setGridMode(S32 mode);
+	static void refreshGridMode();
+	void toggleLightRadius(LLUICtrl* ctrl);
+	void toggleSelectSurrounding(LLUICtrl* ctrl);
+
 private:
 	friend class LLFloaterReg;
 
@@ -55,5 +61,9 @@ private:
 	~LLFloaterBuildOptions();
 
 	LLObjectSelectionHandle	mObjectSelection;
+
+	LLComboBox*		mComboGridMode;
+	LLUICtrl*		mCheckMyObjects;
+	LLUICtrl*		mCheckPhysicalObjects;
 };
 #endif

@@ -105,8 +105,6 @@ public:
 	bool selectedMediaEditable();
 	void updateLandImpacts();
 
-	static void setGridMode(S32 mode);
-
 	LLPanelFace* getPanelFace() { return mPanelFace; }
 
 private:
@@ -120,6 +118,8 @@ private:
 	static bool multipleFacesSelectedConfirm(const LLSD& notification, const LLSD& response);
 	static void setObjectType( LLPCode pcode );
 	void onClickGridOptions();
+	//BD - Next / Previous Element
+	void onSelectElement(LLUICtrl* ctrl, const LLSD& userdata);
 
 public:
 	LLButton		*mBtnFocus;
@@ -151,13 +151,10 @@ public:
 	LLPanel*		mLandPanel;
 
 	LLUICtrl*		mCheckSnapToGrid;
-	LLUICtrl*		mCheckMyObjects;
-	LLUICtrl*		mCheckPhysicalObjects;
 
 	LLSlider*	mZoomSlider;
 
 	LLButton*		mBtnGridOptions;
-	LLComboBox*		mComboGridMode;
 	LLCheckBoxCtrl*	mCheckStretchUniform;
 	LLCheckBoxCtrl*	mCheckStretchTexture;
 
@@ -165,6 +162,10 @@ public:
 	LLTextBox*		mRemainingCapacity;
 	LLTextBox*		mNothingSelected;
 	LLTextBox*		mMediaInfo;
+
+	//BD - Next / Previous Element
+	LLButton*		mNextElement;
+	LLButton*		mPrevElement;
 
 	LLButton*		mMediaAdd;
 	LLButton*		mMediaDelete;

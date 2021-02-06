@@ -87,16 +87,6 @@ const S32 SHINY_TEXTURE = 4;		// use supplied specular map
 //
 std::string USE_TEXTURE;
 
-LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
-{
-	//BD
-	LLRender::eTexIndex channel_to_edit = (LLRender::eTexIndex)mRadioMaterialType->getSelectedIndex();
-
-	channel_to_edit = (channel_to_edit == LLRender::NORMAL_MAP) ? (getCurrentNormalMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
-	channel_to_edit = (channel_to_edit == LLRender::SPECULAR_MAP) ? (getCurrentSpecularMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
-	return channel_to_edit;
-}
-
 // Things the UI provides...
 //
 LLUUID	LLPanelFace::getCurrentNormalMap()			{ return mBumpyTextureCtrl->getImageAssetID(); }
@@ -141,7 +131,6 @@ BOOL	LLPanelFace::postBuild()
 	setMouseOpaque(FALSE);
 
 	mBtnAlign = getChild<LLButton>("align_media");
-	mRadioMaterialType = getChild<LLRadioGroup>("radio mattype");
 	mComboShiny = getChild<LLComboBox>("combobox shininess");
 	mComboBumpy = getChild<LLComboBox>("combobox bumpiness");
 	mComboAlpha = getChild<LLComboBox>("combobox alphamode");
@@ -2229,4 +2218,14 @@ void LLPanelFace::LLSelectedTE::getMaxDiffuseRepeats(F32& repeats, bool& identic
 
 	} max_diff_repeats_func;
 	identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&max_diff_repeats_func, repeats);
+}
+
+LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
+{
+	//BD
+	LLRender::eTexIndex channel_to_edit = (LLRender::eTexIndex)mRadioMaterialType->getSelectedIndex();
+
+	channel_to_edit = (channel_to_edit == LLRender::NORMAL_MAP) ? (getCurrentNormalMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
+	channel_to_edit = (channel_to_edit == LLRender::SPECULAR_MAP) ? (getCurrentSpecularMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
+	return channel_to_edit;
 }

@@ -145,6 +145,7 @@
 #include "llfloatersidepanelcontainer.h"
 #include "llsidepanelinventory.h"
 #include "llteleporthistory.h"
+#include "llfloaterbuildoptions.h"
 #include "llurlaction.h"
 #include "bdfunctions.h"
 //BD - Pie Menu
@@ -8675,7 +8676,7 @@ class LLToolsUseSelectionForGrid : public view_listener_t
 		} func;
 		LLSelectMgr::getInstance()->getSelection()->applyToRootObjects(&func);
 		LLSelectMgr::getInstance()->setGridMode(GRID_MODE_REF_OBJECT);
-		LLFloaterTools::setGridMode((S32)GRID_MODE_REF_OBJECT);
+		LLFloaterBuildOptions::setGridMode((S32)GRID_MODE_REF_OBJECT);
 		return true;
 	}
 };

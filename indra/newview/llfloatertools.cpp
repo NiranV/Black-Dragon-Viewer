@@ -250,18 +250,10 @@ BOOL	LLFloaterTools::postBuild()
 	mCreatePanel		= getChild<LLPanel>("create_panel");
 	mLandPanel			= getChild<LLPanel>("land_panel");
 
-	mCheckMyObjects			= getChild<LLUICtrl>("checkbox only my objects");
-	mCheckPhysicalObjects	= getChild<LLUICtrl>("checkbox only physical objects");
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
 	mCheckSnapToGrid		= getChild<LLUICtrl>("checkbox snap to grid");
 	mCheckStretchUniform	= getChild<LLCheckBoxCtrl>("checkbox uniform");
 	mCheckStretchTexture	= getChild<LLCheckBoxCtrl>("checkbox stretch textures");
-	mComboGridMode			= getChild<LLComboBox>("combobox grid mode");
-
-	mCheckSnapToGrid->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
-	mCheckStretchUniform->setValue((BOOL)gSavedSettings.getBOOL("ScaleUniform"));
-	mCheckStretchTexture->setValue((BOOL)gSavedSettings.getBOOL("ScaleStretchTextures"));
-	mCheckSelectIndividual->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
 
 	//
 	// Create Buttons
@@ -283,11 +275,6 @@ BOOL	LLFloaterTools::postBuild()
 	mCheckCopyCenters		= getChild<LLCheckBoxCtrl>("checkbox copy centers");
 	mCheckCopyRotates		= getChild<LLCheckBoxCtrl>("checkbox copy rotates");
 
-	mCheckCopySelection->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopySelection"));
-	mCheckSticky->setValue((BOOL)gSavedSettings.getBOOL("CreateToolKeepSelected"));
-	mCheckCopyCenters->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyCenters"));
-	mCheckCopyRotates->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyRotates"));
-
 	mRadioGroupLand			= getChild<LLRadioGroup>("land_radio_group");
 	mBtnApplyToSelection	= getChild<LLButton>("button apply to selection");
 	mSliderDozerSize		= getChild<LLSlider>("slider brush size");
@@ -303,6 +290,9 @@ BOOL	LLFloaterTools::postBuild()
 	mSelectionCount			= getChild<LLTextBox>("selection_count");
 	mRemainingCapacity		= getChild<LLTextBox>("remaining_capacity");
 	mNothingSelected		= getChild<LLTextBox>("selection_empty");
+
+	mNextElement			= getChild<LLButton>("next_part_btn");
+	mPrevElement			= getChild<LLButton>("prev_part_btn");
 
 	mMediaInfo				= getChild<LLTextBox>("media_info");
 	mMediaAdd				= getChild<LLButton>("add_media");
@@ -342,14 +332,10 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mRadioGroupEdit(NULL),
 
 	mCheckSelectIndividual(NULL),
-	//BD
-	mCheckMyObjects(NULL),
-	mCheckPhysicalObjects(NULL),
 
 	mCheckSnapToGrid(NULL),
 	mBtnGridOptions(NULL),
 	mTitleMedia(NULL),
-	mComboGridMode(NULL),
 	mCheckStretchUniform(NULL),
 	mCheckStretchTexture(NULL),
 
@@ -360,6 +346,7 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mBtnLink(NULL),
 	mBtnUnlink(NULL),
 
+	//BD
 	mFocusPanel(NULL),
 	mGrabPanel(NULL),
 	mEditPanel(NULL),
@@ -397,6 +384,10 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mNothingSelected(NULL),
 	mMediaInfo(NULL),
 
+	//BD - Next / Previous Element
+	mNextElement(NULL),
+	mPrevElement(NULL),
+
 	mMediaAdd(NULL),
 	mMediaDelete(NULL),
 	mMediaAlign(NULL),
@@ -423,7 +414,6 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mCommitCallbackRegistrar.add("BuildTool.commitRadioMove",	boost::bind(&commit_radio_group_move,_1));
 	mCommitCallbackRegistrar.add("BuildTool.commitRadioEdit",	boost::bind(&commit_radio_group_edit,_1));
 
-	mCommitCallbackRegistrar.add("BuildTool.gridMode",			boost::bind(&commit_grid_mode,_1));
 	mCommitCallbackRegistrar.add("BuildTool.selectComponent",	boost::bind(&commit_select_component, this));
 	mCommitCallbackRegistrar.add("BuildTool.gridOptions",		boost::bind(&LLFloaterTools::onClickGridOptions,this));
 	mCommitCallbackRegistrar.add("BuildTool.applyToSelection",	boost::bind(&click_apply_to_selection, this));
@@ -432,6 +422,9 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mCommitCallbackRegistrar.add("BuildTool.AddMedia",			boost::bind(&LLFloaterTools::onClickBtnAddMedia,this));
 	mCommitCallbackRegistrar.add("BuildTool.DeleteMedia",		boost::bind(&LLFloaterTools::onClickBtnDeleteMedia,this));
 	mCommitCallbackRegistrar.add("BuildTool.EditMedia",			boost::bind(&LLFloaterTools::onClickBtnEditMedia,this));
+
+	mCommitCallbackRegistrar.add("BuildTool.NextPart",			boost::bind(&LLFloaterTools::onSelectElement, this, _1, _2));
+	mCommitCallbackRegistrar.add("BuildTool.PrevPart",			boost::bind(&LLFloaterTools::onSelectElement, this, _1, _2));
 
 	mCommitCallbackRegistrar.add("BuildTool.LinkObjects",		boost::bind(&LLSelectMgr::linkObjects, LLSelectMgr::getInstance()));
 	mCommitCallbackRegistrar.add("BuildTool.UnlinkObjects",		boost::bind(&LLSelectMgr::unlinkObjects, LLSelectMgr::getInstance()));
@@ -618,6 +611,9 @@ void LLFloaterTools::refresh()
 		mSelectionCount->setVisible(have_selection);
 		mRemainingCapacity->setVisible(have_selection);
 		mNothingSelected->setVisible(!have_selection);
+
+		mNextElement->setEnabled(have_selection && (is_link_select || is_face_select));
+		mPrevElement->setEnabled(have_selection && (is_link_select || is_face_select));
 	}
 
 
@@ -797,29 +793,13 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		{
 			mRadioGroupEdit->setValue("radio align");
 		}
+	}
 
-		S32 index = mComboGridMode->getCurrentIndex();
-		mComboGridMode->removeall();
-
-		switch (mObjectSelection->getSelectType())
-		{
-		case SELECT_TYPE_HUD:
-			mComboGridMode->add(getString("grid_screen_text"));
-			mComboGridMode->add(getString("grid_local_text"));
-			break;
-		case SELECT_TYPE_WORLD:
-			mComboGridMode->add(getString("grid_world_text"));
-			mComboGridMode->add(getString("grid_local_text"));
-			mComboGridMode->add(getString("grid_reference_text"));
-			break;
-		case SELECT_TYPE_ATTACHMENT:
-			mComboGridMode->add(getString("grid_attachment_text"));
-			mComboGridMode->add(getString("grid_local_text"));
-			mComboGridMode->add(getString("grid_reference_text"));
-			break;
-		}
-
-		mComboGridMode->setCurrentByIndex(index);
+	//BD - Refresh grid options
+	LLFloaterBuildOptions* options_floater = LLFloaterReg::getTypedInstance<LLFloaterBuildOptions>("build_options");
+	if (options_floater)
+	{
+		options_floater->refreshGridMode();
 	}
 
 	// Create buttons
@@ -1131,25 +1111,6 @@ void LLFloaterTools::setObjectType( LLPCode pcode )
 	LLToolPlacer::setObjectType( pcode );
 	gSavedSettings.setBOOL("CreateToolCopySelection", FALSE);
 	gFocusMgr.setMouseCapture(NULL);
-}
-
-void commit_grid_mode(LLUICtrl *ctrl)
-{
-	LLComboBox* combo = (LLComboBox*)ctrl;
-
-	LLSelectMgr::getInstance()->setGridMode((EGridMode)combo->getCurrentIndex());
-}
-
-// static
-void LLFloaterTools::setGridMode(S32 mode)
-{
-	LLFloaterTools* tools_floater = LLFloaterReg::getTypedInstance<LLFloaterTools>("build");
-	if (!tools_floater || !tools_floater->mComboGridMode)
-	{
-		return;
-	}
-
-	tools_floater->mComboGridMode->setCurrentByIndex(mode);
 }
 
 void LLFloaterTools::onClickGridOptions()
@@ -2051,3 +2012,159 @@ void LLFloaterTools::updateMediaSettings()
     mMediaSettings[ base_key + std::string( LLPanelContents::TENTATIVE_SUFFIX ) ] = ! identical;
 }
 
+//BD - Shameless plug from llviewermenu.cpp
+// Cycle selection through linked children or/and faces in selected object.
+// FIXME: Order of children list is not always the same as sim's idea of link order. This may confuse
+// resis. Need link position added to sim messages to address this.
+void LLFloaterTools::onSelectElement(LLUICtrl* ctrl, const LLSD& userdata)
+{
+	bool cycle_faces = LLToolFace::getInstance() == LLToolMgr::getInstance()->getCurrentTool();
+	bool cycle_linked = gSavedSettings.getBOOL("EditLinkedParts");
+
+	if (!cycle_faces && !cycle_linked)
+	{
+		// Nothing to do
+		return;
+	}
+
+	bool fwd = (userdata.asString() == "next");
+	bool prev = (userdata.asString() == "previous");
+	bool ifwd = (userdata.asString() == "includenext");
+	bool iprev = (userdata.asString() == "includeprevious");
+
+	LLViewerObject* to_select = NULL;
+	bool restart_face_on_part = !cycle_faces;
+	S32 new_te = 0;
+
+	if (cycle_faces)
+	{
+		// Cycle through faces of current selection, if end is reached, swithc to next part (if present)
+		LLSelectNode* nodep = LLSelectMgr::getInstance()->getSelection()->getFirstNode();
+		if (!nodep) 
+			return;
+		to_select = nodep->getObject();
+		if (!to_select) 
+			return;
+
+		S32 te_count = to_select->getNumTEs();
+		S32 selected_te = nodep->getLastOperatedTE();
+
+		if (fwd || ifwd)
+		{
+			if (selected_te < 0)
+			{
+				new_te = 0;
+			}
+			else if (selected_te + 1 < te_count)
+			{
+				// select next face
+				new_te = selected_te + 1;
+			}
+			else
+			{
+				// restart from first face on next part
+				restart_face_on_part = true;
+			}
+		}
+		else if (prev || iprev)
+		{
+			if (selected_te > te_count)
+			{
+				new_te = te_count - 1;
+			}
+			else if (selected_te - 1 >= 0)
+			{
+				// select previous face
+				new_te = selected_te - 1;
+			}
+			else
+			{
+				// restart from last face on next part
+				restart_face_on_part = true;
+			}
+		}
+	}
+
+	S32 object_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
+	if (cycle_linked && object_count && restart_face_on_part)
+	{
+		LLViewerObject* selected = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		if (selected && selected->getRootEdit())
+		{
+			LLViewerObject::child_list_t children = selected->getRootEdit()->getChildren();
+			children.push_front(selected->getRootEdit());	// need root in the list too
+
+			for (LLViewerObject::child_list_t::iterator iter = children.begin(); iter != children.end(); ++iter)
+			{
+				if ((*iter)->isSelected())
+				{
+					if (object_count > 1 && (fwd || prev))	// multiple selection, find first or last selected if not include
+					{
+						to_select = *iter;
+						if (fwd)
+						{
+							// stop searching if going forward; repeat to get last hit if backward
+							break;
+						}
+					}
+					else if ((object_count == 1) || (ifwd || iprev))	// single selection or include
+					{
+						if (fwd || ifwd)
+						{
+							++iter;
+							while (iter != children.end() && ((*iter)->isAvatar() || (ifwd && (*iter)->isSelected())))
+							{
+								++iter;	// skip sitting avatars and selected if include
+							}
+						}
+						else // backward
+						{
+							iter = (iter == children.begin() ? children.end() : iter);
+							--iter;
+							while (iter != children.begin() && ((*iter)->isAvatar() || (iprev && (*iter)->isSelected())))
+							{
+								--iter;	// skip sitting avatars and selected if include
+							}
+						}
+						iter = (iter == children.end() ? children.begin() : iter);
+						to_select = *iter;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (to_select)
+	{
+		if (gFocusMgr.childHasKeyboardFocus(gFloaterTools))
+		{
+			gFocusMgr.setKeyboardFocus(NULL);	// force edit toolbox to commit any changes
+		}
+		if (fwd || prev)
+		{
+			LLSelectMgr::getInstance()->deselectAll();
+		}
+		if (cycle_faces)
+		{
+			if (restart_face_on_part)
+			{
+				if (fwd || ifwd)
+				{
+					new_te = 0;
+				}
+				else
+				{
+					new_te = to_select->getNumTEs() - 1;
+				}
+			}
+			LLSelectMgr::getInstance()->addAsIndividual(to_select, new_te, FALSE);
+		}
+		else
+		{
+			LLSelectMgr::getInstance()->selectObjectOnly(to_select);
+		}
+		return;
+	}
+	return;
+};

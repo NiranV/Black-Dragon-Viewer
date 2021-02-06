@@ -13,26 +13,6 @@
  sound_flags="0"
  width="305">
   <floater.string
-     name="grid_screen_text">
-    Screen
-  </floater.string>
-  <floater.string
-   name="grid_local_text">
-    Local
-  </floater.string>
-  <floater.string
-   name="grid_world_text">
-    World
-  </floater.string>
-  <floater.string
-   name="grid_reference_text">
-    Reference
-  </floater.string>
-  <floater.string
-   name="grid_attachment_text">
-    Attachment
-  </floater.string>
-  <floater.string
      name="status_rotate">
         Drag colored bands to rotate object
     </floater.string>
@@ -265,7 +245,7 @@
      initial_value="0.125"
      layout="topleft"
      max_val="0.5"
-     top_delta="-2"
+     top_delta="2"
      left="145"
      name="slider zoom"
      width="158">
@@ -418,7 +398,7 @@
 			<radio_group.commit_callback
 			function="BuildTool.commitRadioEdit"/>
     </radio_group>
-
+    
     <check_box
      control_name="ScaleUniform"
      height="16"
@@ -439,29 +419,25 @@
      top_pad="0"
      follows="left|top"
      width="134" />
-	<check_box
-     control_name="SelectMovableOnly"
-     height="16"
-     initial_value="true"
-     label="Only Physical Objects"
-     layout="topleft"
+    <check_box
      left="143"
-     name="checkbox only physical objects"
-     top_pad="0"
      follows="left|top"
-     width="134" />
-	<check_box
-     control_name="SelectOwnedOnly"
      height="16"
-     initial_value="true"
-     label="Only My Objects"
+     control_name="RenderHighlightSelections"
+     label="Selection Outlines"
      layout="topleft"
+     name="checkbox show selection outlines"
+     top_pad="0"/>
+    <check_box
      left="143"
-     name="checkbox only my objects"
-     top_pad="0"
      follows="left|top"
-     width="134" />
-				<check_box
+     height="16"
+     control_name="SnapEnabled"
+     label="Snap to Grid"
+     layout="topleft"
+     name="checkbox snap to grid"
+     top_pad="0"/>
+    <check_box
      left="143"
      follows="left|top"
      height="16"
@@ -473,6 +449,7 @@
 		  <check_box.commit_callback
 			function="BuildTool.selectComponent"/>
 	</check_box>
+    
 				<button
      follows="left|top"
      height="21"
@@ -502,62 +479,41 @@
 	  <button.commit_callback
 	     function="BuildTool.UnlinkObjects"/>
 	</button>
-	<button
-	 control_name="SnapEnabled"
+    
+    <button
      follows="left|top"
-	 is_toggle="true"
      height="21"
-     label="Snap to"
+     label="Next Part"
+     enabled="false"
      image_hover_unselected="Toolbar_Middle_Over"
       image_selected="Toolbar_Middle_Selected"
       image_unselected="Toolbar_Middle_Off"
+     top="110"
      layout="topleft"
      left_pad="1"
-     name="checkbox snap to grid"
-     width="66"/>
-   <!--<check_box
-     control_name="SnapEnabled"
-     height="16"
-     initial_value="true"
-     label="Snap"
+     name="next_part_btn"
+     width="73">
+	  <button.commit_callback
+	     function="BuildTool.NextPart"
+      parameter="next"/>
+    </button>
+    <button
+     follows="left|top"
+     height="21"
+     label="Prev Part"
+     enabled="false"
+     image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+     top="110"
      layout="topleft"
-     top_pad="0"
-     name="checkbox snap to grid"
-     width="134" />-->
-    <combo_box
-      height="21"
-      layout="topleft"
-      follows="left|top"
-      name="combobox grid mode"
-      tool_tip="Choose the type of grid ruler for positioning the object"
-      top_delta="0"
-      left_pad="1"
-      width="85">
-      <combo_box.item
-      label="World"
-      name="World"
-      value="World" />
-      <combo_box.item
-      label="Local"
-      name="Local"
-      value="Local" />
-      <combo_box.item
-      label="Reference"
-      name="Reference"
-      value="Reference" />
-      <combo_box.commit_callback
-      function="BuildTool.gridMode"/>
-      <combo_box.combo_button
-            image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Press"
-            image_disabled="ToolbarDropDown_Off" />
-            <combo_box.drop_down_button
-            image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Press"
-            image_pressed="ToolbarDropDown_Press" 
-            image_pressed_selected="ToolbarDropDown_Press"
-            image_disabled="ToolbarDropDown_Off" />
-    </combo_box>
+     left_pad="1"
+     name="prev_part_btn"
+     width="73">
+	  <button.commit_callback
+	     function="BuildTool.PrevPart"
+      parameter="previous"/>
+    </button>
 	<button
      left_pad="1"
      label=""
@@ -570,7 +526,7 @@
       image_unselected="Toolbar_Middle_Off"
      tool_tip="See more grid options"
      top_delta="0"
-     width="19"
+     width="25"
      height="21" >
 	 <button.commit_callback
 	     function="BuildTool.gridOptions"/>
@@ -828,7 +784,7 @@
      height="130"
      layout="topleft"
      left="0"
-     visible="true"
+     visible="false"
      mouse_opaque="false"
      name="land_panel"
      top="0"
