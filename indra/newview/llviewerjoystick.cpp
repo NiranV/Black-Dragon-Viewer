@@ -442,9 +442,9 @@ void LLViewerJoystick::init(bool autoenable)
 	}
 	LL_INFOS("Joystick") << "ndof: mDriverState=" << mDriverState << "; mNdofDev=" 
 			<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
-#endif
 
 	gJoystick = LLViewerJoystick::getInstance();
+#endif
 }
 
 void LLViewerJoystick::initDevice(LLSD &guid)
