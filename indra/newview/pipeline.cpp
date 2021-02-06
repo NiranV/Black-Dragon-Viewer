@@ -220,6 +220,7 @@ BOOL LLPipeline::RenderDeferredBlurLight;
 BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
 BOOL LLPipeline::RenderHighPrecisionNormals;
 BOOL LLPipeline::RenderShadowAutomaticDistance;
+BOOL LLPipeline::RenderScreenSpaceReflections;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOBlurSize;
@@ -659,6 +660,7 @@ void LLPipeline::init()
 	gSavedSettings.getControl("RenderAutoHideSurfaceAreaLimit")->getCommitSignal()->connect(boost::bind(&LLPipeline::refreshCachedSettings));
 
 	//BD - Screen Space Reflections
+	connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
 	connectRefreshCachedSettingsSafe("RenderSSRResolution");
 	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 
@@ -1344,6 +1346,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 
 //	//BD - Screen Space Reflections
+	RenderScreenSpaceReflections = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
 	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
 	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 
@@ -4230,7 +4233,7 @@ void LLPipeline::postSort(LLCamera& camera)
 						if (facep)
 						{
 							gPipeline.mSelectedFaces.push_back(facep);
-					}
+						}
 					}
 					return true;
 				}
@@ -8998,7 +9001,8 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget *screen_target)
 		//BD
 		if (RenderDeferredSSAO 
 			|| RenderShadowDetail > 0
-			|| RenderDeferredBlurLight)
+			|| RenderDeferredBlurLight
+			|| RenderScreenSpaceReflections)
 		{
             deferred_light_target->bindTarget();
             {  // paint shadow/SSAO light map (direct lighting lightmap)

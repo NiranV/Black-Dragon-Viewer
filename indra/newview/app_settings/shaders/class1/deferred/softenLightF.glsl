@@ -132,9 +132,6 @@ void main()
     
     vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
 
-    vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
-    scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
-
     vec3 color = vec3(0);
     float bloom = 0.0;
     {
@@ -165,6 +162,10 @@ void main()
         vec3 refnormpersp = normalize(reflect(pos.xyz, norm.xyz));
         
 #if USE_SSR
+        vec2 scol_ambocc = texture2DRect(lightMap, vary_fragcoord.xy).rg;
+        scol_ambocc = pow(scol_ambocc, vec2(light_gamma));
+        float scol       = max(scol_ambocc.r, diffuse.a);
+        
         if (spec.a > 0.0) // specular reflection
         {
          float fullbrightification = diffuse.a;

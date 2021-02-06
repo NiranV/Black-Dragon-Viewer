@@ -986,6 +986,7 @@ public:
 	static BOOL RenderSnapshotAutoAdjustMultiplier;
 	static BOOL RenderHighPrecisionNormals;
 	static BOOL RenderShadowAutomaticDistance;
+	static BOOL RenderScreenSpaceReflections;
 	static U32 RenderSSRResolution;
 	static F32 RenderSSRBrightness;
 	static F32 RenderSSAOBlurSize;
