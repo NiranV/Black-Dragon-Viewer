@@ -188,7 +188,7 @@ void LLFloaterFixedEnvironment::onOpen(const LLSD& key)
 	mIsLocalEdit = !mInventoryItem;
 	updateEditEnvironment();
 
-	//syncronizeTabs();
+	//ssyncronizeTabs();
 	populatePresetsList();
 	refresh();
 }
@@ -202,7 +202,12 @@ void LLFloaterFixedEnvironment::onFocusReceived()
 {
     if (isInVisibleChain())
     {
+		mPreviousSettings = mSettings;
         updateEditEnvironment();
+		if (mPreviousSettings != mSettings)
+		{
+			syncronizeTabs();
+		}
     }
 }
 

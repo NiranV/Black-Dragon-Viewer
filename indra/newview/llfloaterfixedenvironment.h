@@ -90,6 +90,7 @@ protected:
     LLComboBox *			mTxtName;
 
     LLSettingsBase::ptr_t   mSettings;
+	LLSettingsBase::ptr_t	mPreviousSettings;
 
     virtual void            doImportFromDisk() = 0;
     virtual void            doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings);
