@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="929"
+	      height="949"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -204,7 +204,19 @@ width="510">
 		     top_pad="0"
 		     width="256" />
        <check_box
+		     control_name="RenderHighlightSelections"
+		     height="16"
+		     initial_value="true"
+		     label="Show Selection Outlines"
+		     tool_tip="This option toggles the visibility of outlines when selecting objects in Edit mode. This option can heavily impact performance when a lot of complex objects are selected."
+		     layout="topleft"
+		     left="10"
+		     name="RenderHighlightSelections"
+		     top_pad="0"
+		     width="256" />
+       <check_box
 		     control_name="FastSelectionUpdates"
+       enabled_control="RenderHighlightSelections"
 		     height="16"
 		     initial_value="true"
 		     label="Refresh Selection Outlines"
@@ -234,6 +246,7 @@ width="510">
  </text>
                   <radio_group
                   control_name="RenderHighlightType"
+                  enabled_control="RenderHighlightSelections"
                   height="19"
                   layout="topleft"
                   left="10"
