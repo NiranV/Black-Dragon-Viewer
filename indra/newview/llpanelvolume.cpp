@@ -320,11 +320,9 @@ void LLPanelVolume::getState( )
 
 	mLightColorSwatch->setEnabled(light_enabled);
 	mLightColorSwatch->setValid(light_enabled);
-	mLightColorSwatch->set(volobjp->getLightSRGBBaseColor());
 
 	mLightTextureCtrl->setEnabled(light_enabled);
 	mLightTextureCtrl->setValid(light_enabled);
-	mLightTextureCtrl->setImageAssetID(volobjp->getLightTextureID());
 
 	//BD
 	mLabelLights->setReadOnly(!light_enabled);
@@ -343,6 +341,8 @@ void LLPanelVolume::getState( )
 		mLightRadius->setValue(volobjp->getLightRadius());
 		mLightFalloff->setValue(volobjp->getLightFalloff());
 
+		mLightColorSwatch->set(volobjp->getLightSRGBBaseColor());
+		mLightTextureCtrl->setImageAssetID(volobjp->getLightTextureID());
 		mLightSavedColor = volobjp->getLightSRGBBaseColor();
 	}
 	else
