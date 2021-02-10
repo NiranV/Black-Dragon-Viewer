@@ -173,8 +173,73 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="91"
+     height="338"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Show Selection Beam option to Build options.
+Added: Show Light Radius option to Build options.
+Added: Select by surrounding option to Build options.
+Added: Next and Previous Element buttons to Build Tools.
+Added: Selection Outlines option to Build Tools.
+Added: Show Selection Outlines option to Preferences - Viewer tab.
+Added: CallieRose2013 as Patreon patron.
+Changed: Renamed Grid Options window to Build options.
+Changed: Moved Select Only My Objects to Build options.
+Changed: Moved Select Only Physical Objects to Build options.
+Changed: Moved Snap to Grid mode selection to Build options.
+Changed: Swapped Snap to Grid for a checkbox and moved it to the other commonly used options.
+Changed: Make Selection Outlines Type and Refresh Selection Outlines option depend on Show Selection Outlines.
+Changed: Disabled shortcut for "Quit Viewer", it was way too close to rolling the camera.
+Changed: Version to 3.9.8.
+Fixed: Environment Editors getting out of sync when a preset is changed outside of the Fixed Environment window while its open.
+Fixed: Deferred Rendering failing when SSR is enabled but everything else is disabled.
+Fixed: Viewer attempting to open an empty invalid chat when double clicking "None" group.
+Fixed: Snapshots sometimes tiling weirdly and inventory snapshots being broken.
+Fixed: Potential startup crash when gJoystick isn't initialized yet.
+Fixed: Crash when trying to edit linden grass/trees.
+Fixed: First-time startup crash when a controller was plugged in.
+Fixed: Simple fullbrights with shiny not being subject to atmospheric haze.
+Fixed: Image dimensions text in texture picker not being displayed.
+Fixed: Fixed Rigged Alpha not being fogged underwater, ported from Alchemy as per Drake's recommendation.
+Removed: Class 3 shaders.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.7
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="91"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
