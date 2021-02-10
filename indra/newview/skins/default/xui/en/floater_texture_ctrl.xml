@@ -94,7 +94,7 @@ width="220">
     layout="topleft"
 	halign="center"
     left="7"
-    name="unknown"
+    name="size_lbl"
     top_pad="-14"
     width="206">
         [DIMENSIONS]
