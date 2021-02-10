@@ -338,6 +338,8 @@ LLViewerJoystick::~LLViewerJoystick()
 // -----------------------------------------------------------------------------
 void LLViewerJoystick::init(bool autoenable)
 {
+	gJoystick = LLViewerJoystick::getInstance();
+
 #if LIB_NDOF
 	static bool libinit = false;
 	mDriverState = JDS_INITIALIZING;
@@ -442,8 +444,6 @@ void LLViewerJoystick::init(bool autoenable)
 	}
 	LL_INFOS("Joystick") << "ndof: mDriverState=" << mDriverState << "; mNdofDev=" 
 			<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
-
-	gJoystick = LLViewerJoystick::getInstance();
 #endif
 }
 

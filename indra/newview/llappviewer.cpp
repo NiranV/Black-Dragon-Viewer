@@ -947,6 +947,9 @@ bool LLAppViewer::init()
 
 	/////////////////////////////////////////////////
 
+	//BD - This needs to happen after Joystick initialization as it depends on it.
+	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
+
 	LLViewerFloaterReg::registerFloaters();
 
 	/////////////////////////////////////////////////
@@ -1020,12 +1023,6 @@ bool LLAppViewer::init()
 	gGLActive = TRUE;
 	initWindow();
 	LL_INFOS("InitInfo") << "Window is initialized." << LL_ENDL ;
-
-	//BD - Joystick needs to be initialized after Window otherwise we crash.
-	LLViewerJoystick::getInstance()->init(true);
-
-	//BD - This needs to happen after Joystick initialization as it depends on it.
-	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
 
 	// initWindow also initializes the Feature List, so now we can initialize this global.
 	LLCubeMap::sUseCubeMaps = LLFeatureManager::getInstance()->isFeatureAvailable("RenderCubeMap");
@@ -1167,17 +1164,14 @@ bool LLAppViewer::init()
 	gSimLastTime = gRenderStartTime.getElapsedTimeF32();
 	gSimFrames = (F32)gFrameCount;
 
-    if (gSavedSettings.getBOOL("JoystickEnabled"))
-    {
-        gJoystick->getInstance()->init(false);
-    }
-
-	try {
+	try 
+	{
+		LL_INFOS("InitInfo") << "Initializing SecHandler" << LL_ENDL;
 		initializeSecHandler();
 	}
 	catch (LLProtectedDataException&)
 	{
-	  LLNotificationsUtil::add("CorruptedProtectedDataStore");
+		LLNotificationsUtil::add("CorruptedProtectedDataStore");
 	}
 
 	gGLActive = FALSE;
@@ -1280,6 +1274,12 @@ bool LLAppViewer::init()
 
 #endif //LL_RELEASE_FOR_DOWNLOAD
 
+	LL_INFOS("InitInfo") << "Attempting to enable Joystick" << LL_ENDL;
+	//BD - Joystick needs to be initialized after Window otherwise we crash.
+	LLViewerJoystick::getInstance()->init(true);
+	
+	gJoystick->setNeedsReset(true);
+
 	LLTextUtil::TextHelpers::iconCallbackCreationFunction = create_text_segment_icon_from_url_match;
 
 	//EXT-7013 - On windows for some locale (Japanese) standard
@@ -1325,9 +1325,6 @@ bool LLAppViewer::init()
 
 	//gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
 	//onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
-
-	//BD
-	gJoystick->setNeedsReset(true);
 
 	/*----------------------------------------------------------------------*/
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
