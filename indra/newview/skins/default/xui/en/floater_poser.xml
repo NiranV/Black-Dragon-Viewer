@@ -200,6 +200,22 @@ width="678">
 				<check_box.commit_callback
                     function="Joint.EasyRotations"/>
 				</check_box>
+				<button
+				height="21"
+				follows="top|left"
+				layout="topleft"
+				enabled="true"
+				label="Mirror Pose"
+				image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+				name="flip_pose"
+				width="151"
+				top_pad="40"
+				left="2">
+				<button.commit_callback
+				function="Joint.FlipPose"/>
+				</button>
 			</panel>
 		</layout_panel>
 		<layout_panel

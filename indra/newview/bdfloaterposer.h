@@ -180,6 +180,9 @@ private:
 	void toggleMirrorMode(LLUICtrl* ctrl) { mMirrorMode = ctrl->getValue().asBoolean(); }
 	void toggleEasyRotations(LLUICtrl* ctrl) { mEasyRotations = ctrl->getValue().asBoolean(); }
 
+	//BD - Flip Poses
+	void onFlipPose();
+
 	//BD - Animesh
 	void onAvatarsRefresh();
 	void onAvatarsSelect();
