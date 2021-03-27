@@ -135,10 +135,6 @@ private:
 		//BD
 		if (mType == LLAssetType::AT_LANDMARK)
 		{
-
-			if (mID.isNull())
-				return;
-
 			LLVector3d g_pos;
 			if (LLLandmarkActions::getLandmarkGlobalPos(mID, g_pos))
 			{
@@ -148,37 +144,11 @@ private:
 		}
 		else if (mType == LLAssetType::AT_CALLINGCARD)
 		{
-			if (mID.isNull())
-				return;
-
 			callingcardCallback(static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle));
-
-			/*LLVector3d g_pos;
-			std::string name;
-			LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
-			LLTracker::ETrackingStatus tracking_status = LLTracker::getTrackingStatus();
-
-			if (//LLAvatarActions::isFriend(mCallingcardID)
-				av_tracker.getBuddyInfo(mCallingcardID)->isRightGrantedFrom(LLRelationship::GRANT_MAP_LOCATION))
-			{
-				LLAvatarActions::showOnMap(mCallingcardID);
-
-				if (LLTracker::TRACKING_AVATAR == tracking_status
-					&& av_tracker.haveTrackingInfo())
-				{
-					g_pos = av_tracker.getGlobalPos();
-					name = av_tracker.getName();
-
-					callingcardCallback(static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle), name, g_pos.mdV[VX], g_pos.mdV[VY], g_pos.mdV[VZ]);
-				}
-			}
-			else
-			{
-				if (LLAvatarActions::canOfferTeleport(mCallingcardID))
-				{
-					LLAvatarActions::offerTeleport(mCallingcardID);
-				}
-			}*/
+		}
+		else if (mType == LLAssetType::AT_SETTINGS)
+		{
+			callingcardCallback(static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle));
 		}
 	}
 
@@ -653,6 +623,77 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			}
 		}
 		break;
+	case DAD_SETTINGS:
+		{
+			/*
+			* add a callback to the end drag event.
+			* the callback will disconnet itself immediately after execution
+			* this is done because LLToolDragAndDrop is a common tool so it shouldn't
+			* be overloaded with redundant callbacks.
+			*/
+			if (!mEndDragConnection.connected())
+			{
+				mEndDragConnection = LLToolDragAndDrop::getInstance()->setEndDragCallback(boost::bind(&LLFavoritesBarCtrl::onEndDrag, this));
+			}
+
+			// Copy the item into the favorites folder (if it's not already there).
+			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
+
+			//BD
+			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
+			{
+				setLandingTab(dest);
+			}
+			else if (mLastTab && (x >= mLastTab->getRect().mRight))
+			{
+				/*
+				* the condition dest == NULL can be satisfied not only in the case
+				* of dragging to the right from the last tab of the favbar. there is a
+				* small gap between each tab. if the user drags something exactly there
+				* then mLandingTab will be set to NULL and the dragged item will be pushed
+				* to the end of the favorites bar. this is incorrect behavior. that's why
+				* we need an additional check which excludes the case described previously
+				* making sure that the mouse pointer is beyond the last tab.
+				*/
+				setLandingTab(NULL);
+			}
+
+			// check if we are dragging an existing item from the favorites bar
+			if (item && mDragItemId == item->getUUID())
+			{
+				*accept = ACCEPT_YES_SINGLE;
+
+				showDragMarker(TRUE);
+
+				if (drop)
+				{
+					handleExistingFavoriteDragAndDrop(x, y);
+				}
+			}
+			else
+			{
+				const LLUUID favorites_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
+				if (item->getParentUUID() == favorites_id)
+				{
+					LL_WARNS("FavoritesBar") << "Attemt to copy a favorite item into the same folder." << LL_ENDL;
+					break;
+				}
+
+				*accept = ACCEPT_YES_COPY_MULTI;
+
+				showDragMarker(TRUE);
+
+				if (drop)
+				{
+					if (mItems.empty())
+					{
+						setLandingTab(NULL);
+					}
+					handleNewFavoriteDragAndDrop(item, favorites_id, x, y);
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}
@@ -824,6 +865,19 @@ void LLFavoritesBarCtrl::changed(U32 mask)
 			items.push_back((*i));
 		}
 		for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+		{
+			cats.push_back((*i));
+		}
+
+		LLInventoryModel::item_array_t s_items;
+		LLInventoryModel::cat_array_t s_cats;
+		is_type = LLAssetType::AT_SETTINGS;
+		gInventory.collectDescendentsIf(mFavoriteFolderId, s_cats, s_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+		for (LLInventoryModel::item_array_t::iterator i = s_items.begin(); i != s_items.end(); ++i)
+		{
+			items.push_back((*i));
+		}
+		for (LLInventoryModel::cat_array_t::iterator i = s_cats.begin(); i != s_cats.end(); ++i)
 		{
 			cats.push_back((*i));
 		}
@@ -1142,6 +1196,19 @@ BOOL LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &it
 		items.push_back((*i));
 	}
 	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
+	LLInventoryModel::item_array_t s_items;
+	LLInventoryModel::cat_array_t s_cats;
+	is_type = LLAssetType::AT_SETTINGS;
+	gInventory.collectDescendentsIf(mFavoriteFolderId, s_cats, s_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = s_items.begin(); i != s_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = s_cats.begin(); i != s_cats.end(); ++i)
 	{
 		cats.push_back((*i));
 	}
@@ -2008,6 +2075,19 @@ void LLFavoritesOrderStorage::saveOrder()
 		cats.push_back((*i));
 	}
 
+	LLInventoryModel::item_array_t s_items;
+	LLInventoryModel::cat_array_t s_cats;
+	is_type = LLAssetType::AT_SETTINGS;
+	gInventory.collectDescendentsIf(favorites_id, s_cats, s_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = s_items.begin(); i != s_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = s_cats.begin(); i != s_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
 	std::sort(items.begin(), items.end(), LLViewerInventoryItemSort());
 	saveItemsOrder(items);
 }
@@ -2060,6 +2140,20 @@ void LLFavoritesOrderStorage::rearrangeFavoriteLandmarks(const LLUUID& source_it
 		cats.push_back((*i));
 	}
 
+	LLInventoryModel::item_array_t s_items;
+	LLInventoryModel::cat_array_t s_cats;
+	is_type = LLAssetType::AT_SETTINGS;
+	gInventory.collectDescendentsIf(favorites_id, s_cats, s_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = s_items.begin(); i != s_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = s_cats.begin(); i != s_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
+
 	// ensure items are sorted properly before changing order. EXT-3498
 	std::sort(items.begin(), items.end(), LLViewerInventoryItemSort());
 
@@ -2094,6 +2188,19 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 		items.push_back((*i));
 	}
 	for (LLInventoryModel::cat_array_t::iterator i = c_cats.begin(); i != c_cats.end(); ++i)
+	{
+		cats.push_back((*i));
+	}
+
+	LLInventoryModel::item_array_t s_items;
+	LLInventoryModel::cat_array_t s_cats;
+	is_type = LLAssetType::AT_SETTINGS;
+	gInventory.collectDescendentsIf(favorite_folder, s_cats, s_items, LLInventoryModel::EXCLUDE_TRASH, is_type);
+	for (LLInventoryModel::item_array_t::iterator i = s_items.begin(); i != s_items.end(); ++i)
+	{
+		items.push_back((*i));
+	}
+	for (LLInventoryModel::cat_array_t::iterator i = s_cats.begin(); i != s_cats.end(); ++i)
 	{
 		cats.push_back((*i));
 	}
