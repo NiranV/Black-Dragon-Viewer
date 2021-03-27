@@ -948,6 +948,7 @@ LLSD LLMemoryInfo::loadStatsMap()
 	stats.add("Total Virtual KB",   state.ullTotalVirtual/div);
 	stats.add("Avail Virtual KB",   state.ullAvailVirtual/div);
 
+	//BD
 	/*PERFORMANCE_INFORMATION perf;
 	perf.cb = sizeof(perf);
 	GetPerformanceInfo(&perf, sizeof(perf));
