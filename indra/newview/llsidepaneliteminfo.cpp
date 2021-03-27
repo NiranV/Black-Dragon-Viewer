@@ -52,6 +52,9 @@
 #include "rlvcommon.h"
 // [/RLVa:KB]
 
+//BD
+#include "llnamebox.h"
+
 class PropertiesChangedCallback : public LLInventoryCallback
 {
 public:
@@ -183,10 +186,19 @@ BOOL LLSidepanelItemInfo::postBuild()
 {
 	LLSidepanelInventorySubpanel::postBuild();
 
-	getChild<LLLineEditor>("LabelItemName")->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
-	getChild<LLUICtrl>("LabelItemName")->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onCommitName,this));
-	getChild<LLLineEditor>("LabelItemDesc")->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
-	getChild<LLUICtrl>("LabelItemDesc")->setCommitCallback(boost::bind(&LLSidepanelItemInfo:: onCommitDescription, this));
+	mLabelItemNameTitle = getChild<LLUICtrl>("LabelItemNameTitle");
+	mLabelItemName = getChild<LLLineEditor>("LabelItemName");
+	mLabelItemDescTitle = getChild<LLUICtrl>("LabelItemDescTitle");
+	mLabelItemDesc = getChild<LLLineEditor>("LabelItemDesc");
+	mLabelCreatorTitle = getChild<LLUICtrl>("LabelCreatorTitle");
+	mLabelCreatorName = getChild<LLUICtrl>("LabelCreatorName");
+	mLabelOwnerTitle = getChild<LLUICtrl>("LabelOwnerTitle");
+	mLabelOwnerName = getChild<LLUICtrl>("LabelOwnerName");
+
+	mLabelItemName->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
+	mLabelItemName->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onCommitName,this));
+	mLabelItemDesc->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
+	mLabelItemDesc->setCommitCallback(boost::bind(&LLSidepanelItemInfo:: onCommitDescription, this));
 	// Creator information
 	getChild<LLUICtrl>("BtnCreator")->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onClickCreator,this));
 	// owner information
@@ -382,13 +394,13 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 											   GP_OBJECT_MANIPULATE)
 		&& is_obj_modify && is_complete && not_in_trash;
 
-	getChildView("LabelItemNameTitle")->setEnabled(TRUE);
-	getChildView("LabelItemName")->setEnabled(is_modifiable && !is_calling_card); // for now, don't allow rename of calling cards
-	getChild<LLUICtrl>("LabelItemName")->setValue(item->getName());
-	getChildView("LabelItemDescTitle")->setEnabled(TRUE);
-	getChildView("LabelItemDesc")->setEnabled(is_modifiable);
+	mLabelItemNameTitle->setEnabled(TRUE);
+	mLabelItemName->setEnabled(is_modifiable && !is_calling_card); // for now, don't allow rename of calling cards
+	mLabelItemName->setValue(item->getName());
+	mLabelItemDescTitle->setEnabled(TRUE);
+	mLabelItemDesc->setEnabled(is_modifiable);
 	getChildView("IconLocked")->setVisible(!is_modifiable);
-	getChild<LLUICtrl>("LabelItemDesc")->setValue(item->getDescription());
+	mLabelItemDesc->setValue(item->getDescription());
 
 	//////////////////
 	// CREATOR NAME //
@@ -410,19 +422,19 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 		{
 			fRlvCanShowCreator = false;
 		}
-		std::string name = LLSLURL("agent", creator_id, (fRlvCanShowCreator) ? "completename" : "rlvanonym").getSLURLString();
+		std::string name = LLSLURL("agent", creator_id, (fRlvCanShowCreator) ? "inspect" : "rlvanonym").getSLURLString();
 		getChildView("BtnCreator")->setEnabled(fRlvCanShowCreator);
 // [/RLVa:KB]
-		getChildView("LabelCreatorTitle")->setEnabled(TRUE);
-		getChild<LLUICtrl>("LabelCreatorName")->setValue(name);
+		mLabelCreatorTitle->setEnabled(TRUE);
+		mLabelCreatorName->setValue(name);
 //		//BD - SSFUI
-		getChildView("LabelCreatorName")->setEnabled(TRUE);
+		mLabelCreatorName->setEnabled(TRUE);
 	}
 	else
 	{
-		getChildView("LabelCreatorTitle")->setEnabled(FALSE);
-		getChildView("LabelCreatorName")->setEnabled(FALSE);
-		getChild<LLUICtrl>("LabelCreatorName")->setValue(getString("unknown_multiple"));
+		mLabelCreatorTitle->setEnabled(FALSE);
+		mLabelCreatorName->setEnabled(FALSE);
+		mLabelCreatorName->setValue(getString("unknown_multiple"));
 	}
 
 	////////////////
@@ -446,23 +458,23 @@ void LLSidepanelItemInfo::refreshFromItem(LLViewerInventoryItem* item)
 //			name = LLSLURL("agent", owner_id, "completename").getSLURLString();
 // [RLVa:KB] - Checked: RLVa-2.0.1
 			fRlvCanShowOwner = RlvActions::canShowName(RlvActions::SNC_DEFAULT, owner_id);
-			name = LLSLURL("agent", owner_id, (fRlvCanShowOwner) ? "completename" : "rlvanonym").getSLURLString();
+			name = LLSLURL("agent", owner_id, (fRlvCanShowOwner) ? "inspect" : "rlvanonym").getSLURLString();
 // [/RLVa:KB]
 		}
 //		getChildView("BtnOwner")->setEnabled(TRUE);
 // [RLVa:KB] - Checked: RLVa-2.0.1
 		getChildView("BtnOwner")->setEnabled(fRlvCanShowOwner);
 // [/RLVa:KB]
-		getChildView("LabelOwnerTitle")->setEnabled(TRUE);
-		getChild<LLUICtrl>("LabelOwnerName")->setValue(name);
+		mLabelOwnerTitle->setEnabled(TRUE);
+		mLabelOwnerName->setValue(name);
 //		//BD - SSFUI
-		getChildView("LabelOwnerName")->setEnabled(TRUE);
+		mLabelOwnerName->setEnabled(TRUE);
 	}
 	else
 	{
-		getChildView("LabelOwnerTitle")->setEnabled(FALSE);
-		getChildView("LabelOwnerName")->setEnabled(FALSE);
-		getChild<LLUICtrl>("LabelOwnerName")->setValue(getString("public"));
+		mLabelOwnerTitle->setEnabled(FALSE);
+		mLabelOwnerName->setEnabled(FALSE);
+		mLabelOwnerName->setValue(getString("public"));
 	}
 	
 	////////////
@@ -856,14 +868,13 @@ void LLSidepanelItemInfo::onCommitName()
 	{
 		return;
 	}
-	LLLineEditor* labelItemName = getChild<LLLineEditor>("LabelItemName");
 
-	if(labelItemName&&
-	   (item->getName() != labelItemName->getText()) && 
+	if(mLabelItemName &&
+	   (item->getName() != mLabelItemName->getText()) &&
 	   (gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE)) )
 	{
 		LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
-		new_item->rename(labelItemName->getText());
+		new_item->rename(mLabelItemName->getText());
 		onCommitChanges(new_item);
 	}
 }
@@ -874,17 +885,12 @@ void LLSidepanelItemInfo::onCommitDescription()
 	LLViewerInventoryItem* item = findItem();
 	if(!item) return;
 
-	LLLineEditor* labelItemDesc = getChild<LLLineEditor>("LabelItemDesc");
-	if(!labelItemDesc)
-	{
-		return;
-	}
-	if((item->getDescription() != labelItemDesc->getText()) && 
+	if((item->getDescription() != mLabelItemDesc->getText()) &&
 	   (gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE)))
 	{
 		LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
 
-		new_item->setDescription(labelItemDesc->getText());
+		new_item->setDescription(mLabelItemDesc->getText());
 		onCommitChanges(new_item);
 	}
 }

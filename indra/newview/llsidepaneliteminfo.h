@@ -40,6 +40,8 @@ class LLItemPropertiesObserver;
 class LLObjectInventoryObserver;
 class LLViewerObject;
 class LLPermissions;
+class LLNameBox;
+class LLLineEditor;
 
 class LLSidepanelItemInfo : public LLSidepanelInventorySubpanel
 {
@@ -59,6 +61,15 @@ public:
 
 	// if received update and item id (from callback) matches internal ones, update UI
 	void onUpdateCallback(const LLUUID& item_id, S32 received_update_id);
+
+	LLUICtrl*		mLabelItemNameTitle;
+	LLLineEditor*	mLabelItemName;
+	LLUICtrl*		mLabelItemDescTitle;
+	LLLineEditor*	mLabelItemDesc;
+	LLUICtrl*		mLabelCreatorTitle;
+	LLUICtrl*		mLabelCreatorName;
+	LLUICtrl*		mLabelOwnerTitle;
+	LLUICtrl*		mLabelOwnerName;
 
 protected:
 	/*virtual*/ void refresh();
@@ -87,6 +98,7 @@ private:
 	//
 	// UI Elements
 	// 
+
 protected:
 	void 						onClickCreator();
 	void 						onClickOwner();
