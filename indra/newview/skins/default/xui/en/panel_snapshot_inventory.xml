@@ -100,8 +100,16 @@
      label="Constrain proportions"
      layout="topleft"
      left="10"
-     name="inventory_keep_aspect_check"
-     visible="false" />
+     name="inventory_keep_aspect_check"/>
+    <check_box
+     top_pad="1"
+     control_name="SnapshotLocalCrop"
+     height="16"
+     follows="left|top"
+     label="Aspect cropping"
+     layout="topleft"
+     left="10"
+     name="crop_snapshots" />
     <text
      follows="top|left"
      font="SansSerif"

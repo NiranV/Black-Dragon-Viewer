@@ -4980,9 +4980,9 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	LLRenderTarget scratch_space;
 
 	F32 scale_factor = 1.0f ;
-	if (!keep_window_aspect || (image_width > window_width) || (image_height > window_height))
+	if (!keep_window_aspect)
 	{	
-		if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) && 
+		if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) &&
 			(image_width > window_width || image_height > window_height) && LLPipeline::sRenderDeferred && !show_ui)
 		{
 			//BD - Always update our view rect and aspect ratio to match our desired snapshot resolution.
@@ -5025,33 +5025,34 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 				{
 					LL_WARNS() << "Failed to allocate scratch space. " << LL_ENDL;
 				}
+			}
+		}
 
-				if (type != LLSnapshotModel::SNAPSHOT_TYPE_DEPTH)
-				{
-					if (reset_deferred)
-					{
-						//BD - Always update our view rect and aspect ratio to match our desired snapshot resolution.
-						//     Should the snapshot fail our main camera and render loop will automatically return us
-						//     to the proper values again anyway.
-						mWorldViewRectRaw.set(0, image_height, image_width, 0);
-						LLViewerCamera::getInstance()->setViewHeightInPixels(mWorldViewRectRaw.getHeight());
-						LLViewerCamera::getInstance()->setAspect(getWorldViewAspectRatio());
-					}
-					else
-					{
-						//BD - As mentioned above, this is part of the issue that makes depth shots zoomed in.
-						//     Due to the above scratch space allocation failing and thus reset_deferred never
-						//     getting set to true, we end up in here.
-						//     This causes differences between how the final depth shot looks compared to the
-						//     same color snapshot. Make it an option to both depth and color shots can either
-						//     allow cropping or not.
-						// if image cropping or need to enlarge the scene, compute a scale_factor
-						F32 ratio = llmin((F32)window_width / image_width, (F32)window_height / image_height);
-						snapshot_width = (S32)(ratio * image_width);
-						snapshot_height = (S32)(ratio * image_height);
-						scale_factor = llmax(1.0f, 1.0f / ratio);
-					}
-				}
+		if (type != LLSnapshotModel::SNAPSHOT_TYPE_DEPTH)
+		{
+			if (reset_deferred)
+			{
+				//BD - Always update our view rect and aspect ratio to match our desired snapshot resolution.
+				//     Should the snapshot fail our main camera and render loop will automatically return us
+				//     to the proper values again anyway.
+				mWorldViewRectRaw.set(0, image_height, image_width, 0);
+				LLViewerCamera::getInstance()->setViewHeightInPixels(mWorldViewRectRaw.getHeight());
+				LLViewerCamera::getInstance()->setAspect(getWorldViewAspectRatio());
+			}
+			
+			if(is_texture && gSavedSettings.getBOOL("SnapshotLocalCrop"))
+			{
+				//BD - As mentioned above, this is part of the issue that makes depth shots zoomed in.
+				//     Due to the above scratch space allocation failing and thus reset_deferred never
+				//     getting set to true, we end up in here.
+				//     This causes differences between how the final depth shot looks compared to the
+				//     same color snapshot. Make it an option to both depth and color shots can either
+				//     allow cropping or not.
+				// if image cropping or need to enlarge the scene, compute a scale_factor
+				F32 ratio = llmin((F32)window_width / image_width, (F32)window_height / image_height);
+				snapshot_width = (S32)(ratio * image_width);
+				snapshot_height = (S32)(ratio * image_height);
+				scale_factor = llmax(1.0f, 1.0f / ratio);
 			}
 		}
 	}
