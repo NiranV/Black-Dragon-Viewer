@@ -2608,12 +2608,25 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
         compl_upd_freq = 100;
     }
 
+	//BD - Moved here from idleUpdateRenderComplexity() to include idleUpdateDebugInfo which generates empty debug info.
+	if (isControlAvatar())
+	{
+		LLControlAvatar *cav = static_cast<LLControlAvatar*>(this);
+		bool is_attachment = cav->mRootVolp && cav->mRootVolp->isAttachment(); // For attached animated objects
+		if (is_attachment)
+		{
+			// ARC for animated object attachments is accounted with the avatar they're attached to.
+			return;
+		}
+	}
+
     if ((LLFrameTimer::getFrameCount() + mID.mData[0]) % compl_upd_freq == 0)
     {
         LL_RECORD_BLOCK_TIME(FTM_AVATAR_UPDATE_COMPLEXITY);
-	idleUpdateRenderComplexity();
-}
-    idleUpdateDebugInfo();
+		idleUpdateRenderComplexity();
+	}
+	
+	idleUpdateDebugInfo();
 }
 
 void LLVOAvatar::idleUpdateVoiceVisualizer(bool voice_enabled)
@@ -10367,16 +10380,6 @@ void LLVOAvatar::updateImpostorRendering(U32 newMaxNonImpostorsValue)
 
 void LLVOAvatar::idleUpdateRenderComplexity()
 {
-    if (isControlAvatar())
-    {
-        LLControlAvatar *cav = static_cast<LLControlAvatar*>(this);
-        bool is_attachment = cav->mRootVolp && cav->mRootVolp->isAttachment(); // For attached animated objects
-        if (is_attachment)
-        {
-            // ARC for animated object attachments is accounted with the avatar they're attached to.
-            return;
-        }
-    }
 
     // Render Complexity
     calculateUpdateRenderComplexity(); // Update mVisualComplexity if needed	
