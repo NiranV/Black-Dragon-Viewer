@@ -1596,7 +1596,7 @@ bool LLAppViewer::doFrame()
 
 				pingMainloopTimeout("Main:Snapshot");
 				LLFloaterSnapshot::update(); // take snapshots
-					LLFloaterOutfitSnapshot::update();
+				LLFloaterOutfitSnapshot::update();
 				gGLActive = FALSE;
 			}
 		}

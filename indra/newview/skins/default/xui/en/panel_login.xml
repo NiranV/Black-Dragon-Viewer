@@ -4733,7 +4733,7 @@ Removed: Rotation order dropdown and all code.
     height="20"
     top="4"
     left="7"
-    name="app_name_text"
+    name="store_list"
     width="320"
     word_wrap="true">
     Patreon Supporting Shops:
@@ -4746,7 +4746,7 @@ Removed: Rotation order dropdown and all code.
     height="200"
     top_pad="0"
     left="7"
-    name="app_name_text"
+    name="store_list"
     width="320"
     word_wrap="true">
     Crazy Kobold Creations - [https://marketplace.secondlife.com/stores/38282 Marketplace] - [https://maps.secondlife.com/secondlife/Montecito%20Bay/55/171/723 Inworld Store]
