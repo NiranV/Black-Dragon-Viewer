@@ -4716,7 +4716,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="135"
+ height="145"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
@@ -4757,6 +4757,7 @@ babyCo - [http://maps.secondlife.com/secondlife/Angel%20Eyes/59/123/26 Inworld S
 Thalia Heckroth - [http://maps.secondlife.com/secondlife/Fingal/128/84/23 Inworld Store]
 Petrichor - [https://marketplace.secondlife.com/stores/25375 Marketplace] - [https://maps.secondlife.com/secondlife/Lune/82/219/1201 Inworld Store]
 FOXCITY - [https://marketplace.secondlife.com/stores/11069 Marketplace] - [https://maps.secondlife.com/secondlife/FOXCITY/180/69/21 Inworld Store]
+The Little Branch - [http://maps.secondlife.com/secondlife/Aspen%20Springs/99/88/21 Inworld Store] - [https://marketplace.secondlife.com/stores/160713 Marketplace]
   </text>
  </panel>
  
