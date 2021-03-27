@@ -1617,7 +1617,8 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
     }
 
     LLWindow* viewer_window = gViewerWindow->getWindow();
-    if (viewer_window && viewer_window->getMinimized())
+    if (viewer_window && viewer_window->getMinimized()
+		&& gSavedSettings.getBOOL("FlashTaskbarOnIM"))
     {
         viewer_window->flashIcon(5.f);
     }

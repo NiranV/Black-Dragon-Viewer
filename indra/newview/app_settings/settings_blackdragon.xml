@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>FlashTaskbarOnIM</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow the taskbar icon of Black Dragon to flash for a couple seconds when receiving new messages.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>SnapshotLocalCrop</key>
   <map>
     <key>Comment</key>

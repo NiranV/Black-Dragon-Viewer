@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1088"
+  height="1108"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -685,6 +685,16 @@ width="510">
    Chat Behavior Options:
    </text>
    
+   <check_box
+   height="16"
+   label="Flash taskbar icon when receiving IM's"
+   layout="topleft"
+   left_delta="0"
+   name="send_im_to_email"
+   tool_tip="This option toggles whether the Black Dragon icon in your taskbar should flash (and show the taskbar if it is set to autohide) whenever you receive a new IM."
+   top_pad="15"
+   width="400" />
+   
    <text
    type="string"
    length="1"
@@ -693,7 +703,7 @@ width="510">
    layout="topleft"
    left="10"
    name="friend_ims"
-   top_pad="15"
+   top_pad="4"
    width="160">
    Friend IM Behavior:
    </text>
