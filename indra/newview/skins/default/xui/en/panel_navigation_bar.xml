@@ -220,7 +220,7 @@ width="800">
 		name="nvpb_stack"
 		orientation="horizontal"
 		top="0"
-		right="-300"
+		right="-260"
 		width="272">
 		<layout_panel
 		follows="top|left|right"
@@ -351,6 +351,15 @@ width="800">
 		 tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the menu."
 		 top="1"/>
       </layout_panel>
+      <layout_panel
+		visibility_control="ShowFPSCounter"
+		follows="top|left|right"
+		auto_resize="false"
+		mouse_opaque="false"
+		layout="topleft"
+		height="24"
+		name="fps_counter_layout"
+		width="40"/>
 		</layout_stack>
 	  </layout_panel>
    </layout_stack>

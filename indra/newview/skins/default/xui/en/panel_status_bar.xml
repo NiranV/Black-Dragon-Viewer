@@ -29,36 +29,26 @@
      name="timeTooltip">
         [weekday, datetime, slt], [day, datetime, slt] [month, datetime, slt] [year, datetime, slt]
     </panel.string>
-    <chiclet_notification
-    follows="right|top"
-    height="26"
-    mouse_opaque="false"
-    layout="topleft"
-    left="-76"
-    max_displayed_count="99"
-    name="notification_well"
-    top_pad="-1"
-    width="190">
-     <button
-     auto_resize="false"
-     follows="top|right"
-     layout="topleft"
-     halign="left"
-     height="22"
-     image_pressed="Sys_BG_Pressed"
-     image_pressed_selected="Sys_BG_Pressed"
-     image_selected="Sys_BG"
-     image_unselected="Sys_BG"
-     left="0"
-     top_delta="0"
-     name="Unread"
-     tool_tip="Notifications"
-     width="48">
-     <init_callback
-     function="Button.SetDockableFloaterToggle"
-     parameter="notification_well_window" />
-     </button>
-    </chiclet_notification>
+    <layout_stack
+   follows="top|right"
+   height="55"
+   layout="topleft"
+   border_size="-1"
+   left="-290"
+   right="-25"
+   mouse_opaque="false"
+   name="statusbar_stack"
+   orientation="horizontal"
+   top="0"
+   width="300">
+   <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  mouse_opaque="false"
+	  height="55"
+	  auto_resize="true"
+	  name="statusbar_layout"
+	  width="185">
     <text
      type="string"
      font="SansSerifSmall"
@@ -68,7 +58,7 @@
      height="16"
      top="7"
      layout="topleft"
-     left="-300"
+     left="0"
      name="TimeText"
      tool_tip="Current time (Pacific)"
      width="80">
@@ -116,20 +106,72 @@
 	  top="6"
 	  name="presets_icon"
 	  width="18" />
-
+   </layout_panel>
+   <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  mouse_opaque="false"
+   visibility_control="ShowFPSCounter"
+	  height="55"
+	  min_width="36"
+	  auto_resize="false"
+	  name="FPSText_layout"
+	  width="40">
 				<text
 		type="string"
 		font="SansSerifSmallBold"
-		follows="right|top"
+		follows="left|top"
 		text_color="0.2 0.9 0.3 1"
 		halign="left"
 		height="16"
 		top="7"
 		layout="topleft"
-		left_pad="12"
+		left="0"
 		name="FPSText"
 		tool_tip="Your current FPS"
 		width="36">
 			10.00
 		</text>
+    </layout_panel>
+   <layout_panel
+	  follows="top|left|right"
+	  layout="topleft"
+	  mouse_opaque="false"
+	  height="55"
+	  min_width="48"
+	  auto_resize="false"
+	  name="notifications_layout"
+	  width="48">
+    <chiclet_notification
+    follows="right|top"
+    height="26"
+    mouse_opaque="false"
+    layout="topleft"
+    left="0"
+    max_displayed_count="99"
+    name="notification_well"
+    top_pad="-1"
+    width="190">
+     <button
+     auto_resize="false"
+     follows="top|right"
+     layout="topleft"
+     halign="left"
+     height="22"
+     image_pressed="Sys_BG_Pressed"
+     image_pressed_selected="Sys_BG_Pressed"
+     image_selected="Sys_BG"
+     image_unselected="Sys_BG"
+     left="0"
+     top_delta="0"
+     name="Unread"
+     tool_tip="Notifications"
+     width="48">
+     <init_callback
+     function="Button.SetDockableFloaterToggle"
+     parameter="notification_well_window" />
+     </button>
+    </chiclet_notification>
+   </layout_panel>
+    </layout_stack>
 </panel>

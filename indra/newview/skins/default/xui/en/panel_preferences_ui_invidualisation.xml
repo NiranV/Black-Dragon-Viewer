@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="906"
+     height="922"
      name="ui_panel"
      top="0"
      left="0"
@@ -82,6 +82,17 @@ width="510">
 	tool_tip="This option toggles the visibility of coordinates in the navigationbar. "
 	left="10"
 	name="NavBarShowCoordinates"
+	top_pad="0"
+	width="256" />
+ <check_box
+	control_name="ShowFPSCounter"
+	height="16"
+	initial_value="true"
+	label="Show FPS Counter"
+	layout="topleft"
+	tool_tip="This option toggles the visibility of the framerate counter in the statusbar."
+	left="10"
+	name="ShowFPSCounter"
 	top_pad="0"
 	width="256" />
 	
