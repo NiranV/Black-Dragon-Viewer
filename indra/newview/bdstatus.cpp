@@ -172,14 +172,14 @@ void BDStatus::onCrouchingButtonClick()
 
 void BDStatus::onFreeDoFButtonClick()
 {
-	gPipeline.CameraDoFLocked = FALSE;
+	gSavedSettings.setBOOL("CameraFreeDoFFocus", false);
 	setFreeDoF(false);
 	setFocus(FALSE);
 }
 
 void BDStatus::onLockedDoFButtonClick()
 {
-	gPipeline.CameraFreeDoFFocus = FALSE;
+	gSavedSettings.setBOOL("CameraDoFLocked", false);
 	setLockedDoF(false);
 	setFocus(FALSE);
 }
