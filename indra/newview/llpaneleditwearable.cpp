@@ -575,6 +575,8 @@ static void init_texture_ctrl(LLPanelEditWearable* self, LLPanel* panel, const L
                 texture_ctrl->setImmediateFilterPermMask(PERM_NONE);
                 texture_ctrl->setDnDFilterPermMask(PERM_NONE);
                 texture_ctrl->setNonImmediateFilterPermMask(PERM_NONE);
+				//BD - Don't allow local textures in BOM bakes.
+				texture_ctrl->setAllowLocalTexture(FALSE);
         }
 }
 
