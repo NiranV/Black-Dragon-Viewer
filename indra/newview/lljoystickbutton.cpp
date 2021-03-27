@@ -553,16 +553,17 @@ void LLJoystickCameraRotate::resetJoystickCamera()
 
 F32 LLJoystickCameraRotate::getOrbitRate()
 {
+	F32 zoom_factor = llclamp(LLViewerCamera::getInstance()->getView(), 0.2f, 1.f);
 	F32 time = getElapsedHeldDownTime();
 	if( time < NUDGE_TIME )
 	{
-		F32 rate = ORBIT_NUDGE_RATE + time * (1 - ORBIT_NUDGE_RATE)/ NUDGE_TIME;
+		F32 rate = ORBIT_NUDGE_RATE + time * (1 - ORBIT_NUDGE_RATE)/ NUDGE_TIME * zoom_factor;
 		//LL_INFOS() << rate << LL_ENDL;
 		return rate;
 	}
 	else
 	{
-		return 1;
+		return 1 * zoom_factor;
 	}
 }
 
