@@ -138,7 +138,7 @@
      top="337"
      width="97">
       <button.commit_callback
-       function="Inventory.Cancel" />
+       function="Snapshot.Cancel" />
     </button>
     <button
      follows="left|bottom"
@@ -150,6 +150,6 @@
      top_delta="0"
      width="97">
       <button.commit_callback
-       function="Inventory.Save" />
+       function="Snapshot.SaveTexture" />
     </button>
 </panel>

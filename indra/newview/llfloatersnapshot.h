@@ -38,49 +38,26 @@ class LLComboBox;
 class LLSnapshotLivePreview;
 class LLToolset;
 class LLFloaterBigPreview;
+class LLSliderCtrl;
 
-class LLFloaterSnapshotBase : public LLFloater
+class LLFloaterSnapshot: public LLFloater
 {
-    LOG_CLASS(LLFloaterSnapshotBase);
+    LOG_CLASS(LLFloaterSnapshot);
 
 public:
+	LLFloaterSnapshot(const LLSD& key);
+	/*virtual*/ ~LLFloaterSnapshot();
 
-    LLFloaterSnapshotBase(const LLSD& key);
-    virtual ~LLFloaterSnapshotBase();
-
+	/*virtual*/ BOOL postBuild();
+	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/ void draw();
 	/*virtual*/ void onClose(bool app_quitting);
-	void onClickBigPreview();
-	virtual S32 notify(const LLSD& info);
+	/*virtual*/ S32 notify(const LLSD& info);
+	static void update();
 
-	// TODO: create a snapshot model instead
-	virtual void saveTexture() = 0;
-	void postSave();
-	virtual void postPanelSwitch();
-	LLPointer<LLImageFormatted> getImageData();
-	LLSnapshotLivePreview* getPreviewView();
-	const LLVector3d& getPosTakenGlobal();
+	static LLFloaterSnapshot* getInstance();
+	static LLFloaterSnapshot* findInstance();
 
-	const LLRect& getThumbnailPlaceholderRect() { return mThumbnailPlaceholder->getRect(); }
-
-	void setRefreshLabelVisible(bool value) { mRefreshLabel->setVisible(value); }
-	void setSuccessLabelPanelVisible(bool value) { mSucceessLblPanel->setVisible(value); }
-	void setFailureLabelPanelVisible(bool value) { mFailureLblPanel->setVisible(value); }
-	void inventorySaveFailed();
-
-	class ImplBase;
-	friend class ImplBase;
-	ImplBase* impl;
-
-protected:
-	LLUICtrl* mThumbnailPlaceholder;
-	LLUICtrl *mRefreshBtn, *mRefreshLabel;
-	LLUICtrl *mSucceessLblPanel, *mFailureLblPanel;
-};
-
-class LLFloaterSnapshotBase::ImplBase
-{
-public:
 	typedef enum e_status
 	{
 		STATUS_READY,
@@ -88,145 +65,135 @@ public:
 		STATUS_FINISHED
 	} EStatus;
 
-	ImplBase(LLFloaterSnapshotBase* floater) : mAvatarPauseHandles(),
-		mLastToolset(NULL),
-		mAspectRatioCheckOff(false),
-		mNeedRefresh(false),
-		mStatus(STATUS_READY),
-		mFloater(floater),
-		mBigPreviewFloater(NULL)
-	{}
-	virtual ~ImplBase()
-	{
-		//unpause avatars
-		mAvatarPauseHandles.clear();
-	}
-
-	static void onClickNewSnapshot(void* data);
-	static void onClickAutoSnap(LLUICtrl *ctrl, void* data);
-	static void onClickFilter(LLUICtrl *ctrl, void* data);
-	static void onClickUICheck(LLUICtrl *ctrl, void* data);
-	static void onClickHUDCheck(LLUICtrl *ctrl, void* data);
-	//BD
-	static void onClickMultiplierCheck(LLUICtrl *ctrl, void* data);
-	static void onCommitFreezeWorld(LLUICtrl* ctrl, void* data);
-	static void onClickResolutionUnlock(LLUICtrl* ctrl, void* data);
-
-	virtual LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true) = 0;
-	virtual LLSnapshotModel::ESnapshotType getActiveSnapshotType(LLFloaterSnapshotBase* floater);
-	virtual LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshotBase* floater) = 0;
-	virtual std::string getSnapshotPanelPrefix() = 0;
-
+	// Gets
+	// TODO: create a snapshot model instead
+	//virtual void postPanelSwitch();
+	LLPointer<LLImageFormatted> getImageData();
 	LLSnapshotLivePreview* getPreviewView();
-	virtual void updateControls(LLFloaterSnapshotBase* floater) = 0;
-	virtual void updateLayout(LLFloaterSnapshotBase* floater);
-	virtual void updateLivePreview();
-	virtual void setStatus(EStatus status, bool ok = true, const std::string& msg = LLStringUtil::null);
-	virtual EStatus getStatus() const { return mStatus; }
-	virtual void setNeedRefresh(bool need);
+	const LLVector3d& getPosTakenGlobal();
+	LLPanel* getActivePanel(bool ok_if_not_found = true);
+	S32 getActivePanelIndex(bool ok_if_not_found = true);
+	LLSnapshotModel::ESnapshotType getActiveSnapshotType();
+	LLSnapshotModel::ESnapshotFormat getImageFormat();
+	std::string getSnapshotPanelPrefix();
+	LLSnapshotModel::ESnapshotLayerType getLayerType();
+	const LLRect& getThumbnailPlaceholderRect() { return mThumbnailPlaceholder->getRect(); }
 
+	
+	void onClickBigPreview();
+	void onClickNewSnapshot();
+	void onClickFilter(LLUICtrl *ctrl);
+	void onUpdateSnapshotAndControls();
+	void onCommitFreezeWorld(LLUICtrl* ctrl);
+	void onCustomResolutionCommit();
+	void onKeepAspectRatioCommit(LLUICtrl* ctrl);
+	void onImageQualityChange(S32 quality_val);
+	void onImageFormatChange();
+	void onCommitLayerTypes(LLUICtrl* ctrl);
+	void onFormatComboCommit(LLUICtrl* ctrl);
+	void onQualitySliderCommit(LLUICtrl* ctrl);
+	void onResolutionCommit(LLUICtrl* ctrl);
+
+	void setResolution(const std::string& comboname);
+	void comboSetCustom(const std::string& comboname);
+	void checkAspectRatio(S32 index);
+	void applyCustomResolution(S32 w, S32 h);
+
+	// Updating
+	void updateLayout();
+	void updateControls();
+	void enableControls(BOOL enable);
+	void updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL is_width_changed);
+	void updateResolution(LLUICtrl* ctrl, BOOL do_update = TRUE);
+	void updateLivePreview();
+	void updateUploadCost();
+	void onExtendFloater();
+
+	void setAdvanced(bool advanced) { mAdvanced = advanced; }
+	static void setAgentEmail(const std::string& email);
+	BOOL checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL isWidthChanged, S32 max_value);
+
+	// Panels
+	void openPanel(const std::string& panel_name);
+	void onSaveToProfile();
+	void onSaveToEmail();
+	void onSaveToInventory();
+	void onSaveToComputer();
+
+	// Status
+	void setStatus(EStatus status, bool ok = true, const std::string& msg = LLStringUtil::null);
+	EStatus getStatus() const { return mStatus; }
+	void setWorking(bool working);
+	void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null);
+	void setNeedRefresh(bool need);
+
+	// Preview
 	static BOOL updatePreviewList(bool initialized);
 	void getBigPreview();
 	void attachPreview();
 	bool isPreviewVisible();
 
-	void setAdvanced(bool advanced) { mAdvanced = advanced; }
+	// Labels
+	void setRefreshLabelVisible(bool value) { mRefreshLabel->setVisible(value); }
+	void setSuccessLabelPanelVisible(bool value) { mSucceessLblPanel->setVisible(value); }
+	void setFailureLabelPanelVisible(bool value) { mFailureLblPanel->setVisible(value); }
+	
+	// Saving
+	void onSendingPostcardFinished(bool status);
+	void onSnapshotUploadFinished(bool status);
+	void onMsgFormFocusRecieved();
+	bool missingSubjMsgAlertCallback(const LLSD& notification, const LLSD& response);
+	typedef boost::signals2::signal<void(void)> snapshot_saved_signal_t;
+	void saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb);
 
-	virtual LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshotBase* floater) = 0;
-	void setWorking(bool working);
-	virtual void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null) = 0;
+	void saveTextureFailed();
+	static void sendPostcardFinished(LLSD result);
+	void onPostcardSend();
+	void onInventorySend();
+	void saveLocalFinished();
+	void saveLocalFailed();
 
-public:
-	LLFloaterSnapshotBase* mFloater;
+	void onSnapshotCancel();
+	void onSnapshotSave();
+	void sendPostcard();
+	void sendProfile();
+	void saveTexture();
+	void saveLocal(LLUICtrl* ctrl);
+	void postSave();
+
+
+	LLComboBox* mSizeComboCtrl;
+	LLComboBox* mFormatComboCtrl;
+	LLSpinCtrl* mWidthSpinnerCtrl;
+	LLSpinCtrl* mHeightSpinnerCtrl;
+	LLUICtrl* mKeepAspectCheckCtrl;
+	LLUICtrl* mSaveBtn;
+	LLUICtrl* mCancelBtn;
+	LLSliderCtrl* mImageQualitySliderCtrl;
+
+	LLSideTrayPanelContainer* mSnapshotOptionsPanel;
 	LLFloaterBigPreview* mBigPreviewFloater;
 	std::vector<LLAnimPauseRequest> mAvatarPauseHandles;
-
+	EStatus mStatus;
 	LLToolset*	mLastToolset;
 	LLHandle<LLView> mPreviewHandle;
+
+	S32 mLocalFormat;
+
+	bool mHasFirstMsgFocus;
 	bool mAspectRatioCheckOff;
 	bool mNeedRefresh;
 	bool mAdvanced;
-	EStatus mStatus;
-
 	bool mSnapshotFreezeWorld;
-};
-
-class LLFloaterSnapshot : public LLFloaterSnapshotBase
-{
-	LOG_CLASS(LLFloaterSnapshot);
-
-public:
-	LLFloaterSnapshot(const LLSD& key);
-	/*virtual*/ ~LLFloaterSnapshot();
-    
-	/*virtual*/ BOOL postBuild();
-	/*virtual*/ void onOpen(const LLSD& key);
-	/*virtual*/ S32 notify(const LLSD& info);
-	
-	static void update();
-
-	void onExtendFloater();
-
-	static LLFloaterSnapshot* getInstance();
-	static LLFloaterSnapshot* findInstance();
-	/*virtual*/ void saveTexture();
-
-	typedef boost::signals2::signal<void(void)> snapshot_saved_signal_t;
-	void saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb);
-	static void setAgentEmail(const std::string& email);
-
 	BOOL isWaitingState();
 
-	class Impl;
-	friend class Impl;
+protected:
 
-private:
-	LLHandle<LLView> mPreviewHandle;
+	void updateImageQualityLevel();
 
-};
-
-///----------------------------------------------------------------------------
-/// Class LLFloaterSnapshot::Impl
-///----------------------------------------------------------------------------
-
-class LLFloaterSnapshot::Impl : public LLFloaterSnapshotBase::ImplBase
-{
-	LOG_CLASS(LLFloaterSnapshot::Impl);
-public:
-	Impl(LLFloaterSnapshotBase* floater)
-		: LLFloaterSnapshotBase::ImplBase(floater)
-	{}
-	~Impl()
-	{}
-
-	void applyKeepAspectCheck(LLFloaterSnapshotBase* view, BOOL checked);
-	void updateResolution(LLUICtrl* ctrl, void* data, BOOL do_update = TRUE);
-	static void onCommitLayerTypes(LLUICtrl* ctrl, void*data);
-	void onImageQualityChange(LLFloaterSnapshotBase* view, S32 quality_val);
-	void onImageFormatChange(LLFloaterSnapshotBase* view);
-	void applyCustomResolution(LLFloaterSnapshotBase* view, S32 w, S32 h);
-	static void onSendingPostcardFinished(LLFloaterSnapshotBase* floater, bool status);
-	BOOL checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL isWidthChanged, S32 max_value);
-	void setImageSizeSpinnersValues(LLFloaterSnapshotBase *view, S32 width, S32 height);
-	void updateSpinners(LLFloaterSnapshotBase* view, LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL is_width_changed);
-	static void onSnapshotUploadFinished(LLFloaterSnapshotBase* floater, bool status);
-
-	/*virtual*/ LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true);
-	/*virtual*/ LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshotBase* floater);
-	LLSpinCtrl* getWidthSpinner(LLFloaterSnapshotBase* floater);
-	LLSpinCtrl* getHeightSpinner(LLFloaterSnapshotBase* floater);
-	void enableAspectRatioCheckbox(LLFloaterSnapshotBase* floater, BOOL enable);
-	void setAspectRatioCheckboxValue(LLFloaterSnapshotBase* floater, BOOL checked);
-	/*virtual*/ std::string getSnapshotPanelPrefix();
-
-	void setResolution(LLFloaterSnapshotBase* floater, const std::string& comboname);
-	/*virtual*/ void updateControls(LLFloaterSnapshotBase* floater);
-
-private:
-	/*virtual*/ LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshotBase* floater);
-	void comboSetCustom(LLFloaterSnapshotBase *floater, const std::string& comboname);
-	void checkAspectRatio(LLFloaterSnapshotBase *view, S32 index);
-	void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null);
+	LLUICtrl* mThumbnailPlaceholder;
+	LLUICtrl *mRefreshBtn, *mRefreshLabel;
+	LLUICtrl *mSucceessLblPanel, *mFailureLblPanel;
 };
 
 class LLSnapshotFloaterView : public LLFloaterView

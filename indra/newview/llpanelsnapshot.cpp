@@ -77,7 +77,7 @@ BOOL LLPanelSnapshot::postBuild()
     }
 	updateControls(LLSD());
 
-	mSnapshotFloater = getParentByType<LLFloaterSnapshotBase>();
+	mSnapshotFloater = getParentByType<LLFloaterSnapshot>();
 	return TRUE;
 }
 

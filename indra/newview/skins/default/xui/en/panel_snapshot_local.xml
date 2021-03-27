@@ -147,12 +147,22 @@
        </check_box>
     <check_box
      top_pad="1"
+     control_name="KeepAspectForSnapshot"
      height="16"
      follows="left|top"
      label="Constrain proportions"
      layout="topleft"
      left="10"
      name="local_keep_aspect_check" />
+    <check_box
+     top_pad="1"
+     control_name="UploadLocalSnapshots"
+     height="16"
+     follows="left|top"
+     label="Upload to inventory"
+     layout="topleft"
+     left="10"
+     name="upload_local_snapshots" />
     <text
       type="string"
       length="1"
@@ -212,7 +222,7 @@
      top="337"
      width="97">
       <button.commit_callback
-       function="Local.Cancel" />
+       function="Snapshot.Cancel" />
     </button>
     <flyout_button
      follows="left|bottom"
@@ -232,5 +242,7 @@
          label="Save As..."
          name="saveas_item"
          value="save as" />
+        <flyout_button.commit_callback
+       function="Snapshot.SaveLocal" />
     </flyout_button>
 </panel>

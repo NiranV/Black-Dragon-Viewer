@@ -814,10 +814,10 @@ void LLViewerAssetUpload::AssetInventoryUploadCoproc(LLCoreHttpUtil::HttpCorouti
         LLUploadDialog::modalUploadFinished();
 
     // Let the Snapshot floater know we have finished uploading a snapshot to inventory
-    LLFloater* floater_snapshot = LLFloaterReg::findInstance("snapshot");
+	LLFloaterSnapshot* floater_snapshot = LLFloaterSnapshot::findInstance();
     if (uploadInfo->getAssetType() == LLAssetType::AT_TEXTURE && floater_snapshot && floater_snapshot->isShown())
     {
-        floater_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", success).with("msg", "inventory")));
+		floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, success, "inventory");
     }
     LLFloater* floater_outfit_snapshot = LLFloaterReg::findInstance("outfit_snapshot");
     if (uploadInfo->getAssetType() == LLAssetType::AT_TEXTURE && floater_outfit_snapshot && floater_outfit_snapshot->isShown())
@@ -894,11 +894,11 @@ void LLViewerAssetUpload::HandleUploadError(LLCore::HttpStatus status, LLSD &res
     {
         if (uploadInfo->getAssetType() == LLAssetType::AT_IMAGE_JPEG)
         {
-            floater_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", false).with("msg", "postcard")));
+			floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, false, "postcard");
         }
         if (uploadInfo->getAssetType() == LLAssetType::AT_TEXTURE)
         {
-            floater_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", false).with("msg", "inventory")));
+			floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, false, "inventory");
         }
     }
 

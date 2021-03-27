@@ -85,7 +85,7 @@
      bottom="-20"
      width="97">
       <button.commit_callback
-       function="Postcard.Cancel" />
+       function="Snapshot.Cancel" />
     </button>
     <button
      follows="left|bottom"
@@ -97,6 +97,6 @@
      top_delta="0"
      width="97">
       <button.commit_callback
-       function="Postcard.Send" />
+       function="Snapshot.SendPostcard" />
     </button>
 </panel>

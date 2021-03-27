@@ -79,6 +79,7 @@
 
 //BD
 #include "llsidepanelinventory.h"
+#include "llfloatersnapshot.h"
 
 #include "boost/lexical_cast.hpp"
 #include <boost/smart_ptr/make_shared.hpp>
@@ -5470,9 +5471,9 @@ void on_new_single_inventory_upload_complete(
     LLUploadDialog::modalUploadFinished();
 
     // Let the Snapshot floater know we have finished uploading a snapshot to inventory.
-    LLFloater* floater_snapshot = LLFloaterReg::findInstance("snapshot");
+    LLFloaterSnapshot* floater_snapshot = LLFloaterSnapshot::findInstance();
     if (asset_type == LLAssetType::AT_TEXTURE && floater_snapshot)
     {
-        floater_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", success).with("msg", "inventory")));
+		floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, success, "inventory");
     }
 }

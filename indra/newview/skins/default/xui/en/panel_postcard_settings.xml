@@ -67,6 +67,7 @@
    <check_box
     top_pad="12"
     follows="left|top"
+    control_name="KeepAspectForSnapshot"
     label="Constrain proportions"
     layout="topleft"
     left="5"

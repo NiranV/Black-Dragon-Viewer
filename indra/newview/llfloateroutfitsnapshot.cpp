@@ -58,9 +58,9 @@ static LLDefaultChildRegistry::Register<LLOutfitSnapshotFloaterView> r("snapshot
 ///----------------------------------------------------------------------------
 
 // virtual
-LLPanelSnapshot* LLFloaterOutfitSnapshot::Impl::getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found)
+LLPanelSnapshot* LLFloaterOutfitSnapshot::getActivePanel(bool ok_if_not_found)
 {
-    LLPanel* panel = floater->getChild<LLPanel>("panel_outfit_snapshot_inventory");
+    LLPanel* panel = getChild<LLPanel>("panel_outfit_snapshot_inventory");
     LLPanelSnapshot* active_panel = dynamic_cast<LLPanelSnapshot*>(panel);
     if (!ok_if_not_found)
     {
@@ -70,13 +70,13 @@ LLPanelSnapshot* LLFloaterOutfitSnapshot::Impl::getActivePanel(LLFloaterSnapshot
 }
 
 // virtual
-LLSnapshotModel::ESnapshotFormat LLFloaterOutfitSnapshot::Impl::getImageFormat(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotFormat LLFloaterOutfitSnapshot::getImageFormat()
 {
     return LLSnapshotModel::SNAPSHOT_FORMAT_PNG;
 }
 
 // virtual
-LLSnapshotModel::ESnapshotLayerType LLFloaterOutfitSnapshot::Impl::getLayerType(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotLayerType LLFloaterOutfitSnapshot::getLayerType()
 {
     return LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
 }
@@ -88,11 +88,11 @@ LLSnapshotModel::ESnapshotLayerType LLFloaterOutfitSnapshot::Impl::getLayerType(
 // appropriate saved settings and then call this method to sync the GUI with them.
 // FIXME: The above comment seems obsolete now.
 // virtual
-void LLFloaterOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
+void LLFloaterOutfitSnapshot::updateControls(LLFloaterSnapshot* floater)
 {
-    LLSnapshotModel::ESnapshotType shot_type = getActiveSnapshotType(floater);
+    LLSnapshotModel::ESnapshotType shot_type = getActiveSnapshotType();
     LLSnapshotModel::ESnapshotFormat shot_format = (LLSnapshotModel::ESnapshotFormat)gSavedSettings.getS32("SnapshotFormat");
-    LLSnapshotModel::ESnapshotLayerType layer_type = getLayerType(floater);
+    LLSnapshotModel::ESnapshotLayerType layer_type = getLayerType();
 
     LLSnapshotLivePreview* previewp = getPreviewView();
     BOOL got_snap = previewp && previewp->getSnapshotUpToDate();
@@ -128,7 +128,7 @@ void LLFloaterOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floate
         previewp->setSnapshotBufferType(layer_type);
     }
 
-    LLPanelSnapshot* current_panel = Impl::getActivePanel(floater);
+    LLPanelSnapshot* current_panel = getActivePanel(floater);
     if (current_panel)
     {
         LLSD info;
@@ -139,30 +139,31 @@ void LLFloaterOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floate
 }
 
 // virtual
-std::string LLFloaterOutfitSnapshot::Impl::getSnapshotPanelPrefix()
+std::string LLFloaterOutfitSnapshot::getSnapshotPanelPrefix()
 {
     return "panel_outfit_snapshot_";
 }
 
 // Show/hide upload status message.
 // virtual
-void LLFloaterOutfitSnapshot::Impl::setFinished(bool finished, bool ok, const std::string& msg)
+void LLFloaterOutfitSnapshot::setFinished(bool finished, bool ok, const std::string& msg)
 {
-    mFloater->setSuccessLabelPanelVisible(finished && ok);
-    mFloater->setFailureLabelPanelVisible(finished && !ok);
+	LLFloaterSnapshot* snapshot_floater = LLFloaterSnapshot::findInstance();
+	snapshot_floater->setSuccessLabelPanelVisible(finished && ok);
+	snapshot_floater->setFailureLabelPanelVisible(finished && !ok);
 
     if (finished)
     {
-        LLUICtrl* finished_lbl = mFloater->getChild<LLUICtrl>(ok ? "succeeded_lbl" : "failed_lbl");
-        std::string result_text = mFloater->getString(msg + "_" + (ok ? "succeeded_str" : "failed_str"));
+        LLUICtrl* finished_lbl = snapshot_floater->getChild<LLUICtrl>(ok ? "succeeded_lbl" : "failed_lbl");
+        std::string result_text = snapshot_floater->getString(msg + "_" + (ok ? "succeeded_str" : "failed_str"));
         finished_lbl->setValue(result_text);
 
-        LLPanel* snapshot_panel = mFloater->getChild<LLPanel>("panel_outfit_snapshot_inventory");
+        LLPanel* snapshot_panel = snapshot_floater->getChild<LLPanel>("panel_outfit_snapshot_inventory");
         snapshot_panel->onOpen(LLSD());
     }
 }
 
-void LLFloaterOutfitSnapshot::Impl::updateResolution(void* data)
+void LLFloaterOutfitSnapshot::updateResolution(void* data)
 {
     LLFloaterOutfitSnapshot *view = (LLFloaterOutfitSnapshot *)data;
 
@@ -209,10 +210,9 @@ void LLFloaterOutfitSnapshot::Impl::updateResolution(void* data)
 
 // Default constructor
 LLFloaterOutfitSnapshot::LLFloaterOutfitSnapshot(const LLSD& key)
-: LLFloaterSnapshotBase(key),
+: LLFloaterSnapshot(key),
 mOutfitGallery(NULL)
 {
-    impl = new Impl(this);
 }
 
 LLFloaterOutfitSnapshot::~LLFloaterOutfitSnapshot()
@@ -223,19 +223,16 @@ LLFloaterOutfitSnapshot::~LLFloaterOutfitSnapshot()
 BOOL LLFloaterOutfitSnapshot::postBuild()
 {
     mRefreshBtn = getChild<LLUICtrl>("new_snapshot_btn");
-    childSetAction("new_snapshot_btn", ImplBase::onClickNewSnapshot, this);
+	mRefreshBtn->setCommitCallback(boost::bind(&LLFloaterSnapshot::onClickNewSnapshot, this));
     mRefreshLabel = getChild<LLUICtrl>("refresh_lbl");
     mSucceessLblPanel = getChild<LLUICtrl>("succeeded_panel");
     mFailureLblPanel = getChild<LLUICtrl>("failed_panel");
 
-    childSetCommitCallback("ui_check", ImplBase::onClickUICheck, this);
     getChild<LLUICtrl>("ui_check")->setValue(gSavedSettings.getBOOL("RenderUIInSnapshot"));
-
-    childSetCommitCallback("hud_check", ImplBase::onClickHUDCheck, this);
+	getChild<LLUICtrl>("ui_check")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onUpdateSnapshotAndControls, this));
     getChild<LLUICtrl>("hud_check")->setValue(gSavedSettings.getBOOL("RenderHUDInSnapshot"));
-
-	childSetCommitCallback("freeze_world_check", Impl::onCommitFreezeWorld, this);
-
+	getChild<LLUICtrl>("hud_check")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onUpdateSnapshotAndControls, this));
+	getChild<LLUICtrl>("freeze_world_check")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onCommitFreezeWorld, this, _1));
     getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterOutfitSnapshot::onExtendFloater, this));
     getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterOutfitSnapshot::onExtendFloater, this));
 
@@ -246,7 +243,7 @@ BOOL LLFloaterOutfitSnapshot::postBuild()
     {
         filterbox->add(filter_list[i]);
     }
-    childSetCommitCallback("filters_combobox", ImplBase::onClickFilter, this);
+	getChild<LLButton>("filters_combobox")->setCommitCallback(boost::bind(&LLFloaterOutfitSnapshot::onClickFilter, this, _1));
 
     mThumbnailPlaceholder = getChild<LLUICtrl>("thumbnail_placeholder");
 
@@ -266,11 +263,10 @@ BOOL LLFloaterOutfitSnapshot::postBuild()
     gFloaterView->removeChild(this);
     gSnapshotFloaterView->addChild(this);
 
-    impl->mPreviewHandle = previewp->getHandle();
+    mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
-    impl->updateControls(this);
-    impl->setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
-    impl->updateLayout(this);
+    updateControls(this);
+    setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
 
     previewp->mKeepAspectRatio = FALSE;
     previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
@@ -292,19 +288,18 @@ void LLFloaterOutfitSnapshot::onOpen(const LLSD& key)
     gSnapshotFloaterView->setVisible(TRUE);
     gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-    impl->updateControls(this);
-    impl->setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
-    impl->updateLayout(this);
+    updateControls(this);
+    setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
 
     LLPanel* snapshot_panel = getChild<LLPanel>("panel_outfit_snapshot_inventory");
     snapshot_panel->onOpen(LLSD());
-    postPanelSwitch();
+    //postPanelSwitch();
 
 }
 
 void LLFloaterOutfitSnapshot::onExtendFloater()
 {
-	impl->setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
+	setAdvanced(gSavedSettings.getBOOL("AdvanceOutfitSnapshot"));
 }
 
 // static 
@@ -313,7 +308,7 @@ void LLFloaterOutfitSnapshot::update()
     LLFloaterOutfitSnapshot* inst = findInstance();
     if (inst != NULL)
     {
-        inst->impl->updateLivePreview();
+        inst->updateLivePreview();
     }
 }
 

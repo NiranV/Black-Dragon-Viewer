@@ -36,7 +36,7 @@
 /// Class LLFloaterOutfitSnapshot
 ///----------------------------------------------------------------------------
 
-class LLFloaterOutfitSnapshot : public LLFloaterSnapshotBase
+class LLFloaterOutfitSnapshot : public LLFloaterSnapshot
 {
     LOG_CLASS(LLFloaterOutfitSnapshot);
 
@@ -68,33 +68,19 @@ private:
 
     LLUUID mOutfitID;
     LLOutfitGallery* mOutfitGallery;
-};
 
-///----------------------------------------------------------------------------
-/// Class LLFloaterOutfitSnapshot::Impl
-///----------------------------------------------------------------------------
-
-class LLFloaterOutfitSnapshot::Impl : public LLFloaterSnapshotBase::ImplBase
-{
-    LOG_CLASS(LLFloaterOutfitSnapshot::Impl);
-public:
-    Impl(LLFloaterSnapshotBase* floater)
-        : LLFloaterSnapshotBase::ImplBase(floater)
-    {}
-    ~Impl()
-    {}
     void updateResolution(void* data);
 
-    static void onSnapshotUploadFinished(LLFloaterSnapshotBase* floater, bool status);
+    static void onSnapshotUploadFinished(LLFloaterSnapshot* floater, bool status);
 
-    /*virtual*/ LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true);
-    /*virtual*/ LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshotBase* floater);
+    /*virtual*/ LLPanelSnapshot* getActivePanel(bool ok_if_not_found = true);
+    /*virtual*/ LLSnapshotModel::ESnapshotFormat getImageFormat();
     /*virtual*/ std::string getSnapshotPanelPrefix();
 
-    /*virtual*/ void updateControls(LLFloaterSnapshotBase* floater);
+    /*virtual*/ void updateControls(LLFloaterSnapshot* floater);
 
 private:
-    /*virtual*/ LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshotBase* floater);
+    /*virtual*/ LLSnapshotModel::ESnapshotLayerType getLayerType();
     /*virtual*/ void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null);
 };
 

@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>UploadLocalSnapshots</key>
+  <map>
+    <key>Comment</key>
+    <string>Immediately upload snapshots saved to disk into your inventory as well.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>RenderImpostors</key>
   <map>
     <key>Comment</key>

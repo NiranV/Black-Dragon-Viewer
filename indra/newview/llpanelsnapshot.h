@@ -33,7 +33,7 @@
 
 class LLSpinCtrl;
 class LLSideTrayPanelContainer;
-class LLFloaterSnapshotBase;
+class LLFloaterSnapshot;
 
 /**
  * Snapshot panel base class.
@@ -73,7 +73,7 @@ protected:
 	void onResolutionComboCommit(LLUICtrl* ctrl);
 	void onKeepAspectRatioCommit(LLUICtrl* ctrl);
 
-	LLFloaterSnapshotBase* mSnapshotFloater;
+	LLFloaterSnapshot* mSnapshotFloater;
 };
 
 #endif // LL_LLPANELSNAPSHOT_H

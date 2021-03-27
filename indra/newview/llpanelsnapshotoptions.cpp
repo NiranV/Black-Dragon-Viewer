@@ -57,7 +57,7 @@ private:
 	void onSaveToInventory();
 	void onSaveToComputer();
 
-	LLFloaterSnapshotBase* mSnapshotFloater;
+	LLFloaterSnapshot* mSnapshotFloater;
 };
 
 static LLPanelInjector<LLPanelSnapshotOptions> panel_class("llpanelsnapshotoptions");
@@ -77,7 +77,7 @@ LLPanelSnapshotOptions::~LLPanelSnapshotOptions()
 // virtual
 BOOL LLPanelSnapshotOptions::postBuild()
 {
-	mSnapshotFloater = getParentByType<LLFloaterSnapshotBase>();
+	mSnapshotFloater = getParentByType<LLFloaterSnapshot>();
 	return LLPanel::postBuild();
 }
 

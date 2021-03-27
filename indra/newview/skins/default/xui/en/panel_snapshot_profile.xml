@@ -102,6 +102,7 @@
     <check_box
      top_pad="12"
      label="Constrain proportions"
+     control_name="KeepAspectForSnapshot"
      layout="topleft"
      left="10"
      name="profile_keep_aspect_check" />
@@ -151,7 +152,7 @@
      top="337"
      width="97">
       <button.commit_callback
-       function="PostToProfile.Cancel" />
+       function="Snapshot.Cancel" />
     </button>
     <button
      follows="left|bottom"
@@ -163,6 +164,6 @@
      top_delta="0"
      width="97">
       <button.commit_callback
-       function="PostToProfile.Send" />
+       function="Snapshot.SendProfile" />
     </button>
 </panel>
