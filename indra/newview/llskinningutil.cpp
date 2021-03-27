@@ -381,12 +381,12 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
         if (vol_face.mJointRiggingInfoTab.size()!=0)
         {
             // _LL_DEBUGS("RigSpammish") << "we have rigging info for vf " << &vol_face 
-                                     << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
+            //                         << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
         else
         {
             // _LL_DEBUGS("RigSpammish") << "no rigging info for vf " << &vol_face 
-                                     << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
+            //                         << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
 #endif
 

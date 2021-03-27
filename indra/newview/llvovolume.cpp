@@ -6240,7 +6240,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 			std::string vobj_name = llformat("Vol%p", vobj);
 
 			F32 est_tris = vobj->getEstTrianglesMax();
-			// _LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " rebuilding, isAttachment: " << (U32) vobj->isAttachment()
+			/* _LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " rebuilding, isAttachment: " << (U32) vobj->isAttachment()
                                                 << " is_mesh " << is_mesh
                                                 << " est_tris " << est_tris
                                                 << " is_animated " << vobj->isAnimatedObject()
@@ -6251,7 +6251,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
                                                 << " drawable state " << drawablep->getState()
                                                 << " playing " << (U32) (vobj->getControlAvatar() ? vobj->getControlAvatar()->mPlaying : false)
                                                 << " frame " << LLFrameTimer::getFrameCount()
-                                                << LL_ENDL;
+                                                << LL_ENDL;*/
 
 			llassert_always(vobj);
 #endif

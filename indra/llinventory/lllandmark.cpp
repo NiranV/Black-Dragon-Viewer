@@ -249,7 +249,7 @@ void LLLandmark::processRegionIDAndHandle(LLMessageSystem* msg, void**)
 	U32 grid_x, grid_y;
 	grid_from_region_handle(info.mRegionHandle, &grid_x, &grid_y);
 	// _LL_DEBUGS() << "Landmark got reply for region: " << region_id << " "
-			 << grid_x << "," << grid_y << LL_ENDL;
+	//		 << grid_x << "," << grid_y << LL_ENDL;
 #endif
 
 	// make all the callbacks here.

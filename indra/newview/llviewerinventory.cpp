@@ -1215,9 +1215,9 @@ void link_inventory_array(const LLUUID& category,
 
 #ifndef LL_RELEASE_FOR_DOWNLOAD
 		// _LL_DEBUGS(LOG_INV) << "Linking Object [ name:" << baseobj->getName() 
-						   << " UUID:" << baseobj->getUUID() 
-						   << " ] into Category [ name:" << cat_name 
-						   << " UUID:" << category << " ] " << LL_ENDL;
+		//				   << " UUID:" << baseobj->getUUID() 
+		//				   << " ] into Category [ name:" << cat_name 
+		//				   << " UUID:" << category << " ] " << LL_ENDL;
 #endif
 	}
     LLSD new_inventory = LLSD::emptyMap();

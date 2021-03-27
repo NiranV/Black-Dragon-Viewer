@@ -355,7 +355,7 @@ void LLJoint::setPosition( const LLVector3& requested_pos, bool apply_attachment
         {
             LLScopedContextString str("setPosition");
             // _LL_DEBUGS("Avatar") << " joint " << getName() << " requested_pos " << requested_pos
-                                << " overriden by attachment " << active_override << LL_ENDL;
+            //                    << " overriden by attachment " << active_override << LL_ENDL;
         }
 #endif
         pos = active_override;
@@ -902,7 +902,7 @@ void LLJoint::setScale( const LLVector3& requested_scale, bool apply_attachment_
         {
             LLScopedContextString str("setScale");
             // _LL_DEBUGS("Avatar") << " joint " << getName() << " requested_scale " << requested_scale
-                                << " overriden by attachment " << active_override << LL_ENDL;
+            //                    << " overriden by attachment " << active_override << LL_ENDL;
         }
 #endif
         scale = active_override;
