@@ -54,6 +54,7 @@ public:
 	static void setLockedDoF(bool toggle);
 	static void setWorldFrozen(bool toggle);
 	static void setPosing(bool toggle);
+	static void setCameraRoll(bool toggle);
 
 	/*virtual*/ BOOL postBuild();
 	/*virtual*/ void draw();
@@ -68,6 +69,7 @@ private:
 	void onLockedDoFButtonClick();
 	void onWorldFrozenButtonClick();
 	void onPosingButtonClick();
+	void onCameraRollButtonClick();
 
 	LLButton* mSittingButton;
 	LLButton* mFlyingButton;
@@ -77,6 +79,7 @@ private:
 	LLButton* mLockedDoFButton;
 	LLButton* mWorldFrozenButton;
 	LLButton* mPosingButton;
+	LLButton* mCameraRollButton;
 
 	LLLayoutPanel* mSittingLayout;
 	LLLayoutPanel* mFlyingLayout;
@@ -86,8 +89,10 @@ private:
 	LLLayoutPanel* mLockedDoFLayout;
 	LLLayoutPanel* mWorldFrozenLayout;
 	LLLayoutPanel* mPosingLayout;
+	LLLayoutPanel* mCameraRollLayout;
 
 	bool mSitting;
+	bool mRoll;
 };
 
 extern BDStatus *gDragonStatus;
