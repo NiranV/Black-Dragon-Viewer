@@ -7066,7 +7066,7 @@ void LLWearableBridge::wearAddOnAvatar()
 	LLViewerInventoryItem* item = getItem();
 	if(item)
 	{
-		LLAppearanceMgr::instance().wearItemOnAvatar(item->getUUID(), true, false);
+		LLAppearanceMgr::instance().wearItemOnAvatar(item->getUUID(), true, item->isWearableType());
 	}
 }
 
