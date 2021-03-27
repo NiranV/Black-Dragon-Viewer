@@ -2193,9 +2193,13 @@ bool idle_startup()
 		// compute appearance from that.
 		if (isAgentAvatarValid() && !gAgent.isFirstLogin() && !gAgent.isOutfitChosen())
 		{
+			display_startup();
 			gAgentWearables.notifyLoadingStarted();
+			display_startup();
 			gAgent.setOutfitChosen(TRUE);
+			display_startup();
 			gAgentWearables.sendDummyAgentWearablesUpdate();
+			display_startup();
 			callAfterCategoryFetch(LLAppearanceMgr::instance().getCOF(), set_flags_and_update_appearance);
 		}
 
@@ -2279,6 +2283,7 @@ bool idle_startup()
 		}
 		else
 		{
+			display_startup();
 			// OK to just get the wearables
 			if ( gAgentWearables.areWearablesLoaded() )
 			{
