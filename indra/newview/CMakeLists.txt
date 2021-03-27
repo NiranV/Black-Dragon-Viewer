@@ -507,12 +507,6 @@ set(viewer_SOURCE_FILES
     llpanelprofileclassifieds.cpp
     llpanelprofilepicks.cpp
     llpanelpulldown.cpp
-    llpanelsnapshot.cpp
-    llpanelsnapshotinventory.cpp
-    llpanelsnapshotlocal.cpp
-    llpanelsnapshotoptions.cpp
-    llpanelsnapshotpostcard.cpp
-    llpanelsnapshotprofile.cpp
     llpanelteleporthistory.cpp
     llpaneltiptoast.cpp
     llpanelvoiceeffect.cpp
@@ -1158,7 +1152,6 @@ set(viewer_HEADER_FILES
     llpanelprofileclassifieds.h
     llpanelprofilepicks.h
     llpanelpulldown.h
-    llpanelsnapshot.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
     llpanelvoiceeffect.h
