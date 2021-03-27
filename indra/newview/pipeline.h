@@ -998,6 +998,7 @@ public:
 	static F32 RenderShadowFarClip;
 	static F32 RenderGlobalLightStrength;
 	static LLVector4 RenderShadowFarClipVec;
+	static BOOL RenderImpostors;
 
 //    //BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;

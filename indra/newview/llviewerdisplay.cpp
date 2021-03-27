@@ -755,7 +755,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				glViewport(0,0,512,512);
 				LLVOAvatar::updateFreezeCounter() ;
 
-				if(!LLPipeline::sMemAllocationThrottled)
+				//BD
+				if(!LLPipeline::sMemAllocationThrottled && gPipeline.RenderImpostors)
 				{		
 					LLVOAvatar::updateImpostors();
 				}

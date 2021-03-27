@@ -811,6 +811,13 @@ static bool handleWaterHeightChanged(const LLSD& newvalue)
 	return true;
 }
 
+//BD - Impostor Toggle
+static bool handleRenderImpostorsChanged(const LLSD& newvalue)
+{
+	gPipeline.RenderImpostors = newvalue.asBoolean();
+	return true;
+}
+
 //BD - Cinematic Camera
 static bool handleCinematicCamera(const LLSD& newvalue)
 {
@@ -1227,6 +1234,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderEnableAlpha")->getSignal()->connect(boost::bind(&handleAlphaChanged, _2));
 	gSavedSettings.getControl("RenderGodraysDirectional")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 	gSavedSettings.getControl("RenderWaterHeightFudge")->getSignal()->connect(boost::bind(&handleWaterHeightChanged, _2));
+	gSavedSettings.getControl("RenderImpostors")->getSignal()->connect(boost::bind(&handleRenderImpostorsChanged, _2));
 
 	//BD - Camera
 	gSavedSettings.getControl("InvertMouseThirdPerson")->getSignal()->connect(boost::bind(&handleInvertMouse, _2));

@@ -232,6 +232,7 @@ F32 LLPipeline::RenderSnapshotMultiplier;
 F32 LLPipeline::RenderShadowFarClip;
 F32 LLPipeline::RenderGlobalLightStrength;
 LLVector4 LLPipeline::RenderShadowFarClipVec;
+BOOL LLPipeline::RenderImpostors;
 
 //    //BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
@@ -698,6 +699,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
+	connectRefreshCachedSettingsSafe("RenderImpostors");
 
 //    //BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
@@ -1334,6 +1336,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
 	RenderShadowFarClipVec = gSavedSettings.getVector4("RenderShadowDistance");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
+	RenderImpostors = gSavedSettings.getBOOL("RenderImpostors");
 
 //	//BD - Volumetric Lighting
 	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");

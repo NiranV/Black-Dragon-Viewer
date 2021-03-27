@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>RenderImpostors</key>
+  <map>
+    <key>Comment</key>
+    <string>Allow rendering impostor images, disabling this disables generating them and makes avatars invisible when they are impostored.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>FlashTaskbarOnIM</key>
   <map>
     <key>Comment</key>
