@@ -173,8 +173,79 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="338"
+     height="416"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Implement Pose flipping (mirroring/inverting an entire pose).
+Added: Camera Roll status button to reset camera roll when not default.
+Added: Option to crop inventory snapshots like they did before they were broken.
+Added: Option to toggle taskbar icon flashing when receiving IMs.
+Added: Debug setting to disable generating impostors. (RenderImpostors)
+Added: Option to upload snapshots taken locally directly to inventory.
+Added: The Little Branch patreon store link.
+Added: Option to toggle FPS counter.
+Added: Aebleskiver Thibedeau as Patreon patron.
+Added. Dann Haefnir as Patreon patron.
+Added: Emeline Laks as Patreon patron.
+Added: Heleeennn as Patreon patron.
+Added: Lucas Alastair Moonfeather as Patreon patron.
+Changed: Attempt to open inventory when clicking "Show in main panel" and the inventory is not opened.
+Changed: Make Inventory item properties use SLURL's for names for easier accessibility of creators and owners.
+Changed: Allow favorising windlight/EEP presets in the favorites bar.
+Changed: Improved responsiveness of Viewer while world precaching to prevent the Viewer from freezing too long resulting in a timeout shortly after logging in.
+Changed: Disabled using Local Textures in BOM layers to prevent potentially crashing the Viewer due to unknown reasons.
+Changed: Allow uploading 1024x1024 inventory snapshots.
+Changed: Unify, simplify and rework the snapshot window a single code file, remove all unnecessary and duplicate code.
+Changed: Version to 3.9.9.
+Fixed: More compile errors.
+Fixed: Camera Locked status button not toggling camera lock off correctly.
+Fixed: Cameraa Free DoF status button not toggling free cam lock off correctly.
+Fixed: Onscreen camera controls not subject to zoom-scaling like Alt-Cam making it hard to control when zoomed in.
+Fixed: Wearables not replacing when double clicked from inventory.
+Fixed: Animesh avatars showing empty complexity information when being attached to another avatar.
+Fixed: Snapshot window not resizing with snapshot aspect ratio.
+Removed: Obsolete files.
+Misc: Commenting.
+Misc: Internal name cleaning.
+Misc: Moved all Outfit snapshot floater code into the main snapshot floater code and removed all unnecessary and duplicate code.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.7
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="338"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
