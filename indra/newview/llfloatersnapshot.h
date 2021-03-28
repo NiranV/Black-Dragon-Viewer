@@ -30,7 +30,6 @@
 #include "llagent.h"
 #include "llfloater.h"
 #include "llviewertexture.h"
-#include "llpanelsnapshot.h"
 #include "llsnapshotmodel.h"
 
 class LLSpinCtrl;
@@ -39,6 +38,8 @@ class LLSnapshotLivePreview;
 class LLToolset;
 class LLFloaterBigPreview;
 class LLSliderCtrl;
+class LLSideTrayPanelContainer;
+class LLOutfitGallery;
 
 class LLFloaterSnapshot: public LLFloater
 {
@@ -78,7 +79,10 @@ public:
 	std::string getSnapshotPanelPrefix();
 	LLSnapshotModel::ESnapshotLayerType getLayerType();
 	const LLRect& getThumbnailPlaceholderRect() { return mThumbnailPlaceholder->getRect(); }
+	LLUUID getOutfitID() { return mOutfitID; }
 
+	void setOutfitID(LLUUID id) { mOutfitID = id; }
+	void setGallery(LLOutfitGallery* gallery) { mOutfitGallery = gallery; }
 	
 	void onClickBigPreview();
 	void onClickNewSnapshot();
@@ -105,6 +109,7 @@ public:
 	void enableControls(BOOL enable);
 	void updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL is_width_changed);
 	void updateResolution(LLUICtrl* ctrl, BOOL do_update = TRUE);
+	void updateOutfitResolution();
 	void updateLivePreview();
 	void updateUploadCost();
 	void onExtendFloater();
@@ -158,6 +163,7 @@ public:
 	void sendPostcard();
 	void sendProfile();
 	void saveTexture();
+	void saveOutfitTexture();
 	void saveLocal(LLUICtrl* ctrl);
 	void postSave();
 
@@ -194,6 +200,12 @@ protected:
 	LLUICtrl* mThumbnailPlaceholder;
 	LLUICtrl *mRefreshBtn, *mRefreshLabel;
 	LLUICtrl *mSucceessLblPanel, *mFailureLblPanel;
+
+private:
+
+	LLUUID mOutfitID;
+	LLOutfitGallery* mOutfitGallery;
+
 };
 
 class LLSnapshotFloaterView : public LLFloaterView

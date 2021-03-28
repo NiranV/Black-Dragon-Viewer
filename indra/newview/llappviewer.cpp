@@ -225,7 +225,6 @@
 #include "llcommandlineparser.h"
 #include "llfloatermemleak.h"
 #include "llfloaterreg.h"
-#include "llfloateroutfitsnapshot.h"
 #include "llfloatersnapshot.h"
 #include "llsidepanelinventory.h"
 #include "llatmosphere.h"
@@ -1596,7 +1595,6 @@ bool LLAppViewer::doFrame()
 
 				pingMainloopTimeout("Main:Snapshot");
 				LLFloaterSnapshot::update(); // take snapshots
-				LLFloaterOutfitSnapshot::update();
 				gGLActive = FALSE;
 			}
 		}

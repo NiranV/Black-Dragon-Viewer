@@ -41,7 +41,6 @@
 #include "llfilepicker.h"
 #include "llfloaterperms.h"
 #include "llfloaterreg.h"
-#include "llfloateroutfitsnapshot.h"
 #include "llimagedimensionsinfo.h"
 #include "llinventoryfunctions.h"
 #include "llinventorymodel.h"
@@ -55,6 +54,9 @@
 #include "llviewermenufile.h"
 #include "llviewertexturelist.h"
 #include "llwearableitemslist.h"
+
+//BD
+#include "llfloatersnapshot.h"
 
 static LLPanelInjector<LLOutfitGallery> t_outfit_gallery("outfit_gallery");
 
@@ -1382,10 +1384,13 @@ void LLOutfitGallery::onSelectPhoto(LLUUID selected_outfit_id)
 
 void LLOutfitGallery::onTakeSnapshot(LLUUID selected_outfit_id)
 {
-    LLFloaterReg::toggleInstanceOrBringToFront("outfit_snapshot");
-    LLFloaterOutfitSnapshot* snapshot_floater = LLFloaterOutfitSnapshot::getInstance();
+	//BD
+    LLFloaterReg::toggleInstanceOrBringToFront("snapshot");
+    LLFloaterSnapshot* snapshot_floater = LLFloaterSnapshot::getInstance();
     if (snapshot_floater)
     {
+		snapshot_floater->openPanel("panel_outfit_snapshot_inventory");
+		snapshot_floater->onOpen("panel_outfit_snapshot_inventory");
         snapshot_floater->setOutfitID(selected_outfit_id);
         snapshot_floater->getInstance()->setGallery(this);
     }

@@ -410,6 +410,12 @@
        layout="topleft"
        name="panel_snapshot_local"
        filename="panel_snapshot_local.xml" />
+      <panel
+       class="llpaneloutfitsnapshotinventory"
+       follows="all"
+       layout="topleft"
+       name="panel_outfit_snapshot_inventory"
+       filename="panel_outfit_snapshot_inventory.xml"/>
     </panel_container>
 	<view_border 
          bevel_style="in"

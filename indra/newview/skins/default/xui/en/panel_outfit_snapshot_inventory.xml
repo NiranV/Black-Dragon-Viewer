@@ -12,7 +12,7 @@
      left="12"
      mouse_opaque="true"
      name="title_icon"
-     top="6"
+     top="0"
      width="18" />
     <text
      follows="top|left|right"
@@ -25,7 +25,7 @@
      right="-10"
      text_color="white"
      type="string"
-     top_delta="3">
+     top_delta="2">
         Inventory
     </text>
     <view_border 
@@ -45,7 +45,7 @@
      layout="topleft"
      left="10"
      length="1"
-     name="hint_lbl"
+     name="outfit_hint_lbl"
      top_pad="6"
      width="200"
      type="string"
@@ -67,7 +67,7 @@
     <button
      follows="left|bottom"
      height="23"
-     label="UPLOAD L$10"
+     label="Upload L$10"
      layout="topleft"
      left="10"
      name="save_btn"

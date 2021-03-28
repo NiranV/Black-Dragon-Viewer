@@ -54,6 +54,7 @@
 #include "llagent.h"
 #include "llstatusbar.h"
 #include "llviewerregion.h"
+#include "lloutfitgallery.h"
 
 #include <boost/regex.hpp>
 
@@ -64,6 +65,9 @@ LLSnapshotFloaterView* gSnapshotFloaterView = NULL;
 
 const S32 MAX_POSTCARD_DATASIZE = 1572864; // 1.5 megabyte, similar to simulator limit
 const S32 MAX_TEXTURE_SIZE = 1024 ; //max upload texture size 1024 * 1024
+
+const S32 OUTFIT_SNAPSHOT_WIDTH = 256;
+const S32 OUTFIT_SNAPSHOT_HEIGHT = 256;
 
 static LLDefaultChildRegistry::Register<LLSnapshotFloaterView> r("snapshot_floater_view");
 
@@ -91,7 +95,8 @@ LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
 	mRefreshLabel(NULL),
 	mSucceessLblPanel(NULL),
 	mFailureLblPanel(NULL),
-	mHasFirstMsgFocus(false)
+	mHasFirstMsgFocus(false),
+	mOutfitGallery(NULL)
 {
 	//BD - Postcard
 	mCommitCallbackRegistrar.add("Snapshot.SendPostcard", boost::bind(&LLFloaterSnapshot::onPostcardSend, this));
@@ -350,9 +355,6 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 		getChild<LLComboBox>("local_format_combo")->selectNthItem(mLocalFormat);
 	}
 
-	//BD - Outfit
-	getChild<LLUICtrl>("hint_lbl")->setTextArg("[UPLOAD_COST]", llformat("%d", LLAgentBenefitsMgr::current().getTextureUploadCost()));
-
 	//BD - Options
 	updateUploadCost();
 }
@@ -463,6 +465,8 @@ LLSnapshotModel::ESnapshotType LLFloaterSnapshot::getActiveSnapshotType()
 	case 2:
 		type = LLSnapshotModel::SNAPSHOT_POSTCARD;
 		break;
+	//BD - Outfit
+	case 5:
 	//BD - Inventory
 	case 3:
 		type = LLSnapshotModel::SNAPSHOT_TEXTURE;
@@ -875,116 +879,152 @@ void LLFloaterSnapshot::setFinished(bool finished, bool ok, const std::string& m
 // Apply a new resolution selected from the given combobox.
 void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, BOOL do_update)
 {
-	LLComboBox* combobox = (LLComboBox*)ctrl;
-		
-	if (!combobox)
+	S32 idx = getActivePanelIndex();
+	if (idx != 5)
 	{
-		llassert(combobox);
-		return;
-	}
-
-	std::string sdstring = combobox->getSelectedValue();
-	LLSD sdres;
-	std::stringstream sstream(sdstring);
-	LLSDSerialize::fromNotation(sdres, sstream, sdstring.size());
-		
-	S32 width = sdres[0];
-	S32 height = sdres[1];
-	
-	LLSnapshotLivePreview* previewp = getPreviewView();
-	if (previewp && combobox->getCurrentIndex() >= 0)
-	{
-		S32 original_width = 0 , original_height = 0 ;
-		previewp->getSize(original_width, original_height) ;
-		
-		if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
-		{ //clamp snapshot resolution to window size when showing UI or HUD in snapshot
-			width = llmin(width, gViewerWindow->getWindowWidthRaw());
-			height = llmin(height, gViewerWindow->getWindowHeightRaw());
+		LLComboBox* combobox = (LLComboBox*)ctrl;
+		if (!combobox)
+		{
+			llassert(combobox);
+			return;
 		}
 
-		if (width == 0 || height == 0)
+		std::string sdstring = combobox->getSelectedValue();
+		LLSD sdres;
+		std::stringstream sstream(sdstring);
+		LLSDSerialize::fromNotation(sdres, sstream, sdstring.size());
+
+		S32 width = sdres[0];
+		S32 height = sdres[1];
+
+		LLSnapshotLivePreview* previewp = getPreviewView();
+		if (previewp && combobox->getCurrentIndex() >= 0)
 		{
-			// take resolution from current window size
-			// _LL_DEBUGS() << "Setting preview res from window: " << gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
-			previewp->setSize(gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw());
-		}
-		else if (width == -1 || height == -1)
-		{
-			// load last custom value
-			S32 new_width = 0, new_height = 0;
-			LLPanel* spanel = getActivePanel();
-			if (spanel)
+			S32 original_width = 0, original_height = 0;
+			previewp->getSize(original_width, original_height);
+
+			if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
+			{ //clamp snapshot resolution to window size when showing UI or HUD in snapshot
+				width = llmin(width, gViewerWindow->getWindowWidthRaw());
+				height = llmin(height, gViewerWindow->getWindowHeightRaw());
+			}
+
+			if (width == 0 || height == 0)
 			{
-				// _LL_DEBUGS() << "Loading typed res from panel " << spanel->getName() << LL_ENDL;
-				new_width = mWidthSpinnerCtrl->getValue().asInteger();
-				new_height = mHeightSpinnerCtrl->getValue().asInteger();
-
-				// Limit custom size for inventory snapshots to 512x512 px.
-				if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
+				// take resolution from current window size
+				// _LL_DEBUGS() << "Setting preview res from window: " << gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;
+				previewp->setSize(gViewerWindow->getWindowWidthRaw(), gViewerWindow->getWindowHeightRaw());
+			}
+			else if (width == -1 || height == -1)
+			{
+				// load last custom value
+				S32 new_width = 0, new_height = 0;
+				LLPanel* spanel = getActivePanel();
+				if (spanel)
 				{
-					new_width = llmin(new_width, MAX_TEXTURE_SIZE);
-					new_height = llmin(new_height, MAX_TEXTURE_SIZE);
+					// _LL_DEBUGS() << "Loading typed res from panel " << spanel->getName() << LL_ENDL;
+					new_width = mWidthSpinnerCtrl->getValue().asInteger();
+					new_height = mHeightSpinnerCtrl->getValue().asInteger();
+
+					// Limit custom size for inventory snapshots to 512x512 px.
+					if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
+					{
+						new_width = llmin(new_width, MAX_TEXTURE_SIZE);
+						new_height = llmin(new_height, MAX_TEXTURE_SIZE);
+					}
 				}
+				else
+				{
+					/*// _LL_DEBUGS() << "No custom res chosen, setting preview res from window: "
+						<< gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;*/
+					new_width = gViewerWindow->getWindowWidthRaw();
+					new_height = gViewerWindow->getWindowHeightRaw();
+				}
+
+				llassert(new_width > 0 && new_height > 0);
+				previewp->setSize(new_width, new_height);
 			}
 			else
 			{
-				/*// _LL_DEBUGS() << "No custom res chosen, setting preview res from window: "
-					<< gViewerWindow->getWindowWidthRaw() << "x" << gViewerWindow->getWindowHeightRaw() << LL_ENDL;*/
-				new_width = gViewerWindow->getWindowWidthRaw();
-				new_height = gViewerWindow->getWindowHeightRaw();
+				// use the resolution from the selected pre-canned drop-down choice
+				// _LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
+				previewp->setSize(width, height);
 			}
 
-			llassert(new_width > 0 && new_height > 0);
-			previewp->setSize(new_width, new_height);
+			checkAspectRatio(width);
+
+			previewp->getSize(width, height);
+
+			//BD
+			if (gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"))
+			{
+				F32 multiplier = (F32)height / (F32)gViewerWindow->getWindowHeightRaw();
+				gSavedSettings.setF32("RenderSnapshotMultiplier", multiplier);
+			}
+
+			// We use the height spinner here because we come here via the aspect ratio
+			// checkbox as well and we want height always changing to width by default.
+			// If we use the width spinner we would change width according to height by
+			// default, that is not what we want.
+			updateSpinners(previewp, width, height, !mHeightSpinnerCtrl->isDirty()); // may change width and height
+
+			if (mWidthSpinnerCtrl->getValue().asInteger() != width || mHeightSpinnerCtrl->getValue().asInteger() != height)
+			{
+				mWidthSpinnerCtrl->setValue(width);
+				mHeightSpinnerCtrl->setValue(height);
+				if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
+				{
+					mWidthSpinnerCtrl->setIncrement(width >> 1);
+					mHeightSpinnerCtrl->setIncrement(height >> 1);
+				}
+			}
+
+			if (original_width != width || original_height != height)
+			{
+				previewp->setSize(width, height);
+
+				// hide old preview as the aspect ratio could be wrong
+				// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+				// Don't update immediately, give window chance to redraw
+				getPreviewView()->updateSnapshot(TRUE, FALSE, 1.f);
+				if (do_update)
+				{
+					// _LL_DEBUGS() << "Will update controls" << LL_ENDL;
+					updateControls();
+				}
+			}
 		}
-		else
+	}
+	//BD - Special case, outfit snapshot does not have a combobox.
+	else
+	{
+		S32 width = OUTFIT_SNAPSHOT_WIDTH;
+		S32 height = OUTFIT_SNAPSHOT_HEIGHT;
+
+		LLSnapshotLivePreview* previewp = getPreviewView();
+		if (previewp)
 		{
+			S32 original_width = 0, original_height = 0;
+			previewp->getSize(original_width, original_height);
+
+			if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
+			{ //clamp snapshot resolution to window size when showing UI or HUD in snapshot
+				width = llmin(width, gViewerWindow->getWindowWidthRaw());
+				height = llmin(height, gViewerWindow->getWindowHeightRaw());
+			}
+
+
+			llassert(width > 0 && height > 0);
+
 			// use the resolution from the selected pre-canned drop-down choice
 			// _LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
 			previewp->setSize(width, height);
-		}
 
-		checkAspectRatio(width) ;
-
-		previewp->getSize(width, height);
-
-		//BD
-		if (gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"))
-		{
-			F32 multiplier = (F32)height / (F32)gViewerWindow->getWindowHeightRaw();
-			gSavedSettings.setF32("RenderSnapshotMultiplier", multiplier);
-		}
-
-		// We use the height spinner here because we come here via the aspect ratio
-		// checkbox as well and we want height always changing to width by default.
-		// If we use the width spinner we would change width according to height by
-		// default, that is not what we want.
-		updateSpinners(previewp, width, height, !mHeightSpinnerCtrl->isDirty()); // may change width and height
-		
-		if(mWidthSpinnerCtrl->getValue().asInteger() != width || mHeightSpinnerCtrl->getValue().asInteger() != height)
-		{
-			mWidthSpinnerCtrl->setValue(width);
-			mHeightSpinnerCtrl->setValue(height);
-			if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
+			if (original_width != width || original_height != height)
 			{
-				mWidthSpinnerCtrl->setIncrement(width >> 1);
-				mHeightSpinnerCtrl->setIncrement(height >> 1);
-			}
-		}
-
-		if(original_width != width || original_height != height)
-		{
-			previewp->setSize(width, height);
-
-			// hide old preview as the aspect ratio could be wrong
-			// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
-			// Don't update immediately, give window chance to redraw
-			getPreviewView()->updateSnapshot(TRUE, FALSE, 1.f);
-			if(do_update)
-			{
-				// _LL_DEBUGS() << "Will update controls" << LL_ENDL;
-				updateControls();
+				// hide old preview as the aspect ratio could be wrong
+				// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+				previewp->updateSnapshot(TRUE);
 			}
 		}
 	}
@@ -1245,7 +1285,16 @@ void LLFloaterSnapshot::saveTexture()
 		return;
 	}
 
-	previewp->saveTexture();
+	BOOL is_outfit_snapshot = getOutfitID().notNull();
+	if (is_outfit_snapshot && mOutfitGallery)
+	{
+		mOutfitGallery->onBeforeOutfitSnapshotSave();
+	}
+	previewp->saveTexture(is_outfit_snapshot, is_outfit_snapshot ? getOutfitID().asString() : "");
+	if (is_outfit_snapshot && mOutfitGallery)
+	{
+		mOutfitGallery->onAfterOutfitSnapshotSave();
+	}
 }
 
 void LLFloaterSnapshot::saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb)
@@ -1370,6 +1419,9 @@ void LLFloaterSnapshot::updateUploadCost()
 {
 	S32 upload_cost = LLAgentBenefitsMgr::current().getTextureUploadCost();
 	getChild<LLUICtrl>("save_to_inventory_btn")->setLabelArg("[AMOUNT]", llformat("%d", upload_cost));
+
+	//BD - Outfit
+	mSnapshotOptionsPanel->getChild<LLUICtrl>("outfit_hint_lbl", TRUE)->setTextArg("[UPLOAD_COST]", llformat("%d", upload_cost));
 }
 
 void LLFloaterSnapshot::openPanel(const std::string& panel_name)
@@ -1685,6 +1737,65 @@ LLFloaterSnapshot* LLFloaterSnapshot::getInstance()
 {
 	return LLFloaterReg::getTypedInstance<LLFloaterSnapshot>("snapshot");
 }
+
+
+void LLFloaterSnapshot::updateOutfitResolution()
+{
+	S32 width = OUTFIT_SNAPSHOT_WIDTH;
+	S32 height = OUTFIT_SNAPSHOT_HEIGHT;
+
+	LLSnapshotLivePreview* previewp = getPreviewView();
+	if (previewp)
+	{
+		S32 original_width = 0, original_height = 0;
+		previewp->getSize(original_width, original_height);
+
+		if (gSavedSettings.getBOOL("RenderUIInSnapshot") || gSavedSettings.getBOOL("RenderHUDInSnapshot"))
+		{ //clamp snapshot resolution to window size when showing UI or HUD in snapshot
+			width = llmin(width, gViewerWindow->getWindowWidthRaw());
+			height = llmin(height, gViewerWindow->getWindowHeightRaw());
+		}
+
+
+		llassert(width > 0 && height > 0);
+
+		// use the resolution from the selected pre-canned drop-down choice
+		// _LL_DEBUGS() << "Setting preview res selected from combo: " << width << "x" << height << LL_ENDL;
+		previewp->setSize(width, height);
+
+		if (original_width != width || original_height != height)
+		{
+			// hide old preview as the aspect ratio could be wrong
+			// _LL_DEBUGS() << "updating thumbnail" << LL_ENDL;
+			previewp->updateSnapshot(TRUE);
+		}
+	}
+}
+
+// virtual
+void LLFloaterSnapshot::saveOutfitTexture()
+{
+	// _LL_DEBUGS() << "saveTexture" << LL_ENDL;
+
+	LLSnapshotLivePreview* previewp = getPreviewView();
+	if (!previewp)
+	{
+		llassert(previewp != NULL);
+		return;
+	}
+
+	if (mOutfitGallery)
+	{
+		mOutfitGallery->onBeforeOutfitSnapshotSave();
+	}
+	previewp->saveTexture(TRUE, getOutfitID().asString());
+	if (mOutfitGallery)
+	{
+		mOutfitGallery->onAfterOutfitSnapshotSave();
+	}
+	closeFloater();
+}
+
 
 
 ///----------------------------------------------------------------------------
