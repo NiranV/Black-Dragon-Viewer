@@ -4980,7 +4980,7 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	LLRenderTarget scratch_space;
 
 	F32 scale_factor = 1.0f ;
-	if (!keep_window_aspect)
+	if (!keep_window_aspect || (image_width > window_width) || (image_height > window_height))
 	{	
 		if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) &&
 			(image_width > window_width || image_height > window_height) && LLPipeline::sRenderDeferred && !show_ui)
