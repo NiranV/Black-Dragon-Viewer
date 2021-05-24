@@ -816,16 +816,6 @@ void LLFloaterEnvironmentAdjust::onButtonSave()
 
 	LLSettingsSky::ptr_t sky = mLiveSky->buildClone();
 
-	//BD - Using local window saved booleans is not the safest method of checking
-	//     but should work just fine for now until i change the actual windlight settings
-	//     item to track whether the UUID's have changed or not.
-	if (mSunImageChanged && !gDragonLibrary.checkPermissions(mSunImage->getImageItemID()))
-		sky->setSunTextureId(LLUUID::null);
-	if (mMoonImageChanged && !gDragonLibrary.checkPermissions(mMoonImage->getImageItemID()))
-		sky->setMoonTextureId(LLUUID::null);
-	if (mCloudImageChanged && !gDragonLibrary.checkPermissions(mCloudImage->getImageItemID()))
-		sky->setCloudNoiseTextureId(LLUUID::null);
-
 	gDragonLibrary.savePreset(mNameCombo->getValue(), sky);
 	gDragonLibrary.loadPresetsFromDir(mNameCombo, "skies");
 	gDragonLibrary.addInventoryPresets(mNameCombo, sky);

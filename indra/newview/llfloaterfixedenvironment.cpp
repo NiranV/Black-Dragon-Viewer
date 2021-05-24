@@ -524,9 +524,17 @@ void LLFloaterFixedEnvironment::onSaveAsCommit(const LLSD& notification, const L
             settings_name = "Unnamed";
         }
 
+		//BD - Since "Save As (Item)" is currently shown and enabled due to the loadInventoryItem()
+		//     call always returning everything true (because we started the edit locally and don't
+		//     have an inventory item) we have to cull the texture ID's here. "Save (Item)" is
+		//     already included and hidden by the checks against whether we are editing an inventory
+		//     item which also includes the baseline permission checks. This does not so we need to
+		//     apply our own.
+		LLSettingsBase::ptr_t culled_settings = gDragonLibrary.cullAssets(settings);
+
         if (mCanMod)
         {
-            doApplyCreateNewInventory(settings_name, settings);
+            doApplyCreateNewInventory(settings_name, culled_settings);
         }
         else if (mInventoryItem)
         {
