@@ -844,7 +844,9 @@ LLEnvironment::LLEnvironment():
     mShowMoonBeacon(false),
 	//BD - Windlight
 	mCloudScrollXLocked(false),
-	mCloudScrollYLocked(false)
+	mCloudScrollYLocked(false),
+	//BD - Local Windlights
+	mIsLocalPreset(false)
 {
 }
 

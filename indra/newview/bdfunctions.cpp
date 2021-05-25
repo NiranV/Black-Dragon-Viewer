@@ -589,6 +589,9 @@ bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t setting
 {
 	if (!settings || filename.empty()) return false;
 
+	//BD - If we get here we are loading a local preset which we assume allows us to save.
+	LLEnvironment::instance().setLocalPreset(true);
+
 	llifstream xml_file;
 	xml_file.open(filename);
 	if (!xml_file) return false;

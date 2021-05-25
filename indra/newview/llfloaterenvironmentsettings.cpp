@@ -104,6 +104,8 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 	LLEnvironment &env(LLEnvironment::instance());
 	if (mRegionSettingsButton->getValue().asBoolean())
 	{
+		//BD - Make sure that if we use the region light we disallow saving.
+		env.setLocalPreset(false);
 		env.clearEnvironment(LLEnvironment::ENV_LOCAL);
 		env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 		env.updateEnvironment(F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
@@ -112,6 +114,8 @@ void LLFloaterEnvironmentSettings::onSwitchRegionSettings()
 	}
 	else
 	{
+		//BD - When we switch back to our presets, allow us to save again.
+		env.setLocalPreset(true);
 		onChangeToRegion();
 	}
 }
@@ -146,7 +150,6 @@ void LLFloaterEnvironmentSettings::onChangeToRegion()
 		}
 		else
 		{
-			
 			//BD - If we dont have a sky preset simply use the default midday.
 			env.setEnvironment(LLEnvironment::ENV_LOCAL, LLEnvironment::KNOWN_SKY_MIDDAY);
 			env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
@@ -161,7 +164,6 @@ void LLFloaterEnvironmentSettings::onSelectWaterPreset()
 	//BD
 	gDragonLibrary.onSelectPreset(mWaterPresetCombo, mLiveWater);
 	gSavedSettings.setString("WaterPresetName", mWaterPresetCombo->getValue());
-
 	refresh();
 }
 
@@ -170,7 +172,6 @@ void LLFloaterEnvironmentSettings::onSelectSkyPreset()
 	//BD
 	gDragonLibrary.onSelectPreset(mSkyPresetCombo, mLiveSky);
 	gSavedSettings.setString("SkyPresetName", mSkyPresetCombo->getValue());
-
 	refresh();
 }
 
@@ -179,22 +180,21 @@ void LLFloaterEnvironmentSettings::onSelectDayCyclePreset()
 	//BD
 	gDragonLibrary.onSelectPreset(mDayCyclePresetCombo, mLiveDay);
 	gSavedSettings.setString("DayCycleName", mDayCyclePresetCombo->getValue());
-
 	refresh();
 }
 
 void LLFloaterEnvironmentSettings::onBtnCancel()
 {
 	// Revert environment to user preferences.
-	LLEnvironment &env(LLEnvironment::instance());
+	/*LLEnvironment &env(LLEnvironment::instance());
 	env.setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
 	env.clearEnvironment(LLEnvironment::ENV_EDIT);
+	env.setLocalPreset(false);*/
 	closeFloater();
 }
 
 void LLFloaterEnvironmentSettings::refresh()
 {
-	//LLEnvManagerNew& env_mgr = LLEnvManagerNew::instance();
 	bool use_region_settings = false;
 	LLSettingsSky::ptr_t sky = LLEnvironment::instance().getEnvironmentFixedSky(LLEnvironment::ENV_LOCAL);
 	if (!sky)

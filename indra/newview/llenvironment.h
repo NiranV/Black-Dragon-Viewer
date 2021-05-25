@@ -214,6 +214,9 @@ public:
 	static LLSettingsSky::ptr_t createSkyFromPreset(const std::string filename, LLSD &messages);
 	static LLSettingsDay::ptr_t createDayCycleFromPreset(const std::string filename, LLSD &messages);
 
+	bool						isLocalPreset() { return mIsLocalPreset; }
+	void						setLocalPreset(bool local) { mIsLocalPreset = local; }
+
     // Construct a new day cycle based on the environment.  Replacing either the water or the sky tracks.
     LLSettingsDay::ptr_t        createDayCycleFromEnvironment(EnvSelection_t env, LLSettingsBase::ptr_t settings);
 
@@ -398,6 +401,9 @@ private:
     bool                        mShowSunBeacon;
     bool                        mShowMoonBeacon;
     S32                         mEditorCounter;
+
+	//BD - Local Windlights
+	bool						mIsLocalPreset;
 
     struct UpdateInfo
     {

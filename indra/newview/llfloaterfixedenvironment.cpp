@@ -206,7 +206,7 @@ void LLFloaterFixedEnvironment::onFocusReceived()
         updateEditEnvironment();
 		if (mPreviousSettings != mSettings)
 		{
-			syncronizeTabs();
+			refresh();
 		}
     }
 }
@@ -223,12 +223,23 @@ void LLFloaterFixedEnvironment::refresh()
         return;
     }
 
+	//BD - If we enter through an item we will proceed as normal, checking for its permissions
+	//     to determine what we can and can't do. If we enter through any other means (local) we
+	//     lock out all options and only display local saving if this is a local preset we loaded
+	//     which we currently can only know AFTER specifically switching to a local preset for the
+	//     first time.
+	//     Note: Since there is no way of saving the state of whether we have a local preset loaded
+	//     or not (which could also be manipulated if its a setting) we'll sadly have to assume that
+	//     we don't have a local preset even if we do, forcing the user to switch the preset once
+	//     to trigger the check. It's a minor inconvenience but this horrible system currently leaves
+	//     me with no other option.
     bool is_inventory_avail = canUseInventory();
-
+	bool is_local = LLEnvironment::instance().isLocalPreset();
 	bool visible = is_inventory_avail && mCanMod && !mInventoryId.isNull();
-	mFlyoutControl->setSelectedItem(!visible ? ACTION_SAVELOCAL : ACTION_SAVE);
+	mFlyoutControl->setSelectedItem(!visible ? is_local ? ACTION_SAVELOCAL : ACTION_APPLY_PARCEL : ACTION_SAVE);
     mFlyoutControl->setMenuItemVisible(ACTION_SAVE, visible);
-    mFlyoutControl->setMenuItemVisible(ACTION_SAVEAS, is_inventory_avail && mCanCopy);
+    mFlyoutControl->setMenuItemVisible(ACTION_SAVEAS, is_inventory_avail && (mCanCopy || is_local));
+	mFlyoutControl->setMenuItemVisible(ACTION_SAVELOCAL, mCanCopy || is_local);
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_PARCEL, canApplyParcel());
     mFlyoutControl->setMenuItemVisible(ACTION_APPLY_REGION, canApplyRegion());
 
@@ -299,9 +310,12 @@ void LLFloaterFixedEnvironment::loadInventoryItem(const LLUUID  &inventoryId, bo
     {
         mInventoryItem = nullptr;
         mInventoryId.setNull();
+		//BD - Make it so presets are always editable but only saveable when its a local preset
+		//     or we have an item with permissions.
+		bool is_local = LLEnvironment::instance().isLocalPreset();
         mCanMod = true;
-        mCanCopy = true;
-        mCanTrans = true;
+        mCanCopy = is_local;
+        mCanTrans = is_local;
         return;
     }
 
@@ -493,9 +507,9 @@ void LLFloaterFixedEnvironment::onButtonApply(LLUICtrl *ctrl, const LLSD &data)
 	}
     else if (ctrl_action == ACTION_SAVEAS)
     {
-        LLSD args;
-        args["DESC"] = mSettings->getName();
-        LLNotificationsUtil::add("SaveSettingAs", args, LLSD(), boost::bind(&LLFloaterFixedEnvironment::onSaveAsCommit, this, _1, _2, setting_clone));
+		LLSD args;
+		args["DESC"] = mSettings->getName();
+		LLNotificationsUtil::add("SaveSettingAs", args, LLSD(), boost::bind(&LLFloaterFixedEnvironment::onSaveAsCommit, this, _1, _2, setting_clone));
     }
     else if ((ctrl_action == ACTION_APPLY_LOCAL) ||
         (ctrl_action == ACTION_APPLY_PARCEL) ||
@@ -821,7 +835,6 @@ void LLFloaterFixedEnvironmentWater::onOpen(const LLSD& key)
         // Initialize the settings, take a snapshot of the current water. 
         mSettings = LLEnvironment::instance().getEnvironmentFixedWater(LLEnvironment::ENV_CURRENT)->buildClone();
         mSettings->setName("Snapshot water (new)");
-
         // TODO: Should we grab sky and keep it around for reference?
     }
 
@@ -1004,6 +1017,9 @@ void LLFloaterFixedEnvironment::loadItem(LLSettingsBase::ptr_t settings)
 bool LLFloaterFixedEnvironment::loadPreset(std::string filename, std::string type)
 {
 	if (filename.empty()) return false;
+
+	//BD - If we get here we are loading a local preset which we assume allows us to save.
+	LLEnvironment::instance().setLocalPreset(true);
 
 	llifstream xml_file;
 	xml_file.open(filename);
