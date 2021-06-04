@@ -73,6 +73,7 @@ public:
 		Ignored				length; 
 
 		Multiple<LLScrollListCell::Params> columns;
+		Optional<std::string> tool_tip;
 		//BD - Cells ~ Thanks to Liru
 		Optional<Contents> contents;
 
@@ -83,6 +84,7 @@ public:
 			type("type"),
 			length("length"),
 			columns("columns"),
+			tool_tip("tool_tip"),
 			//BD - Cells ~ Thanks to Liru
 			contents("contents")
 		{
@@ -101,6 +103,9 @@ public:
 
 	void	setHighlighted( BOOL b )		{ mHighlighted = b; }
 	BOOL	getHighlighted() const			{ return mHighlighted; }
+
+	void		setToolTip(std::string str)	{ mToolTip = str; }
+	std::string	getToolTip() const			{ return mToolTip; }
 
 	//BD
 	void	setFlagged(bool b)				{ mFlagged = b; }
@@ -146,6 +151,7 @@ private:
 
 	void*	mUserdata;
 	LLSD	mItemValue;
+	std::string	mToolTip;
 	std::vector<LLScrollListCell *> mColumns;
 	LLRect  mRectangle;
 };

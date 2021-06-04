@@ -38,6 +38,8 @@
 #include "lllineeditor.h"
 #include <boost/function.hpp>
 
+#include "lliconctrl.h"
+
 // Classes
 
 class LLFontGL;
@@ -62,6 +64,7 @@ public:
 	struct ItemParams : public LLInitParam::Block<ItemParams, LLScrollListItem::Params>
 	{
 		Optional<std::string>	label;
+		Optional<std::string>	tool_tip;
 		ItemParams();
 	};
 
@@ -70,7 +73,8 @@ public:
 	{
 		Optional<bool>						allow_text_entry,
 											show_text_as_tentative,
-											allow_new_values;
+											allow_new_values,
+											use_ticker;
 		Optional<S32>						max_chars;
 		Optional<commit_callback_t> 		prearrange_callback,
 											text_entry_callback,
@@ -79,7 +83,10 @@ public:
 		Optional<EPreferredPosition, PreferredPositionValues>	list_position;
 		
 		// components
-		Optional<LLButton::Params>			combo_button;
+		Optional<LLIconCtrl::Params>		combo_icon;
+		Optional<LLButton::Params>			combo_button,
+											combo_next_btn,
+											combo_previous_btn;
 		Optional<LLScrollListCtrl::Params>	combo_list;
 		Optional<LLLineEditor::Params>		combo_editor;
 
@@ -109,6 +116,9 @@ public:
 	virtual BOOL	handleUnicodeCharHere(llwchar uni_char);
 	//BD - UI Improvements
 	BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) final override;
+
+	void			onNextBtn();
+	void			onPrevBtn();
 
 	// LLUICtrl interface
 	virtual void	clear();					// select nothing
@@ -228,6 +238,9 @@ public:
 	
 protected:
 	LLButton*			mButton;
+	LLButton*			mNextBtn;
+	LLButton*			mPrevBtn;
+	LLIconCtrl*			mIcon;
 	LLLineEditor*		mTextEntry;
 	LLScrollListCtrl*	mList;
 	EPreferredPosition	mListPosition;

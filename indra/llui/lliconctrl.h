@@ -46,11 +46,21 @@ class LLIconCtrl
 public:
 	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
 	{
-		Optional<LLUIImage*>	image;
+		Optional<LLUIImage*>	image,
+								//BD
+								warn_image,
+								default_image;
 		Optional<LLUIColor>		color;
-		Optional<bool>			use_draw_context_alpha;
+		Optional<bool>			use_draw_context_alpha,
+								//BD
+								repeat_image;
 		Optional<S32>			min_width,
-								min_height;
+								min_height,
+								//BD
+								repeats,
+								selected,
+								warns_index,
+								default_index;
 		Ignored					scale_image;
 
 		Params();
@@ -75,6 +85,8 @@ public:
 	void			setColor(const LLColor4& color) { mColor = color; }
 	void			setImage(LLPointer<LLUIImage> image) { mImagep = image; }
 	const LLPointer<LLUIImage> getImage() { return mImagep; }
+	void			setRepeats(S32 repeats) { mRepeats = repeats; }
+	void			setSelected(S32 selected) { mSelected = selected; }
 	
 protected:
 	S32 mPriority;
@@ -84,6 +96,15 @@ protected:
 		mMinHeight,
 		mMaxWidth,
 		mMaxHeight;
+
+	//BD
+	S32 mRepeats;
+	S32 mSelected;
+	S32 mWarnIndex;
+	S32 mDefaultIndex;
+	LLPointer<LLUIImage> mWarnImagep;
+	LLPointer<LLUIImage> mDefaultImagep;
+	bool mRepeatImage;
 
 	// If set to true (default), use the draw context transparency.
 	// If false, will use transparency returned by getCurrentTransparency(). See STORM-698.

@@ -2,6 +2,7 @@
 <combo_box font="SansSerifSmall"
            list_position="below"
            max_chars="20"
+           use_ticker="false"
            height="23"
            follows="right|top">
   <combo_box.combo_button name="Combobox Button"
@@ -34,4 +35,24 @@
                           select_on_focus="true"
                           font="SansSerifSmall" 
                           text_tentative_color="TextFgColor" />
+  <combo_box.combo_icon
+            image_name="Ticker"
+            warn_image="Ticker_Warn"
+            default_image="Ticker_Default"
+            follows="left|bottom|right"
+            default_index="99"
+            warns_index="99"
+            repeat_image="true"/>
+      <combo_box.combo_next_btn
+            follows="left|bottom|top"
+            image_overlay="Arrow_Right"
+            image_unselected="Transparent"
+            image_selected="Transparent"
+            image_disabled="Transparent" />
+      <combo_box.combo_previous_btn
+            follows="left|bottom|top"
+            image_overlay="Arrow_Left"
+            image_unselected="Transparent"
+            image_selected="Transparent"
+            image_disabled="Transparent" />
 </combo_box>

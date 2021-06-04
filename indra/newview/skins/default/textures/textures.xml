@@ -807,6 +807,10 @@ with the same filename but different name
   <texture name="Blogger_Icon" file_name="blogger_gr.png" preload="true"/>
   <texture name="FMOD_Logo" file_name="fmod.png" preload="true"/>
   
+  <texture name="Ticker" file_name="widgets/Ticker.png" preload="true" scale.left="4" scale.top="13" scale.right="27" scale.bottom="2" />
+  <texture name="Ticker_Warn" file_name="widgets/Ticker_Warn.png" preload="true" scale.left="4" scale.top="13" scale.right="27" scale.bottom="2"/>
+  <texture name="Ticker_Default" file_name="widgets/Ticker_Default.png" preload="true" scale.left="4" scale.top="3" scale.right="27" scale.bottom="2"/>
+  
   <texture name="Command_Machinima_Icon"    file_name="toolbar_icons/machinima.png"    preload="true" />
   <texture name="Command_Script_Limits_Icon" file_name="toolbar_icons/script.png"      preload="true" />
   <texture name="Command_PF_Linksets_Icon"  file_name="toolbar_icons/linksets.png"     preload="true" />
