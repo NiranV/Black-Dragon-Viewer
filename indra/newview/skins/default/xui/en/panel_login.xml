@@ -173,8 +173,112 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="416"
+     height="312"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability for icons to be repeated several times.
+Added: Ability for dropdown comboboxes to use the new icon repeat functionality to create a new widget type allowing to select next/previous entries.
+Added: Ability for list entries in comboboxes to each have their own separate tooltip.
+Added: Danielle Abney as Patreon patron.
+Added: GBTH project as Patreon patron.
+Added: Haefnir as Patreon patron.
+Added: Liz as Patreon patron.
+Added: Luxxo as Patreon patron.
+Added: Mikey as Patreon patron.
+Added: Seefor.ark2 as Patreon patron.
+Added: Violet Voxel as Patreon patron.
+Added: XavaX as Patreon patron.
+Changed: Ripped out and moved the permission checks as well as the culling of texture ID's into its own function for easier calling and replace both inventory and local saving to use the new function.
+Changed: Remove ability to save presets if we don't use a locally saved preset or an item we have permissions of to do so. As per Vir.
+Changed: Replaced most of radio buttons with the new combobox tickers to simplify the usage, save space and make everything look nicer. Work in Progress.
+Changed: Overhauled a couple warnings in preferences and their conditions when and how to display. Work in Progress.
+Changed: Make the Animation Controls window "Stop" stop only the selected animation rather than absolutely everything.
+Changed: Rachel Quinn patron amount to the new highest.
+Changed: Version to 3.9.11.
+Fixed: Permissions of textures not being respected when using "Save As (Item)".
+Fixed: Projector light shadow resolution not working properly separately on both projectors (or at all).
+Fixed: Pressing "Search" again will reset the active search window (if any).
+Fixed: All tooltips and moved them over from the radio buttons into the new ticker widgets.
+Misc: Very very first rough "Animator" draft. Work in Progress. Currently can't do much other than showing keyframes on bones.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.10
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="26"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Fixed: Snapshot scaling is broken and taking snapshots in high resolution results in them being poorly upscaled.
+Fixed: Quick Draw Distance slider being all the way to the left instead of below the icon.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.9
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="416"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
@@ -237,7 +341,7 @@ Misc: Moved all Outfit snapshot floater code into the main snapshot floater code
      bg_writeable_color="Black_50" 
      width="990"
      word_wrap="false">
-     3.9.7
+     3.9.8
      </text>
      <text
      follows="top|left"
