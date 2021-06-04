@@ -153,115 +153,6 @@ width="510">
  width="220">
  Interface Size:
  </text>
-                  <!--<radio_group
-                  control_name="UIScaleFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="UIScaleFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Small"
-                        value="0.8"
-								tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        value="1"
-								tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
-                        layout="topleft"
-                        name="1"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Big"
-                        halign="right"
-                        value="1.2"
-								tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-								<radio_item
-                        height="16"
-                        label="Huge (4k)"
-                        halign="right"
-                        value="2"
-								tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
-                        layout="topleft"
-                        name="3"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-        <radio_group.commit_callback
-        function="Dragon.TriggerWarn"/>
-                  </radio_group>-->
-                  
    <combo_box
    follows="top|left"
    left="155"
@@ -736,59 +627,67 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much detail objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;0.25&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much details objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much details objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
        value="1.5"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;3.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details objects should have and which Level-of-Detail they use.
+||RenderVolumeLODFactor: &lt;blue&gt;4.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set."
        value="2"
        name="item4"/>
       <combo_box.combo_icon
@@ -802,169 +701,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderVolumeLODFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderVolumeLODFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="0.25"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much detail objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;0.25&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
-                        value="0.5"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="2"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set higher than this."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="3"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;3.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        halign="right"
-                        value="4"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;4.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer, this should be kept in mind when building with this option set."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -990,49 +726,57 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+||RenderAvatarLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+||RenderAvatarLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+||RenderAvatarLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="1.5"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+||RenderAvatarLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
+||RenderAvatarLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.combo_icon
@@ -1046,144 +790,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderAvatarLODFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderAvatarLODFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="0.5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-||RenderAvatarLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-||RenderAvatarLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="2"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-||RenderAvatarLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-||RenderAvatarLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="10"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details default linden bodies should have and which Level-of-Detail they use.
-||RenderAvatarLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -1209,59 +815,69 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="1.5"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details the terrain should have and which Level-of-Detail it uses.
+||RenderTerrainLODFactor: &lt;blue&gt;15.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.combo_icon
@@ -1275,172 +891,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderTerrainLODFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderTerrainLODFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="0.5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="2"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="10"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        halign="right"
-                        value="15"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details the terrain should have and which Level-of-Detail it uses.
-||RenderTerrainLODFactor: &lt;blue&gt;15.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -1466,59 +916,69 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;Disabled&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="1.5"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;2.5&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much details trees should have and which Level-of-Detail they use.
+||RenderTreeLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.combo_icon
@@ -1532,172 +992,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderTreeLODFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderTreeLODFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Off"
-                        value="0"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;Disabled&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="0.5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="2.5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;2.5&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        halign="right"
-                        value="10"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much details trees should have and which Level-of-Detail they use.
-||RenderTreeLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <panel
        follows="top|left|right"
        height="39"
@@ -1747,59 +1041,67 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;32&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;64&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;96&lt;/blue&gt;"
        value="1.5"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;128&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;192&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls how much details the sky has and how smooth the sun is.
+||WLSkyDetail: &lt;blue&gt;256&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2"
        name="item4"/>
       <combo_box.combo_icon
@@ -1813,165 +1115,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="WLSkyDetail"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="WLSkyDetail"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="32"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;32&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="64"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;64&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Normal"
-                        value="96"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;96&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        value="128"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;128&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        value="192"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;192&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        value="256"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls how much details the sky has and how smooth the sun is.
-||WLSkyDetail: &lt;blue&gt;256&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                     
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -2036,59 +1179,63 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="0.1"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.1&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.2&lt;/blue&gt;"
        value="0.2"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.4&lt;/blue&gt;"
        value="0.4"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.6&lt;/blue&gt;"
        value="0.6"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.8&lt;/blue&gt;"
        value="0.8"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls how much time should be spend on calculating avatar physics.
+||RenderAvatarPhysicsLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="1"
        name="item4"/>
       <combo_box.combo_icon
@@ -2102,160 +1249,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderAvatarPhysicsLODFactor"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderAvatarPhysicsLODFactor"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="0.1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.1&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="0.2"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.2&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="0.4"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.4&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="0.6"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.6&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="0.8"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;0.8&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        halign="right"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls how much time should be spend on calculating avatar physics.
-||RenderAvatarPhysicsLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -2342,49 +1335,46 @@ width="510">
       <combo_box.item
        label="None"
        value="0"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option prevents everything from being reflected in water reflections."
        name="item0"/>
       <combo_box.item
        label="Terrain"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option allows the terrain to be reflected in water reflections."
        value="1"
        name="item2"/>
       <combo_box.item
        label="Objects"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option allows the terrain and objects to be reflected in water reflections."
        value="2"
        name="item3"/>
       <combo_box.item
        label="Avatars"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option allows the terrain, objects and avatars to be reflected in water reflections."
        value="3"
        name="item4"/>
       <combo_box.item
        label="Everything"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option allows everything to be reflected in water reflections."
        value="4"
        name="item4"/>
       <combo_box.drop_down_button
@@ -2395,124 +1385,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderReflectionDetail"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderReflectionDetail"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="None"
-                        value="0"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option prevents everything from being reflected in water reflections."
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Terrain"
-                        value="1"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option allows the terrain to be reflected in water reflections."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Objects"
-                        value="2"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option allows the terrain and objects to be reflected in water reflections."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Avatars"
-                        value="3"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option allows the terrain, objects and avatars to be reflected in water reflections."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Everything"
-                        value="4"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option allows everything to be reflected in water reflections."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <panel
        follows="top|left|right"
        height="39"
@@ -2562,59 +1434,69 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="256"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;256x&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;512x&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;768x&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="768"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;1024x&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="1024"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;1536x&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="1536"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the resolution of water reflections.
+||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2048"
        name="item4"/>
       <combo_box.combo_icon
@@ -2628,169 +1510,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderWaterRefResolution"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderWaterRefResolution"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="256"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;256x&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="512"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;512x&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Normal"
-                        value="768"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;768x&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        value="1024"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1024x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        value="1536"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1536x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        value="2048"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Caution_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                     
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -2816,59 +1535,61 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="20"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;20&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;16&lt;/blue&gt;"
        value="16"
        name="item2"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;12&lt;/blue&gt;"
        value="12"
        name="item3"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;9&lt;/blue&gt;"
        value="9"
        name="item4"/>
       <combo_box.item
        label="Very High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;6&lt;/blue&gt;"
        value="6"
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the repeats of the default terrain textures. Higher means less repeats.
+||RenderTerrainScale: &lt;blue&gt;5&lt;/blue&gt;"
        value="5"
        name="item4"/>
       <combo_box.combo_icon
@@ -2882,156 +1603,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderTerrainScale"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderTerrainScale"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Very Low"
-                        value="20"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;20&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="16"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;16&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Medium"
-                        halign="right"
-                        value="12"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;12&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        halign="right"
-                        value="9"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;9&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Very High"
-                        halign="right"
-                        value="6"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;6&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Ultra"
-                        halign="right"
-                        value="5"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;5&lt;/blue&gt;"
-                        layout="topleft"
-                        name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  <text
  type="string"
  length="1"
@@ -3057,29 +1628,33 @@ width="510">
       <combo_box.item
        label="Low"
        value="8"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of post processing glow.
+||RenderGlowResolutionPow: &lt;blue&gt;7&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Normal"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the resolution of post processing glow.
+||RenderGlowResolutionPow: &lt;blue&gt;9&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="9"
        name="item2"/>
       <combo_box.item
        label="High"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
-||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the resolution of post processing glow.
+||RenderGlowResolutionPow: &lt;blue&gt;10&lt;/blue&gt;"
        value="10"
        name="item3"/>
       <combo_box.combo_icon
@@ -3092,87 +1667,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <!--<radio_group
-                  control_name="RenderGlowResolutionPow"
-                  height="19"
-                  layout="topleft"
-                  left="10"
-                  name="RenderGlowResolutionPow"
-                  top_pad="5"
-                  width="600">
-                        <radio_item
-                        height="16"
-                        label="Low"
-                        value="7"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of post processing glow.
-||RenderGlowResolutionPow: &lt;blue&gt;7&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        top="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Normal"
-                        value="9"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of post processing glow.
-||RenderGlowResolutionPow: &lt;blue&gt;9&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_overlay="Default_Widget"
-                              image_overlay_alignment="left"
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="High"
-                        value="10"
-								tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of post processing glow.
-||RenderGlowResolutionPow: &lt;blue&gt;10&lt;/blue&gt;"
-                        layout="topleft"
-                        name="0"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                  </radio_group>-->
  </layout_panel>
       <layout_panel
 	  follows="top|left|right"
