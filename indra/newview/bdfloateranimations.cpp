@@ -39,6 +39,7 @@ BDFloaterAnimations::BDFloaterAnimations(const LLSD& key)
 	:	LLFloater(key)
 {
 	//BD - This is the global command from which on we decide what to do. We had them all separately before.
+	//     "Clear" - Stops all animation complete, essentially just reset animation.
 	//     "Stop" - Stops an animation complete, essentially just reset animation.
 	//     "Freeze" - Pauses an animation just like if we set its playback speed to 0.0.
 	//     "Set" - Changes the animation playback speed to the desired value.
@@ -290,7 +291,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 						}
 					}
 				}
-				else if (param.asString() == "Stop")
+				else if (param.asString() == "Clear")
 				{
 					//BD - Special case to prevent the posing animation from becoming stuck.
 					if (avatar->getID() == gAgentID)
@@ -300,6 +301,18 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					}
 
 					avatar->deactivateAllMotions();
+					avatar->startDefaultMotions();
+				}
+				else if (param.asString() == "Stop")
+				{
+					for (LLScrollListItem* item : mMotionScroll->getAllSelected())
+					{
+						LLUUID id = item->getColumn(1)->getValue();
+						if (id.notNull())
+						{
+							avatar->stopMotion(id);
+						}
+					}
 				}
 				else if (param.asString() == "Remove")
 				{
@@ -350,10 +363,10 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 							}
 
 							//BD - Will be using this later to export our finished animations.
-							/*if (kf_motion && kf_motion->getName().empty() &&
-								kf_motion->getDuration() > 0.0f)
+							/*if (motion && motion->getName().empty() &&
+								motion->getDuration() > 0.0f)
 							{
-								kf_motion->dumpToFile("");
+								((LLKeyframeMotion*)motion)->dumpToFile("");
 
 								//S32 anim_file_size = kf_motion->getFileSize();
 								//U8* anim_data = new U8[anim_file_size];
