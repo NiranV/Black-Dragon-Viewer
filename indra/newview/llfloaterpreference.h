@@ -328,21 +328,22 @@ private:
 	LLScrollListCtrl* mBindModeList;
 
 //	//BD - Warning System
-	LLUICtrl* mWarning0;
-	LLUICtrl* mWarning1;
-	LLUICtrl* mWarning2;
-	LLUICtrl* mWarning3;
-	LLUICtrl* mWarning4;
-	LLUICtrl* mWarning5;
-	LLUICtrl* mWarning6;
-	LLUICtrl* mWarning7;
-	LLUICtrl* mWarning8;
-	LLUICtrl* mWarning9;
-	LLUICtrl* mWarning10;
-	LLUICtrl* mWarning11;
-	LLUICtrl* mWarning12;
-	LLUICtrl* mWarning13;
-	LLUICtrl* mWarning14;
+	LLPanel* mWarning0;
+	LLPanel* mWarning1;
+	LLPanel* mWarning2;
+	LLPanel* mWarning3;
+	LLPanel* mWarning4;
+	LLPanel* mWarning5;
+	LLPanel* mWarning6;
+	LLPanel* mWarning7;
+	LLPanel* mWarning8;
+	LLPanel* mWarning9;
+	LLPanel* mWarning10;
+	LLPanel* mWarning11;
+	LLPanel* mWarning12;
+	LLPanel* mWarning13;
+	LLPanel* mWarning14;
+	LLPanel* mWarning15;
 
 //	//BD - Memory Allocation
 	LLSliderCtrl*	mSystemMemory;
@@ -371,7 +372,11 @@ private:
 	LLUICtrl*	mRenderShadowBlurSize;
 	LLUICtrl*	mRenderSSRResolution;
 	LLUICtrl*	mRenderSSRBrightness;
+	LLUICtrl*	mRenderSSRRoughness;
 	LLUICtrl*	mRenderDepthOfFieldHighQuality;
+	LLUICtrl*	mRenderDepthOfFieldAlphas;
+	LLUICtrl*	mRenderDepthOfFieldFront;
+	LLUICtrl*	mRenderDepthOfFieldInEditMode;
 	LLUICtrl*	mCameraFOV;
 	LLUICtrl*	mCameraFNum;
 	LLUICtrl*	mCameraFocal;
@@ -394,7 +399,20 @@ private:
 	LLUICtrl*	mExodusRenderColorGradeTech;
 	LLUICtrl*	mExodusRenderToneMappingTech;
 
-	std::array<LLView*, 12> mDisplayTabs;
+	//BD - Preferences Tabs
+	// 0 - Viewer
+	// 1 - LOD
+	// 2 - Performance
+	// 3 - Vertex / Windlight
+	// 4 - Deferred
+	// 5 - Depth of Field
+	// 6 - SSAO
+	// 7 - Motion Blur
+	// 8 - Godrays
+	// 9 - Post Processing
+	// 10 - Tone Mapping
+	// 11 - Vignette 
+	std::array<LLPanel*, 12> mDisplayTabs;
 
 	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
 	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;

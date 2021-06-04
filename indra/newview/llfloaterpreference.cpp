@@ -1316,7 +1316,11 @@ BOOL LLFloaterPreference::postBuild()
 	mRenderShadowBlurSize = getChild<LLUICtrl>("RenderShadowBlurSize");
 	mRenderSSRResolution = getChild<LLUICtrl>("RenderSSRResolution");
 	mRenderSSRBrightness = getChild<LLUICtrl>("RenderSSRBrightness");
+	mRenderSSRRoughness = getChild<LLUICtrl>("RenderSSRRoughness");
 	mRenderDepthOfFieldHighQuality = getChild<LLUICtrl>("RenderDepthOfFieldHighQuality");
+	mRenderDepthOfFieldAlphas = getChild<LLUICtrl>("RenderDepthOfFieldAlphas");
+	mRenderDepthOfFieldFront = getChild<LLUICtrl>("RenderDepthOfFieldFront");
+	mRenderDepthOfFieldInEditMode = getChild<LLUICtrl>("RenderDepthOfFieldInEditMode");
 	mCameraFOV = getChild<LLUICtrl>("CameraFOV");
 	mCameraFNum = getChild<LLUICtrl>("CameraFNum");
 	mCameraFocal = getChild<LLUICtrl>("CameraFocal");
@@ -1336,39 +1340,40 @@ BOOL LLFloaterPreference::postBuild()
 	mRenderGodraysMultiplier = getChild<LLUICtrl>("GodraysMultiplier");
 	mRenderGodraysFalloffMultiplier = getChild<LLUICtrl>("GodraysFalloffMultiplier");
 
-	mDisplayTabs = { { getChild<LLView>("viewer_layout_panel"),
-					getChild<LLView>("lod_layout_panel"),
-					getChild<LLView>("performance_layout_panel"),
-					getChild<LLView>("vertex_layout_panel"),
-					getChild<LLView>("deferred_layout_panel"),
-					getChild<LLView>("dof_layout_panel"),
-					getChild<LLView>("ao_layout_panel"),
-					getChild<LLView>("motionblur_layout_panel"),
-					getChild<LLView>("godrays_layout_panel"),
-					getChild<LLView>("post_layout_panel"),
-					getChild<LLView>("tonemapping_layout_panel"),
-					getChild<LLView>("vignette_layout_panel") } };
+	mDisplayTabs = { { getChild<LLPanel>("viewer_layout_panel"),
+					getChild<LLPanel>("lod_layout_panel"),
+					getChild<LLPanel>("performance_layout_panel"),
+					getChild<LLPanel>("vertex_layout_panel"),
+					getChild<LLPanel>("deferred_layout_panel"),
+					getChild<LLPanel>("dof_layout_panel"),
+					getChild<LLPanel>("ao_layout_panel"),
+					getChild<LLPanel>("motionblur_layout_panel"),
+					getChild<LLPanel>("godrays_layout_panel"),
+					getChild<LLPanel>("post_layout_panel"),
+					getChild<LLPanel>("tonemapping_layout_panel"),
+					getChild<LLPanel>("vignette_layout_panel") } };
 
 //	//BD - Custom Keyboard Layout
 	mBindModeList = this->getChild<LLScrollListCtrl>("scroll_mode", true);
 	mBindModeList->setDoubleClickCallback(boost::bind(&LLFloaterPreference::onListClickAction, this));
 
 //	//BD - Warning System
-	mWarning0 = getChild<LLUICtrl>("warning_ui_size");
-	mWarning1 = getChild<LLUICtrl>("warning_font_dpi");
-	mWarning2 = getChild<LLUICtrl>("warning_texture_memory");
-	mWarning3 = getChild<LLUICtrl>("warning_object_lod");
-	mWarning4 = getChild<LLUICtrl>("warning_draw_distance");
-	mWarning5 = getChild<LLUICtrl>("warning_avatars_visible");
-	mWarning6 = getChild<LLUICtrl>("warning_derender_m2");
-	mWarning7 = getChild<LLUICtrl>("warning_derender_ar");
-	mWarning8 = getChild<LLUICtrl>("warning_derender_surface");
-	mWarning9 = getChild<LLUICtrl>("warning_reflection_quality");
-	mWarning10 = getChild<LLUICtrl>("warning_sky_quality");
-	mWarning11 = getChild<LLUICtrl>("warning_shadow_resolution");
-	mWarning12 = getChild<LLUICtrl>("warning_projector_resolution");
-	mWarning13 = getChild<LLUICtrl>("warning_blur_quality");
-	mWarning14 = getChild<LLUICtrl>("warning_light_resolution");
+	mWarning0 = getChild<LLPanel>("warning_ui_size");
+	mWarning1 = getChild<LLPanel>("warning_font_dpi");
+	mWarning2 = getChild<LLPanel>("warning_texture_memory");
+	mWarning3 = getChild<LLPanel>("warning_object_lod");
+	mWarning4 = getChild<LLPanel>("warning_draw_distance");
+	mWarning5 = getChild<LLPanel>("warning_avatars_visible");
+	mWarning6 = getChild<LLPanel>("warning_derender_m2");
+	mWarning7 = getChild<LLPanel>("warning_derender_ar");
+	mWarning8 = getChild<LLPanel>("warning_derender_surface");
+	mWarning9 = getChild<LLPanel>("warning_reflection_quality");
+	mWarning10 = getChild<LLPanel>("warning_sky_quality");
+	mWarning11 = getChild<LLPanel>("warning_shadow_resolution");
+	mWarning12 = getChild<LLPanel>("warning_projector_resolution");
+	mWarning13 = getChild<LLPanel>("warning_blur_quality");
+	mWarning14 = getChild<LLPanel>("warning_light_resolution");
+	mWarning15 = getChild<LLPanel>("warning_ssr_resolution");
 
 //	//BD - Memory Allocation
 	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
@@ -1787,7 +1792,7 @@ void LLFloaterPreference::refreshEverything()
 			//     report back its maximum and free memory we'll just use the max, whatever
 			//     that is and only show the actual used memory from SL. Only NVIDIA Cards seem
 			//     to properly and accurately report back their max and free memory.
-			if (gGLManager.mIsNVIDIA)
+			//if (gGLManager.mIsNVIDIA)
 			{
 				refreshMemoryControls();
 			}
@@ -1800,6 +1805,8 @@ void LLFloaterPreference::refreshEverything()
 		if (scroll_rect.overlaps(deferred_rect))
 		{
 			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
+			mDisplayTabs[4]->setEnabled(deferred_enabled);
+			mDisplayTabs[4]->setBackgroundVisible(!deferred_enabled);
 			mRenderShadowResolution[0]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[1]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[2]->setEnabled(shadows_enabled);
@@ -1823,6 +1830,11 @@ void LLFloaterPreference::refreshEverything()
 			bool ssr_enabled = (gSavedSettings.getBOOL("RenderScreenSpaceReflections") && deferred_enabled);
 			mRenderSSRResolution->setEnabled(ssr_enabled);
 			mRenderSSRBrightness->setEnabled(ssr_enabled);
+			mRenderSSRRoughness->setEnabled(ssr_enabled);
+
+			mWarning11->setBackgroundVisible(deferred_enabled);
+			mWarning12->setBackgroundVisible(deferred_enabled);
+			mWarning15->setBackgroundVisible(deferred_enabled);
 		}
 
 		//BD - Depth of Field
@@ -1831,6 +1843,10 @@ void LLFloaterPreference::refreshEverything()
 		if (scroll_rect.overlaps(dof_rect))
 		{
 			bool dof_enabled = (gPipeline.RenderDepthOfField && deferred_enabled);
+			mDisplayTabs[5]->setBackgroundVisible(!dof_enabled);
+			mRenderDepthOfFieldAlphas->setEnabled(dof_enabled);
+			mRenderDepthOfFieldFront->setEnabled(dof_enabled);
+			mRenderDepthOfFieldInEditMode->setEnabled(dof_enabled);
 			mRenderDepthOfFieldHighQuality->setEnabled(dof_enabled);
 			mCameraFOV->setEnabled(dof_enabled);
 			mCameraFNum->setEnabled(dof_enabled);
@@ -1846,6 +1862,7 @@ void LLFloaterPreference::refreshEverything()
 		if (scroll_rect.overlaps(ssao_rect))
 		{
 			bool ssao_enabled = (gPipeline.RenderDeferredSSAO && deferred_enabled);
+			mDisplayTabs[6]->setBackgroundVisible(!ssao_enabled);
 			mRenderSSAOBlurSize->setEnabled(ssao_enabled);
 			mSSAOEffect->setEnabled(ssao_enabled);
 			mSSAOScale->setEnabled(ssao_enabled);
@@ -1859,8 +1876,10 @@ void LLFloaterPreference::refreshEverything()
 		if (scroll_rect.overlaps(blur_rect))
 		{
 			bool blur_enabled = (gPipeline.RenderMotionBlur && deferred_enabled);
+			mDisplayTabs[7]->setBackgroundVisible(!blur_enabled);
 			mRenderRiggedMotionBlurQuality->setEnabled(blur_enabled);
 			mMotionBlurQuality->setEnabled(blur_enabled);
+			mWarning13->setBackgroundVisible(blur_enabled);
 		}
 
 		//BD - Volumetric Lighting
@@ -1870,17 +1889,19 @@ void LLFloaterPreference::refreshEverything()
 		{
 			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
 			bool volumetric_enabled = (gPipeline.RenderGodrays && shadows_enabled);
+			mDisplayTabs[8]->setBackgroundVisible(!volumetric_enabled);
 			mRenderGodrays->setEnabled(shadows_enabled);
 			mRenderGodraysDirectional->setEnabled(volumetric_enabled);
 			mRenderGodraysResolution->setEnabled(volumetric_enabled);
 			mRenderGodraysMultiplier->setEnabled(volumetric_enabled);
 			mRenderGodraysFalloffMultiplier->setEnabled(volumetric_enabled);
+			mWarning14->setBackgroundVisible(volumetric_enabled);
 		}
 
 		//BD - Tone Mapping
 		//=================
 		LLRect tone_rect = mDisplayTabs[10]->calcScreenRect();
-		if (scroll_rect.overlaps(deferred_rect))
+		if (scroll_rect.overlaps(tone_rect))
 		{
 			//BD - Tone Mapping
 			bool tone_enabled = (exoPostProcess::sExodusRenderToneMapping && deferred_enabled);
@@ -1900,6 +1921,7 @@ void LLFloaterPreference::refreshEverything()
 
 			//BD - Color Correction
 			bool color_enabled = (mExodusRenderColorGradeTech->getValue().asInteger() == 0 && deferred_enabled);
+			mDisplayTabs[10]->setBackgroundVisible(!tone_enabled && !color_enabled);
 			mExodusRenderColorGradeTech->setEnabled(deferred_enabled);
 			mExodusRenderGamma[0]->setEnabled(color_enabled);
 			mExodusRenderGamma[1]->setEnabled(color_enabled);
@@ -1912,6 +1934,16 @@ void LLFloaterPreference::refreshEverything()
 			mExodusRenderOffset[0]->setEnabled(color_enabled);
 			mExodusRenderOffset[1]->setEnabled(color_enabled);
 			mExodusRenderOffset[2]->setEnabled(color_enabled);
+		}
+
+		LLRect vignette_rect = mDisplayTabs[11]->calcScreenRect();
+		if (scroll_rect.overlaps(vignette_rect))
+		{
+			//BD - Vignette
+			mDisplayTabs[11]->setBackgroundVisible(!deferred_enabled);
+			mExodusRenderVignette[0]->setEnabled(deferred_enabled);
+			mExodusRenderVignette[1]->setEnabled(deferred_enabled);
+			mExodusRenderVignette[2]->setEnabled(deferred_enabled);
 		}
 	}
 
@@ -2036,6 +2068,9 @@ void LLFloaterPreference::refreshWarnings()
 
 	//BD - Volumetric Lighting Options
 	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 48);
+
+	//BD - Screen Space Reflections
+	mWarning15->setVisible(gSavedSettings.getU32("RenderSSRResolution") > 13);
 }
 
 //BD - Memory Allocation
