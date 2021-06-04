@@ -178,19 +178,40 @@ width="678">
 				width="480"
 				top="20"
 				left="2"/>
+				<scroll_list
+				column_padding="2"
+				draw_heading="true"
+				height="279"
+				follows="left|top"
+				enable_sort="false"
+				layout="topleft"
+				left="2"
+				width="150"
+				multi_select="true"
+				name="motions_scroll"
+				top="0">
+				<scroll_list.columns
+				label="Animation"
+				name="name"
+				relative_width="0.33"  />
+				<scroll_list.columns
+				label="ID"
+				name="uuid"
+				relative_width="0.0"  />
+				</scroll_list>
 				<tab_container
 				follows="all"
 				halign="center"
 				height="299"
 				layout="topleft"
-				left="0"
-				enabled="false"
+				left_pad="0"
+				enabled="true"
 				name="joints_tabs"
 				tab_height="20"
 				tab_group="1"
 				tab_position="top"
 				top="0"
-				width="483">
+				width="153">
 					<panel
 					follows="all"
 					background_visible="false"
@@ -200,7 +221,7 @@ width="678">
 					title="Skeleton"
 					name="joints_panel"
 					top="0"
-					width="481">
+					width="181">
 						<scroll_list
 						column_padding="2"
 						draw_heading="true"
@@ -224,27 +245,27 @@ width="678">
 						<scroll_list.columns
 						label="Rot X"
 						name="x"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Rot Y"
 						name="y"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Rot Z"
 						name="z"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Pos X"
 						name="pos_x"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Pos Y"
 						name="pos_y"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Pos Z"
 						name="pos_z"
-						relative_width="0.10"  />
+						relative_width="0.0"  />
 						<scroll_list.columns
 						label="Size X"
 						name="scale_x"
@@ -263,7 +284,7 @@ width="678">
 						relative_width="0.00"  />
 						</scroll_list>
 					</panel>
-					<panel
+					<!--<panel
 					follows="all"
 					background_visible="false"
 					height="299"
@@ -406,7 +427,7 @@ width="678">
 						name="number"
 						relative_width="0.00"  />
 						</scroll_list>
-					</panel>
+					</panel>-->
 				</tab_container>
 				<button
 				height="21"

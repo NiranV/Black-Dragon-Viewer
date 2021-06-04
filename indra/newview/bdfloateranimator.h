@@ -169,6 +169,11 @@ private:
 	void onAvatarsRefresh();
 	void onAvatarsSelect();
 
+	void onAnimationsRefresh();
+	void onMotionSelect();
+	void onJointSelect();
+	void onKeyframeRefresh();
+
 	//BD
 	void loadPoseRotations(std::string name, LLVector3 *rotations);
 	void loadPosePositions(std::string name, LLVector3 *rotations);
@@ -198,6 +203,8 @@ private:
 
 	LLButton*								mStartPosingBtn;
 	LLMenuButton*							mLoadPosesBtn;
+
+	LLScrollListCtrl*				mMotionScroll;
 
 	//BD - Experimental
 	void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);

@@ -97,16 +97,16 @@ BOOL BDFloaterAnimator::postBuild()
 						this->getChild<LLScrollListCtrl>("attach_scroll", true) } };
 
 	mJointScrolls[JOINTS]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[JOINTS]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointControlsRefresh, this));
+	mJointScrolls[JOINTS]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointSelect, this));
 	mJointScrolls[JOINTS]->setDoubleClickCallback(boost::bind(&BDFloaterAnimator::onJointChangeState, this));
 
 	//BD - Collision Volumes
 	mJointScrolls[COLLISION_VOLUMES]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[COLLISION_VOLUMES]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointControlsRefresh, this));
+	mJointScrolls[COLLISION_VOLUMES]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointSelect, this));
 
 	//BD - Attachment Bones
 	mJointScrolls[ATTACHMENT_BONES]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[ATTACHMENT_BONES]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointControlsRefresh, this));
+	mJointScrolls[ATTACHMENT_BONES]->setCommitCallback(boost::bind(&BDFloaterAnimator::onJointSelect, this));
 
 	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
 	mPoseScroll->setCommitOnSelectionChange(TRUE);
@@ -124,6 +124,9 @@ BOOL BDFloaterAnimator::postBuild()
 	//BD - Animesh
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("avatar_scroll", true);
 	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterAnimator::onAvatarsSelect, this));
+
+	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
+	mMotionScroll->setCommitCallback(boost::bind(&BDFloaterAnimator::onMotionSelect, this));
 
 	//BD - Misc
 	mDelayRefresh = false;
@@ -813,7 +816,7 @@ void BDFloaterAnimator::onJointControlsRefresh()
 
 	bool can_position = false;
 	bool is_pelvis = false;
-	bool is_posing = (avatar->isFullyLoaded() && avatar->getPosing());
+	bool is_posing = true;
 	S32 index = mJointTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
 
@@ -1497,6 +1500,31 @@ void BDFloaterAnimator::onAvatarsSelect()
 	//     valid and/or if new avatars have become valid for posing.
 	onAvatarsRefresh();
 
+	onAnimationsRefresh();
+
+	//BD - Now that we selected an avatar we can refresh the joint list to have all bones
+	//     mapped to that avatar so we can immediately start posing them or continue doing so.
+	//     This will automatically invoke a onJointControlsRefresh()
+	//onJointRefresh();
+
+	//BD - Now that we support animating multiple avatars we also need to refresh all controls
+	//     and animation/pose lists for them when we switch to make it as easy as possible to
+	//     quickly switch back and forth and make edits.
+	//onUpdateLayout();
+
+	//onPoseControlsRefresh();
+
+	//mStartPosingBtn->setFlashing(true, true);
+}
+
+void BDFloaterAnimator::onMotionSelect()
+{
+	//BD - Whenever we select an avatar in the list, check if the selected Avatar is still
+	//     valid and/or if new avatars have become valid for posing.
+	//onAvatarsRefresh();
+
+	//onAnimationsRefresh();
+
 	//BD - Now that we selected an avatar we can refresh the joint list to have all bones
 	//     mapped to that avatar so we can immediately start posing them or continue doing so.
 	//     This will automatically invoke a onJointControlsRefresh()
@@ -1507,9 +1535,131 @@ void BDFloaterAnimator::onAvatarsSelect()
 	//     quickly switch back and forth and make edits.
 	onUpdateLayout();
 
-	onPoseControlsRefresh();
+	//onPoseControlsRefresh();
 
-	mStartPosingBtn->setFlashing(true, true);
+	//mStartPosingBtn->setFlashing(true, true);
+}
+
+void BDFloaterAnimator::onJointSelect()
+{
+	//BD - Whenever we select an avatar in the list, check if the selected Avatar is still
+	//     valid and/or if new avatars have become valid for posing.
+	//onAvatarsRefresh();
+
+	//onAnimationsRefresh();
+
+	//BD - Now that we selected an avatar we can refresh the joint list to have all bones
+	//     mapped to that avatar so we can immediately start posing them or continue doing so.
+	//     This will automatically invoke a onJointControlsRefresh()
+	//onJointRefresh();
+
+	//BD - Now that we support animating multiple avatars we also need to refresh all controls
+	//     and animation/pose lists for them when we switch to make it as easy as possible to
+	//     quickly switch back and forth and make edits.
+	onUpdateLayout();
+
+	onKeyframeRefresh();
+
+	//onPoseControlsRefresh();
+
+	//mStartPosingBtn->setFlashing(true, true);
+}
+
+void BDFloaterAnimator::onKeyframeRefresh()
+{
+	LLScrollListItem* motion_item = mMotionScroll->getFirstSelected();
+	if (motion_item)
+	{
+		LLScrollListItem* joint_item = mJointScrolls[JOINTS]->getFirstSelected();
+		if (joint_item)
+		{
+			getChild<LLMultiSliderCtrl>("key_slider")->clear();
+			//LLUUID id = LLUUID("cd9b0386-b26d-e860-0114-d879ee12a777");
+			LLUUID id = motion_item->getColumn(1)->getValue().asUUID();
+			//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(id);
+			typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
+
+			LLKeyframeMotion::JointMotionList* jointmotion_list;
+			jointmotion_list = LLKeyframeDataCache::getKeyframeData(id);
+			S32 i = 0;
+
+			if (!jointmotion_list)
+			{
+				return;
+			}
+
+			LLScrollListItem* item = mJointScrolls[JOINTS]->getLastSelectedItem();
+			if (!item)
+			{
+				return;
+			}
+
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			i = joint->mJointNum;
+
+			LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(i);
+			LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
+			LLKeyframeMotion::RotationKey rot_key;
+			LLQuaternion rotation;
+			F32 time;
+			LLKeyframeMotion::RotationCurve::key_map_t keys = rot_courve.mKeys;
+
+			for (LLKeyframeMotion::RotationCurve::key_map_t::const_iterator iter = keys.begin();
+				iter != keys.end(); ++iter)
+			{
+				time = iter->first;
+				rot_key = iter->second;
+
+				//const std::string& sldr_name = getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
+				getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
+				//getChild<LLMultiSliderCtrl>("key_slider")->getSliderValue();
+			}
+		}
+	}
+}
+
+void BDFloaterAnimator::onAnimationsRefresh()
+{
+	mMotionScroll->clear();
+	LLScrollListItem* element = mAvatarScroll->getFirstSelected();
+	LLVOAvatar* avatar = (LLVOAvatar*)element->getUserdata();
+
+	if (avatar)
+	{
+		LLMotionController::motion_list_t motions = avatar->getMotionController().getActiveMotions();
+		for (LLMotion* motion : motions)
+		{
+			if (motion)
+			{
+				LLUUID motion_id = motion->getID();
+				LLSD row;
+				LLAvatarName av_name;
+				LLAvatarNameCache::get(avatar->getID(), &av_name);
+
+				//BD - Animesh Support
+				row["columns"][0]["column"] = "name";
+				row["columns"][0]["value"] = av_name.getDisplayName();
+				row["columns"][1]["column"] = "uuid";
+				row["columns"][1]["value"] = motion_id.asString();
+				/*row["columns"][2]["column"] = "priority";
+				row["columns"][2]["value"] = motion->getPriority();
+				row["columns"][3]["column"] = "duration";
+				row["columns"][3]["value"] = motion->getDuration();
+				row["columns"][4]["column"] = "blend type";
+				row["columns"][4]["value"] = motion->getBlendType();
+				row["columns"][5]["column"] = "loop";
+				row["columns"][5]["value"] = motion->getLoop();
+				row["columns"][6]["column"] = "easein";
+				row["columns"][6]["value"] = motion->getEaseInDuration();
+				row["columns"][7]["column"] = "easeout";
+				row["columns"][7]["value"] = motion->getEaseOutDuration();*/
+				if (motion->getDuration() > 0.0f)
+				{
+					mMotionScroll->addElement(row);
+				}
+			}
+		}
+	}
 }
 
 void BDFloaterAnimator::onAvatarsRefresh()
