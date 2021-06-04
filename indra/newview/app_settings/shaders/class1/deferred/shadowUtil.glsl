@@ -47,22 +47,21 @@ uniform vec2 screen_res;
 uniform int sun_up_factor;
 
 
-float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float bias_scale, vec2 pos_screen)
+float pcfSpotShadow(sampler2DShadow shadowMap, vec4 stc, float bias_scale, vec2 pos_screen, float shad_res)
 {
     stc.xyz /= stc.w;
     stc.z += spot_shadow_bias * bias_scale;
-    stc.x = floor(proj_shadow_res.x * stc.x + fract(pos_screen.y*0.666666666)) / proj_shadow_res.x; // snap
+    stc.x = floor(shad_res * stc.x + fract(pos_screen.y*0.666666666)) / shad_res; // snap
 
     float cs = shadow2D(shadowMap, stc.xyz).x;
     float shadow = cs;
 
-    vec2 off = 1.0/proj_shadow_res;
-    off.y *= 1.5;
+    float off = 1.0/shad_res;
     
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(off.x*2.0, off.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(off.x, -off.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-off.x, off.y, 0.0)).x;
-    shadow += shadow2D(shadowMap, stc.xyz+vec3(-off.x*2.0, -off.y, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(off*2.0, off, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(off, -off, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(-off, off, 0.0)).x;
+    shadow += shadow2D(shadowMap, stc.xyz+vec3(-off*2.0, -off, 0.0)).x;
     return shadow*0.2;
 }
 
@@ -192,12 +191,12 @@ float sampleSpotShadow(vec3 pos, vec3 norm, int index, vec2 pos_screen)
             if (index == 0)
             {        
                 lpos = shadow_matrix[4]*spos;
-                shadow += pcfSpotShadow(shadowMap4, lpos, 0.8, spos.xy)*w;
+                shadow += pcfSpotShadow(shadowMap4, lpos, 0.8, spos.xy, proj_shadow_res.x)*w;
             }
             else
             {
                 lpos = shadow_matrix[5]*spos;
-                shadow += pcfSpotShadow(shadowMap5, lpos, 0.8, spos.xy)*w;
+                shadow += pcfSpotShadow(shadowMap5, lpos, 0.8, spos.xy, proj_shadow_res.y)*w;
             }
             weight += w;
             shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
