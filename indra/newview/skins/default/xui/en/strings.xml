@@ -3649,14 +3649,6 @@ If you continue to receive this message, contact the [SUPPORT_SITE].
   <string name="OfflineStatus">[NAME] is Offline</string>
 	<string name="not_online_msg">User not online - message will be stored and delivered later.</string>
 	<string name="not_online_inventory">User not online - inventory has been saved.</string>
-	<string name="im_developer">
-&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;DON'T's&lt;/red&gt;
-• Message me with '&lt;i&gt;Hello&lt;/i&gt;' or '&lt;i&gt;I don't want to waste your time&lt;/i&gt;' or '&lt;i&gt;Can i ask you a question&lt;/i&gt;'.
-• Send me notecards or textures of your problem unless asked.
-• Ask me if i'm the developer, yes i am. The Viewer doesn't lie to you.
-&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;green&gt;DO's&lt;/green&gt;
-• State your question even if i'm offline. I'll come back to you as soon as i see your IM.
-	</string>
 
 	<!-- voice calls -->
 	<string name="answered_call">Your call has been answered</string>
@@ -4371,4 +4363,13 @@ and report the problem.
   <string name="Precache">Precaching</string>
   <string name="WearablesWait">Awaiting Wearables</string>
   <string name="Cleanup">Cleanup</string>
+  
+  <string name="im_developer">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;DON'T's&lt;/red&gt;
+• Message me with '&lt;i&gt;Hello&lt;/i&gt;' or '&lt;i&gt;I don't want to waste your time&lt;/i&gt;' or '&lt;i&gt;Can i ask you a question&lt;/i&gt;'.
+• Send me notecards or textures of your problem unless asked.
+• Ask me if i'm the developer, yes i am. The Viewer doesn't lie to you.
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;green&gt;DO's&lt;/green&gt;
+• State your question even if i'm offline. I'll come back to you as soon as i see your IM.
+	</string>
 </strings>
