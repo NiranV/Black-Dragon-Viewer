@@ -2,18 +2,17 @@
 <floater
  legacy_header_height="18"
  can_resize="true"
- height="570"
+ height="471"
  help_topic="scriptlimits"
  layout="topleft"
  name="myscripts"
  save_rect="true"
  title="My Scripts"
- min_width="620"
- width="620">
+ min_width="510"
+ width="510">
   <panel
    filename="panel_script_limits_my_avatar.xml"
    follows="all"
-   bottom="555"
    layout="topleft"
    left="3"
    right="-2"
