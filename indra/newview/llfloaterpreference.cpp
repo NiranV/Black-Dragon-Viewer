@@ -1333,25 +1333,16 @@ BOOL LLFloaterPreference::postBuild()
 	mSSAOMaxScale = getChild<LLUICtrl>("SSAOMaxScale");
 	mSSAOFactor = getChild<LLUICtrl>("SSAOFactor");
 	mRenderRiggedMotionBlurQuality = getChild<LLUICtrl>("RenderRiggedMotionBlurQuality");
-	mMotionBlurQuality = getChild<LLUICtrl>("MotionBlurQuality");
+	mMotionBlurQuality = getChild<LLUICtrl>("RenderMotionBlurStrength");
 	mRenderGodrays = getChild<LLUICtrl>("RenderGodrays");
 	mRenderGodraysDirectional = getChild<LLUICtrl>("RenderGodraysDirectional");
 	mRenderGodraysResolution = getChild<LLUICtrl>("GodraysResolution");
 	mRenderGodraysMultiplier = getChild<LLUICtrl>("GodraysMultiplier");
 	mRenderGodraysFalloffMultiplier = getChild<LLUICtrl>("GodraysFalloffMultiplier");
 
-	mDisplayTabs = { { getChild<LLPanel>("viewer_layout_panel"),
-					getChild<LLPanel>("lod_layout_panel"),
-					getChild<LLPanel>("performance_layout_panel"),
-					getChild<LLPanel>("vertex_layout_panel"),
-					getChild<LLPanel>("deferred_layout_panel"),
-					getChild<LLPanel>("dof_layout_panel"),
-					getChild<LLPanel>("ao_layout_panel"),
-					getChild<LLPanel>("motionblur_layout_panel"),
-					getChild<LLPanel>("godrays_layout_panel"),
-					getChild<LLPanel>("post_layout_panel"),
-					getChild<LLPanel>("tonemapping_layout_panel"),
-					getChild<LLPanel>("vignette_layout_panel") } };
+	mDisplayTabs = { { getChild<LLPanel>("basic_layout_panel"),
+					getChild<LLPanel>("advanced_layout_panel"),
+					getChild<LLPanel>("finetuning_layout_panel") } };
 
 //	//BD - Custom Keyboard Layout
 	mBindModeList = this->getChild<LLScrollListCtrl>("scroll_mode", true);
@@ -1725,30 +1716,12 @@ void LLFloaterPreference::toggleTabs()
 
 	if (gSavedSettings.getBOOL("PrefsViewerVisible"))
 		mModifier += (mDisplayTabs[0]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsLoDVisible"))
-		mModifier += (mDisplayTabs[1]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsPerformanceVisible"))
-		mModifier += (mDisplayTabs[2]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsVertexVisible"))
-		mModifier += (mDisplayTabs[3]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsDeferredVisible"))
-		mModifier += (mDisplayTabs[4]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsDoFVisible"))
-		mModifier += (mDisplayTabs[5]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsAOVisible"))
-		mModifier += (mDisplayTabs[6]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsMotionBlurVisible"))
-		mModifier += (mDisplayTabs[7]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsGodraysVisible"))
-		mModifier += (mDisplayTabs[8]->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[1]->getRect().getHeight() - 5);
 	if (gSavedSettings.getBOOL("PrefsPostVisible"))
-		mModifier += (mDisplayTabs[9]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsToneMappingVisible"))
-		mModifier += (mDisplayTabs[10]->getRect().getHeight() - 5);
-	if (gSavedSettings.getBOOL("PrefsVignetteVisible"))
-		mModifier += (mDisplayTabs[11]->getRect().getHeight() - 5);
+		mModifier += (mDisplayTabs[2]->getRect().getHeight() - 5);
 
-	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), (267 + mModifier));
+	rect.setLeftTopAndSize(rect.mLeft, rect.mTop, rect.getWidth(), 66 + mModifier);
 	getChild<LLPanel>("gfx_scroll_panel")->setRect(rect);
 	mGFXStack->translate(0, mModifier);
 }
@@ -1801,12 +1774,12 @@ void LLFloaterPreference::refreshEverything()
 		bool deferred_enabled = gPipeline.RenderDeferred;
 		//BD - Deferred Rendering
 		//=======================
-		LLRect deferred_rect = mDisplayTabs[4]->calcScreenRect();
+		LLRect deferred_rect = mDisplayTabs[1]->calcScreenRect();
 		if (scroll_rect.overlaps(deferred_rect))
 		{
 			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
-			mDisplayTabs[4]->setEnabled(deferred_enabled);
-			mDisplayTabs[4]->setBackgroundVisible(!deferred_enabled);
+			mDisplayTabs[1]->setEnabled(deferred_enabled);
+			mDisplayTabs[1]->setBackgroundVisible(!deferred_enabled);
 			mRenderShadowResolution[0]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[1]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[2]->setEnabled(shadows_enabled);
@@ -1835,15 +1808,10 @@ void LLFloaterPreference::refreshEverything()
 			mWarning11->setBackgroundVisible(deferred_enabled);
 			mWarning12->setBackgroundVisible(deferred_enabled);
 			mWarning15->setBackgroundVisible(deferred_enabled);
-		}
 
-		//BD - Depth of Field
-		//===================
-		LLRect dof_rect = mDisplayTabs[5]->calcScreenRect();
-		if (scroll_rect.overlaps(dof_rect))
-		{
+			//BD - Depth of Field
+			//===================
 			bool dof_enabled = (gPipeline.RenderDepthOfField && deferred_enabled);
-			mDisplayTabs[5]->setBackgroundVisible(!dof_enabled);
 			mRenderDepthOfFieldAlphas->setEnabled(dof_enabled);
 			mRenderDepthOfFieldFront->setEnabled(dof_enabled);
 			mRenderDepthOfFieldInEditMode->setEnabled(dof_enabled);
@@ -1854,42 +1822,26 @@ void LLFloaterPreference::refreshEverything()
 			mCameraCoF->setEnabled(dof_enabled);
 			mCameraFocusTrans->setEnabled(dof_enabled);
 			mCameraDoFRes->setEnabled(dof_enabled);
-		}
 
-		//BD - Screen Space Ambient Occlusion (SSAO)
-		//==========================================
-		LLRect ssao_rect = mDisplayTabs[6]->calcScreenRect();
-		if (scroll_rect.overlaps(ssao_rect))
-		{
+			//BD - Screen Space Ambient Occlusion (SSAO)
+			//==========================================
 			bool ssao_enabled = (gPipeline.RenderDeferredSSAO && deferred_enabled);
-			mDisplayTabs[6]->setBackgroundVisible(!ssao_enabled);
 			mRenderSSAOBlurSize->setEnabled(ssao_enabled);
 			mSSAOEffect->setEnabled(ssao_enabled);
 			mSSAOScale->setEnabled(ssao_enabled);
 			mSSAOMaxScale->setEnabled(ssao_enabled);
 			mSSAOFactor->setEnabled(ssao_enabled);
-		}
 
-		//BD - Motion Blur
-		//================
-		LLRect blur_rect = mDisplayTabs[7]->calcScreenRect();
-		if (scroll_rect.overlaps(blur_rect))
-		{
+			//BD - Motion Blur
+			//================
 			bool blur_enabled = (gPipeline.RenderMotionBlur && deferred_enabled);
-			mDisplayTabs[7]->setBackgroundVisible(!blur_enabled);
 			mRenderRiggedMotionBlurQuality->setEnabled(blur_enabled);
 			mMotionBlurQuality->setEnabled(blur_enabled);
 			mWarning13->setBackgroundVisible(blur_enabled);
-		}
 
-		//BD - Volumetric Lighting
-		//========================
-		LLRect volumetric_rect = mDisplayTabs[8]->calcScreenRect();
-		if (scroll_rect.overlaps(volumetric_rect))
-		{
-			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
+			//BD - Volumetric Lighting
+			//========================
 			bool volumetric_enabled = (gPipeline.RenderGodrays && shadows_enabled);
-			mDisplayTabs[8]->setBackgroundVisible(!volumetric_enabled);
 			mRenderGodrays->setEnabled(shadows_enabled);
 			mRenderGodraysDirectional->setEnabled(volumetric_enabled);
 			mRenderGodraysResolution->setEnabled(volumetric_enabled);
@@ -1900,7 +1852,7 @@ void LLFloaterPreference::refreshEverything()
 
 		//BD - Tone Mapping
 		//=================
-		LLRect tone_rect = mDisplayTabs[10]->calcScreenRect();
+		LLRect tone_rect = mDisplayTabs[2]->calcScreenRect();
 		if (scroll_rect.overlaps(tone_rect))
 		{
 			//BD - Tone Mapping
@@ -1921,7 +1873,6 @@ void LLFloaterPreference::refreshEverything()
 
 			//BD - Color Correction
 			bool color_enabled = (mExodusRenderColorGradeTech->getValue().asInteger() == 0 && deferred_enabled);
-			mDisplayTabs[10]->setBackgroundVisible(!tone_enabled && !color_enabled);
 			mExodusRenderColorGradeTech->setEnabled(deferred_enabled);
 			mExodusRenderGamma[0]->setEnabled(color_enabled);
 			mExodusRenderGamma[1]->setEnabled(color_enabled);
@@ -1934,13 +1885,8 @@ void LLFloaterPreference::refreshEverything()
 			mExodusRenderOffset[0]->setEnabled(color_enabled);
 			mExodusRenderOffset[1]->setEnabled(color_enabled);
 			mExodusRenderOffset[2]->setEnabled(color_enabled);
-		}
 
-		LLRect vignette_rect = mDisplayTabs[11]->calcScreenRect();
-		if (scroll_rect.overlaps(vignette_rect))
-		{
 			//BD - Vignette
-			mDisplayTabs[11]->setBackgroundVisible(!deferred_enabled);
 			mExodusRenderVignette[0]->setEnabled(deferred_enabled);
 			mExodusRenderVignette[1]->setEnabled(deferred_enabled);
 			mExodusRenderVignette[2]->setEnabled(deferred_enabled);

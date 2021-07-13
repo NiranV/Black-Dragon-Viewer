@@ -400,19 +400,10 @@ private:
 	LLUICtrl*	mExodusRenderToneMappingTech;
 
 	//BD - Preferences Tabs
-	// 0 - Viewer
-	// 1 - LOD
-	// 2 - Performance
-	// 3 - Vertex / Windlight
-	// 4 - Deferred
-	// 5 - Depth of Field
-	// 6 - SSAO
-	// 7 - Motion Blur
-	// 8 - Godrays
-	// 9 - Post Processing
-	// 10 - Tone Mapping
-	// 11 - Vignette 
-	std::array<LLPanel*, 12> mDisplayTabs;
+	// 0 - Basic
+	// 1 - Advanced
+	// 2 - Finetuning
+	std::array<LLPanel*, 3> mDisplayTabs;
 
 	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
 	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;
