@@ -42,6 +42,7 @@
 
 class LLDrawable;
 class LLHUDNameTag;
+class LLUIImage;
 
 struct llhudnametag_further_away
 {
@@ -171,6 +172,14 @@ private:
 	EVertAlignment	mVertAlignment;
 	S32				mLOD;
 	BOOL			mHidden;
+
+	//BD
+	LLPointer<LLUIImage> mBGImage;
+	LLPointer<LLUIImage> mVoicePTTImage;
+	LLPointer<LLUIImage> mVoicePTTImage1;
+	LLPointer<LLUIImage> mVoicePTTImage2;
+	LLPointer<LLUIImage> mVoicePTTImage3;
+	LLPointer<LLUIImage> mDeveloperImage;
 
 	static BOOL    sDisplayText ;
 	static std::set<LLPointer<LLHUDNameTag> > sTextObjects;

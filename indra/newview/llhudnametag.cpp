@@ -50,6 +50,9 @@
 #include "pipeline.h"
 #include <boost/tokenizer.hpp>
 
+#include "llvoiceclient.h"
+#include "bdfunctions.h"
+
 
 const F32 SPRING_STRENGTH = 0.7f;
 const F32 HORIZONTAL_PADDING = 16.f;
@@ -75,7 +78,7 @@ bool llhudnametag_further_away::operator()(const LLPointer<LLHUDNameTag>& lhs, c
 
 
 LLHUDNameTag::LLHUDNameTag(const U8 type)
-:	LLHUDObject(type),
+	: LLHUDObject(type),
 	mDoFade(TRUE),
 	mFadeDistance(8.f),
 	mFadeRange(4.f),
@@ -84,7 +87,7 @@ LLHUDNameTag::LLHUDNameTag(const U8 type)
 	mVisibleOffScreen(FALSE),
 	mOffscreen(FALSE),
 	mColor(1.f, 1.f, 1.f, 1.f),
-//	mScale(),
+	//	mScale(),
 	mWidth(0.f),
 	mHeight(0.f),
 	mFontp(LLFontGL::getFontSansSerifSmall()),
@@ -101,10 +104,25 @@ LLHUDNameTag::LLHUDNameTag(const U8 type)
 	mTextAlignment(ALIGN_TEXT_CENTER),
 	mVertAlignment(ALIGN_VERT_CENTER),
 	mLOD(0),
-	mHidden(FALSE)
+	mHidden(FALSE),
+	//BD
+	mBGImage(NULL),
+	mVoicePTTImage(NULL),
+	mVoicePTTImage1(NULL),
+	mVoicePTTImage2(NULL),
+	mVoicePTTImage3(NULL),
+	mDeveloperImage(NULL)
 {
 	LLPointer<LLHUDNameTag> ptr(this);
 	sTextObjects.insert(ptr);
+
+	//BD
+	mBGImage = LLUI::getUIImage("Name_Rect");
+	mVoicePTTImage = LLUI::getUIImage("OldVoicePTT_On");
+	mVoicePTTImage1 = LLUI::getUIImage("OldVoicePTT_Lvl1");
+	mVoicePTTImage2 = LLUI::getUIImage("OldVoicePTT_Lvl2");
+	mVoicePTTImage3 = LLUI::getUIImage("OldVoicePTT_Lvl3");
+	mDeveloperImage = LLUI::getUIImage("Donut");
 }
 
 LLHUDNameTag::~LLHUDNameTag()
@@ -275,8 +293,6 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
 
 	// *TODO: cache this image
-	//BD
-	LLUIImagePtr imagep = LLUI::getUIImage("Name_Rect");
 
 	// *TODO: make this a per-text setting
 	static const LLUIColor nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
@@ -308,19 +324,50 @@ void LLHUDNameTag::renderText(BOOL for_select)
 
 	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
 	LLRect screen_rect;
+	LLUUID id = mSourceObject->getID();
+	LLVoiceClient* voice_client = LLVoiceClient::getInstance();
+	bool isSpeaking = voice_client->getVoiceEnabled(id) && voice_client->getIsSpeaking(id);
 	screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
-	imagep->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
+	screen_rect.mRight += isSpeaking ? 20 : 0;
+	mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
 	if (mLabelSegments.size())
 	{
-		//BD
-		LLUIImagePtr rect_top_image = LLUI::getUIImage("Name_Rect");
 		LLRect label_top_rect = screen_rect;
 		const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
 		label_top_rect.mBottom = label_top_rect.mTop - label_height;
 		LLColor4 label_top_color = text_color;
 		label_top_color.mV[VALPHA] = chat_bubble_opacity_cc * alpha_factor;
 
-		rect_top_image->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
+		mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
+	}
+	
+	if (isSpeaking)
+	{
+		F32 voice_power = voice_client->getCurrentPower(id);
+
+		LLRect voice_ptt_rect = screen_rect;
+		voice_ptt_rect.mRight = screen_rect.mRight - 4;
+		voice_ptt_rect.mLeft = voice_ptt_rect.mRight - 18;
+		voice_ptt_rect.mTop = screen_rect.mTop - 4;
+		voice_ptt_rect.mBottom = voice_ptt_rect.mTop - 18;
+		if (voice_power == 0.0f)
+			mVoicePTTImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+		else if (voice_power < 0.33f)
+			mVoicePTTImage1->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+		else if (voice_power < 0.66f)
+			mVoicePTTImage2->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+		else
+			mVoicePTTImage3->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+	}
+
+	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
+	{
+		LLRect developer_rect = screen_rect;
+		developer_rect.mLeft = screen_rect.mLeft + (screen_rect.mRight / 2) + 9;
+		developer_rect.mRight = developer_rect.mLeft + 18;
+		developer_rect.mTop = screen_rect.mTop + 22;
+		developer_rect.mBottom = developer_rect.mTop - 18;
+		mDeveloperImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, developer_rect, LLColor4::white);
 	}
 
 	F32 y_offset = (F32)mOffsetY;
@@ -396,6 +443,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 			hud_render_text(segment_iter->getText(), render_position, *fontp, style, shadow, x_offset, y_offset, text_color, FALSE);
 		}
 	}
+
 	/// Reset the default color to white.  The renderer expects this to be the default. 
 	gGL.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 	if (for_select)

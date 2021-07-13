@@ -336,6 +336,9 @@ void LLVoiceVisualizer::lipSyncOohAah( F32& ooh, F32& aah )
 //---------------------------------------------------
 void LLVoiceVisualizer::render()
 {
+	//BD - Disable old Voice dot.
+	return;
+
 	if ( ! mVoiceEnabled )
 	{
 		return;
