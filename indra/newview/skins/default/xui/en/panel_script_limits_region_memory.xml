@@ -1,62 +1,72 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
  follows="all"
- height="502"
+ height="485"
  label="Region Memory"
  layout="topleft"
  name="script_limits_region_memory_panel"
  top="0"
  left="0"
- width="620">
+ width="600">
 	<text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="16"
+	 height="14"
 	 layout="topleft"
 	 left="7"
 	 name="parcels_listed"
-	 top="10"
+	 top="0"
 	 visible="true"
-	 width="620">
-	 
+	 width="600">
 	</text>
 	<text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="16"
+	 height="14"
 	 layout="topleft"
 	 left="7"
 	 name="memory_used"
-	 top_pad="1"
-	 width="620">
+	 top_pad="-3"
+	 width="600">
 	</text>
 	
 	<text
 	 type="string"
 	 length="1"
 	 follows="left|top"
-	 height="16"
+	 height="14"
 	 layout="topleft"
 	 left="7"
 	 name="urls_used"
-	 top_pad="1"
-	 width="620">
-	 
+	 top_pad="-3"
+	 width="600">
 	</text>
+ <icon
+				follows="all"
+				height="415"
+				color="1 1 1 1"
+				image_name="Panel_Background"
+				layout="topleft"
+				name="vicon"
+				mouse_opaque="false"
+				visible="true"
+				width="595"
+				top_pad="5"
+				left="5"/>
     <scroll_list
      draw_heading="true"
      follows="all"
-     height="410"
+     height="415"
      layout="topleft"
-     left_delta="0"
+     left_delta="1"
      multi_select="true"
      sort_column="0"
      sort_ascending="true"
      name="scripts_list"
-     top_pad="1"
-     width="610">
+     top_delta="1"
+     width="593">
         <scroll_list.columns
          label="Size (kb)"
          name="size"
@@ -84,27 +94,36 @@
     </scroll_list>
     <button
      follows="bottom|left"
-     height="21"
+     height="23"
      label="Refresh List"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
      layout="bottomleft"
-     left="7"
+     left="6"
      name="refresh_list_btn"
-     top_pad="1"
+     bottom="6"
      width="100" />
     <button
      follows="bottom|right"
-     height="21"
+     height="23"
      label="Return"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
 	 visible="true"
      layout="topleft"
      name="return_btn"
      top_delta="0"
-     left_delta="409"
+     right="-102"
      width="100" />
     <button
      follows="bottom|right"
-     height="21"
+     height="23"
      label="Highlight"
+     image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
 	 visible="true"
      layout="topleft"
      left_delta="101"
@@ -117,7 +136,7 @@
      follows="left|bottom"
      height="14"
      layout="topleft"
-     left="117"
+     left="113"
      name="loading_text"
      top_delta="5"
      width="300">

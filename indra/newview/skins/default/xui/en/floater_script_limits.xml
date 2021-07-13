@@ -2,19 +2,18 @@
 <floater
  legacy_header_height="18"
  can_resize="true"
- height="555"
+ height="505"
  layout="topleft"
  name="scriptlimits"
  save_rect="true"
  title="Script Information"
- width="480">
-    <tab_container
-     bottom="555"
-     follows="left|right|top|bottom"
-     layout="topleft"
-     left="1"
-     name="scriptlimits_panels"
-     right="-1"
-     tab_position="top"
-     top="20" />
+ width="600">
+    <panel
+   filename="panel_script_limits_region_memory.xml"
+   follows="all"
+   layout="topleft"
+   left="0"
+   right="-5"
+   name="script_limits_region_memory_panel"
+   top="20"/>
 </floater>

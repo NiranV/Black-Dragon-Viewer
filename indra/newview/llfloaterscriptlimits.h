@@ -42,15 +42,12 @@ class LLAvatarName;
 
 class LLPanelScriptLimitsRegionMemory;
 
-class LLFloaterScriptLimits : public LLFloater
+class LLFloaterScriptLimits : public LLFloater, LLRemoteParcelInfoObserver
 {
 	friend class LLFloaterReg;
 public:
 
 	/*virtual*/ BOOL postBuild();
-
-	// from LLPanel
-	virtual void refresh();
 
 private:
 
@@ -59,50 +56,16 @@ private:
 
 protected:
 
-	LLTabContainer* mTab;
-	typedef std::vector<LLPanelScriptLimitsInfo*> info_panels_t;
-	info_panels_t mInfoPanels;
-};
 
-
-// Base class for all script limits information panels.
-class LLPanelScriptLimitsInfo : public LLPanel
-{
 public:
-	LLPanelScriptLimitsInfo();
-	
-	virtual BOOL postBuild();
-	virtual void updateChild(LLUICtrl* child_ctrl);
 	
 protected:
-	void initCtrl(const std::string& name);
 	
 	typedef std::vector<std::string> strings_t;
 	
 	LLHost mHost;
-};
-
-/////////////////////////////////////////////////////////////////////////////
-// Memory panel
-/////////////////////////////////////////////////////////////////////////////
-
-class LLPanelScriptLimitsRegionMemory : public LLPanelScriptLimitsInfo, LLRemoteParcelInfoObserver
-{
 	
 public:
-	LLPanelScriptLimitsRegionMemory()
-		: LLPanelScriptLimitsInfo(), LLRemoteParcelInfoObserver(),
-
-		mParcelId(LLUUID()),
-		mGotParcelMemoryUsed(false),
-		mGotParcelMemoryMax(false),
-		mParcelMemoryMax(0),
-		mParcelMemoryUsed(0) {};
-
-	~LLPanelScriptLimitsRegionMemory();
-	
-	// LLPanel
-	virtual BOOL postBuild();
 
 	void setRegionDetails(LLSD content);
 	void setRegionSummary(LLSD content);
@@ -147,9 +110,9 @@ protected:
 /*virtual*/ void setParcelID(const LLUUID& parcel_id);
 /*virtual*/ void setErrorStatus(S32 status, const std::string& reason);
 	
-	static void onClickRefresh(void* userdata);
-	static void onClickHighlight(void* userdata);
-	static void onClickReturn(void* userdata);
+	void onClickRefresh();
+	void onClickHighlight();
+	void onClickReturn();
 };
 
 #endif
