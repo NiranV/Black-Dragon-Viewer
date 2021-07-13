@@ -670,6 +670,13 @@ void LLOutfitsList::wearSelectedItems()
 	wear_multiple(selected_uuids, false);
 }
 
+void LLOutfitsList::removeSelectedItems()
+{
+	uuid_vec_t selected_uuids;
+	getSelectedItemsUUIDs(selected_uuids);
+	LLAppearanceMgr::instance().removeItemsFromAvatar(selected_uuids);
+}
+
 void LLOutfitsList::onWearableItemsListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
 {
 	LLWearableItemsList* list = dynamic_cast<LLWearableItemsList*>(ctrl);

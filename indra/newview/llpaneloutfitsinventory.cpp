@@ -175,6 +175,24 @@ void LLPanelOutfitsInventory::onSearchEdit(const std::string& string)
 	mActivePanel->setFilterSubString(string);
 }
 
+void LLPanelOutfitsInventory::onWearOrDetach()
+{
+	if (isOutfitsListPanelActive())
+	{
+		if (mMyOutfitsPanel->hasItemSelected())
+		{
+			if (mMyOutfitsPanel->canWearSelected())
+			{
+				onWearButtonClick();
+			}
+			else
+			{
+				onDetachAction();
+			}
+		}
+	}
+}
+
 void LLPanelOutfitsInventory::onWearButtonClick()
 {
 	if(isOutfitsListPanelActive())
@@ -193,6 +211,24 @@ void LLPanelOutfitsInventory::onWearButtonClick()
 		mOutfitGalleryPanel->wearSelectedOutfit();
 	}
 
+}
+
+void LLPanelOutfitsInventory::onDetachAction()
+{
+	if (isOutfitsListPanelActive())
+	{
+		if (mMyOutfitsPanel->hasItemSelected())
+		{
+			mMyOutfitsPanel->removeSelectedItems();
+		}
+	}
+	else
+	{
+		if (mCurrentOutfitPanel->hasItemSelected())
+		{
+			mCurrentOutfitPanel->onRemoveItem();
+		}
+	}
 }
 
 bool LLPanelOutfitsInventory::onSaveCommit(const LLSD& notification, const LLSD& response)
@@ -300,9 +336,11 @@ void LLPanelOutfitsInventory::initTabPanels()
     //TODO: Add LLOutfitGallery change callback
 	mCurrentOutfitPanel = findChild<LLPanelWearing>(COF_TAB_NAME);
 	mCurrentOutfitPanel->setSelectionChangeCallback(boost::bind(&LLPanelOutfitsInventory::updateVerbs, this));
+	mCurrentOutfitPanel->setDoubleClickCallback(boost::bind(&LLPanelOutfitsInventory::onDetachAction, this));
 
 	mMyOutfitsPanel = findChild<LLOutfitsList>(OUTFITS_TAB_NAME);
 	mMyOutfitsPanel->setSelectionChangeCallback(boost::bind(&LLPanelOutfitsInventory::updateVerbs, this));
+	mMyOutfitsPanel->setDoubleClickCallback(boost::bind(&LLPanelOutfitsInventory::onWearOrDetach, this));
 
     mOutfitGalleryPanel = findChild<LLOutfitGallery>(OUTFIT_GALLERY_TAB_NAME);
     mOutfitGalleryPanel->setSelectionChangeCallback(boost::bind(&LLPanelOutfitsInventory::updateVerbs, this));

@@ -103,6 +103,9 @@ protected:
 	void setWearablesLoading(bool val);
 	void onWearablesLoaded();
 	void onWearablesLoading();
+	//BD
+	void onDetachAction();
+	void onWearOrDetach();
 private:
 	LLPanel*					mListCommands;
 	LLMenuGL*					mMenuAdd;

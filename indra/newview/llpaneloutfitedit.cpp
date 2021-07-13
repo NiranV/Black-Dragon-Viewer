@@ -491,6 +491,9 @@ BOOL LLPanelOutfitEdit::postBuild()
 
 	mCOFWearables = findChild<LLCOFWearables>("cof_wearables_list");
 	mCOFWearables->setCommitCallback(boost::bind(&LLPanelOutfitEdit::filterWearablesBySelectedItem, this));
+	//BD - UI Improvements
+	//     Allow double-click to take off wearables and attachments.
+	mCOFWearables->setDoubleClickCallback(boost::bind(&LLPanelOutfitEdit::onRemoveFromOutfitClicked, this));
 
 	mCOFWearables->getCOFCallbacks().mAddWearable = boost::bind(&LLPanelOutfitEdit::onAddWearableClicked, this);
 	mCOFWearables->getCOFCallbacks().mEditWearable = boost::bind(&LLPanelOutfitEdit::onEditWearableClicked, this);
