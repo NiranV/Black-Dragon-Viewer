@@ -33,7 +33,6 @@
 #include "llimagefiltersmanager.h"
 #include "llcheckboxctrl.h"
 #include "llcombobox.h"
-#include "llpostcard.h"
 #include "llresmgr.h"		// LLLocale
 #include "llsdserialize.h"
 #include "llsidetraypanelcontainer.h"
@@ -63,7 +62,6 @@
 ///----------------------------------------------------------------------------
 LLSnapshotFloaterView* gSnapshotFloaterView = NULL;
 
-const S32 MAX_POSTCARD_DATASIZE = 1572864; // 1.5 megabyte, similar to simulator limit
 const S32 MAX_TEXTURE_SIZE = 1024 ; //max upload texture size 1024 * 1024
 
 const S32 OUTFIT_SNAPSHOT_WIDTH = 256;
@@ -95,11 +93,8 @@ LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
 	mRefreshLabel(NULL),
 	mSucceessLblPanel(NULL),
 	mFailureLblPanel(NULL),
-	mHasFirstMsgFocus(false),
 	mOutfitGallery(NULL)
 {
-	//BD - Postcard
-	mCommitCallbackRegistrar.add("Snapshot.SendPostcard", boost::bind(&LLFloaterSnapshot::onPostcardSend, this));
 	//BD - Profile
 	mCommitCallbackRegistrar.add("Snapshot.SendProfile", boost::bind(&LLFloaterSnapshot::sendProfile, this));
 	//BD - Local
@@ -112,7 +107,6 @@ LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
 
 	//BD - Options
 	mCommitCallbackRegistrar.add("Snapshot.SaveToProfile", boost::bind(&LLFloaterSnapshot::onSaveToProfile, this));
-	mCommitCallbackRegistrar.add("Snapshot.SaveToEmail", boost::bind(&LLFloaterSnapshot::onSaveToEmail, this));
 	mCommitCallbackRegistrar.add("Snapshot.SaveToInventory", boost::bind(&LLFloaterSnapshot::onSaveToInventory, this));
 	mCommitCallbackRegistrar.add("Snapshot.SaveToComputer", boost::bind(&LLFloaterSnapshot::onSaveToComputer, this));
 
@@ -183,15 +177,9 @@ BOOL LLFloaterSnapshot::postBuild()
 
 	// Pre-select "Current Window" resolution.
 	getChild<LLComboBox>("profile_size_combo")->selectNthItem(0);
-	getChild<LLComboBox>("postcard_size_combo")->selectNthItem(0);
 	getChild<LLComboBox>("texture_size_combo")->selectNthItem(0);
 	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
 	setAdvanced(gSavedSettings.getBOOL("AdvanceSnapshot"));
-
-	//BD - Postcard
-	// For the first time a user focuses to .the msg box, all text will be selected.
-	getChild<LLUICtrl>("msg_form")->setFocusChangedCallback(boost::bind(&LLFloaterSnapshot::onMsgFormFocusRecieved, this));
-	getChild<LLUICtrl>("to_form")->setFocus(TRUE);
 
 	//BD - Local
 	getChild<LLUICtrl>("local_format_combo")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onFormatComboCommit, this, _1));
@@ -211,7 +199,6 @@ BOOL LLFloaterSnapshot::postBuild()
 	filterbox->setCommitCallback(boost::bind(&LLFloaterSnapshot::onClickFilter, this, _1));
 
 	LLWebProfile::setImageUploadResultCallback(boost::bind(&LLFloaterSnapshot::onSnapshotUploadFinished, this, _1));
-	LLPostCard::setPostResultCallback(boost::bind(&LLFloaterSnapshot::onSendingPostcardFinished, this, _1));
 
 
 	// create preview window
@@ -340,15 +327,6 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 		onImageFormatChange();
 	}
 
-	//BD - Postcard
-	LLUICtrl* name_form = getChild<LLUICtrl>("name_form");
-	if (name_form && name_form->getValue().asString().empty())
-	{
-		std::string name_string;
-		LLAgentUI::buildFullname(name_string);
-		getChild<LLUICtrl>("name_form")->setValue(LLSD(name_string));
-	}
-
 	//BD - Local
 	if (gSavedSettings.getS32("SnapshotFormat") != mLocalFormat)
 	{
@@ -461,10 +439,6 @@ LLSnapshotModel::ESnapshotType LLFloaterSnapshot::getActiveSnapshotType()
 	LLSnapshotModel::ESnapshotType type = LLSnapshotModel::SNAPSHOT_WEB;
 	switch (getActivePanelIndex())
 	{
-	//BD - Postcard
-	case 2:
-		type = LLSnapshotModel::SNAPSHOT_POSTCARD;
-		break;
 	//BD - Outfit
 	case 5:
 	//BD - Inventory
@@ -625,7 +599,6 @@ void LLFloaterSnapshot::updateControls()
 	}
 		
 	LLSnapshotLivePreview* previewp = getPreviewView();
-	BOOL got_bytes = previewp && previewp->getDataSize() > 0;
 	BOOL got_snap = previewp && previewp->getSnapshotUpToDate();
 
 	// *TODO: Separate maximum size for Web images from postcards
@@ -643,9 +616,7 @@ void LLFloaterSnapshot::updateControls()
 	file_info_label->setTextArg("[WIDTH]", got_snap ? llformat("%d", previewp->getEncodedImageWidth()) : getString("unknown"));
 	file_info_label->setTextArg("[HEIGHT]", got_snap ? llformat("%d", previewp->getEncodedImageHeight()) : getString("unknown"));
 	file_info_label->setTextArg("[SIZE]", got_snap ? bytes_string : getString("unknown"));
-	file_info_label->setColor(shot_type == LLSnapshotModel::SNAPSHOT_POSTCARD
-								&& got_bytes
-								&& previewp->getDataSize() > MAX_POSTCARD_DATASIZE ? LLUIColor(LLColor4::red) : LLUIColorTable::instance().getColor( "LabelTextColor" ));
+	file_info_label->setColor(LLUIColorTable::instance().getColor( "LabelTextColor" ));
 
 	// Update the width and height spinners based on the corresponding resolution combos. (?)
 	switch(shot_type)
@@ -654,12 +625,6 @@ void LLFloaterSnapshot::updateControls()
 		layer_type = LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
 		getChild<LLUICtrl>("layer_types")->setValue("colors");
 		setResolution("profile_size_combo");
-		break;
-	  case LLSnapshotModel::SNAPSHOT_POSTCARD:
-		layer_type = LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
-		shot_format = LLSnapshotModel::e_snapshot_format::SNAPSHOT_FORMAT_JPEG;
-		getChild<LLUICtrl>("layer_types")->setValue("colors");
-		setResolution("postcard_size_combo");
 		break;
 	  case LLSnapshotModel::SNAPSHOT_TEXTURE:
 		layer_type = LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
@@ -1160,12 +1125,6 @@ void LLFloaterSnapshot::onSnapshotUploadFinished(bool status)
 	setStatus(STATUS_FINISHED, status, "profile");
 }
 
-// static
-void LLFloaterSnapshot::onSendingPostcardFinished(bool status)
-{
-	setStatus(STATUS_FINISHED, status, "postcard");
-}
-
 void LLFloaterSnapshot::onClickBigPreview()
 {
     // Toggle the preview
@@ -1457,29 +1416,6 @@ void LLFloaterSnapshot::onSaveToProfile()
 	updateControls();
 }
 
-void LLFloaterSnapshot::onSaveToEmail()
-{
-	openPanel("panel_snapshot_postcard");
-
-	mSizeComboCtrl = getActivePanel()->getChild<LLComboBox>("postcard_size_combo");
-	mWidthSpinnerCtrl = getActivePanel()->getChild<LLSpinCtrl>("postcard_snapshot_width");
-	mHeightSpinnerCtrl = getActivePanel()->getChild<LLSpinCtrl>("postcard_snapshot_height");
-	mKeepAspectCheckCtrl = getActivePanel()->getChild<LLUICtrl>("postcard_keep_aspect_check");
-	mImageQualitySliderCtrl = getActivePanel()->getChild<LLSliderCtrl>("image_quality_slider");
-	mSaveBtn = getActivePanel()->getChild<LLUICtrl>("send_btn");
-	mCancelBtn = getActivePanel()->getChild<LLUICtrl>("cancel_btn");
-
-	mSaveBtn->setLabelArg("[UPLOAD_COST]", std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost()));
-	mSizeComboCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::updateResolution, this, _1, true));
-	mFormatComboCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::updateControls, this));
-	mWidthSpinnerCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::onCustomResolutionCommit, this));
-	mHeightSpinnerCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::onCustomResolutionCommit, this));
-	mKeepAspectCheckCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::onKeepAspectRatioCommit, this, _1));
-	mImageQualitySliderCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::onQualitySliderCommit, this, _1));
-
-	updateControls();
-}
-
 void LLFloaterSnapshot::onSaveToInventory()
 {
 	openPanel("panel_snapshot_inventory");
@@ -1552,115 +1488,12 @@ void LLFloaterSnapshot::onInventorySend()
 	}
 }
 
-bool LLFloaterSnapshot::missingSubjMsgAlertCallback(const LLSD& notification, const LLSD& response)
-{
-	S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
-	if (0 == option)
-	{
-		// User clicked OK
-		if ((getChild<LLUICtrl>("subject_form")->getValue().asString()).empty())
-		{
-			// Stuff the subject back into the form.
-			getChild<LLUICtrl>("subject_form")->setValue(getString("default_subject"));
-		}
-
-		if (!mHasFirstMsgFocus)
-		{
-			// The user never switched focus to the message window.
-			// Using the default string.
-			getChild<LLUICtrl>("msg_form")->setValue(getString("default_message"));
-		}
-
-		sendPostcard();
-	}
-	return false;
-}
-
-
-void LLFloaterSnapshot::sendPostcardFinished(LLSD result)
-{
-	LL_WARNS() << result << LL_ENDL;
-
-	std::string state = result["state"].asString();
-
-	LLPostCard::reportPostResult((state == "complete"));
-}
-
-
-void LLFloaterSnapshot::sendPostcard()
-{
-	if (!gAgent.getRegion()) return;
-
-	// upload the image
-	std::string url = gAgent.getRegion()->getCapability("SendPostcard");
-	if (!url.empty())
-	{
-		LLResourceUploadInfo::ptr_t uploadInfo(std::make_shared<LLPostcardUploadInfo>(
-			getChild<LLUICtrl>("name_form")->getValue().asString(),
-			getChild<LLUICtrl>("to_form")->getValue().asString(),
-			getChild<LLUICtrl>("subject_form")->getValue().asString(),
-			getChild<LLUICtrl>("msg_form")->getValue().asString(),
-			getPosTakenGlobal(),
-			getImageData(),
-			[](LLUUID, LLUUID, LLUUID, LLSD response) 
-			{
-				LLFloaterSnapshot::sendPostcardFinished(response);
-			}));
-
-		LLViewerAssetUpload::EnqueueInventoryUpload(url, uploadInfo);
-	}
-	else
-	{
-		LL_WARNS() << "Postcards unavailable in this region." << LL_ENDL;
-	}
-
-
-	// Give user feedback of the event.
-	gViewerWindow->playSnapshotAnimAndSound();
-
-	postSave();
-}
-
-void LLFloaterSnapshot::onMsgFormFocusRecieved()
-{
-	LLTextEditor* msg_form = getChild<LLTextEditor>("msg_form");
-	if (msg_form->hasFocus() && !mHasFirstMsgFocus)
-	{
-		mHasFirstMsgFocus = true;
-		msg_form->setText(LLStringUtil::null);
-	}
-}
-
 void LLFloaterSnapshot::onQualitySliderCommit(LLUICtrl* ctrl)
 {
 	//updateImageQualityLevel();
 
 	S32 quality_val = llfloor(ctrl->getValue().asReal());
 	onImageQualityChange(quality_val);
-}
-
-void LLFloaterSnapshot::onPostcardSend()
-{
-	// Validate input.
-	std::string to(getChild<LLUICtrl>("to_form")->getValue().asString());
-
-	boost::regex email_format("[A-Za-z0-9.%+-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(,[ \t]*[A-Za-z0-9.%+-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})*");
-
-	if (to.empty() || !boost::regex_match(to, email_format))
-	{
-		LLNotificationsUtil::add("PromptRecipientEmail");
-		return;
-	}
-
-	std::string subject(getChild<LLUICtrl>("subject_form")->getValue().asString());
-	if (subject.empty() || !mHasFirstMsgFocus)
-	{
-		LLNotificationsUtil::add("PromptMissingSubjMsg", LLSD(), LLSD(), boost::bind(&LLFloaterSnapshot::missingSubjMsgAlertCallback, this, _1, _2));
-		return;
-	}
-
-	// Send postcard.
-	sendPostcard();
 }
 
 void LLFloaterSnapshot::sendProfile()

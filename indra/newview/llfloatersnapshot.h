@@ -121,7 +121,6 @@ public:
 	// Panels
 	void openPanel(const std::string& panel_name);
 	void onSaveToProfile();
-	void onSaveToEmail();
 	void onSaveToInventory();
 	void onSaveToComputer();
 
@@ -144,23 +143,17 @@ public:
 	void setFailureLabelPanelVisible(bool value) { mFailureLblPanel->setVisible(value); }
 	
 	// Saving
-	void onSendingPostcardFinished(bool status);
 	void onSnapshotUploadFinished(bool status);
-	void onMsgFormFocusRecieved();
-	bool missingSubjMsgAlertCallback(const LLSD& notification, const LLSD& response);
 	typedef boost::signals2::signal<void(void)> snapshot_saved_signal_t;
 	void saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb);
 
 	void saveTextureFailed();
-	static void sendPostcardFinished(LLSD result);
-	void onPostcardSend();
 	void onInventorySend();
 	void saveLocalFinished();
 	void saveLocalFailed();
 
 	void onSnapshotCancel();
 	void onSnapshotSave();
-	void sendPostcard();
 	void sendProfile();
 	void saveTexture();
 	void saveOutfitTexture();
@@ -186,7 +179,6 @@ public:
 
 	S32 mLocalFormat;
 
-	bool mHasFirstMsgFocus;
 	bool mAspectRatioCheckOff;
 	bool mNeedRefresh;
 	bool mAdvanced;

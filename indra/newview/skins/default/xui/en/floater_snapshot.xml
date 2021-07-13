@@ -20,10 +20,6 @@
         -
     </floater.string>
     <string
-     name="postcard_progress_str">
-        Sending Email
-    </string>
-    <string
         name="facebook_progress_str">
         Posting to Facebook
     </string>
@@ -48,10 +44,6 @@
  	    Image uploaded
  	</string>
  	<string
- 	 name="postcard_succeeded_str">
- 	    Email Sent!
- 	</string>
- 	<string
  	 name="inventory_succeeded_str">
  	    Saved to Inventory!
  	</string>
@@ -66,10 +58,6 @@
  	<string
      name="profile_failed_str">
  	    Failed to upload to profile.
- 	</string>
- 	<string
- 	 name="postcard_failed_str">
- 	    Failed to send EMail.
  	</string>
  	<string
  	 name="inventory_failed_str">
@@ -354,23 +342,6 @@
           <button.commit_callback
            function="Snapshot.SaveToProfile" />
         </button>
-        <button
-         follows="left|top"
-         font="SansSerif"
-         halign="left"
-         height="22"
-         image_overlay="Snapshot_Email"
-         image_overlay_alignment="left"
-         image_top_pad="0"
-         imgoverlay_label_space="10"
-         label="Send via E-mail"
-         layout="topleft"
-         left_delta="0"
-         name="save_to_email_btn"
-         top_pad="5">
-          <button.commit_callback
-           function="Snapshot.SaveToEmail" />
-        </button>
         <text
          follows="top|left"
          font="SansSerif"
@@ -383,7 +354,7 @@
          width="200"
          type="string"
          word_wrap="true">
-          Fee is based on your subscription level. Higher levels are charged lower fees.
+          Fee may be based on your subscription level. Higher levels may be charged lower fees.
         </text>
       </panel>
       <panel
