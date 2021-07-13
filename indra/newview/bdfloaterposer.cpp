@@ -206,17 +206,6 @@ void BDFloaterPoser::draw()
 		}
 	}
 
-	//BD - Retry until we are fully loaded, then grab our default values, this prevents
-	//     us from using the Poser too early and grabbing in-loading values.
-	if (mDelayRefresh)
-	{
-		if (gAgentAvatarp->isFullyLoaded())
-		{
-			onCollectDefaults();
-			mDelayRefresh = false;
-		}
-	}
-
 	LLFloater::draw();
 }
 
@@ -527,6 +516,10 @@ void BDFloaterPoser::onPoseStart()
 		avatar->setPosing();
 		if (avatar->isSelf())
 		{
+			//BD - Grab our current defaults to revert to them when stopping the Poser.
+			if(gAgentAvatarp->isFullyLoaded())
+				onCollectDefaults();
+
 			gAgent.stopFidget();
 			gDragonStatus->setPosing(true);
 		}
@@ -1561,6 +1554,9 @@ void BDFloaterPoser::onCollectDefaults()
 	gAgentAvatarp->getSortedJointNames(1, cv_names);
 	gAgentAvatarp->getSortedJointNames(2, attach_names);
 
+	mDefaultScales.clear();
+	mDefaultPositions.clear();
+
 	for (auto name : joint_names)
 	{
 		joint = gAgentAvatarp->getJoint(name);
@@ -2321,6 +2317,15 @@ void BDFloaterPoser::onAvatarsSelect()
 
 	onPoseControlsRefresh();
 	onAnimControlsRefresh();
+
+	//BD - Disable the Start Posing button if we haven't loaded yet.
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (item)
+	{
+		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+		if (avatar && avatar->isSelf())
+			mStartPosingBtn->setEnabled(gAgentAvatarp->isFullyLoaded());
+	}
 
 	mStartPosingBtn->setFlashing(true, true);
 }
