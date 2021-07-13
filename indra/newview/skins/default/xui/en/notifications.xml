@@ -11988,6 +11988,18 @@ RLVa is currently in an assumed defunct state, some parts of it may or may not w
   
   <notification
    icon="alertmodal.tga"
+   name="ObjectCacheEnabled"
+   type="alert">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
+
+You will see caching bugs, items will break, you will become unable to 'Pay' and 'Touch' objects.
+
+&lt;b&gt;DO NOT DISABLE THIS!&lt;/b&gt;
+  <tag>notification</tag>
+  </notification>
+  
+  <notification
+   icon="alertmodal.tga"
    name="RenderShadowResolution_Max"
    type="alert">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
