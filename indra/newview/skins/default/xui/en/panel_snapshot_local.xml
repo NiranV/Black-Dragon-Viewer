@@ -101,6 +101,7 @@
     </combo_box>
     <spinner
      allow_text_entry="false"
+     control_name="LastSnapshotToDiskWidth"
      decimal_digits="0"
      follows="left|top"
      height="20"
@@ -116,6 +117,7 @@
      width="144" />
     <spinner
      allow_text_entry="false"
+     control_name="LastSnapshotToDiskHeight"
      decimal_digits="0"
      follows="left|top"
      height="20"
