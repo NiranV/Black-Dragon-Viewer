@@ -401,12 +401,18 @@ width="510">
    follows="left|top"
    height="16"
    label="Switch IM tabs to the left side"
-   tool_tip="This option toggles whether the IM tabs should be shown on the left or right side in the Conversation window."
+   tool_tip="This option toggles whether the IM tabs should be shown on the left or right side in the Conversation window.
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|Changing this option needs a restart."
    layout="topleft" 
    left="10"
    top_pad="0"
    name="IMWindowSwitchSide" 
-   width="250" />
+   width="250" >
+   <check_box.check_button
+   image_overlay="Caution_Widget"
+   image_overlay_alignment="left"/>
+   </check_box>
    <check_box
    control_name="ShowScriptErrors" 
    follows="left|top"
