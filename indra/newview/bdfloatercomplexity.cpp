@@ -288,8 +288,6 @@ void BDFloaterComplexity::calcARC()
 										face_count += child->getNumFaces();
 										if (child->isParticleSource())
 											particles++;
-										if (child->isAnimatedObject())
-											animeshs++;
 										if (child->getIsLight())
 											lights++;
 										if (child->getHasShadow())
