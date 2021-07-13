@@ -48,7 +48,7 @@ width="494">
  height="12"
  width="350"
  top_delta="4">
- Visible Avatars:
+ Visible Avatars and Animeshes:
  </text>
  <scroll_list
  column_padding="2"
@@ -62,13 +62,13 @@ width="494">
  name="other_avatars_scroll"
  top_pad="3">
     <scroll_list.columns
-     label="Avatar Name"
+     label="Name"
      name="name"
    relative_width="0.32"  />
     <scroll_list.columns
-     label="Avatar UUID"
+     label="UUID"
      name="uuid"
-   relative_width="0.48"  />
+   relative_width="0.47"  />
     <scroll_list.columns
      label="Speed"
      name="value"
@@ -76,34 +76,36 @@ width="494">
 	<scroll_list.columns
      label="Perms"
      name="permission"
-   relative_width="0.10"  />
+   relative_width="0.11"  />
 </scroll_list>
- <button
+	<button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Stop All"
+ label="List Animations"
+	tool_tip="Extract and write all animations (excluding the default animations) playing on the selected Avatar into the animation list below."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="103"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
    function="Motion.Command"
-   parameter="Stop"/>
+   parameter="Save"/>
  </button>
  <button
  height="21"
  follows="top|left"
  layout="topleft"
  label="Freeze"
+	tool_tip="Freeze all animations of the selected Avatar."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="62"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -118,12 +120,13 @@ width="494">
   left_pad="1"
   top_delta="0"
   name="anim_factor"
-  width="61"/>
+  width="41"/>
  <button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Set Factor"
+ label="Set Speed"
+	tool_tip="Set the animation speed factor of the selected Avatar to the entered value."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
@@ -139,12 +142,13 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Restart"
+ label="Restart Animations"
+	tool_tip="Restart all animations currently playing on the selected Avatar. Allows syncing avatars by selecting multiple."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="121"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -156,11 +160,12 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Refresh"
+	tool_tip="Refresh the Avatar list."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="82"
+ width="62"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -197,7 +202,7 @@ width="494">
  height="12"
  width="350"
  top_delta="4">
- Saved Motions:
+ Animations:
  </text>
  <scroll_list
  column_padding="2"
@@ -243,32 +248,35 @@ width="494">
      name="easeout"
    relative_width="0.10"  />
 </scroll_list>
+	
 	<button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Save"
+ label="Stop Selected"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="Stop the selected animation on the selected Avatar if it's playing."
  name="default"
- width="63"
+ width="95"
  top_pad="1"
  left_delta="2">
    <button.commit_callback
    function="Motion.Command"
-   parameter="Save"/>
+   parameter="Stop"/>
  </button>
 	<button
  height="21"
  follows="top|left"
  layout="topleft"
- label="Apply To"
+ label="Play Selected"
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
+		tool_tip="Play the selected animation on the selected Avatar."
  name="default"
- width="63"
+ width="93"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -279,12 +287,13 @@ width="494">
  height="21"
  follows="top|left"
  layout="topleft"
- label="Create"
+ label="Import"
+	tool_tip="Import an animation (.ANIM) from disk to test and preview it here."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="create"
- width="63"
+ width="57"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -296,11 +305,12 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Skeleton"
+	tool_tip="Copy your skeleton (shape) to the selected Avatar."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="skeleton"
- width="83"
+ width="73"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
@@ -312,35 +322,29 @@ width="494">
  follows="top|left"
  layout="topleft"
  label="Attachments"
+	tool_tip="Copy your currently in Edit Mode selected attachments to the selected Avatar."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="attachments"
- width="83"
+ width="88"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
    function="Motion.Command"
    parameter="Attachments"/>
  </button>
-	<icon
-	follows="left|top|right"
-	image_name="Toolbar_Middle_Off"
-	height="21"
-	width="32"
-	layout="topleft"
-	left_pad="1"
-	top_delta="0"/>
 	<button
  height="21"
  follows="top|left"
  layout="topleft"
  label="Remove"
+	tool_tip="Remove the selected animation from the list."
  image_hover_unselected="Toolbar_Middle_Over"
 	 image_selected="Toolbar_Middle_Selected"
 	 image_unselected="Toolbar_Middle_Off"
  name="default"
- width="83"
+ width="65"
  top_delta="0"
  left_pad="1">
    <button.commit_callback
