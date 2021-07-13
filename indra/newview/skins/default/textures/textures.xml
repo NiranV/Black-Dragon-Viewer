@@ -861,6 +861,13 @@ with the same filename but different name
   <texture name="icon_avatar_offline.tga" />
   <texture name="icon_avatar_online.tga" />
   
+  <texture name="OldVoicePTT_Lvl1" file_name="icons/VoicePTT_Lvl1.png" preload="false" />
+  <texture name="OldVoicePTT_Lvl2" file_name="icons/VoicePTT_Lvl2.png" preload="false" />
+  <texture name="OldVoicePTT_Lvl3" file_name="icons/VoicePTT_Lvl3.png" preload="false" />
+  <texture name="OldVoicePTT_Off" file_name="icons/VoicePTT_Off.png" preload="false" />
+  <texture name="OldVoicePTT_On" file_name="icons/VoicePTT_On.png" preload="false" />
+  <texture name="Donut" file_name="icons/Donut.png" preload="false" />
+  
   <!--WARNING OLD ART BELOW *do not use*-->
 
   <!--<texture name="jump_left_out.tga" file_name="widgets/jump_left_out.png" />
