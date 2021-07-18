@@ -8192,7 +8192,14 @@ void LLPipeline::renderFinalize()
 
 			F32 fov = viewer_cam->getView();
 
-			const F32 default_fov = CameraFieldOfView * F_PI / 180.f;
+			//BD - Autoscale Rendering
+			F32 camera_fov = CameraFieldOfView;
+			if (RenderSnapshotAutoAdjustMultiplier)
+			{
+				CameraFieldOfView *= RenderSnapshotMultiplier;
+			}
+
+			const F32 default_fov = camera_fov * F_PI / 180.f;
 
 			// F32 aspect_ratio = (F32) mScreen.getWidth()/(F32)mScreen.getHeight();
 
@@ -8843,8 +8850,17 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 	shader.uniform1f(LLShaderMgr::DEFERRED_SHADOW_NOISE, RenderShadowNoise);
 	shader.uniform1f(LLShaderMgr::DEFERRED_BLUR_SIZE, RenderShadowBlurSize);
 
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_RADIUS, RenderSSAOScale);
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_MAX_RADIUS, RenderSSAOMaxScale);
+	//BD - Autoscale Rendering
+	F32 ssao_scale = RenderSSAOScale;
+	U32 ssao_max_scale = RenderSSAOMaxScale;
+	if (RenderSnapshotAutoAdjustMultiplier)
+	{
+		ssao_scale *= RenderSnapshotMultiplier;
+		ssao_max_scale *= RenderSnapshotMultiplier;
+	}
+
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_RADIUS, ssao_scale);
+	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_MAX_RADIUS, ssao_max_scale);
 
 	F32 ssao_factor = RenderSSAOFactor;
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
@@ -9071,6 +9087,15 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget *screen_target)
 			F32 blur_size = RenderShadowBlurSize;
 			F32 dist_factor = RenderShadowBlurDistFactor;
 
+			//BD - Autoscale Rendering
+			F32 ssao_blur = RenderSSAOBlurSize;
+			if (RenderSnapshotAutoAdjustMultiplier)
+			{
+				blur_size *= RenderSnapshotMultiplier;
+				ssao_blur *= RenderSnapshotMultiplier;
+			}
+
+
 			// sample symmetrically with the middle sample falling exactly on 0.0
 			//F32 x = 0.f;
 
@@ -9087,7 +9112,7 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget *screen_target)
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
 			//gDeferredBlurLightProgram.uniform3fv(sKern, kern_length, gauss[0].mV);
-			gDeferredBlurLightProgram.uniform2f(sKernScale, blur_size, RenderSSAOBlurSize);
+			gDeferredBlurLightProgram.uniform2f(sKernScale, blur_size, ssao_blur);
 		
 			{
 				LLGLDisable blend(GL_BLEND);

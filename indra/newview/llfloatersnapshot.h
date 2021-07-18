@@ -183,6 +183,7 @@ public:
 	bool mNeedRefresh;
 	bool mAdvanced;
 	bool mSnapshotFreezeWorld;
+	bool mSnapshotAutoscale;
 	BOOL isWaitingState();
 
 protected:

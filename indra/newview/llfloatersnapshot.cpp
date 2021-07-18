@@ -55,6 +55,9 @@
 #include "llviewerregion.h"
 #include "lloutfitgallery.h"
 
+//BD
+#include "pipeline.h"
+
 #include <boost/regex.hpp>
 
 ///----------------------------------------------------------------------------
@@ -308,6 +311,8 @@ void LLFloaterSnapshot::onOpen(const LLSD& key)
 
 	updateControls();
 	setAdvanced(gSavedSettings.getBOOL("AdvanceSnapshot"));
+	//BD - Autoscale Rendering
+	gSavedSettings.setBOOL("RenderSnapshotAutoAdjustMultiplier", mSnapshotAutoscale);
 
 
 	// Initialize default tab.
@@ -356,9 +361,11 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		previewp->setEnabled(FALSE);
 	}
 
-	//BD - When closing the window, automatically disable the autoscale option or we
+	//BD - Autoscale Rendering
+	//     When closing the window, automatically disable the autoscale option or we
 	//     get temporarily stuck with it until we disable it again and this might cause
 	//     confusion for the user who doesn't know what he might have missed.
+	mSnapshotAutoscale = gPipeline.RenderSnapshotAutoAdjustMultiplier;
 	gSavedSettings.setBOOL("RenderSnapshotAutoAdjustMultiplier", false);
 
 	//BD
@@ -920,10 +927,11 @@ void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, BOOL do_update)
 
 			previewp->getSize(width, height);
 
-			//BD
-			if (gSavedSettings.getBOOL("RenderSnapshotAutoAdjustMultiplier"))
+			//BD - Autoscale Rendering
+			if (gPipeline.RenderSnapshotAutoAdjustMultiplier)
 			{
-				F32 multiplier = (F32)height / (F32)gViewerWindow->getWindowHeightRaw();
+				F32 window_height = gViewerWindow->getWindowHeightRaw();
+				F32 multiplier = (F32)height / window_height;
 				gSavedSettings.setF32("RenderSnapshotMultiplier", multiplier);
 			}
 
