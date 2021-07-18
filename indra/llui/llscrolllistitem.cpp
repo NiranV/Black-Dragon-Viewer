@@ -45,6 +45,7 @@ LLScrollListItem::LLScrollListItem(const Params& p)
 	mUserdata(p.userdata),
 	mItemValue(p.value),
 	//BD
+	mToolTip(p.tool_tip),
 	mMarked(false)
 {
 	//BD - Cells ~ Thanks to Liru

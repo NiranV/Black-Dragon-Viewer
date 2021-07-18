@@ -84,6 +84,7 @@ public:
 			type("type"),
 			length("length"),
 			columns("columns"),
+			//BD
 			tool_tip("tool_tip"),
 			//BD - Cells ~ Thanks to Liru
 			contents("contents")
