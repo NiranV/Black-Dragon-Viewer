@@ -735,6 +735,22 @@
      <spinner.commit_callback
      function="Joystick.Refresh"/>
      </spinner>
+      <spinner
+     top_pad="11"
+     control_name="JoystickButtonRollDefault"
+     decimal_digits="0"
+     increment="1"
+     label="Roll Default Mapping"
+     label_width="125"
+     layout="topleft"
+     left_delta="0"
+     max_val="15"
+     min_val="-1"
+     name="JoystickButtonCrouch"
+     width="170" >
+     <spinner.commit_callback
+     function="Joystick.Refresh"/>
+     </spinner>
     <panel
  follows="left|top|right"
  height="20"

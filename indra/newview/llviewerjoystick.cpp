@@ -1123,7 +1123,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	LLQuaternion new_rot = LLQuaternion(rot_mat)*sFlycamRotation;
 	sFlycamRotation = nlerp(llmin(flycam_feather, 1.f), sFlycamRotation, new_rot);*/
 
-	if (mAutoLeveling)
+	if (mAutoLeveling || mBtn[mMappedButtons[ROLL_DEFAULT]])
 	{
 		LLMatrix3 level(sFlycamRotation);
 
@@ -1138,7 +1138,10 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		level.orthogonalize();
 				
 		LLQuaternion quat(level);
-		sFlycamRotation = nlerp(llmin(flycam_feather * time, 1.f), sFlycamRotation, quat);
+		if(mBtn[mMappedButtons[ROLL_DEFAULT]])
+			sFlycamRotation = quat;
+		else
+			sFlycamRotation = nlerp(llmin(flycam_feather * time, 1.f), sFlycamRotation, quat);
 	}
 
 	if (mZoomDirect)
@@ -1368,6 +1371,7 @@ void LLViewerJoystick::setSNDefaults()
 	gSavedSettings.setS32("JoystickButtonZoomIn", -1);
 	gSavedSettings.setS32("JoystickButtonRollLeft", -1);
 	gSavedSettings.setS32("JoystickButtonRollRight", -1);
+	gSavedSettings.setS32("JoystickButtonRollDefault", -1);
 	
 	gSavedSettings.setBOOL("Cursor3D", is_3d_cursor);
 	gSavedSettings.setBOOL("AutoLeveling", true);
@@ -1444,6 +1448,7 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setS32("JoystickButtonZoomIn", 4);
 	gSavedSettings.setS32("JoystickButtonRollLeft", -1);
 	gSavedSettings.setS32("JoystickButtonRollRight", -1);
+	gSavedSettings.setS32("JoystickButtonRollDefault", -1);
 	
 	gSavedSettings.setBOOL("Cursor3D", false);
 	gSavedSettings.setBOOL("AutoLeveling", false);
@@ -1500,6 +1505,7 @@ void LLViewerJoystick::refreshButtonMapping()
 {
 	mMappedButtons[ROLL_LEFT] = gSavedSettings.getS32("JoystickButtonRollLeft");
 	mMappedButtons[ROLL_RIGHT] = gSavedSettings.getS32("JoystickButtonRollRight");
+	mMappedButtons[ROLL_DEFAULT] = gSavedSettings.getS32("JoystickButtonRollDefault");
 	mMappedButtons[ZOOM_OUT] = gSavedSettings.getS32("JoystickButtonZoomOut");
 	mMappedButtons[ZOOM_IN] = gSavedSettings.getS32("JoystickButtonZoomIn");
 	mMappedButtons[ZOOM_DEFAULT] = gSavedSettings.getS32("JoystickButtonZoomDefault");

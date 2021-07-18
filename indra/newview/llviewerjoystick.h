@@ -48,16 +48,17 @@ typedef enum E_Buttons
 {
 	ROLL_LEFT = 0,
 	ROLL_RIGHT = 1,
-	ZOOM_IN = 2,
-	ZOOM_OUT = 3,
-	ZOOM_DEFAULT = 4,
-	JUMP = 5,
-	CROUCH = 6,
-	FLY = 7,
-	MOUSELOOK = 8,
-	FLYCAM = 9,
-	TOGGLE_RUN = 10,
-	MAX_BUTTONS = 11
+	ROLL_DEFAULT = 2,
+	ZOOM_IN = 3,
+	ZOOM_OUT = 4,
+	ZOOM_DEFAULT = 5,
+	JUMP = 6,
+	CROUCH = 7,
+	FLY = 8,
+	MOUSELOOK = 9,
+	FLYCAM = 10,
+	TOGGLE_RUN = 11,
+	MAX_BUTTONS = 12
 } E_buttons;
 
 typedef enum E_Axes
