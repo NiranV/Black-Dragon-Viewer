@@ -55,6 +55,7 @@ public:
 	static void setWorldFrozen(bool toggle);
 	static void setPosing(bool toggle);
 	static void setCameraRoll(bool toggle);
+	static void setCameraLock(bool toggle);
 
 	/*virtual*/ BOOL postBuild();
 	/*virtual*/ void draw();
@@ -70,6 +71,7 @@ private:
 	void onWorldFrozenButtonClick();
 	void onPosingButtonClick();
 	void onCameraRollButtonClick();
+	void onCameraLockButtonClick();
 
 	LLButton* mSittingButton;
 	LLButton* mFlyingButton;
@@ -80,6 +82,7 @@ private:
 	LLButton* mWorldFrozenButton;
 	LLButton* mPosingButton;
 	LLButton* mCameraRollButton;
+	LLButton* mCameraLockButton;
 
 	LLLayoutPanel* mSittingLayout;
 	LLLayoutPanel* mFlyingLayout;
@@ -90,6 +93,7 @@ private:
 	LLLayoutPanel* mWorldFrozenLayout;
 	LLLayoutPanel* mPosingLayout;
 	LLLayoutPanel* mCameraRollLayout;
+	LLLayoutPanel* mCameraLockLayout;
 
 	bool mSitting;
 	bool mRoll;

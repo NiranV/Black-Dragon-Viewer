@@ -148,6 +148,7 @@
 #include "llfloaterbuildoptions.h"
 #include "llurlaction.h"
 #include "bdfunctions.h"
+#include "bdstatus.h"
 //BD - Pie Menu
 #include "piemenu.h"
 
@@ -9658,6 +9659,13 @@ class LLAvatarShare : public view_listener_t
 	}
 };
 
+//BD - Camera Position Lock
+void handle_camera_lock()
+{
+	gAgentCamera.setCameraLocked(true);
+	gDragonStatus->setCameraLock(true);
+}
+
 //BD - Derender
 void handle_derender_clear()
 {
@@ -10348,6 +10356,7 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAvatarCheckPermissions(), "Avatar.CheckPermissions");
 
 //	//BD - Functions
+	commit.add("Dragon.CameraLock", boost::bind(&handle_camera_lock));
 	commit.add("Dragon.Default", boost::bind(&BDFunctions::resetToDefault, _1));
 	commit.add("Dragon.FactoryReset", boost::bind(&BDFunctions::askFactoryReset, _2));
 	commit.add("Dragon.Invert", boost::bind(&BDFunctions::invertValue, _1));

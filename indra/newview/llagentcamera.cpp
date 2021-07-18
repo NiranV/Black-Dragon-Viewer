@@ -356,6 +356,11 @@ void LLAgentCamera::resetView(BOOL reset_camera, BOOL change_camera)
 		return;
 	}
 
+	if (mPositionLocked)
+	{
+		return;
+	}
+
 	if (gAgent.getAutoPilot())
 	{
 		gAgent.stopAutoPilot(TRUE);

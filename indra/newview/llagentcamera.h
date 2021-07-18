@@ -252,6 +252,9 @@ public:
 	void			setObjectTracking(BOOL track) 	{ mTrackFocusObject = track; }
 	const LLVector3d &getFocusGlobal() const		{ return mFocusGlobal; }
 	const LLVector3d &getFocusTargetGlobal() const	{ return mFocusTargetGlobal; }
+
+	//BD - Camera Position Lock
+	void			setCameraLocked(BOOL locked) { mPositionLocked = locked; }
 private:
 	LLQuaternion	mCameraRotation;
 	LLVector3d		mCameraFocusOffset;				// Offset from focus point in build mode
@@ -265,6 +268,9 @@ private:
 	LLVector3		mFocusObjectOffset;
 	F32				mFocusDotRadius; 				// Meters
 	BOOL			mTrackFocusObject;
+
+	//BD - Camera Position Lock
+	BOOL			mPositionLocked;
 
 //	//BD - Save/Load Camera Position
 	//--------------------------------------------------------------------

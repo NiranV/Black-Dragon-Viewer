@@ -115,6 +115,11 @@ void BDStatus::setCameraRoll(bool toggle)
 	gDragonStatus->mCameraRollLayout->setVisible(toggle);
 }
 
+void BDStatus::setCameraLock(bool toggle)
+{
+	gDragonStatus->mCameraLockLayout->setVisible(toggle);
+}
+
 BOOL BDStatus::postBuild()
 {
 	mSittingButton = getChild<LLButton>("sitting_btn");
@@ -126,6 +131,7 @@ BOOL BDStatus::postBuild()
 	mWorldFrozenButton = getChild<LLButton>("world_frozen_btn");
 	mPosingButton = getChild<LLButton>("posing_btn");
 	mCameraRollButton = getChild<LLButton>("camera_roll_btn");
+	mCameraLockButton = getChild<LLButton>("camera_lock_btn");
 
 	mSittingLayout = getChild<LLLayoutPanel>("sitting_layout");
 	mFlyingLayout = getChild<LLLayoutPanel>("flying_layout");
@@ -136,6 +142,7 @@ BOOL BDStatus::postBuild()
 	mWorldFrozenLayout = getChild<LLLayoutPanel>("world_frozen_layout");
 	mPosingLayout = getChild<LLLayoutPanel>("posing_layout");
 	mCameraRollLayout = getChild<LLLayoutPanel>("camera_roll_layout");
+	mCameraLockLayout = getChild<LLLayoutPanel>("camera_lock_layout");
 
 	mSittingButton->setCommitCallback(boost::bind(&BDStatus::onSittingButtonClick, this));
 	mFlyingButton->setCommitCallback(boost::bind(&BDStatus::onFlyingButtonClick, this));
@@ -146,6 +153,7 @@ BOOL BDStatus::postBuild()
 	mWorldFrozenButton->setCommitCallback(boost::bind(&BDStatus::onWorldFrozenButtonClick, this));
 	mPosingButton->setCommitCallback(boost::bind(&BDStatus::onPosingButtonClick, this));
 	mCameraRollButton->setCommitCallback(boost::bind(&BDStatus::onCameraRollButtonClick, this));
+	mCameraLockButton->setCommitCallback(boost::bind(&BDStatus::onCameraLockButtonClick, this));
 
 	return TRUE;
 }
@@ -220,6 +228,14 @@ void BDStatus::onCameraRollButtonClick()
 {
 	gAgentCamera.mCameraRollAngle = 0;
 	setCameraRoll(false);
+
+	setFocus(FALSE);
+}
+
+void BDStatus::onCameraLockButtonClick()
+{
+	gAgentCamera.setCameraLocked(false);
+	setCameraLock(false);
 
 	setFocus(FALSE);
 }
