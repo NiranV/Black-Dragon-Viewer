@@ -3440,7 +3440,7 @@ void LLAgentCamera::onRemoveCameraPreset(std::string preset_name)
 	if (preset_name.empty())
 		name = gSavedSettings.getString("CameraPresetName");
 
-	if (gDirUtilp->deleteFilesInDir(pathname, LLURI::escape(name) + ".xml") < 1)
+	if (gDirUtilp->deleteFilesInDir(pathname, gDragonLibrary.escapeString(name) + ".xml") < 1)
 		LL_WARNS("Camera") << "Cannot remove camera preset file: " << name << LL_ENDL;
 
 	gAgentCamera.initializeCameraPresets();
