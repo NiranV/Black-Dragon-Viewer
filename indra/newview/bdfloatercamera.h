@@ -85,6 +85,8 @@ private:
 
 	void onRecorderControlsRefresh();
 
+	void copyToClipboard();
+
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
 

@@ -19,6 +19,7 @@
 #include "bdfloatercamera.h"
 #include "lluictrlfactory.h"
 #include "llagent.h"
+#include "llwindow.h"
 
 #include "llagentpilot.h"
 #include "llviewercamera.h"
@@ -63,6 +64,9 @@ BDFloaterCamera::BDFloaterCamera(const LLSD& key)
 	mCommitCallbackRegistrar.add("Recorder.Time", boost::bind(&BDFloaterCamera::onTime, this, _1, _2));
 	//     ModFoVCamera - Configrue the currently selected record's field of view (camera angle).
 	mCommitCallbackRegistrar.add("Recorder.CamAngle", boost::bind(&BDFloaterCamera::onCameraAngle, this, _1, _2));
+
+	//     ModFoVCamera - Configrue the currently selected record's field of view (camera angle).
+	mCommitCallbackRegistrar.add("Recorder.Clipboard", boost::bind(&BDFloaterCamera::copyToClipboard, this));
 
 	//mCommitCallbackRegistrar.add("Recorder.Command", boost::bind(&BDFloaterCamera::onCommand, this, _1, _2));
 }
@@ -496,6 +500,19 @@ void BDFloaterCamera::onRecorderControlsRefresh()
 	}
 
 	getChild<LLUICtrl>("loop_btn")->setValue(gAgentPilot.getLoop());
+}
+
+void BDFloaterCamera::copyToClipboard()
+{
+	std::string string;
+	for (LLScrollListItem* item : mRecorderScroll->getAllSelected())
+	{
+		if (item)
+		{
+			string.append(item->getContentsCSV());
+		}
+	}
+	LLView::getWindow()->copyTextToClipboard(utf8str_to_wstring(string));
 }
 
 void BDFloaterCamera::onRecorderSelection()

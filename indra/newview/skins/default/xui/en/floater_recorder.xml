@@ -304,6 +304,22 @@ width="449">
    <button.commit_callback
    function="Recorder.Override"/>
  </button>
+		<button
+ height="21"
+ follows="top|left"
+ layout="topleft"
+ label="Copy"
+	is_toggle="false"
+ image_hover_unselected="Toolbar_Middle_Over"
+	 image_selected="Toolbar_Middle_Selected"
+	 image_unselected="Toolbar_Middle_Off"
+ name="clipboard_btn"
+ width="71"
+ top_pad="1"
+ left="7">
+   <button.commit_callback
+   function="Recorder.Clipboard"/>
+ </button>
 		
 		<slider
 						decimal_digits="3"
