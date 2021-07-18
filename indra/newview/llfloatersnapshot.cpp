@@ -379,7 +379,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 		LLToolMgr::getInstance()->setCurrentToolset(mLastToolset);
 	}
 
-	if (mSnapshotOptionsPanel)
+	if (mSnapshotOptionsPanel && !gSavedSettings.getBOOL("RememberSnapshotMode"))
 	{
 		mSnapshotOptionsPanel->openPreviousPanel();
 		mSnapshotOptionsPanel->getCurrentPanel()->onOpen(LLSD());
@@ -1459,9 +1459,9 @@ void LLFloaterSnapshot::onSaveToComputer()
 	mCancelBtn = getActivePanel()->getChild<LLUICtrl>("cancel_btn");
 
 	if(gSavedSettings.getS32("LastSnapshotToDiskWidth") != 0)
-	mWidthSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskWidth"));
+		mWidthSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskWidth"));
 	if (gSavedSettings.getS32("LastSnapshotToDiskHeigh") != 0)
-	mHeightSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskHeigh"));
+		mHeightSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskHeigh"));
 
 	mSaveBtn->setLabelArg("[UPLOAD_COST]", std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost()));
 	mSizeComboCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::updateResolution, this, _1, true));
