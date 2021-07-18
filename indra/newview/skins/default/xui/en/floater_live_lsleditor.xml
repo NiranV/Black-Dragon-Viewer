@@ -58,14 +58,17 @@
      follows="right|bottom"
     height="23"
     label="Reset"
-     top_pad="-26"
+     top_pad="-25"
     label_selected="Reset"
+    image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
     layout="topleft"
     name="Reset"
-     right="-173"
-     width="81" />
+     right="-171"
+     width="83" />
   <check_box
-     left="7"
+     left="10"
      top_pad="-44"
     enabled="false"
     follows="left|bottom"
@@ -98,21 +101,35 @@
              label="Use Experience:"
              name="enable_xp"/>
   <combo_box
-    label=""
-    top_pad="-21"
+    top_pad="-18"
     left_pad="0"
     right="-33"
+    label="Click to select"
     layout="topleft"
-    follows="left|bottom|right"
+    follows="left|bottom"
     visible="true"
-    name="Experiences..."/>
-  <button label="&gt;"
+    name="Experiences...">
+   <combo_box.combo_button
+            image_unselected="Transparent"
+            image_selected="Transparent"
+            image_disabled="Transparent" />
+            <combo_box.drop_down_button
+            image_unselected="Transparent"
+            image_selected="Transparent"
+            image_pressed="Transparent" 
+            image_pressed_selected="Transparent"
+            image_disabled="Transparent" />
+  </combo_box>
+  <button label="⌊?⌉"
           name="view_profile"
+          image_hover_unselected="Transparent"
+      image_selected="Transparent"
+      image_unselected="Transparent"
           height="23"
           width="23"
           left_pad="1"
           layout="topleft"
           top_delta="0"
-          follows="right"
+          follows="left"
           visible="true"/>
 </floater>

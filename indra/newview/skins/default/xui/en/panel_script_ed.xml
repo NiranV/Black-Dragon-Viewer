@@ -183,8 +183,20 @@
      show_context_menu="true">
     Loading...
     </script_editor>
+    <icon
+	follows="bottom|left|right"
+	height="110"
+	color="1 1 1 1"
+	image_name="Panel_Background"
+	layout="topleft"
+	name="vicon"
+	mouse_opaque="false"
+	visible="true"
+	width="488"
+	top_pad="5"
+	left_delta="-1"/>
   <scroll_list
-    top_pad="5"
+    top_delta="1"
     left="0"
     follows="left|right|bottom"
     height="60"
@@ -195,29 +207,46 @@
     follows="left|bottom|right"
     height="23"
      top_pad="25"
-     left="0"
+     left="1"
     label="Insert..."
     layout="topleft"
     name="Insert..."
-     width="241" />
+     width="240" >
+   <combo_box.combo_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+            <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+  </combo_box>
   <button
     follows="right|bottom"
+    image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
     height="23"
     label="Save"
     label_selected="Save"
     layout="topleft"
      top_delta="0"
-     right="487"
+     right="485"
     name="Save_btn"
-    width="81" />
+    width="79" />
   <button
     enabled="false"
     follows="right|bottom"
+    image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
     height="23"
     label="Edit..."
     layout="topleft"
     top_pad="-23"
      right="405"
     name="Edit_btn"
-    width="81" />
+    width="79" />
 </panel>
