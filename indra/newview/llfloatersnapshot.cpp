@@ -447,13 +447,13 @@ LLSnapshotModel::ESnapshotType LLFloaterSnapshot::getActiveSnapshotType()
 	switch (getActivePanelIndex())
 	{
 	//BD - Outfit
-	case 5:
+	case 4:
 	//BD - Inventory
-	case 3:
+	case 2:
 		type = LLSnapshotModel::SNAPSHOT_TEXTURE;
 		break;
 	//BD - Local
-	case 4:
+	case 3:
 		type = LLSnapshotModel::SNAPSHOT_LOCAL;
 		break;
 	//BD - Options
