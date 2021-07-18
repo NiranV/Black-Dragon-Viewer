@@ -5631,22 +5631,22 @@
       <key>Comment</key>
       <string>The height of the last disk snapshot, in px</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>768</integer>
+      <integer>0</integer>
     </map>
     <key>LastSnapshotToDiskWidth</key>
     <map>
       <key>Comment</key>
       <string>The width of the last disk snapshot, in px</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>1024</integer>
+      <integer>0</integer>
     </map>
     <key>LastSnapshotToInventoryHeight</key>
     <map>

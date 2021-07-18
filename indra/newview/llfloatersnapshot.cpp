@@ -1458,7 +1458,9 @@ void LLFloaterSnapshot::onSaveToComputer()
 	mSaveBtn = getActivePanel()->getChild<LLUICtrl>("save_btn");
 	mCancelBtn = getActivePanel()->getChild<LLUICtrl>("cancel_btn");
 
+	if(gSavedSettings.getS32("LastSnapshotToDiskWidth") != 0)
 	mWidthSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskWidth"));
+	if (gSavedSettings.getS32("LastSnapshotToDiskHeigh") != 0)
 	mHeightSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskHeigh"));
 
 	mSaveBtn->setLabelArg("[UPLOAD_COST]", std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost()));
