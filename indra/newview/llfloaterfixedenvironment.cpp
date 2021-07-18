@@ -830,10 +830,10 @@ void LLFloaterFixedEnvironmentWater::updateEditEnvironment(void)
 
 void LLFloaterFixedEnvironmentWater::onOpen(const LLSD& key)
 {
+	mSettings = LLEnvironment::instance().getEnvironmentFixedWater(LLEnvironment::ENV_CURRENT)->buildClone();
     if (!mSettings)
     {
         // Initialize the settings, take a snapshot of the current water. 
-        mSettings = LLEnvironment::instance().getEnvironmentFixedWater(LLEnvironment::ENV_CURRENT)->buildClone();
         mSettings->setName("Snapshot water (new)");
         // TODO: Should we grab sky and keep it around for reference?
     }
@@ -899,10 +899,10 @@ void LLFloaterFixedEnvironmentSky::updateEditEnvironment(void)
 
 void LLFloaterFixedEnvironmentSky::onOpen(const LLSD& key)
 {
+	mSettings = LLEnvironment::instance().getEnvironmentFixedSky(LLEnvironment::ENV_CURRENT)->buildClone();
     if (!mSettings)
     {
         // Initialize the settings, take a snapshot of the current water. 
-        mSettings = LLEnvironment::instance().getEnvironmentFixedSky(LLEnvironment::ENV_CURRENT)->buildClone();
         mSettings->setName("Snapshot sky (new)");
         LLEnvironment::instance().saveBeaconsState();
         // TODO: Should we grab water and keep it around for reference?
