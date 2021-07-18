@@ -159,8 +159,8 @@ width="510">
    height="18"
    control_name="UIScaleFactor"
    name="uisize_combo"
-   use_ticker="true"
    tool_tip=""
+   use_ticker="true"
    top_delta="-2"
    width="219">
     <combo_box.item
@@ -1413,8 +1413,7 @@ width="510">
        value="1"
        name="item4"/>
       <combo_box.combo_icon
-       default_index="2"
-       warns_index="3"/>
+       default_index="5"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -1691,7 +1690,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;256x&lt;/blue&gt;"
+||RenderWaterRefResolution: &lt;blue&gt;256&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
@@ -1700,7 +1699,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;512x&lt;/blue&gt;"
+||RenderWaterRefResolution: &lt;blue&gt;512&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -1710,7 +1709,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;768x&lt;/blue&gt;
+||RenderWaterRefResolution: &lt;blue&gt;768&lt;/blue&gt;
 ||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
 |This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="768"
@@ -1722,7 +1721,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1024x&lt;/blue&gt;
+||RenderWaterRefResolution: &lt;blue&gt;1024&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
        value="1024"
@@ -1734,7 +1733,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1536x&lt;/blue&gt;
+||RenderWaterRefResolution: &lt;blue&gt;1536&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
        value="1536"
@@ -1746,7 +1745,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
+||RenderWaterRefResolution: &lt;blue&gt;2048&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
        value="2048"
@@ -1830,117 +1829,101 @@ width="510">
       <combo_box.item
        label="15 FPS"
        value="15"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;256x&lt;/blue&gt;"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;15&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="24 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;512x&lt;/blue&gt;"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;24&lt;/blue&gt;"
        value="24"
        name="item2"/>
       <combo_box.item
        label="30 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;768x&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;30&lt;/blue&gt;"
        value="30"
        name="item3"/>
       <combo_box.item
        label="45 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1024x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;45&lt;/blue&gt;"
        value="45"
        name="item4"/>
       <combo_box.item
        label="60 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1536x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;60&lt;/blue&gt;"
        value="60"
        name="item4"/>
       <combo_box.item
        label="75 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;75&lt;/blue&gt;"
        value="75"
        name="item4"/>
       <combo_box.item
        label="90 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;90&lt;/blue&gt;"
        value="90"
        name="item4"/>
       <combo_box.item
        label="120 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;120&lt;/blue&gt;"
        value="120"
        name="item4"/>
       <combo_box.item
        label="144 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
+||FramePerSecondLimit: &lt;blue&gt;144&lt;/blue&gt;"
        value="144"
        name="item4"/>
       <combo_box.item
        label="Unlimited"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option disables limiting the frames per second while the Viewer is active.
+||FramePerSecondLimit: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
       <combo_box.drop_down_button
@@ -1977,45 +1960,41 @@ width="510">
       <combo_box.item
        label="6 FPS"
        value="6"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;256x&lt;/blue&gt;"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is not active (tabbed out or deslected). This can be used to save resources for other applications while the Viewer is in the background.
+||BackgroundYieldTime: &lt;blue&gt;6&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="17 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;512x&lt;/blue&gt;"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is not active (tabbed out or deslected). This can be used to save resources for other applications while the Viewer is in the background.
+||BackgroundYieldTime: &lt;blue&gt;17&lt;/blue&gt;"
        value="17"
        name="item2"/>
       <combo_box.item
        label="33 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;768x&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is not active (tabbed out or deslected). This can be used to save resources for other applications while the Viewer is in the background.
+||BackgroundYieldTime: &lt;blue&gt;33&lt;/blue&gt;"
        value="33"
        name="item3"/>
       <combo_box.item
        label="Unlimited"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048x&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option disables limiting the frames per second while the Viewer is not active (tabbed out or deselected).
+||BackgroundYieldTime: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
       <combo_box.drop_down_button
@@ -2086,18 +2065,18 @@ width="510">
       <combo_box.item
        label="1 Avatar"
        value="1"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;1&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="3 Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;3&lt;/blue&gt;"
@@ -2105,9 +2084,9 @@ width="510">
        name="item2"/>
       <combo_box.item
        label="5 Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;5&lt;/blue&gt;"
@@ -2115,9 +2094,9 @@ width="510">
        name="item3"/>
       <combo_box.item
        label="10 Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;10&lt;/blue&gt;"
@@ -2125,9 +2104,9 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="15 Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;15&lt;/blue&gt;"
@@ -2135,9 +2114,9 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="20 Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;20&lt;/blue&gt;"
@@ -2145,11 +2124,11 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="Unlimited Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;Extreme&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; Low
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;Extreme&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the maximum amount of avatars rendered on screen at any given time. Any more avatars will be automatically displayed as impostors (2D sprites).
+||This option disables impostoring avatars based on count and will render all Avatars as full 3D avatars.
 ||RenderAvatarMaxNonImpostors: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
@@ -2210,18 +2189,18 @@ width="510">
       <combo_box.item
        label="Low"
        value="50"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAutoMuteSurfaceAreaLimit: &lt;blue&gt;50&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Medium"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAutoMuteSurfaceAreaLimit: &lt;blue&gt;100&lt;/blue&gt;"
@@ -2229,9 +2208,9 @@ width="510">
        name="item2"/>
       <combo_box.item
        label="High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAutoMuteSurfaceAreaLimit: &lt;blue&gt;175&lt;/blue&gt;"
@@ -2239,9 +2218,9 @@ width="510">
        name="item3"/>
       <combo_box.item
        label="Very High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAutoMuteSurfaceAreaLimit: &lt;blue&gt;256&lt;/blue&gt;"
@@ -2249,11 +2228,11 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="Unlimited"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the maximum total surface area in m² any avatar may have before it is automatically jelly dolled (colored 2D sprite).
+||This option disables jelly dolling (colored 2D sprite) based on maximum total surface area in m².
 ||RenderAutoMuteSurfaceAreaLimit: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
@@ -2314,9 +2293,9 @@ width="510">
       <combo_box.item
        label="Potato"
        value="1"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;1&lt;/blue&gt;"
@@ -2324,9 +2303,9 @@ width="510">
       <combo_box.item
        label="Very Low"
        value="50000"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;50000&lt;/blue&gt;"
@@ -2334,18 +2313,18 @@ width="510">
       <combo_box.item
        label="Low"
        value="75000"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;75000&lt;/blue&gt;"
        name="item1"/>
       <combo_box.item
        label="Medium"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;125000&lt;/blue&gt;"
@@ -2353,9 +2332,9 @@ width="510">
        name="item2"/>
       <combo_box.item
        label="High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;200000&lt;/blue&gt;"
@@ -2363,9 +2342,9 @@ width="510">
        name="item3"/>
       <combo_box.item
        label="Very High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;300000&lt;/blue&gt;"
@@ -2373,9 +2352,9 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="Ultra"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;450000&lt;/blue&gt;"
@@ -2383,11 +2362,11 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="Unlimited"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;Extreme&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the maximum total Avatar Complexity (AR) any avatar may have before it is automatically jelly dolled (colored 2D sprite).
+||This option disables jelly dolling (colored 2D sprite) based on Avatar Complexity (AR).
 ||RenderAvatarMaxComplexity: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
@@ -2448,18 +2427,18 @@ width="510">
       <combo_box.item
        label="Low"
        value="50"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum surface area in m² any single object may have before it is automatically derendered.
 ||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;50&lt;/blue&gt;"
        name="item1"/>
       <combo_box.item
        label="Medium"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum surface area in m² any single object may have before it is automatically derendered.
 ||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;100&lt;/blue&gt;"
@@ -2467,9 +2446,9 @@ width="510">
        name="item2"/>
       <combo_box.item
        label="High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum surface area in m² any single object may have before it is automatically derendered.
 ||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;175&lt;/blue&gt;"
@@ -2477,9 +2456,9 @@ width="510">
        name="item3"/>
       <combo_box.item
        label="Very High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum surface area in m² any single object may have before it is automatically derendered.
 ||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;256&lt;/blue&gt;"
@@ -2487,11 +2466,11 @@ width="510">
        name="item4"/>
       <combo_box.item
        label="Unlimited"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;green&gt;Extreme&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the maximum surface area in m² any single object may have before it is automatically derendered.
+||This option disables derendering single objects based on maximum total surface area in m².
 ||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
@@ -3085,7 +3064,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3094,7 +3074,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3104,7 +3085,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3114,7 +3096,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3124,7 +3107,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3134,7 +3118,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3144,7 +3129,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (X): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -3187,7 +3173,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3196,7 +3183,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3206,7 +3194,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3216,7 +3205,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3226,7 +3216,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3236,7 +3227,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3246,7 +3238,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Y): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -3289,7 +3282,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3298,7 +3292,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3308,7 +3303,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3318,7 +3314,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3328,7 +3325,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3338,7 +3336,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3348,7 +3347,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (Z): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -3391,7 +3391,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3400,7 +3401,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3410,7 +3412,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3420,7 +3423,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3430,7 +3434,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3440,7 +3445,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3450,7 +3456,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderShadowResolution (W): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -3534,7 +3541,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3543,7 +3551,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3553,7 +3562,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3563,7 +3573,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3573,7 +3584,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3583,7 +3595,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3593,7 +3606,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (X): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -3636,7 +3650,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x = 0.25MB VRAM usage&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low (512x)"
@@ -3645,7 +3660,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 1MB VRAM usage&lt;/blue&gt;"
        value="512"
        name="item2"/>
       <combo_box.item
@@ -3655,7 +3671,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;1024&lt;/blue&gt;
+|&lt;blue&gt;1024x = 4MB VRAM usage&lt;/blue&gt;"
        value="1024"
        name="item3"/>
       <combo_box.item
@@ -3665,7 +3682,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;2048&lt;/blue&gt;
+|&lt;blue&gt;2048x = 16MB VRAM usage&lt;/blue&gt;"
        value="2048"
        name="item4"/>
       <combo_box.item
@@ -3675,7 +3693,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;4096&lt;/blue&gt;
+|&lt;blue&gt;4096x = 64MB VRAM usage&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -3685,7 +3704,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;6144&lt;/blue&gt;
+|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3695,7 +3715,8 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High &lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
+||RenderProjectorShadowResolution (Y): &lt;blue&gt;8192&lt;/blue&gt;
+|&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
       <combo_box.drop_down_button
@@ -4303,7 +4324,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    label="Enable Foreground Blur in Depth of Field"
    layout="topleft"
    left="10"
-   tool_tip="This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
    name="RenderDepthOfFieldFront"
    top_pad="0"
    width="115"/>
@@ -4692,16 +4717,31 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       <combo_box.item
        label="Low"
        value="40"
-       tool_tip="This option controls the strength divisor used for Motion Blur, higher means weaker and smoother blur."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the quality and strength of Motion Blur.
+||RenderMotionBlurStrength: &lt;blue&gt;40&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option controls the strength divisor used for Motion Blur, higher means weaker and smoother blur."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the quality and strength of Motion Blur.
+||RenderMotionBlurStrength: &lt;blue&gt;80&lt;/blue&gt;"
        value="80"
        name="item1"/>
       <combo_box.item
        label="High"
-       tool_tip="This option controls the strength divisor used for Motion Blur, higher means weaker and smoother blur."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the quality and strength of Motion Blur.
+||RenderMotionBlurStrength: &lt;blue&gt;120&lt;/blue&gt;"
        value="120"
        name="item2"/>
       <combo_box.drop_down_button
@@ -4933,7 +4973,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="881"
+	  height="873"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -4946,9 +4986,11 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    height="16"
    initial_value="false"
    label="Tone Mapping"
-   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
-&lt;icon&gt;Stat_Dot3&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles Tone Mapping on or off. It is used to transform colors that are outside the visible range into a color range that most monitors can display while trying to keep the details of the scene such as the contrast intact, in short it compresses the whole color range which is partly not visible into one that can be displayed."
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+||This option toggles Tone Mapping on or off. It is used to transform colors that are outside the visible range into a color range that most monitors can display while trying to keep the details of the scene such as the contrast intact, in short it compresses the whole color range which is partly not visible into one that can be displayed."
    layout="topleft"
    left="10"
    name="ToneMapping"
@@ -5009,7 +5051,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option switches allows full control over the weights of the Tone Mapping algorythm."
+||This option allows full control over the weights of the Tone Mapping algorythm."
        value="3"
        name="item3"/>
       <combo_box.drop_down_button
@@ -6189,13 +6231,15 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    height="16"
    initial_value="true"
    label="Lens Flare Effect"
-   tool_tip="&lt;icon&gt;Stat_Dot0&lt;/icon&gt; Performance  		
-&lt;icon&gt;Stat_Dot1&lt;/icon&gt; Graphics         
-&lt;icon&gt;ToolTip_Spacer&lt;/icon&gt;This option toggles a lens reflection of the sun in your camera on or off."
+tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles a lens reflection of the sun in your camera on or off."
    layout="topleft"
    left="10"
    name="LensFlare"
-   top_pad="15"
+   top_pad="7"
    width="115"/>
    <slider
       can_edit_text="true"
