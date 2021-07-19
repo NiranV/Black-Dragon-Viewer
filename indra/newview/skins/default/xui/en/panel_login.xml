@@ -173,8 +173,95 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="312"
+     height="624"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Missing marketplace link to Thalia's patreon entry both on login and About Black Dragon.
+Added: VirtualVerse.One Forum as patreon supporter to the login page.
+Added: Developer indicator (donut) to nametags.
+Added: An explicit warning that disabling Object Cache will have undesired effects.
+Added: Flycam reset camera roll binds.
+Added: Copy to clipboard button to Camera Recorder window.
+Added: Option to lock camera position in place while in Freecam.
+Added: Blake Selkie as Patreon patron.
+Added: Daisha as Patreon patron.
+Added: EGO SUM as Patreon patron.
+Added: Imokon Neox as Patreon patron.
+Added: Rains as Patreon patron.
+Added: VirtualVerse as Patreon patron.
+Added: Imokon Neox's store to the login page and about section.
+Added: bdheadrotmotion.cpp/h. Currently not used.
+Changed: Allow attaching or detaching via double click in all 'Appearance' window tabs (My Outfits, Edit Outfit etc)
+Changed: Overhauled 'Animations Controls' window, relabeled everything and added tooltips.
+Changed: Disabled legacy voice dot and replaced it with a nametag based voice dot for better visibility and performance.
+Changed: Overhauled Preferences - Display tab completely, new layout, grouping and more usage of the new widget, simplified most of the options.
+Changed: Overhauled personal script memory display.
+Changed: Overhauled region script memory display.
+Changed: Reduced saving snapshot resolution to persist only per session to prevent a potential crash loop.
+Changed: Raised Remember Snapshot Mode to persist per session.
+Changed: Overhauled Script Editor window layout and look slightly.
+Changed: Improved several Preferences - Display tooltips with more information.
+Changed: As per request changed Luxxo's name to Lux Chiantelle in the Patreon section.
+Changed: Version to 4.0 - Refreshing Dragon.
+Fixed: Animesh being counted as many times as it has sub pieces in the Advanced Complexity breakdown.
+Fixed: Poser reverting body paramaters to previous avatar if the Poser was not closed while changing avatars.
+Fixed: Snapshot window not remembering last snapshot resolution when closing out.
+Fixed: Double click on some clothing layers 'replacing' the previous layer instead of adding like it is expected.
+Fixed: Local Textures tab being wrongly disabled in cases it shouldn't.
+Fixed: Inventory menu missing entry to create new 'Universal' layer.
+Fixed: Script Memory info window is nowhere to be found, readded it to the main Dragon menu.
+Fixed: Snapshot window custom controls not saving their snapshot resolution.
+Fixed: Inventory filters for 'Settings' do not work.
+Fixed: Switch IM Tab side missing a warning that it needs a Viewer restart.
+Fixed: Missing entries for several textures in Textures.xml and several textures in repository.
+Fixed: Tooltips of dropdown entries not showing.
+Fixed: Autoscale Rendering being broken.
+Fixed: Several Preferences - Display tooltips.
+Fixed: A couple Preferences - Display layout inconsistencies.
+Fixed: Camera presets containing "-" cannot be deleted.
+Fixed: Environment preset reverting when opening another preset while the Fixed Environment window is already opened.
+Removed: Snapshot send via mail panel.
+Misc: Cleaned up now unused code for sending snapshots via E-mail.
+Misc: Moved developer string into the Black Dragon strings section.
+Misc: Reduced snapshot autoscale multiplier to per session just in case.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     3.9.11
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="312"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
