@@ -4891,7 +4891,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="158"
+ height="172"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
@@ -4918,7 +4918,7 @@ Removed: Rotation order dropdown and all code.
     font_shadow="soft"
     font.style="BOLD"
     halign="left"
-    height="200"
+    height="220"
     top_pad="0"
     left="7"
     name="store_list"
@@ -4932,8 +4932,9 @@ babyCo - [http://maps.secondlife.com/secondlife/Angel%20Eyes/59/123/26 Inworld S
 Thalia Heckroth - [https://marketplace.secondlife.com/stores/118124/ Marketplace] - [http://maps.secondlife.com/secondlife/Fingal/128/84/23 Inworld Store]
 Petrichor - [https://marketplace.secondlife.com/stores/25375 Marketplace] - [https://maps.secondlife.com/secondlife/Lune/82/219/1201 Inworld Store]
 FOXCITY - [https://marketplace.secondlife.com/stores/11069 Marketplace] - [https://maps.secondlife.com/secondlife/FOXCITY/180/69/21 Inworld Store]
-The Little Branch - [http://maps.secondlife.com/secondlife/Aspen%20Springs/99/88/21 Inworld Store] - [https://marketplace.secondlife.com/stores/160713 Marketplace]
+The Little Branch - [https://marketplace.secondlife.com/stores/160713 Marketplace] - [http://maps.secondlife.com/secondlife/Aspen%20Springs/99/88/21 Inworld Store]
 Aii The Ugly &amp; Beauitful - [http://maps.secondlife.com/secondlife/Aii%20and%20Ego/123/144/1521 Inworld Store]
+Cinphul - [https://marketplace.secondlife.com/stores/55081 Marketplce] - [http://maps.secondlife.com/secondlife/Barzakh/240/220/31 Inworld Store]
   </text>
  </panel>
  
