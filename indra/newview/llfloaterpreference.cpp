@@ -1365,6 +1365,7 @@ BOOL LLFloaterPreference::postBuild()
 	mWarning13 = getChild<LLPanel>("warning_blur_quality");
 	mWarning14 = getChild<LLPanel>("warning_light_resolution");
 	mWarning15 = getChild<LLPanel>("warning_ssr_resolution");
+	mWarning16 = getChild<LLPanel>("warning_fxaa");
 
 //	//BD - Memory Allocation
 	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
@@ -1807,6 +1808,7 @@ void LLFloaterPreference::refreshEverything()
 			mWarning11->setBackgroundVisible(deferred_enabled);
 			mWarning12->setBackgroundVisible(deferred_enabled);
 			mWarning15->setBackgroundVisible(deferred_enabled);
+			mWarning16->setBackgroundVisible(deferred_enabled);
 
 			//BD - Depth of Field
 			//===================

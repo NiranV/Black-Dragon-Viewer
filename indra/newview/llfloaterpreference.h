@@ -344,6 +344,7 @@ private:
 	LLPanel* mWarning13;
 	LLPanel* mWarning14;
 	LLPanel* mWarning15;
+	LLPanel* mWarning16;
 
 //	//BD - Memory Allocation
 	LLSliderCtrl*	mSystemMemory;
