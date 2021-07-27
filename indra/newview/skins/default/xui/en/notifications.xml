@@ -12008,7 +12008,12 @@ Setting shadow resolution higher than 2048 will drastically impact the performan
 
 The more complex a scene is the bigger the impact will be.
 
-&lt;blue&gt;Texture Memory Usage: 1024x = 4MB , 2048x = 16MB , 4096x = 64MB , 6144x = 112MB per texture.&lt;/blue&gt;
+&lt;blue&gt;Texture Memory Usage:
+1024x = 4MB,
+2048x = 16MB,
+4096x = 64MB,
+6144x = 128MB,
+8192x = 256MBper texture.&lt;/blue&gt;
 
 &lt;b&gt;DO NOT DO this unless you have performance and a lot of texture memory to spare!&lt;/b&gt;
   <tag>warning</tag>
@@ -12026,7 +12031,12 @@ The more complex a scene is the bigger the impact will be.
 
 Setting projector resolution higher than 2048 will drastically impact the performance of the viewer and raise texture memory usage quickly without much gain.
 
-&lt;blue&gt;Texture Memory Usage: 1024x = 4MB , 2048x = 16MB , 4096x = 64MB , 6144x = 112MB per texture.&lt;/blue&gt;
+&lt;blue&gt;Texture Memory Usage:
+1024x = 4MB,
+2048x = 16MB,
+4096x = 64MB,
+6144x = 128MB,
+8192x = 256MB per texture.&lt;/blue&gt;
 
 &lt;b&gt;DO NOT DO this unless you have performance and a lot of texture memory to spare!&lt;/b&gt;
   <tag>warning</tag>
