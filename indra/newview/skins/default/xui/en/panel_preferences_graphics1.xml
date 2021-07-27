@@ -5908,7 +5908,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       label_width="150"
       left="10"
       max_val="64"
-      min_val="0"
+      min_val="1"
       mouse_opaque="true"
       name="Iterations"
       show_text="true"/>
