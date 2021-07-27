@@ -6532,7 +6532,7 @@ tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
         name="app_name_text"
         width="994"
         word_wrap="false">
-&lt;red&gt;Intel Graphics Card detected&lt;/red&gt; - Performance will be impacted.
+&lt;red&gt;Intel Graphics Card detected&lt;/red&gt; - Deferred Rendering unavailable.
         </text>
        </panel>
       </layout_panel>
