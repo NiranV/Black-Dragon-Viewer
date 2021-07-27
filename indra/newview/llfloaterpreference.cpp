@@ -1778,7 +1778,6 @@ void LLFloaterPreference::refreshEverything()
 		if (scroll_rect.overlaps(deferred_rect))
 		{
 			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
-			mDisplayTabs[1]->setEnabled(deferred_enabled);
 			mDisplayTabs[1]->setBackgroundVisible(!deferred_enabled);
 			mRenderShadowResolution[0]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[1]->setEnabled(shadows_enabled);
