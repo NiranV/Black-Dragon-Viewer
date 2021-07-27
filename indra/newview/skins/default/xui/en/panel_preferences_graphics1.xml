@@ -100,7 +100,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsViewerVisible"
 	  layout="topleft"
-	  height="921"
+	  height="941"
 	  auto_resize="false"
       visible="false"
 	  name="basic_layout_panel"
@@ -2570,6 +2570,18 @@ width="510">
       name="UnloadedAvatars"
       top_pad="0"
       width="315" />
+   <check_box
+   control_name="RenderEnableFullbright"
+   height="16"
+   initial_value="true"
+   label="Enable Fullbright"
+   tool_tip="This option controls whether the Viewer should ignore the legacy fullbright flag on object surfaces.
+WARNING! - Does not work with prim param LIGHT script command and emmisive masks!"
+   layout="topleft"
+   left="10"
+   name="EnableFullbright"
+   top_pad="0"
+   width="115" />
       </layout_panel>
       
       <layout_panel
@@ -2614,7 +2626,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1260"
+	  height="1240"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -2760,18 +2772,6 @@ width="510">
    layout="topleft"
    left="10"
    name="RenderSpotLightImages"
-   top_pad="0"
-   width="115" />
-   <check_box
-   control_name="RenderEnableFullbright"
-   height="16"
-   initial_value="true"
-   label="Enable Fullbright"
-   tool_tip="This option controls whether the Viewer should ignore the legacy fullbright flag on object surfaces.
-WARNING! - Does not work with prim param LIGHT script command and emmisive masks!"
-   layout="topleft"
-   left="10"
-   name="EnableFullbright"
    top_pad="0"
    width="115" />
 	  
