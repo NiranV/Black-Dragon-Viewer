@@ -11809,7 +11809,7 @@ Preset could not be removed, either it or its folder does not exist or you are n
   <notification
    icon="alertmodal.tga"
    name="UsePieMenu"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 The Pie Menu is still marked as a dangerous feature.
@@ -11825,7 +11825,7 @@ Should you still experience crashing please report it to me.
   <notification
    icon="alertmodal.tga"
    name="SnapshotResolutionUnlock"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Any resolution above 4K is is considered unsupported and unsafe and the Viewer might crash when you try to take a snapshot at these resolutions.
@@ -11837,7 +11837,7 @@ Any resolution above 4K is is considered unsupported and unsafe and the Viewer m
   <notification
    icon="alertmodal.tga"
    name="UIScaleFactor_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 The UI is and cannot be designed to be properly viewed at bigger UI sizes.
@@ -11851,7 +11851,7 @@ Changing the UI size to anything other than Normal will impact the UI quality. C
   <notification
    icon="alertmodal.tga"
    name="UIScaleFactor_Min"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 The UI is and cannot be designed to be properly viewed at smaller UI sizes.
@@ -11865,7 +11865,7 @@ Changing the UI size to anything other than Normal will impact the UI quality. C
   <notification
    icon="alertmodal.tga"
    name="FontScreenDPI_Min"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 The UI is and cannot be designed to be properly viewed with smaller font sizes.
@@ -11879,7 +11879,7 @@ Changing the font size to anything other than 96 will impact the UI quality. Cli
   <notification
    icon="alertmodal.tga"
    name="FontScreenDPI_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 The UI is and cannot be designed to be properly viewed with bigger font sizes.
@@ -11893,7 +11893,7 @@ Changing the font size to anything other than 96 will impact the UI quality. Cli
   <notification
    icon="alertmodal.tga"
    name="RenderCompressTextures"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Enabling Texture Compression will result in texture quality loss, visual artifacts on textures (blockiness) and will drastically impact performance while loading and decoding textures for minimal texture memory savings.
@@ -11905,7 +11905,7 @@ Enabling Texture Compression will result in texture quality loss, visual artifac
   <notification
    icon="alertmodal.tga"
    name="RenderFarClip_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Setting the draw distance higher than 128m will have a drastic performance impact even on the most powerful machine.
@@ -11921,7 +11921,7 @@ Setting the draw distance higher than 128m will have a drastic performance impac
   <notification
    icon="alertmodal.tga"
    name="RenderAvatarMaxComplexity_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Setting the maximum allowed complexity beyond 250000 will negatively impact the performance with other avatars around.
@@ -11937,7 +11937,7 @@ Setting the maximum allowed complexity beyond 250000 will negatively impact the 
   <notification
    icon="alertmodal.tga"
    name="RenderAvatarMaxComplexity_Min"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Setting the maximum allowed complexity to infinite will allow even the worst avatars to be rendered, this will have a huge impact on the viewer performance and memory usage.
@@ -11953,7 +11953,7 @@ Setting the maximum allowed complexity to infinite will allow even the worst ava
   <notification
    icon="alertmodal.tga"
    name="DisallowLeftClickGrab"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Disabling left-click touch will also prevent you from clicking your own HUDs.
@@ -11965,7 +11965,7 @@ Disabling left-click touch will also prevent you from clicking your own HUDs.
   <notification
    icon="alertmodal.tga"
    name="ConnectionPortEnabled"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Enabling a custom port can make you completely unable to connect to Second Life if not properly configured.
@@ -11977,7 +11977,7 @@ Enabling a custom port can make you completely unable to connect to Second Life 
   <notification
    icon="alertmodal.tga"
    name="RestrainedLove"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Please Note:&lt;/red&gt;
 
 RLVa is currently in an assumed defunct state, some parts of it may or may not work.
@@ -11989,7 +11989,7 @@ RLVa is currently in an assumed defunct state, some parts of it may or may not w
   <notification
    icon="alertmodal.tga"
    name="ObjectCacheEnabled"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 You will see caching bugs, items will break, you will become unable to 'Pay' and 'Touch' objects.
@@ -12001,7 +12001,7 @@ You will see caching bugs, items will break, you will become unable to 'Pay' and
   <notification
    icon="alertmodal.tga"
    name="RenderShadowResolution_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Setting shadow resolution higher than 2048 will drastically impact the performance of the viewer and raise texture memory usage quickly.
@@ -12021,7 +12021,7 @@ The more complex a scene is the bigger the impact will be.
   <notification
    icon="alertmodal.tga"
    name="RenderProjectorShadowResolution_Max"
-   type="alert">
+   type="alertmodal">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;Warning!&lt;/red&gt;
 
 Setting projector resolution higher than 2048 will drastically impact the performance of the viewer and raise texture memory usage quickly without much gain.
