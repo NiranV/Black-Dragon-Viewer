@@ -3130,7 +3130,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first and closest shadowmap. Affects precision of shadows in the first quarter of your desired shadow distance.
 ||RenderShadowResolution (X): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3241,7 +3241,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second shadowmap. Affects precision of shadows in the second quarter of your desired shadow distance.
 ||RenderShadowResolution (Y): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3352,7 +3352,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the third shadowmap. Affects precision of shadows in the third quarter of your desired shadow distance.
 ||RenderShadowResolution (Z): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3463,7 +3463,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the last and furthest shadowmap. Affects precision of shadows in the last quarter of your desired shadow distance.
 ||RenderShadowResolution (W): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3615,7 +3615,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the first projector shadowmap. Affects the precision of the first projector and might cause artifacts if set too low.
 ||RenderProjectorShadowResolution (X): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -3726,7 +3726,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
 ||RenderProjectorShadowResolution (Y): &lt;blue&gt;6144&lt;/blue&gt;
-|&lt;blue&gt;6144x = 112MB VRAM usage&lt;/blue&gt;"
+|&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
