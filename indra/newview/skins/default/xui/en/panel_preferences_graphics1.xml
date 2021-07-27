@@ -3958,6 +3958,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
      name="RenderScreenSpaceReflections"
      top_pad="7"
      width="115" />
+ <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
      <check_box
      control_name="RenderSSRRoughness"
      enabled_control="RenderDeferred"
@@ -4109,6 +4122,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="UseSSAO"
    top_pad="7"
    width="115" />
+ <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
      <slider
       control_name="RenderSSAOBlurSize"
       decimal_digits="3"
@@ -4622,6 +4648,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    top_pad="7"
    width="115" />
  <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
+ <text
  type="string"
  length="1"
  follows="left|top"
@@ -4817,6 +4856,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="RenderGodrays"
    top_pad="7"
    width="115" />
+   <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
    <check_box
    control_name="RenderGodraysDirectional"
    height="16"
@@ -5021,6 +5073,19 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="ToneMapping"
    top_pad="15"
    width="115" />
+      <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
       <text
  type="string"
  length="1"
@@ -6270,6 +6335,19 @@ tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
    name="LensFlare"
    top_pad="7"
    width="115"/>
+      <text
+   invisibility_control="RenderDeferred"
+   name="post_label"
+   follows="left|top"
+   layout="topleft"
+   halign="right"
+   top_delta="3"
+   text_color="1.0 0.4 0.225 1.0"
+   left="-270" 
+   height="12"
+   width="220">
+   Requires Deferred Rendering
+   </text>
    <slider
       can_edit_text="true"
       control_name="RenderPostGreyscaleStrength"
