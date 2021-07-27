@@ -47,18 +47,18 @@ typedef enum e_joystick_driver_state
 typedef enum E_Buttons
 {
 	ROLL_LEFT = 0,
-	ROLL_RIGHT = 1,
-	ROLL_DEFAULT = 2,
-	ZOOM_IN = 3,
-	ZOOM_OUT = 4,
-	ZOOM_DEFAULT = 5,
-	JUMP = 6,
-	CROUCH = 7,
-	FLY = 8,
-	MOUSELOOK = 9,
-	FLYCAM = 10,
-	TOGGLE_RUN = 11,
-	MAX_BUTTONS = 12
+	ROLL_RIGHT,
+	ROLL_DEFAULT ,
+	ZOOM_IN,
+	ZOOM_OUT,
+	ZOOM_DEFAULT,
+	JUMP,
+	CROUCH,
+	FLY,
+	MOUSELOOK,
+	FLYCAM,
+	TOGGLE_RUN,
+	MAX_BUTTONS
 } E_buttons;
 
 typedef enum E_Axes

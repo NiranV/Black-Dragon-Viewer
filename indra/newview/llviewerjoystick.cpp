@@ -738,16 +738,16 @@ void LLViewerJoystick::moveObjects(bool reset)
 
 	// max feather is 32
 	bool is_zero = true;
+
+//	//BD - Remappable Joystick Controls
+	cur_delta[CAM_X_AXIS] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
+	cur_delta[CAM_X_AXIS] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
+	cur_delta[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
+	cur_delta[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 	
 	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
-
-//		//BD - Remappable Joystick Controls
-		cur_delta[3] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
-		cur_delta[3] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
-		cur_delta[2] += (F32)mBtn[mMappedButtons[JUMP]];
-		cur_delta[2] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 //		//BD - Invertable Pitch Controls
 		if (mJoystickInvertPitch)
@@ -909,14 +909,14 @@ void LLViewerJoystick::moveAvatar(bool reset)
 #else
     bool absolute = false;
 #endif
+//	//BD - Remappable Joystick Controls
+	mAxes[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
+	mAxes[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
+
 	// remove dead zones and determine biggest movement on the joystick 
 	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
-
-//		//BD - Remappable Joystick Controls
-		cur_delta[2] += (F32)mBtn[mMappedButtons[JUMP]];
-		cur_delta[2] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 		if (absolute)
 		{
@@ -1038,32 +1038,36 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	F32 max_angle = viewer_cam->getMaxView();
 	F32 min_angle = viewer_cam->getMinView();
 
-	{
-		if (mBtn[mMappedButtons[ZOOM_DEFAULT]])
-			sFlycamZoom = gSavedSettings.getF32("CameraAngle");
+	if (mBtn[mMappedButtons[ZOOM_DEFAULT]] == 1)
+		sFlycamZoom = gSavedSettings.getF32("CameraAngle");
 
-		//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
-		//     ends up working against previous input, delaying zoom in movement when we just zoomed
-		//     out beyond capped max for a bit and vise versa.
-		if ((sFlycamZoom <= min_angle
-			|| sFlycamZoom >= max_angle))
-		{
-			flycam_feather = 3.0f;
-		}
+	//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
+	//     ends up working against previous input, delaying zoom in movement when we just zoomed
+	//     out beyond capped max for a bit and vise versa.
+	if ((sFlycamZoom <= min_angle
+		|| sFlycamZoom >= max_angle))
+	{
+		flycam_feather = 3.0f;
 	}
+
+//	//BD - Remappable Joystick Controls
+	if(mMappedButtons[ROLL_LEFT] >= 0)
+		mAxes[mMappedAxes[CAM_X_AXIS]] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
+	if (mMappedButtons[ROLL_RIGHT] >= 0)
+		mAxes[mMappedAxes[CAM_X_AXIS]] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
+	if (mMappedButtons[ZOOM_OUT] >= 0)
+		mAxes[mMappedAxes[CAM_W_AXIS]] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
+	if (mMappedButtons[ZOOM_IN] >= 0)
+		mAxes[mMappedAxes[CAM_W_AXIS]] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
+	if (mMappedButtons[JUMP] >= 0)
+		mAxes[mMappedAxes[Z_AXIS]] += (F32)mBtn[mMappedButtons[JUMP]];
+	if (mMappedButtons[CROUCH] >= 0)
+		mAxes[mMappedAxes[Z_AXIS]] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 	bool is_zero = true;
 	for (U32 i = 0; i < 7; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
-
-//		//BD - Remappable Joystick Controls
-		cur_delta[CAM_X_AXIS] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
-		cur_delta[CAM_X_AXIS] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
-		cur_delta[CAM_W_AXIS] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
-		cur_delta[CAM_W_AXIS] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
-		cur_delta[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
-		cur_delta[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 		F32 tmp = cur_delta[i];
 		if (mCursor3D)
@@ -1117,13 +1121,7 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	LLMatrix3 rot_mat(sDelta[CAM_X_AXIS], sDelta[CAM_Y_AXIS], sDelta[CAM_Z_AXIS]);
 	sFlycamRotation = LLQuaternion(rot_mat)*sFlycamRotation;
 
-	/*LLVector3 new_pos = sFlycamPosition + LLVector3(sDelta) * sFlycamRotation;
-	sFlycamPosition = lerp(sFlycamPosition, new_pos, llmin(flycam_feather, 1.f));
-	LLMatrix3 rot_mat(sDelta[CAM_X_AXIS], sDelta[CAM_Y_AXIS], sDelta[CAM_Z_AXIS]);
-	LLQuaternion new_rot = LLQuaternion(rot_mat)*sFlycamRotation;
-	sFlycamRotation = nlerp(llmin(flycam_feather, 1.f), sFlycamRotation, new_rot);*/
-
-	if (mAutoLeveling || mBtn[mMappedButtons[ROLL_DEFAULT]])
+	if (mAutoLeveling || mBtn[mMappedButtons[ROLL_DEFAULT]] == 1)
 	{
 		LLMatrix3 level(sFlycamRotation);
 
@@ -1138,10 +1136,8 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		level.orthogonalize();
 				
 		LLQuaternion quat(level);
-		if(mBtn[mMappedButtons[ROLL_DEFAULT]])
-			sFlycamRotation = quat;
-		else
-			sFlycamRotation = nlerp(llmin(flycam_feather * time, 1.f), sFlycamRotation, quat);
+		LLQuaternion lerp = nlerp(llmin(flycam_feather * time, 1.f), sFlycamRotation, quat);
+		sFlycamRotation = mBtn[mMappedButtons[ROLL_DEFAULT]] == 1 ? quat : lerp;
 	}
 
 	if (mZoomDirect)
