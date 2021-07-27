@@ -185,7 +185,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	setAdvanced(gSavedSettings.getBOOL("AdvanceSnapshot"));
 
 	//BD - Local
-	getChild<LLUICtrl>("local_format_combo")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onFormatComboCommit, this, _1));
+	//getChild<LLUICtrl>("local_format_combo")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onFormatComboCommit, this, _1));
 
 	//BD - Inventory
 	getChild<LLSpinCtrl>("inventory_snapshot_width")->setAllowEdit(FALSE);
@@ -473,12 +473,12 @@ LLSnapshotModel::ESnapshotFormat LLFloaterSnapshot::getImageFormat()
 	LLSnapshotModel::ESnapshotFormat format = LLSnapshotModel::SNAPSHOT_FORMAT_PNG;
 
 	S32 idx = getActivePanelIndex();
-	if (idx == 3)
+	if (idx == 2)
 	{
 		//BD - Inventory
 		format = LLSnapshotModel::SNAPSHOT_FORMAT_JPEG;
 	}
-	else if (idx == 4)
+	else if (idx == 3)
 	{
 		//BD - Local
 		std::string id = mFormatComboCtrl->getValue().asString();
@@ -1517,18 +1517,10 @@ void LLFloaterSnapshot::sendProfile()
 
 void LLFloaterSnapshot::onFormatComboCommit(LLUICtrl* ctrl)
 {
-	S32 idx = getActivePanelIndex();
-	if (idx == 2)
-	{
-		// will call updateControls()
-		onImageFormatChange();
-	}
-	else if (idx == 4)
-	{
-		mLocalFormat = getImageFormat();
-		// will call updateControls()
-		gSavedSettings.setS32("SnapshotFormat", getImageFormat());
-	}
+	mLocalFormat = getImageFormat();
+	// will call updateControls()
+	gSavedSettings.setS32("SnapshotFormat", getImageFormat());
+	onImageFormatChange();
 }
 
 void LLFloaterSnapshot::saveLocal(LLUICtrl* ctrl)
