@@ -54,17 +54,17 @@ void main()
     vec3 pos = getPosition(tc).xyz;
     vec4 ccol = texture2DRect(lightMap, tc).rgba;
    
-    kern_[0] = vec3(0.500, 1, 0.60);
-    kern_[1] = vec3(0.333, 1, 1.200);
-    kern_[2] = vec3(0.151, 1, 2.00);
-    kern_[3] = vec3(0.100, 1, 2.800);
-    kern_[4] = vec3(0.090, 1, 3.600);
-    kern_[5] = vec3(0.070, 1, 4.40);
-    kern_[6] = vec3(0.040, 1, 5.200);
-    kern_[7] = vec3(0.020, 1, 6.800);
+    kern_[0] = vec3(0.500, 1, 0.75);
+    kern_[1] = vec3(0.333, 1, 1.5);
+    kern_[2] = vec3(0.151, 1, 2.25);
+    kern_[3] = vec3(0.100, 1, 3.0);
+    kern_[4] = vec3(0.090, 1, 3.75);
+    kern_[5] = vec3(0.070, 1, 4.5);
+    kern_[6] = vec3(0.040, 1, 5.25);
+    kern_[7] = vec3(0.020, 1, 6.0);
     
-    vec2 dlt = kern_scale.x * (vec2(1.5,1.5)-norm.xy*norm.xy);
-    dlt = delta * ceil(max(dlt.xy, vec2(1.0)));
+    vec2 dlt = kern_scale.x * (vec2(2.0,2.0)-norm.xy*norm.xy);
+    dlt = delta * max(dlt.xy, vec2(1.0));
     dlt /= max(pos.z, 1.0);
     
     vec2 defined_weight = kern_[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
