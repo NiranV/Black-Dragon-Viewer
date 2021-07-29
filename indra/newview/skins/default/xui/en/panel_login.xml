@@ -173,8 +173,68 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="624"
+     height="273"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: "Requires Deferred Rendering" label next to all major toggles to clarify even more that they do infact require it.
+Fixed: Deferred can disable itself leaving the user unable to re-enable it.
+Fixed: Antialiasing warning background appearing ontop of the Deferred tab background.
+Fixed: Avatar Physics Quality not being disabled when Avatar Physics is toggled off.
+Fixed: Labels for dropdowns not showing greyed out when the dropdown is disabled.
+Fixed: Incorrect tooltip in shadow resolution settings. 6K is 128MB not 112MB.
+Fixed: Incorrect warning stating that Intel GPU only impacts performance when it does in fact make you unable to use Deferred.
+Fixed: Several notifications not blocking input until the user confirmed the notification.
+Fixed: Warning notifications not appearing on top of the snapshot window (specifically the 4K warning).
+Fixed: Local snapshot format cannot be changed inside the Snapshot window.
+Fixed: Binding Default Zoom/Roll to nothing (-1) prevents using Zoom and Roll completely.
+Fixed: Bound button actions being applied possibly several times resulting in too much input per frame.
+Fixed: Post Processing Effects (Sepia, Greyscale, Posterize etc) not working when Volumetric Lighting was enabled but Shadows disabled.
+Fixed: Long standing issue with light softening "snapping" to different strengths at different camera up angles.
+Fixed: Long standing issue with light softening only incrementing in "steps" when raising Blur Size option.
+Changed: Moved Enable Fullbright option to basic options.
+Changed: Minimum value for Glow Iterations to 1 to prevent people from setting it to 0 and getting glow stuck on screen.
+Changed: Updated and fixed the shadow resolution warning notifications to include 8K and the correct 6K memory amount.
+Changed: Tweaked blur light kernel slightly for slightly sharper shadows and less banding at higher blur size.
+Changed: Version to 4.0.1.
+Misc: Cleaned up llviewerjoystick.cpp/h a bit.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="624"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
