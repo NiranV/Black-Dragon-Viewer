@@ -880,8 +880,8 @@ width="510">
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 ||This option controls how much details the terrain should have and which Level-of-Detail it uses.
 ||RenderTerrainLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
-       value="1.0"
-       name="item2"/>
+       value="1"
+       name="item1"/>
       <combo_box.item
        label="Medium"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
@@ -892,8 +892,8 @@ width="510">
 ||RenderTerrainLODFactor: &lt;blue&gt;2.0&lt;/blue&gt;
 ||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
 |This option is equivalent of the maximum (Ultra) available in the official Viewer."
-       value="2.0"
-       name="item3"/>
+       value="2"
+       name="item2"/>
       <combo_box.item
        label="High"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
@@ -904,8 +904,8 @@ width="510">
 ||RenderTerrainLODFactor: &lt;blue&gt;5.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="5.0"
-       name="item4"/>
+       value="5"
+       name="item3"/>
       <combo_box.item
        label="Very High"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
@@ -916,7 +916,7 @@ width="510">
 ||RenderTerrainLODFactor: &lt;blue&gt;10.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="2"
+       value="10"
        name="item4"/>
       <combo_box.item
        label="Ultra"
@@ -928,8 +928,8 @@ width="510">
 ||RenderTerrainLODFactor: &lt;blue&gt;15.0&lt;/blue&gt;
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
 |This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="15.0"
-       name="item4"/>
+       value="15"
+       name="item5"/>
       <combo_box.combo_icon
        default_index="2"
        warns_index="3"/>
@@ -2818,6 +2818,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    follows="top|left"
    left="155"
    height="18"
+   label="Antialiasing"
    control_name="RenderFSAASamples"
    enabled_control="RenderDeferred"
    name="RenderFSAASamples"
@@ -4647,7 +4648,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="MotionBlur"
    top_pad="7"
    width="115" />
- <text
+   <text
    invisibility_control="RenderDeferred"
    name="post_label"
    follows="left|top"
@@ -5073,7 +5074,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
    name="ToneMapping"
    top_pad="15"
    width="115" />
-      <text
+   <text
    invisibility_control="RenderDeferred"
    name="post_label"
    follows="left|top"
