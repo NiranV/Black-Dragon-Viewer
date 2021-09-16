@@ -165,6 +165,15 @@
      layout="topleft"
      left="10"
      name="upload_local_snapshots" />
+    <check_box
+     top_pad="1"
+     control_name="SnapshotLocalCrop"
+     height="16"
+     follows="left|top"
+     label="Aspect cropping"
+     layout="topleft"
+     left="10"
+     name="crop_snapshots" />
     <text
       type="string"
       length="1"
