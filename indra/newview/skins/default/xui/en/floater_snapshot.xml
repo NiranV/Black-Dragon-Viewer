@@ -325,23 +325,6 @@
           <button.commit_callback
            function="Snapshot.SaveToInventory" />
         </button>
-        <button
-         follows="left|top"
-         font="SansSerif"
-         halign="left"
-         height="22"
-         image_overlay="Snapshot_Profile"
-         image_overlay_alignment="left"
-         image_top_pad="-1"
-         imgoverlay_label_space="10"
-         label="Share to Profile Feed"
-         layout="topleft"
-         name="save_to_profile_btn"
-         left_delta="0"
-         top_pad="5">
-          <button.commit_callback
-           function="Snapshot.SaveToProfile" />
-        </button>
         <text
          follows="top|left"
          font="SansSerif"
