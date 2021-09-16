@@ -604,27 +604,6 @@ width="510">
   <check_box
 		     follows="left|top"
 		     height="16"
-		     initial_value="true"
-		     control_name="ObjectCacheEnabled"
-		     label="Enable Object Cache"
-		     tool_tip="This option toggles whether objects should be cached or not. The object cache is in the same folder as the normal cache but is independent of it.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|Do not disable this, you will become unable to 'Pay' items, click touchable items and you will see caching bugs!"
-		     left="10"
-		     mouse_opaque="true"
-		     name="ObjectCacheEnabled"
-		     width="400"
-		     top_pad="3">
-   <check_box.check_button
-         image_overlay="Caution_Widget"
-         image_overlay_alignment="left"/>
-   <check_box.commit_callback
-         function="Dragon.TriggerWarn"
-         parameter="ObjectCacheEnabled"/>
-  </check_box>
-  <check_box
-		     follows="left|top"
-		     height="16"
 		     initial_value="false"
 		     control_name="FastCacheFetchEnabled"
 		     label="Enable Fast Cache Fetch"
@@ -634,7 +613,7 @@ width="510">
 		     mouse_opaque="true"
 		     name="FastCacheFetchEnabled"
 		     width="400"
-		     top_pad="0"/>
+		     top_pad="3"/>
   <panel
  follows="left|top|right"
  height="20"
