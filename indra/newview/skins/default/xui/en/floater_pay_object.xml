@@ -2,29 +2,42 @@
 <floater
  legacy_header_height="18"
  can_minimize="false"
- height="165"
+ height="228"
  layout="topleft"
  name="Give Money"
+ help_topic="give_money"
  save_rect="true"
- width="250">
+ width="261">
     <string
      name="payee_group">
-Pay Group
+        Pay Group
     </string>
     <string
      name="payee_resident">
-Pay Resident
+        Pay Resident
     </string>
+
     <text
-     follows="right|left"
+     type="string"
+     length="1"
+     follows="left|top"
      height="16"
      layout="topleft"
-     left="6"
-     top_pad="20"
-     halign="left" 
+     left="10"
+     top="24"
+     name="paying_text"
+     width="180">
+      You are paying:
+    </text>
+    <text
+     follows="left|top"
+     height="16"
+     layout="topleft"
+     left="10"
+     top_pad="5"
      name="payee_name"
-     use_ellipses="false" 
-     width="230">
+     use_ellipses="true" 
+     width="225">
       Ericacita Moostopolison
     </text>
     <text
@@ -36,125 +49,135 @@ Pay Resident
      layout="topleft"
      left="10"
      name="object_name_label"
-     top_pad="3"
+     top_pad="5"
      width="180">
         Via object:
     </text>
-   <icon
+    <icon
      height="16"
      width="16"
      image_name="Inv_Object"
      mouse_opaque="true"
      name="icon_object"
      tool_tip="Objects"
-     top_pad="3"
+     top_pad="5"
      left="10"
      />
     <text
      type="string"
      length="1"
      follows="left|top"
-     height="14"
+     height="16"
      layout="topleft"
-     left_pad="4"
+     left_pad="7"
      name="object_name_text"
-     top_delta="2"
+     top_delta="3"
      use_ellipses="true"
      word_wrap="false"
-     width="210">
+     width="188">
         My awesome object with a really damn long name
     </text>
-   <button
-     height="23"
-     label="L$1"
-     label_selected="L$1"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
+    <panel
+     border_thickness="0"
+     height="104"
+     label="Search"
      layout="topleft"
-     left="10"
-     name="fastpay 1"
-     top_pad="8"
-     width="56" />
-    <button
-     height="23"
-     label="L$5"
-     label_selected="L$5"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
+     left="0"
+     top_pad="10"
+     help_topic="avatarpicker"
+     name="PatternsPanel"
+     width="120">
+      <button
+       height="23"
+       label="Pay L$ 1"
+       label_selected="Pay L$ 1"
+       layout="topleft"
+       left="10"
+       top="0"
+       name="fastpay 1"
+       width="110" />
+      <button
+       height="23"
+       label="Pay L$ 5"
+       label_selected="Pay L$ 5"
+       layout="topleft"
+       left="10"
+       top_pad="4"
+       name="fastpay 5"
+       width="110" />
+      <button
+       height="23"
+       label="Pay L$ 10"
+       label_selected="Pay L$ 10"
+       layout="topleft"
+       left="10"
+       top_pad="4"
+       name="fastpay 10"
+       width="110" />
+      <button
+       height="23"
+       label="Pay L$ 20"
+       label_selected="Pay L$ 20"
+       layout="topleft"
+       left="10"
+       top_pad="4"
+       name="fastpay 20"
+       width="110" />
+    </panel>
+    <view_border
+     bevel_style="in"
+     width="1"
+     height="104"
+     left_pad="10"
+     layout="topleft" />
+    <panel
+     border_thickness="0"
+     height="104"
+     label="Search"
      layout="topleft"
-     left_pad="1"
-     name="fastpay 5"
-     width="57" />
-    <button
-     height="23"
-     label="L$10"
-     label_selected="L$10"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
-     layout="topleft"
-     left_pad="1"
-     name="fastpay 10"
-     top_delta="0"
-     width="56" />
-    <button
-     height="23"
-     label="L$20"
-     label_selected="L$20"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
-     layout="topleft"
-     left_pad="1"
-     top_delta="0"
-     name="fastpay 20"
-     width="57" />
-    <text
-     type="string"
-     length="1"
-     follows="left|top"
-     height="14"
-     layout="topleft"
-     left="10"
-     name="amount text"
-     top_pad="7"
-     width="180">
-        Or, choose amount:
-    </text>
-    <line_editor
-     border_style="line"
-     follows="left|top|right"
-     height="21"
-     top_delta="-3"
-     layout="topleft"
-     left="159"
-     max_length_bytes="9"
-     name="amount"
-     width="80" />
-    <button
-     enabled="false"
-     height="23"
-     label="Pay"
-     label_selected="Pay"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
-     layout="topleft"
-     left="10"
-     name="pay btn"
-     top_pad="4"
-     width="114" />
-    <button
-     height="23"
-     label="Cancel"
-     label_selected="Cancel"
-     image_hover_unselected="Toolbar_Middle_Over"
-     image_selected="Toolbar_Middle_Selected"
-     image_unselected="Toolbar_Middle_Off"
-     layout="topleft"
-     left_pad="1"
-     name="cancel btn"
-     width="114" />
+     left_pad="0"
+     name="InputPanel"
+     width="120">
+      <text
+       type="string"
+       length="1"
+       follows="left|top"
+       height="18"
+       layout="topleft"
+       left="10"
+       top="0"
+       name="amount text"
+       width="180">
+        Other amount:
+      </text>
+      <line_editor
+       border_style="line"
+       follows="left|top|right"
+       height="19"
+       layout="topleft"
+       left="10"
+       top_pad="0"
+       max_length_bytes="9"
+       name="amount"
+       width="90" />
+      <button
+       enabled="false"
+       height="23"
+       label="Pay"
+       label_selected="Pay"
+       layout="topleft"
+       left="10"
+       top_pad="17"
+       name="pay btn"
+       width="110" />
+      <button
+       height="23"
+       label="Cancel"
+       label_selected="Cancel"
+       layout="topleft"
+       left="10"
+       top_pad="4"
+       name="cancel btn"
+       width="110" />
+    </panel>
 </floater>
