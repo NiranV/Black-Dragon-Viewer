@@ -173,8 +173,60 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="273"
+     height="169"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Voice indicator to nametag when Voice is on but we're not speaking.
+Added: Option to local snapshots to enable camera aspect ratio scaling just like in inventory shots.
+Changed: Require only trans and copy permissions to save textures into presets.
+Changed: Change the Fixed Environment editor title to inform the user that they cannot save a preset unless they swap to a preset with permissions.
+Changed: Match the pay object and avatar floaters to the new LL layout, including the description bar.
+Changed: Make Return deselects chatbar option also deselect IM chat. (Requested)
+Changed: Version to 4.0.2.
+Fixed: Poser cannot delete presets containing certain special characters.
+Fixed: Fixed Environment editor does not save presets properly and deletes custom textures even when we have the permissions for them.
+Fixed: Local snapshot being squished when snapshots are taken at lower-than-window resolution.
+Fixed: Terrain Quality option getting stuck at low/medium.
+Removed: Object Cache option and disabled it in code as it was solely there to cause issues.
+Removed: Save snapshot to Profile (as it is currently broken in LL Viewer too).
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="273"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
