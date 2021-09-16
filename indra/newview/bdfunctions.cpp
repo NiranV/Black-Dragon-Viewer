@@ -481,7 +481,6 @@ bool BDFunctions::checkPermissions(LLUUID uuid)
 	{
 		LLPermissions perms = item->getPermissions();
 		if (perms.allowOperationBy(PERM_TRANSFER, gAgent.getID())
-			&& perms.allowOperationBy(PERM_MODIFY, gAgent.getID())
 			&& perms.allowOperationBy(PERM_COPY, gAgent.getID()))
 		{
 			return true;
@@ -630,48 +629,12 @@ bool BDFunctions::loadPreset(std::string filename, LLSettingsBase::ptr_t setting
 }
 
 //BD - Windlight functions
-LLSettingsBase::ptr_t BDFunctions::cullAssets(LLSettingsBase::ptr_t settings)
-{
-	LLSD Params = settings->getSettings();
-	std::string type = settings->getSettingsType();
-	//BD - Moved permission checks here and made them independent of floater type and state.
-	//     Just check generally for Sun/Moon/Cloud and Water Normal Map. We don't do this often
-	//     so its fine.
-	if (type == "sky")
-	{
-		LLSettingsSky::ptr_t sky = std::static_pointer_cast<LLSettingsSky>(settings->buildDerivedClone());
-
-		LLUUID moon_id = sky->getMoonTextureId();
-		LLUUID cloud_id = sky->getCloudNoiseTextureId();
-		LLUUID sun_id = sky->getSunTextureId();
-
-		if (!gDragonLibrary.checkPermissions(sun_id))
-			sky->setSunTextureId(LLUUID::null);
-		if (!gDragonLibrary.checkPermissions(moon_id))
-			sky->setMoonTextureId(LLUUID::null);
-		if (!gDragonLibrary.checkPermissions(cloud_id))
-			sky->setCloudNoiseTextureId(LLUUID::null);
-		return sky;
-	}
-	else
-	{
-		LLSettingsWater::ptr_t water = std::static_pointer_cast<LLSettingsWater>(settings->buildDerivedClone());
-		LLUUID normal_map = water->getNormalMapID();
-		if (!gDragonLibrary.checkPermissions(normal_map))
-			water->setNormalMapID(LLUUID::null);
-		return water;
-	}
-}
-
-
 void BDFunctions::savePreset(std::string name, LLSettingsBase::ptr_t settings)
 {
 	if (!settings || name.empty()) return;
 
-	LLSettingsBase::ptr_t culled_settings =	cullAssets(settings);
-
-	LLSD Params = culled_settings->getSettings();
-	std::string type = culled_settings->getSettingsType();
+	LLSD Params = settings->getSettings();
+	std::string type = settings->getSettingsType();
 	std::string folder = type == "sky" ? "skies" : type == "water" ? "water" : "days";
 
 	//BD - Make sure whatever string we get is a name only and doesn't contain a file ending.

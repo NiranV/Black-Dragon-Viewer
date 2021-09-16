@@ -64,19 +64,16 @@ public:
 	bool getCameraOverride() { return mCameraOverride; }
 
 //	//BD - Windlight functions
-	LLSettingsBase::ptr_t cullAssets(LLSettingsBase::ptr_t settings);
 	void savePreset(std::string name, LLSettingsBase::ptr_t settings);
 	void deletePreset(std::string name, std::string folder = "skies");
 	void loadPresetsFromDir(LLComboBox* combo, std::string folder = "skies");
 	bool doLoadPreset(const std::string& path);
-	void loadAllPresets(LLSD& presets);
 	static std::string getWindlightDir(std::string folder, bool system = false);
 	bool checkPermissions(LLUUID uuid);
 	void onSelectPreset(LLComboBox* combo, LLSettingsBase::ptr_t settings);
 	void addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t settings);
 	void loadItem(LLSettingsBase::ptr_t settings);
 	bool loadPreset(std::string filename, LLSettingsBase::ptr_t settings);
-	void loadSettingFromFile(const std::vector<std::string>& filenames);
 
 	bool mCameraOverride;
 

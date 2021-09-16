@@ -66,6 +66,7 @@
 #include "llinventorymodel.h"
 #include "llinventoryfunctions.h"
 #include "llagent.h"
+#include "lltexturectrl.h"
 
 extern LLControlGroup gSavedSettings;
 
@@ -249,18 +250,10 @@ void LLFloaterFixedEnvironment::refresh()
 	mTxtName->setValue(preset_name);
     mTxtName->setEnabled(mCanMod);
 
-	syncronizeTabs();
-    S32 count = mTab->getTabCount();
+	std::string title = is_local ? getString("CanSave") : getString("CantSave");
+	setTitle(title);
 
-    for (S32 idx = 0; idx < count; ++idx)
-    {
-        LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(mTab->getPanelByIndex(idx));
-        if (panel)
-        {
-            panel->setCanChangeSettings(mCanMod);
-            panel->refresh();
-        }
-    }
+	syncronizeTabs();
 }
 
 void LLFloaterFixedEnvironment::populatePresetsList()
@@ -281,8 +274,12 @@ void LLFloaterFixedEnvironment::syncronizeTabs()
     for (S32 idx = 0; idx < count; ++idx)
     {
         LLSettingsEditPanel *panel = static_cast<LLSettingsEditPanel *>(mTab->getPanelByIndex(idx));
-        if (panel)
-            panel->setSettings(mSettings);
+		if (panel)
+		{
+			panel->setSettings(mSettings);
+			panel->setCanChangeSettings(mCanMod);
+			panel->refresh();
+		}
     }
 }
 
@@ -544,11 +541,32 @@ void LLFloaterFixedEnvironment::onSaveAsCommit(const LLSD& notification, const L
 		//     already included and hidden by the checks against whether we are editing an inventory
 		//     item which also includes the baseline permission checks. This does not so we need to
 		//     apply our own.
-		LLSettingsBase::ptr_t culled_settings = gDragonLibrary.cullAssets(settings);
+		LLSD Params = mSettings->getSettings();
+		std::string type = mSettings->getSettingsType();
+		if (type == "sky")
+		{
+			LLUUID moon_id = mTab->getChild<LLTextureCtrl>("moon_image")->getImageItemID();
+			LLUUID cloud_id = mTab->getChild<LLTextureCtrl>("cloud_map")->getImageItemID();
+			LLUUID sun_id = mTab->getChild<LLTextureCtrl>("sun_image")->getImageItemID();
+
+			LLSD sd = mSettings->getSettings();
+			if (!gDragonLibrary.checkPermissions(sun_id))
+				mSettings->setLLSD("sun_id", LLUUID::null);
+			if (!gDragonLibrary.checkPermissions(moon_id))
+				mSettings->setLLSD("moon_id", LLUUID::null);
+			if (!gDragonLibrary.checkPermissions(cloud_id))
+				mSettings->setLLSD("cloud_id", LLUUID::null);
+		}
+		else
+		{
+			LLUUID normal_map = mTab->getChild<LLTextureCtrl>("water_normal_map")->getImageItemID();
+			if (!gDragonLibrary.checkPermissions(normal_map))
+				mSettings->setLLSD("normal_map", LLUUID::null);
+		}
 
         if (mCanMod)
         {
-            doApplyCreateNewInventory(settings_name, culled_settings);
+            doApplyCreateNewInventory(settings_name, mSettings);
         }
         else if (mInventoryItem)
         {
@@ -934,7 +952,28 @@ void LLFloaterFixedEnvironmentSky::loadSkySettingFromFile(const std::vector<std:
 
 void LLFloaterFixedEnvironment::onButtonSave()
 {
-	std::string folder = mSettings->getSettingsType() == "sky" ? "skies" : "water";
+	LLSD Params = mSettings->getSettings();
+	std::string type = mSettings->getSettingsType();
+	if (type == "sky")
+	{
+		LLUUID moon_id = mTab->getChild<LLTextureCtrl>("moon_image")->getImageItemID();
+		LLUUID cloud_id = mTab->getChild<LLTextureCtrl>("cloud_map")->getImageItemID();
+		LLUUID sun_id = mTab->getChild<LLTextureCtrl>("sun_image")->getImageItemID();
+
+		LLSD sd = mSettings->getSettings();
+		if (!gDragonLibrary.checkPermissions(sun_id))
+			mSettings->setLLSD("sun_id", LLUUID::null);
+		if (!gDragonLibrary.checkPermissions(moon_id))
+			mSettings->setLLSD("moon_id", LLUUID::null);
+		if (!gDragonLibrary.checkPermissions(cloud_id))
+			mSettings->setLLSD("cloud_id", LLUUID::null);
+	}
+	else
+	{
+		LLUUID normal_map = mTab->getChild<LLTextureCtrl>("water_normal_map")->getImageItemID();
+		if (!gDragonLibrary.checkPermissions(normal_map))
+			mSettings->setLLSD("normal_map", LLUUID::null);
+	}
 
 	gDragonLibrary.savePreset(mTxtName->getValue(), mSettings);
 	populatePresetsList();

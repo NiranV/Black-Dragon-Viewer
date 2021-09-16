@@ -183,6 +183,12 @@ width="700">
     <string name="combo_label">
     -Type or select a preset-
     </string>
+    <string name="CantSave">
+    Fixed Environment - Can't save! Please select a local preset first.
+    </string>
+    <string name="CanSave">
+    Fixed Environment
+    </string>
     <icon
     follows="top|left"
     height="193"
