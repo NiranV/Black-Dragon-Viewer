@@ -175,6 +175,7 @@ private:
 
 	//BD
 	LLPointer<LLUIImage> mBGImage;
+	LLPointer<LLUIImage> mVoicePTTImageOff;
 	LLPointer<LLUIImage> mVoicePTTImage;
 	LLPointer<LLUIImage> mVoicePTTImage1;
 	LLPointer<LLUIImage> mVoicePTTImage2;

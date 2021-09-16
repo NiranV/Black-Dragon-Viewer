@@ -118,6 +118,7 @@ LLHUDNameTag::LLHUDNameTag(const U8 type)
 
 	//BD
 	mBGImage = LLUI::getUIImage("Name_Rect");
+	mVoicePTTImageOff = LLUI::getUIImage("OldVoicePTT_Off");
 	mVoicePTTImage = LLUI::getUIImage("OldVoicePTT_On");
 	mVoicePTTImage1 = LLUI::getUIImage("OldVoicePTT_Lvl1");
 	mVoicePTTImage2 = LLUI::getUIImage("OldVoicePTT_Lvl2");
@@ -326,9 +327,10 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	LLRect screen_rect;
 	LLUUID id = mSourceObject->getID();
 	LLVoiceClient* voice_client = LLVoiceClient::getInstance();
-	bool isSpeaking = voice_client->getVoiceEnabled(id) && voice_client->getIsSpeaking(id);
+	bool voice_enabled = voice_client->getVoiceEnabled(id);
+	bool isSpeaking = voice_client->getIsSpeaking(id);
 	screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
-	screen_rect.mRight += isSpeaking ? 20 : 0;
+	screen_rect.mRight += voice_enabled ? 20 : 0;
 	mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
 	if (mLabelSegments.size())
 	{
@@ -341,23 +343,27 @@ void LLHUDNameTag::renderText(BOOL for_select)
 		mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
 	}
 	
-	if (isSpeaking)
+	if (voice_enabled)
 	{
-		F32 voice_power = voice_client->getCurrentPower(id);
-
 		LLRect voice_ptt_rect = screen_rect;
 		voice_ptt_rect.mRight = screen_rect.mRight - 4;
 		voice_ptt_rect.mLeft = voice_ptt_rect.mRight - 18;
 		voice_ptt_rect.mTop = screen_rect.mTop - 4;
 		voice_ptt_rect.mBottom = voice_ptt_rect.mTop - 18;
-		if (voice_power == 0.0f)
-			mVoicePTTImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
-		else if (voice_power < 0.33f)
-			mVoicePTTImage1->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
-		else if (voice_power < 0.66f)
-			mVoicePTTImage2->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+		if (isSpeaking)
+		{
+			F32 voice_power = voice_client->getCurrentPower(id);
+			if (voice_power == 0.0f)
+				mVoicePTTImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+			else if (voice_power < 0.33f)
+				mVoicePTTImage1->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+			else if (voice_power < 0.66f)
+				mVoicePTTImage2->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+			else
+				mVoicePTTImage3->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+		}
 		else
-			mVoicePTTImage3->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+			mVoicePTTImageOff->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
 	}
 
 	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
