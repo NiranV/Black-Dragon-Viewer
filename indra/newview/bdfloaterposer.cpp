@@ -552,7 +552,7 @@ void BDFloaterPoser::onPoseDelete()
 		std::string filename = item->getColumn(0)->getValue().asString();
 		std::string dirname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "poses");
 
-		if (gDirUtilp->deleteFilesInDir(dirname, LLURI::escape(filename) + ".xml") < 1)
+		if (gDirUtilp->deleteFilesInDir(dirname, gDragonLibrary.escapeString(filename) + ".xml") < 1)
 		{
 			LL_WARNS("Posing") << "Cannot remove file: " << filename << LL_ENDL;
 		}
