@@ -291,6 +291,12 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 				sendMsg(utf8_text);
 
 				mInputEditor->setText(LLStringUtil::null);
+
+				//BD - Autoclose Chat
+				if (gSavedSettings.getBOOL("CloseChatOnReturn"))
+				{
+					mInputEditor->setFocus(false);
+				}
 			}
 		}
 	}
