@@ -3238,12 +3238,257 @@ void LLFloaterPreference::refreshEnabledState()
 {
 	// Cannot have floater active until caps have been received
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
-
 	//BD
 	bool started = LLStartUp::getStartupState() == STATE_STARTED;
 	getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(started);
 // [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
 	if (rlv_handler_t::isEnabled() && started)
+	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::refreshEnabledState()
+{
+	LLComboBox* ctrl_reflections = getChild<LLComboBox>("Reflections");
+	LLTextBox* reflections_text = getChild<LLTextBox>("ReflectionsText");
+
+	// Reflections
+    BOOL reflections = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps;
+	ctrl_reflections->setEnabled(reflections);
+	reflections_text->setEnabled(reflections);
+
+    // Transparent Water
+    LLCheckBoxCtrl* transparent_water_ctrl = getChild<LLCheckBoxCtrl>("TransparentWater");
+
+	// Bump & Shiny	
+	LLCheckBoxCtrl* bumpshiny_ctrl = getChild<LLCheckBoxCtrl>("BumpShiny");
+	bool bumpshiny = gGLManager.mHasCubeMap && LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump");
+	bumpshiny_ctrl->setEnabled(bumpshiny ? TRUE : FALSE);
+    
+	// Avatar Mode
+	// Enable Avatar Shaders
+	LLCheckBoxCtrl* ctrl_avatar_vp = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
+	// Avatar Render Mode
+	LLCheckBoxCtrl* ctrl_avatar_cloth = getChild<LLCheckBoxCtrl>("AvatarCloth");
+	
+	bool avatar_vp_enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderAvatarVP");
+	if (LLViewerShaderMgr::sInitialized)
+	{
+		S32 max_avatar_shader = LLViewerShaderMgr::instance()->mMaxAvatarShaderLevel;
+		avatar_vp_enabled = (max_avatar_shader > 0) ? TRUE : FALSE;
+	}
+
+	ctrl_avatar_vp->setEnabled(avatar_vp_enabled);
+	
+    if (gSavedSettings.getBOOL("RenderAvatarVP") == FALSE)
+    {
+        ctrl_avatar_cloth->setEnabled(FALSE);
+    } 
+    else
+    {
+        ctrl_avatar_cloth->setEnabled(TRUE);
+    }
+
+    // Vertex Shaders, Global Shader Enable
+    // SL-12594 Basic shaders are always enabled. DJH TODO clean up now-orphaned state handling code
+    LLSliderCtrl* terrain_detail = getChild<LLSliderCtrl>("TerrainDetail");   // can be linked with control var
+    LLTextBox* terrain_text = getChild<LLTextBox>("TerrainDetailText");
+
+    terrain_detail->setEnabled(FALSE);
+    terrain_text->setEnabled(FALSE);
+
+    // WindLight
+    LLCheckBoxCtrl* ctrl_wind_light = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
+    LLSliderCtrl* sky = getChild<LLSliderCtrl>("SkyMeshDetail");
+    LLTextBox* sky_text = getChild<LLTextBox>("SkyMeshDetailText");
+    ctrl_wind_light->setEnabled(TRUE);
+    sky->setEnabled(TRUE);
+    sky_text->setEnabled(TRUE);
+
+    //Deferred/SSAO/Shadows
+    LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
+    
+    BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
+                        ((bumpshiny_ctrl && bumpshiny_ctrl->get()) ? TRUE : FALSE) &&
+                        ((transparent_water_ctrl && transparent_water_ctrl->get()) ? TRUE : FALSE) &&
+                        gGLManager.mHasFramebufferObject &&
+                        gSavedSettings.getBOOL("RenderAvatarVP") &&
+                        (ctrl_wind_light->get()) ? TRUE : FALSE;
+
+    ctrl_deferred->setEnabled(enabled);
+
+	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
+	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");
+	LLComboBox* ctrl_shadow = getChild<LLComboBox>("ShadowDetail");
+	LLTextBox* shadow_text = getChild<LLTextBox>("RenderShadowDetailText");
+
+	// note, okay here to get from ctrl_deferred as it's twin, ctrl_deferred2 will alway match it
+	enabled = enabled && LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferredSSAO") && (ctrl_deferred->get() ? TRUE : FALSE);
+	
+	ctrl_deferred->set(gSavedSettings.getBOOL("RenderDeferred"));
+
+	ctrl_ssao->setEnabled(enabled);
+	ctrl_dof->setEnabled(enabled);
+
+	enabled = enabled && LLFeatureManager::getInstance()->isFeatureAvailable("RenderShadowDetail");
+
+	ctrl_shadow->setEnabled(enabled);
+	shadow_text->setEnabled(enabled);
+
+	// Hardware settings
+	F32 mem_multiplier = gSavedSettings.getF32("RenderTextureMemoryMultiple");
+	S32Megabytes min_tex_mem = LLViewerTextureList::getMinVideoRamSetting();
+	S32Megabytes max_tex_mem = LLViewerTextureList::getMaxVideoRamSetting(false, mem_multiplier);
+	getChild<LLSliderCtrl>("GraphicsCardTextureMemory")->setMinValue(min_tex_mem.value());
+	getChild<LLSliderCtrl>("GraphicsCardTextureMemory")->setMaxValue(max_tex_mem.value());
+
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderVBOEnable") ||
+		!gGLManager.mHasVertexBufferObject)
+	{
+		getChildView("vbo")->setEnabled(FALSE);
+	}
+
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderCompressTextures") ||
+		!gGLManager.mHasVertexBufferObject)
+	{
+		getChildView("texture compression")->setEnabled(FALSE);
+	}
+
+	// if no windlight shaders, turn off nighttime brightness, gamma, and fog distance
+	LLUICtrl* gamma_ctrl = getChild<LLUICtrl>("gamma");
+	gamma_ctrl->setEnabled(!gPipeline.canUseWindLightShaders());
+	getChildView("(brightness, lower is brighter)")->setEnabled(!gPipeline.canUseWindLightShaders());
+	getChildView("fog")->setEnabled(!gPipeline.canUseWindLightShaders());
+	getChildView("antialiasing restart")->setVisible(!LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred"));
+
+	// now turn off any features that are unavailable
+	disableUnavailableSettings();
+}
+
+// static
+void LLAvatarComplexityControls::setIndirectControls()
+{
+	/*
+	 * We have controls that have an indirect relationship between the control
+	 * values and adjacent text and the underlying setting they influence.
+	 * In each case, the control and its associated setting are named Indirect<something>
+	 * This method interrogates the controlled setting and establishes the
+	 * appropriate value for the indirect control. It must be called whenever the
+	 * underlying setting may have changed other than through the indirect control,
+	 * such as when the 'Reset all to recommended settings' button is used...
+	 */
+	setIndirectMaxNonImpostors();
+	setIndirectMaxArc();
+}
+
+// static
+void LLAvatarComplexityControls::setIndirectMaxNonImpostors()
+{
+	U32 max_non_impostors = gSavedSettings.getU32("RenderAvatarMaxNonImpostors");
+	// for this one, we just need to make zero, which means off, the max value of the slider
+	U32 indirect_max_non_impostors = (0 == max_non_impostors) ? LLVOAvatar::NON_IMPOSTORS_MAX_SLIDER : max_non_impostors;
+	gSavedSettings.setU32("IndirectMaxNonImpostors", indirect_max_non_impostors);
+}
+
+void LLAvatarComplexityControls::setIndirectMaxArc()
+{
+	U32 max_arc = gSavedSettings.getU32("RenderAvatarMaxComplexity");
+	U32 indirect_max_arc;
+	if (0 == max_arc)
+	{
+		// the off position is all the way to the right, so set to control max
+		indirect_max_arc = INDIRECT_MAX_ARC_OFF;
+	}
+	else
+	{
+		// This is the inverse of the calculation in updateMaxComplexity
+		indirect_max_arc = (U32)ll_round(((log(F32(max_arc)) - MIN_ARC_LOG) / ARC_LIMIT_MAP_SCALE)) + MIN_INDIRECT_ARC_LIMIT;
+	}
+	gSavedSettings.setU32("IndirectMaxComplexity", indirect_max_arc);
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::disableUnavailableSettings()
+{	
+	LLComboBox* ctrl_reflections   = getChild<LLComboBox>("Reflections");
+	LLTextBox* reflections_text = getChild<LLTextBox>("ReflectionsText");
+	LLCheckBoxCtrl* ctrl_avatar_vp     = getChild<LLCheckBoxCtrl>("AvatarVertexProgram");
+	LLCheckBoxCtrl* ctrl_avatar_cloth  = getChild<LLCheckBoxCtrl>("AvatarCloth");
+	LLCheckBoxCtrl* ctrl_wind_light    = getChild<LLCheckBoxCtrl>("WindLightUseAtmosShaders");
+	LLCheckBoxCtrl* ctrl_deferred = getChild<LLCheckBoxCtrl>("UseLightShaders");
+	LLComboBox* ctrl_shadows = getChild<LLComboBox>("ShadowDetail");
+	LLTextBox* shadows_text = getChild<LLTextBox>("RenderShadowDetailText");
+	LLCheckBoxCtrl* ctrl_ssao = getChild<LLCheckBoxCtrl>("UseSSAO");
+	LLCheckBoxCtrl* ctrl_dof = getChild<LLCheckBoxCtrl>("UseDoF");
+	LLSliderCtrl* sky = getChild<LLSliderCtrl>("SkyMeshDetail");
+	LLTextBox* sky_text = getChild<LLTextBox>("SkyMeshDetailText");
+
+	// disabled windlight
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders"))
+	{
+		ctrl_wind_light->setEnabled(FALSE);
+		ctrl_wind_light->setValue(FALSE);
+
+		sky->setEnabled(FALSE);
+		sky_text->setEnabled(FALSE);
+
+		//deferred needs windlight, disable deferred
+		ctrl_shadows->setEnabled(FALSE);
+		ctrl_shadows->setValue(0);
+		shadows_text->setEnabled(FALSE);
+		
+		ctrl_ssao->setEnabled(FALSE);
+		ctrl_ssao->setValue(FALSE);
+
+		ctrl_dof->setEnabled(FALSE);
+		ctrl_dof->setValue(FALSE);
+
+		ctrl_deferred->setEnabled(FALSE);
+		ctrl_deferred->setValue(FALSE);
+	}
+
+	// disabled deferred
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") ||
+		!gGLManager.mHasFramebufferObject)
+	{
+		ctrl_shadows->setEnabled(FALSE);
+		ctrl_shadows->setValue(0);
+		shadows_text->setEnabled(FALSE);
+		
+		ctrl_ssao->setEnabled(FALSE);
+		ctrl_ssao->setValue(FALSE);
+
+		ctrl_dof->setEnabled(FALSE);
+		ctrl_dof->setValue(FALSE);
+
+		ctrl_deferred->setEnabled(FALSE);
+		ctrl_deferred->setValue(FALSE);
+	}
+	
+	// disabled deferred SSAO
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferredSSAO"))
+	{
+		ctrl_ssao->setEnabled(FALSE);
+		ctrl_ssao->setValue(FALSE);
+	}
+	
+	// disabled deferred shadows
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderShadowDetail"))
+	{
+		ctrl_shadows->setEnabled(FALSE);
+		ctrl_shadows->setValue(0);
+		shadows_text->setEnabled(FALSE);
+	}
+
+	// disabled reflections
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderReflectionDetail"))
+	{
+		ctrl_reflections->setEnabled(FALSE);
+		ctrl_reflections->setValue(FALSE);
+		reflections_text->setEnabled(FALSE);
+	}
+	
+	// disabled av
+	if (!LLFeatureManager::getInstance()->isFeatureAvailable("RenderAvatarVP"))
+>>>>>>> e61f485a04dc8c8ac6bcf6a24848359092884d14
 	{
 		getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(!RlvActions::hasBehaviour(RLV_BHVR_SENDIM));
 	}
@@ -3502,12 +3747,144 @@ bool LLFloaterPreference::moveTranscriptsAndLog()
 		}
 
 		return false;
+
 	}
 
 	gDirUtilp->setChatLogsDir(instantMessageLogPath);
 	gDirUtilp->updatePerAccountChatLogsDir();
 
 	return true;
+}
+
+void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im_via_email, bool is_verified_email)
+{
+	mGotPersonalInfo = true;
+	mOriginalIMViaEmail = im_via_email;
+	mDirectoryVisibility = visibility;
+	
+	if (visibility == VISIBILITY_DEFAULT)
+	{
+		mOriginalHideOnlineStatus = false;
+		getChildView("online_visibility")->setEnabled(TRUE); 	 
+	}
+	else if (visibility == VISIBILITY_HIDDEN)
+	{
+		mOriginalHideOnlineStatus = true;
+		getChildView("online_visibility")->setEnabled(TRUE); 	 
+	}
+	else
+	{
+		mOriginalHideOnlineStatus = true;
+	}
+	
+	getChild<LLUICtrl>("online_searchresults")->setEnabled(TRUE);
+	getChildView("friends_online_notify_checkbox")->setEnabled(TRUE);
+	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus); 	 
+	getChild<LLUICtrl>("online_visibility")->setLabelArg("[DIR_VIS]", mDirectoryVisibility);
+	getChildView("send_im_to_email")->setEnabled(is_verified_email);
+
+    std::string tooltip;
+    if (!is_verified_email)
+        tooltip = getString("email_unverified_tooltip");
+
+    getChildView("send_im_to_email")->setToolTip(tooltip);
+
+    // *TODO: Show or hide verify email text here based on is_verified_email
+    getChild<LLUICtrl>("send_im_to_email")->setValue(im_via_email);
+	getChildView("favorites_on_login_check")->setEnabled(TRUE);
+	getChildView("log_path_button")->setEnabled(TRUE);
+	getChildView("chat_font_size")->setEnabled(TRUE);
+	getChildView("conversation_log_combo")->setEnabled(TRUE);
+	getChild<LLUICtrl>("voice_call_friends_only_check")->setEnabled(TRUE);
+	getChild<LLUICtrl>("voice_call_friends_only_check")->setValue(gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly"));
+}
+
+
+void LLFloaterPreference::refreshUI()
+{
+	refresh();
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::updateSliderText(LLSliderCtrl* ctrl, LLTextBox* text_box)
+{
+	if (text_box == NULL || ctrl== NULL)
+		return;
+
+	// get range and points when text should change
+	F32 value = (F32)ctrl->getValue().asReal();
+	F32 min = ctrl->getMinValue();
+	F32 max = ctrl->getMaxValue();
+	F32 range = max - min;
+	llassert(range > 0);
+	F32 midPoint = min + range / 3.0f;
+	F32 highPoint = min + (2.0f * range / 3.0f);
+
+	// choose the right text
+	if (value < midPoint)
+	{
+		text_box->setText(LLTrans::getString("GraphicsQualityLow"));
+	} 
+	else if (value < highPoint)
+	{
+		text_box->setText(LLTrans::getString("GraphicsQualityMid"));
+	}
+	else
+	{
+		text_box->setText(LLTrans::getString("GraphicsQualityHigh"));
+	}
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::updateMaxNonImpostors()
+{
+	// Called when the IndirectMaxNonImpostors control changes
+	// Responsible for fixing the slider label (IndirectMaxNonImpostorsText) and setting RenderAvatarMaxNonImpostors
+	LLSliderCtrl* ctrl = getChild<LLSliderCtrl>("IndirectMaxNonImpostors",true);
+	U32 value = ctrl->getValue().asInteger();
+
+	if (0 == value || LLVOAvatar::NON_IMPOSTORS_MAX_SLIDER <= value)
+	{
+		value=0;
+	}
+	gSavedSettings.setU32("RenderAvatarMaxNonImpostors", value);
+	LLVOAvatar::updateImpostorRendering(value); // make it effective immediately
+	setMaxNonImpostorsText(value, getChild<LLTextBox>("IndirectMaxNonImpostorsText"));
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::setMaxNonImpostorsText(U32 value, LLTextBox* text_box)
+{
+	if (0 == value)
+	{
+		text_box->setText(LLTrans::getString("no_limit"));
+	}
+	else
+	{
+		text_box->setText(llformat("%d", value));
+	}
+}
+
+void LLAvatarComplexityControls::updateMax(LLSliderCtrl* slider, LLTextBox* value_label)
+{
+	// Called when the IndirectMaxComplexity control changes
+	// Responsible for fixing the slider label (IndirectMaxComplexityText) and setting RenderAvatarMaxComplexity
+	U32 indirect_value = slider->getValue().asInteger();
+	U32 max_arc;
+	
+	if (INDIRECT_MAX_ARC_OFF == indirect_value)
+	{
+		// The 'off' position is when the slider is all the way to the right, 
+		// which is a value of INDIRECT_MAX_ARC_OFF,
+		// so it is necessary to set max_arc to 0 disable muted avatars.
+		max_arc = 0;
+	}
+	else
+	{
+		// if this is changed, the inverse calculation in setIndirectMaxArc
+		// must be changed to match
+		max_arc = (U32)ll_round(exp(MIN_ARC_LOG + (ARC_LIMIT_MAP_SCALE * (indirect_value - MIN_INDIRECT_ARC_LIMIT))));
+	}
+
+	gSavedSettings.setU32("RenderAvatarMaxComplexity", (U32)max_arc);
+	setText(max_arc, value_label);
 }
 
 void LLFloaterPreference::setPersonalInfo(const std::string& visibility, bool im_via_email, bool is_verified_email)

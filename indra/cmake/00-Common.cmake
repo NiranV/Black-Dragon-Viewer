@@ -76,14 +76,18 @@ if (WINDOWS)
   # CP changed to only append the flag for 32bit builds - on 64bit builds,
   # locally at least, the build output is spammed with 1000s of 'D9002'
   # warnings about this switch being ignored.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
   if( ADDRESS_SIZE EQUAL 32 )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()
-
-  set(GLOBAL_CXX_FLAGS 
-      "/GS /W3 /c /Zc:forScope /Zc:rvalueCast /Zc:wchar_t- /nologo"
-      )
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
+      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Zo"
+      CACHE STRING "C++ compiler release-with-debug options" FORCE)
+  set(CMAKE_CXX_FLAGS_RELEASE
+      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /Zo"
+      CACHE STRING "C++ compiler release options" FORCE)
+  # zlib has assembly-language object files incompatible with SAFESEH
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE /SAFESEH:NO /NODEFAULTLIB:LIBCMT /IGNORE:4099")
 
   if (USE_AVX2)
     set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /arch:AVX2")
