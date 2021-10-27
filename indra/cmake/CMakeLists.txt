@@ -70,7 +70,7 @@ set(cmake_SOURCE_FILES
     LLSharedLibs.cmake
     LLTestCommand.cmake
     LLUI.cmake
-    LLFileSystem.cmake
+    LLVFS.cmake
     LLWindow.cmake
     LLXML.cmake
     Linking.cmake

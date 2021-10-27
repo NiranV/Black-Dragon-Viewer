@@ -41,13 +41,16 @@
 #include "llmutelist.h"
 #include "llsearchableui.h"
 #include "llnamelistctrl.h"
+#include "llsearcheditor.h"
 
 class LLConversationLogObserver;
 class LLPanelPreference;
 class LLPanelLCD;
 class LLPanelDebug;
 class LLMessageSystem;
+class LLComboBox;
 class LLScrollListCtrl;
+class LLScrollListCell;
 class LLSliderCtrl;
 class LLSD;
 class LLTextBox;
@@ -126,13 +129,15 @@ public:
 	void selectPrivacyPanel();
 	void selectChatPanel();
 	void getControlNames(std::vector<std::string>& names);
+	// updates click/double-click action controls depending on values from settings.xml
+	void updateClickActionViews();
 
 protected:	
 	//BD
 	void		onBtnOK();
 	void		onBtnCancel();
 
-	void		onClickClearCache();			// Clear viewer texture cache, file cache on next startup
+	void		onClickClearCache();			// Clear viewer texture cache, vfs, and VO cache on next startup
 	void		onClickBrowserClearCache();		// Clear web history and caches as well as viewer caches above
 	void		onLanguageChange();
 	void		onNotificationsChange(const std::string& OptionName);
@@ -143,7 +148,18 @@ protected:
 	void onDoNotDisturbResponseChanged();
 	// callback for defaults
 	void setHardwareDefaults();
-	
+
+	void setRecommended();
+	// callback for when client modifies a render option
+    void onRenderOptionEnable();
+	// callback for when client turns on impostors
+	void onAvatarImpostorsEnable();
+
+	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
+	void onClickActionChange();
+	// updates click/double-click action keybindngs depending on view values
+	void updateClickActionControls();
+
 public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
@@ -289,7 +305,6 @@ private:
 
 	static std::string sSkin;
 	notifications_map mNotificationOptions;
-	bool mClickActionDirty; ///< Set to true when the click/double-click options get changed by user.
 	bool mGotPersonalInfo;
 	bool mOriginalIMViaEmail;
 	bool mLanguageChanged;
@@ -503,6 +518,7 @@ private:
 	void onPresetsListChange();
 	LOG_CLASS(LLPanelPreferenceGraphics);
 };
+
 
 class LLFloaterPreferenceProxy : public LLFloater
 {

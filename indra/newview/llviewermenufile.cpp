@@ -52,6 +52,8 @@
 #include "llviewercontrol.h"	// gSavedSettings
 #include "llviewertexturelist.h"
 #include "lluictrlfactory.h"
+#include "llvfile.h"
+#include "llvfs.h"
 #include "llviewerinventory.h"
 #include "llviewermenu.h"	// gMenuHolder
 #include "llviewerparcelmgr.h"

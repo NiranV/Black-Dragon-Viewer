@@ -72,8 +72,9 @@
 #include "lltrans.h"
 #include "llviewercontrol.h"
 #include "llviewercamera.h"
-#include "llviewerwindow.h"
+#include "llviewereventrecorder.h"
 #include "llviewermessage.h"
+#include "llviewerwindow.h"
 #include "llviewershadermgr.h"
 #include "llviewerthrottle.h"
 #include "llvoavatarself.h"
@@ -562,7 +563,6 @@ void LLVoiceSetKeyDialog::onCancel(void* user_data)
 	self->closeFloater();
 }
 
-
 //BD - Custom Keyboard Layout
 class LLSetKeyDialog : public LLModalDialog
 {
@@ -858,7 +858,6 @@ void LLChangeKeyDialog::onBind()
 	}
 	this->closeFloater();
 }
-
 
 
 /// This must equal the maximum value set for the IndirectMaxComplexity slider in panel_preferences_graphics1.xml
@@ -2736,7 +2735,7 @@ void LLFloaterPreference::cancel()
 	// reverts any changes to current skin
 	gSavedSettings.setString("SkinCurrent", sSkin);
 
-
+	updateClickActionViews();
 
 	LLFloaterPreferenceProxy * advanced_proxy_settings = LLFloaterReg::findTypedInstance<LLFloaterPreferenceProxy>("prefs_proxy");
 	if (advanced_proxy_settings)
@@ -2818,6 +2817,9 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onChangeTextureFolder();
 	onChangeSoundFolder();
 	onChangeAnimationFolder();
+
+	// Load (double-)click to walk/teleport settings.
+	updateClickActionViews();
 	
 	// Enabled/disabled popups, might have been changed by user actions
 	// while preferences floater was closed.
@@ -3584,24 +3586,52 @@ void LLFloaterPreference::onClickSetNone()
 	}
 }
 
+void LLFloaterPreferenceGraphicsAdvanced::refresh()
+{
+	getChild<LLUICtrl>("fsaa")->setValue((LLSD::Integer)  gSavedSettings.getU32("RenderFSAASamples"));
+
+	// sliders and their text boxes
+	//	mPostProcess = gSavedSettings.getS32("RenderGlowResolutionPow");
+	// slider text boxes
+	updateSliderText(getChild<LLSliderCtrl>("ObjectMeshDetail",		true), getChild<LLTextBox>("ObjectMeshDetailText",		true));
+	updateSliderText(getChild<LLSliderCtrl>("FlexibleMeshDetail",	true), getChild<LLTextBox>("FlexibleMeshDetailText",	true));
+	updateSliderText(getChild<LLSliderCtrl>("TreeMeshDetail",		true), getChild<LLTextBox>("TreeMeshDetailText",		true));
+	updateSliderText(getChild<LLSliderCtrl>("AvatarMeshDetail",		true), getChild<LLTextBox>("AvatarMeshDetailText",		true));
+	updateSliderText(getChild<LLSliderCtrl>("AvatarPhysicsDetail",	true), getChild<LLTextBox>("AvatarPhysicsDetailText",		true));
+	updateSliderText(getChild<LLSliderCtrl>("TerrainMeshDetail",	true), getChild<LLTextBox>("TerrainMeshDetailText",		true));
+	updateSliderText(getChild<LLSliderCtrl>("RenderPostProcess",	true), getChild<LLTextBox>("PostProcessText",			true));
+	updateSliderText(getChild<LLSliderCtrl>("SkyMeshDetail",		true), getChild<LLTextBox>("SkyMeshDetailText",			true));
+	updateSliderText(getChild<LLSliderCtrl>("TerrainDetail",		true), getChild<LLTextBox>("TerrainDetailText",			true));	
+    LLAvatarComplexityControls::setIndirectControls();
+	setMaxNonImpostorsText(
+        gSavedSettings.getU32("RenderAvatarMaxNonImpostors"),
+        getChild<LLTextBox>("IndirectMaxNonImpostorsText", true));
+    LLAvatarComplexityControls::setText(
+        gSavedSettings.getU32("RenderAvatarMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText", true));
+	refreshEnabledState();
+}
+
+void LLFloaterPreference::onCommitWindowedMode()
+{
+	refresh();
+}
+
+void LLFloaterPreference::onChangeQuality(const LLSD& data)
+{
+	U32 level = (U32)(data.asReal());
+	LLFeatureManager::getInstance()->setGraphicsLevel(level, true);
+	refreshEnabledGraphics();
+	refresh();
+}
+
+>>>>>>> Linden_Release/DRTVWR-515-maint
 void LLFloaterPreference::onClickSetSounds()
 {
 	// Disable Enable gesture sounds checkbox if the master sound is disabled 
 	// or if sound effects are disabled.
 	getChild<LLCheckBoxCtrl>("gesture_audio_play_btn")->setEnabled(!gSavedSettings.getBOOL("MuteSounds"));
 }
-
-/*
-void LLFloaterPreference::onClickSkipDialogs()
-{
-	LLNotificationsUtil::add("SkipShowNextTimeDialogs", LLSD(), LLSD(), boost::bind(&callback_skip_dialogs, _1, _2, this));
-}
-
-void LLFloaterPreference::onClickResetDialogs()
-{
-	LLNotificationsUtil::add("ResetShowNextTimeDialogs", LLSD(), LLSD(), boost::bind(&callback_reset_dialogs, _1, _2, this));
-}
- */
 
 void LLFloaterPreference::onClickEnablePopup()
 {	
@@ -4034,6 +4064,33 @@ void LLFloaterPreference::onClickSpellChecker()
     LLFloaterReg::showInstance("prefs_spellchecker");
 }
 
+void LLFloaterPreference::onClickRenderExceptions()
+{
+    LLFloaterReg::showInstance("avatar_render_settings");
+}
+
+void LLFloaterPreference::onClickAdvanced()
+{
+	LLFloaterReg::showInstance("prefs_graphics_advanced");
+
+	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
+	for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
+		 iter != tabcontainer->getChildList()->end(); ++iter)
+	{
+		LLView* view = *iter;
+		LLPanelPreferenceGraphics* panel = dynamic_cast<LLPanelPreferenceGraphics*>(view);
+		if (panel)
+		{
+			panel->resetDirtyChilds();
+		}
+	}
+}
+
+void LLFloaterPreference::onClickActionChange()
+{
+    updateClickActionControls();
+}
+
 void LLFloaterPreference::onClickPermsDefault()
 {
 	LLFloaterReg::showInstance("perms_default");
@@ -4074,6 +4131,86 @@ void LLFloaterPreference::onLogChatHistorySaved()
 	{
 		delete_transcripts_buttonp->setEnabled(true);
 	}
+}
+
+void LLFloaterPreference::updateClickActionControls()
+{
+    const int single_clk_action = getChild<LLComboBox>("single_click_action_combo")->getValue().asInteger();
+    const int double_clk_action = getChild<LLComboBox>("double_click_action_combo")->getValue().asInteger();
+
+    // Todo: This is a very ugly way to get access to keybindings.
+    // Reconsider possible options.
+    // Potential option: make constructor of LLKeyConflictHandler private
+    // but add a getter that will return shared pointer for specific
+    // mode, pointer should only exist so long as there are external users.
+    // In such case we won't need to do this 'dynamic_cast' nightmare.
+    // updateTable() can also be avoided
+    LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
+    for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
+        iter != tabcontainer->getChildList()->end(); ++iter)
+    {
+        LLView* view = *iter;
+        LLPanelPreferenceControls* panel = dynamic_cast<LLPanelPreferenceControls*>(view);
+        if (panel)
+        {
+            panel->setKeyBind("walk_to",
+                              EMouseClickType::CLICK_LEFT,
+                              KEY_NONE,
+                              MASK_NONE,
+                              single_clk_action == 1);
+            
+            panel->setKeyBind("walk_to",
+                              EMouseClickType::CLICK_DOUBLELEFT,
+                              KEY_NONE,
+                              MASK_NONE,
+                              double_clk_action == 1);
+            
+            panel->setKeyBind("teleport_to",
+                              EMouseClickType::CLICK_DOUBLELEFT,
+                              KEY_NONE,
+                              MASK_NONE,
+                              double_clk_action == 2);
+
+            panel->updateAndApply();
+        }
+    }
+}
+
+void LLFloaterPreference::updateClickActionViews()
+{
+    bool click_to_walk = false;
+    bool dbl_click_to_walk = false;
+    bool dbl_click_to_teleport = false;
+
+    // Todo: This is a very ugly way to get access to keybindings.
+    // Reconsider possible options.
+    LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
+    for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
+        iter != tabcontainer->getChildList()->end(); ++iter)
+    {
+        LLView* view = *iter;
+        LLPanelPreferenceControls* panel = dynamic_cast<LLPanelPreferenceControls*>(view);
+        if (panel)
+        {
+            click_to_walk = panel->canKeyBindHandle("walk_to",
+                EMouseClickType::CLICK_LEFT,
+                KEY_NONE,
+                MASK_NONE);
+
+            dbl_click_to_walk = panel->canKeyBindHandle("walk_to",
+                EMouseClickType::CLICK_DOUBLELEFT,
+                KEY_NONE,
+                MASK_NONE);
+
+            dbl_click_to_teleport = panel->canKeyBindHandle("teleport_to",
+                EMouseClickType::CLICK_DOUBLELEFT,
+                KEY_NONE,
+                MASK_NONE);
+        }
+    }
+
+	getChild<LLComboBox>("single_click_action_combo")->setValue((int)click_to_walk);
+	getChild<LLComboBox>("double_click_action_combo")->setValue(dbl_click_to_teleport ? 2 : (int)dbl_click_to_walk);
 }
 
 void LLFloaterPreference::applyUIColor(LLUICtrl* ctrl, const LLSD& param)
@@ -4229,25 +4366,6 @@ BOOL LLPanelPreference::postBuild()
 		getChild<LLTextBox>("mute_chb_label")->setShowCursorHand(false);
 		getChild<LLTextBox>("mute_chb_label")->setSoundFlags(LLView::MOUSE_UP);
 		getChild<LLTextBox>("mute_chb_label")->setClickedCallback(boost::bind(&toggleMuteWhenMinimized));
-	}
-
-	//////////////////////PanelAdvanced ///////////////////
-	if (hasChild("modifier_combo", TRUE))
-	{
-		//localizing if push2talk button is set to middle mouse
-		std::string modifier_value = getChild<LLUICtrl>("modifier_combo")->getValue().asString();
-		if (MIDDLE_MOUSE_CV == modifier_value)
-		{
-			getChild<LLUICtrl>("modifier_combo")->setValue(getString("middle_mouse"));
-		}
-		else if (MOUSE_BUTTON_4_CV == modifier_value)
-		{
-			getChild<LLUICtrl>("modifier_combo")->setValue(getString("button4_mouse"));
-		}
-		else if (MOUSE_BUTTON_5_CV == modifier_value)
-		{
-			getChild<LLUICtrl>("modifier_combo")->setValue(getString("button5_mouse"));
-		}
 	}
 
 	//////////////////////PanelSetup ///////////////////
@@ -4519,7 +4637,7 @@ void LLPanelPreferenceGraphics::setPresetText()
 		}
 	}*/
 
-	if (hasDirtyChilds() && !preset_graphic_active.empty())
+    if (hasDirtyChilds() && !preset_graphic_active.empty())
 	{
 		gSavedSettings.setString("PresetGraphicActive", "");
 		preset_graphic_active.clear();

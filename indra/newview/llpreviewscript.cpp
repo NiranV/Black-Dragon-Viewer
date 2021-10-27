@@ -51,7 +51,7 @@
 #include "llsdserialize.h"
 #include "llslider.h"
 #include "lltooldraganddrop.h"
-#include "llfilesystem.h"
+#include "llvfile.h"
 
 #include "llagent.h"
 #include "llmenugl.h"
@@ -744,7 +744,10 @@ void LLScriptEdCore::updateDynamicHelp(BOOL immediate)
 		}
 		if (immediate || (mLiveHelpTimer.getStarted() && mLiveHelpTimer.getElapsedTimeF32() > LIVE_HELP_REFRESH_TIME))
 		{
-			std::string help_string = mEditor->getText().substr(segment->getStart(), segment->getEnd() - segment->getStart());
+			// Use Wtext since segment's start/end are made for wstring and will
+			// result in a shift for case of multi-byte symbols inside std::string.
+			LLWString segment_text = mEditor->getWText().substr(segment->getStart(), segment->getEnd() - segment->getStart());
+			std::string help_string = wstring_to_utf8str(segment_text);
 			setHelpPage(help_string);
 			mLiveHelpTimer.stop();
 		}
@@ -1696,11 +1699,8 @@ void LLPreviewLSL::saveIfNeeded(bool sync /*= true*/)
         {
             std::string buffer(mScriptEd->mEditor->getText());
 
-            LLUUID old_asset_id = inv_item->getAssetUUID().isNull() ? mScriptEd->getAssetID() : inv_item->getAssetUUID();
-
             LLResourceUploadInfo::ptr_t uploadInfo(std::make_shared<LLScriptAssetUpload>(mItemUUID, buffer, 
-                [old_asset_id](LLUUID itemId, LLUUID, LLUUID, LLSD response) {
-                    LLFileSystem::removeFile(old_asset_id, LLAssetType::AT_LSL_TEXT);
+                [](LLUUID itemId, LLUUID, LLUUID, LLSD response) {
                     LLPreviewLSL::finishedLSLUpload(itemId, response);
                 }));
 
@@ -1710,8 +1710,8 @@ void LLPreviewLSL::saveIfNeeded(bool sync /*= true*/)
 }
 
 // static
-void LLPreviewLSL::onLoadComplete(const LLUUID& asset_uuid, LLAssetType::EType type,
-								  void* user_data, S32 status, LLExtStat ext_status)
+void LLPreviewLSL::onLoadComplete( LLVFS *vfs, const LLUUID& asset_uuid, LLAssetType::EType type,
+								   void* user_data, S32 status, LLExtStat ext_status)
 {
 	/*// _LL_DEBUGS() << "LLPreviewLSL::onLoadComplete: got uuid " << asset_uuid
 		 << LL_ENDL;*/
@@ -1721,7 +1721,7 @@ void LLPreviewLSL::onLoadComplete(const LLUUID& asset_uuid, LLAssetType::EType t
 	{
 		if(0 == status)
 		{
-			LLFileSystem file(asset_uuid, type);
+			LLVFile file(vfs, asset_uuid, type);
 			S32 file_length = file.getSize();
 
 			std::vector<char> buffer(file_length+1);
@@ -1748,7 +1748,6 @@ void LLPreviewLSL::onLoadComplete(const LLUUID& asset_uuid, LLAssetType::EType t
 			}
 			preview->mScriptEd->setScriptName(script_name);
 			preview->mScriptEd->setEnableEditing(is_modifiable);
-            preview->mScriptEd->setAssetID(asset_uuid);
 			preview->mAssetStatus = PREVIEW_ASSET_LOADED;
 		}
 		else
@@ -1985,7 +1984,7 @@ void LLLiveLSLEditor::loadAsset()
 }
 
 // static
-void LLLiveLSLEditor::onLoadComplete(const LLUUID& asset_id,
+void LLLiveLSLEditor::onLoadComplete(LLVFS *vfs, const LLUUID& asset_id,
 									 LLAssetType::EType type,
 									 void* user_data, S32 status, LLExtStat ext_status)
 {
@@ -1999,10 +1998,9 @@ void LLLiveLSLEditor::onLoadComplete(const LLUUID& asset_id,
 	{
 		if( LL_ERR_NOERR == status )
 		{
-			instance->loadScriptText(asset_id, type);
+			instance->loadScriptText(vfs, asset_id, type);
 			instance->mScriptEd->setEnableEditing(TRUE);
 			instance->mAssetStatus = PREVIEW_ASSET_LOADED;
-            instance->mScriptEd->setAssetID(asset_id);
 		}
 		else
 		{
@@ -2026,9 +2024,9 @@ void LLLiveLSLEditor::onLoadComplete(const LLUUID& asset_id,
 	delete floater_key;
 }
 
-void LLLiveLSLEditor::loadScriptText(const LLUUID &uuid, LLAssetType::EType type)
+void LLLiveLSLEditor::loadScriptText(LLVFS *vfs, const LLUUID &uuid, LLAssetType::EType type)
 {
-	LLFileSystem file(uuid, type);
+	LLVFile file(vfs, uuid, type);
 	S32 file_length = file.getSize();
 	std::vector<char> buffer(file_length + 1);
 	file.read((U8*)&buffer[0], file_length);
@@ -2198,7 +2196,6 @@ void LLLiveLSLEditor::finishLSLUpload(LLUUID itemId, LLUUID taskId, LLUUID newAs
     if (preview)
     {
         preview->mItem->setAssetUUID(newAssetId);
-        preview->mScriptEd->setAssetID(newAssetId);
 
         // Bytecode save completed
         if (response["compiled"])
@@ -2277,14 +2274,12 @@ void LLLiveLSLEditor::saveIfNeeded(bool sync /*= true*/)
     if (!url.empty())
     {
         std::string buffer(mScriptEd->mEditor->getText());
-        LLUUID old_asset_id = mScriptEd->getAssetID();
 
         LLResourceUploadInfo::ptr_t uploadInfo(std::make_shared<LLScriptAssetUpload>(mObjectUUID, mItemUUID, 
                 monoChecked() ? LLScriptAssetUpload::MONO : LLScriptAssetUpload::LSL2, 
                 isRunning, mScriptEd->getAssociatedExperience(), buffer, 
-                [isRunning, old_asset_id](LLUUID itemId, LLUUID taskId, LLUUID newAssetId, LLSD response) { 
-                        LLFileSystem::removeFile(old_asset_id, LLAssetType::AT_LSL_TEXT);
-                        LLLiveLSLEditor::finishLSLUpload(itemId, taskId, newAssetId, response, isRunning);
+                [isRunning](LLUUID itemId, LLUUID taskId, LLUUID newAssetId, LLSD response) { 
+                    LLLiveLSLEditor::finishLSLUpload(itemId, taskId, newAssetId, response, isRunning);
                 }));
 
         LLViewerAssetUpload::EnqueueInventoryUpload(url, uploadInfo);

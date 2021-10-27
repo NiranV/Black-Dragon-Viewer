@@ -229,9 +229,10 @@ public:
 				void	updateSculptTexture();
 				void    setIndexInTex(U32 ch, S32 index) { mIndexInTex[ch] = index ;}
 				void	sculpt();
-	 static     void    rebuildMeshAssetCallback(const LLUUID& asset_uuid,
-												 LLAssetType::EType type,
-												 void* user_data, S32 status, LLExtStat ext_status);
+	 static     void    rebuildMeshAssetCallback(LLVFS *vfs,
+														  const LLUUID& asset_uuid,
+														  LLAssetType::EType type,
+														  void* user_data, S32 status, LLExtStat ext_status);
 					
 				void	updateRelativeXform(bool force_identity = false);
 	/*virtual*/ BOOL	updateGeometry(LLDrawable *drawable);
@@ -478,26 +479,6 @@ protected:
 	static S32 sNumLODChanges;
 
 	friend class LLVolumeImplFlexible;
-
-public:
-	bool notifyAboutCreatingTexture(LLViewerTexture *texture);
-	bool notifyAboutMissingAsset(LLViewerTexture *texture);
-
-private:
-	struct material_info 
-	{
-		LLRender::eTexIndex map;
-		U8 te;
-
-		material_info(LLRender::eTexIndex map_, U8 te_)
-			: map(map_)
-			, te(te_)
-		{}
-	};
-
-	typedef std::multimap<LLUUID, material_info> mmap_UUID_MAP_t;
-	mmap_UUID_MAP_t	mWaitingTextureInfo;
-
 };
 
 #endif // LL_LLVOVOLUME_H

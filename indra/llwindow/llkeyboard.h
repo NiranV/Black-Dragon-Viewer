@@ -38,10 +38,10 @@ enum EKeystate
 {
 	KEYSTATE_DOWN,
 	KEYSTATE_LEVEL,
-	KEYSTATE_UP 
+	KEYSTATE_UP
 };
 
-typedef boost::function<void(EKeystate keystate)> LLKeyFunc;
+typedef boost::function<bool(EKeystate keystate)> LLKeyFunc;
 typedef std::string (LLKeyStringTranslatorFunc)(const char *label);
 	
 enum EKeyboardInsertMode
@@ -109,6 +109,7 @@ public:
 	static std::string stringFromMask(MASK mask, bool for_ui = false);
 	static std::string stringFromKey(KEY key, bool translate = true);
 
+	static std::string stringFromAccelerator( MASK accel_mask ); // separated for convinience, returns with "+": "Shift+" or "Shift+Alt+"...
 	static std::string stringFromAccelerator( MASK accel_mask, KEY key );
 
 	void setCallbacks(LLWindowCallbacks *cbs) { mCallbacks = cbs; }

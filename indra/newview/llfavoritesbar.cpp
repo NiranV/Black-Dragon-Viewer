@@ -433,6 +433,8 @@ LLFavoritesBarCtrl::LLFavoritesBarCtrl(const LLFavoritesBarCtrl::Params& p)
 	mUpdateDropDownItems(true),
 	mRestoreOverflowMenu(false),
 	mGetPrevItems(true),
+	mMouseX(0),
+	mMouseY(0),
 	mItemsChangedTimer()
 {
 	// Register callback for menus with current registrar (will be parent panel's registrar)
@@ -448,7 +450,7 @@ LLFavoritesBarCtrl::LLFavoritesBarCtrl(const LLFavoritesBarCtrl::Params& p)
 	//make chevron button                                                                                                                               
 	LLTextBox::Params more_button_params(p.more_button);
 	mMoreTextBox = LLUICtrlFactory::create<LLTextBox> (more_button_params);
-	mMoreTextBox->setClickedCallback(boost::bind(&LLFavoritesBarCtrl::showDropDownMenu, this));
+	mMoreTextBox->setClickedCallback(boost::bind(&LLFavoritesBarCtrl::onMoreTextBoxClicked, this));
 	addChild(mMoreTextBox);
 
 	mDropDownItemsCount = 0;
@@ -1228,6 +1230,12 @@ BOOL LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &it
 	return TRUE;
 }
 
+void LLFavoritesBarCtrl::onMoreTextBoxClicked()
+{
+	LLUI::getInstance()->getMousePositionScreen(&mMouseX, &mMouseY);
+	showDropDownMenu();
+}
+
 void LLFavoritesBarCtrl::showDropDownMenu()
 {
 	if (mOverflowMenuHandle.isDead())
@@ -1383,7 +1391,7 @@ void LLFavoritesBarCtrl::positionAndShowMenu(LLToggleableMenu* menu)
 		}
 	}
 
-	LLMenuGL::showPopup(this, menu, menu_x, menu_y);
+	LLMenuGL::showPopup(this, menu, menu_x, menu_y, mMouseX, mMouseY);
 }
 
 void LLFavoritesBarCtrl::onButtonClick(LLUUID item_id)

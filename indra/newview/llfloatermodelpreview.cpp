@@ -59,7 +59,6 @@
 #include "llspinctrl.h"
 #include "lltabcontainer.h"
 #include "lltrans.h"
-#include "llfilesystem.h"
 #include "llcallbacklist.h"
 #include "llviewertexteditor.h"
 #include "llviewernetwork.h"
@@ -104,6 +103,11 @@ LLMeshFilePicker::LLMeshFilePicker(LLModelPreview* mp, S32 lod)
 
 void LLMeshFilePicker::notify(const std::vector<std::string>& filenames)
 {
+	if(LLAppViewer::instance()->quitRequested())
+	{
+		return;
+	}
+	
 	if (filenames.size() > 0)
 	{
 		mMP->loadModel(filenames[0], mLOD);

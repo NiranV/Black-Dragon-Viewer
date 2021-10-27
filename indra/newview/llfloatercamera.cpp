@@ -493,13 +493,7 @@ void LLFloaterCamera::switchMode(ECameraControlMode mode)
 
 	switch (mode)
 	{
-	case CAMERA_CTRL_MODE_MODES:
-		if(sFreeCamera)
-		{
-			switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
-		}
-		break;
-
+	case CAMERA_CTRL_MODE_PRESETS:
 	case CAMERA_CTRL_MODE_PAN:
 		sFreeCamera = false;
 		clear_camera_tool();
@@ -508,13 +502,6 @@ void LLFloaterCamera::switchMode(ECameraControlMode mode)
 	case CAMERA_CTRL_MODE_FREE_CAMERA:
 		sFreeCamera = true;
 		activate_camera_tool();
-		break;
-
-	case CAMERA_CTRL_MODE_PRESETS:
-		if(sFreeCamera)
-		{
-			switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
-		}
 		break;
 
 	default:
@@ -698,7 +685,17 @@ void LLFloaterCamera::onClickCameraItem(const LLSD& param)
 	{
 		LLFloaterCamera* camera_floater = LLFloaterCamera::findInstance();
 		if (camera_floater)
+		{
 			camera_floater->switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
+			camera_floater->updateItemsSelection();
+		}
+	}
+	else
+	{
+		LLFloaterCamera* camera_floater = LLFloaterCamera::findInstance();
+		if (camera_floater)
+			camera_floater->switchMode(CAMERA_CTRL_MODE_PAN);
+		switchToPreset(name);
 	}
 }
 
@@ -724,14 +721,7 @@ void LLFloaterCamera::switchToPreset()
 	LLFloaterCamera* camera_floater = LLFloaterCamera::findInstance();
 	if (camera_floater)
 	{
-		camera_floater->fromFreeToPresets();
-	}
-}
-
-void LLFloaterCamera::fromFreeToPresets()
-{
-	if (!sFreeCamera && mCurrMode == CAMERA_CTRL_MODE_FREE_CAMERA && mPrevMode == CAMERA_CTRL_MODE_PRESETS)
-	{
-		switchMode(CAMERA_CTRL_MODE_PRESETS);
+		camera_floater->updateItemsSelection();
+		camera_floater->switchMode(CAMERA_CTRL_MODE_PRESETS);
 	}
 }

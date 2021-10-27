@@ -104,6 +104,7 @@ public:
 
 	//BD
 	void onLocalHistory();
+	void updateChatIcon(const LLUUID& id);
 
 	LLView* getChatHistory();
 

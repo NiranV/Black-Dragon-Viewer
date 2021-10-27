@@ -96,15 +96,16 @@ public:
 
 	virtual ~LLScrollListItem();
 
-	void	setSelected( BOOL b )			{ mSelected = b; }
+	void	setSelected( BOOL b );
 	BOOL	getSelected() const				{ return mSelected; }
 
 	void	setEnabled( BOOL b )			{ mEnabled = b; }
 	BOOL	getEnabled() const 				{ return mEnabled; }
 
-	void	setHighlighted( BOOL b )		{ mHighlighted = b; }
+	void	setHighlighted( BOOL b );
 	BOOL	getHighlighted() const			{ return mHighlighted; }
 
+	//BD
 	void		setToolTip(std::string str)	{ mToolTip = str; }
 	std::string	getToolTip() const			{ return mToolTip; }
 
@@ -115,6 +116,12 @@ public:
 	//BD
 	void	setMarked(bool b)				{ mMarked = b; }
 	bool	getMarked() const				{ return mMarked; }
+
+	void	setSelectedCell( S32 cell );
+	S32		getSelectedCell() const			{ return mSelectedIndex; }
+
+	void	setHoverCell( S32 cell );
+	S32		getHoverCell() const			{ return mHoverIndex; }
 
 	void	setUserdata( void* userdata )	{ mUserdata = userdata; }
 	void*	getUserdata() const 			{ return mUserdata; }
@@ -137,14 +144,21 @@ public:
 
 	std::string getContentsCSV() const;
 
-	virtual void draw(const LLRect& rect, const LLColor4& fg_color, const LLColor4& bg_color, const LLColor4& highlight_color, S32 column_padding);
+	virtual void draw(const LLRect& rect,
+					  const LLColor4& fg_color,
+					  const LLColor4& hover_color, // highlight/hover selection of whole item or cell
+					  const LLColor4& select_color, // highlight/hover selection of whole item or cell
+					  const LLColor4& highlight_color, // highlights contents of cells (ex: text)
+					  S32 column_padding);
 
 protected:
 	LLScrollListItem( const Params& );
 
 private:
 	BOOL	mSelected;
-	BOOL	mHighlighted;
+    BOOL	mHighlighted;
+    S32		mHoverIndex;
+	S32		mSelectedIndex;
 	BOOL	mEnabled;
 	//BD
 	bool	mFlagged;
