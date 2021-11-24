@@ -266,9 +266,9 @@ void BDFloaterObjects::onObjectRefresh()
 	mObjectsScroll[2]->updateLayout();
 
 	//BD - Disable sorting to prevent users from breaking groups.
-	mObjectsScroll[0]->mAllowSorting = false;
-	mObjectsScroll[1]->mAllowSorting = false;
-	mObjectsScroll[2]->mAllowSorting = false;
+	//mObjectsScroll[0]->mAllowSorting = false;
+	//mObjectsScroll[1]->mAllowSorting = false;
+	//mObjectsScroll[2]->mAllowSorting = false;
 }
 
 void BDFloaterObjects::onObjectCommand(LLUICtrl* ctrl, const LLSD& param)

@@ -81,14 +81,9 @@ if (WINDOWS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()
 
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Zo"
-      CACHE STRING "C++ compiler release-with-debug options" FORCE)
-  set(CMAKE_CXX_FLAGS_RELEASE
-      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /Zo"
-      CACHE STRING "C++ compiler release options" FORCE)
-  # zlib has assembly-language object files incompatible with SAFESEH
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE /SAFESEH:NO /NODEFAULTLIB:LIBCMT /IGNORE:4099")
+  set(GLOBAL_CXX_FLAGS 
+    "/GS /W3 /c /Zc:forScope /Zc:rvalueCast /Zc:wchar_t- /nologo"
+    )
 
   if (USE_AVX2)
     set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /arch:AVX2")

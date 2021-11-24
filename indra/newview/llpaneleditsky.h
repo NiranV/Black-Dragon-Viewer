@@ -29,7 +29,7 @@
 
 #include "llpanel.h"
 #include "llsettingssky.h"
-#include "llfloatereditenvironmentbase.h"
+#include "llfloaterfixedenvironment.h"
 
 //=========================================================================
 class LLSlider;
@@ -39,45 +39,45 @@ class LLTextureCtrl;
 //=========================================================================
 class LLPanelSettingsSky : public LLSettingsEditPanel
 {
-    LOG_CLASS(LLPanelSettingsSky);
+	LOG_CLASS(LLPanelSettingsSky);
 
 public:
-                            LLPanelSettingsSky();
+	LLPanelSettingsSky();
 
-    virtual void            setSettings(const LLSettingsBase::ptr_t &settings) override   { setSky(std::static_pointer_cast<LLSettingsSky>(settings)); }
+	virtual void            setSettings(const LLSettingsBase::ptr_t &settings) override { setSky(std::static_pointer_cast<LLSettingsSky>(settings)); }
 
-    LLSettingsSky::ptr_t    getSky() const                                          { return mSkySettings; }
-    void                    setSky(const LLSettingsSky::ptr_t &sky)                 { mSkySettings = sky; clearIsDirty(); refresh(); }
+	LLSettingsSky::ptr_t    getSky() const { return mSkySettings; }
+	void                    setSky(const LLSettingsSky::ptr_t &sky) { mSkySettings = sky; clearIsDirty(); refresh(); }
 
 protected:
-    LLSettingsSky::ptr_t  mSkySettings;
+	LLSettingsSky::ptr_t  mSkySettings;
 };
 
 class LLPanelSettingsSkyAtmosTab : public LLPanelSettingsSky
 {
-    LOG_CLASS(LLPanelSettingsSkyAtmosTab);
+	LOG_CLASS(LLPanelSettingsSkyAtmosTab);
 
 public:
-                            LLPanelSettingsSkyAtmosTab();
+	LLPanelSettingsSkyAtmosTab();
 
-    virtual BOOL	        postBuild() override;
+	virtual BOOL	        postBuild() override;
 
 protected:
-    virtual void            refresh() override;
+	virtual void            refresh() override;
 
 private:
-    void                    onAmbientLightChanged();
-    void                    onBlueHorizonChanged();
-    void                    onBlueDensityChanged();
-    void                    onHazeHorizonChanged();
-    void                    onHazeDensityChanged();
-    void                    onSceneGammaChanged();
-    void                    onDensityMultipChanged();
-    void                    onDistanceMultipChanged();
-    void                    onMaxAltChanged();
-    void                    onMoistureLevelChanged();
-    void                    onDropletRadiusChanged();
-    void                    onIceLevelChanged();
+	void                    onAmbientLightChanged();
+	void                    onBlueHorizonChanged();
+	void                    onBlueDensityChanged();
+	void                    onHazeHorizonChanged();
+	void                    onHazeDensityChanged();
+	void                    onSceneGammaChanged();
+	void                    onDensityMultipChanged();
+	void                    onDistanceMultipChanged();
+	void                    onMaxAltChanged();
+	void                    onMoistureLevelChanged();
+	void                    onDropletRadiusChanged();
+	void                    onIceLevelChanged();
 
 	//BD - Atmosphere
 	LLColorSwatchCtrl* mAmbientLight;
@@ -97,25 +97,25 @@ private:
 
 class LLPanelSettingsSkyCloudTab : public LLPanelSettingsSky
 {
-    LOG_CLASS(LLPanelSettingsSkyCloudTab);
+	LOG_CLASS(LLPanelSettingsSkyCloudTab);
 
 public:
-                            LLPanelSettingsSkyCloudTab();
+	LLPanelSettingsSkyCloudTab();
 
-    virtual BOOL	        postBuild() override;
+	virtual BOOL	        postBuild() override;
 
 protected:
-    virtual void            refresh() override;
+	virtual void            refresh() override;
 
 private:
-    void                    onCloudColorChanged();
-    void                    onCloudCoverageChanged();
-    void                    onCloudScaleChanged();
-    void                    onCloudVarianceChanged();
-    void                    onCloudScrollChanged();
-    void                    onCloudMapChanged();
-    void                    onCloudDensityChanged();
-    void                    onCloudDetailChanged();
+	void                    onCloudColorChanged();
+	void                    onCloudCoverageChanged();
+	void                    onCloudScaleChanged();
+	void                    onCloudVarianceChanged();
+	void                    onCloudScrollChanged();
+	void                    onCloudMapChanged();
+	void                    onCloudDensityChanged();
+	void                    onCloudDetailChanged();
 	void					onCloudScrollXLocked(bool lock);
 	void					onCloudScrollYLocked(bool lock);
 
@@ -139,27 +139,27 @@ private:
 
 class LLPanelSettingsSkySunMoonTab : public LLPanelSettingsSky
 {
-    LOG_CLASS(LLPanelSettingsSkySunMoonTab);
+	LOG_CLASS(LLPanelSettingsSkySunMoonTab);
 
 public:
-                            LLPanelSettingsSkySunMoonTab();
+	LLPanelSettingsSkySunMoonTab();
 
-    virtual BOOL	        postBuild() override;
+	virtual BOOL	        postBuild() override;
 
 protected:
-    virtual void            refresh() override;
+	virtual void            refresh() override;
 
 private:
-    void                    onSunMoonColorChanged();
-    void                    onGlowChanged();
-    void                    onStarBrightnessChanged();
-    void                    onSunRotationChanged();
-    void                    onSunScaleChanged();
-    void                    onSunImageChanged();
-    void                    onMoonRotationChanged();
-    void                    onMoonScaleChanged();
-    void                    onMoonBrightnessChanged();
-    void                    onMoonImageChanged();
+	void                    onSunMoonColorChanged();
+	void                    onGlowChanged();
+	void                    onStarBrightnessChanged();
+	void                    onSunRotationChanged();
+	void                    onSunScaleChanged();
+	void                    onSunImageChanged();
+	void                    onMoonRotationChanged();
+	void                    onMoonScaleChanged();
+	void                    onMoonBrightnessChanged();
+	void                    onMoonImageChanged();
 
 	//BD - Sun & Moon
 	LLColorSwatchCtrl* mSunMoonColor;
@@ -182,36 +182,36 @@ private:
 // single subtab of the density settings tab
 class LLPanelSettingsSkyDensityTab : public LLPanelSettingsSky
 {
-    LOG_CLASS(LLPanelSettingsSkyDensityTab);
+	LOG_CLASS(LLPanelSettingsSkyDensityTab);
 
 public:
-    LLPanelSettingsSkyDensityTab();
+	LLPanelSettingsSkyDensityTab();
 
-    virtual BOOL postBuild() override;
+	virtual BOOL postBuild() override;
 
 protected:
-    virtual void refresh() override;
+	virtual void refresh() override;
 
-    void onRayleighExponentialChanged();
-    void onRayleighExponentialScaleChanged();
-    void onRayleighLinearChanged();
-    void onRayleighConstantChanged();
-    void onRayleighMaxAltitudeChanged();
+	void onRayleighExponentialChanged();
+	void onRayleighExponentialScaleChanged();
+	void onRayleighLinearChanged();
+	void onRayleighConstantChanged();
+	void onRayleighMaxAltitudeChanged();
 
-    void onMieExponentialChanged();
-    void onMieExponentialScaleChanged();
-    void onMieLinearChanged();
-    void onMieConstantChanged();
-    void onMieAnisoFactorChanged();
-    void onMieMaxAltitudeChanged();
+	void onMieExponentialChanged();
+	void onMieExponentialScaleChanged();
+	void onMieLinearChanged();
+	void onMieConstantChanged();
+	void onMieAnisoFactorChanged();
+	void onMieMaxAltitudeChanged();
 
-    void onAbsorptionExponentialChanged();
-    void onAbsorptionExponentialScaleChanged();
-    void onAbsorptionLinearChanged();
-    void onAbsorptionConstantChanged();
-    void onAbsorptionMaxAltitudeChanged();
+	void onAbsorptionExponentialChanged();
+	void onAbsorptionExponentialScaleChanged();
+	void onAbsorptionLinearChanged();
+	void onAbsorptionConstantChanged();
+	void onAbsorptionMaxAltitudeChanged();
 
-    // update the settings for our profile type
-    void updateProfile();
+	// update the settings for our profile type
+	void updateProfile();
 };
 #endif // LLPANEL_EDIT_SKY_H

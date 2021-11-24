@@ -162,8 +162,7 @@ LLScrollListCtrl::Params::Params()
 	scroll_bar_bg_color("scroll_bar_bg_color"),
 	border("border"),
 	//BD
-	bg_marked_color("bg_marked_color"),
-	enable_sort("enable_sort", true)
+	bg_marked_color("bg_marked_color")
 {}
 
 LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
@@ -227,9 +226,6 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 		menu->die();
 		mPopupMenuHandle.markDead();
 	}
-
-	//BD
-	mAllowSorting = p.enable_sort;
 
 	mItemListRect.setOriginAndSize(
 		mBorderThickness,
@@ -1610,11 +1606,11 @@ void LLScrollListCtrl::drawItems()
 				{
 					if (item->getSelected())	// if it's highlighted, average the colors
 					{
-						bg_color = lerp(mBgSelectedColor.get(), mBgMarkedColor.get(), 0.5f);
+						hover_color = lerp(mBgSelectedColor.get(), mBgMarkedColor.get(), 0.5f);
 					}
 					else						// otherwise just select-highlight it
 					{
-						bg_color = mBgMarkedColor.get();
+						hover_color = mBgMarkedColor.get();
 					}
 				}
 				else if( item->getSelected() && mCanSelect)

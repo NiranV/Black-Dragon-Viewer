@@ -427,9 +427,6 @@ public:
 
 	boost::signals2::connection setIsFriendCallback(const is_friend_signal_t::slot_type& cb);
 
-	//BD
-	bool			mAllowSorting;
-
 protected:
 	// "Full" interface: use this when you're creating a list that has one or more of the following:
 	// * contains icons

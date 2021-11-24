@@ -11445,12 +11445,12 @@ void LLVOAvatar::calcMutedAVColor()
         new_color = LLColor4::white;
         change_msg = " simple imposter ";
     }
+#ifdef COLORIZE_JELLYDOLLS
 //    else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 )
 // [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
 	else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 || mMutedAVColor == LLColor4::silhouette)
 // [/RLVa:KB]
    {
-#ifdef COLORIZE_JELLYDOLLS
         // select a color based on the first byte of the agents uuid so any muted agent is always the same color
         F32 color_value = (F32) (av_id.mData[0]);
         F32 spectrum = (color_value / 256.0);          // spectrum is between 0 and 1.f

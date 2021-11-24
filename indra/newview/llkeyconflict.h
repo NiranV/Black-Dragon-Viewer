@@ -133,7 +133,7 @@ public:
 
     // reloads bindings from last valid user's xml or from default xml
     // to keyboard's handler
-    static void resetKeyboardBindings();
+    //static void resetKeyboardBindings();
 
     bool hasUnsavedChanges() { return mHasUnsavedChanges; }
     void setLoadMode(ESourceMode mode) { mLoadMode = mode; }

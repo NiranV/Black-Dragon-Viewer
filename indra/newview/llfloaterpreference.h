@@ -129,8 +129,6 @@ public:
 	void selectPrivacyPanel();
 	void selectChatPanel();
 	void getControlNames(std::vector<std::string>& names);
-	// updates click/double-click action controls depending on values from settings.xml
-	void updateClickActionViews();
 
 protected:	
 	//BD
@@ -148,17 +146,6 @@ protected:
 	void onDoNotDisturbResponseChanged();
 	// callback for defaults
 	void setHardwareDefaults();
-
-	void setRecommended();
-	// callback for when client modifies a render option
-    void onRenderOptionEnable();
-	// callback for when client turns on impostors
-	void onAvatarImpostorsEnable();
-
-	// callback for commit in the "Single click on land" and "Double click on land" comboboxes.
-	void onClickActionChange();
-	// updates click/double-click action keybindngs depending on view values
-	void updateClickActionControls();
 
 public:
 	// This function squirrels away the current values of the controls so that
@@ -193,9 +180,6 @@ public:
 	bool isActionChecked(const LLSD& userdata, const LLUUID& av_id);
 	void onClickAdd(const LLSD& userdata);
 
-	void onCommitMediaEnabled();
-	void onCommitMusicEnabled();
-	void applyResolution();
 	void onChangeModelFolder();
 	void onChangeTextureFolder();
 	void onChangeSoundFolder();

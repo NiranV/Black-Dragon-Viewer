@@ -1035,9 +1035,6 @@ bool LLAppViewer::init()
 	gGLManager.getGLInfo(gDebugInfo);
 	gGLManager.printGLInfoString();
 
-//	//BD - Custom Keyboard Layout
-	loadKeyboardlayout();
-
 	// If we don't have the right GL requirements, exit.
 	if (!gGLManager.mHasRequirements)
 	{
@@ -1340,8 +1337,12 @@ bool LLAppViewer::init()
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
 	onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
 
+	//BD - We have our own.
 	// Load User's bindings
-	loadKeyBindings();
+	//loadKeyBindings();
+
+	//	//BD - Custom Keyboard Layout
+	loadKeyboardlayout();
 
 	return true;
 }
@@ -1357,7 +1358,7 @@ void LLAppViewer::loadKeyboardlayout()
 
 	if (gDirUtilp->fileExists(key_bindings_file))
 	{
-		gViewerKeyboard.loadBindingsSettings(key_bindings_file);
+		gViewerInput.loadBindingsSettings(key_bindings_file);
 	}
 	else
 	{
@@ -1365,8 +1366,8 @@ void LLAppViewer::loadKeyboardlayout()
 		LL_INFOS("InitInfo") << "Couldn't find custom controls yet, loading default from " << key_bindings_file << LL_ENDL;
 		if (gDirUtilp->fileExists(key_bindings_file))
 		{
-			gViewerKeyboard.loadBindingsSettings(key_bindings_file);
-			gViewerKeyboard.exportBindingsXML(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml"));
+			gViewerInput.loadBindingsSettings(key_bindings_file);
+			gViewerInput.exportBindingsXML(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml"));
 		}
 		else
 		{
@@ -4583,7 +4584,7 @@ void LLAppViewer::addOnIdleCallback(const boost::function<void()>& cb)
 	LLDeferredTaskList::instance().addTask(cb);
 }
 
-void LLAppViewer::loadKeyBindings()
+/*void LLAppViewer::loadKeyBindings()
 {
 	std::string key_bindings_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "key_bindings.xml");
 #if 1
@@ -4709,7 +4710,7 @@ void LLAppViewer::loadKeyBindings()
 			LL_ERRS("InitInfo") << "Unable to open default key bindings from " << key_bindings_file << LL_ENDL;
 		}
 	}
-}
+}*/
 
 void LLAppViewer::purgeCache()
 {

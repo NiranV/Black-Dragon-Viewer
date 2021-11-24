@@ -30,7 +30,7 @@
 #include "llpanel.h"
 #include "llsettingswater.h"
 
-#include "llfloatereditenvironmentbase.h"
+#include "llfloaterfixedenvironment.h"
 
 //=========================================================================
 class LLSlider;
@@ -41,18 +41,18 @@ class LLXYVector;
 //=========================================================================
 class LLPanelSettingsWater : public LLSettingsEditPanel
 {
-    LOG_CLASS(LLPanelSettingsWater);
+	LOG_CLASS(LLPanelSettingsWater);
 
 public:
-                            LLPanelSettingsWater();
+	LLPanelSettingsWater();
 
-    virtual void            setSettings(const LLSettingsBase::ptr_t &settings) override   { setWater(std::static_pointer_cast<LLSettingsWater>(settings)); }
+	virtual void            setSettings(const LLSettingsBase::ptr_t &settings) override { setWater(std::static_pointer_cast<LLSettingsWater>(settings)); }
 
-    LLSettingsWater::ptr_t  getWater() const                                        { return mWaterSettings; }
-    void                    setWater(const LLSettingsWater::ptr_t &water)           { mWaterSettings = water; clearIsDirty(); refresh(); }
+	LLSettingsWater::ptr_t  getWater() const { return mWaterSettings; }
+	void                    setWater(const LLSettingsWater::ptr_t &water) { mWaterSettings = water; clearIsDirty(); refresh(); }
 
 protected:
-    LLSettingsWater::ptr_t  mWaterSettings;
+	LLSettingsWater::ptr_t  mWaterSettings;
 };
 
 // *RIDER* In this case this split is unecessary since there is only a single 
@@ -60,28 +60,28 @@ protected:
 // future and I want to reinforce the pattern used for sky/atmosphere tabs.
 class LLPanelSettingsWaterMainTab : public LLPanelSettingsWater
 {
-    LOG_CLASS(LLPanelSettingsWaterMainTab);
+	LOG_CLASS(LLPanelSettingsWaterMainTab);
 
 public:
-                            LLPanelSettingsWaterMainTab();
+	LLPanelSettingsWaterMainTab();
 
-    virtual BOOL	        postBuild() override;
-    //virtual void	        setEnabled(BOOL enabled) override;
+	virtual BOOL	        postBuild() override;
+	//virtual void	        setEnabled(BOOL enabled) override;
 
 protected:
-    virtual void            refresh() override;
+	virtual void            refresh() override;
 
 private:
-    void                    onFogColorChanged();
-    void                    onFogDensityChanged();
-    void                    onFogUnderWaterChanged();
+	void                    onFogColorChanged();
+	void                    onFogDensityChanged();
+	void                    onFogUnderWaterChanged();
 
-    void                    onNormalScaleChanged();
-    void                    onFresnelScaleChanged();
-    void                    onFresnelOffsetChanged();
-    void                    onScaleAboveChanged();
-    void                    onScaleBelowChanged();
-    void                    onBlurMultipChanged();
+	void                    onNormalScaleChanged();
+	void                    onFresnelScaleChanged();
+	void                    onFresnelOffsetChanged();
+	void                    onScaleAboveChanged();
+	void                    onScaleBelowChanged();
+	void                    onBlurMultipChanged();
 
 	void					onDefaultWaterHeight();
 

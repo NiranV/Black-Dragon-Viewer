@@ -389,8 +389,8 @@ BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	LLCoordGL pos;
 	pos.mX = x * gViewerWindow->getDisplayScale().mV[VX];
 	pos.mY = y * gViewerWindow->getDisplayScale().mV[VY];
-	gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, LLMouseHandler::CLICK_RIGHT, TRUE);
-	return gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, LLMouseHandler::CLICK_RIGHT, FALSE);
+	gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, CLICK_RIGHT, TRUE);
+	return gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, CLICK_RIGHT, FALSE);
 }
 
 

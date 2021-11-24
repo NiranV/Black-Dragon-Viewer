@@ -1097,7 +1097,7 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 
 //	//BD - If we have the tools floater open and are right clicking pass this event to 
 	//     the pie menu tool otherwise it will be eaten.
-	if (clicktype == LLMouseHandler::CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
+	if (clicktype == CLICK_RIGHT && LLToolMgr::getInstance()->inBuildMode())
 	{
 		LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
 	}

@@ -172,7 +172,7 @@ bool LLKeyConflictHandler::isReservedByMenu(const KEY &key, const MASK &mask)
         return false;
     }
     return (gMenuBarView && gMenuBarView->hasAccelerator(key, mask))
-           || (gLoginMenuBarView && gLoginMenuBarView->hasAccelerator(key, mask));
+           /*|| (gLoginMenuBarView && gLoginMenuBarView->hasAccelerator(key, mask))*/;
 }
 
 // static
@@ -183,7 +183,7 @@ bool LLKeyConflictHandler::isReservedByMenu(const LLKeyData &data)
         return false;
     }
     return (gMenuBarView && gMenuBarView->hasAccelerator(data.mKey, data.mMask))
-           || (gLoginMenuBarView && gLoginMenuBarView->hasAccelerator(data.mKey, data.mMask));
+           /*|| (gLoginMenuBarView && gLoginMenuBarView->hasAccelerator(data.mKey, data.mMask))*/;
 }
 
 bool LLKeyConflictHandler::registerControl(const std::string &control_name, U32 index, EMouseClickType mouse, KEY key, MASK mask, bool ignore_mask)
@@ -608,14 +608,15 @@ void LLKeyConflictHandler::saveToSettings(bool temporary)
                 }
             }
             // Now force a rebind for keyboard
-            if (gDirUtilp->fileExists(filename))
+			//BD
+            /*if (gDirUtilp->fileExists(filename))
             {
                 // Ideally instead of rebinding immediately we should shedule
                 // the rebind since single file can have multiple handlers,
                 // one per mode, saving simultaneously.
                 // Or whatever uses LLKeyConflictHandler should control the process.
                 gViewerInput.loadBindingsXML(filename);
-            }
+            }*/
         }
     }
 
@@ -838,14 +839,15 @@ void LLKeyConflictHandler::clear()
     if (clearUnsavedChanges())
     {
         // temporary file was removed, this means we were using it and need to reload keyboard's bindings
-        resetKeyboardBindings();
+        //resetKeyboardBindings();
     }
     mControlsMap.clear();
     mDefaultsMap.clear();
 }
 
+//BD
 // static
-void LLKeyConflictHandler::resetKeyboardBindings()
+/*void LLKeyConflictHandler::resetKeyboardBindings()
 {
     // Try to load User's bindings first
     std::string key_bindings_file = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, filename_default);
@@ -858,7 +860,7 @@ void LLKeyConflictHandler::resetKeyboardBindings()
             LL_ERRS("InitInfo") << "Unable to open default key bindings from " << key_bindings_file << LL_ENDL;
         }
     }
-}
+}*/
 
 void LLKeyConflictHandler::generatePlaceholders(ESourceMode load_mode)
 {
