@@ -26,6 +26,7 @@
 #include "llselectmgr.h"
 #include "pipeline.h"
 #include "llviewercontrol.h"
+#include "llviewerjoystick.h"
 
 #include "rlvactions.h"
 
@@ -45,6 +46,12 @@ void BDStatus::draw()
 {
 	bool camera_roll = gAgentCamera.mCameraRollAngle != 0;
 	bool sitting = gAgent.isSitting();
+	bool flycam = gJoystick->getOverrideCamera();
+
+	if (!mFlycam && flycam)
+		setFlycam(true);
+	else if (mFlycam && !flycam)
+		setFlycam(false);
 
 	if (!mSitting && sitting)
 		setSitting(true);
@@ -120,6 +127,16 @@ void BDStatus::setCameraLock(bool toggle)
 	gDragonStatus->mCameraLockLayout->setVisible(toggle);
 }
 
+void BDStatus::setFlycam(bool toggle)
+{
+	if (gDragonStatus)
+	{
+		gDragonStatus->mFlycamLayout->setVisible(toggle);
+		gDragonStatus->mFlycam = toggle;
+	}
+}
+
+
 BOOL BDStatus::postBuild()
 {
 	mSittingButton = getChild<LLButton>("sitting_btn");
@@ -132,6 +149,7 @@ BOOL BDStatus::postBuild()
 	mPosingButton = getChild<LLButton>("posing_btn");
 	mCameraRollButton = getChild<LLButton>("camera_roll_btn");
 	mCameraLockButton = getChild<LLButton>("camera_lock_btn");
+	mFlycamButton = getChild<LLButton>("flycam_btn");
 
 	mSittingLayout = getChild<LLLayoutPanel>("sitting_layout");
 	mFlyingLayout = getChild<LLLayoutPanel>("flying_layout");
@@ -143,6 +161,7 @@ BOOL BDStatus::postBuild()
 	mPosingLayout = getChild<LLLayoutPanel>("posing_layout");
 	mCameraRollLayout = getChild<LLLayoutPanel>("camera_roll_layout");
 	mCameraLockLayout = getChild<LLLayoutPanel>("camera_lock_layout");
+	mFlycamLayout = getChild<LLLayoutPanel>("flycam_layout");
 
 	mSittingButton->setCommitCallback(boost::bind(&BDStatus::onSittingButtonClick, this));
 	mFlyingButton->setCommitCallback(boost::bind(&BDStatus::onFlyingButtonClick, this));
@@ -154,6 +173,7 @@ BOOL BDStatus::postBuild()
 	mPosingButton->setCommitCallback(boost::bind(&BDStatus::onPosingButtonClick, this));
 	mCameraRollButton->setCommitCallback(boost::bind(&BDStatus::onCameraRollButtonClick, this));
 	mCameraLockButton->setCommitCallback(boost::bind(&BDStatus::onCameraLockButtonClick, this));
+	mFlycamButton->setCommitCallback(boost::bind(&BDStatus::onFlycamButtonClick, this));
 
 	return TRUE;
 }
@@ -236,6 +256,14 @@ void BDStatus::onCameraLockButtonClick()
 {
 	gAgentCamera.setCameraLocked(false);
 	setCameraLock(false);
+
+	setFocus(FALSE);
+}
+
+void BDStatus::onFlycamButtonClick()
+{
+	gJoystick->setOverrideCamera(false);
+	setFlycam(false);
 
 	setFocus(FALSE);
 }

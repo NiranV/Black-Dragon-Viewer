@@ -293,6 +293,32 @@
   <layout_panel
   follows="all"
   layout="topleft"
+  height="23"
+  auto_resize="false"
+  background_visible="true"
+  bg_alpha_color="0 0 0 0.5"
+  visible="false"
+  name="flycam_layout"
+  width="110">
+    <button
+     follows="left|bottom"
+     height="22"
+     label="Flycam Mode"
+     layout="topleft"
+     left="0"
+     name="flycam_btn"
+     tool_tip="Your camera is currently in flycam mode, normal camera controls are disabled, only your joystick/gamepad can control the camera now."
+     image_overlay_alignment="left"
+     image_overlay="Command_View_Icon"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     top="0"
+     width="110" />
+    </layout_panel>
+  <layout_panel
+  follows="all"
+  layout="topleft"
   mouse_opaque="false"
   height="21"
   auto_resize="true"

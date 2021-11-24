@@ -56,6 +56,7 @@ public:
 	static void setPosing(bool toggle);
 	static void setCameraRoll(bool toggle);
 	static void setCameraLock(bool toggle);
+	static void setFlycam(bool toggle);
 
 	/*virtual*/ BOOL postBuild();
 	/*virtual*/ void draw();
@@ -72,6 +73,7 @@ private:
 	void onPosingButtonClick();
 	void onCameraRollButtonClick();
 	void onCameraLockButtonClick();
+	void onFlycamButtonClick();
 
 	LLButton* mSittingButton;
 	LLButton* mFlyingButton;
@@ -83,6 +85,7 @@ private:
 	LLButton* mPosingButton;
 	LLButton* mCameraRollButton;
 	LLButton* mCameraLockButton;
+	LLButton* mFlycamButton;
 
 	LLLayoutPanel* mSittingLayout;
 	LLLayoutPanel* mFlyingLayout;
@@ -94,9 +97,11 @@ private:
 	LLLayoutPanel* mPosingLayout;
 	LLLayoutPanel* mCameraRollLayout;
 	LLLayoutPanel* mCameraLockLayout;
+	LLLayoutPanel* mFlycamLayout;
 
 	bool mSitting;
 	bool mRoll;
+	bool mFlycam;
 };
 
 extern BDStatus *gDragonStatus;
