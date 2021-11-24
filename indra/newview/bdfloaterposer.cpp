@@ -79,6 +79,8 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Joint.ResetJointPosition", boost::bind(&BDFloaterPoser::onJointPositionReset, this));
 	//BD - Reset all selected bones scales back to their default.
 	mCommitCallbackRegistrar.add("Joint.ResetJointScale", boost::bind(&BDFloaterPoser::onJointScaleReset, this));
+	//BD - Reset all selected bone rotations back to the initial rotation.
+	mCommitCallbackRegistrar.add("Joint.RevertJointRotation", boost::bind(&BDFloaterPoser::onJointRotationRevert, this));
 
 	//BD - Toggle Mirror Mode on/off.
 	mCommitCallbackRegistrar.add("Joint.ToggleMirror", boost::bind(&BDFloaterPoser::toggleMirrorMode, this, _1));
@@ -1450,6 +1452,95 @@ void BDFloaterPoser::onJointScaleReset()
 	onJointControlsRefresh();
 }
 
+//BD - Used to revert rotations only.
+void BDFloaterPoser::onJointRotationRevert()
+{
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	//BD - We do support reverting bone rotations for everyone however.
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
+	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
+	//     to make movements smoother.
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
+	if (motion)
+	{
+		//BD - If we don't use our default spherical interpolation, set it once.
+		motion->setInterpolationTime(0.25f);
+		motion->setInterpolationType(2);
+	}
+
+	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
+	{
+		if (item)
+		{
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			if (joint)
+			{
+				//BD - Reverting rotations first if there are any.
+				LLQuaternion quat = mDefaultRotations[joint->getName()];
+				LLVector3 rot;
+				quat.getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
+				LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+				LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_X);
+				LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_X);
+
+				col_rot_x->setValue(rot.mV[VX]);
+				col_rot_y->setValue(rot.mV[VY]);
+				col_rot_z->setValue(rot.mV[VZ]);
+
+				joint->setTargetRotation(quat);
+
+				//BD - If we are in Mirror mode, try to find the opposite bone of our currently
+				//     selected one, for now this simply means we take the name and replace "Left"
+				//     with "Right" and vise versa since all bones are conveniently that way.
+				//     TODO: Do this when creating the joint list so we don't try to find the joint
+				//     over and over again.
+				if (mMirrorMode)
+				{
+					LLJoint* mirror_joint = nullptr;
+					std::string mirror_joint_name = joint->getName();
+					S32 idx = joint->getName().find("Left");
+					if (idx != -1)
+						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+
+					idx = joint->getName().find("Right");
+					if (idx != -1)
+						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+
+					if (mirror_joint_name != joint->getName())
+					{
+						mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+					}
+
+					if (mirror_joint)
+					{
+						//BD - We also need to find the opposite joint's list entry and change its values to reflect
+						//     the new ones, doing this here is still better than causing a complete refresh.
+						LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+						if (item2)
+						{
+							col_rot_x = item2->getColumn(COL_ROT_X);
+							col_rot_y = item2->getColumn(COL_ROT_Y);
+							col_rot_z = item2->getColumn(COL_ROT_Z);
+
+							col_rot_x->setValue(rot.mV[VX]);
+							col_rot_y->setValue(rot.mV[VY]);
+							col_rot_z->setValue(rot.mV[VZ]);
+
+							mirror_joint->setTargetRotation(quat);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	onJointControlsRefresh();
+}
+
 //BD - Flip our pose (mirror it)
 void BDFloaterPoser::onFlipPose()
 {
@@ -1543,7 +1634,7 @@ void BDFloaterPoser::onFlipPose()
 //BD - This is used to collect all default values at the beginning to revert to later on.
 void BDFloaterPoser::onCollectDefaults()
 {
-	LLVector3 rot;
+	LLQuaternion rot;
 	LLVector3 pos;
 	LLVector3 scale;
 	LLJoint* joint;
@@ -1554,6 +1645,7 @@ void BDFloaterPoser::onCollectDefaults()
 	gAgentAvatarp->getSortedJointNames(1, cv_names);
 	gAgentAvatarp->getSortedJointNames(2, attach_names);
 
+	mDefaultRotations.clear();
 	mDefaultScales.clear();
 	mDefaultPositions.clear();
 
@@ -1564,6 +1656,9 @@ void BDFloaterPoser::onCollectDefaults()
 		if (!joint)	continue;
 
 		LLSD row;
+
+		rot = joint->getTargetRotation();
+		mDefaultRotations.insert(std::pair<std::string, LLQuaternion>(name, rot));
 
 		//BD - We always get the values but we don't write them out as they are not relevant for the
 		//     user yet but we need them to establish default values we revert to later on.

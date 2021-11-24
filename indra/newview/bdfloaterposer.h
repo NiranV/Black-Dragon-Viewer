@@ -160,6 +160,7 @@ private:
 	void onJointRotationReset();
 	void onJointPositionReset();
 	void onJointScaleReset();
+	void onJointRotationRevert();
 	void onCollectDefaults();
 
 	//BD - Animating
@@ -194,35 +195,36 @@ private:
 
 private:
 	//BD - Posing
-	LLScrollListCtrl*						mPoseScroll;
-	LLTabContainer*							mJointTabs;
-	LLHandle<LLToggleableMenu>				mPosesMenuHandle;
+	LLScrollListCtrl*							mPoseScroll;
+	LLTabContainer*								mJointTabs;
+	LLHandle<LLToggleableMenu>					mPosesMenuHandle;
 
-	std::array<LLUICtrl*, 3>				mRotationSliders;
-	std::array<LLSliderCtrl*, 3>			mPositionSliders;
-	std::array<LLSliderCtrl*, 3>			mScaleSliders;
-	std::array<LLScrollListCtrl*, 3>		mJointScrolls;
+	std::array<LLUICtrl*, 3>					mRotationSliders;
+	std::array<LLSliderCtrl*, 3>				mPositionSliders;
+	std::array<LLSliderCtrl*, 3>				mScaleSliders;
+	std::array<LLScrollListCtrl*, 3>			mJointScrolls;
 
 	//BD - I really didn't want to do this this way but we have to.
 	//     It's the easiest way doing this.
-	std::map<const std::string, LLVector3>	mDefaultScales;
-	std::map<const std::string, LLVector3>	mDefaultPositions;
+	std::map<const std::string, LLQuaternion>	mDefaultRotations;
+	std::map<const std::string, LLVector3>		mDefaultScales;
+	std::map<const std::string, LLVector3>		mDefaultPositions;
 
 	//BD - Animations
-	LLScrollListCtrl*						mAnimEditorScroll;
+	LLScrollListCtrl*							mAnimEditorScroll;
 
 	//BD - Misc
-	bool									mDelayRefresh;
-	bool									mEasyRotations;
+	bool										mDelayRefresh;
+	bool										mEasyRotations;
 	
 	//BD - Mirror Bone
-	bool									mMirrorMode;
+	bool										mMirrorMode;
 
 	//BD - Animesh
-	LLScrollListCtrl*						mAvatarScroll;
+	LLScrollListCtrl*							mAvatarScroll;
 
-	LLButton*								mStartPosingBtn;
-	LLMenuButton*							mLoadPosesBtn;
+	LLButton*									mStartPosingBtn;
+	LLMenuButton*								mLoadPosesBtn;
 
 	//BD - Experimental
 	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
