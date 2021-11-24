@@ -125,8 +125,7 @@ void main()
     {
         discard;
     }
-     col *= global_light_strength;
-//col.rgb = vec3(0);        
+    col *= global_light_strength;
     frag_color.rgb = col;   
     frag_color.a = 0.0;
 }

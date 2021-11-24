@@ -128,8 +128,8 @@ void main()
     }
     
     //convert to gamma space
-    diffuse.rgb = linear_to_srgb(diffuse.rgb);
-    
+    diffuse.rgb = linear_to_srgb(diffuse.rgb); // SL-14035
+
     vec4 spec = texture2DRect(specularRect, vary_fragcoord.xy);
 
     vec3 color = vec3(0);
