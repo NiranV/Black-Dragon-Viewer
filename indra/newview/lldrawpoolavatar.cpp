@@ -53,6 +53,9 @@
 #include "llviewercontrol.h" // for gSavedSettings
 #include "llviewertexturelist.h"
 
+//BD
+#include "llvoavatarself.h"
+
 static U32 sDataMask = LLDrawPoolAvatar::VERTEX_DATA_MASK;
 static U32 sBufferUsage = GL_STREAM_DRAW_ARB;
 static U32 sShaderLevel = 0;
@@ -2194,6 +2197,48 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 		if (!skin)
 		{
 			continue;
+		}
+
+		//BD - Fix rigged attachments showing in Mouselook when they shouldn't.
+		if (avatar->isSelf() && !gAgent.needsRenderHead() && vobj->isAttachment())
+		{
+			//BD - First do a quick check to see if its attached to any of the attachment slots
+			//     that are hidden in Mouselook.
+			LLViewerJointAttachment* attach_point = gAgentAvatarp->getTargetAttachmentPoint(vobj);
+			if (attach_point)
+			{
+				if (!attach_point->getVisibleInFirstPerson())
+				{
+					avatar->getJoint(attach_point->getJointNum())->setScale(LLVector3(0, 0, 0));
+					continue;
+				}
+			}
+
+			//BD - Above didn't bring any results, this attachment might be attached to the hand
+			//     because its rigged, do a slower check against the skinned info and see if the
+			//     attachment has any parts rigged to any of the head bones. Skip if it is.
+			//
+			//     NOTE: This is disabled because it does not work as i'd like it to, the problem 
+			//     here is that objects, even links have skin info of multiple bones, if any of them 
+			//     is rigged to any of the head bones we skip rendering this face, since sadly a lot 
+			//     of body parts include head rigging even in lower body parts, we falsely assume
+			//     them as head rig, skipping them too. We also cannot check whether a linked prim
+			//     is attached to a head bone because they are always attached to whatever the root
+			//     prim is attached. Since single faces have no memory of what they are actually
+			//     rigged to (at least none that would be efficient to extract right now) we cannot
+			//     hide them per-face either.
+			/*bool skip = false;
+			for (U32 i = 0; i < skin->mJointNames.size(); ++i)
+			{
+				if (skin->mJointNums[i] >= 7 && skin->mJointNums[i] < 58)
+				{
+					skip = true;
+					break;
+				}
+			}
+
+			if (skip)
+				continue;*/
 		}
 
 		//BD - Don't render invisible faces even when they are in a linkset.
