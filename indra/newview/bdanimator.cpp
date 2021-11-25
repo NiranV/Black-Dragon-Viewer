@@ -31,6 +31,8 @@
 #include "bdfunctions.h"
 #include "bdposingmotion.h"
 
+#include "llagentcamera.h"
+
 BDAnimator gDragonAnimator;
 
 
@@ -45,6 +47,26 @@ BDAnimator::~BDAnimator()
 
 void BDAnimator::update()
 {
+	if (gAgentCamera.cameraMouselook())
+	{
+		LLJoint* joint;
+		for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+		{
+			if (!joint)	continue;
+
+			LLSD row;
+			if (joint->mJointNum > 7 &&	//mHead
+				joint->mJointNum < 58)	//mCollarLeft
+			{
+				joint->setScale(LLVector3::zero);
+			}
+		}
+
+		joint = gAgentAvatarp->getJoint("HEAD");
+		if (joint)
+			joint->setScale(LLVector3::zero);
+	}
+
 	//BD - Don't do anything if the animator is not activated.
 	if (!mPlaying) return;
 

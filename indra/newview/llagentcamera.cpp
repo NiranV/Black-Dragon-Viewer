@@ -2527,6 +2527,13 @@ void LLAgentCamera::changeCameraToFollow(BOOL animate)
 		return;
 	}
 
+	//BD - Coming from Mouselook
+	if (mCameraMode == CAMERA_MODE_MOUSELOOK)
+	{
+		if (!gAgent.mIsPosing)
+			gAgentAvatarp->resetSkeleton(false);
+	}
+
 	if(mCameraMode != CAMERA_MODE_FOLLOW)
 	{
 		if (mCameraMode == CAMERA_MODE_MOUSELOOK)
@@ -2601,6 +2608,13 @@ void LLAgentCamera::changeCameraToThirdPerson(BOOL animate)
 	// unpause avatar animation
 	gAgent.unpauseAnimation();
 
+	//BD - Coming from Mouselook
+	if (mCameraMode == CAMERA_MODE_MOUSELOOK)
+	{
+		if (!gAgent.mIsPosing)
+			gAgentAvatarp->resetSkeleton(false);
+	}
+
 	if (mCameraMode != CAMERA_MODE_THIRD_PERSON)
 	{
 		if (gBasicToolset)
@@ -2667,6 +2681,13 @@ void LLAgentCamera::changeCameraToCustomizeAvatar()
 	}
 
 	startCameraAnimation();
+
+	//BD - Coming from Mouselook
+	if (mCameraMode == CAMERA_MODE_MOUSELOOK)
+	{
+		if (!gAgent.mIsPosing)
+			gAgentAvatarp->resetSkeleton(false);
+	}
 
 	if (mCameraMode != CAMERA_MODE_CUSTOMIZE_AVATAR)
 	{
