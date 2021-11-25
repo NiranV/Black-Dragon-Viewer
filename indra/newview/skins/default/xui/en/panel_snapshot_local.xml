@@ -113,7 +113,7 @@
      max_val="16384"
      min_val="32"
      name="local_snapshot_width"
-     top_pad="7"
+     top_pad="4"
      width="144" />
     <spinner
      allow_text_entry="false"
@@ -133,7 +133,7 @@
      width="54" />
     <check_box
      top_pad="7"
-     height="16"
+     height="15"
      follows="left|top"
      control_name="SnapshotResolutionUnlock"
      label="Allow High Resolutions"
@@ -150,7 +150,7 @@
     <check_box
      top_pad="1"
      control_name="KeepAspectForSnapshot"
-     height="16"
+     height="15"
      follows="left|top"
      label="Constrain proportions"
      layout="topleft"
@@ -159,7 +159,7 @@
     <check_box
      top_pad="1"
      control_name="UploadLocalSnapshots"
-     height="16"
+     height="15"
      follows="left|top"
      label="Upload to inventory"
      layout="topleft"
@@ -168,7 +168,7 @@
     <check_box
      top_pad="1"
      control_name="SnapshotLocalCrop"
-     height="16"
+     height="15"
      follows="left|top"
      label="Aspect cropping"
      layout="topleft"
@@ -182,7 +182,7 @@
       layout="topleft"
       left="10"
       name="local_format_label"
-      top_pad="7"
+      top_pad="9"
       width="50">
          Format:
      </text>
@@ -212,7 +212,7 @@
     <slider
      decimal_digits="0"
      follows="left|top"
-     height="15"
+     height="14"
      increment="1"
      initial_value="75"
      label="Quality:"
@@ -221,26 +221,26 @@
      left="10"
      max_val="100"
      name="image_quality_slider"
-     top_pad="6"
+     top_pad="5"
      width="203" />
     <button
      follows="right|bottom"
-     height="23"
+     height="21"
      label="Cancel"
      layout="topleft"
      name="cancel_btn"
      right="-5"
-     top="337"
+     top="339"
      width="97">
       <button.commit_callback
        function="Snapshot.Cancel" />
     </button>
     <flyout_button
      follows="left|bottom"
-     height="23"
+     height="21"
      label="Save"
      layout="topleft"
-     left="10"
+     left="9"
      name="save_btn"
      tool_tip="Save image to a file"
      top_delta="0"

@@ -81,7 +81,7 @@
      max_val="6016"
      min_val="32"
      name="inventory_snapshot_width"
-     top_pad="7"
+     top_pad="4"
      width="144" />
     <spinner
      allow_text_entry="false"
@@ -99,7 +99,8 @@
      top_delta="0"
      width="54" />
     <check_box
-     top_pad="12"
+     top_pad="7"
+     height="15"
      follows="left|top"
      label="Constrain proportions"
      layout="topleft"
@@ -108,7 +109,7 @@
     <check_box
      top_pad="1"
      control_name="SnapshotLocalCrop"
-     height="16"
+     height="15"
      follows="left|top"
      label="Aspect cropping"
      layout="topleft"

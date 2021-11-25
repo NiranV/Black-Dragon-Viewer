@@ -82,7 +82,7 @@
      left="10"
 	 label="NEW SNAP"
      name="new_snapshot_btn"
-     top_pad="26"
+     top_pad="24"
      width="86" />
 	<button
        follows="left|top"
@@ -136,7 +136,7 @@
 	   top_delta="0"
        width="31" />
 	<panel
-     height="168"
+     height="162"
      layout="topleft"
 	 follows="top|left"
      left="0"
@@ -166,7 +166,7 @@
         </text>
         <combo_box
          follows="left|top|right"
-         height="23"
+         height="21"
          label="Image Layers"
          layout="topleft"
          left="100"
@@ -187,17 +187,17 @@
          control_name="RenderUIInSnapshot"
          layout="topleft"
          left="10"
-		 height="16"
-         top_pad="7"
+		 height="15"
+         top_pad="6"
          width="180"
          name="ui_check" />
         <check_box
          label="HUDs"
          control_name="RenderHUDInSnapshot"
          layout="topleft"
-		 height="16"
+		 height="15"
          left="10"
-         top_pad="0"
+         top_pad="1"
          width="180"
          name="hud_check" />
 		<view_border 
@@ -214,18 +214,18 @@
 		 control_name="UseFreezeWorld"
 		 initial_value="false"
          layout="topleft"
-		 height="16"
+		 height="15"
          left="10"
-         top_pad="7"
+         top_pad="6"
          width="180"
          name="freeze_world_check" />
 		<check_box
          label="Remember snapshot mode"
 		 control_name="RememberSnapshotMode"
          layout="topleft"
-		 height="16"
+		 height="15"
          left="10"
-         top_pad="0"
+         top_pad="1"
          width="180"
          name="remember_mode_check" />
 		<check_box
@@ -233,9 +233,9 @@
          control_name="RenderSnapshotAutoAdjustMultiplier"
          layout="topleft"
 			tool_tip="Tries to automatically scale Depth of Field, Screen Space Ambient Occlusion and Shadow Blur strength up or down depending on the desired snapshot resolution to match the desired strength of the actual render scene. Useful if you notice mentioned effects become weaker with higher snapshot respolution but don't want (or know how) to manually adjust them."
-		 height="16"
+		 height="15"
          left="10"
-         top_pad="0"
+         top_pad="1"
          width="180"
          name="autoscale_check" />
         <text
@@ -278,7 +278,7 @@
     </panel>
 	<panel_container
      follows="left|top"
-     height="226"
+     height="234"
      layout="topleft"
      left="0"
      name="panel_container"
