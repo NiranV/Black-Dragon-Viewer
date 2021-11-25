@@ -493,6 +493,13 @@ void LLFloaterCamera::switchMode(ECameraControlMode mode)
 
 	switch (mode)
 	{
+	case CAMERA_CTRL_MODE_MODES:
+		if (sFreeCamera)
+		{
+			switchMode(CAMERA_CTRL_MODE_FREE_CAMERA);
+		}
+		break;
+
 	case CAMERA_CTRL_MODE_PRESETS:
 	case CAMERA_CTRL_MODE_PAN:
 		sFreeCamera = false;
