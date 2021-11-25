@@ -4014,7 +4014,6 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	// Get access to params we'll need at various points.  
 	// Skip if this is object doesn't have a volume (e.g. is an avatar).
-	BOOL has_volume = (getVolume() != NULL);
 	LLVolumeParams volume_params;
 	LLPathParams path_params;
 	LLProfileParams profile_params;
@@ -4078,14 +4077,10 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	U32 shiny = 0;
 	U32 glow = 0;
 	U32 alpha = 0;
-	U32 flexi = 0;
 	U32 animtex = 0;
-	U32 particles = 0;
 	U32 bump = 0;
 	U32 weighted_mesh = 0;
 	U32 animated_mesh = 0;
-	U32 produces_light = 0;
-	U32 produces_shadows = 0;
 	U32 media_faces = 0;
 
 	const LLDrawable* drawablep = mDrawable;
@@ -4095,7 +4090,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	vovolume->mRenderComplexityTextures = 0;
 
-	if (has_volume)
+	if (getVolume() != NULL)
 	{
 		volume_params = getVolume()->getParams();
 		path_params = volume_params.getPathParams();
@@ -4152,24 +4147,6 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 				}
 			}
 		}
-	}
-
-	if (isFlexible())
-	{
-		flexi = 1;
-	}
-	if (isParticleSource())
-	{
-		particles = 1;
-	}
-
-	if (getIsLight())
-	{
-		produces_light = 1;
-	}
-	else if (getHasShadow())
-	{
-		produces_shadows = 1;
 	}
 
 	for (S32 i = 0; i < num_faces; ++i)
@@ -4283,7 +4260,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}
 
 	// multiply shame by multipliers
-	if (flexi)
+	if (isFlexible())
 	{
 		extra_shame += (shame * ARC_FLEXI_MULT);
 	}
@@ -4297,7 +4274,7 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 	}*/
 
 	// add additional costs
-	if (particles)
+	if (isParticleSource())
 	{
 		const LLPartSysData *part_sys_data = &(mPartSourcep->mPartSysData);
 		const LLPartData *part_data = &(part_sys_data->mPartData);
@@ -4309,12 +4286,12 @@ U32 LLVOVolume::getRenderCost(texture_cost_t &textures) const
 
 	shame += extra_shame;
 
-	if (produces_light)
+	if (getIsLight())
 	{
 		shame += ARC_LIGHT_COST;
 	}
 
-	if (produces_shadows)
+	if (getHasShadow())
 	{
 		shame += ARC_PROJECTOR_COST;
 	}
