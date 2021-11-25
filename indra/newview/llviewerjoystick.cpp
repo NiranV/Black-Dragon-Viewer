@@ -1479,15 +1479,15 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("BuildAxisDeadZone0", .2f);
 	gSavedSettings.setF32("BuildAxisDeadZone2", .2f);
 	gSavedSettings.setF32("BuildAxisDeadZone1", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone3", .1f);
-	gSavedSettings.setF32("BuildAxisDeadZone4", .1f);
+	gSavedSettings.setF32("BuildAxisDeadZone3", .2f);
+	gSavedSettings.setF32("BuildAxisDeadZone4", .2f);
 	gSavedSettings.setF32("BuildAxisDeadZone5", .1f);
 	gSavedSettings.setF32("FlycamAxisDeadZone0", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone2", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone1", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone3", .1f);
-	gSavedSettings.setF32("FlycamAxisDeadZone4", .1f);
-	gSavedSettings.setF32("FlycamAxisDeadZone5", .1f);
+	gSavedSettings.setF32("FlycamAxisDeadZone4", .2f);
+	gSavedSettings.setF32("FlycamAxisDeadZone5", .2f);
 	gSavedSettings.setF32("FlycamAxisDeadZone6", .1f);
 	
 	gSavedSettings.setF32("AvatarFeathering", 20.0f);
