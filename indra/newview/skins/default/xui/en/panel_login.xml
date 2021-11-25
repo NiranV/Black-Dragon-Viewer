@@ -5090,7 +5090,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="172"
+ height="196"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
@@ -5117,7 +5117,7 @@ Removed: Rotation order dropdown and all code.
     font_shadow="soft"
     font.style="BOLD"
     halign="left"
-    height="220"
+    height="244"
     top_pad="0"
     left="7"
     name="store_list"
@@ -5134,6 +5134,8 @@ FOXCITY - [https://marketplace.secondlife.com/stores/11069 Marketplace] - [https
 The Little Branch - [https://marketplace.secondlife.com/stores/160713 Marketplace] - [http://maps.secondlife.com/secondlife/Aspen%20Springs/99/88/21 Inworld Store]
 Aii The Ugly &amp; Beauitful - [http://maps.secondlife.com/secondlife/Aii%20and%20Ego/123/144/1521 Inworld Store]
 Cinphul - [https://marketplace.secondlife.com/stores/55081 Marketplce] - [http://maps.secondlife.com/secondlife/Barzakh/240/220/31 Inworld Store]
+PrimPossible 1 Prim Furniture - [https://marketplace.secondlife.com/stores/56262 Marketplace]
+ASA Studios - [https://marketplace.secondlife.com/stores/222823 Marketplace]
   </text>
  </panel>
  
