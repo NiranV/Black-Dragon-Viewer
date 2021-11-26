@@ -319,6 +319,8 @@ public:
 	//BD - Altered Complexity Calculation
 	U32				getVisualComplexity()			{ return mVisualComplexity;				};		// Numbers calculated here by rendering AV
 	F32				getAttachmentSurfaceArea()		{ return mAttachmentSurfaceArea;		};		// estimated surface area of attachments
+//	//BD - Performance Indicator
+	U32				getAvatarPerfRank()				{ return mPerfRank; };							// performance rank of this avatar
 
 	U32				getReportedVisualComplexity()					{ return mReportedVisualComplexity;				};	// Numbers as reported by the SL server
 	void			setReportedVisualComplexity(U32 value)			{ mReportedVisualComplexity = value;			};
@@ -488,6 +490,17 @@ public:
 		AOA_INVISIBLE
 	};
 
+//	//BD - Performance Indicator
+	enum PerfRank
+	{
+		PERF_UNKNOWN = 0,
+		PERF_EXCELLENT = 1,
+		PERF_GOOD = 2,
+		PERF_MEDIUM = 3,
+		PERF_POOR = 4,
+		PERF_VERYPOOR = 5
+	};
+
 	AvatarOverallAppearance getOverallAppearance() const;
 	void setOverallAppearanceNormal();
 	void setOverallAppearanceJellyDoll();
@@ -532,9 +545,16 @@ private:
 	U32          mReportedVisualComplexity; // from other viewers through the simulator
 
 	//BD
-	mutable U32  mTotalTriangleCount;
-	mutable U32  mTotalVerticeCount;
+	mutable U32			mTotalTriangleCount;
+	mutable U32			mTotalVerticeCount;
 	//mutable S32Megabytes  mTextureMemoryUsage;
+
+	mutable U32			mPerfTextureCount;
+	mutable U32			mPerfLightCount;
+	mutable U32			mPerfPolyCount;
+	mutable U32			mPerfObjectCount;
+//	//BD - Performance Indicator
+	mutable U32			mPerfRank;
 
 	mutable bool		mCachedInMuteList;
 	mutable F64			mCachedMuteListUpdateTime;

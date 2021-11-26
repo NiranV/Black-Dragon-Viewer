@@ -181,6 +181,12 @@ private:
 	LLPointer<LLUIImage> mVoicePTTImage2;
 	LLPointer<LLUIImage> mVoicePTTImage3;
 	LLPointer<LLUIImage> mDeveloperImage;
+//	//BD - Performance Indicator
+	LLPointer<LLUIImage> mPerfVeryPoor;
+	LLPointer<LLUIImage> mPerfPoor;
+	LLPointer<LLUIImage> mPerfMedium;
+	LLPointer<LLUIImage> mPerfGood;
+	LLPointer<LLUIImage> mPerfExcellent;
 
 	static BOOL    sDisplayText ;
 	static std::set<LLPointer<LLHUDNameTag> > sTextObjects;

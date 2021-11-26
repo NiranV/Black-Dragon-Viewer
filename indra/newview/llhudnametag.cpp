@@ -50,9 +50,10 @@
 #include "pipeline.h"
 #include <boost/tokenizer.hpp>
 
+//BD
 #include "llvoiceclient.h"
 #include "bdfunctions.h"
-
+#include "llvoavatar.h"
 
 const F32 SPRING_STRENGTH = 0.7f;
 const F32 HORIZONTAL_PADDING = 16.f;
@@ -61,7 +62,7 @@ const F32 LINE_PADDING = 3.f;			// aka "leading"
 const F32 BUFFER_SIZE = 2.f;
 const F32 HUD_TEXT_MAX_WIDTH = 190.f;
 const S32 NUM_OVERLAP_ITERATIONS = 10;
-const F32 POSITION_DAMPING_TC = 0.2f;
+const F32 POSITION_DAMPING_TC = 0.01f;
 const F32 MAX_STABLE_CAMERA_VELOCITY = 0.1f;
 const F32 LOD_0_SCREEN_COVERAGE = 0.15f;
 const F32 LOD_1_SCREEN_COVERAGE = 0.30f;
@@ -118,12 +119,20 @@ LLHUDNameTag::LLHUDNameTag(const U8 type)
 
 	//BD
 	mBGImage = LLUI::getUIImage("Name_Rect");
+	//BD - Voice Indicator
 	mVoicePTTImageOff = LLUI::getUIImage("OldVoicePTT_Off");
 	mVoicePTTImage = LLUI::getUIImage("OldVoicePTT_On");
 	mVoicePTTImage1 = LLUI::getUIImage("OldVoicePTT_Lvl1");
 	mVoicePTTImage2 = LLUI::getUIImage("OldVoicePTT_Lvl2");
 	mVoicePTTImage3 = LLUI::getUIImage("OldVoicePTT_Lvl3");
+	//BD - Developer Indicator
 	mDeveloperImage = LLUI::getUIImage("Donut");
+	//BD - Performance Indicator
+	mPerfVeryPoor = LLUI::getUIImage("Performance_VeryPoor");
+	mPerfPoor = LLUI::getUIImage("Performance_Poor");
+	mPerfMedium = LLUI::getUIImage("Performance_Medium");
+	mPerfGood = LLUI::getUIImage("Performance_Good");
+	mPerfExcellent = LLUI::getUIImage("Performance_Excellent");
 }
 
 LLHUDNameTag::~LLHUDNameTag()
@@ -251,16 +260,11 @@ void LLHUDNameTag::render()
 void LLHUDNameTag::renderText(BOOL for_select)
 {
 	if (!mVisible || mHidden)
-	{
 		return;
-	}
 
 	// don't pick text that isn't bound to a viewerobject
-	if (for_select && 
-		(!mSourceObject || mSourceObject->mDrawable.isNull()))
-	{
+	if (for_select && (!mSourceObject || mSourceObject->mDrawable.isNull()))
 		return;
-	}
 	
 	if (for_select)
 	{
@@ -274,65 +278,54 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	LLGLState gls_blend(GL_BLEND, for_select ? FALSE : TRUE);
 	LLGLState gls_alpha(GL_ALPHA_TEST, for_select ? FALSE : TRUE);
 	
-	LLColor4 shadow_color(0.f, 0.f, 0.f, 1.f);
+	// *TODO: make this a per-text setting
+	LLVoiceClient* voice_client = LLVoiceClient::getInstance();
+	LLUUID id = mSourceObject->getID();
+	bool voice_enabled = voice_client->getVoiceEnabled(id);
+	bool is_speaking = voice_client->getIsSpeaking(id);
+	static const LLColor4 nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
+	static const LLCachedControl<F32> chat_bubble_opacity_cc(gSavedSettings, "ChatBubbleOpacity");
 	F32 alpha_factor = 1.f;
-	LLColor4 text_color = mColor;
 	if (mDoFade)
 	{
 		if (mLastDistance > mFadeDistance)
 		{
 			alpha_factor = llmax(0.f, 1.f - (mLastDistance - mFadeDistance)/mFadeRange);
-			text_color.mV[3] = text_color.mV[3]*alpha_factor;
 		}
 	}
+	LLColor4 bg_color(nametag_bg_color.mV[0], nametag_bg_color.mV[1], nametag_bg_color.mV[2], chat_bubble_opacity_cc * alpha_factor);
+	LLColor4 shadow_color(0.f, 0.f, 0.f, mColor.mV[3]);
+	LLColor4 text_color(mColor.mV[0], mColor.mV[1], mColor.mV[2], mColor.mV[3] * alpha_factor);
+	LLColor4 label_color(1.f, 1.f, 1.f, alpha_factor);
+
 	if (text_color.mV[3] < 0.01f)
-	{
 		return;
-	}
-	shadow_color.mV[3] = text_color.mV[3];
-
-	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
-
-	// *TODO: cache this image
-
-	// *TODO: make this a per-text setting
-	static const LLUIColor nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
-	LLColor4 bg_color = nametag_bg_color;
-	static const LLCachedControl<F32> chat_bubble_opacity_cc(gSavedSettings, "ChatBubbleOpacity");
-	bg_color.setAlpha(chat_bubble_opacity_cc * alpha_factor);
 
 	// scale screen size of borders down
 	//RN: for now, text on hud objects is never occluded
-
+	LLCoordGL screen_pos;
+	LLVector2 screen_offset = updateScreenPos(mPositionOffset);
 	LLVector3 x_pixel_vec;
 	LLVector3 y_pixel_vec;
-	
+	LLViewerCamera::getInstance()->projectPosAgentToScreen(mPositionAgent, screen_pos, FALSE);
 	LLViewerCamera::getInstance()->getPixelVectors(mPositionAgent, y_pixel_vec, x_pixel_vec);
-
 	LLVector3 width_vec = mWidth * x_pixel_vec;
 	LLVector3 height_vec = mHeight * y_pixel_vec;
-
-	mRadius = (width_vec + height_vec).magVec() * 0.5f;
-
-	LLCoordGL screen_pos;
-	LLViewerCamera::getInstance()->projectPosAgentToScreen(mPositionAgent, screen_pos, FALSE);
-
-	LLVector2 screen_offset = updateScreenPos(mPositionOffset);
-
 	LLVector3 render_position = mPositionAgent  
 			+ (x_pixel_vec * screen_offset.mV[VX])
 			+ (y_pixel_vec * screen_offset.mV[VY]);
-
 	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
 	LLRect screen_rect;
-	LLUUID id = mSourceObject->getID();
-	LLVoiceClient* voice_client = LLVoiceClient::getInstance();
-	bool voice_enabled = voice_client->getVoiceEnabled(id);
-	bool isSpeaking = voice_client->getIsSpeaking(id);
+
+	mRadius = (width_vec + height_vec).magVec() * 0.5f;
+	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
+	mWidth += 24;
+
 	screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
 	screen_rect.mRight += voice_enabled ? 20 : 0;
 	mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
-	if (mLabelSegments.size())
+
+	/*if (mLabelSegments.size())
 	{
 		LLRect label_top_rect = screen_rect;
 		const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
@@ -341,42 +334,48 @@ void LLHUDNameTag::renderText(BOOL for_select)
 		label_top_color.mV[VALPHA] = chat_bubble_opacity_cc * alpha_factor;
 
 		mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
-	}
+	}*/
 	
 	if (voice_enabled)
 	{
 		LLRect voice_ptt_rect = screen_rect;
-		voice_ptt_rect.mRight = screen_rect.mRight - 4;
-		voice_ptt_rect.mLeft = voice_ptt_rect.mRight - 18;
-		voice_ptt_rect.mTop = screen_rect.mTop - 4;
-		voice_ptt_rect.mBottom = voice_ptt_rect.mTop - 18;
-		if (isSpeaking)
+		voice_ptt_rect.setLeftTopAndSize(screen_rect.mRight - 24, screen_rect.mBottom + 22, 18, 18);
+		if (is_speaking)
 		{
 			F32 voice_power = voice_client->getCurrentPower(id);
 			if (voice_power == 0.0f)
-				mVoicePTTImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+				mVoicePTTImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, text_color);
 			else if (voice_power < 0.33f)
-				mVoicePTTImage1->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+				mVoicePTTImage1->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, text_color);
 			else if (voice_power < 0.66f)
-				mVoicePTTImage2->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+				mVoicePTTImage2->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, text_color);
 			else
-				mVoicePTTImage3->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+				mVoicePTTImage3->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, text_color);
 		}
 		else
-			mVoicePTTImageOff->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, LLColor4::white);
+			mVoicePTTImageOff->draw3D(render_position, x_pixel_vec, y_pixel_vec, voice_ptt_rect, text_color);
 	}
 
-	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
+//	//BD - Performance Indicator
+	LLVOAvatar* avatar = mSourceObject->asAvatar();
+	if (avatar)
 	{
-		LLRect developer_rect = screen_rect;
-		developer_rect.mLeft = screen_rect.mLeft + (screen_rect.mRight / 2) + 9;
-		developer_rect.mRight = developer_rect.mLeft + 18;
-		developer_rect.mTop = screen_rect.mTop + 22;
-		developer_rect.mBottom = developer_rect.mTop - 18;
-		mDeveloperImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, developer_rect, LLColor4::white);
+		U32 rank = avatar->getAvatarPerfRank();
+		LLRect perf_rect = screen_rect;
+		perf_rect.setLeftTopAndSize(screen_rect.mLeft + 4, screen_rect.mBottom + 22, 18, 18);
+		if (rank == LLVOAvatar::PERF_VERYPOOR)
+			mPerfVeryPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		else if (rank == LLVOAvatar::PERF_POOR)
+			mPerfPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		else if (rank == LLVOAvatar::PERF_MEDIUM)
+			mPerfMedium->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		else if (rank == LLVOAvatar::PERF_GOOD)
+			mPerfGood->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		else
+			mPerfExcellent->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
 	}
 
-	F32 y_offset = (F32)mOffsetY;
+	F32 y_offset = (F32)mOffsetY - 1;
 		
 	// Render label
 	{
@@ -387,7 +386,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 		{
 			// Label segments use default font
 			const LLFontGL* fontp = (segment_iter->mStyle == LLFontGL::BOLD) ? mBoldFontp : mFontp;
-			y_offset -= fontp->getLineHeight();
+			y_offset += fontp->getLineHeight();
 
 			F32 x_offset;
 			if (mTextAlignment == ALIGN_TEXT_CENTER)
@@ -399,8 +398,6 @@ void LLHUDNameTag::renderText(BOOL for_select)
 				x_offset = -0.5f * mWidth + (HORIZONTAL_PADDING / 2.f);
 			}
 
-			LLColor4 label_color(0.f, 0.f, 0.f, 1.f);
-			label_color.mV[VALPHA] = alpha_factor;
 			hud_render_text(segment_iter->getText(), render_position, *fontp, segment_iter->mStyle, LLFontGL::NO_SHADOW, x_offset, y_offset, label_color, FALSE);
 		}
 	}
@@ -424,8 +421,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 			 segment_iter != mTextSegments.end(); ++segment_iter )
 		{
 			const LLFontGL* fontp = segment_iter->mFont;
-			y_offset -= fontp->getLineHeight();
-			y_offset -= LINE_PADDING;
+			y_offset -= (fontp->getLineHeight() + LINE_PADDING);
 
 			U8 style = segment_iter->mStyle;
 			LLFontGL::ShadowType shadow = LLFontGL::DROP_SHADOW;
@@ -433,21 +429,24 @@ void LLHUDNameTag::renderText(BOOL for_select)
 			F32 x_offset;
 			if (mTextAlignment== ALIGN_TEXT_CENTER)
 			{
-				x_offset = -0.5f*segment_iter->getWidth(fontp);
+				x_offset = (-0.5f*segment_iter->getWidth(fontp)) + 11;
 			}
 			else // ALIGN_LEFT
 			{
-				x_offset = -0.5f * mWidth + (HORIZONTAL_PADDING / 2.f);
-
-				// *HACK
-				x_offset += 1;
+				x_offset = (-0.5f * mWidth + (HORIZONTAL_PADDING / 2.f)) + 23;
 			}
-
 			text_color = segment_iter->mColor;
 			text_color.mV[VALPHA] *= alpha_factor;
 
 			hud_render_text(segment_iter->getText(), render_position, *fontp, style, shadow, x_offset, y_offset, text_color, FALSE);
 		}
+	}
+
+	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
+	{
+		LLRect developer_rect = screen_rect;
+		developer_rect.setCenterAndSize(voice_enabled ? 12 : 2, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)) + 18, 18,18);
+		mDeveloperImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, developer_rect, text_color);
 	}
 
 	/// Reset the default color to white.  The renderer expects this to be the default. 

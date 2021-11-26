@@ -780,7 +780,7 @@ with the same filename but different name
   <texture name="ToolbarDropDown_Press" file_name="widgets/DropDownToolbar_Selected.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
   <texture name="ToolbarDropDown_Off" file_name="widgets/DropDownToolbar_Off.png" preload="true" scale.left="3" scale.top="23" scale.right="26" scale.bottom="2" />
   
-  <texture name="Name_Rect"	file_name="Name_Rect.png" preload="true" scale.left="6" scale.top="26" scale.right="58" scale.bottom="6" />
+  <texture name="Name_Rect"	file_name="Name_Rect.png" preload="true" scale.left="16" scale.top="17" scale.right="48" scale.bottom="16" />
   <!--<texture name="Rounded_Rect_Top"	file_name="Rounded_Rect.png" preload="true" scale.left="6" scale.top="8" scale.right="58" scale.bottom="0" clip.left="0" clip.right="64" clip.bottom="16" clip.top="32" />-->
   
   <texture name="Prefs_Separator" file_name="widgets/prefs_separator.png"/>
@@ -876,6 +876,11 @@ with the same filename but different name
   <texture name="OldVoicePTT_Off" file_name="icons/VoicePTT_Off.png" preload="false" />
   <texture name="OldVoicePTT_On" file_name="icons/VoicePTT_On.png" preload="false" />
   <texture name="Donut" file_name="icons/Donut.png" preload="false" />
+  <texture name="Performance_VeryPoor" file_name="perf/Perf_Horrible_32.png" preload="false" />
+  <texture name="Performance_Poor" file_name="perf/Perf_Poor_32.png" preload="false" />
+  <texture name="Performance_Medium" file_name="perf/Perf_Medium_32.png" preload="false" />
+  <texture name="Performance_Good" file_name="perf/Perf_Good_32.png" preload="false" />
+  <texture name="Performance_Excellent" file_name="perf/Perf_Great_32.png" preload="false" />
   
   <!--WARNING OLD ART BELOW *do not use*-->
 

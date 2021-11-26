@@ -7138,9 +7138,9 @@ void LLVOAvatar::updateVisualParams()
 		//BD - Poser
 		//     Don't refresh our root position while we pose otherwise moving any joint that moves
 		//     mFootLeft will trigger mRoot repositioning.
-		if (!(isSelf() && gAgent.getPosing()))
-	{
-		computeBodySize();
+		if (!(isSelf() && (gAgent.getPosing() || gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)))
+		{
+			computeBodySize();
 		}
 		mLastSkeletonSerialNum = mSkeletonSerialNum;
 		mRoot->updateWorldMatrixChildren();
@@ -10590,7 +10590,6 @@ const U32 LLVOAvatar::NON_IMPOSTORS_MAX_SLIDER = 66; /* Must equal the maximum a
 // static
 void LLVOAvatar::updateImpostorRendering(U32 newMaxNonImpostorsValue)
 {
-	U32  oldmax = sMaxNonImpostors;
 	bool oldflg = sLimitNonImpostors;
 	
 	if (NON_IMPOSTORS_MAX_SLIDER <= newMaxNonImpostorsValue)
@@ -10825,6 +10824,8 @@ void LLVOAvatar::accountRenderComplexityForObject(
         mAttachmentEstTriangleCount += attached_object->recursiveGetEstTrianglesMax();
         mAttachmentSurfaceArea += attached_object->recursiveGetScaledSurfaceArea();
 
+		mPerfPolyCount += attached_object->recursiveGetTriangleCount();
+
 		textures.clear();
 		const LLDrawable* drawable = attached_object->mDrawable;
 		if (drawable)
@@ -10843,6 +10844,8 @@ void LLVOAvatar::accountRenderComplexityForObject(
 					attachment_volume_cost += animated_object_attachment_surcharge;
 				}
 				attachment_volume_cost += volume->getRenderCost(textures);
+				mPerfObjectCount++;
+				mPerfLightCount += volume->getIsLight();
 
 				const_child_list_t children = volume->getChildren();
 				for (const_child_list_t::const_iterator child_iter = children.begin();
@@ -10854,9 +10857,12 @@ void LLVOAvatar::accountRenderComplexityForObject(
 					if (child)
 					{
 						attachment_children_cost += child->getRenderCost(textures);
+						mPerfLightCount += child->getIsLight();
 					}
 				}
+				mPerfObjectCount += children.size();
 
+				mPerfTextureCount += textures.size();
 				for (LLVOVolume::texture_cost_t::iterator volume_texture = textures.begin();
 						volume_texture != textures.end();
 						++volume_texture)
@@ -11120,6 +11126,12 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
         mAttachmentVisibleTriangleCount = 0;
         mAttachmentEstTriangleCount = 0.f;
         mAttachmentSurfaceArea = 0.f;
+
+		mPerfTextureCount = 0;
+		mPerfLightCount = 0;
+		mPerfPolyCount = 0;
+		mPerfObjectCount = 0;
+		mPerfRank = PERF_UNKNOWN;
         
         // A standalone animated object needs to be accounted for
         // using its associated volume. Attached animated objects
@@ -11231,6 +11243,53 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
             // HUD complexity
             LLHUDRenderNotifier::getInstance()->updateNotificationHUD(hud_complexity_list);
         }
+
+		/*if (mPerfPolyCount > 200000
+			|| mPerfLightCount > 32
+			|| mPerfTextureCount > 50
+			|| mPerfObjectCount > 256)
+		{
+			mPerfRank = PERF_VERYPOOR;
+		}
+		else if (mPerfPolyCount > 125000
+			|| mPerfLightCount > 24
+			|| mPerfTextureCount > 42
+			|| mPerfObjectCount > 128)
+		{
+			mPerfRank = PERF_POOR;
+		}
+		else if (mPerfPolyCount > 75000
+			|| mPerfLightCount > 16
+			|| mPerfTextureCount > 36
+			|| mPerfObjectCount > 64)
+		{
+			mPerfRank = PERF_MEDIUM;
+		}
+		else if (mPerfPolyCount > 32000
+			|| mPerfLightCount > 6
+			|| mPerfTextureCount > 24
+			|| mPerfObjectCount > 24)
+		{
+			mPerfRank = PERF_GOOD;
+		}
+		else if(mPerfObjectCount <= 256
+			&& mPerfLightCount <= 6
+			&& mPerfPolyCount <= 32000
+			&& mPerfTextureCount <= 24)
+		{
+			mPerfRank = PERF_EXCELLENT;
+		}*/
+
+		if (cost > 500000)
+			mPerfRank = PERF_VERYPOOR;
+		else if (cost > 250000)
+			mPerfRank = PERF_POOR;
+		else if (cost > 125000)
+			mPerfRank = PERF_MEDIUM;
+		else if (cost > 48000)
+			mPerfRank = PERF_GOOD;
+		else
+			mPerfRank = PERF_EXCELLENT;
     }
 }
 
@@ -11450,37 +11509,37 @@ void LLVOAvatar::calcMutedAVColor()
 // [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
 	else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 || mMutedAVColor == LLColor4::silhouette)
 // [/RLVa:KB]
-   {
-        // select a color based on the first byte of the agents uuid so any muted agent is always the same color
-        F32 color_value = (F32) (av_id.mData[0]);
-        F32 spectrum = (color_value / 256.0);          // spectrum is between 0 and 1.f
+	{
+		// select a color based on the first byte of the agents uuid so any muted agent is always the same color
+		F32 color_value = (F32)(av_id.mData[0]);
+		F32 spectrum = (color_value / 256.0);          // spectrum is between 0 and 1.f
 
-        // Array of colors.  These are arranged so only one RGB color changes between each step,
-        // and it loops back to red so there is an even distribution.  It is not a heat map
-        const S32 NUM_SPECTRUM_COLORS = 7;
-        static LLColor4 * spectrum_color[NUM_SPECTRUM_COLORS] = { &LLColor4::red, &LLColor4::magenta, &LLColor4::blue, &LLColor4::cyan, &LLColor4::green, &LLColor4::yellow, &LLColor4::red };
+		// Array of colors.  These are arranged so only one RGB color changes between each step,
+		// and it loops back to red so there is an even distribution.  It is not a heat map
+		const S32 NUM_SPECTRUM_COLORS = 7;
+		static LLColor4 * spectrum_color[NUM_SPECTRUM_COLORS] = { &LLColor4::red, &LLColor4::magenta, &LLColor4::blue, &LLColor4::cyan, &LLColor4::green, &LLColor4::yellow, &LLColor4::red };
 
-        spectrum = spectrum * (NUM_SPECTRUM_COLORS - 1);               // Scale to range of number of colors
-        S32 spectrum_index_1  = floor(spectrum);                               // Desired color will be after this index
-        S32 spectrum_index_2  = spectrum_index_1 + 1;                  //    and before this index (inclusive)
-        F32 fractBetween = spectrum - (F32)(spectrum_index_1);  // distance between the two indexes (0-1)
+		spectrum = spectrum * (NUM_SPECTRUM_COLORS - 1);               // Scale to range of number of colors
+		S32 spectrum_index_1 = floor(spectrum);                               // Desired color will be after this index
+		S32 spectrum_index_2 = spectrum_index_1 + 1;                  //    and before this index (inclusive)
+		F32 fractBetween = spectrum - (F32)(spectrum_index_1);  // distance between the two indexes (0-1)
 
-        new_color = lerp(*spectrum_color[spectrum_index_1], *spectrum_color[spectrum_index_2], fractBetween);
+		new_color = lerp(*spectrum_color[spectrum_index_1], *spectrum_color[spectrum_index_2], fractBetween);
 		new_color.normalize();
-        new_color *= 0.28f;            // Tone it down
+		new_color *= 0.28f;            // Tone it down
 	}
 #endif
-    else
-    {
+	else
+	{
 		new_color = LLColor4::grey4;
-        change_msg = " over limit color ";
-    }
+		change_msg = " over limit color ";
+	}
 
-    if (mMutedAVColor != new_color) 
-    {
-        // _LL_DEBUGS("AvatarRender") << "avatar "<< av_id << change_msg << std::setprecision(3) << new_color << LL_ENDL;
-        mMutedAVColor = new_color;
-    }
+	if (mMutedAVColor != new_color)
+	{
+		// _LL_DEBUGS("AvatarRender") << "avatar "<< av_id << change_msg << std::setprecision(3) << new_color << LL_ENDL;
+		mMutedAVColor = new_color;
+	}
 }
 
 // static
