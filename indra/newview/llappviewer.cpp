@@ -1341,7 +1341,7 @@ bool LLAppViewer::init()
 	// Load User's bindings
 	//loadKeyBindings();
 
-	//	//BD - Custom Keyboard Layout
+//	//BD - Custom Keyboard Layout
 	loadKeyboardlayout();
 
 	return true;

@@ -2861,9 +2861,6 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onChangeSoundFolder();
 	onChangeAnimationFolder();
 	
-	// Load (double-)click to walk/teleport settings.
-	updateClickActionViews();
-	
 	// Enabled/disabled popups, might have been changed by user actions
 	// while preferences floater was closed.
 	buildPopupLists();
