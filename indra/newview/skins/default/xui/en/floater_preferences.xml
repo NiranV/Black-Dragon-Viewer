@@ -63,6 +63,22 @@ width="669">
  name="start_gesture">
  Start Gesture
  </string>
+ <string
+ name="toggle_voice">
+ Voice (Toggle)
+ </string>
+ <string
+ name="toggle_run">
+ Run (Toggle)
+ </string>
+ <string
+ name="toggle_sit">
+ Sit / Standup
+ </string>
+ <string
+ name="voice_follow_key">
+ Voice (Push-To-Talk)
+ </string>
  
  <string
  name="move_forward">

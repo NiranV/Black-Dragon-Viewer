@@ -46,6 +46,7 @@ class LLKeyboardBinding
 {
 public:
     KEY				mKey;
+	EMouseClickType	mMouse;
     MASK			mMask;
 
     LLKeyFunc		mFunction;
@@ -65,6 +66,7 @@ typedef enum e_keyboard_mode
 {
 	MODE_FIRST_PERSON,
 	MODE_THIRD_PERSON,
+	MODE_EDIT,
 	MODE_EDIT_AVATAR,
 	MODE_SITTING,
 	MODE_COUNT
@@ -99,6 +101,8 @@ public:
 		Optional<KeyMode>	first_person,
 							third_person,
 							sitting,
+//							//BD - Custom Keyboard Layout
+							editing,
 							edit_avatar;
 
 		Keys();
@@ -109,16 +113,13 @@ public:
 	BOOL			handleKey(KEY key, MASK mask, BOOL repeated);
 	BOOL			handleKeyUp(KEY key, MASK mask);
 
-	S32				loadBindingsXML(const std::string& filename);										// returns number bound, 0 on error
 	EKeyboardMode	getMode() const;
 
 	static BOOL		modeFromString(const std::string& string, S32 *mode);			// False on failure
-	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode);// False on failure
+	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode, bool translate = false);// False on failure
 
-    bool            scanKey(KEY key,
-                            BOOL key_down,
-                            BOOL key_up,
-                            BOOL key_level) const;
+//	//BD - Custom Keyboard Layout
+	std::string		stringFromMouse(EMouseClickType click, bool translate);
 
     // handleMouse() records state, scanMouse() goes through states, scanMouse(click) processes individual saved states after UI is done with them
     BOOL            handleMouse(LLWindow *window_impl, LLCoordGL pos, MASK mask, EMouseClickType clicktype, BOOL down);
@@ -126,6 +127,16 @@ public:
 
     bool            isMouseBindUsed(const EMouseClickType mouse, const MASK mask = MASK_NONE, const S32 mode = MODE_THIRD_PERSON);
 
+//	//BD - Custom Keyboard Layout
+	BOOL			exportBindingsXML(const std::string& filename);
+	BOOL			unbindAllKeys(bool reset);
+	BOOL			unbindModeKeys(bool reset, S32 mode);
+	S32				loadBindingsSettings(const std::string& filename);
+
+	bool            scanKey(KEY key,BOOL key_down,BOOL key_up,BOOL key_level);
+
+	BOOL			bindControl(const S32 mode, const KEY key, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
+	BOOL			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
 private:
     bool            scanKey(const std::vector<LLKeyboardBinding> &binding,
                             S32 binding_count,
@@ -145,15 +156,8 @@ private:
         MOUSE_STATE_SILENT // notified about 'up', do not notify again
     };
     bool			scanMouse(EMouseClickType click, EMouseState state) const;
-    bool            scanMouse(const std::vector<LLMouseBinding> &binding,
-                          S32 binding_count,
-                          EMouseClickType mouse,
-                          MASK mask,
-                          EMouseState state) const;
+    bool            scanMouse(EMouseClickType mouse, S32 mode, MASK mask, EMouseState state) const;
 
-    S32				loadBindingMode(const LLViewerInput::KeyMode& keymode, S32 mode);
-    BOOL			bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name);
-    BOOL			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
     void			resetBindings();
 
 	// Hold all the ugly stuff torn out to make LLKeyboard non-viewer-specific here
@@ -162,7 +166,11 @@ private:
     // would be much better to send to functions actual state of the button than
     // to send what we think function wants based on collection of bools (mKeyRepeated, mKeyLevel, mKeyDown)
     std::vector<LLKeyboardBinding>	mKeyBindings[MODE_COUNT];
-    std::vector<LLMouseBinding>		mMouseBindings[MODE_COUNT];
+	std::vector<LLMouseBinding>		mMouseBindings[MODE_COUNT];
+
+//	//BD - Custom Keyboard Layout
+	S32				mBindingCount[MODE_COUNT];
+	LLKeyBinding	mBindings[MODE_COUNT][MAX_KEY_BINDINGS];
 
 	typedef std::map<U32, U32> key_remap_t;
 	key_remap_t		mRemapKeys[MODE_COUNT];

@@ -54,6 +54,7 @@ class LLKeyBinding
 {
 public:
 	KEY				mKey;
+	EMouseClickType	mMouse;
 	MASK			mMask;
 // 	const char		*mName; // unused
 	LLKeyFunc		mFunction;

@@ -159,7 +159,7 @@ public:
 	void onClickResetCache();
 	void onClickSetKey();
 	void setKey(KEY key);
-	void setMouse(LLMouseHandler::EClickType click);
+	void setMouse(EMouseClickType click);
 	void onClickSetMiddleMouse();
 	void onClickSetSounds();
 	void onClickEnablePopup();
@@ -241,9 +241,9 @@ public:
 	void onUnbindControls();
 	void onDefaultControls();
 	void refreshKeys();
-	void onAddBind(KEY key, MASK mask, std::string action);
+	void onAddBind(KEY key, EMouseClickType mouse, MASK mask, std::string action);
 	void onRemoveBind();
-	void onReplaceBind(KEY key, MASK mask);
+	void onReplaceBind(KEY key, EMouseClickType mouse, MASK mask);
 	void onListClickAction();
 	void onClickSetAnyKey();
 

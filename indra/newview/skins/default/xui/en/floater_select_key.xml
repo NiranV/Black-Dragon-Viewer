@@ -164,6 +164,14 @@
   name="stop_moving"
   value="stop_moving" />
   <combo_box.item
+  label="Toggle Sit"
+  name="toggle_sit"
+  value="toggle_sit" />
+  <combo_box.item
+  label="Toggle Run"
+  name="toggle_run"
+  value="toggle_run" />
+  <combo_box.item
   label="                 Misc"
   enabled="false"
   value="menu_separator" />
@@ -175,6 +183,14 @@
   label="Start Gesture"
   name="start_gesture"
   value="start_gesture" />
+  <combo_box.item
+  label="Toggle Voice"
+  name="toggle_voice"
+  value="toggle_voice" />
+  <combo_box.item
+  label="Toggle Voice (Push-To-Talk)"
+  name="voice_follow_key"
+  value="voice_follow_key" />
   <combo_box.item
   label="             Camera"
   enabled="false"
@@ -411,6 +427,22 @@
   label="Start Gesture"
   name="start_gesture"
   value="start_gesture" />
+  <combo_box.item
+  label="Pause Media"
+  name="toggle_pause_media"
+  value="toggle_pause_media" />
+  <combo_box.item
+  label="Start Media"
+  name="toggle_enable_media"
+  value="toggle_enable_media" />
+  <combo_box.item
+  label="Teleport To"
+  name="teleport_to"
+  value="teleport_to" />
+  <combo_box.item
+  label="Walk To"
+  name="walk_to"
+  value="walk_to" />
   <combo_box.item
   label="             Camera"
   enabled="false"

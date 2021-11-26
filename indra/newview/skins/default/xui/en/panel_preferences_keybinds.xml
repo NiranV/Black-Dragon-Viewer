@@ -68,10 +68,14 @@ width="510">
     <scroll_list.columns
      label="Function Name"
      name="function"
-   relative_width="0.35"  />
+   relative_width="0.25"  />
     <scroll_list.columns
      label="Button"
      name="button"
+   relative_width="0.10"  />
+    <scroll_list.columns
+     label="Mouse"
+     name="mouse"
    relative_width="0.15"  />
     <scroll_list.columns
      label="Modifiers"

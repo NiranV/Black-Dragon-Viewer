@@ -120,7 +120,7 @@
 //BD
 #include "lldefs.h"
 #include "lldiriterator.h"
-#include "llviewerkeyboard.h"
+#include "llviewerinput.h"
 #include "llprogressbar.h"
 #include "lllogininstance.h"        // to check if logged in yet
 #include "llsdserialize.h"
@@ -132,6 +132,7 @@
 #include "bdsidebar.h"
 #include "bdfunctions.h"
 #include "exopostprocess.h"
+#include "llkeyconflict.h"
 
 //BD - Avatar Rendering Settings
 #include "llfloateravatarpicker.h"
@@ -475,7 +476,7 @@ public:
 	void setParent(LLFloaterPreference* parent) { mParent = parent; }
 	
 	BOOL handleKeyHere(KEY key, MASK mask);
-	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, LLMouseHandler::EClickType clicktype, BOOL down);
+	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
 	static void onCancel(void* user_data);
 		
 private:
@@ -537,11 +538,11 @@ BOOL LLVoiceSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 	return result;
 }
 
-BOOL LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, LLMouseHandler::EClickType clicktype, BOOL down)
+BOOL LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
 {
     BOOL result = FALSE;
     if (down
-        && (clicktype == LLMouseHandler::CLICK_MIDDLE || clicktype == LLMouseHandler::CLICK_BUTTON4 || clicktype == LLMouseHandler::CLICK_BUTTON5)
+        && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5)
         && mask == 0)
     {
         mParent->setMouse(clicktype);
@@ -576,6 +577,7 @@ public:
 	void setMode(S32 mode);
 
 	BOOL handleKeyHere(KEY key, MASK mask);
+	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
 	void onCancel();
 	void onBind();
 	void onActionCommit(LLUICtrl* ctrl, const LLSD& param);
@@ -585,6 +587,7 @@ public:
 	S32 mMode;
 	MASK mMask;
 	KEY mKey;
+	EMouseClickType mMouse;
 	LLSD mAction;
 private:
 	LLFloaterPreference* mParent;
@@ -596,6 +599,7 @@ LLSetKeyDialog::LLSetKeyDialog(const LLSD& key)
 	mMode(NULL),
 	mMask(MASK_NONE),
 	mKey(NULL),
+	mMouse(CLICK_NONE),
 	mAction()
 {
 	mCommitCallbackRegistrar.add("Set.Masks", boost::bind(&LLSetKeyDialog::onMasks, this));
@@ -661,6 +665,34 @@ BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 	return TRUE;
 }
 
+BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
+{
+	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
+	std::string mouse = "";
+	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5))
+	{
+		mMouse = clicktype;
+		if(clicktype == CLICK_MIDDLE)
+			mouse = "Middle Mouse";
+		else if (clicktype == CLICK_BUTTON4)
+			mouse = "Mouse Button 4";
+		else if (clicktype == CLICK_BUTTON5)
+			mouse = "Mouse Button 5";
+	}
+	else
+	{
+		LLMouseHandler::handleAnyMouseClick(x, y, mask, clicktype, down);
+		return FALSE;
+	}
+
+	ctrl->setTextArg("[KEY]", mouse);
+	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+	LL_INFOS() << "Pressed: " << clicktype << " + "
+		<< mask << gKeyboard->stringFromMask(mask) << LL_ENDL;
+
+	return TRUE;
+}
+
 void LLSetKeyDialog::onActionCommit(LLUICtrl* ctrl, const LLSD& param)
 {
 	mAction = ctrl->getValue();
@@ -707,9 +739,9 @@ void LLSetKeyDialog::onCancel()
 
 void LLSetKeyDialog::onBind()
 {
-	if (mParent && mKey != NULL && !mAction == NULL)
+	if (mParent && (mKey != NULL || mMouse != CLICK_NONE) && !mAction == NULL)
 	{
-		mParent->onAddBind(mKey, mMask, mAction);
+		mParent->onAddBind(mKey, mMouse, mMask, mAction);
 		this->closeFloater();
 	}
 	else
@@ -734,6 +766,7 @@ public:
 	void setMode(S32 mode) { mMode = mode; }
 	void setKey(KEY key) { mKey = key; }
 	void setMask(MASK mask) { mMask = mask;	}
+	void setMouse(EMouseClickType mouse) { mMouse = mouse; }
 
 	BOOL handleKeyHere(KEY key, MASK mask);
 	void onCancel();
@@ -744,6 +777,7 @@ public:
 	S32 mMode;
 	MASK mMask;
 	KEY mKey;
+	EMouseClickType mMouse;
 private:
 	LLFloaterPreference* mParent;
 };
@@ -753,7 +787,8 @@ LLChangeKeyDialog::LLChangeKeyDialog(const LLSD& key)
 	mParent(NULL),
 	mMode(NULL),
 	mMask(MASK_NONE),
-	mKey(NULL)
+	mKey(NULL),
+	mMouse(CLICK_NONE)
 {
 	mCommitCallbackRegistrar.add("Set.Masks", boost::bind(&LLChangeKeyDialog::onMasks, this));
 	mCommitCallbackRegistrar.add("Set.Bind", boost::bind(&LLChangeKeyDialog::onBind, this));
@@ -784,6 +819,7 @@ void LLChangeKeyDialog::onOpen(const LLSD& key)
 	old_ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
 	mKey = NULL;
+	mMouse = CLICK_NONE;
 	mMask = MASK_NONE;
 
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
@@ -852,9 +888,9 @@ void LLChangeKeyDialog::onCancel()
 
 void LLChangeKeyDialog::onBind()
 {
-	if (mParent && mKey != NULL)
+	if (mParent && (mKey != NULL || mMouse != CLICK_NONE))
 	{
-		mParent->onReplaceBind(mKey, mMask);
+		mParent->onReplaceBind(mKey, mMouse, mMask);
 	}
 	this->closeFloater();
 }
@@ -1482,13 +1518,14 @@ void LLFloaterPreference::onExportControls()
 		LLScrollListItem* row = mBindModeList->getFirstSelected();
 		MASK old_mask = MASK_NONE;
 		KEY old_key = NULL;
+		EMouseClickType old_mouse = CLICK_NONE;
+		gViewerInput.mouseFromString(row->getColumn(3)->getValue().asString(), &old_mouse, false);
 		gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
-		gKeyboard->maskFromString(row->getColumn(3)->getValue().asString(), &old_mask);
-		gViewerKeyboard.bindKey(mode, old_key, old_mask, row->getColumn(1)->getValue().asString());
+		gKeyboard->maskFromString(row->getColumn(4)->getValue().asString(), &old_mask);
+		gViewerInput.bindControl(mode, old_key, old_mouse, old_mask, row->getColumn(1)->getValue().asString());
 		it++;
 	}
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
-	gViewerKeyboard.exportBindingsXML(filename);
 	gViewerInput.exportBindingsXML(filename);
 	refreshKeys();
 }
@@ -1496,24 +1533,19 @@ void LLFloaterPreference::onExportControls()
 void LLFloaterPreference::onUnbindControls()
 {
 	//BD - Simply unbind everything and save it.
-	gViewerKeyboard.unbindAllKeys(true);
 	gViewerInput.unbindAllKeys(true);
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");
-	gViewerKeyboard.exportBindingsXML(filename);
 	gViewerInput.exportBindingsXML(filename);
 	refreshKeys();
 }
 
 void LLFloaterPreference::onDefaultControls()
 {
-	gViewerKeyboard.unbindAllKeys(true);
 	gViewerInput.unbindAllKeys(true);
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "controls.xml");
 	LL_INFOS("Settings") << "Loading default controls file from " << filename << LL_ENDL;
-	if (gViewerKeyboard.loadBindingsSettings(filename))
 	if (gViewerInput.loadBindingsSettings(filename))
 	{
-		gViewerKeyboard.exportBindingsXML(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml"));
 		gViewerInput.exportBindingsXML(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml"));
 	}
 	refreshKeys();
@@ -1531,7 +1563,7 @@ void LLFloaterPreference::onRemoveBind()
 	onExportControls();
 }
 
-void LLFloaterPreference::onAddBind(KEY key, MASK mask, std::string action)
+void LLFloaterPreference::onAddBind(KEY key, EMouseClickType mouse, MASK mask, std::string action)
 {
 	if (!mBindModeList)
 		return;
@@ -1543,13 +1575,15 @@ void LLFloaterPreference::onAddBind(KEY key, MASK mask, std::string action)
 	row["columns"][1]["value"] = action;
 	row["columns"][2]["column"] = "button";
 	row["columns"][2]["value"] = gKeyboard->stringFromKey(key);
-	row["columns"][3]["column"] = "modifiers";
-	row["columns"][3]["value"] = gKeyboard->stringFromMask(mask, true);
+	row["columns"][3]["column"] = "mouse";
+	row["columns"][3]["value"] = gViewerInput.stringFromMouse(mouse, false);
+	row["columns"][4]["column"] = "modifiers";
+	row["columns"][4]["value"] = gKeyboard->stringFromMask(mask, true);
 	mBindModeList->addElement(row);
 	onExportControls();
 }
 
-void LLFloaterPreference::onReplaceBind(KEY key, MASK mask)
+void LLFloaterPreference::onReplaceBind(KEY key, EMouseClickType mouse, MASK mask)
 {
 	if (!mBindModeList)
 		return;
@@ -1559,9 +1593,11 @@ void LLFloaterPreference::onReplaceBind(KEY key, MASK mask)
 	{
 		LLScrollListCell* column_3 = item->getColumn(2);
 		LLScrollListCell* column_4 = item->getColumn(3);
+		LLScrollListCell* column_5 = item->getColumn(4);
 
 		column_3->setValue(LLKeyboard::stringFromKey(key));
-		column_4->setValue(LLKeyboard::stringFromMask(mask, true));
+		column_4->setValue(gViewerInput.stringFromMouse(mouse, true));
+		column_5->setValue(LLKeyboard::stringFromMask(mask, true));
 	}
 	onExportControls();
 }
@@ -1625,6 +1661,7 @@ void LLFloaterPreference::refreshKeys()
 		gKeyboard->maskFromString(settings["mask"].asString(), &mask);
 		std::string action_str = getString(settings["function"].asString());
 		std::string mask_str = gKeyboard->stringFromMask(mask, true);
+		std::string mouse_str = gViewerInput.stringFromMouse((EMouseClickType)settings["mouse"].asInteger(), false);
 
 		row["columns"][0]["column"] = "action";
 		row["columns"][0]["value"] = action_str;
@@ -1632,8 +1669,10 @@ void LLFloaterPreference::refreshKeys()
 		row["columns"][1]["value"] = settings["function"].asString();
 		row["columns"][2]["column"] = "button";
 		row["columns"][2]["value"] = settings["key"].asString();
-		row["columns"][3]["column"] = "modifiers";
-		row["columns"][3]["value"] = mask_str;
+		row["columns"][3]["column"] = "mouse";
+		row["columns"][3]["value"] = mouse_str;
+		row["columns"][4]["column"] = "modifiers";
+		row["columns"][4]["value"] = mask_str;
 		LLScrollListItem* element = mBindModeList->addElement(row);
 
 		//BD - Ouch, we're doing super slow string comparison here to check for
@@ -1645,9 +1684,10 @@ void LLFloaterPreference::refreshKeys()
 
 			if (item != element)
 			{
-				if (item->getColumn(2)->getValue().asString() == settings["key"].asString())
+				if (item->getColumn(2)->getValue().asString() == settings["key"].asString()
+					&& item->getColumn(3)->getValue().asString() == settings["mouse"].asString())
 				{
-					if (item->getColumn(3)->getValue().asString() == mask_str)
+					if (item->getColumn(4)->getValue().asString() == mask_str)
 					{
 						item->setMarked(true);
 						element->setMarked(true);
@@ -2820,7 +2860,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onChangeTextureFolder();
 	onChangeSoundFolder();
 	onChangeAnimationFolder();
-
+	
 	// Load (double-)click to walk/teleport settings.
 	updateClickActionViews();
 	
@@ -3277,21 +3317,21 @@ void LLFloaterPreference::setKey(KEY key)
 	getChild<LLUICtrl>("modifier_combo")->onCommit();
 }
 
-void LLFloaterPreference::setMouse(LLMouseHandler::EClickType click)
+void LLFloaterPreference::setMouse(EMouseClickType click)
 {
     std::string bt_name;
     std::string ctrl_value;
     switch (click)
     {
-        case LLMouseHandler::CLICK_MIDDLE:
+        case CLICK_MIDDLE:
             bt_name = "middle_mouse";
             ctrl_value = MIDDLE_MOUSE_CV;
             break;
-        case LLMouseHandler::CLICK_BUTTON4:
+        case CLICK_BUTTON4:
             bt_name = "button4_mouse";
             ctrl_value = MOUSE_BUTTON_4_CV;
             break;
-        case LLMouseHandler::CLICK_BUTTON5:
+        case CLICK_BUTTON5:
             bt_name = "button5_mouse";
             ctrl_value = MOUSE_BUTTON_5_CV;
             break;
