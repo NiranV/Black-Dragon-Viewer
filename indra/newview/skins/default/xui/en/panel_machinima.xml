@@ -1895,7 +1895,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowIterations"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="0"
                   enabled="true"
                   follows="left|top"
@@ -1915,7 +1915,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowStrength"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="3"
                   enabled="true"
                   follows="left|top"
@@ -1935,7 +1935,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowMinLuminance"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="1"
                   enabled="true"
                   follows="left|top"
@@ -1955,7 +1955,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowWarmthAmount"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="1"
                   enabled="true"
                   follows="left|top"
@@ -1975,7 +1975,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowWidth"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="1"
                   enabled="true"
                   follows="left|top"
@@ -1995,7 +1995,7 @@ width="345">
                   width="310" />
                   <slider  
                   control_name="RenderGlowMaxExtractAlpha"
-                  visiblity_control="RenderGlow"
+                  enabled_control="RenderGlow"
                   decimal_digits="3"
                   enabled="true"
                   follows="left|top"
