@@ -1385,9 +1385,12 @@ S32 LLViewerInput::loadBindingsSettings(const std::string& filename)
 
 		LLKeyboard::keyFromString(settings["key"], &key);
 		LLKeyboard::maskFromString(settings["mask"], &mask);
-		mouse = (EMouseClickType)settings["mouse"].asInteger();
+		if (settings["mouse"].isDefined())
+		{
+			mouse = (EMouseClickType)settings["mouse"].asInteger();
+		}
 		bindControl(mode, key, mouse, mask, function);
-		LL_INFOS("Settings") << "Binding key: " << key << LL_ENDL;
+		LL_INFOS("Settings") << "Binding key: " << key << " and mouse: " << mouse << LL_ENDL;
 	}
 	infile.close();
 	return TRUE;
