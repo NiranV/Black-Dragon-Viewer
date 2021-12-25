@@ -1038,8 +1038,12 @@ void LLViewerJoystick::moveFlycam(bool reset)
 	F32 max_angle = viewer_cam->getMaxView();
 	F32 min_angle = viewer_cam->getMinView();
 
+	//BD - Slam zoom back to default and kill any delta we might have.
 	if (mBtn[mMappedButtons[ZOOM_DEFAULT]] == 1)
+	{
 		sFlycamZoom = gSavedSettings.getF32("CameraAngle");
+		sDelta[CAM_W_AXIS] = 0.0f;
+	}
 
 	//BD - Only smooth flycam zoom if we are not capping at the min/max otherwise the feathering
 	//     ends up working against previous input, delaying zoom in movement when we just zoomed
@@ -1055,19 +1059,16 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		mAxes[mMappedAxes[CAM_X_AXIS]] -= (F32)mBtn[mMappedButtons[ROLL_LEFT]];
 	if (mMappedButtons[ROLL_RIGHT] >= 0)
 		mAxes[mMappedAxes[CAM_X_AXIS]] += (F32)mBtn[mMappedButtons[ROLL_RIGHT]];
-	if (mMappedButtons[ZOOM_OUT] >= 0)
-		mAxes[mMappedAxes[CAM_W_AXIS]] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
-	if (mMappedButtons[ZOOM_IN] >= 0)
-		mAxes[mMappedAxes[CAM_W_AXIS]] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
-	if (mMappedButtons[JUMP] >= 0)
-		mAxes[mMappedAxes[Z_AXIS]] += (F32)mBtn[mMappedButtons[JUMP]];
-	if (mMappedButtons[CROUCH] >= 0)
-		mAxes[mMappedAxes[Z_AXIS]] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 	bool is_zero = true;
 	for (U32 i = 0; i < 7; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
+
+		cur_delta[CAM_W_AXIS] -= (F32)mBtn[mMappedButtons[ZOOM_OUT]];
+		cur_delta[CAM_W_AXIS] += (F32)mBtn[mMappedButtons[ZOOM_IN]];
+		cur_delta[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
+		cur_delta[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 		F32 tmp = cur_delta[i];
 		if (mCursor3D)

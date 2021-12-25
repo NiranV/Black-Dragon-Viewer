@@ -135,7 +135,7 @@ public:
 	void refreshEverything();
 
 	long					mBtn[16];
-	F32						mAxes[6];
+	F32						mAxes[MAX_AXES];
 	
 	bool isDeviceUUIDSet();
 	LLSD getDeviceUUID(); //unconverted, OS dependent value wrapped into LLSD, for comparison/search
