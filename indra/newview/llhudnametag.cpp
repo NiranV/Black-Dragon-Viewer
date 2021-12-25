@@ -445,7 +445,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
 	{
 		LLRect developer_rect = screen_rect;
-		developer_rect.setCenterAndSize(voice_enabled ? 12 : 2, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)) + 18, 18,18);
+		developer_rect.setCenterAndSize(voice_enabled ? 12 : 2, screen_rect.mTop + 3, 18,18);
 		mDeveloperImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, developer_rect, text_color);
 	}
 
