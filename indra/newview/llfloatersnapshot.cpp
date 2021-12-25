@@ -1460,8 +1460,8 @@ void LLFloaterSnapshot::onSaveToComputer()
 
 	if(gSavedSettings.getS32("LastSnapshotToDiskWidth") != 0)
 		mWidthSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskWidth"));
-	if (gSavedSettings.getS32("LastSnapshotToDiskHeigh") != 0)
-		mHeightSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskHeigh"));
+	if (gSavedSettings.getS32("LastSnapshotToDiskHeight") != 0 && !mKeepAspectCheckCtrl->getValue())
+		mHeightSpinnerCtrl->setValue(gSavedSettings.getS32("LastSnapshotToDiskHeight"));
 
 	mSaveBtn->setLabelArg("[UPLOAD_COST]", std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost()));
 	mSizeComboCtrl->setCommitCallback(boost::bind(&LLFloaterSnapshot::updateResolution, this, _1, true));
