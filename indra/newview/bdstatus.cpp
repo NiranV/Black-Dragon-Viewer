@@ -119,7 +119,11 @@ void BDStatus::setPosing(bool toggle)
 
 void BDStatus::setCameraRoll(bool toggle)
 {
-	gDragonStatus->mCameraRollLayout->setVisible(toggle);
+	if (gDragonStatus)
+	{
+		gDragonStatus->mCameraRollLayout->setVisible(toggle);
+		gDragonStatus->mRoll = toggle;
+	}
 }
 
 void BDStatus::setCameraLock(bool toggle)
