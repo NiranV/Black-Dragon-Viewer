@@ -173,8 +173,92 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="169"
+     height="585"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Function to revert poser bone rotations to original pose.
+Added: Flyam status bar button.
+Added: Missing textures.
+Added: Ample Clarity as Patreon patron.
+Added: Cisco Jabberwocky as Patreon patron.
+Added: Derenova as Patreon patron.
+Added: Erik Hugo as Patreon patron.
+Added: iPro Resident as Patreon patron.
+Added: Jasmyne as Patreon patron.
+Added: Kenzie Starlight as Patreon patron.
+Added: Shyaltii Milneaux as Patreon patron.
+Added: Sonny J as Patreon patron.
+Added: Stephan Bedard as Patreon patron.
+Added: Tatsushi Ohara as Patreon patron.
+Added: Zieb Zen as Patreon patron.
+Added: Prim Possible store page to login screen.
+Added: ASA Studios store page to login screen.
+Added: Implemented a simple performance ranking system shown on the avatar name tag.
+Added: Zelda as Patreon patron.
+Added: Mister Durden as Patreon patron.
+Changed: Raised default Xbox 360 Controller deadzones slightly to reduce accidential movement.
+Changed: Make People window save its visibility.
+Changed: Switched out login screen video.
+Changed: (EXPERIMENTAL) Scale down head bones while in mouselook to prevent them clipping into view.
+Changed: Swapped Wireframe and Linden style outlines.
+Changed: Increase Poser priority to 10 making it theoretically impossible to overwrite.
+Changed: Glow settings in Machinima sidebar now become disabled rather than invisible.
+Changed: Version to 4.0.3.
+Fixed: Compile.
+Fixed: Rigged attachments attached to the head not hidden in mouselook.
+Fixed: Crash when trying to switch camera presets.
+Fixed: JPEG Snapshot Quality slider is hidden behind buttons.
+Fixed: Reworked and fixed keybinding system for the latest code, implemented experimental mouse bindings.
+Fixed: Developer icon not being centered properly.
+Fixed: Viewer internally binding Left Mouse Button to all keybinds without a mouse entry.
+Fixed: Zoom and Jump button binding for flycam freaking out.
+Fixed: Developer tag clipping into nametag too much when the nametag has more than one line.
+Fixed: Snapshot window not setting custom height when Remember Snapshot Mode and Keep Aspect are off.
+Fixed: Potential initialization crash.
+Removed: Unnecessary code.
+Misc: Shader merge, commenting and fixes.
+Misc: Simplified complexity calculation slightly.
+Misc: Cleaned up nametag code a bit.
+Merge Linden Release.
+Merge Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.2
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="169"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
