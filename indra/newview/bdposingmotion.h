@@ -66,7 +66,7 @@ public:
 	virtual F32 getEaseOutDuration() { return 0.5f; }
 
 	// motions must report their priority
-	virtual LLJoint::JointPriority getPriority() { return LLJoint::ADDITIVE_PRIORITY; }
+	virtual LLJoint::JointPriority getPriority() { return LLJoint::POSING_PRIORITY; }
 
 	virtual LLMotionBlendType getBlendType() { return NORMAL_BLEND; }
 
