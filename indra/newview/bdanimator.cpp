@@ -25,6 +25,7 @@
 #include "llviewerjointattachment.h"
 #include "llviewerjoint.h"
 #include "llvoavatarself.h"
+#include "llviewercontrol.h"
 
 #include "bdfloaterposer.h"
 #include "bdanimator.h"
@@ -47,7 +48,8 @@ BDAnimator::~BDAnimator()
 
 void BDAnimator::update()
 {
-	if (gAgentCamera.cameraMouselook())
+	static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+	if (exp_scaling && gAgentCamera.cameraMouselook())
 	{
 		LLJoint* joint;
 		for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)

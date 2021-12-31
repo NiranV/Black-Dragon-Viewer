@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="767"
+  height="783"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -670,6 +670,24 @@
    top_pad="0"
    name="UseRealisticMouselook"
    width="256" />
+   <check_box
+   control_name="MouselookExperimentalHeadScaling"
+   follows="left|top"
+   height="16"
+   enabled_control="EnableMouselook"
+   label="Allow experimental head bone scaling in Mouselook"
+   tool_tip="This option toggles whether the Viewer should scale down all head bones while in Mouselook, this should prevent attachments rigged to the head from showing up while in Mouselook.
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|Note that under very specific circumstances with certain avatars this can cause the head to deform and will require a relog to fix, turn this off if that happens."
+   layout="topleft"
+   left="10"
+   top_pad="0"
+   name="MouselookExperimentalHeadScaling"
+   width="256">
+   <check_box.check_button
+     image_overlay="Caution_Widget"
+     image_overlay_alignment="left"/>
+   </check_box>
    <check_box
    control_name="MouseSmooth"
    follows="left|top"
