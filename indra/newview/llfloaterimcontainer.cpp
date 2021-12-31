@@ -819,7 +819,7 @@ void LLFloaterIMContainer::collapseMessagesPane(bool collapse)
     S32 msg_pane_width = mMessagesPane->getRect().getWidth();
 
 	//BD - Switchable Conversations window conversation side.
-	bool is_left = gSavedSettings.getBOOL("IMWindowSwitchside");
+	bool is_left = gSavedSettings.getBOOL("IMWindowSwitchSide");
 	if (collapse)
 	{
 		// Save the messages pane width before collapsing it.
