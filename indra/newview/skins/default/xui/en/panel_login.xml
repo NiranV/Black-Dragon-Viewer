@@ -173,8 +173,58 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="585"
+     height="143"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Option to disable experimental head scaling in Mouselook.
+Added: Option to disable Avatar Performance Rank indicator in nametags.
+Changed: Preload some icons to try and fix loading screen tips getting cut off.
+Changed: Version to 4.0.4.
+Fixed: Poser breaking due to elevated animation priority.
+Fixed: Conversations window not retracting into the correct direction when IM tabs are switched to the left side.
+Fixed: IM tabs of friends have purple names.
+Fixed: Poser randomly breaking when appearance update messages arrive.
+Fixed: Autoscale Rendering being enabled each new login session.
+Removed: Fast Cache Fetch option and force disabled it in code to prevent further incidents with this option.
+Misc: Possible future code changes, currently inactive due to something missing.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.3
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="585"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
