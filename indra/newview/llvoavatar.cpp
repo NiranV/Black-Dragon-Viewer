@@ -2085,7 +2085,7 @@ void LLVOAvatar::applyDefaultParams()
 //-----------------------------------------------------------------------------
 void LLVOAvatar::resetSkeleton(bool reset_animations)
 {
-    // _LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
+    LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
     if (!isControlAvatar() && !mLastProcessedAppearance)
     {
         LL_WARNS() << "Can't reset avatar; no appearance message has been received yet." << LL_ENDL;
@@ -2093,11 +2093,11 @@ void LLVOAvatar::resetSkeleton(bool reset_animations)
     }
 
 	//BD - We need to clear posing here otherwise we'll crash.
-	LLMotion* pose_motion = gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+	LLMotion* pose_motion = findMotion(ANIM_BD_POSING_MOTION);
 	if (pose_motion)
 	{
-		gAgent.clearPosing();
-		gAgentAvatarp->removeMotion(ANIM_BD_POSING_MOTION);
+		clearPosing();
+		removeMotion(ANIM_BD_POSING_MOTION);
 	}
 
     // Save mPelvis state
@@ -9423,7 +9423,8 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 
     bool slam_params = false;
 	applyParsedAppearanceMessage(*contents, slam_params);
-	if (getOverallAppearance() != AOA_NORMAL)
+	//BD - Poser
+	if (getOverallAppearance() != AOA_NORMAL && !mIsPosing)
 	{
 		resetSkeleton(false);
 	}
@@ -11309,7 +11310,9 @@ void LLVOAvatar::setOverallAppearanceNormal()
 		return;
 
     LLVector3 pelvis_pos = getJoint("mPelvis")->getPosition();
-	resetSkeleton(false);
+	//BD - Poser
+	if(!getPosing())
+		resetSkeleton(false);
     getJoint("mPelvis")->setPosition(pelvis_pos);
 
 	for (auto it = mJellyAnims.begin(); it !=  mJellyAnims.end(); ++it)
@@ -11349,7 +11352,8 @@ void LLVOAvatar::setOverallAppearanceJellyDoll()
 	updateOverallAppearanceAnimations();
 	
     LLVector3 pelvis_pos = getJoint("mPelvis")->getPosition();
-	resetSkeleton(false);
+	if(!getPosing())
+		resetSkeleton(false);
     getJoint("mPelvis")->setPosition(pelvis_pos);
 
 }
