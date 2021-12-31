@@ -2449,9 +2449,12 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 				if (mat->getSpecularID().isNull())
 				{
-					env = tex_entry->getShiny()*0.25f;
-					col.set(env,env,env,0);
-					spec = env;
+					//BD - Kill Environment Map without killing materials environment value.
+					//     Only works on avatars.
+					//static LLCachedControl<bool> enable_env(gSavedSettings, "RenderDeferredEnvironmentMap", false);
+					spec = tex_entry->getShiny()*0.25f;
+					env = /*enable_env ?*/ spec /*: 0.f*/;
+					col.set(spec, spec, spec,0);
 				}
 		
 				BOOL fullbright = tex_entry->getFullbright();
