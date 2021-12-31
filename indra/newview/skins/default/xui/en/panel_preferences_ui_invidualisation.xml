@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="922"
+     height="942"
      name="ui_panel"
      top="0"
      left="0"
@@ -653,6 +653,18 @@ width="510">
 	    layout="topleft"
 	    left="10"
 	    name="ShowStatusButtonContainer"
+	    top_pad="0"
+	    width="256" />
+     
+     <check_box
+	    control_name="EnablePerformanceRanking"
+	    height="16"
+	    initial_value="true"
+	    label="Show Performance Rank indicators on nametags"
+		tool_tip="This option toggles whether the Viewer should show an avatar performance indicator next to the name, the performance rank is based on the avatar's complexity."
+	    layout="topleft"
+	    left="10"
+	    name="EnablePerformanceRanking"
 	    top_pad="0"
 	    width="256" />
 		

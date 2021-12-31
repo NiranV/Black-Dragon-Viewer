@@ -285,6 +285,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	bool is_speaking = voice_client->getIsSpeaking(id);
 	static const LLColor4 nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
 	static const LLCachedControl<F32> chat_bubble_opacity_cc(gSavedSettings, "ChatBubbleOpacity");
+	static LLCachedControl<bool> performance_ranking(gSavedSettings, "EnablePerformanceRanking");
 	F32 alpha_factor = 1.f;
 	if (mDoFade)
 	{
@@ -319,13 +320,14 @@ void LLHUDNameTag::renderText(BOOL for_select)
 
 	mRadius = (width_vec + height_vec).magVec() * 0.5f;
 	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
-	mWidth += 24;
+	if(performance_ranking)
+		mWidth += 24;
 
 	screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
 	screen_rect.mRight += voice_enabled ? 20 : 0;
 	mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
 
-	/*if (mLabelSegments.size())
+	if (mLabelSegments.size())
 	{
 		LLRect label_top_rect = screen_rect;
 		const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
@@ -334,7 +336,7 @@ void LLHUDNameTag::renderText(BOOL for_select)
 		label_top_color.mV[VALPHA] = chat_bubble_opacity_cc * alpha_factor;
 
 		mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
-	}*/
+	}
 	
 	if (voice_enabled)
 	{
@@ -357,22 +359,25 @@ void LLHUDNameTag::renderText(BOOL for_select)
 	}
 
 //	//BD - Performance Indicator
-	LLVOAvatar* avatar = mSourceObject->asAvatar();
-	if (avatar)
+	if (performance_ranking)
 	{
-		U32 rank = avatar->getAvatarPerfRank();
-		LLRect perf_rect = screen_rect;
-		perf_rect.setLeftTopAndSize(screen_rect.mLeft + 4, screen_rect.mBottom + 22, 18, 18);
-		if (rank == LLVOAvatar::PERF_VERYPOOR)
-			mPerfVeryPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
-		else if (rank == LLVOAvatar::PERF_POOR)
-			mPerfPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
-		else if (rank == LLVOAvatar::PERF_MEDIUM)
-			mPerfMedium->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
-		else if (rank == LLVOAvatar::PERF_GOOD)
-			mPerfGood->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
-		else
-			mPerfExcellent->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		LLVOAvatar* avatar = mSourceObject->asAvatar();
+		if (avatar)
+		{
+			U32 rank = avatar->getAvatarPerfRank();
+			LLRect perf_rect = screen_rect;
+			perf_rect.setLeftTopAndSize(screen_rect.mLeft + 4, screen_rect.mBottom + 22, 18, 18);
+			if (rank == LLVOAvatar::PERF_VERYPOOR)
+				mPerfVeryPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+			else if (rank == LLVOAvatar::PERF_POOR)
+				mPerfPoor->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+			else if (rank == LLVOAvatar::PERF_MEDIUM)
+				mPerfMedium->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+			else if (rank == LLVOAvatar::PERF_GOOD)
+				mPerfGood->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+			else
+				mPerfExcellent->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
+		}
 	}
 
 	F32 y_offset = (F32)mOffsetY - 1;
@@ -429,11 +434,15 @@ void LLHUDNameTag::renderText(BOOL for_select)
 			F32 x_offset;
 			if (mTextAlignment== ALIGN_TEXT_CENTER)
 			{
-				x_offset = (-0.5f*segment_iter->getWidth(fontp)) + 11;
+				x_offset = (-0.5f*segment_iter->getWidth(fontp));
+				if(performance_ranking)
+					x_offset += 11;
 			}
 			else // ALIGN_LEFT
 			{
-				x_offset = (-0.5f * mWidth + (HORIZONTAL_PADDING / 2.f)) + 23;
+				x_offset = (-0.5f * mWidth + (HORIZONTAL_PADDING / 2.f)) + 1;
+				if (performance_ranking)
+					x_offset += 22;
 			}
 			text_color = segment_iter->mColor;
 			text_color.mV[VALPHA] *= alpha_factor;
