@@ -96,7 +96,9 @@ LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
 	mRefreshLabel(NULL),
 	mSucceessLblPanel(NULL),
 	mFailureLblPanel(NULL),
-	mOutfitGallery(NULL)
+	mOutfitGallery(NULL),
+	//BD
+	mSnapshotAutoscale(false)
 {
 	//BD - Profile
 	mCommitCallbackRegistrar.add("Snapshot.SendProfile", boost::bind(&LLFloaterSnapshot::sendProfile, this));
@@ -222,6 +224,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	
 	//BD
 	mSnapshotFreezeWorld = false;
+	mSnapshotAutoscale = false;
 
 	getBigPreview();
 	mPreviewHandle = previewp->getHandle();
