@@ -559,7 +559,10 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 												   LLGLenum primary_format,
 												   LLHost request_from_host)
 {
-	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", true);
+	//BD - Disable Fast Cache Fetch
+	//     It has caused a lot of vanishing objects in the past, corrupting the cache and making
+	//     a cache clear (and turning this option off) necessary to fix it.
+	//static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", true);
 
 	LLPointer<LLViewerFetchedTexture> imagep ;
 	switch(texture_type)
@@ -604,11 +607,12 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 		imagep->forceActive() ;
 	}
 
-	if(fast_cache_fetching_enabled)
+	//BD - Disable Fast Cache Fetch
+	/*if(fast_cache_fetching_enabled)
 	{
 		mFastCacheList.insert(imagep);
 		imagep->setInFastCacheList(true);
-	}
+	}*/
 	return imagep ;
 }
 
@@ -957,10 +961,11 @@ void LLViewerTextureList::updateImagesDecodePriorities()
 			{
 				continue;
 			}
-			if(imagep->isInFastCacheList())
+			//BD - Disable Fast Cache
+			/*if(imagep->isInFastCacheList())
 			{
 				continue; //wait for loading from the fast cache.
-			}
+			}*/
 
 			imagep->processTextureStats();
 			F32 old_priority = imagep->getDecodePriority();
@@ -1197,7 +1202,8 @@ void LLViewerTextureList::decodeAllImages(F32 max_time)
 	LLTimer timer;
 
 	//loading from fast cache 
-	updateImagesLoadingFastCache(max_time);
+	//BD - Disable Fast Cache
+	//updateImagesLoadingFastCache(max_time);
 
 	// Update texture stats and priorities
 	std::vector<LLPointer<LLViewerFetchedTexture> > image_list;

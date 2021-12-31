@@ -23,7 +23,7 @@ width="510">
 	      <panel
 	      layout="topleft"
 	      follows="left|top|right"
-	      height="949"
+	      height="919"
 	      name="viewer_scroll_panel"
 	      top="0"
 	      left="0"
@@ -601,19 +601,6 @@ width="510">
        <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-  <check_box
-		     follows="left|top"
-		     height="16"
-		     initial_value="false"
-		     control_name="FastCacheFetchEnabled"
-		     label="Enable Fast Cache Fetch"
-		     tool_tip="This option enables fetching textures from the fast cache.
-||&lt;red&gt;It is currently unknown what this option exactly does or if it has any noticeable impact.&lt;/red&gt;"
-		     left="10"
-		     mouse_opaque="true"
-		     name="FastCacheFetchEnabled"
-		     width="400"
-		     top_pad="3"/>
   <panel
  follows="left|top|right"
  height="20"
