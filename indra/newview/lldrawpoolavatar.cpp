@@ -2209,7 +2209,6 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 			{
 				if (!attach_point->getVisibleInFirstPerson())
 				{
-					avatar->getJoint(attach_point->getJointNum())->setScale(LLVector3(0, 0, 0));
 					continue;
 				}
 			}
