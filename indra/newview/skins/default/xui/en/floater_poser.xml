@@ -585,6 +585,10 @@ width="678">
 				image_hover_unselected="Toolbar_Middle_Over"
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
+				button_flash_enable="true"
+				flash_color="0.7 0.7 1 1"
+				button_flash_count="64"
+				button_flash_rate="0.5"
 				name="extend"
 				left_pad="1"
 				top_delta="0"
@@ -709,11 +713,27 @@ width="678">
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							name="reset_bone_rot"
-							width="238"
+							width="159"
 							top="0"
 							left_delta="2">
 							<button.commit_callback
 							function="Joint.ResetJointRotation"/>
+							</button>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							enabled="true"
+							label="Revert Selected Rotation(s)"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							name="revert_pose"
+							width="158"
+							top_delta="0"
+							left_pad="1">
+							<button.commit_callback
+							function="Joint.RevertJointRotation"/>
 							</button>
 						</panel>
 					</panel>
@@ -808,7 +828,7 @@ width="678">
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							name="reset_bone_pos"
-							width="238"
+							width="318"
 							top="0"
 							left_delta="2">
 							<button.commit_callback
@@ -907,7 +927,7 @@ width="678">
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							name="reset_bone_scale"
-							width="238"
+							width="318"
 							top="0"
 							left_delta="2">
 							<button.commit_callback
@@ -928,9 +948,9 @@ width="678">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				name="toggle_bone"
-				width="237"
+				width="157"
 				top_pad="-19"
-				left_delta="242">
+				left_delta="322">
 				<button.commit_callback
 				function="Joint.ChangeState"/>
 				</button>
