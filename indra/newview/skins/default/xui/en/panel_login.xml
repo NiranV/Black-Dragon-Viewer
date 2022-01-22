@@ -173,8 +173,65 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="143"
+     height="234"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Button to revert selected bones to their original position prior to us modifying them.
+Added: Ability to keybind Walk-To and Teleport-To via the keybinding system.
+Added: Shortcut (Ctrl + O) to open Appearance/Outfits. As per suggestion.
+Added: Double Click TP as default keybind.
+Added: Ability to bind Left Mouse Double-Click to actions.
+Changed: Allow overdriving slider values by typing in values directly.
+Changed: Flash the poses button whenever we save a pose to give a visual cue where they can be found.
+Changed: Switch out of Rotation/Position/Scale tabs when they become unavailable for bones.
+Changed: Lock "Show Look At" and "Show Point At" behind godmode/developer checks.
+Changed: Sync maximum Blur Size value with Machinima Sidebar equivalent.
+Changed: Experimental SSAO tweak for smoother SSAO.
+Changed: Make experimental mouselook scaling option disable the reset skeleton call on leave too.
+Changed: Default SSAO setting tweaks.
+Changed: Version to 4.0.5.
+Fixed: Head attachments shifting permanently (until relog) when entering and leaving mouselook.
+Removed: Bad and unused string in Help - About Black Dragon.
+Removed: Broken button keybinding system for voice toggle in Preferences - Sound.
+Misc: Commenting.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.4
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="143"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
