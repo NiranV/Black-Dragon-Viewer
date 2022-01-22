@@ -65,7 +65,6 @@ Automatic Memory Managment: [AUTO_MEM]
 Texture memory: [TEXTURE_MEMORY]MB
 Scene memory: [SCENE_MEMORY]MB
 VFS (cache) creation time: [VFS_TIME]
-Disk cache: [DISK_CACHE_INFO]
 	</string>
 	<string name="AboutOSXHiDPI">
 HiDPI display mode: [HIDPI]
