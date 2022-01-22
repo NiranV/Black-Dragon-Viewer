@@ -1216,7 +1216,7 @@ void LLVOAvatar::initInstance()
 		registerMotion( ANIM_AGENT_TARGET,					LLTargetingMotion::create );
 		registerMotion( ANIM_AGENT_WALK_ADJUST,				LLWalkAdjustMotion::create );
 
-		//BD - Jackpot.
+		//BD - Poser.
 		registerMotion(	ANIM_BD_POSING_MOTION,				BDPosingMotion::create);
 	}
 	
