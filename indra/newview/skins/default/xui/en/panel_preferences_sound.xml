@@ -664,7 +664,7 @@ width="510">
    visiblity_control="ShowDeviceSettings"
    border="false"
    follows="top|left"
-   height="135"
+   height="82"
    label="Device Settings"
    tool_tip="This option opens the input and output configuration and will disconnect you from voice if you are currently using it for as long as this panel remains open."
    layout="topleft"
@@ -804,83 +804,6 @@ width="510">
     name="bar4"
     top_delta="0"
     width="8" />
-    <check_box
-    follows="top|left"
-    enabled_control="EnableVoiceChat"
-    control_name="PushToTalkToggle"
-    height="15"
-    label="Toggle speak on/off when I press:"
-    layout="topleft"
-    left="10"
-    top_pad="7"
-    name="push_to_talk_toggle_check"
-    width="237"
-    tool_tip="This option toggles whether you want to use the microphone toggle mode (press the microphone button once to activate, press again to deactivate) or hold mode (press and hold the microphone button while speaking, let go to deactivate) when using voice."/>
-    <line_editor
-    follows="top|left"
-    control_name="PushToTalkButton"
-    enabled="false"
-    enabled_control="EnableVoiceChat"
-    height="23"
-    left="10"
-    name="modifier_combo"
-    label="Push-to-talk trigger"
-    tool_tip="This option sets the button you have to press or hold to activate/deactivate your microphone."
-    top_pad="5"
-    width="270" />
-    <button
-    follows="left|top"
-    enabled_control="EnableVoiceChat"
-    height="15"
-    is_toggle="false"
-    label_color="White"
-    label="⌊none⌉"
-    image_selected="transparent.j2c"
-    image_unselected="transparent.j2c"
-    layout="topleft"
-    halign="right"
-    left="325"
-    top_delta="2"
-    name="set_voice_none_button"
-    width="45">
-    <button.commit_callback
-            function="Pref.VoiceSetNone"/>
-    </button>
-    <button
-    follows="left|top"
-    enabled_control="EnableVoiceChat"
-    height="15"
-    is_toggle="false"
-    label_color="White"
-    label="⌊default⌉"
-    image_selected="transparent.j2c"
-    image_unselected="transparent.j2c"
-    layout="topleft"
-    left_pad="0"
-    top_delta="0"
-    name="set_voice_middlemouse_button"
-    width="55">
-    <button.commit_callback
-            function="Pref.VoiceSetMiddleMouse"/>
-    </button>
-    <button
-    follows="left|top"
-    enabled_control="EnableVoiceChat"
-    height="15"
-    is_toggle="false"
-    label_color="White"
-    label="⌊set key⌉"
-    image_selected="transparent.j2c"
-    image_unselected="transparent.j2c"
-    layout="topleft"
-    left_pad="0"
-    top_delta="0"
-    tool_tip="This option allows you to set the key for toggling your microphone when using voice."
-    name="set_voice_hotkey_button"
-    width="55">
-    <button.commit_callback
-            function="Pref.VoiceSetKey"/>
-    </button>
    </panel>
   </panel>
  </scroll_container>
