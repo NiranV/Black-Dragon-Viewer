@@ -284,6 +284,9 @@ void BDFloaterPoser::onClickPoseSave()
 {
 	//BD - Values don't matter when not editing.
 	onPoseSave(2, 0.1f, false);
+
+	//BD - Flash the poses button to give the user a visual cue where it went.
+	getChild<LLButton>("extend")->setFlashing(true, true);
 }
 
 void BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
