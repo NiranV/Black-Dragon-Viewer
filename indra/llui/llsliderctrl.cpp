@@ -340,7 +340,8 @@ void LLSliderCtrl::onEditorCommit( LLUICtrl* ctrl, const LLSD& userdata )
 	{
 		LLLocale locale(LLLocale::USER_LOCALE);
 		val = (F32) atof( text.c_str() );
-		if( self->mSlider->getMinValue() <= val && val <= self->mSlider->getMaxValue() )
+		//BD - Allow overdriving sliders when we directly type in the value.
+		//if( self->mSlider->getMinValue() <= val && val <= self->mSlider->getMaxValue() )
 		{
 			self->setValue( val );  // set the value temporarily so that the callback can retrieve it.
 			if( !self->mValidateSignal || (*(self->mValidateSignal))( self, val ) )

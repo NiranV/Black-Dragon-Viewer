@@ -110,7 +110,8 @@ LLSlider::~LLSlider()
 //BD - UI Improvements
 void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override)
 {
-	value = llclamp( value, mMinValue, mMaxValue );
+	//BD - Allow overdriving sliders if numbers are entered directly.
+	//value = llclamp( value, mMinValue, mMaxValue );
 
 	//BD - UI Improvements
 	if (!precision_override)
@@ -134,7 +135,8 @@ void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override)
 void LLSlider::updateThumbRect()
 {
 	const S32 DEFAULT_THUMB_SIZE = 16;
-	F32 t = (getValueF32() - mMinValue) / (mMaxValue - mMinValue);
+	//BD - Prevent the slider display from clipping outside the slider width.
+	F32 t = llclamp((getValueF32() - mMinValue) / (mMaxValue - mMinValue), 0.f, 1.f);
 
 	S32 thumb_width = mThumbImage ? mThumbImage->getWidth() : DEFAULT_THUMB_SIZE;
 	S32 thumb_height = mThumbImage ? mThumbImage->getHeight() : DEFAULT_THUMB_SIZE;
