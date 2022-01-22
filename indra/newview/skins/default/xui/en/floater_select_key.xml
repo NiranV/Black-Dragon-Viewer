@@ -24,6 +24,7 @@
      halign="center"
      length="1"
      follows="left|top"
+     read_only="true"
      height="14"
      layout="topleft"
      left="0"
@@ -171,6 +172,14 @@
   label="Toggle Run"
   name="toggle_run"
   value="toggle_run" />
+  <combo_box.item
+  label="Teleport To"
+  name="teleport_to"
+  value="teleport_to" />
+  <combo_box.item
+  label="Walk To"
+  name="walk_to"
+  value="walk_to" />
   <combo_box.item
   label="                 Misc"
   enabled="false"

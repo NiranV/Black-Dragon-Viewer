@@ -79,6 +79,14 @@ width="669">
  name="voice_follow_key">
  Voice (Push-To-Talk)
  </string>
+ <string
+ name="teleport_to">
+ Teleport To
+ </string>
+ <string
+ name="walk_to">
+ Walk To
+ </string>
  
  <string
  name="move_forward">
