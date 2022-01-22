@@ -443,6 +443,7 @@ void LLPanelVoiceDeviceSettings::onCommitOutputDevice()
 const static std::string MIDDLE_MOUSE_CV = "MiddleMouse"; // for voice client and redability
 const static std::string MOUSE_BUTTON_4_CV = "MouseButton4";
 const static std::string MOUSE_BUTTON_5_CV = "MouseButton5";
+const static std::string MOUSE_DOUBLELEFT_CV = "MouseDoubleLeft";
 
 struct LabelDef : public LLInitParam::Block<LabelDef>
 {
@@ -542,7 +543,7 @@ BOOL LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseCli
 {
     BOOL result = FALSE;
     if (down
-        && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5)
+        && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT)
         && mask == 0)
     {
         mParent->setMouse(clicktype);
@@ -669,7 +670,7 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 	std::string mouse = "";
-	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5))
+	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT))
 	{
 		mMouse = clicktype;
 		if(clicktype == CLICK_MIDDLE)
@@ -678,6 +679,8 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 			mouse = "Mouse Button 4";
 		else if (clicktype == CLICK_BUTTON5)
 			mouse = "Mouse Button 5";
+		else if (clicktype == CLICK_DOUBLELEFT)
+			mouse = "Mouse Double Left";
 	}
 	else
 	{
@@ -769,6 +772,7 @@ public:
 	void setMouse(EMouseClickType mouse) { mMouse = mouse; }
 
 	BOOL handleKeyHere(KEY key, MASK mask);
+	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
 	void onCancel();
 	void onBind();
 	void onMasks();
@@ -815,7 +819,10 @@ void LLChangeKeyDialog::onOpen(const LLSD& key)
 	LLUICtrl* old_ctrl = getChild<LLUICtrl>("old_key_display");
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 
-	old_ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
+	if (mKey != NULL)
+		old_ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
+	else
+		old_ctrl->setTextArg("[KEY]", gViewerInput.stringFromMouse(mMouse, true));
 	old_ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
 	mKey = NULL;
@@ -848,6 +855,36 @@ BOOL LLChangeKeyDialog::handleKeyHere(KEY key, MASK mask)
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 	LL_INFOS() << "Pressed: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + "
 		<< mask << +"(" << gKeyboard->stringFromMask(mask) << LL_ENDL;
+
+	return TRUE;
+}
+
+BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
+{
+	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
+	std::string mouse = "";
+	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT))
+	{
+		mMouse = clicktype;
+		if (clicktype == CLICK_MIDDLE)
+			mouse = "Middle Mouse";
+		else if (clicktype == CLICK_BUTTON4)
+			mouse = "Mouse Button 4";
+		else if (clicktype == CLICK_BUTTON5)
+			mouse = "Mouse Button 5";
+		else if (clicktype == CLICK_DOUBLELEFT)
+			mouse = "Mouse Double Left";
+	}
+	else
+	{
+		LLMouseHandler::handleAnyMouseClick(x, y, mask, clicktype, down);
+		return FALSE;
+	}
+
+	ctrl->setTextArg("[KEY]", mouse);
+	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
+	LL_INFOS() << "Pressed: " << clicktype << " + "
+		<< mask << gKeyboard->stringFromMask(mask) << LL_ENDL;
 
 	return TRUE;
 }
@@ -1615,13 +1652,16 @@ void LLFloaterPreference::onListClickAction()
 			{
 				MASK mask = MASK_NONE;
 				KEY key = NULL;
+				EMouseClickType mouse = CLICK_NONE;
 				gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &key);
-				gKeyboard->maskFromString(row->getColumn(3)->getValue().asString(), &mask);
+				gKeyboard->maskFromString(row->getColumn(4)->getValue().asString(), &mask);
+				gViewerInput.mouseFromString(row->getColumn(3)->getValue().asString(), &mouse);
 
 				dialog->setParent(this);
 				dialog->setMode(mode);
 				dialog->setKey(key);
 				dialog->setMask(mask);
+				dialog->setMouse(mouse);
 
 				LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
 			}
@@ -3332,6 +3372,10 @@ void LLFloaterPreference::setMouse(EMouseClickType click)
             bt_name = "button5_mouse";
             ctrl_value = MOUSE_BUTTON_5_CV;
             break;
+		case CLICK_DOUBLELEFT:
+			bt_name = "doubleleft_mouse";
+			ctrl_value = MOUSE_DOUBLELEFT_CV;
+			break;
         default:
             break;
     }
