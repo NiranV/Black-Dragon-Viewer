@@ -2881,7 +2881,7 @@ WARNING! - Does not work with prim param LIGHT script command and emmisive masks
       tool_tip="This option control the strength of each blur light pass. Higher values mean softer but also wider blur."
       layout="topleft"
       left="10"
-      max_val="4"
+      max_val="6"
       min_val="0.0"
       name="RenderShadowBlurSize"
       top_pad="10"/>
