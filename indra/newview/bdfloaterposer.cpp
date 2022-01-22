@@ -954,6 +954,19 @@ void BDFloaterPoser::onJointControlsRefresh()
 	modifier_tabs->enableTabButton(0, (item && is_posing && index == JOINTS));
 	modifier_tabs->enableTabButton(1, (item && is_posing && can_position));
 	modifier_tabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
+	
+	S32 tab_idx = modifier_tabs->getCurrentPanelIndex();
+	//BD - Swap out of "Position" tab when it's not available.
+	if (!can_position && tab_idx == 1)
+	{
+		modifier_tabs->selectTab(0);
+	}
+	//BD - Swap out of "Scale" and "Rotation" tabs when they are not available.
+	if ((index != COLLISION_VOLUMES && index != JOINTS && tab_idx == 2)
+		|| (index != JOINTS && tab_idx == 0))
+	{
+		modifier_tabs->selectTab(1);
+	}
 
 	F32 max_val = is_pelvis ? 20.f : 1.0f;
 	mPositionSliders[VX]->setMaxValue(max_val);
