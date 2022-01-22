@@ -9788,6 +9788,17 @@ class LLAvatarCheckPermissions : public view_listener_t
 	}
 };
 
+//BD - God/Dev check
+class BDCheckGodStatus : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		//BD - Check whether we are either a god or developer.
+		bool new_value = (gAgent.getAgentAccess().isGodlikeWithoutAdminMenuFakery() || gDragonLibrary.checkDeveloper(gAgent.getID()));
+		return new_value;
+	}
+};
+
 
 void initialize_edit_menu()
 {
@@ -10366,6 +10377,9 @@ void initialize_menus()
 //	//BD - Permissions
 	view_listener_t::addMenu(new LLAvatarGrantPermissions(), "Avatar.GrantPermissions");
 	view_listener_t::addMenu(new LLAvatarCheckPermissions(), "Avatar.CheckPermissions");
+
+//	//BD - God/Dev check
+	view_listener_t::addMenu(new BDCheckGodStatus(), "Dragon.EnableCheckGod");
 
 //	//BD - Functions
 	commit.add("Dragon.CameraLock", boost::bind(&handle_camera_lock));
