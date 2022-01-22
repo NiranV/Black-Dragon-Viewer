@@ -9084,7 +9084,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1000.0</real>
+    <real>500.0</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -9097,7 +9097,7 @@
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
-    <integer>800</integer>
+    <integer>300</integer>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -9110,7 +9110,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.075</real>
+    <real>0.05</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
@@ -9123,7 +9123,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-1.0</real>
+    <real>-0.5</real>
     <key>PresetType</key>
     <integer>1</integer>
   </map>
