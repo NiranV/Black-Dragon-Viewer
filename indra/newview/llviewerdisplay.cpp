@@ -203,6 +203,7 @@ void display_update_camera()
 	}
 
 	LLViewerCamera* viewer_cam = LLViewerCamera::getInstance();
+	//viewer_cam->setNear()
 	viewer_cam->setFar(final_far);
 	gViewerWindow->setup3DRender();
 
