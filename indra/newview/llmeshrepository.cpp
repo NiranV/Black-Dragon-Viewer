@@ -1275,14 +1275,20 @@ LLCore::HttpHandle LLMeshRepoThread::getByteRange(const std::string & url,
 	
 	if (len < LARGE_MESH_FETCH_THRESHOLD)
 	{
-		handle = mHttpRequest->requestGetByteRange( mHttpPolicyClass,
+		/*handle = mHttpRequest->requestGetByteRange( mHttpPolicyClass,
                                                     mHttpPriority,
                                                     url,
                                                     (disable_range_req ? size_t(0) : offset),
                                                     (disable_range_req ? size_t(0) : len),
                                                     mHttpOptions,
                                                     mHttpHeaders,
-                                                    handler);
+                                                    handler);*/
+		handle = mHttpRequest->requestGet(mHttpPolicyClass,
+			mHttpPriority,
+			url,
+			mHttpOptions,
+			mHttpHeaders,
+			handler);
 		if (LLCORE_HTTP_HANDLE_INVALID != handle)
 		{
 			++LLMeshRepository::sHTTPRequestCount;
@@ -1290,14 +1296,20 @@ LLCore::HttpHandle LLMeshRepoThread::getByteRange(const std::string & url,
 	}
 	else
 	{
-		handle = mHttpRequest->requestGetByteRange(mHttpLargePolicyClass,
+		/*handle = mHttpRequest->requestGetByteRange(mHttpLargePolicyClass,
 												   mHttpPriority,
 												   url,
 												   (disable_range_req ? size_t(0) : offset),
 												   (disable_range_req ? size_t(0) : len),
 												   mHttpLargeOptions,
 												   mHttpHeaders,
-												   handler);
+												   handler);*/
+		handle = mHttpRequest->requestGet(mHttpPolicyClass,
+			mHttpPriority,
+			url,
+			mHttpOptions,
+			mHttpHeaders,
+			handler);
 		if (LLCORE_HTTP_HANDLE_INVALID != handle)
 		{
 			++LLMeshRepository::sHTTPLargeRequestCount;
