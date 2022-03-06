@@ -419,7 +419,7 @@ void BDFloaterPoser::onPoseSave(S32 type, F32 time, bool editing)
 					//     as well as all attachment bones and collision volumes.
 					if (joint->mHasPosition || it > JOINTS)
 					{
-						vec3 = joint->getTargetPosition();
+						vec3 = it > JOINTS ? joint->getPosition() : joint->getTargetPosition();
 						record[line]["position"] = vec3.getValue();
 					}
 
