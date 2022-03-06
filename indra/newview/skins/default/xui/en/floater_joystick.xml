@@ -760,7 +760,7 @@
  mouse_opaque="false"
  left="1"
  name="title"
- top_pad="44"
+ top_pad="22"
  width="482"/>
     <text
    name="general_label"
