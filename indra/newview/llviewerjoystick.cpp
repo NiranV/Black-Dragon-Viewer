@@ -168,7 +168,7 @@ BOOL CALLBACK di8_devices_callback(LPCDIDEVICEINSTANCE device_instance_ptr, LPVO
 
         if (init_device)
         {
-            LL_DEBUGS("Joystick") << "Found and attempting to use device: " << product_name << LL_ENDL;
+            //LL_DEBUGS("Joystick") << "Found and attempting to use device: " << product_name << LL_ENDL;
             LPDIRECTINPUT8       di8_interface = *((LPDIRECTINPUT8 *)gViewerWindow->getWindow()->getDirectInput8());
             LPDIRECTINPUTDEVICE8 device = NULL;
 
@@ -181,20 +181,20 @@ BOOL CALLBACK di8_devices_callback(LPCDIDEVICEINSTANCE device_instance_ptr, LPVO
             if (status == DI_OK)
             {
                 // prerequisite for aquire()
-                LL_DEBUGS("Joystick") << "Device created" << LL_ENDL;
+                //LL_DEBUGS("Joystick") << "Device created" << LL_ENDL;
                 status = device->SetDataFormat(&c_dfDIJoystick); // c_dfDIJoystick2
             }
 
             if (status == DI_OK)
             {
                 // set properties
-                LL_DEBUGS("Joystick") << "Format set" << LL_ENDL;
+                //LL_DEBUGS("Joystick") << "Format set" << LL_ENDL;
                 status = device->EnumObjects(EnumObjectsCallback, &device, DIDFT_ALL);
             }
 
             if (status == DI_OK)
             {
-                LL_DEBUGS("Joystick") << "Properties updated" << LL_ENDL;
+                //LL_DEBUGS("Joystick") << "Properties updated" << LL_ENDL;
 
                 S32 size = sizeof(GUID);
                 LLSD::Binary data; //just an std::vector
@@ -206,7 +206,7 @@ BOOL CALLBACK di8_devices_callback(LPCDIDEVICEINSTANCE device_instance_ptr, LPVO
         }
         else
         {
-            LL_DEBUGS("Joystick") << "Found device: " << product_name << LL_ENDL;
+            //LL_DEBUGS("Joystick") << "Found device: " << product_name << LL_ENDL;
         }
     }
     return DIENUM_CONTINUE;
@@ -1288,7 +1288,7 @@ void LLViewerJoystick::loadDeviceIdFromSettings()
     }
     else
     {
-        LL_DEBUGS("Joystick") << "Looking for device by id: " << device_string << LL_ENDL;
+        //LL_DEBUGS("Joystick") << "Looking for device by id: " << device_string << LL_ENDL;
         GUID guid;
         guid_from_string(guid, device_string);
         S32 size = sizeof(GUID);

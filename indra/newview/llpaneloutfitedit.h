@@ -58,7 +58,6 @@ class LLMenuButton;
 class LLMenuGL;
 class LLFindNonLinksByMask;
 class LLFindWearablesOfType;
-class LLSaveOutfitComboBtn;
 class LLWearableItemTypeNameComparator;
 
 class LLPanelOutfitEdit : public LLPanel
@@ -192,6 +191,7 @@ private:
 	void getSelectedItemsUUID(uuid_vec_t& uuid_list);
 	void getCurrentItemUUID(LLUUID& selected_id);
 	void onCOFChanged();
+	void saveOutfit(bool as_new = false);
 
 	/**
 	 * Method preserves selection while switching between folder/list view modes
@@ -232,7 +232,6 @@ private:
 	LLToggleableMenu*	mGearMenu;
 	LLToggleableMenu*	mAddWearablesGearMenu;
 	bool				mInitialized;
-	std::auto_ptr<LLSaveOutfitComboBtn> mSaveComboBtn;
 	LLMenuButton*		mWearablesGearMenuBtn;
 	LLMenuButton*		mGearMenuBtn;
 

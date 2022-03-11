@@ -887,7 +887,7 @@ void LLMeshRepoThread::run()
 		LL_WARNS(LOG_MESH) << "Convex decomposition unable to be loaded.  Expect severe problems." << LL_ENDL;
 	}
 
-	while (!LLApp::isQuitting())
+	while (!LLApp::isExiting())
 	{
 		// *TODO:  Revise sleep/wake strategy and try to move away
 		// from polling operations in this thread.  We can sleep
@@ -904,7 +904,7 @@ void LLMeshRepoThread::run()
 		
 		mSignal->wait();
 
-		if (LLApp::isQuitting())
+		if (LLApp::isExiting())
 		{
 			break;
 		}
@@ -1168,7 +1168,7 @@ void LLMeshRepoThread::loadMeshPhysicsShape(const LLUUID& mesh_id)
 
 void LLMeshRepoThread::lockAndLoadMeshLOD(const LLVolumeParams& mesh_params, S32 lod)
 {
-	if (!LLAppViewer::isQuitting())
+	if (!LLAppViewer::isExiting())
 	{
 		loadMeshLOD(mesh_params, lod);
 	}
@@ -2701,7 +2701,7 @@ void LLMeshUploadThread::doWholeModelUpload()
 			// _LL_DEBUGS(LOG_MESH) << "POST request issued." << LL_ENDL;
 			
 			mHttpRequest->update(0);
-			while (! LLApp::isQuitting() && ! finished() && ! isDiscarded())
+			while (! LLApp::isExiting() && ! finished() && ! isDiscarded())
 			{
 				ms_sleep(sleep_time);
 				sleep_time = llmin(250U, sleep_time + sleep_time);
@@ -2750,7 +2750,7 @@ void LLMeshUploadThread::requestWholeModelFee()
 		U32 sleep_time(10);
 		
 		mHttpRequest->update(0);
-		while (! LLApp::isQuitting() && ! finished() && ! isDiscarded())
+		while (! LLApp::isExiting() && ! finished() && ! isDiscarded())
 		{
 			ms_sleep(sleep_time);
 			sleep_time = llmin(250U, sleep_time + sleep_time);
@@ -3223,7 +3223,7 @@ common_exit:
 
 LLMeshHeaderHandler::~LLMeshHeaderHandler()
 {
-	if (!LLApp::isQuitting())
+	if (!LLApp::isExiting())
 	{
 		if (! mProcessed)
 		{
@@ -3366,7 +3366,7 @@ void LLMeshHeaderHandler::processData(LLCore::BufferArray * /* body */, S32 /* b
 
 LLMeshLODHandler::~LLMeshLODHandler()
 {
-	if (! LLApp::isQuitting())
+	if (! LLApp::isExiting())
 	{
 		if (! mProcessed)
 		{
@@ -3627,7 +3627,7 @@ void LLMeshRepository::shutdown()
 		mUploads[i]->discard() ; //discard the uploading requests.
 	}
 
-	mThread->mSignal->signal();
+	mThread->mSignal->broadcast();
 	
 	while (!mThread->isStopped())
 	{
@@ -4791,7 +4791,8 @@ void LLPhysicsDecomp::shutdown()
 	if (mSignal)
 	{
 		mQuitting = true;
-		mSignal->signal();
+		// There is only one wait(), but just in case 'broadcast'
+		mSignal->broadcast();
 
 		while (!isStopped())
 		{

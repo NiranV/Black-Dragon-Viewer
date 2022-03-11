@@ -60,6 +60,8 @@ static const S32 LINE_HEIGHT = 15;
 
 S32		LLView::sDepth = 0;
 bool	LLView::sDebugRects = false;
+bool	LLView::sIsRectDirty = false;
+LLRect	LLView::sDirtyRect;
 bool	LLView::sDebugRectsShowNames = true;
 bool	LLView::sDebugKeys = false;
 bool	LLView::sDebugMouseHandling = false;
@@ -923,16 +925,18 @@ BOOL LLView::handleToolTip(S32 x, S32 y, MASK mask)
 	std::string tooltip = getToolTip();
 	if (!tooltip.empty())
 	{
+        static LLCachedControl<F32> tooltip_fast_delay(*LLUI::getInstance()->mSettingGroups["config"], "ToolTipFastDelay", 0.1f);
+        static LLCachedControl<F32> tooltip_delay(*LLUI::getInstance()->mSettingGroups["config"], "ToolTipDelay", 0.7f);
+        static LLCachedControl<bool> allow_ui_tooltips(*LLUI::getInstance()->mSettingGroups["config"], "BasicUITooltips", true);
 		// allow "scrubbing" over ui by showing next tooltip immediately
 		// if previous one was still visible
 		static LLUICachedControl<F32> tool_tip_delay("ToolTipDelay", 0.69999f);
 		static LLUICachedControl<F32> tool_tip_fast_delay("ToolTipFastDelay", 0.1f);
 		F32 timeout = LLToolTipMgr::instance().toolTipVisible() 
-		              ? tool_tip_fast_delay
-		              : tool_tip_delay;
+		              ? tooltip_fast_delay
+		              : tooltip_delay;
 
 		// Even if we don't show tooltips, consume the event, nothing below should show tooltip
-		static LLUICachedControl<bool> allow_ui_tooltips("BasicUITooltips", true);
 		if (allow_ui_tooltips)
 		{
 			LLToolTipMgr::instance().show(LLToolTip::Params()
@@ -1233,7 +1237,7 @@ void LLView::drawChildren()
 			if (viewp->getVisible() && viewp->getRect().isValid())
 			{
 				LLRect screen_rect = viewp->calcScreenRect();
-				if ( rootp->getLocalRect().overlaps(screen_rect)  && LLUI::getInstance()->mDirtyRect.overlaps(screen_rect))
+				if ( rootp->getLocalRect().overlaps(screen_rect)  && sDirtyRect.overlaps(screen_rect))
 				{
 					LLUI::pushMatrix();
 					{
@@ -1275,7 +1279,15 @@ void LLView::dirtyRect()
 		parent = parent->getParent();
 	}
 
-	LLUI::getInstance()->dirtyRect(cur->calcScreenRect());
+    if (!sIsRectDirty)
+    {
+        sDirtyRect = cur->calcScreenRect();
+        sIsRectDirty = true;
+    }
+    else
+    {
+        sDirtyRect.unionWith(cur->calcScreenRect());
+    }
 }
 
 //Draw a box for debugging.

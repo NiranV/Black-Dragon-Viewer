@@ -2085,7 +2085,7 @@ void LLVOAvatar::applyDefaultParams()
 //-----------------------------------------------------------------------------
 void LLVOAvatar::resetSkeleton(bool reset_animations)
 {
-    LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
+    //LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
     if (!isControlAvatar() && !mLastProcessedAppearance)
     {
         LL_WARNS() << "Can't reset avatar; no appearance message has been received yet." << LL_ENDL;
@@ -4797,29 +4797,29 @@ void LLVOAvatar::debugBodySize() const
 
 	// some of the joints have not been cached
 	LLVector3 skull = mSkullp->getPosition();
-    LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
 	//LLVector3 skull_scale = mSkullp->getScale();
 
 	LLVector3 neck = mNeckp->getPosition();
 	LLVector3 neck_scale = mNeckp->getScale();
-    LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
 
 	LLVector3 chest = mChestp->getPosition();
 	LLVector3 chest_scale = mChestp->getScale();
-    LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
 
 	// the rest of the joints have been cached
 	LLVector3 head = mHeadp->getPosition();
 	LLVector3 head_scale = mHeadp->getScale();
-    LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
 
 	LLVector3 torso = mTorsop->getPosition();
 	LLVector3 torso_scale = mTorsop->getScale();
-    LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
 
 	LLVector3 hip = mHipLeftp->getPosition();
 	LLVector3 hip_scale = mHipLeftp->getScale();
-    LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
 
 	LLVector3 knee = mKneeLeftp->getPosition();
 	LLVector3 knee_scale = mKneeLeftp->getScale();
@@ -4827,19 +4827,19 @@ void LLVOAvatar::debugBodySize() const
 
 	LLVector3 ankle = mAnkleLeftp->getPosition();
 	LLVector3 ankle_scale = mAnkleLeftp->getScale();
-    LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
 
 	LLVector3 foot  = mFootLeftp->getPosition();
-    LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
 
 	F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
-    LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
 
 	F32 new_pelvis_to_foot = hip.mV[VZ] * pelvis_scale.mV[VZ] -
         knee.mV[VZ] * hip_scale.mV[VZ] -
         ankle.mV[VZ] * knee_scale.mV[VZ] -
         foot.mV[VZ] * ankle_scale.mV[VZ];
-    LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
 
 	LLVector3 new_body_size;
 	new_body_size.mV[VZ] = new_pelvis_to_foot +
@@ -4855,7 +4855,7 @@ void LLVOAvatar::debugBodySize() const
 	new_body_size.mV[VX] = DEFAULT_AGENT_DEPTH;
 	new_body_size.mV[VY] = DEFAULT_AGENT_WIDTH;
 
-    LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
+    //LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
 }
    
 //------------------------------------------------------------------------
@@ -8928,7 +8928,7 @@ void LLVOAvatar::releaseComponentTextures()
 
 void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 {	
-	LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
+	//LL_DEBUGS("Avatar") << avString() << (isSelf() ? "Self: " : "Other: ") << context << LL_ENDL;
 	for (LLAvatarAppearanceDictionary::Textures::const_iterator iter = LLAvatarAppearance::getDictionary()->getTextures().begin();
 		 iter != LLAvatarAppearance::getDictionary()->getTextures().end();
 		 ++iter)
@@ -8938,23 +8938,23 @@ void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 		const LLViewerTexture* te_image = getImage(iter->first,0);
 		if( !te_image )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
+			//LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null ptr" << LL_ENDL;
 		}
 		else if( te_image->getID().isNull() )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
+			//LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": null UUID" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
+			//LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT" << LL_ENDL;
 		}
 		else if( te_image->getID() == IMG_DEFAULT_AVATAR )
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
+			//LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": IMG_DEFAULT_AVATAR" << LL_ENDL;
 		}
 		else
 		{
-			LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
+			//LL_DEBUGS("Avatar") << avString() << "       " << texture_dict->mName << ": " << te_image->getID() << LL_ENDL;
 		}
 	}
 }
@@ -10796,6 +10796,7 @@ void LLVOAvatar::accountRenderOriginalComplexityForObject(
 				hud_object_complexity.texturesCost += volume_texture->second;
 				LLViewerFetchedTexture *tex = LLViewerTextureManager::getFetchedTexture(volume_texture->first);
 				if (tex)
+
 				{
 					// Note: Texture memory might be incorect since texture might be still loading.
 					hud_object_complexity.texturesMemoryTotal += tex->getTextureMemory();
@@ -11116,10 +11117,23 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 			ETextureIndex tex_index = baked_dict->mTextureIndex;
 			if ((tex_index != TEX_SKIRT_BAKED) || (isWearingWearableType(LLWearableType::WT_SKIRT)))
 			{
-				if (isTextureVisible(tex_index))
-				{
-					cost +=COMPLEXITY_BODY_PART_COST;
-				}
+                // Same as isTextureVisible(), but doesn't account for isSelf to ensure identical numbers for all avatars
+                if (isIndexLocalTexture(tex_index))
+                {
+                    if (isTextureDefined(tex_index, 0))
+                    {
+                        cost += COMPLEXITY_BODY_PART_COST;
+                    }
+                }
+                else
+                {
+                    // baked textures can use TE images directly
+                    if (isTextureDefined(tex_index)
+                        && (getTEImage(tex_index)->getID() != IMG_INVISIBLE || LLDrawPoolAlpha::sShowDebugAlpha))
+                    {
+                        cost += COMPLEXITY_BODY_PART_COST;
+                    }
+                }
 			}
 		}
         // _LL_DEBUGS("ARCdetail") << "Avatar body parts complexity: " << cost << LL_ENDL;
@@ -11178,8 +11192,7 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
 
 		// Diagnostic output to identify all avatar-related textures.
 		// Does not affect rendering cost calculation.
-		// Could be wrapped in a debug option if output becomes problematic.
-		if (isSelf())
+		if (isSelf() && debugLoggingEnabled("ARCdetail"))
 		{
 			// print any attachment textures we didn't already know about.
 			for (LLVOVolume::texture_cost_t::iterator it = textures.begin(); it != textures.end(); ++it)
@@ -11318,7 +11331,7 @@ void LLVOAvatar::setOverallAppearanceNormal()
 	for (auto it = mJellyAnims.begin(); it !=  mJellyAnims.end(); ++it)
 	{
 		bool is_playing = (mPlayingAnimations.find(*it) != mPlayingAnimations.end());
-		LL_DEBUGS("Avatar") << "jelly anim " << *it << " " << is_playing << LL_ENDL;
+		//LL_DEBUGS("Avatar") << "jelly anim " << *it << " " << is_playing << LL_ENDL;
 		if (!is_playing)
 		{
 			// Anim was not requested for this av by sim, but may be playing locally
@@ -11418,7 +11431,7 @@ void LLVOAvatar::updateOverallAppearanceAnimations()
 			for (auto it = mJellyAnims.begin(); it !=  mJellyAnims.end(); ++it)
 			{
 				bool is_playing = (mPlayingAnimations.find(*it) != mPlayingAnimations.end());
-				LL_DEBUGS("Avatar") << "jelly anim " << *it << " " << is_playing << LL_ENDL;
+				//LL_DEBUGS("Avatar") << "jelly anim " << *it << " " << is_playing << LL_ENDL;
 				if (!is_playing)
 				{
 					// Anim was not requested for this av by sim, but may be playing locally

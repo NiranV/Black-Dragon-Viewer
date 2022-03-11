@@ -132,6 +132,20 @@
 //#define DEBUG_INDICES
 #endif
 
+// Expensive and currently broken
+//
+#define MATERIALS_IN_REFLECTIONS 0
+
+// NOTE: Keep in sync with indra/newview/skins/default/xui/en/floater_preferences_graphics_advanced.xml
+// NOTE: Unused consts are commented out since some compilers (on macOS) may complain about unused variables.
+//  const S32 WATER_REFLECT_NONE_WATER_OPAQUE       = -2;
+    const S32 WATER_REFLECT_NONE_WATER_TRANSPARENT  = -1;
+    const S32 WATER_REFLECT_MINIMAL                 =  0;
+//  const S32 WATER_REFLECT_TERRAIN                 =  1;
+    const S32 WATER_REFLECT_STATIC_OBJECTS          =  2;
+    const S32 WATER_REFLECT_AVATARS                 =  3;
+    const S32 WATER_REFLECT_EVERYTHING              =  4;
+
 bool gShiftFrame = false;
 
 //cached settings
@@ -387,7 +401,6 @@ bool	LLPipeline::sRenderFrameTest = false;
 bool	LLPipeline::sRenderAttachedLights = true;
 bool	LLPipeline::sRenderAttachedParticles = true;
 bool	LLPipeline::sRenderDeferred = false;
-bool    LLPipeline::sMemAllocationThrottled = false;
 S32		LLPipeline::sVisibleLightCount = 0;
 F32		LLPipeline::sMinRenderSize = 0.f;
 bool	LLPipeline::sRenderingHUDs;
@@ -825,24 +838,6 @@ void LLPipeline::destroyGL()
 }
 
 static LLTrace::BlockTimerStatHandle FTM_RESIZE_SCREEN_TEXTURE("Resize Screen Texture");
-
-//static
-void LLPipeline::throttleNewMemoryAllocation(bool disable)
-{
-	if(sMemAllocationThrottled != disable)
-	{
-		sMemAllocationThrottled = disable ;
-
-		if(sMemAllocationThrottled)
-		{
-			//send out notification
-			LLNotification::Params params("LowMemory");
-			LLNotifications::instance().add(params);
-
-			//release some memory.
-		}
-	}
-}
 
 void LLPipeline::requestResizeScreenTexture()
 {
@@ -1888,7 +1883,7 @@ U32 LLPipeline::getPoolTypeFromTE(const LLTextureEntry* te, LLViewerTexture* ima
 
 	if (alpha && mat)
 	{
-		switch (mat->getDiffuseAlphaModeRender())
+		switch (mat->getDiffuseAlphaMode())
 		{
 			case 1:
 				alpha = true; // Material's alpha mode is set to blend.  Toss it into the alpha draw pool.
@@ -9956,7 +9951,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 		glh::matrix4f saved_projection = get_current_projection();
 		glh::matrix4f mat;
 
-		S32 detail = RenderReflectionDetail;
+		S32 reflection_detail = RenderReflectionDetail;
 
 		F32 water_height = gAgent.getRegion()->getWaterHeight();
 		F32 camera_height = fabsf(camera_in.getOrigin().mV[2] - water_height);
@@ -10005,7 +10000,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 			set_current_modelview(mat);
 			gGL.loadMatrix(mat.m);
 
-			LLViewerCamera::updateFrustumPlanes(camera, FALSE, TRUE);
+            LLViewerCamera::updateFrustumPlanes(camera, FALSE, TRUE);
 
 			glh::vec3f    origin(0, 0, 0);
 			glh::matrix4f inv_mat = mat.inverse();
@@ -10013,7 +10008,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 			camera.setOrigin(origin.v);
 
-			glCullFace(GL_FRONT);
+            glCullFace(GL_FRONT);
 
 			if (LLDrawPoolWater::sNeedsReflectionUpdate)
 			{
@@ -10026,13 +10021,25 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				gGL.setColorMask(true, false);
 				mWaterRef.getViewport(gGLViewport);
 
-				//initial sky pass (no user clip plane)
-				{ //mask out everything but the sky
-					gPipeline.pushRenderTypeMask();
-					gPipeline.andRenderTypeMask(LLPipeline::RENDER_TYPE_SKY,
-						LLPipeline::RENDER_TYPE_WL_SKY,
-						LLPipeline::RENDER_TYPE_CLOUDS,
-						LLPipeline::END_RENDER_TYPES);
+                //initial sky pass (no user clip plane)
+                //mask out everything but the sky
+                gPipeline.pushRenderTypeMask();
+                {
+                    if (reflection_detail >= WATER_REFLECT_MINIMAL)
+                    {
+                        gPipeline.andRenderTypeMask(
+                            LLPipeline::RENDER_TYPE_SKY,
+                            LLPipeline::RENDER_TYPE_WL_SKY,
+                            LLPipeline::RENDER_TYPE_CLOUDS,
+                            LLPipeline::END_RENDER_TYPES);
+                    }
+                    else
+                    {
+                        gPipeline.andRenderTypeMask(
+                            LLPipeline::RENDER_TYPE_SKY,
+                            LLPipeline::RENDER_TYPE_WL_SKY,
+                            LLPipeline::END_RENDER_TYPES);
+                    }
 
 					updateCull(camera, mSky);
 					stateSort(camera, mSky);
@@ -10041,46 +10048,55 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 					gPipeline.popRenderTypeMask();
 				}
 
-				gPipeline.pushRenderTypeMask();
+                if (reflection_detail >= WATER_REFLECT_NONE_WATER_TRANSPARENT)
+                {
+                    gPipeline.pushRenderTypeMask();
+                    {
+                        clearRenderTypeMask(
+                            LLPipeline::RENDER_TYPE_WATER,
+                            LLPipeline::RENDER_TYPE_VOIDWATER,
+                            LLPipeline::RENDER_TYPE_GROUND,
+                            LLPipeline::RENDER_TYPE_SKY,
+                            LLPipeline::RENDER_TYPE_CLOUDS,
+                            LLPipeline::END_RENDER_TYPES);
 
-				clearRenderTypeMask(LLPipeline::RENDER_TYPE_WATER,
-					LLPipeline::RENDER_TYPE_VOIDWATER,
-					LLPipeline::RENDER_TYPE_GROUND,
-					LLPipeline::RENDER_TYPE_SKY,
-					LLPipeline::RENDER_TYPE_CLOUDS,
-					LLPipeline::END_RENDER_TYPES);
+                        if (reflection_detail > WATER_REFLECT_MINIMAL)
+                        { //mask out selected geometry based on reflection detail
+                            if (reflection_detail < WATER_REFLECT_EVERYTHING)
+                            {
+                                clearRenderTypeMask(LLPipeline::RENDER_TYPE_PARTICLES, END_RENDER_TYPES);
+                                if (reflection_detail < WATER_REFLECT_AVATARS)
+                                {
+                                    clearRenderTypeMask(
+                                        LLPipeline::RENDER_TYPE_AVATAR,
+                                        LLPipeline::RENDER_TYPE_CONTROL_AV,
+                                        END_RENDER_TYPES);
+                                    if (reflection_detail < WATER_REFLECT_STATIC_OBJECTS)
+                                    {
+                                        clearRenderTypeMask(LLPipeline::RENDER_TYPE_VOLUME, END_RENDER_TYPES);
+                                    }
+                                }
+                            }
 
-				if (detail > 0)
-				{ //mask out selected geometry based on reflection detail
-					if (detail < 4)
-					{
-						clearRenderTypeMask(LLPipeline::RENDER_TYPE_PARTICLES, END_RENDER_TYPES);
-						if (detail < 3)
-						{
-							clearRenderTypeMask(LLPipeline::RENDER_TYPE_AVATAR, LLPipeline::RENDER_TYPE_CONTROL_AV, END_RENDER_TYPES);
-							if (detail < 2)
-							{
-								clearRenderTypeMask(LLPipeline::RENDER_TYPE_VOLUME, END_RENDER_TYPES);
-							}
-						}
-					}
+                            LLGLUserClipPlane clip_plane(plane, mReflectionModelView, saved_projection);
+                            LLGLDisable cull(GL_CULL_FACE);
+                            updateCull(camera, mReflectedObjects, -water_clip, &plane);
+                            stateSort(camera, mReflectedObjects);
+                            renderGeom(camera);
+                        }
+                    }
+                    gPipeline.popRenderTypeMask();
+                }
 
-					LLGLUserClipPlane clip_plane(plane, mReflectionModelView, saved_projection);
-					LLGLDisable cull(GL_CULL_FACE);
-					updateCull(camera, mReflectedObjects, -water_clip, &plane);
-					stateSort(camera, mReflectedObjects);
-					renderGeom(camera);
-				}
-				gPipeline.popRenderTypeMask();
-				mWaterRef.flush();
-			}
+                mWaterRef.flush();
+            }
 
-			glCullFace(GL_BACK);
-			gGL.matrixMode(LLRender::MM_MODELVIEW);
-			gGL.popMatrix();
+            glCullFace(GL_BACK);
+            gGL.matrixMode(LLRender::MM_MODELVIEW);
+            gGL.popMatrix();
 
-			set_current_modelview(saved_modelview);
-		}
+            set_current_modelview(saved_modelview);
+        }
 
 		camera.setOrigin(camera_in.getOrigin());
 		//render distortion map
@@ -10124,9 +10140,9 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				mWaterDis.bindTarget();
 				mWaterDis.getViewport(gGLViewport);
 
-				gGL.setColorMask(true, true);
-				mWaterDis.clear();
-				gGL.setColorMask(true, false);
+                gGL.setColorMask(true, true);
+                mWaterDis.clear();
+                gGL.setColorMask(true, false);
 
 				//clip out geometry on the same side of water as the camera w/ enough margin to not include the water geo itself,
 				// but not so much as to clip out parts of avatars that should be seen under the water in the distortion map
@@ -10188,13 +10204,15 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 		LLGLState::checkStates();
 
-		if (!skip_avatar_update)
-		{
-			gAgentAvatarp->updateAttachmentVisibility(gAgentCamera.getCameraMode());
-		}
+        LLGLState::checkStates();
 
-		LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
-	}
+        if (!skip_avatar_update)
+        {
+            gAgentAvatarp->updateAttachmentVisibility(gAgentCamera.getCameraMode());
+        }
+
+        LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
+    }
 }
 
 glh::matrix4f look(const LLVector3 pos, const LLVector3 dir, const LLVector3 up)

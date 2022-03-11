@@ -587,6 +587,9 @@ BOOL LLVOAvatarSelf::buildMenus()
 		if (gDetachBodyPartPieMenus[i])
 		{
 			gDetachPieMenu->appendContextSubMenu( gDetachBodyPartPieMenus[i] );
+			gDetachAttSelfMenu->appendContextSubMenu(gDetachBodyPartPieMenus[i]);
+			gDetachAvatarMenu->appendContextSubMenu(gDetachBodyPartPieMenus[i]);
+
 //			//BD - Pie Menu
 			if (gPieDetachBodyPartMenus[i])
 			{
@@ -628,6 +631,9 @@ BOOL LLVOAvatarSelf::buildMenus()
 
 					gDetachPieMenu->addChild(item);
 
+					gDetachAttSelfMenu->addChild(LLUICtrlFactory::create<LLMenuItemCallGL>(item_params));
+					gDetachAvatarMenu->addChild(LLUICtrlFactory::create<LLMenuItemCallGL>(item_params));
+
 //					//BD - Pie Menu
 					slice_params.name =(slice_params.label );
 					slice_params.on_click.function_name = "Attachment.Detach";
@@ -637,12 +643,13 @@ BOOL LLVOAvatarSelf::buildMenus()
 					PieSlice* slice = LLUICtrlFactory::create<PieSlice>(slice_params);
 
 					gPieDetachMenu->addChild(slice);
-						
+					
 					break;
 				}
 			}
 		}
 	}
+	
 
 	// add screen attachments
 	for (attachment_map_t::iterator iter = mAttachmentPoints.begin(); 
@@ -683,6 +690,9 @@ BOOL LLVOAvatarSelf::buildMenus()
 			item_params.on_enable.parameter = iter->first;
 			item = LLUICtrlFactory::create<LLMenuItemCallGL>(item_params);
 			gDetachScreenPieMenu->addChild(item);
+
+			gDetachHUDAttSelfMenu->addChild(LLUICtrlFactory::create<LLMenuItemCallGL>(item_params));
+			gDetachHUDAvatarMenu->addChild(LLUICtrlFactory::create<LLMenuItemCallGL>(item_params));
 
 //			//BD - Pie Menu
 			slice_params.name =(slice_params.label );

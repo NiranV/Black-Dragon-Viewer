@@ -440,7 +440,7 @@ void LLFloaterJoystick::onCommitJoystickEnabled(LLUICtrl*, void *joy_panel)
 
     std::string device_id = LLViewerJoystick::getInstance()->getDeviceUUIDString();
     gSavedSettings.setString("JoystickDeviceUUID", device_id);
-    LL_DEBUGS("Joystick") << "Selected " << device_id << " as joystick." << LL_ENDL;
+    //LL_DEBUGS("Joystick") << "Selected " << device_id << " as joystick." << LL_ENDL;
 
     self->refreshListOfDevices();
 }

@@ -180,10 +180,10 @@ void LLConsole::draw()
 
 	LLUIImagePtr imagep = LLUI::getUIImage("transparent");
 
-	static LLUICachedControl<F32> console_background_opacity("ConsoleBackgroundOpacity", 0.7f);
-	F32 console_opacity = llclamp(console_background_opacity(), 0.f, 1.f);
-	static const LLUIColor color_background = LLUIColorTable::instance().getColor("ConsoleBackground");
-	auto color = color_background.get();
+	static LLCachedControl<F32> console_bg_opacity(*LLUI::getInstance()->mSettingGroups["config"], "ConsoleBackgroundOpacity", 0.7f);
+	F32 console_opacity = llclamp(console_bg_opacity(), 0.f, 1.f);
+
+	LLColor4 color = LLUIColorTable::instance().getColor("ConsoleBackground");
 	color.mV[VALPHA] *= console_opacity;
 
 	F32 line_height = mFont->getLineHeight();

@@ -484,7 +484,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			gViewerWindow->setProgressPercent(90.f);
 			LL_INFOS("Teleport") << "Changing state to TELEPORT_ARRIVING" << LL_ENDL;
 			gAgent.setTeleportState( LLAgent::TELEPORT_ARRIVING );
-			gViewerWindow->setProgressString(message);
+			gAgent.setTeleportMessage(
+				LLAgent::sTeleportProgressMessages["arriving"]);
+			gAgent.sheduleTeleportIM();
+			gTextureList.mForceResetTextureStats = TRUE;
+			gAgentCamera.resetView(TRUE, TRUE);
 			
 			break;
 
@@ -757,7 +761,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				LLVOAvatar::updateFreezeCounter() ;
 
 				//BD
-				if(!LLPipeline::sMemAllocationThrottled && gPipeline.RenderImpostors)
+				if(gPipeline.RenderImpostors)
 				{		
 					LLVOAvatar::updateImpostors();
 				}
@@ -1520,10 +1524,9 @@ void render_ui_2d()
 
 	if (LLPipeline::RenderUIBuffer)
 	{
-		LLUI* ui_inst = LLUI::getInstance();
-		if (ui_inst->mDirty)
+		if (LLView::sIsRectDirty)
 		{
-			ui_inst->mDirty = FALSE;
+            LLView::sIsRectDirty = false;
 			LLRect t_rect;
 
 			gPipeline.mUIScreen.bindTarget();
@@ -1531,25 +1534,25 @@ void render_ui_2d()
 			{
 				static const S32 pad = 8;
 
-				ui_inst->mDirtyRect.mLeft -= pad;
-				ui_inst->mDirtyRect.mRight += pad;
-				ui_inst->mDirtyRect.mBottom -= pad;
-				ui_inst->mDirtyRect.mTop += pad;
+                LLView::sDirtyRect.mLeft -= pad;
+                LLView::sDirtyRect.mRight += pad;
+                LLView::sDirtyRect.mBottom -= pad;
+                LLView::sDirtyRect.mTop += pad;
 
 				LLGLEnable scissor(GL_SCISSOR_TEST);
-				static LLRect last_rect = ui_inst->mDirtyRect;
+				static LLRect last_rect = LLView::sDirtyRect;
 
 				//union with last rect to avoid mouse poop
-				last_rect.unionWith(ui_inst->mDirtyRect);
+				last_rect.unionWith(LLView::sDirtyRect);
 								
-				t_rect = ui_inst->mDirtyRect;
-				ui_inst->mDirtyRect = last_rect;
+				t_rect = LLView::sDirtyRect;
+                LLView::sDirtyRect = last_rect;
 				last_rect = t_rect;
-			
-				last_rect.mLeft = LLRect::tCoordType(last_rect.mLeft / ui_inst->getScaleFactor().mV[0]);
-				last_rect.mRight = LLRect::tCoordType(last_rect.mRight / ui_inst->getScaleFactor().mV[0]);
-				last_rect.mTop = LLRect::tCoordType(last_rect.mTop / ui_inst->getScaleFactor().mV[1]);
-				last_rect.mBottom = LLRect::tCoordType(last_rect.mBottom / ui_inst->getScaleFactor().mV[1]);
+
+				last_rect.mLeft = LLRect::tCoordType(last_rect.mLeft / LLUI::getScaleFactor().mV[0]);
+				last_rect.mRight = LLRect::tCoordType(last_rect.mRight / LLUI::getScaleFactor().mV[0]);
+				last_rect.mTop = LLRect::tCoordType(last_rect.mTop / LLUI::getScaleFactor().mV[1]);
+				last_rect.mBottom = LLRect::tCoordType(last_rect.mBottom / LLUI::getScaleFactor().mV[1]);
 
 				LLRect clip_rect(last_rect);
 				
@@ -1561,7 +1564,7 @@ void render_ui_2d()
 			gPipeline.mUIScreen.flush();
 			gGL.setColorMask(true, false);
 
-			ui_inst->mDirtyRect = t_rect;
+            LLView::sDirtyRect = t_rect;
 		}
 
 		LLGLDisable cull(GL_CULL_FACE);

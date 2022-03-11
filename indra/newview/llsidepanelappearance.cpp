@@ -159,8 +159,12 @@ void LLSidepanelAppearance::onOpen(const LLSD& key)
 		std::string type = key["type"].asString();
 		if (type == "my_outfits")
 		{
-			showOutfitsInventoryPanel();
+			showOutfitsInventoryPanel("outfitslist_tab");
 		}
+        else if (type == "now_wearing")
+        {
+            showOutfitsInventoryPanel("cof_tab");
+        }
 		else if (type == "edit_outfit")
 		{
 			showOutfitEditPanel();
@@ -255,7 +259,14 @@ void LLSidepanelAppearance::showOutfitsInventoryPanel()
 {
 	toggleWearableEditPanel(FALSE);
 	toggleOutfitEditPanel(FALSE);
-	toggleMyOutfitsPanel(TRUE);
+	toggleMyOutfitsPanel(TRUE, "");
+}
+
+void LLSidepanelAppearance::showOutfitsInventoryPanel(const std::string &tab_name)
+{
+    toggleWearableEditPanel(FALSE);
+    toggleOutfitEditPanel(FALSE);
+    toggleMyOutfitsPanel(TRUE, tab_name);
 }
 
 void LLSidepanelAppearance::showOutfitEditPanel()
@@ -280,19 +291,19 @@ void LLSidepanelAppearance::showOutfitEditPanel()
 		return;
 	}
 
-	toggleMyOutfitsPanel(FALSE);
+	toggleMyOutfitsPanel(FALSE, "");
 	toggleWearableEditPanel(FALSE, NULL, TRUE); // don't switch out of edit appearance mode
 	toggleOutfitEditPanel(TRUE);
 }
 
 void LLSidepanelAppearance::showWearableEditPanel(LLViewerWearable *wearable /* = NULL*/, BOOL disable_camera_switch)
 {
-	toggleMyOutfitsPanel(FALSE);
+	toggleMyOutfitsPanel(FALSE, "");
 	toggleOutfitEditPanel(FALSE, TRUE); // don't switch out of edit appearance mode
 	toggleWearableEditPanel(TRUE, wearable, disable_camera_switch);
 }
 
-void LLSidepanelAppearance::toggleMyOutfitsPanel(BOOL visible)
+void LLSidepanelAppearance::toggleMyOutfitsPanel(BOOL visible, const std::string& tab_name)
 {
 	if (!mPanelOutfitsInventory || mPanelOutfitsInventory->getVisible() == visible)
 	{

@@ -56,6 +56,7 @@
 #include "llweb.h"
 #include "llhints.h"
 
+#include "llfloatersidepanelcontainer.h"
 #include "llinventorymodel.h"
 #include "lllandmarkactions.h"
 
@@ -295,7 +296,8 @@ BOOL LLNavigationBar::postBuild()
 	mBtnBack	= getChild<LLPullButton>("back_btn");
 	mBtnForward	= getChild<LLPullButton>("forward_btn");
 	mBtnHome	= getChild<LLButton>("home_btn");
-	
+	mBtnLandmarks = getChild<LLButton>("landmarks_btn");
+
 	mCmbLocation= getChild<LLLocationInputCtrl>("location_combo");
 
 	mBtnBack->setEnabled(FALSE);
@@ -309,6 +311,8 @@ BOOL LLNavigationBar::postBuild()
 	mBtnForward->setClickDraggingCallback(boost::bind(&LLNavigationBar::showTeleportHistoryMenu, this,_1));
 
 	mBtnHome->setClickedCallback(boost::bind(&LLNavigationBar::onHomeButtonClicked, this));
+
+	mBtnLandmarks->setClickedCallback(boost::bind(&LLNavigationBar::onLandmarksButtonClicked, this));
 
 //	//BD - Search Combo Box
 	mSearchComboBox	= getChild<LLSearchComboBox>("search_combo_box");
@@ -428,6 +432,12 @@ void LLNavigationBar::invokeSearch(std::string search_text)
 	LLFloaterReg::showInstance("search", LLSD().with("category", "all").with("query", LLSD(search_text)));
 }
 
+
+void LLNavigationBar::onLandmarksButtonClicked()
+{
+	LLFloaterReg::toggleInstanceOrBringToFront("places");
+	LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "open_landmark_tab"));
+}
 
 void LLNavigationBar::onTeleportHistoryMenuItemClicked(const LLSD& userdata)
 {

@@ -31,6 +31,7 @@
 #include "llagent.h"
 #include "llagentui.h"
 #include "llclipboard.h"
+#include "llfloaterreg.h"
 #include "llfloatersidepanelcontainer.h"
 #include "lllandmarkactions.h"
 #include "lllocationinputctrl.h"
@@ -455,8 +456,18 @@ void LLPanelTopInfoBar::onContextMenuItemClicked(const LLSD::String& item)
 {
 	if (item == "landmark")
 	{
+<<<<<<< HEAD
 // [RLVa:KB] - Checked: 2012-02-08 (RLVa-1.4.5) | Added: RLVa-1.4.5
 		if (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
+=======
+		LLViewerInventoryItem* landmark = LLLandmarkActions::findLandmarkForAgentPos();
+
+		if(landmark == NULL)
+		{
+			LLFloaterReg::showInstance("add_landmark");
+		}
+		else
+>>>>>>> be6066eae218856f7fd74b98968a75e5062fa830
 		{
 // [/RLVa:KB]
 			LLViewerInventoryItem* landmark = LLLandmarkActions::findLandmarkForAgentPos();

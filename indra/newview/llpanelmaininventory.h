@@ -97,6 +97,8 @@ public:
 
 	void toggleFindOptions();
 
+    void resetFilters();
+
 protected:
 	//
 	// Misc functions
@@ -125,7 +127,8 @@ protected:
 	void doToSelected(const LLSD& userdata);
 	void closeAllFolders();
 	void doCreate(const LLSD& userdata);
-	void resetFilters();
+	void setSortBy(const LLSD& userdata);
+
 	//BD
 	void setSortObjects();
 	void setSortSystemOnTop();

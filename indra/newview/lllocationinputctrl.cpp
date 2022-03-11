@@ -44,6 +44,7 @@
 
 // newview includes
 #include "llagent.h"
+#include "llfloaterreg.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llfloaterreg.h"
 #include "llinventoryobserver.h"
@@ -672,7 +673,7 @@ void LLLocationInputCtrl::onAddLandmarkButtonClicked()
 	}
 	else
 	{
-		LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "create_landmark"));
+		LLFloaterReg::showInstance("add_landmark");
 	}
 }
 
@@ -1159,11 +1160,11 @@ void LLLocationInputCtrl::onLocationContextMenuItemClicked(const LLSD& userdata)
 			
 			if(!landmark)
 			{
-				LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "create_landmark"));
+				LLFloaterReg::showInstance("add_landmark");
 			}
 			else
 			{
-				LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "landmark").with("id",landmark->getUUID()));
+				LLFloaterSidePanelContainer::showPanel("places", LLSD().with("type", "landmark").with("id", landmark->getUUID()));
 			}
 // [RLVa:KB] - Checked: 2010-04-05 (RLVa-1.2.0d) | Added: RLVa-1.2.0d
 		}

@@ -117,7 +117,8 @@ const U8 AGENT_STATE_EDITING =  0x10;
 // Autopilot constants
 const F32 AUTOPILOT_HEIGHT_ADJUST_DISTANCE = 8.f;			// meters
 const F32 AUTOPILOT_MIN_TARGET_HEIGHT_OFF_GROUND = 1.f;	// meters
-const F32 AUTOPILOT_MAX_TIME_NO_PROGRESS = 1.5f;		// seconds
+const F32 AUTOPILOT_MAX_TIME_NO_PROGRESS_WALK = 1.5f;		// seconds
+const F32 AUTOPILOT_MAX_TIME_NO_PROGRESS_FLY = 2.5f;		// seconds. Flying is less presize, needs a bit more time
 
 const F32 MAX_VELOCITY_AUTO_LAND_SQUARED = 4.f * 4.f;
 const F64 CHAT_AGE_FAST_RATE = 3.0;
@@ -409,6 +410,7 @@ LLAgent::LLAgent() :
 	mTeleportFinishedSlot(),
 	mTeleportFailedSlot(),
 	mIsMaturityRatingChangingDuringTeleport(false),
+	mTPNeedsNeabyChatSeparator(false),
 	mMaturityRatingChange(0U),
 	mIsDoSendMaturityPreferenceToServer(false),
 	mMaturityPreferenceRequestId(0U),
@@ -1007,13 +1009,12 @@ boost::signals2::connection LLAgent::addParcelChangedCallback(parcel_changed_cal
 }
 
 // static
-void LLAgent::capabilityReceivedCallback(const LLUUID &region_id)
+void LLAgent::capabilityReceivedCallback(const LLUUID &region_id, LLViewerRegion *regionp)
 {
-    LLViewerRegion* region = gAgent.getRegion();
-    if (region && region->getRegionID() == region_id)
+    if (regionp && regionp->getRegionID() == region_id)
     {
-        region->requestSimulatorFeatures();
-        LLAppViewer::instance()->updateNameLookupUrl();
+        regionp->requestSimulatorFeatures();
+        LLAppViewer::instance()->updateNameLookupUrl(regionp);
     }
 }
 
@@ -1066,7 +1067,7 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
             if (regionp->capabilitiesReceived())
             {
                 regionp->requestSimulatorFeatures();
-                LLAppViewer::instance()->updateNameLookupUrl();
+                LLAppViewer::instance()->updateNameLookupUrl(regionp);
             }
             else
             {
@@ -1092,11 +1093,11 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 
             if (regionp->capabilitiesReceived())
             {
-                LLAppViewer::instance()->updateNameLookupUrl();
+                LLAppViewer::instance()->updateNameLookupUrl(regionp);
             }
             else
             {
-                regionp->setCapabilitiesReceivedCallback([](const LLUUID &region_id) {LLAppViewer::instance()->updateNameLookupUrl(); });
+                regionp->setCapabilitiesReceivedCallback([](const LLUUID &region_id, LLViewerRegion* regionp) {LLAppViewer::instance()->updateNameLookupUrl(regionp); });
             }
 		}
 
@@ -1721,6 +1722,12 @@ void LLAgent::startAutoPilotGlobal(
 	{
 		return;
 	}
+
+    if (target_global.isExactlyZero())
+    {
+        LL_WARNS() << "Canceling attempt to start autopilot towards invalid position" << LL_ENDL;
+        return;
+    }
 	
 	// Are there any pending callbacks from previous auto pilot requests?
 	if (mAutoPilotFinishedCallback)
@@ -1936,7 +1943,16 @@ void LLAgent::autoPilot(F32 *delta_yaw)
 		if (target_dist >= mAutoPilotTargetDist)
 		{
 			mAutoPilotNoProgressFrameCount++;
-			if (mAutoPilotNoProgressFrameCount > AUTOPILOT_MAX_TIME_NO_PROGRESS * gFPSClamped)
+            bool out_of_time = false;
+            if (getFlying())
+            {
+                out_of_time = mAutoPilotNoProgressFrameCount > AUTOPILOT_MAX_TIME_NO_PROGRESS_FLY * gFPSClamped;
+            }
+            else
+            {
+                out_of_time = mAutoPilotNoProgressFrameCount > AUTOPILOT_MAX_TIME_NO_PROGRESS_WALK * gFPSClamped;
+            }
+			if (out_of_time)
 			{
 				stopAutoPilot();
 				return;
@@ -1985,7 +2001,7 @@ void LLAgent::autoPilot(F32 *delta_yaw)
 		F32 slow_distance;
 		if (getFlying())
 		{
-			slow_distance = llmax(6.f, mAutoPilotStopDistance + 5.f);
+			slow_distance = llmax(8.f, mAutoPilotStopDistance + 5.f);
 		}
 		else
 		{
@@ -2029,14 +2045,41 @@ void LLAgent::autoPilot(F32 *delta_yaw)
 		}
 		else if (mAutoPilotTargetDist > mAutoPilotStopDistance)
 		{
-			// walking/flying slow
+            // walking/flying slow
+            U32 movement_flag = 0;
+
 			if (at * direction > 0.9f)
 			{
-				setControlFlags(AGENT_CONTROL_AT_POS);
-			}
-			else if (at * direction < -0.9f)
-			{
-				setControlFlags(AGENT_CONTROL_AT_NEG);
+                movement_flag = AGENT_CONTROL_AT_POS;
+            }
+            else if (at * direction < -0.9f)
+            {
+                movement_flag = AGENT_CONTROL_AT_NEG;
+            }
+
+            if (getFlying())
+            {
+                // flying is too fast and has high inertia, artificially slow it down
+                // Don't update flags too often, server might not react
+                static U64 last_time_microsec = 0;
+                U64 time_microsec = LLTimer::getTotalTime();
+                U64 delta = time_microsec - last_time_microsec;
+                // fly during ~0-40 ms, stop during ~40-250 ms
+                if (delta > 250000) // 250ms
+                {
+                    // reset even if !movement_flag
+                    last_time_microsec = time_microsec;
+                }
+                else if (delta > 40000) // 40 ms
+                {
+                    clearControlFlags(AGENT_CONTROL_AT_POS | AGENT_CONTROL_AT_POS);
+                    movement_flag = 0;
+                }
+            }
+
+            if (movement_flag)
+            {
+                setControlFlags(movement_flag);
 			}
 		}
 
@@ -4032,7 +4075,7 @@ void LLAgent::clearVisualParams(void *data)
 // protected
 bool LLAgent::teleportCore(bool is_local)
 {
-    LL_DEBUGS("Teleport") << "In teleport core" << LL_ENDL;
+    //LL_DEBUGS("Teleport") << "In teleport core" << LL_ENDL;
 	if ((TELEPORT_NONE != mTeleportState) && (mTeleportState != TELEPORT_PENDING))
 	{
 		LL_WARNS() << "Attempt to teleport when already teleporting." << LL_ENDL;
@@ -4147,12 +4190,19 @@ void LLAgent::clearTeleportRequest()
         LLVoiceClient::getInstance()->setHidden(FALSE);
     }
 	mTeleportRequest.reset();
+    mTPNeedsNeabyChatSeparator = false;
 }
 
 void LLAgent::setMaturityRatingChangeDuringTeleport(U8 pMaturityRatingChange)
 {
 	mIsMaturityRatingChangingDuringTeleport = true;
 	mMaturityRatingChange = pMaturityRatingChange;
+}
+
+void LLAgent::sheduleTeleportIM()
+{
+    // is supposed to be called during teleport so we are still waiting for parcel
+    mTPNeedsNeabyChatSeparator = true;
 }
 
 bool LLAgent::hasPendingTeleportRequest()
@@ -4202,6 +4252,12 @@ void LLAgent::startTeleportRequest()
 void LLAgent::handleTeleportFinished()
 {
     LL_INFOS("Teleport") << "Agent handling teleport finished." << LL_ENDL;
+    if (mTPNeedsNeabyChatSeparator)
+    {
+        // parcel is ready at this point
+        addTPNearbyChatSeparator();
+        mTPNeedsNeabyChatSeparator = false;
+    }
 	clearTeleportRequest();
     mTeleportCanceled.reset();
 	if (mIsMaturityRatingChangingDuringTeleport)
@@ -4219,19 +4275,19 @@ void LLAgent::handleTeleportFinished()
     {
         if (mRegionp->capabilitiesReceived())
         {
-			LL_DEBUGS("Teleport") << "capabilities have been received for region handle "
+			/*LL_DEBUGS("Teleport") << "capabilities have been received for region handle "
 								  << mRegionp->getHandle()
 								  << " id " << mRegionp->getRegionID()
 								  << ", calling onCapabilitiesReceivedAfterTeleport()"
-								  << LL_ENDL;
+								  << LL_ENDL;*/
             onCapabilitiesReceivedAfterTeleport();
         }
         else
         {
-			LL_DEBUGS("Teleport") << "Capabilities not yet received for region handle "
+			/*LL_DEBUGS("Teleport") << "Capabilities not yet received for region handle "
 								  << mRegionp->getHandle()
 								  << " id " << mRegionp->getRegionID()
-								  << LL_ENDL;
+								  << LL_ENDL;*/
             mRegionp->setCapabilitiesReceivedCallback(boost::bind(&LLAgent::onCapabilitiesReceivedAfterTeleport));
         }
     }
@@ -4264,6 +4320,44 @@ void LLAgent::handleTeleportFailed()
 		LLNotificationsUtil::add("PreferredMaturityChanged", args);
 		mIsMaturityRatingChangingDuringTeleport = false;
 	}
+
+    mTPNeedsNeabyChatSeparator = false;
+}
+
+/*static*/
+void LLAgent::addTPNearbyChatSeparator()
+{
+    LLViewerRegion* agent_region = gAgent.getRegion();
+    LLParcel* agent_parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+    if (!agent_region || !agent_parcel)
+    {
+        return;
+    }
+
+    LLFloaterIMNearbyChat* nearby_chat = LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat");
+    if (nearby_chat)
+    {
+        std::string location_name;
+        LLAgentUI::ELocationFormat format = LLAgentUI::LOCATION_FORMAT_NO_MATURITY;
+
+        // Might be better to provide slurl to chat
+        if (!LLAgentUI::buildLocationString(location_name, format))
+        {
+            location_name = "Teleport to new region"; // Shouldn't happen
+        }
+
+        LLChat chat;
+        chat.mFromName = location_name;
+        chat.mMuted = FALSE;
+        chat.mFromID = LLUUID::null;
+        chat.mSourceType = CHAT_SOURCE_TELEPORT;
+        chat.mChatStyle = CHAT_STYLE_TELEPORT_SEP;
+        chat.mText = "";
+
+        LLSD args;
+        args["do_not_log"] = TRUE;
+        nearby_chat->addMessage(chat, true, args);
+    }
 }
 
 /*static*/
@@ -4271,11 +4365,11 @@ void LLAgent::onCapabilitiesReceivedAfterTeleport()
 {
 	if (gAgent.getRegion())
 	{
-		LL_DEBUGS("Teleport") << "running after capabilities received callback has been triggered, agent region "
+		/*LL_DEBUGS("Teleport") << "running after capabilities received callback has been triggered, agent region "
 							  << gAgent.getRegion()->getHandle()
 							  << " id " << gAgent.getRegion()->getRegionID()
 							  << " name " << gAgent.getRegion()->getName()
-							  << LL_ENDL;
+							  << LL_ENDL;*/
 	}
 	else
 	{

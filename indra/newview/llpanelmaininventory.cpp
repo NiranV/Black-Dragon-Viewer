@@ -224,6 +224,17 @@ BOOL LLPanelMainInventory::postBuild()
 				recent_items_panel->setSortOrder(gSavedSettings.getU32(LLInventoryPanel::RECENTITEMS_SORT_ORDER));
 			}
 		}
+		if(mActivePanel)
+		{
+			if(savedFilterState.has(mActivePanel->getFilter().getName()))
+			{
+				LLSD items = savedFilterState.get(mActivePanel->getFilter().getName());
+				LLInventoryFilter::Params p;
+				LLParamSDParser parser;
+				parser.readSD(items, p);
+				mActivePanel->getFilter().setSearchVisibilityTypes(p);
+			}
+		}
 
 	}
 
@@ -244,14 +255,6 @@ BOOL LLPanelMainInventory::postBuild()
 	const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
 	const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
 
-	LLMenuGL* menu = (LLMenuGL*)mMenuAddHandle.get();
-	if (menu)
-	{
-		menu->getChild<LLMenuItemGL>("Upload Image")->setLabelArg("[COST]", texture_upload_cost_str);
-		menu->getChild<LLMenuItemGL>("Upload Sound")->setLabelArg("[COST]", sound_upload_cost_str);
-		menu->getChild<LLMenuItemGL>("Upload Animation")->setLabelArg("[COST]", animation_upload_cost_str);
-	}
-
 	// Trigger callback for focus received so we can deselect items in inbox/outbox
 	LLFocusableElement::setFocusReceivedCallback(boost::bind(&LLPanelMainInventory::onFocusReceived, this));
 
@@ -262,6 +265,9 @@ BOOL LLPanelMainInventory::postBuild()
 LLPanelMainInventory::~LLPanelMainInventory( void )
 {
 	// Save the filters state.
+	// Some params types cannot be saved this way
+	// for example, LLParamSDParser doesn't know about U64,
+	// so some FilterOps params should be revised.
 	LLSD filterRoot;
 	LLInventoryPanel* all_items_panel = getChild<LLInventoryPanel>("All Items");
 	if (all_items_panel)
@@ -1439,6 +1445,21 @@ void LLPanelMainInventory::onCustomAction(const LLSD& userdata)
 		}
 		LLFloaterReg::showInstance("linkreplace", params);
 	}
+
+	if (command_name == "toggle_search_trash")
+	{
+		mActivePanel->getFilter().toggleSearchVisibilityTrash();
+	}
+
+	if (command_name == "toggle_search_library")
+	{
+		mActivePanel->getFilter().toggleSearchVisibilityLibrary();
+	}
+
+	if (command_name == "include_links")
+	{
+		mActivePanel->getFilter().toggleSearchVisibilityLinks();
+	}		
 }
 
 void LLPanelMainInventory::onVisibilityChange( BOOL new_visibility )
@@ -1579,6 +1600,21 @@ BOOL LLPanelMainInventory::isActionChecked(const LLSD& userdata)
 		return sort_order_mask & LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
 	}
 
+	if (command_name == "toggle_search_trash")
+	{
+		return (mActivePanel->getFilter().getSearchVisibilityTypes() & LLInventoryFilter::VISIBILITY_TRASH) != 0;
+	}
+
+	if (command_name == "toggle_search_library")
+	{
+		return (mActivePanel->getFilter().getSearchVisibilityTypes() & LLInventoryFilter::VISIBILITY_LIBRARY) != 0;
+	}
+
+	if (command_name == "include_links")
+	{
+		return (mActivePanel->getFilter().getSearchVisibilityTypes() & LLInventoryFilter::VISIBILITY_LINKS) != 0;	
+	}	
+
 	return FALSE;
 }
 
@@ -1610,17 +1646,13 @@ void LLPanelMainInventory::setUploadCostIfNeeded()
 		LLMenuItemBranchGL* upload_menu = this->findChild<LLMenuItemBranchGL>("upload");
 		if (upload_menu)
 		{
-			LLMenuGL* menu = (LLMenuGL*)mMenuAddHandle.get();
-			if (mNeedUploadCost && menu)
-			{
-				const std::string texture_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost());
-				const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
-				const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
+			const std::string texture_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost());
+			const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
+			const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
 
-				menu->getChild<LLView>("Upload Image")->setLabelArg("[COST]", texture_upload_cost_str);
-				menu->getChild<LLView>("Upload Sound")->setLabelArg("[COST]", sound_upload_cost_str);
-				menu->getChild<LLView>("Upload Animation")->setLabelArg("[COST]", animation_upload_cost_str);
-			}
+			upload_menu->getChild<LLView>("Upload Image")->setLabelArg("[COST]", texture_upload_cost_str);
+			upload_menu->getChild<LLView>("Upload Sound")->setLabelArg("[COST]", sound_upload_cost_str);
+			upload_menu->getChild<LLView>("Upload Animation")->setLabelArg("[COST]", animation_upload_cost_str);
 		}
 	}
 }

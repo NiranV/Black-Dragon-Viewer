@@ -427,6 +427,9 @@ void LLPanelLogin::addFavoritesToStartLocation()
 	if (mFavoritesCombo->getValue().asString().empty())
 	{
 		mFavoritesCombo->selectFirstItem();
+        // Value 'home' or 'last' should have been taken from NextLoginLocation
+        // but NextLoginLocation was not set, so init it from combo explicitly
+        onLocationSLURL();
 	}
 }
 
@@ -845,8 +848,11 @@ void LLPanelLogin::onClickConnect()
 {
 	if (sInstance && sInstance->mCallback)
 	{
-		// JC - Make sure the fields all get committed.
-		sInstance->setFocus(FALSE);
+		/*if (commit_fields)
+		{
+			// JC - Make sure the fields all get committed.
+			sInstance->setFocus(FALSE);
+		}*/
 
 		LLSD combo_val = sInstance->mGridCombo->getSelectedValue();
 
@@ -1185,7 +1191,7 @@ void LLPanelLogin::onSelectServer()
 			{
 				// the grid specified by the location is not this one, so clear the combo
 				mFavoritesCombo->setCurrentByIndex(0); // last location on the new grid
-				mFavoritesCombo->setTextEntry(LLStringUtil::null);
+				onLocationSLURL();
 			}
 		}			
 		break;

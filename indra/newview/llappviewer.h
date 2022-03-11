@@ -57,6 +57,8 @@ class LLImageDecodeThread;
 class LLTextureFetch;
 class LLWatchdogTimeout;
 class LLViewerJoystick;
+class LLViewerRegion;
+//BD
 class LLToolMgr;
 
 extern LLTrace::BlockTimerStatHandle FTM_FRAME;
@@ -152,6 +154,8 @@ public:
     virtual void forceErrorInfiniteLoop();
     virtual void forceErrorSoftwareException();
     virtual void forceErrorDriverCrash();
+    virtual void forceErrorCoroutineCrash();
+    virtual void forceErrorThreadCrash();
 
 	// The list is found in app_settings/settings_files.xml
 	// but since they are used explicitly in code,
@@ -213,8 +217,8 @@ public:
 
 //	//BD - Custom Keyboard Layout
 	static void loadKeyboardlayout();
-	
-    void updateNameLookupUrl();
+    void updateNameLookupUrl(const LLViewerRegion* regionp);
+
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.
 	virtual void initLoggingAndGetLastDuration(); // Initialize log files, logging system
@@ -239,7 +243,6 @@ private:
 	bool initConfiguration(); // Initialize settings from the command line/config file.
 	void initStrings();       // Initialize LLTrans machinery
 	bool initCache(); // Initialize local client cache.
-	void checkMemory() ;
 
 	// We have switched locations of both Mac and Windows cache, make sure
 	// files migrate and old cache is cleared out.
@@ -322,8 +325,6 @@ private:
 	LLUUID mAgentRegionLastID;
 
     LLAllocator mAlloc;
-
-	LLFrameTimer mMemCheckTimer;
 
 	// llcorehttp library init/shutdown helper
 	LLAppCoreHttp mAppCoreHttp;

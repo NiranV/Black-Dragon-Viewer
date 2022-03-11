@@ -1105,7 +1105,7 @@ BOOL LLViewerInput::handleKey(KEY translated_key, MASK translated_mask, BOOL rep
 		return FALSE;
 	}
 
-	LL_DEBUGS("UserInput") << "keydown -" << translated_key << "-" << LL_ENDL;
+	//LL_DEBUGS("UserInput") << "keydown -" << translated_key << "-" << LL_ENDL;
 	// skip skipped keys
 	if(mKeysSkippedByUI.find(translated_key) != mKeysSkippedByUI.end()) 
 	{

@@ -40,7 +40,6 @@
 #include <set>
 #include <vector>
 
-class LLDrawable;
 class LLHUDNameTag;
 class LLUIImage;
 
@@ -172,6 +171,8 @@ private:
 	EVertAlignment	mVertAlignment;
 	S32				mLOD;
 	BOOL			mHidden;
+	LLPointer<LLUIImage> mRoundedRectImgp;
+	LLPointer<LLUIImage> mRoundedRectTopImgp;
 
 	//BD
 	LLPointer<LLUIImage> mBGImage;
