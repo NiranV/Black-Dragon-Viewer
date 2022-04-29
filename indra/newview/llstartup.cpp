@@ -40,7 +40,7 @@
 #include "llaudioengine.h"
 
 #if USE_FMODSTUDIO
-#include "llaudioengine_fmodstudio.h"
+# include "llaudioengine_fmodstudio.h"
 #endif
 
 #ifdef LL_OPENAL
@@ -71,6 +71,7 @@
 #include "llnotifications.h"
 #include "llnotificationsutil.h"
 #include "llpersistentnotificationstorage.h"
+#include "llpresetsmanager.h"
 #include "llteleporthistory.h"
 #include "llregionhandle.h"
 #include "llsd.h"
@@ -96,7 +97,6 @@
 #include "llfloateravatarpicker.h"
 #include "llcallbacklist.h"
 #include "llcallingcard.h"
-#include "llclassifiedinfo.h"
 #include "llconsole.h"
 #include "llcontainerview.h"
 #include "llconversationlog.h"
@@ -136,6 +136,7 @@
 #include "llselectmgr.h"
 #include "llsky.h"
 #include "llstatview.h"
+#include "llstatusbar.h"		// sendMoneyBalanceRequest(), owns L$ balance
 #include "llsurface.h"
 #include "lltexturecache.h"
 #include "lltexturefetch.h"
@@ -641,9 +642,9 @@ bool idle_startup()
 				&& NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER")
 #endif // !LL_WINDOWS
 				)
-			{
+            {
 				gAudiop = (LLAudioEngine *) new LLAudioEngine_FMODSTUDIO(LLAppViewer::instance()->getSecondLifeTitle(), gSavedSettings.getBOOL("FMODProfilerEnable"), gSavedSettings.getU32("FMODResampleMethod"));
-			}
+            }
 #endif
 
 #ifdef LL_OPENAL
@@ -779,8 +780,8 @@ bool idle_startup()
 		// this startup phase more than once.
 		// _LL_DEBUGS("AppInit") << "initializing menu bar" << LL_ENDL;
 		initialize_edit_menu();
-		initialize_spellcheck_menu();
-		init_menus();
+			initialize_spellcheck_menu();
+			init_menus();
 		show_release_notes_if_required();
 
 		if (show_connect_box)
@@ -1031,10 +1032,9 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
 		// Display the startup progress bar.
+		//gViewerWindow->initTextures(agent_location_id);
 		gViewerWindow->setShowProgress(TRUE);
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, LLTrans::getString("Quit"));
-
-		//gViewerWindow->revealIntroPanel();
 
 		// Poke the VFS, which could potentially block for a while if
 		// Windows XP is acting up
@@ -1100,29 +1100,7 @@ bool idle_startup()
 		// Generic failure message
 		std::ostringstream emsg;
 		emsg << LLTrans::getString("LoginFailed") << "\n";
-		if (LLLoginInstance::getInstance()->authSuccess())
-		{
-			if (process_login_success_response())
-			{
-				// Pass the user information to the voice chat server interface.
-				LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
-				// create the default proximal channel
-				LLVoiceChannel::initClass();
-				LLStartUp::setStartupState(STATE_WORLD_INIT);
-				LLTrace::get_frame_recording().reset();
-			}
-			else
-			{
-				LLSD args;
-				args["ERROR_MESSAGE"] = emsg.str();
-				LL_INFOS("LLStartup") << "Notification: " << args << LL_ENDL;
-				LLNotificationsUtil::add("ErrorMessage", args, LLSD(), login_alert_done);
-				transition_back_to_login_panel(emsg.str());
-				show_connect_box = true;
-				return FALSE;
-			}
-		}
-		else if(LLLoginInstance::getInstance()->authFailure())
+		if(LLLoginInstance::getInstance()->authFailure())
 		{
 			LL_INFOS("LLStartup") << "Login failed, LLLoginInstance::getResponse(): "
 			                      << LLLoginInstance::getInstance()->getResponse() << LL_ENDL;
@@ -1254,6 +1232,28 @@ bool idle_startup()
 				show_connect_box = true;
 			}
 		}
+		else if(LLLoginInstance::getInstance()->authSuccess())
+		{
+			if(process_login_success_response())
+			{
+				// Pass the user information to the voice chat server interface.
+				LLVoiceClient::getInstance()->userAuthorized(gUserCredential->userID(), gAgentID);
+				// create the default proximal channel
+				LLVoiceChannel::initClass();
+				LLStartUp::setStartupState( STATE_WORLD_INIT);
+				LLTrace::get_frame_recording().reset();
+			}
+			else
+			{
+				LLSD args;
+				args["ERROR_MESSAGE"] = emsg.str();
+				LL_INFOS("LLStartup") << "Notification: " << args << LL_ENDL;
+				LLNotificationsUtil::add("ErrorMessage", args, LLSD(), login_alert_done);
+				transition_back_to_login_panel(emsg.str());
+				show_connect_box = true;
+				return FALSE;
+			}
+		}
 		return FALSE;
 	}
 
@@ -1299,7 +1299,7 @@ bool idle_startup()
 		// Initialize classes w/graphics stuff.
 		//
 		LLViewerStatsRecorder::instance(); // Since textures work in threads
-		gTextureList.doPrefetchImages();	
+		gTextureList.doPrefetchImages();		
 		set_startup_status(0.11f, LLTrans::getString("WorldInit"), "Initializing Surfaces");
 		display_startup();
 
@@ -1588,6 +1588,7 @@ bool idle_startup()
 			display_startup();
 			gTextureList.decodeAllImages(1.f);
 		}
+		LLStartUp::setStartupState( STATE_WORLD_WAIT );
 
 		set_startup_status(0.46f, LLTrans::getString("SeedGranted"), "Connecting to Region");
 		display_startup();
@@ -1621,8 +1622,6 @@ bool idle_startup()
 		timeout.reset();
 		set_startup_status(0.47f, LLTrans::getString("SeedGranted"), "");
 		display_startup();
-
-		LLStartUp::setStartupState(STATE_WORLD_WAIT);
 
 		return FALSE;
 	}
@@ -1687,11 +1686,11 @@ bool idle_startup()
 			LLHUDManager::getInstance()->sendEffects();
 		}*/
 
+		LLStartUp::setStartupState( STATE_AGENT_WAIT );		// Go to STATE_AGENT_WAIT
+
 		timeout.reset();
 		set_startup_status(0.52f, LLTrans::getString("AgentSend"), "");
 		display_startup();
-
-		LLStartUp::setStartupState(STATE_AGENT_WAIT);		// Go to STATE_AGENT_WAIT
 		return FALSE;
 	}
 
@@ -1752,26 +1751,29 @@ bool idle_startup()
 	//---------------------------------------------------------------------
 	if (STATE_INVENTORY_SEND == LLStartUp::getStartupState())
 	{
-		set_startup_status(0.65f, LLTrans::getString("InventorySend"), "Requesting Mute List");
 		display_startup();
+
+		set_startup_status(0.54f, LLTrans::getString("InventorySend"), "Requesting Mute List");
         // request mute list
         LL_INFOS() << "Requesting Mute List" << LL_ENDL;
         LLMuteList::getInstance()->requestFromServer(gAgent.getID());
 
+		set_startup_status(0.54f, LLTrans::getString("InventorySend"), "Requesting Money Balance");
         // Get L$ and ownership credit information
         LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
-        //LLStatusBar::sendMoneyBalanceRequest();
+		//BD
+		LLSidepanelInventory::sendMoneyBalanceRequest();
 
         display_startup();
 
 		// Inform simulator of our language preference
 		LLAgentLanguage::update();
+		set_startup_status(0.55f, LLTrans::getString("InventorySend"), "Lib Root");
+
 		display_startup();
 		// unpack thin inventory
 		LLSD response = LLLoginInstance::getInstance()->getResponse();
 		//bool dump_buffer = false;
-
-		set_startup_status(0.54f, LLTrans::getString("InventorySend"), "Lib Root");
 
 		LLSD inv_lib_root = response["inventory-lib-root"];
 		if(inv_lib_root.isDefined())
@@ -1783,7 +1785,7 @@ bool idle_startup()
 				gInventory.setLibraryRootFolderID(id.asUUID());
 			}
 		}
-		set_startup_status(0.55f, LLTrans::getString("InventorySend"), "Lib Owner");
+		set_startup_status(0.56f, LLTrans::getString("InventorySend"), "Lib Owner");
 		display_startup();
  		
 		LLSD inv_lib_owner = response["inventory-lib-owner"];
@@ -1796,7 +1798,7 @@ bool idle_startup()
 				gInventory.setLibraryOwnerID( LLUUID(id.asUUID()));
 			}
 		}
-		set_startup_status(0.56f, LLTrans::getString("InventorySend"), "Lib Skeleton");
+		set_startup_status(0.57f, LLTrans::getString("InventorySend"), "Lib Skeleton");
 		display_startup();
 
 		LLSD inv_skel_lib = response["inventory-skel-lib"];
@@ -1807,7 +1809,7 @@ bool idle_startup()
  				LL_WARNS("AppInit") << "Problem loading inventory-skel-lib" << LL_ENDL;
  			}
  		}
-		set_startup_status(0.57f, LLTrans::getString("InventorySend"), "Inventory Skeleton");
+		set_startup_status(0.58f, LLTrans::getString("InventorySend"), "Inventory Skeleton");
 		display_startup();
 
 		LLSD inv_skeleton = response["inventory-skeleton"];
@@ -1818,7 +1820,7 @@ bool idle_startup()
  				LL_WARNS("AppInit") << "Problem loading inventory-skel-targets" << LL_ENDL;
  			}
  		}
-		set_startup_status(0.58f, LLTrans::getString("InventorySend"), "Basic Inventory");
+		set_startup_status(0.59f, LLTrans::getString("InventorySend"), "Basic Inventory");
 		display_startup();
 
 		LLSD inv_basic = response["inventory-basic"];
@@ -1860,7 +1862,7 @@ bool idle_startup()
 			display_startup();
  		}
 
-		set_startup_status(0.59f, LLTrans::getString("InventorySend"), "Tutorial Settings");
+		set_startup_status(0.6f, LLTrans::getString("InventorySend"), "Tutorial Settings");
 		display_startup();
 
 		bool show_hud = false;
@@ -1888,7 +1890,7 @@ bool idle_startup()
 				//}
 			}
 		}
-		set_startup_status(0.60f, LLTrans::getString("InventorySend"), "Showing Tutorials");
+		set_startup_status(0.61f, LLTrans::getString("InventorySend"), "Showing Tutorials");
 		display_startup();
 
 		// Either we want to show tutorial because this is the first login
@@ -1898,7 +1900,7 @@ bool idle_startup()
 		{
 			LLFloaterReg::showInstance("hud", LLSD(), FALSE);
 		}
-		set_startup_status(0.61f, LLTrans::getString("InventorySend"), "Loading Event Notifier");
+		set_startup_status(0.62f, LLTrans::getString("InventorySend"), "Loading Event Notifier");
 		display_startup();
 
 		LLSD event_notifications = response["event_notifications"];
@@ -1906,7 +1908,7 @@ bool idle_startup()
 		{
 			gEventNotifier.load(event_notifications);
 		}
-		set_startup_status(0.62f, LLTrans::getString("InventorySend"), "Loading Classified Categories");
+		set_startup_status(0.63f, LLTrans::getString("InventorySend"), "Loading Classified Categories");
 		display_startup();
 
 		LLSD classified_categories = response["classified_categories"];
@@ -1914,7 +1916,7 @@ bool idle_startup()
 		{
 			LLClassifiedInfo::loadCategories(classified_categories);
 		}
-		set_startup_status(0.63f, LLTrans::getString("InventorySend"), "Building Child Map");
+		set_startup_status(0.64f, LLTrans::getString("InventorySend"), "Building Child Map");
 		display_startup();
 
 		// This method MUST be called before gInventory.findCategoryUUIDForType because of 
@@ -1929,7 +1931,7 @@ bool idle_startup()
 		gInventory.addChangedMask(LLInventoryObserver::ALL, LLUUID::null);
 		gInventory.notifyObservers();
 		
-		set_startup_status(0.64f, LLTrans::getString("InventorySend"), "Creating My Favorites");
+		set_startup_status(0.65f, LLTrans::getString("InventorySend"), "Creating My Favorites");
 		display_startup();
 
 		// set up callbacks
@@ -1951,10 +1953,7 @@ bool idle_startup()
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
 		display_startup();
-		// Get L$ and ownership credit information
-		LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
-		//BD
-		LLSidepanelInventory::sendMoneyBalanceRequest();
+		
 		set_startup_status(0.68f, LLTrans::getString("InventorySend"), "Checking RLVa");
 		display_startup();
 
@@ -2710,6 +2709,7 @@ void register_viewer_callbacks(LLMessageSystem* msg)
 	msg->setHandlerFunc("EventInfoReply", LLEventNotifier::processEventInfoReply);
 	
 	msg->setHandlerFunc("PickInfoReply", &LLAvatarPropertiesProcessor::processPickInfoReply);
+//	msg->setHandlerFunc("ClassifiedInfoReply", LLPanelClassified::processClassifiedInfoReply);
 	msg->setHandlerFunc("ClassifiedInfoReply", LLAvatarPropertiesProcessor::processClassifiedInfoReply);
 	msg->setHandlerFunc("ParcelInfoReply", LLRemoteParcelInfoProcessor::processParcelInfoReply);
 	msg->setHandlerFunc("ScriptDialog", process_script_dialog);
@@ -2726,7 +2726,7 @@ void register_viewer_callbacks(LLMessageSystem* msg)
 
 	msg->setHandlerFunc("InitiateDownload", process_initiate_download);
 	msg->setHandlerFunc("LandStatReply", LLFloaterTopObjects::handle_land_reply);
-	msg->setHandlerFunc("GenericMessage", process_generic_message);
+    msg->setHandlerFunc("GenericMessage", process_generic_message);
     msg->setHandlerFunc("LargeGenericMessage", process_large_generic_message);
 
 	msg->setHandlerFuncFast(_PREHASH_FeatureDisabled, process_feature_disabled_message);
@@ -2757,9 +2757,9 @@ bool callback_choose_gender(const LLSD& notification, const LLSD& response)
 			break;
 			
         case OPT_FEMALE:
-		case OPT_CLOSED_WINDOW:
+        case OPT_CLOSED_WINDOW:
         default:
-			LLStartUp::loadInitialOutfit(gSavedSettings.getString("DefaultFemaleAvatar"), "female");
+			LLStartUp::loadInitialOutfit( gSavedSettings.getString("DefaultFemaleAvatar"), "female" );
 			break;
 	}
 	return false;
@@ -2863,89 +2863,14 @@ std::string LLStartUp::getUserId()
     return gUserCredential->userID();
 }
 
-//BD
-// Loads a bitmap to display during load
-/*void init_start_screen(S32 location_id)
-{
-	if (gStartTexture.notNull())
-	{
-		gStartTexture = NULL;
-		LL_INFOS("AppInit") << "re-initializing start screen" << LL_ENDL;
-	}
-
-	// _LL_DEBUGS("AppInit") << "Loading startup bitmap..." << LL_ENDL;
-
-	U8 image_codec = IMG_CODEC_PNG;
-	std::string temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter();
-
-	if ((S32)START_LOCATION_ID_LAST == location_id)
-	{
-		temp_str += LLStartUp::getScreenLastFilename();
-	}
-	else
-	{
-		std::string path = temp_str + LLStartUp::getScreenHomeFilename();
-		
-		if (!gDirUtilp->fileExists(path) && LLGridManager::getInstance()->isInProductionGrid())
-		{
-			// Fallback to old file, can be removed later
-			// Home image only sets when user changes home, so it will take time for users to switch to pngs
-			temp_str += "screen_home.bmp";
-			image_codec = IMG_CODEC_BMP;
-		}
-		else
-		{
-			temp_str = path;
-		}
-	}
-
-	LLPointer<LLImageFormatted> start_image_frmted = LLImageFormatted::createFromType(image_codec);
-
-	// Turn off start screen to get around the occasional readback 
-	// driver bug
-	if(!gSavedSettings.getBOOL("UseStartScreen"))
-	{
-		LL_INFOS("AppInit")  << "Bitmap load disabled" << LL_ENDL;
-		return;
-	}
-	else if(!start_image_frmted->load(temp_str) )
-	{
-		LL_WARNS("AppInit") << "Bitmap load failed" << LL_ENDL;
-		gStartTexture = NULL;
-	}
-	else
-	{
-		gStartImageWidth = start_image_frmted->getWidth();
-		gStartImageHeight = start_image_frmted->getHeight();
-
-		LLPointer<LLImageRaw> raw = new LLImageRaw;
-		if (!start_image_frmted->decode(raw, 0.0f))
-		{
-			LL_WARNS("AppInit") << "Bitmap decode failed" << LL_ENDL;
-			gStartTexture = NULL;
-		}
-		else
-		{
-			raw->expandToPowerOfTwo();
-			gStartTexture = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE) ;
-		}
-	}
-
-	if(gStartTexture.isNull())
-	{
-		gStartTexture = LLViewerTexture::sBlackImagep ;
-		gStartImageWidth = gStartTexture->getWidth() ;
-		gStartImageHeight = gStartTexture->getHeight() ;
-	}
-}
-
 
 // frees the bitmap
 void release_start_screen()
 {
-	// _LL_DEBUGS("AppInit") << "Releasing bitmap..." << LL_ENDL;
+	//LL_DEBUGS("AppInit") << "Releasing bitmap..." << LL_ENDL;
 	gStartTexture = NULL;
-}*/
+}
+
 
 // static
 std::string LLStartUp::startupStateToString(EStartupState state)
@@ -3783,6 +3708,13 @@ bool process_login_success_response()
 	if (!agent_appearance_url.empty())
 	{
 		LLAppearanceMgr::instance().setAppearanceServiceURL(agent_appearance_url);
+	}
+
+	// Set the location of the snapshot sharing config endpoint
+	std::string snapshot_config_url = response["snapshot_config_url"];
+	if(!snapshot_config_url.empty())
+	{
+		gSavedSettings.setString("SnapshotConfigURL", snapshot_config_url);
 	}
 
 	// Start the process of fetching the OpenID session cookie for this user login

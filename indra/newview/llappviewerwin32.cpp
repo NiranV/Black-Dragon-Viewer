@@ -765,12 +765,12 @@ bool LLAppViewerWin32::initHardwareTest()
 			// Warn them that runnin without DirectX 9 will
 			// not allow us to tell them about driver issues
 			std::ostringstream msg;
-			msg << LLTrans::getString("MBNoDirectX");
+			msg << LLTrans::getString ("MBNoDirectX");
 			S32 button = OSMessageBox(
 				msg.str(),
 				LLTrans::getString("MBWarning"),
 				OSMB_YESNO);
-			if (OSBTN_NO == button)
+			if (OSBTN_NO== button)
 			{
 				LL_INFOS("AppInit") << "User quitting after failed DirectX 9 detection" << LL_ENDL;
 				LLWeb::loadURLExternal("http://secondlife.com/support/", false);
