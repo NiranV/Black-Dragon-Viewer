@@ -1883,10 +1883,6 @@ if (WINDOWS)
       ${CMAKE_CURRENT_SOURCE_DIR}/licenses-win32.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/featuretable.txt
       ${CMAKE_CURRENT_SOURCE_DIR}/featuretable_xp.txt
-      ${ARCH_PREBUILT_DIRS_RELEASE}/libeay32.dll
-      ${ARCH_PREBUILT_DIRS_RELEASE}/ssleay32.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/libeay32.dll
-      ${ARCH_PREBUILT_DIRS_DEBUG}/ssleay32.dll
       ${viewer_APPSETTINGS_FILES}
       SLPlugin
       media_plugin_cef
@@ -1903,11 +1899,15 @@ if (WINDOWS)
         list(APPEND COPY_INPUT_DEPENDENCIES
             ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/vivoxsdk_x64.dll
             ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/ortp_x64.dll
+           ${ARCH_PREBUILT_DIRS_RELEASE}/libcrypto-1_1-x64.dll
+           ${ARCH_PREBUILT_DIRS_RELEASE}/libssl-1_1-x64.dll
             )
     else (ADDRESS_SIZE EQUAL 64)
         list(APPEND COPY_INPUT_DEPENDENCIES
             ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/vivoxsdk.dll
             ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/ortp.dll
+            ${ARCH_PREBUILT_DIRS_RELEASE}/libcrypto-1_1.dll
+            ${ARCH_PREBUILT_DIRS_RELEASE}/libssl-1_1.dll
             )
     endif (ADDRESS_SIZE EQUAL 64)
 
@@ -1961,11 +1961,9 @@ if (WINDOWS)
       add_dependencies(${VIEWER_BINARY_NAME} copy_win_scripts)
     endif (EXISTS ${CMAKE_SOURCE_DIR}/copy_win_scripts)
 
-    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
-
-    if (NOT USE_BUGSPLAT)
-        add_dependencies(${VIEWER_BINARY_NAME} windows-crash-logger)
-    endif (NOT USE_BUGSPLAT)
+    add_dependencies(${VIEWER_BINARY_NAME}
+      SLPlugin
+    )
 
     # sets the 'working directory' for debugging from visual studio.
     if (NOT UNATTENDED)
@@ -2248,8 +2246,13 @@ if (DARWIN)
     # SIGH, as of 2018-05-24 (cmake 3.11.1) the INSTALL_RPATH property simply
     # does not work. Try this:
     LINK_FLAGS "-rpath @loader_path/../Frameworks"
+<<<<<<< HEAD
     MACOSX_BUNDLE_INFO_PLIST
     "${CMAKE_CURRENT_SOURCE_DIR}/Info-BlackDragon.plist"
+=======
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-SecondLife.plist"
+    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
+>>>>>>> 8dd9554eb504e43e392b858003914be3210ba91e
     )
 
   set(VIEWER_APP_BUNDLE "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${product}.app")
@@ -2288,10 +2291,6 @@ if (DARWIN)
     )
 
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-
-  if (NOT USE_BUGSPLAT)
-      add_dependencies(${VIEWER_BINARY_NAME} mac-crash-logger)
-  endif (NOT USE_BUGSPLAT)
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")
@@ -2334,6 +2333,7 @@ endif (INSTALL)
 
 # Note that the conventional VIEWER_SYMBOL_FILE is set by ../../build.sh
 if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIEWER_SYMBOL_FILE)
+<<<<<<< HEAD
   if (NOT USE_BUGSPLAT)
     # Breakpad symbol-file generation
     set(SYMBOL_SEARCH_DIRS "")
@@ -2390,6 +2390,9 @@ if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIE
     endif (WINDOWS OR LINUX)
 
   else (NOT USE_BUGSPLAT)
+=======
+  if (BUGSPLAT_DB)
+>>>>>>> 8dd9554eb504e43e392b858003914be3210ba91e
     # BugSplat symbol-file generation
     if (WINDOWS)
       # Just pack up a tarball containing only the .pdb file for the
@@ -2473,7 +2476,7 @@ if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIE
     if (LINUX)
       # TBD
     endif (LINUX)
-  endif (NOT USE_BUGSPLAT)
+  endif (BUGSPLAT_DB)
 
   # for both Bugsplat and Breakpad
   add_dependencies(llpackage generate_symbols)

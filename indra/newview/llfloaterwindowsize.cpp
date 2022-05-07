@@ -33,14 +33,30 @@
 // Linden library includes
 #include "llfloater.h"
 #include "llfloaterreg.h"
+#include "llregex.h"
 #include "lluictrl.h"
-
-// System libraries
-#include <boost/regex.hpp>
 
 //BD
 #include "llspinctrl.h"
 #include "llviewercontrol.h"
+
+// Extract from strings of the form "<width> x <height>", e.g. "640 x 480".
+bool extractWindowSizeFromString(const std::string& instr, U32 *width, U32 *height)
+{
+	boost::cmatch what;
+	// matches (any number)(any non-number)(any number)
+	const boost::regex expression("([0-9]+)[^0-9]+([0-9]+)");
+	if (ll_regex_match(instr.c_str(), what, expression))
+	{
+		*width = atoi(what[1].first);
+		*height = atoi(what[2].first);
+		return true;
+	}
+	
+	*width = 0;
+	*height = 0;
+	return false;
+}
 
 
 LLFloaterWindowSize::LLFloaterWindowSize(const LLSD& key) 

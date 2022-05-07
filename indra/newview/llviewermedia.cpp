@@ -1292,7 +1292,13 @@ void LLViewerMedia::getOpenIDCookieCoro(std::string url)
 				// down.
 				std::string cefUrl(std::string(inst->mOpenIDURL.mURI) + "://" + std::string(inst->mOpenIDURL.mAuthority));
 
-				media_instance->getMediaPlugin()->setCookie(cefUrl, cookie_name, cookie_value, cookie_host, cookie_path, httponly, secure);
+				media_instance->getMediaPlugin()->setCookie(cefUrl, cookie_name, cookie_value, cookie_host, 
+                    cookie_path, httponly, secure);
+
+                // Now that we have parsed the raw cookie, we must store it so that each new media instance
+                // can also get a copy and faciliate logging into internal SL sites.
+				media_instance->getMediaPlugin()->storeOpenIDCookie(cefUrl, cookie_name, cookie_value, 
+                    cookie_host, cookie_path, httponly, secure);
 			}
 		}
 	}
@@ -1747,13 +1753,13 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
 			bool cookies_enabled = gSavedSettings.getBOOL( "CookiesEnabled" );
 			media_source->cookies_enabled( cookies_enabled || clean_browser);
 
-			// collect 'plugins enabled' setting from prefs and send to embedded browser
-			bool plugins_enabled = gSavedSettings.getBOOL( "BrowserPluginsEnabled" );
-			media_source->setPluginsEnabled( plugins_enabled  || clean_browser);
-
 			// collect 'javascript enabled' setting from prefs and send to embedded browser
 			bool javascript_enabled = gSavedSettings.getBOOL( "BrowserJavascriptEnabled" );
 			media_source->setJavascriptEnabled( javascript_enabled || clean_browser);
+
+			// As of SL-15559 PDF files do not load in CEF v91 we enable plugins
+			// but explicitly disable Flash (PDF support in CEF is now treated as a plugin)
+			media_source->setPluginsEnabled(true);
 
 			bool media_plugin_debugging_enabled = gSavedSettings.getBOOL("MediaPluginDebugging");
 			media_source->enableMediaPluginDebugging( media_plugin_debugging_enabled  || clean_browser);
@@ -1827,6 +1833,7 @@ bool LLViewerMediaImpl::initializePlugin(const std::string& media_type)
 
 	if (media_source)
 	{
+		media_source->injectOpenIDCookie();
 		media_source->setDisableTimeout(gSavedSettings.getBOOL("DebugPluginDisableTimeout"));
 		media_source->setLoop(mMediaLoop);
 		media_source->setAutoScale(mMediaAutoScale);

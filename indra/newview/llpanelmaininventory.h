@@ -85,6 +85,8 @@ public:
 	void onOutboxClearSearch();
 	void onOutboxFilterEdit(const std::string& search_string);
 
+	bool isRecentItemsPanelSelected();
+
 	const std::string& getFilterText() const { return mFilterText; }
 	
 	void setSelectCallback(const LLFolderView::signal_t::slot_type& cb);

@@ -38,6 +38,7 @@
 #include "llkeybind.h" // LLKeyData
 #include "llmorphview.h"
 #include "llmoveview.h"
+#include "llsetkeybinddialog.h"
 #include "lltoolfocus.h"
 #include "lltoolpie.h"
 #include "llviewercontrol.h"
@@ -65,8 +66,21 @@ const F32 ORBIT_NUDGE_RATE = 0.05f;  // fraction of normal speed
 
 const LLKeyData agent_control_lbutton(CLICK_LEFT, KEY_NONE, MASK_NONE, true);
 
+struct LLKeybindFunctionData
+{
+    LLKeybindFunctionData(boost::function<bool(EKeystate keystate)> function, bool global)
+        :
+        mFunction(function),
+        mIsGlobal(global)
+    {
+    }
+    boost::function<bool(EKeystate keystate)> mFunction;
+    // todo: might be good idea to make this into enum, like: global/inworld/menu
+    bool mIsGlobal;
+};
+
 struct LLKeyboardActionRegistry 
-:	public LLRegistrySingleton<std::string, boost::function<bool (EKeystate keystate)>, LLKeyboardActionRegistry>
+:	public LLRegistrySingleton<const std::string, LLKeybindFunctionData, LLKeyboardActionRegistry>
 {
 	LLSINGLETON_EMPTY_CTOR(LLKeyboardActionRegistry);
 };
@@ -898,8 +912,10 @@ bool toggle_crouch(EKeystate s)
 	return false;
 }
 
-
-#define REGISTER_KEYBOARD_ACTION(KEY, ACTION) LLREGISTER_STATIC(LLKeyboardActionRegistry, KEY, ACTION);
+// In-world keybindings, like walking or camera
+#define REGISTER_KEYBOARD_ACTION(KEY, ACTION) LLREGISTER_STATIC(LLKeyboardActionRegistry, KEY, LLKeybindFunctionData(ACTION, false));
+// Global keybindings that should work even with floaters focused, like voice
+#define REGISTER_KEYBOARD_GLOBAL_ACTION(KEY, ACTION) LLREGISTER_STATIC(LLKeyboardActionRegistry, KEY, LLKeybindFunctionData(ACTION, true));
 REGISTER_KEYBOARD_ACTION("jump", agent_jump);
 REGISTER_KEYBOARD_ACTION("push_down", agent_push_down);
 REGISTER_KEYBOARD_ACTION("push_forward", agent_push_forward);
@@ -950,8 +966,6 @@ REGISTER_KEYBOARD_ACTION("toggle_pause_media", toggle_pause_media);
 REGISTER_KEYBOARD_ACTION("toggle_enable_media", toggle_enable_media);
 REGISTER_KEYBOARD_ACTION("teleport_to", teleport_to);
 REGISTER_KEYBOARD_ACTION("walk_to", walk_to);
-REGISTER_KEYBOARD_ACTION("toggle_voice", toggle_voice);
-REGISTER_KEYBOARD_ACTION("voice_follow_key", voice_follow_key);
 //BD - Camera Roll
 REGISTER_KEYBOARD_ACTION("roll_left", camera_roll_left);
 REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
@@ -959,6 +973,8 @@ REGISTER_KEYBOARD_ACTION("roll_reset", camera_roll_reset);
 //BD - Toggle Crouching
 REGISTER_KEYBOARD_ACTION("toggle_crouch", toggle_crouch);
 
+REGISTER_KEYBOARD_GLOBAL_ACTION("toggle_voice", toggle_voice);
+REGISTER_KEYBOARD_GLOBAL_ACTION("voice_follow_key", voice_follow_key);
 #undef REGISTER_KEYBOARD_ACTION
 
 LLViewerInput::LLViewerInput()
@@ -1129,46 +1145,93 @@ BOOL LLViewerInput::handleKeyUp(KEY translated_key, MASK translated_mask)
 	return gViewerWindow->handleKeyUp(translated_key, translated_mask);
 }
 
+bool LLViewerInput::handleGlobalBindsKeyDown(KEY key, MASK mask)
+{
+    if (LLSetKeyBindDialog::isRecording())
+    {
+        // handleGlobalBindsKeyDown happens before view handling, so can't
+        // be interupted by LLSetKeyBindDialog, check manually
+        return false;
+    }
+    S32 mode = getMode();
+    return scanKey(mGlobalKeyBindings[mode], mGlobalKeyBindings[mode].size(), key, mask, TRUE, FALSE, FALSE, FALSE);
+}
+
+bool LLViewerInput::handleGlobalBindsKeyUp(KEY key, MASK mask)
+{
+    if (LLSetKeyBindDialog::isRecording())
+    {
+        // handleGlobalBindsKeyUp happens before view handling, so can't
+        // be interupted by LLSetKeyBindDialog, check manually
+        return false;
+    }
+
+    S32 mode = getMode();
+    return scanKey(mGlobalKeyBindings[mode], mGlobalKeyBindings[mode].size(), key, mask, FALSE, TRUE, FALSE, FALSE);
+}
+
+bool LLViewerInput::handleGlobalBindsMouse(EMouseClickType clicktype, MASK mask, bool down)
+{
+    if (LLSetKeyBindDialog::isRecording())
+    {
+        // handleGlobalBindsMouse happens before view handling, so can't
+        // be interupted by LLSetKeyBindDialog, check manually
+        return false;
+    }
+
+    bool res = false;
+    S32 mode = getMode();
+    if (down)
+    {
+        res = scanMouse(mGlobalMouseBindings[mode], mGlobalMouseBindings[mode].size(), clicktype, mask, MOUSE_STATE_DOWN, true);
+    }
+    else
+    {
+        res = scanMouse(mGlobalMouseBindings[mode], mGlobalMouseBindings[mode].size(), clicktype, mask, MOUSE_STATE_UP, true);
+    }
+    return res;
+}
+
 BOOL LLViewerInput::bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name)
 {
-    S32 index;
-    typedef boost::function<bool(EKeystate)> function_t;
-    function_t function = NULL;
+	S32 index;
+	typedef boost::function<bool(EKeystate)> function_t;
+	function_t function = NULL;
 
-    function_t* result = LLKeyboardActionRegistry::getValue(function_name);
-    if (result)
-    {
-        function = *result;
-    }
+	function_t* result = LLKeyboardActionRegistry::getValue(function_name);
+	if (result)
+	{
+		function = *result;
+	}
 
-    if (!function)
-    {
-        LL_ERRS() << "Can't bind key to function " << function_name << ", no function with this name found" << LL_ENDL;
-        return FALSE;
-    }
+	if (!function)
+	{
+		LL_ERRS() << "Can't bind key to function " << function_name << ", no function with this name found" << LL_ENDL;
+		return FALSE;
+	}
 
-    // check for duplicate first and overwrite
-    S32 size = mMouseBindings[mode].size();
-    for (index = 0; index < size; index++)
-    {
-        if (mouse == mMouseBindings[mode][index].mMouse && mask == mMouseBindings[mode][index].mMask)
-            break;
-    }
+	// check for duplicate first and overwrite
+	S32 size = mMouseBindings[mode].size();
+	for (index = 0; index < size; index++)
+	{
+		if (mouse == mMouseBindings[mode][index].mMouse && mask == mMouseBindings[mode][index].mMask)
+			break;
+	}
 
-    if (mode >= MODE_COUNT)
-    {
-        LL_ERRS() << "LLKeyboard::bindKey() - unknown mode passed" << mode << LL_ENDL;
-        return FALSE;
-    }
+	if (mode >= MODE_COUNT)
+	{
+		LL_ERRS() << "LLKeyboard::bindKey() - unknown mode passed" << mode << LL_ENDL;
+		return FALSE;
+	}
 
-    LLMouseBinding bind;
-    bind.mMouse = mouse;
-    bind.mMask = mask;
-    bind.mFunction = function;
+	LLMouseBinding bind;
+	bind.mMouse = mouse;
+	bind.mMask = mask;
+	bind.mFunction = function;
 
-    mMouseBindings[mode].push_back(bind);
+	mMouseBindings[mode].push_back(bind);
 
-    return TRUE;
+	return TRUE;
 }
 
 //BD - Custom Keyboard Layout
@@ -1198,10 +1261,10 @@ BOOL LLViewerInput::bindControl(const S32 mode, const KEY key, const EMouseClick
 	}
 
 	// Not remapped, look for a function
-	function_t* result = LLKeyboardActionRegistry::getValue(function_name);
+    LLKeybindFunctionData* result = LLKeyboardActionRegistry::getValue(function_name);
 	if (result)
 	{
-		function = *result;
+		function = result->mFunction;
 	}
 
 	if (!function)
@@ -1295,6 +1358,8 @@ void LLViewerInput::resetBindings()
 {
     for (S32 i = 0; i < MODE_COUNT; i++)
     {
+        mGlobalKeyBindings[i].clear();
+        mGlobalMouseBindings[i].clear();
         mKeyBindings[i].clear();
         mMouseBindings[i].clear();
     }
@@ -1588,11 +1653,18 @@ BOOL LLViewerInput::handleMouse(LLWindow *window_impl, LLCoordGL pos, MASK mask,
     return handled;
 }
 
-bool LLViewerInput::scanMouse(EMouseClickType mouse, S32 mode, MASK mask, EMouseState state) const
+bool LLViewerInput::scanMouse(
+    const std::vector<LLMouseBinding> &binding,
+    S32 binding_count,
+    EMouseClickType mouse,
+    MASK mask,
+    EMouseState state,
+    bool ignore_additional_masks
+) const
 {
     for (S32 i = 0; i < mBindingCount[1]; i++)
     {
-        if (mBindings[mode][i].mMouse == mouse && (mBindings[mode][i].mMask & mask) == mBindings[mode][i].mMask)
+        if (mBindings[mode][i].mMouse == mouse && (ignore_additional_masks ? (mBindings[mode][i].mMask & mask) == mBindings[mode][i].mMask : mBindings[mode][i].mMask == mask))
         {
 			bool res = false;
 			switch (state)
@@ -1633,7 +1705,11 @@ bool LLViewerInput::scanMouse(EMouseClickType click, EMouseState state) const
 	//     of MODE EDITING.
     S32 mode = MODE_THIRD_PERSON;
     MASK mask = gKeyboard->currentMask(TRUE);
-    res = scanMouse(click, mode, mask, state);
+
+    // By default mouse clicks require exact mask
+    // Todo: support for mIgnoreMasks because some functions like teleports
+    // expect to be canceled, but for voice it's prefered to ignore mask.
+    res = scanMouse(mMouseBindings[mode], mMouseBindings[mode].size(), click, mask, state, false);
     // no user defined actions found or those actions can't handle the key/button, handle control if nessesary
     if (!res && agent_control_lbutton.canHandle(click, KEY_NONE, mask))
     {
@@ -1687,6 +1763,12 @@ bool LLViewerInput::isMouseBindUsed(const EMouseClickType mouse, const MASK mask
     for (S32 index = 0; index < size; index++)
     {
         if (mouse == mMouseBindings[mode][index].mMouse && mask == mMouseBindings[mode][index].mMask)
+            return true;
+    }
+    size = mGlobalMouseBindings[mode].size();
+    for (S32 index = 0; index < size; index++)
+    {
+        if (mouse == mGlobalMouseBindings[mode][index].mMouse && mask == mGlobalMouseBindings[mode][index].mMask)
             return true;
     }
     return false;

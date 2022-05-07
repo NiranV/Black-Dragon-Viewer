@@ -129,6 +129,9 @@ public:
 	void selectPrivacyPanel();
 	void selectChatPanel();
 	void getControlNames(std::vector<std::string>& names);
+	// updates click/double-click action controls depending on values from settings.xml
+	void updateClickActionViews();
+    void updateSearchableItems();
 
 protected:	
 	//BD
@@ -307,6 +310,7 @@ private:
 
 	LLFilterEditor *mFilterEdit;
 	std::unique_ptr<LLSearchableUI::LLTabData> mSearchData;
+	bool mSearchDataDirty;
 
 	void onUpdateFilterTerm( bool force = false );
 	void collectSearchableItems();
