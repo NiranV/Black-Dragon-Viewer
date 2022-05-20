@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- background_visible="true"
+ background_visible="false"
  follows="all"
  height="570"
  layout="topleft"
@@ -83,18 +83,16 @@
      value="Place Profile"
      width="280" />
     <scroll_container
-     color="DkGray2"
      follows="all"
      height="534"
      layout="topleft"
      left="9"
      name="place_scroll"
-     opaque="true"
      top_pad="9"
      width="324">
         <panel
-         bg_alpha_color="DkGray2"
          follows="left|top|right"
+         background_visible="false"
          height="654"
          layout="topleft"
          left="0"
@@ -278,16 +276,12 @@
                  value="Title:"
                  width="290" />
                 <line_editor
-                 text_readonly_color="white"
                  enabled="false"
-                 use_bg_color="true"
-                 bg_color="DkGray0"
                  follows="left|top|right"
                  height="22"
                  layout="topleft"
                  left="0"
                  name="title_value"
-                 text_color="white"
                  top_pad="5"
                  width="200" /> 
                 <button
@@ -309,7 +303,6 @@
                  max_length_bytes="63"
                  name="title_editor"
                  prevalidate_callback="ascii"
-                 text_readonly_color="white"
                  top_delta="1"
                  width="290"/>
                 <text
@@ -322,7 +315,6 @@
                  value="My notes:"
                  width="290" />
                 <text_editor
-                 bg_readonly_color="DkGray0"
                  follows="all"
                  height="75"
                  layout="topleft"
@@ -331,7 +323,6 @@
                  name="notes_editor"
                  read_only="true"
                  spellcheck="true"
-                 text_readonly_color="white"
                  text_type="ascii_with_newline"
                  top_pad="5"
                  width="290"
@@ -352,7 +343,14 @@
                  left="0"
                  name="folder_combo"
                  top_pad="5"
-                 width="200" />
+                 width="200">
+                 <combo_box.drop_down_button
+            image_unselected="ToolbarDropDown_Off"
+            image_selected="ToolbarDropDown_Press"
+            image_pressed="ToolbarDropDown_Press" 
+            image_pressed_selected="ToolbarDropDown_Press"
+            image_disabled="ToolbarDropDown_Off" />
+                </combo_box>
             </panel>
         </panel>
     </scroll_container>

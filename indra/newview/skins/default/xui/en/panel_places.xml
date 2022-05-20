@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
-background_visible="true"
+background_visible="false"
  default_tab_group="1"
  follows="all"
  height="570"
@@ -177,12 +177,12 @@ background_visible="true"
      follows="all"
      layout="topleft"
      height="533"
-     left="0"
+     left="7"
      top="4"
      help_topic="place_profile"
      name="panel_place_profile"
      visible="false"
-     width="318" />
+     width="327" />
     <panel
      class="panel_landmark_info"
      filename="panel_landmark_info.xml"
