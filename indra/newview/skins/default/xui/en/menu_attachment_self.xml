@@ -13,16 +13,6 @@
          function="Object.EnableTouch"
          name="EnableTouch"/>
     </menu_item_call>
-    <!--menu_item_call
-     label="Stand Up"
-     layout="topleft"
-     name="Stand Up">
-        <menu_item_call.on_click
-         function="Self.StandUp"
-         parameter="" />
-        <menu_item_call.on_enable
-         function="Self.EnableStandUp" />
-    </menu_item_call-->
     <menu_item_call
      enabled="false"
      label="Edit"
@@ -47,26 +37,15 @@
     layout="topleft" />
 
     <menu_item_call
-     label="Sit Down"
-     layout="topleft"
-     name="Sit Down Here">
-        <menu_item_call.on_click
-         function="Self.SitDown"
-         parameter="" />
-        <menu_item_call.on_enable
-         function="Self.EnableSitDown" />
-    </menu_item_call>
-
-  <menu_item_call
-label="Stand Up"
-layout="topleft"
-name="Stand Up">
+    label="Sit Down / Stand Up"
+    name="Sit stand">
     <menu_item_call.on_click
-     function="Self.StandUp"
-     parameter="" />
+    function="Self.ToggleSitStand"
+    parameter="" />
     <menu_item_call.on_enable
-     function="Self.EnableStandUp" />
-  </menu_item_call>
+    function="Self.EnableSitStand" />
+    </menu_item_call>
+    
   <menu_item_call
   label="My Appearance"
   name="Change Outfit">

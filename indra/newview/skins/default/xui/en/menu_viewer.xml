@@ -4293,17 +4293,17 @@
 	    name="Movement"
 	    tear_off="true">
             <menu_item_call
-             label="Sit Down"
+             label="Sit Down / Stand Up"
              layout="topleft"
 	     shortcut="alt|shift|S"
-             name="Sit Down Here">
+             name="Sit stand">
                 <menu_item_call.on_click
-                 function="Self.SitDown"
+                 function="Self.ToggleSitStand"
                  parameter="" />
                 <menu_item_call.on_enable
-                 function="Self.EnableSitDown" />
+                 function="Self.EnableSitStand" />
             </menu_item_call>
-            <menu_item_call
+            <!--<menu_item_call
              label="Stand Up"
              layout="topleft"
 	     shortcut="alt|shift|S"
@@ -4313,10 +4313,10 @@
          	 parameter="" />
         	<menu_item_call.on_enable
          	 function="Self.EnableStandUp" />
-            </menu_item_call>
+            </menu_item_call>-->
             <menu_item_check
-             label="Fly"
-             name="Fly"
+             label="Fly / Land"
+             name="Fly land"
              shortcut="Home">
                 <menu_item_check.on_check
                  function="Agent.getFlying" />
