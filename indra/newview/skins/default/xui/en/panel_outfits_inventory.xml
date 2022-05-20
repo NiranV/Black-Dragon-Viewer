@@ -80,9 +80,9 @@
        width="242">
 	    
                     <button
-                         follows="bottom|left|right"
+                         follows="bottom|left"
                          height="25"
-                         label="Save As"
+                         label="Save"
                          left="1"
                          layout="topleft"
                          name="save_btn"
@@ -90,20 +90,19 @@
                          image_hover_unselected="Toolbar_Middle_Over"
 						  image_selected="Toolbar_Middle_Selected"
 						  image_unselected="Toolbar_Middle_Off"
-                         width="121" />
+                         width="82" />
                     <button
-                         follows="bottom|right"
+                         follows="bottom|left|right"
                          height="25"
-                         name="save_flyout_btn"
-                         label=""
-                         layout="topleft"
+                         label="Save As"
                          left_pad="1"
-                         tab_stop="false"
+                         layout="topleft"
+                         name="save_as_btn"
+                         top="0"
                          image_hover_unselected="Toolbar_Middle_Over"
 						  image_selected="Toolbar_Middle_Selected"
 						  image_unselected="Toolbar_Middle_Off"
-                         image_overlay="Arrow_Small_Up"
-                         width="31"/>
+                         width="82" />
                     <button
                          follows="bottom|right"
                          height="25"
@@ -115,6 +114,6 @@
 						  image_unselected="Toolbar_Middle_Off"
                          left_pad="1"
                          top="0"
-                         width="95" />
+                         width="83" />
    </panel>
 </panel>
