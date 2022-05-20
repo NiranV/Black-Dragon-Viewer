@@ -1152,7 +1152,7 @@ void LLComboBox::onSetHighlight() const
 {
     if (mButton)
     {
-        mButton->ll::ui::SearchableControl::setHighlighted(ll::ui::SearchableControl::getHighlighted());
+        mButton->LLSearchableControl::setHighlighted(LLSearchableControl::getHighlighted());
     }
 }
 

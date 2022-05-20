@@ -61,7 +61,7 @@ const S32 DROP_DOWN_MENU_WIDTH = 250;
 const S32 DROP_DOWN_MENU_TOP_PAD = 13;
 
 /**
- * Helper for LLFavoriteButton and LLFavoriteLandmarkMenuItem.
+ * Helper for LLFavoriteLandmarkButton and LLFavoriteLandmarkMenuItem.
  * Performing requests for SLURL for given Landmark ID
  */
 class LLLandmarkInfoGetter
@@ -69,7 +69,7 @@ class LLLandmarkInfoGetter
 public:
 	//BD
 	LLLandmarkInfoGetter()
-	:	mID(LLUUID::null),
+	:	mLandmarkID(LLUUID::null),
 		mName("(Loading...)"),
 		mPosX(0),
 		mPosY(0),
@@ -82,8 +82,8 @@ public:
 	}
 
 	//BD
-	void setID(const LLUUID& id) { mID = id; }
-	const LLUUID& getId() const { return mID; }
+	void setLandmarkID(const LLUUID& id) { mLandmarkID = id; }
+	const LLUUID& getLandmarkId() const { return mLandmarkID; }
 	void setType(const LLAssetType::EType type) { mType = type; }
 	const LLAssetType::EType getType() const { return mType; }
 
@@ -130,14 +130,14 @@ private:
 	void requestNameAndPos()
 	{
 		//BD
-		if (mID.isNull())
+		if (mLandmarkID.isNull())
 			return;
 
 		//BD
 		if (mType == LLAssetType::AT_LANDMARK)
 		{
 			LLVector3d g_pos;
-			if (LLLandmarkActions::getLandmarkGlobalPos(mID, g_pos))
+			if (LLLandmarkActions::getLandmarkGlobalPos(mLandmarkID, g_pos))
 			{
 				LLLandmarkActions::getRegionNameAndCoordsFromPosGlobal(g_pos,
 					boost::bind(&LLLandmarkInfoGetter::landmarkNameCallback, static_cast<LLHandle<LLLandmarkInfoGetter>>(mHandle), _1, _2, _3, _4));
@@ -177,7 +177,7 @@ private:
 	}
 
 	//BD
-	LLUUID mID;
+	LLUUID mLandmarkID;
 	std::string mName;
 	S32 mPosX;
 	S32 mPosY;
@@ -196,7 +196,7 @@ private:
  * created. Thats why we are requesting landmark data after 
  */
 //BD
-class LLFavoriteButton : public LLButton
+class LLFavoriteLandmarkButton : public LLButton
 {
 public:
 
@@ -236,8 +236,8 @@ public:
 	}
 	
 	//BD
-	void setID(const LLUUID& id){ mLandmarkInfoGetter.setID(id); }
-	const LLUUID& getId() const { return mLandmarkInfoGetter.getId(); }
+	void setLandmarkID(const LLUUID& id) { mLandmarkInfoGetter.setLandmarkID(id); }
+	const LLUUID& getLandmarkId() const { return mLandmarkInfoGetter.getLandmarkId(); }
 	void setType(const LLAssetType::EType type){ mLandmarkInfoGetter.setType(type); }
 	const LLAssetType::EType getType() const { return mLandmarkInfoGetter.getType(); }
 
@@ -255,7 +255,7 @@ public:
 
 protected:
 	//BD
-	LLFavoriteButton(const LLButton::Params& p) : LLButton(p) {}
+	LLFavoriteLandmarkButton(const LLButton::Params& p) : LLButton(p) {}
 	friend class LLUICtrlFactory;
 
 private:
@@ -286,7 +286,7 @@ public:
 	}
 	
 	//BD
-	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setID(id); }
+	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setLandmarkID(id); }
 
 	virtual BOOL handleMouseDown(S32 x, S32 y, MASK mask)
 	{
@@ -502,7 +502,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
 
 			//BD
-			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
+			if (LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(findChildByLocalCoords(x, y)))
 			{
 				setLandingTab(dest);
 			}
@@ -574,7 +574,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
 
 			//BD
-			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
+			if (LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(findChildByLocalCoords(x, y)))
 			{
 				setLandingTab(dest);
 			}
@@ -645,7 +645,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			LLInventoryItem *item = (LLInventoryItem *)cargo_data;
 
 			//BD
-			if (LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(findChildByLocalCoords(x, y)))
+			if (LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(findChildByLocalCoords(x, y)))
 			{
 				setLandingTab(dest);
 			}
@@ -710,17 +710,17 @@ void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 {
 	//BD
 	// Identify the button hovered and the side to drop
-	LLFavoriteButton* dest = dynamic_cast<LLFavoriteButton*>(mLandingTab);
+	LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLandingTab);
 	bool insert_before = true;	
 	if (!dest)
 	{
 		insert_before = false;
-		dest = dynamic_cast<LLFavoriteButton*>(mLastTab);
+		dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLastTab);
 	}
 
 	//BD
 	// There is no need to handle if an item was dragged onto itself
-	if (dest && dest->getId() == mDragItemId)
+	if (dest && dest->getLandmarkId() == mDragItemId)
 	{
 		return;
 	}
@@ -729,7 +729,7 @@ void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 	if (dest)
 	{
 		//BD
-		LLInventoryModel::updateItemsOrder(mItems, mDragItemId, dest->getId(), insert_before);
+		LLInventoryModel::updateItemsOrder(mItems, mDragItemId, dest->getLandmarkId(), insert_before);
 	}
 	else
 	{
@@ -752,7 +752,7 @@ void LLFavoritesBarCtrl::handleNewFavoriteDragAndDrop(LLInventoryItem *item, con
 {
 	//BD
 	// Identify the button hovered and the side to drop
-	LLFavoriteButton* dest = NULL;
+	LLFavoriteLandmarkButton* dest = NULL;
 	bool insert_before = true;
 	if (!mItems.empty())
 	{
@@ -760,17 +760,17 @@ void LLFavoritesBarCtrl::handleNewFavoriteDragAndDrop(LLInventoryItem *item, con
 		//		the viewer would crash when casting mLastTab below, as mLastTab is still null when the
 		//		second landmark is being added.
 		//		To ensure mLastTab is valid, we need to call updateButtons() at the end of this function
-		dest = dynamic_cast<LLFavoriteButton*>(mLandingTab);
+		dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLandingTab);
 		if (!dest)
 		{
 			insert_before = false;
-			dest = dynamic_cast<LLFavoriteButton*>(mLastTab);
+			dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLastTab);
 		}
 	}
 	
 	//BD
 	// There is no need to handle if an item was dragged onto itself
-	if (dest && dest->getId() == mDragItemId)
+	if (dest && dest->getLandmarkId() == mDragItemId)
 	{
 		return;
 	}
@@ -781,7 +781,7 @@ void LLFavoritesBarCtrl::handleNewFavoriteDragAndDrop(LLInventoryItem *item, con
 	// Insert the dragged item in the right place
 	if (dest)
 	{
-		insertItem(mItems, dest->getId(), viewer_item, insert_before);
+		insertItem(mItems, dest->getLandmarkId(), viewer_item, insert_before);
 	}
 	else
 	{
@@ -1047,8 +1047,8 @@ void LLFavoritesBarCtrl::updateButtons(bool force_update)
 		while (child_it != childs->end())
 		{
 			child_list_const_iter_t cur_it = child_it++;
-			LLFavoriteButton* button =
-				dynamic_cast<LLFavoriteButton*> (*cur_it);
+			LLFavoriteLandmarkButton* button =
+				dynamic_cast<LLFavoriteLandmarkButton*> (*cur_it);
 			if (button)
 			{
 				removeChild(button);
@@ -1140,7 +1140,7 @@ LLButton* LLFavoritesBarCtrl::createButton(const LLPointer<LLViewerInventoryItem
 	int required_width = mFont->getWidth(item->getName()) + 20;
 	int width = required_width > def_button_width? def_button_width : required_width;
 	//BD
-	LLFavoriteButton* fav_btn = NULL;
+	LLFavoriteLandmarkButton* fav_btn = NULL;
 
 	// do we have a place for next button + double buttonHGap + mMoreTextBox ?
 	if (curr_x + width + 2 * button_x_delta + mMoreTextBox->getRect().getWidth() > getRect().mRight)
@@ -1149,17 +1149,17 @@ LLButton* LLFavoritesBarCtrl::createButton(const LLPointer<LLViewerInventoryItem
 	}
 	LLButton::Params fav_btn_params(button_params);
 	//BD
-	fav_btn = LLUICtrlFactory::create<LLFavoriteButton>(fav_btn_params);
+	fav_btn = LLUICtrlFactory::create<LLFavoriteLandmarkButton>(fav_btn_params);
 	if (NULL == fav_btn)
 	{
-		LL_WARNS("FavoritesBar") << "Unable to create LLFavoriteButton widget: " << item->getName() << LL_ENDL;
+		LL_WARNS("FavoritesBar") << "Unable to create LLFavoriteLandmarkButton widget: " << item->getName() << LL_ENDL;
 		return NULL;
 	}
 
 	addChild(fav_btn);
 
 	LLRect butt_rect(fav_btn->getRect());
-	fav_btn->setID(item->getUUID());
+	fav_btn->setLandmarkID(item->getUUID());
 	fav_btn->setType(item->getActualType());
 	butt_rect.setOriginAndSize(curr_x + button_x_delta, fav_btn->getRect().mBottom, width, fav_btn->getRect().getHeight());
 

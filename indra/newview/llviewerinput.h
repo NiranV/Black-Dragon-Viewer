@@ -164,21 +164,8 @@ private:
         MOUSE_STATE_SILENT // notified about 'up', do not notify again
     };
     bool			scanMouse(EMouseClickType click, EMouseState state) const;
-<<<<<<< HEAD
     bool            scanMouse(EMouseClickType mouse, S32 mode, MASK mask, EMouseState state) const;
 
-=======
-    bool            scanMouse(const std::vector<LLMouseBinding> &binding,
-                          S32 binding_count,
-                          EMouseClickType mouse,
-                          MASK mask,
-                          EMouseState state,
-                          bool ignore_additional_masks) const;
-
-    S32				loadBindingMode(const LLViewerInput::KeyMode& keymode, S32 mode);
-    BOOL			bindKey(const S32 mode, const KEY key, const MASK mask, const std::string& function_name);
-    BOOL			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
->>>>>>> 8dd9554eb504e43e392b858003914be3210ba91e
     void			resetBindings();
 
 	// Hold all the ugly stuff torn out to make LLKeyboard non-viewer-specific here

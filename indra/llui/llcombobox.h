@@ -48,7 +48,7 @@ class LLViewBorder;
 class LLComboBox
 : public LLUICtrl
 , public LLCtrlListInterface
-, public ll::ui::SearchableControl
+, public LLSearchableControl
 {
 public:	
 	typedef enum e_preferred_position

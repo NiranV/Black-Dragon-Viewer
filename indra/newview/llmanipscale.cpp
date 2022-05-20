@@ -171,10 +171,10 @@ void LLManipScale::handleSelect()
 	updateSnapGuides(bbox);
 	LLSelectMgr::getInstance()->saveSelectedObjectTransform(SELECT_ACTION_TYPE_PICK);
 	//BD
-    if (gFloaterTools)
+    /*if (gFloaterTools)
     {
         gFloaterTools->setStatusText("scale");
-    }
+    }*/
 	LLManip::handleSelect();
 }
 

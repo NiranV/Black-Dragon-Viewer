@@ -729,7 +729,7 @@ void LLVivoxVoiceClient::voiceControlStateMachine(S32 &coro_state)
             // starting point for voice
             if (gAgent.getTeleportState() != LLAgent::TELEPORT_NONE)
             {
-                LL_DEBUGS("Voice") << "Suspending voiceControlCoro() momentarily for teleport. Tuning: " << mTuningMode << ". Relog: " << mRelogRequested << LL_ENDL;
+                //LL_DEBUGS("Voice") << "Suspending voiceControlCoro() momentarily for teleport. Tuning: " << mTuningMode << ". Relog: " << mRelogRequested << LL_ENDL;
                 llcoro::suspendUntilTimeout(1.0);
             }
             else
@@ -739,7 +739,7 @@ void LLVivoxVoiceClient::voiceControlStateMachine(S32 &coro_state)
             break;
 
         case VOICE_STATE_START_DAEMON:
-            LL_DEBUGS("Voice") << "Launching daemon" << LL_ENDL;
+            //LL_DEBUGS("Voice") << "Launching daemon" << LL_ENDL;
             LLVoiceVivoxStats::getInstance()->reset();
             if (startAndLaunchDaemon())
             {
@@ -832,7 +832,7 @@ void LLVivoxVoiceClient::voiceControlStateMachine(S32 &coro_state)
             break;
 
         case VOICE_STATE_DISCONNECT:
-            LL_DEBUGS("Voice") << "lost channel RelogRequested=" << mRelogRequested << LL_ENDL;
+            //LL_DEBUGS("Voice") << "lost channel RelogRequested=" << mRelogRequested << LL_ENDL;
             endAndDisconnectSession();
             retry = 0; // Connected without issues
             coro_state = VOICE_STATE_WAIT_FOR_EXIT;
@@ -2022,11 +2022,11 @@ bool LLVivoxVoiceClient::waitForChannel()
             else
             {
                 mIsProcessingChannels = false;
-                LL_DEBUGS("Voice")
+                /*LL_DEBUGS("Voice")
                     << "leaving inner waitForChannel loop"
                     << " RelogRequested=" << mRelogRequested
                     << " VoiceEnabled=" << mVoiceEnabled
-                    << LL_ENDL;
+                    << LL_ENDL;*/
                 state = VOICE_CHANNEL_STATE_LOGOUT;
                 break;
             }
@@ -2065,11 +2065,11 @@ bool LLVivoxVoiceClient::waitForChannel()
             }
             break;
         case VOICE_CHANNEL_STATE_DONE:
-            LL_DEBUGS("Voice")
+            /*LL_DEBUGS("Voice")
                 << "exiting"
                 << " RelogRequested=" << mRelogRequested
                 << " VoiceEnabled=" << mVoiceEnabled
-                << LL_ENDL;
+                << LL_ENDL;*/
             return !sShuttingDown;
         }
     } while (true);

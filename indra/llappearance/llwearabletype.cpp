@@ -50,7 +50,7 @@ LLWearableType::LLWearableDictionary::LLWearableDictionary(LLTranslationBridge::
 	addEntry(LLWearableType::WT_UNIVERSAL,    new WearableEntry(trans, "universal",   "New Universal",     LLAssetType::AT_CLOTHING,   LLInventoryType::ICONNAME_CLOTHING_UNIVERSAL, FALSE, TRUE));
 
 // [SL:KB] - Patch: Appearance-Misc | Checked: 2011-05-29 (Catznip-2.6)
-	addEntry(LLWearableType::WT_PHYSICS, new WearableEntry(wtype, "physics", "New Physics", LLAssetType::AT_CLOTHING, LLInventoryType::ICONNAME_CLOTHING_PHYSICS, TRUE, FALSE));
+	addEntry(LLWearableType::WT_PHYSICS,      new WearableEntry(trans, "physics",     "New Physics",	LLAssetType::AT_CLOTHING,	LLInventoryType::ICONNAME_CLOTHING_PHYSICS, TRUE, FALSE));
 // [/SL:KB]
 	//	addEntry(LLWearableType::WT_PHYSICS,      new WearableEntry(wtype, "physics",     "New Physics",		LLAssetType::AT_CLOTHING, 	LLInventoryType::ICONNAME_CLOTHING_PHYSICS, TRUE, TRUE));
 

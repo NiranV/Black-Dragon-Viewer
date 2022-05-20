@@ -4402,76 +4402,6 @@ static LLVOAvatar* find_avatar(const LLUUID& id)
 		obj = (LLViewerObject *)obj->getParent();
 	}
 
-    pControlsTable->clearRows();
-    pControlsTable->clearColumns();
-
-    // Add columns
-    std::string filename;
-    switch ((LLKeyConflictHandler::ESourceMode)mEditingMode)
-    {
-    case LLKeyConflictHandler::MODE_THIRD_PERSON:
-    case LLKeyConflictHandler::MODE_FIRST_PERSON:
-    case LLKeyConflictHandler::MODE_EDIT_AVATAR:
-    case LLKeyConflictHandler::MODE_SITTING:
-        filename = "control_table_contents_columns_basic.xml";
-        break;
-    default:
-        {
-            // Either unknown mode or MODE_SAVED_SETTINGS
-            // It doesn't have UI or actual settings yet
-            LL_WARNS() << "Unimplemented mode" << LL_ENDL;
-
-            // Searchable columns were removed, mark searchables for an update
-            LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
-            if (instance)
-            {
-                instance->updateSearchableItems();
-            }
-            return;
-        }
-    }
-    addControlTableColumns(filename);
-
-    // Add rows.
-    // Each file represents individual visual group (movement/camera/media...)
-    if (mEditingMode == LLKeyConflictHandler::MODE_FIRST_PERSON)
-    {
-        // Don't display whole camera and editing groups
-        addControlTableRows("control_table_contents_movement.xml");
-        addControlTableSeparator();
-        addControlTableRows("control_table_contents_media.xml");
-    }
-    // MODE_THIRD_PERSON; MODE_EDIT_AVATAR; MODE_SITTING
-    else if (mEditingMode < LLKeyConflictHandler::MODE_SAVED_SETTINGS)
-    {
-        // In case of 'sitting' mode, movements still apply due to vehicles
-        // but walk_to is not supported and will be hidden by addControlTableRows
-        addControlTableRows("control_table_contents_movement.xml");
-        addControlTableSeparator();
-
-        addControlTableRows("control_table_contents_camera.xml");
-        addControlTableSeparator();
-
-        addControlTableRows("control_table_contents_editing.xml");
-        addControlTableSeparator();
-
-        addControlTableRows("control_table_contents_media.xml");
-    }
-    else
-    {
-        LL_WARNS() << "Unimplemented mode" << LL_ENDL;
-    }
-
-    // Searchable columns were removed and readded, mark searchables for an update
-    // Note: at the moment tables/lists lack proper llsearchableui support
-    LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
-    if (instance)
-    {
-        instance->updateSearchableItems();
-    }
-}
->>>>>>> 8dd9554eb504e43e392b858003914be3210ba91e
-
 	if (obj && obj->isAvatar())
 	{
 		return (LLVOAvatar*)obj;
@@ -4861,7 +4791,7 @@ void LLFloaterPreference::onUpdateFilterTerm(bool force)
         collectSearchableItems();
     }
 
-	mSearchData->mLastFilter = seachValue;
+	mSearchData->mLastFilter = searchValue;
 
 	if (!mSearchData->mRootTab)
 		return;

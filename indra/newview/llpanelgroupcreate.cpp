@@ -39,6 +39,8 @@
 #include "lltexteditor.h"
 #include "lltexturectrl.h"
 #include "lluictrlfactory.h"
+//BD
+#include "llsidepanelinventory.h"
 
 // Viewer includes
 #include "llagentbenefits.h"
@@ -118,7 +120,8 @@ void LLPanelGroupCreate::refreshCreatedGroup(const LLUUID& group_id)
     params["group_id"] = group_id;
     params["open_tab_name"] = "panel_group_info_sidetray";
     LLFloaterSidePanelContainer::showPanel("people", "panel_group_info_sidetray", params);
-    LLStatusBar::sendMoneyBalanceRequest();
+	//BD
+	LLSidepanelInventory::sendMoneyBalanceRequest();
 }
 
 void LLPanelGroupCreate::addMembershipRow(const std::string &name)

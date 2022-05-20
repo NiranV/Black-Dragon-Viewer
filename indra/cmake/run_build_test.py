@@ -47,7 +47,7 @@ $/LicenseInfo$
 import os
 import sys
 import errno
-import html.parser
+import HTMLParser
 import re
 import signal
 import subprocess
@@ -194,7 +194,7 @@ def translate_rc(rc):
             strc = str(rc)
         return "terminated by signal %s" % strc
 
-class TableParser(html.parser.HTMLParser):
+class TableParser(HTMLParser.HTMLParser):
     """
     This HTMLParser subclass is designed to parse the table we know exists
     in windows-rcs.html, hopefully without building in too much knowledge of

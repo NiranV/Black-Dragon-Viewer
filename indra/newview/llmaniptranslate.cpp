@@ -291,10 +291,10 @@ void LLManipTranslate::handleSelect()
 {
 	LLSelectMgr::getInstance()->saveSelectedObjectTransform(SELECT_ACTION_TYPE_PICK);
 	//BD
-    if (gFloaterTools)
+    /*if (gFloaterTools)
     {
         gFloaterTools->setStatusText("move");
-    }
+    }*/
 	LLManip::handleSelect();
 }
 

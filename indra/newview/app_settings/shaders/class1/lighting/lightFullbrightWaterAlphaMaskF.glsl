@@ -50,8 +50,6 @@ void fullbright_lighting_water()
  
  color.rgb *= vertex_color.rgb;
 
-	color.rgb *= vertex_color.rgb;
-
 	color.rgb = fullbrightAtmosTransport(color.rgb);
 	
 	frag_color = applyWaterFog(color);

@@ -1119,7 +1119,7 @@ namespace
     {
         const size_t size(sizeof(T));
 
-        LL_DEBUGS("TEXTUREENTRY") << "Request to read items of size " << size << " with swizzle " << type << " froum buffer sized " << (source_end - source) << LL_ENDL;
+        //LL_DEBUGS("TEXTUREENTRY") << "Request to read items of size " << size << " with swizzle " << type << " froum buffer sized " << (source_end - source) << LL_ENDL;
 
         if ((source + size + 1) > source_end)
         {
@@ -1417,7 +1417,7 @@ S32 LLPrimitive::parseTEMessage(LLMessageSystem* mesgsys, char const* block_name
 	tec.face_count = llmin((U32)getNumTEs(),(U32)LLTEContents::MAX_TES);
 
 	U8 *cur_ptr = tec.packed_buffer;
-    LL_DEBUGS("TEXTUREENTRY") << "Texture Entry with buffere sized: " << tec.size << LL_ENDL;
+    //LL_DEBUGS("TEXTUREENTRY") << "Texture Entry with buffere sized: " << tec.size << LL_ENDL;
     U8 *buffer_end = tec.packed_buffer + tec.size;
 
     if (!(  unpack_TEField<LLUUID>(tec.image_data, tec.face_count, cur_ptr, buffer_end, MVT_LLUUID) &&
@@ -1559,7 +1559,7 @@ S32 LLPrimitive::unpackTEMessage(LLDataPacker &dp)
 	U32 i;
 
     U8 *cur_ptr = packed_buffer;
-    LL_DEBUGS("TEXTUREENTRY") << "Texture Entry with buffer sized: " << size << LL_ENDL;
+    //LL_DEBUGS("TEXTUREENTRY") << "Texture Entry with buffer sized: " << size << LL_ENDL;
     U8 *buffer_end = packed_buffer + size;
 
     if (!(  unpack_TEField<LLUUID>(image_data, face_count, cur_ptr, buffer_end, MVT_LLUUID) &&

@@ -163,7 +163,7 @@ void LLIconCtrl::draw()
 		{
 			S32 available_width = getRect().getWidth();
 			S32 leftover_width = available_width % mRepeats;
-			S32 repeat_width = local_rect.getWidth() / mRepeats;
+			//S32 repeat_width = local_rect.getWidth() / mRepeats;
 			S32 last_left = 0;
 
 			F32 new_alpha = alpha * 0.6;
