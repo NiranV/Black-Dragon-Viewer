@@ -507,6 +507,7 @@
      left_delta="18"
 	 top_pad="1"
      name="Recent Items"
+     show_item_link_overlays="true"
      width="220" />
       <inventory_panel
 		scroll.reserve_scroll_corner="false"
