@@ -173,8 +173,80 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="234"
+     height="429"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Pnpnkitin as Patreon patron.
+Added: Arien Lightspear as Patreon patron.
+Added: Roxanna Tesch as Patreon patron.
+Added: Kouturiér as Patreon patron.
+Added: Pink Absinthe as Patreon patron.
+Added: Bloodwain Arun as Patreon patron.
+Added: Soda Sullivan as Patreon patron.
+Added: ᴆɛᴌ as Patreon patron.
+Added: Anomaloris as Patreon patron.
+Added: Dana Pierce as Patreon patron.
+Added: Ark as Patreon patron.
+Added: Matt as Patreon patron.
+Changed: Near clipping plane adjustments to reduce distance flicker of objects.
+Changed: (EXPERIMENTAL) Force mesh to be downloaded completely with all LOD's right away rather than only the LOD currently required.
+Changed: Some basic background cleanup for places. Still needs a full rework.
+Changed: Kenzie Starlight's patron amount to 5$.
+Changed: Rains name to Skylene Rains and changed the patron amount to 10$.
+Changed: Version to 4.0.6.
+Fixed: Marketplace links in Patreon list.
+Fixed: Flycam setup being cut off at the bottom.
+Fixed: Saved poses shifting some bones slightly due to their scale not being saved.
+Fixed: Compile.
+Fixed: More compile errors.
+Fixed: Compile.
+Fixed: Environment Settings picker being unreadable.
+Fixed: Sit down (anywhere) not working.
+Fixed: Crashing on left-click while sitting, reverted viewerinput code to last working version.
+Fixed: Group role dropdown icon overlapping with the text.
+Fixed: Save/Save As dropdown in Outfits not working, replace it with Save and Save As buttons.
+Fixed: Modify Environment role action missing from group roles.
+Fixed: Recent View in Inventory not showing item links.
+Fixed: World Map being able to be zoomed infinitely.
+Merged Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.5
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="234"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
