@@ -68,7 +68,7 @@ protected:
 public:
 	virtual ~LLSlider();
 	//BD - UI Improvements
-	void			setValue( F32 value, BOOL from_event = FALSE , BOOL precision_override = FALSE);
+	void			setValue( F32 value, BOOL from_event = FALSE , BOOL precision_override = FALSE, BOOL overdrive = TRUE);
     // overrides for LLF32UICtrl methods
 	virtual void	setValue(const LLSD& value )	{ setValue((F32)value.asReal(), TRUE); }
 	

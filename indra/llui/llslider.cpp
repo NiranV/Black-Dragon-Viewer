@@ -108,10 +108,11 @@ LLSlider::~LLSlider()
 }
 
 //BD - UI Improvements
-void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override)
+void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override, BOOL overdrive)
 {
 	//BD - Allow overdriving sliders if numbers are entered directly.
-	//value = llclamp( value, mMinValue, mMaxValue );
+	if(!overdrive)
+		value = llclamp( value, mMinValue, mMaxValue );
 
 	//BD - UI Improvements
 	if (!precision_override)

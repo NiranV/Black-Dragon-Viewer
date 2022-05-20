@@ -212,14 +212,14 @@ void LLSliderCtrl::onEditorGainFocus( LLFocusableElement* caller, void *userdata
 }
 
 
-void LLSliderCtrl::setValue(F32 v, BOOL from_event)
+void LLSliderCtrl::setValue(F32 v, BOOL from_event, BOOL overdrive)
 {
 	//BD - UI Improvements
 	//     Prevent the slider from being changed while we are dragging it but do
 	//     apply the value internally.
 	if (!mSlider->hasMouseCapture())
 	{
-		mSlider->setValue(v, from_event, mAllowPrecisionOverride);
+		mSlider->setValue(v, from_event, mAllowPrecisionOverride, overdrive);
 	}
 	mValue = v;
 	updateText();

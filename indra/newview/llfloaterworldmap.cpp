@@ -417,7 +417,7 @@ BOOL LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 		{
 			F32 slider_value = (F32)getChild<LLUICtrl>("zoom slider")->getValue().asReal();
 			slider_value += ((F32)clicks * -0.3333f);
-			getChild<LLUICtrl>("zoom slider")->setValue(LLSD(slider_value));
+			getChild<LLSliderCtrl>("zoom slider")->setValue(slider_value, FALSE, FALSE);
 			return TRUE;
 		}
 	}

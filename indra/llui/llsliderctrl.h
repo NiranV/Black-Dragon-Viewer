@@ -89,7 +89,7 @@ public:
 	virtual ~LLSliderCtrl();
 
 	/*virtual*/ F32	getValueF32() const { return mSlider->getValueF32(); }
-	void			setValue(F32 v, BOOL from_event = FALSE);
+	void			setValue(F32 v, BOOL from_event = FALSE, BOOL overdrive = TRUE);
 
 	/*virtual*/ void	setValue(const LLSD& value)	{ setValue((F32)value.asReal(), TRUE); }
 	/*virtual*/ LLSD	getValue() const			{ return LLSD(getValueF32()); }
