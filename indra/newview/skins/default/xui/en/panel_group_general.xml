@@ -262,6 +262,7 @@ Hover your mouse over the options for more help.
             image_disabled="ToolbarDropDown_Off" />
             <icons_combo_box.drop_down_button
             image_unselected="ToolbarDropDown_Off"
+            image_overlay_alignment="left"
             image_selected="ToolbarDropDown_Press"
             image_pressed="ToolbarDropDown_Press" 
             image_pressed_selected="ToolbarDropDown_Press"
