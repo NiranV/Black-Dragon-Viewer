@@ -170,6 +170,9 @@ public:
 	LLUICtrl* mCancelBtn;
 	LLSliderCtrl* mImageQualitySliderCtrl;
 
+	void onExtendFloater();
+    void on360Snapshot();
+
 	LLSideTrayPanelContainer* mSnapshotOptionsPanel;
 	LLFloaterBigPreview* mBigPreviewFloater;
 	std::vector<LLAnimPauseRequest> mAvatarPauseHandles;

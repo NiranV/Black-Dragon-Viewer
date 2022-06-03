@@ -492,7 +492,7 @@
    layout="topleft"
    name="img_info_border"
    top_pad="0"
-   right="-10"
+   right="-130"
    follows="left|top|right"
    left_delta="0"/>
    <text
@@ -505,9 +505,6 @@
     layout="topleft"
     left="220"
     right="-172"
-    halign="left"
-    name="image_path"
-    top_delta="5"
     width="230">
    </text>
    <text
@@ -523,5 +520,20 @@
     type="string"
     width="150">
        [WIDTH]px x [HEIGHT]px @ [SIZE] KB
+   </text>
+   <text
+    follows="right|top"
+    font="SansSerifSmall"
+    height="14"
+    layout="topleft"
+    left="-130"
+    length="1"
+    halign="right"
+    name="360_label"
+    text_color="0.3 0.82 1 1"
+    top_delta="0"
+    type="string"
+    width="115">
+    Take a 360 snapshot
    </text>
 </floater>
