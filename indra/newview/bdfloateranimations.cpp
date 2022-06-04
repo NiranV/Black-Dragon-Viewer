@@ -25,8 +25,8 @@
 #include "llcallingcard.h"
 #include "lldatapacker.h"
 #include "llfilepicker.h"
+#include "llfilesystem.h"
 #include "llkeyframemotion.h"
-#include "llvfile.h"
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
 #include "llselectmgr.h"
@@ -536,8 +536,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 					U8 *anim_data;
 					S32 anim_file_size;
 
-					LLVFile file(gVFS, mMotionID, LLAssetType::AT_ANIMATION, LLVFile::WRITE);
-					file.setMaxSize(file_size);
+					LLFileSystem file(mMotionID, LLAssetType::AT_ANIMATION, LLFileSystem::WRITE);
 					const S32 buf_size = 65536;
 					U8 copy_buf[buf_size];
 					while ((file_size = infile.read(copy_buf, buf_size)))
@@ -547,7 +546,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 
 					//BD - Now that we wrote the temporary file, find it and use it to set the size
 					//     and buffer into which we will unpack the .anim file into.
-					LLVFile* anim_file = new LLVFile(gVFS, mMotionID, LLAssetType::AT_ANIMATION);
+					LLFileSystem* anim_file = new LLFileSystem(mMotionID, LLAssetType::AT_ANIMATION);
 					anim_file_size = anim_file->getSize();
 					anim_data = new U8[anim_file_size];
 					anim_file->read(anim_data, anim_file_size);

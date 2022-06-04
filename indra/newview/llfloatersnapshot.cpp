@@ -419,11 +419,11 @@ void LLFloaterSnapshot::updateLayout()
 	thumbnail_placeholder->reshape(panel_width, thumbnail_placeholder->getRect().getHeight());
 	getChild<LLUICtrl>("file_size_label")->setVisible(mAdvanced);
 	if (!isMinimized())
-    if (floaterp->hasChild("360_label", TRUE))
+    if (hasChild("360_label", TRUE))
     { 
-        floaterp->getChild<LLUICtrl>("360_label")->setVisible(mAdvanced);
+        getChild<LLUICtrl>("360_label")->setVisible(mAdvanced);
     }
-	if(!floaterp->isMinimized())
+	if(!isMinimized())
 	{
 		reshape(floater_width, getRect().getHeight());
 	}
@@ -1146,7 +1146,7 @@ void LLFloaterSnapshot::onClickBigPreview()
     // Toggle the preview
     if (isPreviewVisible())
     {
-		if (impl->mPreviewHandle.get()) impl->mPreviewHandle.get()->die();
+		if (mPreviewHandle.get()) mPreviewHandle.get()->die();
         LLFloaterReg::hideInstance("big_preview");
 
     }
@@ -1159,113 +1159,15 @@ void LLFloaterSnapshot::onClickBigPreview()
 	//unfreeze everything else
 	gSavedSettings.setBOOL("FreezeTime", FALSE);
 
-	if (impl->mLastToolset)
+	if (mLastToolset)
 	{
-		LLToolMgr::getInstance()->setCurrentToolset(impl->mLastToolset);
+		LLToolMgr::getInstance()->setCurrentToolset(mLastToolset);
 	}
-
-	delete impl;
 }
 
 ///----------------------------------------------------------------------------
 /// Class LLFloaterSnapshot
 ///----------------------------------------------------------------------------
-
-// Default constructor
-LLFloaterSnapshot::LLFloaterSnapshot(const LLSD& key)
-    : LLFloaterSnapshotBase(key)
-{
-	impl = new Impl(this);
-}
-
-LLFloaterSnapshot::~LLFloaterSnapshot()
-{
-}
-
-// virtual
-BOOL LLFloaterSnapshot::postBuild()
-{
-	mRefreshBtn = getChild<LLUICtrl>("new_snapshot_btn");
-	childSetAction("new_snapshot_btn", ImplBase::onClickNewSnapshot, this);
-	mRefreshLabel = getChild<LLUICtrl>("refresh_lbl");
-	mSucceessLblPanel = getChild<LLUICtrl>("succeeded_panel");
-	mFailureLblPanel = getChild<LLUICtrl>("failed_panel");
-
-	childSetCommitCallback("ui_check", ImplBase::onClickUICheck, this);
-	getChild<LLUICtrl>("ui_check")->setValue(gSavedSettings.getBOOL("RenderUIInSnapshot"));
-
-	childSetCommitCallback("hud_check", ImplBase::onClickHUDCheck, this);
-	getChild<LLUICtrl>("hud_check")->setValue(gSavedSettings.getBOOL("RenderHUDInSnapshot"));
-
-	((Impl*)impl)->setAspectRatioCheckboxValue(this, gSavedSettings.getBOOL("KeepAspectForSnapshot"));
-
-	childSetCommitCallback("layer_types", Impl::onCommitLayerTypes, this);
-	getChild<LLUICtrl>("layer_types")->setValue("colors");
-	getChildView("layer_types")->setEnabled(FALSE);
-
-	getChild<LLUICtrl>("freeze_frame_check")->setValue(gSavedSettings.getBOOL("UseFreezeFrame"));
-	childSetCommitCallback("freeze_frame_check", ImplBase::onCommitFreezeFrame, this);
-
-	getChild<LLUICtrl>("auto_snapshot_check")->setValue(gSavedSettings.getBOOL("AutoSnapshot"));
-	childSetCommitCallback("auto_snapshot_check", ImplBase::onClickAutoSnap, this);
-
-    getChild<LLButton>("retract_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
-    getChild<LLButton>("extend_btn")->setCommitCallback(boost::bind(&LLFloaterSnapshot::onExtendFloater, this));
-
-    getChild<LLTextBox>("360_label")->setSoundFlags(LLView::MOUSE_UP);
-    getChild<LLTextBox>("360_label")->setShowCursorHand(false);
-    getChild<LLTextBox>("360_label")->setClickedCallback(boost::bind(&LLFloaterSnapshot::on360Snapshot, this));
-
-	// Filters
-	LLComboBox* filterbox = getChild<LLComboBox>("filters_combobox");
-	std::vector<std::string> filter_list = LLImageFiltersManager::getInstance()->getFiltersList();
-	for (U32 i = 0; i < filter_list.size(); i++)
-	{
-		filterbox->add(filter_list[i]);
-	}
-	childSetCommitCallback("filters_combobox", ImplBase::onClickFilter, this);
-    
-	LLWebProfile::setImageUploadResultCallback(boost::bind(&Impl::onSnapshotUploadFinished, this, _1));
-	LLPostCard::setPostResultCallback(boost::bind(&Impl::onSendingPostcardFinished, this, _1));
-
-	mThumbnailPlaceholder = getChild<LLUICtrl>("thumbnail_placeholder");
-
-	// create preview window
-	LLRect full_screen_rect = getRootView()->getRect();
-	LLSnapshotLivePreview::Params p;
-	p.rect(full_screen_rect);
-	LLSnapshotLivePreview* previewp = new LLSnapshotLivePreview(p);
-	LLView* parent_view = gSnapshotFloaterView->getParent();
-	
-	parent_view->removeChild(gSnapshotFloaterView);
-	// make sure preview is below snapshot floater
-	parent_view->addChild(previewp);
-	parent_view->addChild(gSnapshotFloaterView);
-	
-	//move snapshot floater to special purpose snapshotfloaterview
-	gFloaterView->removeChild(this);
-	gSnapshotFloaterView->addChild(this);
-
-	// Pre-select "Current Window" resolution.
-	getChild<LLComboBox>("profile_size_combo")->selectNthItem(0);
-	getChild<LLComboBox>("postcard_size_combo")->selectNthItem(0);
-	getChild<LLComboBox>("texture_size_combo")->selectNthItem(0);
-	getChild<LLComboBox>("local_size_combo")->selectNthItem(8);
-	getChild<LLComboBox>("local_format_combo")->selectNthItem(0);
-
-	impl->mPreviewHandle = previewp->getHandle();
-    previewp->setContainer(this);
-	impl->updateControls(this);
-	impl->setAdvanced(gSavedSettings.getBOOL("AdvanceSnapshot"));
-	impl->updateLayout(this);
-	
-
-	previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
-
-	return TRUE;
->>>>>>> 630c4427447471a5a9e30b097789948cd236196b
-}
-
 bool LLFloaterSnapshot::isPreviewVisible()
 {
 	return (mBigPreviewFloater && mBigPreviewFloater->getVisible());
@@ -1290,29 +1192,6 @@ void LLFloaterSnapshot::on360Snapshot()
 {
     LLFloaterReg::showInstance("360capture");
     closeFloater();
-}
-
-//virtual
-void LLFloaterSnapshotBase::onClose(bool app_quitting)
-{
-	getParent()->setMouseOpaque(FALSE);
-
-	//unfreeze everything, hide fullscreen preview
-	LLSnapshotLivePreview* previewp = getPreviewView();
-	if (previewp)
-	{
-		previewp->setAllowFullScreenPreview(FALSE);
-		previewp->setVisible(FALSE);
-		previewp->setEnabled(FALSE);
-	}
-
-	gSavedSettings.setBOOL("FreezeTime", FALSE);
-	impl->mAvatarPauseHandles.clear();
-
-	if (impl->mLastToolset)
-	{
-		LLToolMgr::getInstance()->setCurrentToolset(impl->mLastToolset);
-	}
 }
 
 // virtual

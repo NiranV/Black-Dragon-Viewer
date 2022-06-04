@@ -112,7 +112,6 @@ public:
 	void updateOutfitResolution();
 	void updateLivePreview();
 	void updateUploadCost();
-	void onExtendFloater();
 
 	void setAdvanced(bool advanced) { mAdvanced = advanced; }
 	static void setAgentEmail(const std::string& email);

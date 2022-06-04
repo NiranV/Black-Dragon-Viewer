@@ -81,14 +81,33 @@ if (WINDOWS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()
 
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO 
-      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Zo"
-      CACHE STRING "C++ compiler release-with-debug options" FORCE)
-  set(CMAKE_CXX_FLAGS_RELEASE
-      "${CMAKE_CXX_FLAGS_RELEASE} ${LL_CXX_FLAGS} /Zo"
-      CACHE STRING "C++ compiler release options" FORCE)
-  # zlib has assembly-language object files incompatible with SAFESEH
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE /SAFESEH:NO /NODEFAULTLIB:LIBCMT /IGNORE:4099")
+    set(GLOBAL_CXX_FLAGS 
+    "/GS /W3 /c /Zc:forScope /Zc:rvalueCast /Zc:wchar_t- /nologo"
+    )
+
+  if (USE_AVX2)
+    set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /arch:AVX2")
+    add_definitions(/DAL_AVX2=1 /DAL_AVX=1)
+  elseif (USE_AVX)
+    set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /arch:AVX")
+    add_definitions(/DAL_AVX=1)
+  elseif (ADDRESS_SIZE EQUAL 32)
+    set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /arch:SSE2")
+  endif ()
+
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    #set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /Zc:externConstexpr /Zc:referenceBinding /Zc:throwingNew")
+  elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /Qvec /Zc:dllexportInlines- /clang:-mprefer-vector-width=128 -fno-strict-aliasing -Wno-ignored-pragma-intrinsic -Wno-unused-local-typedef")
+  endif()
+
+  if(FAVOR_AMD AND FAVOR_INTEL)
+      message(FATAL_ERROR "Cannot enable FAVOR_AMD and FAVOR_INTEL at the same time")
+  elseif(FAVOR_AMD)
+      set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /favor:AMD64")
+  elseif(FAVOR_INTEL)
+      set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /favor:INTEL64")
+  endif()
 
   #if (NOT VS_DISABLE_FATAL_WARNINGS)
   #  set(GLOBAL_CXX_FLAGS "${GLOBAL_CXX_FLAGS} /WX")
