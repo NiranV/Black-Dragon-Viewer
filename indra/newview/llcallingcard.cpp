@@ -507,6 +507,7 @@ void LLAvatarTracker::notifyObservers()
 		// new masks and ids will be processed later from idle.
 		return;
 	}
+	LL_PROFILE_ZONE_SCOPED
 	mIsNotifyObservers = TRUE;
 
 	observer_list_t observers(mObservers);
@@ -660,7 +661,8 @@ void LLAvatarTracker::processChange(LLMessageSystem* msg)
 		{
 			if(mBuddyInfo.find(agent_id) != mBuddyInfo.end())
 			{
-				if((mBuddyInfo[agent_id]->getRightsGrantedFrom() ^  new_rights) & LLRelationship::GRANT_MODIFY_OBJECTS)
+                if (((mBuddyInfo[agent_id]->getRightsGrantedFrom() ^  new_rights) & LLRelationship::GRANT_MODIFY_OBJECTS)
+                    && !gAgent.isDoNotDisturb())
 				{
 					LLSD args;
 					args["NAME"] = LLSLURL("agent", agent_id, "displayname").getSLURLString();
@@ -693,6 +695,7 @@ void LLAvatarTracker::processChangeUserRights(LLMessageSystem* msg, void**)
 
 void LLAvatarTracker::processNotify(LLMessageSystem* msg, bool online)
 {
+	LL_PROFILE_ZONE_SCOPED
 	S32 count = msg->getNumberOfBlocksFast(_PREHASH_AgentBlock);
 	BOOL chat_notify = gSavedSettings.getBOOL("ChatOnlineNotification");
 
@@ -727,8 +730,6 @@ void LLAvatarTracker::processNotify(LLMessageSystem* msg, bool online)
 				// we were tracking someone who went offline
 				deleteTrackingData();
 			}
-			// *TODO: get actual inventory id
-			gInventory.addChangedMask(LLInventoryObserver::CALLING_CARD, LLUUID::null);
 		}
 		if(chat_notify)
 		{

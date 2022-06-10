@@ -31,6 +31,8 @@
 #include "llinitparam.h"
 
 const S32 MAX_KEY_BINDINGS = 128; // was 60
+const S32 keybindings_xml_version = 1;
+const std::string script_mouse_handler_name = "script_trigger_lbutton";
 
 class LLNamedFunction
 {
@@ -104,7 +106,6 @@ public:
 			//							//BD - Custom Keyboard Layout
 			editing,
 			edit_avatar;
-
 		Keys();
 	};
 
@@ -125,7 +126,8 @@ public:
 	BOOL            handleMouse(LLWindow *window_impl, LLCoordGL pos, MASK mask, EMouseClickType clicktype, BOOL down);
 	void            scanMouse();
 
-	bool            isMouseBindUsed(const EMouseClickType mouse, const MASK mask = MASK_NONE, const S32 mode = MODE_THIRD_PERSON);
+    bool            isMouseBindUsed(const EMouseClickType mouse, const MASK mask, const S32 mode) const;
+    bool            isLMouseHandlingDefault(const S32 mode) const { return mLMouseDefaultHandling[mode]; }
 
 	//	//BD - Custom Keyboard Layout
 	BOOL			exportBindingsXML(const std::string& filename);
@@ -162,11 +164,12 @@ private:
 
 	// Hold all the ugly stuff torn out to make LLKeyboard non-viewer-specific here
 
-	// TODO: at some point it is better to remake this, especially keyaboard part
-	// would be much better to send to functions actual state of the button than
-	// to send what we think function wants based on collection of bools (mKeyRepeated, mKeyLevel, mKeyDown)
-	std::vector<LLKeyboardBinding>	mKeyBindings[MODE_COUNT];
-	std::vector<LLMouseBinding>		mMouseBindings[MODE_COUNT];
+    // TODO: at some point it is better to remake this, especially keyaboard part
+    // would be much better to send to functions actual state of the button than
+    // to send what we think function wants based on collection of bools (mKeyRepeated, mKeyLevel, mKeyDown)
+    std::vector<LLKeyboardBinding>	mKeyBindings[MODE_COUNT];
+    std::vector<LLMouseBinding>		mMouseBindings[MODE_COUNT];
+    bool							mLMouseDefaultHandling[MODE_COUNT]; // Due to having special priority
 
 	//	//BD - Custom Keyboard Layout
 	S32				mBindingCount[MODE_COUNT];

@@ -39,6 +39,7 @@
 #include "llfilepicker.h"
 #include "llfloaterwebcontent.h"	// for handling window close requests and geometry change requests in media browser windows.
 #include "llfocusmgr.h"
+#include "llimagegl.h"
 #include "llkeyboard.h"
 #include "lllogininstance.h"
 #include "llmarketplacefunctions.h"
@@ -78,39 +79,10 @@
 #include <boost/bind.hpp>	// for SkinFolder listener
 #include <boost/signals2.hpp>
 
-class LLMediaFilePicker : public LLFilePickerThread // deletes itself when done
-{
-public:
-    LLMediaFilePicker(LLPluginClassMedia* plugin, LLFilePicker::ELoadFilter filter, bool get_multiple)
-        : LLFilePickerThread(filter, get_multiple),
-        mPlugin(plugin->getSharedPrt())
-    {
-    }
-
-    LLMediaFilePicker(LLPluginClassMedia* plugin, LLFilePicker::ESaveFilter filter, const std::string &proposed_name)
-        : LLFilePickerThread(filter, proposed_name),
-        mPlugin(plugin->getSharedPrt())
-    {
-    }
-
-    virtual void notify(const std::vector<std::string>& filenames)
-    {
-        mPlugin->sendPickFileResponse(mResponses);
-        mPlugin = NULL;
-    }
-
-private:
-    boost::shared_ptr<LLPluginClassMedia> mPlugin;
-};
 
 void init_threaded_picker_load_dialog(LLPluginClassMedia* plugin, LLFilePicker::ELoadFilter filter, bool get_multiple)
 {
     (new LLMediaFilePicker(plugin, filter, get_multiple))->getFile(); // will delete itself
-}
-
-void init_threaded_picker_save_dialog(LLPluginClassMedia* plugin, LLFilePicker::ESaveFilter filter, std::string &proposed_name)
-{
-    (new LLMediaFilePicker(plugin, filter, proposed_name))->getFile(); // will delete itself
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -635,6 +607,7 @@ static bool proximity_comparitor(const LLViewerMediaImpl* i1, const LLViewerMedi
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_UPDATE("Update Media");
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_SPARE_IDLE("Spare Idle");
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_UPDATE_INTEREST("Update/Interest");
+static LLTrace::BlockTimerStatHandle FTM_MEDIA_UPDATE_VOLUME("Update/Volume");
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_SORT("Media Sort");
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_SORT2("Media Sort 2");
 static LLTrace::BlockTimerStatHandle FTM_MEDIA_MISC("Misc");
@@ -649,11 +622,18 @@ void LLViewerMedia::onIdle(void *dummy_arg)
 //////////////////////////////////////////////////////////////////////////////////////////
 void LLViewerMedia::updateMedia(void *dummy_arg)
 {
-	LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE);
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA; //LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE);
 
 	// Enable/disable the plugin read thread
 	static LLCachedControl<bool> pluginUseReadThread(gSavedSettings, "PluginUseReadThread");
 	LLPluginProcessParent::setUseReadThread(pluginUseReadThread);
+
+    // SL-16418 We can't call LLViewerMediaImpl->update() if we are in the state of shutting down.
+    if(LLApp::isExiting())
+    {
+        setAllMediaEnabled(false);
+        return;
+    }
 
 	// HACK: we always try to keep a spare running webkit plugin around to improve launch times.
 	// 2017-04-19 Removed CP - this doesn't appear to buy us much and consumes a lot of resources so
@@ -667,7 +647,7 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 	impl_list::iterator end = sViewerMediaImplList.end();
 
 	{
-		LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE_INTEREST);
+        LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media update interest"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE_INTEREST);
 		for(; iter != end;)
 		{
 			LLViewerMediaImpl* pimpl = *iter++;
@@ -679,12 +659,12 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 	// Let the spare media source actually launch
 	if(mSpareBrowserMediaSource)
 	{
-		LL_RECORD_BLOCK_TIME(FTM_MEDIA_SPARE_IDLE);
+        LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media spare idle"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_SPARE_IDLE);
 		mSpareBrowserMediaSource->idle();
 	}
 
 	{
-		LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT);
+        LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media sort"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT);
 		// Sort the static instance list using our interest criteria
 		sViewerMediaImplList.sort(priorityComparitor);
 	}
@@ -716,7 +696,7 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 	// If max_normal + max_low is less than max_instances, things will tend to get unloaded instead of being set to slideshow.
 
 	{
-		LL_RECORD_BLOCK_TIME(FTM_MEDIA_MISC);
+        LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media misc"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_MISC);
 		for(; iter != end; iter++)
 		{
 			LLViewerMediaImpl* pimpl = *iter;
@@ -902,7 +882,7 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 	}
 	else
 	{
-		LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT2);
+        LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media sort2"); // LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT2);
 		// Use a distance-based sort for proximity values.
 		std::stable_sort(proximity_order.begin(), proximity_order.end(), proximity_comparitor);
 	}
@@ -1218,7 +1198,7 @@ LLCore::HttpHeaders::ptr_t LLViewerMedia::getHttpHeaders()
 /////////////////////////////////////////////////////////////////////////////////////////
 void LLViewerMedia::setOpenIDCookie(const std::string& url)
 {
-	if(!mOpenIDCookie.empty())
+	if(!gNonInteractive && !mOpenIDCookie.empty())
 	{
         //std::string profileUrl = getProfileURL("");
 
@@ -1592,6 +1572,8 @@ LLViewerMediaImpl::LLViewerMediaImpl(	  const LLUUID& texture_id,
 		media_tex->setMediaImpl();
 	}
 
+    mMainQueue = LL::WorkQueue::getInstance("mainloop");
+    mTexUpdateQueue = LL::WorkQueue::getInstance("LLImageGL"); // Share work queue with tex loader.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1678,11 +1660,13 @@ void LLViewerMediaImpl::destroyMediaSource()
 
 	cancelMimeTypeProbe();
 
+    mLock.lock();   // Delay tear-down while bg thread is updating
 	if(mMediaSource)
 	{
 		mMediaSource->setDeleteOK(true) ;
 		mMediaSource = NULL; // shared pointer
 	}
+    mLock.unlock();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1695,6 +1679,11 @@ void LLViewerMediaImpl::setMediaType(const std::string& media_type)
 /*static*/
 LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_type, LLPluginClassMediaOwner *owner /* may be NULL */, S32 default_width, S32 default_height, F64 zoom_factor, const std::string target, bool clean_browser)
 {
+	if (gNonInteractive)
+    {
+        return NULL;
+    }
+
 	std::string plugin_basename = LLMIMETypes::implType(media_type);
 	LLPluginClassMedia* media_source = NULL;
 
@@ -1774,6 +1763,10 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
 
 			// need to set agent string here before instance created
 			media_source->setBrowserUserAgent(LLViewerMedia::getInstance()->getCurrentUserAgent());
+
+            // configure and pass proxy setup based on debug settings that are 
+            // configured by UI in prefs -> setup
+            media_source->proxy_setup(gSavedSettings.getBOOL("BrowserProxyEnabled"), gSavedSettings.getString("BrowserProxyAddress"), gSavedSettings.getS32("BrowserProxyPort"));
 
 			media_source->setTarget(target);
 
@@ -1858,8 +1851,6 @@ bool LLViewerMediaImpl::initializePlugin(const std::string& media_type)
 		// Qt/WebKit loads from your system location.
 		std::string ca_path = gDirUtilp->getCAFile();
 		media_source->addCertificateFilePath( ca_path );
-
-		media_source->proxy_setup(gSavedSettings.getBOOL("BrowserProxyEnabled"), gSavedSettings.getString("BrowserProxyAddress"), gSavedSettings.getS32("BrowserProxyPort"));
 
 		if(mClearCache)
 		{
@@ -2084,6 +2075,7 @@ void LLViewerMediaImpl::setMute(bool mute)
 //////////////////////////////////////////////////////////////////////////////////////////
 void LLViewerMediaImpl::updateVolume()
 {
+    LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE_VOLUME);
 	if(mMediaSource)
 	{
 		// always scale the volume by the global media volume
@@ -2798,203 +2790,275 @@ static LLTrace::BlockTimerStatHandle FTM_MEDIA_SET_SUBIMAGE("Set Subimage");
 
 void LLViewerMediaImpl::update()
 {
-	LL_RECORD_BLOCK_TIME(FTM_MEDIA_DO_UPDATE);
-	if(mMediaSource == NULL)
-	{
-		if(mPriority == LLPluginClassMedia::PRIORITY_UNLOADED)
-		{
-			// This media source should not be loaded.
-		}
-		else if(mPriority <= LLPluginClassMedia::PRIORITY_SLIDESHOW)
-		{
-			// Don't load new instances that are at PRIORITY_SLIDESHOW or below.  They're just kept around to preserve state.
-		}
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA; //LL_RECORD_BLOCK_TIME(FTM_MEDIA_DO_UPDATE);
+    if(mMediaSource == NULL)
+    {
+        if(mPriority == LLPluginClassMedia::PRIORITY_UNLOADED)
+        {
+            // This media source should not be loaded.
+        }
+        else if(mPriority <= LLPluginClassMedia::PRIORITY_SLIDESHOW)
+        {
+            // Don't load new instances that are at PRIORITY_SLIDESHOW or below.  They're just kept around to preserve state.
+        }
         else if (!mMimeProbe.expired())
-		{
-			// this media source is doing a MIME type probe -- don't try loading it again.
-		}
-		else
-		{
-			// This media may need to be loaded.
-			if(sMediaCreateTimer.hasExpired())
-			{
-				// _LL_DEBUGS("PluginPriority") << this << ": creating media based on timer expiration" << LL_ENDL;
-				createMediaSource();
-				sMediaCreateTimer.setTimerExpirySec(LLVIEWERMEDIA_CREATE_DELAY);
-			}
-			else
-			{
-				// _LL_DEBUGS("PluginPriority") << this << ": NOT creating media (waiting on timer)" << LL_ENDL;
-			}
-		}
-	}
-	else
-	{
-		updateVolume();
+        {
+            // this media source is doing a MIME type probe -- don't try loading it again.
+        }
+        else
+        {
+            // This media may need to be loaded.
+            if(sMediaCreateTimer.hasExpired())
+            {
+                LL_DEBUGS("PluginPriority") << this << ": creating media based on timer expiration" << LL_ENDL;
+                createMediaSource();
+                sMediaCreateTimer.setTimerExpirySec(LLVIEWERMEDIA_CREATE_DELAY);
+            }
+            else
+            {
+                LL_DEBUGS("PluginPriority") << this << ": NOT creating media (waiting on timer)" << LL_ENDL;
+            }
+        }
+    }
+    else
+    {
+        updateVolume();
 
-		// TODO: this is updated every frame - is this bad?
-		// Removing this as part of the post viewer64 media update
-		// Removed as not implemented in CEF embedded browser
-		// See MAINT-8194 for a more fuller description
-		// updateJavascriptObject();
-	}
+        // TODO: this is updated every frame - is this bad?
+        // Removing this as part of the post viewer64 media update
+        // Removed as not implemented in CEF embedded browser
+        // See MAINT-8194 for a more fuller description
+        // updateJavascriptObject();
+    }
 
 
-	if(mMediaSource == NULL)
-	{
-		return;
-	}
+    if(mMediaSource == NULL)
+    {
+        return;
+    }
 
-	// Make sure a navigate doesn't happen during the idle -- it can cause mMediaSource to get destroyed, which can cause a crash.
-	setNavigateSuspended(true);
+    // Make sure a navigate doesn't happen during the idle -- it can cause mMediaSource to get destroyed, which can cause a crash.
+    setNavigateSuspended(true);
 
-	mMediaSource->idle();
+    mMediaSource->idle();
 
-	setNavigateSuspended(false);
+    setNavigateSuspended(false);
 
-	if(mMediaSource == NULL)
-	{
-		return;
-	}
+    if(mMediaSource == NULL)
+    {
+        return;
+    }
 
-	if(mMediaSource->isPluginExited())
-	{
-		resetPreviousMediaState();
-		destroyMediaSource();
-		return;
-	}
+    if(mMediaSource->isPluginExited())
+    {
+        resetPreviousMediaState();
+        destroyMediaSource();
+        return;
+    }
 
-	if(!mMediaSource->textureValid())
-	{
-		return;
-	}
+    if(!mMediaSource->textureValid())
+    {
+        return;
+    }
 
-	if(mSuspendUpdates || !mVisible)
-	{
-		return;
-	}
+    if(mSuspendUpdates || !mVisible)
+    {
+        return;
+    }
 
-	LLViewerMediaTexture* placeholder_image = updatePlaceholderImage();
+    
+    LLViewerMediaTexture* media_tex;
+    U8* data;
+    S32 data_width;
+    S32 data_height;
+    S32 x_pos;
+    S32 y_pos;
+    S32 width;
+    S32 height;
 
-	if(placeholder_image)
-	{
-		LLRect dirty_rect;
-
-		// Since we're updating this texture, we know it's playing.  Tell the texture to do its replacement magic so it gets rendered.
-		placeholder_image->setPlaying(TRUE);
-
-		if(mMediaSource->getDirty(&dirty_rect))
-		{
-			// Constrain the dirty rect to be inside the texture
-			S32 x_pos = llmax(dirty_rect.mLeft, 0);
-			S32 y_pos = llmax(dirty_rect.mBottom, 0);
-			S32 width = llmin(dirty_rect.mRight, placeholder_image->getWidth()) - x_pos;
-			S32 height = llmin(dirty_rect.mTop, placeholder_image->getHeight()) - y_pos;
-
-			if(width > 0 && height > 0)
-			{
-
-				U8* data = NULL;
-				{
-					LL_RECORD_BLOCK_TIME(FTM_MEDIA_GET_DATA);
-					data = mMediaSource->getBitsData();
-				}
-
-				if(data != NULL)
-				{
-					// Offset the pixels pointer to match x_pos and y_pos
-					data += ( x_pos * mMediaSource->getTextureDepth() * mMediaSource->getBitsWidth() );
-					data += ( y_pos * mMediaSource->getTextureDepth() );
-
-					{
-						LL_RECORD_BLOCK_TIME(FTM_MEDIA_SET_SUBIMAGE);
-									placeholder_image->setSubImage(
-									data,
-									mMediaSource->getBitsWidth(),
-									mMediaSource->getBitsHeight(),
-									x_pos,
-									y_pos,
-									width,
-									height);
-					}
-				}
-
-			}
-
-			mMediaSource->resetDirty();
-		}
-	}
+    if (preMediaTexUpdate(media_tex, data, data_width, data_height, x_pos, y_pos, width, height))
+    {
+        // Push update to worker thread
+        auto main_queue = LLImageGLThread::sEnabled ? mMainQueue.lock() : nullptr;
+        if (main_queue)
+        {
+            mTextureUpdatePending = true;
+            ref();  // protect texture from deletion while active on bg queue
+            media_tex->ref();
+            main_queue->postTo(
+                mTexUpdateQueue, // Worker thread queue
+                [=]() // work done on update worker thread
+                {
+#if LL_IMAGEGL_THREAD_CHECK
+                    media_tex->getGLTexture()->mActiveThread = LLThread::currentID();
+#endif
+                    doMediaTexUpdate(media_tex, data, data_width, data_height, x_pos, y_pos, width, height, true);
+                },
+                [=]() // callback to main thread
+                {
+#if LL_IMAGEGL_THREAD_CHECK
+                    media_tex->getGLTexture()->mActiveThread = LLThread::currentID();
+#endif
+                    mTextureUpdatePending = false;
+                    media_tex->unref();
+                    unref();
+                });
+        }
+        else
+        {
+            doMediaTexUpdate(media_tex, data, data_width, data_height, x_pos, y_pos, width, height, false); // otherwise, update on main thread
+        }
+    }
 }
 
+bool LLViewerMediaImpl::preMediaTexUpdate(LLViewerMediaTexture*& media_tex, U8*& data, S32& data_width, S32& data_height, S32& x_pos, S32& y_pos, S32& width, S32& height)
+{
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA;
+
+    bool retval = false;
+
+    if (!mTextureUpdatePending)
+    {
+        media_tex = updateMediaImage();
+
+        if (media_tex && mMediaSource)
+        {
+            LLRect dirty_rect;
+            S32 media_width = mMediaSource->getTextureWidth();
+            S32 media_height = mMediaSource->getTextureHeight();
+            //S32 media_depth = mMediaSource->getTextureDepth();
+
+            // Since we're updating this texture, we know it's playing.  Tell the texture to do its replacement magic so it gets rendered.
+            media_tex->setPlaying(TRUE);
+
+            if (mMediaSource->getDirty(&dirty_rect))
+            {
+                // Constrain the dirty rect to be inside the texture
+                x_pos = llmax(dirty_rect.mLeft, 0);
+                y_pos = llmax(dirty_rect.mBottom, 0);
+                width = llmin(dirty_rect.mRight, media_width) - x_pos;
+                height = llmin(dirty_rect.mTop, media_height) - y_pos;
+
+                if (width > 0 && height > 0)
+                {
+                    data = mMediaSource->getBitsData();
+                    data_width = mMediaSource->getWidth();
+                    data_height = mMediaSource->getHeight();
+
+                    if (data != NULL)
+                    {
+                        // data is ready to be copied to GL
+                        retval = true;
+                    }
+                }
+
+                mMediaSource->resetDirty();
+            }
+        }
+    }
+
+    return retval;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+void LLViewerMediaImpl::doMediaTexUpdate(LLViewerMediaTexture* media_tex, U8* data, S32 data_width, S32 data_height, S32 x_pos, S32 y_pos, S32 width, S32 height, bool sync)
+{
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA;
+    mLock.lock();   // don't allow media source tear-down during update
+
+    // wrap "data" in an LLImageRaw but do NOT make a copy
+    LLPointer<LLImageRaw> raw = new LLImageRaw(data, media_tex->getWidth(), media_tex->getHeight(), media_tex->getComponents(), true);
+        
+    // Allocate GL texture based on LLImageRaw but do NOT copy to GL
+    LLGLuint tex_name = 0;
+    media_tex->createGLTexture(0, raw, 0, TRUE, LLGLTexture::OTHER, true, &tex_name);
+
+    // copy just the subimage covered by the image raw to GL
+    media_tex->setSubImage(data, data_width, data_height, x_pos, y_pos, width, height, tex_name);
+    
+    if (sync)
+    {
+        media_tex->getGLTexture()->syncToMainThread(tex_name);
+    }
+    else
+    {
+        media_tex->getGLTexture()->syncTexName(tex_name);
+    }
+    
+    // release the data pointer before freeing raw so LLImageRaw destructor doesn't
+    // free memory at data pointer
+    raw->releaseData();
+
+    mLock.unlock();
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 void LLViewerMediaImpl::updateImagesMediaStreams()
 {
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////
-LLViewerMediaTexture* LLViewerMediaImpl::updatePlaceholderImage()
+LLViewerMediaTexture* LLViewerMediaImpl::updateMediaImage()
 {
-//	if(mTextureId.isNull())
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA;
+	//	if(mTextureId.isNull())
 // [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
-	if ( (mTextureId.isNull()) || ((LLViewerFetchedTexture::sDefaultDiffuseImagep.notNull()) && (LLViewerFetchedTexture::sDefaultDiffuseImagep->getID() == mTextureId)) )
-// [/SL:KB]
-	{
-		// The code that created this instance will read from the plugin's bits.
-		return NULL;
-	}
+	if ((mTextureId.isNull()) || ((LLViewerFetchedTexture::sDefaultDiffuseImagep.notNull()) && (LLViewerFetchedTexture::sDefaultDiffuseImagep->getID() == mTextureId)))
+		// [/SL:KB]
+    {
+        return nullptr; // not ready for updating
+    }
 
-	LLViewerMediaTexture* placeholder_image = LLViewerTextureManager::getMediaTexture( mTextureId );
+    llassert(!mTextureId.isNull());
+    LLViewerMediaTexture* media_tex = LLViewerTextureManager::getMediaTexture( mTextureId );
+ 
+    if ( mNeedsNewTexture
+        || media_tex->getUseMipMaps()
+        || (media_tex->getWidth() != mMediaSource->getTextureWidth())
+        || (media_tex->getHeight() != mMediaSource->getTextureHeight())
+        || (mTextureUsedWidth != mMediaSource->getWidth())
+        || (mTextureUsedHeight != mMediaSource->getHeight())
+        )
+    {
+        LL_DEBUGS("Media") << "initializing media placeholder" << LL_ENDL;
+        LL_DEBUGS("Media") << "movie image id " << mTextureId << LL_ENDL;
 
-	if (mNeedsNewTexture
-		|| placeholder_image->getUseMipMaps()
-		|| (placeholder_image->getWidth() != mMediaSource->getTextureWidth())
-		|| (placeholder_image->getHeight() != mMediaSource->getTextureHeight())
-		|| (mTextureUsedWidth != mMediaSource->getWidth())
-		|| (mTextureUsedHeight != mMediaSource->getHeight())
-		)
-	{
-		// _LL_DEBUGS("Media") << "initializing media placeholder" << LL_ENDL;
-		// _LL_DEBUGS("Media") << "movie image id " << mTextureId << LL_ENDL;
+        int texture_width = mMediaSource->getTextureWidth();
+        int texture_height = mMediaSource->getTextureHeight();
+        int texture_depth = mMediaSource->getTextureDepth();
 
-		int texture_width = mMediaSource->getTextureWidth();
-		int texture_height = mMediaSource->getTextureHeight();
-		int texture_depth = mMediaSource->getTextureDepth();
+        // MEDIAOPT: check to see if size actually changed before doing work
+        media_tex->destroyGLTexture();
+        // MEDIAOPT: apparently just calling setUseMipMaps(FALSE) doesn't work?
+        media_tex->reinit(FALSE);	// probably not needed
 
-		// MEDIAOPT: check to see if size actually changed before doing work
-		placeholder_image->destroyGLTexture();
-		// MEDIAOPT: apparently just calling setUseMipMaps(FALSE) doesn't work?
-		placeholder_image->reinit(FALSE);	// probably not needed
+        // MEDIAOPT: seems insane that we actually have to make an imageraw then
+        // immediately discard it
+        LLPointer<LLImageRaw> raw = new LLImageRaw(texture_width, texture_height, texture_depth);
+        // Clear the texture to the background color, ignoring alpha.
+        // convert background color channels from [0.0, 1.0] to [0, 255];
+        raw->clear(int(mBackgroundColor.mV[VX] * 255.0f), int(mBackgroundColor.mV[VY] * 255.0f), int(mBackgroundColor.mV[VZ] * 255.0f), 0xff);
 
-		// MEDIAOPT: seems insane that we actually have to make an imageraw then
-		// immediately discard it
-		LLPointer<LLImageRaw> raw = new LLImageRaw(texture_width, texture_height, texture_depth);
-		// Clear the texture to the background color, ignoring alpha.
-		// convert background color channels from [0.0, 1.0] to [0, 255];
-		raw->clear(int(mBackgroundColor.mV[VX] * 255.0f), int(mBackgroundColor.mV[VY] * 255.0f), int(mBackgroundColor.mV[VZ] * 255.0f), 0xff);
-		int discard_level = 0;
+        // ask media source for correct GL image format constants
+        media_tex->setExplicitFormat(mMediaSource->getTextureFormatInternal(),
+            mMediaSource->getTextureFormatPrimary(),
+            mMediaSource->getTextureFormatType(),
+            mMediaSource->getTextureFormatSwapBytes());
 
-		// ask media source for correct GL image format constants
-		placeholder_image->setExplicitFormat(mMediaSource->getTextureFormatInternal(),
-											 mMediaSource->getTextureFormatPrimary(),
-											 mMediaSource->getTextureFormatType(),
-											 mMediaSource->getTextureFormatSwapBytes());
+        int discard_level = 0;
+        media_tex->createGLTexture(discard_level, raw);
 
-		placeholder_image->createGLTexture(discard_level, raw);
+        // MEDIAOPT: set this dynamically on play/stop
+        // FIXME
+//		media_tex->mIsMediaTexture = true;
+        mNeedsNewTexture = false;
 
-		// MEDIAOPT: set this dynamically on play/stop
-		// FIXME
-//		placeholder_image->mIsMediaTexture = true;
-		mNeedsNewTexture = false;
-
-		// If the amount of the texture being drawn by the media goes down in either width or height,
-		// recreate the texture to avoid leaving parts of the old image behind.
-		mTextureUsedWidth = mMediaSource->getWidth();
-		mTextureUsedHeight = mMediaSource->getHeight();
-	}
-
-	return placeholder_image;
+        // If the amount of the texture being drawn by the media goes down in either width or height,
+        // recreate the texture to avoid leaving parts of the old image behind.
+        mTextureUsedWidth = mMediaSource->getWidth();
+        mTextureUsedHeight = mMediaSource->getHeight();
+    }
+    return media_tex;
 }
 
 
@@ -3226,37 +3290,13 @@ void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginCla
 			// _LL_DEBUGS("Media") <<  "Media event:  MEDIA_EVENT_CURSOR_CHANGED, new cursor is " << plugin->getCursorName() << LL_ENDL;
 
 			std::string cursor = plugin->getCursorName();
-
-			if(cursor == "arrow")
-				mLastSetCursor = UI_CURSOR_ARROW;
-			else if(cursor == "ibeam")
-				mLastSetCursor = UI_CURSOR_IBEAM;
-			else if(cursor == "splith")
-				mLastSetCursor = UI_CURSOR_SIZEWE;
-			else if(cursor == "splitv")
-				mLastSetCursor = UI_CURSOR_SIZENS;
-			else if(cursor == "hand")
-				mLastSetCursor = UI_CURSOR_HAND;
-			else // for anything else, default to the arrow
-				mLastSetCursor = UI_CURSOR_ARROW;
+			mLastSetCursor = getCursorFromString(cursor);
 		}
 		break;
 
 		case LLViewerMediaObserver::MEDIA_EVENT_FILE_DOWNLOAD:
 		{
 			// _LL_DEBUGS("Media") << "Media event - file download requested - filename is " << plugin->getFileDownloadFilename() << LL_ENDL;
-			// pick a file from SAVE FILE dialog
-
-			// need a better algorithm that this or else, pass in type of save type
-			// from event that initiated it - this is okay for now - only thing
-			// that saves is 360s
-			std::string suggested_filename = plugin->getFileDownloadFilename();
-			LLFilePicker::ESaveFilter filter = LLFilePicker::FFSAVE_ALL;
-			if (suggested_filename.find(".jpg") != std::string::npos || suggested_filename.find(".jpeg") != std::string::npos)
-				filter = LLFilePicker::FFSAVE_JPEG;
-			if (suggested_filename.find(".png") != std::string::npos)
-				filter = LLFilePicker::FFSAVE_PNG;
-			init_threaded_picker_save_dialog(plugin, filter, suggested_filename);
 		}
 		break;
 
@@ -3518,7 +3558,7 @@ static LLTrace::BlockTimerStatHandle FTM_MEDIA_CALCULATE_INTEREST("Calculate Int
 
 void LLViewerMediaImpl::calculateInterest()
 {
-	LL_RECORD_BLOCK_TIME(FTM_MEDIA_CALCULATE_INTEREST);
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_MEDIA; //LL_RECORD_BLOCK_TIME(FTM_MEDIA_CALCULATE_INTEREST);
 	LLViewerMediaTexture* texture = LLViewerTextureManager::findMediaTexture( mTextureId );
 
 	if(texture != NULL)

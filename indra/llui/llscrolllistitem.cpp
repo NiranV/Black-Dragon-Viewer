@@ -46,6 +46,7 @@ LLScrollListItem::LLScrollListItem(const Params& p)
 	mEnabled(p.enabled),
 	mUserdata(p.userdata),
 	mItemValue(p.value),
+	mItemAltValue(p.alt_value),
 	//BD
 	mToolTip(p.tool_tip),
 	mMarked(false)

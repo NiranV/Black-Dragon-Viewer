@@ -935,6 +935,13 @@ const LLMatrix4 &LLJoint::getWorldMatrix()
 	return mXform.getWorldMatrix();
 }
 
+const LLMatrix4a& LLJoint::getWorldMatrix4a()
+{
+    updateWorldMatrixParent();
+
+    return mWorldMatrix;
+}
+
 
 //--------------------------------------------------------------------
 // setWorldMatrix()
@@ -1016,6 +1023,7 @@ void LLJoint::updateWorldMatrix()
 	{
 		sNumUpdates++;
 		mXform.updateMatrix(FALSE);
+        mWorldMatrix.loadu(mXform.getWorldMatrix());
 		mDirtyFlags = 0x0;
 	}
 }

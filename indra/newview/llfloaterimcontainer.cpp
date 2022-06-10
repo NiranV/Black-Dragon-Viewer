@@ -734,7 +734,8 @@ void LLFloaterIMContainer::setMinimized(BOOL b)
 }
 
 void LLFloaterIMContainer::setVisible(BOOL visible)
-{	LLFloaterIMNearbyChat* nearby_chat;
+{
+    LLFloaterIMNearbyChat* nearby_chat;
 	if (visible)
 	{
 		// Make sure we have the Nearby Chat present when showing the conversation container
@@ -769,22 +770,25 @@ void LLFloaterIMContainer::setVisible(BOOL visible)
 		LLFloaterIMSessionTab::addToHost(LLUUID());
 	}
 
-	// We need to show/hide all the associated conversations that have been torn off
-	// (and therefore, are not longer managed by the multifloater),
-	// so that they show/hide with the conversations manager.
-	conversations_widgets_map::iterator widget_it = mConversationsWidgets.begin();
-	for (;widget_it != mConversationsWidgets.end(); ++widget_it)
-	{
-		LLConversationViewSession* widget = dynamic_cast<LLConversationViewSession*>(widget_it->second);
-		if (widget)
-		{
-			LLFloater* session_floater = widget->getSessionFloater();
-			if (session_floater != nearby_chat)
-			{
-		    widget->setVisibleIfDetached(visible);
-		}
-	}
-	}
+    if (!LLFloater::isQuitRequested())
+    {
+        // We need to show/hide all the associated conversations that have been torn off
+        // (and therefore, are not longer managed by the multifloater),
+        // so that they show/hide with the conversations manager.
+        conversations_widgets_map::iterator widget_it = mConversationsWidgets.begin();
+        for (; widget_it != mConversationsWidgets.end(); ++widget_it)
+        {
+            LLConversationViewSession* widget = dynamic_cast<LLConversationViewSession*>(widget_it->second);
+            if (widget)
+            {
+                LLFloater* session_floater = widget->getSessionFloater();
+                if (session_floater != nearby_chat)
+                {
+                    widget->setVisibleIfDetached(visible);
+                }
+            }
+        }
+    }
 	
 	// Now, do the normal multifloater show/hide
 	LLMultiFloater::setVisible(visible);
@@ -1743,7 +1747,7 @@ BOOL LLFloaterIMContainer::selectConversationPair(const LLUUID& session_id, bool
 
     /* floater processing */
 
-	if (NULL != session_floater)
+	if (NULL != session_floater && !session_floater->isDead())
 	{
 		if (session_id != getSelectedSession())
 		{
@@ -1915,11 +1919,14 @@ bool LLFloaterIMContainer::removeConversationListItem(const LLUUID& uuid, bool c
 	if (widget)
 	{
 		is_widget_selected = widget->isSelected();
-		new_selection = mConversationsRoot->getNextFromChild(widget, FALSE);
-		if (!new_selection)
-		{
-			new_selection = mConversationsRoot->getPreviousFromChild(widget, FALSE);
-		}
+        if (mConversationsRoot)
+        {
+            new_selection = mConversationsRoot->getNextFromChild(widget, FALSE);
+            if (!new_selection)
+            {
+                new_selection = mConversationsRoot->getPreviousFromChild(widget, FALSE);
+            }
+        }
 
 		// Will destroy views and delete models that are not assigned to any views
 		widget->destroyView();

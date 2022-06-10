@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """\
 @file   run_build_test.py
 @author Nat Goodspeed
@@ -17,7 +17,7 @@ line.
 
 Example:
 
-python run_build_test.py -DFOO=bar myprog somearg otherarg
+python3 run_build_test.py -DFOO=bar myprog somearg otherarg
 
 sets environment variable FOO=bar, then runs:
 myprog somearg otherarg
@@ -47,7 +47,7 @@ $/LicenseInfo$
 import os
 import sys
 import errno
-import HTMLParser
+import html.parser
 import re
 import signal
 import subprocess
@@ -194,7 +194,7 @@ def translate_rc(rc):
             strc = str(rc)
         return "terminated by signal %s" % strc
 
-class TableParser(HTMLParser.HTMLParser):
+class TableParser(html.parser.HTMLParser):
     """
     This HTMLParser subclass is designed to parse the table we know exists
     in windows-rcs.html, hopefully without building in too much knowledge of

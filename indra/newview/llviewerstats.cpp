@@ -62,6 +62,7 @@
 #include "llsdutil.h"
 #include "llcorehttputil.h"
 #include "llvoicevivox.h"
+#include "llinventorymodel.h"
 #include "lluiusage.h"
 
 namespace LLStatViewer
@@ -181,8 +182,9 @@ SimMeasurement<F64Kilobytes >	SIM_UNACKED_BYTES("simtotalunackedbytes", "", LL_S
 SimMeasurement<F64Megabytes >	SIM_PHYSICS_MEM("physicsmemoryallocated", "", LL_SIM_STAT_SIMPHYSICSMEMORY);
 
 LLTrace::SampleStatHandle<F64Milliseconds >	FRAMETIME_JITTER("frametimejitter", "Average delta between successive frame times"),
-																FRAMETIME_SLEW("frametimeslew", "Average delta between frame time and mean"),
-																SIM_PING("simpingstat");
+											FRAMETIME_SLEW("frametimeslew", "Average delta between frame time and mean"),
+											FRAMETIME("frametime", "Measured frame time"),
+											SIM_PING("simpingstat");
 
 LLTrace::EventStatHandle<LLUnit<F64, LLUnits::Meters> > AGENT_POSITION_SNAP("agentpositionsnap", "agent position corrections");
 
@@ -205,6 +207,7 @@ LLTrace::EventStatHandle<F64Seconds >	AVATAR_EDIT_TIME("avataredittime", "Second
 
 LLTrace::EventStatHandle<LLUnit<F32, LLUnits::Percent> > OBJECT_CACHE_HIT_RATE("object_cache_hits");
 
+LLTrace::EventStatHandle<F64Seconds >	TEXTURE_FETCH_TIME("texture_fetch_time");
 }
 
 LLViewerStats::LLViewerStats() 
@@ -259,8 +262,11 @@ void LLViewerStats::updateFrameStats(const F64Seconds time_diff)
 		// new "stutter" meter
 		add(LLStatViewer::FRAMETIME_DOUBLED, time_diff >= 2.0 * mLastTimeDiff ? 1 : 0);
 
+		sample(LLStatViewer::FRAMETIME, time_diff);
+
 		// old stats that were never really used
-		sample(LLStatViewer::FRAMETIME_JITTER, F64Milliseconds (mLastTimeDiff - time_diff));
+		F64Seconds jit = (F64Seconds) std::fabs((mLastTimeDiff - time_diff));
+		sample(LLStatViewer::FRAMETIME_JITTER, jit);
 			
 		F32Seconds average_frametime = gRenderStartTime.getElapsedTimeF32() / (F32)gFrameCount;
 		sample(LLStatViewer::FRAMETIME_SLEW, F64Milliseconds (average_frametime - time_diff));
@@ -387,18 +393,13 @@ void update_statistics()
 	add(LLStatViewer::ASSET_UDP_DATA_RECEIVED, F64Bits(gTransferManager.getTransferBitsIn(LLTCT_ASSET)));
 	gTransferManager.resetTransferBitsIn(LLTCT_ASSET);
 
-	if (LLAppViewer::getTextureFetch()->getNumRequests() == 0)
-	{
-		gTextureTimer.pause();
-	}
-	else
-	{
-		gTextureTimer.unpause();
-	}
-	
 	sample(LLStatViewer::VISIBLE_AVATARS, LLVOAvatar::sNumVisibleAvatars);
-	LLWorld::getInstance()->updateNetStats();
-	LLWorld::getInstance()->requestCacheMisses();
+    LLWorld *world = LLWorld::getInstance(); // not LLSingleton
+    if (world)
+    {
+        world->updateNetStats();
+        world->requestCacheMisses();
+    }
 	
 	// Reset all of these values.
 	gVLManager.resetBitCounts();
@@ -417,6 +418,19 @@ void update_statistics()
 	}
 }
 
+void update_texture_time()
+{
+	if (gTextureList.isPrioRequestsFetched())
+	{
+		gTextureTimer.pause();
+	}
+	else
+	{		
+		gTextureTimer.unpause();
+	}
+
+	record(LLStatViewer::TEXTURE_FETCH_TIME, gTextureTimer.getElapsedTimeF32());
+}
 /*
  * The sim-side LLSD is in newsim/llagentinfo.cpp:forwardViewerStats.
  *
@@ -538,7 +552,7 @@ void send_viewer_stats(bool include_preferences)
 	{
 		shader_level = 2;
 	}
-	else if (gPipeline.canUseVertexShaders())
+	else if (gPipeline.shadersLoaded())
 	{
 		shader_level = 1;
 	}
@@ -578,6 +592,11 @@ void send_viewer_stats(bool include_preferences)
 	fail["off_circuit"] = (S32) gMessageSystem->mOffCircuitPackets;
 	fail["invalid"] = (S32) gMessageSystem->mInvalidOnCircuitPackets;
 	fail["missing_updater"] = (S32) LLAppViewer::instance()->isUpdaterMissing();
+
+	LLSD &inventory = body["inventory"];
+	inventory["usable"] = gInventory.isInventoryUsable();
+	LLSD& validation_info = inventory["validation_info"];
+	gInventory.mValidationInfo->asLLSD(validation_info);
 
 	body["ui"] = LLUIUsage::instance().asLLSD();
 		

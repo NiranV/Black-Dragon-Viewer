@@ -279,6 +279,8 @@ Beq Janus
 	SL-14766
 	SL-14927
 	SL-11300
+	SL-15709
+	SL-16021
 Beth Walcher
 Bezilon Kasei
 Biancaluce Robbiani
@@ -1107,6 +1109,7 @@ Nicky Dasmijn
 	OPEN-187
 	STORM-1937
 	OPEN-187
+	SL-15234
     STORM-2010
 	STORM-2082
 	MAINT-6665
@@ -1116,6 +1119,7 @@ Nicky Dasmijn
     SL-11072
 	SL-13141
 	SL-13642
+	SL-16438
 Nicky Perian
 	OPEN-1
 	STORM-1087
@@ -1369,7 +1373,7 @@ Sovereign Engineer
     MAINT-7343
     SL-11079
     OPEN-343
-    SL-11625
+	SL-11625
     BUG-229030
 	SL-14705
 	SL-14706
@@ -1377,6 +1381,7 @@ Sovereign Engineer
 	SL-14731
 	SL-14732
 	SL-15096
+	SL-16127
 SpacedOut Frye
 	VWR-34
 	VWR-45

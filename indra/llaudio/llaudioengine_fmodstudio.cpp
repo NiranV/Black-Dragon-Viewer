@@ -647,49 +647,51 @@ LLAudioBufferFMODSTUDIO::~LLAudioBufferFMODSTUDIO()
 
 bool LLAudioBufferFMODSTUDIO::loadWAV(const std::string& filename)
 {
-	// Try to open a wav file from disk.  This will eventually go away, as we don't
-	// really want to block doing this.
-	if (filename.empty())
-	{
-		// invalid filename, abort.
-		return false;
-	}
+    // Try to open a wav file from disk.  This will eventually go away, as we don't
+    // really want to block doing this.
+    if (filename.empty())
+    {
+        // invalid filename, abort.
+        return false;
+    }
 
-	if (!gDirUtilp->fileExists(filename))
-	{
-		// File not found, abort.
-		return false;
-	}
-	
-	if (mSoundp)
-	{
-		// If there's already something loaded in this buffer, clean it up.
-		Check_FMOD_Error(mSoundp->release(),"FMOD::Sound::release");
-		mSoundp = nullptr;
-	}
+    if (!gDirUtilp->fileExists(filename))
+    {
+        // File not found, abort.
+        return false;
+    }
 
-	FMOD_MODE base_mode = FMOD_LOOP_NORMAL;
-	FMOD_CREATESOUNDEXINFO exinfo = { };
-	exinfo.cbsize = sizeof(exinfo);
-	exinfo.suggestedsoundtype = FMOD_SOUND_TYPE_WAV;	//Hint to speed up loading.
-	// Load up the wav file into an fmod sample
-	FMOD_RESULT result = getSystem()->createSound(filename.c_str(), base_mode, &exinfo, &mSoundp);
-	if (result != FMOD_OK)
-	{
-		// We failed to load the file for some reason.
-		LL_WARNS() << "Could not load data '" << filename << "': " << FMOD_ErrorString(result) << LL_ENDL;
+    if (mSoundp)
+    {
+        // If there's already something loaded in this buffer, clean it up.
+        mSoundp->release();
+        mSoundp = NULL;
+    }
 
-		//
-		// If we EVER want to load wav files provided by end users, we need
-		// to rethink this!
-		//
-		// file is probably corrupt - remove it.
-		LLFile::remove(filename);
-		return false;
-	}
+    FMOD_MODE base_mode = FMOD_LOOP_NORMAL;
+    FMOD_CREATESOUNDEXINFO exinfo;
+    memset(&exinfo, 0, sizeof(exinfo));
+    exinfo.cbsize = sizeof(exinfo);
+    exinfo.suggestedsoundtype = FMOD_SOUND_TYPE_WAV;	//Hint to speed up loading.
+    // Load up the wav file into an fmod sample (since 1.05 fmod studio expects everything in UTF-8)
+    FMOD_RESULT result = getSystem()->createSound(filename.c_str(), base_mode, &exinfo, &mSoundp);
 
-	// Everything went well, return true
-	return true;
+    if (result != FMOD_OK)
+    {
+        // We failed to load the file for some reason.
+        LL_WARNS() << "Could not load data '" << filename << "': " << FMOD_ErrorString(result) << LL_ENDL;
+
+        //
+        // If we EVER want to load wav files provided by end users, we need
+        // to rethink this!
+        //
+        // file is probably corrupt - remove it.
+        LLFile::remove(filename);
+        return false;
+    }
+
+    // Everything went well, return true
+    return true;
 }
 
 

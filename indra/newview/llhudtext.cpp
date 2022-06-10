@@ -192,9 +192,6 @@ void LLHUDText::renderText()
 	F32 y_offset = (F32)mOffsetY;
 		
 	// Render label
-	{
-		gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
-	}
 
 	// Render text
 	{
@@ -362,7 +359,7 @@ void LLHUDText::updateVisibility()
 
 	if (!mSourceObject)
 	{
-		//LL_WARNS() << "LLHUDText::updateScreenPos -- mSourceObject is NULL!" << LL_ENDL;
+		LL_WARNS() << "HUD text: mSourceObject is NULL,  mOnHUDAttachment: " << mOnHUDAttachment << LL_ENDL;
 		mVisible = TRUE;
 		if (mOnHUDAttachment)
 		{
@@ -603,7 +600,6 @@ void LLHUDText::renderAllHUD()
 {
 	LLGLState::checkStates();
 	LLGLState::checkTextureChannels();
-	LLGLState::checkClientArrays();
 
 	{
 		LLGLEnable color_mat(GL_COLOR_MATERIAL);
@@ -621,7 +617,6 @@ void LLHUDText::renderAllHUD()
 
 	LLGLState::checkStates();
 	LLGLState::checkTextureChannels();
-	LLGLState::checkClientArrays();
 }
 
 void LLHUDText::shiftAll(const LLVector3& offset)

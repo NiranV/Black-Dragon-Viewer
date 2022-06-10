@@ -67,23 +67,16 @@ class LLStreamingAudio_FMODSTUDIO final : public LLStreamingAudioInterface
 	/*virtual*/ bool supportsWaveData() override {return true;}
 	/*virtual*/ bool getWaveData(float* arr, S32 count, S32 stride = 1) override;
 private:
-	bool releaseDeadStreams();
-	void cleanupWaveData();
+    void killDeadStreams();
 
-	FMOD::System *mSystem;
-
-	LLAudioStreamManagerFMODSTUDIO *mCurrentInternetStreamp;
-	FMOD::DSP* mStreamDSP;
-	FMOD::ChannelGroup* mStreamGroup;
-	FMOD::Channel *mFMODInternetStreamChannelp;
-	std::list<LLAudioStreamManagerFMODSTUDIO *> mDeadStreams;
+    FMOD::System *mSystem;
 
 	std::string mURL;
 	std::string mPendingURL;
 	F32 mGain;
-
-	LLSD *mMetaData;
-	bool mNewMetadata;
+    std::string mURL;
+    F32 mGain;
+    S32 mRetryCount;
 };
 
 

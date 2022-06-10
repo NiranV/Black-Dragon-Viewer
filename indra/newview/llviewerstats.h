@@ -217,8 +217,8 @@ extern SimMeasurement<F64Megabytes >	SIM_PHYSICS_MEM;
 
 
 extern LLTrace::SampleStatHandle<F64Milliseconds >	FRAMETIME_JITTER,
-																		FRAMETIME_SLEW,
-																		SIM_PING;
+													FRAMETIME_SLEW,
+													SIM_PING;
 
 extern LLTrace::EventStatHandle<LLUnit<F64, LLUnits::Meters> > AGENT_POSITION_SNAP;
 
@@ -294,6 +294,7 @@ static const F32 SEND_STATS_PERIOD = 300.0f;
 // The following are from (older?) statistics code found in appviewer.
 void update_statistics();
 void send_viewer_stats(bool include_preferences);
+void update_texture_time();
 
 extern LLFrameTimer gTextureTimer;
 extern U64Bytes	gTotalTextureData;

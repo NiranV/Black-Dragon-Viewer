@@ -364,6 +364,7 @@ with open source contributions from:
    width="448"
    word_wrap="true">
 Dummy Name replaced at run time
+<<<<<<< HEAD
    </text_editor>
   </panel>
   <panel
@@ -502,6 +503,45 @@ Zi Ree:
 
 feel free to IM me if you can tell me missing names and/or find more stuff others did!
    </text_editor>
+  </panel>
+  <panel
+      border="true"
+      label="Licenses"
+      help_topic="about_licenses_tab"
+      name="licenses_panel">
+      <text_editor
+       enabled="false"
+       follows="left|top"
+       height="375"
+       bg_readonly_color="Transparent"
+       left="5"
+       text_color="LtGray"
+       max_length="65536"
+       name="licenses_editor"
+       top="5"
+       width="465"
+       word_wrap="true">
+        3Dconnexion SDK Copyright (C) 1992-2009 3Dconnexion
+        APR Copyright (C) 2011 The Apache Software Foundation
+        Collada DOM Copyright 2006 Sony Computer Entertainment Inc.
+        cURL Copyright (C) 1996-2010, Daniel Stenberg, (daniel@haxx.se)
+        DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
+        expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
+        FreeType Copyright (C) 1996-2002, 2006 David Turner, Robert Wilhelm, and Werner Lemberg.
+        GL Copyright (C) 1999-2004 Brian Paul.
+        google-perftools Copyright (c) 2005, Google Inc.
+        Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
+        jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
+        jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
+        meshoptimizer Copyright (c) 2016-2021 Arseny Kapoulkine
+        ogg/vorbis Copyright (C) 2002, Xiphophorus
+        OpenSSL Copyright (C) 1998-2008 The OpenSSL Project.
+        PCRE Copyright (c) 1997-2012 University of Cambridge
+        SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
+        SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+        xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
+        zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
+      </text_editor>
   </panel>
  </tab_container>
 </floater>

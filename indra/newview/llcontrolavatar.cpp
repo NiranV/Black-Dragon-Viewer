@@ -235,7 +235,7 @@ void LLControlAvatar::matchVolumeTransform()
 			if (skin_info)
 			{
                 // _LL_DEBUGS("BindShape") << getFullname() << " bind shape " << skin_info->mBindShapeMatrix << LL_ENDL;
-                bind_rot = LLSkinningUtil::getUnscaledQuaternion(skin_info->mBindShapeMatrix);
+                bind_rot = LLSkinningUtil::getUnscaledQuaternion(LLMatrix4(skin_info->mBindShapeMatrix));
 			}
 #endif
 			setRotation(bind_rot*obj_rot);
@@ -292,7 +292,6 @@ void LLControlAvatar::updateVolumeGeom()
 	mRootVolp->mDrawable->makeActive();
 	gPipeline.markMoved(mRootVolp->mDrawable);
 	gPipeline.markTextured(mRootVolp->mDrawable); // face may need to change draw pool to/from POOL_HUD
-	mRootVolp->mDrawable->setState(LLDrawable::USE_BACKLIGHT);
 
 	LLViewerObject::const_child_list_t& child_list = mRootVolp->getChildren();
 	for (LLViewerObject::child_list_t::const_iterator iter = child_list.begin();
@@ -301,7 +300,6 @@ void LLControlAvatar::updateVolumeGeom()
 		LLViewerObject* childp = *iter;
 		if (childp && childp->mDrawable.notNull())
 		{
-			childp->mDrawable->setState(LLDrawable::USE_BACKLIGHT);
 			gPipeline.markTextured(childp->mDrawable); // face may need to change draw pool to/from POOL_HUD
 			gPipeline.markMoved(childp->mDrawable);
         }

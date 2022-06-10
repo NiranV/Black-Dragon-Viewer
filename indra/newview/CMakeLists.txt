@@ -16,7 +16,6 @@ include(DBusGlib)
 include(DragDrop)
 include(EXPAT)
 include(FMODSTUDIO)
-include(GLOD)
 include(Hunspell)
 include(JsonCpp)
 include(LLAppearance)
@@ -31,6 +30,7 @@ include(LLInventory)
 include(LLKDU)
 include(LLLogin)
 include(LLMath)
+include(LLMeshOptimizer)
 include(LLMessage)
 include(LLPhysicsExtensions)
 include(LLPlugin)
@@ -47,6 +47,8 @@ include(OpenGL)
 include(OpenSSL)
 include(PNG)
 include(TemplateCheck)
+include(ThreeJS)
+include(Tracy)
 include(UI)
 include(UnixInstall)
 include(ViewerMiscLibs)
@@ -68,7 +70,6 @@ include_directories(
     ${DBUSGLIB_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
-    ${GLOD_INCLUDE_DIR}
     ${LLAUDIO_INCLUDE_DIRS}
     ${LLCHARACTER_INCLUDE_DIRS}
     ${LLCOMMON_INCLUDE_DIRS}
@@ -78,6 +79,7 @@ include_directories(
     ${LLKDU_INCLUDE_DIRS}
     ${LLINVENTORY_INCLUDE_DIRS}
     ${LLMATH_INCLUDE_DIRS}
+    ${LLMESHOPTIMIZER_INCLUDE_DIRS}
     ${LLMESSAGE_INCLUDE_DIRS}
     ${LLPLUGIN_INCLUDE_DIRS}
     ${LLPRIMITIVE_INCLUDE_DIRS}
@@ -93,6 +95,7 @@ include_directories(
     ${LIBS_PREBUILT_DIR}/include/collada/1.4
     ${LLAPPEARANCE_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${TRACY_INCLUDE_DIR}
     )
 
 include_directories(SYSTEM
@@ -412,7 +415,6 @@ set(viewer_SOURCE_FILES
     llloginhandler.cpp
     lllogininstance.cpp
     llmachineid.cpp
-    llmainlooprepeater.cpp
     llmanip.cpp
     llmaniprotate.cpp
     llmanipscale.cpp
@@ -597,11 +599,8 @@ set(viewer_SOURCE_FILES
     llsyntaxid.cpp
     llsyswellitem.cpp
     llsyswellwindow.cpp
-    lltelemetry.cpp
     llteleporthistory.cpp
     llteleporthistorystorage.cpp
-    lltextureatlas.cpp
-    lltextureatlasmanager.cpp
     lltexturecache.cpp
     lltexturectrl.cpp
     lltexturefetch.cpp
@@ -1073,7 +1072,6 @@ set(viewer_HEADER_FILES
     llloginhandler.h
     lllogininstance.h
     llmachineid.h
-    llmainlooprepeater.h
     llmanip.h
     llmaniprotate.h
     llmanipscale.h
@@ -1256,8 +1254,6 @@ set(viewer_HEADER_FILES
     lltable.h
     llteleporthistory.h
     llteleporthistorystorage.h
-    lltextureatlas.h
-    lltextureatlasmanager.h
     lltexturecache.h
     lltexturectrl.h
     lltexturefetch.h
@@ -1653,6 +1649,7 @@ if (WINDOWS)
         comdlg32
         dinput8
         dxguid
+        imm32
         kernel32
         odbc32
         odbccp32
@@ -1742,6 +1739,8 @@ set(viewer_APPSETTINGS_FILES
     ${CMAKE_SOURCE_DIR}/../etc/message.xml
     ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
     packages-info.txt
+    featuretable.txt
+    featuretable_mac.txt
     )
 
 source_group("App Settings" FILES ${viewer_APPSETTINGS_FILES})
@@ -1863,9 +1862,6 @@ if (WINDOWS)
       ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/libapr-1.dll
       ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/libaprutil-1.dll
       ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/libapriconv-1.dll
-      ${SHARED_LIB_STAGING_DIR}/Release/glod.dll
-      ${SHARED_LIB_STAGING_DIR}/RelWithDebInfo/glod.dll
-      ${SHARED_LIB_STAGING_DIR}/Debug/glod.dll
       ${SHARED_LIB_STAGING_DIR}/Release/libcollada14dom22.dll
       ${SHARED_LIB_STAGING_DIR}/RelWithDebInfo/libcollada14dom22.dll
       ${SHARED_LIB_STAGING_DIR}/Debug/libcollada14dom22-d.dll
@@ -1963,9 +1959,7 @@ if (WINDOWS)
       add_dependencies(${VIEWER_BINARY_NAME} copy_win_scripts)
     endif (EXISTS ${CMAKE_SOURCE_DIR}/copy_win_scripts)
 
-    add_dependencies(${VIEWER_BINARY_NAME}
-      SLPlugin
-    )
+    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
 
     # sets the 'working directory' for debugging from visual studio.
     if (NOT UNATTENDED)
@@ -2092,6 +2086,7 @@ target_link_libraries(${VIEWER_BINARY_NAME}
     ${LLCHARACTER_LIBRARIES}
     ${LLIMAGE_LIBRARIES}
     ${LLINVENTORY_LIBRARIES}
+    ${LLMESHOPTIMIZER_LIBRARIES}
     ${LLMESSAGE_LIBRARIES}
     ${LLPLUGIN_LIBRARIES}
     ${LLPRIMITIVE_LIBRARIES}
@@ -2115,7 +2110,6 @@ target_link_libraries(${VIEWER_BINARY_NAME}
     ${DBUSGLIB_LIBRARIES}
     ${OPENGL_LIBRARIES}
     ${FMODWRAPPER_LIBRARY} # must come after LLAudio
-    ${GLOD_LIBRARIES}
     ${OPENGL_LIBRARIES}
     ${JSONCPP_LIBRARIES}
     ${SDL_LIBRARY}
@@ -2130,6 +2124,7 @@ target_link_libraries(${VIEWER_BINARY_NAME}
     ${LLPHYSICS_LIBRARIES}
     ${LLPHYSICSEXTENSIONS_LIBRARIES}
     ${LLAPPEARANCE_LIBRARIES}
+    ${TRACY_LIBRARY}
     )
 
 if (USE_BUGSPLAT)
@@ -2330,7 +2325,7 @@ endif (INSTALL)
 
 # Note that the conventional VIEWER_SYMBOL_FILE is set by ../../build.sh
 if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIEWER_SYMBOL_FILE)
-  if (BUGSPLAT_DB)
+  if (USE_BUGSPLAT)
     # BugSplat symbol-file generation
     if (WINDOWS)
       # Just pack up a tarball containing only the .pdb file for the
@@ -2414,7 +2409,7 @@ if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIE
     if (LINUX)
       # TBD
     endif (LINUX)
-  endif (BUGSPLAT_DB)
+  endif (USE_BUGSPLAT)
 
   # for both Bugsplat and Breakpad
   add_dependencies(llpackage generate_symbols)

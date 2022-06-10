@@ -839,14 +839,21 @@ bool toggle_enable_media(EKeystate s)
 
 bool walk_to(EKeystate s)
 {
-	if (KEYSTATE_DOWN != s) return true;
-	return LLToolPie::getInstance()->walkToClickedLocation();
+    if (KEYSTATE_DOWN != s)
+    {
+        // teleport/walk is usually on mouseclick, mouseclick needs
+        // to let AGENT_CONTROL_LBUTTON_UP happen if teleport didn't,
+        // so return false, but if it causes issues, do some kind of
+        // "return !has_teleported"
+        return false;
+    }
+    return LLToolPie::getInstance()->walkToClickedLocation();
 }
 
 bool teleport_to(EKeystate s)
 {
-	if (KEYSTATE_DOWN != s) return true;
-	return LLToolPie::getInstance()->teleportToClickedLocation();
+    if (KEYSTATE_DOWN != s) return false;
+    return LLToolPie::getInstance()->teleportToClickedLocation();
 }
 
 bool toggle_voice(EKeystate s)
@@ -873,7 +880,47 @@ bool voice_follow_key(EKeystate s)
 	return false;
 }
 
-bool agen_control_lbutton_handle(EKeystate s)
+bool script_trigger_lbutton(EKeystate s)
+{
+    // Check for script overriding/expecting left mouse button.
+    // Note that this does not pass event further and depends onto mouselook.
+    // Checks CONTROL_ML_LBUTTON_DOWN_INDEX for mouselook,
+    // CONTROL_LBUTTON_DOWN_INDEX for normal camera
+    if (gAgent.leftButtonGrabbed())
+    {
+        bool mouselook = gAgentCamera.cameraMouselook();
+        switch (s)
+        {
+        case KEYSTATE_DOWN:
+            if (mouselook)
+            {
+                gAgent.setControlFlags(AGENT_CONTROL_ML_LBUTTON_DOWN);
+            }
+            else
+            {
+                gAgent.setControlFlags(AGENT_CONTROL_LBUTTON_DOWN);
+            }
+            return true;
+        case KEYSTATE_UP:
+            if (mouselook)
+            {
+                gAgent.setControlFlags(AGENT_CONTROL_ML_LBUTTON_UP);
+            }
+            else
+            {
+                gAgent.setControlFlags(AGENT_CONTROL_LBUTTON_UP);
+            }
+            return true;
+        default:
+            break;
+        }
+    }
+    return false;
+}
+
+// Used by scripts, for overriding/handling left mouse button
+// see mControlsTakenCount
+bool agent_control_lbutton_handle(EKeystate s)
 {
 	switch (s)
 	{
@@ -960,7 +1007,7 @@ REGISTER_KEYBOARD_ACTION("roll_right", camera_roll_right);
 REGISTER_KEYBOARD_ACTION("roll_reset", camera_roll_reset);
 //BD - Toggle Crouching
 REGISTER_KEYBOARD_ACTION("toggle_crouch", toggle_crouch);
-
+REGISTER_KEYBOARD_ACTION(script_mouse_handler_name, script_trigger_lbutton);
 #undef REGISTER_KEYBOARD_ACTION
 
 LLViewerInput::LLViewerInput()
@@ -1290,7 +1337,8 @@ LLViewerInput::Keys::Keys()
 	: first_person("first_person"),
 	third_person("third_person"),
 	sitting("sitting"),
-	edit_avatar("edit_avatar")
+	edit_avatar("edit_avatar"),
+	xml_version("xml_version", 0)
 {}
 
 void LLViewerInput::resetBindings()
@@ -1299,6 +1347,85 @@ void LLViewerInput::resetBindings()
 	{
 		mKeyBindings[i].clear();
 		mMouseBindings[i].clear();
+        mLMouseDefaultHandling[i] = false;
+    }
+}
+
+S32 LLViewerInput::loadBindingsXML(const std::string& filename)
+{
+    resetBindings();
+
+	S32 binding_count = 0;
+	Keys keys;
+	LLSimpleXUIParser parser;
+
+	if (parser.readXUI(filename, keys) 
+		&& keys.validateBlock())
+	{
+		binding_count += loadBindingMode(keys.first_person, MODE_FIRST_PERSON);
+		binding_count += loadBindingMode(keys.third_person, MODE_THIRD_PERSON);
+		binding_count += loadBindingMode(keys.sitting, MODE_SITTING);
+		binding_count += loadBindingMode(keys.edit_avatar, MODE_EDIT_AVATAR);
+
+        // verify version
+        if (keys.xml_version < 1)
+        {
+            // updating from a version that was not aware of LMouse bindings
+            for (S32 i = 0; i < MODE_COUNT; i++)
+            {
+                mLMouseDefaultHandling[i] = true;
+            }
+
+            // fix missing values
+            KeyBinding mouse_binding;
+            mouse_binding.key = "";
+            mouse_binding.mask = "NONE";
+            mouse_binding.mouse = "LMB";
+            mouse_binding.command = script_mouse_handler_name;
+
+            if (keys.third_person.isProvided())
+            {
+                keys.third_person.bindings.add(mouse_binding);
+            }
+
+            if (keys.first_person.isProvided())
+            {
+                keys.first_person.bindings.add(mouse_binding);
+            }
+
+            if (keys.sitting.isProvided())
+            {
+                keys.sitting.bindings.add(mouse_binding);
+            }
+
+            if (keys.edit_avatar.isProvided())
+            {
+                keys.edit_avatar.bindings.add(mouse_binding);
+            }
+
+            // fix version
+            keys.xml_version.set(keybindings_xml_version, true);
+
+            // Write the resulting XML to file
+            LLXMLNodePtr output_node = new LLXMLNode("keys", false);
+            LLXUIParser write_parser;
+            write_parser.writeXUI(output_node, keys);
+
+            if (!output_node->isNull())
+            {
+                // file in app_settings is supposed to be up to date
+                // this is only for the file from user_settings
+                LL_INFOS("ViewerInput") << "Updating file " << filename << " to a newer version" << LL_ENDL;
+                LLFILE *fp = LLFile::fopen(filename, "w");
+                if (fp != NULL)
+                {
+                    LLXMLNode::writeHeaderToFile(fp);
+                    output_node->writeToFile(fp);
+                    fclose(fp);
+                }
+            }
+        }
+>>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 	}
 }
 
@@ -1636,8 +1763,17 @@ bool LLViewerInput::scanMouse(EMouseClickType click, EMouseState state) const
 	S32 mode = MODE_THIRD_PERSON;
 	MASK mask = gKeyboard->currentMask(TRUE);
 	res = scanMouse(click, mode, mask, state);
-	// no user defined actions found or those actions can't handle the key/button, handle control if nessesary
-	if (!res && agent_control_lbutton.canHandle(click, KEY_NONE, mask))
+	// No user defined actions found or those actions can't handle the key/button,
+	// so handle CONTROL_LBUTTON if nessesary.
+	//
+	// Default handling for MODE_FIRST_PERSON is in LLToolCompGun::handleMouseDown,
+	// and sends AGENT_CONTROL_ML_LBUTTON_DOWN, but it only applies if ML controls
+	// are leftButtonGrabbed(), send a normal click otherwise.
+	if (!res
+		&& mLMouseDefaultHandling[mode]
+		&& (mode != MODE_FIRST_PERSON || !gAgent.leftButtonGrabbed())
+		&& (click == CLICK_LEFT || click == CLICK_DOUBLELEFT)
+		)
 	{
 		switch (state)
 		{
@@ -1683,7 +1819,7 @@ void LLViewerInput::scanMouse()
 	}
 }
 
-bool LLViewerInput::isMouseBindUsed(const EMouseClickType mouse, const MASK mask, const S32 mode)
+bool LLViewerInput::isMouseBindUsed(const EMouseClickType mouse, const MASK mask, const S32 mode) const
 {
 	S32 size = mMouseBindings[mode].size();
 	for (S32 index = 0; index < size; index++)

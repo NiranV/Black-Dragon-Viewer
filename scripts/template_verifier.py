@@ -58,14 +58,14 @@ def add_indra_lib_path():
                 sys.path.insert(0, dir)
             break
     else:
-        print >>sys.stderr, "This script is not inside a valid installation."
+        print("This script is not inside a valid installation.", file=sys.stderr)
         sys.exit(1)
 
 add_indra_lib_path()
 
 import optparse
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import hashlib
 
 from indra.ipc import compatibility
@@ -90,7 +90,7 @@ def getstatusoutput(command):
 
 
 def die(msg):
-    print >>sys.stderr, msg
+    print(msg, file=sys.stderr)
     sys.exit(1)
 
 MESSAGE_TEMPLATE = 'message_template.msg'

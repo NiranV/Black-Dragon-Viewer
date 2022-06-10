@@ -30,24 +30,31 @@
 #include "llpreview.h"
 #include "llcharacter.h"
 
+class LLMotion;
+class LLTextBox;
+
 class LLPreviewAnim : public LLPreview
 {
 public:
 
 	LLPreviewAnim(const LLSD& key);
-	/*virtual*/	BOOL postBuild();
-	/*virtual*/ void onClose(bool app_quitting);
-	void draw();
-	void cleanup();
-	void play(const LLSD& param);
-	void time(LLUICtrl* time, const LLSD& param);
+	BOOL postBuild() override;
+	void onClose(bool app_quitting) override;
+	void draw() override;
+	void refreshFromItem() override;
 
+	void cleanup(); // cleanup 'playing' state
+	void play(const LLSD& param);
+	void showAdvanced();
+
+	//BD
+	void time(LLUICtrl* time, const LLSD& param);
 	F32 nTime;
-	
 protected:
 	
-	LLUUID	mItemID;
+	LLUUID	mItemID; // Not an item id, but a playing asset id
 	bool	mDidStart;
+	LLTextBox* pAdvancedStatsTextBox;
 };
 
 #endif  // LL_LLPREVIEWANIM_H

@@ -699,8 +699,13 @@ bool LLSidepanelInventory::canWearSelected()
 
 LLInventoryItem *LLSidepanelInventory::getSelectedItem()
 {
-	LLFolderViewItem* current_item = mPanelMainInventory->getActivePanel()->getRootFolder()->getCurSelectedItem();
-
+    LLFolderView* root = mPanelMainInventory->getActivePanel()->getRootFolder();
+    if (!root)
+    {
+        return NULL;
+    }
+	LLFolderViewItem* current_item = root->getCurSelectedItem();
+	
 	if (!current_item)
 	{
 		if (mInventoryPanelInbox.get() && mInventoryPanelInbox.get()->getRootFolder())

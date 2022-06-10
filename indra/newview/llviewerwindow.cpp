@@ -222,6 +222,7 @@
 
 #if LL_WINDOWS
 #include <tchar.h> // For Unicode conversion methods
+#include "llwindowwin32.h" // For AltGr handling
 #endif
 
 //
@@ -617,12 +618,6 @@ public:
 		if (debugShowRenderInfo)
 		{
 			LLTrace::Recording& last_frame_recording = LLTrace::get_frame_recording().getLastRecording();
-
-			if (gPipeline.getUseVertexShaders() == 0)
-			{
-				addText(xpos, ypos, "Shaders Disabled");
-				ypos += y_inc;
-			}
 
 			if (gGLManager.mHasATIMemInfo)
 			{
@@ -1590,8 +1585,15 @@ BOOL LLViewerWindow::handleCloseRequest(LLWindow *window)
 
 void LLViewerWindow::handleQuit(LLWindow *window)
 {
-	LL_INFOS() << "Window forced quit" << LL_ENDL;
-	LLAppViewer::instance()->forceQuit();
+	if (gNonInteractive)
+	{
+		LLAppViewer::instance()->requestQuit();
+	}
+	else
+	{
+		LL_INFOS() << "Window forced quit" << LL_ENDL;
+		LLAppViewer::instance()->forceQuit();
+	}
 }
 
 void LLViewerWindow::handleResize(LLWindow *window,  S32 width,  S32 height)
@@ -1852,7 +1854,12 @@ void LLViewerWindow::handleDataCopy(LLWindow *window, S32 data_type, void *data)
 
 BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 {
+<<<<<<< HEAD
 	if (gJoystick->getOverrideCamera())
+=======
+    //TODO: just call this every frame from gatherInput instead of using a convoluted 30fps timer callback
+	if (LLViewerJoystick::getInstance()->getOverrideCamera())
+>>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 	{
 		gJoystick->updateStatus();
 		return TRUE;
@@ -1999,16 +2006,10 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 		p.title, p.name, p.x, p.y, p.width, p.height, 0,
 		p.fullscreen, 
 		gHeadlessClient,
-		gSavedSettings.getBOOL("DisableVerticalSync"),
+		gSavedSettings.getBOOL("RenderVSyncEnable"),
 		!gHeadlessClient,
 		p.ignore_pixel_depth,
 		gSavedSettings.getBOOL("RenderDeferred") ? 0 : gSavedSettings.getU32("RenderFSAASamples")); //don't use window level anti-aliasing if FBOs are enabled
-
-	if (!LLViewerShaderMgr::sInitialized)
-	{ //immediately initialize shaders
-		LLViewerShaderMgr::sInitialized = TRUE;
-		LLViewerShaderMgr::instance()->setShaders();
-	}
 
 	if (NULL == mWindow)
 	{
@@ -2028,6 +2029,12 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 #endif
         LLAppViewer::instance()->fastQuit(1);
 	}
+    else if (!LLViewerShaderMgr::sInitialized)
+    {
+        //immediately initialize shaders
+        LLViewerShaderMgr::sInitialized = TRUE;
+        LLViewerShaderMgr::instance()->setShaders();
+    }
 	
 	if (!LLAppViewer::instance()->restoreErrorTrap())
 	{
@@ -2066,6 +2073,13 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	}
 	
 	LLFontManager::initClass();
+	// Init font system, load default fonts and generate basic glyphs
+	// currently it takes aprox. 0.5 sec and we would load these fonts anyway
+	// before login screen.
+	LLFontGL::initClass( gSavedSettings.getF32("FontScreenDPI"),
+		mDisplayScale.mV[VX],
+		mDisplayScale.mV[VY],
+		gDirUtilp->getAppRODataDir());
 
 	//
 	// We want to set this stuff up BEFORE we initialize the pipeline, so we can turn off
@@ -2107,20 +2121,12 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 		
 	// Init the image list.  Must happen after GL is initialized and before the images that
 	// LLViewerWindow needs are requested.
-	LLImageGL::initClass(LLViewerTexture::MAX_GL_IMAGE_CATEGORY) ;
+    LLImageGL::initClass(mWindow, LLViewerTexture::MAX_GL_IMAGE_CATEGORY, false, gSavedSettings.getBOOL("RenderGLMultiThreaded"));
 	gTextureList.init();
 	LLViewerTextureManager::init() ;
 	gBumpImageList.init();
 	
-	// Init font system, but don't actually load the fonts yet
-	// because our window isn't onscreen and they take several
-	// seconds to parse.
-	LLFontGL::initClass( gSavedSettings.getF32("FontScreenDPI"),
-								mDisplayScale.mV[VX],
-								mDisplayScale.mV[VY],
-								gDirUtilp->getAppRODataDir());
-	
-	// Create container for all sub-views
+    // Create container for all sub-views
 	LLView::Params rvp;
 	rvp.name("root");
 	rvp.rect(mWindowRectScaled);
@@ -2153,29 +2159,6 @@ std::string LLViewerWindow::getLastSnapshotDir()
 
 void LLViewerWindow::initGLDefaults()
 {
-	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-
-	if (!LLGLSLShader::sNoFixedFunction)
-	{ //initialize fixed function state
-		glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
-
-		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,LLColor4::black.mV);
-		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,LLColor4::white.mV);
-
-		// lights for objects
-		glShadeModel( GL_SMOOTH );
-
-		gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
-		gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
-	}
-
-	glPixelStorei(GL_PACK_ALIGNMENT,1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-
-	gGL.setAmbientLightColor(LLColor4::black);
-		
-	glCullFace(GL_BACK);
-
 	// RN: Need this for translation and stretch manip.
 	gBox.prerender();
 }
@@ -2207,6 +2190,8 @@ void LLViewerWindow::initBase()
 	// Login screen and main_view.xml need edit menus for preferences and browser
 	// _LL_DEBUGS("AppInit") << "initializing edit menu" << LL_ENDL;
 	initialize_edit_menu();
+
+    LLFontGL::loadCommonFonts();
 
 	// Create the floater view at the start so that other views can add children to it. 
 	// (But wait to add it as a child of the root view so that it will be in front of the 
@@ -2296,6 +2281,14 @@ void LLViewerWindow::initBase()
 
 void LLViewerWindow::initWorldUI()
 {
+	if (gNonInteractive)
+	{
+		gIMMgr = LLIMMgr::getInstance();
+		LLNavigationBar::getInstance();
+		gFloaterView->pushVisibleAll(FALSE);
+		return;
+	}
+	
 	S32 height = mRootView->getRect().getHeight();
 	S32 width = mRootView->getRect().getWidth();
 	LLRect full_window(0, height, width, 0);
@@ -2343,10 +2336,13 @@ void LLViewerWindow::initWorldUI()
 	if (mChicletContainer && !mChicletBar)
 	{
 		mChicletBar = LLChicletBar::getInstance();
-		mChicletBar->setShape(mChicletContainer->getLocalRect());
-		mChicletBar->setFollowsAll();
-		mChicletContainer->addChild(mChicletBar);
-		mChicletContainer->setVisible(TRUE);
+		if (!gNonInteractive)
+		{
+			mChicletBar->setShape(chiclet_container->getLocalRect());
+			mChicletBar->setFollowsAll();
+			mChicletContainer->addChild(chiclet_bar);
+			mChicletContainer->setVisible(TRUE);
+		}
 	}
 
 	//BD - Machinima Sidebar
@@ -2409,21 +2405,24 @@ void LLViewerWindow::initWorldUI()
 		gToolBarView->setVisible(TRUE);
 	}
 
-	LLMediaCtrl* destinations = LLFloaterReg::getInstance("destinations")->getChild<LLMediaCtrl>("destination_guide_contents");
-	if (destinations)
+	if (!gNonInteractive)
 	{
-		destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-		std::string url = gSavedSettings.getString("DestinationGuideURL");
-		url = LLWeb::expandURLSubstitutions(url, LLSD());
-		destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-	}
-	LLMediaCtrl* avatar_picker = LLFloaterReg::getInstance("avatar")->findChild<LLMediaCtrl>("avatar_picker_contents");
-	if (avatar_picker)
-	{
-		avatar_picker->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-		std::string url = gSavedSettings.getString("AvatarPickerURL");
-		url = LLWeb::expandURLSubstitutions(url, LLSD());
-		avatar_picker->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+		LLMediaCtrl* destinations = LLFloaterReg::getInstance("destinations")->getChild<LLMediaCtrl>("destination_guide_contents");
+		if (destinations)
+		{
+			destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+			std::string url = gSavedSettings.getString("DestinationGuideURL");
+			url = LLWeb::expandURLSubstitutions(url, LLSD());
+			destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+		}
+		LLMediaCtrl* avatar_picker = LLFloaterReg::getInstance("avatar")->findChild<LLMediaCtrl>("avatar_picker_contents");
+		if (avatar_picker)
+		{
+			avatar_picker->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+			std::string url = gSavedSettings.getString("AvatarPickerURL");
+			url = LLWeb::expandURLSubstitutions(url, LLSD());
+			avatar_picker->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+		}
 	}
 }
 
@@ -2531,7 +2530,7 @@ void LLViewerWindow::shutdownGL()
 
 	LLViewerTextureManager::cleanup() ;
 	SUBSYSTEM_CLEANUP(LLImageGL) ;
-
+    
 	LL_INFOS() << "All textures and llimagegl images are destroyed!" << LL_ENDL ;
 
 	LL_INFOS() << "Cleaning up select manager" << LL_ENDL;
@@ -2663,25 +2662,32 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 		if (!gViewerWindow->getFullscreenWindow())
 #endif // LL_WINDOWS
 		{
-// [/SL:KB]
-		BOOL maximized = mWindow->getMaximized();
-		gSavedSettings.setBOOL("WindowMaximized", maximized);
+			// [/SL:KB]
+			BOOL maximized = mWindow->getMaximized();
+			gSavedSettings.setBOOL("WindowMaximized", maximized);
+
+			U32 min_window_width = gSavedSettings.getU32("MinWindowWidth");
+			U32 min_window_height = gSavedSettings.getU32("MinWindowHeight");
+			// tell the OS specific window code about min window size
+			mWindow->setMinSize(min_window_width, min_window_height);
 
 			LLCoordScreen window_size;
-// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
-#ifndef LL_WINDOWS
-			if (!maximized
-				&& mWindow->getSize(&window_size))
-#else
-			if (mWindow->getRestoredSize(&window_size))
-#endif // LL_WINDOWS
-// [/SL:KB]
+			// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Added: Catznip-2.1.2a
+			if (!maximized)
 			{
-				//BD - Fix for Window resizing with an offset.
-				gSavedSettings.setS32("WindowWidth", (width + 16));
-				gSavedSettings.setS32("WindowHeight", (height + 38));
+				U32 min_window_width = gSavedSettings.getU32("MinWindowWidth");
+				U32 min_window_height = gSavedSettings.getU32("MinWindowHeight");
+				// tell the OS specific window code about min window size
+				mWindow->setMinSize(min_window_width, min_window_height);
+
+				LLCoordScreen window_rect;
+				if (!gNonInteractive && mWindow->getSize(&window_rect))
+				{
+					//BD - Fix for Window resizing with an offset.
+					gSavedSettings.setS32("WindowWidth", (width + 16));
+					gSavedSettings.setS32("WindowHeight", (height + 38));
+				}
 			}
-// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-08-26 (Catznip-2.1.2a) | Modified: Catznip-2.1.2a
 		}
 // [/SL:KB]
 
@@ -2750,10 +2756,7 @@ void LLViewerWindow::drawDebugText()
 	gGL.color4f(1,1,1,1);
 	gGL.pushMatrix();
 	gGL.pushUIMatrix();
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.bind();
-	}
+	gUIProgram.bind();
 	{
 		// scale view by UI global scale factor and aspect ratio correction factor
 		gGL.scaleUI(mDisplayScale.mV[VX], mDisplayScale.mV[VY], 1.f);
@@ -2763,10 +2766,7 @@ void LLViewerWindow::drawDebugText()
 	gGL.popMatrix();
 
 	gGL.flush();
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.unbind();
-	}
+	gUIProgram.unbind();
 }
 
 void LLViewerWindow::draw()
@@ -2813,10 +2813,7 @@ void LLViewerWindow::draw()
 	// Draw all nested UI views.
 	// No translation needed, this view is glued to 0,0
 
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.bind();
-	}
+	gUIProgram.bind();
 
 	gGL.pushMatrix();
 	LLUI::pushMatrix();
@@ -2886,14 +2883,9 @@ void LLViewerWindow::draw()
 	LLUI::popMatrix();
 	gGL.popMatrix();
 
-	if (LLGLSLShader::sNoFixedFunction)
-	{
-		gUIProgram.unbind();
-	}
+	gUIProgram.unbind();
 
-//#if LL_DEBUG
 	LLView::sIsDrawing = FALSE;
-//#endif
 }
 
 // Takes a single keyup event, usually when UI is visible
@@ -2965,57 +2957,64 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
     if (keyboard_focus
         && !gFocusMgr.getKeystrokesOnly())
     {
-#ifdef LL_WINDOWS
-        // On windows Alt Gr key generates additional Ctrl event, as result handling situations
-        // like 'AltGr + D' will result in 'Alt+Ctrl+D'. If it results in WM_CHAR, don't let it
-        // pass into menu or it will trigger 'develop' menu assigned to this combination on top
-        // of character handling.
-        // Alt Gr can be additionally modified by Shift
-        const MASK alt_gr = MASK_CONTROL | MASK_ALT;
-        if ((mask & alt_gr) != 0
-            && key >= 0x30
-            && key <= 0x5A
-            && (GetKeyState(VK_RMENU) & 0x8000) != 0
-            && (GetKeyState(VK_RCONTROL) & 0x8000) == 0) // ensure right control is not pressed, only left one
+        LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(keyboard_focus);
+        if (cur_focus && cur_focus->acceptsTextInput())
         {
-            // Alt Gr key is represented as right alt and left control.
-            // Any alt+ctrl combination is treated as Alt Gr by TranslateMessage() and
-            // will generate a WM_CHAR message, but here we only treat virtual Alt Graph
-            // key by checking if this specific combination has unicode char.
-            //
-            // I decided to handle only virtual RAlt+LCtrl==AltGr combination to minimize
-            // impact on menu, but the right way might be to handle all Alt+Ctrl calls.
-
-            BYTE keyboard_state[256];
-            if (GetKeyboardState(keyboard_state))
+#ifdef LL_WINDOWS
+            // On windows Alt Gr key generates additional Ctrl event, as result handling situations
+            // like 'AltGr + D' will result in 'Alt+Ctrl+D'. If it results in WM_CHAR, don't let it
+            // pass into menu or it will trigger 'develop' menu assigned to this combination on top
+            // of character handling.
+            // Alt Gr can be additionally modified by Shift
+            const MASK alt_gr = MASK_CONTROL | MASK_ALT;
+            LLWindowWin32 *window = static_cast<LLWindowWin32*>(mWindow);
+            U32 raw_key = window->getRawWParam();
+            if ((mask & alt_gr) != 0
+                && ((raw_key >= 0x30 && raw_key <= 0x5A) //0-9, plus normal chartacters
+                    || (raw_key >= 0xBA && raw_key <= 0xE4)) // Misc/OEM characters that can be covered by AltGr, ex: -, =, ~
+                && (GetKeyState(VK_RMENU) & 0x8000) != 0
+                && (GetKeyState(VK_RCONTROL) & 0x8000) == 0) // ensure right control is not pressed, only left one
             {
-                const int char_count = 6;
-                wchar_t chars[char_count];
-                HKL layout = GetKeyboardLayout(0);
-                // ToUnicodeEx changes buffer state on OS below Win10, which is undesirable,
-                // but since we already did a TranslateMessage() in gatherInput(), this
-                // should have no negative effect
-                int res = ToUnicodeEx(key, 0, keyboard_state, chars, char_count, 1 << 2 /*do not modify buffer flag*/, layout);
-                if (res == 1 && chars[0] >= 0x20)
+                // Alt Gr key is represented as right alt and left control.
+                // Any alt+ctrl combination is treated as Alt Gr by TranslateMessage() and
+                // will generate a WM_CHAR message, but here we only treat virtual Alt Graph
+                // key by checking if this specific combination has unicode char.
+                //
+                // I decided to handle only virtual RAlt+LCtrl==AltGr combination to minimize
+                // impact on menu, but the right way might be to handle all Alt+Ctrl calls.
+
+                BYTE keyboard_state[256];
+                if (GetKeyboardState(keyboard_state))
                 {
-                    // Let it fall through to character handler and get a WM_CHAR.
-                    return TRUE;
+                    const int char_count = 6;
+                    wchar_t chars[char_count];
+                    HKL layout = GetKeyboardLayout(0);
+                    // ToUnicodeEx changes buffer state on OS below Win10, which is undesirable,
+                    // but since we already did a TranslateMessage() in gatherInput(), this
+                    // should have no negative effect
+                    // ToUnicodeEx works with virtual key codes
+                    int res = ToUnicodeEx(raw_key, 0, keyboard_state, chars, char_count, 1 << 2 /*do not modify buffer flag*/, layout);
+                    if (res == 1 && chars[0] >= 0x20)
+                    {
+                        // Let it fall through to character handler and get a WM_CHAR.
+                        return TRUE;
+                    }
                 }
             }
-        }
 #endif
 
-        if (!(mask & (MASK_CONTROL | MASK_ALT)))
-        {
-            // We have keyboard focus, and it's not an accelerator
-            if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+            if (!(mask & (MASK_CONTROL | MASK_ALT)))
             {
-                return keyboard_focus->handleKey(key, mask, FALSE);
-            }
-            else if (key < 0x80)
-            {
-                // Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
-                return TRUE;
+                // We have keyboard focus, and it's not an accelerator
+                if (keyboard_focus && keyboard_focus->wantsKeyUpKeyDown())
+                {
+                    return keyboard_focus->handleKey(key, mask, FALSE);
+                }
+                else if (key < 0x80)
+                {
+                    // Not a special key, so likely (we hope) to generate a character.  Let it fall through to character handler first.
+                    return TRUE;
+                }
             }
         }
     }
@@ -3452,7 +3451,7 @@ static LLTrace::BlockTimerStatHandle ftm("Update UI");
 // event processing.
 void LLViewerWindow::updateUI()
 {
-	LL_RECORD_BLOCK_TIME(ftm);
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_UI; //LL_RECORD_BLOCK_TIME(ftm);
 
 	static std::string last_handle_msg;
 
@@ -4006,8 +4005,15 @@ void LLViewerWindow::updateLayout()
 
 void LLViewerWindow::updateMouseDelta()
 {
+#if LL_WINDOWS
+    LLCoordCommon delta; 
+    mWindow->getCursorDelta(&delta);
+    S32 dx = delta.mX;
+    S32 dy = delta.mY;
+#else
 	S32 dx = lltrunc((F32) (mCurrentMousePoint.mX - mLastMousePoint.mX) * LLUI::getScaleFactor().mV[VX]);
 	S32 dy = lltrunc((F32) (mCurrentMousePoint.mY - mLastMousePoint.mY) * LLUI::getScaleFactor().mV[VY]);
+#endif
 
 	//RN: fix for asynchronous notification of mouse leaving window not working
 	LLCoordWindow mouse_pos;
@@ -5686,6 +5692,7 @@ void LLViewerWindow::setup3DRender()
 
 void LLViewerWindow::setup3DViewport(S32 x_offset, S32 y_offset)
 {
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_UI
 	gGLViewport[0] = mWorldViewRectRaw.mLeft + x_offset;
 	gGLViewport[1] = mWorldViewRectRaw.mBottom + y_offset;
 	gGLViewport[2] = mWorldViewRectRaw.getWidth();
@@ -5907,8 +5914,6 @@ void LLViewerWindow::initFonts(F32 zoom_factor)
 								mDisplayScale.mV[VX] * zoom_factor,
 								mDisplayScale.mV[VY] * zoom_factor,
 								gDirUtilp->getAppRODataDir());
-	// Force font reloads, which can be very slow
-	LLFontGL::loadDefaultFonts();
 }
 
 // [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Added: Catznip-2.1.1a
@@ -5976,7 +5981,7 @@ void LLViewerWindow::restartDisplay(BOOL show_progress_bar)
 	}
 }
 
-BOOL LLViewerWindow::changeDisplaySettings(LLCoordScreen size, BOOL disable_vsync, BOOL show_progress_bar)
+BOOL LLViewerWindow::changeDisplaySettings(LLCoordScreen size, BOOL enable_vsync, BOOL show_progress_bar)
 {
 	//BOOL was_maximized = gSavedSettings.getBOOL("WindowMaximized");
 

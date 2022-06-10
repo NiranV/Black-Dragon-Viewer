@@ -71,7 +71,7 @@ void LLOfferHandler::initChannel()
 }
 
 //--------------------------------------------------------------------------
-bool LLOfferHandler::processNotification(const LLNotificationPtr& notification)
+bool LLOfferHandler::processNotification(const LLNotificationPtr& notification, bool should_log)
 {
 	if(mChannel.isDead())
 	{
@@ -181,14 +181,14 @@ bool LLOfferHandler::processNotification(const LLNotificationPtr& notification)
 
 /*virtual*/ void LLOfferHandler::onChange(LLNotificationPtr p)
 {
-	LLToastNotifyPanel* panelp = LLToastNotifyPanel::getInstance(p->getID());
+	auto panelp = LLToastNotifyPanel::getInstance(p->getID());
 	if (panelp)
 	{
 		//
 		// HACK: if we're dealing with a notification embedded in IM, update it
 		// otherwise remove its toast
 		//
-		if (dynamic_cast<LLIMToastNotifyPanel*>(panelp))
+		if (dynamic_cast<LLIMToastNotifyPanel*>(panelp.get()))
 		{
 			panelp->updateNotification();
 		}

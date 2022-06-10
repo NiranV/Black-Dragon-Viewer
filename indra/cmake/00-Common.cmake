@@ -39,8 +39,8 @@ if(NON_RELEASE_CRASH_REPORTING)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DLL_SEND_CRASH_REPORTS=1")
 endif()  
 
-# Don't bother with a MinSizeRel build.
-set(CMAKE_CONFIGURATION_TYPES "RelWithDebInfo;Release;Debug" CACHE STRING
+# Don't bother with MinSizeRel or Debug builds.
+set(CMAKE_CONFIGURATION_TYPES "RelWithDebInfo;Release" CACHE STRING
     "Supported build types." FORCE)
 
 
@@ -76,7 +76,7 @@ if (WINDOWS)
   # CP changed to only append the flag for 32bit builds - on 64bit builds,
   # locally at least, the build output is spammed with 1000s of 'D9002'
   # warnings about this switch being ignored.
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  
   if( ADDRESS_SIZE EQUAL 32 )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()

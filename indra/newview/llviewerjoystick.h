@@ -104,6 +104,7 @@ class LLViewerJoystick : public LLSingleton<LLViewerJoystick>
 public:
 	//LLViewerJoystick();
 	virtual ~LLViewerJoystick();
+    LOG_CLASS(LLViewerJoystick);
 
 	void init(bool autoenable);
 	void initDevice(LLSD &guid);

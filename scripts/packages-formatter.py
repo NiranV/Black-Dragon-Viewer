@@ -116,7 +116,7 @@ for key, rawdata in ("versions", versions), ("copyrights", copyrights):
 if any(pkgs for pkgs in list(dups.values())):
     for key, pkgs in list(dups.items()):
         if pkgs:
-            print >>sys.stderr, "Duplicate %s for %s" % (key, ", ".join(pkgs))
+            print("Duplicate %s for %s" % (key, ", ".join(pkgs)), file=sys.stderr)
     sys.exit(1)
 
 print("%s %s" % (args.channel, args.version))

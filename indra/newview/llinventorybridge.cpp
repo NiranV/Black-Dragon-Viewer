@@ -1907,7 +1907,8 @@ void LLItemBridge::buildDisplayName() const
 	LLStringUtil::toUpper(mSearchableName);
 	
 	//Name set, so trigger a sort
-	if(mParent)
+    LLInventorySort sorter = static_cast<LLFolderViewModelInventory&>(mRootViewModel).getSorter();
+	if(mParent && !sorter.isByDate())
 	{
 		mParent->requestSort();
 	}
@@ -2213,7 +2214,8 @@ void LLFolderBridge::buildDisplayName() const
 	LLStringUtil::toUpper(mSearchableName);
 
     //Name set, so trigger a sort
-    if(mParent)
+    LLInventorySort sorter = static_cast<LLFolderViewModelInventory&>(mRootViewModel).getSorter();
+    if(mParent && sorter.isFoldersByName())
     {
         mParent->requestSort();
     }
@@ -3454,9 +3456,22 @@ void LLFolderBridge::copyOutfitToClipboard()
 void LLFolderBridge::openItem()
 {
 	// _LL_DEBUGS() << "LLFolderBridge::openItem()" << LL_ENDL;
-	LLInventoryModel* model = getInventoryModel();
-	if(!model) return;
-	if(mUUID.isNull()) return;
+
+    LLInventoryPanel* panel = mInventoryPanel.get();
+    if (!panel)
+    {
+        return;
+    }
+    LLInventoryModel* model = getInventoryModel();
+    if (!model)
+    {
+        return;
+    }
+    if (mUUID.isNull())
+    {
+        return;
+    }
+    panel->onFolderOpening(mUUID);
 	bool fetching_inventory = model->fetchDescendentsOf(mUUID);
 	// Only change folder type if we have the folder contents.
 	if (!fetching_inventory)
@@ -5822,14 +5837,14 @@ class LLCallingCardObserver : public LLFriendObserver
 public:
 	LLCallingCardObserver(LLCallingCardBridge* bridge) : mBridgep(bridge) {}
 	virtual ~LLCallingCardObserver() { mBridgep = NULL; }
-	virtual void changed(U32 mask)
-	{
-		mBridgep->refreshFolderViewItem();
-		if (mask & LLFriendObserver::ONLINE)
-		{
-			mBridgep->checkSearchBySuffixChanges();
-		}
-	}
+    virtual void changed(U32 mask)
+    {
+        if (mask & LLFriendObserver::ONLINE)
+        {
+            mBridgep->refreshFolderViewItem();
+            mBridgep->checkSearchBySuffixChanges();
+        }
+    }
 protected:
 	LLCallingCardBridge* mBridgep;
 };
@@ -5843,14 +5858,16 @@ LLCallingCardBridge::LLCallingCardBridge(LLInventoryPanel* inventory,
 										 const LLUUID& uuid ) :
 	LLItemBridge(inventory, root, uuid)
 {
-	mObserver = new LLCallingCardObserver(this);
-	LLAvatarTracker::instance().addObserver(mObserver);
+    mObserver = new LLCallingCardObserver(this);
+    mCreatorUUID = getItem()->getCreatorUUID();
+    LLAvatarTracker::instance().addParticularFriendObserver(mCreatorUUID, mObserver);
 }
 
 LLCallingCardBridge::~LLCallingCardBridge()
 {
-	LLAvatarTracker::instance().removeObserver(mObserver);
-	delete mObserver;
+    LLAvatarTracker::instance().removeParticularFriendObserver(mCreatorUUID, mObserver);
+
+    delete mObserver;
 }
 
 void LLCallingCardBridge::refreshFolderViewItem()

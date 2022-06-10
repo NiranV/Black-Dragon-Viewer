@@ -758,7 +758,6 @@ void LLGLTexMemBar::draw()
 
 	//----------------------------------------------------------------------------
 	//BD - Cache
-
 	U32 cache_read(0U), cache_write(0U), res_wait(0U);
 	LLAppViewer::getTextureFetch()->getStateStats(&cache_read, &cache_write, &res_wait);
 

@@ -158,10 +158,7 @@ void LLManipRotate::render()
 		}
 		else
 		{
-			if (LLGLSLShader::sNoFixedFunction)
-			{
-				gDebugProgram.bind();
-			}
+			gDebugProgram.bind();
 
 			LLGLEnable cull_face(GL_CULL_FACE);
 			LLGLDepthTest gls_depth(GL_FALSE);
@@ -214,10 +211,7 @@ void LLManipRotate::render()
 			}
 			gGL.popMatrix();
 
-			if (LLGLSLShader::sNoFixedFunction)
-			{
-				gUIProgram.bind();
-			}
+			gUIProgram.bind();
 		}
 		
 		gGL.translatef( center.mV[VX], center.mV[VY], center.mV[VZ] );
@@ -235,10 +229,7 @@ void LLManipRotate::render()
 		gGL.rotatef(angle_radians * RAD_TO_DEG, x, y, z);
 
 
-		if (LLGLSLShader::sNoFixedFunction)
-		{
-			gDebugProgram.bind();
-		}
+		gDebugProgram.bind();
 
 		if (mManipPart == LL_ROT_Z)
 		{
@@ -356,11 +347,7 @@ void LLManipRotate::render()
 			
 		}
 
-		if (LLGLSLShader::sNoFixedFunction)
-		{
-			gUIProgram.bind();
-		}
-		
+		gUIProgram.bind();
 	}
 	gGL.popMatrix();
 	gGL.popMatrix();
@@ -1557,7 +1544,10 @@ LLQuaternion LLManipRotate::dragConstrained( S32 x, S32 y )
 	
 				LLVector3 object_axis;
 				getObjectAxisClosestToMouse(object_axis);
-				object_axis = object_axis * first_object_node->mSavedRotation;
+                if (first_object_node)
+                {
+                    object_axis = object_axis * first_object_node->mSavedRotation;
+                }
 	
 				// project onto constraint plane
 				object_axis = object_axis - (object_axis * getConstraintAxis()) * getConstraintAxis();

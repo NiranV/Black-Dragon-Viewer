@@ -50,6 +50,8 @@
 #include "lltimer.h"
 #include "llappcorehttp.h"
 
+#include <boost/signals2.hpp>
+
 class LLCommandLineParser;
 class LLFrameTimer;
 class LLPumpIO;
@@ -63,6 +65,11 @@ class LLViewerRegion;
 //BD
 class LLToolMgr;
 
+namespace LL
+{
+    class ThreadPool;
+}
+
 extern LLTrace::BlockTimerStatHandle FTM_FRAME;
 
 class LLAppViewer : public LLApp
@@ -71,13 +78,13 @@ public:
 	LLAppViewer();
 	virtual ~LLAppViewer();
 
-    /**
-     * @brief Access to the LLAppViewer singleton.
-     * 
-     * The LLAppViewer singleton is created in main()/WinMain().
-     * So don't use it in pre-entry (static initialization) code.
-     */
-    static LLAppViewer* instance() {return sInstance; } 
+	/**
+	 * @brief Access to the LLAppViewer singleton.
+	 * 
+	 * The LLAppViewer singleton is created in main()/WinMain().
+	 * So don't use it in pre-entry (static initialization) code.
+	 */
+	static LLAppViewer* instance() {return sInstance; } 
 
 	//
 	// Main application logic
@@ -95,12 +102,12 @@ public:
     void earlyExit(const std::string& name, 
 				   const LLSD& substitutions = LLSD()); // Display an error dialog and forcibly quit.
 	void earlyExitNoNotify(); // Do not display error dialog then forcibly quit.
-    void abortQuit();  // Called to abort a quit request.
+	void abortQuit();  // Called to abort a quit request.
 
-    bool quitRequested() { return mQuitRequested; }
-    bool logoutRequestSent() { return mLogoutRequestSent; }
+	bool quitRequested() { return mQuitRequested; }
+	bool logoutRequestSent() { return mLogoutRequestSent; }
 	bool isSecondInstance() { return mSecondInstance; }
-    bool isUpdaterMissing() { return mUpdaterNotFound; }
+    bool isUpdaterMissing(); // In use by tests
 
 	void writeDebugInfo(bool isStatic=true);
 
@@ -114,7 +121,7 @@ public:
 	virtual bool restoreErrorTrap() = 0; // Require platform specific override to reset error handling mechanism.
 	                                     // return false if the error trap needed restoration.
 	static void handleViewerCrash(); // Hey! The viewer crashed. Do this, soon.
-    void checkForCrash();
+	void checkForCrash();
     
 	// Thread accessors
 	static LLTextureCache* getTextureCache() { return sTextureCache; }
@@ -126,38 +133,38 @@ public:
 	static U32 getObjectCacheVersion() ;
 
 	const std::string& getSerialNumber() { return mSerialNumber; }
-	
+
 	bool getPurgeCache() const { return mPurgeCache; }
-	
+
 	std::string getSecondLifeTitle() const; // The Second Life title.
 	std::string getWindowTitle() const; // The window display name.
 
-    void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
-    void badNetworkHandler(); // Cause a crash state due to bad network packet.
+	void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
+	void badNetworkHandler(); // Cause a crash state due to bad network packet.
 
 	//BD
 	//bool hasSavedFinalSnapshot() { return mSavedFinalSnapshot; }
 	//void saveFinalSnapshot(); 
 
-    void loadNameCache();
-    void saveNameCache();
+	void loadNameCache();
+	void saveNameCache();
 
 	void loadExperienceCache();
 	void saveExperienceCache();
 
 	void removeMarkerFiles();
-	
+
 	void removeDumpDir();
-    // LLAppViewer testing helpers.
-    // *NOTE: These will potentially crash the viewer. Only for debugging.
-    virtual void forceErrorLLError();
-    virtual void forceErrorBreakpoint();
-    virtual void forceErrorBadMemoryAccess();
-    virtual void forceErrorInfiniteLoop();
-    virtual void forceErrorSoftwareException();
-    virtual void forceErrorDriverCrash();
-    virtual void forceErrorCoroutineCrash();
-    virtual void forceErrorThreadCrash();
+	// LLAppViewer testing helpers.
+	// *NOTE: These will potentially crash the viewer. Only for debugging.
+	virtual void forceErrorLLError();
+	virtual void forceErrorBreakpoint();
+	virtual void forceErrorBadMemoryAccess();
+	virtual void forceErrorInfiniteLoop();
+	virtual void forceErrorSoftwareException();
+	virtual void forceErrorDriverCrash();
+	virtual void forceErrorCoroutineCrash();
+	virtual void forceErrorThreadCrash();
 
 	// The list is found in app_settings/settings_files.xml
 	// but since they are used explicitly in code,
@@ -190,15 +197,19 @@ public:
 	// *NOTE:Mani Fix this for login abstraction!!
 	void handleLoginComplete();
 
-    LLAllocator & getAllocator() { return mAlloc; }
+	LLAllocator & getAllocator() { return mAlloc; }
 
 	// On LoginCompleted callback
 	typedef boost::signals2::signal<void (void)> login_completed_signal_t;
 	login_completed_signal_t mOnLoginCompleted;
-	boost::signals2::connection setOnLoginCompletedCallback( const login_completed_signal_t::slot_type& cb ) { return mOnLoginCompleted.connect(cb); } 
+	boost::signals2::connection setOnLoginCompletedCallback( const login_completed_signal_t::slot_type& cb )
+	{
+		return mOnLoginCompleted.connect(cb);
+	}
 
 	void addOnIdleCallback(const boost::function<void()>& cb); // add a callback to fire (once) when idle
 
+    void initGeneralThread();
 	void purgeUserDataOnExit() { mPurgeUserDataOnExit = true; }
 	void purgeCache(); // Clear the local cache. 
 	void purgeCacheImmediate(); //clear local cache immediately.
@@ -217,9 +228,10 @@ public:
 	// llcorehttp init/shutdown/config information.
 	LLAppCoreHttp & getAppCoreHttp()			{ return mAppCoreHttp; }
 
+    void updateNameLookupUrl(const LLViewerRegion* regionp);
+
 //	//BD - Custom Keyboard Layout
 	static void loadKeyboardlayout();
-    void updateNameLookupUrl(const LLViewerRegion* regionp);
 
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.
@@ -230,7 +242,7 @@ protected:
 	virtual bool sendURLToOtherInstance(const std::string& url);
 
 	virtual bool initParseCommandLine(LLCommandLineParser& clp) 
-        { return true; } // Allow platforms to specify the command line args.
+		{ return true; } // Allow platforms to specify the command line args.
 
 	virtual std::string generateSerialNumber() = 0; // Platforms specific classes generate this.
 
@@ -258,24 +270,21 @@ private:
 	void processMarkerFiles(); 
 	static void recordMarkerVersion(LLAPRFile& marker_file);
 	bool markerIsSameVersion(const std::string& marker_name) const;
-	
-    void idle(); 
-    void idleShutdown();
+
+	void idle(); 
+	void idleShutdown();
 	// update avatar SLID and display name caches
-	void idleExperienceCache();
 	void idleNameCache();
-    void idleNetwork();
+	void idleNetwork();
 
-    void sendLogoutRequest();
-    void disconnectViewer();
-
-	bool onChangeFrameLimit(LLSD const & evt);
+	void sendLogoutRequest();
+	void disconnectViewer();
 
 	// *FIX: the app viewer class should be some sort of singleton, no?
 	// Perhaps its child class is the singleton and this should be an abstract base.
 	static LLAppViewer* sInstance; 
 
-    bool mSecondInstance; // Is this a second instance of the app?
+	bool mSecondInstance; // Is this a second instance of the app?
 	bool mUpdaterNotFound; // True when attempt to start updater failed
 
 	std::string mMarkerFileName;
@@ -293,6 +302,7 @@ private:
 	static LLImageDecodeThread* sImageDecodeThread; 
 	static LLTextureFetch* sTextureFetch;
 	static LLPurgeDiskCacheThread* sPurgeDiskCacheThread;
+    LL::ThreadPool* mGeneralThreadPool;
 
 	S32 mNumSessions;
 
@@ -312,8 +322,8 @@ private:
 
 	boost::optional<U32> mForceGraphicsLevel;
 
-    bool mQuitRequested;				// User wants to quit, may have modified documents open.
-    bool mLogoutRequestSent;			// Disconnect message sent to simulator, no longer safe to send messages to the sim.
+	bool mQuitRequested;				// User wants to quit, may have modified documents open.
+	bool mLogoutRequestSent;			// Disconnect message sent to simulator, no longer safe to send messages to the sim.
 	U32 mLastAgentControlFlags;
 	F32 mLastAgentForceUpdate;
 	struct SettingsFiles* mSettingsLocationList;
@@ -327,7 +337,7 @@ private:
 	bool mAgentRegionLastAlive;
 	LLUUID mAgentRegionLastID;
 
-    LLAllocator mAlloc;
+	LLAllocator mAlloc;
 
 	// llcorehttp library init/shutdown helper
 	LLAppCoreHttp mAppCoreHttp;
