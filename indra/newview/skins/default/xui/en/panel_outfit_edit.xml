@@ -492,12 +492,12 @@ width="320">
    image_unselected="Toolbar_Middle_Off"
    name="save_btn"
    top_delta="1"
-   width="121" />
+   width="82" />
    <button
    follows="bottom|left"
    height="25"
-   name="save_flyout_btn"
-   label=""
+   name="save_as_btn"
+   label="Save As"
    layout="topleft"
    left_pad="1"
    tab_stop="false"
