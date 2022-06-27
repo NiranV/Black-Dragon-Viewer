@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1443"
+            height="1427"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -919,7 +919,7 @@ width="345">
                   name="EnableFullbright"
                   top_pad="0"
                   width="115" />
-                  <check_box
+                  <!--<check_box
                   top_pad="0"
                   height="16"
                   control_name="JoystickEnabled"
@@ -928,7 +928,7 @@ width="345">
                   layout="topleft"
                   left="10"
                   name="enable_joystick"
-                  width="60" />
+                  width="60" />-->
                   <panel
                   follows="left|top|right"
                   height="20"
