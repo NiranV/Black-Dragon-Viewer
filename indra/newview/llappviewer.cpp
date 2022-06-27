@@ -3357,12 +3357,9 @@ LLSD LLAppViewer::getViewerInfo() const
     info["DRAW_DISTANCE"] = gSavedSettings.getF32("RenderFarClip");
     info["NET_BANDWITH"] = gSavedSettings.getF32("ThrottleBandwidthKBPS");
     info["LOD_FACTOR"] = gSavedSettings.getF32("RenderVolumeLODFactor");
-    info["RENDER_QUALITY"] = (F32)gSavedSettings.getU32("RenderQualityPerformance");
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
 	//BD
-	info["AUTO_MEM"] = gSavedSettings.getBOOL("AutomaticMemoryManagement") ? "Enabled" : "Disabled";
-	info["TEXTURE_MEMORY"] = (S32)gTextureList.getMaxTotalTextureMem().value();
-	info["SCENE_MEMORY"] = (S32)gTextureList.getMaxResidentTexMem().value();
+	info["MAX_TEXTURE_MEMORY"] = gSavedSettings.getF32("MaxTextureMemoryAllowed");
 
 #if LL_DARWIN
     info["HIDPI"] = gHiDPISupport;
