@@ -1479,12 +1479,17 @@ void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 //BD - Automatic Memory Management
 void LLViewerTextureList::idleUpdateMaxResidentTexMem()
 {
-	//BD - First lets find out how much VRAM we actually have.
-	S32 tot_mem = gGLManager.mVRAM;
+	//BD - Lets find out how much VRAM we actually have and how much
+	//     the user is willing to give to the Viewer.
+	static LLCachedControl<S32> max_desired_mem(gSavedSettings, "MaxTextureMemoryAllowed", true);
+	S32 tot_mem = (max_desired_mem > gGLManager.mVRAM || max_desired_mem == 0) ? gGLManager.mVRAM : max_desired_mem;
 
 	//BD - Limit our absolute maximum memory  of our available.
 	//     This way we leave some rest for FBO.
-	S32Megabytes max_mem = (S32Megabytes)tot_mem - (S32Megabytes)256;
+	//     Leave 16MB per memory pool, this adds up to 32MB in total,
+	//     which should be a sufficient reserve for anything that might
+	//     come in.
+	S32Megabytes max_mem = (S32Megabytes)tot_mem - (S32Megabytes)16;
 
 	//BD - Find out how much memory we are currently using for each.
 	S32Megabytes cur_mem = LLViewerTexture::sBoundTextureMemory;

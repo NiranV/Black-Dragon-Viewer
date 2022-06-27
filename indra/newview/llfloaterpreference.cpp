@@ -2066,11 +2066,8 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning0->setVisible(gSavedSettings.getF32("UIScaleFactor") != 1.0);
 	mWarning1->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
 	S32 max_vram = gGLManager.mVRAM;
-	S32 tex_mem = gSavedSettings.getS32("TextureMemory");
-	S32 sys_mem = gSavedSettings.getS32("SystemMemory");
-	mWarning2->setVisible(!gSavedSettings.getBOOL("AutomaticMemoryManagement") 
-						&& ((tex_mem < 368) || (sys_mem < 512)
-						|| (tex_mem + sys_mem) > (max_vram * 0.9)));
+	S32 tex_mem = gSavedSettings.getS32("MaxTextureMemoryAllowed");
+	mWarning2->setVisible(((tex_mem < 1024) && tex_mem != 0) || tex_mem > (max_vram * 0.9));
 
 	//BD - Quality Options
 	mWarning3->setVisible(LLVOVolume::sLODFactor > 2.0);

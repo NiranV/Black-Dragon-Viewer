@@ -357,7 +357,7 @@ width="510">
  function="Dragon.TriggerWarn"
  parameter="RenderCompressTextures"/>
       </check_box>
- <check_box
+ <!--<check_box
       control_name="AutomaticMemoryManagement"
       height="16"
       initial_value="false"
@@ -367,10 +367,11 @@ width="510">
       tool_tip="This option enables automatically raising or lowering the memory limits depending on how much is currently used to minimize the empty unused reserved memory to a minimum."
       name="AutomaticMemoryManagement"
       top_pad="0"
-      width="256"/>
+      width="256"/>-->
+ 
  <panel
        follows="top|left|right"
-       height="34"
+       height="20"
        background_visible="true"
        bg_alpha_color="0.5 0.2 0.2 0.3"
        layout="topleft"
@@ -390,9 +391,96 @@ width="510">
   tool_tip="WARNING: You might be allowing too much memory or even more than your GPU has available. Too high texture memory may cause drastic negative performance impact. Too low texture memory will cause faster texture trashing issues."
   width="16"
   left="472"
-  top="8"/>
+  top="2"/>
  </panel>
- <slider
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="MaxTextureMemoryAllowed"
+ top_delta="4"
+ width="220">
+ Max. Texture Memory:
+ </text>
+   <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   control_name="MaxTextureMemoryAllowed"
+   name="maxtexturememory"
+   tool_tip=""
+   use_ticker="true"
+   top_delta="-2"
+   width="219">
+    <combo_box.item
+       label="512 MB"
+       value="512"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;512&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="1024 MB"
+       value="1024"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;1024&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="1536 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;1536&lt;/blue&gt;"
+       value="1536"
+       name="item2"/>
+      <combo_box.item
+       label="2048 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;2048&lt;/blue&gt;"
+       value="2048"
+       name="item3"/>
+      <combo_box.item
+       label="3072 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;3072&lt;/blue&gt;"
+       value="3072"
+       name="item4"/>
+      <combo_box.item
+       label="4096 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;4096&lt;/blue&gt;"
+       value="4096"
+       name="item4"/>
+      <combo_box.item
+       label="6144 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;6144&lt;/blue&gt;"
+       value="6144"
+       name="item4"/>
+      <combo_box.item
+       label="8196 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;8196&lt;/blue&gt;"
+       value="8196"
+       name="item4"/>
+      <combo_box.item
+       label="Unlimited"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||MaxTextureMemoryAllowed: &lt;blue&gt;0&lt;/blue&gt;"
+       value="0"
+       name="item4"/>
+      <combo_box.combo_icon
+       default_index="8"
+       warns_index="9"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+ <!--<slider
  control_name="SystemMemory"
  disabled_control="AutomaticMemoryManagement"
  decimal_digits="0"
@@ -461,7 +549,7 @@ width="510">
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
-      </button>
+      </button>-->
  <text
  type="string"
  length="1"

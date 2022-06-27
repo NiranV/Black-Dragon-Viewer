@@ -584,10 +584,7 @@ void LLViewerTexture::updateClass()
 	//BD - Automatic Memory Management
 	//     Do memory management here, check whether we need more memory
 	//     and if enough memory is available.
-	if (gTextureList.mAutomaticMemoryManagement)
-	{
 		gTextureList.idleUpdateMaxResidentTexMem();
-	}
 
 	if (sBoundTextureMemory >= sMaxBoundTextureMemory ||
 		sTotalTextureMemory >= sMaxTotalTextureMem)
