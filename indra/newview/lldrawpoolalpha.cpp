@@ -86,7 +86,7 @@ void LLDrawPoolAlpha::prerender()
 S32 LLDrawPoolAlpha::getNumPostDeferredPasses() 
 { 
 //	//BD - Include Alphas In DoF and Volumetric Lighting if we want to.
-	else if ((gPipeline.RenderDepthOfField || gPipeline.RenderGodrays)
+	if ((gPipeline.RenderDepthOfField || gPipeline.RenderGodrays)
 			&& gSavedSettings.getBOOL("RenderDepthOfFieldAlphas"))
 	{
 		return 2; 

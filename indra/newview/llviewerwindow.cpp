@@ -1854,12 +1854,8 @@ void LLViewerWindow::handleDataCopy(LLWindow *window, S32 data_type, void *data)
 
 BOOL LLViewerWindow::handleTimerEvent(LLWindow *window)
 {
-<<<<<<< HEAD
+	//TODO: just call this every frame from gatherInput instead of using a convoluted 30fps timer callback
 	if (gJoystick->getOverrideCamera())
-=======
-    //TODO: just call this every frame from gatherInput instead of using a convoluted 30fps timer callback
-	if (LLViewerJoystick::getInstance()->getOverrideCamera())
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 	{
 		gJoystick->updateStatus();
 		return TRUE;
@@ -2338,9 +2334,9 @@ void LLViewerWindow::initWorldUI()
 		mChicletBar = LLChicletBar::getInstance();
 		if (!gNonInteractive)
 		{
-			mChicletBar->setShape(chiclet_container->getLocalRect());
+			mChicletBar->setShape(mChicletContainer->getLocalRect());
 			mChicletBar->setFollowsAll();
-			mChicletContainer->addChild(chiclet_bar);
+			mChicletContainer->addChild(mChicletBar);
 			mChicletContainer->setVisible(TRUE);
 		}
 	}

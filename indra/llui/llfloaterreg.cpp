@@ -556,7 +556,7 @@ void LLFloaterReg::showInstanceOrBringToFront(const LLSD& sdname, const LLSD& ke
 
     if (!instance)
     {
-        LL_DEBUGS() << "Unable to get instance of floater '" << name << "'" << LL_ENDL;
+        //LL_DEBUGS() << "Unable to get instance of floater '" << name << "'" << LL_ENDL;
         return;
     }
 

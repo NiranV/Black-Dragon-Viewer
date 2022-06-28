@@ -3147,7 +3147,7 @@ void LLFloaterPreference::refreshEnabledGraphics()
 {
 	//BD - If we detect an Intel GPU, display a warning that this will negatively impact
 	//     performance and not all features might be usable depending on the GPU.
-	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
+	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsAMD);
 
 	getChild<LLUICtrl>("warning_multi_panel")->setVisible(!is_good_gpu);
 }

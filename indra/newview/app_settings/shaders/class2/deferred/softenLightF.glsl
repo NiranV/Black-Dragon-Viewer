@@ -56,6 +56,7 @@ VARYING vec2 vary_fragcoord;
 uniform mat4 inv_proj;
 uniform vec2 screen_res;
 
+vec3 getNorm(vec2 pos_screen);
 vec4 getPositionWithDepth(vec2 pos_screen, float depth);
 
 void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, out vec3 sunlit, out vec3 amblit, out vec3 additive, out vec3 atten, bool use_ao);
@@ -65,7 +66,7 @@ vec3  scaleSoftClipFrag(vec3 l);
 vec3  fullbrightAtmosTransportFrag(vec3 light, vec3 additive, vec3 atten);
 vec3  fullbrightScaleSoftClip(vec3 light);
 
-vec3 decode_normal(vec2 enc);
+
 vec3 linear_to_srgb(vec3 c);
 vec3 srgb_to_linear(vec3 c);
 
@@ -106,7 +107,7 @@ void main()
     vec4  pos          = getPositionWithDepth(tc, depth);
     vec4  norm         = texture2DRect(normalMap, tc);
     float envIntensity = norm.z;
-    norm.xyz           = decode_normal(norm.xy);
+    norm.xyz           = getNorm(tc);
 
     vec3  light_dir   = (sun_up_factor == 1) ? sun_dir : moon_dir;
     float da          = clamp(dot(norm.xyz, light_dir.xyz), 0.0, 1.0);
@@ -224,7 +225,7 @@ void main()
            refapprop = min(refapprop, angleapprop);
            float refshad = texture2DRect(lightMap, ref2d).r;
            refshad = pow(refshad, light_gamma);
-           vec3 refn = decode_normal(ref2d);
+           vec3 refn = getNorm(ref2d);
            
            // darken reflections from points which face away from the reflected ray - our guess was a back-face
            //refapprop = min(refapprop, step(dot(refnorm, refn), 0.001));

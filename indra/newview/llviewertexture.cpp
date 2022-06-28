@@ -1575,7 +1575,7 @@ BOOL LLViewerFetchedTexture::preCreateTexture(S32 usename/*= 0*/)
     S32 discard_level = mRawDiscardLevel;
     if (mRawDiscardLevel < 0)
     {
-        LL_DEBUGS() << "Negative raw discard level when creating image: " << mRawDiscardLevel << LL_ENDL;
+        //LL_DEBUGS() << "Negative raw discard level when creating image: " << mRawDiscardLevel << LL_ENDL;
         discard_level = 0;
     }
 

@@ -885,6 +885,13 @@ void LLViewerObjectList::update(LLAgent &agent)
 {
 	LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK;
 
+	static LLCachedControl<bool> cc_velocity_interpolate(gSavedSettings, "VelocityInterpolate");
+	static LLCachedControl<bool> cc_ping_interpolate(gSavedSettings, "PingInterpolate");
+	static LLCachedControl<F32> cc_interpolation_time(gSavedSettings, "InterpolationTime");
+	static LLCachedControl<F32> cc_ping_region_cross_interp(gSavedSettings, "RegionCrossingInterpolationTime");
+	static LLCachedControl<F32> cc_interpolation_phase_out(gSavedSettings, "InterpolationPhaseOut");
+	static LLCachedControl<bool> cc_animate_textures(gSavedSettings, "AnimateTextures");
+
 	// Update globals
 	LLViewerObject::setVelocityInterpolate( cc_velocity_interpolate );
 	LLViewerObject::setPingInterpolate( cc_ping_interpolate );

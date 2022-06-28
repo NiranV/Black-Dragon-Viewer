@@ -442,7 +442,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
     }
     else if(reason_response == "mfa_challenge")
     {
-        LL_DEBUGS("LLLogin") << " MFA challenge" << LL_ENDL;
+        //LL_DEBUGS("LLLogin") << " MFA challenge" << LL_ENDL;
 
         if (gViewerWindow)
         {
@@ -454,7 +454,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         LLNotificationsUtil::add("PromptMFAToken", args, payload, [=](LLSD const & notif, LLSD const & response) {
             bool continue_clicked = response["continue"].asBoolean();
             std::string token = response["token"].asString();
-            LL_DEBUGS("LLLogin") << "PromptMFAToken: response: " << response << " continue_clicked" << continue_clicked << LL_ENDL;
+            //LL_DEBUGS("LLLogin") << "PromptMFAToken: response: " << response << " continue_clicked" << continue_clicked << LL_ENDL;
 
             // strip out whitespace - SL-17034/BUG-231938
             token = boost::regex_replace(token, boost::regex("\\s"), "");

@@ -4889,7 +4889,7 @@ void LLVOAvatar::debugBodySize() const
 	LLVector3 foot  = mFootLeftp->getPosition();
     //LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
 
-	F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
+	//F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
     //LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
 
 	F32 new_pelvis_to_foot = hip.mV[VZ] * pelvis_scale.mV[VZ] -
@@ -8445,7 +8445,6 @@ bool LLVOAvatar::isTooComplex() const
 {
 	static const LLCachedControl<bool> always_render_friends(gSavedSettings, "AlwaysRenderFriends", false);
 	bool too_complex;
-    static LLCachedControl<bool> always_render_friends(gSavedSettings, "AlwaysRenderFriends");
 	bool render_friend =  (LLAvatarTracker::instance().isBuddy(getID()) && always_render_friends);
 
 	if (isSelf() || render_friend || mVisuallyMuteSetting == AV_ALWAYS_RENDER)
@@ -9008,7 +9007,7 @@ void LLVOAvatar::dumpAvatarTEs( const std::string& context ) const
 		 iter != LLAvatarAppearance::getDictionary()->getTextures().end();
 		 ++iter)
 	{
-		const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
+		//const LLAvatarAppearanceDictionary::TextureEntry *texture_dict = iter->second;
 		// TODO: MULTI-WEARABLE: handle multiple textures for self
 		const LLViewerTexture* te_image = getImage(iter->first,0);
 		if( !te_image )
@@ -9411,7 +9410,7 @@ bool resolve_appearance_version(const LLAppearanceMessageContents& contents, S32
 //-----------------------------------------------------------------------------
 void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
 {
-	LL_DEBUGS("Avatar") << "starts" << LL_ENDL;
+	//LL_DEBUGS("Avatar") << "starts" << LL_ENDL;
 
     static LLCachedControl<bool> enable_verbose_dumps(gSavedSettings, "DebugAvatarAppearanceMessage");
     static LLCachedControl<bool> block_avatar_appearance_messages(gSavedSettings, "BlockAvatarAppearanceMessages");

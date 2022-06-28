@@ -384,9 +384,9 @@ struct LLWindowWin32::LLWindowWin32Thread : public LL::ThreadPool
         // internal heap allocation it likely requires to store func.
         auto ptr = new FuncType(std::move(func));
         WPARAM wparam{ 0xF1C };
-        LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
+        /*LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
                             << ", " << WM_POST_FUNCTION_
-                            << ", " << wparam << std::dec << LL_ENDL;
+                            << ", " << wparam << std::dec << LL_ENDL;*/
         PostMessage(windowHandle, WM_POST_FUNCTION_, wparam, LPARAM(ptr));
     }
 
@@ -1262,12 +1262,12 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen& size, BO
     mPostQuit = FALSE;
 
     // create window
-    LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
+    /*LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
         << " Y: " << window_rect.top
         << " Width: " << (window_rect.right - window_rect.left)
         << " Height: " << (window_rect.bottom - window_rect.top)
         << " Fullscreen: " << mFullscreen
-        << LL_ENDL;
+        << LL_ENDL;*/
 
 	recreateWindow(window_rect, dw_ex_style, dw_style);
 
@@ -1770,7 +1770,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
          &promise]
         ()
         {
-            LL_DEBUGS("Window") << "recreateWindow(): window_work entry" << LL_ENDL;
+            //LL_DEBUGS("Window") << "recreateWindow(): window_work entry" << LL_ENDL;
             self->mWindowHandle = 0;
             self->mhDC = 0;
 
@@ -1812,7 +1812,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
 
             // It's important to wake up the future either way.
             promise.set_value(std::make_pair(self->mWindowHandle, self->mhDC));
-            LL_DEBUGS("Window") << "recreateWindow(): window_work done" << LL_ENDL;
+            //LL_DEBUGS("Window") << "recreateWindow(): window_work done" << LL_ENDL;
         };
     // But how we pass window_work to the window thread depends on whether we
     // already have a window handle.
@@ -1820,7 +1820,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
     {
         // Pass window_work using the WorkQueue: without an existing window
         // handle, the window thread can't call GetMessage().
-        LL_DEBUGS("Window") << "posting window_work to WorkQueue" << LL_ENDL;
+        //LL_DEBUGS("Window") << "posting window_work to WorkQueue" << LL_ENDL;
         mWindowThread->post(window_work);
     }
     else
@@ -1828,7 +1828,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
         // Pass window_work using PostMessage(). We can still
         // PostMessage(oldHandle) because oldHandle won't be destroyed until
         // the window thread has retrieved and executed window_work.
-        LL_DEBUGS("Window") << "posting window_work to message queue" << LL_ENDL;
+        //LL_DEBUGS("Window") << "posting window_work to message queue" << LL_ENDL;
         mWindowThread->Post(oldHandle, window_work);
     }
 
@@ -2270,13 +2270,13 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
     ASSERT_WINDOW_THREAD();
     LL_PROFILE_ZONE_SCOPED_CATEGORY_WIN32;
 
-    LL_DEBUGS("Window") << "mainWindowProc(" << std::hex << h_wnd
+    /*LL_DEBUGS("Window") << "mainWindowProc(" << std::hex << h_wnd
                         << ", " << u_msg
-                        << ", " << w_param << ")" << std::dec << LL_ENDL;
+                        << ", " << w_param << ")" << std::dec << LL_ENDL;*/
 
     if (u_msg == WM_POST_FUNCTION_)
     {
-        LL_DEBUGS("Window") << "WM_POST_FUNCTION_" << LL_ENDL;
+        //LL_DEBUGS("Window") << "WM_POST_FUNCTION_" << LL_ENDL;
         // from LLWindowWin32Thread::Post()
         // Cast l_param back to the pointer to the heap FuncType
         // allocated by Post(). Capture in unique_ptr so we'll delete
@@ -4629,21 +4629,21 @@ public:
     {
         // This odd construct ensures that the stringize() call is only
         // executed if DEBUG logging is enabled for the passed tag.
-        LL_DEBUGS(mTag.c_str());
+        /*LL_DEBUGS(mTag.c_str());
         log(LL_CONT, stringize(std::forward<Items>(items)...));
-        LL_ENDL;
+        LL_ENDL;*/
     }
 
     template <typename... Items>
     void onChange(Items&&... items)
     {
-        LL_DEBUGS(mTag.c_str());
+        /*LL_DEBUGS(mTag.c_str());
         auto str = stringize(std::forward<Items>(items)...);
         if (str != mPrev)
         {
             log(LL_CONT, str);
         }
-        LL_ENDL;
+        LL_ENDL;*/
     }
 
 private:
@@ -4729,9 +4729,9 @@ void LLWindowWin32::kickWindowThread(HWND windowHandle)
         // case any functions are pending and no windows events came
         // through this frame
         WPARAM wparam{ 0xB0B0 };
-        LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
+        /*LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
                             << ", " << WM_DUMMY_
-                            << ", " << wparam << ")" << std::dec << LL_ENDL;
+                            << ", " << wparam << ")" << std::dec << LL_ENDL;*/
         PostMessage(windowHandle, WM_DUMMY_, wparam, 0x1337);
     }
 }

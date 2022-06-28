@@ -255,8 +255,6 @@ LLVOVolume::~LLVOVolume()
 	delete mVolumeImpl;
 	mVolumeImpl = NULL;
 
-	gMeshRepo.unregisterMesh(this);
-
 	if(!mMediaImplList.empty())
 	{
 		for(U32 i = 0 ; i < mMediaImplList.size() ; i++)
@@ -2649,7 +2647,7 @@ S32 LLVOVolume::setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialPa
 		}
 	}
 
-	S32 res = LLViewerObject::setTEMaterialParams(te, pMaterial);
+	//S32 res = LLViewerObject::setTEMaterialParams(te, pMaterial);
 
 	/*LL_DEBUGS("MaterialTEs") << "te " << (S32)te << " material " << ((pMaterial) ? pMaterial->asLLSD() : LLSD("null")) << " res " << res
 							 << ( LLSelectMgr::getInstance()->getSelection()->contains(const_cast<LLVOVolume*>(this), te) ? " selected" : " not selected" )
@@ -3737,9 +3735,8 @@ const LLMeshSkinInfo* LLVOVolume::getSkinInfo() const
     }
     else
     {
-         return mSkinInfo;
+		return nullptr;
     }
-    return nullptr;
 }
 
 // virtual
@@ -6310,7 +6307,7 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 				group->mSurfaceArea += volume->getSurfaceArea() * llmax(llmax(scale.mV[0], scale.mV[1]), scale.mV[2]);
 			}
             
-            F32 est_tris = vobj->getEstTrianglesMax();
+            //F32 est_tris = vobj->getEstTrianglesMax();
             vobj->updateControlAvatar();
             
 #if ENABLE_DEBUG
@@ -6706,7 +6703,7 @@ void LLVolumeGeometryManager::rebuildMesh(LLSpatialGroup* group)
 					
 					if (!vobj) continue;
 					
-					if (debugLoggingEnabled("AnimatedObjectsLinkset"))
+					/*if (debugLoggingEnabled("AnimatedObjectsLinkset"))
 					{
 						if (vobj->isAnimatedObject() && vobj->isRiggedMesh())
 						{
@@ -6714,7 +6711,7 @@ void LLVolumeGeometryManager::rebuildMesh(LLSpatialGroup* group)
 							F32 est_tris = vobj->getEstTrianglesMax();
 							LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " rebuildMesh, tris " << est_tris << LL_ENDL;
 						}
-					}
+					}*/
 					if (vobj->isNoLOD()) continue;
 
 					vobj->preRebuild();

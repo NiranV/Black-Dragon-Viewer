@@ -1119,14 +1119,14 @@ void LLGestureMgr::onLoadComplete(const LLUUID& asset_uuid,
             if (it == self.mActive.end())
             {
                 // Gesture is supposed to be present, active, but NULL
-                LL_DEBUGS("GestureMgr") << "Gesture " << item_id << " not found in active list" << LL_ENDL;
+                //LL_DEBUGS("GestureMgr") << "Gesture " << item_id << " not found in active list" << LL_ENDL;
             }
             else
             {
                 LLMultiGesture* old_gesture = (*it).second;
                 if (old_gesture && old_gesture != gesture)
                 {
-                    LL_DEBUGS("GestureMgr") << "Received dupplicate " << item_id << " callback" << LL_ENDL;
+                    //LL_DEBUGS("GestureMgr") << "Received dupplicate " << item_id << " callback" << LL_ENDL;
                     // In case somebody managest to activate, deactivate and
                     // then activate gesture again, before asset finishes loading.
                     // LLLoadInfo will have a different pointer, asset storage will

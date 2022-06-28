@@ -643,15 +643,13 @@ bool idle_startup()
 			delete gAudiop;
 			gAudiop = nullptr;
 
-#if USE_FMODSTUDIO
-			if (!gAudiop
+#ifdef LL_FMODSTUDIO
 #if !LL_WINDOWS
-				&& NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER")
+			if (NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER"))
 #endif // !LL_WINDOWS
-				)
-            {
-				gAudiop = (LLAudioEngine *) new LLAudioEngine_FMODSTUDIO(LLAppViewer::instance()->getSecondLifeTitle(), gSavedSettings.getBOOL("FMODProfilerEnable"), gSavedSettings.getU32("FMODResampleMethod"));
-            }
+			{
+				gAudiop = (LLAudioEngine *) new LLAudioEngine_FMODSTUDIO(gSavedSettings.getBOOL("FMODExProfilerEnable"));
+			}
 #endif
 
 #ifdef LL_OPENAL
@@ -662,7 +660,7 @@ bool idle_startup()
 				gAudiop = (LLAudioEngine *) new LLAudioEngine_OpenAL();
 			}
 #endif
-            
+
 			if (gAudiop)
 			{
 #if LL_WINDOWS

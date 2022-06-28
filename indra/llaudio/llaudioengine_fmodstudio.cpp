@@ -1,746 +1,460 @@
-/** 
- * @file audioengine_fmodstudio.cpp
- * @brief Implementation of LLAudioEngine class abstracting the audio 
- * support as a FMOD Studio implementation
+/**
+ * @file streamingaudio_fmodstudio.cpp
+ * @brief LLStreamingAudio_FMODSTUDIO implementation
  *
- * $LicenseInfo:firstyear=2014&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2020&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2014, Linden Research, Inc.
- * 
+ * Copyright (C) 2020, Linden Research, Inc.
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
 
 #include "linden_common.h"
 
-#include "llstreamingaudio.h"
+#include "llmath.h"
+
+#include "fmodstudio/fmod.hpp"
+#include "fmodstudio/fmod_errors.h"
+
 #include "llstreamingaudio_fmodstudio.h"
 
-#include "llaudioengine_fmodstudio.h"
-#include <utility>
-#include "lllistener_fmodstudio.h"
 
-#include "llerror.h"
-#include "llmath.h"
-#include "llrand.h"
-
-#include "fmod.hpp"
-#include "fmod_errors.h"
-#include "lldir.h"
-
-#include "sound_ids.h"
-
-const U32 EXTRA_SOUND_CHANNELS = 32;
-
-FMOD_RESULT F_CALLBACK windDSPCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels);
-
-FMOD::ChannelGroup *LLAudioEngine_FMODSTUDIO::mChannelGroups[LLAudioEngine::AUDIO_TYPE_COUNT] = {nullptr};
-
-LLAudioEngine_FMODSTUDIO::LLAudioEngine_FMODSTUDIO(std::string app_name, bool enable_profiler, U32 resample_method)
-	: mInited(false)
-	, mWindGen(nullptr)
-	, mWindDSPDesc(nullptr)
-	, mWindDSP(nullptr)
-	, mSystem(nullptr)
-	, mEnableProfiler(enable_profiler)
-	, mResampleMethod(resample_method)
-	, mAppName(std::move(app_name))
+class LLAudioStreamManagerFMODSTUDIO
 {
+public:
+	LLAudioStreamManagerFMODSTUDIO(FMOD::System *system, const std::string& url);
+	FMOD::Channel* startStream();
+	bool stopStream(); // Returns true if the stream was successfully stopped.
+	bool ready();
+
+	const std::string& getURL() { return mInternetStreamURL; }
+
+	FMOD_OPENSTATE getOpenState(unsigned int* percentbuffered = NULL, bool* starving = NULL, bool* diskbusy = NULL);
+protected:
+	FMOD::System* mSystem;
+	FMOD::Channel* mStreamChannel;
+	FMOD::Sound* mInternetStream;
+	bool mReady;
+
+	std::string mInternetStreamURL;
+};
+
+
+
+//---------------------------------------------------------------------------
+// Internet Streaming
+//---------------------------------------------------------------------------
+LLStreamingAudio_FMODSTUDIO::LLStreamingAudio_FMODSTUDIO(FMOD::System *system) :
+	mSystem(system),
+	mCurrentInternetStreamp(NULL),
+	mFMODInternetStreamChannelp(NULL),
+	mGain(1.0f),
+	mRetryCount(0)
+{
+	// Number of milliseconds of audio to buffer for the audio card.
+	// Must be larger than the usual Second Life frame stutter time.
+	const U32 buffer_seconds = 10;		//sec
+	const U32 estimated_bitrate = 128;	//kbit/sec
+	mSystem->setStreamBufferSize(estimated_bitrate * buffer_seconds * 128/*bytes/kbit*/, FMOD_TIMEUNIT_RAWBYTES);
+
+	// Here's where we set the size of the network buffer and some buffering 
+	// parameters.  In this case we want a network buffer of 16k, we want it 
+	// to prebuffer 40% of that when we first connect, and we want it 
+	// to rebuffer 80% of that whenever we encounter a buffer underrun.
+
+	// Leave the net buffer properties at the default.
+	//FSOUND_Stream_Net_SetBufferProperties(20000, 40, 80);
 }
 
-LLAudioEngine_FMODSTUDIO::~LLAudioEngine_FMODSTUDIO()
+
+LLStreamingAudio_FMODSTUDIO::~LLStreamingAudio_FMODSTUDIO()
 {
-}
-
-inline bool Check_FMOD_Error(FMOD_RESULT result, const char *string)
-{
-	if(result == FMOD_OK)
-		return false;
-	LL_WARNS("AudioImpl") << string << " Error: " << FMOD_ErrorString(result) << LL_ENDL;
-	return true;
-}
-
-bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, const std::string &app_title)
-{
-	U32 version;
-	FMOD_RESULT result;
-
-	// _LL_DEBUGS("AppInit") << "LLAudioEngine_FMODSTUDIO::init() initializing FMOD" << LL_ENDL;
-
-	result = FMOD::System_Create(&mSystem);
-	if(Check_FMOD_Error(result, "FMOD::System_Create"))
-		return false;
-
-	//will call LLAudioEngine_FMODSTUDIO::allocateListener, which needs a valid mSystem pointer.
-	LLAudioEngine::init(num_channels, userdata, app_title);	
-	
-	result = mSystem->getVersion(&version);
-	Check_FMOD_Error(result, "FMOD::System::getVersion");
-
-	if (version < FMOD_VERSION)
+	if (mCurrentInternetStreamp)
 	{
-		LL_WARNS("AppInit") << "Error : You are using the wrong FMOD Studio version (" << version
-			<< ")!  You should be using FMOD Studio" << FMOD_VERSION << LL_ENDL;
+		// Isn't supposed to hapen, stream should be clear by now,
+		// and if it does, we are likely going to crash.
+		LL_WARNS("FMOD") << "mCurrentInternetStreamp not null on shutdown!" << LL_ENDL;
+		stop();
 	}
 
-	// In this case, all sounds, PLUS wind and stream will be software.
-	result = mSystem->setSoftwareChannels(num_channels + EXTRA_SOUND_CHANNELS);
-	Check_FMOD_Error(result,"FMOD::System::setSoftwareChannels");
+	// Kill dead internet streams, if possible
+	killDeadStreams();
 
-	FMOD_ADVANCEDSETTINGS adv_settings = { };
-	adv_settings.cbSize = sizeof(FMOD_ADVANCEDSETTINGS);
-	switch (mResampleMethod)
+	if (!mDeadStreams.empty())
 	{
-	default:
-	case RESAMPLE_LINEAR:
-		adv_settings.resamplerMethod = FMOD_DSP_RESAMPLER_LINEAR;
-		break;
-	case RESAMPLE_CUBIC:
-		adv_settings.resamplerMethod = FMOD_DSP_RESAMPLER_CUBIC;
-		break;
-	case RESAMPLE_SPLINE:
-		adv_settings.resamplerMethod = FMOD_DSP_RESAMPLER_SPLINE;
-		break;
-	}
-
-	result = mSystem->setAdvancedSettings(&adv_settings);
-	Check_FMOD_Error(result, "FMOD::System::setAdvancedSettings");
-
-	U32 fmod_flags = FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED | FMOD_INIT_THREAD_UNSAFE;
-	if(mEnableProfiler)
-	{
-		fmod_flags |= FMOD_INIT_PROFILE_ENABLE;
-	}
-
-#if LL_LINUX
-	bool audio_ok = false;
-
-	if (!audio_ok)
-	{
-		if (NULL == getenv("LL_BAD_FMOD_PULSEAUDIO")) /*Flawfinder: ignore*/
+		// LLStreamingAudio_FMODSTUDIO was inited on startup
+		// and should be destroyed on shutdown, it should
+		// wait for streams to die to not cause crashes or
+		// leaks.
+		// Ideally we need to wait on some kind of callback
+		// to release() streams correctly, but 200 ms should
+		// be enough and we can't wait forever.
+		LL_INFOS("FMOD") << "Waiting for " << (S32)mDeadStreams.size() << " streams to stop" << LL_ENDL;
+		for (S32 i = 0; i < 20; i++)
 		{
-			// _LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
-			if((result = mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO)) == FMOD_OK &&
-				(result = mSystem->init(num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, const_cast<char*>(mAppName.c_str()))) == FMOD_OK)
+			const U32 ms_delay = 10;
+			ms_sleep(ms_delay); // rude, but not many options here
+			killDeadStreams();
+			if (mDeadStreams.empty())
 			{
-				// _LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY"	<< LL_ENDL;
-				audio_ok = true;
+				LL_INFOS("FMOD") << "All streams stopped after " << (S32)((i + 1) * ms_delay) << "ms" << LL_ENDL;
+				break;
 			}
-			else 
-			{
-				Check_FMOD_Error(result, "PulseAudio audio output FAILED to initialize");
-			}
-		} 
-		else 
-		{
-			// _LL_DEBUGS("AppInit") << "PulseAudio audio output SKIPPED" << LL_ENDL;
-		}	
-	}
-	if (!audio_ok)
-	{
-		if (NULL == getenv("LL_BAD_FMOD_ALSA"))		/*Flawfinder: ignore*/
-		{
-			// _LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
-			if((result = mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA)) == FMOD_OK &&
-			    (result = mSystem->init(num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, 0)) == FMOD_OK)
-			{
-				// _LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
-				audio_ok = true;
-			} 
-			else 
-			{
-				Check_FMOD_Error(result, "ALSA audio output FAILED to initialize");
-			}
-		} 
-		else 
-		{
-			// _LL_DEBUGS("AppInit") << "ALSA audio output SKIPPED" << LL_ENDL;
 		}
 	}
-	if (!audio_ok)
+
+	if (!mDeadStreams.empty())
 	{
-		LL_WARNS("AppInit") << "Overall audio init failure." << LL_ENDL;
-		return false;
+		LL_WARNS("FMOD") << "Failed to kill some audio streams" << LL_ENDL;
 	}
-
-	// We're interested in logging which output method we
-	// ended up with, for QA purposes.
-	FMOD_OUTPUTTYPE output_type;
-	if(!Check_FMOD_Error(mSystem->getOutput(&output_type), "FMOD::System::getOutput"))
-	{
-		switch (output_type)
-		{
-			case FMOD_OUTPUTTYPE_NOSOUND: 
-				LL_INFOS("AppInit") << "Audio output: NoSound" << LL_ENDL; break;
-			case FMOD_OUTPUTTYPE_PULSEAUDIO:	
-				LL_INFOS("AppInit") << "Audio output: PulseAudio" << LL_ENDL; break;
-			case FMOD_OUTPUTTYPE_ALSA: 
-				LL_INFOS("AppInit") << "Audio output: ALSA" << LL_ENDL; break;
-			default:
-				LL_INFOS("AppInit") << "Audio output: Unknown!" << LL_ENDL; break;
-		};
-	}
-#else // LL_LINUX
-
-	// initialize the FMOD engine
-	result = mSystem->init( num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, nullptr);
-	if (result == FMOD_ERR_OUTPUT_CREATEBUFFER)
-	{
-		/*
-		Ok, the speaker mode selected isn't supported by this soundcard. Switch it
-		back to stereo...
-		*/
-		result = mSystem->setSoftwareFormat(44100, FMOD_SPEAKERMODE_STEREO, 0);
-		Check_FMOD_Error(result,"Error falling back to stereo mode");
-		/*
-		... and re-init.
-		*/
-		result = mSystem->init( num_channels + EXTRA_SOUND_CHANNELS, fmod_flags, nullptr);
-	}
-	if(Check_FMOD_Error(result, "Error initializing FMOD Studio"))
-		return false;
-#endif
-
-	if (mEnableProfiler)
-	{
-		Check_FMOD_Error(mSystem->createChannelGroup("None", &mChannelGroups[AUDIO_TYPE_NONE]), "FMOD::System::createChannelGroup");
-		Check_FMOD_Error(mSystem->createChannelGroup("SFX", &mChannelGroups[AUDIO_TYPE_SFX]), "FMOD::System::createChannelGroup");
-		Check_FMOD_Error(mSystem->createChannelGroup("UI", &mChannelGroups[AUDIO_TYPE_UI]), "FMOD::System::createChannelGroup");
-		Check_FMOD_Error(mSystem->createChannelGroup("Ambient", &mChannelGroups[AUDIO_TYPE_AMBIENT]), "FMOD::System::createChannelGroup");
-	}
-
-	// set up our favourite FMOD-native streaming audio implementation if none has already been added
-	if (!getStreamingAudioImpl()) // no existing implementation added
-		setStreamingAudioImpl(new LLStreamingAudio_FMODSTUDIO(mSystem));
-
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init() FMOD Studio initialized correctly" << LL_ENDL;
-
-	FMOD_ADVANCEDSETTINGS adv_settings_dump = { };
-	mSystem->getAdvancedSettings(&adv_settings_dump);
-
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): resampler=" << adv_settings.resamplerMethod << " bytes" << LL_ENDL;
-
-	int r_numbuffers, r_samplerate, r_channels;
-	unsigned int r_bufferlength;
-	mSystem->getDSPBufferSize(&r_bufferlength, &r_numbuffers);
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_bufferlength=" << r_bufferlength << " bytes" << LL_ENDL;
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_numbuffers=" << r_numbuffers << LL_ENDL;
-
-	char r_name[512];
-	mSystem->getDriverInfo(0, r_name, 511, nullptr, &r_samplerate, nullptr, &r_channels);
-	r_name[511] = '\0';
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_name=\"" << r_name << "\"" <<  LL_ENDL;
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_samplerate=" << r_samplerate << "Hz" << LL_ENDL;
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): r_channels=" << r_channels << LL_ENDL;
-
-	int latency = 100; // optimistic default - i suspect if sample rate is 0, everything breaks. 
-	if ( r_samplerate != 0 )
-		latency = (int)(1000.0f * r_bufferlength * r_numbuffers / r_samplerate);
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): latency=" << latency << "ms" << LL_ENDL;
-
-	mInited = true;
-
-	LL_INFOS("AppInit") << "LLAudioEngine_FMODSTUDIO::init(): initialization complete." << LL_ENDL;
-
-	return true;
 }
 
-
-std::string LLAudioEngine_FMODSTUDIO::getDriverName(bool verbose)
+void LLStreamingAudio_FMODSTUDIO::killDeadStreams()
 {
-	llassert_always(mSystem);
-	if (verbose)
+	std::list<LLAudioStreamManagerFMODSTUDIO *>::iterator iter;
+	for (iter = mDeadStreams.begin(); iter != mDeadStreams.end();)
 	{
-		U32 version;
-		if(!Check_FMOD_Error(mSystem->getVersion(&version), "FMOD::System::getVersion"))
+		LLAudioStreamManagerFMODSTUDIO *streamp = *iter;
+		if (streamp->stopStream())
 		{
-			return llformat("FMOD Studio %1x.%02x.%02x", version >> 16, version >> 8 & 0x000000FF, version & 0x000000FF);
+			LL_INFOS("FMOD") << "Closed dead stream" << LL_ENDL;
+			delete streamp;
+			mDeadStreams.erase(iter++);
+		}
+		else
+		{
+			iter++;
 		}
 	}
-	return "FMOD Studio";
 }
 
-
-void LLAudioEngine_FMODSTUDIO::allocateListener(void)
-{	
-	try
-	{
-		mListenerp = (LLListener *) new LLListener_FMODSTUDIO(mSystem);
-	}
-	catch (const std::bad_alloc& e)
-	{
-		LL_WARNS() << "Listener allocation failed due to: " << e.what() << LL_ENDL;
-	}
-
-}
-
-
-void LLAudioEngine_FMODSTUDIO::shutdown()
+void LLStreamingAudio_FMODSTUDIO::start(const std::string& url)
 {
-	LL_INFOS() << "About to LLAudioEngine::shutdown()" << LL_ENDL;
-	LLAudioEngine::shutdown();
-	
-	LL_INFOS() << "LLAudioEngine_FMODSTUDIO::shutdown() closing FMOD Studio" << LL_ENDL;
-	if ( mSystem ) // speculative fix for MAINT-2657
+	//if (!mInited)
+	//{
+	//	LL_WARNS() << "startInternetStream before audio initialized" << LL_ENDL;
+	//	return;
+	//}
+
+	// "stop" stream but don't clear url, etc. in case url == mInternetStreamURL
+	stop();
+
+	if (!url.empty())
 	{
-		Check_FMOD_Error(mSystem->close(), "FMOD::System::close");
-		Check_FMOD_Error(mSystem->release(), "FMOD::System::release");
-	}
-	LL_INFOS() << "LLAudioEngine_FMODSTUDIO::shutdown() done closing FMOD Studio" << LL_ENDL;
-
-	delete mListenerp;
-	mListenerp = nullptr;
-}
-
-
-LLAudioBuffer * LLAudioEngine_FMODSTUDIO::createBuffer()
-{
-	return new LLAudioBufferFMODSTUDIO(mSystem);
-}
-
-
-LLAudioChannel * LLAudioEngine_FMODSTUDIO::createChannel()
-{
-	return new LLAudioChannelFMODSTUDIO(mSystem);
-}
-
-bool LLAudioEngine_FMODSTUDIO::initWind()
-{
-	mNextWindUpdate = 0.0;
-
-	cleanupWind();
-
-	mWindDSPDesc = new FMOD_DSP_DESCRIPTION();
-	memset(mWindDSPDesc, 0, sizeof(*mWindDSPDesc));	//Set everything to zero
-	mWindDSPDesc->pluginsdkversion = FMOD_PLUGIN_SDK_VERSION;
-	strncpy(mWindDSPDesc->name, "Wind Unit", sizeof(mWindDSPDesc->name));	//Set name to "Wind Unit"
-	mWindDSPDesc->numoutputbuffers = 1;
-	mWindDSPDesc->read = &windDSPCallback; //Assign callback.
-	if (Check_FMOD_Error(mSystem->createDSP(mWindDSPDesc, &mWindDSP), "FMOD::createDSP") || !mWindDSP)
-		return false;
-
-	int frequency = 44100;
-	FMOD_SPEAKERMODE mode;
-	if (!Check_FMOD_Error(mSystem->getSoftwareFormat(&frequency, &mode, nullptr), "FMOD::System::getSoftwareFormat"))
-	{
-		mWindGen = new LLWindGen<MIXBUFFERFORMAT>((U32)frequency);
-
-		if (!Check_FMOD_Error(mWindDSP->setUserData((void*)mWindGen), "FMOD::DSP::setUserData") &&
-			!Check_FMOD_Error(mWindDSP->setChannelFormat(FMOD_CHANNELMASK_STEREO, 2, mode), "FMOD::DSP::setChannelFormat") &&
-			!Check_FMOD_Error(mSystem->playDSP(mWindDSP, nullptr, false, nullptr), "FMOD::System::playDSP"))
-			return true;	//Success
-	}
-
-	cleanupWind();
-	return false;
-}
-
-
-void LLAudioEngine_FMODSTUDIO::cleanupWind()
-{
-	if (mWindDSP)
-	{
-		FMOD::ChannelGroup* mastergroup = nullptr;
-		if (!Check_FMOD_Error(mSystem->getMasterChannelGroup(&mastergroup), "FMOD::System::getMasterChannelGroup") && mastergroup)
-			Check_FMOD_Error(mastergroup->removeDSP(mWindDSP), "FMOD::ChannelGroup::removeDSP");
-		Check_FMOD_Error(mWindDSP->release(), "FMOD::DSP::release");
-		mWindDSP = nullptr;
-	}
-
-	delete mWindDSPDesc;
-	mWindDSPDesc = nullptr;
-
-	delete mWindGen;
-	mWindGen = nullptr;
-}
-
-
-//-----------------------------------------------------------------------
-void LLAudioEngine_FMODSTUDIO::updateWind(LLVector3 wind_vec, F32 camera_height_above_water)
-{
-	LLVector3 wind_pos;
-	F64 pitch;
-	F64 center_freq;
-
-	if (!mEnableWind)
-	{
-		return;
-	}
-	
-	if (mWindUpdateTimer.checkExpirationAndReset(LL_WIND_UPDATE_INTERVAL))
-	{
-		
-		// wind comes in as Linden coordinate (+X = forward, +Y = left, +Z = up)
-		// need to convert this to the conventional orientation DS3D and OpenAL use
-		// where +X = right, +Y = up, +Z = backwards
-
-		wind_vec.setVec(-wind_vec.mV[1], wind_vec.mV[2], -wind_vec.mV[0]);
-
-		// cerr << "Wind update" << endl;
-
-		pitch = 1.0 + mapWindVecToPitch(wind_vec);
-		center_freq = 80.0 * pow(pitch,2.5*(mapWindVecToGain(wind_vec)+1.0));
-		
-		mWindGen->mTargetFreq = (F32)center_freq;
-		mWindGen->mTargetGain = (F32)mapWindVecToGain(wind_vec) * mMaxWindGain;
-		mWindGen->mTargetPanGainR = (F32)mapWindVecToPan(wind_vec);
-  	}
-}
-
-//-----------------------------------------------------------------------
-void LLAudioEngine_FMODSTUDIO::setInternalGain(F32 gain)
-{
-	if (!mInited)
-	{
-		return;
-	}
-
-	gain = llclamp( gain, 0.0f, 1.0f );
-
-	FMOD::ChannelGroup *master_group;
-	if(Check_FMOD_Error(mSystem->getMasterChannelGroup(&master_group), "FMOD::System::getMasterChannelGroup"))
-		return;
-
-	master_group->setVolume(gain);
-
-	LLStreamingAudioInterface *saimpl = getStreamingAudioImpl();
-	if ( saimpl )
-	{
-		// fmod likes its streaming audio channel gain re-asserted after
-		// master volume change.
-		saimpl->setGain(saimpl->getGain());
-	}
-}
-
-//
-// LLAudioChannelFMODSTUDIO implementation
-//
-
-LLAudioChannelFMODSTUDIO::LLAudioChannelFMODSTUDIO(FMOD::System *system) : LLAudioChannel(), mSystemp(system), mChannelp(nullptr), mLastSamplePos(0)
-{
-}
-
-
-LLAudioChannelFMODSTUDIO::~LLAudioChannelFMODSTUDIO()
-{
-	cleanup();
-}
-
-bool LLAudioChannelFMODSTUDIO::updateBuffer()
-{	
-	if (mCurrentSourcep)
-	{
-		if (LLAudioChannel::updateBuffer())
-		{
-			// Base class update returned true, which means that we need to actually
-			// set up the channel for a different buffer.
-
-			LLAudioBufferFMODSTUDIO *bufferp = (LLAudioBufferFMODSTUDIO *) mCurrentSourcep->getCurrentBuffer();
-
-			// Grab the FMOD sample associated with the buffer
-			FMOD::Sound *soundp = bufferp->getSound();
-			if (!soundp)
-			{
-				// This is bad, there should ALWAYS be a sound associated with a legit
-				// buffer.
-				LL_ERRS() << "No FMOD sound!" << LL_ENDL;
-				return false;
-			}
-
-
-			// Actually play the sound.  Start it off paused so we can do all the necessary
-			// setup.
-			if (!mChannelp)
-			{
-				FMOD_RESULT result = getSystem()->playSound(soundp, nullptr, true, &mChannelp);
-				Check_FMOD_Error(result, "FMOD::System::playSound");
-			}
-
-			//LL_INFOS() << "Setting up channel " << std::hex << mChannelID << std::dec << LL_ENDL;
-		}
-
-		//FMOD_RESULT result;
-
-		mChannelp->setVolume(getSecondaryGain() * mCurrentSourcep->getGain());
-		//Check_FMOD_Error(result, "FMOD::Channel::setVolume");
-
-		mChannelp->setMode(mCurrentSourcep->isLoop() ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF);
-		/*if(Check_FMOD_Error(result, "FMOD::Channel::setMode"))
-		{
-			S32 index;
-			mChannelp->getIndex(&index);
-			LL_WARNS() << "Channel " << index << "Source ID: " << mCurrentSourcep->getID()
-					<< " at " << mCurrentSourcep->getPositionGlobal() << LL_ENDL;
-		}*/
+		LL_INFOS("FMOD") << "Starting internet stream: " << url << LL_ENDL;
+		mCurrentInternetStreamp = new LLAudioStreamManagerFMODSTUDIO(mSystem, url);
+		mURL = url;
 	}
 	else
 	{
-		// _LL_DEBUGS() << "No source buffer!" << LL_ENDL;
-		return false;
+		LL_INFOS("FMOD") << "Set internet stream to null" << LL_ENDL;
+		mURL.clear();
 	}
 
-	return true;
+	mRetryCount = 0;
 }
 
 
-void LLAudioChannelFMODSTUDIO::update3DPosition()
+void LLStreamingAudio_FMODSTUDIO::update()
 {
-	if (!mChannelp)
+	// Kill dead internet streams, if possible
+	killDeadStreams();
+
+	// Don't do anything if there are no streams playing
+	if (!mCurrentInternetStreamp)
 	{
-		// We're not actually a live channel (i.e., we're not playing back anything)
 		return;
 	}
 
-	LLAudioBufferFMODSTUDIO  *bufferp = (LLAudioBufferFMODSTUDIO  *)mCurrentBufferp;
-	if (!bufferp)
+	unsigned int progress;
+	bool starving;
+	bool diskbusy;
+	FMOD_OPENSTATE open_state = mCurrentInternetStreamp->getOpenState(&progress, &starving, &diskbusy);
+
+	if (open_state == FMOD_OPENSTATE_READY)
 	{
-		// We don't have a buffer associated with us (should really have been picked up
-		// by the above if.
+		// Stream is live
+
+		// start the stream if it's ready
+		if (!mFMODInternetStreamChannelp &&
+			(mFMODInternetStreamChannelp = mCurrentInternetStreamp->startStream()))
+		{
+			// Reset volume to previously set volume
+			setGain(getGain());
+			mFMODInternetStreamChannelp->setPaused(false);
+		}
+		mRetryCount = 0;
+	}
+	else if (open_state == FMOD_OPENSTATE_ERROR)
+	{
+		LL_INFOS("FMOD") << "State: FMOD_OPENSTATE_ERROR"
+			<< " Progress: " << U32(progress)
+			<< " Starving: " << S32(starving)
+			<< " Diskbusy: " << S32(diskbusy) << LL_ENDL;
+		if (mRetryCount < 2)
+		{
+			// Retry
+			std::string url = mURL;
+			stop(); // might drop mURL, drops mCurrentInternetStreamp
+
+			mRetryCount++;
+
+			if (!url.empty())
+			{
+				LL_INFOS("FMOD") << "Restarting internet stream: " << url << ", attempt " << (mRetryCount + 1) << LL_ENDL;
+				mCurrentInternetStreamp = new LLAudioStreamManagerFMODSTUDIO(mSystem, url);
+				mURL = url;
+			}
+		}
+		else
+		{
+			stop();
+		}
 		return;
 	}
 
-	if (mCurrentSourcep->isAmbient())
+	if (mFMODInternetStreamChannelp)
 	{
-		// Ambient sound, don't need to do any positional updates.
-		set3DMode(false);
+		FMOD::Sound *sound = NULL;
+
+		if (mFMODInternetStreamChannelp->getCurrentSound(&sound) == FMOD_OK && sound)
+		{
+			FMOD_TAG tag;
+			S32 tagcount, dirtytagcount;
+
+			if (sound->getNumTags(&tagcount, &dirtytagcount) == FMOD_OK && dirtytagcount)
+			{
+				for (S32 i = 0; i < tagcount; ++i)
+				{
+					if (sound->getTag(NULL, i, &tag) != FMOD_OK)
+						continue;
+
+					if (tag.type == FMOD_TAGTYPE_FMOD)
+					{
+						if (!strcmp(tag.name, "Sample Rate Change"))
+						{
+							LL_INFOS("FMOD") << "Stream forced changing sample rate to " << *((float *)tag.data) << LL_ENDL;
+							mFMODInternetStreamChannelp->setFrequency(*((float *)tag.data));
+						}
+						continue;
+					}
+				}
+			}
+
+			if (starving)
+			{
+				bool paused = false;
+				mFMODInternetStreamChannelp->getPaused(&paused);
+				if (!paused)
+				{
+					LL_INFOS("FMOD") << "Stream starvation detected! Pausing stream until buffer nearly full." << LL_ENDL;
+					LL_INFOS("FMOD") << "  (diskbusy=" << diskbusy << ")" << LL_ENDL;
+					LL_INFOS("FMOD") << "  (progress=" << progress << ")" << LL_ENDL;
+					mFMODInternetStreamChannelp->setPaused(true);
+				}
+			}
+			else if (progress > 80)
+			{
+				mFMODInternetStreamChannelp->setPaused(false);
+			}
+		}
+	}
+}
+
+void LLStreamingAudio_FMODSTUDIO::stop()
+{
+	if (mFMODInternetStreamChannelp)
+	{
+		mFMODInternetStreamChannelp->setPaused(true);
+		mFMODInternetStreamChannelp->setPriority(0);
+		mFMODInternetStreamChannelp = NULL;
+	}
+
+	if (mCurrentInternetStreamp)
+	{
+		LL_INFOS("FMOD") << "Stopping internet stream: " << mCurrentInternetStreamp->getURL() << LL_ENDL;
+		if (mCurrentInternetStreamp->stopStream())
+		{
+			delete mCurrentInternetStreamp;
+		}
+		else
+		{
+			LL_WARNS("FMOD") << "Pushing stream to dead list: " << mCurrentInternetStreamp->getURL() << LL_ENDL;
+			mDeadStreams.push_back(mCurrentInternetStreamp);
+		}
+		mCurrentInternetStreamp = NULL;
+		//mURL.clear();
+	}
+}
+
+void LLStreamingAudio_FMODSTUDIO::pause(int pauseopt)
+{
+	if (pauseopt < 0)
+	{
+		pauseopt = mCurrentInternetStreamp ? 1 : 0;
+	}
+
+	if (pauseopt)
+	{
+		if (mCurrentInternetStreamp)
+		{
+			LL_INFOS("FMOD") << "Pausing internet stream" << LL_ENDL;
+			stop();
+		}
 	}
 	else
 	{
-		// Localized sound.  Update the position and velocity of the sound.
-		set3DMode(true);
-
-		LLVector3 float_pos;
-		float_pos.setVec(mCurrentSourcep->getPositionGlobal());
-		FMOD_RESULT result = mChannelp->set3DAttributes((FMOD_VECTOR*)float_pos.mV, (FMOD_VECTOR*)mCurrentSourcep->getVelocity().mV);
-		Check_FMOD_Error(result, "FMOD::Channel::set3DAttributes");
+		start(getURL());
 	}
 }
 
 
-void LLAudioChannelFMODSTUDIO::updateLoop()
+// A stream is "playing" if it has been requested to start.  That
+// doesn't necessarily mean audio is coming out of the speakers.
+int LLStreamingAudio_FMODSTUDIO::isPlaying()
 {
-	if (!mChannelp)
+	if (mCurrentInternetStreamp)
 	{
-		// May want to clear up the loop/sample counters.
-		return;
+		return 1; // Active and playing
 	}
-
-	//
-	// Hack:  We keep track of whether we looped or not by seeing when the
-	// sample position looks like it's going backwards.  Not reliable; may
-	// yield false negatives.
-	//
-	U32 cur_pos;
-	Check_FMOD_Error(mChannelp->getPosition(&cur_pos,FMOD_TIMEUNIT_PCMBYTES),"FMOD::Channel::getPosition");
-
-	if (cur_pos < (U32)mLastSamplePos)
+	else if (!mURL.empty())
 	{
-		mLoopedThisFrame = true;
+		return 2; // "Paused"
 	}
-	mLastSamplePos = cur_pos;
-}
-
-
-void LLAudioChannelFMODSTUDIO::cleanup()
-{
-	if (!mChannelp)
-	{
-		//LL_INFOS() << "Aborting cleanup with no channel handle." << LL_ENDL;
-		return;
-	}
-
-	//LL_INFOS() << "Cleaning up channel: " << mChannelID << LL_ENDL;
-	Check_FMOD_Error(mChannelp->stop(),"FMOD::Channel::stop");
-
-	mCurrentBufferp = nullptr;
-	mChannelp = nullptr;
-}
-
-
-void LLAudioChannelFMODSTUDIO::play()
-{
-	if (!mChannelp)
-	{
-		LL_WARNS() << "Playing without a channel handle, aborting" << LL_ENDL;
-		return;
-	}
-
-	Check_FMOD_Error(mChannelp->setPaused(false), "FMOD::Channel::setPaused");
-
-	getSource()->setPlayedOnce(true);
-
-	if(LLAudioEngine_FMODSTUDIO::mChannelGroups[getSource()->getType()])
-		Check_FMOD_Error(mChannelp->setChannelGroup(LLAudioEngine_FMODSTUDIO::mChannelGroups[getSource()->getType()]),"FMOD::Channel::setChannelGroup");
-}
-
-
-void LLAudioChannelFMODSTUDIO::playSynced(LLAudioChannel *channelp)
-{
-	LLAudioChannelFMODSTUDIO *fmod_channelp = (LLAudioChannelFMODSTUDIO*)channelp;
-	if (!(fmod_channelp->mChannelp && mChannelp))
-	{
-		// Don't have channels allocated to both the master and the slave
-		return;
-	}
-
-	U32 cur_pos;
-	if(Check_FMOD_Error(mChannelp->getPosition(&cur_pos,FMOD_TIMEUNIT_PCMBYTES), "Unable to retrieve current position"))
-		return;
-
-	cur_pos %= mCurrentBufferp->getLength();
-	
-	// Try to match the position of our sync master
-	Check_FMOD_Error(mChannelp->setPosition(cur_pos,FMOD_TIMEUNIT_PCMBYTES),"Unable to set current position");
-
-	// Start us playing
-	play();
-}
-
-
-bool LLAudioChannelFMODSTUDIO::isPlaying()
-{
-	if (!mChannelp)
-	{
-		return false;
-	}
-
-	bool paused, playing;
-	Check_FMOD_Error(mChannelp->getPaused(&paused),"FMOD::Channel::getPaused");
-	Check_FMOD_Error(mChannelp->isPlaying(&playing),"FMOD::Channel::isPlaying");
-	return !paused && playing;
-}
-
-
-//
-// LLAudioChannelFMODSTUDIO implementation
-//
-
-
-LLAudioBufferFMODSTUDIO::LLAudioBufferFMODSTUDIO(FMOD::System *system) : mSystemp(system), mSoundp(nullptr)
-{
-}
-
-
-LLAudioBufferFMODSTUDIO::~LLAudioBufferFMODSTUDIO()
-{
-	if(mSoundp)
-	{
-		Check_FMOD_Error(mSoundp->release(),"FMOD::Sound::Release");
-		mSoundp = nullptr;
-	}
-}
-
-
-bool LLAudioBufferFMODSTUDIO::loadWAV(const std::string& filename)
-{
-    // Try to open a wav file from disk.  This will eventually go away, as we don't
-    // really want to block doing this.
-    if (filename.empty())
-    {
-        // invalid filename, abort.
-        return false;
-    }
-
-    if (!gDirUtilp->fileExists(filename))
-    {
-        // File not found, abort.
-        return false;
-    }
-
-    if (mSoundp)
-    {
-        // If there's already something loaded in this buffer, clean it up.
-        mSoundp->release();
-        mSoundp = NULL;
-    }
-
-    FMOD_MODE base_mode = FMOD_LOOP_NORMAL;
-    FMOD_CREATESOUNDEXINFO exinfo;
-    memset(&exinfo, 0, sizeof(exinfo));
-    exinfo.cbsize = sizeof(exinfo);
-    exinfo.suggestedsoundtype = FMOD_SOUND_TYPE_WAV;	//Hint to speed up loading.
-    // Load up the wav file into an fmod sample (since 1.05 fmod studio expects everything in UTF-8)
-    FMOD_RESULT result = getSystem()->createSound(filename.c_str(), base_mode, &exinfo, &mSoundp);
-
-    if (result != FMOD_OK)
-    {
-        // We failed to load the file for some reason.
-        LL_WARNS() << "Could not load data '" << filename << "': " << FMOD_ErrorString(result) << LL_ENDL;
-
-        //
-        // If we EVER want to load wav files provided by end users, we need
-        // to rethink this!
-        //
-        // file is probably corrupt - remove it.
-        LLFile::remove(filename);
-        return false;
-    }
-
-    // Everything went well, return true
-    return true;
-}
-
-
-U32 LLAudioBufferFMODSTUDIO::getLength()
-{
-	if (!mSoundp)
+	else
 	{
 		return 0;
 	}
-
-	U32 length;
-	Check_FMOD_Error(mSoundp->getLength(&length, FMOD_TIMEUNIT_PCMBYTES),"FMOD::Sound::getLength");
-	return length;
 }
 
 
-void LLAudioChannelFMODSTUDIO::set3DMode(bool use3d)
+F32 LLStreamingAudio_FMODSTUDIO::getGain()
 {
-	FMOD_MODE current_mode;
-	if(Check_FMOD_Error(mChannelp->getMode(&current_mode),"FMOD::Channel::getMode"))
-		return;
-	FMOD_MODE new_mode = current_mode;	
-	new_mode &= ~(use3d ? FMOD_2D : FMOD_3D);
-	new_mode |= use3d ? FMOD_3D : FMOD_2D;
+	return mGain;
+}
 
-	if(current_mode != new_mode)
+
+std::string LLStreamingAudio_FMODSTUDIO::getURL()
+{
+	return mURL;
+}
+
+
+void LLStreamingAudio_FMODSTUDIO::setGain(F32 vol)
+{
+	mGain = vol;
+
+	if (mFMODInternetStreamChannelp)
 	{
-		Check_FMOD_Error(mChannelp->setMode(new_mode),"FMOD::Channel::setMode");
+		vol = llclamp(vol * vol, 0.f, 1.f);	//should vol be squared here?
+
+		mFMODInternetStreamChannelp->setVolume(vol);
 	}
 }
 
-// *NOTE:  This is almost certainly being called on the mixer thread,
-// not the main thread.  May have implications for callees or audio
-// engine shutdown.
+///////////////////////////////////////////////////////
+// manager of possibly-multiple internet audio streams
 
-FMOD_RESULT F_CALLBACK windDSPCallback(FMOD_DSP_STATE *dsp_state, float *inbuffer, float *outbuffer, unsigned int length, int inchannels, int *outchannels)
+LLAudioStreamManagerFMODSTUDIO::LLAudioStreamManagerFMODSTUDIO(FMOD::System *system, const std::string& url) :
+	mSystem(system),
+	mStreamChannel(NULL),
+	mInternetStream(NULL),
+	mReady(false)
 {
-	// inbuffer = incomming data.
-	// newbuffer = outgoing data. AKA this DSP's output.
-	// length = length in samples at this mix time. True buffer size, in bytes, would be (length * sizeof(float) * inchannels).
-	// userdata = user-provided data attached this DSP via FMOD::DSP::setUserData.
-	
-	LLWindGen<LLAudioEngine_FMODSTUDIO::MIXBUFFERFORMAT> *windgen;
-	FMOD::DSP *thisdsp = (FMOD::DSP *)dsp_state->instance;
+	mInternetStreamURL = url;
 
-	thisdsp->getUserData((void **)&windgen);
-	
-	if (windgen)
-		windgen->windGenerate((LLAudioEngine_FMODSTUDIO::MIXBUFFERFORMAT *)outbuffer, length);
+	FMOD_RESULT result = mSystem->createStream(url.c_str(), FMOD_2D | FMOD_NONBLOCKING | FMOD_IGNORETAGS, 0, &mInternetStream);
 
-	return FMOD_OK;
+	if (result != FMOD_OK)
+	{
+		LL_WARNS("FMOD") << "Couldn't open fmod stream, error "
+			<< FMOD_ErrorString(result)
+			<< LL_ENDL;
+		mReady = false;
+		return;
+	}
+
+	mReady = true;
+}
+
+FMOD::Channel *LLAudioStreamManagerFMODSTUDIO::startStream()
+{
+	// We need a live and opened stream before we try and play it.
+	if (!mInternetStream || getOpenState() != FMOD_OPENSTATE_READY)
+	{
+		LL_WARNS("FMOD") << "No internet stream to start playing!" << LL_ENDL;
+		return NULL;
+	}
+
+	if (mStreamChannel)
+		return mStreamChannel;	//Already have a channel for this stream.
+
+	mSystem->playSound(mInternetStream, NULL, true, &mStreamChannel);
+	return mStreamChannel;
+}
+
+bool LLAudioStreamManagerFMODSTUDIO::stopStream()
+{
+	if (mInternetStream)
+	{
+
+
+		bool close = true;
+		switch (getOpenState())
+		{
+		case FMOD_OPENSTATE_CONNECTING:
+			close = false;
+			break;
+		default:
+			close = true;
+		}
+
+		if (close)
+		{
+			mInternetStream->release();
+			mStreamChannel = NULL;
+			mInternetStream = NULL;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return true;
+	}
+}
+
+FMOD_OPENSTATE LLAudioStreamManagerFMODSTUDIO::getOpenState(unsigned int* percentbuffered, bool* starving, bool* diskbusy)
+{
+	FMOD_OPENSTATE state;
+	mInternetStream->getOpenState(&state, percentbuffered, starving, diskbusy);
+	return state;
+}
+
+void LLStreamingAudio_FMODSTUDIO::setBufferSizes(U32 streambuffertime, U32 decodebuffertime)
+{
+	mSystem->setStreamBufferSize(streambuffertime / 1000 * 128 * 128, FMOD_TIMEUNIT_RAWBYTES);
+	FMOD_ADVANCEDSETTINGS settings;
+	memset(&settings, 0, sizeof(settings));
+	settings.cbSize = sizeof(settings);
+	settings.defaultDecodeBufferSize = decodebuffertime;//ms
+	mSystem->setAdvancedSettings(&settings);
 }

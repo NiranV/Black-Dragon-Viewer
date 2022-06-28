@@ -142,7 +142,7 @@ void LLSkinningUtil::initSkinningMatrixPalette(
         }
         else
         {
-            mat[j].loadu(skin->mInvBindMatrix[j]);
+			mat[j] = skin->mInvBindMatrix[j];
 #if DEBUG_SKINNING
             // This  shouldn't  happen   -  in  mesh  upload,  skinned
             // rendering  should  be disabled  unless  all joints  are

@@ -247,7 +247,6 @@ void LLAgentCamera::init()
 
 	mCameraFocusOffsetTarget = LLVector4(gSavedSettings.getVector3("CameraOffsetBuild"));
 
-<<<<<<< HEAD
 	//BD - Unlimited Camera Presets
 	mCameraPresetName = gSavedSettings.getString("CameraPresetName");
 	initializeCameraPresets();
@@ -270,8 +269,6 @@ void LLAgentCamera::init()
 	}*/
 // [/RLVa:KB]
 
-=======
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 	mCameraCollidePlane.clearVec();
 	mCurrentCameraDistance = getCameraOffsetInitial().magVec() * gSavedSettings.getF32("CameraOffsetScale");
 	mTargetCameraDistance = mCurrentCameraDistance;

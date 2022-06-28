@@ -229,21 +229,6 @@ static bool handleRenderPerfTestChanged(const LLSD& newvalue)
        return true;
 }
 
-bool handleRenderTransparentWaterChanged(const LLSD& newvalue)
-{
-	if (gPipeline.isInit())
-	{
-		gPipeline.updateRenderTransparentWater();
-		gPipeline.updateRenderDeferred();
-		gPipeline.releaseGLBuffers();
-		gPipeline.createGLBuffers();
-		gPipeline.resetVertexBuffers();
-		LLViewerShaderMgr::instance()->setShaders();
-	}
-	LLWorld::getInstance()->updateWaterObjects();
-	return true;
-}
-
 static bool handleShadowsResized(const LLSD& newvalue)
 {
 	gPipeline.requestResizeShadowTexture();

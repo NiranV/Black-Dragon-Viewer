@@ -1447,7 +1447,7 @@ void LLGLManager::initExtensions()
     glGetVertexAttribPointervARB    = (PFNGLGETVERTEXATTRIBPOINTERVARBPROC) GLH_EXT_GET_PROC_ADDRESS("glgetVertexAttribPointervARB");
     glIsProgramARB                  = (PFNGLISPROGRAMARBPROC) GLH_EXT_GET_PROC_ADDRESS("glIsProgramARB");
 
-    LL_DEBUGS("RenderInit") << "GL Probe: Got symbols" << LL_ENDL;
+    //LL_DEBUGS("RenderInit") << "GL Probe: Got symbols" << LL_ENDL;
 #endif
 
     mInited = TRUE;

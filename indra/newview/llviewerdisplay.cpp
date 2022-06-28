@@ -686,6 +686,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Cull");
 		
+		//BD
+		bool under_water = viewer_cam->cameraUnderWater();
+
 		//Increment drawable frame counter
 		LLDrawable::incrementVisible();
 
@@ -704,7 +707,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 		static LLCullResult result;
 		LLViewerCamera::sCurCameraID = LLViewerCamera::CAMERA_WORLD;
-		LLPipeline::sUnderWaterRender = LLViewerCamera::getInstance()->cameraUnderWater();
+		LLPipeline::sUnderWaterRender = under_water;
 		gPipeline.updateCull(*viewer_cam, result);
 		stop_glerror();
 
@@ -1314,10 +1317,11 @@ void render_ui(F32 zoom_factor, int subfield)
 					render_ui_3d();
 					LLGLState::checkStates();
 				}
-				else
+				//BD
+				/*else
 				{
 					render_disconnected_background();
-				}
+				}*/
 
 				LL_PROFILE_ZONE_NAMED_CATEGORY_UI("UI 2D"); //LL_RECORD_BLOCK_TIME(FTM_RENDER_UI_2D);
 				render_ui_2d();

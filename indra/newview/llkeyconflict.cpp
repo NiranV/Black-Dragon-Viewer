@@ -583,7 +583,7 @@ void LLKeyConflictHandler::saveToSettings(bool temporary)
                 break;
             }
 
-            keys.xml_version.set(keybindings_xml_version, true);
+            //keys.xml_version.set(keybindings_xml_version, true);
 
             if (temporary)
             {

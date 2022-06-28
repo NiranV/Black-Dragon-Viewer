@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llmeshrepository.h
  * @brief Client-side repository of mesh assets.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010-2013, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -53,13 +53,13 @@ class LLMeshRepository;
 
 typedef enum e_mesh_processing_result_enum
 {
-    MESH_OK = 0,
-    MESH_NO_DATA = 1,
-    MESH_OUT_OF_MEMORY,
-    MESH_HTTP_REQUEST_FAILED,
-    MESH_PARSE_FAILURE,
-    MESH_INVALID,
-    MESH_UNKNOWN
+	MESH_OK = 0,
+	MESH_NO_DATA = 1,
+	MESH_OUT_OF_MEMORY,
+	MESH_HTTP_REQUEST_FAILED,
+	MESH_PARSE_FAILURE,
+	MESH_INVALID,
+	MESH_UNKNOWN
 } EMeshProcessingResult;
 
 class LLMeshUploadData
@@ -117,12 +117,12 @@ public:
 		std::vector<LLVector3> mPositions;
 		std::vector<U16> mIndices;
 		decomp_params mParams;
-				
+
 		//output state
 		std::string mStatusMessage;
 		std::vector<LLModel::PhysicsMesh> mHullMesh;
 		LLModel::convex_hull_decomposition mHull;
-			
+
 		//status message callback, called from decomposition thread
 		virtual S32 statusCallback(const char* status, S32 p1, S32 p2) = 0;
 
@@ -131,30 +131,30 @@ public:
 
 		virtual void setStatusMessage(const std::string& msg);
 
-		bool isValid() const {return mPositions.size() > 2 && mIndices.size() > 2 ;}
+		bool isValid() const { return mPositions.size() > 2 && mIndices.size() > 2; }
 
 	protected:
 		//internal use
-		LLVector3 mBBox[2] ;
-		F32 mTriangleAreaThreshold ;
+		LLVector3 mBBox[2];
+		F32 mTriangleAreaThreshold;
 
-		void assignData(LLModel* mdl) ;
-		void updateTriangleAreaThreshold() ;
-		bool isValidTriangle(U16 idx1, U16 idx2, U16 idx3) ;
+		void assignData(LLModel* mdl);
+		void updateTriangleAreaThreshold();
+		bool isValidTriangle(U16 idx1, U16 idx2, U16 idx3);
 	};
 
 	LLCondition* mSignal;
 	LLMutex* mMutex;
-	
+
 	bool mInited;
 	bool mQuitting;
 	bool mDone;
-	
+
 	LLPhysicsDecomp();
 	~LLPhysicsDecomp();
 
 	void shutdown();
-		
+
 	void submitRequest(Request* request);
 	static S32 llcdCallback(const char*, S32, S32);
 	void cancel();
@@ -164,7 +164,7 @@ public:
 	void doDecompositionSingleHull();
 
 	virtual void run();
-	
+
 	void completeCurrent();
 	void notifyCompleted();
 
@@ -182,16 +182,16 @@ public:
 class RequestStats
 {
 public:
-    RequestStats() : mRetries(0) {};
+	RequestStats() : mRetries(0) {};
 
-    void updateTime();
-    bool canRetry() const;
-    bool isDelayed() const;
-    U32 getRetries() { return mRetries; }
+	void updateTime();
+	bool canRetry() const;
+	bool isDelayed() const;
+	U32 getRetries() { return mRetries; }
 
 private:
-    U32 mRetries;
-    LLFrameTimer mTimer;
+	U32 mRetries;
+	LLFrameTimer mTimer;
 };
 
 class LLMeshRepoThread : public LLThread
@@ -212,11 +212,11 @@ public:
 	//map of known mesh headers
 	typedef std::map<LLUUID, LLSD> mesh_header_map;
 	mesh_header_map mMeshHeader;
-	
+
 	std::map<LLUUID, U32> mMeshHeaderSize;
 
 	class HeaderRequest : public RequestStats
-	{ 
+	{
 	public:
 		const LLVolumeParams mMeshParams;
 
@@ -260,12 +260,12 @@ public:
 		UUIDBasedRequest(const LLUUID& id)
 			: RequestStats(), mId(id)
 		{
-        }
+		}
 
-        bool operator<(const UUIDBasedRequest& rhs) const
-        {
-            return mId < rhs.mId;
-        }
+		bool operator<(const UUIDBasedRequest& rhs) const
+		{
+			return mId < rhs.mId;
+		}
 	};
 
 	class LoadedMesh
@@ -283,13 +283,10 @@ public:
 	};
 
 	//set of requested skin info
-	std::queue<UUIDBasedRequest> mSkinReqQ;
-
-	// list of skin info requests that have failed or are unavailaibe
-	std::queue<UUIDBasedRequest> mSkinUnavailableQ;
+	std::set<UUIDBasedRequest> mSkinRequests;
 
 	// list of completed skin info requests
-	std::queue<LLMeshSkinInfo> mSkinInfoQ;
+	std::list<LLMeshSkinInfo> mSkinInfoQ;
 
 	//set of requested decompositions
 	std::set<UUIDBasedRequest> mDecompositionRequests;
@@ -350,14 +347,14 @@ public:
 
 	void notifyLoadedMeshes();
 	S32 getActualMeshLOD(const LLVolumeParams& mesh_params, S32 lod);
-	
+
 	void loadMeshSkinInfo(const LLUUID& mesh_id);
 	void loadMeshDecomposition(const LLUUID& mesh_id);
 	void loadMeshPhysicsShape(const LLUUID& mesh_id);
 
 	//send request for skin info, returns true if header info exists 
 	//  (should hold onto mesh_id and try again later if header info does not exist)
-	bool fetchMeshSkinInfo(const LLUUID& mesh_id, bool can_retry = true);
+	bool fetchMeshSkinInfo(const LLUUID& mesh_id);
 
 	//send request for decomposition, returns true if header info exists 
 	//  (should hold onto mesh_id and try again later if header info does not exist)
@@ -388,9 +385,9 @@ private:
 	// or dispose of handler.
 	//
 	// Threads:  Repo thread only
-	LLCore::HttpHandle getByteRange(const std::string & url, 
-									size_t offset, size_t len, 
-									const LLCore::HttpHandler::ptr_t &handler);
+	LLCore::HttpHandle getByteRange(const std::string & url,
+		size_t offset, size_t len,
+		const LLCore::HttpHandler::ptr_t &handler);
 };
 
 
@@ -400,10 +397,10 @@ private:
 // trivially serve as the HttpHandler object for request completion
 // notifications.
 
-class LLMeshUploadThread : public LLThread, public LLCore::HttpHandler 
+class LLMeshUploadThread : public LLThread, public LLCore::HttpHandler
 {
 private:
-	S32 mMeshUploadTimeOut ; //maximum time in seconds to execute an uploading request.
+	S32 mMeshUploadTimeOut; //maximum time in seconds to execute an uploading request.
 
 public:
 	class DecompRequest : public LLPhysicsDecomp::Request
@@ -435,11 +432,11 @@ public:
 	LLMutex*		mMutex;
 	S32				mPendingUploads;
 	LLVector3		mOrigin;
-	bool			mFinished;	
+	bool			mFinished;
 	bool			mUploadTextures;
 	bool			mUploadSkin;
 	bool			mUploadJoints;
-    bool			mLockScaleIfJointPosition;
+	bool			mLockScaleIfJointPosition;
 	volatile bool	mDiscarded;
 
 	LLHost			mHost;
@@ -447,16 +444,16 @@ public:
 	std::string		mWholeModelUploadURL;
 
 	LLMeshUploadThread(instance_list& data, LLVector3& scale, bool upload_textures,
-					   bool upload_skin, bool upload_joints, bool lock_scale_if_joint_position,
-                       const std::string & upload_url, bool do_upload = true,
-					   LLHandle<LLWholeModelFeeObserver> fee_observer = (LLHandle<LLWholeModelFeeObserver>()),
-					   LLHandle<LLWholeModelUploadObserver> upload_observer = (LLHandle<LLWholeModelUploadObserver>()));
+		bool upload_skin, bool upload_joints, bool lock_scale_if_joint_position,
+		const std::string & upload_url, bool do_upload = true,
+		LLHandle<LLWholeModelFeeObserver> fee_observer = (LLHandle<LLWholeModelFeeObserver>()),
+		LLHandle<LLWholeModelUploadObserver> upload_observer = (LLHandle<LLWholeModelUploadObserver>()));
 	~LLMeshUploadThread();
 
 	bool finished() const { return mFinished; }
 	virtual void run();
 	void preStart();
-	void discard() ;
+	void discard();
 	bool isDiscarded() const;
 
 	void generateHulls();
@@ -467,9 +464,9 @@ public:
 	void wholeModelToLLSD(LLSD& dest, bool include_textures);
 
 	void decomposeMeshMatrix(LLMatrix4& transformation,
-							 LLVector3& result_pos,
-							 LLQuaternion& result_rot,
-							 LLVector3& result_scale);
+		LLVector3& result_pos,
+		LLQuaternion& result_rot,
+		LLVector3& result_scale);
 
 	void setFeeObserverHandle(LLHandle<LLWholeModelFeeObserver> observer_handle) { mFeeObserverHandle = observer_handle; }
 	void setUploadObserverHandle(LLHandle<LLWholeModelUploadObserver> observer_handle) { mUploadObserverHandle = observer_handle; }
@@ -477,7 +474,7 @@ public:
 	// Inherited from LLCore::HttpHandler
 	virtual void onCompleted(LLCore::HttpHandle handle, LLCore::HttpResponse * response);
 
-        LLViewerFetchedTexture* FindViewerTexture(const LLImportMaterial& material);
+	LLViewerFetchedTexture* FindViewerTexture(const LLImportMaterial& material);
 
 private:
 	LLHandle<LLWholeModelFeeObserver> mFeeObserverHandle;
@@ -485,7 +482,7 @@ private:
 
 	bool mDoUpload; // if FALSE only model data will be requested, otherwise the model will be uploaded
 	LLSD mModelData;
-	
+
 	// llcorehttp library interface objects.
 	LLCore::HttpStatus					mHttpStatus;
 	LLCore::HttpRequest *				mHttpRequest;
@@ -499,47 +496,47 @@ private:
 class LLMeshCostData
 {
 public:
-    LLMeshCostData();
+	LLMeshCostData();
 
-    bool init(const LLSD& header);
-    
-    // Size for given LOD
-    S32 getSizeByLOD(S32 lod);
+	bool init(const LLSD& header);
 
-    // Sum of all LOD sizes.
-    S32 getSizeTotal();
+	// Size for given LOD
+	S32 getSizeByLOD(S32 lod);
 
-    // Estimated triangle counts for the given LOD.
-    F32 getEstTrisByLOD(S32 lod);
-    
-    // Estimated triangle counts for the largest LOD. Typically this
-    // is also the "high" LOD, but not necessarily.
-    F32 getEstTrisMax();
+	// Sum of all LOD sizes.
+	S32 getSizeTotal();
 
-    // Triangle count as computed by original streaming cost
-    // formula. Triangles in each LOD are weighted based on how
-    // frequently they will be seen.
-    // This was called "unscaled_value" in the original getStreamingCost() functions.
-    F32 getRadiusWeightedTris(F32 radius);
+	// Estimated triangle counts for the given LOD.
+	F32 getEstTrisByLOD(S32 lod);
 
-    // Triangle count used by triangle-based cost formula. Based on
-    // triangles in highest LOD plus potentially partial charges for
-    // lower LODs depending on complexity.
-    F32 getEstTrisForStreamingCost();
+	// Estimated triangle counts for the largest LOD. Typically this
+	// is also the "high" LOD, but not necessarily.
+	F32 getEstTrisMax();
 
-    // Streaming cost. This should match the server-side calculation
-    // for the corresponding volume.
-    F32 getRadiusBasedStreamingCost(F32 radius);
+	// Triangle count as computed by original streaming cost
+	// formula. Triangles in each LOD are weighted based on how
+	// frequently they will be seen.
+	// This was called "unscaled_value" in the original getStreamingCost() functions.
+	F32 getRadiusWeightedTris(F32 radius);
 
-    // New streaming cost formula, currently only used for animated objects.
-    F32 getTriangleBasedStreamingCost();
+	// Triangle count used by triangle-based cost formula. Based on
+	// triangles in highest LOD plus potentially partial charges for
+	// lower LODs depending on complexity.
+	F32 getEstTrisForStreamingCost();
+
+	// Streaming cost. This should match the server-side calculation
+	// for the corresponding volume.
+	F32 getRadiusBasedStreamingCost(F32 radius);
+
+	// New streaming cost formula, currently only used for animated objects.
+	F32 getTriangleBasedStreamingCost();
 
 private:
-    // From the "size" field of the mesh header. LOD 0=lowest, 3=highest.
-    std::vector<S32> mSizeByLOD;
+	// From the "size" field of the mesh header. LOD 0=lowest, 3=highest.
+	std::vector<S32> mSizeByLOD;
 
-    // Estimated triangle counts derived from the LOD sizes. LOD 0=lowest, 3=highest.
-    std::vector<F32> mEstTrisByLOD;
+	// Estimated triangle counts derived from the LOD sizes. LOD 0=lowest, 3=highest.
+	std::vector<F32> mEstTrisByLOD;
 };
 
 class LLMeshRepository
@@ -557,19 +554,19 @@ public:
 	static U32 sLODProcessing;
 	static U32 sCacheBytesRead;
 	static U32 sCacheBytesWritten;
-	static U32 sCacheReads;						
+	static U32 sCacheReads;
 	static U32 sCacheWrites;
 	static U32 sMaxLockHoldoffs;				// Maximum sequential locking failures
-	
+
 	static LLDeadmanTimer sQuiescentTimer;		// Time-to-complete-mesh-downloads after significant events
 
-    // Estimated triangle count of the largest LOD
-    F32 getEstTrianglesMax(LLUUID mesh_id);
-    F32 getEstTrianglesStreamingCost(LLUUID mesh_id);
+	// Estimated triangle count of the largest LOD
+	F32 getEstTrianglesMax(LLUUID mesh_id);
+	F32 getEstTrianglesStreamingCost(LLUUID mesh_id);
 	F32 getStreamingCostLegacy(LLUUID mesh_id, F32 radius, S32* bytes = NULL, S32* visible_bytes = NULL, S32 detail = -1, F32 *unscaled_value = NULL);
 	static F32 getStreamingCostLegacy(LLSD& header, F32 radius, S32* bytes = NULL, S32* visible_bytes = NULL, S32 detail = -1, F32 *unscaled_value = NULL);
-    bool getCostData(LLUUID mesh_id, LLMeshCostData& data);
-    bool getCostData(LLSD& header, LLMeshCostData& data);
+	bool getCostData(LLUUID mesh_id, LLMeshCostData& data);
+	bool getCostData(LLSD& header, LLMeshCostData& data);
 
 	LLMeshRepository();
 
@@ -577,15 +574,13 @@ public:
 	void shutdown();
 	S32 update();
 
-	void unregisterMesh(LLVOVolume* volume);
 	//mesh management functions
 	S32 loadMesh(LLVOVolume* volume, const LLVolumeParams& mesh_params, S32 detail = 0, S32 last_lod = -1);
-	
+
 	void notifyLoadedMeshes();
 	void notifyMeshLoaded(const LLVolumeParams& mesh_params, LLVolume* volume);
 	void notifyMeshUnavailable(const LLVolumeParams& mesh_params, S32 lod);
 	void notifySkinInfoReceived(LLMeshSkinInfo& info);
-	void notifySkinInfoUnavailable(const LLUUID& info);
 	void notifyDecompositionReceived(LLModel::Decomposition* info);
 
 	S32 getActualMeshLOD(const LLVolumeParams& mesh_params, S32 lod);
@@ -594,18 +589,18 @@ public:
 	LLModel::Decomposition* getDecomposition(const LLUUID& mesh_id);
 	void fetchPhysicsShape(const LLUUID& mesh_id);
 	bool hasPhysicsShape(const LLUUID& mesh_id);
-	
+
 	void buildHull(const LLVolumeParams& params, S32 detail);
 	void buildPhysicsMesh(LLModel::Decomposition& decomp);
-	
+
 	bool meshUploadEnabled();
 	bool meshRezEnabled();
 
 	void uploadModel(std::vector<LLModelInstance>& data, LLVector3& scale, bool upload_textures,
-                     bool upload_skin, bool upload_joints, bool lock_scale_if_joint_position,
-                     std::string upload_url, bool do_upload = true,
-					 LLHandle<LLWholeModelFeeObserver> fee_observer= (LLHandle<LLWholeModelFeeObserver>()), 
-                     LLHandle<LLWholeModelUploadObserver> upload_observer = (LLHandle<LLWholeModelUploadObserver>()));
+		bool upload_skin, bool upload_joints, bool lock_scale_if_joint_position,
+		std::string upload_url, bool do_upload = true,
+		LLHandle<LLWholeModelFeeObserver> fee_observer = (LLHandle<LLWholeModelFeeObserver>()),
+		LLHandle<LLWholeModelUploadObserver> upload_observer = (LLHandle<LLWholeModelUploadObserver>()));
 
 	S32 getMeshSize(const LLUUID& mesh_id, S32 lod);
 
@@ -614,10 +609,10 @@ public:
 	static void metricsStop();
 	static void metricsProgress(unsigned int count);
 	static void metricsUpdate();
-	
-	typedef std::map<LLVolumeParams, std::vector<LLVOVolume*> > mesh_load_map;
+
+	typedef std::map<LLVolumeParams, std::set<LLUUID> > mesh_load_map;
 	mesh_load_map mLoadingMeshes[4];
-	
+
 	typedef std::unordered_map<LLUUID, LLMeshSkinInfo> skin_map;
 	skin_map mSkinMap;
 
@@ -625,11 +620,11 @@ public:
 	decomposition_map mDecompositionMap;
 
 	LLMutex*					mMeshMutex;
-	
+
 	std::vector<LLMeshRepoThread::LODRequest> mPendingRequests;
-	
+
 	//list of mesh ids awaiting skin info
-	typedef std::map<LLUUID, std::vector<LLVOVolume*> > skin_load_map;
+	typedef std::map<LLUUID, std::set<LLUUID> > skin_load_map;
 	skin_load_map mLoadingSkins;
 
 	//list of mesh ids that need to send skin info fetch requests
@@ -640,23 +635,23 @@ public:
 
 	//list of mesh ids that need to send decomposition fetch requests
 	std::queue<LLUUID> mPendingDecompositionRequests;
-	
+
 	//list of mesh ids awaiting physics shapes
 	std::set<LLUUID> mLoadingPhysicsShapes;
 
 	//list of mesh ids that need to send physics shape fetch requests
 	std::queue<LLUUID> mPendingPhysicsShapeRequests;
-	
+
 	U32 mMeshThreadCount;
 
 	void cacheOutgoingMesh(LLMeshUploadData& data, LLSD& header);
-	
+
 	LLMeshRepoThread* mThread;
 	std::vector<LLMeshUploadThread*> mUploads;
 	std::vector<LLMeshUploadThread*> mUploadWaitList;
 
 	LLPhysicsDecomp* mDecompThread;
-	
+
 	class inventory_data
 	{
 	public:

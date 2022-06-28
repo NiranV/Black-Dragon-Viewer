@@ -1337,8 +1337,7 @@ LLViewerInput::Keys::Keys()
 	: first_person("first_person"),
 	third_person("third_person"),
 	sitting("sitting"),
-	edit_avatar("edit_avatar"),
-	xml_version("xml_version", 0)
+	edit_avatar("edit_avatar")
 {}
 
 void LLViewerInput::resetBindings()
@@ -1349,84 +1348,6 @@ void LLViewerInput::resetBindings()
 		mMouseBindings[i].clear();
         mLMouseDefaultHandling[i] = false;
     }
-}
-
-S32 LLViewerInput::loadBindingsXML(const std::string& filename)
-{
-    resetBindings();
-
-	S32 binding_count = 0;
-	Keys keys;
-	LLSimpleXUIParser parser;
-
-	if (parser.readXUI(filename, keys) 
-		&& keys.validateBlock())
-	{
-		binding_count += loadBindingMode(keys.first_person, MODE_FIRST_PERSON);
-		binding_count += loadBindingMode(keys.third_person, MODE_THIRD_PERSON);
-		binding_count += loadBindingMode(keys.sitting, MODE_SITTING);
-		binding_count += loadBindingMode(keys.edit_avatar, MODE_EDIT_AVATAR);
-
-        // verify version
-        if (keys.xml_version < 1)
-        {
-            // updating from a version that was not aware of LMouse bindings
-            for (S32 i = 0; i < MODE_COUNT; i++)
-            {
-                mLMouseDefaultHandling[i] = true;
-            }
-
-            // fix missing values
-            KeyBinding mouse_binding;
-            mouse_binding.key = "";
-            mouse_binding.mask = "NONE";
-            mouse_binding.mouse = "LMB";
-            mouse_binding.command = script_mouse_handler_name;
-
-            if (keys.third_person.isProvided())
-            {
-                keys.third_person.bindings.add(mouse_binding);
-            }
-
-            if (keys.first_person.isProvided())
-            {
-                keys.first_person.bindings.add(mouse_binding);
-            }
-
-            if (keys.sitting.isProvided())
-            {
-                keys.sitting.bindings.add(mouse_binding);
-            }
-
-            if (keys.edit_avatar.isProvided())
-            {
-                keys.edit_avatar.bindings.add(mouse_binding);
-            }
-
-            // fix version
-            keys.xml_version.set(keybindings_xml_version, true);
-
-            // Write the resulting XML to file
-            LLXMLNodePtr output_node = new LLXMLNode("keys", false);
-            LLXUIParser write_parser;
-            write_parser.writeXUI(output_node, keys);
-
-            if (!output_node->isNull())
-            {
-                // file in app_settings is supposed to be up to date
-                // this is only for the file from user_settings
-                LL_INFOS("ViewerInput") << "Updating file " << filename << " to a newer version" << LL_ENDL;
-                LLFILE *fp = LLFile::fopen(filename, "w");
-                if (fp != NULL)
-                {
-                    LLXMLNode::writeHeaderToFile(fp);
-                    output_node->writeToFile(fp);
-                    fclose(fp);
-                }
-            }
-        }
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
-	}
 }
 
 S32 count_masks(const MASK &mask)
@@ -1778,18 +1699,18 @@ bool LLViewerInput::scanMouse(EMouseClickType click, EMouseState state) const
 		switch (state)
 		{
 		case MOUSE_STATE_DOWN:
-			agen_control_lbutton_handle(KEYSTATE_DOWN);
+			agent_control_lbutton_handle(KEYSTATE_DOWN);
 			res = true;
 			break;
 		case MOUSE_STATE_CLICK:
 			// might not work best with some functions,
 			// but some function need specific states too specifically
-			agen_control_lbutton_handle(KEYSTATE_DOWN);
-			agen_control_lbutton_handle(KEYSTATE_UP);
+			agent_control_lbutton_handle(KEYSTATE_DOWN);
+			agent_control_lbutton_handle(KEYSTATE_UP);
 			res = true;
 			break;
 		case MOUSE_STATE_UP:
-			agen_control_lbutton_handle(KEYSTATE_UP);
+			agent_control_lbutton_handle(KEYSTATE_UP);
 			res = true;
 			break;
 		default:

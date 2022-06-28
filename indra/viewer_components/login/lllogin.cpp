@@ -270,7 +270,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
                         }
                         else
                         {
-                            LL_DEBUGS("LLLogin") << "Got responses from updater and login.cgi" << LL_ENDL;
+                            //LL_DEBUGS("LLLogin") << "Got responses from updater and login.cgi" << LL_ENDL;
                         }
                     }
                 }

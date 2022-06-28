@@ -48,7 +48,7 @@ void LL::ThreadPool::start()
             if (status != "running")
             {
                 // viewer is starting shutdown -- proclaim the end is nigh!
-                LL_DEBUGS("ThreadPool") << mName << " saw " << status << LL_ENDL;
+                //LL_DEBUGS("ThreadPool") << mName << " saw " << status << LL_ENDL;
                 close();
             }
             return false;
@@ -64,22 +64,22 @@ void LL::ThreadPool::close()
 {
     if (! mQueue.isClosed())
     {
-        LL_DEBUGS("ThreadPool") << mName << " closing queue and joining threads" << LL_ENDL;
+        //LL_DEBUGS("ThreadPool") << mName << " closing queue and joining threads" << LL_ENDL;
         mQueue.close();
         for (auto& pair: mThreads)
         {
-            LL_DEBUGS("ThreadPool") << mName << " waiting on thread " << pair.first << LL_ENDL;
+            //LL_DEBUGS("ThreadPool") << mName << " waiting on thread " << pair.first << LL_ENDL;
             pair.second.join();
         }
-        LL_DEBUGS("ThreadPool") << mName << " shutdown complete" << LL_ENDL;
+        //LL_DEBUGS("ThreadPool") << mName << " shutdown complete" << LL_ENDL;
     }
 }
 
 void LL::ThreadPool::run(const std::string& name)
 {
-    LL_DEBUGS("ThreadPool") << name << " starting" << LL_ENDL;
+    //LL_DEBUGS("ThreadPool") << name << " starting" << LL_ENDL;
     run();
-    LL_DEBUGS("ThreadPool") << name << " stopping" << LL_ENDL;
+    //LL_DEBUGS("ThreadPool") << name << " stopping" << LL_ENDL;
 }
 
 void LL::ThreadPool::run()

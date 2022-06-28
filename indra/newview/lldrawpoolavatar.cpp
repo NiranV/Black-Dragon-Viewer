@@ -375,26 +375,7 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 		if (avatarp->isImpostor() || avatarp->isVisuallyMuted())
 			return;
 
-		if (pass == 1)
-		{
-			renderDeferredRiggedSimple(avatarp);
-			renderDeferredRiggedBump(avatarp);
-			//BD - We really need some sort of avatar flag system to do a quick check which
-			//     rigged render types the avatar and all its attachments have, it would save
-			//     a lot of unnecessary renders.
-			for (S32 CurCount = 0; CurCount < 16; CurCount++)
-			{
-				renderDeferredRiggedMaterial(avatarp, CurCount);
-			}
-			renderRiggedFullbright(avatarp);
-			renderRiggedFullbrightShiny(avatarp);
-			renderRiggedShinySimple(avatarp);
-		}
-		else
-		{
-			renderRiggedAlpha(avatarp);
-			renderRiggedFullbrightAlpha(avatarp);
-		}
+		avatarp->renderSkinned();
 	}
 }
 
@@ -974,11 +955,11 @@ void LLDrawPoolAvatar::renderAvatars(LLVOAvatar* single_avatar, S32 pass)
 	//}
 
 	//BD - Don't render invisible faces even when they are in a linkset.
-	LLColor4 color = face->getTextureEntry()->getColor();
+	/*LLColor4 color = face->getTextureEntry()->getColor();
 	if (color.mV[VW] == 0.0f)
 	{
 		continue;
-	}
+	}*/
 
 	if (( avatarp->isInMuteList() 
 		  || impostor 

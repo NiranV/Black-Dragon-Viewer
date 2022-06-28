@@ -6698,7 +6698,7 @@ class LLAvatarToggleSearch : public view_listener_t
 	}
 };
 
-class LLAvatarResetSkeleton: public view_listener_t
+class LLAvatarTogglePicks : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {

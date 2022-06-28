@@ -106,7 +106,6 @@ LLMediaCtrl::LLMediaCtrl( const Params& p) :
 	mTrusted(p.trusted_content),
 	mWindowShade(NULL),
 	mHoverTextChanged(false),
-	mContextMenu(NULL),
     mAllowFileDownload(false)
 {
 	{

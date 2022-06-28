@@ -454,35 +454,35 @@ private:
             case xmlrpc_type_boolean:
                 {
                     LLSD::Boolean val(XMLRPC_GetValueBoolean(current));
-                    LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                    //LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                     responses.insert(key, val);
                     break;
                 }
             case xmlrpc_type_datetime:
                 {
                     std::string iso8601_date(XMLRPC_GetValueDateTime_ISO8601(current));
-                    LL_DEBUGS("LLXMLRPCListener") << "val: " << iso8601_date << LL_ENDL;
+                    //LL_DEBUGS("LLXMLRPCListener") << "val: " << iso8601_date << LL_ENDL;
                     responses.insert(key, LLSD::Date(iso8601_date));
                     break;
                 }
             case xmlrpc_type_double:
                 {
                     LLSD::Real val(XMLRPC_GetValueDouble(current));
-                    LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                    //LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                     responses.insert(key, val);
                     break;
                 }
             case xmlrpc_type_int:
                 {
                     LLSD::Integer val(XMLRPC_GetValueInt(current));
-                    LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                    //LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                     responses.insert(key, val);
                     break;
                 }
             case xmlrpc_type_string:
                 {
                     LLSD::String val(XMLRPC_GetValueString(current));
-                    LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
+                    //LL_DEBUGS("LLXMLRPCListener") << "val: " << val << LL_ENDL;
                     responses.insert(key, val);
                     break;
                 }

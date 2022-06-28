@@ -1302,8 +1302,6 @@ bool LLAppViewer::init()
 	//onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
 
 	/*----------------------------------------------------------------------*/
-	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
-	onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
 
 	//BD - We have our own.
 	// Load User's bindings
@@ -2268,8 +2266,8 @@ void LLAppViewer::initGeneralThread()
     LLSD poolSizes{ gSavedSettings.getLLSD("ThreadPoolSizes") };
     LLSD sizeSpec{ poolSizes["General"] };
     LLSD::Integer poolSize{ sizeSpec.isInteger() ? sizeSpec.asInteger() : 3 };
-    LL_DEBUGS("ThreadPool") << "Instantiating General pool with "
-        << poolSize << " threads" << LL_ENDL;
+    /*LL_DEBUGS("ThreadPool") << "Instantiating General pool with "
+        << poolSize << " threads" << LL_ENDL;*/
     // We don't want anyone, especially the main thread, to have to block
     // due to this ThreadPool being full.
     mGeneralThreadPool = new LL::ThreadPool("General", poolSize, 1024 * 1024);

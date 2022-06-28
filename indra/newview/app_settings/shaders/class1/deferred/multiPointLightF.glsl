@@ -33,8 +33,10 @@ out vec4 frag_color;
 #define frag_color gl_FragColor
 #endif
 
+uniform sampler2DRect depthMap;
 uniform sampler2DRect diffuseRect;
 uniform sampler2DRect specularRect;
+uniform samplerCube   environmentMap;
 uniform sampler2D     noiseMap;
 uniform sampler2D     lightFunc;
 

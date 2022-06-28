@@ -107,15 +107,13 @@
 #include "llcleanup.h"
 #include "llcallstack.h"
 #include "llmeshrepository.h"
-<<<<<<< HEAD
+#include "llgl.h"
 // [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
 #include "rlvactions.h"
 #include "rlvcommon.h"
 #include "rlvlocks.h"
 // [/RLVa:KB]
-=======
 #include "llgl.h"
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 
 //#define DEBUG_UPDATE_TYPE
 

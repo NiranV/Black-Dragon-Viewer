@@ -167,15 +167,9 @@ void LLAttachmentsMgr::onIdle()
 
 	expireOldDetachRequests();
 
-<<<<<<< HEAD
 //    checkInvalidCOFLinks();
     
     spamStatusInfo();
-=======
-	checkInvalidCOFLinks();
-	
-	spamStatusInfo();
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 }
 
 void LLAttachmentsMgr::requestPendingAttachments()

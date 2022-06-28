@@ -299,7 +299,6 @@ bool make_rigged_variant(LLGLSLShader& shader, LLGLSLShader& riggedShader)
     shader.mRiggedVariant = &riggedShader;
     return riggedShader.createShader(NULL, NULL);
 }
->>>>>>> 3365a39080744af0566adb7b6efd8e53fc6b3339
 
 LLViewerShaderMgr::LLViewerShaderMgr() :
 	mShaderLevel(SHADER_COUNT, 0),
@@ -5034,9 +5033,6 @@ BOOL LLViewerShaderMgr::resetDeferredShaders()
 	bool canRenderDeferred = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred");
 	S32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
 	bool useRenderDeferred = canRenderDeferred && gSavedSettings.getBOOL("RenderDeferred");
-
-	//using shaders, disable fixed function
-	LLGLSLShader::sNoFixedFunction = true;
 
 	S32 deferred_class = 0;
 

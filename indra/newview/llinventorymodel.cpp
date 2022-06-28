@@ -737,7 +737,7 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 	accountForUpdate(update);
 	updateCategory(cat);
 
-	LL_DEBUGS(LOG_INV) << "Creating category via UDP message CreateInventoryFolder, type " << preferred_type << LL_ENDL;
+	//LL_DEBUGS(LOG_INV) << "Creating category via UDP message CreateInventoryFolder, type " << preferred_type << LL_ENDL;
 
 	// Create the category on the server. We do this to prevent people
 	// from munging their protected folders.
@@ -2452,11 +2452,11 @@ bool LLInventoryModel::loadSkeleton(
 					}
 				}
 
- 				LL_DEBUGS(LOG_INV) << "Attempted to add " << bad_link_count
+ 				/*LL_DEBUGS(LOG_INV) << "Attempted to add " << bad_link_count
 								   << " cached link items without baseobj present. "
 								   << good_link_count << " link items were successfully added. "
 								   << recovered_link_count << " links added in recovery. "
-								   << "The corresponding categories were invalidated." << LL_ENDL;
+								   << "The corresponding categories were invalidated." << LL_ENDL;*/
 			}
 
 		}
@@ -2484,7 +2484,7 @@ bool LLInventoryModel::loadSkeleton(
 		}
 		if (invalid_categories.size() > 0)
 		{
-			LL_DEBUGS(LOG_INV) << "Invalidated " << invalid_categories.size() << " categories due to invalid descendents cache" << LL_ENDL;
+			//LL_DEBUGS(LOG_INV) << "Invalidated " << invalid_categories.size() << " categories due to invalid descendents cache" << LL_ENDL;
 		}
 
 		// At this point, we need to set the known descendents for each
@@ -4206,7 +4206,7 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 				ft_counts_under_root[folder_type]++;
 				if (folder_type != LLFolderType::FT_NONE)
 				{
-					LL_DEBUGS("Inventory") << "Under root cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
+					//LL_DEBUGS("Inventory") << "Under root cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
 				}
 			}
 			else
@@ -4214,7 +4214,7 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 				ft_counts_elsewhere[folder_type]++;
 				if (folder_type != LLFolderType::FT_NONE)
 				{
-					LL_DEBUGS("Inventory") << "Elsewhere cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
+					//LL_DEBUGS("Inventory") << "Elsewhere cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
 				}
 			}
 		}
@@ -4327,11 +4327,11 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 	// Check system folders
 	for (auto fit=ft_counts_under_root.begin(); fit != ft_counts_under_root.end(); ++fit)
 	{
-		LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " under root" << LL_ENDL;
+		//LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " under root" << LL_ENDL;
 	}
 	for (auto fit=ft_counts_elsewhere.begin(); fit != ft_counts_elsewhere.end(); ++fit)
 	{
-		LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " elsewhere" << LL_ENDL;
+		//LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " elsewhere" << LL_ENDL;
 	}
 
 	static LLCachedControl<bool> fake_system_folder_issues(gSavedSettings, "QAModeFakeSystemFolderIssues", false);
@@ -4402,16 +4402,16 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 
 	if (cat_lock > 0 || item_lock > 0)
 	{
-		LL_INFOS("Inventory") << "Found locks on some categories: sub-cat arrays "
-				<< cat_lock << ", item arrays " << item_lock << LL_ENDL;
+		/*LL_INFOS("Inventory") << "Found locks on some categories: sub-cat arrays "
+				<< cat_lock << ", item arrays " << item_lock << LL_ENDL;*/
 	}
 	if (desc_unknown_count != 0)
 	{
-		LL_DEBUGS() << "Found " << desc_unknown_count << " cats with unknown descendent count" << LL_ENDL; 
+		//LL_DEBUGS() << "Found " << desc_unknown_count << " cats with unknown descendent count" << LL_ENDL; 
 	}
 	if (version_unknown_count != 0)
 	{
-		LL_DEBUGS("Inventory") << "Found " << version_unknown_count << " cats with unknown version" << LL_ENDL;
+		//LL_DEBUGS("Inventory") << "Found " << version_unknown_count << " cats with unknown version" << LL_ENDL;
 	}
 
 	// FIXME need to fail login and tell user to retry, contact support if problem persists.

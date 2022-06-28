@@ -33,7 +33,6 @@ ATTRIBUTE vec3 position;
 
 // Output parameters
 VARYING vec4 vary_HazeColor;
-VARYING float vary_LightNormPosDot;
 
 // Inputs
 uniform vec3 camPosLocal;
@@ -73,30 +72,28 @@ void main()
     vec3 rel_pos = position.xyz - camPosLocal.xyz + vec3(0, 50, 0);
 
     // Adj position vector to clamp altitude
-    if (rel_pos.y > 0.)
+    if (rel_pos.y > 0)
     {
         rel_pos *= (max_y / rel_pos.y);
     }
-    if (rel_pos.y < 0.)
+    if (rel_pos.y < 0)
     {
         rel_pos *= (-32000. / rel_pos.y);
     }
 
-    // Normalized
-    vec3  rel_pos_norm = normalize(rel_pos);
-    float rel_pos_len  = length(rel_pos);
+    // Can normalize then
+    vec3 rel_pos_norm = normalize(rel_pos);
 
-    // Grab this value and pass to frag shader for rainbows
-    float rel_pos_lightnorm_dot = dot(rel_pos_norm, lightnorm.xyz);
-    vary_LightNormPosDot = rel_pos_lightnorm_dot;
+    float rel_pos_len = length(rel_pos);
 
     // Initialize temp variables
     vec4 sunlight = (sun_up_factor == 1) ? sunlight_color : moonlight_color;
+    vec4 light_atten;
 
     // Sunlight attenuation effect (hue and brightness) due to atmosphere
     // this is used later for sunlight modulation at various altitudes
-    vec4 light_atten = (blue_density + vec4(haze_density * 0.25)) * (density_multiplier * max_y);
-    
+    light_atten = (blue_density + vec4(haze_density * 0.25)) * (density_multiplier * max_y);
+
     // Calculate relative weights
     vec4 combined_haze = abs(blue_density) + vec4(abs(haze_density));
     vec4 blue_weight   = blue_density / combined_haze;
@@ -115,7 +112,7 @@ void main()
     combined_haze = exp(-combined_haze * density_dist);
 
     // Compute haze glow
-    float haze_glow = 1.0 - rel_pos_lightnorm_dot;
+    float haze_glow = 1.0 - dot(rel_pos_norm, lightnorm.xyz);
     // haze_glow is 0 at the sun and increases away from sun
     haze_glow = max(haze_glow, .001);
     // Set a minimum "angle" (smaller glow.y allows tighter, brighter hotspot)
@@ -126,30 +123,30 @@ void main()
 
     // Add "minimum anti-solar illumination"
     // For sun, add to glow.  For moon, remove glow entirely. SL-13768
-    haze_glow = (sun_moon_glow_factor < 1.0) ? 0.0 : (sun_moon_glow_factor * (haze_glow + 0.25));
+    haze_glow = (sun_moon_glow_factor < 1.0) ? 0.0 : (haze_glow + 0.25);
 
-    // Haze color above cloud
-    vec4 color = (blue_horizon * blue_weight * (sunlight + ambient_color)
-               + (haze_horizon * haze_weight) * (sunlight * haze_glow + ambient_color));
+    vec4 color =
+        (blue_horizon * blue_weight * (sunlight + ambient_color) + (haze_horizon * haze_weight) * (sunlight * haze_glow + ambient_color));
 
     // Final atmosphere additive
     color *= (1. - combined_haze);
 
     // Increase ambient when there are more clouds
-    vec4 ambient = ambient_color + max(vec4(0), (1. - ambient_color)) * cloud_shadow * 0.5;
+    vec4 tmpAmbient = ambient_color;
+    tmpAmbient += max(vec4(0), (1. - ambient_color)) * cloud_shadow * 0.5;
 
     // Dim sunlight by cloud shadow percentage
     sunlight *= max(0.0, (1. - cloud_shadow));
 
     // Haze color below cloud
-    vec4 add_below_cloud = (blue_horizon * blue_weight * (sunlight + ambient) 
-                         + (haze_horizon * haze_weight) * (sunlight * haze_glow + ambient));
+    vec4 additiveColorBelowCloud =
+        (blue_horizon * blue_weight * (sunlight + tmpAmbient) + (haze_horizon * haze_weight) * (sunlight * haze_glow + tmpAmbient));
 
     // Attenuate cloud color by atmosphere
     combined_haze = sqrt(combined_haze);  // less atmos opacity (more transparency) below clouds
 
     // At horizon, blend high altitude sky color towards the darker color below the clouds
-    color += (add_below_cloud - color) * (1. - sqrt(combined_haze));
+    color += (additiveColorBelowCloud - color) * (1. - sqrt(combined_haze));
 
     // Haze color above cloud
     vary_HazeColor = color;

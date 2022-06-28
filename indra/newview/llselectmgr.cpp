@@ -6545,7 +6545,7 @@ void pushWireframe(LLDrawable* drawable)
 void LLSelectNode::renderOneWireframe(const LLColor4& color)
 {
 	//BD - Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
-	if (gGLManager.mIsATI)
+	if (gGLManager.mIsAMD)
 	{
 		LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
 	}
@@ -6624,7 +6624,7 @@ void LLSelectNode::renderOneWireframeDefault(const LLColor4& color)
 			glFogf(GL_FOG_START, d);
 			glFogf(GL_FOG_END, d*(1 + (camera->getView() / camera->getDefaultFOV())));
 			glFogfv(GL_FOG_COLOR, fogCol.mV);
-			gGL.setAlphaRejectSettings(LLRender::CF_DEFAULT);
+			gGL.flush();
 			{
 				gGL.diffuseColor4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 				pushWireframe(drawable);

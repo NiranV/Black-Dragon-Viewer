@@ -2810,13 +2810,13 @@ void LLViewerMediaImpl::update()
             // This media may need to be loaded.
             if(sMediaCreateTimer.hasExpired())
             {
-                LL_DEBUGS("PluginPriority") << this << ": creating media based on timer expiration" << LL_ENDL;
+                //LL_DEBUGS("PluginPriority") << this << ": creating media based on timer expiration" << LL_ENDL;
                 createMediaSource();
                 sMediaCreateTimer.setTimerExpirySec(LLVIEWERMEDIA_CREATE_DELAY);
             }
             else
             {
-                LL_DEBUGS("PluginPriority") << this << ": NOT creating media (waiting on timer)" << LL_ENDL;
+                //LL_DEBUGS("PluginPriority") << this << ": NOT creating media (waiting on timer)" << LL_ENDL;
             }
         }
     }
@@ -3020,8 +3020,8 @@ LLViewerMediaTexture* LLViewerMediaImpl::updateMediaImage()
         || (mTextureUsedHeight != mMediaSource->getHeight())
         )
     {
-        LL_DEBUGS("Media") << "initializing media placeholder" << LL_ENDL;
-        LL_DEBUGS("Media") << "movie image id " << mTextureId << LL_ENDL;
+        //LL_DEBUGS("Media") << "initializing media placeholder" << LL_ENDL;
+        //LL_DEBUGS("Media") << "movie image id " << mTextureId << LL_ENDL;
 
         int texture_width = mMediaSource->getTextureWidth();
         int texture_height = mMediaSource->getTextureHeight();

@@ -341,7 +341,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 	//BD - Intel GPU's are trash and their performance is lackluster, show the
 	//     user a warning that they will have to expect subpar performance.
-	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsATI);
+	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsAMD);
 	getChild<LLPanel>("intel_warning_panel")->setVisible(!is_good_gpu);
 	getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
 	getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
