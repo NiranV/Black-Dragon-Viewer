@@ -72,16 +72,17 @@ void main()
 #endif
 
 	color.rgb *= vertex_color.rgb;
- color.rgb = fullbrightAtmosTransport(color.rgb);
-	color.rgb = fullbrightScaleSoftClip(color.rgb);
 
 #ifdef WATER_FOG
 	vec3 pos = vary_position;
-	color = applyWaterFogView(pos, vec4(color.rgb, final_alpha));
+	vec4 fogged = applyWaterFogView(pos, vec4(color.rgb, final_alpha));
+	color.rgb = fogged.rgb;
+	color.a   = fogged.a;
 #else
     color.a   = final_alpha;
 #endif
 
-	frag_color = color;
+	frag_color.rgb = color.rgb;
+	frag_color.a   = color.a;
 }
 
