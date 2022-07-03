@@ -9429,13 +9429,10 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Vector4</string>
+    <string>F32</string>
     <key>Value</key>
     <array>
       <real>0.0</real>
-      <real>-0.0005</real>
-      <real>-0.001</real>
-      <real>-0.002</real>
     </array>
   </map>
   <key>RenderShadowOffsetError</key>

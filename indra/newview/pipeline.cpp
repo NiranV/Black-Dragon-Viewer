@@ -200,7 +200,7 @@ F32 LLPipeline::RenderSSAOScale;
 U32 LLPipeline::RenderSSAOMaxScale;
 F32 LLPipeline::RenderSSAOFactor;
 F32 LLPipeline::RenderShadowOffsetError;
-LLVector4 LLPipeline::RenderShadowBiasError;
+F32 LLPipeline::RenderShadowBiasError;
 F32 LLPipeline::RenderShadowOffset;
 F32 LLPipeline::RenderShadowBias;
 F32 LLPipeline::RenderSpotShadowOffset;
@@ -1351,7 +1351,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSSAOMaxScale = gSavedSettings.getU32("RenderSSAOMaxScale");
 	RenderSSAOFactor = gSavedSettings.getF32("RenderSSAOFactor");
 	RenderShadowOffsetError = gSavedSettings.getF32("RenderShadowOffsetError");
-	RenderShadowBiasError = gSavedSettings.getVector4("RenderShadowBiasError");
+	RenderShadowBiasError = gSavedSettings.getF32("RenderShadowBiasError");
 	RenderShadowOffset = gSavedSettings.getF32("RenderShadowOffset");
 	RenderShadowBias = gSavedSettings.getF32("RenderShadowBias");
 	RenderSpotShadowOffset = gSavedSettings.getF32("RenderSpotShadowOffset");
@@ -8807,22 +8807,20 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, RenderSSAOEffect);
 
-	//F32 shadow_offset_error = 1.f + RenderShadowOffsetError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]);
-	//F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2])/4000.f;
-	LLVector4 shadow_bias_error = LLVector4(-0.00025, -0.0005, -0.001, -0.002);
-	shadow_bias_error += (RenderShadowBiasError / llclamp(fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 686.f, 1.0f, 5.83f));
+	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 3000.f;
+	F32 shadow_bias = RenderShadowBias + shadow_bias_error;
 
     shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, deferred_target->getWidth(), deferred_target->getHeight());
 	shader.uniform1f(LLShaderMgr::DEFERRED_NEAR_CLIP, LLViewerCamera::getInstance()->getNear()*2.f);
 	shader.uniform1f (LLShaderMgr::DEFERRED_SHADOW_OFFSET, RenderShadowOffset); //*shadow_offset_error);
-	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_BIAS, 1, shadow_bias_error.mV);
+	shader.uniform1f(LLShaderMgr::DEFERRED_SHADOW_BIAS, shadow_bias);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SPOT_SHADOW_OFFSET, RenderSpotShadowOffset);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SPOT_SHADOW_BIAS, RenderSpotShadowBias);	
 
 	shader.uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, mTransformedSunDir.mV);
     shader.uniform3fv(LLShaderMgr::DEFERRED_MOON_DIR, 1, mTransformedMoonDir.mV);
-	shader.uniform4fv(LLShaderMgr::DEFERRED_SHADOW_RES, 1, RenderShadowResolution.mV);
-	shader.uniform2fv(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, 1, RenderProjectorShadowResolution.mV);
+	shader.uniform4f(LLShaderMgr::DEFERRED_SHADOW_RES, RenderShadowResolution.mV[VX], RenderShadowResolution.mV[VY], RenderShadowResolution.mV[VZ], RenderShadowResolution.mV[VW]);
+	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, RenderProjectorShadowResolution.mV[VX], RenderProjectorShadowResolution.mV[VY]);
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 	

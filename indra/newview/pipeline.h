@@ -979,7 +979,7 @@ public:
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
 	static F32 RenderShadowOffsetError;
-	static LLVector4 RenderShadowBiasError;
+	static F32 RenderShadowBiasError;
 	static F32 RenderShadowOffset;
 	static F32 RenderShadowBias;
 	static F32 RenderSpotShadowOffset;

@@ -38,7 +38,7 @@ uniform vec4 shadow_res;
 uniform vec2 proj_shadow_res;
 uniform mat4 shadow_matrix[6];
 uniform vec4 shadow_clip;
-uniform vec4 shadow_bias;
+uniform float shadow_bias;
 uniform float shadow_offset;
 uniform float spot_shadow_bias;
 uniform float spot_shadow_offset;
@@ -114,8 +114,11 @@ float sampleDirectionalShadow(vec3 pos, vec3 norm, vec2 pos_screen)
          
          float w = 1.0;
          w -= max(spos.z-far_split.z, 0.0)/transition_domain.z;
-         shadow += pcfShadow(shadowMap3, lpos, 0.25, pos_screen, shadow_res.w, shadow_bias.w)*w;
-         weight += w;
+         float contrib = pcfShadow(shadowMap3, lpos, 0.25, pos_screen, shadow_res.w, shadow_bias)*w;
+         {
+          shadow += contrib;
+          weight += w;
+         }
          shadow += max((pos.z+shadow_clip.z)/(shadow_clip.z-shadow_clip.w)*2.0-1.0, 0.0);
         }
      
@@ -126,7 +129,7 @@ float sampleDirectionalShadow(vec3 pos, vec3 norm, vec2 pos_screen)
          float w = 1.0;
          w -= max(spos.z-far_split.y, 0.0)/transition_domain.y;
          w -= max(near_split.z-spos.z, 0.0)/transition_domain.z;
-         shadow += pcfShadow(shadowMap2, lpos, 0.5, pos_screen, shadow_res.z, shadow_bias.z)*w;
+         shadow += pcfShadow(shadowMap2, lpos, 0.5, pos_screen, shadow_res.z, shadow_bias)*w;
          weight += w;
         }
      
@@ -137,7 +140,7 @@ float sampleDirectionalShadow(vec3 pos, vec3 norm, vec2 pos_screen)
          float w = 1.0;
          w -= max(spos.z-far_split.x, 0.0)/transition_domain.x;
          w -= max(near_split.y-spos.z, 0.0)/transition_domain.y;
-         shadow += pcfShadow(shadowMap1, lpos, 0.75, pos_screen, shadow_res.y, shadow_bias.y)*w;
+         shadow += pcfShadow(shadowMap1, lpos, 0.75, pos_screen, shadow_res.y, shadow_bias)*w;
          weight += w;
         }
      
@@ -148,18 +151,12 @@ float sampleDirectionalShadow(vec3 pos, vec3 norm, vec2 pos_screen)
          float w = 1.0;
          w -= max(near_split.x-spos.z, 0.0)/transition_domain.x;
          
-         shadow += pcfShadow(shadowMap0, lpos, 1.0, pos_screen, shadow_res.x, shadow_bias.x)*w;
+         shadow += pcfShadow(shadowMap0, lpos, 1.0, pos_screen, shadow_res.x, shadow_bias)*w;
          weight += w;
         }
        
      
         shadow /= weight;
-     
-        // take the most-shadowed value out of these two:
-        //  * the blurred sun shadow in the light (shadow) map
-        //  * an unblurred dot product between the sun and this norm
-        // the goal is to err on the side of most-shadow to fill-in shadow holes and reduce artifacting
-        shadow = min(shadow, dp_directional_light);
     }
     else
     {

@@ -47,8 +47,8 @@ void fullbright_lighting_water()
 	{
 		discard;
 	}
- 
- color.rgb *= vertex_color.rgb;
+
+	color.rgb *= vertex_color.rgb;
 
 	color.rgb = fullbrightAtmosTransport(color.rgb);
 	
