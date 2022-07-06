@@ -366,7 +366,7 @@ void LLVOCacheEntry::updateDebugSettings()
 	}
 	timer.reset();
 
-	//BD - The number of frames invisible objects stay in memory
+	//The number of frames invisible objects stay in memory
 	static LLCachedControl<U32> inv_obj_time(gSavedSettings,"NonvisibleObjectsInMemoryTime");
 	//BD - Objects within the view frustum whose visible area is greater than this threshold will be loaded
 	static LLCachedControl<F32> front_pixel_threshold(gSavedSettings, "SceneLoadFrontPixelThreshold");

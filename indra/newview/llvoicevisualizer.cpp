@@ -339,7 +339,7 @@ void LLVoiceVisualizer::render()
 	//BD - Disable old Voice dot.
 	return;
 
-	if ( ! mVoiceEnabled )
+	/*if ( ! mVoiceEnabled )
 	{
 		return;
 	}
@@ -523,7 +523,7 @@ void LLVoiceVisualizer::render()
 			
 		}// for loop
 											
-	}//if ( mSoundSymbol.mActive ) 
+	}//if ( mSoundSymbol.mActive ) */
 
 }//---------------------------------------------------
 

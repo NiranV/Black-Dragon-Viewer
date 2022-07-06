@@ -2096,6 +2096,9 @@ bool LLAppViewer::cleanup()
 
 	LLAvatarIconIDCache::getInstance()->save();
 
+	// Stop the plugin read thread if it's running.
+	LLPluginProcessParent::setUseReadThread(false);
+
 	LL_INFOS() << "Shutting down Threads" << LL_ENDL;
 
 	// Let threads finish
@@ -2249,6 +2252,8 @@ bool LLAppViewer::cleanup()
 	// This calls every remaining LLSingleton's cleanupSingleton() and
 	// deleteSingleton() methods.
 	LLSingletonBase::deleteAll();
+
+	LL_INFOS() << "Goodbye!" << LL_ENDL;
 
 	removeDumpDir();
 
@@ -3301,7 +3306,6 @@ LLSD LLAppViewer::getViewerInfo() const
 
 			boost::regex regex("\\.(secondlife|lindenlab)\\..*");
 			info["HOSTNAME"] = boost::regex_replace(gAgent.getRegion()->getSimHostName(), regex, "");
-			info["HOSTIP"] = gAgent.getRegion()->getHost().getString();
 			info["SERVER_VERSION"] = gLastVersionChannel;
 			LLSLURL slurl;
 			LLAgentUI::buildSLURL(slurl);

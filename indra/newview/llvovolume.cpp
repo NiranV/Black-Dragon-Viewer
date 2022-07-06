@@ -6626,6 +6626,20 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 		fullbright_mask = fullbright_mask | LLVertexBuffer::MAP_TEXTURE_INDEX;
 	}
 
+	LLSpatialBridge* bridge = group->getSpatialPartition()->asBridge();
+	LLViewerObject *vobj = NULL;
+	LLVOVolume *vol_obj = NULL;
+
+	if (bridge)
+	{
+		vobj = bridge->mDrawable->getVObj();
+		vol_obj = dynamic_cast<LLVOVolume*>(vobj);
+	}
+	if (vol_obj)
+	{
+		vol_obj->updateVisualComplexity();
+	}
+	
 	group->mGeometryBytes = 0;
 
 	U32 geometryBytes = 0;
