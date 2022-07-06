@@ -110,7 +110,7 @@ void LLSkinningUtil::scrubInvalidJoints(LLVOAvatar *avatar, LLMeshSkinInfo* skin
         // needed for handling of any legacy bad data.
         if (!avatar->getJoint(skin->mJointNames[j]))
         {
-            // _LL_DEBUGS("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint " << skin->mJointNames[j] << LL_ENDL;
+            LL_DEBUGS("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint " << skin->mJointNames[j] << LL_ENDL;
             LL_WARNS_ONCE("Avatar") << avatar->getFullname() << " mesh rigged to invalid joint" << skin->mJointNames[j] << LL_ENDL;
             skin->mJointNames[j] = "mPelvis";
             skin->mJointNumsInitialized = false; // force update after names change.
@@ -142,7 +142,7 @@ void LLSkinningUtil::initSkinningMatrixPalette(
         }
         else
         {
-			mat[j] = skin->mInvBindMatrix[j];
+            mat[j] = skin->mInvBindMatrix[j];
 #if DEBUG_SKINNING
             // This  shouldn't  happen   -  in  mesh  upload,  skinned
             // rendering  should  be disabled  unless  all joints  are
@@ -374,7 +374,7 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
                         }
                     }
                 }
-                //// _LL_DEBUGS("RigSpammish") << "built rigging info for vf " << &vol_face 
+                //LL_DEBUGS("RigSpammish") << "built rigging info for vf " << &vol_face 
                 //                         << " num_verts " << vol_face.mNumVertices
                 //                         << " active joints " << active_joints.size()
                 //                         << " active verts " << active_verts
@@ -386,13 +386,13 @@ void LLSkinningUtil::updateRiggingInfo(const LLMeshSkinInfo* skin, LLVOAvatar *a
 #if DEBUG_SKINNING
         if (vol_face.mJointRiggingInfoTab.size()!=0)
         {
-            // _LL_DEBUGS("RigSpammish") << "we have rigging info for vf " << &vol_face 
-            //                         << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
+            LL_DEBUGS("RigSpammish") << "we have rigging info for vf " << &vol_face 
+                                     << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
         else
         {
-            // _LL_DEBUGS("RigSpammish") << "no rigging info for vf " << &vol_face 
-            //                         << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
+            LL_DEBUGS("RigSpammish") << "no rigging info for vf " << &vol_face 
+                                     << " num_verts " << vol_face.mNumVertices << LL_ENDL; 
         }
 #endif
 

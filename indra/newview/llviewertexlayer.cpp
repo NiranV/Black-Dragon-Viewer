@@ -245,7 +245,7 @@ void LLViewerTexLayerSetBuffer::doUpdate()
 		args["BODYREGION"] = layer_set->getBodyRegionName();
 		args["RESOLUTION"] = lod_str;
 		LLNotificationsUtil::add("AvatarRezSelfBakedTextureUpdateNotification",args);
-		// _LL_DEBUGS("Avatar") << self_av_string() << "Locally updating [ name: " << layer_set->getBodyRegionName() << " res:" << lod_str << " time:" << (U32)mNeedsUpdateTimer.getElapsedTimeF32() << " ]" << LL_ENDL;
+		LL_DEBUGS("Avatar") << self_av_string() << "Locally updating [ name: " << layer_set->getBodyRegionName() << " res:" << lod_str << " time:" << (U32)mNeedsUpdateTimer.getElapsedTimeF32() << " ]" << LL_ENDL;
 	}
 }
 

@@ -251,11 +251,11 @@ bool LLTexUnit::bind(LLTexture* texture, bool for_rendering, bool forceBind)
 		{
 			if (texture)
 			{
-				// _LL_DEBUGS() << "NULL LLTexUnit::bind GL image" << LL_ENDL;
+				LL_DEBUGS() << "NULL LLTexUnit::bind GL image" << LL_ENDL;
 			}
 			else
 			{
-				// _LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
+				LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
 			}
 			return false;
 		}
@@ -277,7 +277,7 @@ bool LLTexUnit::bind(LLImageGL* texture, bool for_rendering, bool forceBind, S32
 
 	if(!texture)
 	{
-		// _LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
+		LL_DEBUGS() << "NULL LLTexUnit::bind texture" << LL_ENDL;
 		return false;
 	}
 
@@ -962,8 +962,8 @@ void LLRender::syncLightState()
         LLVector4 position[LL_NUM_LIGHT_UNITS];
         LLVector3 direction[LL_NUM_LIGHT_UNITS];
         LLVector4 attenuation[LL_NUM_LIGHT_UNITS];
-		LLVector3 diffuse[LL_NUM_LIGHT_UNITS];
-		LLVector3 diffuse_b[LL_NUM_LIGHT_UNITS];
+        LLVector3 diffuse[LL_NUM_LIGHT_UNITS];
+        LLVector3 diffuse_b[LL_NUM_LIGHT_UNITS];
         bool      sun_primary[LL_NUM_LIGHT_UNITS];
 
         for (U32 i = 0; i < LL_NUM_LIGHT_UNITS; i++)
@@ -981,7 +981,7 @@ void LLRender::syncLightState()
         shader->uniform4fv(LLShaderMgr::LIGHT_POSITION, LL_NUM_LIGHT_UNITS, position[0].mV);
         shader->uniform3fv(LLShaderMgr::LIGHT_DIRECTION, LL_NUM_LIGHT_UNITS, direction[0].mV);
         shader->uniform4fv(LLShaderMgr::LIGHT_ATTENUATION, LL_NUM_LIGHT_UNITS, attenuation[0].mV);
-		shader->uniform3fv(LLShaderMgr::LIGHT_DIFFUSE, LL_NUM_LIGHT_UNITS, diffuse[0].mV);
+        shader->uniform3fv(LLShaderMgr::LIGHT_DIFFUSE, LL_NUM_LIGHT_UNITS, diffuse[0].mV);
         shader->uniform4fv(LLShaderMgr::LIGHT_AMBIENT, 1, mAmbientLightColor.mV);
         shader->uniform1i(LLShaderMgr::SUN_UP_FACTOR, sun_primary[0] ? 1 : 0);
         shader->uniform4fv(LLShaderMgr::AMBIENT, 1, mAmbientLightColor.mV);
@@ -1494,7 +1494,7 @@ LLTexUnit* LLRender::getTexUnit(U32 index)
 	}
 	else 
 	{
-		// _LL_DEBUGS() << "Non-existing texture unit layer requested: " << index << LL_ENDL;
+		LL_DEBUGS() << "Non-existing texture unit layer requested: " << index << LL_ENDL;
 		return mDummyTexUnit;
 	}
 }

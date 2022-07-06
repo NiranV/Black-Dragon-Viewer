@@ -1,4 +1,4 @@
-/** 
+/**
  * @file llerror.h
  * @date   December 2006
  * @brief error message system
@@ -6,21 +6,21 @@
  * $LicenseInfo:firstyear=2006&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -48,7 +48,6 @@ const int LL_ERR_NOERR = 0;
 #define RELEASE_SHOW_WARN // Define this if you want your release builds to show llwarn output.
 
 #ifdef _DEBUG
-#define ENABLE_DEBUG 1
 #define SHOW_DEBUG
 #define SHOW_WARN
 #define SHOW_INFO
@@ -56,12 +55,10 @@ const int LL_ERR_NOERR = 0;
 #else // _DEBUG
 
 #ifdef LL_RELEASE_WITH_DEBUG_INFO
-#define ENABLE_DEBUG 1
 #define SHOW_ASSERT
 #endif // LL_RELEASE_WITH_DEBUG_INFO
 
 #ifdef RELEASE_SHOW_DEBUG
-#define ENABLE_DEBUG 1
 #define SHOW_DEBUG
 #endif
 
@@ -103,76 +100,76 @@ const int LL_ERR_NOERR = 0;
 /** Error Logging Facility
 
 	Information for most users:
-	
+
 	Code can log messages with constructions like this:
-	
+
 		LL_INFOS("StringTag") << "request to fizzbip agent " << agent_id
 			<< " denied due to timeout" << LL_ENDL;
-		
+
 	Messages can be logged to one of four increasing levels of concern,
 	using one of four "streams":
 
-		// _LL_DEBUGS("StringTag")	- debug messages that are normally suppressed
+		LL_DEBUGS("StringTag")	- debug messages that are normally suppressed
 		LL_INFOS("StringTag")	- informational messages that are normal shown
 		LL_WARNS("StringTag")	- warning messages that signal a problem
 		LL_ERRS("StringTag")	- error messages that are major, unrecoverable failures
-		
+
 	The later (LL_ERRS("StringTag")) automatically crashes the process after the message
 	is logged.
-	
+
 	Note that these "streams" are actually #define magic.  Rules for use:
 		* they cannot be used as normal streams, only to start a message
 		* messages written to them MUST be terminated with LL_ENDL
 		* between the opening and closing, the << operator is indeed
 		  writing onto a std::ostream, so all conversions and stream
 		  formating are available
-	
+
 	These messages are automatically logged with function name, and (if enabled)
 	file and line of the message.  (Note: Existing messages that already include
 	the function name don't get name printed twice.)
-	
+
 	If you have a class, adding LOG_CLASS line to the declaration will cause
 	all messages emitted from member functions (normal and static) to be tagged
 	with the proper class name as well as the function name:
-	
+
 		class LLFoo
 		{
 			LOG_CLASS(LLFoo);
 		public:
 			...
 		};
-	
+
 		void LLFoo::doSomething(int i)
 		{
 			if (i > 100)
 			{
-				LL_WARNS("FooBarTag") << "called with a big value for i: " << i << LL_ENDL; 
+				LL_WARNS("FooBarTag") << "called with a big value for i: " << i << LL_ENDL;
 			}
 			...
 		}
-	
+
 	will result in messages like:
-	
+
 		WARN #FooBarTag# llcommon/llfoo(100) LLFoo::doSomething : called with a big value for i: 283
-	
-    the syntax is:
-        <timestamp> SPACE <level> SPACE <tags> SPACE <location> SPACE <function> SPACE COLON SPACE <message>
 
-    where each SPACE is a single space character; note that if a field is empty (such as when no
-    tags are specified), all the SPACEs are still present.
+	the syntax is:
+		<timestamp> SPACE <level> SPACE <tags> SPACE <location> SPACE <function> SPACE COLON SPACE <message>
 
-    The tags must be a single word (may not contain a space); if more than one tag is specified,
-    they are all surrounded by '#' ( #FooTag#BarTag# ).
+	where each SPACE is a single space character; note that if a field is empty (such as when no
+	tags are specified), all the SPACEs are still present.
+
+	The tags must be a single word (may not contain a space); if more than one tag is specified,
+	they are all surrounded by '#' ( #FooTag#BarTag# ).
 
 	Which messages are logged and which are suppressed can be controlled at run
 	time from the configuration file. The default configuration is in newview/app_settings/logcontrol.xml
-    A copy of that file named logcontrol-dev.xml can be made in the users personal settings
-    directory; that will override the installed default file.  See the logcontrol.xml
-    file or http://wiki.secondlife.com/wiki/Logging_System_Overview for configuration details.
-	
+	A copy of that file named logcontrol-dev.xml can be made in the users personal settings
+	directory; that will override the installed default file.  See the logcontrol.xml
+	file or http://wiki.secondlife.com/wiki/Logging_System_Overview for configuration details.
+
 	Lastly, logging is now very efficient in both compiled code and execution
 	when skipped.  There is no need to wrap messages, even debugging ones, in
-	#ifdef _DEBUG constructs.  // _LL_DEBUGS("StringTag") messages are compiled into all builds,
+	#ifdef _DEBUG constructs.  LL_DEBUGS("StringTag") messages are compiled into all builds,
 	even release.  Which means you can use them to help debug even when deployed
 	to a real grid.
 */
@@ -181,16 +178,16 @@ namespace LLError
 	enum ELevel
 	{
 		LEVEL_ALL = 0,
-			// used to indicate that all messages should be logged
-			
+		// used to indicate that all messages should be logged
+
 		LEVEL_DEBUG = 0,
 		LEVEL_INFO = 1,
 		LEVEL_WARN = 2,
 		LEVEL_ERROR = 3,	// used to be called FATAL
-		
+
 		LEVEL_NONE = 4
-			// not really a level
-			// used to indicate that no messages should be logged
+		// not really a level
+		// used to indicate that no messages should be logged
 	};
 	// If you change ELevel, please update llvlog() macro below.
 
@@ -209,10 +206,10 @@ namespace LLError
 		static std::string demangle(const char* mangled);
 		/// classname<TYPE>()
 		template <typename T>
-		static std::string classname()             { return demangle(typeid(T).name()); }
+		static std::string classname() { return demangle(typeid(T).name()); }
 		/// classname(some_pointer)
 		template <typename T>
-		static std::string classname(T* const ptr) { return ptr? demangle(typeid(*ptr).name()) : "nullptr"; }
+		static std::string classname(T* const ptr) { return ptr ? demangle(typeid(*ptr).name()) : "nullptr"; }
 		/// classname(some_reference)
 		template <typename T>
 		static std::string classname(const T& obj) { return demangle(typeid(obj).name()); }
@@ -223,14 +220,14 @@ namespace LLError
 		// Represents a specific place in the code where a message is logged
 		// This is public because it is used by the macros below.  It is not
 		// intended for public use.
-		CallSite(ELevel level, 
-				const char* file, 
-				int line,
-				const std::type_info& class_info, 
-				const char* function, 
-				bool print_once, 
-				const char** tags, 
-				size_t tag_count);
+		CallSite(ELevel level,
+			const char* file,
+			int line,
+			const std::type_info& class_info,
+			const char* function,
+			bool print_once,
+			const char** tags,
+			size_t tag_count);
 
 		~CallSite();
 
@@ -238,16 +235,16 @@ namespace LLError
 		bool shouldLog();
 #else // LL_LIBRARY_INCLUDE
 		bool shouldLog()
-		{ 
-			return mCached 
-					? mShouldLog 
-					: Log::shouldLog(*this); 
+		{
+			return mCached
+				? mShouldLog
+				: Log::shouldLog(*this);
 		}
-			// this member function needs to be in-line for efficiency
+		// this member function needs to be in-line for efficiency
 #endif // LL_LIBRARY_INCLUDE
-		
+
 		void invalidate();
-		
+
 		// these describe the call site and never change
 		const ELevel			mLevel;
 		const char* const		mFile;
@@ -259,54 +256,55 @@ namespace LLError
 		const bool				mPrintOnce;
 		const char*				mLevelString;
 		std::string				mLocationString,
-								mFunctionString,
-								mTagString;
+			mFunctionString,
+			mTagString;
 		bool					mCached,
-								mShouldLog;
-		
+			mShouldLog;
+
 		friend class Log;
 	};
-	
-	
+
+
 	class End { };
 	inline std::ostream& operator<<(std::ostream& s, const End&)
-		{ return s; }
-		// used to indicate the end of a message
-		
+	{
+		return s;
+	}
+	// used to indicate the end of a message
+
 	class LL_COMMON_API NoClassInfo { };
-		// used to indicate no class info known for logging
+	// used to indicate no class info known for logging
 
-    //LLCallStacks keeps track of call stacks and output the call stacks to log file
-    //when LLAppViewer::handleViewerCrash() is triggered.
-    //
-    //Note: to be simple, efficient and necessary to keep track of correct call stacks, 
-    //LLCallStacks is designed not to be thread-safe.
-    //so try not to use it in multiple parallel threads at same time.
-    //Used in a single thread at a time is fine.
-    class LL_COMMON_API LLCallStacks
-    {
-    private:
-        typedef std::vector<std::string> StringVector;
-        static StringVector sBuffer ;
-              
-    public:   
-        static void push(const char* function, const int line) ;
-        static void insert(std::ostream& out, const char* function, const int line) ;
-        static void print() ;
-        static void clear() ;
-        static void end(const std::ostringstream& out) ;
-        static void cleanup();
-    };
+//LLCallStacks keeps track of call stacks and output the call stacks to log file
+//when LLAppViewer::handleViewerCrash() is triggered.
+//
+//Note: to be simple, efficient and necessary to keep track of correct call stacks, 
+//LLCallStacks is designed not to be thread-safe.
+//so try not to use it in multiple parallel threads at same time.
+//Used in a single thread at a time is fine.
+	class LL_COMMON_API LLCallStacks
+	{
+	private:
+		typedef std::vector<std::string> StringVector;
+		static StringVector sBuffer;
 
-    // class which, when streamed, inserts the current stack trace
-    struct LLStacktrace
-    {
-        friend std::ostream& operator<<(std::ostream& out, const LLStacktrace&);
-    };
+	public:
+		static void push(const char* function, const int line);
+		static void insert(std::ostream& out, const char* function, const int line);
+		static void print();
+		static void clear();
+		static void end(const std::ostringstream& out);
+		static void cleanup();
+	};
+
+	// class which, when streamed, inserts the current stack trace
+	struct LLStacktrace
+	{
+		friend std::ostream& operator<<(std::ostream& out, const LLStacktrace&);
+	};
 }
 
 //this is cheaper than llcallstacks if no need to output other variables to call stacks. 
-#if ENABLE_DEBUG
 #define LL_PUSH_CALLSTACKS() LLError::LLCallStacks::push(__FUNCTION__, __LINE__)
 
 #define llcallstacks                                                    \
@@ -319,20 +317,6 @@ namespace LLError
 		LLError::End();                    \
 		LLError::LLCallStacks::end(_out) ; \
 	}
-#else
-#define LL_PUSH_CALLSTACKS()
-
-#define llcallstacks                                                                      \
-	if (false)																			  \
-	{                                                                                     \
-       std::ostringstream* _out = LLError::LLCallStacks::insert(__FUNCTION__, __LINE__) ; \
-       (*_out)
-
-#define llcallstacksendl                   \
-		LLError::End();                    \
-		LLError::LLCallStacks::end(_out) ; \
-	}
-#endif
 
 #define LL_CLEAR_CALLSTACKS() LLError::LLCallStacks::clear()
 #define LL_PRINT_CALLSTACKS() LLError::LLCallStacks::print() 
@@ -342,19 +326,19 @@ namespace LLError
  */
 
 #define LOG_CLASS(s)	typedef s _LL_CLASS_TO_LOG
-	// Declares class to tag logged messages with.
-	// See top of file for example of how to use this
-	
+ // Declares class to tag logged messages with.
+ // See top of file for example of how to use this
+
 typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
-	// Outside a class declaration, or in class without LOG_CLASS(), this
-	// typedef causes the messages to not be associated with any class.
+// Outside a class declaration, or in class without LOG_CLASS(), this
+// typedef causes the messages to not be associated with any class.
 
 /////////////////////////////////
 // Error Logging Macros
 // See top of file for common usage.
 /////////////////////////////////
 
-// Instead of using // _LL_DEBUGS(), LL_INFOS() et al., it may be tempting to
+// Instead of using LL_DEBUGS(), LL_INFOS() et al., it may be tempting to
 // directly code the lllog() macro so you can pass in the LLError::ELevel as a
 // variable. DON'T DO IT! The reason is that the first time control passes
 // through lllog(), it initializes a local static LLError::CallSite with that
@@ -379,30 +363,6 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 		{                                       \
 			std::ostringstream _out;            \
 			_out
-
-#ifdef ENABLE_DEBUG
-
-#define lllog_debug(level, once, ...)                                         \
-	do {                                                                \
-		const char* tags[] = {"", ##__VA_ARGS__};                       \
-		static LLError::CallSite _site(lllog_site_args_(level, once, tags)); \
-		lllog_test_debug_()
-
-#define lllog_test_debug_()                                       \
-		if (LL_UNLIKELY(_site.shouldLog()))                 \
-		{                                                   \
-			std::ostringstream* _out = LLError::Log::out(); \
-			(*_out)
-#else
-#define lllog_debug(level, once, ...)                                         \
-	do {                                                                \
-		if (false)                 \
-		{                                                   \
-			const char* tags[] = {"", ##__VA_ARGS__};                       \
-			LLError::CallSite _site(lllog_site_args_(level, once, tags)); \
-			std::ostringstream* _out = LLError::Log::out(); \
-			(*_out)
-#endif
 
 #define lllog_site_args_(level, once, tags)                 \
 	level, __FILE__, __LINE__, typeid(_LL_CLASS_TO_LOG),    \
@@ -446,7 +406,7 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 // NEW Macros for debugging, allow the passing of a string tag
 
 // Pass comma separated list of tags (currently only supports up to 0, 1, or 2)
-#define LL_DEBUGS(...)	lllog_debug(LLError::LEVEL_DEBUG, false, ##__VA_ARGS__)
+#define LL_DEBUGS(...)	lllog(LLError::LEVEL_DEBUG, false, ##__VA_ARGS__)
 #define LL_INFOS(...)	lllog(LLError::LEVEL_INFO, false, ##__VA_ARGS__)
 #define LL_WARNS(...)	lllog(LLError::LEVEL_WARN, false, ##__VA_ARGS__)
 #define LL_ERRS(...)	lllog(LLError::LEVEL_ERROR, false, ##__VA_ARGS__)
@@ -461,7 +421,7 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 
 // Only print the log message once (good for warnings or infos that would otherwise
 // spam the log file over and over, such as tighter loops).
-#define LL_DEBUGS_ONCE(...)	lllog_debug(LLError::LEVEL_DEBUG, true, ##__VA_ARGS__)
+#define LL_DEBUGS_ONCE(...)	lllog(LLError::LEVEL_DEBUG, true, ##__VA_ARGS__)
 #define LL_INFOS_ONCE(...)	lllog(LLError::LEVEL_INFO, true, ##__VA_ARGS__)
 #define LL_WARNS_ONCE(...)	lllog(LLError::LEVEL_WARN, true, ##__VA_ARGS__)
 

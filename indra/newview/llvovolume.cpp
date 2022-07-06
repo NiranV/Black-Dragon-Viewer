@@ -354,7 +354,7 @@ U32 LLVOVolume::processUpdateMessage(LLMessageSystem *mesgsys,
 		sculpt_id = sculpt_params->getSculptTexture();
 		sculpt_type = sculpt_params->getSculptType();
 
-        // _LL_DEBUGS("ObjectUpdate") << "uuid " << mID << " set sculpt_id " << sculpt_id << LL_ENDL;
+        LL_DEBUGS("ObjectUpdate") << "uuid " << mID << " set sculpt_id " << sculpt_id << LL_ENDL;
         dumpStack("ObjectUpdateStack");
 	}
 
@@ -553,8 +553,8 @@ U32 LLVOVolume::processUpdateMessage(LLMessageSystem *mesgsys,
 				 ! LLTextureEntry::isMediaVersionString(mMedia->mMediaURL) ) )
 		{
 			// If the media changed at all, request new media data
-			/*// _LL_DEBUGS("MediaOnAPrim") << "Media update: " << getID() << ": retval=" << retval << " Media URL: " <<
-                ((mMedia) ?  mMedia->mMediaURL : std::string("")) << LL_ENDL;*/
+			LL_DEBUGS("MediaOnAPrim") << "Media update: " << getID() << ": retval=" << retval << " Media URL: " <<
+                ((mMedia) ?  mMedia->mMediaURL : std::string("")) << LL_ENDL;
 			requestMediaDataUpdate(retval & MEDIA_FLAGS_CHANGED);
 		}
         else {
@@ -1364,7 +1364,7 @@ std::string get_debug_object_lod_text(LLVOVolume *rootp)
          iter != child_list.end(); ++iter)
     {
         LLViewerObject *childp = *iter;
-        LLVOVolume *volp = childp ? childp->asVolume() : nullptr;
+        LLVOVolume *volp = dynamic_cast<LLVOVolume*>(childp);
         if (volp)
         {
             lod_string += llformat("%d",volp->getLOD());
@@ -1424,7 +1424,7 @@ BOOL LLVOVolume::calcLOD()
             const LLVector3* box = avatar->getLastAnimExtents();
             LLVector3 diag = box[1] - box[0];
             radius = diag.magVec() * 0.5f;
-            // _LL_DEBUGS("DynamicBox") << avatar->getFullname() << " diag " << diag << " radius " << radius << LL_ENDL;
+            LL_DEBUGS("DynamicBox") << avatar->getFullname() << " diag " << diag << " radius " << radius << LL_ENDL;
         }
         else
         {
@@ -1435,11 +1435,11 @@ BOOL LLVOVolume::calcLOD()
             const LLVector3* box = avatar->getLastAnimExtents();
             LLVector3 diag = box[1] - box[0];
             radius = diag.magVec(); // preserve old BinRadius behavior - 2x off
-            // _LL_DEBUGS("DynamicBox") << avatar->getFullname() << " diag " << diag << " radius " << radius << LL_ENDL;
+            LL_DEBUGS("DynamicBox") << avatar->getFullname() << " diag " << diag << " radius " << radius << LL_ENDL;
         }
         if (distance <= 0.f || radius <= 0.f)
         {
-            // _LL_DEBUGS("DynamicBox","CalcLOD") << "avatar distance/radius uninitialized, skipping" << LL_ENDL;
+            LL_DEBUGS("DynamicBox","CalcLOD") << "avatar distance/radius uninitialized, skipping" << LL_ENDL;
             return FALSE;
         }
 	}
@@ -1449,7 +1449,7 @@ BOOL LLVOVolume::calcLOD()
 		radius = getVolume() ? getVolume()->mLODScaleBias.scaledVec(getScale()).length() : getScale().length();
         if (distance <= 0.f || radius <= 0.f)
         {
-            // _LL_DEBUGS("DynamicBox","CalcLOD") << "non-avatar distance/radius uninitialized, skipping" << LL_ENDL;
+            LL_DEBUGS("DynamicBox","CalcLOD") << "non-avatar distance/radius uninitialized, skipping" << LL_ENDL;
             return FALSE;
         }
 	}
@@ -1530,12 +1530,12 @@ BOOL LLVOVolume::calcLOD()
 
 	if (cur_detail != mLOD)
 	{
-        /*// _LL_DEBUGS("DynamicBox","CalcLOD") << "new LOD " << cur_detail << " change from " << mLOD 
+        LL_DEBUGS("DynamicBox","CalcLOD") << "new LOD " << cur_detail << " change from " << mLOD 
                              << " distance " << distance << " radius " << radius << " rampDist " << rampDist
                              << " drawable rigged? " << (mDrawable ? (S32) mDrawable->isState(LLDrawable::RIGGED) : (S32) -1)
 							 << " mRiggedVolume " << (void*)getRiggedVolume()
                              << " distanceWRTCamera " << (mDrawable ? mDrawable->mDistanceWRTCamera : -1.f)
-                             << LL_ENDL;*/
+                             << LL_ENDL;
         
 		mAppAngle = ll_round((F32) atan2( mDrawable->getRadius(), mDrawable->mDistanceWRTCamera) * RAD_TO_DEG, 0.01f);
 		mLOD = cur_detail;		
@@ -1582,16 +1582,15 @@ BOOL LLVOVolume::updateLOD()
 
 	if (lod_changed)
 	{
-		/*static const bool enable_log = debugLoggingEnabled("AnimatedObjectsLinkset");
-        if (enable_log)
+        if (debugLoggingEnabled("AnimatedObjectsLinkset"))
         {
             if (isAnimatedObject() && isRiggedMesh())
             {
                 std::string vobj_name = llformat("Vol%p", this);
-                //F32 est_tris = getEstTrianglesMax();
-                // _LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " updateLOD to " << getLOD() << ", tris " << est_tris << LL_ENDL; 
+                F32 est_tris = getEstTrianglesMax();
+                LL_DEBUGS("AnimatedObjectsLinkset") << vobj_name << " updateLOD to " << getLOD() << ", tris " << est_tris << LL_ENDL; 
             }
-        }*/
+            }
 
 		gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_VOLUME, FALSE);
 		mLODChanged = TRUE;
@@ -1763,7 +1762,7 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
 
     if (getRiggedVolume())
     {
-        // _LL_DEBUGS("RiggedBox") << "rebuilding box, volume face count " << getVolume()->getNumVolumeFaces() << " drawable face count " << mDrawable->getNumFaces() << LL_ENDL;
+        LL_DEBUGS("RiggedBox") << "rebuilding box, volume face count " << getVolume()->getNumVolumeFaces() << " drawable face count " << mDrawable->getNumFaces() << LL_ENDL;
     }
 
     // There's no guarantee that getVolume()->getNumFaces() == mDrawable->getNumFaces()
@@ -1791,7 +1790,7 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
         {
             if (getRiggedVolume())
             {
-                // _LL_DEBUGS("RiggedBox") << "rebuilding box, face " << i << " extents " << face->mExtents[0] << ", " << face->mExtents[1] << LL_ENDL;
+                LL_DEBUGS("RiggedBox") << "rebuilding box, face " << i << " extents " << face->mExtents[0] << ", " << face->mExtents[1] << LL_ENDL;
             }
             if (!any_valid_boxes)
             {
@@ -1863,7 +1862,7 @@ BOOL LLVOVolume::genBBoxes(BOOL force_global)
     }
     else
     {
-        // _LL_DEBUGS("RiggedBox") << "genBBoxes failed to find any valid face boxes" << LL_ENDL;
+        LL_DEBUGS("RiggedBox") << "genBBoxes failed to find any valid face boxes" << LL_ENDL;
     }
 
     return res;
@@ -2379,7 +2378,7 @@ void LLVOVolume::setTEMaterialParamsCallbackTE(const LLUUID& objectID, const LLM
 	LLVOVolume* pVol = (LLVOVolume*)gObjectList.findObject(objectID);
 	if (pVol)
 	{
-		// _LL_DEBUGS("MaterialTEs") << "materialid " << pMaterialID.asString() << " to TE " << te << LL_ENDL;
+		LL_DEBUGS("MaterialTEs") << "materialid " << pMaterialID.asString() << " to TE " << te << LL_ENDL;
 		if (te >= pVol->getNumTEs())
 			return;
 
@@ -2394,11 +2393,11 @@ void LLVOVolume::setTEMaterialParamsCallbackTE(const LLUUID& objectID, const LLM
 S32 LLVOVolume::setTEMaterialID(const U8 te, const LLMaterialID& pMaterialID)
 {
 	S32 res = LLViewerObject::setTEMaterialID(te, pMaterialID);
-	/*// _LL_DEBUGS("MaterialTEs") << "te "<< (S32)te << " materialid " << pMaterialID.asString() << " res " << res
+	LL_DEBUGS("MaterialTEs") << "te "<< (S32)te << " materialid " << pMaterialID.asString() << " res " << res
 								<< ( LLSelectMgr::getInstance()->getSelection()->contains(const_cast<LLVOVolume*>(this), te) ? " selected" : " not selected" )
-								<< LL_ENDL;*/
+								<< LL_ENDL;
 		
-	// _LL_DEBUGS("MaterialTEs") << " " << pMaterialID.asString() << LL_ENDL;
+	LL_DEBUGS("MaterialTEs") << " " << pMaterialID.asString() << LL_ENDL;
 	if (res)
 	{
 		LLMaterialMgr::instance().getTE(getRegion()->getRegionID(), pMaterialID, te, boost::bind(&LLVOVolume::setTEMaterialParamsCallbackTE, getID(), _1, _2, _3));
@@ -2551,6 +2550,7 @@ S32 LLVOVolume::setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialPa
 
 	if(pMaterialParams)
 	{ //check all of them according to material settings
+
 		LLViewerTexture *img_diffuse = getTEImage(te);
 		LLViewerTexture *img_normal = getTENormalMap(te);
 		LLViewerTexture *img_specular = getTESpecularMap(te);
@@ -2647,11 +2647,11 @@ S32 LLVOVolume::setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialPa
 		}
 	}
 
-	//S32 res = LLViewerObject::setTEMaterialParams(te, pMaterial);
+	S32 res = LLViewerObject::setTEMaterialParams(te, pMaterial);
 
-	/*LL_DEBUGS("MaterialTEs") << "te " << (S32)te << " material " << ((pMaterial) ? pMaterial->asLLSD() : LLSD("null")) << " res " << res
+	LL_DEBUGS("MaterialTEs") << "te " << (S32)te << " material " << ((pMaterial) ? pMaterial->asLLSD() : LLSD("null")) << " res " << res
 							 << ( LLSelectMgr::getInstance()->getSelection()->contains(const_cast<LLVOVolume*>(this), te) ? " selected" : " not selected" )
-							 << LL_ENDL;*/
+							 << LL_ENDL;
 	setChanged(ALL_CHANGED);
 	if (!mDrawable.isNull())
 	{
@@ -2808,9 +2808,9 @@ void LLVOVolume::syncMediaData(S32 texture_index, const LLSD &media_data, bool m
 		return ;
 	}
 
-	/*// _LL_DEBUGS("MediaOnAPrim") << "BEFORE: texture_index = " << texture_index
+	LL_DEBUGS("MediaOnAPrim") << "BEFORE: texture_index = " << texture_index
 		<< " hasMedia = " << te->hasMedia() << " : " 
-		<< ((NULL == te->getMediaData()) ? "NULL MEDIA DATA" : ll_pretty_print_sd(te->getMediaData()->asLLSD())) << LL_ENDL;*/
+		<< ((NULL == te->getMediaData()) ? "NULL MEDIA DATA" : ll_pretty_print_sd(te->getMediaData()->asLLSD())) << LL_ENDL;
 
 	std::string previous_url;
 	LLMediaEntry* mep = te->getMediaData();
@@ -2850,9 +2850,9 @@ void LLVOVolume::syncMediaData(S32 texture_index, const LLSD &media_data, bool m
 		removeMediaImpl(texture_index);
 	}
 
-	/*// _LL_DEBUGS("MediaOnAPrim") << "AFTER: texture_index = " << texture_index
+	LL_DEBUGS("MediaOnAPrim") << "AFTER: texture_index = " << texture_index
 		<< " hasMedia = " << te->hasMedia() << " : " 
-		<< ((NULL == te->getMediaData()) ? "NULL MEDIA DATA" : ll_pretty_print_sd(te->getMediaData()->asLLSD())) << LL_ENDL;*/
+		<< ((NULL == te->getMediaData()) ? "NULL MEDIA DATA" : ll_pretty_print_sd(te->getMediaData()->asLLSD())) << LL_ENDL;
 }
 
 void LLVOVolume::mediaNavigateBounceBack(U8 texture_index)
@@ -2987,7 +2987,7 @@ void LLVOVolume::mediaNavigated(LLViewerMediaImpl *impl, LLPluginClassMedia* plu
 	else if (sObjectMediaNavigateClient)
 	{
 		
-		// _LL_DEBUGS("MediaOnAPrim") << "broadcasting navigate with URI " << new_location << LL_ENDL;
+		LL_DEBUGS("MediaOnAPrim") << "broadcasting navigate with URI " << new_location << LL_ENDL;
 
 		sObjectMediaNavigateClient->navigate(new LLMediaDataClientObjectImpl(this, false), face_index, new_location);
 	}
@@ -3011,7 +3011,7 @@ void LLVOVolume::mediaEvent(LLViewerMediaImpl *impl, LLPluginClassMedia* plugin,
 				
 				case LLViewerMediaImpl::MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS:
 					// This navigate didn't change the current URL.  
-					// _LL_DEBUGS("MediaOnAPrim") << "	NOT broadcasting navigate (spurious)" << LL_ENDL;
+					LL_DEBUGS("MediaOnAPrim") << "	NOT broadcasting navigate (spurious)" << LL_ENDL;
 				break;
 				
 				case LLViewerMediaImpl::MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED:
@@ -3040,7 +3040,7 @@ void LLVOVolume::mediaEvent(LLViewerMediaImpl *impl, LLPluginClassMedia* plugin,
 				
 				case LLViewerMediaImpl::MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS:
 					// This navigate didn't change the current URL.  
-					// _LL_DEBUGS("MediaOnAPrim") << "	NOT broadcasting navigate (spurious)" << LL_ENDL;
+					LL_DEBUGS("MediaOnAPrim") << "	NOT broadcasting navigate (spurious)" << LL_ENDL;
 				break;
 
 				case LLViewerMediaImpl::MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED:
@@ -3801,10 +3801,10 @@ void LLVOVolume::setExtendedMeshFlags(U32 flags)
             param_block->setFlags(flags);
         }
         parameterChanged(LLNetworkData::PARAMS_EXTENDED_MESH, true);
-        /*// _LL_DEBUGS("AnimatedObjects") << this
+        LL_DEBUGS("AnimatedObjects") << this
                                      << " new flags " << flags << " curr_flags " << curr_flags
                                      << ", calling onSetExtendedMeshFlags()"
-                                     << LL_ENDL;*/
+                                     << LL_ENDL;
         onSetExtendedMeshFlags(flags);
     }
 }
@@ -3864,14 +3864,14 @@ void LLVOVolume::onReparent(LLViewerObject *old_parent, LLViewerObject *new_pare
 void LLVOVolume::afterReparent()
 {
     {
-        /*// _LL_DEBUGS("AnimatedObjects") << "new child added for parent " 
-            << ((LLViewerObject*)getParent())->getID() << LL_ENDL;*/
+        LL_DEBUGS("AnimatedObjects") << "new child added for parent " 
+            << ((LLViewerObject*)getParent())->getID() << LL_ENDL;
     }
                                                                                              
     if (isAnimatedObject() && getControlAvatar())
     {
-        /*// _LL_DEBUGS("AnimatedObjects") << "adding attachment overrides, parent is animated object " 
-            << ((LLViewerObject*)getParent())->getID() << LL_ENDL;*/
+        LL_DEBUGS("AnimatedObjects") << "adding attachment overrides, parent is animated object " 
+            << ((LLViewerObject*)getParent())->getID() << LL_ENDL;
 
         // MAINT-8239 - doing a full rebuild whenever parent is set
         // makes the joint overrides load more robustly. In theory,
@@ -3885,10 +3885,10 @@ void LLVOVolume::afterReparent()
     }
     else
     {
-        /*// _LL_DEBUGS("AnimatedObjects") << "not adding overrides, parent: " 
+        LL_DEBUGS("AnimatedObjects") << "not adding overrides, parent: " 
                                      << ((LLViewerObject*)getParent())->getID() 
                                      << " isAnimated: "  << isAnimatedObject() << " cav "
-                                     << getControlAvatar() << LL_ENDL;*/
+                                     << getControlAvatar() << LL_ENDL;
     }
 }
 
@@ -3903,7 +3903,7 @@ void LLVOVolume::updateRiggingInfo()
         LLVolume *volume = getVolume();
         if (skin && avatar && volume)
         {
-            // _LL_DEBUGS("RigSpammish") << "starting, vovol " << this << " lod " << getLOD() << " last " << mLastRiggingInfoLOD << LL_ENDL;
+            LL_DEBUGS("RigSpammish") << "starting, vovol " << this << " lod " << getLOD() << " last " << mLastRiggingInfoLOD << LL_ENDL;
             if (getLOD()>mLastRiggingInfoLOD || getLOD()==3)
             {
                 // Rigging info may need update
@@ -3919,9 +3919,9 @@ void LLVOVolume::updateRiggingInfo()
                 }
                 // Keep the highest LOD info available.
                 mLastRiggingInfoLOD = getLOD();
-                /*// _LL_DEBUGS("RigSpammish") << "updated rigging info for LLVOVolume " 
+                LL_DEBUGS("RigSpammish") << "updated rigging info for LLVOVolume " 
                                          << this << " lod " << mLastRiggingInfoLOD 
-                                         << LL_ENDL;*/
+                                         << LL_ENDL;
             }
         }
     }

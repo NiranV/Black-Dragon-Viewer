@@ -114,7 +114,7 @@ void LLViewerTextureList::init()
 void LLViewerTextureList::doPreloadImages()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
-	// _LL_DEBUGS("ViewerImages") << "Preloading images..." << LL_ENDL;
+	LL_DEBUGS("ViewerImages") << "Preloading images..." << LL_ENDL;
 	
 	llassert_always(mInitialized) ;
 	llassert_always(mImageList.empty()) ;
@@ -254,7 +254,7 @@ void LLViewerTextureList::doPrefetchImages()
 			}
 		}
 	}
-    // _LL_DEBUGS() << "fetched " << texture_count << " images from " << filename << LL_ENDL;
+    LL_DEBUGS() << "fetched " << texture_count << " images from " << filename << LL_ENDL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ void LLViewerTextureList::shutdown()
 		std::string filename = get_texture_list_name();
 		llofstream file;
 		file.open(filename.c_str());
-        // _LL_DEBUGS() << "saving " << imagelist.size() << " image list entries" << LL_ENDL;
+        LL_DEBUGS() << "saving " << imagelist.size() << " image list entries" << LL_ENDL;
 		LLSDSerialize::toPrettyXML(imagelist, file);
 	}
 	
@@ -444,9 +444,9 @@ LLViewerFetchedTexture* LLViewerTextureList::getImageFromUrl(const std::string& 
 		{
 			// This is not an error as long as the images really match -
 			// e.g. could be two avatars wearing the same outfit.
-			/*// _LL_DEBUGS("Avatar") << "Requested texture " << new_id
+			LL_DEBUGS("Avatar") << "Requested texture " << new_id
 								<< " already exists with a different url, requested: " << url
-								<< " current: " << texture->getUrl() << LL_ENDL;*/
+								<< " current: " << texture->getUrl() << LL_ENDL;
 		}
 		
 	}
@@ -1262,12 +1262,12 @@ void LLViewerTextureList::decodeAllImages(F32 max_time)
 	}
 	max_time -= timer.getElapsedTimeF32();
 	max_time = llmax(max_time, .001f);
-	/*F32 create_time = */updateImagesCreateTextures(max_time);
+	F32 create_time = updateImagesCreateTextures(max_time);
 	
-	/*// _LL_DEBUGS("ViewerImages") << "decodeAllImages() took " << timer.getElapsedTimeF32() << " seconds. " 
+	LL_DEBUGS("ViewerImages") << "decodeAllImages() took " << timer.getElapsedTimeF32() << " seconds. " 
 	<< " fetch_pending " << fetch_pending
 	<< " create_time " << create_time
-	<< LL_ENDL;*/
+	<< LL_ENDL;
 }
 
 

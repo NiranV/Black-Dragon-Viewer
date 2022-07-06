@@ -97,7 +97,7 @@ LLMaterialHttpHandler::~LLMaterialHttpHandler()
 
 void LLMaterialHttpHandler::onSuccess(LLCore::HttpResponse * response, const LLSD &content)
 {
-	// _LL_DEBUGS("Materials") << LL_ENDL;
+	LL_DEBUGS("Materials") << LL_ENDL;
 	mCallback(true, content);
 }
 
@@ -174,30 +174,30 @@ void LLMaterialMgr::markGetPending(const LLUUID& region_id, const LLMaterialID& 
 
 const LLMaterialPtr LLMaterialMgr::get(const LLUUID& region_id, const LLMaterialID& material_id)
 {
-	// _LL_DEBUGS("Materials") << "region " << region_id << " material id " << material_id << LL_ENDL;
+	LL_DEBUGS("Materials") << "region " << region_id << " material id " << material_id << LL_ENDL;
 	LLMaterialPtr material;
 	material_map_t::const_iterator itMaterial = mMaterials.find(material_id);
 	if (mMaterials.end() != itMaterial)
 	{
 		material = itMaterial->second;
-		// _LL_DEBUGS("Materials") << " found material " << LL_ENDL;
+		LL_DEBUGS("Materials") << " found material " << LL_ENDL;
 	}
 	else
 	{
 		if (!isGetPending(region_id, material_id))
 		{
-			// _LL_DEBUGS("Materials") << " material pending " << material_id << LL_ENDL;
+			LL_DEBUGS("Materials") << " material pending " << material_id << LL_ENDL;
 			get_queue_t::iterator itQueue = mGetQueue.find(region_id);
 			if (mGetQueue.end() == itQueue)
 			{
-				// _LL_DEBUGS("Materials") << "mGetQueue add region " << region_id << " pending " << material_id << LL_ENDL;
+				LL_DEBUGS("Materials") << "mGetQueue add region " << region_id << " pending " << material_id << LL_ENDL;
 				std::pair<get_queue_t::iterator, bool> ret = mGetQueue.insert(std::pair<LLUUID, material_queue_t>(region_id, material_queue_t()));
 				itQueue = ret.first;
 			}
 			itQueue->second.insert(material_id);
 			markGetPending(region_id, material_id);
 		}
-		// _LL_DEBUGS("Materials") << " returning empty material " << LL_ENDL;
+		LL_DEBUGS("Materials") << " returning empty material " << LL_ENDL;
 		material = LLMaterialPtr();
 	}
 	return material;
@@ -210,7 +210,7 @@ boost::signals2::connection LLMaterialMgr::get(const LLUUID& region_id, const LL
 	material_map_t::const_iterator itMaterial = mMaterials.find(material_id);
 	if (itMaterial != mMaterials.end())
 	{
-		// _LL_DEBUGS("Materials") << "region " << region_id << " found materialid " << material_id << LL_ENDL;
+		LL_DEBUGS("Materials") << "region " << region_id << " found materialid " << material_id << LL_ENDL;
 		get_callback_t signal;
 		signal.connect(cb);
 		signal(material_id, itMaterial->second);
@@ -223,11 +223,11 @@ boost::signals2::connection LLMaterialMgr::get(const LLUUID& region_id, const LL
 			get_queue_t::iterator itQueue = mGetQueue.find(region_id);
 			if (mGetQueue.end() == itQueue)
 			{
-				// _LL_DEBUGS("Materials") << "mGetQueue inserting region "<<region_id << LL_ENDL;
+				LL_DEBUGS("Materials") << "mGetQueue inserting region "<<region_id << LL_ENDL;
 				std::pair<get_queue_t::iterator, bool> ret = mGetQueue.insert(std::pair<LLUUID, material_queue_t>(region_id, material_queue_t()));
 				itQueue = ret.first;
 			}
-			// _LL_DEBUGS("Materials") << "adding material id " << material_id << LL_ENDL;
+			LL_DEBUGS("Materials") << "adding material id " << material_id << LL_ENDL;
 			itQueue->second.insert(material_id);
 			markGetPending(region_id, material_id);
 		}
@@ -251,7 +251,7 @@ boost::signals2::connection LLMaterialMgr::getTE(const LLUUID& region_id, const 
 	material_map_t::const_iterator itMaterial = mMaterials.find(material_id);
 	if (itMaterial != mMaterials.end())
 	{
-		// _LL_DEBUGS("Materials") << "region " << region_id << " found materialid " << material_id << LL_ENDL;
+		LL_DEBUGS("Materials") << "region " << region_id << " found materialid " << material_id << LL_ENDL;
 		get_callback_te_t signal;
 		signal.connect(cb);
 		signal(material_id, itMaterial->second, te);
@@ -264,11 +264,11 @@ boost::signals2::connection LLMaterialMgr::getTE(const LLUUID& region_id, const 
 			get_queue_t::iterator itQueue = mGetQueue.find(region_id);
 			if (mGetQueue.end() == itQueue)
 			{
-				// _LL_DEBUGS("Materials") << "mGetQueue inserting region "<<region_id << LL_ENDL;
+				LL_DEBUGS("Materials") << "mGetQueue inserting region "<<region_id << LL_ENDL;
 				std::pair<get_queue_t::iterator, bool> ret = mGetQueue.insert(std::pair<LLUUID, material_queue_t>(region_id, material_queue_t()));
 				itQueue = ret.first;
 			}
-			// _LL_DEBUGS("Materials") << "adding material id " << material_id << LL_ENDL;
+			LL_DEBUGS("Materials") << "adding material id " << material_id << LL_ENDL;
 			itQueue->second.insert(material_id);
 			markGetPending(region_id, material_id);
 		}
@@ -299,12 +299,12 @@ void LLMaterialMgr::getAll(const LLUUID& region_id)
 {
 	if (!isGetAllPending(region_id))
 	{
-		// _LL_DEBUGS("Materials") << "queuing for region " << region_id << LL_ENDL;
+		LL_DEBUGS("Materials") << "queuing for region " << region_id << LL_ENDL;
 		mGetAllQueue.insert(region_id);
 	}
 	else
 	{
-		// _LL_DEBUGS("Materials") << "already pending for region " << region_id << LL_ENDL;
+		LL_DEBUGS("Materials") << "already pending for region " << region_id << LL_ENDL;
 	}
 }
 
@@ -329,9 +329,9 @@ void LLMaterialMgr::put(const LLUUID& object_id, const U8 te, const LLMaterial& 
 	put_queue_t::iterator itQueue = mPutQueue.find(object_id);
 	if (mPutQueue.end() == itQueue)
 	{
-		// _LL_DEBUGS("Materials") << "mPutQueue insert object " << object_id << LL_ENDL;
 		auto ret = mPutQueue.insert(std::pair<LLUUID, facematerial_map_t>(object_id, facematerial_map_t()));
 		itQueue = ret.first;
+		LL_DEBUGS("Materials") << "mPutQueue insert object " << object_id << LL_ENDL;
 	}
 
 	facematerial_map_t::iterator itFace = itQueue->second.find(te);
@@ -361,7 +361,7 @@ void LLMaterialMgr::setLocalMaterial(const LLUUID& region_id, LLMaterialPtr mate
 		material_id.set(uuid.mData);
 	}	
 
-	// _LL_DEBUGS("Materials") << "region " << region_id << "new local material id " << material_id << LL_ENDL;
+	LL_DEBUGS("Materials") << "region " << region_id << "new local material id " << material_id << LL_ENDL;
 	mMaterials.insert(std::pair<LLMaterialID, LLMaterialPtr>(material_id, material_ptr));
 
 	setMaterialCallbacks(material_id, material_ptr);
@@ -371,11 +371,11 @@ void LLMaterialMgr::setLocalMaterial(const LLUUID& region_id, LLMaterialPtr mate
 
 const LLMaterialPtr LLMaterialMgr::setMaterial(const LLUUID& region_id, const LLMaterialID& material_id, const LLSD& material_data)
 {
-	// _LL_DEBUGS("Materials") << "region " << region_id << " material id " << material_id << LL_ENDL;
+	LL_DEBUGS("Materials") << "region " << region_id << " material id " << material_id << LL_ENDL;
 	material_map_t::const_iterator itMaterial = mMaterials.find(material_id);
 	if (mMaterials.end() == itMaterial)
 	{
-		// _LL_DEBUGS("Materials") << "new material" << LL_ENDL;
+		LL_DEBUGS("Materials") << "new material" << LL_ENDL;
 		LLMaterialPtr newMaterial(new LLMaterial(material_data));
 		std::pair<material_map_t::const_iterator, bool> ret = mMaterials.insert(std::pair<LLMaterialID, LLMaterialPtr>(material_id, newMaterial));
 		itMaterial = ret.first;
@@ -442,7 +442,7 @@ void LLMaterialMgr::onGetResponse(bool success, const LLSD& content, const LLUUI
 	}
 
 	llassert(response_data.isArray());
-	// _LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
+	LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
 	for (LLSD::array_const_iterator itMaterial = response_data.beginArray(); itMaterial != response_data.endArray(); ++itMaterial)
 	{
 		const LLSD& material_data = *itMaterial;
@@ -488,7 +488,7 @@ void LLMaterialMgr::onGetAllResponse(bool success, const LLSD& content, const LL
 	material_map_t materials;
 
 	llassert(response_data.isArray());
-	// _LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
+	LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
 	for (LLSD::array_const_iterator itMaterial = response_data.beginArray(); itMaterial != response_data.endArray(); ++itMaterial)
 	{
 		const LLSD& material_data = *itMaterial;
@@ -523,7 +523,7 @@ void LLMaterialMgr::onGetAllResponse(bool success, const LLSD& content, const LL
 		mGetQueue.erase(itQueue);
 	}
 
-	// _LL_DEBUGS("Materials")<< "recording that getAll has been done for region id " << region_id << LL_ENDL;	
+	LL_DEBUGS("Materials")<< "recording that getAll has been done for region id " << region_id << LL_ENDL;	
 	mGetAllRequested.insert(region_id); // prevents subsequent getAll requests for this region
 	mGetAllPending.erase(region_id);	// Invalidates region_id
 }
@@ -555,7 +555,7 @@ void LLMaterialMgr::onPutResponse(bool success, const LLSD& content)
 	else
 	{
 		llassert(response_data.isArray());
-		// _LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
+		LL_DEBUGS("Materials") << "response has "<< response_data.size() << " materials" << LL_ENDL;
 		for (LLSD::array_const_iterator faceIter = response_data.beginArray(); faceIter != response_data.endArray(); ++faceIter)
 		{
 #           ifdef SHOW_ASSERT                  // same condition that controls llassert()
@@ -643,7 +643,7 @@ void LLMaterialMgr::processGetQueue()
         }
         else if (mGetAllRequested.end() == mGetAllRequested.find(region_id))
         {
-            // _LL_DEBUGS("Materials") << "calling getAll for " << regionp->getName() << LL_ENDL;
+            LL_DEBUGS("Materials") << "calling getAll for " << regionp->getName() << LL_ENDL;
             getAll(region_id);
             continue;
         }
@@ -662,12 +662,12 @@ void LLMaterialMgr::processGetQueue()
 		material_queue_t& materials = itRegionQueue->second;
 		U32 max_entries = regionp->getMaxMaterialsPerTransaction();
 		material_queue_t::iterator loopMaterial = materials.begin();
-		while ( (materials.end() != loopMaterial) && ((U32)materialsData.size() < max_entries) )
+		while ( (materials.end() != loopMaterial) && (materialsData.size() < max_entries) )
 		{
 			material_queue_t::iterator itMaterial = loopMaterial++;
 			materialsData.append((*itMaterial).asLLSD());
-			markGetPending(region_id, *itMaterial);
 			materials.erase(itMaterial);
+			markGetPending(region_id, *itMaterial);
 		}
 		if (materials.empty())
 		{
@@ -695,8 +695,8 @@ void LLMaterialMgr::processGetQueue()
 				boost::bind(&LLMaterialMgr::onGetResponse, this, _1, _2, region_id)
 				));
 
-		/*// _LL_DEBUGS("Materials") << "POSTing to region '" << regionp->getName() << "' at '" << capURL << " for " << materialsData.size() << " materials."
-			<< "\ndata: " << ll_pretty_print_sd(materialsData) << LL_ENDL;*/
+		LL_DEBUGS("Materials") << "POSTing to region '" << regionp->getName() << "' at '" << capURL << " for " << materialsData.size() << " materials."
+			<< "\ndata: " << ll_pretty_print_sd(materialsData) << LL_ENDL;
 
 		LLCore::HttpHandle handle = LLCoreHttpUtil::requestPostWithLLSD(mHttpRequest, 
 				mHttpPolicy, mHttpPriority, capURL, 
@@ -738,7 +738,7 @@ void LLMaterialMgr::processGetQueueCoro()
     }
     else if (mGetAllRequested.end() == mGetAllRequested.find(region_id))
     {
-        // _LL_DEBUGS("Materials") << "calling getAll for " << regionp->getName() << LL_ENDL;
+        LL_DEBUGS("Materials") << "calling getAll for " << regionp->getName() << LL_ENDL;
         getAll(region_id);
         continue;
     }
@@ -790,7 +790,7 @@ void LLMaterialMgr::processGetQueueCoro()
         boost::bind(&LLMaterialMgr::onGetResponse, this, _1, _2, region_id)
         );
 
-    // _LL_DEBUGS("Materials") << "POSTing to region '" << regionp->getName() << "' at '" << capURL << " for " << materialsData.size() << " materials."
+    LL_DEBUGS("Materials") << "POSTing to region '" << regionp->getName() << "' at '" << capURL << " for " << materialsData.size() << " materials."
         << "\ndata: " << ll_pretty_print_sd(materialsData) << LL_ENDL;
 
     LLCore::HttpHandle handle = LLCoreHttpUtil::requestPostWithLLSD(mHttpRequest,
@@ -869,7 +869,7 @@ void LLMaterialMgr::processGetAllQueueCoro(LLUUID regionId)
         return;
     }
 
-    // _LL_DEBUGS("Materials") << "GET all for region " << regionId << "url " << capURL << LL_ENDL;
+    LL_DEBUGS("Materials") << "GET all for region " << regionId << "url " << capURL << LL_ENDL;
 
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t httpAdapter(
             new LLCoreHttpUtil::HttpCoroutineAdapter("processGetAllQueue", LLCore::HttpRequest::DEFAULT_POLICY_ID));
@@ -931,7 +931,7 @@ void LLMaterialMgr::processPutQueue()
 		        facematerial_map_t& face_map = itQueue->second;
 				        U32 max_entries = regionp->getMaxMaterialsPerTransaction();
 		        facematerial_map_t::iterator itFace = face_map.begin();
-				        while ( (face_map.end() != itFace) && ((U32)facesData.size() < max_entries) )
+				        while ( (face_map.end() != itFace) && (facesData.size() < max_entries) )
 		        {
 			        LLSD faceData = LLSD::emptyMap();
 			        faceData[MATERIALS_CAP_FACE_FIELD] = static_cast<LLSD::Integer>(itFace->first);
@@ -978,7 +978,7 @@ void LLMaterialMgr::processPutQueue()
 			LLSD putData = LLSD::emptyMap();
 			putData[MATERIALS_CAP_ZIP_FIELD] = materialBinary;
 
-			// _LL_DEBUGS("Materials") << "put for " << itRequest->second.size() << " faces to region " << itRequest->first->getName() << LL_ENDL;
+			LL_DEBUGS("Materials") << "put for " << itRequest->second.size() << " faces to region " << itRequest->first->getName() << LL_ENDL;
 
 			LLCore::HttpHandler::ptr_t handler (new LLMaterialHttpHandler("PUT",
 										boost::bind(&LLMaterialMgr::onPutResponse, this, _1, _2)

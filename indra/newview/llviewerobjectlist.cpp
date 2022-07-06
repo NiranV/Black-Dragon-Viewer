@@ -248,8 +248,8 @@ void LLViewerObjectList::processUpdateCore(LLViewerObject* objectp,
 	}
 
 	// ignore returned flags
-    /*// _LL_DEBUGS("ObjectUpdate") << "uuid " << objectp->mID << " calling processUpdateMessage " 
-                              << objectp << " just_created " << just_created << " from_cache " << from_cache << " msg " << msg << LL_ENDL;*/
+    LL_DEBUGS("ObjectUpdate") << "uuid " << objectp->mID << " calling processUpdateMessage " 
+                              << objectp << " just_created " << just_created << " from_cache " << from_cache << " msg " << msg << LL_ENDL;
     dumpStack("ObjectUpdateStack");
 	 	
 	objectp->processUpdateMessage(msg, user_data, i, update_type, dpp);
@@ -372,7 +372,7 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
 	{
 		objectp = createObjectFromCache(pcode, regionp, fullid, entry->getLocalID());
 
-        // _LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " created objectp " << objectp << LL_ENDL;
+        LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " created objectp " << objectp << LL_ENDL;
         dumpStack("ObjectUpdateStack");
 	 	
 		if (!objectp)
@@ -493,7 +493,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 			compressed_dp.reset();
 
 			uncompressed_length = mesgsys->getSizeFast(_PREHASH_ObjectData, i, _PREHASH_Data);
-			// _LL_DEBUGS("ObjectUpdate") << "got binary data from message to compressed_dpbuffer" << LL_ENDL;
+			LL_DEBUGS("ObjectUpdate") << "got binary data from message to compressed_dpbuffer" << LL_ENDL;
 			mesgsys->getBinaryDataFast(_PREHASH_ObjectData, _PREHASH_Data, compressed_dpbuffer, 0, i, 2048);
 			compressed_dp.assignBuffer(compressed_dpbuffer, uncompressed_length);
 
@@ -534,7 +534,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 								 gMessageSystem->getSenderPort());
 				if (fullid.isNull())
 				{
-					// _LL_DEBUGS() << "update for unknown localid " << local_id << " host " << gMessageSystem->getSender() << ":" << gMessageSystem->getSenderPort() << LL_ENDL;
+					LL_DEBUGS() << "update for unknown localid " << local_id << " host " << gMessageSystem->getSender() << ":" << gMessageSystem->getSenderPort() << LL_ENDL;
 					mNumUnknownUpdates++;
 				}
 			}
@@ -555,7 +555,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 			}
             else
             {
-                // _LL_DEBUGS("ObjectUpdate") << "Non-full, non-compressed update, obj " << local_id << ", global ID " << fullid << " from " << mesgsys->getSender() << LL_ENDL;
+                LL_DEBUGS("ObjectUpdate") << "Non-full, non-compressed update, obj " << local_id << ", global ID " << fullid << " from " << mesgsys->getSender() << LL_ENDL;
             }
 		}
 		else // OUT_FULL only?
@@ -565,17 +565,17 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 			mesgsys->getU32Fast(_PREHASH_ObjectData, _PREHASH_ID, local_id, i);
 			msg_size += sizeof(LLUUID);
 			msg_size += sizeof(U32);
-			// _LL_DEBUGS("ObjectUpdate") << "Full Update, obj " << local_id << ", global ID " << fullid << " from " << mesgsys->getSender() << LL_ENDL;
+			LL_DEBUGS("ObjectUpdate") << "Full Update, obj " << local_id << ", global ID " << fullid << " from " << mesgsys->getSender() << LL_ENDL;
 		}
 		objectp = findObject(fullid);
 
         if (compressed)
         {
-            // _LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " received compressed data from message (earlier in function)" << LL_ENDL;
+            LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " received compressed data from message (earlier in function)" << LL_ENDL;
         }
-        /*// _LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " objectp " << objectp 
+        LL_DEBUGS("ObjectUpdate") << "uuid " << fullid << " objectp " << objectp 
                                      << " update_cache " << (S32) update_cache << " compressed " << compressed
-                                     << " update_type "  << update_type << LL_ENDL;*/
+                                     << " update_type "  << update_type << LL_ENDL;
         dumpStack("ObjectUpdateStack");
         
 		if(update_cache)
@@ -653,7 +653,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
 
 			objectp = createObject(pcode, regionp, fullid, local_id, gMessageSystem->getSender());
 
-            // _LL_DEBUGS("ObjectUpdate") << "creating object " << fullid << " result " << objectp << LL_ENDL;
+            LL_DEBUGS("ObjectUpdate") << "creating object " << fullid << " result " << objectp << LL_ENDL;
             dumpStack("ObjectUpdateStack");
 
 			if (!objectp)
@@ -751,7 +751,7 @@ void LLViewerObjectList::processCachedObjectUpdate(LLMessageSystem *mesgsys,
 		mesgsys->getU32Fast(_PREHASH_ObjectData, _PREHASH_UpdateFlags, flags, i);
 		msg_size += sizeof(U32) * 2;
 
-        // _LL_DEBUGS("ObjectUpdate") << "got probe for id " << id << " crc " << crc << LL_ENDL;
+        LL_DEBUGS("ObjectUpdate") << "got probe for id " << id << " crc " << crc << LL_ENDL;
         dumpStack("ObjectUpdateStack");
 
 		// Lookup data packer and add this id to cache miss lists if necessary.
@@ -759,7 +759,7 @@ void LLViewerObjectList::processCachedObjectUpdate(LLMessageSystem *mesgsys,
 		if(!regionp->probeCache(id, crc, flags, cache_miss_type))
 		{
 			// Cache Miss.
-            // _LL_DEBUGS("ObjectUpdate") << "cache miss for id " << id << " crc " << crc << " miss type " << (S32) cache_miss_type << LL_ENDL;
+            LL_DEBUGS("ObjectUpdate") << "cache miss for id " << id << " crc " << crc << " miss type " << (S32) cache_miss_type << LL_ENDL;
 
 			recorder.cacheMissEvent(id, update_type, cache_miss_type, msg_size);
 
@@ -1352,7 +1352,7 @@ void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 	// Cleanup any references we have to this object
 	// Remove from object map so noone can look it up.
 
-    // _LL_DEBUGS("ObjectUpdate") << " dereferencing id " << objectp->mID << LL_ENDL;
+    LL_DEBUGS("ObjectUpdate") << " dereferencing id " << objectp->mID << LL_ENDL;
     dumpStack("ObjectUpdateStack");
     
 	mUUIDObjectMap.erase(objectp->mID);
@@ -2203,7 +2203,7 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 {
 	llassert_always(uuid.notNull());
 
-    // _LL_DEBUGS("ObjectUpdate") << "creating " << uuid << " local_id " << local_id << LL_ENDL;
+    LL_DEBUGS("ObjectUpdate") << "creating " << uuid << " local_id " << local_id << LL_ENDL;
     dumpStack("ObjectUpdateStack");
     
 	LLViewerObject *objectp = LLViewerObject::createObject(uuid, pcode, regionp);
@@ -2251,7 +2251,7 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
 		return NULL;
 	}
 
-    // _LL_DEBUGS("ObjectUpdate") << "createObject creating " << fullid << LL_ENDL;
+    LL_DEBUGS("ObjectUpdate") << "createObject creating " << fullid << LL_ENDL;
     dumpStack("ObjectUpdateStack");
 
 	LLViewerObject *objectp = LLViewerObject::createObject(fullid, pcode, regionp);
@@ -2312,7 +2312,7 @@ S32 LLViewerObjectList::findReferences(LLDrawable *drawablep) const
 
 void LLViewerObjectList::orphanize(LLViewerObject *childp, U32 parent_id, U32 ip, U32 port)
 {
-	// _LL_DEBUGS("ORPHANS") << "Orphaning object " << childp->getID() << " with parent " << parent_id << LL_ENDL;
+	LL_DEBUGS("ORPHANS") << "Orphaning object " << childp->getID() << " with parent " << parent_id << LL_ENDL;
 
 	// We're an orphan, flag things appropriately.
 	childp->mOrphaned = TRUE;
@@ -2408,10 +2408,10 @@ void LLViewerObjectList::findOrphans(LLViewerObject* objectp, U32 ip, U32 port)
 				continue;
 			}
 
-			/*// _LL_DEBUGS("ORPHANS") << "Reunited parent " << objectp->mID 
-				<< " with child " << childp->mID << LL_ENDL;*/
-			// _LL_DEBUGS("ORPHANS") << "Glob: " << objectp->getPositionGlobal() << LL_ENDL;
-			// _LL_DEBUGS("ORPHANS") << "Agent: " << objectp->getPositionAgent() << LL_ENDL;
+			LL_DEBUGS("ORPHANS") << "Reunited parent " << objectp->mID 
+				<< " with child " << childp->mID << LL_ENDL;
+			LL_DEBUGS("ORPHANS") << "Glob: " << objectp->getPositionGlobal() << LL_ENDL;
+			LL_DEBUGS("ORPHANS") << "Agent: " << objectp->getPositionAgent() << LL_ENDL;
 #ifdef ORPHAN_SPAM
 			addDebugBeacon(objectp->getPositionAgent(),"");
 #endif

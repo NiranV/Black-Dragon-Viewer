@@ -936,16 +936,16 @@ BOOL LLFace::genVolumeBBoxes(const LLVolume &volume, S32 f,
 
 		const LLVolumeFace &face = volume.getVolumeFace(f);
 		
-        /*// _LL_DEBUGS("RiggedBox") << "updating extents for face " << f 
+        LL_DEBUGS("RiggedBox") << "updating extents for face " << f 
                                << " starting extents " << mExtents[0] << ", " << mExtents[1] 
                                << " starting vf extents " << face.mExtents[0] << ", " << face.mExtents[1] 
-                               << " num verts " << face.mNumVertices << LL_ENDL;*/
+                               << " num verts " << face.mNumVertices << LL_ENDL;
 
         // MAINT-8264 - stray vertices, especially in low LODs, cause bounding box errors.
 		if (face.mNumVertices < 3) 
         {
-            /*// _LL_DEBUGS("RiggedBox") << "skipping face " << f << ", bad num vertices " 
-                                   << face.mNumVertices << " " << face.mNumIndices << " " << face.mWeights << LL_ENDL;*/
+            LL_DEBUGS("RiggedBox") << "skipping face " << f << ", bad num vertices " 
+                                   << face.mNumVertices << " " << face.mNumIndices << " " << face.mWeights << LL_ENDL;
             return FALSE;
         }
         
@@ -959,8 +959,8 @@ BOOL LLFace::genVolumeBBoxes(const LLVolume &volume, S32 f,
 
 		matMulBoundBox(mat_vert, face.mExtents, mExtents);
 
-        /*LL_DEBUGS("RiggedBox") << "updated extents for face " << f 
-                               << " bbox gave extents " << mExtents[0] << ", " << mExtents[1] << LL_ENDL;*/
+        LL_DEBUGS("RiggedBox") << "updated extents for face " << f 
+                               << " bbox gave extents " << mExtents[0] << ", " << mExtents[1] << LL_ENDL;
 
 		if (!mDrawablep->isActive())
 		{	// Shift position for region
@@ -968,12 +968,12 @@ BOOL LLFace::genVolumeBBoxes(const LLVolume &volume, S32 f,
 			offset.load3(mDrawablep->getRegion()->getOriginAgent().mV);
 			mExtents[0].add(offset);
 			mExtents[1].add(offset);
-            /*// _LL_DEBUGS("RiggedBox") << "updating extents for face " << f 
-                                   << " not active, added offset " << offset << LL_ENDL;*/
+            LL_DEBUGS("RiggedBox") << "updating extents for face " << f 
+                                   << " not active, added offset " << offset << LL_ENDL;
 		}
 
-        /*// _LL_DEBUGS("RiggedBox") << "updated extents for face " << f 
-                               << " to " << mExtents[0] << ", " << mExtents[1] << LL_ENDL;*/
+        LL_DEBUGS("RiggedBox") << "updated extents for face " << f 
+                               << " to " << mExtents[0] << ", " << mExtents[1] << LL_ENDL;
 		LLVector4a t;
 		t.setAdd(mExtents[0],mExtents[1]);
 		t.mul(0.5f);

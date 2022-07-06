@@ -92,10 +92,10 @@ void LLFeatureList::addFeature(const std::string& name, const BOOL available, co
 	}
 
 	LLFeatureInfo fi(name, available, level);
-    /*// _LL_DEBUGS_ONCE("RenderInit") << "Feature '" << name << "' "
+    LL_DEBUGS_ONCE("RenderInit") << "Feature '" << name << "' "
                                  << (available ? "" : "not " ) << "available"
                                  << " at " << level
-                                 << LL_ENDL;*/
+                                 << LL_ENDL;
 	mFeatures[name] = fi;
 }
 
@@ -117,7 +117,7 @@ F32 LLFeatureList::getRecommendedValue(const std::string& name)
 {
 	if (mFeatures.count(name) && isFeatureAvailable(name))
 	{
-        // _LL_DEBUGS_ONCE("RenderInit") << "Setting '" << name << "' to recommended value " <<  mFeatures[name].mRecommendedLevel << LL_ENDL;
+        LL_DEBUGS_ONCE("RenderInit") << "Setting '" << name << "' to recommended value " <<  mFeatures[name].mRecommendedLevel << LL_ENDL;
 		return mFeatures[name].mRecommendedLevel;
 	}
 
@@ -127,7 +127,7 @@ F32 LLFeatureList::getRecommendedValue(const std::string& name)
 
 BOOL LLFeatureList::maskList(LLFeatureList &mask)
 {
-	// _LL_DEBUGS_ONCE() << "Masking with " << mask.mName << LL_ENDL;
+	LL_DEBUGS_ONCE() << "Masking with " << mask.mName << LL_ENDL;
 	//
 	// Lookup the specified feature mask, and overlay it on top of the
 	// current feature mask.
@@ -156,31 +156,31 @@ BOOL LLFeatureList::maskList(LLFeatureList &mask)
 		}
 		cur_fi.mAvailable = mask_fi.mAvailable;
 		cur_fi.mRecommendedLevel = llmin(cur_fi.mRecommendedLevel, mask_fi.mRecommendedLevel);
-		/*// _LL_DEBUGS("RenderInit") << "Feature mask " << mask.mName
+		LL_DEBUGS("RenderInit") << "Feature mask " << mask.mName
 				<< " Feature " << mask_fi.mName
 				<< " Mask: " << mask_fi.mRecommendedLevel
-				<< " Now: " << cur_fi.mRecommendedLevel << LL_ENDL;*/
+				<< " Now: " << cur_fi.mRecommendedLevel << LL_ENDL;
 	}
 
-	/*// _LL_DEBUGS("RenderInit") << "After applying mask " << mask.mName << std::endl;
+	LL_DEBUGS("RenderInit") << "After applying mask " << mask.mName << std::endl;
 		// Will conditionally call dump only if the above message will be logged, thanks 
-		// to it being wrapped by the // _LL_DEBUGS and LL_ENDL macros.
+		// to it being wrapped by the LL_DEBUGS and LL_ENDL macros.
 		dump();
-	LL_CONT << LL_ENDL;*/
+	LL_CONT << LL_ENDL;
 
 	return TRUE;
 }
 
 void LLFeatureList::dump()
 {
-	// _LL_DEBUGS("RenderInit") << "Feature list: " << mName << LL_ENDL;
+	LL_DEBUGS("RenderInit") << "Feature list: " << mName << LL_ENDL;
 
 	LLFeatureInfo fi;
 	feature_map_t::iterator feature_it;
 	for (feature_it = mFeatures.begin(); feature_it != mFeatures.end(); ++feature_it)
 	{
 		fi = feature_it->second;
-		// _LL_DEBUGS("RenderInit") << "With " << mName << " feature " << fi.mName << " " << fi.mAvailable << ":" << fi.mRecommendedLevel << LL_ENDL;
+		LL_DEBUGS("RenderInit") << "With " << mName << " feature " << fi.mName << " " << fi.mAvailable << ":" << fi.mRecommendedLevel << LL_ENDL;
 	}
 }
 
@@ -248,7 +248,7 @@ BOOL LLFeatureManager::maskFeatures(const std::string& name)
 	LLFeatureList *maskp = findMask(name);
 	if (!maskp)
 	{
- 		// _LL_DEBUGS("RenderInit") << "Unknown feature mask " << name << LL_ENDL;
+ 		LL_DEBUGS("RenderInit") << "Unknown feature mask " << name << LL_ENDL;
 		return FALSE;
 	}
 	LL_INFOS("RenderInit") << "Applying GPU Feature list: " << name << LL_ENDL;
@@ -324,7 +324,7 @@ bool LLFeatureManager::parseFeatureTable(std::string filename)
         
 		if (name == "list")
 		{
-			/*// _LL_DEBUGS("RenderInit") << "Before new list" << std::endl;
+			LL_DEBUGS("RenderInit") << "Before new list" << std::endl;
 			if (flp)
 			{
 				flp->dump();
@@ -333,7 +333,7 @@ bool LLFeatureManager::parseFeatureTable(std::string filename)
 			{
 				LL_CONT << "No current list";
 			}
-			LL_CONT << LL_ENDL;*/
+			LL_CONT << LL_ENDL;
 			
 			// It's a new mask, create it.
 			file >> name;

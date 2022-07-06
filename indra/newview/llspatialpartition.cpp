@@ -652,9 +652,9 @@ F32 LLSpatialPartition::calcDistance(LLSpatialGroup* group, LLCamera& camera)
 	}
 
 #if !LL_RELEASE
-    /*LL_DEBUGS("RiggedBox") << "calcDistance, group " << group << " camera " << origin << " obj bounds " 
+    LL_DEBUGS("RiggedBox") << "calcDistance, group " << group << " camera " << origin << " obj bounds " 
                            << group->mObjectBounds[0] << ", " << group->mObjectBounds[1] 
-                           << " dist " << dist << " radius " << group->mRadius << LL_ENDL;*/
+                           << " dist " << dist << " radius " << group->mRadius << LL_ENDL;
 #endif
 
 	if (dist < 16.f)
@@ -713,13 +713,13 @@ BOOL LLSpatialGroup::changeLOD()
 
 		if (fabsf(ratio) >= getSpatialPartition()->mSlopRatio)
 		{
-            /*// _LL_DEBUGS("RiggedBox") << "changeLOD true because of ratio compare "
-                                   << fabsf(ratio) << " " << getSpatialPartition()->mSlopRatio << LL_ENDL;*/
-            /*// _LL_DEBUGS("RiggedBox") << "sg " << this << "\nmDistance " << mDistance
+            LL_DEBUGS("RiggedBox") << "changeLOD true because of ratio compare "
+                                   << fabsf(ratio) << " " << getSpatialPartition()->mSlopRatio << LL_ENDL;
+            LL_DEBUGS("RiggedBox") << "sg " << this << "\nmDistance " << mDistance
                                    << " mLastUpdateDistance " << mLastUpdateDistance
                                    << " mRadius " << mRadius
                                    << " fab ratio " << fabsf(ratio) 
-                                   << " slop " << getSpatialPartition()->mSlopRatio << LL_ENDL;*/
+                                   << " slop " << getSpatialPartition()->mSlopRatio << LL_ENDL;
        
 			return TRUE;
 		}

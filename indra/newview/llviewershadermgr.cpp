@@ -865,6 +865,7 @@ void LLViewerShaderMgr::unloadShaders()
 	gDeferredNonIndexedDiffuseProgram.unload();
 	gDeferredSkinnedDiffuseProgram.unload();
 	gDeferredSkinnedBumpProgram.unload();
+	
 	gTransformPositionProgram.unload();
 	gTransformTexCoordProgram.unload();
 	gTransformNormalProgram.unload();

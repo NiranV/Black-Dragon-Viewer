@@ -426,7 +426,7 @@ LLFontGlyphInfo* LLFontFreetype::addGlyph(llwchar wch) const
 		return FALSE;
 
 	llassert(!mIsFallback);
-	//// _LL_DEBUGS() << "Adding new glyph for " << wch << " to font" << LL_ENDL;
+	//LL_DEBUGS() << "Adding new glyph for " << wch << " to font" << LL_ENDL;
 
 	FT_UInt glyph_index;
 

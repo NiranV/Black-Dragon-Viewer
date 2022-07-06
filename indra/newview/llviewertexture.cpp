@@ -694,7 +694,7 @@ LLViewerTexture::LLViewerTexture(const LLImageRaw* raw, BOOL usemipmaps) :
 
 LLViewerTexture::~LLViewerTexture()
 {
-	// // _LL_DEBUGS("Avatar") << mID << LL_ENDL;
+	// LL_DEBUGS("Avatar") << mID << LL_ENDL;
 	cleanup();
 	sImageCount--;
 }
@@ -1413,7 +1413,7 @@ void LLViewerFetchedTexture::destroyTexture()
 		return;
 	}
 
-	//// _LL_DEBUGS("Avatar") << mID << LL_ENDL;
+	//LL_DEBUGS("Avatar") << mID << LL_ENDL;
 	destroyGLTexture();
 	mFullyLoaded = FALSE;
 }
@@ -1575,7 +1575,7 @@ BOOL LLViewerFetchedTexture::preCreateTexture(S32 usename/*= 0*/)
     S32 discard_level = mRawDiscardLevel;
     if (mRawDiscardLevel < 0)
     {
-        //LL_DEBUGS() << "Negative raw discard level when creating image: " << mRawDiscardLevel << LL_ENDL;
+        LL_DEBUGS() << "Negative raw discard level when creating image: " << mRawDiscardLevel << LL_ENDL;
         discard_level = 0;
     }
 
@@ -2414,7 +2414,7 @@ bool LLViewerFetchedTexture::updateFetch()
 		const F32 FETCH_IDLE_TIME = 5.f;
 		if (mLastPacketTimer.getElapsedTimeF32() > FETCH_IDLE_TIME)
 		{
- 			// _LL_DEBUGS("Texture") << "exceeded idle time " << FETCH_IDLE_TIME << ", deleting request: " << getID() << LL_ENDL;
+ 			LL_DEBUGS("Texture") << "exceeded idle time " << FETCH_IDLE_TIME << ", deleting request: " << getID() << LL_ENDL;
 			LLAppViewer::getTextureFetch()->deleteRequest(getID(), true);
 			mHasFetcher = FALSE;
 		}
