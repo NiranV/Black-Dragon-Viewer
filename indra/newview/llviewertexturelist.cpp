@@ -567,10 +567,10 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 												   LLHost request_from_host)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
+
 	//BD - Disable Fast Cache Fetch
 	//     It has caused a lot of vanishing objects in the past, corrupting the cache and making
 	//     a cache clear (and turning this option off) necessary to fix it.
-	static LLCachedControl<bool> fast_cache_fetching_enabled(gSavedSettings, "FastCacheFetchEnabled", true);
 
 	LLPointer<LLViewerFetchedTexture> imagep ;
 	switch(texture_type)
@@ -615,12 +615,6 @@ LLViewerFetchedTexture* LLViewerTextureList::createImage(const LLUUID &image_id,
 		imagep->forceActive() ;
 	}
 
-	//BD - Disable Fast Cache Fetch
-	/*if(fast_cache_fetching_enabled)
-	{
-		mFastCacheList.insert(imagep);
-		imagep->setInFastCacheList(true);
-	}*/
 	return imagep ;
 }
 
