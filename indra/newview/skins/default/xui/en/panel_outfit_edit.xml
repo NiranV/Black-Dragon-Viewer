@@ -505,8 +505,7 @@ width="320">
    image_hover_unselected="Toolbar_Middle_Over"
    image_selected="Toolbar_Middle_Selected"
    image_unselected="Toolbar_Middle_Off"
-   image_overlay="Arrow_Small_Up"
-   width="31"/>
+   width="82"/>
    <button
    follows="bottom|left|right"
    height="25"
@@ -519,5 +518,5 @@ width="320">
    name="revert_btn"
    top_delta="0"
    tool_tip="Revert to last saved version"
-   width="127" />
+   width="115" />
 </panel>
