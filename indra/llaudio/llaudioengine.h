@@ -1,25 +1,25 @@
-/** 
+/**
  * @file audioengine.h
  * @brief Definition of LLAudioEngine base class abstracting the audio support
  *
  * $LicenseInfo:firstyear=2000&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -61,20 +61,20 @@ struct SoundData;
 //
 //  LLAudioEngine definition
 //
-class LLAudioEngine 
+class LLAudioEngine
 {
 	friend class LLAudioChannelOpenAL; // bleh. channel needs some listener methods.
-	
+
 public:
 	enum LLAudioType
 	{
-		AUDIO_TYPE_NONE    = 0,
-		AUDIO_TYPE_SFX     = 1,
-		AUDIO_TYPE_UI      = 2,
+		AUDIO_TYPE_NONE = 0,
+		AUDIO_TYPE_SFX = 1,
+		AUDIO_TYPE_UI = 2,
 		AUDIO_TYPE_AMBIENT = 3,
-		AUDIO_TYPE_COUNT   = 4 // last
+		AUDIO_TYPE_COUNT = 4 // last
 	};
-	
+
 	enum LLAudioPlayState
 	{
 		// isInternetStreamPlaying() returns an *S32*, with
@@ -83,7 +83,7 @@ public:
 		AUDIO_PLAYING = 1,
 		AUDIO_PAUSED = 2
 	};
-	
+
 	LLAudioEngine();
 	virtual ~LLAudioEngine();
 
@@ -94,7 +94,7 @@ public:
 
 	// Used by the mechanics of the engine
 	//virtual void processQueue(const LLUUID &sound_guid);
-	virtual void setListener(LLVector3 pos,LLVector3 vel,LLVector3 up,LLVector3 at);
+	virtual void setListener(LLVector3 pos, LLVector3 vel, LLVector3 up, LLVector3 at);
 	virtual void updateWind(LLVector3 direction, F32 camera_height_above_water) = 0;
 	virtual void idle(F32 max_decode_time = 0.f);
 	virtual void updateChannels();
@@ -131,8 +131,8 @@ public:
 	// Methods actually related to setting up and removing sounds
 	// Owner ID is the owner of the object making the request
 	void triggerSound(const LLUUID &sound_id, const LLUUID& owner_id, const F32 gain,
-					  const S32 type = LLAudioEngine::AUDIO_TYPE_NONE,
-					  const LLVector3d &pos_global = LLVector3d::zero);
+		const S32 type = LLAudioEngine::AUDIO_TYPE_NONE,
+		const LLVector3d &pos_global = LLVector3d::zero);
 	void triggerSound(SoundData& soundData);
 
 	bool preloadSound(const LLUUID &id);
@@ -155,7 +155,7 @@ public:
 	// use a value from 0.0 to 1.0, inclusive
 	void setInternetStreamGain(F32 vol);
 	std::string getInternetStreamURL();
-	
+
 	// For debugging usage
 	virtual LLVector3 getListenerPos();
 
@@ -208,7 +208,7 @@ protected:
 	void* mUserData;
 
 	S32 mLastStatus;
-	
+
 	S32 mNumChannels;
 	bool mEnableWind;
 
@@ -229,7 +229,7 @@ protected:
 	// Buffers needs to change into a different data structure, as the number of buffers
 	// that we have active should be limited by RAM usage, not count.
 	LLAudioBuffer *mBuffers[MAX_BUFFERS];
-	
+
 	F32 mMasterGain;
 	F32 mInternalGain;			// Actual gain set; either mMasterGain or 0 when mMuted is true.
 	F32 mSecondaryGain[AUDIO_TYPE_COUNT];
@@ -266,36 +266,36 @@ public:
 
 	void addAudioData(LLAudioData *adp, bool set_current = TRUE);
 
-	void setAmbient(const bool ambient)						{ mAmbient = ambient; }
-	bool isAmbient() const									{ return mAmbient; }
+	void setAmbient(const bool ambient) { mAmbient = ambient; }
+	bool isAmbient() const { return mAmbient; }
 
-	void setLoop(const bool loop)							{ mLoop = loop; }
-	bool isLoop() const										{ return mLoop; }
+	void setLoop(const bool loop) { mLoop = loop; }
+	bool isLoop() const { return mLoop; }
 
-	void setSyncMaster(const bool master)					{ mSyncMaster = master; }
-	bool isSyncMaster() const								{ return mSyncMaster; }
+	void setSyncMaster(const bool master) { mSyncMaster = master; }
+	bool isSyncMaster() const { return mSyncMaster; }
 
-	void setSyncSlave(const bool slave)						{ mSyncSlave = slave; }
-	bool isSyncSlave() const								{ return mSyncSlave; }
+	void setSyncSlave(const bool slave) { mSyncSlave = slave; }
+	bool isSyncSlave() const { return mSyncSlave; }
 
-	void setQueueSounds(const bool queue)					{ mQueueSounds = queue; }
-	bool isQueueSounds() const								{ return mQueueSounds; }
+	void setQueueSounds(const bool queue) { mQueueSounds = queue; }
+	bool isQueueSounds() const { return mQueueSounds; }
 
-	void setPlayedOnce(const bool played_once)				{ mPlayedOnce = played_once; }
+	void setPlayedOnce(const bool played_once) { mPlayedOnce = played_once; }
 
-	void setType(S32 type)                                  { mType = type; }
-	S32 getType()                                           { return mType; }
+	void setType(S32 type) { mType = type; }
+	S32 getType() { return mType; }
 
-	void setPositionGlobal(const LLVector3d &position_global)		{ mPositionGlobal = position_global; }
-	LLVector3d getPositionGlobal() const							{ return mPositionGlobal; }
-	LLVector3 getVelocity()	const									{ return mVelocity; }				
-	F32 getPriority() const											{ return mPriority; }
+	void setPositionGlobal(const LLVector3d &position_global) { mPositionGlobal = position_global; }
+	LLVector3d getPositionGlobal() const { return mPositionGlobal; }
+	LLVector3 getVelocity()	const { return mVelocity; }
+	F32 getPriority() const { return mPriority; }
 
 	// Gain should always be clamped between 0 and 1.
-	F32 getGain() const												{ return mGain; }
-	virtual void setGain(const F32 gain)							{ mGain = llclamp(gain, 0.f, 1.f); }
+	F32 getGain() const { return mGain; }
+	virtual void setGain(const F32 gain) { mGain = llclamp(gain, 0.f, 1.f); }
 
-	const LLUUID &getID() const		{ return mID; }
+	const LLUUID &getID() const { return mID; }
 	bool isDone() const;
 	bool isMuted() const { return mSourceMuted; }
 
@@ -305,12 +305,12 @@ public:
 
 	bool setupChannel();
 
-    // Stop the audio source, reset audio id even if muted
-    void stop();
+	// Stop the audio source, reset audio id even if muted
+	void stop();
 
-    // Start the audio source playing,
-    // takes mute into account to preserve previous id if nessesary
-    bool play(const LLUUID &audio_id);
+	// Start the audio source playing,
+	// takes mute into account to preserve previous id if nessesary
+	bool play(const LLUUID &audio_id);
 
 	bool hasPendingPreloads() const;	// Has preloads that haven't been done yet
 
@@ -318,7 +318,7 @@ public:
 	friend class LLAudioChannel;
 protected:
 	void setChannel(LLAudioChannel *channelp);
-	LLAudioChannel *getChannel() const						{ return mChannelp; }
+	LLAudioChannel *getChannel() const { return mChannelp; }
 
 protected:
 	LLUUID			mID; // The ID of the source is that of the object if it's attached to an object.
@@ -364,18 +364,18 @@ public:
 	LLAudioData(const LLUUID &uuid);
 	bool load();
 
-	LLUUID getID() const				{ return mID; }
-	LLAudioBuffer *getBuffer() const	{ return mBufferp; }
+	LLUUID getID() const { return mID; }
+	LLAudioBuffer *getBuffer() const { return mBufferp; }
 
-	bool	hasLocalData() const		{ return mHasLocalData; }
-	bool	hasDecodedData() const		{ return mHasDecodedData; }
-	bool	hasCompletedDecode() const	{ return mHasCompletedDecode; }
-	bool	hasValidData() const		{ return mHasValidData; }
+	bool	hasLocalData() const { return mHasLocalData; }
+	bool	hasDecodedData() const { return mHasDecodedData; }
+	bool	hasCompletedDecode() const { return mHasCompletedDecode; }
+	bool	hasValidData() const { return mHasValidData; }
 
-	void	setHasLocalData(const bool hld)		{ mHasLocalData = hld; }
-	void	setHasDecodedData(const bool hdd)	{ mHasDecodedData = hdd; }
-	void	setHasCompletedDecode(const bool hcd)	{ mHasCompletedDecode = hcd; }
-	void	setHasValidData(const bool hvd)		{ mHasValidData = hvd; }
+	void	setHasLocalData(const bool hld) { mHasLocalData = hld; }
+	void	setHasDecodedData(const bool hdd) { mHasDecodedData = hdd; }
+	void	setHasCompletedDecode(const bool hcd) { mHasCompletedDecode = hcd; }
+	void	setHasValidData(const bool hvd) { mHasValidData = hvd; }
 
 	friend class LLAudioEngine; // Severe laziness, bad.
 
@@ -403,10 +403,10 @@ public:
 	virtual ~LLAudioChannel();
 
 	virtual void setSource(LLAudioSource *sourcep);
-	LLAudioSource *getSource() const			{ return mCurrentSourcep; }
+	LLAudioSource *getSource() const { return mCurrentSourcep; }
 
-	void setSecondaryGain(F32 gain)             { mSecondaryGain = gain; }
-	F32 getSecondaryGain()                      { return mSecondaryGain; }
+	void setSecondaryGain(F32 gain) { mSecondaryGain = gain; }
+	F32 getSecondaryGain() { return mSecondaryGain; }
 
 	friend class LLAudioEngine;
 	friend class LLAudioSource;
@@ -415,8 +415,8 @@ protected:
 	virtual void playSynced(LLAudioChannel *channelp) = 0;
 	virtual void cleanup() = 0;
 	virtual bool isPlaying() = 0;
-	void setWaiting(const bool waiting)			{ mWaiting = waiting; }
-	bool isWaiting() const						{ return mWaiting; }
+	void setWaiting(const bool waiting) { mWaiting = waiting; }
+	bool isWaiting() const { return mWaiting; }
 
 	virtual bool updateBuffer(); // Check to see if the buffer associated with the source changed, and update if necessary.
 	virtual void update3DPosition() = 0;
@@ -461,9 +461,9 @@ struct SoundData
 	S32 type;
 	LLVector3d pos_global;
 
-	SoundData(const LLUUID &audio_uuid, 
-		const LLUUID& owner_id, 
-		const F32 gain, 					  
+	SoundData(const LLUUID &audio_uuid,
+		const LLUUID& owner_id,
+		const F32 gain,
 		const S32 type = LLAudioEngine::AUDIO_TYPE_NONE,
 		const LLVector3d &pos_global = LLVector3d::zero)
 	{

@@ -41,7 +41,7 @@
 #include "llaudioengine.h"
 
 #if USE_FMODSTUDIO
-# include "llaudioengine_fmodstudio.h"
+#include "llaudioengine_fmodstudio.h"
 #endif
 
 #ifdef LL_OPENAL
@@ -643,7 +643,7 @@ bool idle_startup()
 			delete gAudiop;
 			gAudiop = nullptr;
 
-#ifdef LL_FMODSTUDIO
+#ifdef USE_FMODSTUDIO
 #if !LL_WINDOWS
 			if (NULL == getenv("LL_BAD_FMODSTUDIO_DRIVER"))
 #endif // !LL_WINDOWS
