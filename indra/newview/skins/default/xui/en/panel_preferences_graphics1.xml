@@ -1918,8 +1918,8 @@ width="510">
    top_delta="-2"
    width="219">
       <combo_box.item
-       label="15 FPS"
-       value="15"
+       label="13 FPS"
+       value="70000"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
@@ -1928,84 +1928,34 @@ width="510">
 ||FramePerSecondLimit: &lt;blue&gt;15&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
-       label="24 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;24&lt;/blue&gt;"
-       value="24"
-       name="item2"/>
-      <combo_box.item
-       label="30 FPS"
+       label="22 FPS"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
 ||FramePerSecondLimit: &lt;blue&gt;30&lt;/blue&gt;"
-       value="30"
+       value="40000"
        name="item3"/>
       <combo_box.item
-       label="45 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;45&lt;/blue&gt;"
-       value="45"
-       name="item4"/>
-      <combo_box.item
-       label="60 FPS"
+       label="33 FPS"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
 ||FramePerSecondLimit: &lt;blue&gt;60&lt;/blue&gt;"
-       value="60"
+       value="20000"
        name="item4"/>
       <combo_box.item
-       label="75 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;75&lt;/blue&gt;"
-       value="75"
-       name="item4"/>
-      <combo_box.item
-       label="90 FPS"
+       label="66 FPS"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
 ||FramePerSecondLimit: &lt;blue&gt;90&lt;/blue&gt;"
-       value="90"
-       name="item4"/>
-      <combo_box.item
-       label="120 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;120&lt;/blue&gt;"
-       value="120"
-       name="item4"/>
-      <combo_box.item
-       label="144 FPS"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;144&lt;/blue&gt;"
-       value="144"
+       value="10000"
        name="item4"/>
       <combo_box.item
        label="Unlimited"
@@ -2049,8 +1999,8 @@ width="510">
    top_delta="-2"
    width="219">
       <combo_box.item
-       label="6 FPS"
-       value="6"
+       label="10 FPS"
+       value="90"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
@@ -2059,14 +2009,14 @@ width="510">
 ||BackgroundYieldTime: &lt;blue&gt;6&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
-       label="17 FPS"
+       label="16 FPS"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is not active (tabbed out or deslected). This can be used to save resources for other applications while the Viewer is in the background.
 ||BackgroundYieldTime: &lt;blue&gt;17&lt;/blue&gt;"
-       value="17"
+       value="40"
        name="item2"/>
       <combo_box.item
        label="33 FPS"
@@ -2076,7 +2026,7 @@ width="510">
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is not active (tabbed out or deslected). This can be used to save resources for other applications while the Viewer is in the background.
 ||BackgroundYieldTime: &lt;blue&gt;33&lt;/blue&gt;"
-       value="33"
+       value="20"
        name="item3"/>
       <combo_box.item
        label="Unlimited"

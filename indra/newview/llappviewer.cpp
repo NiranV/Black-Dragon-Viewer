@@ -679,7 +679,9 @@ LLAppViewer::LLAppViewer()
 	mPeriodicSlowFrame(LLCachedControl<bool>(gSavedSettings,"Periodic Slow Frame", FALSE)),
 	mFastTimerLogThread(NULL),
 	mSettingsLocationList(NULL),
-	mIsFirstRun(false)
+	mIsFirstRun(false),
+	//BD - FPS Limiter
+	mMaxFPS(0)
 {
 	if(NULL != sInstance)
 	{
@@ -1296,10 +1298,11 @@ bool LLAppViewer::init()
 	LLVoiceChannel::initClass();
 	LLVoiceClient::initParamSingleton(gServicePump);
 	LLVoiceChannel::setCurrentVoiceChannelChangedCallback(boost::bind(&LLFloaterIMContainer::onCurrentChannelChanged, _1), true);
-	/*----------------------------------------------------------------------*/
 
-	//gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::onChangeFrameLimit, this, _2));
-	//onChangeFrameLimit(gSavedSettings.getLLSD("FramePerSecondLimit"));
+	/*----------------------------------------------------------------------*/
+	//BD - FPS Limiter
+	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::changeFrameRateLimit, this, _2));
+	changeFrameRateLimit(gSavedSettings.getS32("FramePerSecondLimit"));
 
 	/*----------------------------------------------------------------------*/
 
@@ -1453,6 +1456,8 @@ bool LLAppViewer::doFrame()
 	LLEventPump& mainloop(LLEventPumps::instance().obtain("mainloop"));
 	LLSD newFrame;
 
+	LLTimer frameTimer;
+
 	{
         LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df LLTrace");
         if (LLFloaterReg::instanceVisible("block_timers"))
@@ -1585,11 +1590,27 @@ bool LLAppViewer::doFrame()
 
 				{
 					LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df Snapshot" )
-				pingMainloopTimeout("Main:Snapshot");
-				LLFloaterSnapshot::update(); // take snapshots
-				gGLActive = FALSE;
+
+					pingMainloopTimeout("Main:Snapshot");
+					LLFloaterSnapshot::update(); // take snapshots
+					gGLActive = FALSE;
+				}
+
+				//BD - FPS Limiter
+				static U64 last_call = 0;
+				if (!gTeleportDisplay) // SL-10625...throttle early, throttle often with Intel
+				{
+					// Frame/draw throttling
+					U64 elapsed_time = LLTimer::getTotalTime() - last_call;
+					if (elapsed_time < mMaxFPS)
+					{
+						// llclamp for when time function gets funky
+						U64 sleep_time = llclamp(mMaxFPS - elapsed_time, (U64)1, (U64)1e6);
+						micro_sleep(sleep_time, 0);
+					}
+				}
+				last_call = LLTimer::getTotalTime();
 			}
-		}
 		}
 
 		{

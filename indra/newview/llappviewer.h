@@ -233,6 +233,9 @@ public:
 //	//BD - Custom Keyboard Layout
 	static void loadKeyboardlayout();
 
+//	//BD - FPS Limiter
+	void changeFrameRateLimit(S32 max_fps) { mMaxFPS = max_fps; }
+
 protected:
 	virtual bool initWindow(); // Initialize the viewer's window.
 	virtual void initLoggingAndGetLastDuration(); // Initialize log files, logging system
@@ -343,7 +346,7 @@ private:
 	LLAppCoreHttp mAppCoreHttp;
 
     bool mIsFirstRun;
-	U64 mMinMicroSecPerFrame; // frame throttling
+	U64 mMaxFPS; // frame throttling
 };
 
 // consts from viewer.h
