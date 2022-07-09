@@ -49,29 +49,23 @@ LLImageDecodeThread::~LLImageDecodeThread()
 // virtual
 S32 LLImageDecodeThread::update(F32 max_time_ms)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
 	LLMutexLock lock(mCreationMutex);
 	for (creation_list_t::iterator iter = mCreationList.begin();
-		 iter != mCreationList.end(); ++iter)
+		iter != mCreationList.end(); ++iter)
 	{
-		LLMutexLock lock(mCreationMutex);
-		for (creation_list_t::iterator iter = mCreationList.begin();
-			 iter != mCreationList.end(); ++iter)
-		{
-			creation_info& info = *iter;
-			ImageRequest* req = new ImageRequest(info.handle, info.image,
-				info.priority, info.discard, info.needs_aux,
-				info.responder);
+		creation_info& info = *iter;
+		ImageRequest* req = new ImageRequest(info.handle, info.image,
+			info.priority, info.discard, info.needs_aux,
+			info.responder);
 
-			bool res = addRequest(req);
-			if (!res)
-			{
-				LL_ERRS() << "request added after LLLFSThread::cleanupClass()" << LL_ENDL;
-			}
+		bool res = addRequest(req);
+		if (!res)
+		{
+			LL_ERRS() << "request added after LLLFSThread::cleanupClass()" << LL_ENDL;
 		}
-		mCreationList.clear();
-		mCreationListSize = 0;
 	}
+	mCreationList.clear();
 	S32 res = LLQueuedThread::update(max_time_ms);
 	return res;
 }
