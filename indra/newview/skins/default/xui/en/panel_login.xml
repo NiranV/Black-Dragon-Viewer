@@ -173,8 +173,83 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="429"
+     height="468"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Option to change the maximum allowed GPU memory.
+Added: Missing performance rating icons.
+Added: Dzintars Irbe as Patreon patron.
+Added: Galaxy Littlepaws as Patreon patron.
+Added: Pnpnkitin's store.
+Added: Unknown Name as Patreon patron.
+Changed: Made Automatic Memory Management the new default, removed the options and tweaked it slightly.
+Changed: Reenabled debug output and a bunch of debugs.
+Changed: Object Cache Occlusion to false by default in an attempt to fix occlusion culling problems.
+Changed: Version to 4.1.0 - Speeding Viewer.
+Fixed: Compile.
+Fixed: Compile.
+Fixed: Edit My Outfit "Save As" button missing and broken.
+Fixed: Broken floater_about.xml file.
+Fixed: Compile.
+Fixes: Several differences between official and BD code.
+Fixed: Shadows being broken.
+Fixed: Several more missing LL to BD code inconsistencies.
+Fixed: Materials being broken.
+Fixed: Sound not working.
+Fixed: Imageworker iterating through the list twice.
+Fixed: Framerate limiter not working anymore.
+Fixed: Wrong option labels for framerate limiter.
+Fixed: Snapshot dimensions label being offset.
+Fixed: Save As button in Edit Outfit being cut off.
+Fixed: Crash when opening "Picks" panel in some people's profiles.
+Fixed: Token in patreon link.
+Removed: Defunct Flycam option from Machinima Sidebar.
+Removed: Unneeded Help - About Black Dragon setting entries in the sys spec string.
+Removed: Several impossible options for the framerate limiter.
+Removed: Obsolete Double Click Teleport/Autopilot options.
+Removed: Unclickable "Take 360 Snaphot" its taken through the menu.
+Misc: Cleanup of some code.
+Misc: More viewer code merge.
+Merge Linden Release.
+Merge Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.0.6
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="429"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
