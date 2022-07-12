@@ -339,7 +339,7 @@
          word_wrap="true">
           Fee may be based on your subscription level. Higher levels may be charged lower fees.
         </text>
-        <text
+        <!--<text
         follows="top|left"
         font="SansSerifSmall"
         height="14"
@@ -353,7 +353,7 @@
         type="string"
         width="115">
         Take a 360 snapshot
-        </text>
+        </text>-->
       </panel>
       <panel
        class="llpanelsnapshotprofile"
