@@ -4357,7 +4357,7 @@
                  function="World.AlwaysRun" />
             </menu_item_check>
 	    <menu_item_separator/>
-            <menu_item_check
+            <!--<menu_item_check
              label="Double Click TP"
              layout="topleft"
 	     shortcut="control|shift|D"
@@ -4380,7 +4380,7 @@
 	         function="ToggleControl"
          	 parameter="DoubleClickAutoPilot" />
             </menu_item_check>
-									<menu_item_separator/>
+									<menu_item_separator/>-->
 												<menu_item_check
              label="Enable Third Person Steering Mode"
 													shortcut="V"

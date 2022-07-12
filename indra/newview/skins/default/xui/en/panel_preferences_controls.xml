@@ -153,7 +153,7 @@ width="510">
  name="ClickToWalk"
  width="237"
  top_pad="15"/>
- <check_box
+ <!--<check_box
  control_name="DoubleClickTeleport"
  follows="left|top"
  height="16" 
@@ -177,7 +177,7 @@ width="510">
  name="DoubleclickPilot"
  tool_tip="This option toggles whether a double click into the world makes your avatar walk to the specified location via auto pilot or not."
  width="150"
- top_pad="0"/>
+ top_pad="0"/>-->
  <check_box
  control_name="AutoPilotLocksCamera"
  disabled_control="DoubleClickTeleport"
