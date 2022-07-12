@@ -14,6 +14,9 @@
  positioning="centered"
  save_rect="true"
  title="Profile">
+   <string
+   name="LoadTime"
+   value="Load Time: [TIME] seconds"/>
  <string
      name="status_online">
         Currently Online
@@ -732,9 +735,6 @@
              width="420"
              follows="all"
              layout="topleft">
-                <panel.string
-                 name="LoadTime"
-                 value="Load Time: [TIME] seconds"/>
                 <line_editor
                  name="url_edit"
                  enabled="false"
