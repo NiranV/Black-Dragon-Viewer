@@ -1146,7 +1146,6 @@ void LLFloaterSnapshot::onClickBigPreview()
     // Toggle the preview
     if (isPreviewVisible())
     {
-		if (mPreviewHandle.get()) mPreviewHandle.get()->die();
         LLFloaterReg::hideInstance("big_preview");
 
     }
