@@ -848,9 +848,8 @@ void LLPipeline::requestResizeShadowTexture()
 
 void LLPipeline::resizeShadowTexture()
 {
-	//allocateShadowMaps(false);
+	allocateShadowMaps(false);
 	releaseShadowTargets();
-	allocateShadowBuffer(mScreenWidth, mScreenHeight);
     gResizeShadowTexture = FALSE;
 }
 
@@ -1059,8 +1058,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		}
 
 //      //BD - Shadow Map Allocation
-		//allocateShadowMaps(true);
-		allocateShadowBuffer(resX, resY);
+		allocateShadowMaps(true);
 
 //		//BD - Motion Blur
 		if (RenderMotionBlur)
