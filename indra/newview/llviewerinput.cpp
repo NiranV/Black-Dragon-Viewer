@@ -853,6 +853,8 @@ bool walk_to(EKeystate s)
 bool teleport_to(EKeystate s)
 {
     if (KEYSTATE_DOWN != s) return false;
+	//BD - Block Double Click TP in Mouselook for now.
+	if (gAgentCamera.cameraMouselook()) return false;
     return LLToolPie::getInstance()->teleportToClickedLocation();
 }
 
