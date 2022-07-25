@@ -2623,12 +2623,22 @@ width="510">
    initial_value="true"
    label="Enable Fullbright"
    tool_tip="This option controls whether the Viewer should ignore the legacy fullbright flag on object surfaces.
-WARNING! - Does not work with prim param LIGHT script command and emmisive masks!"
+||NOTE!
+|Does not work with prim param LIGHT script command and emmisive masks!
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option turns off the fullbright flag in objects to force the Viewer to treat objects as non-fullbright, due to how the Viewer works it will detect objects you select and look into as having fullbright turned off, editing your own objects will cause a parameter update to be sent, turning off fullbright permanently. DO NOT select objects you have edit permissions for after using this option."
    layout="topleft"
    left="10"
    name="EnableFullbright"
    top_pad="0"
-   width="115" />
+   width="115">
+    <check_box.check_button
+    image_overlay="Caution_Widget"
+    image_overlay_alignment="left"/>
+    <check_box.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderEnableFullbright"/>
+ </check_box>
       </layout_panel>
       
       <layout_panel

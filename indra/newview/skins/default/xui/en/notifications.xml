@@ -12199,6 +12199,19 @@ This will unreversably undo every setting you changed in the Viewer putting it b
 
 <notification
    icon="alertmodal.tga"
+   name="RenderEnableFullbright"
+   type="alertmodal">
+&lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;WARNING:&lt;/red&gt;
+
+Turning off this option can lead to potential issues:
+
+This option turns off the fullbright flag in objects to force the Viewer to treat objects as non-fullbright, due to how the Viewer works it will detect objects you select and look into as having fullbright turned off, editing your own objects will cause a parameter update to be sent, turning off fullbright permanently.
+
+&lt;b&gt;DO NOT select objects you have edit permissions for after using this option.&lt;/b&gt;
+  <tag>notification</tag>
+
+<notification
+   icon="alertmodal.tga"
    name="SaveProfileChanges"
    type="alertmodal">
 Do you want to save your changes to [NAME]'s profile?
