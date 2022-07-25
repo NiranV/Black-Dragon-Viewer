@@ -165,7 +165,7 @@ width="510">
    width="219">
     <combo_box.item
        label="Tiny"
-       value="0.8"
+       value="0.5"
        tool_tip="This option changes the UI size to tiny.
 ||UIScaleFactor: &lt;blue&gt;0.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
@@ -174,7 +174,7 @@ width="510">
        name="item0"/>
       <combo_box.item
        label="Small"
-       value="0.8"
+       value="0.75"
        tool_tip="This option changes the UI size to small.
 ||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
@@ -183,16 +183,25 @@ width="510">
        name="item0"/>
       <combo_box.item
        label="Medium"
-       tool_tip="This option changes the UI size to small.
+       tool_tip="This option changes the UI size to default.
 ||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
        value="1"
        name="item2"/>
       <combo_box.item
+       label="Big"
+       tool_tip="This option changes the UI size to big.
+||UIScaleFactor: &lt;blue&gt;1.25&lt;/blue&gt;
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
+       value="1.25"
+       name="item3"/>
+      <combo_box.item
        label="Large"
-       tool_tip="This option changes the UI size to small.
-||UIScaleFactor: &lt;blue&gt;1.2&lt;/blue&gt;
+       tool_tip="This option changes the UI size to large.
+||UIScaleFactor: &lt;blue&gt;1.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
@@ -200,7 +209,7 @@ width="510">
        name="item3"/>
       <combo_box.item
        label="Huge (4K)"
-       tool_tip="This option changes the UI size to small.
+       tool_tip="This option changes the UI size to huge.
 ||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
