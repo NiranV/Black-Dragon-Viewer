@@ -80,6 +80,10 @@ width="669">
  Voice (Push-To-Talk)
  </string>
  <string
+ name="script_trigger_lbutton">
+ Script Trigger
+ </string>
+ <string
  name="teleport_to">
  Teleport To
  </string>

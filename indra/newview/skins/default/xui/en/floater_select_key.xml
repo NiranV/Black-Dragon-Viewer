@@ -201,6 +201,10 @@
   name="voice_follow_key"
   value="voice_follow_key" />
   <combo_box.item
+  label="Script Trigger"
+  name="script_trigger_lbutton"
+  value="script_trigger_lbutton" />
+  <combo_box.item
   label="             Camera"
   enabled="false"
   value="menu_separator" />
@@ -339,6 +343,10 @@
   name="start_gesture"
   value="start_gesture" />
   <combo_box.item
+  label="Script Trigger"
+  name="script_trigger_lbutton"
+  value="script_trigger_lbutton" />
+  <combo_box.item
   label="             Camera"
   enabled="false"
   value="menu_separator" />
@@ -424,6 +432,10 @@
   label="Stop Movement"
   name="stop_moving"
   value="stop_moving" />
+  <combo_box.item
+  label="Script Trigger"
+  name="script_trigger_lbutton"
+  value="script_trigger_lbutton" />
   <combo_box.item
   label="                 Misc"
   enabled="false"
@@ -570,6 +582,10 @@
   label="Start Gesture"
   name="start_gesture"
   value="start_gesture" />
+  <combo_box.item
+  label="Script Trigger"
+  name="script_trigger_lbutton"
+  value="script_trigger_lbutton" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"
@@ -672,6 +688,10 @@
   label="Start Gesture"
   name="start_gesture"
   value="start_gesture" />
+  <combo_box.item
+  label="Script Trigger"
+  name="script_trigger_lbutton"
+  value="script_trigger_lbutton" />
 		<combo_box.combo_button
 		image_unselected="ComboToolbarButton_Off"
 		image_selected="ComboToolbarButton_Selected"

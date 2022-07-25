@@ -1184,6 +1184,20 @@ BOOL LLViewerInput::bindMouse(const S32 mode, const EMouseClickType mouse, const
 	typedef boost::function<bool(EKeystate)> function_t;
 	function_t function = NULL;
 
+	if (mouse == CLICK_LEFT
+		&& mask == MASK_NONE
+		&& function_name == script_mouse_handler_name)
+	{
+		// Special case
+		// Left click has script overrides and by default
+		// is handled via agent_control_lbutton as last option
+		// In case of mouselook and present overrides it has highest
+		// priority even over UI and is handled in LLToolCompGun::handleMouseDown
+		// so just mark it as having default handler
+		mLMouseDefaultHandling[mode] = true;
+		return TRUE;
+	}
+
 	function_t* result = LLKeyboardActionRegistry::getValue(function_name);
 	if (result)
 	{
@@ -1226,6 +1240,20 @@ BOOL LLViewerInput::bindControl(const S32 mode, const KEY key, const EMouseClick
 	typedef boost::function<bool(EKeystate)> function_t;
 	function_t function = NULL;
 	LLSD binds;
+
+	if (mouse == CLICK_LEFT
+		&& mask == MASK_NONE
+		&& function_name == script_mouse_handler_name)
+	{
+		// Special case
+		// Left click has script overrides and by default
+		// is handled via agent_control_lbutton as last option
+		// In case of mouselook and present overrides it has highest
+		// priority even over UI and is handled in LLToolCompGun::handleMouseDown
+		// so just mark it as having default handler
+		mLMouseDefaultHandling[mode] = true;
+		return TRUE;
+	}
 
 	// Allow remapping of F2-F12
 	if (function_name[0] == 'F')
