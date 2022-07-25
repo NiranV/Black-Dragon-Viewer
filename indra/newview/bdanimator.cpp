@@ -48,25 +48,30 @@ BDAnimator::~BDAnimator()
 
 void BDAnimator::update()
 {
-	static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
-	if (exp_scaling && gAgentCamera.cameraMouselook())
+	//BD - Don't scale our head when we are posing. We should probably implement a more
+	//     precise solution such as saving the vectors and reapplying them on leave.
+	if (gAgentAvatarp && !gAgentAvatarp->mIsPosing)
 	{
-		LLJoint* joint;
-		for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
+		static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+		if (exp_scaling && gAgentCamera.cameraMouselook())
 		{
-			if (!joint)	continue;
-
-			LLSD row;
-			if (joint->mJointNum > 7 &&	//mHead
-				joint->mJointNum < 58)	//mCollarLeft
+			LLJoint* joint;
+			for (S32 i = 0; (joint = gAgentAvatarp->getCharacterJoint(i)); ++i)
 			{
-				joint->setScale(LLVector3::zero);
-			}
-		}
+				if (!joint)	continue;
 
-		joint = gAgentAvatarp->getJoint("HEAD");
-		if (joint)
-			joint->setScale(LLVector3::zero);
+				LLSD row;
+				if (joint->mJointNum > 7 &&	//mHead
+					joint->mJointNum < 58)	//mCollarLeft
+				{
+					joint->setScale(LLVector3::zero);
+				}
+			}
+
+			joint = gAgentAvatarp->getJoint("HEAD");
+			if (joint)
+				joint->setScale(LLVector3::zero);
+		}
 	}
 
 	//BD - Don't do anything if the animator is not activated.
