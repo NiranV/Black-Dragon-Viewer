@@ -173,8 +173,64 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="468"
+     height="221"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: "Big" UI Size option.
+Added: Eugene The Hero as Patreon patron.
+Changed: Fullbright toggle tooltip and added warnings to it.
+Changed: Improved Max Texture Memory tooltips and added a warning about its increased memory usage.
+Changed: Made Texture Memory warning trigger on "Unlimited" to warn the user of the increased memory usage.
+Changed: Use LL's selection outline code and change its look to fit the original intend of the BD style.
+Changed: Version to 4.1.1.
+Fixed: Poser resetting when exiting mouselook.
+Fixed: Left Mouse Button not triggering scripts in Mouselook.
+Fixed: Head is scaled down while in Poser mode when entering and leaving Mouselook.
+Fixed: Camera Mode buttons not working.
+Fixed: Double clicking the big preview button twice in the snapshot window will break and crash the Viewer.
+Fixed: Fullbrights not being affected by fog.
+Fixed: Quick Draw Distance slider not triggering the Draw Distance warning.
+Fixed: Several incorrect values and tooltips for UI Size.
+Fixed: Double Click in Mouselook results in a teleport.
+Fixed: Shadow resolution reverting when taking snapshots or toggling Depth of Field.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.1.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="468"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
