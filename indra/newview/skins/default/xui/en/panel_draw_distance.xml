@@ -24,7 +24,11 @@ width="32">
  min_val="8"
  layout="topleft"
  name="drawdistance"
- show_text="false"/>
+ show_text="false">
+  <slider.commit_callback
+ function="Dragon.TriggerWarn"
+ parameter="RenderFarClip"/>
+ </slider>
  <text
  type="string"
  font="SansSerifSmall"
