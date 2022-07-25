@@ -693,20 +693,19 @@ void LLFace::renderOneWireframe(const LLColor4 &color, F32 fogCfx, bool wirefram
 
     gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, color.mV[VALPHA]);
 
-    {
-        LLGLDisable depth(wireframe_selection ? 0 : GL_BLEND);
-        LLGLEnable stencil(wireframe_selection ? 0 : GL_STENCIL_TEST);
+	{
+		LLGLDisable depth(GL_BLEND);
+		LLGLEnable stencil(GL_STENCIL_TEST);
 
-        if (!wireframe_selection)
-        { //modify wireframe into outline selection mode
-            glStencilFunc(GL_NOTEQUAL, 2, 0xffff);
-            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-        }
+		{ //modify wireframe into outline selection mode
+			glStencilFunc(GL_NOTEQUAL, 2, 0xffff);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		}
 
-        LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
-        glPolygonOffset(3.f, 3.f);
-        glLineWidth(5.f);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+		glPolygonOffset(3.f, 3.f);
+		glLineWidth(5.f);
+        glPolygonMode(GL_BACK, GL_POINT);
         renderFace(mDrawablep, this);
     }
 }

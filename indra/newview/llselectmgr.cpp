@@ -6066,6 +6066,84 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
 	}
 
+	bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
+	F32 fogCfx = (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
+
+	static LLColor4 sParentColor = LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha);
+	static LLColor4 sChildColor = LLColor4(sSilhouetteChildColor[VRED], sSilhouetteChildColor[VGREEN], sSilhouetteChildColor[VBLUE], LLSelectMgr::sHighlightAlpha);
+
+	auto renderMeshSelection_f = [fogCfx, wireframe_selection](LLSelectNode* node, LLViewerObject* objectp, LLColor4 hlColor)
+	{
+		//Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
+		LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
+
+		LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
+
+		if (shader)
+		{
+			gDebugProgram.bind();
+		}
+
+		gGL.matrixMode(LLRender::MM_MODELVIEW);
+		gGL.pushMatrix();
+
+		BOOL is_hud_object = objectp->isHUDAttachment();
+
+		if (!is_hud_object)
+		{
+			gGL.loadIdentity();
+			gGL.multMatrix(gGLModelView);
+		}
+
+		if (objectp->mDrawable->isActive())
+		{
+			gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
+		}
+		else if (!is_hud_object)
+		{
+			LLVector3 trans = objectp->getRegion()->getOriginAgent();
+			gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+		}
+
+		bool bRenderHidenSelection = node->isTransient() ? false : LLSelectMgr::sRenderHiddenSelections;
+
+
+		LLVOVolume* vobj = objectp->mDrawable->getVOVolume();
+		if (vobj)
+		{
+			LLVertexBuffer::unbind();
+			gGL.pushMatrix();
+			gGL.multMatrix((F32*)vobj->getRelativeXform().mMatrix);
+
+			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
+			{
+				vobj->updateRiggedVolume(true);
+			}
+		}
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
+		for (S32 te = 0; te < num_tes; ++te)
+		{
+			if (node->isTESelected(te))
+			{
+				objectp->mDrawable->getFace(te)->renderOneWireframe(hlColor, fogCfx, wireframe_selection, bRenderHidenSelection, nullptr != shader);
+			}
+		}
+
+		gGL.popMatrix();
+		gGL.popMatrix();
+
+		glLineWidth(1.f);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (shader)
+		{
+			shader->bind();
+		}
+	};
+
 	if (mSelectedObjects->getNumNodes())
 	{
 		LLUUID inspect_item_id = LLUUID::null;
@@ -6098,34 +6176,53 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 				if (!objectp)
 					continue;
 
-				if (objectp->isHUDAttachment() != for_hud)
-					continue;
-
-				if (objectp->getID() == focus_item_id)
+				if (objectp->mDrawable
+					&& objectp->mDrawable->getVOVolume()
+					&& !objectp->isHUDAttachment())
 				{
-					node->renderOneSilhouette(gFocusMgr.getFocusColor());
-				}
-				else if (objectp->getID() == inspect_item_id)
-				{
-					node->renderOneSilhouette(sHighlightInspectColor);
-				}
-				else if (node->isTransient())
-				{
-					BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
-					LLSelectMgr::sRenderHiddenSelections = FALSE;
-					node->renderOneSilhouette(sContextSilhouetteColor);
-					LLSelectMgr::sRenderHiddenSelections = oldHidden;
-				}
-				else if (objectp->isRootEdit())
-				{
-					node->renderOneSilhouette(sSilhouetteParentColor);
+					LLColor4 hlColor = objectp->isRootEdit() ? sParentColor : sChildColor;
+					if (objectp->getID() == inspect_item_id)
+					{
+						hlColor = sHighlightInspectColor;
+					}
+					else if (node->isTransient())
+					{
+						hlColor = sContextSilhouetteColor;
+					}
+					renderMeshSelection_f(node, objectp, hlColor);
 				}
 				else
 				{
-					node->renderOneSilhouette(sSilhouetteChildColor);
+					if (objectp->isHUDAttachment() != for_hud)
+					{
+						continue;
+					}
+					if (objectp->getID() == focus_item_id)
+					{
+						node->renderOneSilhouette(gFocusMgr.getFocusColor());
+					}
+					else if (objectp->getID() == inspect_item_id)
+					{
+						node->renderOneSilhouette(sHighlightInspectColor);
+					}
+					else if (node->isTransient())
+					{
+						BOOL oldHidden = LLSelectMgr::sRenderHiddenSelections;
+						LLSelectMgr::sRenderHiddenSelections = FALSE;
+						node->renderOneSilhouette(sContextSilhouetteColor);
+						LLSelectMgr::sRenderHiddenSelections = oldHidden;
+					}
+					else if (objectp->isRootEdit())
+					{
+						node->renderOneSilhouette(sSilhouetteParentColor);
+					}
+					else
+					{
+						node->renderOneSilhouette(sSilhouetteChildColor);
+					}
 				}
-			}
-		}
+			} //for all selected node's
+		} //for pass
 	}
 
 	if (mHighlightedObjects->getNumNodes())
@@ -6135,20 +6232,30 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		for (S32 pass = 0; pass < 2; pass++)
 		{
 			for (LLObjectSelection::iterator iter = mHighlightedObjects->begin();
-				 iter != mHighlightedObjects->end(); iter++)
+				iter != mHighlightedObjects->end(); iter++)
 			{
 				LLSelectNode* node = *iter;
 				LLViewerObject* objectp = node->getObject();
-				if (!objectp || objectp->isHUDAttachment() != for_hud)
+				if (!objectp)
 					continue;
-				
-				if (subtracting_from_selection)
+				if (objectp->isHUDAttachment() != for_hud)
+				{
+					continue;
+				}
+
+				LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
+				if (objectp->mDrawable
+					&& objectp->mDrawable->getVOVolume()
+					&& objectp->mDrawable->getVOVolume()->isMesh())
+				{
+					renderMeshSelection_f(node, objectp, subtracting_from_selection ? LLColor4::red : highlight_color);
+				}
+				else if (subtracting_from_selection)
 				{
 					node->renderOneSilhouette(LLColor4::red);
 				}
 				else if (!objectp->isSelected())
 				{
-					LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
 					node->renderOneSilhouette(highlight_color);
 				}
 			}
@@ -6725,7 +6832,7 @@ void LLSelectNode::renderOneWireframeDots(const LLColor4& color)
 
 void LLSelectNode::renderOneWireframeDragon(const LLColor4& color)
 {
-	LLViewerObject* objectp = getObject();
+	/*LLViewerObject* objectp = getObject();
 	if (!objectp)
 	{
 		return;
@@ -6736,55 +6843,27 @@ void LLSelectNode::renderOneWireframeDragon(const LLColor4& color)
 	{
 		return;
 	}
-	LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
-	if (shader)
-	{
-		gDebugProgram.bind();
-	}
-	gGL.matrixMode(LLRender::MM_MODELVIEW);
-	gGL.pushMatrix();
-	BOOL is_hud_object = objectp->isHUDAttachment();
-	if (drawable->isActive())
-	{
-		gGL.loadMatrix(gGLModelView);
-		gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
-	}
-	else if (!is_hud_object)
-	{
-		gGL.loadIdentity();
-		gGL.multMatrix(gGLModelView);
-		LLVector3 trans = objectp->getRegion()->getOriginAgent();
-		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
-	}
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-	gGL.flush();
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
-	{
-		LLGLDisable depth(0);
-		LLGLEnable stencil(0);
 
-		//modify wireframe into outline selection mode
-		glStencilFunc(GL_GEQUAL, 2, 0xffff);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, color.mV[VALPHA]);
+
+	{
+		LLGLDisable depth(wireframe_selection ? 0 : GL_BLEND);
+		LLGLEnable stencil(wireframe_selection ? 0 : GL_STENCIL_TEST);
+
+		if (!wireframe_selection)
+		{ //modify wireframe into outline selection mode
+			glStencilFunc(less, 2, 0xffff);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		}
+
+		LLGLEnable offset(offset);
 		glPolygonOffset(3.f, 3.f);
-
-		glLineWidth(4.f);
-		glPointSize(1.f);
-		glPolygonMode(GL_BACK, GL_LINE);
-
+		glLineWidth(5.f);
+		glPolygonMode(front, line);
 		pushWireframe(drawable);
-	}
-
-	glLineWidth(1.f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	gGL.popMatrix();
-	if (shader)
-	{
-		shader->bind();
-	}
+	}*/
 }
 
 void LLSelectNode::renderOneWireframeWire(const LLColor4& color)
@@ -6871,9 +6950,9 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	BOOL is_hud_object = objectp->isHUDAttachment();
 	LLVOVolume* vobj = drawable->getVOVolume();
 	//BD - Use mesh selection outline for everything.
-	if (vobj && !is_hud_object)
+	if (vobj && vobj->isMesh())
 	{
-		renderOneWireframe(color);
+		//renderOneWireframe(color);
 		return;
 	}
 
