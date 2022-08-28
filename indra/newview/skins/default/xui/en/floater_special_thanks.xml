@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater
+positioning="centered"
+legacy_header_height="18"
+height="440"
+layout="topleft"
+name="floater_about"
+save_rect="true"
+title="About [APP_NAME]"
+width="470">
+ <icon
+  follows="all"
+  height="290"
+  color="1 1 1 1"
+  image_name="Panel_Background"
+  layout="topleft"
+  name="vicon"
+  mouse_opaque="false"
+  visible="true"
+  width="452"
+  top="45"
+  bottom="-9"
+  left="9"/>
+ <tab_container
+ follows="all" 
+ top="25"
+ left="7"
+ height="410" 
+ width="455" 
+ name="about_tab"
+ tab_position="top">
+  <panel
+  border="false" 
+  label="Info"
+  name="support_panel">
+   <text_editor
+   parse_urls="true" 
+   follows="top|left"
+   font="SansSerif"
+   height="357"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   left="3"
+   max_length="65536"
+   name="support_editor"
+   top="1"
+   width="448"
+   word_wrap="true" />
+   <button
+   follows="left|top" 
+   label="Copy to Clipboard"
+   image_unselected="Toolbar_Middle_Off"
+    image_selected="Toolbar_Middle_Selected"
+   name="copy_btn"
+   left="3"
+   top_pad="1"
+   height="25"
+   width="448" />
+  </panel>
+  <panel
+  border="false"
+  label="Patreon Support"
+  name="patreon_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   parse_urls="true"
+   height="382"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   left="3"
+   max_length="65536"
+   name="credits_editor"
+   top="1"
+   width="448"
+   word_wrap="true">
+Much thanks to all Patrons who pledged money via Patreon to support this Viewer's development.
+The following list contains all Patrons who pledged at any point at least the minimum amount possible.
+
+1 x Anonymous (Total 10$)
+ねりあ (5$)
+A Paden (1$)
+Acid (1£)
+Aebleskiver Thibedeau (5$)
+Aeeykay (1$)
+Aimee Stubbs (1$)
+Akasha Sternberg (1$)
+Akritos Rain (10$)
+Ark (1$)
+Alexander Powell (10$) - [https://marketplace.secondlife.com/stores/153058 Marketplace] - [http://maps.secondlife.com/secondlife/The%20Boardwalk/219/49/30 Inworld Store]
+Alessia Kirova (10$)
+Alexa Starlight (1$)
+Alexis Matthews (5$)
+Alina Karla (5$)
+Almandite (1$)
+Altcake Resident (15$) - [https://marketplace.secondlife.com/stores/38282 Marketplace] - [https://maps.secondlife.com/secondlife/Montecito%20Bay/55/171/723 Inworld Store]
+Ample Clarity (10$) - [https://marketplace.secondlife.com/stores/56262 Marketplace]
+Andrea Reaux (10$) - [http://maps.secondlife.com/secondlife/Angel%20Eyes/59/123/26 Inworld Store]
+Andrew Maher (2$)
+Anomaloris (5$)
+Aquila Emberpaw (10$)
+Aramllinaly Resident (5$)
+Ariel Lightspear (1$)
+Ashley Beery (10$)
+Avalia (9.50€)
+AwpGoose / Harriet (5$)
+Baphy (1$)
+Bastian Moonfeather (1$)
+Belec (1$)
+Belen Sotelo (5$)
+Ben F Noviello (1$)
+Billy Daxter (10$)
+BiPie (1$)
+Blake Selkie (1$)
+Bloodwain Arun (CA$1.50)
+Booker / Youngblood (3$)
+Boudicca Amat (1$)
+Brandon Carey (1$)
+Brantley Curry (10$)
+Brian Strazzella
+BruiserBest (5$)
+Caleb Bryant (3$)
+Candy Heart (17$)
+Caitlin (1$)
+CallieRose2013 (1$)
+Catalina Bryant (2$)
+Catalina Staheli (10$)
+Chickadee Tremor (1$)
+Chris Jacob (2$)
+Chris R (11.50$)
+Chuu Akamine (1$)
+Cisco Jabberwocky (4.50€)
+Clarisa Comail (1$)
+Cliff Hofmann (1€)
+CokeLore (5$)
+Cyanna Song (1$)
+D'n'Bneko (1$)
+D.Bessant (1$)
+Daisha (10$)
+Dana Pierce (1$)
+Daniel Nichols (1$)
+Danielle Abney (10$)
+Dann Haefnir (7$)
+Dash Riprock (10$)
+David Smith (5$)
+ᴆɛᴌ (5$)
+Derenova (10$)
+Dhalgren Correia (10$)
+Diego Cabral Da Camara (2$)
+DracO HirudO (1$)
+Dzintars Irbe (1€)
+EGO SUM (10$)
+Electric Monday (2$)
+Elvi Hartley (5$)
+Emeline Laks (1$)
+Emms Sygall (10$)
+Enoch (10$)
+Erik Hugo (5€)
+Ethrick Slocum (2$)
+Eugene The Hero (10$)
+Evastika Aura (5$)
+Ewan Haggarty (1$)
+Exis (1$)
+Fabrice Toupet (5$)
+Faullon (10$)
+Flippy Dainox (5$)
+FOXCITY (8.50£) - [https://marketplace.secondlife.com/stores/11069 Marketplace] - [https://maps.secondlife.com/secondlife/FOXCITY/180/69/21 Inworld Store]
+Freyja (1$)
+Galaxy Littlepaws (1$)
+Gary McClellan (5$)
+GBTH project (10$)
+Geena Carminucci (1$)
+Goldeelox Littlepaws (10$)
+Haefnir (7$)
+Heleeennn (4.50€)
+Holger Gilruth (1$)
+Holter Rez (15$)
+Horrorz (5$)
+iPro Resident (10$) - [https://marketplace.secondlife.com/stores/222823 Marketplace]
+Imokon Neox (10$) - [https://marketplace.secondlife.com/stores/55081 Marketplce] - [http://maps.secondlife.com/secondlife/Barzakh/240/220/31 Inworld Store]
+Ivan (25$)
+Ivonne Mejia (10$)
+Jacob Allison (1$)
+Jakeb (15$)
+Jaqui (5$)
+Jasmyne (2$)
+Jax Winchester (5$)
+Jay (2$)
+Jenn No (1$)
+Jochen Heim (5$)
+Justin Z (50$)
+Karen Hitchinson (5$)
+Katrin Chapman (1$)
+Kaymayhem (5$)
+Kei Kurono (1$)
+Ken Durham + BeaTenma (2$)
+KenjiHimura (5$)
+Kenzie Starlight (2$)
+Kodaijin (5$)
+KT Syakumi (1$)
+Kouturiér (1$)
+L Akers (5$)
+Lakaluka Luka (10$)
+Linda Reddevil (1$)
+Liz (1$)
+Lone (10$) - [https://maps.secondlife.com/secondlife/Horizons%20Mars/238/241/1401 Inworld Store]
+Luana Meo (5$) - [https://marketplace.secondlife.com/stores/170473 Marketplace] - [https://maps.secondlife.com/secondlife/Slice%20of%20Heaven/83/132/30 Inworld Store]
+Lucas Alastair Moonfeather (1$)
+Luke N Fortacos (6$)
+Lux Chiantelle (3$)
+Maddy Gynoid (5$)
+Mai Yutani (1$)
+Mark Sommerset (1$)
+Martin Yeats (20$)
+Matenkuo Sauber (5$)
+Matt (1$)
+Mayzatourment (3$)
+Miaa Rebane (5$)
+Mikey (1$)
+Mister Durden (1$)
+Magnum Yoshikawa (1$)
+Mauro Rosenfeld (1$)
+Menominum (2$)
+Mericat Ireland (1$)
+Merry0722 (6$)
+Miru Lane (5$)
+Molly Footman (5$)
+Mr Coffee (30$)
+Naga Lionheart (3$)
+Nairi (1$)
+Nastasya Sokolova (5$)
+Narcissus (5$)
+Natade (1$)
+Nick Williamson (5$)
+Nieka D (1$)
+Nikita Pesterev (10$)
+Nitska Bastet (5$)
+Nils Woerner (5$)
+Nodnol Jameson (10$)
+Norbert Gerntrup (5$)
+Norsks (10$)
+Num Bing (10$)
+Nunmina (5$)
+Nyt (1$)
+Paige (5$)
+Parker (Kobi) Troiani (5$)
+Paul Felts / Paulie Flomar (5$)
+Paul Healy (1$)
+Pink Absinthe (SEK10)
+Pnpnkitin (10$) [https://maps.secondlife.com/secondlife/Cerberus Crossing/128/214/2027 Inworld Store]
+PolygonBird (1$)
+Potato (1$)
+Priscilla Lilienthal (10$)
+Raaket (1$)
+Rachel Quinn / Rachel Osceola (30$)
+Raia Aurelia (1$)
+Ral (10$)
+Renko Usana (5$)
+Richard Call (15$)
+Rich Washabaugh (2$)
+Rienna no Ouji (1$)
+Riot (10$)
+Rita Baumann (1$)
+Roxana Tesch (10$)
+RyukoMR (5$)
+SAINT (5$)
+Sally Crofton (5$)
+Samantha Marie (5$)
+Saysh Infiniti (1$)
+Seefor.ark2 (1$)
+Seren Villiers (5$)
+Shiruviana (1$)
+Shocking Wonder (1$)
+Shyaltii Milneaux (5$)
+Shyralei Nefekalum (1$)
+Silivren Atheria (1$)
+Sinful Rhapsody (1$)
+SingularisLupus (50$)
+Skylene Rains (10$)
+Soda Sullivan (1$)
+Sonny J (1.50CA$)
+Sparklebottom Lasertits (1$)
+Starr (1$)
+Stephan Bedard (1$)
+Stephen Bedard (1$)
+Stelia Archer (1$)
+Swan Princess (1$)
+Naomii Amore (1$)
+Tatsushi Ohara (5$)
+Taya Karpenko (1$)
+Thalia Heckroth H (10$) [http://maps.secondlife.com/secondlife/Fingal/128/84/23 Inworld Store] - [https://marketplace.secondlife.com/stores/118124/ Marketplace]
+The Little Branch [http://maps.secondlife.com/secondlife/Aspen%20Springs/99/88/21 Inworld Store] - [https://marketplace.secondlife.com/stores/160713 Marketplace]
+TheCalina (5$)
+Tijakool Yiyuan (5$)
+Trenton Meador (5$)
+Chance Raynier (1$)
+Ulrike Woltering (5$)
+Unknown Name (1$)
+Vaelian Lionheart (10$)
+Viki Tran (1$)
+Villena (50$)
+William Betteridge (1$)
+Willem Huisman (10$)
+Valentine Wolfram (1€)
+Vanessa (1$)
+Violet Voxel (1£)
+Virginia J Hughes (5$)
+VirtualVerse (10$)
+Wolfdenden (10$)
+Woodruff (5$)
+XavaX (1$)
+Zieb Zen (1$)
+Ziekling Bunnyhug (5$) - [https://maps.secondlife.com/secondlife/Bay%20Ruins/172/209/36 Inworld Store]
+Zelda (10$)
+Zero (10$)
+   </text_editor>
+  </panel>
+  <panel
+  border="false" 
+  label="Credits"
+  name="credits_panel">
+   <text
+   follows="top|left|right"
+   height="10"
+   layout="topleft"
+   left="8"
+   name="linden_intro"
+   top="10"
+   width="435"
+   wrap="true">
+Second Life is brought to you by the Lindens:
+   </text>
+   <text_editor
+   enabled="false" 
+   follows="top|left"
+   height="161"
+   left="3"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   max_length="65536"
+   name="linden_names"
+   top_pad="10"
+   width="448"
+   word_wrap="true">
+Philip, Andrew, Doug, Richard, Phoenix, Ian, Mark, Robin, Dan, Char, Ryan, Eric, Jim, Lee, Jeff, Michael, Kelly, Steve, Catherine, Bub, Ramzi, Jill, Jeska, Don, Kona, Callum, Charity, Jack, Shawn, babbage, James, Lauren, Blue, Brent, Reuben, Pathfinder, Jesse, Patsy, Torley, Bo, Cyn, Jonathan, Gia, Annette, Ginsu, Harry, Lex, Runitai, Guy, Cornelius, Beth, Swiss, Thumper, Wendy, Teeple, Seth, Dee, Mia, Sally, Liana, Aura, Beez, Milo, Red, Gulliver, Marius, Joe, Jose, Dore, Justin, Nora, Morpheus, Lexie, Amber, Chris, Xan, Leyla, Walker, Sabin, Joshua, Hiromi, Tofu, Fritz, June, Jean, Ivy, Dez, Ken, Betsy, Which, Spike, Rob, Zee, Dustin, George, Claudia, del, Matthew, jane, jay, Adrian, Yool, Rika, Yoz, siobhan, Qarl, Benjamin, Beast, Everett, madhavi, Christopher, Izzy, stephany, Jeremy, sean, adreanne, Pramod, Tobin, sejong, Iridium, maurice, kj, Meta, kari, JP, bert, kyle, Jon, Socrates, Bridie, Ivan, maria, Aric, Coco, Periapse, sandy, Storrs, Lotte, Colossus, Brad, Pastrami, Zen, BigPapi, Banzai, Sardonyx, Mani, Garry, Jaime, Neuro, Samuel, Niko, CeeLo, Austin, Soft, Poppy, emma, tessa, angelo, kurz, alexa, Sue, CG, Blake, Erica, Brett, Bevis, kristen, Q, simon, Enus, MJ, laurap, Kip, Scouse, Ron, Ram, kend, Marty, Prospero, melissa, kraft, Nat, Seraph, Hamilton, Lordan, Green, miz, Ashlei, Trinity, Ekim, Echo, Charlie, Rowan, Rome, Jt, Doris, benoc, Christy, Bao, Kate, Tj, Patch, Cheah, Johan, Brandy, Angela, Oreh, Cogsworth, Lan, Mitchell, Space, Bambers, Einstein, Bender, Malbers, Matias, Maggie, Rothman, Milton, Niall, Marin, Allison, Mango, Andrea, Katt, Yi, Ambroff, Rico, Raymond, Gail, Christa, William, Dawn, Usi, Dynamike, M, Corr, Dante, Molly, kaylee, Danica, Kelv, Lil, jacob, Nya, Rodney, elsie, Blondin, Grant, Nyx, Devin, Monty, Minerva, Keira, Katie, Jenn, Makai, Clare, Joy, Cody, Gayathri, FJ, spider, Oskar, Landon, Jarv, Noelle, Al, Doc, Gray, Vir, t, Maestro, Simone, Shannon, yang, Courtney, Scott, charlene, Quixote, Susan, Zed, Amanda, Katelin, Esbee, JoRoan, Enkidu, roxie, Scarlet, Merov, Kevin, Judy, Rand, Newell, Les, Dessie, Galen, Michon, Geo, Siz, Calyle, Pete, Praveen, Callen, Sheldon, Pink, Nelson, jenelle, Terrence, Nathan, Juan, Sascha, Huseby, Karina, Kaye, Kotler, Lis, Darv, Charrell, Dakota, Kimmora, Theeba, Taka, Mae, Perry, Ducot, dana, Esther, Dough, gisele, Doten, Viale, Fisher, jessieann, ashley, Torres, delby, rountree, kurt, Slaton, Madison, Rue, Gino, Wen, Casssandra, Brodesky, Squid, Gez, Rakesh, Gecko, Ladan, Tony, Tatem, Squire, Falcon, BK, Crimp, Tiggs, Bacon, Coyot, Carmilla, Webb, Sea, Arch, Jillian, Jason, Bernard, Vogt, Peggy, dragon, Pup, xandix, Wallace, Bewest, Inoshiro, Rhett, AG, Aimee, Ghengis, Itiaes, Eli, Steffan, Epic, Grapes, Stone, Prep, Scobu, Robert, Alain, Carla, Vicky, Tia, Alec, Taras, Lisa, Oz, Ariane, Log, House, Kazu, Kim, Drofnas, Tyler, Campbell, Michele, Madeline, Nelly, Baron, Thor, Lori, Hele, Fredrik, Teddy, Pixie, Berry, Gabrielle, Alfonso, Brooke, Wolf, Ringo, Cru, Charlar, Rodvik, Gibson, Elise, Bagman, Greger, Leonidas, Jerm, Leslie, CB, Brenda, Durian, Carlo, mm, Zeeshan, Caleb, Max, Elikak, Mercille, Steph, Chase, Baker
+   </text_editor>
+   <text
+   follows="top|left"
+   height="10"
+   layout="topleft"
+   left="8"
+   name="contrib_intro"
+   top_pad="10"
+   width="435"
+   wrap="true">
+with open source contributions from:
+   </text>
+   <text_editor
+   enabled="false" 
+   follows="top|left"
+   height="162"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   left="3"
+   max_length="65536"
+   name="contrib_names"
+   top_pad="10"
+   width="448"
+   word_wrap="true">
+Dummy Name replaced at run time
+   </text_editor>
+  </panel>
+  <panel
+  border="false"
+  label="Licenses"
+  name="licenses_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   height="382"
+   bg_readonly_color="Transparent"
+   left="3"
+   text_readonly_color="LabelTextColor"
+   max_length="65536"
+   name="licenses_editor"
+   top="1"
+   width="448"
+   word_wrap="true">
+3Dconnexion SDK Copyright (C) 1992-2007 3Dconnexion
+APR Copyright (C) 2000-2004 The Apache Software Foundation
+Collada DOM Copyright 2005 Sony Computer Entertainment Inc.
+cURL Copyright (C) 1996-2002, Daniel Stenberg, (daniel@haxx.se)
+DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
+expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
+FMOD Studio, (C) 2019 Firelight Technologies Pty Ltd.
+FreeType Copyright (C) 1996-2002, The FreeType Project (www.freetype.org).
+GL Copyright (C) 1999-2004 Brian Paul.
+GLOD Copyright (C) 2003-04 Jonathan Cohen, Nat Duca, Chris Niski, Johns Hopkins University and David Luebke, Brenden Schubert, University of Virginia.
+google-perftools Copyright (c) 2005, Google Inc.
+Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
+jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
+jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
+ogg/vorbis Copyright (C) 2001, Xiphophorus
+OpenSSL Copyright (C) 1998-2002 The OpenSSL Project.
+PCRE Copyright (c) 1997-2008 University of Cambridge
+SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
+SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
+zlib Copyright (C) 1995-2002 Jean-loup Gailly and Mark Adler.
+google-perftools Copyright (c) 2005, Google Inc.
+
+Second Life uses Havok (TM) Physics. (c)Copyright 1999-2010 Havok.com Inc. (and its Licensors). All Rights Reserved. See www.havok.com for details.
+
+This software contains source code provided by NVIDIA Corporation.
+
+All rights reserved.  See licenses.txt for details.
+
+Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
+   </text_editor>
+  </panel>
+  <panel
+  border="false"
+  label="Special Thanks"
+  name="licenses_panel">
+   <text_editor
+   enabled="false"
+   follows="left|top"
+   parse_urls="true"
+   height="382"
+   bg_readonly_color="Transparent"
+   text_readonly_color="LabelTextColor"
+   left="3"
+   max_length="65536"
+   name="credits_editor"
+   top="1"
+   width="448"
+   word_wrap="true">
+Heres a List of Special Thanks to all people that helped my Viewer , implemented a Feature or something for the UI
+
+Aimee Arcana:
+ Additional Water Normalmaps
+
+Andromeda Rage:
+ Derender
+ 
+Arrehn Oberlander:
+ Qarls Aligning Tool Tweaks &amp; Fixes
+ 
+Chalice Yao:
+ Touch &amp; Sit protection
+ 
+Dannyy Collazo:
+ Script toolbar button icon
+ 
+Geenz Spad:
+ Blinn Phong Speculars
+ High Precision Floating Point Frame Buffers
+ Gamma Correction
+ Color Correction
+ Color Grading
+ Tone Mapping
+ Vignette Effect
+
+Kitty Barnett:
+ RLVa Support &amp; Updates
+ 
+L4n4:
+ Donations
+
+Luna Jubilee:
+ Windlight Presets (from her blog)
+
+Marine Kelley:
+ *Mouselook grabbing
+ Non-hiding UI in Mouselook
+ 
+Mechatoy Mekanic:
+ Sponsoring
+ www.mechtoys.com
+ http://maps.secondlife.com/secondlife/Axell/185/128/21
+ 
+Miguael Liamano:
+ Additional Windlight Presets
+
+Oz Linden:
+ TPV Check &amp; Pass
+ 
+Qarl Fizz:
+ Qarls Aligning Tool
+ 
+TankMaster Finesmith:
+ Optional Chat Range Rings
+ Qarls Aligning Tool Tweaks &amp; Fixes
+ 
+Tofu Buzzard
+ Atmospheric Haze Fix
+ Better SSAO
+ Faster DoF
+ Screen Space Reflections
+ Godrays
+
+Zi Ree:
+ Fading Teleport Screen
+ Pie Menus
+ Texture Refresh
+
+feel free to IM me if you can tell me missing names and/or find more stuff others did!
+   </text_editor>
+  </panel>
+  <panel
+      border="true"
+      label="Licenses"
+      help_topic="about_licenses_tab"
+      name="licenses_panel">
+      <text_editor
+       enabled="false"
+       follows="left|top"
+       height="375"
+       bg_readonly_color="Transparent"
+       left="5"
+       text_color="LtGray"
+       max_length="65536"
+       name="licenses_editor"
+       top="5"
+       width="465"
+       word_wrap="true">
+        3Dconnexion SDK Copyright (C) 1992-2009 3Dconnexion
+        APR Copyright (C) 2011 The Apache Software Foundation
+        Collada DOM Copyright 2006 Sony Computer Entertainment Inc.
+        cURL Copyright (C) 1996-2010, Daniel Stenberg, (daniel@haxx.se)
+        DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
+        expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
+        FreeType Copyright (C) 1996-2002, 2006 David Turner, Robert Wilhelm, and Werner Lemberg.
+        GL Copyright (C) 1999-2004 Brian Paul.
+        google-perftools Copyright (c) 2005, Google Inc.
+        Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
+        jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
+        jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
+        meshoptimizer Copyright (c) 2016-2021 Arseny Kapoulkine
+        ogg/vorbis Copyright (C) 2002, Xiphophorus
+        OpenSSL Copyright (C) 1998-2008 The OpenSSL Project.
+        PCRE Copyright (c) 1997-2012 University of Cambridge
+        SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
+        SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+        xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
+        zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
+      </text_editor>
+  </panel>
+ </tab_container>
+</floater>

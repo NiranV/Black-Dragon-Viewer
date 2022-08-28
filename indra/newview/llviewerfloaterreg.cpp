@@ -408,6 +408,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("complexity", "floater_complexity.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterComplexity>);
 	LLFloaterReg::add("recorder", "floater_recorder.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterCamera>);
 	LLFloaterReg::add("poser", "floater_poser.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterPoser>);
+	LLFloaterReg::add("special_thanks", "floater_special_thanks.xml", &LLFloaterReg::build<LLFloater>);
 
 	// *NOTE: Please keep these alphabetized for easier merges
 	
