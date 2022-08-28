@@ -173,8 +173,87 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="221"
+     height="520"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability to bind Left and Right Mouse click to keybindings system.
+Added: Icons to all mappings to make it easier for people to see what button/axis they are binding.
+Added: WIP special thanks floater.
+Added: Artifex Voxel as Patreon patron.
+Added: Alex B. Collie as Patreon patron.
+Added: Anna Mendoza as Patreon patron.
+Added: Annabelle Puddles as Patreon patron.
+Added: Ashton Agnes as Patreon patron.
+Added: Barbarella Peapod as Patreon patron.
+Added: Becky Lu as Patreon patron.
+Added: Burleh Leonard as Patreon patron.
+Added: Dave Booth as Patreon patron.
+Added: Jamie as Patreon patron.
+Added: Jenya as Patreon patron.
+Added: Kevin Fellion as Patreon patron.
+Added: Kihae as Patreon patron.
+Added: Loverdag as Patreon patron.
+Added: MeanBunneh as Patreon patron.
+Added: Moist Fruitcake as Patreon patron.
+Added: NadnerbD as Patreon patron.
+Added: Nora Foraois as Patreon patron.
+Added: Olakota as Patreon patron.
+Added: Red Blaze as Patreon patron.
+Added: Shanese as Patreon patron.
+Added: Sandisha as Patreon patron.
+Added: Squidpaladin as Patreon patron.
+Added: VideoGameNoodle as Patreon patron.
+Added: Zaphne Diggs as Patreon patron.
+Added: Bad Decisions shop link to Virginia J Hughes as requested.
+Changed: Altered "Include Alphas into Depth" behavior and fixed it causing alphas to change in transparency.
+Changed: Overhauled 'Set Key' and 'Change Key' dialogs and made them easier to understand.
+Changed: Completely rework joystick deadzones and make them work as expected, this should fix people rotating on their first use.
+Changed: Defaults for joystick scales and deadzones for the new rework.
+Changed: Overhauled layout for the flycam configuration.
+Changed: Version to 4.1.2.
+Fixed: Script trigger not bindable.
+Fixed: Script trigger missing from default keybinds (needs reset to take effect).
+Fixed: Profile save notification is broken.
+Fixed: Framerate Limiter not working on restart, requiring the limit to be set again.
+Misc: Merges.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.1.1
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="221"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
