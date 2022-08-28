@@ -4343,47 +4343,50 @@ and report the problem.
   <string name="none_paren_cap">(None)</string>
   <string name="no_limit">No Limit</string>
   
-  <!-- Black Dragon specific -->
+	<!-- Black Dragon specific -->
 	<string name="VIEWER_VERSION_LOCAL">4.1.1</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Speeding Dragon</string>
 	
-  <string name="UnmuteText">Show Text</string>
-  <string name="MuteText">Block Text</string>
-  <string name="UnmuteVoice">Unmute Voice</string>
-  <string name="MuteVoice">Mute Voice</string>
+	<!-- Special "key" 15 is essentially NONE -->
+	<string name="15"></string>
+	
+	<string name="UnmuteText">Show Text</string>
+	<string name="MuteText">Block Text</string>
+	<string name="UnmuteVoice">Unmute Voice</string>
+	<string name="MuteVoice">Mute Voice</string>
 	
 	<string name="Toolbar_Top_Tooltip" >currently in your top toolbar</string>
 	
 	<string name="Command_Windlight_Label">Environment Editor</string>
-  <string name="Command_Sky_Label">Sky Editor</string>
-  <string name="Command_Water_Label">Water Editor</string>
-  <string name="Command_Navbar_Label">Navigationbar</string>
+	<string name="Command_Sky_Label">Sky Editor</string>
+	<string name="Command_Water_Label">Water Editor</string>
+	<string name="Command_Navbar_Label">Navigationbar</string>
 	<string name="Command_Poser_Label">Poser</string>
 	<string name="Command_Windlight_Tooltip">Set your preferred sky and water preset</string>
-  <string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
-  <string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
-  <string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
+	<string name="Command_Sky_Tooltip">Edit a sky preset or create a new one</string>
+	<string name="Command_Water_Tooltip">Edit a water preset or create a new one</string>
+	<string name="Command_Navbar_Tooltip">Show the Navigationbar and your Favorites</string>
 	<string name="Command_Poser_Tooltip">Open the poser and strike a pose</string>
 	
 	<string name="LoginCleanup">Login Cleanup</string>
-  <string name="LoginAuthInit">Initializing Login Authentification</string>
-  <string name="LoginCurlUnstuck">Unstucking Login Curl</string>
-  <string name="LoginProcessResponse">Awaiting Login Response</string>
-  <string name="WorldInit">Initializing World</string>
-  <string name="MediaInit">Initializing Multimedia</string>
-  <string name="FontInit">Initializing Fonts</string>
-  <string name="SeedWaiting">Awaiting Seed Caps</string>
-  <string name="SeedGranted">Seed Caps Granted</string>
-  <string name="WorldWait">Awaiting World</string>
-  <string name="AgentSend">Sending Agent Request</string>
-  <string name="AgentWait">Awaiting Agent Data</string>
-  <string name="InventorySend">Sending Inventory Request</string>
-  <string name="Misc">Miscellaneous</string>
-  <string name="Precache">Precaching</string>
-  <string name="WearablesWait">Awaiting Wearables</string>
-  <string name="Cleanup">Cleanup</string>
-  
-  <string name="im_developer">
+	<string name="LoginAuthInit">Initializing Login Authentification</string>
+	<string name="LoginCurlUnstuck">Unstucking Login Curl</string>
+	<string name="LoginProcessResponse">Awaiting Login Response</string>
+	<string name="WorldInit">Initializing World</string>
+	<string name="MediaInit">Initializing Multimedia</string>
+	<string name="FontInit">Initializing Fonts</string>
+	<string name="SeedWaiting">Awaiting Seed Caps</string>
+	<string name="SeedGranted">Seed Caps Granted</string>
+	<string name="WorldWait">Awaiting World</string>
+	<string name="AgentSend">Sending Agent Request</string>
+	<string name="AgentWait">Awaiting Agent Data</string>
+	<string name="InventorySend">Sending Inventory Request</string>
+	<string name="Misc">Miscellaneous</string>
+	<string name="Precache">Precaching</string>
+	<string name="WearablesWait">Awaiting Wearables</string>
+	<string name="Cleanup">Cleanup</string>
+	
+	<string name="im_developer">
 &lt;icon&gt;Popup_Caution&lt;/icon&gt; &lt;red&gt;DON'T's&lt;/red&gt;
 • Message me with '&lt;i&gt;Hello&lt;/i&gt;' or '&lt;i&gt;I don't want to waste your time&lt;/i&gt;' or '&lt;i&gt;Can i ask you a question&lt;/i&gt;'.
 • Send me notecards or textures of your problem unless asked.

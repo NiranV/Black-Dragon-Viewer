@@ -5,47 +5,51 @@
  border="false"
  can_close="false"
  can_minimize="false"
- height="113"
+ height="198"
  layout="topleft"
  name="modal container"
- width="200">
+ width="300">
    <button
-     height="1"
+     height="102"
      label=""
      image_selected="transparent.j2c"
      image_unselected="transparent.j2c"
      layout="topleft"
      left="10"
      name="FocusButton"
-     top_pad="2"
-     width="10" />
+     top="40"
+     width="282" />
     <text
      type="string"
      halign="center"
      length="1"
      follows="left|top"
-     height="14"
+     read_only="true"
+     height="58"
      layout="topleft"
-     left="0"
+     left="8"
      name="Save item as:"
      top="0"
      word_wrap="true"
-     width="200">
-        Current bind:
+     width="284">
+        To bind a &lt;green&gt;Key&lt;/green&gt;, simply press the desired key.
+To bind a &lt;green&gt;Mouse Button&lt;/green&gt;, click anywhere between the top of the window and mask buttons with the desired &lt;green&gt;Mouse Button&lt;/green&gt;.
     </text>
     <text
      type="string"
      halign="center"
      length="1"
      follows="left|top"
-     height="14"
+     height="42"
      layout="topleft"
      left="0"
      name="old_key_display"
      top_pad="0"
      word_wrap="true"
-     width="200">
-        [KEY] + [MASK]
+     width="300">
+Currently bound:
+Button: [KEY]
+Mask: [MASK]
     </text>
     <text
      type="string"
@@ -58,7 +62,7 @@
      name="Save item as:"
      top_pad="0"
      word_wrap="true"
-     width="200">
+     width="300">
         Will be replaced with:
     </text>
     <text
@@ -66,24 +70,25 @@
      halign="center"
      length="1"
      follows="left|top"
-     height="14"
+     height="28"
      layout="topleft"
      left="0"
      name="key_display"
      top_pad="0"
      word_wrap="true"
-     width="200">
-        [KEY] + [MASK]
+     width="300">
+Button: [KEY]
+Mask: [MASK]
     </text>
+    
     <check_box
    height="16"
    initial_value="false"
-   is_toggle="true"
    label="⌊Ctrl⌉"
    layout="topleft"
    left="7"
    name="CTRL"
-   top_pad="7"
+   top_pad="2"
    width="60" >
    <check_box.commit_callback
       function="Set.Masks"/>
@@ -91,10 +96,9 @@
     <check_box
    height="16"
    initial_value="false"
-   is_toggle="true"
    label="⌊Shift⌉"
    layout="topleft"
-   left_pad="10"
+   left_pad="50"
    name="SHIFT"
    top_delta="0"
    width="60" >
@@ -104,10 +108,9 @@
     <check_box
    height="16"
    initial_value="false"
-   is_toggle="true"
    label="⌊Alt⌉"
    layout="topleft"
-   left_pad="10"
+   left_pad="50"
    name="ALT"
    top_delta="0"
    width="60" >
@@ -118,11 +121,14 @@
      height="23"
      label="Cancel"
      label_selected="Cancel"
+     image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left="10"
      name="Cancel"
-     top_pad="2"
-     width="90" >
+     top_pad="7"
+     width="140" >
       <button.commit_callback
       function="Set.Cancel"/>
    </button>
@@ -130,11 +136,14 @@
      height="23"
      label="Bind"
      label_selected="Bind"
+     image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left_pad="1"
      name="Bind"
      top_delta="0"
-     width="90" >
+     width="140" >
     <button.commit_callback
       function="Set.Bind"/>
    </button>

@@ -1321,6 +1321,7 @@ BOOL LLViewerInput::unbindAllKeys(bool reset)
 			mBindings[i][it].mKey = NULL;
 			mBindings[i][it].mMouse = CLICK_NONE;
 			mBindings[i][it].mMask = NULL;
+			mLMouseDefaultHandling[i] = false;
 		}
 
 		//BD -  We need to seperate this to prevent evil things from happening.
@@ -1341,6 +1342,8 @@ BOOL LLViewerInput::unbindModeKeys(bool reset, S32 mode)
 		mBindings[mode][it].mMouse = CLICK_NONE;
 		mBindings[mode][it].mMask = NULL;
 	}
+
+	mLMouseDefaultHandling[mode] = false;
 
 	//BD -  We need to seperate this to prevent evil things from happening.
 	if (reset)
@@ -1429,6 +1432,22 @@ BOOL LLViewerInput::exportBindingsXML(const std::string& filename)
 			record["function"] = mBindings[i][it].mFunctionName;
 			record["key"] = gKeyboard->stringFromKey(key, false);
 			record["mouse"] = mBindings[i][it].mMouse;
+			record["mode"] = i;
+			record["mask"] = gKeyboard->stringFromMask(mask);
+			record["slot"] = slot;
+
+			LLSDSerialize::toXML(record, file);
+			slot++;
+		}
+		//BD - Special Case to handle the left-click script trigger.
+		for (S32 it = 0, end_it = mLMouseDefaultHandling[i]; it < end_it; it++)
+		{
+			KEY key;
+			MASK mask = MASK_NONE;
+			LLSD record;
+			record["function"] = script_mouse_handler_name;
+			record["key"] = key;
+			record["mouse"] = CLICK_LEFT;
 			record["mode"] = i;
 			record["mask"] = gKeyboard->stringFromMask(mask);
 			record["slot"] = slot;

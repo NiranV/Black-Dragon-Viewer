@@ -3,22 +3,22 @@
  legacy_header_height="18"
  positioning="centered"
  border="false"
- can_close="false"
+ can_close="true"
  can_minimize="false"
- height="110"
+ height="198"
  layout="topleft"
  name="modal container"
- width="200">
+ width="300">
    <button
-     height="1"
+     height="102"
      label=""
      image_selected="transparent.j2c"
      image_unselected="transparent.j2c"
      layout="topleft"
      left="10"
      name="FocusButton"
-     top_pad="2"
-     width="10" />
+     top="40"
+     width="282" />
     <text
      type="string"
      halign="center"
@@ -29,25 +29,44 @@
      layout="topleft"
      left="0"
      name="Save item as:"
-     top="25"
+     top="0"
      word_wrap="true"
-     width="200">
-        Select an action and press a key.
+     width="300">
+        Select an action from the dropdown below.
     </text>
     <text
      type="string"
      halign="center"
      length="1"
      follows="left|top"
-     height="14"
+     read_only="true"
+     height="42"
+     layout="topleft"
+     left="8"
+     name="Save item as:"
+     top_pad="26"
+     word_wrap="true"
+     width="284">
+        To bind a &lt;green&gt;Key&lt;/green&gt;, simply press the desired key.
+To bind a &lt;green&gt;Mouse Button&lt;/green&gt;, click anywhere between the dropdown and mask buttons with the desired &lt;green&gt;Mouse Button&lt;/green&gt;.
+    </text>
+    <text
+     type="string"
+     halign="center"
+     length="1"
+     follows="left|top"
+     height="38"
      layout="topleft"
      left="0"
      name="key_display"
-     top_pad="0"
+     top_pad="22"
      word_wrap="true"
-     width="200">
-        [KEY] + [MASK]
+     width="300">
+Keys to bind:
+Button: &lt;green&gt;[KEY]&lt;/green&gt;
+Mask: &lt;green&gt;[MASK]&lt;/green&gt;
     </text>
+    
     <check_box
    height="16"
    initial_value="false"
@@ -65,7 +84,7 @@
    initial_value="false"
    label="⌊Shift⌉"
    layout="topleft"
-   left_pad="10"
+   left_pad="50"
    name="SHIFT"
    top_delta="0"
    width="60" >
@@ -77,7 +96,7 @@
    initial_value="false"
    label="⌊Alt⌉"
    layout="topleft"
-   left_pad="10"
+   left_pad="50"
    name="ALT"
    top_delta="0"
    width="60" >
@@ -88,11 +107,14 @@
      height="23"
      label="Cancel"
      label_selected="Cancel"
+     image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left="10"
      name="Cancel"
      top_pad="7"
-     width="90" >
+     width="140" >
       <button.commit_callback
       function="Set.Cancel"/>
    </button>
@@ -100,11 +122,14 @@
      height="23"
      label="Bind"
      label_selected="Bind"
+     image_hover_unselected="Toolbar_Middle_Over"
+    image_selected="Toolbar_Middle_Selected"
+    image_unselected="Toolbar_Middle_Off"
      layout="topleft"
      left_pad="1"
      name="Bind"
      top_delta="0"
-     width="90" >
+     width="140" >
     <button.commit_callback
       function="Set.Bind"/>
    </button>
@@ -118,8 +143,8 @@
 	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	name="bind_action_1"
 	allow_text_entry="true"
-	top="1"
-	width="189">
+	top="16"
+	width="289">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -284,8 +309,8 @@
 	name="bind_action_0"
 	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
-	top_delta="0"
-	width="189">
+	top="16"
+	width="289">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -386,8 +411,8 @@
 	name="bind_action_2"
 	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
-	top_delta="0"
-	width="189">
+	top="16"
+	width="289">
   <combo_box.item
   label="Move Left"
   name="slide_left"
@@ -544,8 +569,8 @@
 	name="bind_action_3"
 	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
-	top_delta="0"
-	width="189">
+	top="16"
+	width="289">
   <combo_box.item
   label="Move Forward"
   name="edit_avatar_move_forward"
@@ -610,8 +635,8 @@
 	name="bind_action_4"
 	tool_tip="This dropdown allows you to select the action you want to add to the above list with the 'Add New' button."
 	allow_text_entry="true"
-	top_delta="0"
-	width="189">
+	top="16"
+	width="289">
   <combo_box.item
   label="Move Forward"
   name="move_forward_sitting"

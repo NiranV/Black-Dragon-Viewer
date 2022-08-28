@@ -542,8 +542,9 @@ BOOL LLVoiceSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 BOOL LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
 {
     BOOL result = FALSE;
-    if (down
-        && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT)
+    if (down && getChild<LLTextBox>("FocusButton")->getHoverCursor()
+        && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT
+		|| clicktype == CLICK_LEFT || clicktype == CLICK_RIGHT)
         && mask == 0)
     {
         mParent->setMouse(clicktype);
@@ -670,10 +671,18 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 	std::string mouse = "";
-	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT))
+	LLRect screen_rect;
+	getChild<LLButton>("FocusButton")->localRectToScreen(getChild<LLButton>("FocusButton")->getLocalRect(), &screen_rect);
+	if (down && screen_rect.pointInRect(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY())
+		&& (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT
+			|| clicktype == CLICK_LEFT || clicktype == CLICK_RIGHT))
 	{
 		mMouse = clicktype;
-		if(clicktype == CLICK_MIDDLE)
+		if (clicktype == CLICK_LEFT)
+			mouse = "Left Mouse Button";
+		else if (clicktype == CLICK_RIGHT)
+			mouse = "Right Mouse Button";
+		else if (clicktype == CLICK_MIDDLE)
 			mouse = "Middle Mouse";
 		else if (clicktype == CLICK_BUTTON4)
 			mouse = "Mouse Button 4";
@@ -863,10 +872,18 @@ BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClick
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 	std::string mouse = "";
-	if (down && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT))
+	LLRect screen_rect;
+	getChild<LLButton>("FocusButton")->localRectToScreen(getChild<LLButton>("FocusButton")->getLocalRect(), &screen_rect);
+	if (down && screen_rect.pointInRect(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY())
+		&& (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT
+		|| clicktype == CLICK_LEFT || clicktype == CLICK_RIGHT))
 	{
 		mMouse = clicktype;
-		if (clicktype == CLICK_MIDDLE)
+		if (clicktype == CLICK_LEFT)
+			mouse = "Left Mouse Button";
+		else if (clicktype == CLICK_RIGHT)
+			mouse = "Right Mouse Button";
+		else if (clicktype == CLICK_MIDDLE)
 			mouse = "Middle Mouse";
 		else if (clicktype == CLICK_BUTTON4)
 			mouse = "Mouse Button 4";
