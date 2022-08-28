@@ -12209,6 +12209,7 @@ This option turns off the fullbright flag in objects to force the Viewer to trea
 
 &lt;b&gt;DO NOT select objects you have edit permissions for after using this option.&lt;/b&gt;
   <tag>notification</tag>
+   </notification>
 
 <notification
    icon="alertmodal.tga"
