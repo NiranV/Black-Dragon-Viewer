@@ -85,16 +85,7 @@ void LLDrawPoolAlpha::prerender()
 
 S32 LLDrawPoolAlpha::getNumPostDeferredPasses() 
 { 
-//	//BD - Include Alphas In DoF and Volumetric Lighting if we want to.
-	if ((gPipeline.RenderDepthOfField || gPipeline.RenderGodrays)
-			&& gSavedSettings.getBOOL("RenderDepthOfFieldAlphas"))
-	{
-		return 2; 
-	}
-	else
-	{
-		return 1;
-	}
+	return 1;
 }
 
 // set some common parameters on the given shader to prepare for alpha rendering
@@ -163,7 +154,10 @@ void LLDrawPoolAlpha::renderPostDeferred(S32 pass)
     forwardRender();
 
     // final pass, render to depth for depth of field effects
-    if (!LLPipeline::sImpostorRender && gSavedSettings.getBOOL("RenderDepthOfField"))
+    if (!LLPipeline::sImpostorRender
+		//BD - Volumetric Lighting
+		&& (gPipeline.RenderDepthOfField
+		|| gPipeline.RenderGodrays))
     { 
         //update depth buffer sampler
         gPipeline.mScreen.flush();
@@ -173,7 +167,12 @@ void LLDrawPoolAlpha::renderPostDeferred(S32 pass)
         simple_shader = fullbright_shader = &gObjectFullbrightAlphaMaskProgram;
 
         simple_shader->bind();
-        simple_shader->setMinimumAlpha(0.33f);
+		//BD - TODO: Optimize
+		if ((gPipeline.RenderDepthOfField || gPipeline.RenderGodrays)
+			&& gSavedSettings.getBOOL("RenderDepthOfFieldAlphas"))
+			simple_shader->setMinimumAlpha(0.33f);
+		else
+			simple_shader->setMinimumAlpha(1.f);
 
         // mask off color buffer writes as we're only writing to depth buffer
         gGL.setColorMask(false, false);
