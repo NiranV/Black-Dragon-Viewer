@@ -1302,7 +1302,7 @@ bool LLAppViewer::init()
 	/*----------------------------------------------------------------------*/
 	//BD - FPS Limiter
 	gSavedSettings.getControl("FramePerSecondLimit")->getSignal()->connect(boost::bind(&LLAppViewer::changeFrameRateLimit, this, _2));
-	changeFrameRateLimit(gSavedSettings.getS32("FramePerSecondLimit"));
+	mMaxFPS = gSavedSettings.getS32("FramePerSecondLimit");
 
 	/*----------------------------------------------------------------------*/
 
