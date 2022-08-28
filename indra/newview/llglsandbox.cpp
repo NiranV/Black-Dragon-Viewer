@@ -845,7 +845,7 @@ void LLViewerObjectList::renderObjectBeacons()
 
 		S32 last_line_width = -1;
 		// gGL.begin(LLRender::LINES); // Always happens in (line_width != last_line_width)
-		
+
 		for (std::vector<LLDebugBeacon>::iterator iter = mDebugBeacons.begin(); iter != mDebugBeacons.end(); ++iter)
 		{
 			const LLDebugBeacon &debug_beacon = *iter;
@@ -855,17 +855,17 @@ void LLViewerObjectList::renderObjectBeacons()
 			if (line_width != last_line_width)
 			{
 				gGL.flush();
-				glLineWidth( (F32)line_width );
+				glLineWidth((F32)line_width);
 				last_line_width = line_width;
 			}
 
 			const LLVector3 &thisline = debug_beacon.mPositionAgent;
-		
+
 			gGL.begin(LLRender::LINES);
 			gGL.color4fv(color.mV);
 			draw_cross_lines(thisline, 2.0f, 2.0f, 50.f);
 			draw_line_cube(0.10f, thisline);
-			
+
 			gGL.end();
 		}
 	}
@@ -873,10 +873,10 @@ void LLViewerObjectList::renderObjectBeacons()
 	{
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 		LLGLDepthTest gls_depth(GL_TRUE);
-		
+
 		S32 last_line_width = -1;
 		// gGL.begin(LLRender::LINES); // Always happens in (line_width != last_line_width)
-		
+
 		for (std::vector<LLDebugBeacon>::iterator iter = mDebugBeacons.begin(); iter != mDebugBeacons.end(); ++iter)
 		{
 			const LLDebugBeacon &debug_beacon = *iter;
@@ -885,7 +885,7 @@ void LLViewerObjectList::renderObjectBeacons()
 			if (line_width != last_line_width)
 			{
 				gGL.flush();
-				glLineWidth( (F32)line_width );
+				glLineWidth((F32)line_width);
 				last_line_width = line_width;
 			}
 
@@ -897,7 +897,7 @@ void LLViewerObjectList::renderObjectBeacons()
 
 			gGL.end();
 		}
-		
+
 		gGL.flush();
 		glLineWidth(1.f);
 
