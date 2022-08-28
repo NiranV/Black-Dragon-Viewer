@@ -564,7 +564,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.6</real>
     </map>
     <key>AvatarAxisDeadZone1</key>
     <map>
@@ -575,7 +575,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.6</real>
     </map>
     <key>AvatarAxisDeadZone2</key>
     <map>
@@ -586,7 +586,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>AvatarAxisDeadZone3</key>
     <map>
@@ -597,7 +597,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>AvatarAxisDeadZone4</key>
     <map>
@@ -608,7 +608,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>AvatarAxisDeadZone5</key>
     <map>
@@ -619,7 +619,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>AvatarAxisScale0</key>
     <map>
@@ -4231,7 +4231,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.25</real>
     </map>
     <key>FlycamAxisDeadZone1</key>
     <map>
@@ -4242,7 +4242,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.25</real>
     </map>
     <key>FlycamAxisDeadZone2</key>
     <map>
@@ -4253,7 +4253,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.25</real>
     </map>
     <key>FlycamAxisDeadZone3</key>
     <map>
@@ -4275,7 +4275,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>FlycamAxisDeadZone5</key>
     <map>
@@ -4286,7 +4286,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>0.1</real>
+      <real>0.3</real>
     </map>
     <key>FlycamAxisDeadZone6</key>
     <map>
@@ -4308,7 +4308,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>5.0</real>
     </map>
     <key>FlycamAxisScale1</key>
     <map>
@@ -4319,7 +4319,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>5.0</real>
     </map>
     <key>FlycamAxisScale2</key>
     <map>
@@ -4330,7 +4330,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>5.0</real>
     </map>
     <key>FlycamAxisScale3</key>
     <map>
@@ -4341,7 +4341,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>2.0</real>
     </map>
     <key>FlycamAxisScale4</key>
     <map>
@@ -4352,7 +4352,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>2.0</real>
     </map>
     <key>FlycamAxisScale5</key>
     <map>
@@ -4363,7 +4363,7 @@
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>1.0</real>
+      <real>2.5</real>
     </map>
     <key>FlycamAxisScale6</key>
     <map>

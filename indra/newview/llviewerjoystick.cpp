@@ -754,20 +754,28 @@ void LLViewerJoystick::moveObjects(bool reset)
 			cur_delta[4] *= -1.f;
 
 		F32 tmp = cur_delta[i];
-		if (mCursor3D)
+		F32 axis_deadzone = mAxesDeadzones[i + 6];
+		if (mCursor3D || llabs(cur_delta[i]) < axis_deadzone)
 		{
 			cur_delta[i] = cur_delta[i] - sLastDelta[i];
 		}
 		sLastDelta[i] = tmp;
 		is_zero = is_zero && (cur_delta[i] == 0.f);
 			
-		if (cur_delta[i] > 0)
+		//BD - We assume that delta 1.0 is the maximum.
+		if (llabs(cur_delta[i]) > axis_deadzone)
 		{
-			cur_delta[i] = llmax(cur_delta[i]-mAxesDeadzones[i+6], 0.f);
-		}
-		else
-		{
-			cur_delta[i] = llmin(cur_delta[i] + mAxesDeadzones[i+6], 0.f);
+			//BD - Clamp the delta between 1 and -1 while taking the deadzone into account.
+			if (cur_delta[i] > 0)
+			{
+				cur_delta[i] = llclamp(cur_delta[i] - axis_deadzone, 0.f, 1.f - axis_deadzone);
+			}
+			else
+			{
+				cur_delta[i] = llclamp(cur_delta[i] + axis_deadzone, -1.f + axis_deadzone, 0.f);
+			}
+			//BD - Rescale the remaining delta to match the maximum to get a new clean 0 to 1 range.
+			cur_delta[i] = cur_delta[i] / (1.f - axis_deadzone);
 		}
 		cur_delta[i] *= mAxesScalings[i+6];
 		
@@ -904,11 +912,6 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	F32 cur_delta[6];
 	F32 val, dom_mov = 0.f;
 	U32 dom_axis = Z_I;
-#if LIB_NDOF
-	bool absolute = (mCursor3D && mNdofDev->absolute);
-#else
-    bool absolute = false;
-#endif
 //	//BD - Remappable Joystick Controls
 	mAxes[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
 	mAxes[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
@@ -917,21 +920,26 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	for (U32 i = 0; i < 6; i++)
 	{
 		cur_delta[i] = -mAxes[mMappedAxes[i]];
+		F32 axis_deadzone = mAxesDeadzones[i];
 
-		if (absolute)
+		//BD - We assume that delta 1.0 is the maximum.
+		if (llabs(cur_delta[i]) > axis_deadzone)
 		{
-			F32 tmp = cur_delta[i];
-			cur_delta[i] = cur_delta[i] - sLastDelta[i];
-			sLastDelta[i] = tmp;
-		}
-
-		if (cur_delta[i] > 0)
-		{
-			cur_delta[i] = llmax(cur_delta[i] - mAxesDeadzones[i], 0.f);
+			//BD - Clamp the delta between 1 and -1 while taking the deadzone into account.
+			if (cur_delta[i] > 0)
+			{
+				cur_delta[i] = llclamp(cur_delta[i] - axis_deadzone, 0.f, 1.f - axis_deadzone);
+			}
+			else
+			{
+				cur_delta[i] = llclamp(cur_delta[i] + axis_deadzone, -1.f + axis_deadzone, 0.f);
+			}
+			//BD - Rescale the remaining delta to match the maximum to get a new clean 0 to 1 range.
+			cur_delta[i] = cur_delta[i] / (1.f - axis_deadzone);
 		}
 		else
 		{
-			cur_delta[i] = llmin(cur_delta[i] + mAxesDeadzones[i], 0.f);
+			cur_delta[i] = 0.f;
 		}
 
 		// we don't care about Roll (RZ) and Z is calculated after the loop
@@ -946,6 +954,9 @@ void LLViewerJoystick::moveAvatar(bool reset)
 			}
 		}
 		
+		cur_delta[i] *= mAxesScalings[i] * time;
+
+		//sDelta[i] = sDelta[i] + (cur_delta[i] - sDelta[i]) * time;
 		is_zero = is_zero && (cur_delta[i] == 0.f);
 	}
 
@@ -975,17 +986,10 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		dom_axis = Z_I;
 	}
 
-	sDelta[X_I] = -cur_delta[X_I] * mAxesScalings[X_I];
-	sDelta[Y_I] = -cur_delta[Y_I] * mAxesScalings[Y_I];
-	sDelta[Z_I] = -cur_delta[Z_I] * mAxesScalings[Z_I];
-	cur_delta[RX_I] *= -mAxesScalings[RX_I];
-	cur_delta[RY_I] *= -mAxesScalings[RY_I];
+	sDelta[X_I] = -cur_delta[X_I];
+	sDelta[Y_I] = -cur_delta[Y_I];
+	sDelta[Z_I] = -cur_delta[Z_I];
 		
-	if (!absolute)
-	{
-		cur_delta[RX_I] *= time;
-		cur_delta[RY_I] *= time;
-	}
 	sDelta[RX_I] += (cur_delta[RX_I] - sDelta[RX_I]) * time * mAvatarFeathering;
 	sDelta[RY_I] += (cur_delta[RY_I] - sDelta[RY_I]) * time * mAvatarFeathering;
 	
@@ -1071,19 +1075,27 @@ void LLViewerJoystick::moveFlycam(bool reset)
 		cur_delta[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 		F32 tmp = cur_delta[i];
-		if (mCursor3D)
+		F32 axis_deadzone = mAxesDeadzones[i + 12];
+		if (mCursor3D || llabs(cur_delta[i]) < axis_deadzone)
 		{
 			cur_delta[i] = cur_delta[i] - sLastDelta[i];
 		}
 		sLastDelta[i] = tmp;
 
-		if (cur_delta[i] > 0)
+		//BD - We assume that delta 1.0 is the maximum.
+		if (llabs(cur_delta[i]) > axis_deadzone)
 		{
-			cur_delta[i] = llmax(cur_delta[i] - mAxesDeadzones[i+12], 0.f);
-		}
-		else
-		{
-			cur_delta[i] = llmin(cur_delta[i] + mAxesDeadzones[i+12], 0.f);
+			//BD - Clamp the delta between 1 and -1 while taking the deadzone into account.
+			if (cur_delta[i] > 0)
+			{
+				cur_delta[i] = llclamp(cur_delta[i] - axis_deadzone, 0.f, 1.f - axis_deadzone);
+			}
+			else
+			{
+				cur_delta[i] = llclamp(cur_delta[i] + axis_deadzone, -1.f + axis_deadzone, 0.f);
+			}
+			//BD - Rescale the remaining delta to match the maximum to get a new clean 0 to 1 range.
+			cur_delta[i] = cur_delta[i] / (1.f - axis_deadzone);
 		}
 
 		// We may want to scale camera movements up or down in build mode.
@@ -1097,8 +1109,8 @@ void LLViewerJoystick::moveFlycam(bool reset)
 			}
 		}
 
-		cur_delta[i] *= mAxesScalings[i+12];
-		
+		cur_delta[i] *= mAxesScalings[i + 12];
+
 		if (!mCursor3D)
 		{
 			cur_delta[i] *= time;
@@ -1451,12 +1463,12 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setBOOL("AutoLeveling", false);
 	gSavedSettings.setBOOL("ZoomDirect", false);
 	
-	gSavedSettings.setF32("AvatarAxisScale0", .2f);
-	gSavedSettings.setF32("AvatarAxisScale2", .1f);
-	gSavedSettings.setF32("AvatarAxisScale1", .2f);
-	gSavedSettings.setF32("AvatarAxisScale4", 3.75f);
-	gSavedSettings.setF32("AvatarAxisScale5", 4.5f);
-	gSavedSettings.setF32("AvatarAxisScale3", 1.0f);
+	gSavedSettings.setF32("AvatarAxisScale0", 1.f);
+	gSavedSettings.setF32("AvatarAxisScale2", 1.f);
+	gSavedSettings.setF32("AvatarAxisScale1", 1.f);
+	gSavedSettings.setF32("AvatarAxisScale4", 1.f);
+	gSavedSettings.setF32("AvatarAxisScale5", 1.f);
+	gSavedSettings.setF32("AvatarAxisScale3", 1.f);
 	gSavedSettings.setF32("BuildAxisScale0", 1.25f);
 	gSavedSettings.setF32("BuildAxisScale2", 1.25f);
 	gSavedSettings.setF32("BuildAxisScale1", 1.25f);
@@ -1471,24 +1483,24 @@ void LLViewerJoystick::setXboxDefaults()
 	gSavedSettings.setF32("FlycamAxisScale3", 2.0f);
 	gSavedSettings.setF32("FlycamAxisScale6", 1.0f);
 	
-	gSavedSettings.setF32("AvatarAxisDeadZone0", .4f);
-	gSavedSettings.setF32("AvatarAxisDeadZone2", .2f);
-	gSavedSettings.setF32("AvatarAxisDeadZone1", .4f);
-	gSavedSettings.setF32("AvatarAxisDeadZone3", .25f);
-	gSavedSettings.setF32("AvatarAxisDeadZone4", .25f);
-	gSavedSettings.setF32("AvatarAxisDeadZone5", .25f);
-	gSavedSettings.setF32("BuildAxisDeadZone0", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone2", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone1", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone3", .2f);
-	gSavedSettings.setF32("BuildAxisDeadZone4", .2f);
+	gSavedSettings.setF32("AvatarAxisDeadZone0", .6f);
+	gSavedSettings.setF32("AvatarAxisDeadZone2", .3f);
+	gSavedSettings.setF32("AvatarAxisDeadZone1", .6f);
+	gSavedSettings.setF32("AvatarAxisDeadZone3", .3f);
+	gSavedSettings.setF32("AvatarAxisDeadZone4", .3f);
+	gSavedSettings.setF32("AvatarAxisDeadZone5", .3f);
+	gSavedSettings.setF32("BuildAxisDeadZone0", .25f);
+	gSavedSettings.setF32("BuildAxisDeadZone2", .25f);
+	gSavedSettings.setF32("BuildAxisDeadZone1", .25f);
+	gSavedSettings.setF32("BuildAxisDeadZone3", .3f);
+	gSavedSettings.setF32("BuildAxisDeadZone4", .3f);
 	gSavedSettings.setF32("BuildAxisDeadZone5", .1f);
-	gSavedSettings.setF32("FlycamAxisDeadZone0", .2f);
-	gSavedSettings.setF32("FlycamAxisDeadZone2", .2f);
-	gSavedSettings.setF32("FlycamAxisDeadZone1", .2f);
+	gSavedSettings.setF32("FlycamAxisDeadZone0", .25f);
+	gSavedSettings.setF32("FlycamAxisDeadZone2", .25f);
+	gSavedSettings.setF32("FlycamAxisDeadZone1", .25f);
 	gSavedSettings.setF32("FlycamAxisDeadZone3", .1f);
-	gSavedSettings.setF32("FlycamAxisDeadZone4", .2f);
-	gSavedSettings.setF32("FlycamAxisDeadZone5", .2f);
+	gSavedSettings.setF32("FlycamAxisDeadZone4", .3f);
+	gSavedSettings.setF32("FlycamAxisDeadZone5", .3f);
 	gSavedSettings.setF32("FlycamAxisDeadZone6", .1f);
 	
 	gSavedSettings.setF32("AvatarFeathering", 20.0f);
