@@ -6832,7 +6832,7 @@ void LLSelectNode::renderOneWireframeDots(const LLColor4& color)
 
 void LLSelectNode::renderOneWireframeDragon(const LLColor4& color)
 {
-	/*LLViewerObject* objectp = getObject();
+	LLViewerObject* objectp = getObject();
 	if (!objectp)
 	{
 		return;
@@ -6843,27 +6843,55 @@ void LLSelectNode::renderOneWireframeDragon(const LLColor4& color)
 	{
 		return;
 	}
-
-	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-
-	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, color.mV[VALPHA]);
-
+	LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
+	if (shader)
 	{
-		LLGLDisable depth(wireframe_selection ? 0 : GL_BLEND);
-		LLGLEnable stencil(wireframe_selection ? 0 : GL_STENCIL_TEST);
+		gDebugProgram.bind();
+	}
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
+	gGL.pushMatrix();
+	BOOL is_hud_object = objectp->isHUDAttachment();
+	if (drawable->isActive())
+	{
+		gGL.loadMatrix(gGLModelView);
+		gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
+	}
+	else if (!is_hud_object)
+	{
+		gGL.loadIdentity();
+		gGL.multMatrix(gGLModelView);
+		LLVector3 trans = objectp->getRegion()->getOriginAgent();
+		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+	}
 
-		if (!wireframe_selection)
-		{ //modify wireframe into outline selection mode
-			glStencilFunc(less, 2, 0xffff);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-		}
+	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	gGL.flush();
+	gGL.setSceneBlendType(LLRender::BT_ALPHA);
+	gGL.diffuseColor4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha * 2);
+	{
+		LLGLDisable depth(0);
+		LLGLEnable stencil(0);
 
-		LLGLEnable offset(offset);
+		//modify wireframe into outline selection mode
+		glStencilFunc(GL_GEQUAL, 2, 0xffff);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
 		glPolygonOffset(3.f, 3.f);
-		glLineWidth(5.f);
-		glPolygonMode(front, line);
+
+		glLineWidth(4.f);
+		glPointSize(1.f);
+		glPolygonMode(GL_BACK, GL_LINE);
+
 		pushWireframe(drawable);
-	}*/
+	}
+
+	glLineWidth(1.f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	gGL.popMatrix();
+	if (shader)
+	{
+		shader->bind();
+	}
 }
 
 void LLSelectNode::renderOneWireframeWire(const LLColor4& color)
@@ -6942,7 +6970,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	}
 
 	LLDrawable* drawable = objectp->mDrawable;
-	if(!drawable)
+	if (!drawable)
 	{
 		return;
 	}
@@ -6950,9 +6978,9 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	BOOL is_hud_object = objectp->isHUDAttachment();
 	LLVOVolume* vobj = drawable->getVOVolume();
 	//BD - Use mesh selection outline for everything.
-	if (vobj && vobj->isMesh())
+	if (vobj && !is_hud_object)
 	{
-		//renderOneWireframe(color);
+		renderOneWireframe(color);
 		return;
 	}
 
@@ -6961,7 +6989,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	{
 		return;
 	}
-	
+
 	if (mSilhouetteVertices.size() == 0 || mSilhouetteNormals.size() != mSilhouetteVertices.size())
 	{
 		return;
@@ -6985,11 +7013,11 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		gGL.loadIdentity();
 		gGL.multMatrix(gGLModelView);
 	}
-	
-	
+
+
 	if (drawable->isActive())
 	{
-		gGL.multMatrix((F32*) objectp->getRenderMatrix().mMatrix);
+		gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
 	}
 
 	LLVolume *volume = objectp->getVolume();
@@ -7008,29 +7036,29 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 			gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
 			LLGLEnable fog(GL_FOG);
 			glFogi(GL_FOG_MODE, GL_LINEAR);
-			float d = (LLViewerCamera::getInstance()->getPointOfInterest()-LLViewerCamera::getInstance()->getOrigin()).magVec();
-			LLColor4 fogCol = color * (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal()-gAgentCamera.getCameraPositionGlobal()).magVec()/(LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec()*4), 0.0, 1.0);
+			float d = (LLViewerCamera::getInstance()->getPointOfInterest() - LLViewerCamera::getInstance()->getOrigin()).magVec();
+			LLColor4 fogCol = color * (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
 			glFogf(GL_FOG_START, d);
 			glFogf(GL_FOG_END, d*(1 + (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV())));
 			glFogfv(GL_FOG_COLOR, fogCol.mV);
 
 			LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_GEQUAL);
-            gGL.flush();
+			gGL.flush();
 			gGL.begin(LLRender::LINES);
 			{
 				gGL.color4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.4f);
 
-				for(S32 i = 0; i < mSilhouetteVertices.size(); i += 2)
+				for (S32 i = 0; i < mSilhouetteVertices.size(); i += 2)
 				{
 					u_coord += u_divisor * LLSelectMgr::sHighlightUScale;
-					gGL.texCoord2f( u_coord, v_coord );
-					gGL.vertex3fv( mSilhouetteVertices[i].mV);
+					gGL.texCoord2f(u_coord, v_coord);
+					gGL.vertex3fv(mSilhouetteVertices[i].mV);
 					u_coord += u_divisor * LLSelectMgr::sHighlightUScale;
-					gGL.texCoord2f( u_coord, v_coord );
-					gGL.vertex3fv(mSilhouetteVertices[i+1].mV);
+					gGL.texCoord2f(u_coord, v_coord);
+					gGL.vertex3fv(mSilhouetteVertices[i + 1].mV);
 				}
 			}
-            gGL.end();
+			gGL.end();
 			u_coord = fmod(animationTime * LLSelectMgr::sHighlightUAnim, 1.f);
 		}
 
@@ -7038,10 +7066,10 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		gGL.setSceneBlendType(LLRender::BT_ALPHA);
 		gGL.begin(LLRender::TRIANGLES);
 		{
-			for(S32 i = 0; i < mSilhouetteVertices.size(); i+=2)
+			for (S32 i = 0; i < mSilhouetteVertices.size(); i += 2)
 			{
 				if (!mSilhouetteNormals[i].isFinite() ||
-					!mSilhouetteNormals[i+1].isFinite())
+					!mSilhouetteNormals[i + 1].isFinite())
 				{ //skip skewed segments
 					continue;
 				}
@@ -7056,32 +7084,32 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 
 				u_coord += u_divisor * LLSelectMgr::sHighlightUScale;
 
-				v[2] = mSilhouetteVertices[i+1] + (mSilhouetteNormals[i+1] * silhouette_thickness);
+				v[2] = mSilhouetteVertices[i + 1] + (mSilhouetteNormals[i + 1] * silhouette_thickness);
 				tc[2].set(u_coord, v_coord + LLSelectMgr::sHighlightVScale);
-				
-				v[3] = mSilhouetteVertices[i+1];
-				tc[3].set(u_coord,v_coord);
+
+				v[3] = mSilhouetteVertices[i + 1];
+				tc[3].set(u_coord, v_coord);
 
 				gGL.color4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.0f); //LLSelectMgr::sHighlightAlpha);
 				gGL.texCoord2fv(tc[0].mV);
-				gGL.vertex3fv( v[0].mV ); 
-				
-				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha);
-				gGL.texCoord2fv( tc[1].mV );
-				gGL.vertex3fv( v[1].mV );
+				gGL.vertex3fv(v[0].mV);
+
+				gGL.color4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha);
+				gGL.texCoord2fv(tc[1].mV);
+				gGL.vertex3fv(v[1].mV);
 
 				gGL.color4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], 0.0f); //LLSelectMgr::sHighlightAlpha);
-				gGL.texCoord2fv( tc[2].mV );
-				gGL.vertex3fv( v[2].mV );
+				gGL.texCoord2fv(tc[2].mV);
+				gGL.vertex3fv(v[2].mV);
 
-				gGL.vertex3fv( v[2].mV );
+				gGL.vertex3fv(v[2].mV);
 
-				gGL.color4f(color.mV[VRED]*2, color.mV[VGREEN]*2, color.mV[VBLUE]*2, LLSelectMgr::sHighlightAlpha);
-				gGL.texCoord2fv( tc[1].mV );
-				gGL.vertex3fv( v[1].mV );
+				gGL.color4f(color.mV[VRED] * 2, color.mV[VGREEN] * 2, color.mV[VBLUE] * 2, LLSelectMgr::sHighlightAlpha);
+				gGL.texCoord2fv(tc[1].mV);
+				gGL.vertex3fv(v[1].mV);
 
-				gGL.texCoord2fv( tc[3].mV );
-				gGL.vertex3fv( v[3].mV );			
+				gGL.texCoord2fv(tc[3].mV);
+				gGL.vertex3fv(v[3].mV);
 			}
 		}
 		gGL.end();
