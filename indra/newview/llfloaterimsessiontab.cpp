@@ -1032,7 +1032,7 @@ void LLFloaterIMSessionTab::onOpen(const LLSD& key)
 void LLFloaterIMSessionTab::onTearOffClicked()
 {
 	restoreFloater();
-	setFollows(isTornOff()? FOLLOWS_ALL : FOLLOWS_NONE);
+	setFollows(/*isTornOff()? FOLLOWS_ALL : */FOLLOWS_NONE);
     mSaveRect = isTornOff();
     initRectControl();
 	LLFloater::onClickTearOff(this);
