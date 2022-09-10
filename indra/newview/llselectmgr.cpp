@@ -6117,7 +6117,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 
 			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
 			{
-				vobj->updateRiggedVolume(true);
+				vobj->updateRiggedVolume(true, true);
 			}
 		}
 
