@@ -647,6 +647,8 @@ void LLSetKeyDialog::setMode(S32 mode)
 BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 {
 	mKey = key;
+	//BD - Clear mouse bind.
+	mMouse = CLICK_NONE;
 
 	//BD - Ensure we have at least MASK_NONE set, always, otherwise set our typed mask.
 	if (!mMask)
@@ -670,10 +672,15 @@ BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
+	LLButton* focus = getChild<LLButton>("FocusButton");
 	std::string mouse = "";
 	LLRect screen_rect;
-	getChild<LLButton>("FocusButton")->localRectToScreen(getChild<LLButton>("FocusButton")->getLocalRect(), &screen_rect);
-	if (down && screen_rect.pointInRect(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY())
+	focus->localRectToScreen(focus->getLocalRect(), &screen_rect);
+	//BD - Only bind on mouse down.
+	//     Check whether the dropdown menu has focus and ignore any clicks while it does to prevent clicking through.
+	//     Check if we click into the focus area.
+	if (down && !getChild<LLComboBox>(llformat("bind_action_%i", mMode))->hasFocus() 
+		&& screen_rect.pointInRect(gViewerWindow->getCurrentMouseX(), gViewerWindow->getCurrentMouseY())
 		&& (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT
 			|| clicktype == CLICK_LEFT || clicktype == CLICK_RIGHT))
 	{
@@ -690,6 +697,9 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 			mouse = "Mouse Button 5";
 		else if (clicktype == CLICK_DOUBLELEFT)
 			mouse = "Mouse Double Left";
+
+		//BD - Clear key bind.
+		mKey = NULL;
 	}
 	else
 	{
@@ -712,7 +722,7 @@ void LLSetKeyDialog::onActionCommit(LLUICtrl* ctrl, const LLSD& param)
 	//BD - After selecting an action return the focus back to the focus catcher so
 	//     we can catch keypresses again.
 	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	gFocusMgr.setKeystrokesOnly(FALSE);
 }
 
 void LLSetKeyDialog::onMasks()
@@ -741,7 +751,7 @@ void LLSetKeyDialog::onMasks()
 	//BD - After clicking any mask return the focus back to the focus catcher so
 	//     we can catch keypresses again.
 	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	gFocusMgr.setKeystrokesOnly(FALSE);
 }
 
 void LLSetKeyDialog::onCancel()
@@ -760,7 +770,7 @@ void LLSetKeyDialog::onBind()
 	{
 		//BD - We failed to bind, return focus to the focus button to receive inputs.
 		getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-		gFocusMgr.setKeystrokesOnly(TRUE);
+		gFocusMgr.setKeystrokesOnly(FALSE);
 	}
 }
 
@@ -849,6 +859,9 @@ BOOL LLChangeKeyDialog::handleKeyHere(KEY key, MASK mask)
 {
 	mKey = key;
 
+	//BD - Clear mouse bind.
+	mMouse = CLICK_NONE;
+
 	//BD - Ensure we have at least MASK_NONE set, always, otherwise set our typed mask.
 	if (!mMask)
 	{
@@ -891,6 +904,9 @@ BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClick
 			mouse = "Mouse Button 5";
 		else if (clicktype == CLICK_DOUBLELEFT)
 			mouse = "Mouse Double Left";
+
+		//BD - Clear key bind.
+		mKey = NULL;
 	}
 	else
 	{
