@@ -1198,8 +1198,8 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					{
 						LLQuaternion quat;
 						LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-						LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_X);
-						LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_X);
+						LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+						LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
 						col_rot_x->setValue(0.000f);
 						col_rot_y->setValue(0.000f);
@@ -1500,8 +1500,8 @@ void BDFloaterPoser::onJointRotationRevert()
 				LLVector3 rot;
 				quat.getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
 				LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-				LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_X);
-				LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_X);
+				LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+				LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
 				col_rot_x->setValue(rot.mV[VX]);
 				col_rot_y->setValue(rot.mV[VY]);
