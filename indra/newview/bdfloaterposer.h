@@ -161,6 +161,7 @@ private:
 	void onJointPositionReset();
 	void onJointScaleReset();
 	void onJointRotationRevert();
+	void onJointRecapture();
 	void onCollectDefaults();
 
 	//BD - Animating

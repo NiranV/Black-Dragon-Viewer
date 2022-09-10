@@ -210,11 +210,28 @@ width="678">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				name="flip_pose"
-				width="151"
+				width="75"
 				top_pad="40"
 				left="2">
 				<button.commit_callback
 				function="Joint.FlipPose"/>
+				</button>
+				<button
+				height="21"
+				follows="top|left"
+				layout="topleft"
+				enabled="true"
+				label="Recapture"
+				tool_tip="Recapture all disabled joints, this is useful when disabling bones to edit them via outside means such as HUDs and then recapture these changes into the Poser to make fine adjustments."
+				image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+				name="recapture_bones"
+				width="75"
+				top_delta="0"
+				left_pad="1">
+				<button.commit_callback
+				function="Joint.Recapture"/>
 				</button>
 			</panel>
 		</layout_panel>

@@ -81,6 +81,8 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	mCommitCallbackRegistrar.add("Joint.ResetJointScale", boost::bind(&BDFloaterPoser::onJointScaleReset, this));
 	//BD - Reset all selected bone rotations back to the initial rotation.
 	mCommitCallbackRegistrar.add("Joint.RevertJointRotation", boost::bind(&BDFloaterPoser::onJointRotationRevert, this));
+	//BD - Recapture all bones either all or just disabled ones.
+	mCommitCallbackRegistrar.add("Joint.Recapture", boost::bind(&BDFloaterPoser::onJointRecapture, this));
 
 	//BD - Toggle Mirror Mode on/off.
 	mCommitCallbackRegistrar.add("Joint.ToggleMirror", boost::bind(&BDFloaterPoser::toggleMirrorMode, this, _1));
@@ -1644,6 +1646,76 @@ void BDFloaterPoser::onFlipPose()
 			++axis;
 		}
 		flipped[i] = true;
+	}
+}
+
+//BD - Flip our pose (mirror it)
+void BDFloaterPoser::onJointRecapture()
+{
+	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+	if (!item) return;
+
+	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	if (!avatar || avatar->isDead()) return;
+
+	if (!(avatar->getRegion() == gAgent.getRegion())) return;
+
+	LLQuaternion rot;
+	LLVector3 pos;
+
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
+	if (motion)
+	{
+		LLPose* pose = motion->getPose();
+		if (pose)
+		{
+			for (auto item : mJointScrolls[JOINTS]->getAllData())
+			{
+				if (item)
+				{
+					LLJoint* joint = (LLJoint*)item->getUserdata();
+					if (joint)
+					{
+						// BD - Check for the joint state (whether a bone is enabled or not)
+						//      If not proceed.
+						LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+						if (!joint_state)
+						{
+							//BD - First gather the current rotation and position.
+							rot = joint->getRotation();
+							pos = joint->getPosition();
+
+							//BD - Now, re-add the joint state and enable changing the pose.
+							motion->addJointToState(joint);
+							((LLScrollListText*)item->getColumn(COL_NAME))->setFontStyle(LLFontGL::BOLD);
+
+							//BD - Apply the newly collected rotation and position to the pose.
+							joint->setTargetRotation(rot);
+							joint->setTargetPosition(pos);
+
+							//BD - Get all columns and fill in the new values.
+							LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+							LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+							LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+
+							LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+							LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+							LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+
+							LLVector3 euler_rot;
+							rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
+							col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
+							col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
+							col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+
+							col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+							col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+							col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
