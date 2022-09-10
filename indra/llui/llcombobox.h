@@ -76,7 +76,8 @@ public:
 		Optional<bool>						allow_text_entry,
 											show_text_as_tentative,
 											allow_new_values,
-											use_ticker;
+											use_ticker,
+											only_arrows;
 		Optional<S32>						max_chars;
 		Optional<commit_callback_t> 		prearrange_callback,
 											text_entry_callback,
@@ -248,6 +249,7 @@ protected:
 	LLButton*			mNextBtn;
 	LLButton*			mPrevBtn;
 	LLIconCtrl*			mIcon;
+	BOOL				mOnlyArrows;
 	LLLineEditor*		mTextEntry;
 	LLScrollListCtrl*	mList;
 	EPreferredPosition	mListPosition;

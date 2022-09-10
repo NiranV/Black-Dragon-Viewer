@@ -83,6 +83,7 @@ LLComboBox::Params::Params()
 	combo_editor("combo_editor"),
 	drop_down_button("drop_down_button"),
 	use_ticker("use_ticker", false),
+	only_arrows("only_arrows", false),
 	combo_icon("combo_icon"),
 	combo_next_btn("combo_next_btn"),
 	combo_previous_btn("combo_previous_btn")
@@ -104,7 +105,9 @@ LLComboBox::LLComboBox(const LLComboBox::Params& p)
 	mTextChangedCallback(p.text_changed_callback()),
 	mListPosition(p.list_position),
 	mLastSelectedIndex(-1),
-	mLabel(p.label)
+	mLabel(p.label),
+	mIcon(NULL),
+	mOnlyArrows(p.only_arrows)
 {
 	// Text label button
 
@@ -166,38 +169,45 @@ LLComboBox::LLComboBox(const LLComboBox::Params& p)
 
 	createLineEditor(p);
 
-	LLButton::Params prev_btn_params = p.combo_previous_btn;
-	prev_btn_params.mouse_down_callback.function(boost::bind(&LLComboBox::onPrevBtn, this));
-	LLRect ticker_btn_rect = getLocalRect();
-	ticker_btn_rect.mRight = ticker_btn_rect.mLeft + 16;
-	prev_btn_params.rect(ticker_btn_rect);
-	mPrevBtn = LLUICtrlFactory::create<LLButton>(prev_btn_params);
-	addChild(mPrevBtn);
-	mPrevBtn->setVisible(p.use_ticker);
-
-	LLIconCtrl::Params icon_p = p.combo_icon;
-	icon_p.name = "combo_ticker";
-	LLRect local_rect = getLocalRect();
-	local_rect.mTop = local_rect.mBottom + 5;
-	local_rect.mLeft += 16;
-	local_rect.mRight -= 16;
-	icon_p.rect = local_rect;
-	icon_p.repeats(p.items.size());
-	mIcon = LLUICtrlFactory::create<LLIconCtrl>(icon_p);
-	addChild(mIcon);
-	mIcon->setVisible(p.use_ticker);
-
-	LLButton::Params next_btn_params = p.combo_next_btn;
-	next_btn_params.mouse_down_callback.function(boost::bind(&LLComboBox::onNextBtn, this));
-	ticker_btn_rect.mLeft = local_rect.mRight;
-	ticker_btn_rect.mRight = ticker_btn_rect.mLeft + 16;
-	next_btn_params.rect(ticker_btn_rect);
-	mNextBtn = LLUICtrlFactory::create<LLButton>(next_btn_params);
-	addChild(mNextBtn);
-	mNextBtn->setVisible(p.use_ticker);
-
 	if (p.use_ticker)
 	{
+		LLButton::Params prev_btn_params = p.combo_previous_btn;
+		prev_btn_params.mouse_down_callback.function(boost::bind(&LLComboBox::onPrevBtn, this));
+		LLRect ticker_btn_rect = getLocalRect();
+		ticker_btn_rect.mRight = ticker_btn_rect.mLeft + 16;
+		prev_btn_params.rect(ticker_btn_rect);
+		mPrevBtn = LLUICtrlFactory::create<LLButton>(prev_btn_params);
+		addChild(mPrevBtn);
+		mPrevBtn->setVisible(p.use_ticker);
+
+		LLRect local_rect = getLocalRect();
+		local_rect.mLeft += 16;
+		local_rect.mRight -= 16;
+		local_rect.mTop = local_rect.mBottom;
+
+		if (!mOnlyArrows)
+		{
+			LLIconCtrl::Params icon_p = p.combo_icon;
+			icon_p.name = "combo_ticker";
+			
+			local_rect.mTop += 5;
+
+			icon_p.rect = local_rect;
+			icon_p.repeats(p.items.size());
+			mIcon = LLUICtrlFactory::create<LLIconCtrl>(icon_p);
+			addChild(mIcon);
+			mIcon->setVisible(p.use_ticker);
+		}
+
+		LLButton::Params next_btn_params = p.combo_next_btn;
+		next_btn_params.mouse_down_callback.function(boost::bind(&LLComboBox::onNextBtn, this));
+		ticker_btn_rect.mLeft = local_rect.mRight;
+		ticker_btn_rect.mRight = ticker_btn_rect.mLeft + 16;
+		next_btn_params.rect(ticker_btn_rect);
+		mNextBtn = LLUICtrlFactory::create<LLButton>(next_btn_params);
+		addChild(mNextBtn);
+		mNextBtn->setVisible(p.use_ticker);
+
 		LLRect btn_rect = mButton->getRect();
 		btn_rect.mBottom = local_rect.mTop;
 		mButton->setRect(btn_rect);
@@ -222,7 +232,8 @@ BOOL LLComboBox::postBuild()
 	if (mControlVariable)
 	{
 		setValue(mControlVariable->getValue()); // selects the appropriate item
-		mIcon->setSelected(getCurrentIndex());
+		if(mIcon)
+			mIcon->setSelected(getCurrentIndex());
 	}
 	return TRUE;
 }
@@ -258,7 +269,8 @@ void LLComboBox::onCommit()
 		// the properly capitalized item
 		mTextEntry->setValue(getSimple());
 		mTextEntry->setTentative(FALSE);
-		mIcon->setSelected(getCurrentIndex());
+		if (mIcon)
+			mIcon->setSelected(getCurrentIndex());
 	}
 	setControlValue(getValue());
 	LLUICtrl::onCommit();
@@ -305,7 +317,8 @@ LLScrollListItem* LLComboBox::add(const std::string& name, EAddPosition pos, BOO
 			selectFirstItem();
 		}
 	}
-	mIcon->setRepeats(mList->getChildCount());
+	if (mIcon)
+		mIcon->setRepeats(mList->getChildCount());
 	return item;
 }
 
@@ -325,7 +338,8 @@ LLScrollListItem* LLComboBox::add(const std::string& name, const LLUUID& id, EAd
 			selectFirstItem();
 		}
 	}
-	mIcon->setRepeats(mList->getChildCount());
+	if (mIcon)
+		mIcon->setRepeats(mList->getChildCount());
 	return item;
 }
 
@@ -346,7 +360,8 @@ LLScrollListItem* LLComboBox::add(const std::string& name, void* userdata, EAddP
 			selectFirstItem();
 		}
 	}
-	mIcon->setRepeats(mList->getChildCount());
+	if (mIcon)
+		mIcon->setRepeats(mList->getChildCount());
 	return item;
 }
 
@@ -366,7 +381,8 @@ LLScrollListItem* LLComboBox::add(const std::string& name, LLSD value, EAddPosit
 			selectFirstItem();
 		}
 	}
-	mIcon->setRepeats(mList->getChildCount());
+	if (mIcon)
+		mIcon->setRepeats(mList->getChildCount());
 	return item;
 }
 
@@ -408,7 +424,8 @@ void LLComboBox::setValue(const LLSD& value)
 			updateLabel();
 		}
 		mLastSelectedIndex = mList->getFirstSelectedIndex();
-		mIcon->setSelected(getCurrentIndex());
+		if (mIcon)
+			mIcon->setSelected(getCurrentIndex());
 	}
 	else
 	{
@@ -505,7 +522,8 @@ BOOL LLComboBox::remove(const std::string& name)
 		}
 		mLastSelectedIndex = mList->getFirstSelectedIndex();
 	}
-	mIcon->setRepeats(mList->getChildCount());
+	if (mIcon)
+		mIcon->setRepeats(mList->getChildCount());
 	return found;
 }
 
@@ -515,7 +533,8 @@ BOOL LLComboBox::remove(S32 index)
 	{
 		mList->deleteSingleItem(index);
 		setLabel(getSelectedItemLabel());
-		mIcon->setRepeats(mList->getChildCount());
+		if (mIcon)
+			mIcon->setRepeats(mList->getChildCount());
 		return TRUE;
 	}
 	return FALSE;
@@ -559,7 +578,8 @@ BOOL LLComboBox::setCurrentByIndex( S32 index )
 	{
 		setLabel(getSelectedItemLabel());
 		mLastSelectedIndex = index;
-		mIcon->setSelected(index);
+		if (mIcon)
+			mIcon->setSelected(index);
 	}
 	return found;
 }
@@ -836,7 +856,8 @@ void LLComboBox::onItemSelected(const LLSD& data)
 	// commit does the reverse, asserting the value in the list
 	onCommit();
 
-	mIcon->setSelected(getCurrentIndex());
+	if (mIcon)
+		mIcon->setSelected(getCurrentIndex());
 }
 
 BOOL LLComboBox::handleToolTip(S32 x, S32 y, MASK mask)
@@ -885,7 +906,8 @@ BOOL LLComboBox::handleKeyHere(KEY key, MASK mask)
 			else if (key == KEY_DOWN && mLastSelectedIndex < mList->getItemCount())
 				++mLastSelectedIndex;
 
-			mIcon->setSelected(getCurrentIndex());
+			if (mIcon)
+				mIcon->setSelected(getCurrentIndex());
 			//BD - Don't show list when we simply select the next/previous entry.
 			return mList->handleKeyHere(key, mask);
 		}
@@ -1066,7 +1088,8 @@ void LLComboBox::updateSelection()
 	{
 		mTextEntry->setTentative(FALSE);
 		mLastSelectedIndex = mList->getFirstSelectedIndex();
-		mIcon->setSelected(getCurrentIndex());
+		if (mIcon)
+			mIcon->setSelected(getCurrentIndex());
 	}
 	else if (mList->selectItemByPrefix(left_wstring, FALSE))
 	{
@@ -1078,7 +1101,8 @@ void LLComboBox::updateSelection()
 		mTextEntry->setTentative(FALSE);
 		mHasAutocompletedText = TRUE;
 		mLastSelectedIndex = mList->getFirstSelectedIndex();
-		mIcon->setSelected(getCurrentIndex());
+		if (mIcon)
+			mIcon->setSelected(getCurrentIndex());
 	}
 	else // no matching items found
 	{
@@ -1241,7 +1265,8 @@ BOOL LLComboBox::setCurrentByID(const LLUUID& id)
 		setLabel(getSelectedItemLabel());
 		mLastSelectedIndex = mList->getFirstSelectedIndex();
 	}
-	mIcon->setSelected(getCurrentIndex());
+	if (mIcon)
+		mIcon->setSelected(getCurrentIndex());
 	return found;
 }
 
@@ -1256,7 +1281,8 @@ BOOL LLComboBox::setSelectedByValue(const LLSD& value, BOOL selected)
 	{
 		setLabel(getSelectedItemLabel());
 	}
-	mIcon->setSelected(getCurrentIndex());
+	if (mIcon)
+		mIcon->setSelected(getCurrentIndex());
 	return found;
 }
 
@@ -1349,7 +1375,8 @@ void LLComboBox::onNextBtn()
 	if (i <= count)
 		selectNthItem(i);
 
-	mIcon->setSelected(getCurrentIndex());
+	if (mIcon)
+		mIcon->setSelected(getCurrentIndex());
 	onCommit();
 }
 
@@ -1360,6 +1387,7 @@ void LLComboBox::onPrevBtn()
 	if (i >= 0)
 		selectNthItem(i);
 
-	mIcon->setSelected(getCurrentIndex());
+	if (mIcon)
+		mIcon->setSelected(getCurrentIndex());
 	onCommit();
 }

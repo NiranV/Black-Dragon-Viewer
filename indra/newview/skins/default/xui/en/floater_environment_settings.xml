@@ -81,11 +81,14 @@
   width="64">
   		Sky Preset
   </text>
+
   <combo_box
    follows="top|left"
    disabled_control="UseDayCycle"
    left_delta="0"
    height="23"
+   use_ticker="true"
+   only_arrows="true"
    name="sky_settings_preset_combo"
    top_pad="1"
    width="182">
@@ -97,11 +100,12 @@
             image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Press"
-            image_pressed="ToolbarDropDown_Press" 
-            image_pressed_selected="ToolbarDropDown_Press"
-            image_disabled="ToolbarDropDown_Off" />
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
         </combo_box>
   <button
    follows="left|bottom"
@@ -144,6 +148,8 @@
    follows="top|left"
    enabled_control="UseDayCycle"
    name="dayc_settings_preset_combo"
+   use_ticker="true"
+   only_arrows="true"
    height="23"
    top_pad="1"
    width="182">
@@ -155,11 +161,12 @@
             image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Press"
-            image_pressed="ToolbarDropDown_Press" 
-            image_pressed_selected="ToolbarDropDown_Press"
-            image_disabled="ToolbarDropDown_Off" />
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
         </combo_box>
   <button
    follows="left|top"
@@ -194,6 +201,8 @@
    follows="top|left"
    left_delta="0"
    name="water_settings_preset_combo"
+   use_ticker="true"
+   only_arrows="true"
    top_pad="1"
    width="182">
       <combo_box.item
@@ -204,11 +213,12 @@
             image_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
             <combo_box.drop_down_button
-            image_unselected="ToolbarDropDown_Off"
-            image_selected="ToolbarDropDown_Press"
-            image_pressed="ToolbarDropDown_Press" 
-            image_pressed_selected="ToolbarDropDown_Press"
-            image_disabled="ToolbarDropDown_Off" />
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
         </combo_box>
   <button
    follows="left|top"
