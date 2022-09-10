@@ -989,6 +989,8 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	sDelta[X_I] = -cur_delta[X_I];
 	sDelta[Y_I] = -cur_delta[Y_I];
 	sDelta[Z_I] = -cur_delta[Z_I];
+	cur_delta[RX_I] *= -mAxesScalings[RX_I];
+	cur_delta[RY_I] *= -mAxesScalings[RY_I];
 		
 	sDelta[RX_I] += (cur_delta[RX_I] - sDelta[RX_I]) * time * mAvatarFeathering;
 	sDelta[RY_I] += (cur_delta[RY_I] - sDelta[RY_I]) * time * mAvatarFeathering;
