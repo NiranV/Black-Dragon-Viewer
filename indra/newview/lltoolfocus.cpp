@@ -155,9 +155,6 @@ BOOL LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
 //BD - Right Click Steering
 BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-	// Ensure a mouseup
-	setMouseCapture(TRUE);
-
 	mAccumX = 0;
 	mAccumY = 0;
 
@@ -171,6 +168,9 @@ BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
 	mOutsideSlopRightY = FALSE;
 
 	mRightMouse = TRUE;
+
+	// Ensure a mouseup
+	setMouseCapture(TRUE);
 
 	return TRUE;
 }
@@ -426,6 +426,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 		else
 		{
+			LL_INFOS() << "Right-clicked (Up) at: X - " << dx << " " << x << " Y - " << dy << " " << y << LL_ENDL;
 			if (mAccumX >= SLOP_RANGE_RIGHT)
 			{
 				mOutsideSlopRightX = TRUE;
@@ -553,7 +554,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 	}
 //	//BD - Right Click Steering
-	else if (mRightMouse && mOutsideSlopRightX || mRightMouse && mOutsideSlopRightY)
+	else if (mRightMouse && (mOutsideSlopRightX || mOutsideSlopRightY))
 	{
 //		//BD - Handle right click threshold breaks as a seperate camera tool to
 		//	   prevent any unintentional left-click blocking or interceptions
@@ -583,10 +584,6 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 				{
 					gAgentCamera.cameraPanUp(-dy * meters_per_pixel);
 				}
-
-				LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
-				//gViewerWindow->moveCursorToCenter();
-				// _LL_DEBUGS("UserInput") << "hover handled by LLToolPan" << LL_ENDL;
 			}
 			else
 			{
@@ -610,8 +607,8 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 					}
 				}
 				gViewerWindow->hideCursor();
-				LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
 			}
+			LLUI::getInstance()->setMousePositionScreen(mMouseRightUpX, mMouseRightUpY);
 		}
 	}
 
