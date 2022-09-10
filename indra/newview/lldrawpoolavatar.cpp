@@ -905,55 +905,6 @@ void LLDrawPoolAvatar::renderAvatars(LLVOAvatar* single_avatar, S32 pass)
 	}
 
 	BOOL impostor = !LLPipeline::sImpostorRender && avatarp->isImpostor() && !single_avatar;
-
-	//BD - Fix rigged attachments showing in Mouselook when they shouldn't.
-	/*if (avatar->isSelf() && !gAgent.needsRenderHead() && vobj->isAttachment())
-	{
-		//BD - First do a quick check to see if its attached to any of the attachment slots
-		//     that are hidden in Mouselook.
-		LLViewerJointAttachment* attach_point = gAgentAvatarp->getTargetAttachmentPoint(vobj);
-		if (attach_point)
-		{
-			if (!attach_point->getVisibleInFirstPerson())
-			{
-				continue;
-			}
-		}
-
-		//BD - Above didn't bring any results, this attachment might be attached to the hand
-		//     because its rigged, do a slower check against the skinned info and see if the
-		//     attachment has any parts rigged to any of the head bones. Skip if it is.
-		//
-		//     NOTE: This is disabled because it does not work as i'd like it to, the problem 
-		//     here is that objects, even links have skin info of multiple bones, if any of them 
-		//     is rigged to any of the head bones we skip rendering this face, since sadly a lot 
-		//     of body parts include head rigging even in lower body parts, we falsely assume
-		//     them as head rig, skipping them too. We also cannot check whether a linked prim
-		//     is attached to a head bone because they are always attached to whatever the root
-		//     prim is attached. Since single faces have no memory of what they are actually
-		//     rigged to (at least none that would be efficient to extract right now) we cannot
-		//     hide them per-face either.
-		/*bool skip = false;
-		for (U32 i = 0; i < skin->mJointNames.size(); ++i)
-		{
-			if (skin->mJointNums[i] >= 7 && skin->mJointNums[i] < 58)
-			{
-				skip = true;
-				break;
-			}
-		}
-
-		if (skip)
-			continue;*/
-	//}
-
-	//BD - Don't render invisible faces even when they are in a linkset.
-	/*LLColor4 color = face->getTextureEntry()->getColor();
-	if (color.mV[VW] == 0.0f)
-	{
-		continue;
-	}*/
-
 	if (( avatarp->isInMuteList() 
 		  || impostor 
 		  || (LLVOAvatar::AOA_NORMAL != avatarp->getOverallAppearance() && !avatarp->needsImpostorUpdate()) ) && pass != 0)
