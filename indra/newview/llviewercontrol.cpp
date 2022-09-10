@@ -1050,6 +1050,19 @@ static bool handleAutomaticMemoryManagement(const LLSD& newvalue)
 	return true;
 }
 
+//BD - Rotation Speed Customisation
+static bool handleAvatarPitchMultiplier(const LLSD& newvalue)
+{
+	gAgent.setPitchMultiplier(newvalue.asReal());
+	return true;
+}
+
+static bool handleAvatarYawMultiplier(const LLSD& newvalue)
+{
+	gAgent.setYawMultiplier(newvalue.asReal());
+	return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 void settings_setup_listeners()
@@ -1284,12 +1297,15 @@ void settings_setup_listeners()
 //	//BD - Realistic Mouselook
 	gSavedSettings.getControl("UseRealisticMouselook")->getSignal()->connect(boost::bind(&handleRealisticMouselook, _2));
 
-
+//	//BD - Movement
 	gSavedSettings.getControl("AvatarRotateThresholdFast")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdFast, _2));
 	gSavedSettings.getControl("AvatarRotateThresholdSlow")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdSlow, _2));
 	gSavedSettings.getControl("AvatarRotateThresholdMouselook")->getSignal()->connect(boost::bind(&handleAvatarRotateThresholdMouselook, _2));
 	gSavedSettings.getControl("MovementRotationSpeed")->getSignal()->connect(boost::bind(&handleMovementRotationSpeed, _2));
 	gSavedSettings.getControl("AllowWalkingBackwards")->getSignal()->connect(boost::bind(&handleAllowWalkingBackwards, _2));
+
+	gSavedSettings.getControl("AvatarPitchMultiplier")->getSignal()->connect(boost::bind(&handleAvatarPitchMultiplier, _2));
+	gSavedSettings.getControl("AvatarYawMultiplier")->getSignal()->connect(boost::bind(&handleAvatarYawMultiplier, _2));
 //	//BD
 }
 

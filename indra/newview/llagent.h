@@ -585,6 +585,12 @@ public:
 	LLVector3		getReferenceUpVector();
     F32             clampPitchToLimits(F32 angle);
 
+	void			setPitchMultiplier(F32 mult) { mPitchMultiplier = mult; }
+	void			setYawMultiplier(F32 mult) { mYawMultiplier = mult; }
+
+	F32 mPitchMultiplier;
+	F32 mYawMultiplier;
+
 	//--------------------------------------------------------------------
 	// Autopilot
 	//--------------------------------------------------------------------

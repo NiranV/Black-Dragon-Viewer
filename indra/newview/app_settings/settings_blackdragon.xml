@@ -3,6 +3,28 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>AvatarPitchMultiplier</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls the pitch movement speed</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <integer>1.0</integer>
+  </map>
+  <key>AvatarYawMultiplier</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls the yaw movement speed</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <integer>1.0</integer>
+  </map>
   <key>ShowFPSCounter</key>
   <map>
     <key>Comment</key>

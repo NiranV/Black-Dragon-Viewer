@@ -266,9 +266,76 @@ width="510">
  top_delta="0"
  name="default"
  width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
- 
+ <button.commit_callback
+ function="Pref.Default"/>
+ </button>
+ <slider
+ can_edit_text="true"
+ control_name="AvatarPitchMultiplier"
+ decimal_digits="2"
+ follows="left|top"
+ height="15"
+ increment="0.01"
+ initial_value="1.0"
+ layout="topleft"
+ label_width="150"
+ label="Pitch Rotation Sensitivity:"
+ tool_tip="This option controls the pitch (Up/Down) speed when looking around. This is global and affects keyboard, mouse and onscreen controls."
+ left="10"
+ top_pad="4"
+ max_val="4"
+ min_val="0.01"
+ name="AvatarPitchMultiplier"
+ show_text="true" />
+ <button
+ follows="left|top"
+ control_name="AvatarPitchMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+ <button.commit_callback
+ function="Pref.Default"/>
+ </button>
+ <slider
+ can_edit_text="true"
+ control_name="AvatarYawMultiplier"
+ decimal_digits="2"
+ follows="left|top"
+ height="15"
+ increment="0.01"
+ initial_value="1.0"
+ layout="topleft"
+ label_width="150"
+ label="Yaw Rotation Sensitivity:"
+ tool_tip="This option controls the yaw (Lef/Right) speed when looking around. This is global and affects keyboard, mouse and onscreen controls."
+ left="10"
+ top_pad="1"
+ max_val="4"
+ min_val="0.01"
+ name="AvatarYawMultiplier"
+ show_text="true" />
+ <button
+ follows="left|top"
+ control_name="AvatarYawMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+ <button.commit_callback
+ function="Pref.Default"/>
+ </button>
  
 </panel>

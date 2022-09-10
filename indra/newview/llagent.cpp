@@ -396,10 +396,10 @@ LLAgent::LLAgent() :
 	mDoubleTapRunMode(DOUBLETAP_NONE),
 
 	mbAlwaysRun(false),
-//	mbRunning(false),
-// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
+	//	mbRunning(false),
+	// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
 	mbTempRun(false),
-// [/RLVa:KB]
+	// [/RLVa:KB]
 	mbTeleportKeepsLookAt(false),
 
 	mAgentAccess(new LLAgentAccess(gSavedSettings)),
@@ -456,13 +456,13 @@ LLAgent::LLAgent() :
 	mAutoPilotRotationThreshold(0.f),
 	mAutoPilotFinishedCallback(NULL),
 	mAutoPilotCallbackData(NULL),
-	
+
 	mMovementKeysLocked(FALSE),
 
 	mEffectColor(new LLUIColor(LLColor4(0.f, 1.f, 1.f, 1.f))),
 
 	mHaveHomePosition(FALSE),
-	mHomeRegionHandle( 0 ),
+	mHomeRegionHandle(0),
 	mNearChatRadius(CHAT_NORMAL_RADIUS / 2.f),
 
 	mIsPosing(false),
@@ -474,7 +474,11 @@ LLAgent::LLAgent() :
 	mVoiceConnected(false),
 
 	mMouselookModeInSignal(NULL),
-	mMouselookModeOutSignal(NULL)
+	mMouselookModeOutSignal(NULL),
+
+	//BD - Rotation Speed Customisation
+	mPitchMultiplier(1.f),
+	mYawMultiplier(1.f)
 {
 	for (U32 i = 0; i < TOTAL_CONTROLS; i++)
 	{
@@ -522,6 +526,9 @@ void LLAgent::init()
 	}
 
 	LLAppCoreHttp & app_core_http(LLAppViewer::instance()->getAppCoreHttp());
+
+	mPitchMultiplier = gSavedSettings.getF32("AvatarPitchMultiplier");
+	mYawMultiplier = gSavedSettings.getF32("AvatarYawMultiplier");
 
 	mHttpPolicy = app_core_http.getPolicy(LLAppCoreHttp::AP_AGENT);
 
@@ -1486,6 +1493,8 @@ LLVector3 LLAgent::getReferenceUpVector()
 //-----------------------------------------------------------------------------
 void LLAgent::pitch(F32 angle)
 {
+	//BD - Rotation Speed Customisation
+	angle *= mPitchMultiplier;
 	// don't let user pitch if pointed almost all the way down or up
 	mFrameAgent.pitch(clampPitchToLimits(angle));
 }
@@ -1557,6 +1566,8 @@ void LLAgent::roll(F32 angle)
 //-----------------------------------------------------------------------------
 void LLAgent::yaw(F32 angle)
 {
+	//BD - Rotation Speed Customization
+	angle *= mYawMultiplier;
 	if (!rotateGrabbed())
 	{
 		mFrameAgent.rotate(angle, getReferenceUpVector());
