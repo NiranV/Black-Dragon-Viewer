@@ -658,7 +658,7 @@ width="510">
    left="10" 
    height="12"
    width="220">
-   Input and Output Options:
+   Voice Input and Output Options:
    </text>
    <panel
    visiblity_control="ShowDeviceSettings"
@@ -709,7 +709,7 @@ width="510">
     height="12"
     width="200"
     top_pad="15">
-    Output Device:
+    Voice Output Device:
     </text>
     <combo_box
     control_name="VoiceOutputAudioDevice"
@@ -717,7 +717,7 @@ width="510">
     layout="topleft"
     left_pad="0"
     max_chars="256"
-    tool_tip="This option controls which output device you want to use to hear sounds and voice in Second Life."
+    tool_tip="This option controls which output device you want to use to hear voice in Second Life."
     name="voice_output_device"
     top_delta="-3"
     width="170" />
@@ -729,7 +729,7 @@ width="510">
     height="12"
     width="200"
     top_pad="5">
-    Input Device:
+    Voice Input Device:
     </text>
     <combo_box
     height="23"
