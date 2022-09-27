@@ -9409,7 +9409,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-	    <real>-0.007</real>
+	    <real>-0.012</real>
   </map>
   <key>RenderShadowOffset</key>
   <map>
@@ -9432,7 +9432,7 @@
     <string>F32</string>
     <key>Value</key>
     <array>
-      <real>0.0</real>
+      <real>0.1</real>
     </array>
   </map>
   <key>RenderShadowOffsetError</key>
