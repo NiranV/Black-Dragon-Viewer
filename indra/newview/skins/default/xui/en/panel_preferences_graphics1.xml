@@ -1976,7 +1976,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;15&lt;/blue&gt;"
+||FramePerSecondLimit: &lt;blue&gt;70000&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="22 FPS"
@@ -1985,7 +1985,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;30&lt;/blue&gt;"
+||FramePerSecondLimit: &lt;blue&gt;40000&lt;/blue&gt;"
        value="40000"
        name="item3"/>
       <combo_box.item
@@ -1995,7 +1995,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;60&lt;/blue&gt;"
+||FramePerSecondLimit: &lt;blue&gt;20000&lt;/blue&gt;"
        value="20000"
        name="item4"/>
       <combo_box.item
@@ -2005,7 +2005,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; None
 ||This option controls the maximum amount of frames per second the Viewer is allowed to run at while it is active.
-||FramePerSecondLimit: &lt;blue&gt;90&lt;/blue&gt;"
+||FramePerSecondLimit: &lt;blue&gt;10000&lt;/blue&gt;"
        value="10000"
        name="item4"/>
       <combo_box.item
