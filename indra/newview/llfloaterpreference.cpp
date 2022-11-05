@@ -2100,7 +2100,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning1->setVisible(gSavedSettings.getF32("FontScreenDPI") != 96.0);
 	S32 max_vram = gGLManager.mVRAM;
 	S32 tex_mem = gSavedSettings.getS32("MaxTextureMemoryAllowed");
-	mWarning2->setVisible((tex_mem < 1024) || tex_mem > (max_vram * 0.9) || (tex_mem >= 4096));
+	mWarning2->setVisible(((tex_mem < 1024) || tex_mem > (max_vram * 0.9) || (tex_mem >= 4096)) && (tex_mem != 0));
 
 	//BD - Quality Options
 	mWarning3->setVisible(LLVOVolume::sLODFactor > 2.0);
