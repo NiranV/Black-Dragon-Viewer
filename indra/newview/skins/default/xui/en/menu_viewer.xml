@@ -3382,8 +3382,6 @@
                  parameter="ShowLookAt" />
                 <menu_item_check.on_click
                  function="Advanced.ToggleShowLookAt" />
-                <menu_item_check.on_enable
-                 function="Dragon.EnableCheckGod" />
             </menu_item_check>
             <menu_item_check
              label="Show Point At"
@@ -3393,8 +3391,6 @@
                  parameter="ShowPointAt" />
                 <menu_item_check.on_click
                  function="Advanced.ToggleShowPointAt" />
-                <menu_item_check.on_enable
-                 function="Dragon.EnableCheckGod" />
             </menu_item_check>
             <menu_item_check
              label="Debug Joint Updates"
