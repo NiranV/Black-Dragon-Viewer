@@ -2668,7 +2668,7 @@ width="510">
 ||NOTE!
 |Does not work with prim param LIGHT script command and emmisive masks!
 ||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option turns off the fullbright flag in objects to force the Viewer to treat objects as non-fullbright, due to how the Viewer works it will detect objects you select and look into as having fullbright turned off, editing your own objects will cause a parameter update to be sent, turning off fullbright permanently. DO NOT select objects you have edit permissions for after using this option."
+|Turning this option off will turn off the fullbright flag in objects to force the Viewer to treat objects as non-fullbright, due to how the Viewer works it will detect objects you select and look into as having fullbright turned off, editing your own objects will cause a parameter update to be sent, turning off fullbright permanently. DO NOT select objects you have edit permissions for after using this option."
    layout="topleft"
    left="10"
    name="EnableFullbright"
