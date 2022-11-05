@@ -173,8 +173,62 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="130"
+     height="195"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Script option menu button to Tools - Content tab for quick access of script related options.
+Added: Shadow Drake as Patreon patron.
+Added: Zeltfresse as Patreon patron.
+Changed: Turn off Avatar movement with controllers by default to prevent the last few rare instances of people permanently turning.
+Changed: Turn off "Since Logoff" inventory filter in Recent tab, making it actually useful again.
+Changed: Make Preferences memory usage display only the memory used by the Viewer.
+Changed: Clarify "Enable Fullbright" tooltip to prevent confusion.
+Changed: Object Object Occlusion tooltip and added a warning that it will cause flickering in water reflections.
+Changed: Rubb Rubbers special thanks name as requested.
+Changed: Updated Olakota's patron amount to the latest highest amount.
+Changed: Re-enabled Look At and Point At options for everyone.
+Changed: Version to 4.1.5.
+Fixed: Max Texture Memory warning appearing when setting max to "Unlimited".
+Fixed: Enter toggling borderless window instead of Alt + Enter.
+Removed: Broken "Close" button in Inventory filter window.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.1.4
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="130"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
