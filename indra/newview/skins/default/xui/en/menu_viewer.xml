@@ -2922,7 +2922,7 @@
             <menu_item_check
              label="Toggle Borderless Window"
              name="Toggle Borderless Window"
-             shortcut="Alt|Enter">
+             shortcut="alt|Enter">
              <menu_item_check.on_check
                  function="CheckControl"
                  parameter="FullScreenWindow" />
