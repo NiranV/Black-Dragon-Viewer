@@ -398,14 +398,4 @@
      width="80">
         Days
     </text>
-    <button
-     follows="top|right"
-     height="20"
-     label="Close"
-     label_selected="Close"
-     layout="topleft"
-     name="Close"
-     right="-6"
-     top="434"
-     width="76" />
 </floater>
