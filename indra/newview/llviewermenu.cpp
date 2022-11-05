@@ -9973,6 +9973,109 @@ class BDCheckGodStatus : public view_listener_t
 	}
 };
 
+//BD - Tools - Scripts
+// static
+void script_recompile(bool mono)
+{
+	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
+			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
+	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
+	{
+		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectHasLockedAttach f;
+		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
+			return;
+	}
+	// [/RLVa:KB]
+
+	std::string name = "compile_queue";
+	std::string msg = "Recompile";
+	std::string title = LLTrans::getString("CompileQueueTitle");
+	LLUUID id; id.generate();
+
+	LLFloaterScriptQueue* queue = LLFloaterReg::getTypedInstance<LLFloaterScriptQueue>(name, LLSD(id));
+	if (queue)
+	{
+		queue->setMono(mono);
+		if (queue_actions(queue, msg))
+		{
+			queue->setTitle(title);
+		}
+	}
+	return;
+}
+
+void script_reset()
+{
+	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
+			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
+	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
+	{
+		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectHasLockedAttach f;
+		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
+			return;
+	}
+	// [/RLVa:KB]
+
+	bool mono = false;
+	std::string name = "reset_queue";
+	std::string msg = "Reset";
+	std::string title = LLTrans::getString("ResetQueueTitle");
+	LLUUID id; id.generate();
+
+	LLFloaterScriptQueue* queue = LLFloaterReg::getTypedInstance<LLFloaterScriptQueue>(name, LLSD(id));
+	if (queue)
+	{
+		queue->setMono(mono);
+		if (queue_actions(queue, msg))
+		{
+			queue->setTitle(title);
+		}
+	}
+	return;
+}
+
+void script_set_running(bool running)
+{
+	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
+			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
+	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
+	{
+		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
+		RlvSelectHasLockedAttach f;
+		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
+			return;
+	}
+	// [/RLVa:KB]
+
+	std::string name, msg, title;
+	if (running)
+	{
+		name = "start_queue";
+		msg = "SetRunning";
+		title = LLTrans::getString("RunQueueTitle");
+	}
+	else
+	{
+		name = "stop_queue";
+		msg = "SetRunningNot";
+		title = LLTrans::getString("NotRunQueueTitle");
+	}
+	LLUUID id; id.generate();
+
+	LLFloaterScriptQueue* queue = LLFloaterReg::getTypedInstance<LLFloaterScriptQueue>(name, LLSD(id));
+	if (queue)
+	{
+		queue->setMono(false);
+		if (queue_actions(queue, msg))
+		{
+			queue->setTitle(title);
+		}
+	}
+	return;
+}
+
 
 void initialize_edit_menu()
 {
@@ -10556,6 +10659,13 @@ void initialize_menus()
 
 //	//BD - God/Dev check
 	view_listener_t::addMenu(new BDCheckGodStatus(), "Dragon.EnableCheckGod");
+
+//	//BD - Tools - Scripts
+	commit.add("Tools.RecompileMono", boost::bind(&script_recompile, true));
+	commit.add("Tools.RecompileLSL", boost::bind(&script_recompile, false));
+	commit.add("Tools.ResetScripts", boost::bind(&script_reset));
+	commit.add("Tools.SetRunning", boost::bind(&script_set_running, true));
+	commit.add("Tools.SetStopped", boost::bind(&script_set_running, false));
 
 //	//BD - Functions
 	commit.add("Dragon.CameraLock", boost::bind(&handle_camera_lock));

@@ -475,7 +475,7 @@
      layout="topleft"
      left_pad="1"
      name="unlink_btn"
-     width="69">
+     width="68">
 	  <button.commit_callback
 	     function="BuildTool.UnlinkObjects"/>
 	</button>
@@ -2974,7 +2974,7 @@ the light into a projected light )
              left="6"
              name="contents_inventory"
              top_pad="3"
-             width="278" />
+             width="280" />
             <button
              follows="left|top"
              height="25"
@@ -2987,7 +2987,7 @@ the light into a projected light )
              left="5"
              name="button new script"
              top_pad="5"
-             width="140" />
+             width="123" />
             <button
              follows="left|top"
              height="25"
@@ -2998,7 +2998,22 @@ the light into a projected light )
              layout="topleft"
              left_pad="1"
              name="button permissions"
-             width="139" />
+             width="124" />
+            <menu_button
+       follows="top|left"
+       menu_filename="menu_tools_scripts.xml"
+       menu_position="topright"
+       tool_tip="Show additional options"
+       height="25"
+       image_hover_unselected="Toolbar_Middle_Over"
+       image_overlay="OptionsMenu_Off"
+       image_selected="Toolbar_Middle_Selected"
+       image_unselected="Toolbar_Middle_Off"
+       layout="topleft"
+       left_pad="1"
+       name="options_gear_btn"
+       top_delta="0"
+       width="31"/>
 		</panel>
 	</tab_container>
 	<panel
