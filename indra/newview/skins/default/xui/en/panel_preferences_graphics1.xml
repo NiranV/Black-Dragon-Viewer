@@ -2609,12 +2609,18 @@ width="510">
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option toggles rendering of objects that are occluded by other objects. Can boost your performance depending on how much it is used. It will hurt your performance in open areas."
+||This option toggles rendering of objects that are occluded by other objects. Can boost your performance depending on how much it is used. It will hurt your performance in open areas.
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|Enabling this will cause water reflections to flicker at certain angles, it is highly recommend to leave it off."
    layout="topleft"
    left="10"
    name="UseOcclusion"
    top_delta="0"
-   width="115" />
+   width="115" >
+    <check_box.check_button
+    image_overlay="Caution_Widget"
+    image_overlay_alignment="left"/>
+   </check_box>
    <check_box
       control_name="RenderPreferStreamDraw"
       height="16"
