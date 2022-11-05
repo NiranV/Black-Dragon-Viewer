@@ -2137,19 +2137,25 @@ void LLFloaterPreference::refreshWarnings()
 //BD - Memory Allocation
 void LLFloaterPreference::refreshMemoryControls()
 {
-	U32Megabytes bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
-	U32Megabytes total_mem = LLViewerTexture::sMaxDesiredTextureMem;
+	U32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
+	U32Megabytes max_total_mem = LLViewerTexture::sMaxDesiredTextureMem;
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram = 0;
 	S32 avail_vram;
 	S32 max_mem;
 	F32 percent;
 
+	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
+	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
+	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
+
+	S32 total_viewer_usage = total_mem.value() + bound_mem.value() + fbo;
+
 	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
 	used_vram = max_vram - (avail_vram / 1024);
 
 	//BD - Limit our slider max further on how much is actually still available.
-	max_mem = max_vram - bound_mem.value() + total_mem.value();
+	max_mem = max_vram - max_bound_mem.value() + max_total_mem.value();
 
 	//BD - Cap out at the highest possible stable value we tested.
 	max_mem = llclamp(max_mem, 128, 3984);
@@ -2161,14 +2167,14 @@ void LLFloaterPreference::refreshMemoryControls()
 		mSceneMemory->setMaxValue(max_mem);
 		if (gSavedSettings.getBOOL("AutomaticMemoryManagement"))
 		{
-			mSystemMemory->setValue(total_mem);
-			mSceneMemory->setValue(bound_mem);
+			mSystemMemory->setValue(max_total_mem);
+			mSceneMemory->setValue(max_bound_mem);
 		}
 	}
 
-	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
+	percent = llclamp(((F32)total_viewer_usage / (F32)max_vram) * 100.f, 0.f, 100.f);
 	mProgressBar->setValue(percent);
-	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
+	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", total_viewer_usage));
 	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));
 }
 
