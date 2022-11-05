@@ -163,7 +163,8 @@ BOOL LLPanelMainInventory::postBuild()
 	if (recent_items_panel)
 	{
 		// assign default values until we will be sure that we have setting to restore
-		recent_items_panel->setSinceLogoff(TRUE);
+		//BD - Since logoff off by default.
+		recent_items_panel->setSinceLogoff(FALSE);
 		recent_items_panel->setSortOrder(LLInventoryFilter::SO_DATE);
 		recent_items_panel->setShowFolderState(LLInventoryFilter::SHOW_NON_EMPTY_FOLDERS);
 		LLInventoryFilter& recent_filter = recent_items_panel->getFilter();
