@@ -49,6 +49,8 @@ class LLViewerObject;
 class LLFloater;
 class LLRadioGroup;
 class LLMaterialID;
+class LLMediaCtrl;
+class LLMenuButton;
 
 // Represents an edit for use in replicating the op across one or more materials in the selection set.
 //
@@ -99,8 +101,10 @@ public:
 	virtual ~LLPanelFace();
 
 	void			refresh();
-	void			setMediaURL(const std::string& url);
-	void			setMediaType(const std::string& mime_type);
+    void			refreshMedia();
+    void			unloadMedia();
+
+    /*virtual*/ void draw();
 
 	LLMaterialPtr createDefaultMaterial(LLMaterialPtr current_material)
 	{
@@ -116,6 +120,12 @@ public:
 	LLRender::eTexIndex getTextureChannelToEdit();
 
 protected:
+    void			navigateToTitleMedia(const std::string url);
+    bool			selectedMediaEditable();
+    void			clearMediaSettings();
+    void			updateMediaSettings();
+    void			updateMediaTitle();
+
 	void			getState();
 
 	void			sendTexture();				// applies and sends texture
@@ -129,6 +139,8 @@ protected:
 	void			sendGlow();
 	void			sendMedia();
     void            alignTestureLayer();
+
+    void            updateCopyTexButton();
 
 	// this function is to return TRUE if the drag should succeed.
 	static BOOL onDragTexture(LLUICtrl* ctrl, LLInventoryItem* item);
@@ -151,6 +163,9 @@ protected:
 
 	void 	onCloseTexturePicker(const LLSD& data);
 
+    static bool deleteMediaConfirm(const LLSD& notification, const LLSD& response);
+    static bool multipleFacesSelectedConfirm(const LLSD& notification, const LLSD& response);
+
 	// Make UI reflect state of currently selected material (refresh)
 	// and UI mode (e.g. editing normal map v diffuse map)
 	//
@@ -164,10 +179,42 @@ protected:
 
 	// Callback funcs for individual controls
 	//
-	static void		onCommitTextureInfo( 		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureInfo(LLUICtrl* ctrl, void* userdata);
+	/*static void		onCommitTextureScaleX(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureScaleY(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureRot(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureOffsetX(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureOffsetY(LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialsMedia(		LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialType(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyScaleX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyScaleY(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyRot(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyOffsetX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyOffsetY(	LLUICtrl* ctrl, void* userdata);
+
+	static void		syncRepeatX(LLPanelFace* self, F32 scaleU);
+	static void		syncRepeatY(LLPanelFace* self, F32 scaleV);
+	static void		syncOffsetX(LLPanelFace* self, F32 offsetU);
+	static void		syncOffsetY(LLPanelFace* self, F32 offsetV);
+	static void 	syncMaterialRot(LLPanelFace* self, F32 rot, int te = -1);
+
+	static void		onCommitMaterialShinyScaleX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyScaleY(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyRot(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyOffsetX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyOffsetY(	LLUICtrl* ctrl, void* userdata);
+
+	static void		onCommitMaterialGloss(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialEnv(				LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialMaskCutoff(	LLUICtrl* ctrl, void* userdata);*/
+
+	static void		onCommitMaterialsMedia(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialType(	LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnEditMedia(LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnDeleteMedia(LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnAddMedia(LLUICtrl* ctrl, void* userdata);
+
+	//BD
 	static void		onCommitBump(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitTexGen(				LLUICtrl* ctrl, void* userdata);
 	static void		onCommitShiny(				LLUICtrl* ctrl, void* userdata);
@@ -178,10 +225,21 @@ protected:
 	static void		onClickAutoFix(void*);
     static void		onAlignTexture(void*);
 
-	//BD
 	void			onCommitMaterialGloss();
 	void			onCommitMaterialEnv();
 	void			onCommitMaterialMaskCutoff();
+
+public: // needs to be accessible to selection manager
+    void            onCopyColor(); // records all selected faces
+    void            onPasteColor(); // to specific face
+    void            onPasteColor(LLViewerObject* objectp, S32 te); // to specific face
+    void            onCopyTexture();
+    void            onPasteTexture();
+    void            onPasteTexture(LLViewerObject* objectp, S32 te);
+
+protected:
+    void            menuDoToSelected(const LLSD& userdata);
+    bool            menuEnableItem(const LLSD& userdata);
 
 	static F32     valueGlow(LLViewerObject* object, S32 face);
 
@@ -253,16 +311,16 @@ private:
 	F32		getCurrentShinyOffsetU();
 	F32		getCurrentShinyOffsetV();
 
+    LLComboBox *mComboMatMedia;
+    LLMediaCtrl *mTitleMedia;
+    LLTextBox *mTitleMediaText;
+
 	// Update visibility of controls to match current UI mode
 	// (e.g. materials vs media editing)
 	//
 	// Do NOT call updateUI from within this function.
 	//
 	void updateVisibility();
-
-	// Make material(s) reflect current state of UI (apply edit)
-	//
-	void updateMaterial();
 
 	// Hey look everyone, a type-safe alternative to copy and paste! :)
 	//
@@ -419,7 +477,10 @@ private:
 	 * If agent selects texture which is not allowed to be applied for the currently selected object,
 	 * all controls of the floater texture picker which allow to apply the texture will be disabled.
 	 */
-	void onTextureSelectionChanged(LLInventoryItem* itemp);
+    void onTextureSelectionChanged(LLInventoryItem* itemp);
+
+    LLMenuButton*   mMenuClipboardColor;
+    LLMenuButton*   mMenuClipboardTexture;
 
 	bool mIsAlpha;
 	
@@ -434,7 +495,12 @@ private:
 	 * up-arrow on a spinner, and avoids running afoul of its throttle.
 	 */
 	bool mUpdateInFlight;
-	bool mUpdatePending;
+    bool mUpdatePending;
+
+    LLSD            mClipboardParams;
+
+    LLSD mMediaSettings;
+    bool mNeedMediaTitle;
 
 public:
 	#if defined(DEF_GET_MAT_STATE)

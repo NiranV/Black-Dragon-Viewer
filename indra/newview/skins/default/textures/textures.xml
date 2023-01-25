@@ -425,6 +425,17 @@ with the same filename but different name
   <texture name="OptionsMenu_Off" file_name="icons/OptionsMenu_Off.png" preload="false" />
   <texture name="OptionsMenu_Press" file_name="icons/OptionsMenu_Press.png" preload="false" />
 
+  <texture name="ClipboardSmallMenu_Disabled" file_name="icons/ClipboardSmallMenu_Disabled.png" preload="false" />
+  <texture name="ClipboardSmallMenu_Off" file_name="icons/ClipboardSmallMenu_Off.png" preload="false" />
+  <texture name="ClipboardSmallMenu_Press" file_name="icons/ClipboardSmallMenu_Press.png" preload="false" />
+  <texture name="ClipboardMenu_Disabled" file_name="icons/ClipboardMenu_Disabled.png" preload="false" />
+  <texture name="ClipboardMenu_Off" file_name="icons/ClipboardMenu_Off.png" preload="false" />
+  <texture name="ClipboardMenu_Press" file_name="icons/ClipboardMenu_Press.png" preload="false" />
+
+  <texture name="OutboxStatus_Success" file_name="green_checkmark.png" preload="false" />
+  <texture name="OutboxStatus_Warning" file_name="icons/pop_up_caution.png" preload="false" />
+  <texture name="OutboxStatus_Error" file_name="red_x.png" preload="false" />
+
   <texture name="PanOrbit_Off" file_name="bottomtray/PanOrbit_Off.png" preload="false" />
 
   <texture name="Parcel_Exp_Color" file_name="icons/Parcel_Exp_Color.png" preload="false" />
@@ -480,6 +491,23 @@ with the same filename but different name
   
   <texture name="ProgressBar" file_name="widgets/ProgressBar.png" preload="true" scale.left="3" scale.top="11" scale.right="49" scale.bottom="3" />
   <texture name="ProgressTrack" file_name="widgets/ProgressTrack.png" preload="true" scale.left="3" scale.top="10" scale.right="149" scale.bottom="3" />
+
+  <texture name="Profile_Group_Visibility_Off" file_name="icons/profile_group_visibility_eye_off.png" preload="true"/>
+  <texture name="Profile_Group_Visibility_Off_Pressed" file_name="icons/profile_group_visibility_eye_off_pressed.png" preload="true"/>
+  <texture name="Profile_Group_Visibility_On" file_name="icons/profile_group_visibility_eye_on.png" preload="true"/>
+  <texture name="Profile_Group_Visibility_On_Pressed" file_name="icons/profile_group_visibility_eye_on_pressed.png" preload="true"/>
+  <texture name="Profile_Friend_Offline" file_name="icons/Profile_Friend_Offline.png" preload="true"/>
+  <texture name="Profile_Friend_Online" file_name="icons/Profile_Friend_Online.png" preload="true"/>
+  <texture name="Profile_Perm_Find_Disabled" file_name="icons/Profile_Perm_Find_Disabled.png" preload="true"/>
+  <texture name="Profile_Perm_Find_Enabled" file_name="icons/Profile_Perm_Find_Enabled.png" preload="true"/>
+  <texture name="Profile_Perm_Objects_Disabled" file_name="icons/Profile_Perm_Objects_Disabled.png" preload="true"/>
+  <texture name="Profile_Perm_Objects_Enabled" file_name="icons/Profile_Perm_Objects_Enabled.png" preload="true"/>
+  <texture name="Profile_Perm_Online_Disabled" file_name="icons/Profile_Perm_Online_Disabled.png" preload="true"/>
+  <texture name="Profile_Perm_Online_Enabled" file_name="icons/Profile_Perm_Online_Enabled.png" preload="true"/>
+  
+  <texture name="ProgressBar" file_name="widgets/ProgressBar.png" preload="true" scale.left="4" scale.top="11" scale.right="48" scale.bottom="3" />
+  <texture name="ProgressBarSolid" file_name="widgets/ProgressBarSolid.png" preload="true" scale.left="4" scale.top="11" scale.right="48" scale.bottom="3" />
+  <texture name="ProgressTrack" file_name="widgets/ProgressTrack.png" preload="true" scale.left="4" scale.top="13" scale.right="148" scale.bottom="2" />
 
   <texture name="PushButton_Disabled" file_name="widgets/PushButton_Disabled.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
   <texture name="PushButton_Off" file_name="widgets/PushButton_Off.png" preload="true" scale.left="4" scale.top="19" scale.right="28" scale.bottom="4" />
@@ -574,6 +602,12 @@ with the same filename but different name
   <texture name="Snapshot_Email" file_name="icons/snapshot_email.png" preload="false" />
   <texture name="Snapshot_Inventory" file_name="toolbar_icons/inventory.png" preload="false" />
   <texture name="Snapshot_Profile" file_name="toolbar_icons/profile.png" preload="false" />
+  
+  <texture name="startup_logo"  file_name="windows/startup_logo.png" preload="true" />
+
+  <texture name="login_sl_logo"  file_name="windows/login_sl_logo.png" preload="true" />
+  <texture name="login_sl_logo_small"  file_name="windows/login_sl_logo_small.png" preload="true" />
+  <texture name="first_login_image"  file_name="windows/first_login_image.jpg" preload="true" />
 
   <texture name="Stepper_Down_Off" file_name="widgets/Stepper_Down_Off.png" preload="false" />
   <texture name="Stepper_Down_Press" file_name="widgets/Stepper_Down_Press.png" preload="false" />
@@ -721,6 +755,41 @@ with the same filename but different name
   <texture name="up_arrow.tga" file_name="up_arrow.png" />
   <texture name="down_arrow.tga" file_name="down_arrow.png" />
 
+
+  <texture name="button_anim_pause.tga" />
+  <texture name="button_anim_pause_selected.tga" />
+  <texture name="button_anim_play.tga" />
+  <texture name="button_anim_play_selected.tga" />
+  <texture name="crosshairs.tga" />
+  <texture name="direction_arrow.tga" file_name="world/BeaconArrow.png" />
+
+  <texture name="icon_avatar_offline.tga" />
+  <texture name="icon_avatar_online.tga" />
+  <texture name="icon_diurnal.tga" />
+  <texture name="icon_for_sale.tga" file_name="icons/Icon_For_Sale.png" />
+  <texture name="icon_top_pick.tga" />
+
+  <texture name="lag_status_critical.tga" />
+  <texture name="lag_status_good.tga" />
+  <texture name="lag_status_warning.tga" />
+
+  <texture name="legend.tga" />
+
+  <texture name="map_avatar_16.tga" />
+  <texture name="map_avatar_8.tga" />
+  <texture name="map_event.tga" />
+  <texture name="map_home.tga" />
+  <texture name="map_infohub.tga" />
+  <texture name="map_telehub.tga" />
+  <texture name="map_track_16.tga" />
+  <texture name="map_ui_collapse_icon.png" />
+  <texture name="map_ui_expand_icon.png" />
+
+  <texture name="notify_caution_icon.tga" />
+
+  <texture name="default_land_picture.j2c" />
+  <texture name="default_profile_picture.j2c" />
+  <texture name="locked_image.j2c" />
   <texture name="badge_note.j2c" />
   <texture name="badge_warn.j2c" />
   <texture name="badge_ok.j2c" />

@@ -124,7 +124,6 @@
 #include "llpanellogin.h"
 #include "llmutelist.h"
 #include "llavatarpropertiesprocessor.h"
-#include "llpanelpick.h"
 #include "llpanelgrouplandmoney.h"
 #include "llpanelgroupnotices.h"
 #include "llparcel.h"
@@ -193,6 +192,8 @@
 #include "llavatariconctrl.h"
 #include "llvoicechannel.h"
 #include "llpathfindingmanager.h"
+#include "llremoteparcelrequest.h"
+
 // [RLVa:KB] - Checked: RLVa-1.2.0
 #include "rlvhandler.h"
 // [/RLVa:KB]
@@ -265,6 +266,7 @@ static bool mLoginStatePastUI = false;
 static bool mBenefitsSuccessfullyInit = false;
 
 const F32 STATE_AGENT_WAIT_TIMEOUT = 240; //seconds
+const S32 MAX_SEED_CAP_ATTEMPTS_BEFORE_LOGIN = 3; // Give region 3 chances
 
 std::unique_ptr<LLEventPump> LLStartUp::sStateWatcher(new LLEventStream("StartupState"));
 std::unique_ptr<LLStartupListener> LLStartUp::sListener(new LLStartupListener());
@@ -670,7 +672,7 @@ bool idle_startup()
 #else
 				void* window_handle = NULL;
 #endif
-				bool init = gAudiop->init(kAUDIO_NUM_SOURCES, window_handle, LLAppViewer::instance()->getSecondLifeTitle());
+				bool init = gAudiop->init(window_handle, LLAppViewer::instance()->getSecondLifeTitle());
 				if(init)
 				{
 					gAudiop->setMuted(TRUE);
@@ -946,6 +948,12 @@ bool idle_startup()
 			LLPersistentNotificationStorage::initParamSingleton();
 			LLDoNotDisturbNotificationStorage::initParamSingleton();
 		}
+        else
+        {
+            // reinitialize paths in case user switched grids or accounts
+            LLPersistentNotificationStorage::getInstance()->reset();
+            LLDoNotDisturbNotificationStorage::getInstance()->reset();
+        }
 
 		// Set PerAccountSettingsFile to the default value.
 		std::string settings_per_account = gDirUtilp->getExpandedFilename(LL_PATH_PER_SL_ACCOUNT, LLAppViewer::instance()->getSettingsFilename("Default", "PerAccount"));
@@ -1097,7 +1105,7 @@ bool idle_startup()
 
 		// Generic failure message
 		std::ostringstream emsg;
-		emsg << LLTrans::getString("LoginFailed") << "\n";
+		emsg << LLTrans::getString("LoginFailedHeader") << "\n";
 		if(LLLoginInstance::getInstance()->authFailure())
 		{
 			LL_INFOS("LLStartup") << "Login failed, LLLoginInstance::getResponse(): "
@@ -1110,11 +1118,37 @@ bool idle_startup()
 			std::string message_id = response["message_id"];
 			std::string message; // actual string to show the user
 
-			if(!message_id.empty() && LLTrans::findString(message, message_id, response["message_args"]))
-			{
-				// message will be filled in with the template and arguments
-			}
-			else if(!message_response.empty())
+            bool localized_by_id = false;
+            if(!message_id.empty())
+            {
+                LLSD message_args = response["message_args"];
+                if (message_args.has("TIME")
+                    && (message_id == "LoginFailedAcountSuspended"
+                        || message_id == "LoginFailedAccountMaintenance"))
+                {
+                    LLDate date;
+                    std::string time_string;
+                    if (date.fromString(message_args["TIME"].asString()))
+                    {
+                        LLSD args;
+                        args["datetime"] = (S32)date.secondsSinceEpoch();
+                        LLTrans::findString(time_string, "LocalTime", args);
+                    }
+                    else
+                    {
+                        time_string = message_args["TIME"].asString() + " " + LLTrans::getString("PacificTime");
+                    }
+
+                    message_args["TIME"] = time_string;
+                }
+                // message will be filled in with the template and arguments
+                if (LLTrans::findString(message, message_id, message_args))
+                {
+                    localized_by_id = true;
+                }
+            }
+
+            if(!localized_by_id && !message_response.empty())
 			{
 				// *HACK: "no_inventory_host" sent as the message itself.
 				// Remove this clause when server is sending message_id as well.
@@ -1301,7 +1335,6 @@ bool idle_startup()
 		// Initialize classes w/graphics stuff.
 		//
 		LLViewerStatsRecorder::instance(); // Since textures work in threads
-		gTextureList.doPrefetchImages();		
 		set_startup_status(0.11f, LLTrans::getString("WorldInit"), "Initializing Surfaces");
 		display_startup();
 
@@ -1424,10 +1457,21 @@ bool idle_startup()
 		{
 			LLStartUp::setStartupState( STATE_SEED_CAP_GRANTED );
 		}
+        else if (regionp->capabilitiesError())
+        {
+            // Try to connect despite capabilities' error state
+            LLStartUp::setStartupState(STATE_SEED_CAP_GRANTED);
+        }
 		else
 		{
 			U32 num_retries = regionp->getNumSeedCapRetries();
-			if (num_retries > 0)
+            if (num_retries > MAX_SEED_CAP_ATTEMPTS_BEFORE_LOGIN)
+            {
+                // Region will keep trying to get capabilities,
+                // but for now continue as if caps were granted
+                LLStartUp::setStartupState(STATE_SEED_CAP_GRANTED);
+            }
+			else if (num_retries > 0)
 			{
 				LLStringUtil::format_map_t args;
 				args["[NUMBER]"] = llformat("%d", num_retries + 1);
@@ -1449,6 +1493,15 @@ bool idle_startup()
 	{
 		set_startup_status(0.27f, LLTrans::getString("SeedGranted"), "Updating Texture Fetching");
 		display_startup();
+
+        // These textures are not warrantied to be cached, so needs
+        // to hapen with caps granted
+        gTextureList.doPrefetchImages();
+
+        // will init images, should be done with caps, but before gSky.init()
+        LLEnvironment::getInstance()->initSingleton();
+
+        display_startup();
 		update_texture_fetch();
 		set_startup_status(0.28f, LLTrans::getString("SeedGranted"), "");
 		display_startup();
@@ -2485,6 +2538,11 @@ void login_callback(S32 option, void *userdata)
 void show_release_notes_if_required()
 {
     static bool release_notes_shown = false;
+    // We happen to know that instantiating LLVersionInfo implicitly
+    // instantiates the LLEventMailDrop named "relnotes", which we (might) use
+    // below. If viewer release notes stop working, might be because that
+    // LLEventMailDrop got moved out of LLVersionInfo and hasn't yet been
+    // instantiated.
     if (!release_notes_shown && (LLVersionInfo::instance().getChannelAndVersion() != gLastRunVersion)
         && LLVersionInfo::instance().getViewerMaturity() != LLVersionInfo::TEST_VIEWER // don't show Release Notes for the test builds
         && gSavedSettings.getBOOL("UpdaterShowReleaseNotes")
@@ -2603,8 +2661,6 @@ void use_circuit_callback(void**, S32 result)
 void register_viewer_callbacks(LLMessageSystem* msg)
 {
 	msg->setHandlerFuncFast(_PREHASH_LayerData,				process_layer_data );
-	msg->setHandlerFuncFast(_PREHASH_ImageData,				LLViewerTextureList::receiveImageHeader );
-	msg->setHandlerFuncFast(_PREHASH_ImagePacket,				LLViewerTextureList::receiveImagePacket );
 	msg->setHandlerFuncFast(_PREHASH_ObjectUpdate,				process_object_update );
 	msg->setHandlerFunc("ObjectUpdateCompressed",				process_compressed_object_update );
 	msg->setHandlerFunc("ObjectUpdateCached",					process_cached_object_update );
@@ -2992,6 +3048,7 @@ void reset_login()
 	gAgentWearables.cleanup();
 	gAgentCamera.cleanup();
 	gAgent.cleanup();
+    gSky.cleanup(); // mVOSkyp is an inworld object.
 	LLWorld::getInstance()->resetClass();
 
 	if ( gViewerWindow )

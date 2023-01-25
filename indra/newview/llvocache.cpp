@@ -366,21 +366,15 @@ void LLVOCacheEntry::updateDebugSettings()
 	}
 	timer.reset();
 
-	//The number of frames invisible objects stay in memory
-	static LLCachedControl<U32> inv_obj_time(gSavedSettings,"NonvisibleObjectsInMemoryTime");
-	//BD - Objects within the view frustum whose visible area is greater than this threshold will be loaded
-	static LLCachedControl<F32> front_pixel_threshold(gSavedSettings, "SceneLoadFrontPixelThreshold");
-	//Objects out of the view frustum whose visible area is greater than this threshold will remain loaded
-	static LLCachedControl<F32> rear_pixel_threshold(gSavedSettings, "SceneLoadRearPixelThreshold");
-	//A percentage of draw distance beyond which all objects outside of view frustum will be unloaded, regardless of pixel threshold
-	static LLCachedControl<F32> rear_max_radius_frac(gSavedSettings, "SceneLoadRearMaxRadiusFraction");
-
-	//BD
-	sMinFrameRange = inv_obj_time - 1; //make 0 to be the maximum 
-	sNearRadius = llclamp(gAgentCamera.mDrawDistance, 1.f, 512.f); //BD - Min radius: all objects within this radius remain loaded in memory
+	//objects within the view frustum whose visible area is greater than this threshold will be loaded
+	static LLCachedControl<F32> front_pixel_threshold(gSavedSettings,"SceneLoadFrontPixelThreshold");
 	sFrontPixelThreshold = front_pixel_threshold;
-	sRearPixelThreshold = llmax((F32)rear_pixel_threshold, sFrontPixelThreshold); //can not be smaller than sFrontPixelThreshold.
-	sRearFarRadius = llclamp((F32)rear_max_radius_frac, sNearRadius, gAgentCamera.mDrawDistance); //Can not be less than "SceneLoadMinRadius". Can not be more than the draw distance.
+
+	//objects out of the view frustum whose visible area is greater than this threshold will remain loaded
+	static LLCachedControl<F32> rear_pixel_threshold(gSavedSettings,"SceneLoadRearPixelThreshold");
+	sRearPixelThreshold = rear_pixel_threshold;
+	sRearPixelThreshold = llmax(sRearPixelThreshold, sFrontPixelThreshold); //can not be smaller than sFrontPixelThreshold.
+
 	//BD - Make the above parameters adaptive to memory usage
 	//     Starts to put restrictions from low_mem_bound_MB, apply tightest restrictions when hits high_mem_bound_MB
 	static U32 low_mem_bound_MB = (LLMemory::getAvailableMemKB().value() / 1024) * 0.8f;
@@ -388,16 +382,31 @@ void LLVOCacheEntry::updateDebugSettings()
 	
 	LLMemory::updateMemoryInfo() ;
 	U32 allocated_mem = LLMemory::getAllocatedMemKB().value();
-	allocated_mem /= 1024; //convert to MB.
-	if(allocated_mem < low_mem_bound_MB)
-	{
-		return; 
-	}
-	F32 adjust_factor = llmax(0.f, (F32)(high_mem_bound_MB - allocated_mem) / (high_mem_bound_MB - low_mem_bound_MB));
+    static const F32 KB_to_MB = 1.f / 1024.f;
+	U32 clamped_memory = llclamp(allocated_mem * KB_to_MB, (F32) low_mem_bound_MB, (F32) high_mem_bound_MB);
+    const F32 adjust_range = high_mem_bound_MB - low_mem_bound_MB;
+    const F32 adjust_factor = (high_mem_bound_MB - clamped_memory) / adjust_range; // [0, 1]
 
-	sRearFarRadius = llmin(adjust_factor * sRearFarRadius, 96.f);  //[0.f, 96.f]
-	sMinFrameRange = (U32)llclamp(adjust_factor * sMinFrameRange, 10.f, 64.f);  //[10, 64]
-	sNearRadius    = llmax(adjust_factor * sNearRadius, 1.0f);
+    //min radius: all objects within this radius remain loaded in memory
+    static LLCachedControl<F32> min_radius(gSavedSettings,"SceneLoadMinRadius");
+    static const F32 MIN_RADIUS = 1.0f;
+    const F32 draw_radius = gAgentCamera.mDrawDistance;
+    const F32 clamped_min_radius = llclamp((F32) min_radius, MIN_RADIUS, draw_radius); // [1, mDrawDistance]
+    sNearRadius = MIN_RADIUS + ((clamped_min_radius - MIN_RADIUS) * adjust_factor);
+
+    // a percentage of draw distance beyond which all objects outside of view frustum will be unloaded, regardless of pixel threshold
+    static LLCachedControl<F32> rear_max_radius_frac(gSavedSettings,"SceneLoadRearMaxRadiusFraction");
+    const F32 min_radius_plus_one = sNearRadius + 1.f;
+    const F32 max_radius = rear_max_radius_frac * gAgentCamera.mDrawDistance;
+    const F32 clamped_max_radius = llclamp(max_radius, min_radius_plus_one, draw_radius); // [sNearRadius, mDrawDistance]
+    sRearFarRadius = min_radius_plus_one + ((clamped_max_radius - min_radius_plus_one) * adjust_factor);
+
+    //the number of frames invisible objects stay in memory
+    static LLCachedControl<U32> inv_obj_time(gSavedSettings,"NonvisibleObjectsInMemoryTime");
+    static const U32 MIN_FRAMES = 10;
+    static const U32 MAX_FRAMES = 64;
+    const U32 clamped_frames = inv_obj_time ? llclamp((U32) inv_obj_time, MIN_FRAMES, MAX_FRAMES) : MAX_FRAMES; // [10, 64], with zero => 64
+    sMinFrameRange = MIN_FRAMES + ((clamped_frames - MIN_FRAMES) * adjust_factor);
 }
 
 //static 

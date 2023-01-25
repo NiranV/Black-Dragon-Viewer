@@ -414,6 +414,8 @@ public:
 	
 	void cancelMimeTypeProbe();
 	
+    bool isAttachedToHUD() const;
+
 	// Is this media attached to an avatar *not* self
 	bool isAttachedToAnotherAvatar() const;
 	
@@ -426,6 +428,7 @@ public:
 private:
 	bool isAutoPlayable() const;
 	bool shouldShowBasedOnClass() const;
+	bool isObscured() const;
 	static bool isObjectAttachedToAnotherAvatar(LLVOVolume *obj);
 	static bool isObjectInAgentParcel(LLVOVolume *obj);
 	

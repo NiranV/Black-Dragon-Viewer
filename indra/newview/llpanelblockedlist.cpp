@@ -161,6 +161,26 @@ void LLPanelBlockedList::onFilterEdit(const std::string& search_string)
 	mBlockedList->setNameFilter(filter);
 }
 
+void LLPanelBlockedList::callbackBlockPicked(const uuid_vec_t& ids, const std::vector<LLAvatarName> names)
+{
+	if (names.empty() || ids.empty()) return;
+    LLMute mute(ids[0], names[0].getUserName(), LLMute::AGENT);
+	LLMuteList::getInstance()->add(mute);
+	showPanelAndSelect(mute.mID);
+}
+
+//static
+void LLPanelBlockedList::callbackBlockByName(const std::string& text)
+{
+	if (text.empty()) return;
+
+	LLMute mute(LLUUID::null, text, LLMute::BY_NAME);
+	BOOL success = LLMuteList::getInstance()->add(mute);
+	if (!success)
+	{
+		LLNotificationsUtil::add("MuteByNameFailed");
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 //			LLFloaterGetBlockedObjectName

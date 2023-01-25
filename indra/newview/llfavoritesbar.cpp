@@ -521,7 +521,25 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			}
 
 			// check if we are dragging an existing item from the favorites bar
-			if (item && mDragItemId == item->getUUID())
+            bool existing_drop = false;
+            if (item && mDragItemId == item->getUUID())
+            {
+                // There is a chance of mDragItemId being obsolete
+                // ex: can happen if something interrupts viewer, which
+                // results in viewer not geting a 'mouse up' signal
+                for (LLInventoryModel::item_array_t::iterator i = mItems.begin(); i != mItems.end(); ++i)
+                {
+                    LLViewerInventoryItem* currItem = *i;
+
+                    if (currItem->getUUID() == mDragItemId)
+                    {
+                        existing_drop = true;
+                        break;
+                    }
+                }
+            }
+
+            if (existing_drop)
 			{
 				*accept = ACCEPT_YES_SINGLE;
 
@@ -550,6 +568,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 					if (mItems.empty())
 					{
 						setLandingTab(NULL);
+                        mLastTab = NULL;
 					}
 					handleNewFavoriteDragAndDrop(item, favorites_id, x, y);
 				}
@@ -708,6 +727,12 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 
 void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
 {
+    if (mItems.empty())
+    {
+        // Isn't supposed to be empty
+        return;
+    }
+
 	//BD
 	// Identify the button hovered and the side to drop
 	LLFavoriteLandmarkButton* dest = dynamic_cast<LLFavoriteLandmarkButton*>(mLandingTab);
@@ -998,6 +1023,14 @@ void LLFavoritesBarCtrl::updateButtons(bool force_update)
 	    }
 	    LLFavoritesOrderStorage::instance().mPrevFavorites = mItems;
 		mGetPrevItems = false;
+
+		if (LLFavoritesOrderStorage::instance().isStorageUpdateNeeded())
+		{
+			if (!mItemsChangedTimer.getStarted())
+			{
+				mItemsChangedTimer.start();
+			}
+		}
 	}
 
 	const LLButton::Params& button_params = getButtonParams();
@@ -1005,6 +1038,7 @@ void LLFavoritesBarCtrl::updateButtons(bool force_update)
 	if(mItems.empty())
 	{
 		mBarLabel->setVisible(TRUE);
+        mLastTab = NULL;
 	}
 	else
 	{
@@ -1051,6 +1085,10 @@ void LLFavoritesBarCtrl::updateButtons(bool force_update)
 				dynamic_cast<LLFavoriteLandmarkButton*> (*cur_it);
 			if (button)
 			{
+                if (mLastTab == button)
+                {
+                    mLastTab = NULL;
+                }
 				removeChild(button);
 				delete button;
 			}
@@ -1088,6 +1126,17 @@ void LLFavoritesBarCtrl::updateButtons(bool force_update)
 
 			mLastTab = last_new_button;
 		}
+        if (!mLastTab && mItems.size() > 0)
+        {
+            // mMoreTextBox was removed, so LLFavoriteLandmarkButtons
+            // should be the only ones in the list
+            LLFavoriteLandmarkButton* button = dynamic_cast<LLFavoriteLandmarkButton*> (childs->back());
+            if (button)
+            {
+                mLastTab = button;
+            }
+        }
+
 		mFirstDropDownItem = j;
 		// Chevron button
 		if (mFirstDropDownItem < mItems.size())
@@ -1861,7 +1910,7 @@ void LLFavoritesOrderStorage::destroyClass()
 		file.close();
 		LLFile::remove(filename);
 	}
-	if(mSaveOnExit)
+	if(mSaveOnExit || gSavedSettings.getBOOL("UpdateRememberPasswordSetting"))
 	{
 	    LLFavoritesOrderStorage::instance().saveFavoritesRecord(true);
 	}
@@ -1905,7 +1954,6 @@ void LLFavoritesOrderStorage::load()
 			llifstream in_file;
 			in_file.open(filename.c_str());
 			LLSD fav_llsd;
-			LLSD user_llsd;
 			if (in_file.is_open())
 			{
 				LLSDSerialize::fromXML(fav_llsd, in_file);
@@ -1915,12 +1963,12 @@ void LLFavoritesOrderStorage::load()
 				in_file.close();
 				if (fav_llsd.isMap() && fav_llsd.has(gAgentUsername))
 				{
-					user_llsd = fav_llsd[gAgentUsername];
+					mStorageFavorites = fav_llsd[gAgentUsername];
 
 					S32 index = 0;
 					bool needs_validation = gSavedPerAccountSettings.getBOOL("ShowFavoritesOnLogin");
-					for (LLSD::array_iterator iter = user_llsd.beginArray();
-						iter != user_llsd.endArray(); ++iter)
+					for (LLSD::array_iterator iter = mStorageFavorites.beginArray();
+						iter != mStorageFavorites.endArray(); ++iter)
 					{
 						// Validation
 						LLUUID fv_id = iter->get("id").asUUID();
@@ -2305,7 +2353,7 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 		}
 	}
 
-	if((items != mPrevFavorites) || name_changed || pref_changed)
+	if((items != mPrevFavorites) || name_changed || pref_changed || gSavedSettings.getBOOL("UpdateRememberPasswordSetting"))
 	{
 	    std::string filename = getStoredFavoritesFilename();
 		if (!filename.empty())
@@ -2326,6 +2374,12 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 			LLSD user_llsd;
 			S32 fav_iter = 0;
 			mMissingSLURLs.clear();
+
+            LLSD save_pass;
+            save_pass["save_password"] = gSavedSettings.getBOOL("RememberPassword");
+            user_llsd[fav_iter] = save_pass;
+            fav_iter++;
+
 			for (LLInventoryModel::item_array_t::iterator it = items.begin(); it != items.end(); it++)
 			{
 				LLSD value;
@@ -2394,6 +2448,23 @@ void LLFavoritesOrderStorage::showFavoritesOnLoginChanged(BOOL show)
 	{
 		removeFavoritesRecordOfUser();
 	}
+}
+
+bool LLFavoritesOrderStorage::isStorageUpdateNeeded()
+{
+	if (!mRecreateFavoriteStorage)
+	{
+		for (LLSD::array_iterator iter = mStorageFavorites.beginArray();
+			iter != mStorageFavorites.endArray(); ++iter)
+		{
+			if (mFavoriteNames[iter->get("id").asUUID()] != iter->get("name").asString())
+			{
+				mRecreateFavoriteStorage = true;
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void AddFavoriteLandmarkCallback::fire(const LLUUID& inv_item_id)

@@ -74,7 +74,7 @@ static inline bool Check_FMOD_Error(FMOD_RESULT result, const char *string)
 	return true;
 }
 
-bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, const std::string &app_title)
+bool LLAudioEngine_FMODSTUDIO::init(void* userdata, const std::string &app_title)
 {
 	U32 version;
 	FMOD_RESULT result;
@@ -85,8 +85,8 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 	if (Check_FMOD_Error(result, "FMOD::System_Create"))
 		return false;
 
-	//will call LLAudioEngine_FMODSTUDIO::allocateListener, which needs a valid mSystem pointer.
-	LLAudioEngine::init(num_channels, userdata, app_title);
+    //will call LLAudioEngine_FMODSTUDIO::allocateListener, which needs a valid mSystem pointer.
+    LLAudioEngine::init(userdata, app_title);
 
 	result = mSystem->getVersion(&version);
 	Check_FMOD_Error(result, "FMOD::System::getVersion");
@@ -97,9 +97,9 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 			<< " expected:" << FMOD_VERSION << LL_ENDL;
 	}
 
-	// In this case, all sounds, PLUS wind and stream will be software.
-	result = mSystem->setSoftwareChannels(num_channels + 2);
-	Check_FMOD_Error(result, "FMOD::System::setSoftwareChannels");
+    // In this case, all sounds, PLUS wind and stream will be software.
+    result = mSystem->setSoftwareChannels(LL_MAX_AUDIO_CHANNELS + 2);
+    Check_FMOD_Error(result, "FMOD::System::setSoftwareChannels");
 
 	FMOD_ADVANCEDSETTINGS settings;
 	memset(&settings, 0, sizeof(settings));
@@ -118,94 +118,94 @@ bool LLAudioEngine_FMODSTUDIO::init(const S32 num_channels, void* userdata, cons
 	}
 
 #if LL_LINUX
-	bool audio_ok = false;
+    bool audio_ok = false;
 
-	if (!audio_ok)
-	{
-		const char* env_string = getenv("LL_BAD_FMOD_PULSEAUDIO");
-		if (NULL == env_string)
-		{
-			LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
-			if (mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO) == FMOD_OK &&
-				(result = mSystem->init(num_channels + 2, fmod_flags, const_cast<char*>(app_title.c_str()))) == FMOD_OK)
-			{
-				LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY" << LL_ENDL;
-				audio_ok = true;
-			}
-			else
-			{
-				Check_FMOD_Error(result, "PulseAudio audio output FAILED to initialize");
-			}
-		}
-		else
-		{
-			LL_DEBUGS("AppInit") << "PulseAudio audio output SKIPPED" << LL_ENDL;
-		}
-	}
-	if (!audio_ok)
-	{
-		const char* env_string = getenv("LL_BAD_FMOD_ALSA");
-		if (NULL == env_string)
-		{
-			LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
-			if (mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA) == FMOD_OK &&
-				(result = mSystem->init(num_channels + 2, fmod_flags, 0)) == FMOD_OK)
-			{
-				LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
-				audio_ok = true;
-			}
-			else
-			{
-				Check_FMOD_Error(result, "ALSA audio output FAILED to initialize");
-			}
-		}
-		else
-		{
-			LL_DEBUGS("AppInit") << "ALSA audio output SKIPPED" << LL_ENDL;
-		}
-	}
-	if (!audio_ok)
-	{
-		LL_WARNS("AppInit") << "Overall audio init failure." << LL_ENDL;
-		return false;
-	}
+    if (!audio_ok)
+    {
+        const char* env_string = getenv("LL_BAD_FMOD_PULSEAUDIO");
+        if (NULL == env_string)
+        {
+            LL_DEBUGS("AppInit") << "Trying PulseAudio audio output..." << LL_ENDL;
+            if (mSystem->setOutput(FMOD_OUTPUTTYPE_PULSEAUDIO) == FMOD_OK &&
+                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, const_cast<char*>(app_title.c_str()))) == FMOD_OK)
+            {
+                LL_DEBUGS("AppInit") << "PulseAudio output initialized OKAY" << LL_ENDL;
+                audio_ok = true;
+            }
+            else
+            {
+                Check_FMOD_Error(result, "PulseAudio audio output FAILED to initialize");
+            }
+        }
+        else
+        {
+            LL_DEBUGS("AppInit") << "PulseAudio audio output SKIPPED" << LL_ENDL;
+        }
+    }
+    if (!audio_ok)
+    {
+        const char* env_string = getenv("LL_BAD_FMOD_ALSA");
+        if (NULL == env_string)
+        {
+            LL_DEBUGS("AppInit") << "Trying ALSA audio output..." << LL_ENDL;
+            if (mSystem->setOutput(FMOD_OUTPUTTYPE_ALSA) == FMOD_OK &&
+                (result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0)) == FMOD_OK)
+            {
+                LL_DEBUGS("AppInit") << "ALSA audio output initialized OKAY" << LL_ENDL;
+                audio_ok = true;
+            }
+            else
+            {
+                Check_FMOD_Error(result, "ALSA audio output FAILED to initialize");
+            }
+        }
+        else
+        {
+            LL_DEBUGS("AppInit") << "ALSA audio output SKIPPED" << LL_ENDL;
+        }
+    }
+    if (!audio_ok)
+    {
+        LL_WARNS("AppInit") << "Overall audio init failure." << LL_ENDL;
+        return false;
+    }
 
-	// We're interested in logging which output method we
-	// ended up with, for QA purposes.
-	FMOD_OUTPUTTYPE output_type;
-	mSystem->getOutput(&output_type);
-	switch (output_type)
-	{
-	case FMOD_OUTPUTTYPE_NOSOUND:
-		LL_INFOS("AppInit") << "Audio output: NoSound" << LL_ENDL; break;
-	case FMOD_OUTPUTTYPE_PULSEAUDIO:
-		LL_INFOS("AppInit") << "Audio output: PulseAudio" << LL_ENDL; break;
-	case FMOD_OUTPUTTYPE_ALSA:
-		LL_INFOS("AppInit") << "Audio output: ALSA" << LL_ENDL; break;
-	default:
-		LL_INFOS("AppInit") << "Audio output: Unknown!" << LL_ENDL; break;
-	};
+    // We're interested in logging which output method we
+    // ended up with, for QA purposes.
+    FMOD_OUTPUTTYPE output_type;
+    mSystem->getOutput(&output_type);
+    switch (output_type)
+    {
+    case FMOD_OUTPUTTYPE_NOSOUND:
+        LL_INFOS("AppInit") << "Audio output: NoSound" << LL_ENDL; break;
+    case FMOD_OUTPUTTYPE_PULSEAUDIO:
+        LL_INFOS("AppInit") << "Audio output: PulseAudio" << LL_ENDL; break;
+    case FMOD_OUTPUTTYPE_ALSA:
+        LL_INFOS("AppInit") << "Audio output: ALSA" << LL_ENDL; break;
+    default:
+        LL_INFOS("AppInit") << "Audio output: Unknown!" << LL_ENDL; break;
+    };
 #else // LL_LINUX
 
-	// initialize the FMOD engine
-	// number of channel in this case looks to be identiacal to number of max simultaneously
-	// playing objects and we can set practically any number
-	result = mSystem->init(num_channels + 2, fmod_flags, 0);
-	if (Check_FMOD_Error(result, "Error initializing FMOD Studio with default settins, retrying with other format"))
-	{
-		result = mSystem->setSoftwareFormat(44100, FMOD_SPEAKERMODE_STEREO, 0/*- ignore*/);
-		if (Check_FMOD_Error(result, "Error setting sotware format. Can't init."))
-		{
-			return false;
-		}
-		result = mSystem->init(num_channels + 2, fmod_flags, 0);
-	}
-	if (Check_FMOD_Error(result, "Error initializing FMOD Studio"))
-	{
-		// If it fails here and (result == FMOD_ERR_OUTPUT_CREATEBUFFER),
-		// we can retry with other settings
-		return false;
-	}
+    // initialize the FMOD engine
+    // number of channel in this case looks to be identiacal to number of max simultaneously
+    // playing objects and we can set practically any number
+    result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0);
+    if (Check_FMOD_Error(result, "Error initializing FMOD Studio with default settins, retrying with other format"))
+    {
+        result = mSystem->setSoftwareFormat(44100, FMOD_SPEAKERMODE_STEREO, 0/*- ignore*/);
+        if (Check_FMOD_Error(result, "Error setting sotware format. Can't init."))
+        {
+            return false;
+        }
+        result = mSystem->init(LL_MAX_AUDIO_CHANNELS + 2, fmod_flags, 0);
+    }
+    if (Check_FMOD_Error(result, "Error initializing FMOD Studio"))
+    {
+        // If it fails here and (result == FMOD_ERR_OUTPUT_CREATEBUFFER),
+        // we can retry with other settings
+        return false;
+    }
 #endif
 
 	// set up our favourite FMOD-native streaming audio implementation if none has already been added
@@ -505,35 +505,35 @@ bool LLAudioChannelFMODSTUDIO::updateBuffer()
 
 void LLAudioChannelFMODSTUDIO::update3DPosition()
 {
-	if (!mChannelp)
-	{
-		// We're not actually a live channel (i.e., we're not playing back anything)
-		return;
-	}
+    if (!mChannelp)
+    {
+        // We're not actually a live channel (i.e., we're not playing back anything)
+        return;
+    }
 
-	LLAudioBufferFMODSTUDIO  *bufferp = (LLAudioBufferFMODSTUDIO  *)mCurrentBufferp;
-	if (!bufferp)
-	{
-		// We don't have a buffer associated with us (should really have been picked up
-		// by the above if.
-		return;
-	}
+    LLAudioBufferFMODSTUDIO  *bufferp = (LLAudioBufferFMODSTUDIO  *)mCurrentBufferp;
+    if (!bufferp)
+    {
+        // We don't have a buffer associated with us (should really have been picked up
+        // by the above if.
+        return;
+    }
 
-	if (mCurrentSourcep->isAmbient())
-	{
-		// Ambient sound, don't need to do any positional updates.
-		set3DMode(false);
-	}
-	else
-	{
-		// Localized sound.  Update the position and velocity of the sound.
-		set3DMode(true);
+    if (mCurrentSourcep->isForcedPriority())
+    {
+        // Prioritized UI and preview sounds don't need to do any positional updates.
+        set3DMode(false);
+    }
+    else
+    {
+        // Localized sound.  Update the position and velocity of the sound.
+        set3DMode(true);
 
-		LLVector3 float_pos;
-		float_pos.setVec(mCurrentSourcep->getPositionGlobal());
-		FMOD_RESULT result = mChannelp->set3DAttributes((FMOD_VECTOR*)float_pos.mV, (FMOD_VECTOR*)mCurrentSourcep->getVelocity().mV);
-		Check_FMOD_Error(result, "FMOD::Channel::set3DAttributes");
-	}
+        LLVector3 float_pos;
+        float_pos.setVec(mCurrentSourcep->getPositionGlobal());
+        FMOD_RESULT result = mChannelp->set3DAttributes((FMOD_VECTOR*)float_pos.mV, (FMOD_VECTOR*)mCurrentSourcep->getVelocity().mV);
+        Check_FMOD_Error(result, "FMOD::Channel::set3DAttributes");
+    }
 }
 
 

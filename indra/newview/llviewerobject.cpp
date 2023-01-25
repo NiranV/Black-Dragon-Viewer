@@ -322,7 +322,8 @@ LLViewerObject::LLViewerObject(const LLUUID &id, const LLPCode pcode, LLViewerRe
 	mLastUpdateType(OUT_UNKNOWN),
 	mLastUpdateCached(FALSE),
 	mCachedMuteListUpdateTime(0),
-	mCachedOwnerInMuteList(false)
+	mCachedOwnerInMuteList(false),
+	mRiggedAttachedWarned(false)
 {
 	if (!is_global)
 	{
@@ -361,6 +362,13 @@ LLViewerObject::~LLViewerObject()
 		mPartSourcep->setDead();
 		mPartSourcep = NULL;
 	}
+
+    if (mText)
+    {
+        // something recovered LLHUDText when object was already dead
+        mText->markDead();
+        mText = NULL;
+    }
 
 	// Delete memory associated with extra parameters.
 	std::map<U16, ExtraParameter*>::iterator iter;
@@ -2503,11 +2511,19 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 		needs_refresh = needs_refresh || child->mUserSelected;
 	}
 
+    static LLCachedControl<bool> allow_select_avatar(gSavedSettings, "AllowSelectAvatar", FALSE);
 	if (needs_refresh)
 	{
 		LLSelectMgr::getInstance()->updateSelectionCenter();
 		dialog_refresh_all();
-	} 
+	}
+    else if (allow_select_avatar && asAvatar())
+    {
+        // Override any avatar position updates received
+        // Works only if avatar was repositioned using build
+        // tools and build floater is visible
+        LLSelectMgr::getInstance()->overrideAvatarUpdates();
+    }
 
 
 	// Mark update time as approx. now, with the ping delay.

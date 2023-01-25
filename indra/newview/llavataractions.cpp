@@ -62,6 +62,8 @@
 #include "llmutelist.h"
 #include "llnotificationsutil.h"	// for LLNotificationsUtil
 #include "llpaneloutfitedit.h"
+#include "llpanelprofile.h"
+#include "llparcel.h"
 #include "llrecentpeople.h"
 #include "lltrans.h"
 #include "llurlaction.h"
@@ -69,6 +71,7 @@
 #include "llviewerobjectlist.h"
 #include "llviewermessage.h"	// for handle_lure
 #include "llviewernetwork.h" //LLGridManager
+#include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
 #include "lltrans.h"
 #include "llcallingcard.h"
@@ -76,6 +79,7 @@
 #include "llsidepanelinventory.h"
 #include "llavatarname.h"
 #include "llagentui.h"
+#include "lluiusage.h"
 // [RLVa:KB] - Checked: 2011-04-11 (RLVa-1.3.0)
 #include "rlvactions.h"
 #include "rlvcommon.h"
@@ -93,7 +97,7 @@ const U32 KICK_FLAGS_UNFREEZE	= 1 << 1;
 
 std::string getProfileURL(const std::string& agent_name, bool feed_only)
 {
-	std::string url = "[WEB_PROFILE_URL][AGENT_NAME]";
+    std::string url = "[WEB_PROFILE_URL][AGENT_NAME][FEED_ONLY]";
 	LLSD subs;
 	subs["WEB_PROFILE_URL"] = LLGridManager::getInstance()->getWebProfileURL();
 	subs["AGENT_NAME"] = agent_name;
@@ -438,6 +442,34 @@ void LLAvatarActions::showPick(const LLUUID& avatar_id, const LLUUID& pick_id)
 }
 
 // static
+void LLAvatarActions::createPick()
+{
+    LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", gAgent.getID())));
+    LLViewerRegion* region = gAgent.getRegion();
+    if (profilefloater && region)
+    {
+        LLPickData data;
+        data.pos_global = gAgent.getPositionGlobal();
+        data.sim_name = region->getName();
+
+        LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if (parcel)
+        {
+            data.name = parcel->getName();
+            data.desc = parcel->getDesc();
+            data.snapshot_id = parcel->getSnapshotID();
+            data.parcel_id = parcel->getID();
+        }
+        else
+        {
+            data.name = region->getName();
+        }
+
+        profilefloater->createPick(data);
+    }
+}
+
+// static
 bool LLAvatarActions::isPickTabSelected(const LLUUID& avatar_id)
 {
     if (avatar_id.notNull())
@@ -487,6 +519,16 @@ void LLAvatarActions::showClassified(const LLUUID& avatar_id, const LLUUID& clas
 	}
 }
 
+// static
+void LLAvatarActions::createClassified()
+{
+    LLFloaterProfile* profilefloater = dynamic_cast<LLFloaterProfile*>(LLFloaterReg::showInstance("profile", LLSD().with("id", gAgent.getID())));
+    if (profilefloater)
+    {
+        profilefloater->createClassified();
+    }
+}
+
 //static 
 bool LLAvatarActions::profileVisible(const LLUUID& avatar_id)
 {
@@ -502,7 +544,6 @@ LLFloater* LLAvatarActions::getProfileFloater(const LLUUID& avatar_id)
     LLFloaterProfile* floater = LLFloaterReg::findTypedInstance<LLFloaterProfile>("profile", LLSD().with("id", avatar_id));
     return floater;
 }
-
 
 //static 
 void LLAvatarActions::hideProfile(const LLUUID& avatar_id)
@@ -1504,6 +1545,8 @@ bool LLAvatarActions::handleUnfreeze(const LLSD& notification, const LLSD& respo
 void LLAvatarActions::requestFriendship(const LLUUID& target_id, const std::string& target_name, const std::string& message)
 {
 	const LLUUID calling_card_folder_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_CALLINGCARD);
+	LLUIUsage::instance().logCommand("Agent.SendFriendRequest");
+
 	send_improved_im(target_id,
 					 target_name,
 					 message,

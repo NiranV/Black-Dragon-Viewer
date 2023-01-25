@@ -2,9 +2,9 @@
  * @file llpanelprofileclassifieds.h
  * @brief LLPanelProfileClassifieds and related class implementations
  *
- * $LicenseInfo:firstyear=2009&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2022&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2010, Linden Research, Inc.
+ * Copyright (C) 2022, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -54,7 +54,7 @@ public:
     LLPublishClassifiedFloater(const LLSD& key);
     virtual ~LLPublishClassifiedFloater();
 
-    /*virtual*/ BOOL postBuild();
+    BOOL postBuild() override;
 
     void setPrice(S32 price);
     S32 getPrice();
@@ -64,8 +64,58 @@ public:
 };
 
 
+/**
+* Panel for displaying Avatar's picks.
+*/
+class LLPanelProfileClassifieds
+    : public LLPanelProfilePropertiesProcessorTab
+{
+public:
+    LLPanelProfileClassifieds();
+    /*virtual*/ ~LLPanelProfileClassifieds();
+
+    BOOL postBuild() override;
+
+    void onOpen(const LLSD& key) override;
+
+    void selectClassified(const LLUUID& classified_id, bool edit);
+
+    void createClassified();
+
+    void processProperties(void* data, EAvatarProcessorType type) override;
+
+    void resetData() override;
+
+    void updateButtons();
+
+    void updateData() override;
+
+    bool hasNewClassifieds();
+    bool hasUnsavedChanges() override;
+    // commits changes to existing classifieds, but does not publish new classified!
+    void commitUnsavedChanges() override;
+
+private:
+    void onClickNewBtn();
+    void onClickDelete();
+    void callbackDeleteClassified(const LLSD& notification, const LLSD& response);
+
+    bool canAddNewClassified();
+    bool canDeleteClassified();
+
+    LLTabContainer* mTabContainer;
+    LLUICtrl*       mNoItemsLabel;
+    LLButton*       mNewButton;
+    LLButton*       mDeleteButton;
+
+    LLUUID          mClassifiedToSelectOnLoad;
+    bool            mClassifiedEditOnLoad;
+    bool            mSheduledClassifiedCreation;
+};
+
+
 class LLPanelProfileClassified
-	: public LLPanel
+    : public LLPanelProfilePropertiesProcessorTab
 {
 public:
 
@@ -75,11 +125,11 @@ public:
 
     /*virtual*/ ~LLPanelProfileClassified();
 
-    /*virtual*/ BOOL postBuild();
+    BOOL postBuild() override;
 
-    void onOpen(const LLSD& key);
+    void onOpen(const LLSD& key) override;
 
-    /*virtual*/ void processProperties(void* data, EAvatarProcessorType type);
+    void processProperties(void* data, EAvatarProcessorType type) override;
 
     void setSnapshotId(const LLUUID& id);
 
@@ -121,9 +171,9 @@ public:
 
     void setInfoLoaded(bool loaded) { mInfoLoaded = loaded; }
 
-    /*virtual*/ BOOL isDirty() const;
+    BOOL isDirty() const override;
 
-    /*virtual*/ void resetDirty();
+    void resetDirty() override;
 
     bool isNew() { return mIsNew; }
 
@@ -141,7 +191,7 @@ public:
 
     bool getAutoRenew();
 
-    S32 getPriceForListing();
+    S32 getPriceForListing() { return mPriceForListing; }
 
     void setEditMode(BOOL edit_mode);
     bool getEditMode() {return mEditMode;}
@@ -161,13 +211,15 @@ public:
             const LLVector3d& global_pos,
             const std::string& sim_name);
 
+    void doSave();
+
 protected:
 
-    /*virtual*/ void resetData();
+    void resetData() override;
 
     void resetControls();
 
-    /*virtual*/ void updateButtons();
+    void updateButtons();
     void updateInfoRect();
 
     static std::string createLocationText(
@@ -193,7 +245,7 @@ protected:
 
     std::string makeClassifiedName();
 
-    void setPriceForListing(S32 price);
+    void setPriceForListing(S32 price) { mPriceForListing = price; }
 
     U8 getFlags();
 
@@ -206,54 +258,12 @@ protected:
     void onSetLocationClick();
     void onChange();
 
-    void doSave();
-
     void onPublishFloaterPublishClicked();
 
     void onTexturePickerMouseEnter();
     void onTexturePickerMouseLeave();
 
     void onTextureSelected();
-
-
-
-
-    /**
-     * Callback for "Map" button, opens Map
-     */
-    void onClickMap();
-
-    /**
-     * Callback for "Teleport" button, teleports user to Pick location.
-     */
-    void onClickTeleport();
-
-    /**
-     * Enables/disables "Save" button
-     */
-    void enableSaveButton(BOOL enable);
-
-    /**
-     * Called when snapshot image changes.
-     */
-    void onSnapshotChanged();
-
-    /**
-     * Callback for Pick snapshot, name and description changed event.
-     */
-    void onPickChanged(LLUICtrl* ctrl);
-
-    /**
-     * Callback for "Set Location" button click
-     */
-    void onClickSetLocation();
-
-    /**
-     * Callback for "Save" button click
-     */
-    void onClickSave();
-
-    void onDescriptionFocusReceived();
 
     void updateTabLabel(const std::string& title);
 
@@ -274,8 +284,6 @@ private:
     LLIconCtrl*         mContentTypeG;
     LLComboBox*         mContentTypeCombo;
     LLUICtrl*           mPriceText;
-    LLUICtrl*           mPriceEdit;
-    LLUICtrl*           mPricelabel;
     LLUICtrl*           mAutoRenewText;
     LLUICtrl*           mAutoRenewEdit;
 
@@ -286,9 +294,8 @@ private:
     LLButton*           mSetLocationButton;
     LLButton*           mCancelButton;
 
-    LLPanel*            mMapBtnCnt;
-    LLPanel*            mTeleportBtnCnt;
-    LLPanel*            mEditBtnCnt;
+    LLPanel*            mUtilityBtnCnt;
+    LLPanel*            mPublishBtnsCnt;
     LLPanel*            mSaveBtnCnt;
     LLPanel*            mCancelBtnCnt;
 
@@ -315,6 +322,7 @@ private:
     S32 mMapClicksNew;
     S32 mProfileClicksNew;
 
+    S32 mPriceForListing;
 
     static void handleSearchStatResponse(LLUUID classifiedId, LLSD result);
 

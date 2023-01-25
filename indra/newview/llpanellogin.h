@@ -103,12 +103,13 @@ private:
 	void onClickSignUp();
 	void onUserNameTextEnty();
 	void onUserListCommit();
-	void onRememberUserCheck();
 	void onPassKey();
-	void updateServerCombo();
 
 	//BD
 	void onClickQuit();
+
+	static void onRememberUserCheck(void*);
+    static void onRememberPasswordCheck(void*);
 
 private:
 	boost::scoped_ptr<LLPanelLoginListener> mListener;

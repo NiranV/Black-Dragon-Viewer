@@ -165,6 +165,8 @@
              name="Description"
              top_delta="-4"
              width="379"
+             spellcheck="true"
+             parse_urls="true"
              word_wrap="true" />
             <text
              type="string"
@@ -2060,7 +2062,29 @@ Only large parcels can be listed in search.
              top_pad="4"
              name="parcel_enable_voice_channel_local"
              width="300" />
-        </panel>
+            <text
+             type="string"
+             length="1"
+             follows="left|top"
+             height="16"
+             layout="topleft"
+             left="10"
+             mouse_opaque="false"
+             name="media"
+             top_pad="10"
+             width="100">
+                Media:
+            </text>
+            <check_box
+             height="16"
+             label="Restrict MOAP to this parcel"
+             layout="topleft"
+             left="110"
+             left_pad="0"
+             name="obscure_moap"
+             tool_tip="Media on a prim located outside the parcel should not play automatically for an agent within this parcel and vice versa."
+             width="300" />
+            </panel>
         <panel
          border="false"
          follows="all"

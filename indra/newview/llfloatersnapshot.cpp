@@ -1212,7 +1212,7 @@ S32 LLFloaterSnapshot::notify(const LLSD& info)
 
 		// The refresh button is initially hidden. We show it after the first update,
 		// i.e. when preview appears.
-		if (!mRefreshBtn->getVisible())
+		if (mRefreshBtn && !mRefreshBtn->getVisible())
 		{
 			mRefreshBtn->setVisible(true);
 		}

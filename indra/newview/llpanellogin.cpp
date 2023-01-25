@@ -93,44 +93,6 @@ LLPointer<LLCredential> load_user_credentials(std::string &user_key)
     }
 }
 
-// keys are lower case to be case insensitive so they are not always
-// identical to names which retain user input, like:
-// "AwEsOmE Resident" -> "awesome_resident"
-std::string get_user_key_from_name(const std::string &username)
-{
-    std::string key = username;
-    LLStringUtil::trim(key);
-    LLStringUtil::toLower(key);
-    if (!LLGridManager::getInstance()->isSystemGrid())
-    {
-        size_t separator_index = username.find_first_of(" ");
-        if (separator_index == username.npos)
-        {
-            // CRED_IDENTIFIER_TYPE_ACCOUNT
-            return key;
-        }
-    }
-    // CRED_IDENTIFIER_TYPE_AGENT
-    size_t separator_index = username.find_first_of(" ._");
-    std::string first = username.substr(0, separator_index);
-    std::string last;
-    if (separator_index != username.npos)
-    {
-        last = username.substr(separator_index + 1, username.npos);
-        LLStringUtil::trim(last);
-    }
-    else
-    {
-        // ...on Linden grids, single username users as considered to have
-        // last name "Resident"
-        // *TODO: Make login.cgi support "account_name" like above
-        last = "resident";
-    }
-
-    key = first + "_" + last;
-    return key;
-}
-
 class LLLoginLocationAutoHandler : public LLCommandHandler
 {
 public:
@@ -331,6 +293,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	getChild<LLButton>("forgot_password_text")->setCommitCallback(boost::bind(&LLPanelLogin::onClickForgotPassword, this));
 	getChild<LLButton>("create_new_account_text")->setCommitCallback(boost::bind(&LLPanelLogin::onClickNewAccount, this));
 
+	//BD - Version info.
 	std::string channel = LLVersionInfo::instance().getChannel();
 	std::string version = llformat("%s (%d)", LLVersionInfo::instance().getShortVersion().c_str(), LLVersionInfo::instance().getBuild());
 	LLButton* channel_text = getChild<LLButton>("channel_text");
@@ -348,6 +311,10 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 	//BD - Force preferences to initialize.
 	LLFloaterReg::getInstance("preferences");
+
+    LLCheckBoxCtrl* remember_name = getChild<LLCheckBoxCtrl>("remember_name");
+    remember_name->setCommitCallback(boost::bind(&LLPanelLogin::onRememberUserCheck, this));
+    getChild<LLCheckBoxCtrl>("remember_password")->setCommitCallback(boost::bind(&LLPanelLogin::onRememberPasswordCheck, this));
 }
 
 void LLPanelLogin::addFavoritesToStartLocation()
@@ -408,10 +375,22 @@ void LLPanelLogin::addFavoritesToStartLocation()
 		mFavoritesCombo->addSeparator();
 		// _LL_DEBUGS() << "Loading favorites for " << iter->first << LL_ENDL;
 		LLSD user_llsd = iter->second;
+        bool update_password_setting = true;
 		for (LLSD::array_const_iterator iter1 = user_llsd.beginArray();
 			iter1 != user_llsd.endArray(); ++iter1)
 		{
-			std::string label = (*iter1)["name"].asString();
+            if ((*iter1).has("save_password"))
+            {
+                bool save_password = (*iter1)["save_password"].asBoolean();
+                gSavedSettings.setBOOL("RememberPassword", save_password);
+                if (!save_password)
+                {
+                    getChild<LLButton>("connect_btn")->setEnabled(false);
+                }
+                update_password_setting = false;
+            }
+
+            std::string label = (*iter1)["name"].asString();
 			std::string value = (*iter1)["slurl"].asString();
 			if(label != "" && value != "")
 			{
@@ -422,6 +401,10 @@ void LLPanelLogin::addFavoritesToStartLocation()
 				}
 			}
 		}
+        if (update_password_setting)
+        {
+            gSavedSettings.setBOOL("UpdateRememberPasswordSetting", TRUE);
+        }
 		break;
 	}
 	if (mFavoritesCombo->getValue().asString().empty())
@@ -517,20 +500,11 @@ void LLPanelLogin::populateFields(LLPointer<LLCredential> credential, bool remem
         return;
     }
 
-    /*if (sInstance->mFirstLoginThisInstall)
-    {
-        LLUICtrl* remember_check = sInstance->getChild<LLUICtrl>("remember_check");
-        remember_check->setValue(remember_psswrd);
-        // no list to populate
-        setFields(credential);
-    }
-    else*/
-    {
-        sInstance->mRememberMeCheck->setValue(remember_user);
-		sInstance->mRememberPassCheck->setValue(remember_user && remember_psswrd);
-		sInstance->mRememberPassCheck->setEnabled(remember_user);
-        sInstance->populateUserList(credential);
-    }
+    sInstance->getChild<LLUICtrl>("remember_name")->setValue(remember_user);
+    LLUICtrl* remember_password = sInstance->getChild<LLUICtrl>("remember_password");
+    remember_password->setValue(remember_user && remember_psswrd);
+    remember_password->setEnabled(remember_user);
+    sInstance->populateUserList(credential);
 }
 
 //static
@@ -627,6 +601,7 @@ void LLPanelLogin::getFields(LLPointer<LLCredential>& credential, bool& remember
 	LL_INFOS("Credentials", "Authentication") << "retrieving username:" << username << LL_ENDL;
 	// determine if the username is a first/last form or not.
 	size_t separator_index = username.find_first_of(' ');
+
 	if (separator_index == username.npos && !LLGridManager::getInstance()->isSystemGrid())
 	{
 		LL_INFOS("Credentials", "Authentication") << "account: " << username << LL_ENDL;
@@ -709,10 +684,9 @@ void LLPanelLogin::getFields(LLPointer<LLCredential>& credential, bool& remember
 		}
 	}
 	credential = gSecAPIHandler->createCredential(LLGridManager::getInstance()->getGrid(), identifier, authenticator);
-    {
-        remember_psswrd = sInstance->mRememberPassCheck->getValue();
-        remember_user = remember_psswrd; // on panel_login_first "remember_check" is named as 'remember me'
-    }
+
+    remember_psswrd = sInstance->getChild<LLUICtrl>("remember_password")->getValue();
+    remember_user = sInstance->getChild<LLUICtrl>("remember_name")->getValue();
 }
 
 
@@ -990,14 +964,15 @@ void LLPanelLogin::onUserListCommit()
 }
 
 // static
-// At the moment only happens if !mFirstLoginThisInstall
-void LLPanelLogin::onRememberUserCheck()
+void LLPanelLogin::onRememberUserCheck(void*)
+
 {
     if (sInstance)
     {
-
-        bool remember = sInstance->mRememberMeCheck->getValue().asBoolean();
-        if (sInstance->mUsernameCombo->getCurrentIndex() != -1 && !remember)
+        bool remember = remember_name->getValue().asBoolean();
+        if (!sInstance->mFirstLoginThisInstall
+            && user_combo->getCurrentIndex() != -1
+            && !remember)
         {
             remember = true;
 			sInstance->mRememberMeCheck->setValue(true);
@@ -1008,6 +983,14 @@ void LLPanelLogin::onRememberUserCheck()
             sInstance->mRememberPassCheck->setValue(false);
         }
 		sInstance->mRememberPassCheck->setEnabled(remember);
+    }
+}
+
+void LLPanelLogin::onRememberPasswordCheck(void*)
+{
+    if (sInstance)
+    {
+        gSavedSettings.setBOOL("UpdateRememberPasswordSetting", TRUE);
     }
 }
 

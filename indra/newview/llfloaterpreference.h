@@ -123,9 +123,8 @@ public:
 	static void updateShowFavoritesCheckbox(bool val);
 
 	void processProperties( void* pData, EAvatarProcessorType type );
-	void processProfileProperties(const LLAvatarData* pAvatarData );
-	void storeAvatarProperties( const LLAvatarData* pAvatarData );
 	void saveAvatarProperties( void );
+    static void saveAvatarPropertiesCoro(const std::string url, bool allow_publish);
 	void selectPrivacyPanel();
 	void selectChatPanel();
 	void getControlNames(std::vector<std::string>& names);
@@ -154,6 +153,9 @@ public:
 	// This function squirrels away the current values of the controls so that
 	// cancel() can restore them.	
 	void saveSettings();
+
+	void saveIgnoredNotifications();
+	void restoreIgnoredNotifications();
 
 	void setCacheLocation(const LLStringExplicit& location);
 
@@ -299,12 +301,13 @@ private:
 	
 	bool mOriginalHideOnlineStatus;
 	std::string mDirectoryVisibility;
-	
-	LLAvatarData mAvatarProperties;
 
 	typedef std::map<std::string, skin_t> skinmap_t;
 	skinmap_t mUserSkins;
 	
+	bool mAllowPublish; // Allow showing agent in search
+	std::string mSavedCameraPreset;
+	std::string mSavedGraphicsPreset;
 	LOG_CLASS(LLFloaterPreference);
 
 	LLFilterEditor *mFilterEdit;
@@ -315,6 +318,10 @@ private:
 	void collectSearchableItems();
 
 	bool mFilterCleared;
+
+	void filterIgnorableNotifications();
+
+	std::map<std::string, bool> mIgnorableNotifs;
 	
 //	//BD - Avatar Render Settings
 	bool isHiddenRow(const std::string& av_name);
@@ -437,7 +444,6 @@ private:
 	//     longer freeze times.
 	std::thread mUpdateThread;
 	std::vector<LLSD> mScrollListParams;
-
 };
 
 class LLPanelPreference : public LLPanel

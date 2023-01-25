@@ -41,6 +41,7 @@
 #include "llfilepicker.h"
 #include "llfloaterperms.h"
 #include "llfloaterreg.h"
+#include "llfloatersimpleoutfitsnapshot.h"
 #include "llimagedimensionsinfo.h"
 #include "llinventoryfunctions.h"
 #include "llinventorymodel.h"
@@ -1382,6 +1383,7 @@ void LLOutfitGallery::onSelectPhoto(LLUUID selected_outfit_id)
                 texture_floaterp->setOnFloaterCommitCallback(boost::bind(&LLOutfitGallery::onTexturePickerCommit, this, _1, _2));
                 texture_floaterp->setOnUpdateImageStatsCallback(boost::bind(&LLOutfitGallery::onTexturePickerUpdateImageStats, this, _1));
                 texture_floaterp->setLocalTextureEnabled(FALSE);
+                texture_floaterp->setBakeTextureEnabled(FALSE);
                 texture_floaterp->setCanApply(false, true);
             }
 
@@ -1394,8 +1396,10 @@ void LLOutfitGallery::onSelectPhoto(LLUUID selected_outfit_id)
 void LLOutfitGallery::onTakeSnapshot(LLUUID selected_outfit_id)
 {
 	//BD
-    LLFloaterReg::toggleInstanceOrBringToFront("snapshot");
-    LLFloaterSnapshot* snapshot_floater = LLFloaterSnapshot::getInstance();
+    //LLFloaterReg::toggleInstanceOrBringToFront("snapshot");
+    //LLFloaterSnapshot* snapshot_floater = LLFloaterSnapshot::getInstance();
+    LLFloaterReg::toggleInstanceOrBringToFront("simple_outfit_snapshot");
+    LLFloaterSimpleOutfitSnapshot* snapshot_floater = LLFloaterSimpleOutfitSnapshot::getInstance();
     if (snapshot_floater)
     {
 		snapshot_floater->openPanel("panel_outfit_snapshot_inventory");

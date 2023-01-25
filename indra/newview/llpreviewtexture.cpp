@@ -366,6 +366,17 @@ void LLPreviewTexture::reshape(S32 width, S32 height, BOOL called_from_parent)
 	//BD
 	S32 horiz_pad = 10;
 
+	LLRect dim_rect(getChildView("dimensions")->getRect());
+
+	//S32 horiz_pad = 2 * (LLPANEL_BORDER_WIDTH + PREVIEW_PAD) + PREVIEW_RESIZE_HANDLE_SIZE;
+
+	// add space for dimensions and aspect ratio
+	S32 info_height = dim_rect.mTop + CLIENT_RECT_VPAD;
+	if (getChild<LLLayoutPanel>("buttons_panel")->getVisible())
+	{
+		info_height += getChild<LLLayoutPanel>("buttons_panel")->getRect().getHeight();
+	}
+
 	LLRect client_rect(horiz_pad, getRect().getHeight(), getRect().getWidth() - horiz_pad, 0);
 	//BD
 	client_rect.mTop -= 50;
@@ -409,6 +420,16 @@ void LLPreviewTexture::onFocusReceived()
 void LLPreviewTexture::openToSave()
 {
 	mPreviewToSave = TRUE;
+}
+
+void LLPreviewTexture::hideCtrlButtons()
+{
+	getChildView("desc txt")->setVisible(false);
+	getChildView("desc")->setVisible(false);
+	getChild<LLLayoutStack>("preview_stack")->collapsePanel(getChild<LLLayoutPanel>("buttons_panel"), true);
+	getChild<LLLayoutPanel>("buttons_panel")->setVisible(false);
+	getChild<LLComboBox>("combo_aspect_ratio")->setCurrentByIndex(0); //unconstrained
+	reshape(getRect().getWidth(), getRect().getHeight());
 }
 
 // static

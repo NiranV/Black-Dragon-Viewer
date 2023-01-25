@@ -45,6 +45,7 @@
 #include "llflashtimer.h"
 #include "llfloateravatarpicker.h"
 #include "llfloaterpreference.h"
+#include "llfloaterreporter.h"
 #include "llimview.h"
 #include "llnotificationsutil.h"
 #include "lltoolbarview.h"
@@ -1270,6 +1271,18 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 		{
 			LLAvatarActions::pay(userID);
 		}
+        else if ("report_abuse" == command)
+        {
+            LLAvatarName av_name;
+            if (LLAvatarNameCache::get(userID, &av_name))
+            {
+                LLFloaterReporter::showFromAvatar(userID, av_name.getCompleteName());
+            }
+            else
+            {
+                LLFloaterReporter::showFromAvatar(userID, "not avaliable");
+            }
+        }
 		else if ("block_unblock" == command)
 		{
 			LLAvatarActions::toggleMute(userID, LLMute::flagVoiceChat);
@@ -1559,12 +1572,12 @@ bool LLFloaterIMContainer::enableContextMenuItem(const std::string& item, uuid_v
 		}
 	}
 
-	//BD - Handle all other options
-	if (("can_invite" == item) 
-		|| ("can_chat_history" == item) 
-		|| ("can_share" == item) 
-		|| ("can_pay" == item) 
-		|| ("can_report" == item))
+	// Handle all other options
+	if (("can_invite" == item)
+        || ("can_chat_history" == item)
+        || ("can_share" == item)
+        || ("can_pay" == item)
+        || ("report_abuse" == item))
 	{
 		// Those menu items are enable only if a single avatar is selected
 		return is_single_select;

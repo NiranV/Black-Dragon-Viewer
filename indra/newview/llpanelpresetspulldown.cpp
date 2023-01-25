@@ -164,10 +164,13 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
 		{
 			std::string name = item->getColumn(1)->getValue().asString();
 
-            // _LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
+            LL_DEBUGS() << "selected '" << name << "'" << LL_ENDL;
 			//BD
 			gSavedSettings.loadPreset(1, gDragonLibrary.escapeString(name));
 			gSavedSettings.setString("PresetGraphicActive", name);
+
+            // Scroll grabbed focus, drop it to prevent selection of parent menu
+            setFocus(FALSE);
 			setVisible(FALSE);
 		}
         else

@@ -103,7 +103,6 @@
 #include "llfilepicker.h"
 #include "llfirstuse.h"
 #include "llfloater.h"
-#include "llfloaterbuildoptions.h"
 #include "llfloaterbuyland.h"
 #include "llfloatercamera.h"
 #include "llfloaterland.h"
@@ -269,6 +268,8 @@ static const F32 MIN_UI_SCALE = 0.75f;
 // sanity check, so leaving space for larger values from DPI updates.
 static const F32 MAX_UI_SCALE = 7.0f;
 static const F32 MIN_DISPLAY_SCALE = 0.75f;
+
+static const char KEY_MOUSELOOK = 'M';
 
 static LLCachedControl<std::string>	sSnapshotBaseName(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseName", "Snapshot"));
 static LLCachedControl<std::string>	sSnapshotDir(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseDir", ""));
@@ -783,6 +784,12 @@ public:
 				ypos += y_inc;
 
 				addText(xpos, ypos, llformat("%.3f/%.3f MB Mesh Cache Read/Write ", LLMeshRepository::sCacheBytesRead/(1024.f*1024.f), LLMeshRepository::sCacheBytesWritten/(1024.f*1024.f)));
+                ypos += y_inc;
+
+                addText(xpos, ypos, llformat("%.3f/%.3f MB Mesh Skins/Decompositions Memory", LLMeshRepository::sCacheBytesSkins / (1024.f*1024.f), LLMeshRepository::sCacheBytesDecomps / (1024.f*1024.f)));
+                ypos += y_inc;
+
+                addText(xpos, ypos, llformat("%.3f MB Mesh Headers Memory", LLMeshRepository::sCacheBytesHeaders / (1024.f*1024.f)));
 
 				ypos += y_inc;
 			}
@@ -1640,9 +1647,11 @@ void LLViewerWindow::handleFocusLost(LLWindow *window)
 	showCursor();
 	getWindow()->setMouseClipping(FALSE);
 
-	// If losing focus while keys are down, reset them.
+	// If losing focus while keys are down, handle them as
+    // an 'up' to correctly release states, then reset states
 	if (gKeyboard)
 	{
+        gKeyboard->resetKeyDownAndHandle();
 		gKeyboard->resetKeys();
 	}
 
@@ -2091,7 +2100,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	}
 	LLVertexBuffer::initClass(gSavedSettings.getBOOL("RenderVBOEnable"), gSavedSettings.getBOOL("RenderVBOMappingDisable"));
 	LL_INFOS("RenderInit") << "LLVertexBuffer initialization done." << LL_ENDL ;
-	gGL.init() ;
+	gGL.init(true);
 
 	if (LLFeatureManager::getInstance()->isSafe()
 		|| (gSavedSettings.getS32("LastFeatureVersion") != LLFeatureManager::getInstance()->getVersion())
@@ -2352,6 +2361,11 @@ void LLViewerWindow::initWorldUI()
 		mMachinimaSidebar->addChild(gSideBar);
 		mMachinimaSidebar->setVisible(TRUE);
 	}
+    else
+    {
+        reshapeStatusBarContainer();
+    }
+
 
 	// Navigation bar
 	if (!mNavBarContainer)
@@ -2616,10 +2630,11 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
 		//glViewport(0, 0, width, height );
 
-		if (height > 0)
+        LLViewerCamera * camera = LLViewerCamera::getInstance(); // simpleton, might not exist
+		if (height > 0 && camera)
 		{ 
-			LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
-			LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
+            camera->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
+            camera->setAspect( getWorldViewAspectRatio() );
 		}
 
 		calcDisplayScale();
@@ -2953,6 +2968,13 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
     if (keyboard_focus
         && !gFocusMgr.getKeystrokesOnly())
     {
+        //Most things should fall through, but mouselook is an exception,
+        //don't switch to mouselook if any floater has focus
+        if ((key == KEY_MOUSELOOK) && !(mask & (MASK_CONTROL | MASK_ALT)))
+        {
+            return TRUE;
+        }
+
         LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(keyboard_focus);
         if (cur_focus && cur_focus->acceptsTextInput())
         {
@@ -3322,6 +3344,11 @@ void LLViewerWindow::handleScrollWheel(S32 clicks)
 
 void LLViewerWindow::handleScrollHWheel(S32 clicks)
 {
+    if (LLAppViewer::instance()->quitRequested())
+    {
+        return;
+    }
+    
     LLUI::getInstance()->resetMouseIdleTimer();
 
 	//BD - UI Improvements

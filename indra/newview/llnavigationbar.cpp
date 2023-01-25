@@ -479,9 +479,9 @@ void LLNavigationBar::onLocationSelection()
 			
 			if(value.has("AssetUUID"))
 			{
-				
 				gAgent.teleportViaLandmark( LLUUID(value["AssetUUID"].asString()));
-				mSaveToLocationHistory = true;
+                // user teleported by manually inputting inventory landmark's name
+				mSaveToLocationHistory = false;
 				return;
 			}
 			else
@@ -795,4 +795,9 @@ void LLNavigationBar::collectSearchableItems()
 	LLSearchableUI::LLSearchableEntryPtr pItem(new LLSearchableEntry);
 	mSearchData->mRootMenu = pItem;
 	collectChildren(gMenuBarView, pItem);
+}
+
+bool LLNavigationBar::isRebakeNavMeshAvailable()
+{
+    return mCmbLocation->isNavMeshDirty();
 }

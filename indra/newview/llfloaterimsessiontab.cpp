@@ -257,7 +257,6 @@ BOOL LLFloaterIMSessionTab::postBuild()
 	mGearBtn = getChild<LLButton>("gear_btn");
     mAddBtn = getChild<LLButton>("add_btn");
 	mVoiceButton = getChild<LLButton>("voice_call_btn");
-    mTranslationCheckBox = getChild<LLUICtrl>("translate_chat_checkbox_lp");
     
 	mParticipantListPanel = getChild<LLLayoutPanel>("speakers_list_panel");
 	mRightPartPanel = getChild<LLLayoutPanel>("right_part_holder");
@@ -582,7 +581,7 @@ void LLFloaterIMSessionTab::removeConversationViewParticipant(const LLUUID& part
 void LLFloaterIMSessionTab::updateConversationViewParticipant(const LLUUID& participant_id)
 {
 	LLFolderViewItem* widget = get_ptr_in_map(mConversationsWidgets,participant_id);
-	if (widget)
+	if (widget && widget->getViewModelItem())
 	{
 		widget->refresh();
 	}
@@ -607,8 +606,11 @@ void LLFloaterIMSessionTab::refreshConversation()
 		{
 			participants_uuids.push_back(widget_it->first);
 		}
-		widget_it->second->refresh();
-		widget_it->second->setVisible(TRUE);
+        if (widget_it->second->getViewModelItem())
+        {
+            widget_it->second->refresh();
+            widget_it->second->setVisible(TRUE);
+        }
 		++widget_it;
 	}
 	if (is_ad_hoc || mIsP2PChat)
@@ -846,8 +848,6 @@ void LLFloaterIMSessionTab::updateHeaderAndToolbar()
 	mAddBtnPanel->setVisible(mIsP2PChat || is_ad_hoc);
 
 	enableDisableCallBtn();
-
-	showTranslationCheckbox();
 }
  
 void LLFloaterIMSessionTab::forceReshape()
@@ -863,11 +863,6 @@ void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
 	//BD
 	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6.f, FALSE);
-}
-
-void LLFloaterIMSessionTab::showTranslationCheckbox(BOOL show)
-{
-	mTranslationCheckBox->setVisible(mIsNearbyChat && show);
 }
 
 // static
@@ -1129,7 +1124,10 @@ void LLFloaterIMSessionTab::getSelectedUUIDs(uuid_vec_t& selected_uuids)
     for (; it != it_end; ++it)
     {
         LLConversationItem* conversation_item = static_cast<LLConversationItem *>((*it)->getViewModelItem());
-        selected_uuids.push_back(conversation_item->getUUID());
+        if (conversation_item)
+        {
+            selected_uuids.push_back(conversation_item->getUUID());
+        }
     }
 }
 

@@ -50,6 +50,10 @@
 #include "llpreviewnotecard.h"
 #include "llpreviewgesture.h"
 #include "llcoproceduremanager.h"
+#include "llthread.h"
+#include "llkeyframemotion.h"
+#include "lldatapacker.h"
+#include "llvoavatarself.h"
 
 //BD
 #include "llfloatersidepanelcontainer.h"
@@ -454,9 +458,62 @@ LLSD LLNewFileResourceUploadInfo::exportTempFile()
         errorLabel = "DoNotSupportBulkAnimationUpload";
         error = true;
     }
-    else if (assetType == LLAssetType::AT_ANIMATION)
+    else if (exten == "anim")
     {
-        filename = getFileName();
+		// Default unless everything succeeds
+		errorLabel = "ProblemWithFile";
+		error = true;
+
+        // read from getFileName()
+		LLAPRFile infile;
+		infile.open(getFileName(),LL_APR_RB);
+		if (!infile.getFileHandle())
+		{
+			LL_WARNS() << "Couldn't open file for reading: " << getFileName() << LL_ENDL;
+			errorMessage = llformat("Failed to open animation file %s\n", getFileName().c_str());
+		}
+		else
+		{
+			S32 size = LLAPRFile::size(getFileName());
+			U8* buffer = new U8[size];
+			S32 size_read = infile.read(buffer,size);
+			if (size_read != size)
+			{
+				errorMessage = llformat("Failed to read animation file %s: wanted %d bytes, got %d\n", getFileName().c_str(), size, size_read);
+			}
+			else
+			{
+				LLDataPackerBinaryBuffer dp(buffer, size);
+				LLKeyframeMotion *motionp = new LLKeyframeMotion(getAssetId());
+				motionp->setCharacter(gAgentAvatarp);
+				if (motionp->deserialize(dp, getAssetId(), false))
+				{
+					// write to temp file
+					bool succ = motionp->dumpToFile(filename);
+					if (succ)
+					{
+						assetType = LLAssetType::AT_ANIMATION;
+						errorLabel = "";
+						error = false;
+					}
+					else
+					{
+						errorMessage = "Failed saving temporary animation file";
+					}
+				}
+				else
+				{
+					errorMessage = "Failed reading animation file";
+				}
+			}
+		}
+    }
+    else
+    {
+        // Unknown extension
+        errorMessage = llformat(LLTrans::getString("UnknownFileExtension").c_str(), exten.c_str());
+        errorLabel = "ErrorMessage";
+        error = TRUE;;
     }
 
     if (error)
@@ -816,11 +873,6 @@ void LLViewerAssetUpload::AssetInventoryUploadCoproc(LLCoreHttpUtil::HttpCorouti
     {
 		floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, success, "inventory");
     }
-    LLFloater* floater_outfit_snapshot = LLFloaterReg::findInstance("outfit_snapshot");
-    if (uploadInfo->getAssetType() == LLAssetType::AT_TEXTURE && floater_outfit_snapshot && floater_outfit_snapshot->isShown())
-    {
-        floater_outfit_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", success).with("msg", "inventory")));
-    }
 }
 
 //=========================================================================
@@ -868,6 +920,7 @@ void LLViewerAssetUpload::HandleUploadError(LLCore::HttpStatus status, LLSD &res
     {
         args["FILE"] = uploadInfo->getDisplayName();
         args["REASON"] = reason;
+        args["ERROR"] = reason;
     }
 
     LLNotificationsUtil::add(label, args);
@@ -897,12 +950,6 @@ void LLViewerAssetUpload::HandleUploadError(LLCore::HttpStatus status, LLSD &res
         {
 			floater_snapshot->setStatus(LLFloaterSnapshot::STATUS_FINISHED, false, "inventory");
         }
-    }
-
-    LLFloater* floater_outfit_snapshot = LLFloaterReg::findInstance("outfit_snapshot");
-    if (uploadInfo->getAssetType() == LLAssetType::AT_TEXTURE && floater_outfit_snapshot && floater_outfit_snapshot->isShown())
-    {
-        floater_outfit_snapshot->notify(LLSD().with("set-finished", LLSD().with("ok", false).with("msg", "inventory")));
     }
 }
 

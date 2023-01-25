@@ -908,21 +908,20 @@ void LLWindowWin32::close()
 	// Restore gamma to the system values.
 	restoreGamma();
 
-	if (mhDC)
-	{
-		if (!ReleaseDC(mWindowHandle, mhDC))
-		{
-			LL_WARNS("Window") << "Release of ghDC failed" << LL_ENDL;
-		}
-		mhDC = NULL;
-	}
-
-	// _LL_DEBUGS("Window") << "Destroying Window" << LL_ENDL;
+	LL_DEBUGS("Window") << "Destroying Window" << LL_ENDL;
 
     mWindowThread->post([=]()
         {
             if (IsWindow(mWindowHandle))
             {
+                if (mhDC)
+                {
+                    if (!ReleaseDC(mWindowHandle, mhDC))
+                    {
+                        LL_WARNS("Window") << "Release of ghDC failed!" << LL_ENDL;
+                    }
+                }
+
                 // Make sure we don't leave a blank toolbar button.
                 ShowWindow(mWindowHandle, SW_HIDE);
 
@@ -948,6 +947,7 @@ void LLWindowWin32::close()
     // Even though the above lambda might not yet have run, we've already
     // bound mWindowHandle into it by value, which should suffice for the
     // operations we're asking. That's the last time WE should touch it.
+    mhDC = NULL;
     mWindowHandle = NULL;
     mWindowThread->close();
 }
@@ -1591,12 +1591,10 @@ const	S32   max_format  = (S32)num_formats - 1;
 			{
 				wglDeleteContext (mhRC);							// Release The Rendering Context
 				mhRC = 0;										// Zero The Rendering Context
-
 			}
-			ReleaseDC (mWindowHandle, mhDC);						// Release The Device Context
-			mhDC = 0;											// Zero The Device Context
 		}
 
+        // will release and recreate mhDC, mWindowHandle
 		recreateWindow(window_rect, dw_ex_style, dw_style);
         
         RECT rect;
@@ -1746,7 +1744,8 @@ const	S32   max_format  = (S32)num_formats - 1;
 
 void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw_style)
 {
-    auto oldHandle = mWindowHandle;
+    auto oldWindowHandle = mWindowHandle;
+    auto oldDCHandle = mhDC;
 
     // zero out mWindowHandle and mhDC before destroying window so window
     // thread falls back to peekmessage
@@ -1758,7 +1757,8 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
     auto window_work =
         [this,
          self=mWindowThread,
-         oldHandle,
+         oldWindowHandle,
+         oldDCHandle,
          // bind CreateWindowEx() parameters by value instead of
          // back-referencing LLWindowWin32 members
          windowClassName=mWindowClassName,
@@ -1774,11 +1774,20 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
             self->mWindowHandle = 0;
             self->mhDC = 0;
 
-            // important to call DestroyWindow() from the window thread
-            if (oldHandle && !destroy_window_handler(oldHandle))
+            if (oldWindowHandle)
             {
-                LL_WARNS("Window") << "Failed to properly close window before recreating it!"
-                                   << LL_ENDL;
+                if (oldDCHandle && !ReleaseDC(oldWindowHandle, oldDCHandle))
+                {
+                    LL_WARNS("Window") << "Failed to ReleaseDC" << LL_ENDL;
+                }
+
+                // important to call DestroyWindow() from the window thread
+                if (!destroy_window_handler(oldWindowHandle))
+                {
+
+                    LL_WARNS("Window") << "Failed to properly close window before recreating it!"
+                        << LL_ENDL;
+                }
             }
 
             auto handle = CreateWindowEx(dw_ex_style,
@@ -1816,7 +1825,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
         };
     // But how we pass window_work to the window thread depends on whether we
     // already have a window handle.
-    if (! oldHandle)
+    if (!oldWindowHandle)
     {
         // Pass window_work using the WorkQueue: without an existing window
         // handle, the window thread can't call GetMessage().
@@ -1828,8 +1837,8 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
         // Pass window_work using PostMessage(). We can still
         // PostMessage(oldHandle) because oldHandle won't be destroyed until
         // the window thread has retrieved and executed window_work.
-        //LL_DEBUGS("Window") << "posting window_work to message queue" << LL_ENDL;
-        mWindowThread->Post(oldHandle, window_work);
+        LL_DEBUGS("Window") << "posting window_work to message queue" << LL_ENDL;
+        mWindowThread->Post(oldWindowHandle, window_work);
     }
 
     auto future = promise.get_future();
@@ -3142,8 +3151,56 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
                 if (raw->header.dwType == RIM_TYPEMOUSE)
                 {
                     LLMutexLock lock(&window_imp->mRawMouseMutex);
-                    window_imp->mRawMouseDelta.mX += raw->data.mouse.lLastX;
-                    window_imp->mRawMouseDelta.mY -= raw->data.mouse.lLastY;
+
+                    bool absolute_coordinates = (raw->data.mouse.usFlags & MOUSE_MOVE_ABSOLUTE);
+
+                    if (absolute_coordinates)
+                    {
+                        static S32 prev_absolute_x = 0;
+                        static S32 prev_absolute_y = 0;
+                        S32 absolute_x;
+                        S32 absolute_y;
+
+                        if ((raw->data.mouse.usFlags & 0x10) == 0x10) // touch screen? touch? Not defined in header
+                        {
+                            // touch screen spams (0,0) coordinates in a number of situations
+                            // (0,0) might need to be filtered
+                            absolute_x = raw->data.mouse.lLastX;
+                            absolute_y = raw->data.mouse.lLastY;
+                        }
+                        else
+                        {
+                            bool v_desktop = (raw->data.mouse.usFlags & MOUSE_VIRTUAL_DESKTOP) == MOUSE_VIRTUAL_DESKTOP;
+
+                            S32 width = GetSystemMetrics(v_desktop ? SM_CXVIRTUALSCREEN : SM_CXSCREEN);
+                            S32 height = GetSystemMetrics(v_desktop ? SM_CYVIRTUALSCREEN : SM_CYSCREEN);
+
+                            absolute_x = (raw->data.mouse.lLastX / 65535.0f) * width;
+                            absolute_y = (raw->data.mouse.lLastY / 65535.0f) * height;
+                        }
+
+                        window_imp->mRawMouseDelta.mX += absolute_x - prev_absolute_x;
+                        window_imp->mRawMouseDelta.mY -= absolute_y - prev_absolute_y;
+
+                        prev_absolute_x = absolute_x;
+                        prev_absolute_y = absolute_y;
+                    }
+                    else
+                    {
+                        S32 speed;
+                        const S32 DEFAULT_SPEED(10);
+                        SystemParametersInfo(SPI_GETMOUSESPEED, 0, &speed, 0);
+                        if (speed == DEFAULT_SPEED)
+                        {
+                            window_imp->mRawMouseDelta.mX += raw->data.mouse.lLastX;
+                            window_imp->mRawMouseDelta.mY -= raw->data.mouse.lLastY;
+                        }
+                        else
+                        {
+                            window_imp->mRawMouseDelta.mX += round((F32)raw->data.mouse.lLastX * (F32)speed / DEFAULT_SPEED);
+                            window_imp->mRawMouseDelta.mY -= round((F32)raw->data.mouse.lLastY * (F32)speed / DEFAULT_SPEED);
+                        }
+                    }
                 }
             }
         }
@@ -4280,7 +4337,10 @@ void LLWindowWin32::handleCompositionMessage(const U32 indexes)
 
 	if (needs_update)
 	{
-		mPreeditor->resetPreedit();
+        if (preedit_string.length() != 0 || result_string.length() != 0)
+        {
+            mPreeditor->resetPreedit();
+        }
 
 		if (result_string.length() > 0)
 		{

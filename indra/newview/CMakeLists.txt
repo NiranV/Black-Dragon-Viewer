@@ -54,7 +54,7 @@ include(UnixInstall)
 include(ViewerMiscLibs)
 include(ViewerManager)
 include(VisualLeakDetector)
-include(ZLIB)
+include(ZLIBNG)
 include(URIPARSER)
 
 if (NOT HAVOK_TPV)
@@ -253,6 +253,7 @@ set(viewer_SOURCE_FILES
     llfloaterbuyland.cpp
     llfloatercamera.cpp
     llfloaterchatvoicevolume.cpp
+    llfloaterclassified.cpp
     llfloatercolorpicker.cpp
     llfloaterconversationlog.cpp
     llfloaterconversationpreview.cpp
@@ -260,6 +261,7 @@ set(viewer_SOURCE_FILES
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
     llfloaterdisplayname.cpp
+    llfloatereditenvironmentbase.cpp
     llfloatereditextdaycycle.cpp
     llfloaterenvironmentadjust.cpp
     llfloaterenvironmentsettings.cpp
@@ -307,6 +309,7 @@ set(viewer_SOURCE_FILES
     llfloateroutfitphotopreview.cpp 
     llfloaterobjectweights.cpp
     llfloateropenobject.cpp
+    llfloatersimpleoutfitsnapshot.cpp
     llfloaterpathfindingcharacters.cpp
     llfloaterpathfindingconsole.cpp
     llfloaterpathfindinglinksets.cpp
@@ -317,6 +320,7 @@ set(viewer_SOURCE_FILES
     llfloaterprofile.cpp
     llfloaterpreference.cpp
     llfloaterpreviewtrash.cpp
+    llfloaterprofiletexture.cpp
     llfloaterproperties.cpp
     llfloaterregiondebugconsole.cpp
     llfloaterregioninfo.cpp
@@ -458,6 +462,7 @@ set(viewer_SOURCE_FILES
     llpanelavatar.cpp
     llpanelavatartag.cpp
     llpanelblockedlist.cpp
+    llpanelclassified.cpp
     llpanelcontents.cpp
     llpaneleditsky.cpp
     llpaneleditwater.cpp
@@ -502,7 +507,6 @@ set(viewer_SOURCE_FILES
     llpanelpeople.cpp
     llpanelpeoplemenus.cpp
     llpanelpermissions.cpp
-    llpanelpick.cpp
     llpanelplaceinfo.cpp
     llpanelplaceprofile.cpp
     llpanelplaces.cpp
@@ -909,6 +913,7 @@ set(viewer_HEADER_FILES
     llfloaterbuyland.h
     llfloatercamera.h
     llfloaterchatvoicevolume.h
+    llfloaterclassified.h
     llfloatercolorpicker.h
     llfloaterconversationlog.h
     llfloaterconversationpreview.h
@@ -966,6 +971,7 @@ set(viewer_HEADER_FILES
     llfloateroutfitphotopreview.h
     llfloaterobjectweights.h
     llfloateropenobject.h
+    llfloatersimpleoutfitsnapshot.h
     llfloaterpathfindingcharacters.h
     llfloaterpathfindingconsole.h
     llfloaterpathfindinglinksets.h
@@ -976,6 +982,7 @@ set(viewer_HEADER_FILES
     llfloaterprofile.h
     llfloaterpreference.h
     llfloaterpreviewtrash.h
+    llfloaterprofiletexture.h
     llfloaterproperties.h
     llfloaterregiondebugconsole.h
     llfloaterregioninfo.h
@@ -1106,6 +1113,7 @@ set(viewer_HEADER_FILES
     llpanelavatar.h
     llpanelavatartag.h
     llpanelblockedlist.h
+    llpanelclassified.h
     llpanelcontents.h
     llpaneleditsky.h
     llpaneleditwater.h
@@ -1151,7 +1159,6 @@ set(viewer_HEADER_FILES
     llpanelpeople.h
     llpanelpeoplemenus.h
     llpanelpermissions.h
-    llpanelpick.h
     llpanelplaceinfo.h
     llpanelplaceprofile.h
     llpanelplaces.h
@@ -1889,10 +1896,6 @@ if (WINDOWS)
       winmm_shim
       )
 
-    if (NOT USE_BUGSPLAT)
-        LIST(APPEND COPY_INPUT_DEPENDENCIES windows-crash-logger)
-    endif (NOT USE_BUGSPLAT)
-
     if (ADDRESS_SIZE EQUAL 64)
         list(APPEND COPY_INPUT_DEPENDENCIES
             ${SHARED_LIB_STAGING_DIR}/${CMAKE_CFG_INTDIR}/vivoxsdk_x64.dll
@@ -2072,14 +2075,14 @@ endif (WINDOWS)
 #
 # We generally want the newest version of the library to provide all symbol
 # resolution.  To that end, when using static archives, the *_PRELOAD_ARCHIVES
-# variables, PNG_PRELOAD_ARCHIVES and ZLIB_PRELOAD_ARCHIVES, get the archives
+# variables, PNG_PRELOAD_ARCHIVES and ZLIBNG_PRELOAD_ARCHIVES, get the archives
 # dumped into the target binary and runtime lookup will find the most
 # modern version.
 
 target_link_libraries(${VIEWER_BINARY_NAME}
     ${LEGACY_STDIO_LIBS}
     ${PNG_PRELOAD_ARCHIVES}
-    ${ZLIB_PRELOAD_ARCHIVES}
+    ${ZLIBNG_PRELOAD_ARCHIVES}
     ${URIPARSER_PRELOAD_ARCHIVES}
     ${GOOGLE_PERFTOOLS_LIBRARIES}
     ${LLAUDIO_LIBRARIES}

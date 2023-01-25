@@ -704,6 +704,7 @@ void LLFloaterEditExtDayCycle::onButtonApply(LLUICtrl *ctrl, const LLSD &data)
     if (ctrl_action == ACTION_SAVE)
     {
         doApplyUpdateInventory(dayclone);
+        clearDirtyFlag();
     }
     else if (ctrl_action == ACTION_SAVEAS)
     {

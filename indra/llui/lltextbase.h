@@ -464,6 +464,8 @@ public:
 	void					setSkipLinkUnderline(bool skip_link_underline) { mSkipLinkUnderline = skip_link_underline; }
 	bool					getSkipLinkUnderline() { return mSkipLinkUnderline;  }
 
+    void					setParseURLs(bool parse_urls) { mParseHTML = parse_urls; }
+
 	void					setPlainText(bool value) { mPlainText = value;}
 	bool					getPlainText() const { return mPlainText; }
 
@@ -640,6 +642,8 @@ protected:
 		return mLabel.getString() + getToolTip();
 	}
 
+    std::vector<LLRect> getSelctionRects();
+
 protected:
 	// text segmentation and flow
 	segment_set_t       		mSegments;
@@ -709,6 +713,8 @@ protected:
 	bool						mAlwaysShowIcons;
 
 	bool						mSkipTripleClick;
+	bool						mAlwaysShowIcons;
+
 	bool						mSkipLinkUnderline;
 
 	// support widgets

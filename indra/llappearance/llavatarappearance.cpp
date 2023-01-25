@@ -940,6 +940,9 @@ BOOL LLAvatarAppearance::loadAvatar()
 		return FALSE;
 	}
 
+	// initialize mJointAliasMap
+	getJointAliases();
+
 	// avatar_lad.xml : <skeleton>
 	if( !loadSkeletonNode() )
 	{
@@ -1060,7 +1063,6 @@ BOOL LLAvatarAppearance::loadAvatar()
 			return FALSE;
 		}
 	}
-
 	
 	return TRUE;
 }
