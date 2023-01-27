@@ -85,12 +85,16 @@
 // Constant definitions for comboboxes
 // Must match the commbobox definitions in panel_tools_texture.xml
 //
+const S32 MATMEDIA_MATERIAL = 0;	// Material
+const S32 MATMEDIA_MEDIA = 1;		// Media
 const S32 MATTYPE_DIFFUSE = 0;		// Diffuse material texture
 const S32 MATTYPE_NORMAL = 1;		// Normal map
 const S32 MATTYPE_SPECULAR = 2;		// Specular map
 const S32 ALPHAMODE_MASK = 2;		// Alpha masking mode
 const S32 BUMPY_TEXTURE = 18;		// use supplied normal map
 const S32 SHINY_TEXTURE = 4;		// use supplied specular map
+
+BOOST_STATIC_ASSERT(MATTYPE_DIFFUSE == LLRender::DIFFUSE_MAP && MATTYPE_NORMAL == LLRender::NORMAL_MAP && MATTYPE_SPECULAR == LLRender::SPECULAR_MAP);
 
 //
 // "Use texture" label for normal/specular type comboboxes
@@ -704,7 +708,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 		// only turn on auto-adjust button if there is a media renderer and the media is loaded
 		mBtnAlign->setEnabled(editable);
 
-		if (mComboMatMedia)
+		/*if (mComboMatMedia)
 		{
 			if (mComboMatMedia->getCurrentIndex() < MATMEDIA_MATERIAL)
 			{
@@ -715,7 +719,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 		else
 		{
 			LL_WARNS() << "failed getChild for 'combobox matmedia'" << LL_ENDL;
-		}
+		}*/
 
 		//BD
 		if(mRadioMaterialType)
@@ -730,7 +734,7 @@ void LLPanelFace::updateUI(bool force_set_values)
 			mRadioMaterialType->selectNthItem(MATTYPE_DIFFUSE);
 		}
 		mRadioMaterialType->setEnabled(editable);
-		U32 material_type = (mComboMatMedia->getCurrentIndex() == MATMEDIA_MATERIAL) ? radio_mat_type->getSelectedIndex() : MATTYPE_DIFFUSE;
+		U32 material_type = mRadioMaterialType->getSelectedIndex();
 
 		updateVisibility();
 
@@ -1582,20 +1586,20 @@ void LLPanelFace::refreshMedia()
         getChildView("delete_media")->setEnabled(TRUE);
     }
 
-    U32 materials_media = mComboMatMedia->getCurrentIndex();
-    if (materials_media == MATMEDIA_MEDIA)
+    //U32 materials_media = mComboMatMedia->getCurrentIndex();
+    //if (materials_media == MATMEDIA_MEDIA)
     {
         // currently displaying media info, navigateTo and update title
         navigateToTitleMedia(media_title);
     }
-    else
+    /*else
     {
         // Media can be heavy, don't keep it around
         // MAC specific: MAC doesn't support setVolume(0) so if  not
         // unloaded, it might keep playing audio until user closes editor
         unloadMedia();
         mNeedMediaTitle = false;
-    }
+    }*/
 
     mTitleMediaText->setText(media_title);
 
@@ -2370,11 +2374,11 @@ void LLPanelFace::updateAlphaControls()
 	U32 alpha_value = comboAlphaMode->getCurrentIndex();
 	bool show_alphactrls = (alpha_value == ALPHAMODE_MASK); // Alpha masking
     
-    U32 mat_media = MATMEDIA_MATERIAL;
+    /*U32 mat_media = MATMEDIA_MATERIAL;
     if (mComboMatMedia)
     {
         mat_media = mComboMatMedia->getCurrentIndex();
-    }
+    }*/
     
     U32 mat_type = MATTYPE_DIFFUSE;
     LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
@@ -2383,7 +2387,7 @@ void LLPanelFace::updateAlphaControls()
         mat_type = radio_mat_type->getSelectedIndex();
     }
 
-    show_alphactrls = show_alphactrls && (mat_media == MATMEDIA_MATERIAL);
+    //show_alphactrls = show_alphactrls && (mat_media == MATMEDIA_MATERIAL);
     show_alphactrls = show_alphactrls && (mat_type == MATTYPE_DIFFUSE);
     
 	getChildView("label maskcutoff")->setVisible(show_alphactrls);
@@ -2752,10 +2756,10 @@ void LLPanelFace::onCommitRepeatsPerMeter(LLUICtrl* ctrl, void* userdata)
 
 	F32 repeats_per_meter = self->mRepeats->getValue().asReal();
 	
-	LLUICtrl*	repeats_ctrl	= self->getChild<LLUICtrl>("rptctrl");
-	LLRadioGroup* radio_mat_type = self->getChild<LLRadioGroup>("radio_material_type");
+	//LLUICtrl*	repeats_ctrl	= self->getChild<LLUICtrl>("rptctrl");
+	//LLRadioGroup* radio_mat_type = self->getChild<LLRadioGroup>("radio_material_type");
 	
-	U32 materials_media = self->mComboMatMedia->getCurrentIndex();
+	//U32 materials_media = self->mComboMatMedia->getCurrentIndex();
 
 	F32 obj_scale_s = 1.0f;
 	F32 obj_scale_t = 1.0f;

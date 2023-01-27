@@ -2361,10 +2361,6 @@ void LLViewerWindow::initWorldUI()
 		mMachinimaSidebar->addChild(gSideBar);
 		mMachinimaSidebar->setVisible(TRUE);
 	}
-    else
-    {
-        reshapeStatusBarContainer();
-    }
 
 
 	// Navigation bar

@@ -4566,9 +4566,10 @@ bool is_object_sittable()
 void handle_object_sit(LLViewerObject *object, const LLVector3 &offset)
 {
 	// get object selection offset 
-
+	//BD - Todo: Look into this
 //	if (object && object->getPCode() == LL_PCODE_VOLUME)
 // [RLVa:KB] - Checked: 2010-03-06 (RLVa-1.2.0c) | Modified: RLVa-1.2.0c
+	LLPickInfo pick = LLToolPie::getInstance()->getPick();
 	if ( (object && object->getPCode() == LL_PCODE_VOLUME) && 
 		 ((!rlv_handler_t::isEnabled()) || (RlvActions::canSit(object, pick.mObjectOffset))) )
 // [/RLVa:KB]

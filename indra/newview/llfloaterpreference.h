@@ -122,9 +122,9 @@ public:
 	// update Show Favorites checkbox
 	static void updateShowFavoritesCheckbox(bool val);
 
-	void processProperties( void* pData, EAvatarProcessorType type );
-	void saveAvatarProperties( void );
-    static void saveAvatarPropertiesCoro(const std::string url, bool allow_publish);
+	void processProperties(void* pData, EAvatarProcessorType type);
+	void saveAvatarProperties(void);
+	static void saveAvatarPropertiesCoro(const std::string url, bool allow_publish);
 	void selectPrivacyPanel();
 	void selectChatPanel();
 	void getControlNames(std::vector<std::string>& names);

@@ -311,8 +311,8 @@ void LLColorSwatchCtrl::onColorChanged ( void* data, EColorPickOp pick_op )
 									pickerp->getCurT ());
 			subject->mColor = updatedColor;
 			subject->setControlValue(updatedColor.getValue());
-			pickerp->setRevertOnCancel(TRUE);
-			subject->mColor.mV[VALPHA] ); // keep current alpha
+			//pickerp->setRevertOnCancel(TRUE);
+			subject->mColor.mV[VALPHA]; // keep current alpha
 
             bool color_changed = subject->mColor != updatedColor;
             if (color_changed)

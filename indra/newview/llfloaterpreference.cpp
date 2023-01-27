@@ -1268,39 +1268,18 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	LLAvatarPropertiesProcessor::getInstance()->addObserver(gAgent.getID(), this);
 }
 
-void LLFloaterPreference::processProperties( void* pData, EAvatarProcessorType type )
+void LLFloaterPreference::processProperties(void* pData, EAvatarProcessorType type)
 {
-	if ( APT_PROPERTIES == type )
+	if (APT_PROPERTIES == type)
 	{
-		const LLAvatarData* pAvatarData = static_cast<const LLAvatarData*>( pData );
+		const LLAvatarData* pAvatarData = static_cast<const LLAvatarData*>(pData);
 		if (pAvatarData && (gAgent.getID() == pAvatarData->avatar_id) && (pAvatarData->avatar_id != LLUUID::null))
 		{
-			storeAvatarProperties( pAvatarData );
-			processProfileProperties( pAvatarData );
+			mAllowPublish = (bool)(pAvatarData->flags & AVATAR_ALLOW_PUBLISH);
+			mAvatarDataInitialized = true;
+			getChild<LLUICtrl>("online_searchresults")->setValue(mAllowPublish);
 		}
-	}	
-}
-
-void LLFloaterPreference::storeAvatarProperties( const LLAvatarData* pAvatarData )
-{
-	if (LLStartUp::getStartupState() == STATE_STARTED)
-	{
-		mAvatarProperties.avatar_id		= pAvatarData->avatar_id;
-		mAvatarProperties.image_id		= pAvatarData->image_id;
-		mAvatarProperties.fl_image_id   = pAvatarData->fl_image_id;
-		mAvatarProperties.about_text	= pAvatarData->about_text;
-		mAvatarProperties.fl_about_text = pAvatarData->fl_about_text;
-		mAvatarProperties.profile_url   = pAvatarData->profile_url;
-		mAvatarProperties.flags		    = pAvatarData->flags;
-		mAvatarProperties.allow_publish	= pAvatarData->flags & AVATAR_ALLOW_PUBLISH;
-
-		mAvatarDataInitialized = true;
 	}
-}
-
-void LLFloaterPreference::processProfileProperties(const LLAvatarData* pAvatarData )
-{
-	getChild<LLUICtrl>("online_searchresults")->setValue( (bool)(pAvatarData->flags & AVATAR_ALLOW_PUBLISH) );	
 }
 
 void LLFloaterPreference::saveAvatarProperties(void)
@@ -2047,10 +2026,6 @@ void LLFloaterPreference::refreshEverything()
 		getChild<LLUICtrl>("chatlog_path_button")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
 		getChild<LLUICtrl>("chatlog_path_string")->setEnabled(LLStartUp::getStartupState() == STATE_STARTED);
 	}
-
-	mAllowPublish = (bool)(pAvatarData->flags & AVATAR_ALLOW_PUBLISH);
-	mAvatarDataInitialized = true;
-	getChild<LLUICtrl>("online_searchresults")->setValue(mAllowPublish);
 }
 
 //BD - Refresh all controls
@@ -4881,6 +4856,17 @@ void LLFloaterPreference::onUpdateFilterTerm(bool force)
 		pRoot->selectFirstTab();
 
 	mFilterCleared = false;
+}
+
+void LLFloaterPreference::filterIgnorableNotifications()
+{
+	bool visible = getChildRef<LLScrollListCtrl>("enabled_popups").highlightMatchingItems(mFilterEdit->getValue());
+	visible |= getChildRef<LLScrollListCtrl>("disabled_popups").highlightMatchingItems(mFilterEdit->getValue());
+
+	if (visible)
+	{
+		getChildRef<LLTabContainer>("pref core").setTabVisibility(getChild<LLPanel>("msgs"), true);
+	}
 }
 
 void collectChildren(LLView const *aView, LLSearchableUI::LLPanelDataPtr aParentPanel, LLSearchableUI::LLTabContainerDataPtr aParentTabContainer)

@@ -965,13 +965,11 @@ void LLPanelLogin::onUserListCommit()
 
 // static
 void LLPanelLogin::onRememberUserCheck(void*)
-
 {
     if (sInstance)
     {
-        bool remember = remember_name->getValue().asBoolean();
-        if (!sInstance->mFirstLoginThisInstall
-            && user_combo->getCurrentIndex() != -1
+        bool remember = sInstance->mRememberMeCheck->getValue().asBoolean();
+        if (sInstance->mUsernameCombo->getCurrentIndex() != -1
             && !remember)
         {
             remember = true;

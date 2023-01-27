@@ -34,6 +34,47 @@
 class LLComboBox;
 class LLLineEditor;
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Class LLProfileDropTarget
+//
+// This handy class is a simple way to drop something on another
+// view. It handles drop events, always setting itself to the size of
+// its parent.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class LLProfileDropTarget : public LLView
+{
+public:
+	struct Params : public LLInitParam::Block<Params, LLView::Params>
+	{
+		Optional<LLUUID> agent_id;
+		Params()
+			: agent_id("agent_id")
+		{
+			changeDefault(mouse_opaque, false);
+			changeDefault(follows.flags, FOLLOWS_ALL);
+		}
+	};
+
+	LLProfileDropTarget(const Params&);
+	~LLProfileDropTarget() {}
+
+	void doDrop(EDragAndDropType cargo_type, void* cargo_data);
+
+	//
+	// LLView functionality
+	virtual BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
+		EDragAndDropType cargo_type,
+		void* cargo_data,
+		EAcceptance* accept,
+		std::string& tooltip_msg);
+
+	void setAgentID(const LLUUID &agent_id) { mAgentID = agent_id; }
+
+protected:
+	LLUUID mAgentID;
+};
+
 /**
 * Base class for any Profile View.
 */

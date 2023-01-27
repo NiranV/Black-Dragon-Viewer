@@ -36,7 +36,7 @@
 /// Class LLFloaterSimpleOutfitSnapshot
 ///----------------------------------------------------------------------------
 
-class LLFloaterSimpleOutfitSnapshot : public LLFloaterSnapshotBase
+class LLFloaterSimpleOutfitSnapshot : public LLFloaterSnapshot
 {
     LOG_CLASS(LLFloaterSimpleOutfitSnapshot);
 
@@ -72,35 +72,22 @@ private:
 
     LLUUID mOutfitID;
     LLOutfitGallery* mOutfitGallery;
-};
 
-///----------------------------------------------------------------------------
-/// Class LLFloaterSimpleOutfitSnapshot::Impl
-///----------------------------------------------------------------------------
-
-class LLFloaterSimpleOutfitSnapshot::Impl : public LLFloaterSnapshotBase::ImplBase
-{
-    LOG_CLASS(LLFloaterSimpleOutfitSnapshot::Impl);
 public:
-    Impl(LLFloaterSnapshotBase* floater)
-        : LLFloaterSnapshotBase::ImplBase(floater)
-    {}
-    ~Impl()
-    {}
     void updateResolution(void* data);
 
-    static void onSnapshotUploadFinished(LLFloaterSnapshotBase* floater, bool status);
+    static void onSnapshotUploadFinished(LLFloaterSnapshot* floater, bool status);
 
-    LLPanelSnapshot* getActivePanel(LLFloaterSnapshotBase* floater, bool ok_if_not_found = true) { return NULL; }
-    LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshotBase* floater);
+    LLPanel* getActivePanel(LLFloaterSnapshot* floater, bool ok_if_not_found = true) { return NULL; }
+    LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshot* floater);
     std::string getSnapshotPanelPrefix();
 
-    void updateControls(LLFloaterSnapshotBase* floater);
+    void updateControls(LLFloaterSnapshot* floater);
 
     void setStatus(EStatus status, bool ok = true, const std::string& msg = LLStringUtil::null);
 
 private:
-    LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshotBase* floater);
+    LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshot* floater);
     void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null) {};
 };
 

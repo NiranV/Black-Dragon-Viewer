@@ -1279,11 +1279,7 @@ void LLPanelPlaces::updateVerbs()
 
 	bool is_agent_place_info_visible = mPlaceInfoType == AGENT_INFO_TYPE;
 	bool is_create_landmark_visible = mPlaceInfoType == CREATE_LANDMARK_INFO_TYPE;
-	bool is_pick_panel_visible = false;
-	if(mPickPanel)
-	{
-		is_pick_panel_visible = mPickPanel->isInVisibleChain();
-	}
+	bool is_pick_panel_visible = mPlaceInfoType == CREATE_PICK_TYPE;
 	bool have_3d_pos = !mPosGlobal.isExactlyZero();
 
 	//BD
@@ -1291,7 +1287,6 @@ void LLPanelPlaces::updateVerbs()
 	mShowOnMapBtn->setVisible(!is_create_landmark_visible && !isLandmarkEditModeOn && !is_pick_panel_visible);
 	mOverflowBtn->setVisible(is_place_info_visible && !is_create_landmark_visible && !isLandmarkEditModeOn);
 	mEditBtn->setVisible(mPlaceInfoType == LANDMARK_INFO_TYPE && !isLandmarkEditModeOn);
-	bool have_3d_pos = ! mPosGlobal.isExactlyZero();
 	mSaveBtn->setVisible(isLandmarkEditModeOn);
 	mCancelBtn->setVisible(isLandmarkEditModeOn);
 	mCloseBtn->setVisible(is_create_landmark_visible && !isLandmarkEditModeOn);

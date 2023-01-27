@@ -1398,7 +1398,7 @@ void LLOutfitGallery::onTakeSnapshot(LLUUID selected_outfit_id)
 	//BD
     //LLFloaterReg::toggleInstanceOrBringToFront("snapshot");
     //LLFloaterSnapshot* snapshot_floater = LLFloaterSnapshot::getInstance();
-    LLFloaterReg::toggleInstanceOrBringToFront("simple_outfit_snapshot");
+    /*LLFloaterReg::toggleInstanceOrBringToFront("simple_outfit_snapshot");
     LLFloaterSimpleOutfitSnapshot* snapshot_floater = LLFloaterSimpleOutfitSnapshot::getInstance();
     if (snapshot_floater)
     {
@@ -1406,7 +1406,7 @@ void LLOutfitGallery::onTakeSnapshot(LLUUID selected_outfit_id)
 		snapshot_floater->onOpen("panel_outfit_snapshot_inventory");
         snapshot_floater->setOutfitID(selected_outfit_id);
         snapshot_floater->getInstance()->setGallery(this);
-    }
+    }*/
 }
 
 void LLOutfitGallery::onBeforeOutfitSnapshotSave()

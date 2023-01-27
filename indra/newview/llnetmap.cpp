@@ -796,7 +796,7 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
     {
 //		region_name = region->getName();
 // [RLVa:KB] - Checked: RLVa-1.2.2
-		region_name = (RlvActions::canShowLocation()) ? region->getName() : RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
+		std::string region_name = (RlvActions::canShowLocation()) ? region->getName() : RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
 // [/RLVa:KB]
         if (!region_name.empty())
         {
@@ -868,7 +868,6 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
         tool_tip_hint_msg = mToolTipHintMsg;
     }
 
-    LLStringUtil::format_map_t args;
     args["[PARCEL_NAME_MSG]"]       = parcel_name_msg.empty() ? "" : parcel_name_msg + '\n';
     args["[PARCEL_SALE_PRICE_MSG]"] = parcel_sale_price_msg.empty() ? "" : parcel_sale_price_msg + '\n';
     args["[PARCEL_SALE_AREA_MSG]"]  = parcel_sale_area_msg.empty() ? "" : parcel_sale_area_msg + '\n';
@@ -885,7 +884,6 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
     LLToolTipMgr::instance().show(LLToolTip::Params().message(msg).sticky_rect(sticky_rect));
 
     return true;
->>>>>>> Linden_Release/main
 }
 
 BOOL LLNetMap::handleToolTipAgent(const LLUUID& avatar_id)

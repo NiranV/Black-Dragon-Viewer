@@ -5499,25 +5499,20 @@ void LLVOVolume::clearRiggedVolume()
 
 void LLVOVolume::updateRiggedVolume(bool force_treat_as_rigged, LLRiggedVolume::FaceIndex face_index, bool rebuild_face_octrees)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_VOLUME;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_VOLUME;
 	//Update mRiggedVolume to match current animation frame of avatar. 
 	//Also update position/size in octree.  
 
-    if ((!force_treat_as_rigged) && (!treatAsRigged()))
+	if ((!force_treat_as_rigged) && (!treatAsRigged()))
 	{
 		clearRiggedVolume();
-		
+
 		return;
 	}
 
 	LLVolume* volume = getVolume();
-	if (!volume)
-	{
-		clearRiggedVolume();
-		return;
-	}
-
-	if (!mSkinInfo)
+	const LLMeshSkinInfo* skin = getSkinInfo();
+	if (!skin)
 	{
 		clearRiggedVolume();
 		return;
@@ -5537,15 +5532,15 @@ void LLVOVolume::updateRiggedVolume(bool force_treat_as_rigged, LLRiggedVolume::
 		updateRelativeXform();
 	}
 
-    mRiggedVolume->update(skin, avatar, volume, face_index, rebuild_face_octrees);
+	mRiggedVolume->update(skin, avatar, volume, face_index, rebuild_face_octrees);
 }
 
 void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* volume, FaceIndex face_index, bool rebuild_face_octrees)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_VOLUME;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_VOLUME;
 	bool copy = false;
 	if (volume->getNumVolumeFaces() != getNumVolumeFaces())
-	{ 
+	{
 		copy = true;
 	}
 
@@ -5565,18 +5560,18 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 	{
 		copyVolumeFaces(volume);
 	}
-    else
-    {
-        bool is_paused = avatar && avatar->areAnimationsPaused();
+	else
+	{
+		bool is_paused = avatar && avatar->areAnimationsPaused();
 		if (is_paused)
 		{
-            S32 frames_paused = LLFrameTimer::getFrameCount() - avatar->getMotionController().getPausedFrame();
-            if (frames_paused > 1)
-            {
-                return;
-            }
+			S32 frames_paused = LLFrameTimer::getFrameCount() - avatar->getMotionController().getPausedFrame();
+			if (frames_paused > 1)
+			{
+				return;
+			}
 		}
-    }
+	}
 
 
 	//build matrix palette
@@ -5584,86 +5579,86 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 
 	LLMatrix4a mat[kMaxJoints];
 	U32 maxJoints = LLSkinningUtil::getMeshJointCount(skin);
-    LLSkinningUtil::initSkinningMatrixPalette(mat, maxJoints, skin, avatar);
-    const LLMatrix4a bind_shape_matrix = skin->mBindShapeMatrix;
+	LLSkinningUtil::initSkinningMatrixPalette(mat, maxJoints, skin, avatar);
+	const LLMatrix4a bind_shape_matrix = skin->mBindShapeMatrix;
 
-    S32 rigged_vert_count = 0;
-    S32 rigged_face_count = 0;
-    LLVector4a box_min, box_max;
-    S32 face_begin;
-    S32 face_end;
-    if (face_index == DO_NOT_UPDATE_FACES)
-    {
-        face_begin = 0;
-        face_end = 0;
-    }
-    else if (face_index == UPDATE_ALL_FACES)
-    {
-        face_begin = 0;
-        face_end = volume->getNumVolumeFaces();
-    }
-    else
-    {
-        face_begin = face_index;
-        face_end = face_begin + 1;
-    }
-    for (S32 i = face_begin; i < face_end; ++i)
+	S32 rigged_vert_count = 0;
+	S32 rigged_face_count = 0;
+	LLVector4a box_min, box_max;
+	S32 face_begin;
+	S32 face_end;
+	if (face_index == DO_NOT_UPDATE_FACES)
+	{
+		face_begin = 0;
+		face_end = 0;
+	}
+	else if (face_index == UPDATE_ALL_FACES)
+	{
+		face_begin = 0;
+		face_end = volume->getNumVolumeFaces();
+	}
+	else
+	{
+		face_begin = face_index;
+		face_end = face_begin + 1;
+	}
+	for (S32 i = face_begin; i < face_end; ++i)
 	{
 		const LLVolumeFace& vol_face = volume->getVolumeFace(i);
-		
+
 		LLVolumeFace& dst_face = mVolumeFaces[i];
-		
+
 		LLVector4a* weight = vol_face.mWeights;
 
-		if ( weight )
+		if (weight)
 		{
-            LLSkinningUtil::checkSkinWeights(weight, dst_face.mNumVertices, skin);
+			LLSkinningUtil::checkSkinWeights(weight, dst_face.mNumVertices, skin);
 
 			LLVector4a* pos = dst_face.mPositions;
 
 			if (pos && dst_face.mExtents)
 			{
-                U32 max_joints = LLSkinningUtil::getMaxJointCount();
-                rigged_vert_count += dst_face.mNumVertices;
-                rigged_face_count++;
+				U32 max_joints = LLSkinningUtil::getMaxJointCount();
+				rigged_vert_count += dst_face.mNumVertices;
+				rigged_face_count++;
 
-            #if USE_SEPARATE_JOINT_INDICES_AND_WEIGHTS
-                if (vol_face.mJointIndices) // fast path with preconditioned joint indices
-                {
-                    LLMatrix4a src[4];
-                    U8* joint_indices_cursor = vol_face.mJointIndices;
-                    LLVector4a* just_weights = vol_face.mJustWeights;
-                    for (U32 j = 0; j < dst_face.mNumVertices; ++j)
-				    {
-					    LLMatrix4a final_mat;
-                        F32* w = just_weights[j].getF32ptr();
-                        LLSkinningUtil::getPerVertexSkinMatrixWithIndices(w, joint_indices_cursor, mat, final_mat, src);
-                        joint_indices_cursor += 4;
+#if USE_SEPARATE_JOINT_INDICES_AND_WEIGHTS
+				if (vol_face.mJointIndices) // fast path with preconditioned joint indices
+				{
+					LLMatrix4a src[4];
+					U8* joint_indices_cursor = vol_face.mJointIndices;
+					LLVector4a* just_weights = vol_face.mJustWeights;
+					for (U32 j = 0; j < dst_face.mNumVertices; ++j)
+					{
+						LLMatrix4a final_mat;
+						F32* w = just_weights[j].getF32ptr();
+						LLSkinningUtil::getPerVertexSkinMatrixWithIndices(w, joint_indices_cursor, mat, final_mat, src);
+						joint_indices_cursor += 4;
 
-					    LLVector4a& v = vol_face.mPositions[j];
-					    LLVector4a t;
-					    LLVector4a dst;
-					    bind_shape_matrix.affineTransform(v, t);
-					    final_mat.affineTransform(t, dst);
-					    pos[j] = dst;
-				    }
-                }
-                else
-            #endif
-                {
-				    for (U32 j = 0; j < dst_face.mNumVertices; ++j)
-				    {
-					    LLMatrix4a final_mat;
-                        LLSkinningUtil::getPerVertexSkinMatrix(weight[j].getF32ptr(), mat, false, final_mat, max_joints);
-				
-					    LLVector4a& v = vol_face.mPositions[j];
-					    LLVector4a t;
-					    LLVector4a dst;
-					    bind_shape_matrix.affineTransform(v, t);
-					    final_mat.affineTransform(t, dst);
-					    pos[j] = dst;
-				    }
-                }
+						LLVector4a& v = vol_face.mPositions[j];
+						LLVector4a t;
+						LLVector4a dst;
+						bind_shape_matrix.affineTransform(v, t);
+						final_mat.affineTransform(t, dst);
+						pos[j] = dst;
+					}
+				}
+				else
+#endif
+				{
+					for (U32 j = 0; j < dst_face.mNumVertices; ++j)
+					{
+						LLMatrix4a final_mat;
+						LLSkinningUtil::getPerVertexSkinMatrix(weight[j].getF32ptr(), mat, false, final_mat, max_joints);
+
+						LLVector4a& v = vol_face.mPositions[j];
+						LLVector4a t;
+						LLVector4a dst;
+						bind_shape_matrix.affineTransform(v, t);
+						final_mat.affineTransform(t, dst);
+						pos[j] = dst;
+					}
+				}
 
 				//update bounding box
 				// VFExtents change
@@ -5672,11 +5667,11 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 
 				min = pos[0];
 				max = pos[1];
-                if (i==0)
-                {
-                    box_min = min;
-                    box_max = max;
-                }
+				if (i == 0)
+				{
+					box_min = min;
+					box_max = max;
+				}
 
 				for (U32 j = 1; j < dst_face.mNumVertices; ++j)
 				{
@@ -5684,26 +5679,27 @@ void LLRiggedVolume::update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, cons
 					max.setMax(max, pos[j]);
 				}
 
-                box_min.setMin(min,box_min);
-                box_max.setMax(max,box_max);
+				box_min.setMin(min, box_min);
+				box_max.setMax(max, box_max);
 
 				dst_face.mCenter->setAdd(dst_face.mExtents[0], dst_face.mExtents[1]);
 				dst_face.mCenter->mul(0.5f);
 
 			}
 
-            if (rebuild_face_octrees)
+			if (rebuild_face_octrees)
 			{
-                dst_face.destroyOctree();
-                dst_face.createOctree();
+				dst_face.destroyOctree();
+				dst_face.createOctree();
 			}
 		}
 	}
-    mExtraDebugText = llformat("rigged %d/%d - box (%f %f %f) (%f %f %f)",
-                               rigged_face_count, rigged_vert_count,
-                               box_min[0], box_min[1], box_min[2],
-                               box_max[0], box_max[1], box_max[2]);
+	mExtraDebugText = llformat("rigged %d/%d - box (%f %f %f) (%f %f %f)",
+		rigged_face_count, rigged_vert_count,
+		box_min[0], box_min[1], box_min[2],
+		box_max[0], box_max[1], box_max[2]);
 }
+
 
 U32 LLVOVolume::getPartitionType() const
 {
@@ -7274,11 +7270,11 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 
 			//BD - Do not render faces which alpha is 0, unless we highlight transparent.
 			//     Fix from Marine.
-			if (!LLDrawPoolAlpha::sShowDebugAlpha && te->getColor().mV[3] <= 0.001f)
+			/*if (!LLDrawPoolAlpha::sShowDebugAlpha && te->getColor().mV[3] <= 0.001f)
 			{
 				++face_iter;
 				continue;
-			}
+			}*/
 
 			if (mat && LLPipeline::sRenderDeferred && !hud_group)
 			{

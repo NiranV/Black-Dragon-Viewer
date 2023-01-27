@@ -46,17 +46,17 @@ static LLDefaultChildRegistry::Register<LLSimpleOutfitSnapshotFloaterView> r("si
 /// Class LLFloaterSimpleOutfitSnapshot::Impl
 ///----------------------------------------------------------------------------
 
-LLSnapshotModel::ESnapshotFormat LLFloaterSimpleOutfitSnapshot::Impl::getImageFormat(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotFormat LLFloaterSimpleOutfitSnapshot::getImageFormat(LLFloaterSnapshot* floater)
 {
     return LLSnapshotModel::SNAPSHOT_FORMAT_PNG;
 }
 
-LLSnapshotModel::ESnapshotLayerType LLFloaterSimpleOutfitSnapshot::Impl::getLayerType(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotLayerType LLFloaterSimpleOutfitSnapshot::getLayerType(LLFloaterSnapshot* floater)
 {
     return LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
 }
 
-void LLFloaterSimpleOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
+void LLFloaterSimpleOutfitSnapshot::updateControls(LLFloaterSnapshot* floater)
 {
     LLSnapshotLivePreview* previewp = getPreviewView();
     updateResolution(floater);
@@ -68,12 +68,12 @@ void LLFloaterSimpleOutfitSnapshot::Impl::updateControls(LLFloaterSnapshotBase* 
     }
 }
 
-std::string LLFloaterSimpleOutfitSnapshot::Impl::getSnapshotPanelPrefix()
+std::string LLFloaterSimpleOutfitSnapshot::getSnapshotPanelPrefix()
 {
     return "panel_outfit_snapshot_";
 }
 
-void LLFloaterSimpleOutfitSnapshot::Impl::updateResolution(void* data)
+void LLFloaterSimpleOutfitSnapshot::updateResolution(void* data)
 {
     LLFloaterSimpleOutfitSnapshot *view = (LLFloaterSimpleOutfitSnapshot *)data;
 
@@ -105,24 +105,24 @@ void LLFloaterSimpleOutfitSnapshot::Impl::updateResolution(void* data)
         if (original_width != width || original_height != height)
         {
             // hide old preview as the aspect ratio could be wrong
-            checkAutoSnapshot(previewp, FALSE);
+			//checkAutoSnapshot(previewp, FALSE);
             previewp->updateSnapshot(TRUE);
         }
     }
 }
 
-void LLFloaterSimpleOutfitSnapshot::Impl::setStatus(EStatus status, bool ok, const std::string& msg)
+void LLFloaterSimpleOutfitSnapshot::setStatus(EStatus status, bool ok, const std::string& msg)
 {
     switch (status)
     {
     case STATUS_READY:
-        mFloater->setCtrlsEnabled(true);
+        LLFloaterSnapshot::setCtrlsEnabled(true);
         break;
     case STATUS_WORKING:
-        mFloater->setCtrlsEnabled(false);
+		LLFloaterSnapshot::setCtrlsEnabled(false);
         break;
     case STATUS_FINISHED:
-        mFloater->setCtrlsEnabled(true);
+		LLFloaterSnapshot::setCtrlsEnabled(true);
         break;
     }
 
@@ -134,10 +134,9 @@ void LLFloaterSimpleOutfitSnapshot::Impl::setStatus(EStatus status, bool ok, con
 ///----------------------------------------------------------------------------
 
 LLFloaterSimpleOutfitSnapshot::LLFloaterSimpleOutfitSnapshot(const LLSD& key)
-    : LLFloaterSnapshotBase(key),
+    : LLFloaterSnapshot(key),
     mOutfitGallery(NULL)
 {
-    impl = new Impl(this);
 }
 
 LLFloaterSimpleOutfitSnapshot::~LLFloaterSimpleOutfitSnapshot()
@@ -148,7 +147,7 @@ BOOL LLFloaterSimpleOutfitSnapshot::postBuild()
 {
     getChild<LLUICtrl>("save_btn")->setLabelArg("[UPLOAD_COST]", std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost()));
 
-    childSetAction("new_snapshot_btn", ImplBase::onClickNewSnapshot, this);
+    childSetAction("new_snapshot_btn", boost::bind(&LLFloaterSnapshot::onClickNewSnapshot, this));
     childSetAction("save_btn", boost::bind(&LLFloaterSimpleOutfitSnapshot::onSend, this));
     childSetAction("cancel_btn", boost::bind(&LLFloaterSimpleOutfitSnapshot::onCancel, this));
 
@@ -170,11 +169,11 @@ BOOL LLFloaterSimpleOutfitSnapshot::postBuild()
     gFloaterView->removeChild(this);
     gSnapshotFloaterView->addChild(this);
 
-    impl->mPreviewHandle = previewp->getHandle();
+    mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
-    impl->updateControls(this);
-    impl->setAdvanced(true);
-    impl->setSkipReshaping(true);
+    updateControls(this);
+    setAdvanced(true);
+	//setSkipReshaping(true);
 
     previewp->mKeepAspectRatio = FALSE;
     previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
@@ -201,7 +200,7 @@ void LLFloaterSimpleOutfitSnapshot::draw()
     {		
         if(previewp->getThumbnailImage())
         {
-            bool working = impl->getStatus() == ImplBase::STATUS_WORKING;
+            bool working = getStatus() == STATUS_WORKING;
             const LLRect& thumbnail_rect = getThumbnailPlaceholderRect();
             const S32 thumbnail_w = previewp->getThumbnailWidth();
             const S32 thumbnail_h = previewp->getThumbnailHeight();
@@ -230,7 +229,7 @@ void LLFloaterSimpleOutfitSnapshot::draw()
             gGL.popUIMatrix();
         }
     }
-    impl->updateLayout(this);
+    updateLayout();
 }
 
 void LLFloaterSimpleOutfitSnapshot::onOpen(const LLSD& key)
@@ -245,8 +244,8 @@ void LLFloaterSimpleOutfitSnapshot::onOpen(const LLSD& key)
     gSnapshotFloaterView->setVisible(TRUE);
     gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-    impl->updateControls(this);
-    impl->setStatus(ImplBase::STATUS_READY);
+    updateControls(this);
+    setStatus(STATUS_READY);
 }
 
 void LLFloaterSimpleOutfitSnapshot::onCancel()
@@ -267,13 +266,13 @@ void LLFloaterSimpleOutfitSnapshot::onSend()
         LLSD args;
         args["COST"] = llformat("%d", expected_upload_cost);
         LLNotificationsUtil::add("ErrorPhotoCannotAfford", args);
-        inventorySaveFailed();
+		//inventorySaveFailed();
     }
 }
 
 void LLFloaterSimpleOutfitSnapshot::postSave()
 {
-    impl->setStatus(ImplBase::STATUS_WORKING);
+    setStatus(STATUS_WORKING);
 }
 
 // static 
@@ -282,7 +281,7 @@ void LLFloaterSimpleOutfitSnapshot::update()
     LLFloaterSimpleOutfitSnapshot* inst = findInstance();
     if (inst != NULL)
     {
-        inst->impl->updateLivePreview();
+        inst->updateLivePreview();
     }
 }
 

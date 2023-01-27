@@ -34,9 +34,14 @@
 S32 CASE_SENTITIVITY = 1;
 size_t WRITE_BUFFER_SIZE = 8192;
 
+int compare_filename_mz(unzFile file, const char* filename1, const char* filename2)
+{
+	return strcmp(filename1, filename2);
+}
+
 ALUnZip::ALUnZip(const std::string& filename)
-:	mFilename(filename)
-,	mValid(false)
+	: mFilename(filename)
+	, mValid(false)
 {
 	mZipfile = open(filename);
 	mValid = (mZipfile != nullptr);
@@ -51,17 +56,17 @@ bool ALUnZip::extract(const std::string& path)
 {
 	S32 error = UNZ_OK;
 	unz_global_info64 gi;
-	
+
 	unzGoToFirstFile(mZipfile);
-	
+
 	error = unzGetGlobalInfo64(mZipfile, &gi);
 	if (error != UNZ_OK)
 	{
 		LL_WARNS("ALUNZIP") << "Error unzipping " << mFilename << " - code: " << error << LL_ENDL;
 		return false;
 	}
-	
-	for (uLong i = 0; i < gi.number_entry ; i++)
+
+	for (uint64_t i = 0; i < gi.number_entry; i++)
 	{
 		if (extractCurrentFile(path) != UNZ_OK)
 			break;
@@ -75,7 +80,7 @@ bool ALUnZip::extract(const std::string& path)
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -84,17 +89,17 @@ S32 ALUnZip::extractCurrentFile(const std::string& path)
 	S32 error = UNZ_OK;
 	char filename_inzip[256];
 	unz_file_info64 file_info;
-	
+
 	error = unzGetCurrentFileInfo64(mZipfile, &file_info, filename_inzip, sizeof(filename_inzip), nullptr, 0, nullptr, 0);
 	if (error != UNZ_OK)
 	{
 		LL_WARNS("ALUNZIP") << "Error unzipping " << mFilename << " - code: " << error << LL_ENDL;
 		return error;
 	}
-	
+
 	const std::string& inzip(filename_inzip);
 	const std::string& write_filename = gDirUtilp->add(path, inzip);
-	
+
 	LL_INFOS("ALUNZIP") << "Unpacking " << inzip << LL_ENDL;
 	if (LLStringUtil::endsWith(inzip, "/") || LLStringUtil::endsWith(inzip, "\\"))
 	{
@@ -105,7 +110,7 @@ S32 ALUnZip::extractCurrentFile(const std::string& path)
 		}
 		return error;
 	}
-	
+
 	size_t size_buf = WRITE_BUFFER_SIZE;
 	auto buf = std::make_unique<char[]>(size_buf);
 	if (buf == nullptr)
@@ -119,7 +124,7 @@ S32 ALUnZip::extractCurrentFile(const std::string& path)
 	{
 		LL_WARNS("ALUNZIP") << "Error unzipping " << mFilename << " - code: " << error << LL_ENDL;
 	}
-	
+
 	LLFILE* outfile = LLFile::fopen(write_filename, "wb");
 	if (outfile == nullptr)
 	{
@@ -148,7 +153,7 @@ S32 ALUnZip::extractCurrentFile(const std::string& path)
 		fclose(outfile);
 	}
 
-	
+
 	if (error == UNZ_OK)
 	{
 		error = unzCloseCurrentFile(mZipfile);
@@ -157,20 +162,20 @@ S32 ALUnZip::extractCurrentFile(const std::string& path)
 	}
 	else
 		unzCloseCurrentFile(mZipfile);
-	
+
 	return error;
 }
 
 bool ALUnZip::extractFile(const std::string& file_to_extract, char *buf, size_t bufsize)
 {
-	if (unzLocateFile(mZipfile, file_to_extract.c_str(), CASE_SENTITIVITY) != UNZ_OK)
+	if (unzLocateFile(mZipfile, file_to_extract.c_str(), compare_filename_mz) != UNZ_OK)
 	{
 		LL_WARNS("ALUNZIP") << file_to_extract << " was not found in " << mFilename << LL_ENDL;
 		return false;
 	}
-	
+
 	S32 error = UNZ_OK;
-	
+
 	char filename_inzip[256];
 	unz_file_info64 file_info;
 	error = unzGetCurrentFileInfo64(mZipfile, &file_info, filename_inzip, sizeof(filename_inzip), nullptr, 0, nullptr, 0);
@@ -182,18 +187,18 @@ bool ALUnZip::extractFile(const std::string& file_to_extract, char *buf, size_t 
 		LL_WARNS("ALUNZIP") << "Error unzipping " << mFilename << " - code: " << error << LL_ENDL;
 		return false;
 	}
-	
+
 	return true;
 }
 
 size_t ALUnZip::getSizeFile(const std::string& file_to_size)
 {
-	if (unzLocateFile(mZipfile, file_to_size.c_str(), CASE_SENTITIVITY) != UNZ_OK)
+	if (unzLocateFile(mZipfile, file_to_size.c_str(), compare_filename_mz) != UNZ_OK)
 	{
 		LL_WARNS("ALUNZIP") << file_to_size << " was not found in " << mFilename << LL_ENDL;
 		return 0;
 	}
-	
+
 	S32 error = UNZ_OK;
 	char filename_inzip[256];
 	unz_file_info64 file_info;
@@ -216,10 +221,10 @@ unzFile ALUnZip::open(const std::string& filename)
 #else // !USEWIN32IOAPI
 	mZipfile = unzOpen64(filename.c_str());
 #endif // !USEWIN32IOAPI
-	
+
 	if (mZipfile == nullptr)
 		LL_WARNS("ALUNZIP") << "Failed to open " << mFilename << LL_ENDL;
-	
+
 	return mZipfile;
 }
 

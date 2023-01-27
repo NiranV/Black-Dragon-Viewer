@@ -52,9 +52,9 @@ public:
 								default_image;
 		Optional<LLUIColor>		color;
 		Optional<bool>			use_draw_context_alpha,
+								interactable,
 								//BD
 								repeat_image;
-                                interactable;
 		Optional<S32>			min_width,
 								min_height,
 								//BD

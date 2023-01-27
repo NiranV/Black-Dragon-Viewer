@@ -333,7 +333,7 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 
 	mCheckSnapToGrid(NULL),
 	mBtnGridOptions(NULL),
-	mComboGridMode(NULL),
+	//mComboGridMode(NULL),
 	mCheckStretchUniform(NULL),
 	mCheckStretchTexture(NULL),
 
@@ -1176,3 +1176,160 @@ void LLFloaterTools::updateLandImpacts()
 		object_weights_floater->updateLandImpacts(parcel);
 	}
 }
+
+//BD - Shameless plug from llviewermenu.cpp
+// Cycle selection through linked children or/and faces in selected object.
+// FIXME: Order of children list is not always the same as sim's idea of link order. This may confuse
+// resis. Need link position added to sim messages to address this.
+void LLFloaterTools::onSelectElement(LLUICtrl* ctrl, const LLSD& userdata)
+{
+	bool cycle_faces = LLToolFace::getInstance() == LLToolMgr::getInstance()->getCurrentTool();
+	bool cycle_linked = gSavedSettings.getBOOL("EditLinkedParts");
+
+	if (!cycle_faces && !cycle_linked)
+	{
+		// Nothing to do
+		return;
+	}
+
+	bool fwd = (userdata.asString() == "next");
+	bool prev = (userdata.asString() == "previous");
+	bool ifwd = (userdata.asString() == "includenext");
+	bool iprev = (userdata.asString() == "includeprevious");
+
+	LLViewerObject* to_select = NULL;
+	bool restart_face_on_part = !cycle_faces;
+	S32 new_te = 0;
+
+	if (cycle_faces)
+	{
+		// Cycle through faces of current selection, if end is reached, swithc to next part (if present)
+		LLSelectNode* nodep = LLSelectMgr::getInstance()->getSelection()->getFirstNode();
+		if (!nodep)
+			return;
+		to_select = nodep->getObject();
+		if (!to_select)
+			return;
+
+		S32 te_count = to_select->getNumTEs();
+		S32 selected_te = nodep->getLastOperatedTE();
+
+		if (fwd || ifwd)
+		{
+			if (selected_te < 0)
+			{
+				new_te = 0;
+			}
+			else if (selected_te + 1 < te_count)
+			{
+				// select next face
+				new_te = selected_te + 1;
+			}
+			else
+			{
+				// restart from first face on next part
+				restart_face_on_part = true;
+			}
+		}
+		else if (prev || iprev)
+		{
+			if (selected_te > te_count)
+			{
+				new_te = te_count - 1;
+			}
+			else if (selected_te - 1 >= 0)
+			{
+				// select previous face
+				new_te = selected_te - 1;
+			}
+			else
+			{
+				// restart from last face on next part
+				restart_face_on_part = true;
+			}
+		}
+	}
+
+	S32 object_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
+	if (cycle_linked && object_count && restart_face_on_part)
+	{
+		LLViewerObject* selected = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
+		if (selected && selected->getRootEdit())
+		{
+			LLViewerObject::child_list_t children = selected->getRootEdit()->getChildren();
+			children.push_front(selected->getRootEdit());	// need root in the list too
+
+			for (LLViewerObject::child_list_t::iterator iter = children.begin(); iter != children.end(); ++iter)
+			{
+				if ((*iter)->isSelected())
+				{
+					if (object_count > 1 && (fwd || prev))	// multiple selection, find first or last selected if not include
+					{
+						to_select = *iter;
+						if (fwd)
+						{
+							// stop searching if going forward; repeat to get last hit if backward
+							break;
+						}
+					}
+					else if ((object_count == 1) || (ifwd || iprev))	// single selection or include
+					{
+						if (fwd || ifwd)
+						{
+							++iter;
+							while (iter != children.end() && ((*iter)->isAvatar() || (ifwd && (*iter)->isSelected())))
+							{
+								++iter;	// skip sitting avatars and selected if include
+							}
+						}
+						else // backward
+						{
+							iter = (iter == children.begin() ? children.end() : iter);
+							--iter;
+							while (iter != children.begin() && ((*iter)->isAvatar() || (iprev && (*iter)->isSelected())))
+							{
+								--iter;	// skip sitting avatars and selected if include
+							}
+						}
+						iter = (iter == children.end() ? children.begin() : iter);
+						to_select = *iter;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (to_select)
+	{
+		if (gFocusMgr.childHasKeyboardFocus(gFloaterTools))
+		{
+			gFocusMgr.setKeyboardFocus(NULL);	// force edit toolbox to commit any changes
+		}
+		if (fwd || prev)
+		{
+			LLSelectMgr::getInstance()->deselectAll();
+		}
+		if (cycle_faces)
+		{
+			if (restart_face_on_part)
+			{
+				if (fwd || ifwd)
+				{
+					new_te = 0;
+				}
+				else
+				{
+					new_te = to_select->getNumTEs() - 1;
+				}
+			}
+			LLSelectMgr::getInstance()->addAsIndividual(to_select, new_te, FALSE);
+		}
+		else
+		{
+			LLSelectMgr::getInstance()->selectObjectOnly(to_select);
+		}
+		return;
+	}
+	return;
+};

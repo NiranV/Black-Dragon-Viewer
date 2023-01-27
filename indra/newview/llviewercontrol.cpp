@@ -620,16 +620,6 @@ bool toggle_agent_pause(const LLSD& newvalue)
 	return true;
 }
 
-bool toggle_show_navigation_panel(const LLSD& newvalue)
-{
-	bool value = newvalue.asBoolean();
-
-	LLNavigationBar::getInstance()->setVisible(value);
-	gSavedSettings.setBOOL("ShowMiniLocationPanel", !value);
-    gViewerWindow->reshapeStatusBarContainer();
-	return true;
-}
-
 bool toggle_show_object_render_cost(const LLSD& newvalue)
 {
 	LLFloaterTools::sShowObjectCost = newvalue.asBoolean();
@@ -1468,11 +1458,11 @@ void settings_setup_listeners()
 	setting_setup_signal_listener(gSavedSettings, "QAMode", show_debug_menus);
 	setting_setup_signal_listener(gSavedSettings, "UseDebugMenus", show_debug_menus);
 	setting_setup_signal_listener(gSavedSettings, "AgentPause", toggle_agent_pause);
-	setting_setup_signal_listener(gSavedSettings, "ShowNavbarNavigationPanel", toggle_show_navigation_panel);
-	setting_setup_signal_listener(gSavedSettings, "ShowMiniLocationPanel", toggle_show_mini_location_panel);
+	//setting_setup_signal_listener(gSavedSettings, "ShowNavbarNavigationPanel", toggle_show_navigation_panel);
+	//setting_setup_signal_listener(gSavedSettings, "ShowMiniLocationPanel", toggle_show_mini_location_panel);
 	setting_setup_signal_listener(gSavedSettings, "ShowObjectRenderingCost", toggle_show_object_render_cost);
 	setting_setup_signal_listener(gSavedSettings, "ForceShowGrid", handleForceShowGrid);
-	setting_setup_signal_listener(gSavedSettings, "RenderTransparentWater", handleRenderTransparentWaterChanged);
+	//setting_setup_signal_listener(gSavedSettings, "RenderTransparentWater", handleRenderTransparentWaterChanged);
 	setting_setup_signal_listener(gSavedSettings, "SpellCheck", handleSpellCheckChanged);
 	setting_setup_signal_listener(gSavedSettings, "SpellCheckDictionary", handleSpellCheckChanged);
 	setting_setup_signal_listener(gSavedSettings, "LoginLocation", handleLoginLocationChanged);

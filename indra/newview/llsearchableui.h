@@ -59,59 +59,25 @@ public:
 
 	struct LLPanelData
 	{
-		struct SearchableItem;
-		struct PanelData;
-		struct TabContainerData;
+		LLPanel const *mPanel;
+		std::string mLabel;
 
-		typedef std::shared_ptr< SearchableItem > SearchableItemPtr;
-		typedef std::shared_ptr< PanelData > PanelDataPtr;
-		typedef std::shared_ptr< TabContainerData > TabContainerDataPtr;
+		std::vector<boost::shared_ptr<LLSearchableItem>> mChildren;
+		std::vector<boost::shared_ptr<LLPanelData>> mChildPanel;
 
-		typedef std::vector< TabContainerData > tTabContainerDataList;
-		typedef std::vector< SearchableItemPtr > tSearchableItemList;
-		typedef std::vector< PanelDataPtr > tPanelDataList;
+		virtual ~LLPanelData();
 
-		struct SearchableItem
-		{
-			LLWString mLabel;
-			LLView const *mView;
-			ll::ui::SearchableControl const *mCtrl;
+		void setNotHighlighted();
+		virtual bool hightlightAndHide(LLWString const &aFilter);
+	};
 
-			std::vector< std::shared_ptr< SearchableItem >  > mChildren;
+	struct LLTabContainerData : public LLPanelData
+	{
+		LLTabContainer *mTabContainer;
+		virtual bool hightlightAndHide(LLWString const &aFilter);
+	};
 
-			virtual ~SearchableItem();
-
-			void setNotHighlighted();
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct PanelData
-		{
-			LLPanel const *mPanel;
-			std::string mLabel;
-
-			std::vector< std::shared_ptr< SearchableItem > > mChildren;
-			std::vector< std::shared_ptr< PanelData > > mChildPanel;
-
-			virtual ~PanelData();
-
-			void setNotHighlighted();
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct TabContainerData: public PanelData
-		{
-			LLTabContainer *mTabContainer;
-			virtual bool hightlightAndHide( LLWString const &aFilter );
-		};
-
-		struct SearchData
-		{
-			TabContainerDataPtr mRootTab;
-			LLWString mLastFilter;
-		};
-	}
-	namespace statusbar
+	struct LLTabData
 	{
 		LLTabContainerDataPtr mRootTab;
 		LLWString mLastFilter;

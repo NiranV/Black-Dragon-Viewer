@@ -31,12 +31,12 @@
 #include "llclassifiedinfo.h"
 #include "llfloater.h"
 #include "llpanel.h"
+#include "llpanelavatar.h"
 #include "llrect.h"
 #include "lluuid.h"
 #include "v3dmath.h"
 #include "llcoros.h"
 #include "lleventcoro.h"
-#include "llfloaterprofile.h"
 
 class LLCheckBoxCtrl;
 class LLLineEditor;
@@ -46,21 +46,21 @@ class LLTabContainer;
 class LLTextEditor;
 class LLTextureCtrl;
 class LLUICtrl;
-class LLComboBox;
+
 
 class LLPublishClassifiedFloater : public LLFloater
 {
 public:
-    LLPublishClassifiedFloater(const LLSD& key);
-    virtual ~LLPublishClassifiedFloater();
+	LLPublishClassifiedFloater(const LLSD& key);
+	virtual ~LLPublishClassifiedFloater();
 
-    BOOL postBuild() override;
+	BOOL postBuild() override;
 
-    void setPrice(S32 price);
-    S32 getPrice();
+	void setPrice(S32 price);
+	S32 getPrice();
 
-    void setPublishClickedCallback(const commit_signal_t::slot_type& cb);
-    void setCancelClickedCallback(const commit_signal_t::slot_type& cb);
+	void setPublishClickedCallback(const commit_signal_t::slot_type& cb);
+	void setCancelClickedCallback(const commit_signal_t::slot_type& cb);
 };
 
 
@@ -68,274 +68,273 @@ public:
 * Panel for displaying Avatar's picks.
 */
 class LLPanelProfileClassifieds
-    : public LLPanelProfilePropertiesProcessorTab
+	: public LLPanelProfilePropertiesProcessorTab
 {
 public:
-    LLPanelProfileClassifieds();
-    /*virtual*/ ~LLPanelProfileClassifieds();
+	LLPanelProfileClassifieds();
+	/*virtual*/ ~LLPanelProfileClassifieds();
 
-    BOOL postBuild() override;
+	BOOL postBuild() override;
 
-    void onOpen(const LLSD& key) override;
+	void onOpen(const LLSD& key) override;
 
-    void selectClassified(const LLUUID& classified_id, bool edit);
+	void selectClassified(const LLUUID& classified_id, bool edit);
 
-    void createClassified();
+	void createClassified();
 
-    void processProperties(void* data, EAvatarProcessorType type) override;
+	void processProperties(void* data, EAvatarProcessorType type) override;
 
-    void resetData() override;
+	void resetData() override;
 
-    void updateButtons();
+	void updateButtons();
 
-    void updateData() override;
+	void updateData() override;
 
-    bool hasNewClassifieds();
-    bool hasUnsavedChanges() override;
-    // commits changes to existing classifieds, but does not publish new classified!
-    void commitUnsavedChanges() override;
+	bool hasNewClassifieds();
+	bool hasUnsavedChanges() override;
+	// commits changes to existing classifieds, but does not publish new classified!
+	void commitUnsavedChanges() override;
 
 private:
-    void onClickNewBtn();
-    void onClickDelete();
-    void callbackDeleteClassified(const LLSD& notification, const LLSD& response);
+	void onClickNewBtn();
+	void onClickDelete();
+	void callbackDeleteClassified(const LLSD& notification, const LLSD& response);
 
-    bool canAddNewClassified();
-    bool canDeleteClassified();
+	bool canAddNewClassified();
+	bool canDeleteClassified();
 
-    LLTabContainer* mTabContainer;
-    LLUICtrl*       mNoItemsLabel;
-    LLButton*       mNewButton;
-    LLButton*       mDeleteButton;
+	LLTabContainer* mTabContainer;
+	LLUICtrl*       mNoItemsLabel;
+	LLButton*       mNewButton;
+	LLButton*       mDeleteButton;
 
-    LLUUID          mClassifiedToSelectOnLoad;
-    bool            mClassifiedEditOnLoad;
-    bool            mSheduledClassifiedCreation;
+	LLUUID          mClassifiedToSelectOnLoad;
+	bool            mClassifiedEditOnLoad;
+	bool            mSheduledClassifiedCreation;
 };
 
 
 class LLPanelProfileClassified
-    : public LLPanelProfilePropertiesProcessorTab
+	: public LLPanelProfilePropertiesProcessorTab
 {
 public:
 
-    static LLPanelProfileClassified* create();
+	static LLPanelProfileClassified* create();
 
-    LLPanelProfileClassified();
+	LLPanelProfileClassified();
 
-    /*virtual*/ ~LLPanelProfileClassified();
+	/*virtual*/ ~LLPanelProfileClassified();
 
-    BOOL postBuild() override;
+	BOOL postBuild() override;
 
-    void onOpen(const LLSD& key) override;
+	void onOpen(const LLSD& key) override;
 
-    void processProperties(void* data, EAvatarProcessorType type) override;
+	void processProperties(void* data, EAvatarProcessorType type) override;
 
-    void setSnapshotId(const LLUUID& id);
+	void setSnapshotId(const LLUUID& id);
 
-    LLUUID getSnapshotId();
+	LLUUID getSnapshotId();
 
-    void setClassifiedId(const LLUUID& id) { mClassifiedId = id; }
+	void setClassifiedId(const LLUUID& id) { mClassifiedId = id; }
 
-    LLUUID& getClassifiedId() { return mClassifiedId; }
+	LLUUID& getClassifiedId() { return mClassifiedId; }
 
-    void setClassifiedName(const std::string& name);
+	void setClassifiedName(const std::string& name);
 
-    std::string getClassifiedName();
+	std::string getClassifiedName();
 
-    void setDescription(const std::string& desc);
+	void setDescription(const std::string& desc);
 
-    std::string getDescription();
+	std::string getDescription();
 
-    void setClassifiedLocation(const std::string& location);
+	void setClassifiedLocation(const std::string& location);
 
-    std::string getClassifiedLocation();
+	std::string getClassifiedLocation();
 
-    void setPosGlobal(const LLVector3d& pos) { mPosGlobal = pos; }
+	void setPosGlobal(const LLVector3d& pos) { mPosGlobal = pos; }
 
-    LLVector3d& getPosGlobal() { return mPosGlobal; }
+	LLVector3d& getPosGlobal() { return mPosGlobal; }
 
-    void setParcelId(const LLUUID& id) { mParcelId = id; }
+	void setParcelId(const LLUUID& id) { mParcelId = id; }
 
-    LLUUID getParcelId() { return mParcelId; }
+	LLUUID getParcelId() { return mParcelId; }
 
-    void setSimName(const std::string& sim_name) { mSimName = sim_name; }
+	void setSimName(const std::string& sim_name) { mSimName = sim_name; }
 
-    std::string getSimName() { return mSimName; }
+	std::string getSimName() { return mSimName; }
 
-    void setFromSearch(bool val) { mFromSearch = val; }
+	void setFromSearch(bool val) { mFromSearch = val; }
 
-    bool fromSearch() { return mFromSearch; }
+	bool fromSearch() { return mFromSearch; }
 
-    bool getInfoLoaded() { return mInfoLoaded; }
+	bool getInfoLoaded() { return mInfoLoaded; }
 
-    void setInfoLoaded(bool loaded) { mInfoLoaded = loaded; }
+	void setInfoLoaded(bool loaded) { mInfoLoaded = loaded; }
 
-    BOOL isDirty() const override;
+	BOOL isDirty() const override;
 
-    void resetDirty() override;
+	void resetDirty() override;
 
-    bool isNew() { return mIsNew; }
+	bool isNew() { return mIsNew; }
 
-    bool isNewWithErrors() { return mIsNewWithErrors; }
+	bool isNewWithErrors() { return mIsNewWithErrors; }
 
-    bool canClose();
+	bool canClose();
 
-    U32 getCategory();
+	U32 getCategory();
 
-    void setCategory(U32 category);
+	void setCategory(U32 category);
 
-    U32 getContentType();
+	U32 getContentType();
 
-    void setContentType(bool mature);
+	void setContentType(bool mature);
 
-    bool getAutoRenew();
+	bool getAutoRenew();
 
-    S32 getPriceForListing() { return mPriceForListing; }
+	S32 getPriceForListing() { return mPriceForListing; }
 
-    void setEditMode(BOOL edit_mode);
-    bool getEditMode() {return mEditMode;}
+	void setEditMode(BOOL edit_mode);
+	bool getEditMode() { return mEditMode; }
 
-    static void setClickThrough(
-        const LLUUID& classified_id,
-        S32 teleport,
-        S32 map,
-        S32 profile,
-        bool from_new_table);
+	static void setClickThrough(
+		const LLUUID& classified_id,
+		S32 teleport,
+		S32 map,
+		S32 profile,
+		bool from_new_table);
 
-    static void sendClickMessage(
-            const std::string& type,
-            bool from_search,
-            const LLUUID& classified_id,
-            const LLUUID& parcel_id,
-            const LLVector3d& global_pos,
-            const std::string& sim_name);
+	static void sendClickMessage(
+		const std::string& type,
+		bool from_search,
+		const LLUUID& classified_id,
+		const LLUUID& parcel_id,
+		const LLVector3d& global_pos,
+		const std::string& sim_name);
 
-    void doSave();
+	void doSave();
 
 protected:
 
-    void resetData() override;
+	void resetData() override;
 
-    void resetControls();
+	void resetControls();
 
-    void updateButtons();
-    void updateInfoRect();
+	void updateButtons();
+	void updateInfoRect();
 
-    static std::string createLocationText(
-        const std::string& original_name,
-        const std::string& sim_name,
-        const LLVector3d& pos_global);
+	static std::string createLocationText(
+		const std::string& original_name,
+		const std::string& sim_name,
+		const LLVector3d& pos_global);
 
-    void sendClickMessage(const std::string& type);
+	void sendClickMessage(const std::string& type);
 
-    void scrollToTop();
+	void scrollToTop();
 
-    void onEditClick();
-    void onCancelClick();
-    void onSaveClick();
-    void onMapClick();
-    void onTeleportClick();
+	void onEditClick();
+	void onCancelClick();
+	void onSaveClick();
+	void onMapClick();
+	void onTeleportClick();
 
-    void sendUpdate();
+	void sendUpdate();
 
-    void enableSave(bool enable);
+	void enableSave(bool enable);
 
-    void enableEditing(bool enable);
+	void enableEditing(bool enable);
 
-    std::string makeClassifiedName();
+	std::string makeClassifiedName();
 
-    void setPriceForListing(S32 price) { mPriceForListing = price; }
+	void setPriceForListing(S32 price) { mPriceForListing = price; }
 
-    U8 getFlags();
+	U8 getFlags();
 
-    std::string getLocationNotice();
+	std::string getLocationNotice();
 
-    bool isValidName();
+	bool isValidName();
 
-    void notifyInvalidName();
+	void notifyInvalidName();
 
-    void onSetLocationClick();
-    void onChange();
+	void onSetLocationClick();
+	void onChange();
 
-    void onPublishFloaterPublishClicked();
+	void onPublishFloaterPublishClicked();
 
-    void onTexturePickerMouseEnter();
-    void onTexturePickerMouseLeave();
+	void onTexturePickerMouseEnter();
+	void onTexturePickerMouseLeave();
 
-    void onTextureSelected();
+	void onTextureSelected();
 
-    void updateTabLabel(const std::string& title);
+	void updateTabLabel(const std::string& title);
 
 private:
 
-    LLTextureCtrl*      mSnapshotCtrl;
-    LLUICtrl*           mEditIcon;
-    LLUICtrl*           mClassifiedNameText;
-    LLTextEditor*       mClassifiedDescText;
-    LLLineEditor*       mClassifiedNameEdit;
-    LLTextEditor*       mClassifiedDescEdit;
-    LLUICtrl*           mLocationText;
-    LLUICtrl*           mLocationEdit;
-    LLUICtrl*           mCategoryText;
-    LLComboBox*         mCategoryCombo;
-    LLUICtrl*           mContentTypeText;
-    LLIconCtrl*         mContentTypeM;
-    LLIconCtrl*         mContentTypeG;
-    LLComboBox*         mContentTypeCombo;
-    LLUICtrl*           mPriceText;
-    LLUICtrl*           mAutoRenewText;
-    LLUICtrl*           mAutoRenewEdit;
+	LLTextureCtrl*      mSnapshotCtrl;
+	LLUICtrl*           mEditIcon;
+	LLUICtrl*           mClassifiedNameText;
+	LLTextEditor*       mClassifiedDescText;
+	LLLineEditor*       mClassifiedNameEdit;
+	LLTextEditor*       mClassifiedDescEdit;
+	LLUICtrl*           mLocationText;
+	LLUICtrl*           mLocationEdit;
+	LLUICtrl*           mCategoryText;
+	LLComboBox*         mCategoryCombo;
+	LLUICtrl*           mContentTypeText;
+	LLIconCtrl*         mContentTypeM;
+	LLIconCtrl*         mContentTypeG;
+	LLComboBox*         mContentTypeCombo;
+	LLUICtrl*           mPriceText;
+	LLUICtrl*           mAutoRenewText;
+	LLUICtrl*           mAutoRenewEdit;
 
-    LLButton*           mMapButton;
-    LLButton*           mTeleportButton;
-    LLButton*           mEditButton;
-    LLButton*           mSaveButton;
-    LLButton*           mSetLocationButton;
-    LLButton*           mCancelButton;
+	LLButton*           mMapButton;
+	LLButton*           mTeleportButton;
+	LLButton*           mEditButton;
+	LLButton*           mSaveButton;
+	LLButton*           mSetLocationButton;
+	LLButton*           mCancelButton;
 
-    LLPanel*            mUtilityBtnCnt;
-    LLPanel*            mPublishBtnsCnt;
-    LLPanel*            mSaveBtnCnt;
-    LLPanel*            mCancelBtnCnt;
+	LLPanel*            mUtilityBtnCnt;
+	LLPanel*            mPublishBtnsCnt;
+	LLPanel*            mSaveBtnCnt;
+	LLPanel*            mCancelBtnCnt;
 
-    LLScrollContainer*  mScrollContainer;
-    LLView*             mInfoPanel;
-    LLPanel*            mInfoScroll;
-    LLPanel*            mEditPanel;
-
-
-    LLUUID mClassifiedId;
-    LLVector3d mPosGlobal;
-    LLUUID mParcelId;
-    std::string mSimName;
-    bool mFromSearch;
-    bool mInfoLoaded;
-    bool mEditMode;
-	bool mSelfProfile;
-
-    // Needed for stat tracking
-    S32 mTeleportClicksOld;
-    S32 mMapClicksOld;
-    S32 mProfileClicksOld;
-    S32 mTeleportClicksNew;
-    S32 mMapClicksNew;
-    S32 mProfileClicksNew;
-
-    S32 mPriceForListing;
-
-    static void handleSearchStatResponse(LLUUID classifiedId, LLSD result);
-
-    typedef std::list<LLPanelProfileClassified*> panel_list_t;
-    static panel_list_t sAllPanels;
+	LLScrollContainer*  mScrollContainer;
+	LLView*             mInfoPanel;
+	LLPanel*            mInfoScroll;
+	LLPanel*            mEditPanel;
 
 
-    bool mIsNew;
-    bool mIsNewWithErrors;
-    bool mCanClose;
-    bool mEditOnLoad;
+	LLUUID mClassifiedId;
+	LLVector3d mPosGlobal;
+	LLUUID mParcelId;
+	std::string mSimName;
+	bool mFromSearch;
+	bool mInfoLoaded;
+	bool mEditMode;
 
-    LLPublishClassifiedFloater* mPublishFloater;
+	// Needed for stat tracking
+	S32 mTeleportClicksOld;
+	S32 mMapClicksOld;
+	S32 mProfileClicksOld;
+	S32 mTeleportClicksNew;
+	S32 mMapClicksNew;
+	S32 mProfileClicksNew;
+
+	S32 mPriceForListing;
+
+	static void handleSearchStatResponse(LLUUID classifiedId, LLSD result);
+
+	typedef std::list<LLPanelProfileClassified*> panel_list_t;
+	static panel_list_t sAllPanels;
+
+
+	bool mIsNew;
+	bool mIsNewWithErrors;
+	bool mCanClose;
+	bool mEditOnLoad;
+
+	LLPublishClassifiedFloater* mPublishFloater;
 };
 
 #endif // LL_PANELPROFILECLASSIFIEDS_H

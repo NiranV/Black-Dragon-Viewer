@@ -195,10 +195,6 @@ BOOL LLGroupList::handleDoubleClick(S32 x, S32 y, MASK mask)
 		{
 			(*mDoubleClickSignal)(this, x, y, mask);
 		}
-		else
-		{
-			LLGroupActions::activate(selected_group);
-		}
 	}
 
 	return handled;
