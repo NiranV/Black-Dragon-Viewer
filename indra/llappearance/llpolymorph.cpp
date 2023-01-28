@@ -305,7 +305,7 @@ BOOL LLPolyMorphTargetInfo::parseXml(LLXmlTreeNode* node)
 				static LLStdStringHandle pos_string = LLXmlTree::addAttributeString("pos");
 				child_node->getFastAttributeVector3(pos_string, pos);
 
-				mVolumeInfoList.emplace_back(LLPolyVolumeMorphInfo(volume_name,scale,pos));
+				mVolumeInfoList.push_back(LLPolyVolumeMorphInfo(volume_name,scale,pos));
 			}
 		}
 	}
@@ -371,7 +371,7 @@ BOOL LLPolyMorphTarget::setInfo(LLPolyMorphTargetInfo* info)
 		{
 			if (avatarp->mCollisionVolumes[i].getName() == volume_info->mName)
 			{
-				mVolumeMorphs.emplace_back(
+				mVolumeMorphs.push_back(
 					LLPolyVolumeMorph(&avatarp->mCollisionVolumes[i],
 														  volume_info->mScale,
 														  volume_info->mPos));
@@ -386,8 +386,8 @@ BOOL LLPolyMorphTarget::setInfo(LLPolyMorphTargetInfo* info)
 	if (!mMorphData)
 	{
 		const std::string driven_tag = "_Driven";
-		size_t pos = morph_param_name.find(driven_tag);
-		if (pos != std::string::npos && pos > 0)
+		U32 pos = morph_param_name.find(driven_tag);
+		if (pos > 0)
 		{
 			morph_param_name = morph_param_name.substr(0,pos);
 			mMorphData = mMesh->getMorphData(morph_param_name);

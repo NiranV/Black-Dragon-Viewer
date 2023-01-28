@@ -115,7 +115,7 @@ inline void LLVector4a::set(F32 x, F32 y, F32 z, F32 w)
 // Set to all zeros
 inline void LLVector4a::clear()
 {
-	mQ = _mm_setzero_ps();
+	mQ = LLVector4a::getZero().mQ;
 }
 
 inline void LLVector4a::splat(const F32 x)
@@ -593,6 +593,12 @@ inline bool LLVector4a::equals3(const LLVector4a& rhs, F32 tolerance ) const
 ////////////////////////////////////	
 
 // Do NOT add aditional operators without consulting someone with SSE experience
+inline const LLVector4a& LLVector4a::operator= ( const LLVector4a& rhs )
+{
+	mQ = rhs.mQ;
+	return *this;
+}
+
 inline const LLVector4a& LLVector4a::operator= ( const LLQuad& rhs )
 {
 	mQ = rhs;

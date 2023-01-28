@@ -90,7 +90,7 @@ BOOL LLPolySkeletalDistortionInfo::parseXml(LLXmlTreeNode* node)
                         {
                                 haspos = TRUE;
                         }
-                        mBoneInfoList.emplace_back(LLPolySkeletalBoneInfo(name, scale, pos, haspos));
+                        mBoneInfoList.push_back(LLPolySkeletalBoneInfo(name, scale, pos, haspos));
                 }
                 else
                 {
@@ -210,12 +210,10 @@ void LLPolySkeletalDistortion::apply( ESex avatar_sex )
         // needed? 
         // joint->storeScaleForReset( newScale );				
 
-#ifdef ENABLE_DEBUG
         // BENTO for detailed stack tracing of params.
         std::stringstream ostr;
         ostr << "LLPolySkeletalDistortion::apply, id " << getID() << " " << getName() << " effective wt " << effective_weight << " last wt " << mLastWeight << " scaleDelta " << scaleDelta << " offset " << offset;
         LLScopedContextString str(ostr.str());
-#endif
 
         joint->setScale(newScale, true);
     }

@@ -52,7 +52,7 @@ public:
 	/** 
 	 * @brief Construct a date equal to the source date.
 	 */
-	LLDate(const LLDate& date) = default;
+	LLDate(const LLDate& date);
 
 	/** 
 	 * @brief Construct a date from a seconds since epoch value.

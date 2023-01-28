@@ -696,7 +696,7 @@ BOOL LLTexLayerInfo::parseXml(LLXmlTreeNode* node)
 			BOOL invert = FALSE;
 			static LLStdStringHandle invert_string = LLXmlTree::addAttributeString("invert");
 			maskNode->getFastAttributeBOOL(invert_string, invert);			
-			mMorphNameList.emplace_back(std::pair<std::string,BOOL>(morph_name,invert));
+			mMorphNameList.push_back(std::pair<std::string,BOOL>(morph_name,invert));
 		}
 	}
 
@@ -1336,7 +1336,7 @@ void LLTexLayer::renderMorphMasks(S32 x, S32 y, S32 width, S32 height, const LLC
 {
 	if (!force_render && !hasMorph())
 	{
-		// _LL_DEBUGS() << "skipping renderMorphMasks for " << getUUID() << LL_ENDL;
+		LL_DEBUGS() << "skipping renderMorphMasks for " << getUUID() << LL_ENDL;
 		return;
 	}
     LL_PROFILE_ZONE_SCOPED;
@@ -1371,7 +1371,7 @@ void LLTexLayer::renderMorphMasks(S32 x, S32 y, S32 width, S32 height, const LLC
 		success &= param->render( x, y, width, height );
 		if (!success && !force_render)
 		{
-			// _LL_DEBUGS() << "Failed to render param " << param->getID() << " ; skipping morph mask." << LL_ENDL;
+			LL_DEBUGS() << "Failed to render param " << param->getID() << " ; skipping morph mask." << LL_ENDL;
 			return;
 		}
 	}
@@ -1454,7 +1454,7 @@ void LLTexLayer::renderMorphMasks(S32 x, S32 y, S32 width, S32 height, const LLC
                 // We can get bad morph masks during login, on minimize, and occasional gl errors.
                 // We should only be doing this when we believe something has changed with respect to the user's appearance.
 		{
-                       // _LL_DEBUGS("Avatar") << "gl alpha cache of morph mask not found, doing readback: " << getName() << LL_ENDL;
+                       LL_DEBUGS("Avatar") << "gl alpha cache of morph mask not found, doing readback: " << getName() << LL_ENDL;
                         // clear out a slot if we have filled our cache
 			S32 max_cache_entries = getTexLayerSet()->getAvatarAppearance()->isSelf() ? 4 : 1;
 			while ((S32)mAlphaCache.size() >= max_cache_entries)

@@ -137,31 +137,30 @@ S32 LLVOPartGroup::findAvailableVBSlot()
 
 	S32 ret = *sVBSlotCursor;
 	sVBSlotCursor++;
-
 	return ret;
 }
 
 bool ll_is_part_idx_allocated(S32 idx, S32* start, S32* end)
 {
-	while (start < end)
+	/*while (start < end)
 	{
 		if (*start == idx)
 		{ //not allocated (in free list)
 			return false;
 		}
 		++start;
-	}
+	}*/
 
 	//allocated (not in free list)
-	return true;
+	return false;
 }
 
 //static
 void LLVOPartGroup::freeVBSlot(S32 idx)
 {
 	llassert(idx < LL_MAX_PARTICLE_COUNT && idx >= 0);
-	llassert(sVBSlotCursor > sVBSlotFree);
-	llassert(ll_is_part_idx_allocated(idx, sVBSlotCursor, sVBSlotFree+LL_MAX_PARTICLE_COUNT));
+	//llassert(sVBSlotCursor > sVBSlotFree);
+	//llassert(ll_is_part_idx_allocated(idx, sVBSlotCursor, sVBSlotFree+LL_MAX_PARTICLE_COUNT));
 
 	if (sVBSlotCursor > sVBSlotFree)
 	{
@@ -713,8 +712,7 @@ void LLVOPartGroup::getGeometry(S32 idx,
 	*colorsp++ = color;
 	*colorsp++ = color;
 
-	//Only add emissive attributes if glowing (doing it for all particles is INCREDIBLY inefficient as it leads to a second, slower, render pass.)
-	if (gPipeline.RenderDeferred && (pglow.mV[3] > 0 || part.mGlow.mV[3] > 0))
+	//if (pglow.mV[3] || part.mGlow.mV[3])
 	{ //only write glow if it is not zero
 		*emissivep++ = pglow;
 		*emissivep++ = pglow;

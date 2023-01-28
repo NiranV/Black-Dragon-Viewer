@@ -49,7 +49,7 @@ public:
 	//////////////////////////
 	
 	// Ctor
-	LLQuaternion2() = default;
+	LLQuaternion2() {}
 
 	// Ctor from LLQuaternion
 	explicit LLQuaternion2( const class LLQuaternion& quat );

@@ -56,7 +56,7 @@ public:
 	//////////////////////////
 	
 	// Ctor
-	LLMatrix3a() = default;
+	LLMatrix3a() {}
 
 	// Ctor for setting by columns
 	inline LLMatrix3a( const LLVector4a& c0, const LLVector4a& c1, const LLVector4a& c2 );
@@ -119,7 +119,7 @@ class LLRotation : public LLMatrix3a
 {
 public:
 	
-	LLRotation() = default;
+	LLRotation() {}
 	
 	// Returns true if this rotation is orthonormal with det ~= 1
 	inline bool isOkRotation() const;		

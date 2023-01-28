@@ -2240,7 +2240,7 @@ void LLSelectMgr::selectionSetMedia(U8 media_type, const LLSD &media_data)
 					else {
 						// Add/update media
 						object->setTEMediaFlags(te, mMediaFlags);
-						LLVOVolume *vo = object->asVolume();
+						LLVOVolume *vo = dynamic_cast<LLVOVolume*>(object);
 						llassert(NULL != vo);
 						if (NULL != vo) 
 						{
@@ -2266,7 +2266,7 @@ void LLSelectMgr::selectionSetMedia(U8 media_type, const LLSD &media_data)
 			if (object->permModify())
 			{
 				object->sendTEUpdate();
-				LLVOVolume *vo = object->asVolume();
+				LLVOVolume *vo = dynamic_cast<LLVOVolume*>(object);
 				llassert(NULL != vo);
 				// It's okay to skip this object if hasMedia() is false...
 				// the sendTEUpdate() above would remove all media data if it were
@@ -6219,7 +6219,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 
 			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
 			{
-				vobj->updateRiggedVolume(true, true);
+				vobj->updateRiggedVolume(true);
 			}
 		}
 
@@ -6280,7 +6280,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 
 				if (objectp->mDrawable
 					&& objectp->mDrawable->getVOVolume()
-					&& !objectp->isHUDAttachment())
+                    && objectp->mDrawable->getVOVolume()->isMesh())
 				{
 					LLColor4 hlColor = objectp->isRootEdit() ? sParentColor : sChildColor;
 					if (objectp->getID() == inspect_item_id)

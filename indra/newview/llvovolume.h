@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llvovolume.h
  * @brief LLVOVolume class header file
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -65,12 +65,12 @@ public:
 	{
 	}
 
-    using FaceIndex = S32;
-    static const FaceIndex UPDATE_ALL_FACES = -1;
-    static const FaceIndex DO_NOT_UPDATE_FACES = -2;
-    void update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* src_volume, FaceIndex face_index = UPDATE_ALL_FACES, bool rebuild_face_octrees = true);
+	using FaceIndex = S32;
+	static const FaceIndex UPDATE_ALL_FACES = -1;
+	static const FaceIndex DO_NOT_UPDATE_FACES = -2;
+	void update(const LLMeshSkinInfo* skin, LLVOAvatar* avatar, const LLVolume* src_volume, FaceIndex face_index = UPDATE_ALL_FACES, bool rebuild_face_octrees = true);
 
-    std::string mExtraDebugText;
+	std::string mExtraDebugText;
 };
 
 // Base class for implementations of the volume - Primitive, Flexible Object, etc.
@@ -106,86 +106,86 @@ public:
 	static		void	initClass();
 	static		void	cleanupClass();
 	static		void	preUpdateGeom();
-	
-	enum 
+
+	enum
 	{
-		VERTEX_DATA_MASK =	(1 << LLVertexBuffer::TYPE_VERTEX) |
-							(1 << LLVertexBuffer::TYPE_NORMAL) |
-							(1 << LLVertexBuffer::TYPE_TEXCOORD0) |
-							(1 << LLVertexBuffer::TYPE_TEXCOORD1) |
-							(1 << LLVertexBuffer::TYPE_COLOR)
+		VERTEX_DATA_MASK = (1 << LLVertexBuffer::TYPE_VERTEX) |
+		(1 << LLVertexBuffer::TYPE_NORMAL) |
+		(1 << LLVertexBuffer::TYPE_TEXCOORD0) |
+		(1 << LLVertexBuffer::TYPE_TEXCOORD1) |
+		(1 << LLVertexBuffer::TYPE_COLOR)
 	};
 
 public:
-						LLVOVolume(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp);
-				LLVOVolume* asVolume();
+	LLVOVolume(const LLUUID &id, const LLPCode pcode, LLViewerRegion *regionp);
+	LLVOVolume* asVolume();
 	/*virtual*/ void markDead();		// Override (and call through to parent) to clean up media references
 
 	/*virtual*/ LLDrawable* createDrawable(LLPipeline *pipeline);
 
-				void	deleteFaces();
+	void	deleteFaces();
 
-				void	animateTextures();
-	
-	            BOOL    isVisible() const ;
+	void	animateTextures();
+
+	BOOL    isVisible() const;
 	/*virtual*/ BOOL	isActive() const;
 	/*virtual*/ BOOL	isAttachment() const;
 	/*virtual*/ BOOL	isRootEdit() const; // overridden for sake of attachments treating themselves as a root object
 	/*virtual*/ BOOL	isHUDAttachment() const;
 
-				void	generateSilhouette(LLSelectNode* nodep, const LLVector3& view_point);
+	void	generateSilhouette(LLSelectNode* nodep, const LLVector3& view_point);
 	/*virtual*/	BOOL	setParent(LLViewerObject* parent);
-				S32		getLOD() const						{ return mLOD; }
-				void	setNoLOD()							{ mLOD = NO_LOD; mLODChanged = TRUE; }
-				bool	isNoLOD() const						{ return NO_LOD == mLOD; }
+	S32		getLOD() const { return mLOD; }
+	void	setNoLOD() { mLOD = NO_LOD; mLODChanged = TRUE; }
+	bool	isNoLOD() const { return NO_LOD == mLOD; }
 	const LLVector3		getPivotPositionAgent() const;
-	const LLMatrix4&	getRelativeXform() const				{ return mRelativeXform; }
-	const LLMatrix3&	getRelativeXformInvTrans() const		{ return mRelativeXformInvTrans; }
+	const LLMatrix4&	getRelativeXform() const { return mRelativeXform; }
+	const LLMatrix3&	getRelativeXformInvTrans() const { return mRelativeXformInvTrans; }
 	/*virtual*/	const LLMatrix4	getRenderMatrix() const;
-				typedef std::map<LLUUID, S32> texture_cost_t;
-				U32 	getOriginalRenderCost(texture_cost_t &textures) const;
-				//BD - Altered Complexity Calculation
-				U32 	getRenderCost(texture_cost_t &textures) const;
-    /*virtual*/	F32		getEstTrianglesMax() const;
-    /*virtual*/	F32		getEstTrianglesStreamingCost() const;
-    /* virtual*/ F32	getStreamingCost() const;
-    /*virtual*/ bool getCostData(LLMeshCostData& costs) const;
+	typedef std::map<LLUUID, S32> texture_cost_t;
+	U32 	getOriginalRenderCost(texture_cost_t &textures) const;
+	//BD - Altered Complexity Calculation
+	U32 	getRenderCost(texture_cost_t &textures) const;
+	/*virtual*/	F32		getEstTrianglesMax() const;
+	/*virtual*/	F32		getEstTrianglesStreamingCost() const;
+	/* virtual*/ F32	getStreamingCost() const;
+	/*virtual*/ bool getCostData(LLMeshCostData& costs) const;
 
 	/*virtual*/ U32		getTriangleCount(S32* vcount = NULL) const;
 	/*virtual*/ U32		getHighLODTriangleCount();
 	//BD
 	/*virtual*/ U64     getHighLODTriangleCount64();
 	void				getRenderCostValues(U32 &flexible_cost, U32 &particle_cost, U32 &light_cost, U32 &projector_cost,
-											U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost,
-											U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const;
-	/*virtual*/ BOOL lineSegmentIntersect(const LLVector4a& start, const LLVector4a& end, 
-										  S32 face = -1,                        // which face to check, -1 = ALL_SIDES
-										  BOOL pick_transparent = FALSE,
-										  BOOL pick_rigged = FALSE,
-										  S32* face_hit = NULL,                 // which face was hit
-										  LLVector4a* intersection = NULL,       // return the intersection point
-										  LLVector2* tex_coord = NULL,          // return the texture coordinates of the intersection point
-										  LLVector4a* normal = NULL,             // return the surface normal at the intersection point
-										  LLVector4a* tangent = NULL           // return the surface tangent at the intersection point
-		);
-	
-				LLVector3 agentPositionToVolume(const LLVector3& pos) const;
-				LLVector3 agentDirectionToVolume(const LLVector3& dir) const;
-				LLVector3 volumePositionToAgent(const LLVector3& dir) const;
-				LLVector3 volumeDirectionToAgent(const LLVector3& dir) const;
+		U32 &alpha_cost, U32 &rigged_cost, U32 &animesh_cost, U32 &media_cost, U32 &bump_cost,
+		U32 &shiny_cost, U32 &glow_cost, U32 &animated_cost) const;
+	/*virtual*/ BOOL lineSegmentIntersect(const LLVector4a& start, const LLVector4a& end,
+		S32 face = -1,                        // which face to check, -1 = ALL_SIDES
+		BOOL pick_transparent = FALSE,
+		BOOL pick_rigged = FALSE,
+		S32* face_hit = NULL,                 // which face was hit
+		LLVector4a* intersection = NULL,       // return the intersection point
+		LLVector2* tex_coord = NULL,          // return the texture coordinates of the intersection point
+		LLVector4a* normal = NULL,             // return the surface normal at the intersection point
+		LLVector4a* tangent = NULL           // return the surface tangent at the intersection point
+	);
 
-				
-// [FS:Beq] - Patch: Appearance-RebuildAttachments | Checked: Catznip-5.3
-				void    forceLOD(S32 lod);
-// [/FS]
-				BOOL	getVolumeChanged() const				{ return mVolumeChanged; }
-				
-	/*virtual*/ F32  	getRadius() const						{ return mVObjRadius; };
-				const LLMatrix4& getWorldMatrix(LLXformMatrix* xform) const;
+	LLVector3 agentPositionToVolume(const LLVector3& pos) const;
+	LLVector3 agentDirectionToVolume(const LLVector3& dir) const;
+	LLVector3 volumePositionToAgent(const LLVector3& dir) const;
+	LLVector3 volumeDirectionToAgent(const LLVector3& dir) const;
 
-				void	markForUpdate(BOOL priority);
-				void	markForUnload()							{ LLViewerObject::markForUnload(TRUE); mVolumeChanged = TRUE; }
-				void    faceMappingChanged()                    { mFaceMappingChanged=TRUE; };
+
+	// [FS:Beq] - Patch: Appearance-RebuildAttachments | Checked: Catznip-5.3
+	void    forceLOD(S32 lod);
+	// [/FS]
+	BOOL	getVolumeChanged() const { return mVolumeChanged; }
+
+	/*virtual*/ F32  	getRadius() const { return mVObjRadius; };
+	const LLMatrix4& getWorldMatrix(LLXformMatrix* xform) const;
+
+	void	markForUpdate(BOOL priority);
+	void	markForUnload() { LLViewerObject::markForUnload(TRUE); mVolumeChanged = TRUE; }
+	void    faceMappingChanged() { mFaceMappingChanged = TRUE; };
 
 	/*virtual*/ void	onShift(const LLVector4a &shift_vector); // Called when the drawable shifts
 
@@ -193,16 +193,16 @@ public:
 	/*virtual*/ void	parameterChanged(U16 param_type, LLNetworkData* data, BOOL in_use, bool local_origin);
 
 	/*virtual*/ U32		processUpdateMessage(LLMessageSystem *mesgsys,
-											void **user_data,
-											U32 block_num, const EObjectUpdateType update_type,
-											LLDataPacker *dp);
+		void **user_data,
+		U32 block_num, const EObjectUpdateType update_type,
+		LLDataPacker *dp);
 
 	/*virtual*/ void	setSelected(BOOL sel);
 	/*virtual*/ BOOL	setDrawableParent(LLDrawable* parentp);
 
 	/*virtual*/ void	setScale(const LLVector3 &scale, BOOL damped);
 
-	/*virtual*/ void    changeTEImage(S32 index, LLViewerTexture* new_image)  ;
+	/*virtual*/ void    changeTEImage(S32 index, LLViewerTexture* new_image);
 	/*virtual*/ void	setNumTEs(const U8 num_tes);
 	/*virtual*/ void	setTEImage(const U8 te, LLViewerTexture *imagep);
 	/*virtual*/ S32		setTETexture(const U8 te, const LLUUID &uuid);
@@ -215,7 +215,7 @@ public:
 	/*virtual*/ S32		setTEMediaFlags(const U8 te, const U8 media_flags);
 	/*virtual*/ S32		setTEGlow(const U8 te, const F32 glow);
 	/*virtual*/ S32		setTEMaterialID(const U8 te, const LLMaterialID& pMaterialID);
-	
+
 	static void	setTEMaterialParamsCallbackTE(const LLUUID& objectID, const LLMaterialID& pMaterialID, const LLMaterialPtr pMaterialParams, U32 te);
 
 	/*virtual*/ S32		setTEMaterialParams(const U8 te, const LLMaterialPtr pMaterialParams);
@@ -226,39 +226,39 @@ public:
 	/*virtual*/ S32		setTEMediaTexGen(const U8 te, const U8 media);
 	/*virtual*/ BOOL 	setMaterial(const U8 material);
 
-				void	setTexture(const S32 face);
-				S32     getIndexInTex(U32 ch) const {return mIndexInTex[ch];}
+	void	setTexture(const S32 face);
+	S32     getIndexInTex(U32 ch) const { return mIndexInTex[ch]; }
 	/*virtual*/ BOOL	setVolume(const LLVolumeParams &volume_params, const S32 detail, bool unique_volume = false);
-				void	updateSculptTexture();
-				void    setIndexInTex(U32 ch, S32 index) { mIndexInTex[ch] = index ;}
-				void	sculpt();
-	 static     void    rebuildMeshAssetCallback(const LLUUID& asset_uuid,
-												 LLAssetType::EType type,
-												 void* user_data, S32 status, LLExtStat ext_status);
-					
-				void	updateRelativeXform(bool force_identity = false);
+	void	updateSculptTexture();
+	void    setIndexInTex(U32 ch, S32 index) { mIndexInTex[ch] = index; }
+	void	sculpt();
+	static     void    rebuildMeshAssetCallback(const LLUUID& asset_uuid,
+		LLAssetType::EType type,
+		void* user_data, S32 status, LLExtStat ext_status);
+
+	void	updateRelativeXform(bool force_identity = false);
 	/*virtual*/ BOOL	updateGeometry(LLDrawable *drawable);
 	/*virtual*/ void	updateFaceSize(S32 idx);
 	/*virtual*/ BOOL	updateLOD();
-				void	updateRadius();
+	void	updateRadius();
 	/*virtual*/ void	updateTextures();
-				void	updateTextureVirtualSize(bool forced = false);
+	void	updateTextureVirtualSize(bool forced = false);
 
-				void	updateFaceFlags();
-				void	regenFaces();
-                BOOL    genBBoxes(BOOL force_global, BOOL should_update_octree_bounds = TRUE);
-				void	preRebuild();
+	void	updateFaceFlags();
+	void	regenFaces();
+	BOOL    genBBoxes(BOOL force_global, BOOL should_update_octree_bounds = TRUE);
+	void	preRebuild();
 	virtual		void	updateSpatialExtents(LLVector4a& min, LLVector4a& max);
 	virtual		F32		getBinRadius();
-	
+
 	virtual U32 getPartitionType() const;
 
 	// For Lights
 	void setIsLight(BOOL is_light);
-    //set the gamma-corrected (sRGB) color of this light
+	//set the gamma-corrected (sRGB) color of this light
 	void setLightSRGBColor(const LLColor3& color);
-    //set the linear color of this light
-    void setLightLinearColor(const LLColor3& color);
+	//set the linear color of this light
+	void setLightLinearColor(const LLColor3& color);
 
 	void setLightIntensity(F32 intensity);
 	void setLightRadius(F32 radius);
@@ -278,18 +278,18 @@ public:
 	BOOL getIsLight() const;
 
 
-    // Get the light color in sRGB color space NOT scaled by intensity.
-	LLColor3 getLightSRGBBaseColor() const; 
+	// Get the light color in sRGB color space NOT scaled by intensity.
+	LLColor3 getLightSRGBBaseColor() const;
 
-    // Get the light color in linear color space NOT scaled by intensity.
-    LLColor3 getLightLinearBaseColor() const;
-    
-    // Get the light color in linear color space scaled by intensity 
-    //  this is the value that should be fed into shaders
-    LLColor3 getLightLinearColor() const;
+	// Get the light color in linear color space NOT scaled by intensity.
+	LLColor3 getLightLinearBaseColor() const;
 
-    // Get the light color in sRGB color space scaled by intensity.
-    LLColor3 getLightSRGBColor() const; 
+	// Get the light color in linear color space scaled by intensity 
+	//  this is the value that should be fed into shaders
+	LLColor3 getLightLinearColor() const;
+
+	// Get the light color in sRGB color space scaled by intensity.
+	LLColor3 getLightSRGBColor() const;
 
 	LLUUID	getLightTextureID() const;
 	bool isLightSpotlight() const;
@@ -314,7 +314,7 @@ public:
 	F32 getLightRadius() const;
 	F32 getLightFalloff(const F32 fudge_factor = 1.f) const;
 	F32 getLightCutoff() const;
-	
+
 	// Flexible Objects
 	U32 getVolumeInterfaceID() const;
 	virtual BOOL isFlexible() const;
@@ -323,70 +323,70 @@ public:
 	virtual BOOL isRiggedMesh() const;
 	virtual BOOL hasLightTexture() const;
 
-    
+
 	BOOL isVolumeGlobal() const;
 	BOOL canBeFlexible() const;
 	BOOL setIsFlexible(BOOL is_flexible);
 
-    const LLMeshSkinInfo* getSkinInfo() const;
+	const LLMeshSkinInfo* getSkinInfo() const;
 
-    //convenience accessor for mesh ID (which is stored in sculpt id for legacy reasons)
-    const LLUUID& getMeshID() const { return getVolume()->getParams().getSculptID(); }
-    
-    // Extended Mesh Properties
-    U32 getExtendedMeshFlags() const;
-    void onSetExtendedMeshFlags(U32 flags);
-    void setExtendedMeshFlags(U32 flags);
-    bool canBeAnimatedObject() const;
-    bool isAnimatedObject() const;
-    virtual void onReparent(LLViewerObject *old_parent, LLViewerObject *new_parent);
-    virtual void afterReparent();
+	//convenience accessor for mesh ID (which is stored in sculpt id for legacy reasons)
+	const LLUUID& getMeshID() const { return getVolume()->getParams().getSculptID(); }
 
-    //virtual
-    void updateRiggingInfo();
-    S32 mLastRiggingInfoLOD;
-    
-    // Functions that deal with media, or media navigation
-    
-    // Update this object's media data with the given media data array
-    // (typically this is only called upon a response from a server request)
+	// Extended Mesh Properties
+	U32 getExtendedMeshFlags() const;
+	void onSetExtendedMeshFlags(U32 flags);
+	void setExtendedMeshFlags(U32 flags);
+	bool canBeAnimatedObject() const;
+	bool isAnimatedObject() const;
+	virtual void onReparent(LLViewerObject *old_parent, LLViewerObject *new_parent);
+	virtual void afterReparent();
+
+	//virtual
+	void updateRiggingInfo();
+	S32 mLastRiggingInfoLOD;
+
+	// Functions that deal with media, or media navigation
+
+	// Update this object's media data with the given media data array
+	// (typically this is only called upon a response from a server request)
 	void updateObjectMediaData(const LLSD &media_data_array, const std::string &media_version);
-    
-    // Bounce back media at the given index to its current URL (or home URL, if current URL is empty)
+
+	// Bounce back media at the given index to its current URL (or home URL, if current URL is empty)
 	void mediaNavigateBounceBack(U8 texture_index);
-    
-    // Returns whether or not this object has permission to navigate or control 
+
+	// Returns whether or not this object has permission to navigate or control 
 	// the given media entry
 	enum MediaPermType {
 		MEDIA_PERM_INTERACT, MEDIA_PERM_CONTROL
 	};
-    bool hasMediaPermission(const LLMediaEntry* media_entry, MediaPermType perm_type);
-    
+	bool hasMediaPermission(const LLMediaEntry* media_entry, MediaPermType perm_type);
+
 	void mediaNavigated(LLViewerMediaImpl *impl, LLPluginClassMedia* plugin, std::string new_location);
 	void mediaEvent(LLViewerMediaImpl *impl, LLPluginClassMedia* plugin, LLViewerMediaObserver::EMediaEvent event);
-			
+
 
 	// Sync the given media data with the impl and the given te
 	void syncMediaData(S32 te, const LLSD &media_data, bool merge, bool ignore_agent);
-	
+
 	// Send media data update to the simulator.
 	void sendMediaDataUpdate();
 
 	viewer_media_t getMediaImpl(U8 face_id) const;
 	S32 getFaceIndexWithMediaImpl(const LLViewerMediaImpl* media_impl, S32 start_face_id);
 	F64 getTotalMediaInterest() const;
-   
+
 	bool hasMedia() const;
-	
+
 	LLVector3 getApproximateFaceNormal(U8 face_id);
 
-    // Flag any corresponding avatars as needing update.
-    void updateVisualComplexity();
-    
+	// Flag any corresponding avatars as needing update.
+	void updateVisualComplexity();
+
 	void notifyMeshLoaded();
 	void notifySkinInfoLoaded(const LLMeshSkinInfo* skin);
 	void notifySkinInfoUnavailable();
-	
+
 	// Returns 'true' iff the media data for this object is in flight
 	bool isMediaDataBeingFetched() const;
 
@@ -396,10 +396,10 @@ public:
 	void addMDCImpl() { ++mMDCImplCount; }
 	void removeMDCImpl() { --mMDCImplCount; }
 	S32 getMDCImplCount() { return mMDCImplCount; }
-	
-    // Rigged volume update (for raycasting)
-    // By default, this updates the bounding boxes of all the faces and builds an octree for precise per-triangle raycasting
-    void updateRiggedVolume(bool force_treat_as_rigged, LLRiggedVolume::FaceIndex face_index = LLRiggedVolume::UPDATE_ALL_FACES, bool rebuild_face_octrees = true);
+
+	// Rigged volume update (for raycasting)
+	// By default, this updates the bounding boxes of all the faces and builds an octree for precise per-triangle raycasting
+	void updateRiggedVolume(bool force_treat_as_rigged, LLRiggedVolume::FaceIndex face_index = LLRiggedVolume::UPDATE_ALL_FACES, bool rebuild_face_octrees = true);
 	LLRiggedVolume* getRiggedVolume();
 
 	//returns true if volume should be treated as a rigged volume
@@ -422,25 +422,25 @@ protected:
 	static S32 mRenderComplexity_last;
 	static S32 mRenderComplexity_current;
 
-    void onDrawableUpdateFromServer();
+	void onDrawableUpdateFromServer();
 	void requestMediaDataUpdate(bool isNew);
 	void cleanUpMediaImpls();
-	void addMediaImpl(LLViewerMediaImpl* media_impl, S32 texture_index) ;
-	void removeMediaImpl(S32 texture_index) ;
+	void addMediaImpl(LLViewerMediaImpl* media_impl, S32 texture_index);
+	void removeMediaImpl(S32 texture_index);
 
 private:
-    bool lodOrSculptChanged(LLDrawable *drawable, BOOL &compiled, BOOL &shouldUpdateOctreeBounds);
+	bool lodOrSculptChanged(LLDrawable *drawable, BOOL &compiled, BOOL &shouldUpdateOctreeBounds);
 
 public:
 
-	static S32 getRenderComplexityMax() {return mRenderComplexity_last;}
+	static S32 getRenderComplexityMax() { return mRenderComplexity_last; }
 	static void updateRenderComplexity();
 
 	LLViewerTextureAnim *mTextureAnimp;
 	U8 mTexAnimMode;
-    F32 mLODDistance;
-    F32 mLODAdjustedDistance;
-    F32 mLODRadius;
+	F32 mLODDistance;
+	F32 mLODAdjustedDistance;
+	F32 mLODRadius;
 private:
 	friend class LLDrawable;
 	friend class LLFace;
@@ -450,7 +450,7 @@ private:
 	S32			mLOD;
 	BOOL		mLODChanged;
 	BOOL		mSculptChanged;
-    BOOL		mColorChanged;
+	BOOL		mColorChanged;
 	F32			mSpotLightPriority;
 	LLMatrix4	mRelativeXform;
 	LLMatrix3	mRelativeXformInvTrans;
@@ -461,7 +461,7 @@ private:
 	LLPointer<LLViewerFetchedTexture> mLightTexture;
 	media_list_t mMediaImplList;
 	S32			mLastFetchedMediaVersion; // as fetched from the server, starts as -1
-    U32         mServerDrawableUpdateCount;
+	U32         mServerDrawableUpdateCount;
 	S32 mIndexInTex[LLRender::NUM_VOLUME_TEXTURE_CHANNELS];
 	S32 mMDCImplCount;
 
@@ -473,7 +473,7 @@ private:
 
 	bool mSkinInfoFailed;
 	const LLMeshSkinInfo *mSkinInfo;
-	
+
 	// statics
 public:
 	static F32 sLODSlopDistanceFactor;// Changing this to zero, effectively disables the LOD transition slop
@@ -493,7 +493,7 @@ public:
 	bool notifyAboutMissingAsset(LLViewerTexture *texture);
 
 private:
-	struct material_info 
+	struct material_info
 	{
 		LLRender::eTexIndex map;
 		U8 te;
