@@ -533,7 +533,9 @@ public:
 
 		if (verb == "requestfriend")
 		{
-			LLAvatarActions::requestFriendshipDialog(avatar_id);
+			uuid_vec_t uuids;
+			uuids.push_back(avatar_id);
+			LLAvatarActions::requestFriendshipDialog(uuids);
 			return true;
 		}
 
@@ -1521,7 +1523,9 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
 	}
 	else if (item_name == "add_friend")
 	{
-		LLAvatarActions::requestFriendshipDialog(agent_id);
+		uuid_vec_t uuids;
+		uuids.push_back(agent_id);
+		LLAvatarActions::requestFriendshipDialog(uuids);
 	}
 	else if (item_name == "remove_friend")
 	{
