@@ -173,8 +173,56 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="195"
+     height="117"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Adrian as Patreon patron.
+Added: Game Girl Power as Patreon patron.
+Added: Rybakov as Patreon patron.
+Added: Ulysses Von Hex as Patreon patron.
+Changed: Version to 4.2.0.
+Fixed: Compile errors.
+Fixed: Crashing on right click due to octree generation.
+Fixed: Compile #2.
+Merge Linden Release.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.1.5
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="195"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
