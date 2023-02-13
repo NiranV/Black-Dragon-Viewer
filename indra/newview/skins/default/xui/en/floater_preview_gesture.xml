@@ -139,6 +139,10 @@
      top_delta="0"
      width="50" >
         <combo_box.item
+        label="---"
+        name="None"
+        value=""/>
+        <combo_box.item
         label="B"
         name="B"
         value="B"/>
