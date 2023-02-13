@@ -200,8 +200,11 @@ BOOL LLToolPie::handleRightMouseDown(S32 x, S32 y, MASK mask)
 	//BD - claim not handled so UI focus stays same.
 	//     Don't handle the right click pick while the UI is hidden otherwise we'll
 	//     get temporarily stuck when right clicking a HUD attachment.
-	if(gAgentCamera.getCameraMode() != CAMERA_MODE_MOUSELOOK
-		&& gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+	if((gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI)
+		&& gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK
+		&& gKeyboard->currentMask(false) == MASK_ALT)
+		|| (gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI)
+		&& gAgentCamera.getCameraMode() != CAMERA_MODE_MOUSELOOK))
 	{
 		handleRightClickPick();
 	}
