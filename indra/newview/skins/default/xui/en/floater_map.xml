@@ -3,8 +3,8 @@
  positioning="cascading"
  can_minimize="false" 
  can_resize="true"
- chrome="true"
- height="220"
+ chrome="false"
+ height="240"
  layout="topleft"
  min_height="128"
  min_width="128"
@@ -39,7 +39,7 @@
      width="212"
      height="214"
      bg_color="Transparent"
-     top="3"/>
+     top="22"/>
     <text
      type="string"
      length="1"
@@ -110,19 +110,20 @@
    bg_visible="true"
    name="sim_coords"
    font="SansSerifSmall"
-   top="2"
+   top="21"
    width="220"/>
 	<text
-   follows="bottom|left|right"
+   follows="top|left|right"
    height="17"
    layout="topleft"
-   halign="center"
+   halign="left"
    word_wrap="false"
    bg_writeable_color="Black_75"
-   bg_visible="true"
+   bg_visible="false"
    name="sim_name"
    font="SansSerifSmall"
-   top="-15"
+   left="5"
+   top="5"
    width="220">
       Region Name
    </text>
