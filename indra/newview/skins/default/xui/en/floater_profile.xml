@@ -8,7 +8,7 @@
  can_resize="true"
  help_topic="panel_my_profile_tab"
  min_height="510"
- min_width="510"
+ min_width="400"
  positioning="centered"
  save_rect="true"
  title="Profile"
@@ -24,20 +24,20 @@
     >
         <tab_container
          name="panel_profile_tabs"
+         background_visible="true"
+         bg_alpha_image="Panel_Background"
          top_pad="5"
-         left="0"
+         left="5"
          height="500"
-         width="505"
+         width="500"
          follows="all"
          layout="topleft"
          halign="center"
-         tab_min_width="81"
-         tab_height="30"
          tab_position="top"
         >
             <panel
              name="panel_profile_secondlife"
-             label="BIO"
+             label="Profile"
              layout="topleft"
              class="panel_profile_secondlife"
              filename="panel_profile_secondlife.xml"
@@ -45,7 +45,7 @@
             />
             <panel
              name="panel_profile_web"
-             label="FEED"
+             label="Web"
              layout="topleft"
              class="panel_profile_web"
              filename="panel_profile_web.xml"
@@ -53,7 +53,7 @@
             />
             <panel
              name="panel_profile_picks"
-             label="PICKS"
+             label="Picks"
              layout="topleft"
              class="panel_profile_picks"
              filename="panel_profile_picks.xml"
@@ -61,7 +61,7 @@
             />
             <panel
              name="panel_profile_classifieds"
-             label="CLASSIFIEDS"
+             label="Classified"
              layout="topleft"
              class="panel_profile_classifieds"
              filename="panel_profile_classifieds.xml"
@@ -69,7 +69,7 @@
             />
             <panel
              name="panel_profile_firstlife"
-             label="REAL LIFE"
+             label="First Life"
              layout="topleft"
              class="panel_profile_firstlife"
              filename="panel_profile_firstlife.xml"
@@ -77,7 +77,7 @@
             />
             <panel
              name="panel_profile_notes"
-             label="MY NOTES"
+             label="Notes"
              layout="topleft"
              class="panel_profile_notes"
              filename="panel_profile_notes.xml"
