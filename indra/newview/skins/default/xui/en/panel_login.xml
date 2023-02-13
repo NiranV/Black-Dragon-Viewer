@@ -173,8 +173,60 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="117"
+     height="169"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Chantelle M as Patreon patron.
+Added: NH as Patreon patron.
+Added: Vaimee as Patreon patron.
+Added: 聚力阿 Джулия 寿梨亜于日丫處釐雅ジュリア Julia as Patreon patron.
+Changed: Restored (mostly) old style Second Life profile layout. (Only second life tab for now).
+Changed: Version to 4.2.1.
+Fixed: Media controls in Build - Texture no longer working.
+Fixed: Alpha Mask Cutoff in Build - Texture no longer showing.
+Fixed: Right-click menus no longer working in Mouselook. As per request.
+Fixed: Minimap window cannot be dragged anymore.
+Fixed: All gestures falsely defaulting to "B" shortcut.
+Fixed: Several new notifications for profiles missing and tossing an error when displayed.
+Fixed: Trying to click "Copy SLURL" in World map can result in clicking invisible spinner arrows when clicking too far right.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.2.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="117"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
@@ -5921,7 +5973,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
    mouse_opaque="true"
    name="root_panel"
    top_pad="0"
-   width="395">
+   width="435">
     <text
     follows="left|top|right"
     font="SansSerifBig"
@@ -5932,7 +5984,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     top="0"
     left="0"
     name="app_name_text"
-    width="380"
+    width="420"
     word_wrap="true">
     [APP_NAME]
     </text>
@@ -5955,7 +6007,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     halign="center"
     name="pref_btn"
     top="17"
-    width="122">
+    width="136">
     <button.commit_callback
     function="Floater.Toggle"
     parameter="preferences"/>
@@ -5977,7 +6029,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     halign="center"
     name="grid_btn"
     top_delta="0"
-    width="111">
+    width="130">
     <button.commit_callback
     function="PromptShowURL"
     parameter="WebLaunchExternalTarget,http://status.secondlifegrid.net/"/>
@@ -5993,7 +6045,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     left_pad="1"
     name="server_combo"
     list_position="above"
-    width="157"
+    width="165"
     visible="true">
     <combo_box.combo_editor
     font="SansSerif"
@@ -6021,7 +6073,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     height="22"
     label="Username"
     max_chars="128"
-    left="113"
+    left="133"
     tool_tip="The username you chose when you registered, like bobsmith12 or Steller Sunshine"
     top_pad="12"
     name="username_combo"
@@ -6030,14 +6082,6 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     background_image="TextField_Off"
     background_image_disabled="TextField_Disabled"
     background_image_focused="TextField_Active"/>
-    <combo_box.item
-    label="My last location"
-    name="MyLastLocation"
-    value="last" />
-    <combo_box.item
-    label="My home"
-    name="MyHome"
-    value="home" />
     <combo_box.combo_button
     image_unselected="ComboToolbarButton_Off"
     image_selected="ComboToolbarButton_Selected"
@@ -6065,23 +6109,22 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     <check_box
     control_name="RememberUser"
     follows="left|top"
-    font="SansSerifSmall"
-    height="18"
     left_pad="0"
-    label="remember user"
     top_delta="-25"
+    height="18"
+    label="Remember me"
     name="remember_name"
-    width="200"/>
-    <check_box
+    tool_tip="Already remembered user can be forgotten from Me &gt; Preferences &gt; Advanced &gt; Remembered Usernames."
+    width="250" />
+  <check_box
     control_name="RememberPassword"
     follows="left|top"
-    font="SansSerifSmall"
     height="18"
     left_delta="0"
-    label="remember password"
     top_pad="6"
+    label="Remember password"
     name="remember_password"
-    width="200"/>
+    width="250" /> 
     <combo_box
     allow_text_entry="true"
     control_name="NextLoginLocation"
@@ -6089,7 +6132,7 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     height="23"
     max_chars="128"
     top_pad="8"
-    left="113"
+    left="133"
     name="start_location_combo"
     width="160">
     <combo_box.combo_editor
@@ -6121,12 +6164,12 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     height="23"
     image_unselected="Toolbar_Middle_Off"
     image_selected="Toolbar_Middle_Selected"
-    label="*FLAP WINGS*"
+    label="*LIFT OFF*"
     font="SansSerif"
     font.style="BOLDITALIC"
     label_color="1 1 1 0.8"
     layout="topleft"
-    left="113"
+    left="133"
     name="connect_btn"
     top_pad="3"
     width="152"/>
@@ -6188,31 +6231,6 @@ eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld 
     name="quit_btn"
     top_delta="-8"
     width="77"/>
-  <check_box
-    follows="left|top"
-    font="SansSerifMedium"
-    left="185"
-    bottom_delta="21"
-    height="24"
-    label="Remember me"
-    word_wrap="down"
-    check_button.bottom="3"
-    name="remember_name"
-    tool_tip="Already remembered user can be forgotten from Me &gt; Preferences &gt; Advanced &gt; Remembered Usernames."
-    width="198" />
-  <check_box
-    control_name="RememberPassword"
-    follows="left|top"
-    font="SansSerifMedium"
-    text_color="EmphasisColor"
-    height="24"
-    left="408"
-    bottom_delta="0"
-    label="Remember password"
-    word_wrap="down"
-    check_button.bottom="3"
-    name="remember_password"
-    width="165" /> 
    </layout_panel>
   </layout_stack>
   <icon
