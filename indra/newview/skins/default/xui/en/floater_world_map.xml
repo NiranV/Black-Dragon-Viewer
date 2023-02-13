@@ -713,7 +713,7 @@
 	    <scroll_list
 	    draw_stripes="false"
 	    follows="all"
-	    height="431"
+	    height="429"
 	    layout="topleft"
 	    left="0"
 	    name="search_results"
@@ -732,29 +732,13 @@
 	       <scroll_list.commit_callback
 	       function="WMap.SearchResult" />
 	    </scroll_list>
-     <button
-	    follows="left|bottom"
-	    height="25"
-     image_overlay="Command_Picks_Icon"
-        image_hover_unselected="Toolbar_Middle_Over"
-      image_selected="Toolbar_Middle_Selected"
-      image_unselected="Toolbar_Middle_Off"
-	    layout="topleft"
-	    left="1"
-	    name="copy_slurl"
-	    tool_tip="Copies current location as SLurl to be used on the web."
-	    top_pad="-1"
-	    width="31">
-	       <button.commit_callback
-	       function="WMap.CopySLURL" />
-	    </button>
      <icon
   follows="bottom|left"
   height="25"
   image_name="Toolbar_Middle_Off"
   layout="topleft"
-  left_pad="1"
-  top_delta="0"
+  left="34"
+  top_pad="0"
   name="dummy_icon"
   width="101"/>
    <spinner
@@ -826,6 +810,22 @@
           image_unselected="transparent.j2c"
           image_selected="transparent.j2c"/>
 	    </spinner>
+        <button
+	    follows="left|bottom"
+	    height="25"
+     image_overlay="Command_Picks_Icon"
+        image_hover_unselected="Toolbar_Middle_Over"
+      image_selected="Toolbar_Middle_Selected"
+      image_unselected="Toolbar_Middle_Off"
+	    layout="topleft"
+	    left="2"
+	    name="copy_slurl"
+	    tool_tip="Copies current location as SLurl to be used on the web."
+	    top_delta="-1"
+	    width="31">
+	       <button.commit_callback
+	       function="WMap.CopySLURL" />
+	    </button>
    <button
 	    follows="left|bottom"
 	    height="25"
@@ -834,12 +834,12 @@
       image_unselected="Toolbar_Middle_Off"
       image_overlay_alignment="left"
 	    layout="topleft"
-	    left_pad="69"
+	    left_pad="103"
      label="Teleport"
 	    name="Teleport"
 	    tool_tip="Teleport to selected location"
-	    top_delta="-1"
-	    width="56">
+	    top_delta="0"
+	    width="54">
 	       <button.commit_callback
 	       function="WMap.Teleport" />
 	    </button>
