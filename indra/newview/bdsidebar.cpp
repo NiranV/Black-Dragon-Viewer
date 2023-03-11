@@ -63,12 +63,12 @@ void LLSideBar::draw()
 {
 	if (gSideBar->getParentByType<LLLayoutPanel>()->getVisibleAmount() > 0.01f)
 	{
-		//mShadowDistY->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
-		//mShadowDistZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
-		//mShadowDistW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
-
 		if (mUpdateTimer.getElapsedTimeF32() > 3.f)
 		{
+			mShadowDistY->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+			mShadowDistZ->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+			mShadowDistW->setEnabled(!gPipeline.RenderShadowAutomaticDistance);
+
 			//refreshCreationControls();
 			mUpdateTimer.reset();
 		}
