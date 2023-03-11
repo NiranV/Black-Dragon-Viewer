@@ -33,7 +33,7 @@ Account: [ACCTTYPE]
  mouse_opaque="false"
  left="3"
  name="title"
- top="0"
+ top="1"
  width="415"/>
    <text
  name="show_ims_in_label"
@@ -125,10 +125,10 @@ Account: [ACCTTYPE]
    name="image_stack"
    top="25"
    left_pad="6"
-   height="170"
+   height="191"
    width="245"
    border_size="0"
-   follows="left|top|bottom"
+   follows="left|top|right"
    layout="topleft"
    animate="false"
    orientation="vertical">
@@ -361,11 +361,11 @@ Account: [ACCTTYPE]
   
   <group_list
        name="group_list"
-       top_pad="25"
+       top_pad="3"
        left="6"
        height="80"
        width="410"
-       follows="all"
+       follows="top|left|right"
        layout="topleft"
        border_visible="false"
        color="ScrollBgWriteableColor"
@@ -400,8 +400,8 @@ Account: [ACCTTYPE]
        commit_on_focus_lost="false"
        enabled="false"
        top_pad="10"
-       height="120"
-       width="410"
+       height="122"
+       width="409"
        left="6"
        follows="all"
        layout="topleft"
@@ -419,12 +419,12 @@ Account: [ACCTTYPE]
  image_selected="Toolbar_Middle_Selected"
  image_unselected="Toolbar_Middle_Off"
          label="Save"
-         top_pad="4"
+         top_pad="5"
          left="3"
          height="23"
          width="207"
          enabled="false"
-         follows="top|left"
+         follows="bottom|left"
          layout="topleft"/>
         <button
          name="discard_description_changes"
@@ -437,7 +437,7 @@ Account: [ACCTTYPE]
          height="23"
          width="207"
          enabled="false"
-         follows="top|left|right"
+         follows="bottom|left|right"
          layout="topleft"/>
 
       
@@ -446,85 +446,83 @@ Account: [ACCTTYPE]
        tool_tip="Friend can see my online status"
        mouse_opaque="true"
        name="can_see_online"
-       image_name="Profile_Perm_Online_Enabled"
+       image_name="Permission_Visible_Online"
        layout="topleft"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-61"
-       height="24"
-       width="24"
-       left_pad="2" />
+       top="3"
+       right="-35"
+       height="16"
+       width="16" />
 
       <icon
        tool_tip="Friend can not see my online status"
        mouse_opaque="true"
        name="cant_see_online"
-       image_name="Profile_Perm_Online_Disabled"
+       color="1 1 1 0.4"
+       image_name="Permission_Visible_Online"
        layout="topleft"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-61"
-       height="24"
-       width="24"
-       left_pad="2" />
+       top="3"
+       right="-35"
+       height="16"
+       width="16"/>
 
       <icon
        tool_tip="Friend can see me on map"
        mouse_opaque="true"
        name="can_see_on_map"
-       image_name="Profile_Perm_Find_Enabled"
+       image_name="Permission_Visible_Map"
        layout="topleft"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-30"
-       height="24"
-       width="24"
-       left_pad="2" />
+       top="3"
+       right="-20"
+       height="16"
+       width="16" />
 
       <icon
        tool_tip="Friend can not see me on map"
        mouse_opaque="true"
        name="cant_see_on_map"
-       image_name="Profile_Perm_Find_Disabled"
+       image_name="Permission_Visible_Map"
        layout="topleft"
+       color="1 1 1 0.4"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-30"
-       height="24"
-       width="24"
+       top="3"
+       right="-20"
+       height="16"
+       width="16"
        left_pad="2" />
 
       <icon
        tool_tip="Friend can edit my objects"
        mouse_opaque="true"
        name="can_edit_objects"
-       image_name="Profile_Perm_Objects_Enabled"
+       image_name="Permission_Edit_Objects_Theirs"
        layout="topleft"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-1"
-       height="24"
-       width="24"
-       left_pad="2" />
+       top="3"
+       right="-5"
+       height="16"
+       width="16" />
 
       <icon
        tool_tip="Friend can not edit my objects"
        mouse_opaque="true"
        name="cant_edit_objects"
-       image_name="Profile_Perm_Objects_Disabled"
+       image_name="Permission_Edit_Objects_Theirs"
        layout="topleft"
+       color="1 1 1 0.4"
        follows="right|top"
        interactable="true"
-       top="0"
-       right="-1"
-       height="24"
-       width="24"
-       left_pad="2" />
+       top="3"
+       right="-5"
+       height="16"
+       width="16" />
 
       
 
