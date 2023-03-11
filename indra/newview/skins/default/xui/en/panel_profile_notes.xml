@@ -19,24 +19,34 @@
      layout="topleft"
      visible="false"
     />
-    <text
-     name="status_message"
-     value="Make notes about this person here. No one else can see your notes."
-     top="6"
-     left="6"
-     right="-6"
-     height="16"
-     follows="left|top|right"
-     layout="topleft"
-     font.style="BOLD"
-    />
+    <panel
+ follows="left|top|right"
+ height="21"
+ bg_visible="true"
+ bg_alpha_color="0.10 0.43 0.77 0.28"
+ layout="topleft"
+ mouse_opaque="false"
+ left="3"
+ name="title"
+ top="1"
+ width="415"/>
+   <text
+ name="show_ims_in_label"
+ follows="left|top"
+ layout="topleft"
+ left="10"
+ height="12"
+ width="420"
+ top_delta="5">
+ Make notes about this person here. No one else can see your notes.
+ </text>
     <text_editor
      name="notes_edit"
      enabled="false"
      top="28"
      left="6"
-     right="-6"
-     bottom="-26"
+     right="-5"
+     bottom="-28"
      follows="all"
      layout="topleft"
      max_length="65530"
@@ -44,22 +54,28 @@
     />
     <button
      name="notes_save_changes"
-     label="Save"
-     bottom="-1"
-     right="-108"
-     height="20"
-     width="80"
-     enabled="false"
-     follows="bottom|right"
-     layout="topleft"/>
+     image_hover_unselected="Toolbar_Middle_Over"
+ image_selected="Toolbar_Middle_Selected"
+ image_unselected="Toolbar_Middle_Off"
+         label="Save"
+         top_pad="5"
+         left="3"
+         height="23"
+         width="207"
+         enabled="false"
+         follows="bottom|left"
+         layout="topleft"/>
     <button
      name="notes_discard_changes"
-     label="Discard"
-     bottom="-1"
-     right="-4"
-     height="20"
-     width="100"
-     enabled="false"
-     follows="bottom|right"
-     layout="topleft"/>
+     image_hover_unselected="Toolbar_Middle_Over"
+ image_selected="Toolbar_Middle_Selected"
+ image_unselected="Toolbar_Middle_Off"
+         label="Discard"
+         top_delta="0"
+         left_pad="1"
+         height="23"
+         width="207"
+         enabled="false"
+         follows="bottom|left|right"
+         layout="topleft"/>
 </panel>
