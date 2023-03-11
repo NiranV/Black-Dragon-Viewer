@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="250"
+ height="266"
  layout="topleft"
  name="build options floater"
  help_topic="build_options_floater"
@@ -204,5 +204,16 @@
   <check_box.commit_callback
       function="BuildTool.toggleLightRadius"/>
  </check_box>
+ <check_box
+     control_name="HideSelectedObjects"
+     height="16"
+     initial_value="true"
+     label="Hide Selected Objects"
+     layout="topleft"
+     left_delta="0"
+     name="checkbox hide selected"
+     top_pad="0"
+     follows="left|top"
+     width="134" />
  
 </floater>
