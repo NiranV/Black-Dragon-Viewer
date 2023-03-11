@@ -2149,8 +2149,20 @@ void LLFloaterPreference::refreshMemoryControls()
 	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
 
 	S32 total_viewer_usage = total_mem.value() + bound_mem.value() + fbo;
+	if (gGLManager.mIsAMD)
+	{
+		//glGetIntegerv(WGL_GPU_RAM_AMD, &avail_vram);
+		//glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &avail_vram);
+		//BD - This is LL's official method of doing this, it should work.
+		S32 meminfo[4];
+		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
 
-	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+		avail_vram = meminfo[0] / 1024;
+	}
+	else
+	{
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
+	}
 	used_vram = max_vram - (avail_vram / 1024);
 
 	//BD - Limit our slider max further on how much is actually still available.
