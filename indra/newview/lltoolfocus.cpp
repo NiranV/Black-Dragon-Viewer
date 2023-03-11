@@ -426,7 +426,7 @@ BOOL LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
 		}
 		else
 		{
-			LL_INFOS() << "Right-clicked (Up) at: X - " << dx << " " << x << " Y - " << dy << " " << y << LL_ENDL;
+			LL_DEBUGS() << "Right-clicked (Up) at: X - " << dx << " " << x << " Y - " << dy << " " << y << LL_ENDL;
 			if (mAccumX >= SLOP_RANGE_RIGHT)
 			{
 				mOutsideSlopRightX = TRUE;
