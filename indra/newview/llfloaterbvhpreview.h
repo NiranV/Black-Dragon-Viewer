@@ -130,6 +130,11 @@ protected:
 	LLAnimPauseRequest	mPauseRequest;
 
 	std::map<std::string, LLUUID>	mIDList;
+
+	//BD - Anim Upload
+	std::string		mFilenameAndPath;
+	std::string		mFilename;
+	bool			mIsAnimFile;
 };
 
 #endif  // LL_LLFLOATERBVHPREVIEW_H

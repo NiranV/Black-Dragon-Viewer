@@ -137,17 +137,20 @@ private:
 	/*virtual*/	void onClose(bool app_quitting);
 
 	//BD - Posing
-	void onClickPoseSave();
+	bool onClickPoseSave(const LLSD& param);
 	void onPoseStart();
 	void onPoseDelete();
 	void onPoseRefresh();
 	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onPoseControlsRefresh();
-	void onPoseSave(S32 type, F32 time, bool editing);
+	bool onPoseSave(S32 type, F32 time, bool editing);
 	void onPoseLoad();
 	void onPoseLoadSelective(const LLSD& param);
+	//void onPoseSaveSelective(const LLSD& param);
 	void onPoseMenuAction(const LLSD& param);
 	void onPoseScrollRightMouse(LLUICtrl* ctrl, S32 x, S32 y);
+	bool onPoseExport();
+	void onPoseImport();
 
 	//BD - Joints
 	void onJointRefresh();
@@ -163,13 +166,21 @@ private:
 	void onJointRotationRevert();
 	void onJointRecapture();
 	void onCollectDefaults();
+	void onJointContextMenuAction(const LLSD& param);
+	bool onJointContextMenuEnable(const LLSD& param);
+	//BD - Joints - Utilities
+	void onJointPasteRotation();
+	void onJointPastePosition();
+	void onJointPasteScale();
+	void onJointMirror();
+	void onJointSymmetrize();
+	void onJointCopyTransforms();
 
 	//BD - Animating
 	void onAnimAdd(const LLSD& param);
 	void onAnimListWrite();
 	void onAnimMove(const LLSD& param);
 	void onAnimDelete();
-	void onAnimSave();
 	void onAnimSet();
 	void onAnimPlay();
 	void onAnimStop();
@@ -177,6 +188,9 @@ private:
 
 	//BD - Misc
 	void onUpdateLayout();
+	void onModeChange();
+	void onCreationControlsRefresh();
+	bool onSaveMenuEnable(const LLSD& param);
 
 	//BD - Mirror Bone
 	void toggleMirrorMode(LLUICtrl* ctrl) { mMirrorMode = ctrl->getValue().asBoolean(); }
@@ -199,6 +213,7 @@ private:
 	LLScrollListCtrl*							mPoseScroll;
 	LLTabContainer*								mJointTabs;
 	LLHandle<LLToggleableMenu>					mPosesMenuHandle;
+	LLHandle<LLToggleableMenu>					mSaveMenuHandle;
 
 	std::array<LLUICtrl*, 3>					mRotationSliders;
 	std::array<LLSliderCtrl*, 3>				mPositionSliders;
@@ -226,6 +241,9 @@ private:
 
 	LLButton*									mStartPosingBtn;
 	LLMenuButton*								mLoadPosesBtn;
+	LLButton*									mSavePosesBtn;
+
+	LLSD										mClipboard;
 
 	//BD - Experimental
 	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);

@@ -417,11 +417,11 @@ const void upload_single_file(const std::vector<std::string>& filenames, LLFileP
 		{
 			std::string filename_lc(filename);
 			LLStringUtil::toLower(filename_lc);
-			if (filename_lc.rfind(".anim") != std::string::npos)
+			/*if (filename_lc.rfind(".anim") != std::string::npos)
 			{
 				LLFloaterReg::showInstance("upload_anim_anim", LLSD(filename));
 			}
-			else
+			else*/
 			{
 				LLFloaterReg::showInstance("upload_anim_bvh", LLSD(filename));
 			}

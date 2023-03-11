@@ -2112,44 +2112,47 @@ U32	LLKeyframeMotion::getFileSize()
 //-----------------------------------------------------------------------------
 // dumpToFile()
 //-----------------------------------------------------------------------------
+//BD - Anim Exporter
 bool LLKeyframeMotion::dumpToFile(const std::string& name)
 {
 	bool succ = false;
     if (isLoaded())
     {
-        std::string outfile_base;
+        std::string filename;
         if (!name.empty())
         {
-            outfile_base = name;
+			filename = name;
         }
         else if (!getName().empty())
         {
-            outfile_base = getName();
+			filename = getName();
         }
         else
         {
             const LLUUID& id = getID();
-            outfile_base = id.asString();
+			filename = id.asString();
         }
 
-		if (gDirUtilp->getExtension(outfile_base).empty())
+		if (gDirUtilp->getExtension(filename).empty())
 		{
-			outfile_base += ".anim";
+			filename += ".anim";
 		}
-		std::string outfilename;
-		if (gDirUtilp->getDirName(outfile_base).empty())
+
+		//BD - Create the folder if its not there.
+		std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "animations");
+		if (!gDirUtilp->fileExists(pathname))
 		{
-			outfilename = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,outfile_base);
+			LL_WARNS("Posing") << "Couldn't find folder: " << pathname << " - creating one." << LL_ENDL;
+			LLFile::mkdir(pathname);
 		}
-		else
-		{
-			outfilename = outfile_base;
-		}
-        if (LLFile::isfile(outfilename))
+
+		std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_ANIMATIONS, filename);
+		//BD - Allow overwriting files.
+        /*if (LLFile::isfile(full_path))
         {
-			LL_WARNS() << outfilename << " already exists, write failed" << LL_ENDL;
+			LL_WARNS() << full_path << " already exists, write failed" << LL_ENDL;
             return false;
-        }
+        }*/
 
         S32 file_size = getFileSize();
         U8* buffer = new U8[file_size];
@@ -2159,7 +2162,7 @@ bool LLKeyframeMotion::dumpToFile(const std::string& name)
         if (serialize(dp))
         {
             LLAPRFile outfile;
-            outfile.open(outfilename, LL_APR_WPB);
+            outfile.open(full_path, LL_APR_WPB);
             if (outfile.getFileHandle())
             {
                 S32 wrote_bytes = outfile.write(buffer, file_size);

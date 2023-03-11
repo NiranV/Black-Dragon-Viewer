@@ -12250,6 +12250,28 @@ This option turns off the fullbright flag in objects to force the Viewer to trea
    </notification>
 
 <notification
+   icon="notify.tga"
+   name="PoserExportXMLSuccess"
+   type="notify">
+The pose has been exported successfully as XML file.
+
+The pose can be loaded from the expanded pose list.
+
+The file can be found in:
+&lt;b&gt;C:\Users\USERNAME\AppData\Roaming\BlackDragon\user_settings\poses&lt;/b&gt;
+  </notification>
+
+<notification
+   icon="notify.tga"
+   name="PoserExportANIMSuccess"
+   type="notify">
+The pose has been exported successfully as ANIM file.
+
+The file can be found in:
+&lt;b&gt;C:\Users\USERNAME\AppData\Roaming\BlackDragon\user_settings\animations&lt;/b&gt;
+  </notification>
+
+<notification
    icon="alertmodal.tga"
    name="SaveProfileChanges"
    type="alertmodal">

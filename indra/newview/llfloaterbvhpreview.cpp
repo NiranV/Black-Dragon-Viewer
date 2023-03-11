@@ -65,6 +65,9 @@
 #include "lluictrlfactory.h"
 #include "lltrans.h"
 
+//BD - Anim Upload
+#include "llvoavatarself.h"
+
 const S32 PREVIEW_BORDER_WIDTH = 2;
 const S32 PREVIEW_RESIZE_HANDLE_SIZE = S32(RESIZE_HANDLE_WIDTH * OO_SQRT2) + PREVIEW_BORDER_WIDTH;
 const S32 PREVIEW_HPAD = PREVIEW_RESIZE_HANDLE_SIZE;
@@ -149,6 +152,11 @@ LLFloaterBvhPreview::LLFloaterBvhPreview(const std::string& filename) :
 	mIDList["Surprise"] = ANIM_AGENT_EXPRESS_SURPRISE;
 	mIDList["Wink"] = ANIM_AGENT_EXPRESS_WINK;
 	mIDList["Worry"] = ANIM_AGENT_EXPRESS_WORRY;
+
+	mFilenameAndPath = filename;
+	mFilename = gDirUtilp->getBaseFileName(mFilenameAndPath, false);
+
+	mIsAnimFile = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -270,39 +278,156 @@ BOOL LLFloaterBvhPreview::postBuild()
 			infile.close() ;
 			delete[] file_buffer;
 		}
-	}
 
-	if (loaderp && loaderp->isInitialized() && loaderp->getDuration() <= MAX_ANIM_DURATION)
+		if (loaderp && loaderp->isInitialized() && loaderp->getDuration() <= MAX_ANIM_DURATION)
+		{
+			// generate unique id for this motion
+			mTransactionID.generate();
+			mMotionID = mTransactionID.makeAssetID(gAgent.getSecureSessionID());
+
+			// motion will be returned, but it will be in a load-pending state, as this is a new motion
+			// this motion will not request an asset transfer until next update, so we have a chance to 
+			// load the keyframe data locally
+			motionp = (LLKeyframeMotion*)mAnimPreview->getDummyAvatar()->createMotion(mMotionID);
+
+			// create data buffer for keyframe initialization
+			S32 buffer_size = loaderp->getOutputSize();
+			U8* buffer = new U8[buffer_size];
+
+			LLDataPackerBinaryBuffer dp(buffer, buffer_size);
+
+			// pass animation data through memory buffer
+			LL_INFOS("BVH") << "Serializing loaderp" << LL_ENDL;
+			loaderp->serialize(dp);
+			dp.reset();
+			LL_INFOS("BVH") << "Deserializing motionp" << LL_ENDL;
+			BOOL success = motionp && motionp->deserialize(dp, mMotionID, false);
+			LL_INFOS("BVH") << "Done" << LL_ENDL;
+
+			delete[]buffer;
+
+			if (success)
+			{
+				setAnimCallbacks();
+
+				const LLBBoxLocal &pelvis_bbox = motionp->getPelvisBBox();
+
+				LLVector3 temp = pelvis_bbox.getCenter();
+				// only consider XY?
+				//temp.mV[VZ] = 0.f;
+				F32 pelvis_offset = temp.magVec();
+
+				temp = pelvis_bbox.getExtent();
+				//temp.mV[VZ] = 0.f;
+				F32 pelvis_max_displacement = pelvis_offset + (temp.magVec() * 0.5f) + 1.f;
+
+				F32 camera_zoom = LLViewerCamera::getInstance()->getDefaultFOV() / (2.f * atan(pelvis_max_displacement / PREVIEW_CAMERA_DISTANCE));
+
+				mAnimPreview->setZoom(camera_zoom);
+
+				motionp->setName(getChild<LLUICtrl>("name_form")->getValue().asString());
+				mAnimPreview->getDummyAvatar()->startMotion(mMotionID);
+
+				getChild<LLSlider>("playback_slider")->setMinValue(0.0);
+				getChild<LLSlider>("playback_slider")->setMaxValue(1.0);
+
+				getChild<LLUICtrl>("loop_check")->setValue(LLSD(motionp->getLoop()));
+				getChild<LLUICtrl>("loop_in_point")->setValue(LLSD(motionp->getLoopIn() / motionp->getDuration() * 100.f));
+				getChild<LLUICtrl>("loop_out_point")->setValue(LLSD(motionp->getLoopOut() / motionp->getDuration() * 100.f));
+				getChild<LLUICtrl>("priority")->setValue(LLSD((F32)motionp->getPriority()));
+				getChild<LLUICtrl>("hand_pose_combo")->setValue(LLHandMotion::getHandPoseName(motionp->getHandPose()));
+				getChild<LLUICtrl>("ease_in_time")->setValue(LLSD(motionp->getEaseInDuration()));
+				getChild<LLUICtrl>("ease_out_time")->setValue(LLSD(motionp->getEaseOutDuration()));
+				setEnabled(TRUE);
+				std::string seconds_string;
+				seconds_string = llformat(" - %.2f seconds", motionp->getDuration());
+
+				setTitle(mFilename + std::string(seconds_string));
+			}
+			else
+			{
+				mAnimPreview = NULL;
+				mMotionID.setNull();
+				getChild<LLUICtrl>("bad_animation_text")->setValue(getString("failed_to_initialize"));
+			}
+		}
+		else
+		{
+			if (loaderp)
+			{
+				if (loaderp->getDuration() > MAX_ANIM_DURATION)
+				{
+					LLUIString out_str = getString("anim_too_long");
+					out_str.setArg("[LENGTH]", llformat("%.1f", loaderp->getDuration()));
+					out_str.setArg("[MAX_LENGTH]", llformat("%.1f", MAX_ANIM_DURATION));
+					getChild<LLUICtrl>("bad_animation_text")->setValue(out_str.getString());
+				}
+				else
+				{
+					LLUIString out_str = getString("failed_file_read");
+					out_str.setArg("[STATUS]", getString(STATUS[loaderp->getStatus()]));
+					getChild<LLUICtrl>("bad_animation_text")->setValue(out_str.getString());
+				}
+			}
+
+			//setEnabled(FALSE);
+			mMotionID.setNull();
+			mAnimPreview = NULL;
+		}
+	}
+	//BD - Anim Upload
+	else if (exten == "anim")
 	{
-		// generate unique id for this motion
+		S32 file_size;
+		BOOL success = FALSE;
+		LLAPRFile infile;
+		mIsAnimFile = true;
+
+		//BD - To make this work we'll first need a unique UUID for this animation.
 		mTransactionID.generate();
 		mMotionID = mTransactionID.makeAssetID(gAgent.getSecureSessionID());
-
-		// motion will be returned, but it will be in a load-pending state, as this is a new motion
-		// this motion will not request an asset transfer until next update, so we have a chance to 
-		// load the keyframe data locally
 		motionp = (LLKeyframeMotion*)mAnimPreview->getDummyAvatar()->createMotion(mMotionID);
 
-		// create data buffer for keyframe initialization
-		S32 buffer_size = loaderp->getOutputSize();
-		U8* buffer = new U8[buffer_size];
+		//BD - Find and open the file, we'll need to write it temporarily into the VFS pool.
+		infile.open(mFilenameAndPath, LL_APR_RB, NULL, &file_size);
+		if (infile.getFileHandle())
+		{
+			U8 *anim_data;
+			S32 anim_file_size;
 
-		LLDataPackerBinaryBuffer dp(buffer, buffer_size);
+			LLFileSystem file(mMotionID, LLAssetType::AT_ANIMATION, LLFileSystem::WRITE);
+			const S32 buf_size = 65536;
+			U8 copy_buf[buf_size];
+			while ((file_size = infile.read(copy_buf, buf_size)))
+			{
+				file.write(copy_buf, file_size);
+			}
 
-		// pass animation data through memory buffer
-		LL_INFOS("BVH") << "Serializing loaderp" << LL_ENDL;
-		loaderp->serialize(dp);
-		dp.reset();
-		LL_INFOS("BVH") << "Deserializing motionp" << LL_ENDL;
-		BOOL success = motionp && motionp->deserialize(dp, mMotionID, false);
-		LL_INFOS("BVH") << "Done" << LL_ENDL;
+			//BD - Now that we wrote the temporary file, find it and use it to set the size
+			//     and buffer into which we will unpack the .anim file into.
+			LLFileSystem* anim_file = new LLFileSystem(mMotionID, LLAssetType::AT_ANIMATION);
+			anim_file_size = anim_file->getSize();
+			anim_data = new U8[anim_file_size];
+			anim_file->read(anim_data, anim_file_size);
 
-		delete []buffer;
+			//BD - Cleanup everything we don't need anymore.
+			delete anim_file;
+			anim_file = NULL;
 
+			//BD - Use the datapacker now to actually deserialize and unpack the animation
+			//     into our temporary motion so we can use it after we added it into the list.
+			LLDataPackerBinaryBuffer dp(anim_data, anim_file_size);
+			success = motionp && motionp->deserialize(dp, mMotionID);
+
+			//BD - Cleanup the rest.
+			delete[]anim_data;
+		}
+
+		//BD - Now write an entry with all given information into our list so we can use it.
 		if (success)
 		{
-			setAnimCallbacks() ;
-			
+			setAnimCallbacks();
+
 			const LLBBoxLocal &pelvis_bbox = motionp->getPelvisBBox();
 
 			LLVector3 temp = pelvis_bbox.getCenter();
@@ -313,14 +438,14 @@ BOOL LLFloaterBvhPreview::postBuild()
 			temp = pelvis_bbox.getExtent();
 			//temp.mV[VZ] = 0.f;
 			F32 pelvis_max_displacement = pelvis_offset + (temp.magVec() * 0.5f) + 1.f;
-			
+
 			F32 camera_zoom = LLViewerCamera::getInstance()->getDefaultFOV() / (2.f * atan(pelvis_max_displacement / PREVIEW_CAMERA_DISTANCE));
-		
+
 			mAnimPreview->setZoom(camera_zoom);
 
 			motionp->setName(getChild<LLUICtrl>("name_form")->getValue().asString());
 			mAnimPreview->getDummyAvatar()->startMotion(mMotionID);
-			
+
 			getChild<LLSlider>("playback_slider")->setMinValue(0.0);
 			getChild<LLSlider>("playback_slider")->setMaxValue(1.0);
 
@@ -343,29 +468,6 @@ BOOL LLFloaterBvhPreview::postBuild()
 			mMotionID.setNull();
 			getChild<LLUICtrl>("bad_animation_text")->setValue(getString("failed_to_initialize"));
 		}
-	}
-	else
-	{
-		if ( loaderp )
-		{
-			if (loaderp->getDuration() > MAX_ANIM_DURATION)
-			{
-				LLUIString out_str = getString("anim_too_long");
-				out_str.setArg("[LENGTH]", llformat("%.1f", loaderp->getDuration()));
-				out_str.setArg("[MAX_LENGTH]", llformat("%.1f", MAX_ANIM_DURATION));
-				getChild<LLUICtrl>("bad_animation_text")->setValue(out_str.getString());
-			}
-			else
-			{
-				LLUIString out_str = getString("failed_file_read");
-				out_str.setArg("[STATUS]", getString(STATUS[loaderp->getStatus()])); 
-				getChild<LLUICtrl>("bad_animation_text")->setValue(out_str.getString());
-			}
-		}
-
-		//setEnabled(FALSE);
-		mMotionID.setNull();
-		mAnimPreview = NULL;
 	}
 
 	refresh();
@@ -1007,16 +1109,36 @@ void LLFloaterBvhPreview::onBtnOK(void* userdata)
 				std::string desc = floaterp->getChild<LLUICtrl>("description_form")->getValue().asString();
 				S32 expected_upload_cost = LLAgentBenefitsMgr::current().getAnimationUploadCost();
 
-                LLResourceUploadInfo::ptr_t assetUploadInfo(new LLResourceUploadInfo(
-                    floaterp->mTransactionID, LLAssetType::AT_ANIMATION,
-                    name, desc, 0,
-                    LLFolderType::FT_NONE, LLInventoryType::IT_ANIMATION,
-                    LLFloaterPerms::getNextOwnerPerms("Uploads"),
-					LLFloaterPerms::getGroupPerms("Uploads"),
-					LLFloaterPerms::getEveryonePerms("Uploads"),
-                    expected_upload_cost));
+				//BD - BVH Upload
+				if (!floaterp->mIsAnimFile)
+				{
+					LLResourceUploadInfo::ptr_t assetUploadInfo(new LLResourceUploadInfo(
+						floaterp->mTransactionID, LLAssetType::AT_ANIMATION,
+						name, desc, 0,
+						LLFolderType::FT_NONE, LLInventoryType::IT_ANIMATION,
+						LLFloaterPerms::getNextOwnerPerms("Uploads"),
+						LLFloaterPerms::getGroupPerms("Uploads"),
+						LLFloaterPerms::getEveryonePerms("Uploads"),
+						expected_upload_cost));
 
-                upload_new_resource(assetUploadInfo);
+					upload_new_resource(assetUploadInfo);
+				}
+				//BD - Anim Upload
+				else
+				{
+					void *nruserdata = NULL;
+					LLAssetStorage::LLStoreAssetCallback callback;
+					LLResourceUploadInfo::ptr_t uploadInfo(std::make_shared<LLNewFileResourceUploadInfo>(
+						floaterp->mFilenameAndPath,
+						name, desc, 0,
+						LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
+						LLFloaterPerms::getNextOwnerPerms("Uploads"),
+						LLFloaterPerms::getGroupPerms("Uploads"),
+						LLFloaterPerms::getEveryonePerms("Uploads"),
+						expected_upload_cost));
+
+					upload_new_resource(uploadInfo, callback, nruserdata);
+				}
 			}
 			else
 			{

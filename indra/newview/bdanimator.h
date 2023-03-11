@@ -74,6 +74,8 @@ public:
 
 	bool			getIsPlaying() { return mPlaying; }
 	bool			mPlaying;
+	//BD - Exporter
+	bool			mLiveMode;
 };
 
 extern BDAnimator gDragonAnimator;

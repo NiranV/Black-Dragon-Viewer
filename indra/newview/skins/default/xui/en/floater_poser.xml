@@ -4,7 +4,7 @@ positioning="centered"
 height="431"
 layout="topleft"
 name="floater_poser"
-title="Poser"
+title="Poser - Live Editing Mode"
 width="678">
 	<!-- Expanded Size 745 -->
 	<!-- Expanded Size 906 -->
@@ -27,6 +27,14 @@ width="678">
 	<string
 	name="spherical_time" translate="false">
 	0.001 to 1.0
+	</string>
+	<string
+	name="live_mode_str" translate="false">
+	Poser - Live Editing Mode
+	</string>
+	<string
+	name="creation_mode_str" translate="false">
+	Poser - Create A Pose Mode
 	</string>
 	<string
 	name="icon_category" translate="false">
@@ -96,7 +104,7 @@ width="678">
 		height="420"
 		auto_resize="false"
 		visible="true"
-		name="poser_layout"
+		name="poser_list_layout"
 		width="162">
 			<panel
 			follows="left|top|bottom"
@@ -120,48 +128,59 @@ width="678">
 				width="155"
 				top="20"
 				left="0"/>
-				<scroll_list
-				column_padding="0"
-				draw_heading="true"
-				height="279"
-				enable_sort="false"
-				follows="left|top|right"
+				<panel
+				follows="left|top|bottom"
+				height="319"
+				background_visible="false"
 				layout="topleft"
-				left="1"
-				tool_tip="Select the targeted avatar or animesh."
-				width="154"
-				multi_select="false"
-				name="avatar_scroll"
-				top="20">
-				<scroll_list.columns
-				label=""
-				name="icon"
-				relative_width="0.14"  />
-				<scroll_list.columns
-				label="Name"
-				name="name"
-				relative_width="0.86"  />
-				<scroll_list.columns
-				label="UUID"
-				name="uuid"
-				relative_width="0.0"  />
-				</scroll_list>
-				<button
-				height="21"
-				follows="top|left"
-				layout="topleft"
-				label="Refresh Avatars"
-				image_hover_unselected="Toolbar_Middle_Over"
-				image_selected="Toolbar_Middle_Selected"
-				image_unselected="Toolbar_Middle_Off"
-				name="refresh"
-				width="151"
-				top_pad="-1"
-				left="2">
-				<button.commit_callback
-				function="Poser.RefreshAvatars"/>
-				</button>
-				
+				visible="false"
+				mouse_opaque="false"
+				left="0"
+				name="live_panel"
+				top="0"
+				width="153">
+					<scroll_list
+					column_padding="0"
+					draw_heading="true"
+					height="279"
+					enable_sort="false"
+					follows="left|top|right"
+					layout="topleft"
+					left="1"
+					tool_tip="Select the targeted avatar or animesh."
+					width="153"
+					multi_select="false"
+					name="avatar_scroll"
+					top="20">
+					<scroll_list.columns
+					label=""
+					name="icon"
+					relative_width="0.14"  />
+					<scroll_list.columns
+					label="Name"
+					name="name"
+					relative_width="0.86"  />
+					<scroll_list.columns
+					label="UUID"
+					name="uuid"
+					relative_width="0.0"  />
+					</scroll_list>
+					<button
+					height="21"
+					follows="top|left"
+					layout="topleft"
+					label="Refresh Avatars"
+					image_hover_unselected="Toolbar_Middle_Over"
+					image_selected="Toolbar_Middle_Selected"
+					image_unselected="Toolbar_Middle_Off"
+					name="refresh"
+					width="151"
+					top_pad="-1"
+					left="2">
+					<button.commit_callback
+					function="Poser.RefreshAvatars"/>
+					</button>
+				</panel>
 				<icon
 				follows="top|left"
 				height="100"
@@ -233,6 +252,227 @@ width="678">
 				<button.commit_callback
 				function="Joint.Recapture"/>
 				</button>
+				
+				<button
+				height="20"
+				follows="top|left"
+				is_toggle="true"
+				layout="topleft"
+				label="Switch to Live Edit Mode"
+				label_selected="Switch to Creation Mode"
+				image_hover_unselected="Transparent"
+				image_selected="Transparent"
+				image_unselected="Transparent"
+				name="toggle_mode"
+				width="153"
+				top="1"
+				left="1">
+				<button.commit_callback
+				function="Poser.ToggleMode"/>
+				</button>
+				<panel
+				follows="left|top|bottom"
+				height="319"
+				background_visible="false"
+				layout="topleft"
+				visible="true"
+				mouse_opaque="false"
+				left="0"
+				name="create_panel"
+				top_pad="5"
+				width="153">
+					<text
+					follows="top|left|right"
+					height="10"
+					layout="topleft"
+					left="5"
+					name="linden_intro"
+					top_pad="1"
+					width="435"
+					wrap="true">
+					Pose Name
+					</text>
+					<line_editor
+					commit_on_focus_lost="false"
+					follows="left|top"
+					height="20"
+					label=""
+					left="2"
+					top_pad="7"
+					name="export_name"
+					width="151"/>
+					<text
+					follows="top|left|right"
+					height="10"
+					layout="topleft"
+					left="5"
+					name="linden_intro"
+					top_pad="5"
+					width="435"
+					wrap="true">
+					Ease In / Ease Out Time
+					</text>
+					<line_editor
+					commit_on_focus_lost="false"
+					follows="left|top"
+					height="20"
+					label=""
+					value="1.0"
+					left="2"
+					top_pad="7"
+					name="ease_in"
+					width="75"/>
+					<line_editor
+					commit_on_focus_lost="false"
+					follows="left|top"
+					height="20"
+					label=""
+					value="1.0"
+					left_pad="1"
+					top_delta="0"
+					name="ease_out"
+					width="75"/>
+					<text
+					follows="top|left|right"
+					height="10"
+					layout="topleft"
+					left="5"
+					name="linden_intro"
+					top_pad="5"
+					width="435"
+					wrap="true">
+					Base Priority
+					</text>
+					<combo_box
+					follows="left|top"
+					height="21"
+					layout="topleft"
+					left="2"
+					top_pad="7"
+					max_chars="135"
+					name="base_priority"
+					width="151">
+					<combo_box.combo_button
+					image_unselected="ToolbarDropDown_Off"
+					image_selected="ToolbarDropDown_Press"
+					image_disabled="ToolbarDropDown_Off" />
+					<combo_box.drop_down_button
+					image_unselected="ToolbarDropDown_Off"
+					image_selected="ToolbarDropDown_Press"
+					image_pressed="ToolbarDropDown_Press" 
+					image_pressed_selected="ToolbarDropDown_Press"
+					image_disabled="ToolbarDropDown_Off" />
+					<combo_box.item
+					label="Low Priority (0)"
+					name="0"
+					value="0" />
+					<combo_box.item
+					label="Medium Priority (1)"
+					name="1"
+					value="1" />
+					<combo_box.item
+					label="High Priority (2)"
+					name="2"
+					value="2" />
+					<combo_box.item
+					label="Higher Priority (3)"
+					name="3"
+					value="3" />
+					<combo_box.item
+					label="Highest Priority (4)"
+					name="4"
+					value="4" />
+					<combo_box.item
+					label="Additive Priority (7)"
+					name="7"
+					value="7" />
+					</combo_box>
+					<text
+					follows="top|left|right"
+					height="10"
+					layout="topleft"
+					left="5"
+					name="linden_intro"
+					top_pad="5"
+					width="435"
+					wrap="true">
+					Hand Pose
+					</text>
+					<combo_box
+					follows="left|top"
+					height="21"
+					layout="topleft"
+					left="2"
+					top_pad="7"
+					max_chars="135"
+					name="hand_poses"
+					width="151">
+					<combo_box.combo_button
+					image_unselected="ToolbarDropDown_Off"
+					image_selected="ToolbarDropDown_Press"
+					image_disabled="ToolbarDropDown_Off" />
+					<combo_box.drop_down_button
+					image_unselected="ToolbarDropDown_Off"
+					image_selected="ToolbarDropDown_Press"
+					image_pressed="ToolbarDropDown_Press" 
+					image_pressed_selected="ToolbarDropDown_Press"
+					image_disabled="ToolbarDropDown_Off" />
+					<combo_box.item
+					label="Spread"
+					name="0"
+					value="0" />
+					<combo_box.item
+					label="Relaxed"
+					name="1"
+					value="1" />
+					<combo_box.item
+					label="Point"
+					name="2"
+					value="2" />
+					<combo_box.item
+					label="Fist"
+					name="3"
+					value="3" />
+					</combo_box>
+					
+					<button
+					height="21"
+					follows="bottom|left"
+					layout="topleft"
+					label="Import"
+					image_overlay="Icon_Undock_Foreground"
+					image_overlay_alignment="right"
+					image_hover_unselected="Toolbar_Middle_Over"
+					image_selected="Toolbar_Middle_Selected"
+					image_unselected="Toolbar_Middle_Off"
+					tool_tip="Import pose from disk."
+					name="import_poses"
+					width="75"
+					top="267"
+					left="2">
+						<button.commit_callback
+						function="Poser.Import"/>
+					</button>
+					<button
+					height="21"
+					follows="bottom|left"
+					layout="topleft"
+					label="Export"
+					image_overlay="Icon_Dock_Foreground"
+					image_overlay_alignment="right"
+					image_hover_unselected="Toolbar_Middle_Over"
+					image_selected="Toolbar_Middle_Selected"
+					image_unselected="Toolbar_Middle_Off"
+					tool_tip="Export the current pose."
+					name="export_poses"
+					width="75"
+					top="267"
+					left_pad="1">
+						<button.commit_callback
+						function="Pose.Save"
+						parameter="anim"/>
+					</button>
+				</panel>
 			</panel>
 		</layout_panel>
 		<layout_panel
@@ -265,354 +505,408 @@ width="678">
 				width="480"
 				top="20"
 				left="2"/>
-				<tab_container
-				follows="all"
-				halign="center"
-				height="299"
+				<layout_stack
+				follows="top|left|right"
+				height="319"
 				layout="topleft"
 				left="0"
-				enabled="false"
-				name="joints_tabs"
-				tab_height="20"
-				tab_group="1"
-				tab_position="top"
+				border_size="-4"
+				close_time_constant="0.0"
+				open_time_constant="0.0"
+				mouse_opaque="false"
+				name="poser_layout_stack"
+				orientation="vertical"
 				top="0"
-				width="483">
-					<panel
+				width="666">
+					<layout_panel
 					follows="all"
-					background_visible="false"
-					height="299"
 					layout="topleft"
-					left="0"
-					title="Skeleton"
-					name="joints_panel"
-					top="0"
+					height="302"
+					auto_resize="true"
+					name="poser_layout"
 					width="481">
-						<scroll_list
-						column_padding="2"
-						draw_heading="true"
-						height="279"
-						follows="left|top|right"
-						enable_sort="false"
+						<panel
+						follows="left|top|bottom"
+						height="302"
+						background_visible="false"
 						layout="topleft"
-						left="2"
-						width="479"
-						multi_select="true"
-						name="joints_scroll"
-						top="0">
-						<scroll_list.columns
-						label=""
-						name="icon"
-						relative_width="0.04"  />
-						<scroll_list.columns
-						label="Bone Name"
-						name="joint"
-						relative_width="0.33"  />
-						<scroll_list.columns
-						label="Rot X"
-						name="x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Rot Y"
-						name="y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Rot Z"
-						name="z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos X"
-						name="pos_x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Y"
-						name="pos_y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Z"
-						name="pos_z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size X"
-						name="scale_x"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Size Y"
-						name="scale_y"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Size Z"
-						name="scale_z"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="#"
-						name="number"
-						relative_width="0.00"  />
-						</scroll_list>
-					</panel>
-					<panel
-					follows="all"
-					background_visible="false"
-					height="299"
+						mouse_opaque="false"
+						left="0"
+						name="title"
+						top="0"
+						width="481">
+							<tab_container
+							follows="all"
+							halign="center"
+							height="299"
+							layout="topleft"
+							left="0"
+							enabled="false"
+							name="joints_tabs"
+							tab_height="20"
+							tab_group="1"
+							tab_position="top"
+							top="0"
+							width="483">
+								<panel
+								follows="all"
+								background_visible="false"
+								height="299"
+								layout="topleft"
+								left="0"
+								title="Skeleton"
+								name="joints_panel"
+								top="0"
+								width="481">
+									<scroll_list
+									column_padding="2"
+									draw_heading="true"
+									height="300"
+									follows="all"
+									enable_sort="false"
+									layout="topleft"
+									left="2"
+									width="479"
+									multi_select="true"
+									name="joints_scroll"
+									top="0">
+									<scroll_list.columns
+									label=""
+									name="icon"
+									relative_width="0.04"  />
+									<scroll_list.columns
+									label="Bone Name"
+									name="joint"
+									relative_width="0.33"  />
+									<scroll_list.columns
+									label="Rot X"
+									name="x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Rot Y"
+									name="y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Rot Z"
+									name="z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos X"
+									name="pos_x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Y"
+									name="pos_y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Z"
+									name="pos_z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size X"
+									name="scale_x"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Size Y"
+									name="scale_y"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Size Z"
+									name="scale_z"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="#"
+									name="number"
+									relative_width="0.00"  />
+									</scroll_list>
+								</panel>
+								<panel
+								follows="all"
+								background_visible="false"
+								height="299"
+								layout="topleft"
+								left="0"
+								title="Collision Volumes"
+								name="cv_panel"
+								top="0"
+								width="481">
+									<scroll_list
+									column_padding="2"
+									draw_heading="true"
+									height="300"
+									follows="left|top|right"
+									layout="topleft"
+									enable_sort="false"
+									left="2"
+									width="479"
+									multi_select="true"
+									name="cv_scroll"
+									top="0">
+									<scroll_list.columns
+									label=""
+									name="icon"
+									relative_width="0.04"  />
+									<scroll_list.columns
+									label="Collision Volume Name"
+									name="joint"
+									relative_width="0.33"  />
+									<scroll_list.columns
+									label="Rot X"
+									name="x"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Rot Y"
+									name="y"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Rot Z"
+									name="z"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Pos X"
+									name="pos_x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Y"
+									name="pos_y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Z"
+									name="pos_z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size X"
+									name="scale_x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size Y"
+									name="scale_y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size Z"
+									name="scale_z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="#"
+									name="number"
+									relative_width="0.00"  />
+									</scroll_list>
+								</panel>
+								<panel
+								follows="all"
+								background_visible="false"
+								height="299"
+								layout="topleft"
+								left="0"
+								title="Attachment Bones"
+								name="attach_panel"
+								top="0"
+								width="481">
+									<scroll_list
+									column_padding="2"
+									draw_heading="true"
+									height="300"
+									follows="left|top|right"
+									layout="topleft"
+									enable_sort="false"
+									left="2"
+									width="479"
+									multi_select="true"
+									name="attach_scroll"
+									top="0">
+									<scroll_list.columns
+									label=""
+									name="icon"
+									relative_width="0.04"  />
+									<scroll_list.columns
+									label="Attachment Bone Name"
+									name="joint"
+									relative_width="0.33"  />
+									<scroll_list.columns
+									label="Rot X"
+									name="x"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Rot Y"
+									name="y"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Rot Z"
+									name="z"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Pos X"
+									name="pos_x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Y"
+									name="pos_y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Pos Z"
+									name="pos_z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size X"
+									name="scale_x"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size Y"
+									name="scale_y"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="Size Z"
+									name="scale_z"
+									relative_width="0.10"  />
+									<scroll_list.columns
+									label="#"
+									name="number"
+									relative_width="0.00"  />
+									</scroll_list>
+								</panel>
+							</tab_container>
+						</panel>
+					</layout_panel>
+					<layout_panel
+					follows="top|left|right"
 					layout="topleft"
-					left="0"
-					title="Collision Volumes"
-					name="cv_panel"
-					top="0"
+					height="21"
+					auto_resize="true"
+					visible="true"
+					name="poser_options_layout"
 					width="481">
-						<scroll_list
-						column_padding="2"
-						draw_heading="true"
-						height="279"
-						follows="left|top|right"
+						<panel
+						follows="left|top"
+						height="21"
+						background_visible="false"
 						layout="topleft"
-						enable_sort="false"
-						left="2"
-						width="478"
-						multi_select="true"
-						name="cv_scroll"
-						top="0">
-						<scroll_list.columns
-						label=""
-						name="icon"
-						relative_width="0.04"  />
-						<scroll_list.columns
-						label="Collision Volume Name"
-						name="joint"
-						relative_width="0.33"  />
-						<scroll_list.columns
-						label="Rot X"
-						name="x"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Rot Y"
-						name="y"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Rot Z"
-						name="z"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Pos X"
-						name="pos_x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Y"
-						name="pos_y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Z"
-						name="pos_z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size X"
-						name="scale_x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size Y"
-						name="scale_y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size Z"
-						name="scale_z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="#"
-						name="number"
-						relative_width="0.00"  />
-						</scroll_list>
-					</panel>
-					<panel
-					follows="all"
-					background_visible="false"
-					height="299"
-					layout="topleft"
-					left="0"
-					title="Attachment Bones"
-					name="attach_panel"
-					top="0"
-					width="481">
-						<scroll_list
-						column_padding="2"
-						draw_heading="true"
-						height="279"
-						follows="left|top|right"
-						layout="topleft"
-						enable_sort="false"
-						left="2"
-						width="478"
-						multi_select="true"
-						name="attach_scroll"
-						top="0">
-						<scroll_list.columns
-						label=""
-						name="icon"
-						relative_width="0.04"  />
-						<scroll_list.columns
-						label="Attachment Bone Name"
-						name="joint"
-						relative_width="0.33"  />
-						<scroll_list.columns
-						label="Rot X"
-						name="x"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Rot Y"
-						name="y"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Rot Z"
-						name="z"
-						relative_width="0.0"  />
-						<scroll_list.columns
-						label="Pos X"
-						name="pos_x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Y"
-						name="pos_y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Pos Z"
-						name="pos_z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size X"
-						name="scale_x"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size Y"
-						name="scale_y"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="Size Z"
-						name="scale_z"
-						relative_width="0.10"  />
-						<scroll_list.columns
-						label="#"
-						name="number"
-						relative_width="0.00"  />
-						</scroll_list>
-					</panel>
-				</tab_container>
-				<button
-				height="21"
-				follows="top|left"
-				is_toggle="true"
-				layout="topleft"
-				label="Start Posing"
-				label_selected="Stop Posing"
-				image_hover_unselected="Toolbar_Middle_Over"
-				image_selected="Toolbar_Middle_Selected"
-				image_unselected="Toolbar_Middle_Off"
-				button_flash_enable="true"
-				flash_color="0.7 0.7 1 1"
-				button_flash_count="64"
-				button_flash_rate="0.5"
-				name="activate"
-				width="100"
-				top_pad="-1"
-				left="4">
-				<button.commit_callback
-				function="Pose.Start"/>
-				</button>
-				<line_editor
-				commit_on_focus_lost="false"
-				follows="left|top"
-				height="20"
-				label="Enter Pose Name"
-				left_pad="1"
-				enabled="false"
-				top_delta="0"
-				name="pose_name"
-				width="157"/>
-				<line_editor
-				commit_on_focus_lost="false"
-				follows="left|top"
-				height="20"
-				enabled="false"
-				label="0.001 - 1.0"
-				left_pad="1"
-				top_delta="0"
-				name="interpolation_time"
-				width="78"/>
-				<combo_box
-				follows="left|top"
-				height="21"
-				enabled="false"
-				layout="topleft"
-				left_pad="1"
-				top_delta="0"
-				max_chars="135"
-				name="interpolation_type"
-				width="86">
-				<combo_box.combo_button
-				image_unselected="ToolbarDropDown_Off"
-				image_selected="ToolbarDropDown_Press"
-				image_disabled="ToolbarDropDown_Off" />
-				<combo_box.drop_down_button
-				image_unselected="ToolbarDropDown_Off"
-				image_selected="ToolbarDropDown_Press"
-				image_pressed="ToolbarDropDown_Press" 
-				image_pressed_selected="ToolbarDropDown_Press"
-				image_disabled="ToolbarDropDown_Off" />
-				<combo_box.item
-				enabled="true"
-				label="None"
-				name="0"
-				value="0" />
-				<combo_box.item
-				enabled="true"
-				label="Linear"
-				name="1"
-				value="1" />
-				<combo_box.item
-				enabled="true"
-				label="Spherical Linear"
-				name="2"
-				value="2" />
-				<combo_box.commit_callback
-				function="Pose.Interpolation"/>
-				</combo_box>
-				<button
-				height="21"
-				follows="top|left"
-				layout="topleft"
-				label=""
-				enabled="false"
-				image_overlay="Icon_Dock_Foreground"
-				image_overlay_alignment="right"
-				image_hover_unselected="Toolbar_Middle_Over"
-				image_selected="Toolbar_Middle_Selected"
-				image_unselected="Toolbar_Middle_Off"
-				tool_tip="Save the current pose."
-				name="save_poses"
-				width="25"
-				top_delta="0"
-				left_pad="1">
-				<button.commit_callback
-				function="Pose.Save"/>
-				</button>
-				<button
-				follows="left|top"
-				height="21"
-				is_toggle="true"
-				layout="topleft"
-				image_overlay="Hierarchy_View_On"
-				image_hover_unselected="Toolbar_Middle_Over"
-				image_selected="Toolbar_Middle_Selected"
-				image_unselected="Toolbar_Middle_Off"
-				button_flash_enable="true"
-				flash_color="0.7 0.7 1 1"
-				button_flash_count="64"
-				button_flash_rate="0.5"
-				name="extend"
-				left_pad="1"
-				top_delta="0"
-				width="25" >
-				<button.commit_callback
-				function="Pose.Layout"/>
-				</button>
+						mouse_opaque="false"
+						left="0"
+						name="title"
+						top="0"
+						width="481">
+							<button
+							height="21"
+							follows="top|left"
+							is_toggle="true"
+							layout="topleft"
+							label="Start Posing"
+							label_selected="Stop Posing"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							button_flash_enable="true"
+							flash_color="0.7 0.7 1 1"
+							button_flash_count="64"
+							button_flash_rate="0.5"
+							name="activate"
+							width="100"
+							top_pad="0"
+							left="4">
+							<button.commit_callback
+							function="Pose.Start"/>
+							</button>
+							<line_editor
+							commit_on_focus_lost="false"
+							follows="left|top"
+							height="20"
+							label="Enter Pose Name"
+							left_pad="1"
+							enabled="false"
+							top_delta="0"
+							name="pose_name"
+							width="157"/>
+							<line_editor
+							commit_on_focus_lost="false"
+							follows="left|top"
+							height="20"
+							enabled="false"
+							label="0.001 - 1.0"
+							left_pad="1"
+							top_delta="0"
+							name="interpolation_time"
+							width="78"/>
+							<combo_box
+							follows="left|top"
+							height="21"
+							enabled="false"
+							layout="topleft"
+							left_pad="1"
+							top_delta="0"
+							max_chars="135"
+							name="interpolation_type"
+							width="86">
+							<combo_box.combo_button
+							image_unselected="ToolbarDropDown_Off"
+							image_selected="ToolbarDropDown_Press"
+							image_disabled="ToolbarDropDown_Off" />
+							<combo_box.drop_down_button
+							image_unselected="ToolbarDropDown_Off"
+							image_selected="ToolbarDropDown_Press"
+							image_pressed="ToolbarDropDown_Press" 
+							image_pressed_selected="ToolbarDropDown_Press"
+							image_disabled="ToolbarDropDown_Off" />
+							<combo_box.item
+							enabled="true"
+							label="None"
+							name="0"
+							value="0" />
+							<combo_box.item
+							enabled="true"
+							label="Linear"
+							name="1"
+							value="1" />
+							<combo_box.item
+							enabled="true"
+							label="Spherical Linear"
+							name="2"
+							value="2" />
+							<combo_box.commit_callback
+							function="Pose.Interpolation"/>
+							</combo_box>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label=""
+							enabled="false"
+							image_overlay="Icon_Dock_Foreground"
+							image_overlay_alignment="right"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Save the current pose."
+							name="save_poses"
+							width="25"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Pose.Save"
+								parameter="xml"/>
+							</button>
+							<button
+							follows="left|top"
+							height="21"
+							is_toggle="true"
+							layout="topleft"
+							image_overlay="Hierarchy_View_On"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							button_flash_enable="true"
+							flash_color="0.7 0.7 1 1"
+							button_flash_count="64"
+							button_flash_rate="0.5"
+							name="extend"
+							left_pad="1"
+							top_delta="0"
+							width="25" >
+							<button.commit_callback
+							function="Pose.Layout"/>
+							</button>
+						</panel>
+					</layout_panel>
+				</layout_stack>
 				<icon
 				follows="top|left"
 				height="100"
