@@ -150,7 +150,7 @@
      parameter="copy_display_name"/>
   </menu_item_call>
   <menu_item_call
-   label="Copy Agent Name"
+   label="Copy Avatar Name"
    layout="topleft"
    name="copy_name">
     <menu_item_call.on_click
@@ -161,11 +161,19 @@
      parameter="copy_username"/>
   </menu_item_call>
   <menu_item_call
-   label="Copy Agent Id"
+   label="Copy Avatar UUID"
    layout="topleft"
    name="copy_id">
     <menu_item_call.on_click
      function="Profile.Commit"
      parameter="copy_user_id"/>
+  </menu_item_call>
+  <menu_item_call
+   label="Copy Avatar SLURL"
+   layout="topleft"
+   name="copy_id">
+    <menu_item_call.on_click
+     function="Profile.Commit"
+     parameter="copy_slurl"/>
   </menu_item_call>
 </toggleable_menu>

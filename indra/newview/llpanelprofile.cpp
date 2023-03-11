@@ -1560,6 +1560,15 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
 	{
 		onShowAgentPermissionsDialog();
 	}
+	//BD - SSFUI
+	else if (item_name == "copy_slurl")
+	{
+		// copy a SLURL for the avatar to the clipboard
+		std::string id = getAvatarId().asString();
+		std::string sltype = "agent";
+		std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
+		LLUrlAction::copyURLToClipboard(slurl);
+	}
 	else if (item_name == "copy_display_name"
 		|| item_name == "copy_username")
 	{
