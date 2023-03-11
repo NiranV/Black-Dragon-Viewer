@@ -2001,7 +2001,8 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(BOOL *hit_limit)
 // [/RLVa:KB]
 //			local_camera_offset = mCameraZoomFraction * getCameraOffsetInitial() * gSavedSettings.getF32("CameraOffsetScale");
 			// are we sitting down?
-			if (isAgentAvatarValid() && gAgentAvatarp->getParent())
+			//BD - Commented below to allow freely moving our camera when sitting on objects.
+			/*if (isAgentAvatarValid() && gAgentAvatarp->getParent())
 			{
 				LLQuaternion parent_rot = ((LLViewerObject*)gAgentAvatarp->getParent())->getRenderRotation();
 				// slam agent coordinate frame to proper parent local version
@@ -2012,7 +2013,7 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(BOOL *hit_limit)
 				
 				local_camera_offset = local_camera_offset * gAgent.getFrameAgent().getQuaternion() * parent_rot;
 			}
-			else
+			else*/
 			{
 				local_camera_offset = gAgent.getFrameAgent().rotateToAbsolute( local_camera_offset );
 			}
