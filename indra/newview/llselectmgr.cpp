@@ -6219,7 +6219,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 
 			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
 			{
-				vobj->updateRiggedVolume(true);
+				vobj->updateRiggedVolume(true, false);
 			}
 		}
 
@@ -6747,7 +6747,7 @@ void pushWireframe(LLDrawable* drawable)
 			//BD - Update the selection outline only if we chose to.
 			if (LLSelectMgr::sSelectionUpdate)
 			{
-				vobj->updateRiggedVolume(false, true);
+				vobj->updateRiggedVolume(false, false);
 			}
 			volume = vobj->getRiggedVolume();
 		}
