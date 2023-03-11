@@ -149,6 +149,8 @@ public:
 
 		Optional<Contents> contents;
 
+		Optional<std::string> context_menu;
+
 		Optional<LLViewBorder::Params> border;
 		
 		Params();
@@ -342,6 +344,8 @@ public:
 	enum ContextMenuType { MENU_NONE, MENU_AVATAR, MENU_GROUP };
 	void setContextMenu(const ContextMenuType &menu) { mContextMenuType = menu; }
     ContextMenuType getContextMenuType() { return mContextMenuType; }
+	//BD - Right Click Context Menu
+	void setContextMenu(LLContextMenu* new_context_menu);
 
 	// Overridden from LLView
 	/*virtual*/ void    draw();
@@ -569,6 +573,9 @@ private:
 	S32				mOriginalSelection;
 
 	ContextMenuType mContextMenuType;
+
+	//BD - Right Click Context Menu
+	std::string		mContextMenuName;
 
 	typedef std::vector<LLScrollListColumn*> ordered_columns_t;
 	ordered_columns_t	mColumnsIndexed;

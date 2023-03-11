@@ -171,7 +171,8 @@ LLScrollListCtrl::Params::Params()
 	scroll_bar_bg_color("scroll_bar_bg_color"),
 	border("border"),
 	//BD
-	bg_marked_color("bg_marked_color")
+	bg_marked_color("bg_marked_color"),
+	context_menu("context_menu")
 {}
 
 LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
@@ -228,7 +229,9 @@ LLScrollListCtrl::LLScrollListCtrl(const LLScrollListCtrl::Params& p)
 	mContextMenuType(MENU_NONE),
 	mIsFriendSignal(NULL),
 	//BD
-	mBgMarkedColor(p.bg_marked_color())
+	mBgMarkedColor(p.bg_marked_color()),
+	//BD - Right Click Context Menu
+	mContextMenuName(p.context_menu())
 {
 	auto menu = mPopupMenuHandle.get();
 	if (menu)
@@ -2090,6 +2093,30 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 				return TRUE;
 			}
 		}
+		//BD - Right Click Context Menu
+		else
+		{
+			//BD - If we have a menu (from code) use that, if not attempt to create one if a name
+			//     is defined in the XML file.
+			auto menu = mPopupMenuHandle.get();
+			if (menu)
+			{
+				menu->show(x, y);
+				LLMenuGL::showPopup(this, menu, x, y);
+			}
+			else
+			{
+				if (!mContextMenuName.empty())
+				{
+					llassert(LLMenuGL::sMenuContainer != NULL);
+					menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
+						mContextMenuName, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
+
+					mPopupMenuHandle = menu->getHandle();
+				}
+			}
+			return TRUE;
+		}
 		return LLUICtrl::handleRightMouseDown(x, y, mask);
 	}
 	return FALSE;
@@ -3571,4 +3598,20 @@ bool LLScrollListCtrl::highlightMatchingItems(const std::string& filter_str)
         iter++;
     }
     return res;
+}
+
+//BD - Right Click Context Menu
+void LLScrollListCtrl::setContextMenu(LLContextMenu* new_context_menu)
+{
+	LLContextMenu* menu = static_cast<LLContextMenu*>(mPopupMenuHandle.get());
+	if (menu)
+	{
+		menu->die();
+		mPopupMenuHandle.markDead();
+	}
+
+	if (new_context_menu)
+	{
+		mPopupMenuHandle = new_context_menu->getHandle();
+	}
 }
