@@ -79,9 +79,10 @@
             bg_opaque_image="Panel_Background"
             background_visible="true"
             animate="false"
-            top="20"
+            border_size="0"
+            top="18"
             left="9"
-            right="-6"
+            right="-3"
             bottom="-7"
             orientation="vertical">
         <layout_panel name="inv_list"
@@ -99,20 +100,20 @@
               left="2"
               top="1"
               right="-2"
-              bottom="-2">
-                <asset_filtered_inv_panel
+              bottom="-1">
+                <inventory_panel
                     allow_multi_select="false"
                     allow_drag="false"
+                    background_visible="false"
                     accepts_drag_and_drop="false"
                     suppress_folder_menu="true"
                     border="false"
                     follows="all"
                     layout="topleft"
-                    left_delta="0"
+                    left_delta="7"
                     name="pnl_inventory"
-                    top="1"
-                    right="-4"
-                    bottom="-1"
+                    top="27"
+                    height="300"
                     filter_asset_type="settings" />
             </panel>
         </layout_panel>
@@ -129,7 +130,7 @@
    layout="topleft"
    orientation="horizontal"
    follows="left|right|bottom"
-   top_pad="0"
+   top="0"
    left_delta="0"
    name="bottom_panel"
    width="277">
