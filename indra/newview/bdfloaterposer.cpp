@@ -2948,7 +2948,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar && !avatar->isControlAvatar()
-			/*&& avatar->isSelf()*/)
+			&& avatar->isSelf())
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
