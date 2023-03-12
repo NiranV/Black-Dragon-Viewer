@@ -2037,32 +2037,31 @@ void LLFloaterEditExtDayCycle::onPickerCommitTrackId(U32 track_id)
 
 void LLFloaterEditExtDayCycle::doOpenInventoryFloater(LLSettingsType::type_e type, LLUUID curritem)
 {
-//  LLUI::sWindow->setCursor(UI_CURSOR_WAIT);
-    LLFloaterSettingsPicker *picker = static_cast<LLFloaterSettingsPicker *>(mInventoryFloater.get());
+	LLFloaterSettingsPicker *picker = static_cast<LLFloaterSettingsPicker *>(mInventoryFloater.get());
 
-    // Show the dialog
-    if (!picker)
-    {
-        picker = new LLFloaterSettingsPicker(this,
-            LLUUID::null);
+	// Show the dialog
+	if (!picker)
+	{
+		picker = new LLFloaterSettingsPicker(this,
+			LLUUID::null);
 
-        mInventoryFloater = picker->getHandle();
+		mInventoryFloater = picker->getHandle();
 
-        picker->setCommitCallback([this](LLUICtrl *, const LLSD &data){ onPickerCommitSetting(data["ItemId"].asUUID(), data["Track"].asInteger()); });
-    }
+		picker->setCommitCallback([this](LLUICtrl *, const LLSD &data) { onPickerCommitSetting(data["ItemId"].asUUID(), data["Track"].asInteger()); });
+	}
 
-    picker->setSettingsFilter(type);
-    picker->setSettingsItemId(curritem);
-    if (type == LLSettingsType::ST_DAYCYCLE)
-    {
-        picker->setTrackMode((mCurrentTrack == LLSettingsDay::TRACK_WATER) ? LLFloaterSettingsPicker::TRACK_WATER : LLFloaterSettingsPicker::TRACK_SKY);
-    }
-    else
-    {
-        picker->setTrackMode(LLFloaterSettingsPicker::TRACK_NONE);
-    }
-    picker->openFloater();
-    picker->setFocus(TRUE);
+	picker->setSettingsFilter(type);
+	picker->setSettingsItemId(curritem);
+	if (type == LLSettingsType::ST_DAYCYCLE)
+	{
+		picker->setTrackMode((mCurrentTrack == LLSettingsDay::TRACK_WATER) ? LLFloaterSettingsPicker::TRACK_WATER : LLFloaterSettingsPicker::TRACK_SKY);
+	}
+	else
+	{
+		picker->setTrackMode(LLFloaterSettingsPicker::TRACK_NONE);
+	}
+	picker->openFloater();
+	picker->setFocus(TRUE);
 }
 
 void LLFloaterEditExtDayCycle::doCloseInventoryFloater(bool quitting)

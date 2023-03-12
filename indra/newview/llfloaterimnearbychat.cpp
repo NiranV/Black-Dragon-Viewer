@@ -145,6 +145,7 @@ BOOL LLFloaterIMNearbyChat::postBuild()
 	// obsolete, but may be needed for backward compatibility?
 	gSavedSettings.declareS32("nearbychat_showicons_and_names", 2, "NearByChat header settings", LLControlVariable::PERSIST_NONDFT);
 
+	//BD - Fix for icon not showing when nearby chat starts undocked.
 	LLIconCtrl* icon = getChild<LLIconCtrl>("nearby_chat_icon");
 	icon->setVisible(true);
 
