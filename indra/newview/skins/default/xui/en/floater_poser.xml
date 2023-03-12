@@ -451,7 +451,7 @@ width="678">
 					top="267"
 					left="2">
 						<button.commit_callback
-						function="Poser.Import"/>
+						function="Pose.Import"/>
 					</button>
 					<button
 					height="21"
