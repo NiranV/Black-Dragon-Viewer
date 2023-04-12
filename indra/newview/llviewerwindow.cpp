@@ -4052,7 +4052,7 @@ void LLViewerWindow::updateMouseDelta()
 	LLVector2 mouse_vel; 
 
 	static const LLCachedControl<bool> mouseSmooth(gSavedSettings, "MouseSmooth");
-	if (mouseSmooth)
+	if (mouseSmooth && gAgentCamera.cameraMouselook())
 	{
 		static F32 fdx = 0.f;
 		static F32 fdy = 0.f;
