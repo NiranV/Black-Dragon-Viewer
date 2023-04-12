@@ -9898,11 +9898,6 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 		LLPipeline::sReflectionRender = true;
 
-		//BD - Fix attached lights causing large swats of lighting on the reflection map along the
-		//     coast.
-		S32 light_detail = gPipeline.mLightingDetail;
-		gPipeline.setLightingDetail(0);
-
 		gPipeline.pushRenderTypeMask();
 
 		glh::matrix4f saved_modelview = get_current_modelview();
@@ -10158,9 +10153,6 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 		last_update = LLDrawPoolWater::sNeedsReflectionUpdate && LLDrawPoolWater::sNeedsDistortionUpdate;
 
 		gPipeline.popRenderTypeMask();
-
-		//BD - Fix for attached lights freaking out on reflections
-		gPipeline.setLightingDetail(light_detail);
 
 		LLPipeline::sUnderWaterRender = false;
 		LLPipeline::sReflectionRender = false;
