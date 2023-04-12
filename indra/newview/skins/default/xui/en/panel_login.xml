@@ -5891,7 +5891,7 @@ Removed: Rotation order dropdown and all code.
  
  <panel
  follows="top|right"
- height="222"
+ height="248"
  background_visible="true"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
@@ -5918,7 +5918,7 @@ Removed: Rotation order dropdown and all code.
     font_shadow="soft"
     font.style="BOLD"
     halign="left"
-    height="257"
+    height="283"
     top_pad="0"
     left="7"
     name="store_list"
@@ -5939,6 +5939,8 @@ PrimPossible 1 Prim Furniture - [https://marketplace.secondlife.com/stores/56262
 ASA Studios - [https://marketplace.secondlife.com/stores/222823 Marketplace]
 Insomnia Angel - [https://maps.secondlife.com/secondlife/Cerberus%20Crossing/128/214/2027 Inworld Store]
 eBody REBORN - [http://maps.secondlife.com/secondlife/eBody/193/56/2002 Inworld Store]
+Enaitch - [https://marketplace.secondlife.com/fr-FR/stores/128031 Marketplace] - [http://maps.secondlife.com/secondlife/Enaitch/177/38/23 Inworld Store]
+Muraverse - [https://marketplace.secondlife.com/stores/242928 Marketplace] - [https://maps.secondlife.com/secondlife/Tuvali/213/186/38 Inworld Store]
   </text>
  </panel>
  
