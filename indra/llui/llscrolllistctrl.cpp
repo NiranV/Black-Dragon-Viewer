@@ -2096,6 +2096,8 @@ BOOL LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		//BD - Right Click Context Menu
 		else
 		{
+			deselectAllItems(TRUE);
+			selectItem(item, getColumnIndexFromOffset(x));
 			//BD - If we have a menu (from code) use that, if not attempt to create one if a name
 			//     is defined in the XML file.
 			auto menu = mPopupMenuHandle.get();
