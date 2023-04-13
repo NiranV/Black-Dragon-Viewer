@@ -169,6 +169,7 @@
 #include "bdfloatercamera.h"
 #include "bdfloaterobjects.h"
 #include "bdfloaterposer.h"
+#include "bdfloaterposecreator.h"
 
 #include "llfloaterwateradjust.h"
 #include "llfloaterenvironmentsettings.h"
@@ -414,6 +415,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("complexity", "floater_complexity.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterComplexity>);
 	LLFloaterReg::add("recorder", "floater_recorder.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterCamera>);
 	LLFloaterReg::add("poser", "floater_poser.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterPoser>);
+	LLFloaterReg::add("poser_creator", "floater_poser_creator.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterPoseCreator>);
 	LLFloaterReg::add("special_thanks", "floater_special_thanks.xml", &LLFloaterReg::build<LLFloater>);
 
 	// *NOTE: Please keep these alphabetized for easier merges

@@ -158,7 +158,7 @@ public:
 	BOOL	serialize(LLDataPacker& dp) const;
 	BOOL	deserialize(LLDataPacker& dp, const LLUUID& asset_id, bool allow_invalid_joints = true);
 	BOOL	isLoaded() { return mJointMotionList != NULL; }
-    bool	dumpToFile(const std::string& name);
+    bool	dumpToFile(const std::string& name, bool from_upload = true);
 
 
 	// setters for modifying a keyframe animation
@@ -422,7 +422,6 @@ public:
 	};
 
 protected:
-	JointMotionList*				mJointMotionList;
 	std::vector<LLPointer<LLJointState> > mJointStates;
 	LLJoint*						mPelvisp;
 	LLCharacter*					mCharacter;
@@ -437,8 +436,10 @@ public:
 	void setCharacter(LLCharacter* character) { mCharacter = character; }
 
 	//BD - Poser
-	JointMotionList* getJointMotionList() { return mJointMotionList; }
+	JointMotionList* getJointMotionList() const { return mJointMotionList; }
 	void setJointMotionList(JointMotionList* list) { mJointMotionList = list; }
+
+	JointMotionList*				mJointMotionList;
 };
 
 class LLKeyframeDataCache

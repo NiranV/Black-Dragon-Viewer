@@ -121,6 +121,7 @@ set(viewer_SOURCE_FILES
     bdfloatercomplexity.cpp
     bdfloaterobjects.cpp
     bdfloaterposer.cpp
+    bdfloaterposecreator.cpp
     bdsidebar.cpp
     bdstatus.cpp
     bdheadrotmotion.cpp
@@ -778,6 +779,7 @@ set(viewer_HEADER_FILES
     bdfloatercomplexity.h
     bdfloaterobjects.h
     bdfloaterposer.h
+    bdfloaterposecreator.h
     bdsidebar.h
     bdstatus.h
     bdheadrotmotion.h

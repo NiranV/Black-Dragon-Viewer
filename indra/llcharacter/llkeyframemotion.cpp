@@ -2113,7 +2113,7 @@ U32	LLKeyframeMotion::getFileSize()
 // dumpToFile()
 //-----------------------------------------------------------------------------
 //BD - Anim Exporter
-bool LLKeyframeMotion::dumpToFile(const std::string& name)
+bool LLKeyframeMotion::dumpToFile(const std::string& name, bool from_upload)
 {
 	bool succ = false;
     if (isLoaded())
@@ -2146,13 +2146,15 @@ bool LLKeyframeMotion::dumpToFile(const std::string& name)
 			LLFile::mkdir(pathname);
 		}
 
+
 		std::string full_path = gDirUtilp->getExpandedFilename(LL_PATH_ANIMATIONS, filename);
+
 		//BD - Allow overwriting files.
-        /*if (LLFile::isfile(full_path))
-        {
+		/*if (LLFile::isfile(full_path))
+		{
 			LL_WARNS() << full_path << " already exists, write failed" << LL_ENDL;
-            return false;
-        }*/
+			return false;
+		}*/
 
         S32 file_size = getFileSize();
         U8* buffer = new U8[file_size];
@@ -2162,7 +2164,7 @@ bool LLKeyframeMotion::dumpToFile(const std::string& name)
         if (serialize(dp))
         {
             LLAPRFile outfile;
-            outfile.open(full_path, LL_APR_WPB);
+            outfile.open(from_upload ? name : full_path, LL_APR_WPB);
             if (outfile.getFileHandle())
             {
                 S32 wrote_bytes = outfile.write(buffer, file_size);

@@ -38,9 +38,7 @@ BDAnimator gDragonAnimator;
 
 
 BDAnimator::BDAnimator() :
-			mPlaying(false),
-			//BD - Exporter
-			mLiveMode(true)
+			mPlaying(false)
 {
 }
 
@@ -271,10 +269,6 @@ void BDAnimator::stopPlayback()
 //     4 = scales only, thus 3 = rotations and positions and so on.
 BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 {
-	//BD - Do not allow loading XML poses in "Creation" mode.
-	if (!mLiveMode)
-		return FALSE;
-
 	if (!mTargetAvatar || mTargetAvatar->isDead())
 	{
 		LL_WARNS("Posing") << "Couldn't find avatar, dead?" << LL_ENDL;
@@ -397,26 +391,10 @@ BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 		}
 		else
 		{
-
-			//BD - Not sure how to read the exact line out of a XML file, so we're just going
-			//     by the amount of tags here, since the header has only 3 it's a good indicator
-			//     if it's the correct line we're in.
-			BDPosingMotion* motion = (BDPosingMotion*)mTargetAvatar->findMotion(ANIM_BD_POSING_MOTION);
-			if (count == 3)
-			{
-				if (motion)
-				{
-					F32 time = pose["time"].asReal();
-					S32 type = pose["type"].asInteger();
-					motion->setInterpolationType(type);
-					motion->setInterpolationTime(time);
-					motion->startInterpolationTimer();
-				}
-			}
-
 			LLJoint* joint = mTargetAvatar->getJoint(pose["bone"].asString());
 			if (joint)
 			{
+				BDPosingMotion* motion = (BDPosingMotion*)mTargetAvatar->findMotion(ANIM_BD_POSING_MOTION);
 				//BD - Don't try to add/remove joint states for anything but our default bones.
 				if (motion && joint->getJointNum() < 134)
 				{
@@ -498,17 +476,14 @@ LLSD BDAnimator::returnPose(const LLSD& name)
 	if (!infile.is_open())
 	{
 		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
-		//return;
 	}
 
 	for (S32 i = 0; !infile.eof(); ++i)
-	//while (!infile.eof())
 	{
 		S32 count = LLSDSerialize::fromXML(pose[i], infile);
 		if (count == LLSDParser::PARSE_FAILURE)
 		{
 			LL_WARNS("Posing") << "Failed to parse file: " << filename << LL_ENDL;
-			//return;
 		}
 	}
 	infile.close();

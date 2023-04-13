@@ -28,6 +28,8 @@
 #include "lltoggleablemenu.h"
 #include "llmenubutton.h"
 
+#include "llviewerobject.h"
+
 /*struct BDPoseKey
 {
 public:
@@ -141,16 +143,11 @@ private:
 	void onPoseStart();
 	void onPoseDelete();
 	void onPoseRefresh();
-	void onPoseSet(LLUICtrl* ctrl, const LLSD& param);
 	void onPoseControlsRefresh();
-	bool onPoseSave(S32 type, F32 time, bool editing);
+	bool onPoseSave();
 	void onPoseLoad();
 	void onPoseLoadSelective(const LLSD& param);
-	//void onPoseSaveSelective(const LLSD& param);
 	void onPoseMenuAction(const LLSD& param);
-	void onPoseScrollRightMouse(LLUICtrl* ctrl, S32 x, S32 y);
-	bool onPoseExport();
-	void onPoseImport();
 
 	//BD - Joints
 	void onJointRefresh();
@@ -176,21 +173,8 @@ private:
 	void onJointSymmetrize();
 	void onJointCopyTransforms();
 
-	//BD - Animating
-	void onAnimAdd(const LLSD& param);
-	void onAnimListWrite();
-	void onAnimMove(const LLSD& param);
-	void onAnimDelete();
-	void onAnimSet();
-	void onAnimPlay();
-	void onAnimStop();
-	void onAnimControlsRefresh();
-
 	//BD - Misc
 	void onUpdateLayout();
-	void onModeChange();
-	void onCreationControlsRefresh();
-	bool onSaveMenuEnable(const LLSD& param);
 
 	//BD - Mirror Bone
 	void toggleMirrorMode(LLUICtrl* ctrl) { mMirrorMode = ctrl->getValue().asBoolean(); }
@@ -212,8 +196,6 @@ private:
 	//BD - Posing
 	LLScrollListCtrl*							mPoseScroll;
 	LLTabContainer*								mJointTabs;
-	LLHandle<LLToggleableMenu>					mPosesMenuHandle;
-	LLHandle<LLToggleableMenu>					mSaveMenuHandle;
 
 	std::array<LLUICtrl*, 3>					mRotationSliders;
 	std::array<LLSliderCtrl*, 3>				mPositionSliders;
@@ -225,9 +207,6 @@ private:
 	std::map<const std::string, LLQuaternion>	mDefaultRotations;
 	std::map<const std::string, LLVector3>		mDefaultScales;
 	std::map<const std::string, LLVector3>		mDefaultPositions;
-
-	//BD - Animations
-	LLScrollListCtrl*							mAnimEditorScroll;
 
 	//BD - Misc
 	bool										mDelayRefresh;

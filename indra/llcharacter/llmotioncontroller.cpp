@@ -196,7 +196,8 @@ void LLMotionController::purgeExcessMotions()
 		{
 			motion_set_t::iterator cur_iter = deprecated_motion_it++;
 			LLMotion* cur_motionp = *cur_iter;
-			if (!isMotionActive(cur_motionp))
+			//BD - Do not kill eternal animations.
+			if (!isMotionActive(cur_motionp) && !cur_motionp->getEternal())
 			{
 				// Motion is deprecated so we know it's not cannonical,
 				//  we can safely remove the instance
@@ -217,7 +218,8 @@ void LLMotionController::purgeExcessMotions()
 		{
 			LLMotion* cur_motionp = *loaded_motion_it;
 			// motion isn't playing, delete it
-			if (!isMotionActive(cur_motionp))
+			//BD - Do not kill eternal animations.
+			if (!isMotionActive(cur_motionp) && !cur_motionp->getEternal())
 			{
 				motions_to_kill.insert(cur_motionp->getID());
 			}
@@ -233,7 +235,8 @@ void LLMotionController::purgeExcessMotions()
 		// and kill it only if that one is inactive
 		LLUUID motion_id = *motion_it;
 		LLMotion* motionp = findMotion(motion_id);
-		if (motionp && !isMotionActive(motionp))
+		//BD - Do not kill eternal animations.
+		if (motionp && !isMotionActive(motionp) && !motionp->getEternal())
 		{
 			removeMotion(motion_id);
 		}
