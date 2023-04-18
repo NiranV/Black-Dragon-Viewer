@@ -4360,8 +4360,8 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">4.3.0</string>
-	<string name="VIEWER_VERSION_IDENTIFIER">Exporting Dragon</string>
+	<string name="VIEWER_VERSION_LOCAL">4.3.1</string>
+	<string name="VIEWER_VERSION_IDENTIFIER">Kneading Dragon</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
 	<string name="15"></string>

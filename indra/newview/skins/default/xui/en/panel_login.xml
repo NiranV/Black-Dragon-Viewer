@@ -173,8 +173,69 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="416"
+     height="286"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Bunny as Patreon patron.
+Added: Muraverse Online as Patreon patron.
+Added: NH's Marketplace and inworld store link
+Added: Tamara S as Patreon patron.
+Added: First full keyframe animation editor window allowing to add, remove and edit keyframes for bones.
+Added: Option to change keyframe time and interpoltion method for the selected bone.
+Added: Option to preview the current WIP animation temporarily.
+Added: Multi/Mass add keyframe option.
+Added: Michelita Smith as Patreon patron.
+Added: Puck Softpaw as Patreon patron.
+Changed: Select list entries on right-click so the right-click menu has a target.
+Changed: Sandisha to Sandy Burgess as requested.
+Changed: Make pose creation animation eternal so it does not get deactivated.
+Changed: Allow animation/pose import to import entire animations with all keyframes.
+Changed: By default do not add any keyframes to any bones, let the user choose which bones to include.
+Changed: Moved animation creation into its own window.
+Changed: Version to 4.3.1 - Kneading Dragon.
+Fixed: Attached lights not properly reflecting on the water surface. Undo the attachment light fix, attached lights no longer seem to cause large light reflections on water.
+Fixed: Tiny mouse movements no longer being correctly recognized when panning/zooming/rotating the camera.
+Fixed: Sorting of bones in Poser shouldn't be possible.
+Fixed: Right click menu on Pose loading list.
+Removed: Pose animator features from Poser.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.3.0
+     </text>
+     <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="416"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
