@@ -2215,6 +2215,7 @@ bool LLImageFormatted::save(const std::string &filename)
 	if (!outfile.getFileHandle())
 	{
 		setLastError("Unable to open file for writing", filename);
+		LL_WARNS() << "Couldn't open file for writing." << LL_ENDL;
 		return false;
 	}
 	

@@ -4963,6 +4963,7 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
 	std::string lastSnapshotDir = LLViewerWindow::getLastSnapshotDir();
 	if (lastSnapshotDir.empty())
 	{
+		LL_WARNS() << "Failed saving snapshot, last Snapshot dir is empty." << LL_ENDL;
 		failure_cb();
 		return;
 	}
