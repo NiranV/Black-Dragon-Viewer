@@ -140,6 +140,8 @@ BOOL BDFloaterPoser::postBuild()
 	mJointTabs = getChild<LLTabContainer>("joints_tabs");
 	mJointTabs->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
 
+	mModifierTabs = getChild<LLTabContainer>("modifier_tabs");
+
 	//BD - Animesh
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("avatar_scroll", true);
 	mAvatarScroll->setCommitCallback(boost::bind(&BDFloaterPoser::onAvatarsSelect, this));
@@ -823,23 +825,21 @@ void BDFloaterPoser::onJointControlsRefresh()
 	//BD - Enable position tabs whenever positions are available, scales are always enabled
 	//     unless we are editing attachment bones, rotations on the other hand are only
 	//     enabled when editing joints.
-	LLTabContainer* modifier_tabs = getChild<LLTabContainer>("modifier_tabs");
-	modifier_tabs->setEnabled(item && is_posing);
-	modifier_tabs->enableTabButton(0, (item && is_posing && index == JOINTS));
-	modifier_tabs->enableTabButton(1, (item && is_posing && can_position));
-	modifier_tabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
-	
-	S32 tab_idx = modifier_tabs->getCurrentPanelIndex();
+	S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
+	mModifierTabs->setEnabled(item && is_posing);
+	mModifierTabs->enableTabButton(0, (item && is_posing && index == JOINTS));
+	mModifierTabs->enableTabButton(1, (item && is_posing && can_position));
+	mModifierTabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
 	//BD - Swap out of "Position" tab when it's not available.
-	if (!can_position && tab_idx == 1)
+	if (curr_idx == 1 && !mModifierTabs->getTabButtonEnabled(1))
 	{
-		modifier_tabs->selectTab(0);
+		mModifierTabs->selectTab(0);
 	}
 	//BD - Swap out of "Scale" and "Rotation" tabs when they are not available.
-	if ((index != COLLISION_VOLUMES && index != JOINTS && tab_idx == 2)
-		|| (index != JOINTS && tab_idx == 0))
+	if (curr_idx == 2 && !mModifierTabs->getTabButtonEnabled(2)
+		|| curr_idx == 0 && !mModifierTabs->getTabButtonEnabled(0))
 	{
-		modifier_tabs->selectTab(1);
+		mModifierTabs->selectTab(1);
 	}
 
 	F32 max_val = is_pelvis ? 20.f : 1.0f;
@@ -2157,7 +2157,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar && !avatar->isControlAvatar()
-			&& avatar->isSelf())
+			/*&& avatar->isSelf()*/)
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())

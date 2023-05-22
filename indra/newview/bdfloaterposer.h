@@ -196,6 +196,7 @@ private:
 	//BD - Posing
 	LLScrollListCtrl*							mPoseScroll;
 	LLTabContainer*								mJointTabs;
+	LLTabContainer*								mModifierTabs;
 
 	std::array<LLUICtrl*, 3>					mRotationSliders;
 	std::array<LLSliderCtrl*, 3>				mPositionSliders;
