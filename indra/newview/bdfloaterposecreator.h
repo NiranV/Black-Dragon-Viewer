@@ -25,6 +25,7 @@
 #include "llkeyframemotion.h"
 #include "lltoggleablemenu.h"
 #include "llmenubutton.h"
+#include "llspinctrl.h"
 #include "bdposingmotion.h"
 
 #include "llviewerobject.h"
@@ -77,6 +78,7 @@ private:
 	//BD - Keyframes
 	void onKeyframeSelect();
 	void onKeyframeAdd();
+	void onKeyframeAdd(F32 time, LLJoint* joint);
 	void onKeyframeRemove();
 	void onKeyframeTime();
 	void onKeyframeRefresh();
@@ -97,6 +99,7 @@ private:
 	LLTabContainer*								mJointTabs;
 	LLTabContainer*								mModifierTabs;
 	LLScrollListCtrl*							mKeyframeScroll;
+	LLScrollListCtrl*							mTimelineScroll;
 	LLHandle<LLToggleableMenu>					mSaveMenuHandle;
 
 	std::array<LLUICtrl*, 3>					mRotationSliders;

@@ -489,7 +489,7 @@ LLSD LLNewFileResourceUploadInfo::exportTempFile()
 				if (motionp->deserialize(dp, getAssetId(), false))
 				{
 					// write to temp file
-					bool succ = motionp->dumpToFile(filename);
+					bool succ = motionp->dumpToFile(filename, true);
 					if (succ)
 					{
 						assetType = LLAssetType::AT_ANIMATION;

@@ -201,6 +201,9 @@ public:
     S32         getTotalTabWidth() const;
 	void		setCurrentTabName(const std::string& name);
 
+	//BD
+	BOOL 		getTabButtonEnabled(S32 which);
+
 	void		selectFirstTab();
 	void		selectLastTab();
 	void		selectNextTab();

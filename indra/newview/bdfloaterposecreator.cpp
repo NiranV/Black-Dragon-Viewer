@@ -53,6 +53,10 @@
 #include "bdstatus.h"
 #include "bdfloaterposer.h"
 
+//BD - 1 frame is always 1/60 of a second, we assume animations run at 60 FPS by default.
+//     I might add an option to change it but right now its all manual work.
+const F32 FRAMETIME = 1.f / 60.f;
+
 
 BDFloaterPoseCreator::BDFloaterPoseCreator(const LLSD& key)
 	:	LLFloater(key)
@@ -137,6 +141,8 @@ BOOL BDFloaterPoseCreator::postBuild()
 	mKeyframeScroll->setCommitOnSelectionChange(TRUE);
 	mKeyframeScroll->setCommitCallback(boost::bind(&BDFloaterPoseCreator::onKeyframeSelect, this));
 
+	mTimelineScroll = this->getChild<LLScrollListCtrl>("timeframe_scroll", true);
+
 	mRotationSliders = { { getChild<LLUICtrl>("Rotation_X"), getChild<LLUICtrl>("Rotation_Y"), getChild<LLUICtrl>("Rotation_Z") } };
 	mPositionSliders = { { getChild<LLSliderCtrl>("Position_X"), getChild<LLSliderCtrl>("Position_Y"), getChild<LLSliderCtrl>("Position_Z") } };
 	mScaleSliders = { { getChild<LLSliderCtrl>("Scale_X"), getChild<LLSliderCtrl>("Scale_Y"), getChild<LLSliderCtrl>("Scale_Z") } };
@@ -217,14 +223,51 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 	if (!gDragonAnimator.mPoseCreatorMotion)
 		return;
 
-	mKeyframeScroll->clearRows();
-
 	//BD - Now write an entry with all given information into our list so we can use it.
 	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
+	if (!joint_list)
+		return;
+
 	LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
+	if (!joint_motion)
+		return;
+
+	mKeyframeScroll->clearRows();
+
 	LLKeyframeMotion::RotationCurve rot_curve = joint_motion->mRotationCurve;
 	LLKeyframeMotion::PositionCurve pos_curve = joint_motion->mPositionCurve;
 	LLKeyframeMotion::ScaleCurve scale_curve = joint_motion->mScaleCurve;
+
+	LLScrollListMultiSlider* col_slider = nullptr;
+	if (!rot_curve.mKeys.empty() 
+		|| !pos_curve.mKeys.empty() 
+		|| !scale_curve.mKeys.empty())
+	{
+		//BD - Find and delete the current entry.
+		for (auto timeline_item : mTimelineScroll->getAllData())
+		{
+			std::string name = timeline_item->getColumn(0)->getValue();
+			if (name == joint->getName())
+			{
+				timeline_item->setFlagged(true);
+				break;
+			}
+		}
+		mTimelineScroll->deleteFlaggedItems();
+
+		//BD - Now rewrite the entry.
+		LLSD slider;
+		const std::string joint_name = joint->getName();
+		slider["columns"][0]["column"] = "joint";
+		slider["columns"][0]["value"] = joint_name;
+		slider["columns"][1]["column"] = "multislider";
+		slider["columns"][1]["type"] = "multislider";
+		slider["columns"][1]["min_value"] = 0;
+		slider["columns"][1]["max_value"] = 3600;
+		slider["columns"][1]["increment"] = 1.f;
+		LLScrollListItem* element = mTimelineScroll->addElement(slider);
+		col_slider = (LLScrollListMultiSlider*)element->getColumn(1);
+	}
 
 	S32 modidx = mModifierTabs->getCurrentPanelIndex();
 	if (modidx == 0)
@@ -234,9 +277,12 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 			F32 roll, pitch, yaw;
 			LLQuaternion rot_quat = rot_key.second.mRotation;
 			rot_quat.getEulerAngles(&roll, &pitch, &yaw);
+
+			S32 time_frames = (S32)ll_round(rot_key.second.mTime / FRAMETIME, 1.f);
+
 			LLSD row;
 			row["columns"][0]["column"] = "time";
-			row["columns"][0]["value"] = ll_round(rot_key.second.mTime, 0.1f);
+			row["columns"][0]["value"] = ll_round(time_frames, 1.f);
 			row["columns"][1]["column"] = "value";
 			row["columns"][1]["value"] = rot_key.first;
 			row["columns"][2]["column"] = "x";
@@ -246,6 +292,12 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 			row["columns"][4]["column"] = "z";
 			row["columns"][4]["value"] = ll_round(yaw, 0.001f);
 			mKeyframeScroll->addElement(row);
+
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)rot_key.first);
+			}
 		}
 	}
 	else if (modidx == 1)
@@ -255,9 +307,10 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 			if (joint->mHasPosition)
 			{
 				LLVector3 pos = pos_key.second.mPosition;
+				S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
 				LLSD row;
 				row["columns"][0]["column"] = "time";
-				row["columns"][0]["value"] = pos_key.second.mTime;
+				row["columns"][0]["value"] = ll_round(time_frames, 1.f);
 				row["columns"][1]["column"] = "value";
 				row["columns"][1]["value"] = pos_key.first;
 				row["columns"][2]["column"] = "x";
@@ -267,6 +320,12 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 				row["columns"][4]["column"] = "z";
 				row["columns"][4]["value"] = ll_round(pos.mV[VZ], 0.001f);
 				mKeyframeScroll->addElement(row);
+
+				if (col_slider)
+				{
+					//F32 time_key = time_frames / col_slider->getMaxValue();
+					col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
+				}
 			}
 		}
 	}
@@ -274,19 +333,26 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 	{
 		for (auto& scale_key : scale_curve.mKeys)
 		{
-			LLVector3 pos = scale_key.second.mScale;
+			LLVector3 scale = scale_key.second.mScale;
+			S32 time_frames = (S32)ll_round(scale_key.second.mTime / FRAMETIME, 1.f);
 			LLSD row;
 			row["columns"][0]["column"] = "time";
-			row["columns"][0]["value"] = scale_key.second.mTime;
+			row["columns"][0]["value"] = ll_round(time_frames, 1.f);
 			row["columns"][1]["column"] = "value";
 			row["columns"][1]["value"] = scale_key.first;
 			row["columns"][2]["column"] = "x";
-			row["columns"][2]["value"] = ll_round(pos.mV[VX], 0.001f);
+			row["columns"][2]["value"] = ll_round(scale.mV[VX], 0.001f);
 			row["columns"][3]["column"] = "y";
-			row["columns"][3]["value"] = ll_round(pos.mV[VY], 0.001f);
+			row["columns"][3]["value"] = ll_round(scale.mV[VY], 0.001f);
 			row["columns"][4]["column"] = "z";
-			row["columns"][4]["value"] = ll_round(pos.mV[VZ], 0.001f);
+			row["columns"][4]["value"] = ll_round(scale.mV[VZ], 0.001f);
 			mKeyframeScroll->addElement(row);
+
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)scale_key.first);
+			}
 		}
 	}
 
@@ -366,11 +432,74 @@ void BDFloaterPoseCreator::onKeyframeSelect()
 	}
 }
 
+void BDFloaterPoseCreator::onKeyframeAdd(F32 time, LLJoint* joint)
+{
+	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
+	S32 modifier_idx = mModifierTabs->getCurrentPanelIndex();
+
+	if (joint)
+	{
+		LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
+
+		if (modifier_idx == 0)
+		{
+			//BD - Create a rotation key and put it into the rotation curve.
+			LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
+
+			//BD - Increase the key number since we are adding another key.
+			joint_motion->mRotationCurve.mNumKeys++;
+
+			joint_motion->mRotationCurve.mKeys[joint_motion->mRotationCurve.mNumKeys] = rotation_key;
+
+			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+			if (joint_state->getUsage() ^ LLJointState::ROT)
+			{
+				joint_state->setUsage(joint_state->getUsage() | LLJointState::ROT);
+			}
+		}
+		else if (modifier_idx == 1)
+		{
+			if (joint->mHasPosition)
+			{
+				//BD - Create a position key and put it into the position curve.
+				LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
+				//BD - Increase the key number since we are adding another key.
+				joint_motion->mPositionCurve.mNumKeys++;
+
+				joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys] = position_key;
+
+				LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+				if (joint_state->getUsage() ^ LLJointState::POS)
+				{
+					joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
+				}
+			}
+		}
+		else if (modifier_idx == 2)
+		{
+			//BD - Create a scale key and put it into the scale curve.
+			LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
+
+			//BD - Increase the key number since we are adding another key.
+			joint_motion->mScaleCurve.mNumKeys++;
+
+			joint_motion->mScaleCurve.mKeys[joint_motion->mScaleCurve.mNumKeys] = scale_key;
+
+			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+			if (joint_state->getUsage() ^ LLJointState::SCALE)
+			{
+				joint_state->setUsage(joint_state->getUsage() | LLJointState::SCALE);
+			}
+		}
+	}
+
+	//BD - Check if our animation duration needs changing.
+	onAnimationDurationCheck();
+}
+
 void BDFloaterPoseCreator::onKeyframeAdd()
 {
-	if (!gDragonAnimator.mPoseCreatorMotion)
-		return;
-
 	std::vector<LLScrollListItem*> items = mJointScrolls[JOINTS]->getAllSelected();
 	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
 	LLScrollListItem* item = mKeyframeScroll->getFirstSelected();
@@ -378,6 +507,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 	bool multiple = (items.size() > 1);
 	S32 new_selected_idx = (mask == MASK_SHIFT || multiple) ? mKeyframeScroll->getChildCount() - 1 : mKeyframeScroll->getFirstSelectedIndex() + 1;
 	S32 modifier_idx = mModifierTabs->getCurrentPanelIndex();
+
 
 	for (auto joint_item : items)
 	{
@@ -388,7 +518,8 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 		LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
 		S32 selected_idx = 0;
 		S32 count = 1;
-		F32 time = 1.0f;
+		S32 keys = 1;
+		F32 time = FRAMETIME;
 		if (item)
 			selected_idx = item->getColumn(1)->getValue().asInteger();
 
@@ -401,10 +532,10 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 				//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 				//     entry we assume its the first keyframe, so simply use 1.f.
 				if (joint_motion->mRotationCurve.mNumKeys > 0)
-					time = joint_motion->mRotationCurve.mKeys[joint_motion->mRotationCurve.mNumKeys].mTime + 1.0f;
+					time = joint_motion->mRotationCurve.mKeys[joint_motion->mRotationCurve.mNumKeys].mTime + FRAMETIME;
 
 				//BD - Create a rotation key and put it into the rotation curve.
-				LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.1f), joint->getTargetRotation());
+				LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
 
 				//BD - Increase the key number since we are adding another key.
 				joint_motion->mRotationCurve.mNumKeys++;
@@ -417,7 +548,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 				LLKeyframeMotion::RotationCurve rot_curve;
 
 				//BD - Create a rotation key and put it into the rotation curve.
-				LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.1f), joint->getTargetRotation());
+				LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
 
 				rot_curve.mNumKeys++;
 				rot_curve.mKeys[count] = rotation_key;
@@ -450,10 +581,10 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 						//BD - Add a bit of time to differentiate the keys.
 						//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 						//     entry we assume its the first keyframe, so simply use 1.f.
-						time = it.second.mTime + 1.0f;
+						time = it.second.mTime + FRAMETIME;
 
 						//BD - Create a rotation key and put it into the rotation curve.
-						LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.1f), joint->getTargetRotation());
+						LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
 
 						rot_curve.mNumKeys++;
 						rot_curve.mKeys[count] = rotation_key;
@@ -463,6 +594,8 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 
 				joint_motion->mRotationCurve = rot_curve;
 			}
+
+			keys = joint_motion->mRotationCurve.mNumKeys;
 
 			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
 			if (joint_state->getUsage() ^ LLJointState::ROT)
@@ -480,10 +613,11 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 					//BD - Add a bit of time to differentiate the keys.
 					//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 					//     entry we assume its the first keyframe, so simply use 1.f.
-					time = joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys].mTime + 1.0f;
+					if (joint_motion->mPositionCurve.mNumKeys > 0)
+						time = joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys].mTime + FRAMETIME;
 
 					//BD - Create a position key and put it into the position curve.
-					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.1f), joint->getTargetPosition());
+					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
 
 					//BD - Increase the key number since we are adding another key.
 					joint_motion->mPositionCurve.mNumKeys++;
@@ -496,7 +630,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 					LLKeyframeMotion::PositionCurve pos_curve;
 
 					//BD - Create a position key and put it into the position curve.
-					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.1f), joint->getTargetPosition());
+					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
 
 					pos_curve.mNumKeys++;
 					pos_curve.mKeys[count] = position_key;
@@ -529,10 +663,10 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 							//BD - Add a bit of time to differentiate the keys.
 							//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 							//     entry we assume its the first keyframe, so simply use 1.f.
-							time = it.second.mTime + 1.0f;
+							time = it.second.mTime + FRAMETIME;
 
 							//BD - Create a position key and put it into the position curve.
-							LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.1f), joint->getTargetPosition());
+							LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
 
 							pos_curve.mNumKeys++;
 							pos_curve.mKeys[count] = position_key;
@@ -542,6 +676,8 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 
 					joint_motion->mPositionCurve = pos_curve;
 				}
+
+				keys = joint_motion->mPositionCurve.mNumKeys;
 
 				LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
 				if (joint_state->getUsage() ^ LLJointState::POS)
@@ -553,7 +689,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 		else if (modifier_idx == 2)
 		{
 			//BD - Create a scale key and put it into the scale curve.
-			LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.1f), joint->getScale());
+			LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
 
 			//BD - Put the key at the end of the list if SHIFT is held while pressing the add key button.
 			if (multiple || joint_motion->mScaleCurve.mNumKeys == 0 || gKeyboard->currentMask(TRUE) == MASK_SHIFT)
@@ -561,10 +697,11 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 				//BD - Add a bit of time to differentiate the keys.
 				//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 				//     entry we assume its the first keyframe, so simply use 1.f.
-				time = joint_motion->mScaleCurve.mKeys[joint_motion->mScaleCurve.mNumKeys].mTime + 1.0f;
+				if (joint_motion->mScaleCurve.mNumKeys > 0)
+					time = joint_motion->mScaleCurve.mKeys[joint_motion->mScaleCurve.mNumKeys].mTime + FRAMETIME;
 
 				//BD - Create a scale key and put it into the scale curve.
-				LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.1f), joint->getScale());
+				LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
 
 				//BD - Increase the key number since we are adding another key.
 				joint_motion->mScaleCurve.mNumKeys++;
@@ -577,7 +714,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 				LLKeyframeMotion::ScaleCurve scale_curve;
 
 				//BD - Create a scale key and put it into the scale curve.
-				LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.1f), joint->getScale());
+				LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
 
 				scale_curve.mNumKeys++;
 				scale_curve.mKeys[count] = scale_key;
@@ -610,10 +747,10 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 						//BD - Add a bit of time to differentiate the keys.
 						//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
 						//     entry we assume its the first keyframe, so simply use 1.f.
-						time = it.second.mTime + 1.0f;
+						time = it.second.mTime + FRAMETIME;
 
 						//BD - Create a scale key and put it into the scale curve.
-						LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.1f), joint->getScale());
+						LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
 
 						scale_curve.mNumKeys++;
 						scale_curve.mKeys[count] = scale_key;
@@ -623,6 +760,8 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 
 				joint_motion->mScaleCurve = scale_curve;
 			}
+
+			keys = joint_motion->mScaleCurve.mNumKeys;
 
 			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
 			if (joint_state->getUsage() ^ LLJointState::SCALE)
@@ -776,8 +915,11 @@ void BDFloaterPoseCreator::onKeyframeTime()
 	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
 	LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
 	S32 si = mKeyframeScroll->getFirstSelectedIndex() + 1;
-	F32 new_time = getChild<LLUICtrl>("key_time")->getValue().asReal();
 	S32 idx = mModifierTabs->getCurrentPanelIndex();
+	//BD - Set times in frames rather than direct time, it's easier for the user.
+	//     We assume 60 FPS for an animation by default.
+	S32 time_frames = getChild<LLUICtrl>("key_time")->getValue().asInteger();
+	F32 time_float = FRAMETIME * time_frames;
 
 	if (idx == 0)
 	{
@@ -786,7 +928,7 @@ void BDFloaterPoseCreator::onKeyframeTime()
 		{
 			if ((S32)it.first == si)
 			{
-				it.second.mTime = ll_round(new_time, 0.1f);
+				it.second.mTime = ll_round(time_float, 0.001f);
 			}
 		}
 	}
@@ -796,7 +938,7 @@ void BDFloaterPoseCreator::onKeyframeTime()
 		{
 			if((S32)it.first == si)
 			{
-				it.second.mTime = ll_round(new_time, 0.1f);
+				it.second.mTime = ll_round(time_float, 0.001f);
 			}
 		}
 	}
@@ -806,12 +948,15 @@ void BDFloaterPoseCreator::onKeyframeTime()
 		{
 			if ((S32)it.first == si)
 			{
-				it.second.mTime = ll_round(new_time, 0.1f);
+				it.second.mTime = ll_round(time_float, 0.001f);
 			}
 		}
 	}
 
-	item->getColumn(0)->setValue(ll_round(new_time, 0.1f));
+	onKeyframeRefresh();
+	mKeyframeScroll->selectNthItem(si - 1);
+	//item->getColumn(0)->setValue(time_frames);
+	onAnimationDurationCheck();
 }
 
 void BDFloaterPoseCreator::onEditAnimationInfo(const LLSD& param)
@@ -916,21 +1061,25 @@ void BDFloaterPoseCreator::onAnimationDurationCheck()
 	{
 		for (auto& it : joint_motion->mRotationCurve.mKeys)
 		{
-			new_time = ll_round(llmax(new_time, it.second.mTime), 0.1f);
+			new_time = ll_round(llmax(new_time, it.second.mTime), 0.001f);
 		}
 
 		for (auto& it : joint_motion->mPositionCurve.mKeys)
 		{
-			new_time = ll_round(llmax(new_time, it.second.mTime), 0.1f);
+			new_time = ll_round(llmax(new_time, it.second.mTime), 0.001f);
 		}
 
 		for (auto& it : joint_motion->mScaleCurve.mKeys)
 		{
-			new_time = ll_round(llmax(new_time, it.second.mTime), 0.1f);
+			new_time = ll_round(llmax(new_time, it.second.mTime), 0.001f);
 		}
 	}
 
 	joint_list->mDuration = new_time;
+	joint_list->mLoopOutPoint = new_time;
+	getChild<LLUICtrl>("keyframe_duration")->setValue(new_time);
+	getChild<LLSpinCtrl>("loop_out")->setMaxValue(new_time);
+	getChild<LLUICtrl>("loop_out")->setValue(new_time);
 }
 
 ////////////////////////////////
@@ -1017,6 +1166,9 @@ void BDFloaterPoseCreator::onPoseReapply()
 		return;
 
 	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
+	if (!joint_list)
+		return;
+
 	for (auto& joint_motion : joint_list->mJointMotionArray)
 	{
 		LLJoint* joint = gAgentAvatarp->getJoint(joint_motion->mJointName);
@@ -1070,7 +1222,7 @@ void BDFloaterPoseCreator::onPoseStart()
 		gDragonStatus->setPosing(true);
 
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-		onJointRotPosScaleReset();
+		//onJointRotPosScaleReset();
 
 		//BD - Do not recreate the pose, keep the animation so we can return to it.
 		if(!gDragonAnimator.mPoseCreatorMotion)
@@ -1583,23 +1735,21 @@ void BDFloaterPoseCreator::onJointControlsRefresh()
 	//BD - Enable position tabs whenever positions are available, scales are always enabled
 	//     unless we are editing attachment bones, rotations on the other hand are only
 	//     enabled when editing joints.
-	LLTabContainer* modifier_tabs = getChild<LLTabContainer>("modifier_tabs");
-	modifier_tabs->setEnabled(item && is_posing && !is_previewing);
-	modifier_tabs->enableTabButton(0, (item && is_posing && index == JOINTS));
-	modifier_tabs->enableTabButton(1, (item && is_posing && can_position));
-	modifier_tabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
-	
-	S32 tab_idx = modifier_tabs->getCurrentPanelIndex();
+	S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
+	mModifierTabs->setEnabled(item && is_posing && !is_previewing);
+	mModifierTabs->enableTabButton(0, (item && is_posing && index == JOINTS));
+	mModifierTabs->enableTabButton(1, (item && is_posing && can_position));
+	mModifierTabs->enableTabButton(2, (item && is_posing && index == COLLISION_VOLUMES));
 	//BD - Swap out of "Position" tab when it's not available.
-	if (!can_position && tab_idx == 1)
+	if (curr_idx == 1 && !mModifierTabs->getTabButtonEnabled(1))
 	{
-		modifier_tabs->selectTab(0);
+		mModifierTabs->selectTab(0);
 	}
 	//BD - Swap out of "Scale" and "Rotation" tabs when they are not available.
-	if ((index != COLLISION_VOLUMES && index != JOINTS && tab_idx == 2)
-		|| (index != JOINTS && tab_idx == 0))
+	if (curr_idx == 2 && !mModifierTabs->getTabButtonEnabled(2)
+		|| curr_idx == 0 && !mModifierTabs->getTabButtonEnabled(0))
 	{
-		modifier_tabs->selectTab(1);
+		mModifierTabs->selectTab(1);
 	}
 
 	F32 max_val = is_pelvis ? 20.f : 1.0f;
@@ -1636,8 +1786,6 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		return;
 
 	LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
-	if (!key_item)
-		return;
 
 	//BD - Neat yet quick and direct way of rotating our bones.
 	//     No more need to include bone rotation orders.
@@ -1646,13 +1794,12 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	LLScrollListCell* cell[3] = { item->getColumn(COL_ROT_X), item->getColumn(COL_ROT_Y), item->getColumn(COL_ROT_Z) };
 	LLQuaternion rot_quat = joint->getTargetRotation();
 	LLMatrix3 rot_mat;
-	F32 old_value;
-	F32 new_value;
+	F32 old_value = cell[axis]->getValue().asReal();
+	F32 new_value = val - old_value;
 	LLVector3 vec3;
+	S32 time = key_item ? key_item->getColumn(0)->getValue().asInteger() : 1;
 
-	old_value = cell[axis]->getValue().asReal();
 	cell[axis]->setValue(ll_round(val, 0.001f));
-	new_value = val - old_value;
 	vec3.mV[axis] = new_value;
 	rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
 	rot_quat = LLQuaternion(rot_mat)*rot_quat;
@@ -1677,6 +1824,8 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
 	LLKeyframeMotion::RotationCurve rot_curve = joint_motion->mRotationCurve;
 
+	//BD - Attempt to find the keyframe first.
+	bool found = false;
 	S32 si = mKeyframeScroll->getFirstSelectedIndex() + 1;
 	for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = joint_motion->mRotationCurve.mKeys.begin();
 		it != joint_motion->mRotationCurve.mKeys.end(); )
@@ -1693,16 +1842,37 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		//if (ll_round(curr_it->second.mTime, 0.1f) == ll_round(time, 0.1f))
 		if ((S32)curr_it->first == si)
 		{
+			found = true;
 			curr_it->second.mRotation = joint->getTargetRotation();
 
 			F32 roll, pitch, yaw;
 			LLQuaternion rot_quat = joint->getTargetRotation();
 			rot_quat.getEulerAngles(&roll, &pitch, &yaw);
-			key_item->getColumn(2)->setValue(ll_round(roll, 0.001f));
-			key_item->getColumn(3)->setValue(ll_round(pitch, 0.001f));
-			key_item->getColumn(4)->setValue(ll_round(yaw, 0.001f));
+			//BD - Should we really be able to get here? The comparison above should already
+			//     prevent ever getting here since a missing selection means we will never
+			//     find a keyframe. I don't trust anything.
+			if (key_item)
+			{
+				key_item->getColumn(2)->setValue(ll_round(roll, 0.001f));
+				key_item->getColumn(3)->setValue(ll_round(pitch, 0.001f));
+				key_item->getColumn(4)->setValue(ll_round(yaw, 0.001f));
+			}
+			break;
 		}
 		++it;
+	}
+
+	//BD - We couldn't find a keyframe, create one automatically.
+	if (!found)
+	{
+		onKeyframeAdd((time * FRAMETIME), joint);
+
+		//BD - Refresh the keyframes.
+		onKeyframeRefresh();
+
+		//BD - Always select the last entry whenever we switch bones to allow quickly making
+		//     changes or adding new keyframes.
+		mKeyframeScroll->selectNthItem(mKeyframeScroll->getChildCount() - 1);
 	}
 	
 	//BD - If we are in Mirror mode, try to find the opposite bone of our currently
@@ -1737,18 +1907,31 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 			LLQuaternion inv_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
 			mirror_joint->setTargetRotation(inv_quat);
 
-			//BD - We also need to find the opposite joint's list entry and change its values to reflect
-			//     the new ones, doing this here is still better than causing a complete refresh.
-			LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
-			if (item2)
+			LLKeyframeMotion::JointMotion* mirror_joint_motion = joint_list->getJointMotion(mirror_joint->getJointNum());
+			LLKeyframeMotion::RotationCurve mirror_rot_curve = mirror_joint_motion->mRotationCurve;
+
+			//BD - Attempt to find the mirror bone's keyframe at the same time.
+			found = false;
+			for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = mirror_joint_motion->mRotationCurve.mKeys.begin();
+				it != mirror_joint_motion->mRotationCurve.mKeys.end(); )
 			{
-				LLScrollListCell* cell2[3] = { item2->getColumn(COL_ROT_X), item2->getColumn(COL_ROT_Y), item2->getColumn(COL_ROT_Z) };
-				S32 i = 0;
-				while (i < 3)
+				std::map<F32, LLKeyframeMotion::RotationKey>::iterator curr_it = it;
+				//BD - We did try to find keyframes by their key time before and it was a disaster
+				//     but we have to do it, also this time we are doing it with integers rather than
+				//     floats.
+				S32 mirror_time = (S32)ll_round((curr_it->second.mTime / FRAMETIME), 1.f);
+				if (mirror_time == time)
 				{
-					cell2[i]->setValue(ll_round(item->getColumn(i + 2)->getValue(), 0.001f));
-					++i;
+					found = true;
+					curr_it->second.mRotation = mirror_joint->getTargetRotation();
+					break;
 				}
+				++it;
+			}
+
+			if (!found)
+			{
+				onKeyframeAdd((time * FRAMETIME), mirror_joint);
 			}
 		}
 	}
@@ -1768,12 +1951,10 @@ void BDFloaterPoseCreator::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 	if (!gDragonAnimator.mPoseCreatorMotion)
 		return;
 
-	LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
-	if (!key_item)
-		return;
-
 	if (!joint->mHasPosition || index < JOINTS)
 		return;
+
+	LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
 
 	//BD - We could just check whether position information is available since only joints
 	//     which can have their position changed will have position information but we
@@ -1781,23 +1962,23 @@ void BDFloaterPoseCreator::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 	//     Bones that can support position
 	//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
 	//     as well as all attachment bones and collision volumes.
-	{
-		F32 val = ctrl->getValue().asReal();
-		LLScrollListCell* cell[3] = { item->getColumn(COL_POS_X), item->getColumn(COL_POS_Y), item->getColumn(COL_POS_Z) };
-		LLVector3 vec3 = { F32(cell[VX]->getValue().asReal()),
-							F32(cell[VY]->getValue().asReal()),
-							F32(cell[VZ]->getValue().asReal()) };
+	F32 val = ctrl->getValue().asReal();
+	LLScrollListCell* cell[3] = { item->getColumn(COL_POS_X), item->getColumn(COL_POS_Y), item->getColumn(COL_POS_Z) };
+	LLVector3 vec3 = { F32(cell[VX]->getValue().asReal()),
+						F32(cell[VY]->getValue().asReal()),
+						F32(cell[VZ]->getValue().asReal()) };
+	S32 time = key_item ? key_item->getColumn(0)->getValue().asInteger() : 1;
 
-		S32 dir = param.asInteger();
-		vec3.mV[dir] = val;
-		cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
-		joint->setTargetPosition(vec3);
-	}
+	S32 dir = param.asInteger();
+	vec3.mV[dir] = val;
+	cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
+	joint->setTargetPosition(vec3);
 
 	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
 	LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
 	LLKeyframeMotion::RotationCurve rot_curve = joint_motion->mRotationCurve;
 
+	bool found = false;
 	S32 si = mKeyframeScroll->getFirstSelectedIndex() + 1;
 	for (std::map<F32, LLKeyframeMotion::PositionKey>::iterator it = joint_motion->mPositionCurve.mKeys.begin();
 		it != joint_motion->mPositionCurve.mKeys.end(); )
@@ -1813,14 +1994,34 @@ void BDFloaterPoseCreator::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 		//     This should work for now until we decide to allow reordering keyframes.
 		if ((S32)curr_it->first == si)
 		{
+			found = true;
 			curr_it->second.mPosition = joint->getTargetPosition();
 
 			LLVector3 pos = joint->getTargetPosition();
-			key_item->getColumn(2)->setValue(ll_round(pos.mV[VX], 0.001f));
-			key_item->getColumn(3)->setValue(ll_round(pos.mV[VY], 0.001f));
-			key_item->getColumn(4)->setValue(ll_round(pos.mV[VZ], 0.001f));
+			//BD - Should we really be able to get here? The comparison above should already
+			//     prevent ever getting here since a missing selection means we will never
+			//     find a keyframe. I don't trust anything.
+			if (key_item)
+			{
+				key_item->getColumn(2)->setValue(ll_round(pos.mV[VX], 0.001f));
+				key_item->getColumn(3)->setValue(ll_round(pos.mV[VY], 0.001f));
+				key_item->getColumn(4)->setValue(ll_round(pos.mV[VZ], 0.001f));
+			}
 		}
 		++it;
+	}
+
+	//BD - We couldn't find a keyframe, create one automatically.
+	if (!found)
+	{
+		onKeyframeAdd((time * FRAMETIME), joint);
+
+		//BD - Refresh the keyframes.
+		onKeyframeRefresh();
+
+		//BD - Always select the last entry whenever we switch bones to allow quickly making
+		//     changes or adding new keyframes.
+		mKeyframeScroll->selectNthItem(mKeyframeScroll->getChildCount() - 1);
 	}
 }
 

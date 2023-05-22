@@ -1126,6 +1126,9 @@ void LLFloaterBvhPreview::onBtnOK(void* userdata)
 				//BD - Anim Upload
 				else
 				{
+					//BD - Save the changes before upload otherwise they are going to get reverted.
+					motionp->dumpToFile(floaterp->mFilenameAndPath, true);
+
 					void *nruserdata = NULL;
 					LLAssetStorage::LLStoreAssetCallback callback;
 					LLResourceUploadInfo::ptr_t uploadInfo(std::make_shared<LLNewFileResourceUploadInfo>(

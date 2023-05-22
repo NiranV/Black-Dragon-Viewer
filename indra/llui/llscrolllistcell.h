@@ -37,6 +37,8 @@
 class LLCheckBoxCtrl;
 class LLSD;
 class LLUIImage;
+//BD
+class LLMultiSlider;
 
 /*
  * Represents a cell in a scrollable table.
@@ -70,6 +72,12 @@ public:
 
 		Optional<LLColor4>			color;
 
+		//BD
+		Optional<S32>				max_sliders;
+		Optional<F32>				min_val;
+		Optional<F32>				max_val;
+		Optional<F32>				increment;
+
 		Params()
 		:	type("type", "text"),
 			column("column"),
@@ -83,7 +91,12 @@ public:
 			font("font", LLFontGL::getFontSansSerifSmall()),
 			font_color("font_color", LLColor4::black),
 			color("color", LLColor4::white),
-			font_halign("halign", LLFontGL::LEFT)
+			font_halign("halign", LLFontGL::LEFT),
+			//BD
+			max_sliders("max_sliders", 60),
+			min_val("min_value", 0),
+			max_val("max_value", 1),
+			increment("increment", 1)
 		{
 			addSynonym(column, "name");
 			addSynonym(font_color, "font-color");
@@ -253,6 +266,35 @@ public:
 private:
     LLPointer<LLUIImage>	mIcon;
     S32						mPad;
+};
+
+
+/*
+* BD - Cell displaying a keyframe multislider.
+*/
+
+class LLScrollListMultiSlider : public LLScrollListCell
+{
+public:
+	LLScrollListMultiSlider(const LLScrollListCell::Params& p);
+	/*virtual*/ ~LLScrollListMultiSlider();
+	/*virtual*/ void	draw(const LLColor4& color, const LLColor4& highlight_color) const;
+	/*virtual*/ const LLSD		getValue() const;
+	/*virtual*/ void	setValue(const LLSD& value);
+
+
+	/*virtual*/ void	setWidth(S32 width);/* { LLScrollListCell::setWidth(width); mTextWidth = width - ; }*/
+
+	F32					getMinValue() const { return mMinValue; }
+	F32					getMaxValue() const { return mMaxValue; }
+
+	void				addKeyframe(F32 time, std::string name);
+	void				deleteKeyframe(std::string name);
+
+private:
+	LLMultiSlider*		mMultiSlider;
+	F32					mMinValue;
+	F32					mMaxValue;
 };
 
 #endif

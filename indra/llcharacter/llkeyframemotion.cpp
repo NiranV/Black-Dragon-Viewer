@@ -1424,6 +1424,20 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 	mJointStates.clear();
 	mJointStates.reserve(num_motions);
 
+	LL_DEBUGS("BVH") << "serializing" << LL_ENDL;
+	LL_DEBUGS("BVH") << "version " << KEYFRAME_MOTION_VERSION << LL_ENDL;
+	LL_DEBUGS("BVH") << "sub_version " << KEYFRAME_MOTION_SUBVERSION << LL_ENDL;
+	LL_DEBUGS("BVH") << "base_priority " << mJointMotionList->mBasePriority << LL_ENDL;
+	LL_DEBUGS("BVH") << "duration " << mJointMotionList->mDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "emote_name " << mJointMotionList->mEmoteName << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop_in_point " << mJointMotionList->mLoopInPoint << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop_out_point " << mJointMotionList->mLoopOutPoint << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop " << mJointMotionList->mLoop << LL_ENDL;
+	LL_DEBUGS("BVH") << "ease_in_duration " << mJointMotionList->mEaseInDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "ease_out_duration " << mJointMotionList->mEaseOutDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "hand_pose " << mJointMotionList->mHandPose << LL_ENDL;
+	LL_DEBUGS("BVH") << "num_joints " << mJointMotionList->getNumJointMotions() << LL_ENDL;
+
 	//-------------------------------------------------------------------------
 	// initialize joint motions
 	//-------------------------------------------------------------------------
@@ -1440,6 +1454,8 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                        << " for animation " << asset_id << LL_ENDL;
 			return FALSE;
 		}
+
+		LL_DEBUGS("BVH") << "Joint " << joint_name << LL_ENDL;
 
 		if (joint_name == "mScreen" || joint_name == "mRoot")
 		{
@@ -1608,6 +1624,8 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 			}
 
 			rCurve->mKeys[time] = rot_key;
+
+			LL_DEBUGS("BVH") << "  rot: t " << rot_key.mTime << " angles " << rot_angles.mV[VX] << "," << rot_angles.mV[VY] << "," << rot_angles.mV[VZ] << LL_ENDL;
 		}
 
 		//---------------------------------------------------------------------
@@ -1703,6 +1721,8 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 			{
 				mJointMotionList->mPelvisBBox.addPoint(pos_key.mPosition);
 			}
+
+			LL_DEBUGS("BVH") << "  pos: t " << pos_key.mTime << " pos " << pos_key.mPosition.mV[VX] << "," << pos_key.mPosition.mV[VY] << "," << pos_key.mPosition.mV[VZ] << LL_ENDL;
 		}
 
 		joint_motion->mUsage = joint_state->getUsage();
@@ -1955,9 +1975,24 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 		}
 	}
 
+	LL_DEBUGS("BVH") << "num_constraints " << mJointMotionList->mConstraints.size() << LL_ENDL;
+
 	// *FIX: support cleanup of old keyframe data
 	LLKeyframeDataCache::addKeyframeData(getID(),  mJointMotionList);
 	mAssetStatus = ASSET_LOADED;
+
+	
+	/*LL_DEBUGS("BVH") << "  chain_length " << shared_constraintp->mChainLength << LL_ENDL;
+	LL_DEBUGS("BVH") << "  constraint_type " << (S32)shared_constraintp->mConstraintType << LL_ENDL;
+	LL_DEBUGS("BVH") << "  source_volume " << source_volume << LL_ENDL;
+	LL_DEBUGS("BVH") << "  source_offset " << shared_constraintp->mSourceConstraintOffset << LL_ENDL;
+	LL_DEBUGS("BVH") << "  target_volume " << target_volume << LL_ENDL;
+	LL_DEBUGS("BVH") << "  target_offset " << shared_constraintp->mTargetConstraintOffset << LL_ENDL;
+	LL_DEBUGS("BVH") << "  target_dir " << shared_constraintp->mTargetConstraintDir << LL_ENDL;
+	LL_DEBUGS("BVH") << "  ease_in_start " << shared_constraintp->mEaseInStartTime << LL_ENDL;
+	LL_DEBUGS("BVH") << "  ease_in_stop " << shared_constraintp->mEaseInStopTime << LL_ENDL;
+	LL_DEBUGS("BVH") << "  ease_out_start " << shared_constraintp->mEaseOutStartTime << LL_ENDL;
+	LL_DEBUGS("BVH") << "  ease_out_stop " << shared_constraintp->mEaseOutStopTime << LL_ENDL;*/
 
 	setupPose();
 
@@ -1986,18 +2021,18 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 	success &= dp.packU32(mJointMotionList->mHandPose, "hand_pose");
 	success &= dp.packU32(mJointMotionList->getNumJointMotions(), "num_joints");
 
-    // _LL_DEBUGS("BVH") << "version " << KEYFRAME_MOTION_VERSION << LL_ENDL;
-    // _LL_DEBUGS("BVH") << "sub_version " << KEYFRAME_MOTION_SUBVERSION << LL_ENDL;
-    // _LL_DEBUGS("BVH") << "base_priority " << mJointMotionList->mBasePriority << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "duration " << mJointMotionList->mDuration << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "emote_name " << mJointMotionList->mEmoteName << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "loop_in_point " << mJointMotionList->mLoopInPoint << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "loop_out_point " << mJointMotionList->mLoopOutPoint << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "loop " << mJointMotionList->mLoop << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "ease_in_duration " << mJointMotionList->mEaseInDuration << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "ease_out_duration " << mJointMotionList->mEaseOutDuration << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "hand_pose " << mJointMotionList->mHandPose << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "num_joints " << mJointMotionList->getNumJointMotions() << LL_ENDL;
+    LL_DEBUGS("BVH") << "version " << KEYFRAME_MOTION_VERSION << LL_ENDL;
+    LL_DEBUGS("BVH") << "sub_version " << KEYFRAME_MOTION_SUBVERSION << LL_ENDL;
+    LL_DEBUGS("BVH") << "base_priority " << mJointMotionList->mBasePriority << LL_ENDL;
+	LL_DEBUGS("BVH") << "duration " << mJointMotionList->mDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "emote_name " << mJointMotionList->mEmoteName << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop_in_point " << mJointMotionList->mLoopInPoint << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop_out_point " << mJointMotionList->mLoopOutPoint << LL_ENDL;
+	LL_DEBUGS("BVH") << "loop " << mJointMotionList->mLoop << LL_ENDL;
+	LL_DEBUGS("BVH") << "ease_in_duration " << mJointMotionList->mEaseInDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "ease_out_duration " << mJointMotionList->mEaseOutDuration << LL_ENDL;
+	LL_DEBUGS("BVH") << "hand_pose " << mJointMotionList->mHandPose << LL_ENDL;
+	LL_DEBUGS("BVH") << "num_joints " << mJointMotionList->getNumJointMotions() << LL_ENDL;
 
 	for (U32 i = 0; i < mJointMotionList->getNumJointMotions(); i++)
 	{
@@ -2006,7 +2041,7 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 		success &= dp.packS32(joint_motionp->mPriority, "joint_priority");
 		success &= dp.packS32(joint_motionp->mRotationCurve.mNumKeys, "num_rot_keys");
 
-		// _LL_DEBUGS("BVH") << "Joint " << joint_motionp->mJointName << LL_ENDL;
+		LL_DEBUGS("BVH") << "Joint " << joint_motionp->mJointName << LL_ENDL;
 		for (RotationCurve::key_map_t::iterator iter = joint_motionp->mRotationCurve.mKeys.begin();
 			 iter != joint_motionp->mRotationCurve.mKeys.end(); ++iter)
 		{
@@ -2025,7 +2060,7 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 			success &= dp.packU16(y, "rot_angle_y");
 			success &= dp.packU16(z, "rot_angle_z");
 
-			// _LL_DEBUGS("BVH") << "  rot: t " << rot_key.mTime << " angles " << rot_angles.mV[VX] <<","<< rot_angles.mV[VY] <<","<< rot_angles.mV[VZ] << LL_ENDL;
+			LL_DEBUGS("BVH") << "  rot: t " << rot_key.mTime << " angles " << rot_angles.mV[VX] <<","<< rot_angles.mV[VY] <<","<< rot_angles.mV[VZ] << LL_ENDL;
 		}
 
 		success &= dp.packS32(joint_motionp->mPositionCurve.mNumKeys, "num_pos_keys");
@@ -2045,12 +2080,12 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 			success &= dp.packU16(y, "pos_y");
 			success &= dp.packU16(z, "pos_z");
 
-			// _LL_DEBUGS("BVH") << "  pos: t " << pos_key.mTime << " pos " << pos_key.mPosition.mV[VX] <<","<< pos_key.mPosition.mV[VY] <<","<< pos_key.mPosition.mV[VZ] << LL_ENDL;
+			LL_DEBUGS("BVH") << "  pos: t " << pos_key.mTime << " pos " << pos_key.mPosition.mV[VX] <<","<< pos_key.mPosition.mV[VY] <<","<< pos_key.mPosition.mV[VZ] << LL_ENDL;
 		}
 	}	
 
 	success &= dp.packS32(mJointMotionList->mConstraints.size(), "num_constraints");
-    // _LL_DEBUGS("BVH") << "num_constraints " << mJointMotionList->mConstraints.size() << LL_ENDL;
+    LL_DEBUGS("BVH") << "num_constraints " << mJointMotionList->mConstraints.size() << LL_ENDL;
 	for (JointMotionList::constraint_list_t::const_iterator iter = mJointMotionList->mConstraints.begin();
 		 iter != mJointMotionList->mConstraints.end(); ++iter)
 	{
