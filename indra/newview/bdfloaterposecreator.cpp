@@ -689,7 +689,7 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 		else if (modifier_idx == 2)
 		{
 			//BD - Create a scale key and put it into the scale curve.
-			LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
+			//LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
 
 			//BD - Put the key at the end of the list if SHIFT is held while pressing the add key button.
 			if (multiple || joint_motion->mScaleCurve.mNumKeys == 0 || gKeyboard->currentMask(TRUE) == MASK_SHIFT)
@@ -1222,7 +1222,7 @@ void BDFloaterPoseCreator::onPoseStart()
 		gDragonStatus->setPosing(true);
 
 		gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
-		//onJointRotPosScaleReset();
+		onJointRotPosScaleReset();
 
 		//BD - Do not recreate the pose, keep the animation so we can return to it.
 		if(!gDragonAnimator.mPoseCreatorMotion)
