@@ -686,8 +686,8 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_SCALE_Z]["value"] = ll_round(scale.mV[VZ], 0.001f);
 		}
 
-		LLScrollListItem* item = mJointScrolls[COLLISION_VOLUMES]->addElement(row);
-		item->setUserdata(joint);
+		LLScrollListItem* new_item = mJointScrolls[COLLISION_VOLUMES]->addElement(row);
+		new_item->setUserdata(joint);
 	}
 
 	//BD - Attachment Bones
@@ -1060,11 +1060,11 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 	{
 		//BD - We use this bool to determine whether or not we'll be in need for a full skeleton
 		//     reset and to prevent checking for it every single time.
-		for (auto item : mJointScrolls[it]->getAllData())
+		for (auto new_item : mJointScrolls[it]->getAllData())
 		{
-			if (item)
+			if (new_item)
 			{
-				LLJoint* joint = (LLJoint*)item->getUserdata();
+				LLJoint* joint = (LLJoint*)new_item->getUserdata();
 				if (joint)
 				{
 					//BD - Resetting rotations first if there are any.
@@ -1134,9 +1134,9 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					//     as well as all attachment bones and collision volumes.
 					if (joint->mHasPosition || it > JOINTS)
 					{
-						LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-						LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-						LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+						LLScrollListCell* col_pos_x = new_item->getColumn(COL_POS_X);
+						LLScrollListCell* col_pos_y = new_item->getColumn(COL_POS_Y);
+						LLScrollListCell* col_pos_z = new_item->getColumn(COL_POS_Z);
 						LLVector3 pos = mDefaultPositions[joint->getName()];
 
 						col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
@@ -1146,9 +1146,9 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					}
 
 					//BD - Resetting scales last.
-					LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
-					LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
-					LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
+					LLScrollListCell* col_scale_x = new_item->getColumn(COL_SCALE_X);
+					LLScrollListCell* col_scale_y = new_item->getColumn(COL_SCALE_Y);
+					LLScrollListCell* col_scale_z = new_item->getColumn(COL_SCALE_Z);
 					LLVector3 scale = mDefaultScales[joint->getName()];
 
 					col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
@@ -1183,17 +1183,17 @@ void BDFloaterPoser::onJointRotationReset()
 		motion->setInterpolationType(2);
 	}
 
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
+	for (auto new_item : mJointScrolls[JOINTS]->getAllSelected())
 	{
-		if (item)
+		if (new_item)
 		{
-			LLJoint* joint = (LLJoint*)item->getUserdata();
+			LLJoint* joint = (LLJoint*)new_item->getUserdata();
 			if (joint)
 			{
 				LLQuaternion quat;
-				LLScrollListCell* col_x = item->getColumn(COL_ROT_X);
-				LLScrollListCell* col_y = item->getColumn(COL_ROT_Y);
-				LLScrollListCell* col_z = item->getColumn(COL_ROT_Z);
+				LLScrollListCell* col_x = new_item->getColumn(COL_ROT_X);
+				LLScrollListCell* col_y = new_item->getColumn(COL_ROT_Y);
+				LLScrollListCell* col_z = new_item->getColumn(COL_ROT_Z);
 
 				col_x->setValue(0.000f);
 				col_y->setValue(0.000f);
@@ -2157,7 +2157,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar && !avatar->isControlAvatar()
-			/*&& avatar->isSelf()*/)
+			&& avatar->isSelf())
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
