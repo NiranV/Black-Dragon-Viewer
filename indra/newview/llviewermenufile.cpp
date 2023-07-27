@@ -37,6 +37,8 @@
 #include "llbuycurrencyhtml.h"
 #include "llfloatermap.h"
 #include "llfloatermodelpreview.h"
+#include "llmaterialeditor.h"
+#include "llfloaterperms.h"
 #include "llfloatersnapshot.h"
 #include "llfloatersimpleoutfitsnapshot.h"
 #include "llimage.h"
@@ -48,9 +50,9 @@
 #include "llinventorymodel.h"	// gInventory
 #include "llpluginclassmedia.h"
 #include "llresourcedata.h"
-#include "lltoast.h"
-#include "llfloaterperms.h"
 #include "llstatusbar.h"
+#include "lltinygltfhelper.h"
+#include "lltoast.h"
 #include "llviewercontrol.h"	// gSavedSettings
 #include "llviewertexturelist.h"
 #include "lluictrlfactory.h"
@@ -106,6 +108,19 @@ class LLFileEnableUploadModel : public view_listener_t
 	}
 };
 
+class LLFileEnableUploadMaterial : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        if (gAgent.getRegionCapability("UpdateMaterialAgentInventory").empty())
+        {
+            return false;
+        }
+
+        return true;
+    }
+};
+
 class LLMeshEnabled : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
@@ -129,7 +144,10 @@ std::queue<LLFilePickerThread*> LLFilePickerThread::sDeadQ;
 void LLFilePickerThread::getFile()
 {
 #if LL_WINDOWS
+    // Todo: get rid of LLFilePickerThread and make this modeless
 	start();
+#elif LL_DARWIN
+    runModeless();
 #else
 	run();
 #endif
@@ -172,7 +190,82 @@ void LLFilePickerThread::run()
 		LLMutexLock lock(sMutex);
 		sDeadQ.push(this);
 	}
+}
 
+void LLFilePickerThread::runModeless()
+{
+    BOOL result = FALSE;
+    LLFilePicker picker;
+
+    if (mIsSaveDialog)
+    {
+        result = picker.getSaveFileModeless(mSaveFilter,
+                                            mProposedName,
+                                            modelessStringCallback,
+                                            this);
+    }
+    else if (mIsGetMultiple)
+    {
+        result = picker.getMultipleOpenFilesModeless(mLoadFilter, modelessVectorCallback, this);
+    }
+    else
+    {
+        result = picker.getOpenFileModeless(mLoadFilter, modelessVectorCallback, this);
+    }
+    
+    if (!result)
+    {
+        LLMutexLock lock(sMutex);
+        sDeadQ.push(this);
+    }
+}
+
+void LLFilePickerThread::modelessStringCallback(bool success,
+                                          std::string &response,
+                                          void *user_data)
+{
+    LLFilePickerThread *picker = (LLFilePickerThread*)user_data;
+    if (success)
+    {
+        picker->mResponses.push_back(response);
+    }
+    
+    {
+        LLMutexLock lock(sMutex);
+        sDeadQ.push(picker);
+    }
+}
+
+void LLFilePickerThread::modelessVectorCallback(bool success,
+                                          std::vector<std::string> &responses,
+                                          void *user_data)
+{
+    LLFilePickerThread *picker = (LLFilePickerThread*)user_data;
+    if (success)
+    {
+        if (picker->mIsGetMultiple)
+        {
+            picker->mResponses = responses;
+        }
+        else
+        {
+            std::vector<std::string>::iterator iter = responses.begin();
+            while (iter != responses.end())
+            {
+                if (!iter->empty())
+                {
+                    picker->mResponses.push_back(*iter);
+                    break;
+                }
+                iter++;
+            }
+        }
+    }
+    
+    {
+        LLMutexLock lock(sMutex);
+        sDeadQ.push(picker);
+    }
 }
 
 //static
@@ -240,6 +333,16 @@ LLFilePickerReplyThread::~LLFilePickerReplyThread()
 	delete mFailureSignal;
 }
 
+void LLFilePickerReplyThread::startPicker(const file_picked_signal_t::slot_type & cb, LLFilePicker::ELoadFilter filter, bool get_multiple, const file_picked_signal_t::slot_type & failure_cb)
+{
+    (new LLFilePickerReplyThread(cb, filter, get_multiple, failure_cb))->getFile();
+}
+
+void LLFilePickerReplyThread::startPicker(const file_picked_signal_t::slot_type & cb, LLFilePicker::ESaveFilter filter, const std::string & proposed_name, const file_picked_signal_t::slot_type & failure_cb)
+{
+    (new LLFilePickerReplyThread(cb, filter, proposed_name, failure_cb))->getFile();
+}
+
 void LLFilePickerReplyThread::notify(const std::vector<std::string>& filenames)
 {
 	if (filenames.empty())
@@ -283,14 +386,12 @@ void LLMediaFilePicker::notify(const std::vector<std::string>& filenames)
 static std::string SOUND_EXTENSIONS = "wav";
 static std::string IMAGE_EXTENSIONS = "tga bmp jpg jpeg png";
 static std::string ANIM_EXTENSIONS =  "bvh anim";
-#ifdef _CORY_TESTING
-static std::string GEOMETRY_EXTENSIONS = "slg";
-#endif
 static std::string XML_EXTENSIONS = "xml";
 static std::string SLOBJECT_EXTENSIONS = "slobject";
 #endif
 static std::string ALL_FILE_EXTENSIONS = "*.*";
 static std::string MODEL_EXTENSIONS = "dae";
+static std::string MATERIAL_EXTENSIONS = "gltf glb";
 
 std::string build_extensions_string(LLFilePicker::ELoadFilter filter)
 {
@@ -307,10 +408,8 @@ std::string build_extensions_string(LLFilePicker::ELoadFilter filter)
 		return SLOBJECT_EXTENSIONS;
 	case LLFilePicker::FFLOAD_MODEL:
 		return MODEL_EXTENSIONS;
-#ifdef _CORY_TESTING
-	case LLFilePicker::FFLOAD_GEOMETRY:
-		return GEOMETRY_EXTENSIONS;
-#endif
+    case LLFilePicker::FFLOAD_MATERIAL:
+        return MATERIAL_EXTENSIONS;
 	case LLFilePicker::FFLOAD_XML:
 	    return XML_EXTENSIONS;
     case LLFilePicker::FFLOAD_ALL:
@@ -458,19 +557,37 @@ void do_bulk_upload(std::vector<std::string> filenames, const LLSD& notification
 		if (LLResourceUploadInfo::findAssetTypeAndCodecOfExtension(ext, asset_type, codec) &&
 			LLAgentBenefitsMgr::current().findUploadCost(asset_type, expected_upload_cost))
 		{
-		LLResourceUploadInfo::ptr_t uploadInfo(new LLNewFileResourceUploadInfo(
-			filename,
-			asset_name,
-			asset_name, 0,
-			LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
-			LLFloaterPerms::getNextOwnerPerms("Uploads"),
-			LLFloaterPerms::getGroupPerms("Uploads"),
-			LLFloaterPerms::getEveryonePerms("Uploads"),
-			expected_upload_cost));
+            LLResourceUploadInfo::ptr_t uploadInfo(new LLNewFileResourceUploadInfo(
+                filename,
+                asset_name,
+                asset_name, 0,
+                LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
+                LLFloaterPerms::getNextOwnerPerms("Uploads"),
+                LLFloaterPerms::getGroupPerms("Uploads"),
+                LLFloaterPerms::getEveryonePerms("Uploads"),
+                expected_upload_cost));
 
-		upload_new_resource(uploadInfo);
-	}
-}
+            upload_new_resource(uploadInfo);
+        }
+
+        // gltf does not use normal upload procedure
+        if (ext == "gltf" || ext == "glb")
+        {
+            tinygltf::Model model;
+            if (LLTinyGLTFHelper::loadModel(filename, model))
+            {
+                S32 materials_in_file = model.materials.size();
+
+                for (S32 i = 0; i < materials_in_file; i++)
+                {
+                    // Todo:
+                    // 1. Decouple bulk upload from material editor
+                    // 2. Take into account possiblity of identical textures
+                    LLMaterialEditor::uploadMaterialFromModel(filename, model, i);
+                }
+            }
+        }
+    }
 }
 
 bool get_bulk_upload_expected_cost(const std::vector<std::string>& filenames, S32& total_cost, S32& file_count, S32& bvh_count)
@@ -498,6 +615,50 @@ bool get_bulk_upload_expected_cost(const std::vector<std::string>& filenames, S3
 			total_cost += cost;
 			file_count++;
 		}
+
+        if (ext == "gltf" || ext == "glb")
+        {
+            S32 texture_upload_cost = LLAgentBenefitsMgr::current().getTextureUploadCost();
+            
+            tinygltf::Model model;
+
+            if (LLTinyGLTFHelper::loadModel(filename, model))
+            {
+                S32 materials_in_file = model.materials.size();
+
+                for (S32 i = 0; i < materials_in_file; i++)
+                {
+                    LLPointer<LLFetchedGLTFMaterial> material = new LLFetchedGLTFMaterial();
+                    std::string material_name;
+                    bool decode_successful = LLTinyGLTFHelper::getMaterialFromModel(filename, model, i, material.get(), material_name);
+
+                    if (decode_successful)
+                    {
+                        // Todo: make it account for possibility of same texture in different
+                        // materials and even in scope of same material
+                        S32 texture_count = 0;
+                        if (material->mTextureId[LLGLTFMaterial::GLTF_TEXTURE_INFO_BASE_COLOR].notNull())
+                        {
+                            texture_count++;
+                        }
+                        if (material->mTextureId[LLGLTFMaterial::GLTF_TEXTURE_INFO_METALLIC_ROUGHNESS].notNull())
+                        {
+                            texture_count++;
+                        }
+                        if (material->mTextureId[LLGLTFMaterial::GLTF_TEXTURE_INFO_NORMAL].notNull())
+                        {
+                            texture_count++;
+                        }
+                        if (material->mTextureId[LLGLTFMaterial::GLTF_TEXTURE_INFO_EMISSIVE].notNull())
+                        {
+                            texture_count++;
+                        }
+                        total_cost += texture_count * texture_upload_cost;
+                        file_count++;
+                    }
+                }
+            }
+        }
 	}
 	
     return file_count > 0;
@@ -567,7 +728,7 @@ class LLFileUploadImage : public view_listener_t
 		{
 			gAgentCamera.changeCameraToDefault();
 		}
-		(new LLFilePickerReplyThread(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_IMAGE, false))->getFile();
+		LLFilePickerReplyThread::startPicker(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_IMAGE, false);
 		return true;
 	}
 };
@@ -580,7 +741,16 @@ class LLFileUploadModel : public view_listener_t
         return TRUE;
 	}
 };
-	
+
+class LLFileUploadMaterial : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        LLMaterialEditor::importMaterial();
+        return TRUE;
+    }
+};
+
 class LLFileUploadSound : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
@@ -589,7 +759,7 @@ class LLFileUploadSound : public view_listener_t
 		{
 			gAgentCamera.changeCameraToDefault();
 		}
-		(new LLFilePickerReplyThread(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_WAV, false))->getFile();
+		LLFilePickerReplyThread::startPicker(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_WAV, false);
 		return true;
 	}
 };
@@ -602,7 +772,7 @@ class LLFileUploadAnim : public view_listener_t
 		{
 			gAgentCamera.changeCameraToDefault();
 		}
-		(new LLFilePickerReplyThread(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_ANIM, false))->getFile();
+		LLFilePickerReplyThread::startPicker(boost::bind(&upload_single_file, _1, _2), LLFilePicker::FFLOAD_ANIM, false);
 		return true;
 	}
 };
@@ -615,7 +785,7 @@ class LLFileUploadBulk : public view_listener_t
 		{
 			gAgentCamera.changeCameraToDefault();
 		}
-		(new LLFilePickerReplyThread(boost::bind(&upload_bulk, _1, _2), LLFilePicker::FFLOAD_ALL, true))->getFile();
+		LLFilePickerReplyThread::startPicker(boost::bind(&upload_bulk, _1, _2), LLFilePicker::FFLOAD_ALL, true);
 		return true;
 	}
 };
@@ -1115,6 +1285,7 @@ void init_menu_file()
 	view_listener_t::addCommit(new LLFileUploadSound(), "File.UploadSound");
 	view_listener_t::addCommit(new LLFileUploadAnim(), "File.UploadAnim");
 	view_listener_t::addCommit(new LLFileUploadModel(), "File.UploadModel");
+    view_listener_t::addCommit(new LLFileUploadMaterial(), "File.UploadMaterial");
 	view_listener_t::addCommit(new LLFileUploadBulk(), "File.UploadBulk");
 	view_listener_t::addCommit(new LLFileCloseWindow(), "File.CloseWindow");
 	view_listener_t::addCommit(new LLFileCloseAllWindows(), "File.CloseAllWindows");
@@ -1125,6 +1296,7 @@ void init_menu_file()
 
 	view_listener_t::addEnable(new LLFileEnableUpload(), "File.EnableUpload");
 	view_listener_t::addEnable(new LLFileEnableUploadModel(), "File.EnableUploadModel");
+    view_listener_t::addEnable(new LLFileEnableUploadMaterial(), "File.EnableUploadMaterial");
 	view_listener_t::addMenu(new LLMeshEnabled(), "File.MeshEnabled");
 	view_listener_t::addMenu(new LLMeshUploadVisible(), "File.VisibleUploadModel");
 

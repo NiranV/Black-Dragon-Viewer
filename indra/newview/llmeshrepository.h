@@ -194,6 +194,63 @@ private:
 	LLFrameTimer mTimer;
 };
 
+class LLMeshHeader
+{
+public:
+
+    LLMeshHeader() {}
+
+    explicit LLMeshHeader(const LLSD& header)
+    {
+        fromLLSD(header);
+    }
+
+    void fromLLSD(const LLSD& header)
+    {
+        const char* lod[] =
+        {
+            "lowest_lod",
+            "low_lod",
+            "medium_lod",
+            "high_lod"
+        };
+
+        mVersion = header["version"].asInteger();
+
+        for (U32 i = 0; i < 4; ++i)
+        {
+            mLodOffset[i] = header[lod[i]]["offset"].asInteger();
+            mLodSize[i] = header[lod[i]]["size"].asInteger();
+        }
+
+        mSkinOffset = header["skin"]["offset"].asInteger();
+        mSkinSize = header["skin"]["size"].asInteger();
+
+        mPhysicsConvexOffset = header["physics_convex"]["offset"].asInteger();
+        mPhysicsConvexSize = header["physics_convex"]["size"].asInteger();
+
+        mPhysicsMeshOffset = header["physics_mesh"]["offset"].asInteger();
+        mPhysicsMeshSize = header["physics_mesh"]["size"].asInteger();
+
+        m404 = header.has("404");
+    }
+
+    S32 mVersion = -1;
+    S32 mSkinOffset = -1;
+    S32 mSkinSize = -1;
+
+    S32 mPhysicsConvexOffset = -1;
+    S32 mPhysicsConvexSize = -1;
+
+    S32 mPhysicsMeshOffset = -1;
+    S32 mPhysicsMeshSize = -1;
+
+    S32 mLodOffset[4] = { -1 };
+    S32 mLodSize[4] = { -1 };
+
+    bool m404 = false;
+};
+
 class LLMeshRepoThread : public LLThread
 {
 public:
@@ -210,10 +267,8 @@ public:
 	LLCondition* mSignal;
 
 	//map of known mesh headers
-	typedef std::map<LLUUID, LLSD> mesh_header_map;
+	typedef boost::unordered_map<LLUUID, std::pair<U32, LLMeshHeader>> mesh_header_map; // pair is header_size and data
 	mesh_header_map mMeshHeader;
-
-	std::map<LLUUID, U32> mMeshHeaderSize;
 
 	class HeaderRequest : public RequestStats
 	{
@@ -283,10 +338,13 @@ public:
 	};
 
 	//set of requested skin info
-	std::set<UUIDBasedRequest> mSkinRequests;
-
+	std::deque<UUIDBasedRequest> mSkinRequests;
+	
 	// list of completed skin info requests
-	std::list<LLMeshSkinInfo> mSkinInfoQ;
+	std::deque<LLMeshSkinInfo*> mSkinInfoQ;
+
+	// list of skin info requests that have failed or are unavailaibe
+	std::deque<UUIDBasedRequest> mSkinUnavailableQ;
 
 	//set of requested decompositions
 	std::set<UUIDBasedRequest> mDecompositionRequests;
@@ -304,13 +362,13 @@ public:
 	std::queue<LODRequest> mLODReqQ;
 
 	//queue of unavailable LODs (either asset doesn't exist or asset doesn't have desired LOD)
-	std::queue<LODRequest> mUnavailableQ;
+	std::deque<LODRequest> mUnavailableQ;
 
 	//queue of successfully loaded meshes
-	std::queue<LoadedMesh> mLoadedQ;
+	std::deque<LoadedMesh> mLoadedQ;
 
 	//map of pending header requests and currently desired LODs
-	typedef std::map<LLVolumeParams, std::vector<S32> > pending_lod_map;
+	typedef boost::unordered_map<LLUUID, std::vector<S32> > pending_lod_map;
 	pending_lod_map mPendingLOD;
 
 	// llcorehttp library interface objects.
@@ -321,7 +379,6 @@ public:
 	LLCore::HttpHeaders::ptr_t			mHttpHeaders;
 	LLCore::HttpRequest::policy_t		mHttpPolicyClass;
 	LLCore::HttpRequest::policy_t		mHttpLargePolicyClass;
-	LLCore::HttpRequest::priority_t		mHttpPriority;
 
 	typedef std::set<LLCore::HttpHandler::ptr_t> http_request_set;
 	http_request_set					mHttpRequestSet;			// Outstanding HTTP requests
@@ -344,6 +401,8 @@ public:
 	bool decompositionReceived(const LLUUID& mesh_id, U8* data, S32 data_size);
 	EMeshProcessingResult physicsShapeReceived(const LLUUID& mesh_id, U8* data, S32 data_size);
 	bool hasPhysicsShapeInHeader(const LLUUID& mesh_id);
+    bool hasSkinInfoInHeader(const LLUUID& mesh_id);
+    bool hasHeader(const LLUUID& mesh_id);
 
 	void notifyLoadedMeshes();
 	S32 getActualMeshLOD(const LLVolumeParams& mesh_params, S32 lod);
@@ -354,7 +413,7 @@ public:
 
 	//send request for skin info, returns true if header info exists 
 	//  (should hold onto mesh_id and try again later if header info does not exist)
-	bool fetchMeshSkinInfo(const LLUUID& mesh_id);
+	bool fetchMeshSkinInfo(const LLUUID& mesh_id, bool can_retry = true);
 
 	//send request for decomposition, returns true if header info exists 
 	//  (should hold onto mesh_id and try again later if header info does not exist)
@@ -489,7 +548,6 @@ private:
 	LLCore::HttpOptions::ptr_t			mHttpOptions;
 	LLCore::HttpHeaders::ptr_t			mHttpHeaders;
 	LLCore::HttpRequest::policy_t		mHttpPolicyClass;
-	LLCore::HttpRequest::priority_t		mHttpPriority;
 };
 
 // Params related to streaming cost, render cost, and scene complexity tracking.
@@ -500,8 +558,10 @@ public:
 
 	bool init(const LLSD& header);
 
-	// Size for given LOD
-	S32 getSizeByLOD(S32 lod);
+    bool init(const LLMeshHeader& header);
+    
+    // Size for given LOD
+    S32 getSizeByLOD(S32 lod);
 
 	// Sum of all LOD sizes.
 	S32 getSizeTotal();
@@ -532,11 +592,11 @@ public:
 	F32 getTriangleBasedStreamingCost();
 
 private:
-	// From the "size" field of the mesh header. LOD 0=lowest, 3=highest.
-	std::vector<S32> mSizeByLOD;
+    // From the "size" field of the mesh header. LOD 0=lowest, 3=highest.
+    std::array<S32,4> mSizeByLOD;
 
-	// Estimated triangle counts derived from the LOD sizes. LOD 0=lowest, 3=highest.
-	std::vector<F32> mEstTrisByLOD;
+    // Estimated triangle counts derived from the LOD sizes. LOD 0=lowest, 3=highest.
+    std::array<F32,4> mEstTrisByLOD;
 };
 
 class LLMeshRepository
@@ -567,9 +627,9 @@ public:
 	F32 getEstTrianglesMax(LLUUID mesh_id);
 	F32 getEstTrianglesStreamingCost(LLUUID mesh_id);
 	F32 getStreamingCostLegacy(LLUUID mesh_id, F32 radius, S32* bytes = NULL, S32* visible_bytes = NULL, S32 detail = -1, F32 *unscaled_value = NULL);
-	static F32 getStreamingCostLegacy(LLSD& header, F32 radius, S32* bytes = NULL, S32* visible_bytes = NULL, S32 detail = -1, F32 *unscaled_value = NULL);
-	bool getCostData(LLUUID mesh_id, LLMeshCostData& data);
-	bool getCostData(LLSD& header, LLMeshCostData& data);
+	static F32 getStreamingCostLegacy(LLMeshHeader& header, F32 radius, S32* bytes = NULL, S32* visible_bytes = NULL, S32 detail = -1, F32 *unscaled_value = NULL);
+    bool getCostData(LLUUID mesh_id, LLMeshCostData& data);
+    bool getCostData(LLMeshHeader& header, LLMeshCostData& data);
 
 	LLMeshRepository();
 
@@ -577,22 +637,27 @@ public:
 	void shutdown();
 	S32 update();
 
+	void unregisterMesh(LLVOVolume* volume);
 	//mesh management functions
 	S32 loadMesh(LLVOVolume* volume, const LLVolumeParams& mesh_params, S32 detail = 0, S32 last_lod = -1);
 
 	void notifyLoadedMeshes();
 	void notifyMeshLoaded(const LLVolumeParams& mesh_params, LLVolume* volume);
 	void notifyMeshUnavailable(const LLVolumeParams& mesh_params, S32 lod);
-	void notifySkinInfoReceived(LLMeshSkinInfo& info);
+	void notifySkinInfoReceived(LLMeshSkinInfo* info);
+	void notifySkinInfoUnavailable(const LLUUID& info);
 	void notifyDecompositionReceived(LLModel::Decomposition* info);
 
 	S32 getActualMeshLOD(const LLVolumeParams& mesh_params, S32 lod);
-	static S32 getActualMeshLOD(LLSD& header, S32 lod);
-	const LLMeshSkinInfo* getSkinInfo(const LLUUID& mesh_id, const LLVOVolume* requesting_obj = nullptr);
+	static S32 getActualMeshLOD(LLMeshHeader& header, S32 lod);
+	const LLMeshSkinInfo* getSkinInfo(const LLUUID& mesh_id, LLVOVolume* requesting_obj = nullptr);
 	LLModel::Decomposition* getDecomposition(const LLUUID& mesh_id);
 	void fetchPhysicsShape(const LLUUID& mesh_id);
 	bool hasPhysicsShape(const LLUUID& mesh_id);
 
+    bool hasSkinInfo(const LLUUID& mesh_id);
+    bool hasHeader(const LLUUID& mesh_id);
+	
 	void buildHull(const LLVolumeParams& params, S32 detail);
 	void buildPhysicsMesh(LLModel::Decomposition& decomp);
 
@@ -612,11 +677,11 @@ public:
 	static void metricsStop();
 	static void metricsProgress(unsigned int count);
 	static void metricsUpdate();
-
-	typedef std::map<LLVolumeParams, std::set<LLUUID> > mesh_load_map;
+	
+	typedef boost::unordered_map<LLUUID, std::vector<LLVOVolume*> > mesh_load_map;
 	mesh_load_map mLoadingMeshes[4];
-
-	typedef std::unordered_map<LLUUID, LLMeshSkinInfo> skin_map;
+	
+	typedef std::unordered_map<LLUUID, LLPointer<LLMeshSkinInfo>> skin_map;
 	skin_map mSkinMap;
 
 	typedef std::map<LLUUID, LLModel::Decomposition*> decomposition_map;
@@ -627,7 +692,7 @@ public:
 	std::vector<LLMeshRepoThread::LODRequest> mPendingRequests;
 
 	//list of mesh ids awaiting skin info
-	typedef std::map<LLUUID, std::set<LLUUID> > skin_load_map;
+	typedef boost::unordered_map<LLUUID, std::vector<LLVOVolume*> > skin_load_map;
 	skin_load_map mLoadingSkins;
 
 	//list of mesh ids that need to send skin info fetch requests
@@ -651,6 +716,8 @@ public:
 	std::vector<LLMeshUploadThread*> mUploadWaitList;
 
 	LLPhysicsDecomp* mDecompThread;
+
+	LLFrameTimer     mSkinInfoCullTimer;
 
 	class inventory_data
 	{

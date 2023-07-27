@@ -135,6 +135,7 @@ with the same filename but different name
   <texture name="Command_Move_Icon"         file_name="toolbar_icons/move.png"         preload="true" />
   <texture name="Command_Environments_Icon" file_name="toolbar_icons/environments.png" preload="true" />
   <texture name="Command_People_Icon"       file_name="toolbar_icons/people.png"       preload="true" />
+  <texture name="Command_Performance_Icon"  file_name="toolbar_icons/performance.png"  preload="true" />
   <texture name="Command_Picks_Icon"        file_name="toolbar_icons/picks.png"        preload="true" />
   <texture name="Command_Places_Icon"       file_name="toolbar_icons/places.png"       preload="true" />
   <texture name="Command_Preferences_Icon"  file_name="toolbar_icons/preferences.png"  preload="true" />
@@ -286,6 +287,7 @@ with the same filename but different name
   <texture name="Inv_LostClosed" file_name="icons/Inv_LostClosed.png" preload="false" />
   <texture name="Inv_LostOpen" file_name="icons/Inv_LostOpen.png" preload="false" />
   <texture name="Inv_Landmark" file_name="icons/Inv_Landmark.png" preload="false" />
+  <texture name="Inv_Material" file_name="icons/Inv_Material.png" preload="false" />
   <texture name="Inv_Mesh" file_name="icons/Inv_Mesh.png" preload="false" />  
   <texture name="Inv_Notecard" file_name="icons/Inv_Notecard.png" preload="false" />
   <texture name="Inv_Object" file_name="icons/Inv_Object.png" preload="false" />
@@ -492,6 +494,13 @@ with the same filename but different name
   <texture name="ProgressBar" file_name="widgets/ProgressBar.png" preload="true" scale.left="3" scale.top="11" scale.right="49" scale.bottom="3" />
   <texture name="ProgressTrack" file_name="widgets/ProgressTrack.png" preload="true" scale.left="3" scale.top="10" scale.right="149" scale.bottom="3" />
 
+
+  <texture name="Profile_Badge_Beta" file_name="icons/profile_badge_beta.png" preload="true"/>
+  <texture name="Profile_Badge_Beta_Lifetime" file_name="icons/profile_badge_beta_lifetime.png" preload="true"/>
+  <texture name="Profile_Badge_Lifetime" file_name="icons/profile_badge_lifetime.png" preload="true"/>
+  <texture name="Profile_Badge_Linden" file_name="icons/profile_badge_linden.png" preload="true"/>
+  <texture name="Profile_Badge_Pplus_Lifetime" file_name="icons/profile_badge_pplus_lifetime.png" preload="true"/>
+  <texture name="Profile_Badge_Premium_Lifetime" file_name="icons/profile_badge_premium_lifetime.png" preload="true"/>
   <texture name="Profile_Group_Visibility_Off" file_name="icons/profile_group_visibility_eye_off.png" preload="true"/>
   <texture name="Profile_Group_Visibility_Off_Pressed" file_name="icons/profile_group_visibility_eye_off_pressed.png" preload="true"/>
   <texture name="Profile_Group_Visibility_On" file_name="icons/profile_group_visibility_eye_on.png" preload="true"/>
@@ -720,6 +729,9 @@ with the same filename but different name
   <texture name="VoicePTT_On" file_name="bottomtray/VoicePTT_On.png" preload="false" />
   
   <texture name="Wearables_Divider" file_name="windows/Wearables_Divider.png" preload="false" />
+
+  <texture name="Add_Icon" file_name="icons/add_icon.png" preload="false" />
+  <texture name="Remove_Icon" file_name="icons/remove_icon.png" preload="false" />
 
   <texture name="Web_Profile_Off" file_name="icons/Web_Profile_Off.png" preload="false" />
 

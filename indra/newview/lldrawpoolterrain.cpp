@@ -105,34 +105,7 @@ U32 LLDrawPoolTerrain::getVertexDataMask()
 
 void LLDrawPoolTerrain::prerender()
 {
-	mShaderLevel = LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_ENVIRONMENT);
-	static const LLCachedControl<S32> render_terrain_detail(gSavedSettings, "RenderTerrainDetail");
-	sDetailMode = render_terrain_detail;
-}
-
-void LLDrawPoolTerrain::beginRenderPass( S32 pass )
-{
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_TERRAIN);
-	LLFacePool::beginRenderPass(pass);
-
-	sShader = LLPipeline::sUnderWaterRender ? 
-					&gTerrainWaterProgram :
-					&gTerrainProgram;	
-
-	if (mShaderLevel > 1 && sShader->mShaderLevel > 0)
-	{
-		sShader->bind();
-	}
-}
-
-void LLDrawPoolTerrain::endRenderPass( S32 pass )
-{
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_TERRAIN);
-	//LLFacePool::endRenderPass(pass);
-
-	if (mShaderLevel > 1 && sShader->mShaderLevel > 0) {
-		sShader->unbind();
-	}
+	sDetailMode = gSavedSettings.getS32("RenderTerrainDetail");
 }
 
 //static
@@ -149,67 +122,7 @@ void LLDrawPoolTerrain::boostTerrainDetailTextures()
 	for (S32 i = 0; i < 4; i++)
 	{
 		compp->mDetailTextures[i]->setBoostLevel(LLGLTexture::BOOST_TERRAIN);
-		compp->mDetailTextures[i]->addTextureStats(1024.f*1024.f); // assume large pixel area
-	}
-}
-
-void LLDrawPoolTerrain::render(S32 pass)
-{
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_TERRAIN);
-	
-	if (mDrawFace.empty())
-	{
-		return;
-	}
-
-	boostTerrainDetailTextures();
-
-	LLOverrideFaceColor override(this, 1.f, 1.f, 1.f, 1.f);
-
-	if (!gGLManager.mHasMultitexture)
-	{
-		// No multitexture, render simple land.
-		renderSimple(); // Render without multitexture
-		return;
-	}
-	// Render simplified land if video card can't do sufficient multitexturing
-	if (!gGLManager.mHasARBEnvCombine || (gGLManager.mNumTextureUnits < 2))
-	{
-		renderSimple(); // Render without multitexture
-		return;
-	}
-
-	LLGLSPipeline gls;
-	
-	if (mShaderLevel > 1 && sShader->mShaderLevel > 0)
-	{
-		gPipeline.enableLightsDynamic();
-
-		renderFullShader();
-	}
-	else
-	{
-		gPipeline.enableLightsStatic();
-
-		if (sDetailMode == 0)
-		{
-			renderSimple();
-		} 
-		else if (gGLManager.mNumTextureUnits < 4)
-		{
-			renderFull2TU();
-		} 
-		else 
-		{
-			renderFull4TU();
-		}
-	}
-
-	// Special-case for land ownership feedback
-	static const LLCachedControl<bool> show_parcel_owners(gSavedSettings, "ShowParcelOwners");
-	if (show_parcel_owners)
-	{
-		hilightParcelOwners(false);
+        compp->mDetailTextures[i]->addTextureStats(1024.f * 1024.f);
 	}
 }
 
@@ -218,7 +131,7 @@ void LLDrawPoolTerrain::beginDeferredPass(S32 pass)
 	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_TERRAIN);
 	LLFacePool::beginRenderPass(pass);
 
-	sShader = LLPipeline::sUnderWaterRender ? &gDeferredTerrainWaterProgram : &gDeferredTerrainProgram;
+	sShader = &gDeferredTerrainProgram;
 
 	sShader->bind();
 }
@@ -246,7 +159,7 @@ void LLDrawPoolTerrain::renderDeferred(S32 pass)
 	static const LLCachedControl<bool> show_parcel_owners(gSavedSettings, "ShowParcelOwners");
 	if (show_parcel_owners)
 	{
-		hilightParcelOwners(true);
+		hilightParcelOwners();
 	}
 
 }
@@ -416,13 +329,12 @@ void LLDrawPoolTerrain::renderFullShader()
 	gGL.getTexUnit(detail0)->activate();
 }
 
-void LLDrawPoolTerrain::hilightParcelOwners(bool deferred)
+void LLDrawPoolTerrain::hilightParcelOwners()
 {
-	if (mShaderLevel > 1)
 	{ //use fullbright shader for highlighting
 		LLGLSLShader* old_shader = sShader;
 		sShader->unbind();
-		sShader = deferred ? &gDeferredHighlightProgram : &gHighlightProgram;
+		sShader = &gDeferredHighlightProgram;
 		sShader->bind();
 		gGL.diffuseColor4f(1, 1, 1, 1);
 		LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
@@ -431,11 +343,7 @@ void LLDrawPoolTerrain::hilightParcelOwners(bool deferred)
 		sShader = old_shader;
 		sShader->bind();
 	}
-	else
-	{
-		gPipeline.disableLights();
-		renderOwnership();
-	}
+	
 }
 
 void LLDrawPoolTerrain::renderFull4TU()
@@ -859,8 +767,7 @@ void LLDrawPoolTerrain::renderOwnership()
 		 iter != mDrawFace.end(); iter++)
 	{
 		LLFace *facep = *iter;
-		facep->renderIndexed(LLVertexBuffer::MAP_VERTEX |
-							LLVertexBuffer::MAP_TEXCOORD0);
+		facep->renderIndexed();
 	}
 
 	gGL.matrixMode(LLRender::MM_TEXTURE);

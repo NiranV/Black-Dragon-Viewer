@@ -148,7 +148,6 @@ LLAgentCamera::LLAgentCamera() :
 	mCameraFOVZoomFactor(0.f),
 	mCameraCurrentFOVZoomFactor(0.f),
 	mCameraFocusOffset(),
-	mCameraFOVDefault(DEFAULT_FIELD_OF_VIEW),
 
 	mCameraCollidePlane(),
 
@@ -170,7 +169,6 @@ LLAgentCamera::LLAgentCamera() :
 	mFocusObject(NULL),
 	mFocusObjectDist(0.f),
 	mFocusObjectOffset(),
-	mFocusDotRadius( 0.1f ),			// meters
 	mTrackFocusObject(TRUE),
 
 	mAtKey(0), // Either 1, 0, or -1... indicates that movement-key is pressed
@@ -1297,12 +1295,18 @@ void LLAgentCamera::updateLookAt(const S32 mouse_x, const S32 mouse_y)
 
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_CAMERA("Camera");
 
+extern BOOL gCubeSnapshot;
+
 //-----------------------------------------------------------------------------
 // updateCamera()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::updateCamera()
 {
 	LL_RECORD_BLOCK_TIME(FTM_UPDATE_CAMERA);
+    if (gCubeSnapshot)
+    {
+        return;
+    }
 
 // [RLVa:KB] - Checked: RLVa-2.0.0
 	// Set focus back on our avie if something changed it
@@ -2328,6 +2332,13 @@ F32 LLAgentCamera::getCameraOffsetScale() const
 
 F32 LLAgentCamera::getCameraMaxZoomDistance()
 {
+    // SL-14706 / SL-14885 TPV have relaxed camera constraints allowing you to mousewheeel zoom WAY out.
+    static LLCachedControl<bool> s_disable_camera_constraints(gSavedSettings, "DisableCameraConstraints", false);
+    if (s_disable_camera_constraints)
+    {
+        return (F32)INT_MAX;
+    }
+
     // Ignore "DisableCameraConstraints", we don't want to be out of draw range when we focus onto objects or avatars
     return llmin(MAX_CAMERA_DISTANCE_FROM_OBJECT,
                  mDrawDistance - 1, // convenience, don't hit draw limit when focusing on something
@@ -2674,6 +2685,11 @@ void LLAgentCamera::changeCameraToCustomizeAvatar()
 
 	gAgent.standUp(); // force stand up
 	gViewerWindow->getWindow()->resetBusyCount();
+
+    if (LLSelectMgr::getInstance()->getSelection()->isAttachment())
+    {
+        LLSelectMgr::getInstance()->deselectAll();
+    }
 
 	if (gFaceEditToolset)
 	{

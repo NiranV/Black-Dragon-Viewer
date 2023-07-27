@@ -29,6 +29,7 @@
 
 #include "v4color.h"
 #include "llpanel.h"
+#include "llgltfmaterial.h"
 #include "llmaterial.h"
 #include "llmaterialmgr.h"
 #include "lltextureentry.h"
@@ -99,8 +100,12 @@ public:
 	virtual ~LLPanelFace();
 
 	void			refresh();
-	void			setMediaURL(const std::string& url);
-	void			setMediaType(const std::string& mime_type);
+    void			refreshMedia();
+    void			unloadMedia();
+
+    static void onMaterialOverrideReceived(const LLUUID& object_id, S32 side);
+
+    /*virtual*/ void draw();
 
 	LLMaterialPtr createDefaultMaterial(LLMaterialPtr current_material)
 	{
@@ -114,6 +119,7 @@ public:
 	}
 
 	LLRender::eTexIndex getTextureChannelToEdit();
+    LLRender::eTexIndex getTextureDropChannel();
 
 protected:
 	void			getState();
@@ -124,11 +130,17 @@ protected:
 	void			sendAlpha();				// applies and sends transparency
 	void			sendBump(U32 bumpiness);	// applies and sends bump map
 	void			sendTexGen();				// applies and sends bump map
-	void			sendShiny(U32 shininess);	// applies and sends shininess
-	void			sendFullbright();			// applies and sends full bright
+	void			sendShiny(U32 shininess);			// applies and sends shininess
+	void			sendFullbright();		// applies and sends full bright
 	void			sendGlow();
-	void			sendMedia();
-	void            alignTestureLayer();
+    void            alignTestureLayer();
+
+    void            updateCopyTexButton();
+
+    void 	onCommitPbr(const LLSD& data);
+    void 	onCancelPbr(const LLSD& data);
+    void 	onSelectPbr(const LLSD& data);
+    static BOOL onDragPbr(LLUICtrl* ctrl, LLInventoryItem* item);
 
 	// this function is to return TRUE if the drag should succeed.
 	static BOOL onDragTexture(LLUICtrl* ctrl, LLInventoryItem* item);
@@ -165,18 +177,62 @@ protected:
 	// Callback funcs for individual controls
 	//
 	static void		onCommitTextureInfo(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureScaleX(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureScaleY(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureRot(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureOffsetX(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTextureOffsetY(LLUICtrl* ctrl, void* userdata);
 
-	static void		onCommitMaterialsMedia(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitMaterialType(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitBump(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitTexGen(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitShiny(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitAlphaMode(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitFullbright(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitPlanarAlign(LLUICtrl* ctrl, void* userdata);
-	static void		onCommitRepeatsPerMeter(LLUICtrl* ctrl, void* userinfo);
+	static void		onCommitMaterialBumpyScaleX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyScaleY(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyRot(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyOffsetX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialBumpyOffsetY(	LLUICtrl* ctrl, void* userdata);
+
+	static void		syncRepeatX(LLPanelFace* self, F32 scaleU);
+	static void		syncRepeatY(LLPanelFace* self, F32 scaleV);
+	static void		syncOffsetX(LLPanelFace* self, F32 offsetU);
+	static void		syncOffsetY(LLPanelFace* self, F32 offsetV);
+	static void 	syncMaterialRot(LLPanelFace* self, F32 rot, int te = -1);
+
+	static void		onCommitMaterialShinyScaleX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyScaleY(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyRot(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyOffsetX(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialShinyOffsetY(	LLUICtrl* ctrl, void* userdata);
+
+	static void		onCommitMaterialGloss(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialEnv(				LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialMaskCutoff(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialID( LLUICtrl* ctrl, void* userdata);
+
+	static void		onCommitMaterialsMedia(	LLUICtrl* ctrl, void* userdata);
+	static void		onCommitMaterialType(	LLUICtrl* ctrl, void* userdata);
+    static void		onCommitPbrType(LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnEditMedia(LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnDeleteMedia(LLUICtrl* ctrl, void* userdata);
+	static void 	onClickBtnAddMedia(LLUICtrl* ctrl, void* userdata);
+	static void		onCommitBump(				LLUICtrl* ctrl, void* userdata);
+	static void		onCommitTexGen(			LLUICtrl* ctrl, void* userdata);
+	static void		onCommitShiny(				LLUICtrl* ctrl, void* userdata);
+	static void		onCommitAlphaMode(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitFullbright(		LLUICtrl* ctrl, void* userdata);
+	static void    onCommitGlow(				LLUICtrl* ctrl, void *userdata);
+	static void		onCommitPlanarAlign(		LLUICtrl* ctrl, void* userdata);
+	static void		onCommitRepeatsPerMeter(	LLUICtrl* ctrl, void* userinfo);
+
+    void            onCommitGLTFTextureScaleU(LLUICtrl* ctrl);
+    void            onCommitGLTFTextureScaleV(LLUICtrl* ctrl);
+    void            onCommitGLTFRotation(LLUICtrl* ctrl);
+    void            onCommitGLTFTextureOffsetU(LLUICtrl* ctrl);
+    void            onCommitGLTFTextureOffsetV(LLUICtrl* ctrl);
+
 	static void		onClickAutoFix(void*);
-	static void		onAlignTexture(void*);
+    static void		onAlignTexture(void*);
+    static void 	onClickBtnLoadInvPBR(void* userdata);
+    static void 	onClickBtnEditPBR(void* userdata);
+    static void 	onClickBtnSavePBR(void* userdata);
+>>>>>>> Linden_Release/DRTVWR-559
 
 	//BD
 	void			onCommitMaterialGloss();
@@ -229,7 +285,6 @@ public:
 	LLUICtrl* mRepeats;
 
 private:
-
 	bool		isAlpha() { return mIsAlpha; }
 
 	// Convenience funcs to keep the visual flack to a minimum
@@ -315,9 +370,9 @@ private:
 					//
 					_edit->apply(new_material);
 
-					U32		new_alpha_mode = new_material->getDiffuseAlphaMode();
-					LLUUID	new_normal_map_id = new_material->getNormalID();
-					LLUUID	new_spec_map_id = new_material->getSpecularID();
+					U32		new_alpha_mode			= new_material->getDiffuseAlphaMode();
+					LLUUID	new_normal_map_id		= new_material->getNormalID();
+					LLUUID	new_spec_map_id			= new_material->getSpecularID();
 
 					if ((new_alpha_mode == LLMaterial::DIFFUSE_ALPHA_MODE_BLEND) && !is_alpha_face)
 					{
@@ -419,22 +474,63 @@ private:
 	 * If agent selects texture which is not allowed to be applied for the currently selected object,
 	 * all controls of the floater texture picker which allow to apply the texture will be disabled.
 	 */
-	void onTextureSelectionChanged(LLInventoryItem* itemp);
+
+    void onTextureSelectionChanged(LLInventoryItem* itemp);
+    void onPbrSelectionChanged(LLInventoryItem* itemp);
+
+    void updateUIGLTF(LLViewerObject* objectp, bool& has_pbr_material, bool force_set_values);
+    void updateVisibilityGLTF();
+
+    void updateSelectedGLTFMaterials(std::function<void(LLGLTFMaterial*)> func);
+    void updateGLTFTextureTransform(float value, U32 pbr_type, std::function<void(LLGLTFMaterial::TextureTransform*)> edit);
+
+    void setMaterialOverridesFromSelection();
+
+    LLMenuButton*   mMenuClipboardColor;
+    LLMenuButton*   mMenuClipboardTexture;
 
 	bool mIsAlpha;
+	
+    LLSD            mClipboardParams;
 
-	/* These variables interlock processing of materials updates sent to
-	 * the sim.  mUpdateInFlight is set to flag that an update has been
-	 * sent to the sim and not acknowledged yet, and cleared when an
-	 * update is received from the sim.  mUpdatePending is set when
-	 * there's an update in flight and another UI change has been made
-	 * that needs to be sent as a materials update, and cleared when the
-	 * update is sent.  This prevents the sim from getting spammed with
-	 * update messages when, for example, the user holds down the
-	 * up-arrow on a spinner, and avoids running afoul of its throttle.
-	 */
-	bool mUpdateInFlight;
-	bool mUpdatePending;
+    LLSD mMediaSettings;
+    bool mNeedMediaTitle;
+
+    class Selection
+    {
+    public:
+        void connect();
+
+        // Returns true if the selected objects or sides have changed since
+        // this was last called, and no object update is pending
+        bool update();
+
+        // Prevents update() returning true until the provided object is
+        // updated. Necessary to prevent controls updating when the mouse is
+        // held down.
+        void setObjectUpdatePending(const LLUUID &object_id, S32 side);
+        void setDirty() { mChanged = true; };
+
+        // Callbacks
+        void onSelectionChanged() { mNeedsSelectionCheck = true; }
+        void onSelectedObjectUpdated(const LLUUID &object_id, S32 side);
+
+    protected:
+        bool compareSelection();
+
+        bool mChanged = false;
+
+        boost::signals2::scoped_connection mSelectConnection;
+        bool mNeedsSelectionCheck = true;
+        S32 mSelectedObjectCount = 0;
+        LLUUID mSelectedObjectID;
+        S32 mSelectedSide = -1;
+
+        LLUUID mPendingObjectID;
+        S32 mPendingSide = -1;
+    };
+
+    static Selection sMaterialOverrideSelection;
 
 public:
 #if defined(DEF_GET_MAT_STATE)
@@ -481,50 +577,51 @@ public:
 		static void getMaxNormalRepeats(F32& repeats, bool& identical);
 		static void getCurrentDiffuseAlphaMode(U8& diffuse_alpha_mode, bool& identical, bool diffuse_texture_has_alpha);
 
-		DEF_GET_MAT_STATE(LLUUID, const LLUUID&, getNormalID, LLUUID::null, false, LLUUID::null)
-			DEF_GET_MAT_STATE(LLUUID, const LLUUID&, getSpecularID, LLUUID::null, false, LLUUID::null)
-			DEF_GET_MAT_STATE(F32, F32, getSpecularRepeatX, 1.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getSpecularRepeatY, 1.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getSpecularOffsetX, 0.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getSpecularOffsetY, 0.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getSpecularRotation, 0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(LLUUID,const LLUUID&,getNormalID,LLUUID::null, false, LLUUID::null)
+		DEF_GET_MAT_STATE(LLUUID,const LLUUID&,getSpecularID,LLUUID::null, false, LLUUID::null)
+		DEF_GET_MAT_STATE(F32,F32,getSpecularRepeatX,1.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getSpecularRepeatY,1.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getSpecularOffsetX,0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getSpecularOffsetY,0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getSpecularRotation,0.0f, true, 0.001f)
 
-			DEF_GET_MAT_STATE(F32, F32, getNormalRepeatX, 1.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getNormalRepeatY, 1.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getNormalOffsetX, 0.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getNormalOffsetY, 0.0f, true, 0.001f)
-			DEF_GET_MAT_STATE(F32, F32, getNormalRotation, 0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getNormalRepeatX,1.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getNormalRepeatY,1.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getNormalOffsetX,0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getNormalOffsetY,0.0f, true, 0.001f)
+		DEF_GET_MAT_STATE(F32,F32,getNormalRotation,0.0f, true, 0.001f)
 
-			DEF_EDIT_MAT_STATE(U8, U8, setDiffuseAlphaMode);
-		DEF_EDIT_MAT_STATE(U8, U8, setAlphaMaskCutoff);
+		DEF_EDIT_MAT_STATE(U8,U8,setDiffuseAlphaMode);
+		DEF_EDIT_MAT_STATE(U8,U8,setAlphaMaskCutoff);
 
-		DEF_EDIT_MAT_STATE(F32, F32, setNormalOffsetX);
-		DEF_EDIT_MAT_STATE(F32, F32, setNormalOffsetY);
-		DEF_EDIT_MAT_STATE(F32, F32, setNormalRepeatX);
-		DEF_EDIT_MAT_STATE(F32, F32, setNormalRepeatY);
-		DEF_EDIT_MAT_STATE(F32, F32, setNormalRotation);
+		DEF_EDIT_MAT_STATE(F32,F32,setNormalOffsetX);
+		DEF_EDIT_MAT_STATE(F32,F32,setNormalOffsetY);
+		DEF_EDIT_MAT_STATE(F32,F32,setNormalRepeatX);
+		DEF_EDIT_MAT_STATE(F32,F32,setNormalRepeatY);
+		DEF_EDIT_MAT_STATE(F32,F32,setNormalRotation);
 
-		DEF_EDIT_MAT_STATE(F32, F32, setSpecularOffsetX);
-		DEF_EDIT_MAT_STATE(F32, F32, setSpecularOffsetY);
-		DEF_EDIT_MAT_STATE(F32, F32, setSpecularRepeatX);
-		DEF_EDIT_MAT_STATE(F32, F32, setSpecularRepeatY);
-		DEF_EDIT_MAT_STATE(F32, F32, setSpecularRotation);
+		DEF_EDIT_MAT_STATE(F32,F32,setSpecularOffsetX);
+		DEF_EDIT_MAT_STATE(F32,F32,setSpecularOffsetY);
+		DEF_EDIT_MAT_STATE(F32,F32,setSpecularRepeatX);
+		DEF_EDIT_MAT_STATE(F32,F32,setSpecularRepeatY);
+		DEF_EDIT_MAT_STATE(F32,F32,setSpecularRotation);
 
-		DEF_EDIT_MAT_STATE(U8, U8, setEnvironmentIntensity);
-		DEF_EDIT_MAT_STATE(U8, U8, setSpecularLightExponent);
+		DEF_EDIT_MAT_STATE(U8,U8,setEnvironmentIntensity);
+		DEF_EDIT_MAT_STATE(U8,U8,setSpecularLightExponent);
 
-		DEF_EDIT_MAT_STATE(LLUUID, const LLUUID&, setNormalID);
-		DEF_EDIT_MAT_STATE(LLUUID, const LLUUID&, setSpecularID);
-		DEF_EDIT_MAT_STATE(LLColor4U, const LLColor4U&, setSpecularLightColor);
+		DEF_EDIT_MAT_STATE(LLUUID,const LLUUID&,setNormalID);
+		DEF_EDIT_MAT_STATE(LLUUID,const LLUUID&,setSpecularID);
+		DEF_EDIT_MAT_STATE(LLColor4U,	const LLColor4U&,setSpecularLightColor);
+		DEF_EDIT_MAT_STATE(LLUUID, const LLUUID&, setMaterialID);
 	};
 
 	class LLSelectedTE
 	{
 	public:
-
 		static void getFace(class LLFace*& face_to_return, bool& identical_face);
 		static void getImageFormat(LLGLenum& image_format_to_return, bool& identical_face);
 		static void getTexId(LLUUID& id, bool& identical);
+        static void getPbrMaterialId(LLUUID& id, bool& identical);
 		static void getObjectScaleS(F32& scale_s, bool& identical);
 		static void getObjectScaleT(F32& scale_t, bool& identical);
 		static void getMaxDiffuseRepeats(F32& repeats, bool& identical);

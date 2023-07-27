@@ -50,6 +50,7 @@
 #include "llinventoryicon.h"
 #include "llinventoryfilter.h"
 #include "llinventoryfunctions.h"
+#include "llmaterialeditor.h"
 #include "llpreviewanim.h"
 #include "llpreviewgesture.h"
 #include "llpreviewnotecard.h"
@@ -798,6 +799,7 @@ BOOL LLTaskCategoryBridge::dragOrDrop(MASK mask, BOOL drop,
 		case DAD_CALLINGCARD:
 		case DAD_MESH:
         case DAD_SETTINGS:
+        case DAD_MATERIAL:
 			accept = LLToolDragAndDrop::isInventoryDropAcceptable(object, (LLViewerInventoryItem*)cargo_data);
 			if(accept && drop)
 			{
@@ -1260,6 +1262,58 @@ LLSettingsType::type_e LLTaskSettingsBridge::getSettingsType() const
 }
 
 ///----------------------------------------------------------------------------
+/// Class LLTaskMaterialBridge
+///----------------------------------------------------------------------------
+
+class LLTaskMaterialBridge : public LLTaskInvFVBridge
+{
+public:
+    LLTaskMaterialBridge(LLPanelObjectInventory* panel,
+                         const LLUUID& uuid,
+                         const std::string& name) :
+        LLTaskInvFVBridge(panel, uuid, name) {}
+
+    BOOL canOpenItem() const override { return TRUE; }
+    void openItem() override;
+    BOOL removeItem() override;
+};
+
+void LLTaskMaterialBridge::openItem()
+{
+    LLViewerObject* object = gObjectList.findObject(mPanel->getTaskUUID());
+    if(!object || object->isInventoryPending())
+    {
+        return;
+    }
+
+    // Note: even if we are not allowed to modify copyable notecard, we should be able to view it
+    LLInventoryItem *item = dynamic_cast<LLInventoryItem*>(object->getInventoryObject(mUUID));
+    BOOL item_copy = item && gAgent.allowOperation(PERM_COPY, item->getPermissions(), GP_OBJECT_MANIPULATE);
+    if( item_copy
+        || object->permModify()
+        || gAgent.isGodlike())
+    {
+        LLSD floater_key;
+        floater_key["taskid"] = mPanel->getTaskUUID();
+        floater_key["itemid"] = mUUID;
+        LLMaterialEditor* mat = LLFloaterReg::getTypedInstance<LLMaterialEditor>("material_editor", floater_key);
+        if (mat)
+        {
+            mat->setObjectID(mPanel->getTaskUUID());
+            mat->openFloater(floater_key);
+            mat->setFocus(TRUE);
+        }
+    }
+}
+
+BOOL LLTaskMaterialBridge::removeItem()
+{
+    LLFloaterReg::hideInstance("material_editor", LLSD(mUUID));
+    return LLTaskInvFVBridge::removeItem();
+}
+
+
+///----------------------------------------------------------------------------
 /// LLTaskInvFVBridge impl
 //----------------------------------------------------------------------------
 
@@ -1346,6 +1400,11 @@ LLTaskInvFVBridge* LLTaskInvFVBridge::createObjectBridge(LLPanelObjectInventory*
 										  object_name,
                                           itemflags);
 		break;
+    case LLAssetType::AT_MATERIAL:
+        new_bridge = new LLTaskMaterialBridge(panel,
+                              object_id,
+                              object_name);
+        break;
 	default:
 		LL_INFOS() << "Unhandled inventory type (llassetstorage.h): "
 				<< (S32)type << LL_ENDL;
@@ -1373,7 +1432,8 @@ LLPanelObjectInventory::LLPanelObjectInventory(const LLPanelObjectInventory::Par
 	mHaveInventory(FALSE),
 	mIsInventoryEmpty(TRUE),
 	mInventoryNeedsUpdate(FALSE),
-	mInventoryViewModel(p.name)
+	mInventoryViewModel(p.name),
+    mShowRootFolder(p.show_root_folder)
 {
 	// Setup context menu callbacks
 	mCommitCallbackRegistrar.add("Inventory.DoToSelected", boost::bind(&LLPanelObjectInventory::doToSelected, this, _2));
@@ -1465,7 +1525,8 @@ void LLPanelObjectInventory::reset()
 		LLEditMenuHandler::gEditMenuHandler = mFolders;
 	}
 
-	LLRect scroller_rect(0, getRect().getHeight(), getRect().getWidth(), 0);
+	int offset = hasBorder() ? getBorder()->getBorderWidth() << 1 : 0;
+	LLRect scroller_rect(0, getRect().getHeight() - offset, getRect().getWidth() - offset, 0);
 	LLScrollContainer::Params scroll_p;
 	scroll_p.name("task inventory scroller");
 	scroll_p.rect(scroller_rect);
@@ -1625,15 +1686,23 @@ void LLPanelObjectInventory::createFolderViews(LLInventoryObject* inventory_root
 		p.font_highlight_color = item_color;
 
 		LLFolderViewFolder* new_folder = LLUICtrlFactory::create<LLFolderViewFolder>(p);
-		new_folder->addToFolder(mFolders);
-		new_folder->toggleOpen();
+
+        if (mShowRootFolder)
+        {
+            new_folder->addToFolder(mFolders);
+            new_folder->toggleOpen();
+        }
 
 		if (!contents.empty())
 		{
-			createViewsForCategory(&contents, inventory_root, new_folder);
+			createViewsForCategory(&contents, inventory_root, mShowRootFolder ? new_folder : mFolders);
 		}
-        // Refresh for label to add item count
-        new_folder->refresh();
+
+        if (mShowRootFolder)
+        {
+            // Refresh for label to add item count
+            new_folder->refresh();
+        }
 	}
 }
 

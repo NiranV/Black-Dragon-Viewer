@@ -1236,7 +1236,7 @@ void LLVOAvatarSelf::restoreMeshData()
 	updateAttachmentVisibility(gAgentCamera.getCameraMode());
 
 	// force mesh update as LOD might not have changed to trigger this
-	gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_GEOMETRY, TRUE);
+	gPipeline.markRebuild(mDrawable, LLDrawable::REBUILD_GEOMETRY);
 }
 
 
@@ -1391,6 +1391,7 @@ LLViewerJointAttachment* LLVOAvatarSelf::getWornAttachmentPoint(const LLUUID& id
 
 bool LLVOAvatarSelf::getAttachedPointName(const LLUUID& inv_item_id, std::string& name) const
 {
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 	if (!gInventory.getItem(inv_item_id))
 	{
 		name = "ATTACHMENT_MISSING_ITEM";
@@ -2107,7 +2108,7 @@ void LLVOAvatarSelf::dumpLocalTextures() const
 			}
 			else
 			{
-				const LLViewerFetchedTexture* image = dynamic_cast<LLViewerFetchedTexture*>( local_tex_obj->getImage() );
+				LLViewerFetchedTexture* image = dynamic_cast<LLViewerFetchedTexture*>( local_tex_obj->getImage() );
 
 				LL_INFOS() << "LocTex " << name << ": "
 						<< "Discard " << image->getDiscardLevel() << ", "
@@ -2117,7 +2118,7 @@ void LLVOAvatarSelf::dumpLocalTextures() const
 					// makes textures easier to steal
 						<< image->getID() << " "
 #endif
-						<< "Priority: " << image->getDecodePriority()
+						<< "Priority: " << image->getMaxVirtualSize()
 						<< LL_ENDL;
 			}
 		}
@@ -2356,8 +2357,7 @@ const std::string LLVOAvatarSelf::verboseDebugDumpLocalTextureDataInfo(const LLV
 									   << " glocdisc: " << getLocalDiscardLevel(tex_index, wearable_index)
 									   << " discard: " << image->getDiscardLevel()
 									   << " desired: " << image->getDesiredDiscardLevel()
-									   << " decode: " << image->getDecodePriority()
-									   << " addl: " << image->getAdditionalDecodePriority()
+									   << " vsize: " << image->getMaxVirtualSize()
 									   << " ts: " << image->getTextureState()
 									   << " bl: " << image->getBoostLevel()
 									   << " fl: " << image->isFullyLoaded() // this is not an accessor for mFullyLoaded - see comment there.
@@ -2735,7 +2735,6 @@ void LLVOAvatarSelf::addLocalTextureStats( ETextureIndex type, LLViewerFetchedTe
 				desired_pixels = llmin(mPixelArea, (F32)getTexImageArea());
 				
 				imagep->setBoostLevel(getAvatarBoostLevel());
-				imagep->setAdditionalDecodePriority(SELF_ADDITIONAL_PRI) ;
 				imagep->resetTextureStats();
 				imagep->setMaxVirtualSizeResetInterval(MAX_TEXTURE_VIRTUAL_SIZE_RESET_INTERVAL);
 				imagep->addTextureStats( desired_pixels / texel_area_ratio );
@@ -3106,7 +3105,6 @@ void LLVOAvatarSelf::deleteScratchTextures()
 		// _LL_DEBUGS() << "Clearing Scratch Textures " << (S32Kilobytes)sScratchTexBytes << LL_ENDL;
 
 		delete_and_clear(sScratchTexNames);
-		LLImageGL::sGlobalTextureMemory -= sScratchTexBytes;
 		sScratchTexBytes = S32Bytes(0);
 	}
 }

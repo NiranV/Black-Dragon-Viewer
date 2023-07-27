@@ -42,6 +42,7 @@ class LLPanelPresetsPulldown : public LLPanelPulldown
 	
  private:
 	void onGraphicsButtonClick();
+    void onAutofpsButtonClick(const LLSD& user_data);
 	void onRowClick(const LLSD& user_data);
 
 	std::list<std::string> mPresetNames;

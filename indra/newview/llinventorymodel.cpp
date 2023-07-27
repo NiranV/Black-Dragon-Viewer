@@ -231,8 +231,6 @@ LLInventoryModel::LLInventoryModel()
 	mHttpOptions(),
 	mHttpHeaders(),
 	mHttpPolicyClass(LLCore::HttpRequest::DEFAULT_POLICY_ID),
-	mHttpPriorityFG(0),
-	mHttpPriorityBG(0),
 	mCategoryLock(),
 	mItemLock(),
 	mValidationInfo(new LLInventoryValidationInfo)
@@ -598,7 +596,11 @@ const LLUUID LLInventoryModel::findCategoryUUIDForTypeInRoot(
 		}
 	}
 	
-	if(rv.isNull() && create_folder && root_id.notNull())
+	if(rv.isNull() 
+       && root_id.notNull()
+       && create_folder
+       && preferred_type != LLFolderType::FT_MARKETPLACE_LISTINGS
+       && preferred_type != LLFolderType::FT_OUTBOX)
 	{
 
 		if (isInventoryUsable())
@@ -646,6 +648,11 @@ const LLUUID LLInventoryModel::findUserDefinedCategoryUUIDForType(LLFolderType::
     case LLFolderType::FT_ANIMATION:
     {
         cat_id = LLUUID(gSavedPerAccountSettings.getString("AnimationUploadFolder"));
+        break;
+    }
+    case LLFolderType::FT_MATERIAL:
+    {
+        cat_id = LLUUID(gSavedPerAccountSettings.getString("PBRUploadFolder"));
         break;
     }
     default:
@@ -1689,6 +1696,9 @@ void LLInventoryModel::deleteObject(const LLUUID& id, bool fix_broken_links, boo
 		LL_WARNS(LOG_INV) << "Deleting non-existent object [ id: " << id << " ] " << LL_ENDL;
 		return;
 	}
+
+    //collect the links before removing the item from mItemMap
+    LLInventoryModel::item_array_t links = collectLinksTo(id);
 	
 	// _LL_DEBUGS(LOG_INV) << "Deleting inventory object " << id << LL_ENDL;
 	mLastItem = NULL;
@@ -1746,7 +1756,7 @@ void LLInventoryModel::deleteObject(const LLUUID& id, bool fix_broken_links, boo
 	// update is getting broken link info separately.
 	if (fix_broken_links && !is_link_type)
 	{
-		updateLinkedObjectsFromPurge(id);
+        rebuildLinkItems(links);
 	}
 	obj = nullptr; // delete obj
 	if (do_notify_observers)
@@ -1755,26 +1765,25 @@ void LLInventoryModel::deleteObject(const LLUUID& id, bool fix_broken_links, boo
 	}
 }
 
-void LLInventoryModel::updateLinkedObjectsFromPurge(const LLUUID &baseobj_id)
+void LLInventoryModel::rebuildLinkItems(LLInventoryModel::item_array_t& items)
 {
-	LLInventoryModel::item_array_t item_array = collectLinksTo(baseobj_id);
-
-	// REBUILD is expensive, so clear the current change list first else
-	// everything else on the changelist will also get rebuilt.
-	if (item_array.size() > 0)
-	{
-		notifyObservers();
-		for (LLInventoryModel::item_array_t::const_iterator iter = item_array.begin();
-			iter != item_array.end();
-			iter++)
-		{
-			const LLViewerInventoryItem *linked_item = (*iter);
-			const LLUUID &item_id = linked_item->getUUID();
-			if (item_id == baseobj_id) continue;
-			addChangedMask(LLInventoryObserver::REBUILD, item_id);
-		}
-		notifyObservers();
-	}
+    // REBUILD is expensive, so clear the current change list first else
+    // everything else on the changelist will also get rebuilt.
+    if (items.size() > 0)
+    {
+        notifyObservers();
+        for (LLInventoryModel::item_array_t::const_iterator iter = items.begin();
+            iter != items.end();
+            iter++)
+        {
+            const LLViewerInventoryItem *linked_item = (*iter);
+            if (linked_item)
+            {
+                addChangedMask(LLInventoryObserver::REBUILD, linked_item->getUUID());
+            }
+        }
+        notifyObservers();
+    }
 }
 
 // Add/remove an observer. If the observer is destroyed, be sure to
@@ -2004,18 +2013,20 @@ void LLInventoryModel::cache(
 		items,
 		INCLUDE_TRASH,
 		can_cache);
-	std::string inventory_filename = getInvCacheAddres(agent_id);
-	saveToFile(inventory_filename, categories, items);
-	std::string gzip_filename(inventory_filename);
+    // Use temporary file to avoid potential conflicts with other
+    // instances (even a 'read only' instance unzips into a file)
+    std::string temp_file = gDirUtilp->getTempFilename();
+	saveToFile(temp_file, categories, items);
+    std::string gzip_filename = getInvCacheAddres(agent_id);
 	gzip_filename.append(".gz");
-	if(gzip_file(inventory_filename, gzip_filename))
+	if(gzip_file(temp_file, gzip_filename))
 	{
-		// _LL_DEBUGS(LOG_INV) << "Successfully compressed " << inventory_filename << LL_ENDL;
-		LLFile::remove(inventory_filename);
+		LL_DEBUGS(LOG_INV) << "Successfully compressed " << temp_file << " to " << gzip_filename << LL_ENDL;
+		LLFile::remove(temp_file);
 	}
 	else
 	{
-		LL_WARNS(LOG_INV) << "Unable to compress " << inventory_filename << LL_ENDL;
+		LL_WARNS(LOG_INV) << "Unable to compress " << temp_file << " into " << gzip_filename << LL_ENDL;
 	}
 }
 
@@ -2768,7 +2779,6 @@ void LLInventoryModel::buildParentChildMap()
 			// some accounts has pbroken inventory root folders
 			
 			std::string name = "My Inventory";
-			LLUUID prev_root_id = mRootFolderID;
 			for (parent_cat_map_t::const_iterator it = mParentChildCategoryTree.begin(),
 					 it_end = mParentChildCategoryTree.end(); it != it_end; ++it)
 			{
@@ -2870,7 +2880,6 @@ LLCore::HttpHandle LLInventoryModel::requestPost(bool foreground,
 		
 	handle = LLCoreHttpUtil::requestPostWithLLSD(request,
 												 mHttpPolicyClass,
-												 (foreground ? mHttpPriorityFG : mHttpPriorityBG),
 												 url,
 												 body,
 												 mHttpOptions,
@@ -2896,6 +2905,7 @@ void LLInventoryModel::createCommonSystemCategories()
 	gInventory.findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT, true);
 	gInventory.findCategoryUUIDForType(LLFolderType::FT_LANDMARK, true); // folder should exist before user tries to 'landmark this'
     gInventory.findCategoryUUIDForType(LLFolderType::FT_SETTINGS, true);
+    gInventory.findCategoryUUIDForType(LLFolderType::FT_MATERIAL, true); // probably should be server created
     gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX, true);
 }
 
@@ -3089,6 +3099,7 @@ bool LLInventoryModel::saveToFile(const std::string& filename,
                 return false;
             }
         }
+        fileXML.flush();
 
         fileXML.close();
 
@@ -4410,7 +4421,11 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 			{
 				LL_WARNS("Inventory") << "Fatal inventory corruption: system folder type has excess copies under root, type " << ft << " count " << count_under_root << LL_ENDL;
 				validation_info->mDuplicateRequiredSystemFolders.insert(folder_type);
-                if (!is_automatic && folder_type != LLFolderType::FT_SETTINGS)
+                if (!is_automatic
+                    && folder_type != LLFolderType::FT_SETTINGS
+                    // FT_MATERIAL might need to be automatic like the rest of upload folders
+                    && folder_type != LLFolderType::FT_MATERIAL
+                    )
                 {
                     // It is a fatal problem or can lead to fatal problems for COF,
                     // outfits, trash and other non-automatic folders.
@@ -4666,7 +4681,6 @@ void LLInventoryModel::FetchItemHttpHandler::processData(LLSD & content, LLCore:
 	{
 		gInventory.updateItem(*it);
 	}
-	
 	gInventory.notifyObservers();
 	gViewerWindow->getWindow()->decBusyCount();
 }

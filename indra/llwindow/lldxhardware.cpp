@@ -1098,10 +1098,10 @@ LLSD LLDXHardware::getDisplayInfo()
 	}
 
 LCleanup:
-	if (ret.emptyMap())
-	{
-		LL_INFOS() << "Failed to get data, cleaning up" << LL_ENDL;
-	}
+    if (!ret.isMap() || (ret.size() == 0))
+    {
+        LL_INFOS() << "Failed to get data, cleaning up" << LL_ENDL;
+    }
 	SAFE_RELEASE(file_containerp);
 	SAFE_RELEASE(driver_containerp);
 	SAFE_RELEASE(device_containerp);

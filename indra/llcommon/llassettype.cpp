@@ -96,6 +96,7 @@ LLAssetDictionary::LLAssetDictionary()
 	addEntry(LLAssetType::AT_WIDGET,            new AssetEntry("WIDGET",            "widget",   "widget",           false,      false,      false));
 	addEntry(LLAssetType::AT_PERSON,            new AssetEntry("PERSON",            "person",   "person",           false,      false,      false));
 	addEntry(LLAssetType::AT_SETTINGS,          new AssetEntry("SETTINGS",          "settings", "settings blob",    true,       true,       true));
+	addEntry(LLAssetType::AT_MATERIAL,          new AssetEntry("MATERIAL",          "material", "render material",  true,       true,       true));
 	addEntry(LLAssetType::AT_UNKNOWN,           new AssetEntry("UNKNOWN",           "invalid",  NULL,               false,      false,      false));
     addEntry(LLAssetType::AT_NONE,              new AssetEntry("NONE",              "-1",		NULL,		  		FALSE,		FALSE,		FALSE));
 
@@ -150,14 +151,12 @@ LLAssetType::EType LLAssetType::lookup(const char* name)
 LLAssetType::EType LLAssetType::lookup(const std::string& type_name)
 {
 	const LLAssetDictionary *dict = LLAssetDictionary::getInstance();
-	for (LLAssetDictionary::const_iterator iter = dict->begin();
-		 iter != dict->end();
-		 iter++)
+	for (const LLAssetDictionary::value_type& pair : *dict)
 	{
-		const AssetEntry *entry = iter->second;
+		const AssetEntry *entry = pair.second;
 		if (type_name == entry->mTypeName)
 		{
-			return iter->first;
+			return pair.first;
 		}
 	}
 	return AT_UNKNOWN;
@@ -188,14 +187,12 @@ LLAssetType::EType LLAssetType::lookupHumanReadable(const char* name)
 LLAssetType::EType LLAssetType::lookupHumanReadable(const std::string& readable_name)
 {
 	const LLAssetDictionary *dict = LLAssetDictionary::getInstance();
-	for (LLAssetDictionary::const_iterator iter = dict->begin();
-		 iter != dict->end();
-		 iter++)
+	for (const LLAssetDictionary::value_type& pair : *dict)
 	{
-		const AssetEntry *entry = iter->second;
+		const AssetEntry *entry = pair.second;
 		if (entry->mHumanName && (readable_name == entry->mHumanName))
 		{
-			return iter->first;
+			return pair.first;
 		}
 	}
 	return AT_NONE;

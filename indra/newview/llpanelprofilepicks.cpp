@@ -60,57 +60,81 @@ class LLPickHandler : public LLCommandHandler
 {
 public:
 
-	// requires trusted browser to trigger
-	LLPickHandler() : LLCommandHandler("pick", UNTRUSTED_THROTTLE) { }
+    // requires trusted browser to trigger
+    LLPickHandler() : LLCommandHandler("pick", UNTRUSTED_THROTTLE) { }
 
-	bool handle(const LLSD& params, const LLSD& query_map,
-		LLMediaCtrl* web)
-	{
-		if (LLStartUp::getStartupState() < STATE_STARTED)
-		{
-			return true;
-		}
+    virtual bool canHandleUntrusted(
+        const LLSD& params,
+        const LLSD& query_map,
+        LLMediaCtrl* web,
+        const std::string& nav_type)
+    {
+        if (params.size() < 1)
+        {
+            return true; // don't block, will fail later
+        }
 
-		if (!LLUI::getInstance()->mSettingGroups["config"]->getBOOL("EnablePicks"))
-		{
-			LLNotificationsUtil::add("NoPicks", LLSD(), LLSD(), std::string("SwitchToStandardSkinAndQuit"));
-			return true;
-		}
+        if (nav_type == NAV_TYPE_CLICKED)
+        {
+            return true;
+        }
 
-		// handle app/pick/create urls first
-		if (params.size() == 1 && params[0].asString() == "create")
-		{
-			LLAvatarActions::createPick();
-			return true;
-		}
+        const std::string verb = params[0].asString();
+        if (verb == "create")
+        {
+            return false;
+        }
+        return true;
+    }
 
-		// then handle the general app/pick/{UUID}/{CMD} urls
-		if (params.size() < 2)
-		{
-			return false;
-		}
+    bool handle(const LLSD& params, const LLSD& query_map,
+        LLMediaCtrl* web)
+    {
+        if (LLStartUp::getStartupState() < STATE_STARTED)
+        {
+            return true;
+        }
 
-		// get the ID for the pick_id
-		LLUUID pick_id;
-		if (!pick_id.set(params[0], FALSE))
-		{
-			return false;
-		}
+        if (!LLUI::getInstance()->mSettingGroups["config"]->getBOOL("EnablePicks"))
+        {
+            LLNotificationsUtil::add("NoPicks", LLSD(), LLSD(), std::string("SwitchToStandardSkinAndQuit"));
+            return true;
+        }
 
-		// edit the pick in the side tray.
-		// need to ask the server for more info first though...
-		const std::string verb = params[1].asString();
-		if (verb == "edit")
-		{
-			LLAvatarActions::showPick(gAgent.getID(), pick_id);
-			return true;
-		}
-		else
-		{
-			LL_WARNS() << "unknown verb " << verb << LL_ENDL;
-			return false;
-		}
-	}
+        // handle app/pick/create urls first
+        if (params.size() == 1 && params[0].asString() == "create")
+        {
+            LLAvatarActions::createPick();
+            return true;
+        }
+
+        // then handle the general app/pick/{UUID}/{CMD} urls
+        if (params.size() < 2)
+        {
+            return false;
+        }
+
+        // get the ID for the pick_id
+        LLUUID pick_id;
+        if (!pick_id.set(params[0], FALSE))
+        {
+            return false;
+        }
+
+        // edit the pick in the side tray.
+        // need to ask the server for more info first though...
+        const std::string verb = params[1].asString();
+        if (verb == "edit")
+        {
+            LLAvatarActions::showPick(gAgent.getID(), pick_id);
+            return true;
+        }
+        else
+        {
+            LL_WARNS() << "unknown verb " << verb << LL_ENDL;
+            return false;
+        }
+    }
 };
 LLPickHandler gPickHandler;
 
@@ -482,64 +506,65 @@ LLPanelProfilePick::~LLPanelProfilePick()
 
 void LLPanelProfilePick::setAvatarId(const LLUUID& avatar_id)
 {
-	if (avatar_id.isNull())
-	{
-		return;
-	}
-	LLPanelProfilePropertiesProcessorTab::setAvatarId(avatar_id);
+    if (avatar_id.isNull())
+    {
+        return;
+    }
+    LLPanelProfilePropertiesProcessorTab::setAvatarId(avatar_id);
 
-	// creating new Pick
-	if (getPickId().isNull() && getSelfProfile())
-	{
-		mNewPick = true;
+    // creating new Pick
+    if (getPickId().isNull() && getSelfProfile())
+    {
+        mNewPick = true;
 
-		setPosGlobal(gAgent.getPositionGlobal());
+        setPosGlobal(gAgent.getPositionGlobal());
 
-		LLUUID parcel_id = LLUUID::null, snapshot_id = LLUUID::null;
-		std::string pick_name, pick_desc, region_name;
+        LLUUID parcel_id = LLUUID::null, snapshot_id = LLUUID::null;
+        std::string pick_name, pick_desc, region_name;
 
-		LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		if (parcel)
-		{
-			parcel_id = parcel->getID();
-			pick_name = parcel->getName();
-			pick_desc = parcel->getDesc();
-			snapshot_id = parcel->getSnapshotID();
-		}
+        LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if (parcel)
+        {
+            parcel_id = parcel->getID();
+            pick_name = parcel->getName();
+            pick_desc = parcel->getDesc();
+            snapshot_id = parcel->getSnapshotID();
+            mPickDescription->setParseHTML(false);
+        }
 
-		LLViewerRegion* region = gAgent.getRegion();
-		if (region)
-		{
-			region_name = region->getName();
-		}
+        LLViewerRegion* region = gAgent.getRegion();
+        if (region)
+        {
+            region_name = region->getName();
+        }
 
-		setParcelID(parcel_id);
-		setPickName(pick_name.empty() ? region_name : pick_name);
-		setPickDesc(pick_desc);
-		setSnapshotId(snapshot_id);
-		setPickLocation(createLocationText(getLocationNotice(), pick_name, region_name, getPosGlobal()));
+        setParcelID(parcel_id);
+        setPickName(pick_name.empty() ? region_name : pick_name);
+        setPickDesc(pick_desc);
+        setSnapshotId(snapshot_id);
+        setPickLocation(createLocationText(getLocationNotice(), pick_name, region_name, getPosGlobal()));
 
-		enableSaveButton(TRUE);
-	}
-	else
-	{
-		LLAvatarPropertiesProcessor::getInstance()->sendPickInfoRequest(getAvatarId(), getPickId());
+        enableSaveButton(TRUE);
+    }
+    else
+    {
+        LLAvatarPropertiesProcessor::getInstance()->sendPickInfoRequest(getAvatarId(), getPickId());
 
-		enableSaveButton(FALSE);
-	}
+        enableSaveButton(FALSE);
+    }
 
-	resetDirty();
+    resetDirty();
 
-	if (getSelfProfile())
-	{
-		mPickName->setEnabled(TRUE);
-		mPickDescription->setEnabled(TRUE);
-		mSetCurrentLocationButton->setVisible(TRUE);
-	}
-	else
-	{
-		mSnapshotCtrl->setEnabled(FALSE);
-	}
+    if (getSelfProfile())
+    {
+        mPickName->setEnabled(TRUE);
+        mPickDescription->setEnabled(TRUE);
+        mSetCurrentLocationButton->setVisible(TRUE);
+    }
+    else
+    {
+        mSnapshotCtrl->setEnabled(FALSE);
+    }
 }
 
 BOOL LLPanelProfilePick::postBuild()

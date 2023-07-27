@@ -132,10 +132,17 @@ public:
 	void updateClickActionViews();
     void updateSearchableItems();
 
+<<<<<<< HEAD
 protected:	
 	//BD
 	void		onBtnOK();
 	void		onBtnCancel();
+=======
+	void		onBtnOK(const LLSD& userdata);
+	void		onBtnCancel(const LLSD& userdata);
+>>>>>>> Linden_Release/DRTVWR-559
+
+protected:	
 
 	void		onClickClearCache();			// Clear viewer texture cache, file cache on next startup
 	void		onClickBrowserClearCache();		// Clear web history and caches as well as viewer caches above
@@ -148,6 +155,8 @@ protected:
 	void onDoNotDisturbResponseChanged();
 	// callback for defaults
 	void setHardwareDefaults();
+
+    void onAtmosShaderChange();
 
 public:
 	// This function squirrels away the current values of the controls so that
@@ -186,6 +195,7 @@ public:
 	void onClickAdd(const LLSD& userdata);
 
 	void onChangeModelFolder();
+    void onChangePBRFolder();
 	void onChangeTextureFolder();
 	void onChangeSoundFolder();
 	void onChangeAnimationFolder();
@@ -196,6 +206,12 @@ public:
 	void onClickRememberedUsernames();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
+<<<<<<< HEAD
+=======
+	void onClickRenderExceptions();
+	void onClickAutoAdjustments();
+	void onClickAdvanced();
+>>>>>>> Linden_Release/DRTVWR-559
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
@@ -274,12 +290,20 @@ public:
 	void deleteGraphicPreset();
 	void refreshGraphicPresets();
 
+    void setRecommendedSettings();
+    void resetAutotuneSettings();
+
 private:
 
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
+<<<<<<< HEAD
 
+=======
+	void updateMaxComplexity();
+    void updateComplexityText();
+>>>>>>> Linden_Release/DRTVWR-559
 	static bool loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map);
 	
 	void loadUserSkins();
@@ -313,6 +337,8 @@ private:
 	LLFilterEditor *mFilterEdit;
 	std::unique_ptr<LLSearchableUI::LLTabData> mSearchData;
 	bool mSearchDataDirty;
+
+    boost::signals2::connection	mComplexityChangedSignal;
 
 	void onUpdateFilterTerm( bool force = false );
 	void collectSearchableItems();
@@ -512,6 +538,18 @@ private:
 	LOG_CLASS(LLPanelPreferenceGraphics);
 };
 
+class LLAvatarComplexityControls
+{
+  public: 
+	static void updateMax(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val = false);
+	static void setText(U32 value, LLTextBox* text_box, bool short_val = false);
+	static void updateMaxRenderTime(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val = false);
+	static void setRenderTimeText(F32 value, LLTextBox* text_box, bool short_val = false);
+	static void setIndirectControls();
+	static void setIndirectMaxNonImpostors();
+	static void setIndirectMaxArc();
+	LOG_CLASS(LLAvatarComplexityControls);
+};
 
 class LLFloaterPreferenceProxy : public LLFloater
 {

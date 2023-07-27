@@ -488,9 +488,6 @@ void LLMenuItemGL::draw( void )
 	// let disabled items be highlighted, just don't draw them as such
 	if( getEnabled() && getHighlight() && !mBriefItem)
 	{
-		int debug_count = 0;
-		if (dynamic_cast<LLMenuItemCallGL*>(this))
-			debug_count++;
 		gGL.color4fv( mHighlightBackground.get().mV );
 
 		gl_rect_2d( 0, getRect().getHeight(), getRect().getWidth(), 0 );
@@ -1881,6 +1878,13 @@ bool LLMenuGL::addContextChild(LLView* view, S32 tab_group)
 	}
 
 	return false;
+}
+
+
+void LLMenuGL::deleteAllChildren()
+{
+    mItems.clear();
+    LLUICtrl::deleteAllChildren();
 }
 
 void LLMenuGL::removeChild( LLView* ctrl)
@@ -4100,7 +4104,7 @@ LLContextMenuBranch::LLContextMenuBranch(const LLContextMenuBranch::Params& p)
 	LLContextMenu* branch = static_cast<LLContextMenu*>(p.branch);
 	if (branch)
 	{
-		mBranchHandle = branch->getHandle();
+		mBranch = branch->getHandle();
 		branch->hide();
 		branch->setParentMenuItem(this);
 	}
@@ -4108,9 +4112,9 @@ LLContextMenuBranch::LLContextMenuBranch(const LLContextMenuBranch::Params& p)
 
 LLContextMenuBranch::~LLContextMenuBranch()
 {
-	if (mBranchHandle.get())
+	if (mBranch.get())
 	{
-		mBranchHandle.get()->die();
+		mBranch.get()->die();
 	}
 }
 

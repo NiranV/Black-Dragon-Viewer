@@ -128,7 +128,8 @@ public:
 
 	// Sets cursor, may set to arrow+hourglass
 	virtual void setCursor(ECursorType cursor) { mNextCursor = cursor; };
-	virtual ECursorType getCursor() const;
+    virtual ECursorType getCursor() const;
+    virtual ECursorType getNextCursor() const { return mNextCursor; };
 	virtual void updateCursor() = 0;
 
 	virtual void captureMouse() = 0;
@@ -172,7 +173,10 @@ public:
 	virtual F32	getNativeAspectRatio() = 0;
 	virtual F32 getPixelAspectRatio() = 0;
 	virtual void setNativeAspectRatio(F32 aspect) = 0;
-	
+
+	// query VRAM usage
+	virtual U32 getAvailableVRAMMegabytes() = 0;
+
 	virtual void beforeDialog() {};	// prepare to put up an OS dialog (if special measures are required, such as in fullscreen mode)
 	virtual void afterDialog() {};	// undo whatever was done in beforeDialog()
 
@@ -206,6 +210,8 @@ public:
     // windows only DirectInput8 for joysticks
     virtual void* getDirectInput8() { return NULL; };
     virtual bool getInputDevices(U32 device_type_filter, void * devices_callback, void* userdata) { return false; };
+
+    virtual S32 getRefreshRate() { return mRefreshRate; }
 protected:
 	LLWindow(LLWindowCallbacks* callbacks, BOOL fullscreen, U32 flags);
 	virtual ~LLWindow();
@@ -239,6 +245,7 @@ protected:
 	U16			mHighSurrogate;
 	S32			mMinWindowWidth;
 	S32			mMinWindowHeight;
+    S32         mRefreshRate;
 
  	// Handle a UTF-16 encoding unit received from keyboard.
  	// Converting the series of UTF-16 encoding units to UTF-32 data,
@@ -309,7 +316,10 @@ public:
 		BOOL enable_vsync = FALSE,
 		BOOL use_gl = TRUE,
 		BOOL ignore_pixel_depth = FALSE,
-		U32 fsaa_samples = 0);
+		U32 fsaa_samples = 0,
+        U32 max_cores = 0,
+        U32 max_vram = 0,
+        F32 max_gl_version = 4.6f);
 	static BOOL destroyWindow(LLWindow* window);
 	static BOOL isWindowValid(LLWindow *window);
 };

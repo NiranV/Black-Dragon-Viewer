@@ -49,6 +49,7 @@
 #include "llsys.h"			// for LLOSInfo
 #include "lltimer.h"
 #include "llappcorehttp.h"
+#include "threadpool_fwd.h"
 
 #include <boost/signals2.hpp>
 
@@ -64,11 +65,6 @@ class LLPurgeDiskCacheThread;
 class LLViewerRegion;
 //BD
 class LLToolMgr;
-
-namespace LL
-{
-    class ThreadPool;
-}
 
 extern LLTrace::BlockTimerStatHandle FTM_FRAME;
 
@@ -121,7 +117,6 @@ public:
 
 	virtual bool restoreErrorTrap() = 0; // Require platform specific override to reset error handling mechanism.
 	                                     // return false if the error trap needed restoration.
-	static void handleViewerCrash(); // Hey! The viewer crashed. Do this, soon.
 	void checkForCrash();
     
 	// Thread accessors
@@ -407,7 +402,6 @@ extern BOOL		gDisconnected;
 extern LLFrameTimer	gRestoreGLTimer;
 extern BOOL			gRestoreGL;
 extern bool		gUseWireframe;
-extern bool		gInitialDeferredModeForWireframe;
 
 extern LLMemoryInfo gSysMemory;
 extern U64Bytes gMemoryAllocated;

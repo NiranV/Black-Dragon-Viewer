@@ -97,7 +97,7 @@ private:
 };
 
 LLMeshFilePicker::LLMeshFilePicker(LLModelPreview* mp, S32 lod)
-: LLFilePickerThread(LLFilePicker::FFLOAD_COLLADA)
+: LLFilePickerThread(LLFilePicker::FFLOAD_MODEL)
 	{
 		mMP = mp;
 		mLOD = lod;
@@ -330,8 +330,8 @@ void LLFloaterModelPreview::initModelPreview()
 	S32 tex_width = 512;
 	S32 tex_height = 512;
 
-	S32 max_width = llmin(PREVIEW_RENDER_SIZE, (S32)gPipeline.mScreenWidth);
-	S32 max_height = llmin(PREVIEW_RENDER_SIZE, (S32)gPipeline.mScreenHeight);
+	S32 max_width = llmin(PREVIEW_RENDER_SIZE, (S32)gPipeline.mRT->width);
+	S32 max_height = llmin(PREVIEW_RENDER_SIZE, (S32)gPipeline.mRT->height);
 
 	while ((tex_width << 1) < max_width)
 	{
@@ -1740,7 +1740,7 @@ void LLFloaterModelPreview::toggleCalculateButton(bool visible)
 		childSetTextArg("download_weight", "[ST]", tbd);
 		childSetTextArg("server_weight", "[SIM]", tbd);
 		childSetTextArg("physics_weight", "[PH]", tbd);
-		if (!mModelPhysicsFee.isMap() || mModelPhysicsFee.emptyMap())
+		if (!mModelPhysicsFee.isMap() || (mModelPhysicsFee.size() == 0))
 		{
 			childSetTextArg("upload_fee", "[FEE]", tbd);
 		}

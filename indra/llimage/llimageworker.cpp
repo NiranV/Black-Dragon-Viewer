@@ -28,27 +28,60 @@
 
 #include "llimageworker.h"
 #include "llimagedxt.h"
+#include "threadpool.h"
+
+/*--------------------------------------------------------------------------*/
+class ImageRequest
+{
+public:
+	ImageRequest(const LLPointer<LLImageFormatted>& image,
+				 S32 discard, BOOL needs_aux,
+				 const LLPointer<LLImageDecodeThread::Responder>& responder);
+	virtual ~ImageRequest();
+
+	/*virtual*/ bool processRequest();
+	/*virtual*/ void finishRequest(bool completed);
+
+private:
+	// LLPointers stored in ImageRequest MUST be LLPointer instances rather
+	// than references: we need to increment the refcount when storing these.
+	// input
+	LLPointer<LLImageFormatted> mFormattedImage;
+	S32 mDiscardLevel;
+	BOOL mNeedsAux;
+	// output
+	LLPointer<LLImageRaw> mDecodedImageRaw;
+	LLPointer<LLImageRaw> mDecodedImageAux;
+	BOOL mDecodedRaw;
+	BOOL mDecodedAux;
+	LLPointer<LLImageDecodeThread::Responder> mResponder;
+};
+
 
 //----------------------------------------------------------------------------
 
 // MAIN THREAD
+<<<<<<< HEAD
 LLImageDecodeThread::LLImageDecodeThread(bool threaded)
 	: LLQueuedThread("imagedecode", threaded)
 	, mCreationListSize(0)
+=======
+LLImageDecodeThread::LLImageDecodeThread(bool /*threaded*/)
+>>>>>>> Linden_Release/DRTVWR-559
 {
-	mCreationMutex = new LLMutex();
+    mThreadPool.reset(new LL::ThreadPool("ImageDecode", 8));
+    mThreadPool->start();
 }
 
 //virtual 
 LLImageDecodeThread::~LLImageDecodeThread()
-{
-	delete mCreationMutex ;
-}
+{}
 
 // MAIN THREAD
 // virtual
-S32 LLImageDecodeThread::update(F32 max_time_ms)
+size_t LLImageDecodeThread::update(F32 max_time_ms)
 {
+<<<<<<< HEAD
 	LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
 	LLMutexLock lock(mCreationMutex);
 	for (creation_list_t::iterator iter = mCreationList.begin();
@@ -58,36 +91,48 @@ S32 LLImageDecodeThread::update(F32 max_time_ms)
 		ImageRequest* req = new ImageRequest(info.handle, info.image,
 			info.priority, info.discard, info.needs_aux,
 			info.responder);
+=======
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
+    return getPending();
+}
+>>>>>>> Linden_Release/DRTVWR-559
 
-		bool res = addRequest(req);
-		if (!res)
-		{
-			LL_ERRS() << "request added after LLLFSThread::cleanupClass()" << LL_ENDL;
-		}
-	}
-	mCreationList.clear();
-	S32 res = LLQueuedThread::update(max_time_ms);
-	return res;
+size_t LLImageDecodeThread::getPending()
+{
+    return mThreadPool->getQueue().size();
 }
 
-LLImageDecodeThread::handle_t LLImageDecodeThread::decodeImage(LLImageFormatted* image, 
-	U32 priority, S32 discard, BOOL needs_aux, Responder* responder)
+LLImageDecodeThread::handle_t LLImageDecodeThread::decodeImage(
+    const LLPointer<LLImageFormatted>& image, 
+    S32 discard,
+    BOOL needs_aux,
+    const LLPointer<LLImageDecodeThread::Responder>& responder)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
-	LLMutexLock lock(mCreationMutex);
-	handle_t handle = generateHandle();
-	mCreationList.push_back(creation_info(handle, image, priority, discard, needs_aux, responder));
-	mCreationListSize = mCreationList.size();
-	return handle;
+
+    // Instantiate the ImageRequest right in the lambda, why not?
+    bool posted = mThreadPool->getQueue().post(
+        [req = ImageRequest(image, discard, needs_aux, responder)]
+        () mutable
+        {
+            auto done = req.processRequest();
+            req.finishRequest(done);
+        });
+    if (! posted)
+    {
+        LL_DEBUGS() << "Tried to start decoding on shutdown" << LL_ENDL;
+        // should this return 0?
+    }
+
+    // It's important to our consumer (LLTextureFetchWorker) that we return a
+    // nonzero handle. It is NOT important that the nonzero handle be unique:
+    // nothing is ever done with it except to compare it to zero, or zero it.
+    return 17;
 }
 
-// Used by unit test only
-// Returns the size of the mutex guarded list as an indication of sanity
-S32 LLImageDecodeThread::tut_size()
+void LLImageDecodeThread::shutdown()
 {
-	LLMutexLock lock(mCreationMutex);
-	S32 res = mCreationList.size();
-	return res;
+    mThreadPool->close();
 }
 
 LLImageDecodeThread::Responder::~Responder()
@@ -96,11 +141,10 @@ LLImageDecodeThread::Responder::~Responder()
 
 //----------------------------------------------------------------------------
 
-LLImageDecodeThread::ImageRequest::ImageRequest(handle_t handle, LLImageFormatted* image, 
-												U32 priority, S32 discard, BOOL needs_aux,
-												LLImageDecodeThread::Responder* responder)
-	: LLQueuedThread::QueuedRequest(handle, priority, FLAG_AUTO_COMPLETE),
-	  mFormattedImage(image),
+ImageRequest::ImageRequest(const LLPointer<LLImageFormatted>& image, 
+							S32 discard, BOOL needs_aux,
+							const LLPointer<LLImageDecodeThread::Responder>& responder)
+	: mFormattedImage(image),
 	  mDiscardLevel(discard),
 	  mNeedsAux(needs_aux),
 	  mDecodedRaw(FALSE),
@@ -109,7 +153,7 @@ LLImageDecodeThread::ImageRequest::ImageRequest(handle_t handle, LLImageFormatte
 {
 }
 
-LLImageDecodeThread::ImageRequest::~ImageRequest()
+ImageRequest::~ImageRequest()
 {
 	mDecodedImageRaw = NULL;
 	mDecodedImageAux = NULL;
@@ -120,10 +164,10 @@ LLImageDecodeThread::ImageRequest::~ImageRequest()
 
 
 // Returns true when done, whether or not decode was successful.
-bool LLImageDecodeThread::ImageRequest::processRequest()
+bool ImageRequest::processRequest()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
-	const F32 decode_time_slice = .1f;
+	const F32 decode_time_slice = 0.f; //disable time slicing
 	bool done = true;
 	if (!mDecodedRaw && mFormattedImage.notNull())
 	{
@@ -147,7 +191,7 @@ bool LLImageDecodeThread::ImageRequest::processRequest()
 											  mFormattedImage->getHeight(),
 											  mFormattedImage->getComponents());
 		}
-		done = mFormattedImage->decode(mDecodedImageRaw, decode_time_slice); // 1ms
+		done = mFormattedImage->decode(mDecodedImageRaw, decode_time_slice);
 		// some decoders are removing data when task is complete and there were errors
 		mDecodedRaw = done && mDecodedImageRaw->getData();
 	}
@@ -160,14 +204,14 @@ bool LLImageDecodeThread::ImageRequest::processRequest()
 											  mFormattedImage->getHeight(),
 											  1);
 		}
-		done = mFormattedImage->decodeChannels(mDecodedImageAux, decode_time_slice, 4, 4); // 1ms
+		done = mFormattedImage->decodeChannels(mDecodedImageAux, decode_time_slice, 4, 4);
 		mDecodedAux = done && mDecodedImageAux->getData();
 	}
 
 	return done;
 }
 
-void LLImageDecodeThread::ImageRequest::finishRequest(bool completed)
+void ImageRequest::finishRequest(bool completed)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
 	if (mResponder.notNull())
@@ -176,11 +220,4 @@ void LLImageDecodeThread::ImageRequest::finishRequest(bool completed)
 		mResponder->completed(success, mDecodedImageRaw, mDecodedImageAux);
 	}
 	// Will automatically be deleted
-}
-
-// Used by unit test only
-// Checks that a responder exists for this instance so that something can happen when completion is reached
-bool LLImageDecodeThread::ImageRequest::tut_isOK()
-{
-	return mResponder.notNull();
 }

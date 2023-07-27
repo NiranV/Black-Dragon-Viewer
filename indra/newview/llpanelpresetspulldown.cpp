@@ -34,6 +34,7 @@
 #include "llbutton.h"
 #include "lltabcontainer.h"
 #include "llfloater.h"
+#include "llfloaterperformance.h"
 #include "llfloaterreg.h"
 #include "llpresetsmanager.h"
 #include "llsliderctrl.h"
@@ -56,6 +57,7 @@ LLPanelPresetsPulldown::LLPanelPresetsPulldown()
 	mHoverTimer.stop();
 
 	mCommitCallbackRegistrar.add("Presets.GoGraphicsPrefs", boost::bind(&LLPanelPresetsPulldown::onGraphicsButtonClick, this));
+    mCommitCallbackRegistrar.add("Presets.GoAutofpsPrefs", boost::bind(&LLPanelPresetsPulldown::onAutofpsButtonClick, this, _2));
 	mCommitCallbackRegistrar.add("Presets.RowClick", boost::bind(&LLPanelPresetsPulldown::onRowClick, this, _2));
 
 	buildFromFile( "panel_presets_pulldown.xml");
@@ -191,4 +193,14 @@ void LLPanelPresetsPulldown::onGraphicsButtonClick()
 
 	// bring up the prefs floater
 	gDragonLibrary.openPreferences("display");
+}
+
+void LLPanelPresetsPulldown::onAutofpsButtonClick(const LLSD& user_data)
+{
+    setVisible(FALSE);
+    LLFloaterPerformance* performance_floater = LLFloaterReg::showTypedInstance<LLFloaterPerformance>("performance");
+    if (performance_floater)
+    {
+        performance_floater->showAutoadjustmentsPanel();
+    }
 }

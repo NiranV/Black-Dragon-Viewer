@@ -1180,7 +1180,7 @@ void LLOutfitGallery::uploadPhoto(LLUUID outfit_id)
 	{
 		return;
 	}
-    (new LLFilePickerReplyThread(boost::bind(&LLOutfitGallery::uploadOutfitImage, this, _1, outfit_id), LLFilePicker::FFLOAD_IMAGE, false))->getFile();
+    LLFilePickerReplyThread::startPicker(boost::bind(&LLOutfitGallery::uploadOutfitImage, this, _1, outfit_id), LLFilePicker::FFLOAD_IMAGE, false);
 }
 
 void LLOutfitGallery::uploadOutfitImage(const std::vector<std::string>& filenames, LLUUID outfit_id)
@@ -1220,32 +1220,26 @@ void LLOutfitGallery::uploadOutfitImage(const std::vector<std::string>& filename
 		}
 
         S32 expected_upload_cost = LLAgentBenefitsMgr::current().getTextureUploadCost();
-		void* nruserdata = NULL;
-		nruserdata = (void*)&outfit_id;
+        void *nruserdata = NULL;
+        nruserdata = (void *)&outfit_id;
 
-		LLViewerInventoryCategory* outfit_cat = gInventory.getCategory(outfit_id);
-		if (!outfit_cat) return;
-		updateSnapshotFolderObserver();
-		checkRemovePhoto(outfit_id);
-		std::string upload_pending_name = outfit_id.asString();
-		std::string upload_pending_desc = "";
-		(void)upload_new_resource(filename, // file
-			upload_pending_name,
-			upload_pending_desc,
-			0, LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
-			LLFloaterPerms::getNextOwnerPerms("Uploads"),
-			LLFloaterPerms::getGroupPerms("Uploads"),
-			LLFloaterPerms::getEveryonePerms("Uploads"),
-			upload_pending_name, LLAssetStorage::LLStoreAssetCallback(), expected_upload_cost, nruserdata, false);
-		mOutfitLinkPending = outfit_id;
-	}
-    else
-    {
-        LLSD subst;
-        subst["REASON"] = LLTrans::getString("outfit_photo_load_codec_error");;
-        LLNotificationsUtil::add("OutfitPhotoLoadError", subst);
-        return;
+        LLViewerInventoryCategory *outfit_cat = gInventory.getCategory(outfit_id);
+        if (!outfit_cat) return;
+        updateSnapshotFolderObserver();
+        checkRemovePhoto(outfit_id);
+        std::string upload_pending_name = outfit_id.asString();
+        std::string upload_pending_desc = "";
+        upload_new_resource(filename, // file
+            upload_pending_name,
+            upload_pending_desc,
+            0, LLFolderType::FT_NONE, LLInventoryType::IT_NONE,
+            LLFloaterPerms::getNextOwnerPerms("Uploads"),
+            LLFloaterPerms::getGroupPerms("Uploads"),
+            LLFloaterPerms::getEveryonePerms("Uploads"),
+            upload_pending_name, LLAssetStorage::LLStoreAssetCallback(), expected_upload_cost, nruserdata, false);
+        mOutfitLinkPending = outfit_id;
     }
+    delete unit;
 }
 
 void LLOutfitGallery::linkPhotoToOutfit(LLUUID photo_id, LLUUID outfit_id)
@@ -1367,7 +1361,6 @@ void LLOutfitGallery::onSelectPhoto(LLUUID selected_outfit_id)
                 FALSE,
                 TRUE,
                 "SELECT PHOTO",
-                PERM_NONE,
                 PERM_NONE,
                 PERM_NONE,
                 FALSE,

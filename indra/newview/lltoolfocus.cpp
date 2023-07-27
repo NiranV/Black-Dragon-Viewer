@@ -80,6 +80,7 @@ LLToolCamera::LLToolCamera()
 	mOutsideSlopX(FALSE),
 	mOutsideSlopY(FALSE),
 	mValidClickPoint(FALSE),
+    mClickPickPending(false),
 	mValidSelection(FALSE),
 	mMouseSteering(FALSE),
 	mMouseUpX(0),
@@ -139,6 +140,11 @@ BOOL LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
 
 	mValidClickPoint = FALSE;
 
+    // Sometimes Windows issues down and up events near simultaneously
+    // without giving async pick a chance to trigged
+    // Ex: mouse from numlock emulation
+    mClickPickPending = true;
+
 	// If mouse capture gets ripped away, claim we moused up
 	// at the point we moused down. JC
 	mMouseUpX = x;
@@ -177,13 +183,15 @@ BOOL LLToolCamera::handleRightMouseDown(S32 x, S32 y, MASK mask)
 
 void LLToolCamera::pickCallback(const LLPickInfo& pick_info)
 {
-	if (!LLToolCamera::getInstance()->hasMouseCapture())
+    LLToolCamera* camera = LLToolCamera::getInstance();
+	if (!camera->mClickPickPending)
 	{
 		return;
 	}
+    camera->mClickPickPending = false;
 
-	LLToolCamera::getInstance()->mMouseDownX = pick_info.mMousePt.mX;
-	LLToolCamera::getInstance()->mMouseDownY = pick_info.mMousePt.mY;
+    camera->mMouseDownX = pick_info.mMousePt.mX;
+    camera->mMouseDownY = pick_info.mMousePt.mY;
 
 	gViewerWindow->moveCursorToCenter();
 
@@ -193,7 +201,7 @@ void LLToolCamera::pickCallback(const LLPickInfo& pick_info)
 	// Check for hit the sky, or some other invalid point
 	if (!hit_obj && pick_info.mPosGlobal.isExactlyZero())
 	{
-		LLToolCamera::getInstance()->mValidClickPoint = FALSE;
+        camera->mValidClickPoint = FALSE;
 		return;
 	}
 
@@ -203,7 +211,7 @@ void LLToolCamera::pickCallback(const LLPickInfo& pick_info)
 		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 		if (!selection->getObjectCount() || selection->getSelectType() != SELECT_TYPE_HUD)
 		{
-			LLToolCamera::getInstance()->mValidClickPoint = FALSE;
+            camera->mValidClickPoint = FALSE;
 			return;
 		}
 	}
@@ -227,7 +235,7 @@ void LLToolCamera::pickCallback(const LLPickInfo& pick_info)
 
 		if( !good_customize_avatar_hit )
 		{
-			LLToolCamera::getInstance()->mValidClickPoint = FALSE;
+            camera->mValidClickPoint = FALSE;
 			return;
 		}
 
@@ -272,7 +280,7 @@ void LLToolCamera::pickCallback(const LLPickInfo& pick_info)
 
 	}
 
-	LLToolCamera::getInstance()->mValidClickPoint = TRUE;
+    camera->mValidClickPoint = TRUE;
 
 	if( CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() )
 	{
@@ -319,32 +327,36 @@ BOOL LLToolCamera::handleMouseUp(S32 x, S32 y, MASK mask)
 
 	if (hasMouseCapture())
 	{
-		if (mValidClickPoint)
-		{
-			if( CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() )
-			{
-				LLCoordGL mouse_pos;
-				LLVector3 focus_pos = gAgent.getPosAgentFromGlobal(gAgentCamera.getFocusGlobal());
-				BOOL success = LLViewerCamera::getInstance()->projectPosAgentToScreen(focus_pos, mouse_pos);
-				if (success)
-				{
-					LLUI::getInstance()->setMousePositionScreen(mouse_pos.mX, mouse_pos.mY);
-				}
-			}
-			else if (mMouseSteering)
-			{
-				LLUI::getInstance()->setMousePositionScreen(mMouseDownX, mMouseDownY);
-			}
-			else
-			{
-				gViewerWindow->moveCursorToCenter();
-			}
-		}
-		else
-		{
-			// not a valid zoomable object
-			LLUI::getInstance()->setMousePositionScreen(mMouseDownX, mMouseDownY);
-		}
+        // Do not move camera if we haven't gotten a pick
+        if (!mClickPickPending)
+        {
+            if (mValidClickPoint)
+            {
+                if (CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode())
+                {
+                    LLCoordGL mouse_pos;
+                    LLVector3 focus_pos = gAgent.getPosAgentFromGlobal(gAgentCamera.getFocusGlobal());
+                    BOOL success = LLViewerCamera::getInstance()->projectPosAgentToScreen(focus_pos, mouse_pos);
+                    if (success)
+                    {
+                        LLUI::getInstance()->setMousePositionScreen(mouse_pos.mX, mouse_pos.mY);
+                    }
+                }
+                else if (mMouseSteering)
+                {
+                    LLUI::getInstance()->setMousePositionScreen(mMouseDownX, mMouseDownY);
+                }
+                else
+                {
+                    gViewerWindow->moveCursorToCenter();
+                }
+            }
+            else
+            {
+                // not a valid zoomable object
+                LLUI::getInstance()->setMousePositionScreen(mMouseDownX, mMouseDownY);
+            }
+        }
 
 		// calls releaseMouse() internally
 		setMouseCapture(FALSE);

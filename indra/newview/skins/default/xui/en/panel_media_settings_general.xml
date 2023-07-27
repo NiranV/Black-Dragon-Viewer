@@ -92,10 +92,7 @@
    label="Reset"
    left="5" 
    name="current_url_reset_btn" 
-   width="110" > 
-   <button.commit_callback
-	     function="Media.ResetCurrentUrl"/>
-  </button>
+   width="110"/>
   <check_box 
    top_pad="9" 
    enabled="true" 

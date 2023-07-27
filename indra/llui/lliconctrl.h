@@ -82,6 +82,7 @@ public:
     virtual BOOL handleHover(S32 x, S32 y, MASK mask);
 
 	// lluictrl overrides
+	void onVisibilityChange(BOOL new_visibility);
 	virtual void	setValue(const LLSD& value );
 
 	std::string	getImageName() const;
@@ -116,6 +117,8 @@ protected:
     bool mInteractable;
 
 private:
+	void loadImage(const LLSD& value, S32 priority);
+
 	LLUIColor mColor;
 	LLPointer<LLUIImage> mImagep;
 };

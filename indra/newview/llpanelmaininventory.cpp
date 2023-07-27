@@ -136,6 +136,8 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 	mCommitCallbackRegistrar.add("Inventory.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
+    mEnableCallbackRegistrar.add("Inventory.EnvironmentEnabled", [](LLUICtrl *, const LLSD &) { return LLPanelMainInventory::hasSettingsInventory(); });
+    mEnableCallbackRegistrar.add("Inventory.MaterialsEnabled", [](LLUICtrl *, const LLSD &) { return LLPanelMainInventory::hasMaterialsInventory(); });
 
 	mSavedFolderState = new LLSaveFolderState();
 	mSavedFolderState->setApply(FALSE);
@@ -305,6 +307,13 @@ LLPanelMainInventory::~LLPanelMainInventory( void )
     }
     
 	delete mSavedFolderState;
+
+	auto menu = mMenuAddHandle.get();
+	if(menu)
+	{
+		menu->die();
+		mMenuAddHandle.markDead();
+	}
 }
 
 LLInventoryPanel* LLPanelMainInventory::getAllItemsPanel()
@@ -1057,6 +1066,7 @@ void LLFloaterInventoryFinder::updateElementsFromFilter()
 	getChild<LLUICtrl>("check_clothing")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_WEARABLE));
 	getChild<LLUICtrl>("check_gesture")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_GESTURE));
 	getChild<LLUICtrl>("check_landmark")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_LANDMARK));
+	getChild<LLUICtrl>("check_material")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_MATERIAL));
 	getChild<LLUICtrl>("check_notecard")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_NOTECARD));
 	getChild<LLUICtrl>("check_object")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_OBJECT));
 	getChild<LLUICtrl>("check_script")->setValue((S32) (filter_types & 0x1 << LLInventoryType::IT_LSL));
@@ -1108,6 +1118,12 @@ void LLFloaterInventoryFinder::draw()
 	if (!getChild<LLUICtrl>("check_landmark")->getValue())
 	{
 		filter &= ~(0x1 << LLInventoryType::IT_LANDMARK);
+		filtered_by_all_types = FALSE;
+	}
+
+	if (!getChild<LLUICtrl>("check_material")->getValue())
+	{
+		filter &= ~(0x1 << LLInventoryType::IT_MATERIAL);
 		filtered_by_all_types = FALSE;
 	}
 
@@ -1260,6 +1276,7 @@ void LLFloaterInventoryFinder::selectAllTypes(void* user_data)
 	self->getChild<LLUICtrl>("check_clothing")->setValue(TRUE);
 	self->getChild<LLUICtrl>("check_gesture")->setValue(TRUE);
 	self->getChild<LLUICtrl>("check_landmark")->setValue(TRUE);
+	self->getChild<LLUICtrl>("check_material")->setValue(TRUE);
 	self->getChild<LLUICtrl>("check_notecard")->setValue(TRUE);
 	self->getChild<LLUICtrl>("check_object")->setValue(TRUE);
 	self->getChild<LLUICtrl>("check_script")->setValue(TRUE);
@@ -1280,6 +1297,7 @@ void LLFloaterInventoryFinder::selectNoTypes(void* user_data)
 	self->getChild<LLUICtrl>("check_clothing")->setValue(FALSE);
 	self->getChild<LLUICtrl>("check_gesture")->setValue(FALSE);
 	self->getChild<LLUICtrl>("check_landmark")->setValue(FALSE);
+	self->getChild<LLUICtrl>("check_material")->setValue(FALSE);
 	self->getChild<LLUICtrl>("check_notecard")->setValue(FALSE);
 	self->getChild<LLUICtrl>("check_object")->setValue(FALSE);
 	self->getChild<LLUICtrl>("check_script")->setValue(FALSE);
@@ -1307,6 +1325,17 @@ void LLPanelMainInventory::initListCommandsHandlers()
 			,	_5 // EDragAndDropType cargo_type
 			,	_7 // EAcceptance* accept
 			));
+
+	mCommitCallbackRegistrar.add("Inventory.GearDefault.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
+	mEnableCallbackRegistrar.add("Inventory.GearDefault.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
+	mEnableCallbackRegistrar.add("Inventory.GearDefault.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
+	mMenuGearDefault = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_gear_default.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	mGearMenuButton->setMenu(mMenuGearDefault, LLMenuButton::MP_TOP_LEFT, true);
+	LLMenuGL* menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>("menu_inventory_add.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	mMenuAddHandle = menu->getHandle();
+
+	mMenuVisibility = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_search_visibility.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	mVisibilityMenuButton->setMenu(mMenuVisibility, LLMenuButton::MP_BOTTOM_LEFT, true);
 
 	// Update the trash button when selected item(s) get worn or taken off.
 	LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLPanelMainInventory::updateListCommands, this));
@@ -1656,6 +1685,19 @@ void LLPanelMainInventory::setUploadCostIfNeeded()
 			upload_menu->getChild<LLView>("Upload Animation")->setLabelArg("[COST]", animation_upload_cost_str);
 		}
 	}
+}
+
+bool LLPanelMainInventory::hasSettingsInventory()
+{
+    return LLEnvironment::instance().isInventoryEnabled();
+}
+
+bool LLPanelMainInventory::hasMaterialsInventory()
+{
+    std::string agent_url = gAgent.getRegionCapability("UpdateMaterialAgentInventory");
+    std::string task_url = gAgent.getRegionCapability("UpdateMaterialTaskInventory");
+
+    return (!agent_url.empty() && !task_url.empty());
 }
 
 // List Commands                                                              //

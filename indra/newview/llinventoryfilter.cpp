@@ -437,7 +437,6 @@ bool LLInventoryFilter::checkAgainstFilterType(const LLFolderViewModelItemInvent
 bool LLInventoryFilter::checkAgainstFilterType(const LLInventoryItem* item) const
 {
 	LLInventoryType::EType object_type = item->getInventoryType();
-	const LLUUID object_id = item->getUUID();
 
 	const U32 filterTypes = mFilterOps.mFilterTypes;
 
@@ -1303,6 +1302,18 @@ const std::string& LLInventoryFilter::getFilterText()
 	else
 	{
 		not_filtered_types +=  LLTrans::getString("Landmarks");
+		filtered_by_all_types = FALSE;
+	}
+
+	if (isFilterObjectTypesWith(LLInventoryType::IT_MATERIAL))
+	{
+		filtered_types +=  LLTrans::getString("Materials");
+		filtered_by_type = TRUE;
+		num_filter_types++;
+	}
+	else
+	{
+		not_filtered_types +=  LLTrans::getString("Materials");
 		filtered_by_all_types = FALSE;
 	}
 

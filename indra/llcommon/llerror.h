@@ -82,9 +82,11 @@ const int LL_ERR_NOERR = 0;
 
 #ifdef SHOW_ASSERT
 #define llassert(func)			llassert_always_msg(func, #func)
+#define llassert_msg(func, msg)	llassert_always_msg(func, msg)
 #define llverify(func)			llassert_always_msg(func, #func)
 #else
 #define llassert(func)
+#define llassert_msg(func, msg)
 #define llverify(func)			do {if (func) {}} while(0)
 #endif
 
@@ -273,35 +275,34 @@ namespace LLError
 	// used to indicate the end of a message
 
 	class LL_COMMON_API NoClassInfo { };
-	// used to indicate no class info known for logging
+		// used to indicate no class info known for logging
 
-//LLCallStacks keeps track of call stacks and output the call stacks to log file
-//when LLAppViewer::handleViewerCrash() is triggered.
-//
-//Note: to be simple, efficient and necessary to keep track of correct call stacks, 
-//LLCallStacks is designed not to be thread-safe.
-//so try not to use it in multiple parallel threads at same time.
-//Used in a single thread at a time is fine.
-	class LL_COMMON_API LLCallStacks
-	{
-	private:
-		typedef std::vector<std::string> StringVector;
-		static StringVector sBuffer;
+    //LLCallStacks keeps track of call stacks and output the call stacks to log file
+    //
+    //Note: to be simple, efficient and necessary to keep track of correct call stacks, 
+    //LLCallStacks is designed not to be thread-safe.
+    //so try not to use it in multiple parallel threads at same time.
+    //Used in a single thread at a time is fine.
+    class LL_COMMON_API LLCallStacks
+    {
+    private:
+        typedef std::vector<std::string> StringVector;
+        static StringVector sBuffer ;
+              
+    public:   
+        static void push(const char* function, const int line) ;
+        static void insert(std::ostream& out, const char* function, const int line) ;
+        static void print() ;
+        static void clear() ;
+        static void end(const std::ostringstream& out) ;
+        static void cleanup();
+    };
 
-	public:
-		static void push(const char* function, const int line);
-		static void insert(std::ostream& out, const char* function, const int line);
-		static void print();
-		static void clear();
-		static void end(const std::ostringstream& out);
-		static void cleanup();
-	};
-
-	// class which, when streamed, inserts the current stack trace
-	struct LLStacktrace
-	{
-		friend std::ostream& operator<<(std::ostream& out, const LLStacktrace&);
-	};
+    // class which, when streamed, inserts the current stack trace
+    struct LLStacktrace
+    {
+        friend std::ostream& operator<<(std::ostream& out, const LLStacktrace&);
+    };
 }
 
 //this is cheaper than llcallstacks if no need to output other variables to call stacks. 
@@ -467,7 +468,29 @@ typedef LLError::NoClassInfo _LL_CLASS_TO_LOG;
 		LLError::CallSite& _site(_sites[which]);                        \
 		lllog_test_()
 
-// Check at run-time whether logging is enabled, without generating output
+/*
+// Check at run-time whether logging is enabled, without generating output.
+Resist the temptation to add a function like this because it incurs the
+expense of locking and map-searching every time control reaches it.
 bool debugLoggingEnabled(const std::string& tag);
+
+Instead of:
+
+if debugLoggingEnabled("SomeTag")
+{
+    // ... presumably expensive operation ...
+    LL_DEBUGS("SomeTag") << ... << LL_ENDL;
+}
+
+Use this:
+
+LL_DEBUGS("SomeTag");
+// ... presumably expensive operation ...
+LL_CONT << ...;
+LL_ENDL;
+
+LL_DEBUGS("SomeTag") performs the locking and map-searching ONCE, then caches
+the result in a static variable.
+*/ 
 
 #endif // LL_LLERROR_H

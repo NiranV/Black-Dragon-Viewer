@@ -273,7 +273,7 @@ LLOSInfo::LLOSInfo() :
 	{
 		const char * DARWIN_PRODUCT_NAME = "Mac OS X";
 		
-		S32 major_version, minor_version, bugfix_version = 0;
+		int64_t major_version, minor_version, bugfix_version = 0;
 
 		if (LLGetDarwinOSInfo(major_version, minor_version, bugfix_version))
 		{
@@ -454,14 +454,14 @@ LLOSInfo::LLOSInfo() :
 
 #ifndef LL_WINDOWS
 // static
-S32 LLOSInfo::getMaxOpenFiles()
+long LLOSInfo::getMaxOpenFiles()
 {
-	const S32 OPEN_MAX_GUESS = 256;
+	const long OPEN_MAX_GUESS = 256;
 
 #ifdef	OPEN_MAX
-	static S32 open_max = OPEN_MAX;
+	static long open_max = OPEN_MAX;
 #else
-	static S32 open_max = 0;
+	static long open_max = 0;
 #endif
 
 	if (0 == open_max)
@@ -771,20 +771,28 @@ static U32Kilobytes LLMemoryAdjustKBResult(U32Kilobytes inKB)
 }
 #endif
 
+#if LL_DARWIN
+// static
+U32Kilobytes LLMemoryInfo::getHardwareMemSize()
+{
+    // This might work on Linux as well.  Someone check...
+    uint64_t phys = 0;
+    int mib[2] = { CTL_HW, HW_MEMSIZE };
+
+    size_t len = sizeof(phys);
+    sysctl(mib, 2, &phys, &len, NULL, 0);
+
+    return U64Bytes(phys);
+}
+#endif
+
 U32Kilobytes LLMemoryInfo::getPhysicalMemoryKB() const
 {
 #if LL_WINDOWS
 	return LLMemoryAdjustKBResult(U32Kilobytes(mStatsMap["Total Physical KB"].asInteger()));
 
 #elif LL_DARWIN
-	// This might work on Linux as well.  Someone check...
-	uint64_t phys = 0;
-	int mib[2] = { CTL_HW, HW_MEMSIZE };
-
-	size_t len = sizeof(phys);	
-	sysctl(mib, 2, &phys, &len, NULL, 0);
-	
-	return U64Bytes(phys);
+    return getHardwareMemSize();
 
 #elif LL_LINUX
 	U64 phys = 0;
@@ -909,7 +917,7 @@ void LLMemoryInfo::stream(std::ostream& s) const
 	// Now stream stats
 	BOOST_FOREACH(const MapEntry& pair, inMap(mStatsMap))
 	{
-		s << pfx << std::setw(key_width+1) << (pair.first + ':') << ' ';
+		s << pfx << std::setw(narrow(key_width+1)) << (pair.first + ':') << ' ';
 		LLSD value(pair.second);
 		if (value.isInteger())
 			s << std::setw(12) << value.asInteger();
@@ -1280,7 +1288,7 @@ public:
                     << " seconds ";
         }
 
-	S32 precision = LL_CONT.precision();
+	auto precision = LL_CONT.precision();
 
         LL_CONT << std::fixed << std::setprecision(1) << framerate << '\n'
                 << LLMemoryInfo();

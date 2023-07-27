@@ -31,7 +31,7 @@
 #include "llconvexdecomposition.h"
 #include "llsdserialize.h"
 #include "llvector4a.h"
-#include "llmd5.h"
+#include "hbxxh.h"
 
 #ifdef LL_USESYSTEMLIBS
 # include <zlib.h>
@@ -53,7 +53,6 @@ const int MODEL_NAMES_LENGTH = sizeof(model_names) / sizeof(std::string);
 LLModel::LLModel(LLVolumeParams& params, F32 detail)
 	: LLVolume(params, detail), 
       mNormalizedScale(1,1,1), 
-      mNormalizedTranslation(0,0,0), 
       mPelvisOffset( 0.0f ), 
       mStatus(NO_ERRORS), 
       mSubmodelID(0)
@@ -296,6 +295,7 @@ void LLModel::normalizeVolumeFaces()
 			// the positions to fit within the unit cube.
 			LLVector4a* pos = (LLVector4a*) face.mPositions;
 			LLVector4a* norm = (LLVector4a*) face.mNormals;
+            LLVector4a* t = (LLVector4a*)face.mTangents;
 
 			for (U32 j = 0; j < face.mNumVertices; ++j)
 			{
@@ -306,6 +306,14 @@ void LLModel::normalizeVolumeFaces()
 					norm[j].mul(inv_scale);
 					norm[j].normalize3();
 				}
+
+                if (t)
+                {
+                    F32 w = t[j].getF32ptr()[3];
+                    t[j].mul(inv_scale);
+                    t[j].normalize3();
+                    t[j].getF32ptr()[3] = w;
+                }
 			}
 		}
 
@@ -319,6 +327,12 @@ void LLModel::normalizeVolumeFaces()
 		mNormalizedScale.set(normalized_scale.getF32ptr());
 		mNormalizedTranslation.set(trans.getF32ptr());
 		mNormalizedTranslation *= -1.f; 
+
+        // remember normalized scale so original dimensions can be recovered for mesh processing (i.e. tangent generation)
+        for (auto& face : mVolumeFaces)
+        {
+            face.mNormalizedScale = mNormalizedScale;
+        }
 	}
 }
 
@@ -728,10 +742,12 @@ LLSD LLModel::writeModel(
 				LLSD::Binary verts(face.mNumVertices*3*2);
 				LLSD::Binary tc(face.mNumVertices*2*2);
 				LLSD::Binary normals(face.mNumVertices*3*2);
+                LLSD::Binary tangents(face.mNumVertices * 4 * 2);
 				LLSD::Binary indices(face.mNumIndices*2);
 
 				U32 vert_idx = 0;
 				U32 norm_idx = 0;
+                //U32 tan_idx = 0;
 				U32 tc_idx = 0;
 			
 				LLVector2* ftc = (LLVector2*) face.mTexCoords;
@@ -784,6 +800,24 @@ LLSD LLModel::writeModel(
 							normals[norm_idx++] = buff[1];
 						}
 					}
+
+#if 0 // keep this code for now in case we want to support transporting tangents with mesh assets
+                    if (face.mTangents)
+                    { //normals
+                        F32* tangent = face.mTangents[j].getF32ptr();
+
+                        for (U32 k = 0; k < 4; ++k)
+                        { //for each component
+                            //convert to 16-bit normalized
+                            U16 val = (U16)((tangent[k] + 1.f) * 0.5f * 65535);
+                            U8* buff = (U8*)&val;
+
+                            //write to binary buffer
+                            tangents[tan_idx++] = buff[0];
+                            tangents[tan_idx++] = buff[1];
+                        }
+                    }
+#endif
 					
 					//texcoord
 					if (face.mTexCoords)
@@ -814,12 +848,21 @@ LLSD LLModel::writeModel(
 				//write out face data
 				mdl[model_names[idx]][i]["PositionDomain"]["Min"] = min_pos.getValue();
 				mdl[model_names[idx]][i]["PositionDomain"]["Max"] = max_pos.getValue();
+                mdl[model_names[idx]][i]["NormalizedScale"] = face.mNormalizedScale.getValue();
+
 				mdl[model_names[idx]][i]["Position"] = verts;
 				
 				if (face.mNormals)
 				{
 					mdl[model_names[idx]][i]["Normal"] = normals;
 				}
+
+#if 0 // keep this code for now in case we decide to transport tangents with mesh assets
+                if (face.mTangents)
+                {
+                    mdl[model_names[idx]][i]["Tangent"] = tangents;
+                }
+#endif
 
 				if (face.mTexCoords)
 				{
@@ -832,55 +875,69 @@ LLSD LLModel::writeModel(
 
 				if (skinning)
 				{
-					//write out skin weights
+                    if (!model[idx]->mSkinWeights.empty())
+                    {
+                        //write out skin weights
 
-					//each influence list entry is up to 4 24-bit values
-					// first 8 bits is bone index
-					// last 16 bits is bone influence weight
-					// a bone index of 0xFF signifies no more influences for this vertex
+                        //each influence list entry is up to 4 24-bit values
+                        // first 8 bits is bone index
+                        // last 16 bits is bone influence weight
+                        // a bone index of 0xFF signifies no more influences for this vertex
 
-					std::stringstream ostr;
+                        std::stringstream ostr;
+                        for (U32 j = 0; j < face.mNumVertices; ++j)
+                        {
+                            LLVector3 pos(face.mPositions[j].getF32ptr());
 
-					for (U32 j = 0; j < face.mNumVertices; ++j)
-					{
-						LLVector3 pos(face.mPositions[j].getF32ptr());
+                            weight_list& weights = model[idx]->getJointInfluences(pos);
 
-						weight_list& weights = model[idx]->getJointInfluences(pos);
+                            S32 count = 0;
+                            for (weight_list::iterator iter = weights.begin(); iter != weights.end(); ++iter)
+                            {
+                                // Note joint index cannot exceed 255.
+                                if (iter->mJointIdx < 255 && iter->mJointIdx >= 0)
+                                {
+                                    U8 idx = (U8)iter->mJointIdx;
+                                    ostr.write((const char*)&idx, 1);
 
-						S32 count = 0;
-						for (weight_list::iterator iter = weights.begin(); iter != weights.end(); ++iter)
-						{
-							// Note joint index cannot exceed 255.
-							if (iter->mJointIdx < 255 && iter->mJointIdx >= 0)
-							{
-								U8 idx = (U8) iter->mJointIdx;
-								ostr.write((const char*) &idx, 1);
+                                    U16 influence = (U16)(iter->mWeight * 65535);
+                                    ostr.write((const char*)&influence, 2);
 
-								U16 influence = (U16) (iter->mWeight*65535);
-								ostr.write((const char*) &influence, 2);
+                                    ++count;
+                                }
+                            }
+                            U8 end_list = 0xFF;
+                            if (count < 4)
+                            {
+                                ostr.write((const char*)&end_list, 1);
+                            }
+                        }
 
-								++count;
-							}		
-						}
-						U8 end_list = 0xFF;
-						if (count < 4)
-						{
-							ostr.write((const char*) &end_list, 1);
-						}
-					}
+                        //copy ostr to binary buffer
+                        std::string data = ostr.str();
+                        const U8* buff = (U8*)data.data();
+                        U32 bytes = data.size();
 
-					//copy ostr to binary buffer
-					std::string data = ostr.str();
-					const U8* buff = (U8*) data.data();
-					U32 bytes = data.size();
+                        LLSD::Binary w(bytes);
+                        for (U32 j = 0; j < bytes; ++j)
+                        {
+                            w[j] = buff[j];
+                        }
 
-					LLSD::Binary w(bytes);
-					for (U32 j = 0; j < bytes; ++j)
-					{
-						w[j] = buff[j];
-					}
-
-					mdl[model_names[idx]][i]["Weights"] = w;
+                        mdl[model_names[idx]][i]["Weights"] = w;
+                    }
+                    else
+                    {
+                        if (idx == LLModel::LOD_PHYSICS)
+                        {
+                            // Ex: using "bounding box"
+                            LL_DEBUGS("MESHSKININFO") << "Using physics model without skin weights" << LL_ENDL;
+                        }
+                        else
+                        {
+                            LL_WARNS("MESHSKININFO") << "Attempting to use skinning without having skin weights" << LL_ENDL;
+                        }
+                    }
 				}
 			}
 		}
@@ -982,6 +1039,8 @@ LLModel::weight_list& LLModel::getJointInfluences(const LLVector3& pos)
 	//1. If a vertex has been weighted then we'll find it via pos and return its weight list
 	weight_map::iterator iterPos = mSkinWeights.begin();
 	weight_map::iterator iterEnd = mSkinWeights.end();
+
+    llassert(!mSkinWeights.empty());
 	
 	for ( ; iterPos!=iterEnd; ++iterPos )
 	{
@@ -1386,6 +1445,16 @@ LLMeshSkinInfo::LLMeshSkinInfo(LLSD& skin):
 	fromLLSD(skin);
 }
 
+LLMeshSkinInfo::LLMeshSkinInfo(const LLUUID& mesh_id, LLSD& skin) :
+	mMeshID(mesh_id),
+	mPelvisOffset(0.0),
+	mLockScaleIfJointPosition(false),
+	mInvalidJointsScrubbed(false),
+	mJointNumsInitialized(false)
+{
+	fromLLSD(skin);
+}
+
 void LLMeshSkinInfo::fromLLSD(LLSD& skin)
 {
 	if (skin.has("joint_names"))
@@ -1521,7 +1590,7 @@ LLSD LLMeshSkinInfo::asLLSD(bool include_joints, bool lock_scale_if_joint_positi
 void LLMeshSkinInfo::updateHash()
 {
     //  get hash of data relevant to render batches
-    LLMD5 hash;
+    HBXXH64 hash;
 
     //mJointNames
     for (auto& name : mJointNames)
@@ -1530,24 +1599,19 @@ void LLMeshSkinInfo::updateHash()
     }
     
     //mJointNums 
-    hash.update((U8*)&(mJointNums[0]), sizeof(S32) * mJointNums.size());
+    hash.update((const void*)mJointNums.data(), sizeof(S32) * mJointNums.size());
     
     //mInvBindMatrix
     F32* src = mInvBindMatrix[0].getF32ptr();
     
-    for (int i = 0; i < mInvBindMatrix.size() * 16; ++i)
+    for (size_t i = 0, count = mInvBindMatrix.size() * 16; i < count; ++i)
     {
         S32 t = llround(src[i] * 10000.f);
-        hash.update((U8*)&t, sizeof(S32));
+        hash.update((const void*)&t, sizeof(S32));
     }
-    //hash.update((U8*)&(mInvBindMatrix[0]), sizeof(LLMatrix4a) * mInvBindMatrix.size());
+    //hash.update((const void*)mInvBindMatrix.data(), sizeof(LLMatrix4a) * mInvBindMatrix.size());
 
-    hash.finalize();
-
-    U64 digest[2];
-    hash.raw_digest((U8*) digest);
-
-    mHash = digest[0];
+    mHash = hash.digest();
 }
 
 U32 LLMeshSkinInfo::sizeBytes() const

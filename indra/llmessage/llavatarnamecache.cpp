@@ -63,7 +63,6 @@ LLCore::HttpRequest::ptr_t		sHttpRequest;
 LLCore::HttpHeaders::ptr_t		sHttpHeaders;
 LLCore::HttpOptions::ptr_t		sHttpOptions;
 LLCore::HttpRequest::policy_t	sHttpPolicy;
-LLCore::HttpRequest::priority_t	sHttpPriority;
 
 /* Sample response:
 <?xml version="1.0"?>
@@ -120,7 +119,6 @@ LLAvatarNameCache::LLAvatarNameCache()
     sHttpHeaders = LLCore::HttpHeaders::ptr_t(new LLCore::HttpHeaders());
     sHttpOptions = LLCore::HttpOptions::ptr_t(new LLCore::HttpOptions());
     sHttpPolicy = LLCore::HttpRequest::DEFAULT_POLICY_ID;
-    sHttpPriority = 0;
 }
 
 LLAvatarNameCache::~LLAvatarNameCache()
@@ -252,7 +250,9 @@ void LLAvatarNameCache::handleAvNameCacheSuccess(const LLSD &data, const LLSD &h
         {
             const LLUUID& agent_id = *it;
 
-            LL_WARNS("AvNameCache") << "LLAvatarNameResponder::result "
+            // If cap fails, response can contain a lot of names,
+            // don't spam too much
+            LL_DEBUGS("AvNameCache") << "LLAvatarNameResponder::result "
                 << "failed id " << agent_id
                 << LL_ENDL;
 
@@ -271,7 +271,7 @@ void LLAvatarNameCache::handleAgentError(const LLUUID& agent_id)
 	if (existing == mCache.end())
     {
         // there is no existing cache entry, so make a temporary name from legacy
-        LL_WARNS("AvNameCache") << "LLAvatarNameCache get legacy for agent "
+        LL_DEBUGS("AvNameCache") << "LLAvatarNameCache get legacy for agent "
 								<< agent_id << LL_ENDL;
         gCacheName->get(agent_id, false,  // legacy compatibility
                         boost::bind(&LLAvatarNameCache::legacyNameFetch, _1, _2, _3));

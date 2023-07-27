@@ -263,8 +263,6 @@ BOOL	LLPanelObject::postBuild()
 		// Don't allow (no copy) or (no transfer) textures to be selected during immediate mode
 		mCtrlSculptTexture->setImmediateFilterPermMask(PERM_COPY | PERM_TRANSFER);
 		mCtrlSculptTexture->setDnDFilterPermMask(PERM_COPY | PERM_TRANSFER);
-		// Allow any texture to be used during non-immediate mode.
-		mCtrlSculptTexture->setNonImmediateFilterPermMask(PERM_NONE);
 		LLAggregatePermissions texture_perms;
 		if (LLSelectMgr::getInstance()->selectGetAggregateTexturePermissions(texture_perms))
 		{
@@ -2175,7 +2173,7 @@ bool LLPanelObject::menuEnableItem(const LLSD& userdata)
     }
     else if (command == "params_paste")
     {
-        return mClipboardParams.isMap() && !mClipboardParams.emptyMap();
+        return mClipboardParams.isMap() && (mClipboardParams.size() != 0);
     }
     // copy options
     else if (command == "psr_copy")

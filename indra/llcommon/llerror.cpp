@@ -586,11 +586,9 @@ namespace
 
 	void Globals::invalidateCallSites()
 	{
-		for (CallSiteVector::const_iterator i = callSites.begin();
-			i != callSites.end();
-			++i)
+		for (LLError::CallSite* site : callSites)
 		{
-			(*i)->invalidate();
+            site->invalidate();
 		}
 
 		callSites.clear();
@@ -927,33 +925,33 @@ namespace LLError
 		s->mUniqueLogMessages.clear();
 
 		setDefaultLevel(decodeLevel(config["default-level"]));
-		if (config.has("log-always-flush"))
-		{
-			setAlwaysFlush(config["log-always-flush"]);
-		}
-		if (config.has("enabled-log-types-mask"))
-		{
-			setEnabledLogTypesMask(config["enabled-log-types-mask"].asInteger());
-		}
+        if (config.has("log-always-flush"))
+        {
+            setAlwaysFlush(config["log-always-flush"]);
+        }
+        if (config.has("enabled-log-types-mask"))
+        {
+            setEnabledLogTypesMask(config["enabled-log-types-mask"].asInteger());
+        }
+        
+        if (config.has("settings") && config["settings"].isArray())
+        {
+            LLSD sets = config["settings"];
+            LLSD::array_const_iterator a, end;
+            for (a = sets.beginArray(), end = sets.endArray(); a != end; ++a)
+            {
+                const LLSD& entry = *a;
+                if (entry.isMap() && entry.size() != 0)
+                {
+                    ELevel level = decodeLevel(entry["level"]);
 
-		if (config.has("settings") && config["settings"].isArray())
-		{
-			LLSD sets = config["settings"];
-			LLSD::array_const_iterator a, end;
-			for (a = sets.beginArray(), end = sets.endArray(); a != end; ++a)
-			{
-				const LLSD& entry = *a;
-				if (entry.isMap() && !entry.emptyMap())
-				{
-					ELevel level = decodeLevel(entry["level"]);
-
-					setLevels(s->mFunctionLevelMap, entry["functions"], level);
-					setLevels(s->mClassLevelMap, entry["classes"], level);
-					setLevels(s->mFileLevelMap, entry["files"], level);
-					setLevels(s->mTagLevelMap, entry["tags"], level);
-				}
-			}
-		}
+                    setLevels(s->mFunctionLevelMap, entry["functions"], level);
+                    setLevels(s->mClassLevelMap, entry["classes"], level);
+                    setLevels(s->mFileLevelMap, entry["files"], level);
+                    setLevels(s->mTagLevelMap, entry["tags"], level);
+                }
+            }
+        }
 	}
 }
 
@@ -1223,6 +1221,7 @@ namespace
 
 		std::string escaped_message;
 
+<<<<<<< HEAD
 		LLMutexLock lock(&s->mRecorderMutex);
 		for (Recorders::const_iterator i = s->mRecorders.begin();
 			i != s->mRecorders.end();
@@ -1235,6 +1234,16 @@ namespace
 				continue;
 			}
 
+=======
+        LLMutexLock lock(&s->mRecorderMutex);
+		for (LLError::RecorderPtr& r : s->mRecorders)
+		{
+            if (!r->enabled())
+            {
+                continue;
+            }
+            
+>>>>>>> Linden_Release/DRTVWR-559
 			std::ostringstream message_stream;
 
 			if (r->wantsTime() && s->mTimeFunction != NULL)
@@ -1513,10 +1522,10 @@ namespace LLError
 		time_t now = time(NULL);
 		const size_t BUF_SIZE = 64;
 		char time_str[BUF_SIZE];	/* Flawfinder: ignore */
-
-		int chars = strftime(time_str, BUF_SIZE,
-			"%Y-%m-%dT%H:%M:%SZ",
-			gmtime(&now));
+		
+		auto chars = strftime(time_str, BUF_SIZE, 
+								  "%Y-%m-%dT%H:%M:%SZ",
+								  gmtime(&now));
 
 		return chars ? time_str : "time error";
 	}
@@ -1608,20 +1617,5 @@ namespace LLError
 		return out << boost::stacktrace::stacktrace();
 	}
 }
-
-bool debugLoggingEnabled(const std::string& tag)
-{
-	LLMutexTrylock lock(getMutex<LOG_MUTEX>(), 5);
-	if (!lock.isLocked())
-	{
-		return false;
-	}
-
-	SettingsConfigPtr s = Globals::getInstance()->getSettingsConfig();
-	LLError::ELevel level = LLError::LEVEL_DEBUG;
-	bool res = checkLevelMap(s->mTagLevelMap, tag, level);
-	return res;
-}
-
 
 

@@ -135,6 +135,7 @@ LLViewerFolderDictionary::LLViewerFolderDictionary()
     addEntry(LLFolderType::FT_MY_OUTFITS,           new ViewerFolderEntry("My Outfits",             "Inv_SysOpen",          "Inv_SysClosed",            TRUE,      true));
 	addEntry(LLFolderType::FT_SETTINGS, 		    new ViewerFolderEntry("Settings",			    "Inv_SysOpen",			"Inv_SysClosed",		FALSE,     true));
     addEntry(LLFolderType::FT_MESH,                 new ViewerFolderEntry("Meshes",                 "Inv_SysOpen",          "Inv_SysClosed",            FALSE,     false));
+	addEntry(LLFolderType::FT_MATERIAL, 		    new ViewerFolderEntry("Materials",			    "Inv_SysOpen",			"Inv_SysClosed",		FALSE,     true));
 
 	addEntry(LLFolderType::FT_INBOX, 				new ViewerFolderEntry("Received Items",			"Inv_SysOpen",			"Inv_SysClosed",            FALSE,     false));
 	addEntry(LLFolderType::FT_OUTBOX, 				new ViewerFolderEntry("Merchant Outbox",		"Inv_SysOpen",			"Inv_SysClosed",            FALSE,     true));

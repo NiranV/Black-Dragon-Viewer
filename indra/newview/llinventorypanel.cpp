@@ -213,7 +213,7 @@ LLFolderView * LLInventoryPanel::createFolderRoot(LLUUID root_id )
     p.allow_drop = mParams.allow_drop_on_root;
     p.options_menu = "menu_inventory.xml";
 
-	auto fv = LLUICtrlFactory::create<LLFolderView>(p);
+	LLFolderView* fv = LLUICtrlFactory::create<LLFolderView>(p);
 	fv->setCallbackRegistrar(&mCommitCallbackRegistrar);
 	fv->setEnableRegistrar(&mEnableCallbackRegistrar);
 
@@ -1453,8 +1453,10 @@ BOOL LLInventoryPanel::handleHover(S32 x, S32 y, MASK mask)
 {
 	BOOL handled = LLView::handleHover(x, y, mask);
 	if(handled)
-	{
-		ECursorType cursor = getWindow()->getCursor();
+    {
+        // getCursor gets current cursor, setCursor sets next cursor
+        // check that children didn't set own 'next' cursor
+		ECursorType cursor = getWindow()->getNextCursor();
 		if (LLInventoryModelBackgroundFetch::instance().folderFetchActive() && cursor == UI_CURSOR_ARROW)
 		{
 			// replace arrow cursor with arrow and hourglass cursor
@@ -1838,6 +1840,10 @@ void LLInventoryPanel::fileUploadLocation(const LLSD& userdata)
     {
         gSavedPerAccountSettings.setString("AnimationUploadFolder", LLFolderBridge::sSelf.get()->getUUID().asString());
     }
+    else if (param == "pbr_material")
+    {
+        gSavedPerAccountSettings.setString("PBRUploadFolder", LLFolderBridge::sSelf.get()->getUUID().asString());
+    }
 }
 
 void LLInventoryPanel::purgeSelectedItems()
@@ -1848,6 +1854,7 @@ void LLInventoryPanel::purgeSelectedItems()
     if (inventory_selected.empty()) return;
     LLSD args;
     S32 count = inventory_selected.size();
+    std::vector<LLUUID> selected_items;
     for (std::set<LLFolderViewItem*>::const_iterator it = inventory_selected.begin(), end_it = inventory_selected.end();
         it != end_it;
         ++it)
@@ -1857,27 +1864,23 @@ void LLInventoryPanel::purgeSelectedItems()
         LLInventoryModel::item_array_t items;
         gInventory.collectDescendents(item_id, cats, items, LLInventoryModel::INCLUDE_TRASH);
         count += items.size() + cats.size();
+        selected_items.push_back(item_id);
     }
     args["COUNT"] = count;
-    LLNotificationsUtil::add("PurgeSelectedItems", args, LLSD(), boost::bind(&LLInventoryPanel::callbackPurgeSelectedItems, this, _1, _2));
+    LLNotificationsUtil::add("PurgeSelectedItems", args, LLSD(), boost::bind(callbackPurgeSelectedItems, _1, _2, selected_items));
 }
 
-void LLInventoryPanel::callbackPurgeSelectedItems(const LLSD& notification, const LLSD& response)
+// static
+void LLInventoryPanel::callbackPurgeSelectedItems(const LLSD& notification, const LLSD& response, const std::vector<LLUUID> inventory_selected)
 {
-    if (!mFolderRoot.get()) return;
-
     S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
     if (option == 0)
     {
-        const std::set<LLFolderViewItem*> inventory_selected = mFolderRoot.get()->getSelectionList();
         if (inventory_selected.empty()) return;
 
-        std::set<LLFolderViewItem*>::const_iterator it = inventory_selected.begin();
-        const std::set<LLFolderViewItem*>::const_iterator it_end = inventory_selected.end();
-        for (; it != it_end; ++it)
+        for (auto it : inventory_selected)
         {
-            LLUUID item_id = static_cast<LLFolderViewModelItemInventory*>((*it)->getViewModelItem())->getUUID();
-            remove_inventory_object(item_id, NULL);
+            remove_inventory_object(it, NULL);
         }
     }
 }
@@ -2244,7 +2247,43 @@ LLInventoryRecentItemsPanel::LLInventoryRecentItemsPanel( const Params& params)
 
 void LLAssetFilteredInventoryPanel::initFromParams(const Params& p)
 {
-    mAssetType = LLAssetType::lookup(p.filter_asset_type.getValue());
+    // Init asset types
+    std::string types = p.filter_asset_types.getValue();
+
+    typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+    boost::char_separator<char> sep("|");
+    tokenizer tokens(types, sep);
+    tokenizer::iterator token_iter = tokens.begin();
+
+    memset(mAssetTypes, 0, LLAssetType::AT_COUNT * sizeof(bool));
+    while (token_iter != tokens.end())
+    {
+        const std::string& token_str = *token_iter;
+        LLAssetType::EType asset_type = LLAssetType::lookup(token_str);
+        if (asset_type > LLAssetType::AT_NONE && asset_type < LLAssetType::AT_COUNT)
+        {
+            mAssetTypes[asset_type] = true;
+        }
+        ++token_iter;
+    }
+
+    // Init drag types
+    memset(mDragTypes, 0, EDragAndDropType::DAD_COUNT * sizeof(bool));
+    for (S32 i = 0; i < LLAssetType::AT_COUNT; i++)
+    {
+        if (mAssetTypes[i])
+        {
+            EDragAndDropType drag_type = LLViewerAssetType::lookupDragAndDropType((LLAssetType::EType)i);
+            if (drag_type != DAD_NONE)
+            {
+                mDragTypes[drag_type] = true;
+            }
+        }
+    }
+    // Always show AT_CATEGORY, but it shouldn't get into mDragTypes
+    mAssetTypes[LLAssetType::AT_CATEGORY] = true;
+
+    // Init the panel
     LLInventoryPanel::initFromParams(p);
     U64 filter_cats = getFilter().getFilterCategoryTypes();
     filter_cats &= ~(1ULL << LLFolderType::FT_MARKETPLACE_LISTINGS);
@@ -2262,10 +2301,9 @@ BOOL LLAssetFilteredInventoryPanel::handleDragAndDrop(S32 x, S32 y, MASK mask, B
 
     if (mAcceptsDragAndDrop)
     {
-        EDragAndDropType allow_type = LLViewerAssetType::lookupDragAndDropType(mAssetType);
         // Don't allow DAD_CATEGORY here since it can contain other items besides required assets
         // We should see everything we drop!
-        if (allow_type == cargo_type)
+        if (mDragTypes[cargo_type])
         {
             result = LLInventoryPanel::handleDragAndDrop(x, y, mask, drop, cargo_type, cargo_data, accept, tooltip_msg);
         }
@@ -2281,8 +2319,14 @@ bool LLAssetFilteredInventoryPanel::typedViewsFilter(const LLUUID& id, LLInvento
     {
         return false;
     }
+    LLAssetType::EType asset_type = objectp->getType();
 
-    if (objectp->getType() != mAssetType && objectp->getType() != LLAssetType::AT_CATEGORY)
+    if (asset_type < 0 || asset_type >= LLAssetType::AT_COUNT)
+    {
+        return false;
+    }
+
+    if (!mAssetTypes[asset_type])
     {
         return false;
     }
@@ -2298,11 +2342,16 @@ void LLAssetFilteredInventoryPanel::itemChanged(const LLUUID& id, U32 mask, cons
         return;
     }
 
-    if (model_item
-        && model_item->getType() != mAssetType
-        && model_item->getType() != LLAssetType::AT_CATEGORY)
+    if (model_item)
     {
-        return;
+        LLAssetType::EType asset_type = model_item->getType();
+
+        if (asset_type < 0
+            || asset_type >= LLAssetType::AT_COUNT
+            || !mAssetTypes[asset_type])
+        {
+            return;
+        }
     }
 
     LLInventoryPanel::itemChanged(id, mask, model_item);
@@ -2338,6 +2387,7 @@ namespace LLInitParam
 		declare(LLFolderType::lookup(LLFolderType::FT_OUTBOX)           , LLFolderType::FT_OUTBOX);
 		declare(LLFolderType::lookup(LLFolderType::FT_BASIC_ROOT)       , LLFolderType::FT_BASIC_ROOT);
         declare(LLFolderType::lookup(LLFolderType::FT_SETTINGS)         , LLFolderType::FT_SETTINGS);
+        declare(LLFolderType::lookup(LLFolderType::FT_MATERIAL)         , LLFolderType::FT_MATERIAL);
 		declare(LLFolderType::lookup(LLFolderType::FT_MARKETPLACE_LISTINGS)   , LLFolderType::FT_MARKETPLACE_LISTINGS);
 		declare(LLFolderType::lookup(LLFolderType::FT_MARKETPLACE_STOCK), LLFolderType::FT_MARKETPLACE_STOCK);
 		declare(LLFolderType::lookup(LLFolderType::FT_MARKETPLACE_VERSION), LLFolderType::FT_MARKETPLACE_VERSION);

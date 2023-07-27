@@ -100,6 +100,9 @@ public:
 	F32 getPixelAspectRatio() override;
 	void setNativeAspectRatio(F32 ratio) override { mOverrideAspectRatio = ratio; }
 
+	// query VRAM usage
+    /*virtual*/ U32 getAvailableVRAMMegabytes() override;
+
 	void beforeDialog() override;
 	void afterDialog() override;
 
@@ -228,6 +231,7 @@ protected:
 	BOOL		mLanguageTextInputAllowed;
 	LLPreeditor*	mPreeditor;
 	
+public:
 	static BOOL	sUseMultGL;
 
 	friend class LLWindowManager;

@@ -29,6 +29,63 @@
      top_pad="10"
      width="320"
      word_wrap="true" />
+  <filter_editor
+   follows="left|top|right"
+   height="23"
+   layout="topleft"
+   left="10"
+   right="-10"
+   label="Enter search text"
+   max_length_chars="300"
+   name="filter_input"
+   text_pad_left="10"
+   top="30" />
+  <scroll_list
+   column_padding="0"
+   draw_heading="true"
+   draw_stripes="false"
+   heading_height="23"
+   height="266"
+   layout="topleft"
+   search_column="1"
+   left="10"
+   follows="left|top|bottom"
+   name="setting_list"
+   top_pad="2"
+   width="300">
+    <scroll_list.columns
+     name="changed_setting"
+     relative_width="0.05"  />
+    <scroll_list.columns
+     label="Setting"
+     name="setting" />
+  </scroll_list>
+  <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="16"
+   layout="topleft"
+   name="setting_name_txt"
+   font="SansSerifSmallBold"
+   top_delta="8"
+   left_pad="10"
+   visible="false"
+   use_ellipses="true"
+   text_color="White"
+   width="240">
+    Debug setting name
+  </text>
+  <text_editor
+   enabled="false"
+   height="75"
+   layout="topleft"
+   visible="false"
+   name="comment_text"
+   follows="left|top"
+   width="240"
+   top_delta="20"
+   word_wrap="true" />
   <radio_group
    follows="top|left"
    height="30"
@@ -137,4 +194,16 @@
       <button.commit_callback
        function="ClickDefault" />
     </button>
+    <check_box
+      control_name="DebugSettingsHideDefault"
+      height="16"
+      initial_value="true"
+      label="Show changed settings only"
+      layout="topleft"
+      top_pad="10"
+      left="10"
+      follows="left|bottom"
+      name="hide_default"
+      width="330">
+    </check_box>
 </floater>

@@ -100,6 +100,7 @@ public:
 	void toggleFindOptions();
 
     void resetFilters();
+    void resetAllItemsFilters();
 
 protected:
 	//
@@ -182,7 +183,9 @@ protected:
 	BOOL isActionChecked(const LLSD& userdata);
 	void onCustomAction(const LLSD& command_name);
 	bool handleDragAndDropToTrash(BOOL drop, EDragAndDropType cargo_type, EAcceptance* accept);
-	static bool hasSettingsInventory();
+<<<<<<< HEAD
+    static bool hasSettingsInventory();
+    static bool hasMaterialsInventory();
 	/**
 	 * Set upload cost in "Upload" sub menu.
 	 */

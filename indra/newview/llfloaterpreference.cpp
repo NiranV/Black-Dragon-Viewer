@@ -52,6 +52,8 @@
 #include "llfloaterreg.h"
 #include "llfloaterabout.h"
 #include "llfavoritesbar.h"
+#include "llfloaterpreferencesgraphicsadvanced.h"
+#include "llfloaterperformance.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llfloaterimsession.h"
 #include "llkeyboard.h"
@@ -75,11 +77,9 @@
 #include "llviewereventrecorder.h"
 #include "llviewermessage.h"
 #include "llviewerwindow.h"
-#include "llviewershadermgr.h"
 #include "llviewerthrottle.h"
 #include "llvoavatarself.h"
 #include "llvotree.h"
-#include "llvosky.h"
 #include "llfloaterpathfindingconsole.h"
 // linden library includes
 #include "llavatarnamecache.h"
@@ -101,11 +101,9 @@
 #include "llui.h"
 #include "llversioninfo.h"
 #include "llviewerobjectlist.h"
-#include "llvoavatar.h"
 #include "llvovolume.h"
 #include "llwindow.h"
 #include "llworld.h"
-#include "pipeline.h"
 #include "lluictrlfactory.h"
 #include "llviewermedia.h"
 #include "llpluginclassmedia.h"
@@ -127,6 +125,7 @@
 #include "llpresetsmanager.h"
 #include "llviewercontrol.h"
 #include "llpresetsmanager.h"
+<<<<<<< HEAD
 #include "llfeaturemanager.h"
 #include "llviewertexturelist.h"
 #include "bdsidebar.h"
@@ -148,8 +147,11 @@
 
 #include <json/json.h>
 #include <utility>
+=======
+>>>>>>> Linden_Release/DRTVWR-559
 
 #include "llsearchableui.h"
+#include "llperfstats.h"
 
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
@@ -1177,7 +1179,13 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.SetSounds",				boost::bind(&LLFloaterPreference::onClickSetSounds, this));
 	mCommitCallbackRegistrar.add("Pref.ClickEnablePopup",		boost::bind(&LLFloaterPreference::onClickEnablePopup, this));
 	mCommitCallbackRegistrar.add("Pref.ClickDisablePopup",		boost::bind(&LLFloaterPreference::onClickDisablePopup, this));	
+<<<<<<< HEAD
 	
+=======
+	mCommitCallbackRegistrar.add("Pref.LogPath",				boost::bind(&LLFloaterPreference::onClickLogPath, this));
+	mCommitCallbackRegistrar.add("Pref.RenderExceptions",       boost::bind(&LLFloaterPreference::onClickRenderExceptions, this));
+	mCommitCallbackRegistrar.add("Pref.AutoAdjustments",         boost::bind(&LLFloaterPreference::onClickAutoAdjustments, this));
+>>>>>>> Linden_Release/DRTVWR-559
 	mCommitCallbackRegistrar.add("Pref.HardwareDefaults",		boost::bind(&LLFloaterPreference::setHardwareDefaults, this));
 	mCommitCallbackRegistrar.add("Pref.applyUIColor",			boost::bind(&LLFloaterPreference::applyUIColor, this ,_1, _2));
 	mCommitCallbackRegistrar.add("Pref.getUIColor",				boost::bind(&LLFloaterPreference::getUIColor, this ,_1, _2));
@@ -2263,6 +2271,7 @@ void LLFloaterPreference::refreshPresets()
 		std::string path = gDirUtilp->add(dir, file);
 		std::string name = gDirUtilp->getBaseFileName(LLURI::unescape(path), true);
 
+<<<<<<< HEAD
 		LLSD preset;
 		llifstream infile;
 		infile.open(path);
@@ -2273,17 +2282,30 @@ void LLFloaterPreference::refreshPresets()
 			LL_WARNS("Camera") << "Cannot open file in: " << path << LL_ENDL;
 			continue;
 		}
+=======
+	gSavedSettings.getControl("AppearanceCameraMovement")->getCommitSignal()->connect(boost::bind(&handleAppearanceCameraMovementChanged,  _2));
+    gSavedSettings.getControl("WindLightUseAtmosShaders")->getCommitSignal()->connect(boost::bind(&LLFloaterPreference::onAtmosShaderChange, this));
+>>>>>>> Linden_Release/DRTVWR-559
 
 		//BD - Camera Preset files only have one single line, so it's either a parse failure
 		//     or a success.
 		S32 ret = LLSDSerialize::fromXML(preset, infile);
 
+<<<<<<< HEAD
 		//BD - We couldn't parse the file, don't bother adding it.
 		if (ret == LLSDParser::PARSE_FAILURE)
 		{
 			LL_WARNS("Camera") << "Failed to parse file: " << path << LL_ENDL;
 			continue;
 		}
+=======
+    mComplexityChangedSignal = gSavedSettings.getControl("RenderAvatarMaxComplexity")->getCommitSignal()->connect(boost::bind(&LLFloaterPreference::updateComplexityText, this));
+
+	mCommitCallbackRegistrar.add("Pref.ClearLog",				boost::bind(&LLConversationLog::onClearLog, &LLConversationLog::instance()));
+	mCommitCallbackRegistrar.add("Pref.DeleteTranscripts",      boost::bind(&LLFloaterPreference::onDeleteTranscripts, this));
+	mCommitCallbackRegistrar.add("UpdateFilter", boost::bind(&LLFloaterPreference::onUpdateFilterTerm, this, false)); // <FS:ND/> Hook up for filtering
+}
+>>>>>>> Linden_Release/DRTVWR-559
 
 		//BD - Skip if this preset is meant to be invisible. This is for RLVa.
 		if (preset["hidden"].isDefined())
@@ -2416,10 +2438,18 @@ void LLFloaterPreference::loadGraphicPreset()
 	gSavedSettings.setString("PresetGraphicActive", name);
 }
 
+<<<<<<< HEAD
 void LLFloaterPreference::deleteGraphicPreset()
 {
 	std::string pathname = gDirUtilp->getExpandedFilename(LL_PATH_PRESETS, "graphic");
 	std::string name = getChild<LLComboBox>("preset_combo")->getValue();
+=======
+	gSavedPerAccountSettings.getControl("ModelUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeModelFolder, this));
+    gSavedPerAccountSettings.getControl("PBRUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangePBRFolder, this));
+	gSavedPerAccountSettings.getControl("TextureUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeTextureFolder, this));
+	gSavedPerAccountSettings.getControl("SoundUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeSoundFolder, this));
+	gSavedPerAccountSettings.getControl("AnimationUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeAnimationFolder, this));
+>>>>>>> Linden_Release/DRTVWR-559
 
 	if (gDirUtilp->deleteFilesInDir(pathname, gDragonLibrary.escapeString(name) + ".xml") < 1)
 	{
@@ -2691,6 +2721,7 @@ void LLFloaterPreference::refreshSkinInfo(const skin_t& skin)
 
 void LLFloaterPreference::refreshGraphicPresets()
 {
+<<<<<<< HEAD
 	LLComboBox* combo = getChild<LLComboBox>("preset_combo");
 	combo->removeall();
 
@@ -2727,6 +2758,10 @@ void LLFloaterPreference::refreshGraphicPresets()
 
 		combo->add(name);
 	}
+=======
+	LLConversationLog::instance().removeObserver(this);
+    mComplexityChangedSignal.disconnect();
+>>>>>>> Linden_Release/DRTVWR-559
 }
 
 void LLFloaterPreference::draw()
@@ -2951,6 +2986,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	mLanguageChanged = false;
 
 	onChangeModelFolder();
+    onChangePBRFolder();
 	onChangeTextureFolder();
 	onChangeSoundFolder();
 	onChangeAnimationFolder();
@@ -2959,6 +2995,17 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	// while preferences floater was closed.
 	buildPopupLists();
 
+<<<<<<< HEAD
+=======
+	// Load (double-)click to walk/teleport settings.
+	updateClickActionViews();
+	
+	// Enabled/disabled popups, might have been changed by user actions
+	// while preferences floater was closed.
+	buildPopupLists();
+
+
+>>>>>>> Linden_Release/DRTVWR-559
 	//get the options that were checked
 	onNotificationsChange("FriendIMOptions");
 	onNotificationsChange("NonFriendIMOptions");
@@ -2966,6 +3013,46 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	onNotificationsChange("GroupChatOptions");
 	onNotificationsChange("NearbyChatOptions");
 	onNotificationsChange("ObjectIMOptions");
+<<<<<<< HEAD
+=======
+
+	LLPanelLogin::setAlwaysRefresh(true);
+	refresh();
+	
+	// Make sure the current state of prefs are saved away when
+	// when the floater is opened.  That will make cancel do its
+	// job
+	saveSettings();
+
+	// Make sure there is a default preference file
+	LLPresetsManager::getInstance()->createMissingDefault(PRESETS_CAMERA);
+	LLPresetsManager::getInstance()->createMissingDefault(PRESETS_GRAPHIC);
+
+	bool started = (LLStartUp::getStartupState() == STATE_STARTED);
+
+	LLButton* load_btn = findChild<LLButton>("PrefLoadButton");
+	LLButton* save_btn = findChild<LLButton>("PrefSaveButton");
+	LLButton* delete_btn = findChild<LLButton>("PrefDeleteButton");
+	LLButton* exceptions_btn = findChild<LLButton>("RenderExceptionsButton");
+    LLButton* auto_adjustments_btn = findChild<LLButton>("AutoAdjustmentsButton");
+
+	if (load_btn && save_btn && delete_btn && exceptions_btn && auto_adjustments_btn)
+	{
+		load_btn->setEnabled(started);
+		save_btn->setEnabled(started);
+		delete_btn->setEnabled(started);
+		exceptions_btn->setEnabled(started);
+        auto_adjustments_btn->setEnabled(started);
+	}
+
+    collectSearchableItems();
+	if (!mFilterEdit->getText().empty())
+	{
+		mFilterEdit->setText(LLStringExplicit(""));
+		onUpdateFilterTerm(true);
+	}
+}
+>>>>>>> Linden_Release/DRTVWR-559
 
 	//BD
 	refresh();
@@ -2974,6 +3061,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	refreshEnabledState();
 	toggleTabs();
 
+<<<<<<< HEAD
 //	//BD - Multithreading Experiments
 	//     Updating and filling the render settings list tanks performance hard,
 	//     even harder with bigger lists, this is the perfect candidate to test
@@ -3008,6 +3096,11 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 	//BD - Always clear highlighting when opening prefs.
 	mFilterEdit->setText(LLStringExplicit(""));
 	onUpdateFilterTerm(true);
+=======
+void LLFloaterPreference::onAvatarImpostorsEnable()
+{
+	refreshEnabledGraphics();
+>>>>>>> Linden_Release/DRTVWR-559
 }
 
 //static
@@ -3032,6 +3125,23 @@ void LLFloaterPreference::updateShowFavoritesCheckbox(bool val)
 
 void LLFloaterPreference::setHardwareDefaults()
 {
+<<<<<<< HEAD
+=======
+	std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
+	if (!preset_graphic_active.empty())
+	{
+		saveGraphicsPreset(preset_graphic_active);
+		saveSettings(); // save here to be able to return to the previous preset by Cancel
+	}
+    setRecommendedSettings();
+}
+
+void LLFloaterPreference::setRecommendedSettings()
+{
+    resetAutotuneSettings();
+    gSavedSettings.getControl("RenderVSyncEnable")->resetToDefault(true);
+
+>>>>>>> Linden_Release/DRTVWR-559
 	LLFeatureManager::getInstance()->applyRecommendedSettings();
 
 	gSavedSettings.setString("PresetGraphicActive", "");
@@ -3048,6 +3158,28 @@ void LLFloaterPreference::setHardwareDefaults()
 			panel->setHardwareDefaults();
 		}
 	}
+}
+
+void LLFloaterPreference::resetAutotuneSettings()
+{
+    gSavedSettings.setBOOL("AutoTuneFPS", FALSE);
+
+    const std::string autotune_settings[] = {
+        "AutoTuneLock",
+        "KeepAutoTuneLock",
+        "TargetFPS",
+        "TuningFPSStrategy",
+        "AutoTuneImpostorByDistEnabled",
+        "AutoTuneImpostorFarAwayDistance" ,
+        "AutoTuneRenderFarClipMin",
+        "AutoTuneRenderFarClipTarget",
+        "RenderAvatarMaxART"
+    };
+
+    for (auto it : autotune_settings)
+    {
+        gSavedSettings.getControl(it)->resetToDefault(true);
+    }
 }
 
 void LLFloaterPreference::getControlNames(std::vector<std::string>& names)
@@ -3372,6 +3504,14 @@ void LLFloaterPreference::buildPopupLists()
 
 void LLFloaterPreference::refreshEnabledState()
 {
+<<<<<<< HEAD
+=======
+	LLCheckBoxCtrl* ctrl_pbr = getChild<LLCheckBoxCtrl>("UsePBRShaders");
+
+    //PBR
+    ctrl_pbr->setEnabled(TRUE);
+
+>>>>>>> Linden_Release/DRTVWR-559
 	// Cannot have floater active until caps have been received
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
 	//BD
@@ -3387,6 +3527,7 @@ void LLFloaterPreference::refreshEnabledState()
 	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
 }
 
+<<<<<<< HEAD
 void LLFloaterPreference::refresh()
 {
 	LLPanel::refresh();
@@ -3402,6 +3543,9 @@ void LLFloaterPreference::onClickSetKey()
 }
 
 void LLFloaterPreference::setKey(KEY key)
+=======
+void LLAvatarComplexityControls::setIndirectControls()
+>>>>>>> Linden_Release/DRTVWR-559
 {
 	getChild<LLUICtrl>("modifier_combo")->setValue(LLKeyboard::stringFromKey(key));
 	// update the control right away since we no longer wait for apply
@@ -3447,6 +3591,7 @@ void LLFloaterPreference::setMouse(EMouseClickType click)
     }
 }
 
+<<<<<<< HEAD
 void LLFloaterPreference::onClickSetMiddleMouse()
 {
 	LLUICtrl* p2t_line_editor = getChild<LLUICtrl>("modifier_combo");
@@ -3469,6 +3614,27 @@ void LLFloaterPreference::onClickSetNone()
 
 	// update the control right away since we no longer wait for apply
 	p2t_line_editor->setControlValue("");
+=======
+void LLFloaterPreference::refresh()
+{
+	LLPanel::refresh();
+    LLAvatarComplexityControls::setText(
+        gSavedSettings.getU32("RenderAvatarMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText", true));
+	refreshEnabledState();
+	LLFloater* advanced = LLFloaterReg::findTypedInstance<LLFloater>("prefs_graphics_advanced");
+	if (advanced)
+	{
+		advanced->refresh();
+	}
+    updateClickActionViews();
+}
+
+void LLFloaterPreference::onCommitWindowedMode()
+{
+	refresh();
+}
+>>>>>>> Linden_Release/DRTVWR-559
 
 	//push2talk control value is in English, need to localize it for presentation
 	LLPanel* advanced_preferences = dynamic_cast<LLPanel*>(p2t_line_editor->getParent());
@@ -3637,16 +3803,91 @@ bool LLFloaterPreference::moveTranscriptsAndLog()
 		}
 
 		return false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> Linden_Release/DRTVWR-559
 	}
 
 	gDirUtilp->setChatLogsDir(instantMessageLogPath);
 	gDirUtilp->updatePerAccountChatLogsDir();
+<<<<<<< HEAD
 
 	return true;
 }
 
 void LLFloaterPreference::setPersonalInfo(const std::string& visibility)
+=======
+
+	return true;
+}
+
+void LLFloaterPreference::setPersonalInfo(const std::string& visibility)
+{
+	mGotPersonalInfo = true;
+	mDirectoryVisibility = visibility;
+	
+	if (visibility == VISIBILITY_DEFAULT)
+	{
+		mOriginalHideOnlineStatus = false;
+		getChildView("online_visibility")->setEnabled(TRUE); 	 
+	}
+	else if (visibility == VISIBILITY_HIDDEN)
+	{
+		mOriginalHideOnlineStatus = true;
+		getChildView("online_visibility")->setEnabled(TRUE); 	 
+	}
+	else
+	{
+		mOriginalHideOnlineStatus = true;
+	}
+	
+	getChild<LLUICtrl>("online_searchresults")->setEnabled(TRUE);
+	getChildView("friends_online_notify_checkbox")->setEnabled(TRUE);
+	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus); 	 
+	getChild<LLUICtrl>("online_visibility")->setLabelArg("[DIR_VIS]", mDirectoryVisibility);
+
+	getChildView("favorites_on_login_check")->setEnabled(TRUE);
+	getChildView("log_path_button")->setEnabled(TRUE);
+	getChildView("chat_font_size")->setEnabled(TRUE);
+	getChildView("conversation_log_combo")->setEnabled(TRUE);
+	getChild<LLUICtrl>("voice_call_friends_only_check")->setEnabled(TRUE);
+	getChild<LLUICtrl>("voice_call_friends_only_check")->setValue(gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly"));
+}
+
+
+void LLFloaterPreference::refreshUI()
+{
+	refresh();
+}
+
+void LLAvatarComplexityControls::updateMax(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val)
+{
+	// Called when the IndirectMaxComplexity control changes
+	// Responsible for fixing the slider label (IndirectMaxComplexityText) and setting RenderAvatarMaxComplexity
+	U32 indirect_value = slider->getValue().asInteger();
+	U32 max_arc;
+	
+	if (INDIRECT_MAX_ARC_OFF == indirect_value)
+	{
+		// The 'off' position is when the slider is all the way to the right, 
+		// which is a value of INDIRECT_MAX_ARC_OFF,
+		// so it is necessary to set max_arc to 0 disable muted avatars.
+		max_arc = 0;
+	}
+	else
+	{
+		// if this is changed, the inverse calculation in setIndirectMaxArc
+		// must be changed to match
+		max_arc = (U32)ll_round(exp(MIN_ARC_LOG + (ARC_LIMIT_MAP_SCALE * (indirect_value - MIN_INDIRECT_ARC_LIMIT))));
+	}
+
+	gSavedSettings.setU32("RenderAvatarMaxComplexity", (U32)max_arc);
+	setText(max_arc, value_label, short_val);
+}
+
+void LLAvatarComplexityControls::setText(U32 value, LLTextBox* text_box, bool short_val)
+>>>>>>> Linden_Release/DRTVWR-559
 {
 	mGotPersonalInfo = true;
 	mDirectoryVisibility = visibility;
@@ -3663,9 +3904,15 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility)
 	}
 	else
 	{
+<<<<<<< HEAD
 		mOriginalHideOnlineStatus = true;
+=======
+        std::string text_value = short_val ? llformat("%d", value / 1000) : llformat("%d", value);
+        text_box->setText(text_value);
+>>>>>>> Linden_Release/DRTVWR-559
 	}
 
+<<<<<<< HEAD
 	getChild<LLUICtrl>("online_searchresults")->setEnabled(TRUE);
 	getChildView("friends_online_notify_checkbox")->setEnabled(TRUE);
 	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus);
@@ -3677,6 +3924,37 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility)
 	getChildView("conversation_log_combo")->setEnabled(TRUE);
 	getChild<LLUICtrl>("voice_call_friends_only_check")->setEnabled(TRUE);
 	getChild<LLUICtrl>("voice_call_friends_only_check")->setValue(gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly"));
+=======
+void LLAvatarComplexityControls::updateMaxRenderTime(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val)
+{
+    setRenderTimeText((F32)(LLPerfStats::renderAvatarMaxART_ns/1000), value_label, short_val);
+}
+
+void LLAvatarComplexityControls::setRenderTimeText(F32 value, LLTextBox* text_box, bool short_val)
+{
+    if (0 == value)
+    {
+        text_box->setText(LLTrans::getString("no_limit"));
+    }
+    else
+    {
+        text_box->setText(llformat("%.0f", value));
+    }
+}
+
+void LLFloaterPreference::updateMaxComplexity()
+{
+	// Called when the IndirectMaxComplexity control changes
+    LLAvatarComplexityControls::updateMax(
+        getChild<LLSliderCtrl>("IndirectMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText"));
+}
+
+void LLFloaterPreference::updateComplexityText()
+{
+    LLAvatarComplexityControls::setText(gSavedSettings.getU32("RenderAvatarMaxComplexity"),
+        getChild<LLTextBox>("IndirectMaxComplexityText", true));
+>>>>>>> Linden_Release/DRTVWR-559
 }
 
 bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map)
@@ -3718,6 +3996,23 @@ bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map
     return true;
 }
 
+<<<<<<< HEAD
+=======
+void LLFloaterPreference::onChangeMaturity()
+{
+	U8 sim_access = gSavedSettings.getU32("PreferredMaturity");
+
+	getChild<LLIconCtrl>("rating_icon_general")->setVisible(sim_access == SIM_ACCESS_PG
+															|| sim_access == SIM_ACCESS_MATURE
+															|| sim_access == SIM_ACCESS_ADULT);
+
+	getChild<LLIconCtrl>("rating_icon_moderate")->setVisible(sim_access == SIM_ACCESS_MATURE
+															|| sim_access == SIM_ACCESS_ADULT);
+
+	getChild<LLIconCtrl>("rating_icon_adult")->setVisible(sim_access == SIM_ACCESS_ADULT);
+}
+
+>>>>>>> Linden_Release/DRTVWR-559
 std::string get_category_path(LLUUID cat_id)
 {
 	LLViewerInventoryCategory* cat = gInventory.getCategory(cat_id);
@@ -3743,6 +4038,14 @@ void LLFloaterPreference::onChangeModelFolder()
 	{
 		getChild<LLLineEditor>("upload_models")->setText(get_category_path(LLFolderType::FT_OBJECT));
 	}
+}
+
+void LLFloaterPreference::onChangePBRFolder()
+{
+    if (gInventory.isInventoryUsable())
+    {
+        getChild<LLTextBox>("upload_pbr")->setText(get_category_path(LLFolderType::FT_MATERIAL));
+    }
 }
 
 void LLFloaterPreference::onChangeTextureFolder()
@@ -3797,6 +4100,61 @@ void LLFloaterPreference::onClickSpellChecker()
     LLFloaterReg::showInstance("prefs_spellchecker");
 }
 
+<<<<<<< HEAD
+=======
+void LLFloaterPreference::onClickRenderExceptions()
+{
+    LLFloaterReg::showInstance("avatar_render_settings");
+}
+
+void LLFloaterPreference::onClickAutoAdjustments()
+{
+    LLFloaterPerformance* performance_floater = LLFloaterReg::showTypedInstance<LLFloaterPerformance>("performance");
+    if (performance_floater)
+    {
+        performance_floater->showAutoadjustmentsPanel();
+    }
+}
+
+void LLFloaterPreference::onClickAdvanced()
+{
+	LLFloaterReg::showInstance("prefs_graphics_advanced");
+
+	LLTabContainer* tabcontainer = getChild<LLTabContainer>("pref core");
+	for (child_list_t::const_iterator iter = tabcontainer->getChildList()->begin();
+		 iter != tabcontainer->getChildList()->end(); ++iter)
+	{
+		LLView* view = *iter;
+		LLPanelPreferenceGraphics* panel = dynamic_cast<LLPanelPreferenceGraphics*>(view);
+		if (panel)
+		{
+			panel->resetDirtyChilds();
+		}
+	}
+}
+
+void LLFloaterPreference::onClickActionChange()
+{
+    updateClickActionControls();
+}
+
+void LLFloaterPreference::onAtmosShaderChange()
+{
+    LLCheckBoxCtrl* ctrl_alm = getChild<LLCheckBoxCtrl>("UseLightShaders");
+    if(ctrl_alm)
+    {
+        //Deferred/SSAO/Shadows
+        BOOL bumpshiny = LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump") && gSavedSettings.getBOOL("RenderObjectBump");
+        BOOL shaders = gSavedSettings.getBOOL("WindLightUseAtmosShaders");
+        BOOL enabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
+                        bumpshiny &&
+                        shaders;
+
+        ctrl_alm->setEnabled(enabled);
+    }
+}
+
+>>>>>>> Linden_Release/DRTVWR-559
 void LLFloaterPreference::onClickPermsDefault()
 {
 	LLFloaterReg::showInstance("perms_default");

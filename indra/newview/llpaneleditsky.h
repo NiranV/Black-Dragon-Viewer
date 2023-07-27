@@ -78,6 +78,8 @@ private:
 	void                    onMoistureLevelChanged();
 	void                    onDropletRadiusChanged();
 	void                    onIceLevelChanged();
+	void                    onReflectionProbeAmbianceChanged();
+	void                    updateGammaLabel(bool auto_adjust = false);
 
 	//BD - Atmosphere
 	LLColorSwatchCtrl* mAmbientLight;
@@ -92,7 +94,6 @@ private:
 	LLUICtrl* mMoisture;
 	LLUICtrl* mDroplet;
 	LLUICtrl* mIceLevel;
-
 };
 
 class LLPanelSettingsSkyCloudTab : public LLPanelSettingsSky

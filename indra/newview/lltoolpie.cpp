@@ -121,7 +121,7 @@ BOOL LLToolPie::handleMouseDown(S32 x, S32 y, MASK mask)
 	mMouseDownY = y;
 	LLTimer pick_timer;
 	BOOL pick_rigged = false; //gSavedSettings.getBOOL("AnimatedObjectsAllowLeftClick");
-	LLPickInfo transparent_pick = gViewerWindow->pickImmediate(x, y, TRUE /*includes transparent*/, pick_rigged);
+	LLPickInfo transparent_pick = gViewerWindow->pickImmediate(x, y, TRUE /*includes transparent*/, pick_rigged, FALSE, TRUE, FALSE);
 	LLPickInfo visible_pick = gViewerWindow->pickImmediate(x, y, FALSE, pick_rigged);
 	LLViewerObject *transp_object = transparent_pick.getObject();
 	LLViewerObject *visible_object = visible_pick.getObject();
@@ -488,6 +488,7 @@ BOOL LLToolPie::handleLeftClickPick()
 		LLToolMgr::getInstance()->setTransientTool(LLToolCamera::getInstance());
 		gViewerWindow->hideCursor();
 		LLToolCamera::getInstance()->setMouseCapture(TRUE);
+        LLToolCamera::getInstance()->setClickPickPending();
 		LLToolCamera::getInstance()->pickCallback(mPick);
 		gAgentCamera.setFocusOnAvatar(TRUE, TRUE);
 
@@ -691,7 +692,6 @@ bool LLToolPie::walkToClickedLocation()
         mPick = saved_pick;
         return false;
     }
-    return true;
 }
 
 bool LLToolPie::teleportToClickedLocation()
@@ -803,19 +803,8 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		parent = object->getRootEdit();
 	}
 
-	// Show screen-space highlight glow effect
-	bool show_highlight = false;
-
-	if (handleMediaHover(mHoverPick))
-	{
-		// *NOTE: If you think the hover glow conflicts with the media outline, you
-		// could disable it here.
-		show_highlight = true;
-		// cursor set by media object
-		// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
-	}
-	//BD
-	/*else if (!mMouseOutsideSlop 
+	if (!handleMediaHover(mHoverPick)
+		&& !mMouseOutsideSlop
 		&& mMouseButtonDown
 		// disable camera steering if click on land is not used for moving
 		&& gViewerInput.isMouseBindUsed(CLICK_LEFT, MASK_NONE, MODE_THIRD_PERSON))
@@ -833,7 +822,7 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		{
 			gViewerWindow->setCursor(UI_CURSOR_ARROW);
 		}
-	}*/
+	}
 	else if (inCameraSteerMode())
 	{
 		steerCameraWithMouse(x, y);
@@ -848,7 +837,6 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 
 		if (click_action_object && useClickAction(mask, click_action_object, click_action_object->getRootEdit()))
 		{
-			show_highlight = true;
 			ECursorType cursor = cursorFromObject(click_action_object);
 			gViewerWindow->setCursor(cursor);
 			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
@@ -863,7 +851,6 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		else if ((object && !object->isAvatar() && object->flagUsePhysics()) 
 				 || (parent && !parent->isAvatar() && parent->flagUsePhysics()))
 		{
-			show_highlight = true;
 			gViewerWindow->setCursor(UI_CURSOR_TOOLGRAB);
 			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
@@ -871,7 +858,6 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 				 && ((object && object->flagHandleTouch()) || (parent && parent->flagHandleTouch()))
 				 && (!object || !object->isAvatar()))
 		{
-			show_highlight = true;
 			gViewerWindow->setCursor(UI_CURSOR_HAND);
 			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
@@ -886,15 +872,6 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 	{
 		LLViewerMediaFocus::getInstance()->clearHover();
 	}
-
-	static LLCachedControl<bool> enable_highlight(
-		gSavedSettings, "RenderHoverGlowEnable", false);
-	LLDrawable* drawable = NULL;
-	if (enable_highlight && show_highlight && object)
-	{
-		drawable = object->mDrawable;
-	}
-	gPipeline.setHighlightObject(drawable);
 
 	return TRUE;
 }

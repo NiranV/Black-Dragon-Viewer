@@ -132,8 +132,8 @@ https://bitbucket.org/NiranV/black-dragon-viewer/downloads
 
 For more information, see our FAQ below:
 http://secondlife.com/viewer-access-faq</string>
-	<string name="LoginFailed">Grid emergency login failure.
-If you feel this is an error, please contact support@secondlife.com.</string>
+	<string name="LoginFailed">"Login process did not complete due to system issues. Try again in a few minutes.
+If you feel this is an error, contact Support at https://support.secondlife.com"</string>
 	<string name="LoginIntermediateOptionalUpdateAvailable">Optional viewer update available: [VERSION]</string>
 	<string name="LoginFailedRequiredUpdate">Required viewer update: [VERSION]</string>
 	<string name="LoginFailedAlreadyLoggedIn">This agent is already logged in.
@@ -324,8 +324,13 @@ to notecards on this region.
 Only items with unrestricted
 'next owner' permissions
 can be attached to notecards.
-    </string>
-	
+	</string>
+	<string name="TooltipTextureRestrictedDrop">
+Only textures with unrestricted
+copy and transfer permissions
+are allowed.
+	</string>
+
 	<!-- searching - generic -->
 	<string name="Searching">Searching...</string>
 	<string name="NoneFound">None found.</string>
@@ -409,6 +414,7 @@ http://secondlife.com/support for help fixing this problem.
 	<string name="symbolic link">link</string>
 	<string name="symbolic folder link">folder link</string>
 	<string name="settings blob">settings</string>
+	<string name="render material">material</string>
 	<string name="mesh">mesh</string>
 
 	<!-- llvoavatar. Displayed in the avatar chat bubble -->
@@ -2432,6 +2438,7 @@ If you continue to receive this message, please contact Second Life support for 
 	<string name="Clothing"      value=" Clothing," />
 	<string name="Gestures"      value=" Gestures," />
 	<string name="Landmarks"     value=" Landmarks," />
+	<string name="Materials"     value=" Materials," />
 	<string name="Notecards"     value=" Notecards," />
 	<string name="Objects"       value=" Objects," />
 	<string name="Scripts"       value=" Scripts," />
@@ -2477,6 +2484,9 @@ If you continue to receive this message, please contact Second Life support for 
 	<string name="InvFolder Meshes">Meshes</string>
 	<string name="InvFolder Received Items">Received Items</string>
 	<string name="InvFolder Merchant Outbox">Merchant Outbox</string>
+  <string name="InvFolder Settings">Settings</string>
+  <string name="InvFolder Material">Materials</string>
+  <string name="InvFolder Materials">Materials</string>
 
   <!-- are used for Friends and Friends/All folders in Inventory "Calling cards" folder. See EXT-694-->
 	<string name="InvFolder Friends">Friends</string>	
@@ -3001,16 +3011,6 @@ Running in window.
 	<string name="MBDevContextErr">Can't make GL device context</string>
 	<string name="MBPixelFmtErr">Can't find suitable pixel format</string>
 	<string name="MBPixelFmtDescErr">Can't get pixel format description</string>
-	<string name="MBTrueColorWindow">
-		[APP_NAME] requires True Color (32-bit) to run.
-Please go to your computer's display settings and set the color mode to 32-bit.
-	</string>
-	<string name="MBAlpha">
-		[APP_NAME] is unable to run because it can't get an 8 bit alpha channel.  Usually this is due to video card driver issues.
-Please make sure you have the latest video card drivers installed.
-Also be sure your monitor is set to True Color (32-bit) in Control Panels &gt; Display &gt; Settings.
-If you continue to receive this message, contact the [SUPPORT_SITE].
-	</string>
 	<string name="MBPixelFmtSetErr">Can't set pixel format</string>
 	<string name="MBGLContextErr">Can't create GL rendering context</string>
 	<string name="MBGLContextActErr">Can't activate GL rendering context</string>
@@ -3860,6 +3860,7 @@ Abuse Report</string>
   <string name="New Physics">New Physics</string>
   <string name="Invalid Wearable">Invalid Wearable</string>
   <string name="New Gesture">New Gesture</string>
+  <string name="New Material">New Material</string>
   <string name="New Script">New Script</string>
   <string name="New Note">New Note</string>
   <string name="New Folder">New Folder</string>
@@ -3992,7 +3993,7 @@ Please check http://status.secondlifegrid.net to see if there is a known problem
   <string name="Premium_PlusMembership">Premium Plus</string>
   <string name="InternalMembership">Internal</string> <!-- No need to translate -->
 
-  <string name="MembershipUpgradeText">Upgrade to Premium</string>
+  <string name="MembershipUpgradeText">Change membership plan...</string>
   <string name="MembershipPremiumText">My Premium membership</string>
 
   <!-- Question strings for delete items notifications -->
@@ -4172,6 +4173,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_People_Label">People</string>
   <string name="Command_PF_Linksets_Label">Pathfinding Linksets</string>
   <string name="Command_PF_Characters_Label">Pathfinding Characters</string>
+  <string name="Command_Performance_Label">Graphics speed</string>
   <string name="Command_Picks_Label">Picks</string>
   <string name="Command_Places_Label">Places</string>
   <string name="Command_Preferences_Label">Preferences</string>
@@ -4206,6 +4208,7 @@ Try enclosing path to the editor with double quotes.
   <string name="Command_People_Tooltip">Friends, groups, and nearby people</string>
   <string name="Command_PF_Linksets_Tooltip">Manipulation of pathfinding linksets</string>
   <string name="Command_PF_Characters_Tooltip">Manipulation of pathfinding characters</string>
+  <string name="Command_Performance_Tooltip">Improve graphics speed</string>
   <string name="Command_Picks_Tooltip">Places to show as favorites in your profile</string>
   <string name="Command_Places_Tooltip">Places you've saved</string>
   <string name="Command_Preferences_Tooltip">Preferences</string>
@@ -4291,6 +4294,9 @@ Try enclosing path to the editor with double quotes.
   <string name="ExperiencePermissionShort16">Sit</string>
   <string name="ExperiencePermissionShort17">Environment</string>
 
+  <!-- PBR Materials -->
+  <string name="Material Texture Name Header">Textures present this material: </string>
+  
   <!-- Conversation log messages -->
   <string name="logging_calls_disabled_log_empty">
     Conversations are not being logged. To begin keeping a log, choose "Save: Log only" or "Save: Log and transcripts" under Preferences > Chat.
@@ -4312,7 +4318,7 @@ Try enclosing path to the editor with double quotes.
   <string name="preset_combo_label">-Empty list-</string>
   <string name="Default">Default</string>
   <string name="none_paren_cap">(None)</string>
-  <string name="no_limit">No Limit</string>
+  <string name="no_limit">No limit</string>
   
   <string name="Mav_Details_MAV_FOUND_DEGENERATE_TRIANGLES">
       The physics shape contains triangles which are too small. Try simplifying the physics model.

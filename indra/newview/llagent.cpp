@@ -62,6 +62,7 @@
 #include "llfloaterimnearbychat.h"
 #include "llnotificationsutil.h"
 #include "llparcel.h"
+#include "llperfstats.h"
 #include "llrendersphere.h"
 #include "llscriptruntimeperms.h"
 #include "llsdutil.h"
@@ -1069,11 +1070,7 @@ void LLAgent::setRegion(LLViewerRegion *regionp)
 			{
 				gSky.mVOSkyp->setRegion(regionp);
 			}
-			if (gSky.mVOGroundp)
-			{
-				gSky.mVOGroundp->setRegion(regionp);
-			}
-
+			
             if (regionp->capabilitiesReceived())
             {
                 regionp->requestSimulatorFeatures();
@@ -3922,7 +3919,6 @@ void LLAgent::processScriptControlChange(LLMessageSystem *msg, void **)
 			// take controls
 			msg->getU32("Data", "Controls", controls, block_index );
 			msg->getBOOL("Data", "PassToAgent", passon, block_index );
-			U32 total_count = 0;
 			for (i = 0; i < TOTAL_CONTROLS; i++)
 			{
 				if (controls & ( 1 << i))
@@ -3935,7 +3931,6 @@ void LLAgent::processScriptControlChange(LLMessageSystem *msg, void **)
 					{
 						gAgent.mControlsTakenCount[i]++;
 					}
-					total_count++;
 				}
 			}
 		}
@@ -4179,10 +4174,6 @@ bool LLAgent::teleportCore(bool is_local)
 		LL_INFOS("Teleport") << "Non-local, setting teleport state to TELEPORT_START" << LL_ENDL;
 		gAgent.setTeleportState( LLAgent::TELEPORT_START );
 
-		//release geometry from old location
-		gPipeline.resetVertexBuffers();
-		LLSpatialPartition::sTeleportRequested = TRUE;
-
 //		//BD - Derender
 		//	   Clear Derender List only when we actually teleport away.
 		gObjectList.mDerenderList.clear();
@@ -4321,6 +4312,7 @@ void LLAgent::handleTeleportFinished()
             mRegionp->setCapabilitiesReceivedCallback(boost::bind(&LLAgent::onCapabilitiesReceivedAfterTeleport));
         }
     }
+    LLPerfStats::tunables.autoTuneTimeout = true;
 }
 
 void LLAgent::handleTeleportFailed()
@@ -4352,6 +4344,8 @@ void LLAgent::handleTeleportFailed()
 	}
 
     mTPNeedsNeabyChatSeparator = false;
+
+    LLPerfStats::tunables.autoTuneTimeout = true;
 }
 
 /*static*/
@@ -4554,7 +4548,6 @@ void LLAgent::teleportCancel()
 	}
 	clearTeleportRequest();
 	gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-	gPipeline.resetVertexBuffers(); 
 }
 
 void LLAgent::restoreCanceledTeleportRequest()

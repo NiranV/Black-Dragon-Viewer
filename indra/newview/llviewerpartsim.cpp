@@ -263,9 +263,8 @@ BOOL LLViewerPartGroup::addPart(LLViewerPart* part, F32 desired_size)
 	{
 		return FALSE;
 	}
-
-	gPipeline.markRebuild(mVOPartGroupp->mDrawable, LLDrawable::REBUILD_ALL, TRUE);
-
+	gPipeline.markRebuild(mVOPartGroupp->mDrawable, LLDrawable::REBUILD_ALL);
+	
 	mParticles.push_back(part);
 	part->mSkipOffset = mSkippedTime;
 	LLViewerPartSim::incPartCount(1);
@@ -426,7 +425,7 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 		// we removed one or more particles, so flag this group for update
 		if (mVOPartGroupp.notNull())
 		{
-			gPipeline.markRebuild(mVOPartGroupp->mDrawable, LLDrawable::REBUILD_ALL, TRUE);
+			gPipeline.markRebuild(mVOPartGroupp->mDrawable, LLDrawable::REBUILD_ALL);
 		}
 		LLViewerPartSim::decPartCount(removed);
 	}
@@ -716,7 +715,7 @@ void LLViewerPartSim::updateSimulation()
 
 			if (upd && vobj && (vobj->getPCode() == LL_PCODE_VOLUME))
 			{
-				if (vobj->getAvatar() && vobj->getAvatar()->isTooComplex())
+				if(vobj->getAvatar() && vobj->getAvatar()->isTooComplex() && vobj->getAvatar()->isTooSlow())
 				{
 					upd = FALSE;
 				}
@@ -766,7 +765,7 @@ void LLViewerPartSim::updateSimulation()
 		{
 			if (vobj && !vobj->isDead())
 			{
-				gPipeline.markRebuild(vobj->mDrawable, LLDrawable::REBUILD_ALL, TRUE);
+				gPipeline.markRebuild(vobj->mDrawable, LLDrawable::REBUILD_ALL);
 			}
 			mViewerPartGroups[i]->updateParticles(dt * visirate);
 			mViewerPartGroups[i]->mSkippedTime = 0.0f;

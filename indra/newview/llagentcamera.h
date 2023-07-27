@@ -181,7 +181,6 @@ private:
 	F32				mTargetCameraDistance;			// Target camera offset from avatar
 	F32				mCameraFOVZoomFactor;			// Amount of fov zoom applied to camera when zeroing in on an object
 	F32				mCameraCurrentFOVZoomFactor;	// Interpolated fov zoom
-	F32				mCameraFOVDefault;				// Default field of view that is basis for FOV zoom effect
 	LLVector4		mCameraCollidePlane;			// Colliding plane for camera
 	F32				mCameraZoomFraction;			// Mousewheel driven fraction of zoom
 	LLVector3		mCameraPositionAgent;			// Camera position in agent coordinates
@@ -196,7 +195,6 @@ private:
 	// Follow
 	//--------------------------------------------------------------------
 public:
-	void			setUsingFollowCam(bool using_follow_cam);
 	bool 			isfollowCamLocked();
 private:
 	LLFollowCam 	mFollowCam; 			// Ventrella
@@ -266,7 +264,6 @@ private:
 	LLPointer<LLViewerObject> mFocusObject;
 	F32				mFocusObjectDist;
 	LLVector3		mFocusObjectOffset;
-	F32				mFocusDotRadius; 				// Meters
 	BOOL			mTrackFocusObject;
 
 	//BD - Camera Position Lock

@@ -168,6 +168,7 @@ public:
 												 S32 face = -1,                    // which face to check, -1 = ALL_SIDES
 												 BOOL pick_transparent = FALSE,
 												 BOOL pick_rigged = FALSE,
+                                                 BOOL pick_unselectable = TRUE,
 												 S32* face_hit = NULL,             // which face was hit
 												 LLVector4a* intersection = NULL,   // return the intersection point
 												 LLVector2* tex_coord = NULL,      // return the texture coordinates of the intersection point
@@ -178,6 +179,7 @@ public:
 												 S32 face = -1,                    // which face to check, -1 = ALL_SIDES
 												 BOOL pick_transparent = FALSE,
 												 BOOL pick_rigged = FALSE,
+                                                 BOOL pick_unselectable = TRUE,
 												 S32* face_hit = NULL,             // which face was hit
 												 LLVector4a* intersection = NULL,   // return the intersection point
 												 LLVector2* tex_coord = NULL,      // return the texture coordinates of the intersection point
@@ -313,12 +315,41 @@ public:
 	static const U32 VISUAL_COMPLEXITY_UNKNOWN;
 	void			updateVisualComplexity();
 	
-	U32				getOriginalVisualComplexity()	{ return mOriginalVisualComplexity;		};		// Numbers calculated here by rendering AV
+    void placeProfileQuery();
+    void readProfileQuery(S32 retries);
+
+    // get the GPU time in ms of rendering this avatar including all attachments
+    // returns 0.f if this avatar has not been profiled using gPipeline.profileAvatar
+    // or the avatar is visually muted
+    F32             getGPURenderTime();
+
+    // get the total GPU render time in ms of all avatars that have been benched
+    static F32      getTotalGPURenderTime();
+
+    // get the max GPU render time in ms of all avatars that have been benched
+    static F32      getMaxGPURenderTime();
+
+    // get the average GPU render time in ms of all avatars that have been benched
+    static F32      getAverageGPURenderTime();
+
+    // get the CPU time in ms of rendering this avatar including all attachments
+    // return 0.f if this avatar has not been profiled using gPipeline.mProfileAvatar
+    F32             getCPURenderTime() { return mCPURenderTime; }
+
+
 	//BD - Altered Complexity Calculation
-	U32				getVisualComplexity()			{ return mVisualComplexity;				};		// Numbers calculated here by rendering AV
-	F32				getAttachmentSurfaceArea()		{ return mAttachmentSurfaceArea;		};		// estimated surface area of attachments
+	U32				getOriginalVisualComplexity() { return mOriginalVisualComplexity; };		// Numbers calculated here by rendering AV
+	U32				getVisualComplexity() { return mVisualComplexity; };		// Numbers calculated here by rendering AV
+	F32				getAttachmentSurfaceArea() { return mAttachmentSurfaceArea; };		// estimated surface area of attachments
 //	//BD - Performance Indicator
-	U32				getAvatarPerfRank()				{ return mPerfRank; };							// performance rank of this avatar
+	U32				getAvatarPerfRank() { return mPerfRank; };							// performance rank of this avatar
+
+    
+    // avatar render cost
+	U32				getVisualComplexity()			{ return mVisualComplexity;				};
+
+    // surface area calculation
+	F32				getAttachmentSurfaceArea()		{ return mAttachmentSurfaceArea;		};
 
 	U32				getReportedVisualComplexity()					{ return mReportedVisualComplexity;				};	// Numbers as reported by the SL server
 	void			setReportedVisualComplexity(U32 value)			{ mReportedVisualComplexity = value;			};
@@ -328,6 +359,8 @@ public:
 	static void     updateImpostorRendering(U32 newMaxNonImpostorsValue);
 
 	void 			idleUpdateBelowWater();
+
+	static void updateNearbyAvatarCount();
 
 	//--------------------------------------------------------------------
 	// Static preferences (controlled by user settings/menus)
@@ -353,6 +386,9 @@ public:
 
     static LLPointer<LLViewerTexture>  sCloudTexture;
 
+	static std::vector<LLUUID> sAVsIgnoringARTLimit;
+    static S32 sAvatarsNearby;
+
 	//--------------------------------------------------------------------
 	// Region state
 	//--------------------------------------------------------------------
@@ -364,6 +400,16 @@ public:
 	//--------------------------------------------------------------------
 public:
 	BOOL			isFullyLoaded() const;
+
+    // check and return current state relative to limits
+    // default will test only the geometry (combined=false).
+    // this allows us to disable shadows separately on complex avatars.
+
+    inline bool 	isTooSlowWithoutShadows() const {return mTooSlowWithoutShadows;};
+    bool 	isTooSlow() const;
+
+    void 			updateTooSlow();
+
 	bool 			isTooComplex() const;
 	bool 			visualParamWeightsAreDefault();
 	virtual bool	getIsCloud() const;
@@ -383,7 +429,7 @@ public:
 	void 			logMetricsTimerRecord(const std::string& phase_name, F32 elapsed, bool completed);
 
     void            calcMutedAVColor();
-
+    
 protected:
 	LLViewerStats::PhaseMap& getPhases() { return mPhases; }
 	BOOL			updateIsFullyLoaded();
@@ -403,6 +449,12 @@ private:
 	LLColor4		mMutedAVColor;
 	LLFrameTimer	mFullyLoadedTimer;
 	LLFrameTimer	mRuthTimer;
+
+    // variables to hold "slowness" status
+    bool			mTooSlow{false};
+    bool			mTooSlowWithoutShadows{false};
+
+    bool            mTuned{false};
 
 private:
 	LLViewerStats::PhaseMap mPhases;
@@ -525,6 +577,7 @@ public:
 	S32			mSpecialRenderMode; // special lighting
         
 private:
+    friend class LLPipeline;
 	AvatarOverallAppearance mOverallAppearance;
 	F32			mAttachmentSurfaceArea; //estimated surface area of attachments
     U32			mAttachmentVisibleTriangleCount;
@@ -537,9 +590,23 @@ private:
 	S32	 		mUpdatePeriod;
 	S32  		mNumInitFaces; //number of faces generated when creating the avatar drawable, does not inculde splitted faces due to long vertex buffer.
 
-	mutable U32  mOriginalVisualComplexity;
+    // profile handle
+    U32 mGPUTimerQuery = 0;
+
+    // profile results
+
+    // GPU render time in ms
+    F32 mGPURenderTime = 0.f;
+    bool mGPUProfilePending = false;
+
+    // CPU render time in ms
+    F32 mCPURenderTime = 0.f;
+
 	//BD - Altered Complexity Calculation
+	mutable U32  mOriginalVisualComplexity;
+
 	// the isTooComplex method uses these mutable values to avoid recalculating too frequently
+    // DEPRECATED -- obsolete avatar render cost values
 	mutable U32  mVisualComplexity;
 	mutable bool mVisualComplexityStale;
 	mutable F64  mVisualComplexityUpdateTime = 0.f;
@@ -908,6 +975,7 @@ public:
 	virtual BOOL 		detachObject(LLViewerObject *viewer_object);
 	static bool		    getRiggedMeshID( LLViewerObject* pVO, LLUUID& mesh_id );
 	void				cleanupAttachedMesh( LLViewerObject* pVO );
+    bool                hasPendingAttachedMeshes();
 	static LLVOAvatar*  findAvatarFromAttachment(LLViewerObject* obj);
 	/*virtual*/ BOOL	isWearingWearableType(LLWearableType::EType type ) const;
 	LLViewerObject *	findAttachmentByID( const LLUUID & target_id ) const;

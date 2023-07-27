@@ -106,6 +106,7 @@
 #include "llfloaterpathfindingconsole.h"
 #include "llfloaterpathfindinglinksets.h"
 #include "llfloaterpay.h"
+#include "llfloaterperformance.h"
 #include "llfloaterperms.h"
 #include "llfloaterpostprocess.h"
 #include "llfloaterpreference.h"
@@ -130,7 +131,6 @@
 #include "llfloatertelehub.h"
 #include "llfloatertestinspectors.h"
 #include "llfloatertestlistview.h"
-#include "llfloatertexturefetchdebugger.h"
 #include "llfloatertools.h"
 #include "llfloatertopobjects.h"
 #include "llfloatertos.h"
@@ -149,6 +149,7 @@
 #include "llinspectobject.h"
 #include "llinspectremoteobject.h"
 #include "llinspecttoast.h"
+#include "llmaterialeditor.h"
 #include "llmoveview.h"
 #include "llfloaterimnearbychat.h"
 #include "llpanelblockedlist.h"
@@ -183,11 +184,103 @@ const std::string FLOATER_PROFILE("profile");
 class LLFloaterOpenHandler : public LLCommandHandler
 {
 public:
-	// requires trusted browser to trigger
+	// requires trusted browser to trigger or an explicit click
 	LLFloaterOpenHandler() : LLCommandHandler("openfloater", UNTRUSTED_THROTTLE) { }
 
-	bool handle(const LLSD& params, const LLSD& query_map,
-				LLMediaCtrl* web)
+    bool canHandleUntrusted(
+        const LLSD& params,
+        const LLSD& query_map,
+        LLMediaCtrl* web,
+        const std::string& nav_type) override
+    {
+        if (params.size() != 1)
+        {
+            return true; // will fail silently
+        }
+        
+        std::string fl_name = params[0].asString();
+
+        if (nav_type == NAV_TYPE_CLICKED)
+        {
+            const std::list<std::string> blacklist_clicked = {
+                "camera_presets",
+                "delete_pref_preset",
+                "forget_username",
+                "god_tools",
+                "group_picker",
+                "hud",
+                "incoming_call",
+                "linkreplace",
+                "message_critical", // Modal!!! Login specific.
+                "message_tos", // Modal!!! Login specific.
+                "save_pref_preset",
+                "save_camera_preset",
+                "region_restarting",
+                "outfit_snapshot",
+                "upload_anim_bvh",
+                "upload_anim_anim",
+                "upload_image",
+                "upload_model",
+                "upload_script",
+                "upload_sound"
+            };
+            return std::find(blacklist_clicked.begin(), blacklist_clicked.end(), fl_name) == blacklist_clicked.end();
+        }
+        else
+        {
+            const std::list<std::string> blacklist_untrusted = {
+                "360capture",
+                "block_timers",
+                "add_payment_method",
+                "appearance",
+                "associate_listing",
+                "avatar_picker",
+                "camera",
+                "camera_presets",
+                "classified",
+                "add_landmark",
+                "delete_pref_preset",
+                "env_fixed_environmentent_water",
+                "env_fixed_environmentent_sky",
+                "env_edit_extdaycycle",
+                "font_test",
+                "forget_username",
+                "god_tools",
+                "group_picker",
+                "hud",
+                "incoming_call",
+                "linkreplace",
+                "mem_leaking",
+                "marketplace_validation",
+                "message_critical", // Modal!!! Login specific. If this is in use elsewhere, better to create a non modal variant
+                "message_tos", // Modal!!! Login specific.
+                "mute_object_by_name",
+                "publish_classified",
+                "save_pref_preset",
+                "save_camera_preset",
+                "region_restarting",
+                "script_debug",
+                "script_debug_output",
+                "sell_land",
+                "outfit_snapshot",
+                "upload_anim_bvh",
+                "upload_anim_anim",
+                "upload_image",
+                "upload_model",
+                "upload_script",
+                "upload_sound"
+            };
+            return std::find(blacklist_untrusted.begin(), blacklist_untrusted.end(), fl_name) == blacklist_untrusted.end();
+        }
+
+
+        return true;
+    }
+
+	bool handle(
+        const LLSD& params,
+        const LLSD& query_map,
+        LLMediaCtrl* web) override
 	{
 		if (params.size() != 1)
 		{
@@ -303,10 +396,6 @@ void LLViewerFloaterReg::registerFloaters()
 	
 	LLFloaterReg::add("mem_leaking", "floater_mem_leaking.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterMemLeak>);
 
-	if(gSavedSettings.getBOOL("TextureFetchDebuggerEnabled"))
-	{
-		LLFloaterReg::add("tex_fetch_debugger", "floater_texture_fetch_debugger.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterTextureFetchDebugger>);
-	}
 	LLFloaterReg::add("media_settings", "floater_media_settings.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterMediaSettings>);	
 	LLFloaterReg::add("marketplace_listings", "floater_marketplace_listings.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterMarketplaceListings>);
 	LLFloaterReg::add("marketplace_validation", "floater_marketplace_validation.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterMarketplaceValidation>);
@@ -330,6 +419,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("pathfinding_linksets", "floater_pathfinding_linksets.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPathfindingLinksets>);
 	LLFloaterReg::add("pathfinding_console", "floater_pathfinding_console.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPathfindingConsole>);
 	LLFloaterReg::add("people", "floater_people.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSidePanelContainer>);
+	LLFloaterReg::add("performance", "floater_performance.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPerformance>);
 	LLFloaterReg::add("perms_default", "floater_perms_default.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPermsDefault>);
 	LLFloaterReg::add("places", "floater_places.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSidePanelContainer>);
 	LLFloaterReg::add("preferences", "floater_preferences.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterPreference>);
@@ -353,6 +443,9 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("save_pref_preset", "floater_save_pref_preset.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterSavePrefPreset>);
 	LLFloaterReg::add("script_colors", "floater_script_ed_prefs.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterScriptEdPrefs>);
 
+    LLFloaterReg::add("material_editor", "floater_material_editor.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLMaterialEditor>);
+    LLFloaterReg::add("live_material_editor", "floater_live_material_editor.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLMaterialEditor>);
+    
 	LLFloaterReg::add("telehubs", "floater_telehub.xml",&LLFloaterReg::build<LLFloaterTelehub>);
 	LLFloaterReg::add("test_inspectors", "floater_test_inspectors.xml", &LLFloaterReg::build<LLFloaterTestInspectors>);
 	//LLFloaterReg::add("test_list_view", "floater_test_list_view.xml",&LLFloaterReg::build<LLFloaterTestListView>);

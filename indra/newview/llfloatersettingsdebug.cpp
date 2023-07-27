@@ -2,9 +2,9 @@
  * @file llfloatersettingsdebug.cpp
  * @brief floater for debugging internal viewer settings
  *
- * $LicenseInfo:firstyear=2001&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2022&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2010, Linden Research, Inc.
+ * Copyright (C) 2022, Linden Research, Inc.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,8 @@
 #include "llviewerprecompiledheaders.h"
 #include "llfloatersettingsdebug.h"
 #include "llfloater.h"
+#include "llfiltereditor.h"
 #include "lluictrlfactory.h"
-//#include "llfirstuse.h"
 #include "llcombobox.h"
 // [RLVa:KB] - Patch: RLVa-2.1.0
 #include "llsdserialize.h"
@@ -40,9 +40,9 @@
 
 
 LLFloaterSettingsDebug::LLFloaterSettingsDebug(const LLSD& key) 
-:	LLFloater(key)
+:   LLFloater(key),
+    mSettingList(NULL)
 {
-	mCommitCallbackRegistrar.add("SettingSelect",	boost::bind(&LLFloaterSettingsDebug::onSettingSelect, this,_1));
 	mCommitCallbackRegistrar.add("CommitSettings",	boost::bind(&LLFloaterSettingsDebug::onCommitSettings, this));
 	mCommitCallbackRegistrar.add("ClickDefault",	boost::bind(&LLFloaterSettingsDebug::onClickDefault, this));
 }
@@ -76,15 +76,15 @@ BOOL LLFloaterSettingsDebug::postBuild()
 		}
 	} func(mSettingsCombo);
 
-	std::string key = getKey().asString();
-	if (key == "all" || key == "base")
-	{
-		gSavedSettings.applyToAll(&func);
-	}
-	if (key == "all" || key == "account")
-	{
-		gSavedPerAccountSettings.applyToAll(&func);
-	}
+    getChild<LLFilterEditor>("filter_input")->setCommitCallback(boost::bind(&LLFloaterSettingsDebug::setSearchFilter, this, _2));
+
+    mSettingList = getChild<LLScrollListCtrl>("setting_list");
+    mSettingList->setCommitOnSelectionChange(TRUE);
+    mSettingList->setCommitCallback(boost::bind(&LLFloaterSettingsDebug::onSettingSelect, this));
+
+    updateList();
+
+    gSavedSettings.getControl("DebugSettingsHideDefault")->getCommitSignal()->connect(boost::bind(&LLFloaterSettingsDebug::updateList, this, false));
 
 	mSettingsCombo->sortByName();
 	mSettingsCombo->updateSelection();
@@ -93,24 +93,24 @@ BOOL LLFloaterSettingsDebug::postBuild()
 
 void LLFloaterSettingsDebug::draw()
 {
-	LLControlVariable* controlp = (LLControlVariable*)mSettingsCombo->getCurrentUserdata();
-	updateControl(controlp);
+    LLScrollListItem* first_selected = mSettingList->getFirstSelected();
+    if (first_selected)
+    {
+        LLControlVariable* controlp = (LLControlVariable*)first_selected->getUserdata();
+        updateControl(controlp);
+    }
 
 	LLFloater::draw();
 }
 
-//static 
-void LLFloaterSettingsDebug::onSettingSelect(LLUICtrl* ctrl)
-{
-	LLComboBox* combo_box = (LLComboBox*)ctrl;
-	LLControlVariable* controlp = (LLControlVariable*)combo_box->getCurrentUserdata();
-
-	updateControl(controlp);
-}
-
 void LLFloaterSettingsDebug::onCommitSettings()
 {
-	LLControlVariable* controlp = (LLControlVariable*)mSettingsCombo->getCurrentUserdata();
+    LLScrollListItem* first_selected = mSettingList->getFirstSelected();
+    if (!first_selected)
+    {
+        return;
+    }
+    LLControlVariable* controlp = (LLControlVariable*)first_selected->getUserdata();
 
 	if (!controlp)
 	{
@@ -201,18 +201,23 @@ void LLFloaterSettingsDebug::onCommitSettings()
 		default:
 		break;
 	}
+    updateDefaultColumn(controlp);
 }
 
 // static
 void LLFloaterSettingsDebug::onClickDefault()
 {
-	LLControlVariable* controlp = (LLControlVariable*)mSettingsCombo->getCurrentUserdata();
-
-	if (controlp)
-	{
-		controlp->resetToDefault(true);
-		updateControl(controlp);
-	}
+    LLScrollListItem* first_selected = mSettingList->getFirstSelected();
+    if (first_selected)
+    {
+        LLControlVariable* controlp = (LLControlVariable*)first_selected->getUserdata();
+        if (controlp)
+        {
+            controlp->resetToDefault(true);
+            updateDefaultColumn(controlp);
+            updateControl(controlp);
+        }
+    }
 }
 
 // we've switched controls, or doing per-frame update, so update spinners, etc.
@@ -226,16 +231,14 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		return;
 	}
 
-	mValX->setVisible(FALSE);
-	mValY->setVisible(FALSE);
-	mValZ->setVisible(FALSE);
-	mColor->setVisible(FALSE);
-	mText->setVisible(FALSE);
-	mComment->setText(LLStringUtil::null);
-//	//BD - Vector4
-	mValW->setVisible(FALSE);
+	hideUIControls();
 
-	if (controlp)
+	eControlType type = controlp->type();
+
+	//hide combo box only for non booleans, otherwise this will result in the combo box closing every frame
+	mBool->setVisible(type == TYPE_BOOLEAN);
+
+	if (controlp && !isSettingHidden(controlp))
 	{
 // [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Modified: RLVa-1.4.0a
 		// If "HideFromEditor" was toggled while the floater is open then we need to manually disable access to the control
@@ -252,13 +255,6 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		mValW->setEnabled(fEnable);
 // [/RLVa:KB]
 
-		eControlType type = controlp->type();
-
-		//hide combo box only for non booleans, otherwise this will result in the combo box closing every frame
-		mBool->setVisible(type == TYPE_BOOLEAN);
-		
-
-		mComment->setText(controlp->getComment());
 		mValX->setMaxValue(F32_MAX);
 		mValY->setMaxValue(F32_MAX);
 		mValZ->setMaxValue(F32_MAX);
@@ -268,6 +264,25 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 //		//BD - Vector4
 		mValW->setMaxValue(F32_MAX);
 		mValW->setMinValue(-F32_MAX);
+
+
+		getChildView("boolean_combo")->setVisible( type == TYPE_BOOLEAN);
+        getChildView("default_btn")->setVisible(true);
+        getChildView("setting_name_txt")->setVisible(true);
+        getChild<LLTextBox>("setting_name_txt")->setText(controlp->getName());
+        getChild<LLTextBox>("setting_name_txt")->setToolTip(controlp->getName());
+        mComment->setVisible(true);
+
+        std::string old_text = mComment->getText();
+        std::string new_text = controlp->getComment();
+        // Don't setText if not nessesary, it will reset scroll
+        // This is a debug UI that reads from xml, there might
+        // be use cases where comment changes, but not the name
+		if (old_text != new_text)
+		{
+			mComment->setText(controlp->getComment());
+		}
+        
 		if (!mValX->hasFocus())
 		{
 			mValX->setIncrement(0.1f);
@@ -583,3 +598,167 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 	}
 
 }
+
+void LLFloaterSettingsDebug::updateList(bool skip_selection)
+{
+    std::string last_selected;
+    LLScrollListItem* item = mSettingList->getFirstSelected();
+    if (item)
+    {
+        LLScrollListCell* cell = item->getColumn(1);
+        if (cell)
+        {
+            last_selected = cell->getValue().asString();
+         }
+    }
+
+    mSettingList->deleteAllItems();
+    struct f : public LLControlGroup::ApplyFunctor
+    {
+        LLScrollListCtrl* setting_list;
+        LLFloaterSettingsDebug* floater;
+        std::string selected_setting;
+        bool skip_selection;
+        f(LLScrollListCtrl* list, LLFloaterSettingsDebug* floater, std::string setting, bool skip_selection) 
+            : setting_list(list), floater(floater), selected_setting(setting), skip_selection(skip_selection) {}
+        virtual void apply(const std::string& name, LLControlVariable* control)
+        {
+            if (!control->isHiddenFromSettingsEditor() && floater->matchesSearchFilter(name) && !floater->isSettingHidden(control))
+            {
+                LLSD row;
+
+                row["columns"][0]["column"] = "changed_setting";
+                row["columns"][0]["value"] = control->isDefault() ? "" : "*";
+
+                row["columns"][1]["column"] = "setting";
+                row["columns"][1]["value"] = name;
+
+                LLScrollListItem* item = setting_list->addElement(row, ADD_BOTTOM, (void*)control);
+                if (!floater->mSearchFilter.empty() && (selected_setting == name) && !skip_selection)
+                {
+                    std::string lower_name(name);
+                    LLStringUtil::toLower(lower_name);
+                    if (LLStringUtil::startsWith(lower_name, floater->mSearchFilter))
+                    {
+                        item->setSelected(true);
+                    }
+                }
+            }
+        }
+    } func(mSettingList, this, last_selected, skip_selection);
+
+    std::string key = getKey().asString();
+    if (key == "all" || key == "base")
+    {
+        gSavedSettings.applyToAll(&func);
+    }
+    if (key == "all" || key == "account")
+    {
+        gSavedPerAccountSettings.applyToAll(&func);
+    }
+
+
+    if (!mSettingList->isEmpty())
+    {
+        if (mSettingList->hasSelectedItem())
+        {
+            mSettingList->scrollToShowSelected();
+        }
+        else if (!mSettingList->hasSelectedItem() && !mSearchFilter.empty() && !skip_selection)
+        {
+            if (!mSettingList->selectItemByPrefix(mSearchFilter, false, 1))
+            {
+                mSettingList->selectFirstItem();
+            }
+            mSettingList->scrollToShowSelected();
+        }
+    }
+    else
+    {
+        LLSD row;
+
+        row["columns"][0]["column"] = "changed_setting";
+        row["columns"][0]["value"] = "";
+        row["columns"][1]["column"] = "setting";
+        row["columns"][1]["value"] = "No matching settings.";
+
+        mSettingList->addElement(row);
+        hideUIControls();
+    }
+}
+
+void LLFloaterSettingsDebug::onSettingSelect()
+{
+    LLScrollListItem* first_selected = mSettingList->getFirstSelected();
+    if (first_selected)
+    {
+        LLControlVariable* controlp = (LLControlVariable*)first_selected->getUserdata();
+        if (controlp)
+        {
+            updateControl(controlp);
+        }
+    }
+}
+
+void LLFloaterSettingsDebug::setSearchFilter(const std::string& filter)
+{
+    if(mSearchFilter == filter)
+        return;
+    mSearchFilter = filter;
+    LLStringUtil::toLower(mSearchFilter);
+    updateList();
+}
+
+bool LLFloaterSettingsDebug::matchesSearchFilter(std::string setting_name)
+{
+    // If the search filter is empty, everything passes.
+    if (mSearchFilter.empty()) return true;
+
+    LLStringUtil::toLower(setting_name);
+    std::string::size_type match_name = setting_name.find(mSearchFilter);
+
+    return (std::string::npos != match_name);
+}
+
+bool LLFloaterSettingsDebug::isSettingHidden(LLControlVariable* control)
+{
+    static LLCachedControl<bool> hide_default(gSavedSettings, "DebugSettingsHideDefault", false);
+    return hide_default && control->isDefault();
+}
+
+void LLFloaterSettingsDebug::updateDefaultColumn(LLControlVariable* control)
+{
+    if (isSettingHidden(control))
+    {
+        hideUIControls();
+        updateList(true);
+        return;
+    }
+
+    LLScrollListItem* item = mSettingList->getFirstSelected();
+    if (item)
+    {
+        LLScrollListCell* cell = item->getColumn(0);
+        if (cell)
+        {
+            std::string is_default = control->isDefault() ? "" : "*";
+            cell->setValue(is_default);
+        }
+    }
+}
+
+void LLFloaterSettingsDebug::hideUIControls()
+{
+	mBool->setVisible(false);
+	mValX->setVisible(false);
+	mValY->setVisible(false);
+	mValZ->setVisible(false);
+	mColor->setVisible(false);
+	mText->setVisible(false);
+	//	//BD - Vector4
+	mValW->setVisible(false);
+	mDefaultBtn->setVisible(false);
+    getChildView("setting_name_txt")->setVisible(false);
+    mComment->setVisible(false);
+}
+

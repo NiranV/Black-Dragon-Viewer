@@ -33,11 +33,13 @@
 #include "llstl.h"
 
 #include "llagent.h"
+#include "llagentcamera.h"
 #include "llviewercontrol.h"
 #include "lldrawpool.h"
 #include "llglheaders.h"
 #include "llhttpnode.h"
 #include "llregionhandle.h"
+#include "llsky.h"
 #include "llsurface.h"
 #include "lltrans.h"
 #include "llviewercamera.h"
@@ -109,7 +111,7 @@ LLWorld::LLWorld() :
 	gGL.getTexUnit(0)->bind(mDefaultWaterTexturep);
 	mDefaultWaterTexturep->setAddressMode(LLTexUnit::TAM_CLAMP);
 
-	LLViewerRegion::sVOCacheCullingEnabled = gSavedSettings.getBOOL("RequestFullRegionCache");
+    LLViewerRegion::sVOCacheCullingEnabled = gSavedSettings.getBOOL("RequestFullRegionCache") && gSavedSettings.getBOOL("ObjectCacheEnabled");
 }
 
 
@@ -117,6 +119,7 @@ void LLWorld::resetClass()
 {
 	mHoleWaterObjects.clear();
 	gObjectList.destroy();
+    gSky.cleanup(); // references an object
 	for(region_list_t::iterator region_it = mRegionList.begin(); region_it != mRegionList.end(); )
 	{
 		LLViewerRegion* region_to_delete = *region_it++;
@@ -678,6 +681,7 @@ static LLTrace::SampleStatHandle<> sNumActiveCachedObjects("numactivecachedobjec
 
 void LLWorld::updateRegions(F32 max_update_time)
 {
+    LL_PROFILE_ZONE_SCOPED;
 	LLTimer update_timer;
 	mNumOfActiveCachedObjects = 0;
 	
@@ -764,13 +768,10 @@ void LLWorld::updateParticles()
 
 void LLWorld::renderPropertyLines()
 {
-	S32 region_count = 0;
-
 	for (region_list_t::iterator iter = mVisibleRegionList.begin();
 		 iter != mVisibleRegionList.end(); ++iter)
 	{
 		LLViewerRegion* regionp = *iter;
-		region_count++;
 		regionp->renderPropertyLines();
 	}
 }
@@ -819,7 +820,7 @@ void LLWorld::updateNetStats()
 
 void LLWorld::printPacketsLost()
 {
-	LL_INFOS() << "Simulators:" << LL_ENDL;
+	LL_INFOS() << "Simulators:" << LL_ENDL; 
 	LL_INFOS() << "----------" << LL_ENDL;
 
 	LLCircuitData *cdp = NULL;
@@ -854,6 +855,7 @@ F32 LLWorld::getLandFarClip() const
 
 void LLWorld::setLandFarClip(const F32 far_clip)
 {
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_ENVIRONMENT;
 	static S32 const rwidth = (S32)REGION_WIDTH_U32;
 	S32 const n1 = (llceil(mLandFarClip) - 1) / rwidth;
 	S32 const n2 = (llceil(far_clip) - 1) / rwidth;
@@ -1424,127 +1426,35 @@ void LLWorld::getAvatars(uuid_vec_t* avatar_ids, std::vector<LLVector3d>* positi
 	}
 }
 
-void LLWorld::getAvatars(pos_map_t* umap, const LLVector3d& relative_to, F32 radius) const
+F32 LLWorld::getNearbyAvatarsAndMaxGPUTime(std::vector<LLCharacter*> &valid_nearby_avs)
 {
-	F32 radius_squared = radius * radius;
-	
-	if (!umap->empty())
-	{
-		umap->clear();
-	}
-
-	// get the list of avatars from the character list first, so distances are correct
-	// when agent is above 1020m and other avatars are nearby
-	for (auto instance : LLCharacter::sInstances)
+    static LLCachedControl<F32> render_far_clip(gSavedSettings, "RenderFarClip", 64);
+    F32 nearby_max_complexity = 0;
+    F32 radius = render_far_clip * render_far_clip;
+    std::vector<LLCharacter*>::iterator char_iter = LLCharacter::sInstances.begin();
+    while (char_iter != LLCharacter::sInstances.end())
     {
-		LLVOAvatar* pVOAvatar = static_cast<LLVOAvatar*>(instance);
-		
-		if (!pVOAvatar->isDead() && !pVOAvatar->mIsDummy && !pVOAvatar->isOrphaned())
-		{
-			LLVector3d pos_global = pVOAvatar->getPositionGlobal();
-			LLUUID uuid = pVOAvatar->getID();
-			
-			if (!uuid.isNull()
-				&& dist_vec_squared(pos_global, relative_to) <= radius_squared)
-			{
-				umap->emplace(std::move(uuid), std::move(pos_global));
-			}
-		}
-	}
-	// region avatars added for situations where radius is greater than RenderFarClip
-	for (LLViewerRegion* regionp : LLWorld::getInstance()->getRegionList())
-	{
-		const LLVector3d& origin_global = regionp->getOriginGlobal();
-		S32 count = regionp->mMapAvatars.size();
-		for (S32 i = 0; i < count; i++)
-		{
-			LLUUID uuid = regionp->mMapAvatarIDs[i];
-			if (uuid.isNull()) continue;
+        LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*char_iter);
+        if (avatar && !avatar->isDead() && !avatar->isControlAvatar())
+        {
+            if ((dist_vec_squared(avatar->getPositionGlobal(), gAgent.getPositionGlobal()) > radius) &&
+                (dist_vec_squared(avatar->getPositionGlobal(), gAgentCamera.getCameraPositionGlobal()) > radius))
+            {
+                char_iter++;
+                continue;
+            }
 
-			LLVector3d pos_global = unpackLocalToGlobalPosition(regionp->mMapAvatars[i], origin_global);
-			if(dist_vec_squared(pos_global, relative_to) <= radius_squared && umap->find(uuid) == umap->end())
-			{
-				umap->emplace(std::move(uuid), std::move(pos_global));
-			}
-		}
-	}
+            if (!avatar->isTooSlow())
+            {
+                gPipeline.profileAvatar(avatar);
+            }
+            nearby_max_complexity = llmax(nearby_max_complexity, avatar->getGPURenderTime());
+            valid_nearby_avs.push_back(*char_iter);
+        }
+        char_iter++;
+    }
+    return nearby_max_complexity;
 }
-
-void LLWorld::getAvatars(region_gpos_map_t* umap, const LLVector3d& relative_to, F32 radius) const
-{
-	F32 radius_squared = radius * radius;
-
-	if (!umap->empty())
-	{
-		umap->clear();
-	}
-
-	// get the list of avatars from the character list first, so distances are correct
-	// when agent is above 1020m and other avatars are nearby
-	for (auto instance : LLCharacter::sInstances)
-    {
-		LLVOAvatar* pVOAvatar = static_cast<LLVOAvatar*>(instance);
-
-		if (!pVOAvatar->isDead() && !pVOAvatar->mIsDummy && !pVOAvatar->isOrphaned())
-		{
-			LLUUID uuid = pVOAvatar->getID();
-			auto region = pVOAvatar->getRegion();
-			LLVector3d pos_global = pVOAvatar->getPositionGlobal();
-
-			if (uuid.notNull() && region
-				&& dist_vec_squared(pos_global, relative_to) <= radius_squared)
-			{
-				umap->emplace(std::move(uuid), std::make_pair(region, std::move(pos_global)));
-			}
-		}
-	}
-	// region avatars added for situations where radius is greater than RenderFarClip
-	for (LLViewerRegion* regionp : LLWorld::getInstance()->getRegionList())
-	{
-		const LLVector3d& origin_global = regionp->getOriginGlobal();
-		size_t count = regionp->mMapAvatars.size();
-		for (size_t i = 0; i < count; ++i)
-		{
-			LLUUID uuid = regionp->mMapAvatarIDs[i];
-			if (uuid.isNull()) continue;
-
-			LLVector3d pos_global = unpackLocalToGlobalPosition(regionp->mMapAvatars[i], origin_global);
-			if (dist_vec_squared(pos_global, relative_to) <= radius_squared && umap->find(uuid) == umap->end())
-			{
-				umap->emplace(std::move(uuid), std::make_pair(regionp, std::move(pos_global)));
-			}
-		}
-	}
-}
-
-// [RLVa:KB] - Checked: RLVa-2.0.1
-bool LLWorld::getAvatar(const LLUUID& idAvatar, LLVector3d& posAvatar) const
-{
-	for (const LLCharacter* pCharacter : LLCharacter::sInstances)
-	{
-		const LLVOAvatar* pAvatar = static_cast<const LLVOAvatar*>(pCharacter);
-		if ( (!pAvatar->isDead()) && (!pAvatar->mIsDummy) && (!pAvatar->isOrphaned()) && (idAvatar == pAvatar->getID()) )
-		{
-			posAvatar = pAvatar->getPositionGlobal();
-			return true;
-		}
-	}
-
-	for (const LLViewerRegion* pRegion : LLWorld::getInstance()->getRegionList())
-	{
-		for (S32 idxAgent = 0, cntAgent = pRegion->mMapAvatarIDs.size(); idxAgent < cntAgent; ++idxAgent)
-		{
-			if (idAvatar == pRegion->mMapAvatarIDs[idxAgent])
-			{
-				posAvatar = unpackLocalToGlobalPosition(pRegion->mMapAvatars[idxAgent], pRegion->getOriginGlobal());
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-// [/RLVa:KB]
 
 bool LLWorld::isRegionListed(const LLViewerRegion* region) const
 {

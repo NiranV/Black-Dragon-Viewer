@@ -141,7 +141,12 @@ attributedStringInfo getSegments(NSAttributedString *str)
     CGLError the_err = CGLQueryRendererInfo (CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay), &info, &num_renderers);
     if(0 == the_err)
     {
-        CGLDescribeRenderer (info, 0, kCGLRPTextureMemoryMegabytes, &vram_megabytes);
+        // The name, uses, and other platform definitions of gGLManager.mVRAM suggest that this is supposed to be total vram in MB,
+        // rather than, say, just the texture memory. The two exceptions are:
+        // 1. LLAppViewer::getViewerInfo() puts the value in a field labeled "TEXTURE_MEMORY"
+        // 2. For years, this present function used kCGLRPTextureMemoryMegabytes
+        // Now we use kCGLRPVideoMemoryMegabytes to bring it in line with everything else (except thatone label).
+        CGLDescribeRenderer (info, 0, kCGLRPVideoMemoryMegabytes, &vram_megabytes);
         CGLDestroyRendererInfo (info);
     }
     else
@@ -256,6 +261,7 @@ attributedStringInfo getSegments(NSAttributedString *str)
 		NSOpenGLPFADepthSize, 24,
 		NSOpenGLPFAAlphaSize, 8,
 		NSOpenGLPFAColorSize, 24,
+		NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion4_1Core,
 		0
     };
 	
@@ -495,7 +501,12 @@ attributedStringInfo getSegments(NSAttributedString *str)
     // e.g. OS Window for upload something or Input Window...
     // mModifiers instance variable is for insertText: or insertText:replacementRange:  (by Pell Smit)
 	mModifiers = [theEvent modifierFlags];
-    unichar ch = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
+    NSString *str_no_modifiers = [theEvent charactersIgnoringModifiers];
+    unichar ch = 0;
+    if (str_no_modifiers.length)
+    {
+        ch = [str_no_modifiers characterAtIndex:0];
+    }
     bool acceptsText = mHasMarkedText ? false : callKeyDown(&eventData, keycode, mModifiers, ch);
 
     if (acceptsText &&
@@ -539,7 +550,16 @@ attributedStringInfo getSegments(NSAttributedString *str)
     if (mModifiers & mask)
     {
         eventData.mKeyEvent = NativeKeyEventData::KEYDOWN;
-        callKeyDown(&eventData, [theEvent keyCode], 0, [[theEvent characters] characterAtIndex:0]);
+
+        wchar_t c = 0;
+        if([theEvent type] == NSEventTypeKeyDown)
+        {
+            // characters property is only valid when the event is of type KeyDown or KeyUp
+            // https://developer.apple.com/documentation/appkit/nsevent/1534183-characters?language=objc
+            c = [[theEvent characters] characterAtIndex:0];
+        }
+
+        callKeyDown(&eventData, [theEvent keyCode], 0, c);
     }
     else
     {

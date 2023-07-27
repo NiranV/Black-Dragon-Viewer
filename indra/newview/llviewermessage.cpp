@@ -134,6 +134,8 @@
 
 extern void on_new_message(const LLSD& msg);
 
+extern BOOL gCubeSnapshot;
+
 //
 // Constants
 //
@@ -1441,7 +1443,8 @@ bool check_asset_previewable(const LLAssetType::EType asset_type)
 			(asset_type == LLAssetType::AT_TEXTURE)   ||
 			(asset_type == LLAssetType::AT_ANIMATION) ||
 			(asset_type == LLAssetType::AT_SCRIPT)    ||
-			(asset_type == LLAssetType::AT_SOUND);
+			(asset_type == LLAssetType::AT_SOUND) ||
+            (asset_type == LLAssetType::AT_MATERIAL);
 }
 
 void open_inventory_offer(const uuid_vec_t& objects, const std::string& from_name)
@@ -1546,6 +1549,9 @@ void open_inventory_offer(const uuid_vec_t& objects, const std::string& from_nam
 					case LLAssetType::AT_SOUND:
 						LLFloaterReg::showInstance("preview_sound", LLSD(obj_id), take_focus);
 						break;
+                    case LLAssetType::AT_MATERIAL:
+                        LLFloaterReg::showInstance("material_editor", LLSD(obj_id), take_focus);
+                        break;
 					default:
 						// _LL_DEBUGS("Messaging") << "No preview method for previewable asset type : " << LLAssetType::lookupHumanReadable(asset_type)  << LL_ENDL;
 						break;
@@ -1944,7 +1950,7 @@ bool LLOfferInfo::inventory_offer_callback(const LLSD& notification, const LLSD&
 				log_message = LLTrans::getString("InvOfferDecline", log_message_args);
 			}
 			chat.mText = log_message;
-			if( LLMuteList::getInstance()->isMuted(mFromID ) && ! LLMuteList::getInstance()->isLinden(mFromName) )  // muting for SL-42269
+			if( LLMuteList::getInstance()->isMuted(mFromID ) && ! LLMuteList::isLinden(mFromName) )  // muting for SL-42269
 			{
 				chat.mMuted = TRUE;
 				accept_to_trash = false; // will send decline message
@@ -2530,6 +2536,7 @@ void translateSuccess(LLChat chat, LLSD toastArgs, std::string originalMsg, std:
         chat.mText += " (" + LLTranslate::removeNoTranslateTags(translation) + ")";
     }
 
+	LLTranslate::instance().logSuccess(1);
     LLNotificationsUI::LLNotificationManager::instance().onChat(chat, toastArgs);
 }
 
@@ -2539,6 +2546,7 @@ void translateFailure(LLChat chat, LLSD toastArgs, int status, const std::string
     LLStringUtil::replaceString(msg, "\n", " "); // we want one-line error messages
     chat.mText += " (" + msg + ")";
 
+	LLTranslate::instance().logFailure(1);
     LLNotificationsUI::LLNotificationManager::instance().onChat(chat, toastArgs);
 }
 
@@ -2616,7 +2624,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 		LLMute::flagTextChat) 
 		|| LLMuteList::getInstance()->isMuted(owner_id, LLMute::flagTextChat);
 	is_linden = chat.mSourceType != CHAT_SOURCE_OBJECT &&
-		LLMuteList::getInstance()->isLinden(from_name);
+		LLMuteList::isLinden(from_name);
 
 	if (is_muted && (chat.mSourceType == CHAT_SOURCE_OBJECT))
 	{
@@ -2939,6 +2947,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 		LLSD args;
 		chat.mOwnerID = owner_id;
 
+		LLTranslate::instance().logCharsSeen(mesg.size());
 		if (gSavedSettings.getBOOL("TranslateChat") && chat.mSourceType != CHAT_SOURCE_SYSTEM)
 		{
 			if (chat.mChatStyle == CHAT_STYLE_IRC)
@@ -2948,6 +2957,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
 			const std::string from_lang = ""; // leave empty to trigger autodetect
 			const std::string to_lang = LLTranslate::getTranslateLanguage();
 
+			LLTranslate::instance().logCharsSent(mesg.size());
             LLTranslate::translateMessage(from_lang, to_lang, mesg,
                 boost::bind(&translateSuccess, chat, args, mesg, from_lang, _1, _2),
                 boost::bind(&translateFailure, chat, args, _1, _2));
@@ -3209,8 +3219,6 @@ void process_teleport_finish(LLMessageSystem* msg, void**)
 	
 	// Teleport is finished; it can't be cancelled now.
 	gViewerWindow->setProgressCancelButtonVisible(FALSE);
-
-	gPipeline.doResetVertexBuffers(true);
 
 	// Do teleport effect for where you're leaving
 	// VEFFECT: TeleportStart
@@ -3567,6 +3575,8 @@ const F32 MAX_HEAD_ROT_QDOT = 0.99999f;			// ~= 0.5 degrees -- if its greater th
 void send_agent_update(BOOL force_send, BOOL send_reliable)
 {
     LL_PROFILE_ZONE_SCOPED;
+    llassert(!gCubeSnapshot);
+
 	if (gAgent.getTeleportState() != LLAgent::TELEPORT_NONE)
 	{
 		// We don't care if they want to send an agent update, they're not allowed to until the simulator
@@ -4504,7 +4514,7 @@ void process_object_animation(LLMessageSystem *mesgsys, void **user_data)
         //if (!avatarp->mRootVolp->isAnySelected())
         {
             avatarp->updateVolumeGeom();
-            avatarp->mRootVolp->recursiveMarkForUpdate(TRUE);
+            avatarp->mRootVolp->recursiveMarkForUpdate();
         }
     }
         
@@ -6696,7 +6706,7 @@ bool handle_lure_callback(const LLSD& notification, const LLSD& response)
 		// More than OFFER_RECIPIENT_LIMIT targets will overload the message
 		// producing an llerror.
 		LLSD args;
-		args["OFFERS"] = notification["payload"]["ids"].size();
+		args["OFFERS"] = LLSD::Integer(notification["payload"]["ids"].size());
 		args["LIMIT"] = static_cast<int>(OFFER_RECIPIENT_LIMIT);
 		LLNotificationsUtil::add("TooManyTeleportOffers", args);
 		return false;
@@ -6781,7 +6791,7 @@ bool teleport_request_callback(const LLSD& notification, const LLSD& response)
 	LLAvatarName av_name;
 	LLAvatarNameCache::get(from_id, &av_name);
 
-	if(LLMuteList::getInstance()->isMuted(from_id) && !LLMuteList::getInstance()->isLinden(av_name.getUserName()))
+	if(LLMuteList::getInstance()->isMuted(from_id) && !LLMuteList::isLinden(av_name.getUserName()))
 	{
 		return false;
 	}

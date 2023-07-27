@@ -99,12 +99,13 @@ public:
 	BOOL isMuted(const LLUUID& id, const std::string& name = LLStringUtil::null, U32 flags = 0) const;
 
 	// Workaround for username-based mute search, a lot of string conversions so use cautiously
+    // Expects lower case username
 	BOOL isMuted(const std::string& username, U32 flags = 0) const;
 
 	// Alternate (convenience) form for places we don't need to pass the name, but do need flags
 	BOOL isMuted(const LLUUID& id, U32 flags) const { return isMuted(id, LLStringUtil::null, flags); };
 	
-	BOOL isLinden(const std::string& name) const;
+	static bool isLinden(const std::string& name);
 	
 	BOOL isLoaded() const { return mIsLoaded; }
 

@@ -129,6 +129,8 @@ namespace
 	const std::string   FIELD_SKY_DENSITY_ABSORPTION_CONSTANT("absorption_constant");
 	const std::string   FIELD_SKY_DENSITY_ABSORPTION_MAX_ALTITUDE("absorption_max_altitude");
 
+	const std::string	FIELD_REFLECTION_PROBE_AMBIANCE("probe_ambiance");
+
 	const std::string	ACTION_SAVELOCAL("save_as_local_setting");
 	const std::string	ACTION_SAVEAS("save_as_new_settings");
 
@@ -267,6 +269,8 @@ BOOL LLFloaterEnvironmentAdjust::postBuild()
 	mNameCombo = getChild<LLComboBox>(EDITOR_NAME);
 	mNameCombo->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
 
+    getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->setCommitCallback([this](LLUICtrl*, const LLSD&) { onReflectionProbeAmbianceChanged(); });
+
     refresh();
     return TRUE;
 }
@@ -303,6 +307,7 @@ void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
 //-------------------------------------------------------------------------
 void LLFloaterEnvironmentAdjust::refresh()
 {
+<<<<<<< HEAD
 	if (!mLiveSky)
 	{
 		setAllChildrenEnabled(FALSE);
@@ -330,6 +335,8 @@ void LLFloaterEnvironmentAdjust::refresh()
 	mDroplet->setValue(mLiveSky->getSkyDropletRadius());
 	mIceLevel->setValue(mLiveSky->getSkyIceLevel());
 
+	static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
+	getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->setValue(mLiveSky->getReflectionProbeAmbiance(should_auto_adjust));
 
 	//BD - Sun & Moon
 	LLColor3 glow(mLiveSky->getGlow());
@@ -381,6 +388,8 @@ void LLFloaterEnvironmentAdjust::refresh()
 	mCloudDetailX->setValue(cloudDetail[0]);
 	mCloudDetailY->setValue(cloudDetail[1]);
 	mCloudDetailD->setValue(cloudDetail[2]);
+
+	updateGammaLabel();
 }
 
 
@@ -787,6 +796,32 @@ void LLFloaterEnvironmentAdjust::onSaveAsCommit(const LLSD& notification, const 
 
 		doApplyCreateNewInventory(settings_name, settings);
 	}
+}
+
+void LLFloaterEnvironmentAdjust::onReflectionProbeAmbianceChanged()
+{
+    if (!mLiveSky) return;
+    F32 ambiance = getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->getValue().asReal();
+    mLiveSky->setReflectionProbeAmbiance(ambiance);
+
+    updateGammaLabel();
+    mLiveSky->update();
+}
+
+void LLFloaterEnvironmentAdjust::updateGammaLabel()
+{
+    if (!mLiveSky) return;
+
+    static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
+    F32 ambiance = mLiveSky->getReflectionProbeAmbiance(should_auto_adjust);
+    if (ambiance != 0.f)
+    {
+        childSetValue("scene_gamma_label", getString("hdr_string"));
+    }
+    else
+    {
+        childSetValue("scene_gamma_label", getString("brightness_string"));
+    }
 }
 
 void LLFloaterEnvironmentAdjust::doApplyCreateNewInventory(std::string settings_name, const LLSettingsBase::ptr_t &settings)

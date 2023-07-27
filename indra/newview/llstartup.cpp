@@ -60,6 +60,7 @@
 #include "llfloatergridstatus.h"
 #include "llfloaterimsession.h"
 #include "lllocationhistory.h"
+#include "llgltfmateriallist.h"
 #include "llimageworker.h"
 
 #include "llloginflags.h"
@@ -210,6 +211,7 @@
 #include "llstacktrace.h"
 
 #include "threadpool.h"
+#include "llperfstats.h"
 
 
 #if LL_WINDOWS
@@ -283,7 +285,6 @@ void show_first_run_dialog();
 bool first_run_dialog_callback(const LLSD& notification, const LLSD& response);
 void set_startup_status(const F32 frac, const std::string& string, const std::string& msg);
 bool login_alert_status(const LLSD& notification, const LLSD& response);
-void login_packet_failed(void**, S32 result);
 void use_circuit_callback(void**, S32 result);
 void register_viewer_callbacks(LLMessageSystem* msg);
 void asset_callback_nothing(const LLUUID&, LLAssetType::EType, void*, S32);
@@ -322,7 +323,7 @@ void update_texture_fetch()
 	LLAppViewer::getTextureFetch()->update(1); // unpauses the texture fetch thread
 	gTextureList.updateImages(0.10f);
 
-    if (LLImageGLThread::sEnabled)
+    if (LLImageGLThread::sEnabledTextures)
     {
         std::shared_ptr<LL::WorkQueue> main_queue = LL::WorkQueue::getInstance("mainloop");
         main_queue->runFor(std::chrono::milliseconds(1));
@@ -333,6 +334,8 @@ void set_flags_and_update_appearance()
 {
 	LLAppearanceMgr::instance().setAttachmentInvLinkEnable(true);
 	LLAppearanceMgr::instance().updateAppearanceFromCOF(true, true, no_op);
+
+    LLInventoryModelBackgroundFetch::instance().start();
 }
 
 // Returns false to skip other idle processing. Should only return
@@ -1459,8 +1462,16 @@ bool idle_startup()
 		}
         else if (regionp->capabilitiesError())
         {
-            // Try to connect despite capabilities' error state
-            LLStartUp::setStartupState(STATE_SEED_CAP_GRANTED);
+            LL_WARNS("AppInit") << "Failed to get capabilities. Backing up to login screen!" << LL_ENDL;
+            if (gRememberPassword)
+            {
+                LLNotificationsUtil::add("LoginPacketNeverReceived", LLSD(), LLSD(), login_alert_status);
+            }
+            else
+            {
+                LLNotificationsUtil::add("LoginPacketNeverReceivedNoTP", LLSD(), LLSD(), login_alert_status);
+            }
+            reset_login();
         }
 		else
 		{
@@ -1547,6 +1558,9 @@ bool idle_startup()
 		set_startup_status(0.33f, LLTrans::getString("SeedGranted"), "Initializing Name Cache");
 		display_startup();
 
+		LLGLTFMaterialList::registerCallbacks();
+		display_startup();
+
 		LLStartUp::initNameCache();
 		set_startup_status(0.34f, LLTrans::getString("SeedGranted"), "Updating Voice Settings");
 		display_startup();
@@ -1566,6 +1580,8 @@ bool idle_startup()
 		{
 			LLViewerParcelAskPlay::getInstance()->loadSettings();
 		}
+
+		gAgent.addRegionChangedCallback(boost::bind(&LLPerfStats::StatsRecorder::clearStats));
 
 		// *Note: this is where gWorldMap used to be initialized.
 
@@ -1619,19 +1635,14 @@ bool idle_startup()
 		set_startup_status(0.39f, LLTrans::getString("SeedGranted"), "Checking Texture Channels");
 		display_startup();
 
-		// start up the ThreadPool we'll use for textures et al.
-        LLAppViewer::instance()->initGeneralThread();
-
 		// Initialize global class data needed for surfaces (i.e. textures)
 		// _LL_DEBUGS("AppInit") << "Initializing sky..." << LL_ENDL;
 		// Initialize all of the viewer object classes for the first time (doing things like texture fetches.
 		LLGLState::checkStates();
-		LLGLState::checkTextureChannels();
 
 		gSky.init();
 
 		LLGLState::checkStates();
-		LLGLState::checkTextureChannels();
 		set_startup_status(0.40f, LLTrans::getString("SeedGranted"), "Decoding Images");
 		display_startup();
 
@@ -1995,6 +2006,7 @@ bool idle_startup()
 			LLNotificationsUtil::add("InventoryUnusable");
 		}
 		
+        LLInventoryModelBackgroundFetch::instance().start();
 		gInventory.createCommonSystemCategories();
 
 		// It's debatable whether this flag is a good idea - sets all
@@ -2472,6 +2484,8 @@ bool idle_startup()
 			"");
 
 		LLUIUsage::instance().clear();
+
+        LLPerfStats::StatsRecorder::setAutotuneInit();
 
 		return TRUE;
 	}
@@ -3145,7 +3159,7 @@ bool LLStartUp::dispatchURL()
 			|| (dx*dx > SLOP*SLOP)
 			|| (dy*dy > SLOP*SLOP) )
 		{
-			LLURLDispatcher::dispatch(getStartSLURL().getSLURLString(), "clicked",
+			LLURLDispatcher::dispatch(getStartSLURL().getSLURLString(), LLCommandHandler::NAV_TYPE_CLICKED,
 						  NULL, false);
 		}
 		return true;
@@ -3373,7 +3387,7 @@ LLSD transform_cert_args(LLPointer<LLCertificate> cert)
 		// are actually arrays, and we want to format them as comma separated          
 		// strings, so special case those.                                             
 		LLSDSerialize::toXML(cert_info[iter->first], std::cout);
-		if((iter->first== std::string(CERT_KEY_USAGE)) |
+		if((iter->first == std::string(CERT_KEY_USAGE)) ||
 		   (iter->first == std::string(CERT_EXTENDED_KEY_USAGE)))
 		{
 			value = "";
@@ -3533,6 +3547,9 @@ bool process_login_success_response()
 	if(!text.empty()) gAgentID.set(text);
 	gDebugInfo["AgentID"] = text;
 	
+	LLPerfStats::StatsRecorder::setEnabled(gSavedSettings.getBOOL("PerfStatsCaptureEnabled"));
+	LLPerfStats::StatsRecorder::setFocusAv(gAgentID);
+
 	// Agent id needed for parcel info request in LLUrlEntryParcel
 	// to resolve parcel name.
 	LLUrlEntryParcel::setAgentID(gAgentID);

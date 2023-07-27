@@ -99,8 +99,6 @@ public:
 //	//BD - Misc
 	vobj_list_t getAllObjects() { return mObjects; }
 
-	void removeDrawable(LLDrawable* drawablep);
-
 	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.
 
 	// Simulator and viewer side object updates...
@@ -153,11 +151,6 @@ public:
 	void updateActive(LLViewerObject *objectp);
 	
 	void updateAvatarVisibility();
-
-	// Selection related stuff
-	void generatePickList(LLCamera &camera);
-
-	LLViewerObject *getSelectedObject(const U32 object_id);
 
 	inline S32 getNumObjects() { return (S32) mObjects.size(); }
 	inline S32 getNumActiveObjects() { return (S32) mActiveObjects.size(); }
@@ -251,8 +244,6 @@ protected:
 	static std::map<U64, U32> sIPAndPortToIndex;
 
 	static std::map<U64, LLUUID> sIndexAndLocalIDToUUID;
-
-	std::set<LLViewerObject *> mSelectPickList;
 
 	friend class LLViewerObject;
 

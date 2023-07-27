@@ -47,7 +47,6 @@
 
 /* misc headers */
 #include "llscrolllistctrl.h"
-#include "llfilepicker.h"
 #include "lllocaltextureobject.h"
 #include "llviewertexturelist.h"
 #include "llviewerobjectlist.h"
@@ -62,6 +61,7 @@
 #include "pipeline.h"
 #include "llmaterialmgr.h"
 #include "llimagedimensionsinfo.h"
+#include "llinventoryicon.h"
 #include "llviewercontrol.h"
 #include "lltrans.h"
 #include "llviewerdisplay.h"
@@ -919,7 +919,22 @@ LLLocalBitmapMgr::~LLLocalBitmapMgr()
     mBitmapList.clear();
 }
 
-LLUUID LLLocalBitmapMgr::addUnit(const std::string &filename)
+bool LLLocalBitmapMgr::addUnit(const std::vector<std::string>& filenames)
+{
+    bool add_successful = false;
+    std::vector<std::string>::const_iterator iter = filenames.begin();
+    while (iter != filenames.end())
+    {
+        if (!iter->empty() && addUnit(*iter).notNull())
+        {
+            add_successful = true;
+        }
+        iter++;
+    }
+    return add_successful;
+}
+
+LLUUID LLLocalBitmapMgr::addUnit(const std::string& filename)
 {
     if (!checkTextureDimensions(filename))
     {
@@ -947,31 +962,6 @@ LLUUID LLLocalBitmapMgr::addUnit(const std::string &filename)
     }
 
     return LLUUID::null;
-}
-
-bool LLLocalBitmapMgr::addUnit()
-{
-	bool add_successful = false;
-
-	LLFilePicker& picker = LLFilePicker::instance();
-	if (picker.getMultipleOpenFiles(LLFilePicker::FFLOAD_IMAGE))
-	{
-		mTimer.stopTimer();
-
-		std::string filename = picker.getFirstFile();
-		while(!filename.empty())
-		{
-            if (addUnit(filename).notNull())
-            {
-                add_successful = true;
-            }
-			filename = picker.getNextFile();
-		}
-		
-		mTimer.startTimer();
-	}
-
-	return add_successful;
 }
 
 bool LLLocalBitmapMgr::checkTextureDimensions(std::string filename)
@@ -1079,7 +1069,9 @@ void LLLocalBitmapMgr::feedScrollList(LLScrollListCtrl* ctrl)
 {
 	if (ctrl)
 	{
-		ctrl->clearRows();
+        std::string icon_name = LLInventoryIcon::getIconName(
+            LLAssetType::AT_TEXTURE,
+            LLInventoryType::IT_NONE);
 
 		if (!mBitmapList.empty())
 		{
@@ -1087,13 +1079,19 @@ void LLLocalBitmapMgr::feedScrollList(LLScrollListCtrl* ctrl)
 				 iter != mBitmapList.end(); iter++)
 			{
 				LLSD element;
-				element["columns"][0]["column"] = "unit_name";
-				element["columns"][0]["type"]   = "text";
-				element["columns"][0]["value"]  = (*iter)->getShortName();
 
-				element["columns"][1]["column"] = "unit_id_HIDDEN";
-				element["columns"][1]["type"]   = "text";
-				element["columns"][1]["value"]  = (*iter)->getTrackingID();
+                element["columns"][0]["column"] = "icon";
+                element["columns"][0]["type"] = "icon";
+                element["columns"][0]["value"] = icon_name;
+
+                element["columns"][1]["column"] = "unit_name";
+                element["columns"][1]["type"] = "text";
+                element["columns"][1]["value"] = (*iter)->getShortName();
+
+                LLSD data;
+                data["id"] = (*iter)->getTrackingID();
+                data["type"] = (S32)LLAssetType::AT_TEXTURE;
+                element["value"] = data;
 
 				ctrl->addElement(element);
 			}

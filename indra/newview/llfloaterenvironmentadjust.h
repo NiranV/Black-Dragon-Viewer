@@ -83,6 +83,7 @@ private:
 	void						onMoistureLevelChanged();
 	void						onDropletRadiusChanged();
 	void						onIceLevelChanged();
+	void                        updateGammaLabel();
 
 	//BD - Sun & Moon
 	void						onSunMoonColorChanged();
@@ -95,6 +96,7 @@ private:
 	void						onMoonScaleChanged();
 	void						onMoonBrightnessChanged();
 	void						onMoonImageChanged();
+	void                        onReflectionProbeAmbianceChanged();
 
 	//BD - Clouds
 	void						onCloudColorChanged();
@@ -116,6 +118,8 @@ private:
 	void						onSelectPreset();
 
 	void						loadSkySettingFromFile(const std::vector<std::string>& filenames);
+
+    void                        onButtonReset();
 
     LLSettingsSky::ptr_t        mLiveSky;
     LLEnvironment::connection_t mEventConnection;

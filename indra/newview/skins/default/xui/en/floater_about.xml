@@ -586,6 +586,7 @@ feel free to IM me if you can tell me missing names and/or find more stuff other
         SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
         SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
         xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
+        xxHash Copyright (C) 2012-2020 Yann Collet.
         zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
       </text_editor>
   </panel>

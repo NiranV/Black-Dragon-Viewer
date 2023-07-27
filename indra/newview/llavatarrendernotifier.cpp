@@ -239,6 +239,12 @@ void LLAvatarRenderNotifier::updateNotificationAgent(U32 agentComplexity)
     // save the value for use in following messages
     mLatestAgentComplexity = agentComplexity;
 
+    static LLCachedControl<U32> show_my_complexity_changes(gSavedSettings, "ShowMyComplexityChanges", 20);
+    if (!show_my_complexity_changes)
+    {
+        return;
+    }
+
     if (!isAgentAvatarValid() || !gAgentWearables.areWearablesLoaded())
     {
         // data not ready, nothing to show.
@@ -286,7 +292,8 @@ static const char* e_hud_messages[] =
 };
 
 LLHUDRenderNotifier::LLHUDRenderNotifier() :
-mReportedHUDWarning(WARN_NONE)
+mReportedHUDWarning(WARN_NONE),
+mHUDsCount(0)
 {
 }
 
@@ -302,6 +309,15 @@ void LLHUDRenderNotifier::updateNotificationHUD(hud_complexity_list_t complexity
         return;
     }
 
+    mHUDComplexityList = complexity;
+    mHUDsCount = mHUDComplexityList.size();
+
+    static LLCachedControl<U32> show_my_complexity_changes(gSavedSettings, "ShowMyComplexityChanges", 20);
+    if (!show_my_complexity_changes)
+    {
+        return;
+    }
+        
     // TODO:
     // Find a way to show message with list of issues, but without making it too large
     // and intrusive.
