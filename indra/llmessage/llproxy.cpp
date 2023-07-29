@@ -550,6 +550,6 @@ static LLSocket::ptr_t tcp_open_channel(LLHost host)
  */
 static void tcp_close_channel(LLSocket::ptr_t* handle_ptr)
 {
-	// _LL_DEBUGS("Proxy") << "Resetting proxy LLSocket handle, use_count == " << handle_ptr->use_count() << LL_ENDL;
+	LL_DEBUGS("Proxy") << "Resetting proxy LLSocket handle, use_count == " << handle_ptr->use_count() << LL_ENDL;
 	handle_ptr->reset();
 }

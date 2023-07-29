@@ -361,14 +361,14 @@ F32		gAveLandCompression = 0.f,
 		gWorstLandCompression = 0.f, 
 		gWorstWaterCompression = 0.f;
 
-U64Bytes				gTotalWorldData, 
+U32Bytes				gTotalWorldData, 
 								gTotalObjectData, 
 								gTotalTextureData;
 U32								gSimPingCount = 0;
 U32Bits				gObjectData;
 F32Milliseconds		gAvgSimPing(0.f);
 // rely on default initialization
-U64Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY];
+U32Bytes			gTotalTextureBytesPerBoostLevel[LLViewerTexture::MAX_GL_IMAGE_CATEGORY];
 
 extern U32  gVisCompared;
 extern U32  gVisTested;
@@ -865,12 +865,12 @@ void LLViewerStats::PhaseMap::startPhase(const std::string& phase_name)
 {
 	LLTimer& timer = getPhaseTimer(phase_name);
 	timer.start();
-	//// _LL_DEBUGS("Avatar") << "startPhase " << phase_name << LL_ENDL;
+	//LL_DEBUGS("Avatar") << "startPhase " << phase_name << LL_ENDL;
 }
 
 void LLViewerStats::PhaseMap::clearPhases()
 {
-	//// _LL_DEBUGS("Avatar") << "clearPhases" << LL_ENDL;
+	//LL_DEBUGS("Avatar") << "clearPhases" << LL_ENDL;
 
 	mPhaseMap.clear();
 }
@@ -937,11 +937,11 @@ bool LLViewerStats::PhaseMap::getPhaseValues(const std::string& phase_name, F32&
 		found = true;
 		elapsed =  iter->second.getElapsedTimeF32();
 		completed = !iter->second.getStarted();
-		//// _LL_DEBUGS("Avatar") << " phase_name " << phase_name << " elapsed " << elapsed << " completed " << completed << " timer addr " << (S32)(&iter->second) << LL_ENDL;
+		//LL_DEBUGS("Avatar") << " phase_name " << phase_name << " elapsed " << elapsed << " completed " << completed << " timer addr " << (S32)(&iter->second) << LL_ENDL;
 	}
 	else
 	{
-		//// _LL_DEBUGS("Avatar") << " phase_name " << phase_name << " NOT FOUND"  << LL_ENDL;
+		//LL_DEBUGS("Avatar") << " phase_name " << phase_name << " NOT FOUND"  << LL_ENDL;
 	}
 
 	return found;

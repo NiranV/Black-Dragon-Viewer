@@ -175,12 +175,12 @@ void HttpPolicy::retryOp(const HttpOpRequest::ptr_t &op)
 	{
 		++op->mPolicy503Retries;
 	}
-	/*// _LL_DEBUGS(LOG_CORE) << "HTTP request " << op->getHandle()
+	LL_DEBUGS(LOG_CORE) << "HTTP request " << op->getHandle()
 						<< " retry " << op->mPolicyRetries
 						<< " scheduled in " << (delta / HttpTime(1000))
 						<< " mS (" << (external_delta ? "external" : "internal")
 						<< ").  Status:  " << op->mStatus.toTerseString()
-						<< LL_ENDL;*/
+						<< LL_ENDL;
 	if (op->mTracing > HTTP_TRACE_OFF)
 	{
 		LL_INFOS(LOG_CORE) << "TRACE, ToRetryQueue, Handle:  "
@@ -275,9 +275,9 @@ HttpService::ELoopSpeed HttpPolicy::processReadyQueue()
 					if (now >= state.mThrottleEnd)
 					{
 						// Throttle expired, move to next window
-						/*// _LL_DEBUGS(LOG_CORE) << "Throttle expired with " << state.mThrottleLeft
+						LL_DEBUGS(LOG_CORE) << "Throttle expired with " << state.mThrottleLeft
 											<< " requests to go and " << state.mRequestCount
-											<< " requests issued." << LL_ENDL;*/
+											<< " requests issued." << LL_ENDL;
 						state.mThrottleLeft = state.mOptions.mThrottleRate;
 						state.mThrottleEnd = now + HttpTime(1000000);
 					}
@@ -304,9 +304,9 @@ HttpService::ELoopSpeed HttpPolicy::processReadyQueue()
 					if (now >= state.mThrottleEnd)
 					{
 						// Throttle expired, move to next window
-						/*// _LL_DEBUGS(LOG_CORE) << "Throttle expired with " << state.mThrottleLeft
+						LL_DEBUGS(LOG_CORE) << "Throttle expired with " << state.mThrottleLeft
 											<< " requests to go and " << state.mRequestCount
-											<< " requests issued." << LL_ENDL;*/
+											<< " requests issued." << LL_ENDL;
 						state.mThrottleLeft = state.mOptions.mThrottleRate;
 						state.mThrottleEnd = now + HttpTime(1000000);
 					}
@@ -408,9 +408,9 @@ bool HttpPolicy::stageAfterCompletion(const HttpOpRequest::ptr_t &op)
 	}
 	else if (op->mPolicyRetries)
 	{
-        /*// _LL_DEBUGS(LOG_CORE) << "HTTP request " << op->getHandle()
+        LL_DEBUGS(LOG_CORE) << "HTTP request " << op->getHandle()
 							<< " succeeded on retry " << op->mPolicyRetries << "."
-							<< LL_ENDL;*/
+							<< LL_ENDL;
 	}
 
 	op->stageFromActive(mService);

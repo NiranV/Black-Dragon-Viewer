@@ -114,7 +114,7 @@ void LLMessageHandlerBridge::post(LLHTTPNode::ResponsePtr response,
 	std::string name = context[CONTEXT_REQUEST][CONTEXT_WILDCARD]["message-name"];
 	char* namePtr = LLMessageStringTable::getInstance()->getString(name.c_str());
 	
-	// _LL_DEBUGS() << "Setting mLastSender " << input["sender"].asString() << LL_ENDL;
+	LL_DEBUGS() << "Setting mLastSender " << input["sender"].asString() << LL_ENDL;
 	gMessageSystem->mLastSender = LLHost(input["sender"].asString());
 	gMessageSystem->mPacketsIn += 1;
 	gMessageSystem->mLLSDMessageReader->setMessage(namePtr, input["body"]);
@@ -242,7 +242,7 @@ LLMessageSystem::LLMessageSystem(const std::string& filename, U32 port,
 		mbError = TRUE;
 		mErrorCode = error;
 	}
-//	// _LL_DEBUGS("Messaging") <<  << "*** port: " << mPort << LL_ENDL;
+//	LL_DEBUGS("Messaging") <<  << "*** port: " << mPort << LL_ENDL;
 
 	//
 	// Create the data structure that we can poll on
@@ -617,7 +617,7 @@ BOOL LLMessageSystem::checkMessages(LockMessageChecker&, S64 frame_count )
 						cdp->collectRAck(mCurrentRecvPacketID);
 					}
 								 
-					// _LL_DEBUGS("Messaging") << "Discarding duplicate resend from " << host << LL_ENDL;
+					LL_DEBUGS("Messaging") << "Discarding duplicate resend from " << host << LL_ENDL;
 					if(mVerboseLog)
 					{
 						std::ostringstream str;
@@ -1484,7 +1484,7 @@ void LLMessageSystem::showCircuitInfo()
 
 void LLMessageSystem::dumpCircuitInfo()
 {
-	// _LL_DEBUGS("Messaging") << mCircuitInfo << LL_ENDL;
+	LL_DEBUGS("Messaging") << mCircuitInfo << LL_ENDL;
 }
 
 /* virtual */
@@ -1598,7 +1598,7 @@ BOOL LLMessageSystem::checkCircuitBlocked(const U32 circuit)
 
 	if (!host.isOk())
 	{
-		// _LL_DEBUGS("Messaging") << "checkCircuitBlocked: Unknown circuit " << circuit << LL_ENDL;
+		LL_DEBUGS("Messaging") << "checkCircuitBlocked: Unknown circuit " << circuit << LL_ENDL;
 		return TRUE;
 	}
 
@@ -1620,7 +1620,7 @@ BOOL LLMessageSystem::checkCircuitAlive(const U32 circuit)
 
 	if (!host.isOk())
 	{
-		// _LL_DEBUGS("Messaging") << "checkCircuitAlive: Unknown circuit " << circuit << LL_ENDL;
+		LL_DEBUGS("Messaging") << "checkCircuitAlive: Unknown circuit " << circuit << LL_ENDL;
 		return FALSE;
 	}
 
@@ -1645,7 +1645,7 @@ BOOL LLMessageSystem::checkCircuitAlive(const LLHost &host)
 	}
 	else
 	{
-		// _LL_DEBUGS("Messaging") << "checkCircuitAlive(host): Unknown host - " << host << LL_ENDL;
+		LL_DEBUGS("Messaging") << "checkCircuitAlive(host): Unknown host - " << host << LL_ENDL;
 		return FALSE;
 	}
 }
@@ -2062,9 +2062,9 @@ void LLMessageSystem::dispatch(
 		return;
 	}
 	// enable this for output of message names
-	// _LL_DEBUGS("Messaging") << "< \"" << msg_name << "\"" << LL_ENDL;
-	// _LL_DEBUGS("Messaging") << "context: " << context << LL_ENDL;
-	// _LL_DEBUGS("Messaging") << "message: " << message << LL_ENDL;	   
+	LL_DEBUGS("Messaging") << "< \"" << msg_name << "\"" << LL_ENDL;
+	LL_DEBUGS("Messaging") << "context: " << context << LL_ENDL;
+	LL_DEBUGS("Messaging") << "message: " << message << LL_ENDL;	   
 
 	handler->post(responsep, context, message);
 }
@@ -2101,7 +2101,7 @@ static void check_for_unrecognized_messages(
 void LLMessageSystem::setMessageBans(
 		const LLSD& trusted, const LLSD& untrusted)
 {
-	// _LL_DEBUGS("AppInit") << "LLMessageSystem::setMessageBans:" << LL_ENDL;
+	LL_DEBUGS("AppInit") << "LLMessageSystem::setMessageBans:" << LL_ENDL;
 	bool any_set = false;
 
 	for (message_template_name_map_t::iterator iter = mMessageTemplates.begin(),
@@ -2131,7 +2131,7 @@ void LLMessageSystem::setMessageBans(
 
 	if (!any_set) 
 	{
-		// _LL_DEBUGS("AppInit") << "    no messages banned" << LL_ENDL;
+		LL_DEBUGS("AppInit") << "    no messages banned" << LL_ENDL;
 	}
 
 	check_for_unrecognized_messages("trusted", trusted, mMessageTemplates);
@@ -2202,7 +2202,7 @@ void	process_packet_ack(LLMessageSystem *msgsystem, void** /*user_data*/)
 		for (S32 i = 0; i < ack_count; i++)
 		{
 			msgsystem->getU32Fast(_PREHASH_Packets, _PREHASH_ID, packet_id, i);
-//			// _LL_DEBUGS("Messaging") << "ack recvd' from " << host << " for packet " << (TPACKETID)packet_id << LL_ENDL;
+//			LL_DEBUGS("Messaging") << "ack recvd' from " << host << " for packet " << (TPACKETID)packet_id << LL_ENDL;
 			cdp->ackReliablePacket(packet_id);
 		}
 		if (!cdp->getUnackedPacketCount())
@@ -2480,7 +2480,7 @@ bool start_messaging_system(
 		}
 		else
 		{
-			// _LL_DEBUGS("AppInit") << "Message template version matches prehash version number" << LL_ENDL;
+			LL_DEBUGS("AppInit") << "Message template version matches prehash version number" << LL_ENDL;
 		}
 	}
 
@@ -2695,7 +2695,7 @@ void LLMessageSystem::dumpReceiveCounts()
 
 	if(mNumMessageCounts > 0)
 	{
-		// _LL_DEBUGS("Messaging") << "Dump: " << mNumMessageCounts << " messages processed in " << mReceiveTime << " seconds" << LL_ENDL;
+		LL_DEBUGS("Messaging") << "Dump: " << mNumMessageCounts << " messages processed in " << mReceiveTime << " seconds" << LL_ENDL;
 		for (message_template_name_map_t::const_iterator iter = mMessageTemplates.begin(),
 				 end = mMessageTemplates.end();
 			 iter != end; iter++)

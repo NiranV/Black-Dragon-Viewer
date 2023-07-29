@@ -88,17 +88,17 @@ HttpStatus HttpPolicyGlobal::set(HttpRequest::EPolicyOption opt, const std::stri
 	switch (opt)
 	{
 	case HttpRequest::PO_CA_PATH:
-        // _LL_DEBUGS("CoreHttp") << "Setting global CA Path to " << value << LL_ENDL;
+        LL_DEBUGS("CoreHttp") << "Setting global CA Path to " << value << LL_ENDL;
 		mCAPath = value;
 		break;
 
 	case HttpRequest::PO_CA_FILE:
-        // _LL_DEBUGS("CoreHttp") << "Setting global CA File to " << value << LL_ENDL;
+        LL_DEBUGS("CoreHttp") << "Setting global CA File to " << value << LL_ENDL;
 		mCAFile = value;
 		break;
 
 	case HttpRequest::PO_HTTP_PROXY:
-        // _LL_DEBUGS("CoreHttp") << "Setting global Proxy to " << value << LL_ENDL;
+        LL_DEBUGS("CoreHttp") << "Setting global Proxy to " << value << LL_ENDL;
 		mHttpProxy = value;
 		break;
 

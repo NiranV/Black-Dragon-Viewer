@@ -131,7 +131,7 @@ size_t LLQueuedThread::update(F32 max_time_ms)
 		if (!mThreaded)
 		{
 			startThread();
-			mStarted = true;
+			mStarted = TRUE;
 		}
 	}
 	return updateQueue(max_time_ms);
@@ -243,7 +243,6 @@ bool LLQueuedThread::addRequest(QueuedRequest* req)
 #if _DEBUG
 // 	LL_INFOS() << llformat("LLQueuedThread::Added req [%08d]",handle) << LL_ENDL;
 #endif
-	mRequestQueueSize = mRequestQueue.size();
 	unlockData();
 
     llassert(!mDataLock->isSelfLocked());
@@ -299,7 +298,7 @@ LLQueuedThread::QueuedRequest* LLQueuedThread::getRequest(handle_t handle)
 {
 	if (handle == nullHandle())
 	{
-		return nullptr;
+		return 0;
 	}
 	lockData();
 	QueuedRequest* res = (QueuedRequest*)mRequestHash.find(handle);
@@ -514,7 +513,7 @@ void LLQueuedThread::run()
 	// call checPause() immediately so we don't try to do anything before the class is fully constructed
 	checkPause();
 	startThread();
-	mStarted = true;
+	mStarted = TRUE;
 	
 
 	/*while (1)

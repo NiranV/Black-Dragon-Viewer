@@ -169,7 +169,7 @@ void LLWearable::createVisualParams(LLAvatarAppearance *avatarp)
 		{
 			if( !param->linkDrivenParams(boost::bind(param_function,avatarp,_1 ), true))
 			{
-				// _LL_DEBUGS("Avatar") << "could not link driven params for wearable " << getName() << " id: " << param->getID() << LL_ENDL;
+				LL_DEBUGS("Avatar") << "could not link driven params for wearable " << getName() << " id: " << param->getID() << LL_ENDL;
 				continue;
 			}
 		}

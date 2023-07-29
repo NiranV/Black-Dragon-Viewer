@@ -421,14 +421,14 @@ void LLCoprocedurePool::coprocedureInvokerCoro(
 
         if(status == boost::fibers::channel_op_status::timeout)
         {
-            // _LL_DEBUGS_ONCE("CoProcMgr") << "pool '" << mPoolName << "' waiting." << LL_ENDL;
+            LL_DEBUGS_ONCE("CoProcMgr") << "pool '" << mPoolName << "' waiting." << LL_ENDL;
             continue;
         }
         // we actually popped an item
         --mPending;
         mActiveCoprocsCount++;
 
-        // _LL_DEBUGS("CoProcMgr") << "Dequeued and invoking coprocedure(" << coproc->mName << ") with id=" << coproc->mId.asString() << " in pool \"" << mPoolName << "\" (" << mPending << " left)" << LL_ENDL;
+        LL_DEBUGS("CoProcMgr") << "Dequeued and invoking coprocedure(" << coproc->mName << ") with id=" << coproc->mId.asString() << " in pool \"" << mPoolName << "\" (" << mPending << " left)" << LL_ENDL;
 
         try
         {
@@ -450,7 +450,7 @@ void LLCoprocedurePool::coprocedureInvokerCoro(
             continue;
         }
 
-        // _LL_DEBUGS("CoProcMgr") << "Finished coprocedure(" << coproc->mName << ")" << " in pool \"" << mPoolName << "\"" << LL_ENDL;
+        LL_DEBUGS("CoProcMgr") << "Finished coprocedure(" << coproc->mName << ")" << " in pool \"" << mPoolName << "\"" << LL_ENDL;
 
         mActiveCoprocsCount--;
     }

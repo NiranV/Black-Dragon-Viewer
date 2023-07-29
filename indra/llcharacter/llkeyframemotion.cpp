@@ -497,7 +497,7 @@ LLMotion::LLMotionInitStatus LLKeyframeMotion::onInitialize(LLCharacter *charact
 		// request asset
 		mAssetStatus = ASSET_FETCHED;
 
-        // _LL_DEBUGS("Animation") << "Requesting data fetch for: " << mID << LL_ENDL;
+        LL_DEBUGS("Animation") << "Requesting data fetch for: " << mID << LL_ENDL;
 		character_id = new LLUUID(mCharacter->getID());
 		gAssetStorage->getAssetData(mID,
 						LLAssetType::AT_ANIMATION,
@@ -593,7 +593,7 @@ LLMotion::LLMotionInitStatus LLKeyframeMotion::onInitialize(LLCharacter *charact
 		return STATUS_FAILURE;
 	}
 
-	// _LL_DEBUGS() << "Loading keyframe data for: " << getName() << ":" << getID() << " (" << anim_file_size << " bytes)" << LL_ENDL;
+	LL_DEBUGS() << "Loading keyframe data for: " << getName() << ":" << getID() << " (" << anim_file_size << " bytes)" << LL_ENDL;
 
 	LLDataPackerBinaryBuffer dp(anim_data, anim_file_size);
 
@@ -1418,20 +1418,6 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 	mJointStates.clear();
 	mJointStates.reserve(num_motions);
 
-	LL_DEBUGS("BVH") << "serializing" << LL_ENDL;
-	LL_DEBUGS("BVH") << "version " << KEYFRAME_MOTION_VERSION << LL_ENDL;
-	LL_DEBUGS("BVH") << "sub_version " << KEYFRAME_MOTION_SUBVERSION << LL_ENDL;
-	LL_DEBUGS("BVH") << "base_priority " << mJointMotionList->mBasePriority << LL_ENDL;
-	LL_DEBUGS("BVH") << "duration " << mJointMotionList->mDuration << LL_ENDL;
-	LL_DEBUGS("BVH") << "emote_name " << mJointMotionList->mEmoteName << LL_ENDL;
-	LL_DEBUGS("BVH") << "loop_in_point " << mJointMotionList->mLoopInPoint << LL_ENDL;
-	LL_DEBUGS("BVH") << "loop_out_point " << mJointMotionList->mLoopOutPoint << LL_ENDL;
-	LL_DEBUGS("BVH") << "loop " << mJointMotionList->mLoop << LL_ENDL;
-	LL_DEBUGS("BVH") << "ease_in_duration " << mJointMotionList->mEaseInDuration << LL_ENDL;
-	LL_DEBUGS("BVH") << "ease_out_duration " << mJointMotionList->mEaseOutDuration << LL_ENDL;
-	LL_DEBUGS("BVH") << "hand_pose " << mJointMotionList->mHandPose << LL_ENDL;
-	LL_DEBUGS("BVH") << "num_joints " << mJointMotionList->getNumJointMotions() << LL_ENDL;
-
 	//-------------------------------------------------------------------------
 	// initialize joint motions
 	//-------------------------------------------------------------------------
@@ -1448,8 +1434,6 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
                        << " for animation " << asset_id << LL_ENDL;
 			return FALSE;
 		}
-
-		LL_DEBUGS("BVH") << "Joint " << joint_name << LL_ENDL;
 
 		if (joint_name == "mScreen" || joint_name == "mRoot")
 		{
@@ -1637,8 +1621,6 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 			}
 
 			rCurve->mKeys[time] = rot_key;
-
-			LL_DEBUGS("BVH") << "  rot: t " << rot_key.mTime << " angles " << rot_angles.mV[VX] << "," << rot_angles.mV[VY] << "," << rot_angles.mV[VZ] << LL_ENDL;
 		}
 
         if (joint_motion->mRotationCurve.mNumKeys > joint_motion->mRotationCurve.mKeys.size())
@@ -1747,8 +1729,6 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 			{
 				joint_motion_list->mPelvisBBox.addPoint(pos_key.mPosition);
 			}
-
-			LL_DEBUGS("BVH") << "  pos: t " << pos_key.mTime << " pos " << pos_key.mPosition.mV[VX] << "," << pos_key.mPosition.mV[VY] << "," << pos_key.mPosition.mV[VZ] << LL_ENDL;
 		}
 
         if (joint_motion->mPositionCurve.mNumKeys > joint_motion->mPositionCurve.mKeys.size())
@@ -1998,25 +1978,10 @@ BOOL LLKeyframeMotion::deserialize(LLDataPacker& dp, const LLUUID& asset_id, boo
 		}
 	}
 
-	LL_DEBUGS("BVH") << "num_constraints " << mJointMotionList->mConstraints.size() << LL_ENDL;
-
 	// *FIX: support cleanup of old keyframe data
     mJointMotionList = joint_motion_list.release(); // release from unique_ptr to member;
 	LLKeyframeDataCache::addKeyframeData(getID(),  mJointMotionList);
 	mAssetStatus = ASSET_LOADED;
-
-	
-	/*LL_DEBUGS("BVH") << "  chain_length " << shared_constraintp->mChainLength << LL_ENDL;
-	LL_DEBUGS("BVH") << "  constraint_type " << (S32)shared_constraintp->mConstraintType << LL_ENDL;
-	LL_DEBUGS("BVH") << "  source_volume " << source_volume << LL_ENDL;
-	LL_DEBUGS("BVH") << "  source_offset " << shared_constraintp->mSourceConstraintOffset << LL_ENDL;
-	LL_DEBUGS("BVH") << "  target_volume " << target_volume << LL_ENDL;
-	LL_DEBUGS("BVH") << "  target_offset " << shared_constraintp->mTargetConstraintOffset << LL_ENDL;
-	LL_DEBUGS("BVH") << "  target_dir " << shared_constraintp->mTargetConstraintDir << LL_ENDL;
-	LL_DEBUGS("BVH") << "  ease_in_start " << shared_constraintp->mEaseInStartTime << LL_ENDL;
-	LL_DEBUGS("BVH") << "  ease_in_stop " << shared_constraintp->mEaseInStopTime << LL_ENDL;
-	LL_DEBUGS("BVH") << "  ease_out_start " << shared_constraintp->mEaseOutStartTime << LL_ENDL;
-	LL_DEBUGS("BVH") << "  ease_out_stop " << shared_constraintp->mEaseOutStopTime << LL_ENDL;*/
 
 	setupPose();
 
@@ -2030,7 +1995,7 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 {
 	BOOL success = TRUE;
 
-	// _LL_DEBUGS("BVH") << "serializing" << LL_ENDL;
+	LL_DEBUGS("BVH") << "serializing" << LL_ENDL;
 
 	success &= dp.packU16(KEYFRAME_MOTION_VERSION, "version");
 	success &= dp.packU16(KEYFRAME_MOTION_SUBVERSION, "sub_version");
@@ -2139,17 +2104,17 @@ BOOL LLKeyframeMotion::serialize(LLDataPacker& dp) const
 		success &= dp.packF32(shared_constraintp->mEaseOutStartTime, "ease_out_start");
 		success &= dp.packF32(shared_constraintp->mEaseOutStopTime, "ease_out_stop");
 
-        // _LL_DEBUGS("BVH") << "  chain_length " << shared_constraintp->mChainLength << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  constraint_type " << (S32)shared_constraintp->mConstraintType << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  source_volume " << source_volume << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  source_offset " << shared_constraintp->mSourceConstraintOffset << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  target_volume " << target_volume << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  target_offset " << shared_constraintp->mTargetConstraintOffset << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  target_dir " << shared_constraintp->mTargetConstraintDir << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  ease_in_start " << shared_constraintp->mEaseInStartTime << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  ease_in_stop " << shared_constraintp->mEaseInStopTime << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  ease_out_start " << shared_constraintp->mEaseOutStartTime << LL_ENDL;
-        // _LL_DEBUGS("BVH") << "  ease_out_stop " << shared_constraintp->mEaseOutStopTime << LL_ENDL;
+        LL_DEBUGS("BVH") << "  chain_length " << shared_constraintp->mChainLength << LL_ENDL;
+        LL_DEBUGS("BVH") << "  constraint_type " << (S32)shared_constraintp->mConstraintType << LL_ENDL;
+        LL_DEBUGS("BVH") << "  source_volume " << source_volume << LL_ENDL;
+        LL_DEBUGS("BVH") << "  source_offset " << shared_constraintp->mSourceConstraintOffset << LL_ENDL;
+        LL_DEBUGS("BVH") << "  target_volume " << target_volume << LL_ENDL;
+        LL_DEBUGS("BVH") << "  target_offset " << shared_constraintp->mTargetConstraintOffset << LL_ENDL;
+        LL_DEBUGS("BVH") << "  target_dir " << shared_constraintp->mTargetConstraintDir << LL_ENDL;
+        LL_DEBUGS("BVH") << "  ease_in_start " << shared_constraintp->mEaseInStartTime << LL_ENDL;
+        LL_DEBUGS("BVH") << "  ease_in_stop " << shared_constraintp->mEaseInStopTime << LL_ENDL;
+        LL_DEBUGS("BVH") << "  ease_out_start " << shared_constraintp->mEaseOutStartTime << LL_ENDL;
+        LL_DEBUGS("BVH") << "  ease_out_stop " << shared_constraintp->mEaseOutStopTime << LL_ENDL;
 	}
 
 	return success;
@@ -2217,7 +2182,7 @@ bool LLKeyframeMotion::dumpToFile(const std::string& name, bool from_upload)
         S32 file_size = getFileSize();
         U8* buffer = new U8[file_size];
 
-        // _LL_DEBUGS("BVH") << "Dumping " << outfilename << LL_ENDL;
+        LL_DEBUGS("BVH") << "Dumping " << outfilename << LL_ENDL;
         LLDataPackerBinaryBuffer dp(buffer, file_size);
         if (serialize(dp))
         {
@@ -2427,7 +2392,7 @@ void LLKeyframeMotion::onLoadComplete(const LLUUID& asset_uuid,
 			U8* buffer = new U8[size];
 			file.read((U8*)buffer, size);	/*Flawfinder: ignore*/
 
-			// _LL_DEBUGS("Animation") << "Loading keyframe data for: " << motionp->getName() << ":" << motionp->getID() << " (" << size << " bytes)" << LL_ENDL;
+			LL_DEBUGS("Animation") << "Loading keyframe data for: " << motionp->getName() << ":" << motionp->getID() << " (" << size << " bytes)" << LL_ENDL;
 			
 			LLDataPackerBinaryBuffer dp(buffer, size);
 			if (motionp->deserialize(dp, asset_uuid))

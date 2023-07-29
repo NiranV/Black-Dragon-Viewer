@@ -60,7 +60,7 @@ bool get_required_S32(const LLSD& sd, const LLSD::String& key, S32& value)
 
 bool LLAgentBenefits::init(const LLSD& benefits_sd)
 {
-	// _LL_DEBUGS("Benefits") << "initializing benefits from " << benefits_sd << LL_ENDL;
+	LL_DEBUGS("Benefits") << "initializing benefits from " << benefits_sd << LL_ENDL;
 
 	if (!get_required_S32(benefits_sd, "animated_object_limit", m_animated_object_limit))
 	{

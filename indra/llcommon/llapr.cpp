@@ -66,7 +66,7 @@ void ll_cleanup_apr()
 {
 	gAPRInitialized = false;
 
-	//LL_DEBUGS("APR") << "Cleaning up APR" << LL_ENDL;
+	LL_DEBUGS("APR") << "Cleaning up APR" << LL_ENDL;
 
 	if (gAPRPoolp)
 	{

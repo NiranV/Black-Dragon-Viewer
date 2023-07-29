@@ -182,10 +182,10 @@ void LLTransferTargetVFile::completionCallback(const LLTSCode status)
 			}
 		}
 		err_code = LL_ERR_NOERR;
-		/*// _LL_DEBUGS() << "LLTransferTargetVFile::completionCallback for "
+		LL_DEBUGS() << "LLTransferTargetVFile::completionCallback for "
 			 << mParams.getAssetID() << ","
 			 << LLAssetType::lookup(mParams.getAssetType())
-			 << " with temp id " << mTempID << LL_ENDL;*/
+			 << " with temp id " << mTempID << LL_ENDL;
 		break;
 	  case LLTS_ERROR:
 	  case LLTS_ABORT:

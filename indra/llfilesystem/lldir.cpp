@@ -223,7 +223,7 @@ U32 LLDir::deleteDirAndContents(const std::string& dir_name)
 		  }
 	   }
 	}
-	catch (const boost::filesystem::filesystem_error &er)
+	catch (boost::filesystem::filesystem_error &er)
 	{ 
 		LL_WARNS() << "Failed to delete " << dir_name << " with error " << er.code().message() << LL_ENDL;
 	} 
@@ -310,7 +310,7 @@ const std::string &LLDir::getLindenUserDir() const
 {
 	if (mLindenUserDir.empty())
 	{
-		// _LL_DEBUGS() << "getLindenUserDir() called early, we don't have the user name yet - returning empty string to caller" << LL_ENDL;
+		LL_DEBUGS() << "getLindenUserDir() called early, we don't have the user name yet - returning empty string to caller" << LL_ENDL;
 	}
 
 	return mLindenUserDir;
@@ -580,10 +580,10 @@ std::string LLDir::getExpandedFilename(ELLPath location, const std::string& subd
 			// which to build this string), then intentionally return a blank
 			// string to the caller and skip the below warning about a blank
 			// prefix.
-			/*// _LL_DEBUGS("LLDir") << "getLindenUserDir() not yet set: "
+			LL_DEBUGS("LLDir") << "getLindenUserDir() not yet set: "
 							   << ELLPathToString(location)
 							   << ", '" << subdir1 << "', '" << subdir2 << "', '" << in_filename
-							   << "' => ''" << LL_ENDL;*/
+							   << "' => ''" << LL_ENDL;
 			return std::string();
 		}
 		break;
@@ -598,7 +598,7 @@ std::string LLDir::getExpandedFilename(ELLPath location, const std::string& subd
 		{
 			// potentially directory was not set yet
 			// intentionally return a blank string to the caller
-			// _LL_DEBUGS("LLDir") << "Conversation log directory is not yet set" << LL_ENDL;
+			LL_DEBUGS("LLDir") << "Conversation log directory is not yet set" << LL_ENDL;
 			return std::string();
 		}
 		break;
@@ -710,9 +710,9 @@ std::string LLDir::getExpandedFilename(ELLPath location, const std::string& subd
 	expanded_filename += mDirDelimiter;
 	expanded_filename += in_filename;
 
-	/*// _LL_DEBUGS("LLDir") << ELLPathToString(location)
+	LL_DEBUGS("LLDir") << ELLPathToString(location)
 					   << ", '" << subdir1 << "', '" << subdir2 << "', '" << in_filename
-					   << "' => '" << expanded_filename << "'" << LL_ENDL;*/
+					   << "' => '" << expanded_filename << "'" << LL_ENDL;
 	return expanded_filename;
 }
 
@@ -825,10 +825,10 @@ std::vector<std::string> LLDir::findSkinnedFilenames(const std::string& subdir,
 		("textures")                // textures not localized
 	;
 
-	/*// _LL_DEBUGS("LLDir") << "subdir '" << subdir << "', filename '" << filename
+	LL_DEBUGS("LLDir") << "subdir '" << subdir << "', filename '" << filename
 					   << "', constraint "
 					   << ((constraint == CURRENT_SKIN)? "CURRENT_SKIN" : "ALL_SKINS")
-					   << LL_ENDL;*/
+					   << LL_ENDL;
 
 	// Build results vector.
 	std::vector<std::string> results;
@@ -950,14 +950,14 @@ std::vector<std::string> LLDir::findSkinnedFilenames(const std::string& subdir,
 		}
 	}
 
-	/*// _LL_DEBUGS("LLDir") << empty;
+	LL_DEBUGS("LLDir") << empty;
 	const char* comma = "";
 	BOOST_FOREACH(std::string path, results)
 	{
 		LL_CONT << comma << "'" << path << "'";
 		comma = ", ";
 	}
-	LL_CONT << LL_ENDL;*/
+	LL_CONT << LL_ENDL;
 
 	return results;
 }
@@ -1060,8 +1060,8 @@ void LLDir::setPerAccountChatLogsDir(const std::string &username)
 
 void LLDir::setSkinFolder(const std::string &skin_folder, const std::string& language)
 {
-	/*// _LL_DEBUGS("LLDir") << "Setting skin '" << skin_folder << "', language '" << language << "'"
-					   << LL_ENDL;*/
+	LL_DEBUGS("LLDir") << "Setting skin '" << skin_folder << "', language '" << language << "'"
+					   << LL_ENDL;
 	mSkinName = skin_folder;
 	mLanguage = language;
 
@@ -1098,7 +1098,7 @@ void LLDir::addSearchSkinDir(const std::string& skindir)
 {
 	if (std::find(mSearchSkinDirs.begin(), mSearchSkinDirs.end(), skindir) == mSearchSkinDirs.end())
 	{
-		// _LL_DEBUGS("LLDir") << "search skin: '" << skindir << "'" << LL_ENDL;
+		LL_DEBUGS("LLDir") << "search skin: '" << skindir << "'" << LL_ENDL;
 		mSearchSkinDirs.push_back(skindir);
 	}
 }

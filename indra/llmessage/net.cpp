@@ -222,7 +222,7 @@ S32 start_net(S32& socket_out, int& nPort)
 	stLclAddr.sin_port        = htons(nPort);
 
 	S32 attempt_port = nPort;
-	// _LL_DEBUGS("AppInit") << "attempting to connect on port " << attempt_port << LL_ENDL;
+	LL_DEBUGS("AppInit") << "attempting to connect on port " << attempt_port << LL_ENDL;
 	nRet = bind(hSocket, (struct sockaddr*) &stLclAddr, sizeof(stLclAddr));
 
 	if (nRet == SOCKET_ERROR)
@@ -236,7 +236,7 @@ S32 start_net(S32& socket_out, int& nPort)
 				attempt_port++)
 			{
 				stLclAddr.sin_port = htons(attempt_port);
-				// _LL_DEBUGS("AppInit") << "trying port " << attempt_port << LL_ENDL;
+				LL_DEBUGS("AppInit") << "trying port " << attempt_port << LL_ENDL;
 				nRet = bind(hSocket, (struct sockaddr*) &stLclAddr, sizeof(stLclAddr));
 
 				if (!(nRet == SOCKET_ERROR && 
@@ -295,8 +295,8 @@ S32 start_net(S32& socket_out, int& nPort)
 	getsockopt(hSocket, SOL_SOCKET, SO_RCVBUF, (char *)&rec_size, &buff_size);
 	getsockopt(hSocket, SOL_SOCKET, SO_SNDBUF, (char *)&snd_size, &buff_size);
 
-	// _LL_DEBUGS("AppInit") << "startNet - receive buffer size : " << rec_size << LL_ENDL;
-	// _LL_DEBUGS("AppInit") << "startNet - send buffer size    : " << snd_size << LL_ENDL;
+	LL_DEBUGS("AppInit") << "startNet - receive buffer size : " << rec_size << LL_ENDL;
+	LL_DEBUGS("AppInit") << "startNet - send buffer size    : " << snd_size << LL_ENDL;
 
 	//  Setup a destination address
 	stDstAddr.sin_family =      AF_INET;

@@ -391,7 +391,7 @@ void LLSDMessageBuilder::copyFromMessageData(const LLMsgData& data)
 void LLSDMessageBuilder::copyFromLLSD(const LLSD& msg)
 {
 	mCurrentMessage = msg;
-	// _LL_DEBUGS() << LLSDNotationStreamer(mCurrentMessage) << LL_ENDL;
+	LL_DEBUGS() << LLSDNotationStreamer(mCurrentMessage) << LL_ENDL;
 }
 
 const LLSD& LLSDMessageBuilder::getMessage() const

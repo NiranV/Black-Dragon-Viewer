@@ -289,11 +289,6 @@ LLVOVolume::~LLVOVolume()
 	}
 }
 
-LLVOVolume* LLVOVolume::asVolume()
-{
-	return this;
-}
-
 void LLVOVolume::markDead()
 {
 	if (!mDead)
@@ -973,10 +968,6 @@ void LLVOVolume::updateTextureVirtualSize(bool forced)
 		setDebugText(llformat("%.0f:%.0f", (F32)sqrt(min_vsize), (F32)sqrt(max_vsize)));
 	}
 	else if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_PRIORITY))
-	{
-		setDebugText(llformat("%.0f:%.0f", (F32)sqrt(min_vsize), (F32)sqrt(max_vsize)));
-	}
- 	else if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_TEXTURE_PRIORITY))
  	{
  		//setDebugText(llformat("%.0f:%.0f", (F32) sqrt(min_vsize),(F32) sqrt(max_vsize)));
         setDebugText(debug_text.str());
@@ -1159,6 +1150,7 @@ BOOL LLVOVolume::setVolume(const LLVolumeParams &params_in, const S32 detail, bo
 
 		if (isSculpted())
 		{
+			updateSculptTexture();
 			// if it's a mesh
 			if ((volume_params.getSculptType() & LL_SCULPT_TYPE_MASK) == LL_SCULPT_TYPE_MESH)
 			{
@@ -3844,6 +3836,8 @@ bool LLVOVolume::isAnimatedObject() const
 // virtual
 void LLVOVolume::onReparent(LLViewerObject *old_parent, LLViewerObject *new_parent)
 {
+    LLVOVolume *old_volp = dynamic_cast<LLVOVolume*>(old_parent);
+
 	if (new_parent && !new_parent->isAvatar())
 	{
 		if (mControlAvatar.notNull())
@@ -3855,8 +3849,6 @@ void LLVOVolume::onReparent(LLViewerObject *old_parent, LLViewerObject *new_pare
 			av->markForDeath();
 		}
 	}
-
-	LLVOVolume *old_volp = old_parent ? old_parent->asVolume() : nullptr;
 	if (old_volp && old_volp->isAnimatedObject())
 	{
 		if (old_volp->getControlAvatar())
@@ -4065,7 +4057,7 @@ U32 LLVOVolume::getOriginalRenderCost(texture_cost_t &textures) const
 
 	// Get access to params we'll need at various points.  
 	// Skip if this is object doesn't have a volume (e.g. is an avatar).
-	if (isMeshFast() && getVolume())
+    if (getVolume() == NULL)
     {
         return 0;
     }

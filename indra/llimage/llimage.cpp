@@ -1963,7 +1963,7 @@ bool LLImageRaw::createFromFile(const std::string &filename, bool j2c_lowest_mip
 //---------------------------------------------------------------------------
 
 //static
-S64 LLImageFormatted::sGlobalFormattedMemory = 0;
+S32 LLImageFormatted::sGlobalFormattedMemory = 0;
 
 LLImageFormatted::LLImageFormatted(S8 codec)
 	: LLImageBase(),
@@ -2256,7 +2256,6 @@ bool LLImageFormatted::save(const std::string &filename)
 	if (!outfile.getFileHandle())
 	{
 		setLastError("Unable to open file for writing", filename);
-		LL_WARNS() << "Couldn't open file for writing." << LL_ENDL;
 		return false;
 	}
 	

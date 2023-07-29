@@ -70,7 +70,6 @@ set(llui_SOURCE_FILES
     llscrolllistcolumn.cpp
     llscrolllistctrl.cpp
     llscrolllistitem.cpp
-    llsearchablecontrol.cpp
     llsearcheditor.cpp
     llslider.cpp
     llsliderctrl.cpp

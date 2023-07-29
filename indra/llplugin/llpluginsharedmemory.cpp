@@ -266,7 +266,7 @@ bool LLPluginSharedMemory::map(void)
 		return false;
 	}
 	
-	// _LL_DEBUGS("Plugin") << "memory mapped at " << mMappedAddress << LL_ENDL;
+	LL_DEBUGS("Plugin") << "memory mapped at " << mMappedAddress << LL_ENDL;
 
 	return true;
 }
@@ -275,7 +275,7 @@ bool LLPluginSharedMemory::unmap(void)
 {
 	if(mMappedAddress != NULL)
 	{
-		// _LL_DEBUGS("Plugin") << "calling munmap(" << mMappedAddress << ", " << mSize << ")" << LL_ENDL;
+		LL_DEBUGS("Plugin") << "calling munmap(" << mMappedAddress << ", " << mSize << ")" << LL_ENDL;
 		if(::munmap(mMappedAddress, mSize) == -1)	
 		{
 			// TODO: Is this a fatal error?  I think not...
@@ -291,7 +291,7 @@ bool LLPluginSharedMemory::close(void)
 {
 	if(mImpl->mSharedMemoryFD != -1)
 	{
-		// _LL_DEBUGS("Plugin") << "calling close(" << mImpl->mSharedMemoryFD << ")" << LL_ENDL;
+		LL_DEBUGS("Plugin") << "calling close(" << mImpl->mSharedMemoryFD << ")" << LL_ENDL;
 		if(::close(mImpl->mSharedMemoryFD) == -1)
 		{
 			// TODO: Is this a fatal error?  I think not...
@@ -405,7 +405,7 @@ bool LLPluginSharedMemory::map(void)
 		return false;
 	}
 	
-	// _LL_DEBUGS("Plugin") << "memory mapped at " << mMappedAddress << LL_ENDL;
+	LL_DEBUGS("Plugin") << "memory mapped at " << mMappedAddress << LL_ENDL;
 
 	return true;
 }

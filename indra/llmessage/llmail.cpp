@@ -346,11 +346,11 @@ bool LLMail::send(
 			<< "when sending messages larger than " << LL_MAX_KNOWN_GOOD_MAIL_SIZE
 			<< " bytes. The next log about success is potentially a lie." << LL_ENDL;
 	}
-	/*// _LL_DEBUGS() << "send_mail success: "
+	LL_DEBUGS() << "send_mail success: "
 		<< "to=<" << to_address
 		<< ">, from=<" << from_address << ">"
 		<< ", bytes=" << original_size
-		<< ", sent=" << send_size << LL_ENDL;*/
+		<< ", sent=" << send_size << LL_ENDL;
 
 #if LL_LOG_ENTIRE_MAIL_MESSAGE_ON_SEND
 	LL_INFOS() << rfc2822_msg.str() << LL_ENDL;

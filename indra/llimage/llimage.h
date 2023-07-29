@@ -358,7 +358,7 @@ protected:
 	S8 mLevels;			// Number of resolution levels in that image. Min is 1. 0 means unknown.
 	
 public:
-	static S64 sGlobalFormattedMemory;
+	static S32 sGlobalFormattedMemory;
 };
 
 #endif

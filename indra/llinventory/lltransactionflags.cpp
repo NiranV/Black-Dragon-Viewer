@@ -92,11 +92,11 @@ std::string build_transfer_message_to_source(
 	S32 transaction_type,
 	const std::string& description)
 {
-	/*// _LL_DEBUGS() << "build_transfer_message_to_source: " << amount << " "
+	LL_DEBUGS() << "build_transfer_message_to_source: " << amount << " "
 		<< source_id << " " << dest_id << " " << dest_name << " "
 		<< transaction_type << " "
 		<< (description.empty() ? "(no desc)" : description)
-		<< LL_ENDL;*/
+		<< LL_ENDL;
 	if(source_id.isNull())
 	{
 		return description;
@@ -144,10 +144,10 @@ std::string build_transfer_message_to_destination(
 	S32 transaction_type,
 	const std::string& description)
 {
-	/*// _LL_DEBUGS() << "build_transfer_message_to_dest: " << amount << " "
+	LL_DEBUGS() << "build_transfer_message_to_dest: " << amount << " "
 		<< dest_id << " " << source_id << " " << source_name << " "
 		<< transaction_type << " " << (description.empty() ? "(no desc)" : description)
-		<< LL_ENDL;*/
+		<< LL_ENDL;
 	if(0 == amount)
 	{
 		return std::string();

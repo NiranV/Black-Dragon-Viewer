@@ -35,8 +35,7 @@
 // Run on MAIN thread
 
 LLWorkerThread::LLWorkerThread(const std::string& name, bool threaded, bool should_pause) :
-	LLQueuedThread(name, threaded, should_pause),
-	mDeleteListSize(0)
+	LLQueuedThread(name, threaded, should_pause)
 {
 	mDeleteMutex = new LLMutex();
 
@@ -78,7 +77,6 @@ void LLWorkerThread::clearDeleteList()
 			delete worker;
 		}
 		mDeleteList.clear() ;
-		mDeleteListSize = mDeleteList.size();
 		mDeleteMutex->unlock() ;
 	}
 }
@@ -90,11 +88,13 @@ size_t LLWorkerThread::update(F32 max_time_ms)
 	// Delete scheduled workers
 	std::vector<LLWorkerClass*> delete_list;
 	std::vector<LLWorkerClass*> abort_list;
-	if (mDeleteListSize)
+	mDeleteMutex->lock();
+	for (delete_list_t::iterator iter = mDeleteList.begin();
+		 iter != mDeleteList.end(); )
 	{
-		mDeleteMutex->lock();
-		for (delete_list_t::iterator iter = mDeleteList.begin();
-			 iter != mDeleteList.end(); )
+		delete_list_t::iterator curiter = iter++;
+		LLWorkerClass* worker = *curiter;
+		if (worker->deleteOK())
 		{
 			if (worker->getFlags(LLWorkerClass::WCF_WORK_FINISHED))
 			{
@@ -104,20 +104,11 @@ size_t LLWorkerThread::update(F32 max_time_ms)
 			}
 			else if (!worker->getFlags(LLWorkerClass::WCF_ABORT_REQUESTED))
 			{
-				if (worker->getFlags(LLWorkerClass::WCF_WORK_FINISHED))
-				{
-					delete_list.push_back(worker);
-					mDeleteList.erase(curiter);
-				}
-				else if (!worker->getFlags(LLWorkerClass::WCF_ABORT_REQUESTED))
-				{
-					abort_list.push_back(worker);
-				}
+				abort_list.push_back(worker);
 			}
 		}
-		mDeleteListSize = mDeleteList.size();
-		mDeleteMutex->unlock();
 	}
+	mDeleteMutex->unlock();	
 	// abort and delete after releasing mutex
 	for (LLWorkerClass* worker : abort_list)
 	{
@@ -162,7 +153,6 @@ void LLWorkerThread::deleteWorker(LLWorkerClass* workerclass)
 {
 	mDeleteMutex->lock();
 	mDeleteList.push_back(workerclass);
-	mDeleteListSize = mDeleteList.size();
 	mDeleteMutex->unlock();
 }
 

@@ -136,7 +136,7 @@ void showDetails(const LLJointRiggingInfoTab& src, const std::string& str)
             }
        }
     }
-    // _LL_DEBUGS("RigSpammish") << "details: " << str << " has " << count_rigged << " rigged joints, of which " << count_box << " are non-empty" << LL_ENDL;
+    LL_DEBUGS("RigSpammish") << "details: " << str << " has " << count_rigged << " rigged joints, of which " << count_box << " are non-empty" << LL_ENDL;
 }
 
 void LLJointRiggingInfoTab::merge(const LLJointRiggingInfoTab& src)

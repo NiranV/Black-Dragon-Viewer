@@ -448,7 +448,7 @@ BOOL LLButton::handleMouseDown(S32 x, S32 y, MASK mask)
 
 		if (!mFunctionName.empty())
 		{
-			//LL_DEBUGS("UIUsage") << "calling mouse down function " << mFunctionName << LL_ENDL;
+			LL_DEBUGS("UIUsage") << "calling mouse down function " << mFunctionName << LL_ENDL;
 			LLUIUsage::instance().logCommand(mFunctionName);
 			LLUIUsage::instance().logControl(getPathname());
 		}

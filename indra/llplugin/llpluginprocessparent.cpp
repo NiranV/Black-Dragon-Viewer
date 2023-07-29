@@ -130,7 +130,7 @@ LLPluginProcessParent::LLPluginProcessParent(LLPluginProcessParentOwner *owner):
 
 LLPluginProcessParent::~LLPluginProcessParent()
 {
-	// _LL_DEBUGS("Plugin") << "destructor" << LL_ENDL;
+	LL_DEBUGS("Plugin") << "destructor" << LL_ENDL;
     if (pProcessCreationThread)
     {
         if (!pProcessCreationThread->isStopped())
@@ -230,7 +230,7 @@ void LLPluginProcessParent::requestShutdown()
     // After requestShutdown has been called our previous owner will no longer call 
     // our idle() method.  Tie into the event loop here to do that until we are good
     // and finished.
-    // _LL_DEBUGS("LLPluginProcessParent") << "listening on \"mainloop\"" << LL_ENDL;
+    LL_DEBUGS("LLPluginProcessParent") << "listening on \"mainloop\"" << LL_ENDL;
     mPolling = LLEventPumps::instance().obtain("mainloop")
         .listen(namestream.str(), boost::bind(&LLPluginProcessParent::pollTick, this));
 
@@ -504,7 +504,7 @@ void LLPluginProcessParent::idle(void)
 					}
 				}
 				
-				// _LL_DEBUGS("Plugin") << "Bound tcp socket to port: " << addr->port << LL_ENDL;
+				LL_DEBUGS("Plugin") << "Bound tcp socket to port: " << addr->port << LL_ENDL;
 
 				// Make the listen socket non-blocking
 				status = apr_socket_opt_set(mListenSocket->getSocket(), APR_SO_NONBLOCK, 1);
@@ -638,7 +638,7 @@ void LLPluginProcessParent::idle(void)
 			    break;
 
 			case STATE_HELLO:
-				// _LL_DEBUGS("Plugin") << "received hello message" << LL_ENDL;
+				LL_DEBUGS("Plugin") << "received hello message" << LL_ENDL;
 				
 				// Send the message to load the plugin
 				{
@@ -780,7 +780,7 @@ void LLPluginProcessParent::sendMessage(const LLPluginMessage &message)
 	}
 	
 	std::string buffer = message.generate();
-	// _LL_DEBUGS("Plugin") << "Sending: " << buffer << LL_ENDL;	
+	LL_DEBUGS("Plugin") << "Sending: " << buffer << LL_ENDL;	
 	writeMessageRaw(buffer);
 	
 	// Try to send message immediately.
@@ -832,7 +832,7 @@ void LLPluginProcessParent::dirtyPollSet()
 	
 	if(sReadThread)
 	{
-		// _LL_DEBUGS("PluginPoll") << "unpausing read thread " << LL_ENDL;
+		LL_DEBUGS("PluginPoll") << "unpausing read thread " << LL_ENDL;
 		sReadThread->unpause();
 	}
 }
@@ -849,7 +849,7 @@ void LLPluginProcessParent::updatePollset()
 
 	if(sPollSet)
 	{
-		// _LL_DEBUGS("PluginPoll") << "destroying pollset " << sPollSet << LL_ENDL;
+		LL_DEBUGS("PluginPoll") << "destroying pollset " << sPollSet << LL_ENDL;
 		// delete the existing pollset.
 		apr_pollset_destroy(sPollSet);
 		sPollSet = NULL;
@@ -885,7 +885,7 @@ void LLPluginProcessParent::updatePollset()
 			}
 			else
 			{
-				// _LL_DEBUGS("PluginPoll") << "created pollset " << sPollSet << LL_ENDL;
+				LL_DEBUGS("PluginPoll") << "created pollset " << sPollSet << LL_ENDL;
 				
 				// Pollset was created, add all instances to it.
 				for(iter = sInstances.begin(); iter != sInstances.end(); iter++)
@@ -991,11 +991,11 @@ void LLPluginProcessParent::poll(F64 timeout)
 		{
 			// This happens when one of the file descriptors in the pollset is destroyed, which happens whenever a plugin's socket is closed.
 			// The pollset has been or will be recreated, so just return.
-			// _LL_DEBUGS("PluginPoll") << "apr_pollset_poll returned EBADF" << LL_ENDL;
+			LL_DEBUGS("PluginPoll") << "apr_pollset_poll returned EBADF" << LL_ENDL;
 		}
 		else if(status != APR_SUCCESS)
 		{
-			LL_WARNS_ONCE("PluginPoll") << "apr_pollset_poll failed with status " << status << LL_ENDL;
+			LL_WARNS("PluginPoll") << "apr_pollset_poll failed with status " << status << LL_ENDL;
 		}
 	}
 
@@ -1032,7 +1032,7 @@ void LLPluginProcessParent::servicePoll()
 
 void LLPluginProcessParent::receiveMessageRaw(const std::string &message)
 {
-	// _LL_DEBUGS("Plugin") << "Received: " << message << LL_ENDL;
+	LL_DEBUGS("Plugin") << "Received: " << message << LL_ENDL;
 	
 	LLPluginMessage parsed;
 	if(LLSDParser::PARSE_FAILURE != parsed.parse(message))
@@ -1142,7 +1142,7 @@ void LLPluginProcessParent::receiveMessage(const LLPluginMessage &message)
 
 			mCPUUsage = message.getValueReal("cpu_usage");
 
-			// _LL_DEBUGS("Plugin") << "cpu usage reported as " << mCPUUsage << LL_ENDL;
+			LL_DEBUGS("Plugin") << "cpu usage reported as " << mCPUUsage << LL_ENDL;
 			
 		}
 		else if(message_name == "shm_add_response")
@@ -1268,7 +1268,7 @@ std::string LLPluginProcessParent::getPluginVersion(void)
 
 void LLPluginProcessParent::setState(EState state)
 {
-	// _LL_DEBUGS("Plugin") << "setting state to " << state << LL_ENDL;
+	LL_DEBUGS("Plugin") << "setting state to " << state << LL_ENDL;
 	mState = state; 
 };
 

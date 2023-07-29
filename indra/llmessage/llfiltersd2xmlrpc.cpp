@@ -522,7 +522,7 @@ LLIOPipe::EStatus stream_out(std::ostream& ostr, XMLRPC_VALUE value)
 		break;
 	}
 	case xmlrpc_type_boolean:
-		//// _LL_DEBUGS() << "stream_out() bool" << LL_ENDL;
+		//LL_DEBUGS() << "stream_out() bool" << LL_ENDL;
 		ostr << " " << (XMLRPC_GetValueBoolean(value) ? "true" : "false");
 		break;
 	case xmlrpc_type_datetime:
@@ -530,23 +530,23 @@ LLIOPipe::EStatus stream_out(std::ostream& ostr, XMLRPC_VALUE value)
 		break;
 	case xmlrpc_type_double:
 		ostr << " r" << XMLRPC_GetValueDouble(value);
-		//// _LL_DEBUGS() << "stream_out() double" << XMLRPC_GetValueDouble(value)
+		//LL_DEBUGS() << "stream_out() double" << XMLRPC_GetValueDouble(value)
 		//		 << LL_ENDL;
 		break;
 	case xmlrpc_type_int:
 		ostr << " i" << XMLRPC_GetValueInt(value);
-		//// _LL_DEBUGS() << "stream_out() integer:" << XMLRPC_GetValueInt(value)
+		//LL_DEBUGS() << "stream_out() integer:" << XMLRPC_GetValueInt(value)
 		//		 << LL_ENDL;
 		break;
 	case xmlrpc_type_string:
-		//// _LL_DEBUGS() << "stream_out() string: " << str << LL_ENDL;
+		//LL_DEBUGS() << "stream_out() string: " << str << LL_ENDL;
 		ostr << " s(" << XMLRPC_GetValueStringLen(value) << ")'"
 			<< XMLRPC_GetValueString(value) << "'";
 		break;
 	case xmlrpc_type_array: // vector
 	case xmlrpc_type_mixed: // vector
 	{
-		//// _LL_DEBUGS() << "stream_out() array" << LL_ENDL;
+		//LL_DEBUGS() << "stream_out() array" << LL_ENDL;
 		ostr << " [";
 		U32 needs_comma = 0;
 		XMLRPC_VALUE current = XMLRPC_VectorRewind(value);
@@ -561,7 +561,7 @@ LLIOPipe::EStatus stream_out(std::ostream& ostr, XMLRPC_VALUE value)
 	}
 	case xmlrpc_type_struct: // still vector
 	{
-		//// _LL_DEBUGS() << "stream_out() struct" << LL_ENDL;
+		//LL_DEBUGS() << "stream_out() struct" << LL_ENDL;
 		ostr << " {";
 		std::string name;
 		U32 needs_comma = 0;
@@ -619,7 +619,7 @@ LLIOPipe::EStatus LLFilterXMLRPCResponse2LLSD::process_impl(
 	buf[bytes] = '\0';
 	buffer->readAfter(channels.in(), NULL, (U8*)buf, bytes);
 
-	//// _LL_DEBUGS() << "xmlrpc response: " << buf << LL_ENDL;
+	//LL_DEBUGS() << "xmlrpc response: " << buf << LL_ENDL;
 
 	PUMP_DEBUG;
 	XMLRPC_REQUEST response = XMLRPC_REQUEST_FromXML(
@@ -702,7 +702,7 @@ LLIOPipe::EStatus LLFilterXMLRPCRequest2LLSD::process_impl(
 	buf[bytes] = '\0';
 	buffer->readAfter(channels.in(), NULL, (U8*)buf, bytes);
 
-	//// _LL_DEBUGS() << "xmlrpc request: " << buf << LL_ENDL;
+	//LL_DEBUGS() << "xmlrpc request: " << buf << LL_ENDL;
 	
 	// Check the value in the buffer. XMLRPC_REQUEST_FromXML will report a error code 4 if 
 	// values that are less than 0x20 are passed to it, except

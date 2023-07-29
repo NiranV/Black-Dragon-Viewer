@@ -117,10 +117,11 @@ public:
 	virtual ~LLQueuedThread();	
 	virtual void shutdown();
 	
-    LLQueuedThread(const LLQueuedThread&) = delete;
-    LLQueuedThread& operator=(const LLQueuedThread&) = delete;
-
 private:
+	// No copy constructor or copy assignment
+	LLQueuedThread(const LLQueuedThread&);
+	LLQueuedThread& operator=(const LLQueuedThread&);
+
 	virtual bool runCondition(void);
 	virtual void run(void);
 	virtual void startThread(void);
@@ -158,8 +159,8 @@ public:
 	bool check();
 	
 protected:
-	bool mThreaded;  // if false, run on main thread and do updates during update()
-	bool mStarted;  // required when mThreaded is false to call startThread() from update()
+	BOOL mThreaded;  // if false, run on main thread and do updates during update()
+	BOOL mStarted;  // required when mThreaded is false to call startThread() from update()
 	LLAtomicBool mIdleThread; // request queue is empty (or we are quitting) and the thread is idle
 	
 	//typedef std::set<QueuedRequest*, queued_request_less> request_queue_t;

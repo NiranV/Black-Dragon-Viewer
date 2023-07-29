@@ -2301,18 +2301,13 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 		
 	const U32 CHUNK = 0x4000;
 
-	std::unique_ptr<U8[]> in;
-	try
-	{
-		in = std::make_unique<U8[]>(size);
-	}
-	catch (const std::bad_alloc&)
+	U8 *in = new(std::nothrow) U8[size];
+	if (in == NULL)
 	{
 		LL_WARNS() << "Memory allocation failure." << LL_ENDL;
-		return nullptr;
+		return NULL;
 	}
-
-	is.read((char*) in.get(), size); 
+	is.read((char*) in, size); 
 
 	U8 out[CHUNK];
 		
@@ -2320,7 +2315,7 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 	strm.zfree = Z_NULL;
 	strm.opaque = Z_NULL;
 	strm.avail_in = size;
-	strm.next_in = in.get();
+	strm.next_in = in;
 
 	
 	S32 ret = inflateInit2(&strm,  windowBits | ENABLE_ZLIB_GZIP );
@@ -2333,7 +2328,8 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 		{
 			inflateEnd(&strm);
 			free(result);
-			return NULL;
+			delete [] in;
+			valid = false;
 		}
 		
 		switch (ret)
@@ -2344,8 +2340,9 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 		case Z_MEM_ERROR:
 			inflateEnd(&strm);
 			free(result);
+			delete [] in;
 			valid = false;
-			return NULL;
+			break;
 		}
 
 		U32 have = CHUNK-strm.avail_out;
@@ -2362,6 +2359,7 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 			{
 				free(result);
 			}
+			delete[] in;
 			valid = false;
 			return NULL;
 		}
@@ -2372,7 +2370,7 @@ U8* unzip_llsdNavMesh( bool& valid, size_t& outsize, std::istream& is, S32 size 
 	} while (ret == Z_OK);
 
 	inflateEnd(&strm);
-	in.reset();
+	delete [] in;
 
 	if (ret != Z_STREAM_END)
 	{

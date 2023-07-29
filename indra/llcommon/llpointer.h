@@ -46,11 +46,9 @@
 template <class Type> class LLPointer
 {
 public:
-	template<typename Subclass>
-	friend class LLPointer;
 
 	LLPointer() : 
-		mPointer(nullptr)
+		mPointer(NULL)
 	{
 	}
 
@@ -66,25 +64,12 @@ public:
 		ref();
 	}
 
-	LLPointer(LLPointer<Type>&& ptr)
-    {
-		mPointer = ptr.mPointer;
-		ptr.mPointer = nullptr;
-	}
-
 	// support conversion up the type hierarchy.  See Item 45 in Effective C++, 3rd Ed.
 	template<typename Subclass>
 	LLPointer(const LLPointer<Subclass>& ptr) : 
 		mPointer(ptr.get())
 	{
 		ref();
-	}
-
-	template<typename Subclass>
-	LLPointer(LLPointer<Subclass>&& ptr)
-	{
-		mPointer = ptr.get();
-		ptr.mPointer = nullptr;
 	}
 
 	~LLPointer()								
@@ -98,11 +83,11 @@ public:
 	const Type&	operator*() const				{ return *mPointer; }
 	Type&	operator*()							{ return *mPointer; }
 
-	operator BOOL()  const						{ return (mPointer != nullptr); }
-	operator bool()  const						{ return (mPointer != nullptr); }
-	bool operator!() const						{ return (mPointer == nullptr); }
-	bool isNull() const							{ return (mPointer == nullptr); }
-	bool notNull() const						{ return (mPointer != nullptr); }
+	operator BOOL()  const						{ return (mPointer != NULL); }
+	operator bool()  const						{ return (mPointer != NULL); }
+	bool operator!() const						{ return (mPointer == NULL); }
+	bool isNull() const							{ return (mPointer == NULL); }
+	bool notNull() const						{ return (mPointer != NULL); }
 
 	operator Type*()       const				{ return mPointer; }
 	bool operator !=(Type* ptr) const           { return (mPointer != ptr); 	}
@@ -123,15 +108,6 @@ public:
 		return *this; 
 	}
 
-	LLPointer<Type>& operator =(LLPointer<Type>&& ptr)
-    {
-		if (mPointer != ptr.mPointer)
-		{
-			LLPointer<Type>(std::move(ptr)).swap(*this);
-		}
-		return *this;
-	}
-
 	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
 	template<typename Subclass>
 	LLPointer<Type>& operator =(const LLPointer<Subclass>& ptr)  
@@ -139,35 +115,7 @@ public:
 		assign(ptr.get());
 		return *this; 
 	}
-
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	template<typename Subclass>
-	LLPointer<Type>& operator =(LLPointer<Subclass>&& ptr)
-	{
-		if (mPointer != ptr.get())
-		{
-			LLPointer<Type>(std::move(ptr)).swap(*this);
-		}
-		return *this;
-	}
 	
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	inline void swap(LLPointer<Type>& ptr)
-    {
-		Type* temp = mPointer;
-		mPointer = ptr.mPointer;
-		ptr.mPointer = temp;
-	}
-
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	template<typename Subclass>
-	inline void swap(LLPointer<Subclass>& ptr)
-	{
-		Type* temp = mPointer;
-		mPointer = ptr.mPointer;
-		ptr.mPointer = temp;
-	}
-
 	// Just exchange the pointers, which will not change the reference counts.
 	static void swap(LLPointer<Type>& a, LLPointer<Type>& b)
 	{
@@ -182,7 +130,7 @@ protected:
 	void unref();
 #else
 
-	inline void assign(const LLPointer<Type>& ptr)
+	void assign(const LLPointer<Type>& ptr)
 	{
 		if( mPointer != ptr.mPointer )
 		{
@@ -191,8 +139,7 @@ protected:
 			ref();
 		}
 	}
-
-	inline void ref()
+	void ref()                             
 	{ 
 		if (mPointer)
 		{
@@ -200,14 +147,14 @@ protected:
 		}
 	}
 
-	inline void unref()
+	void unref()
 	{
 		if (mPointer)
 		{
 			Type *temp = mPointer;
-			mPointer = nullptr;
+			mPointer = NULL;
 			temp->unref();
-			if (mPointer != nullptr)
+			if (mPointer != NULL)
 			{
 				LL_WARNS() << "Unreference did assignment to non-NULL because of destructor" << LL_ENDL;
 				unref();
@@ -222,11 +169,8 @@ protected:
 template <class Type> class LLConstPointer
 {
 public:
-	template<typename Subclass>
-	friend class LLConstPointer;
-
 	LLConstPointer() : 
-		mPointer(nullptr)
+		mPointer(NULL)
 	{
 	}
 
@@ -241,12 +185,6 @@ public:
 	{
 		ref();
 	}
-	
-	LLConstPointer(LLConstPointer<Type>&& ptr)
-    {
-		mPointer = ptr.mPointer;
-		ptr.mPointer = nullptr;
-	}
 
 	// support conversion up the type hierarchy.  See Item 45 in Effective C++, 3rd Ed.
 	template<typename Subclass>
@@ -254,13 +192,6 @@ public:
 		mPointer(ptr.get())
 	{
 		ref();
-	}
-	
-	template<typename Subclass>
-	LLConstPointer(LLConstPointer<Subclass>&& ptr)
-	{
-		mPointer = ptr.get();
-		ptr.mPointer = nullptr;
 	}
 
 	~LLConstPointer()
@@ -272,11 +203,11 @@ public:
 	const Type*	operator->() const				{ return mPointer; }
 	const Type&	operator*() const				{ return *mPointer; }
 
-	operator BOOL()  const						{ return (mPointer != nullptr); }
-	operator bool()  const						{ return (mPointer != nullptr); }
-	bool operator!() const						{ return (mPointer == nullptr); }
-	bool isNull() const							{ return (mPointer == nullptr); }
-	bool notNull() const						{ return (mPointer != nullptr); }
+	operator BOOL()  const						{ return (mPointer != NULL); }
+	operator bool()  const						{ return (mPointer != NULL); }
+	bool operator!() const						{ return (mPointer == NULL); }
+	bool isNull() const							{ return (mPointer == NULL); }
+	bool notNull() const						{ return (mPointer != NULL); }
 
 	operator const Type*()       const			{ return mPointer; }
 	bool operator !=(const Type* ptr) const     { return (mPointer != ptr); 	}
@@ -308,15 +239,6 @@ public:
 		return *this; 
 	}
 
-	LLConstPointer<Type>& operator =(LLConstPointer<Type>&& ptr)
-    {
-		if (mPointer != ptr.mPointer)
-		{
-			LLConstPointer<Type>(std::move(ptr)).swap(*this);
-		}
-		return *this;
-	}
-
 	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
 	template<typename Subclass>
 	LLConstPointer<Type>& operator =(const LLConstPointer<Subclass>& ptr)  
@@ -330,34 +252,6 @@ public:
 		return *this; 
 	}
 	
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	template<typename Subclass>
-	LLConstPointer<Type>& operator =(LLConstPointer<Subclass>&& ptr)
-	{
-		if (mPointer != ptr.get())
-		{
-			LLConstPointer<Type>(std::move(ptr)).swap(*this);
-		}
-		return *this;
-	}
-	
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	inline void swap(LLConstPointer<Type>& ptr)
-    {
-		Type* temp = mPointer;
-		mPointer = ptr.mPointer;
-		ptr.mPointer = temp;
-	}
-
-	// support assignment up the type hierarchy. See Item 45 in Effective C++, 3rd Ed.
-	template<typename Subclass>
-	inline void swap(LLConstPointer<Subclass>& ptr)
-	{
-		Type* temp = mPointer;
-		mPointer = ptr.mPointer;
-		ptr.mPointer = temp;
-	}
-
 	// Just exchange the pointers, which will not change the reference counts.
 	static void swap(LLConstPointer<Type>& a, LLConstPointer<Type>& b)
 	{
@@ -371,7 +265,7 @@ protected:
 	void ref();                             
 	void unref();
 #else
-	inline void ref()                             
+	void ref()                             
 	{ 
 		if (mPointer)
 		{
@@ -379,14 +273,14 @@ protected:
 		}
 	}
 
-	inline void unref()
+	void unref()
 	{
 		if (mPointer)
 		{
 			const Type *tempp = mPointer;
-			mPointer = nullptr;
+			mPointer = NULL;
 			tempp->unref();
-			if (mPointer != nullptr)
+			if (mPointer != NULL)
 			{
 				LL_WARNS() << "Unreference did assignment to non-NULL because of destructor" << LL_ENDL;
 				unref();
@@ -418,7 +312,7 @@ public:
 	:	LLPointer<Type>(ptr),
 		mStayUnique(false)
 	{
-		if (ptr.mStayUnique)
+		if (ptr.mForceUnique)
 		{
 			makeUnique();
 		}

@@ -465,8 +465,8 @@ LLBoundListener LLEventLogProxy::listen_impl(const std::string& name,
                                              const NameList& after,
                                              const NameList& before)
 {
-    /*// _LL_DEBUGS("LogProxy") << "LLEventLogProxy('" << getName() << "').listen('"
-                          << name << "')" << LL_ENDL;*/
+    LL_DEBUGS("LogProxy") << "LLEventLogProxy('" << getName() << "').listen('"
+                          << name << "')" << LL_ENDL;
     return mPump.listen(name,
                         [this, name, target](const LLSD& event)->bool
                         { return listener(name, target, event); },

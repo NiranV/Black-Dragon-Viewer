@@ -69,7 +69,7 @@ void pack_instant_message(
 	const U8* binary_bucket,
 	S32 binary_bucket_size)
 {
-	// _LL_DEBUGS() << "pack_instant_message()" << LL_ENDL;
+	LL_DEBUGS() << "pack_instant_message()" << LL_ENDL;
 	msg->newMessageFast(_PREHASH_ImprovedInstantMessage);
 	pack_instant_message_block(
 		msg,

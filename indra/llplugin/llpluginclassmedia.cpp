@@ -69,9 +69,9 @@ LLPluginClassMedia::~LLPluginClassMedia()
 
 bool LLPluginClassMedia::init(const std::string &launcher_filename, const std::string &plugin_dir, const std::string &plugin_filename, bool debug)
 {
-	// _LL_DEBUGS("Plugin") << "launcher: " << launcher_filename << LL_ENDL;
-	// _LL_DEBUGS("Plugin") << "dir: " << plugin_dir << LL_ENDL;
-	// _LL_DEBUGS("Plugin") << "plugin: " << plugin_filename << LL_ENDL;
+	LL_DEBUGS("Plugin") << "launcher: " << launcher_filename << LL_ENDL;
+	LL_DEBUGS("Plugin") << "dir: " << plugin_dir << LL_ENDL;
+	LL_DEBUGS("Plugin") << "plugin: " << plugin_filename << LL_ENDL;
 
 	mPlugin = LLPluginProcessParent::create(this);
 	mPlugin->setSleepTime(mSleepTime);
@@ -268,7 +268,7 @@ void LLPluginClassMedia::idle(void)
 			message.setValueReal("background_a", mBackgroundColor.mV[VW]);
 			mPlugin->sendMessage(message);	// DO NOT just use sendMessage() here -- we want this to jump ahead of the queue.
 
-			// _LL_DEBUGS("Plugin") << "Sending size_change" << LL_ENDL;
+			LL_DEBUGS("Plugin") << "Sending size_change" << LL_ENDL;
 		}
 	}
 
@@ -843,7 +843,7 @@ void LLPluginClassMedia::setPriority(EPriority priority)
 			mPlugin->setSleepTime(mSleepTime);
 		}
 
-		// _LL_DEBUGS("PluginPriority") << this << ": setting priority to " << priority_string << LL_ENDL;
+		LL_DEBUGS("PluginPriority") << this << ": setting priority to " << priority_string << LL_ENDL;
 
 		// This may affect the calculated size, so recalculate it here.
 		setSizeInternal();
@@ -1042,7 +1042,7 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 					mDirtyRect.unionWith(newDirtyRect);
 				}
 
-				/*// _LL_DEBUGS("Plugin") << "adjusted incoming rect is: ("
+				LL_DEBUGS("Plugin") << "adjusted incoming rect is: ("
 					<< newDirtyRect.mLeft << ", "
 					<< newDirtyRect.mTop << ", "
 					<< newDirtyRect.mRight << ", "
@@ -1051,7 +1051,7 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 					<< mDirtyRect.mTop << ", "
 					<< mDirtyRect.mRight << ", "
 					<< mDirtyRect.mBottom << ")"
-					<< LL_ENDL; */
+					<< LL_ENDL;
 
 				mediaEvent(LLPluginClassMediaOwner::MEDIA_EVENT_CONTENT_UPDATED);
 			}
@@ -1107,7 +1107,7 @@ void LLPluginClassMedia::receivePluginMessage(const LLPluginMessage &message)
 		{
 			std::string status = message.getValue("status");
 
-			// _LL_DEBUGS("Plugin") << "Status changed to: " << status << LL_ENDL;
+			LL_DEBUGS("Plugin") << "Status changed to: " << status << LL_ENDL;
 
 			if(status == "loading")
 			{
@@ -1589,5 +1589,5 @@ void LLPluginClassMedia::initializeUrlHistory(const LLSD& url_history)
 	message.setValueLLSD("history", url_history);
 	sendMessage(message);
 
-	// _LL_DEBUGS("Plugin") << "Sending history" << LL_ENDL;
+	LL_DEBUGS("Plugin") << "Sending history" << LL_ENDL;
 }

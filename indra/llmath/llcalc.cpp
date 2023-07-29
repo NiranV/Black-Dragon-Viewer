@@ -141,7 +141,7 @@ bool LLCalc::evalString(const std::string& expression, F32& result)
 	try
 	{
 		info = parse(start, expr_upper.end(), calc, space_p);
-		// _LL_DEBUGS() << "Math expression: " << expression << " = " << result << LL_ENDL;
+		LL_DEBUGS() << "Math expression: " << expression << " = " << result << LL_ENDL;
 	}
 	catch(parser_error<std::string, std::string::iterator> &e)
 	{

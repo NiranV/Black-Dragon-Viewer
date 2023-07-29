@@ -1186,12 +1186,12 @@ void LLOutfitGallery::uploadPhoto(LLUUID outfit_id)
 void LLOutfitGallery::uploadOutfitImage(const std::vector<std::string>& filenames, LLUUID outfit_id)
 {
     std::string filename = filenames[0];
-
-	const std::string exten = gDirUtilp->getExtension(filename);
-	const U32 codec = LLImageBase::getCodecFromExtension(exten);
-
-	if (codec != IMG_CODEC_INVALID)
+    LLLocalBitmap* unit = new LLLocalBitmap(filename);
+    if (unit->getValid())
 	{
+        std::string exten = gDirUtilp->getExtension(filename);
+        U32 codec = LLImageBase::getCodecFromExtension(exten);
+
 		LLImageDimensionsInfo image_info;
 		std::string image_load_error;
 		if (!image_info.load(filename, codec))

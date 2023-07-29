@@ -132,8 +132,8 @@ void LLXferManager::setAckThrottleBPS(const F32 bps)
 
 	// Set
 	F32 actual_rate = llmax(min_bps*1.1f, bps);
-	// _LL_DEBUGS("AppInit") << "LLXferManager ack throttle min rate: " << min_bps << LL_ENDL;
-	// _LL_DEBUGS("AppInit") << "LLXferManager ack throttle actual rate: " << actual_rate << LL_ENDL;
+	LL_DEBUGS("AppInit") << "LLXferManager ack throttle min rate: " << min_bps << LL_ENDL;
+	LL_DEBUGS("AppInit") << "LLXferManager ack throttle actual rate: " << actual_rate << LL_ENDL;
 	#ifdef LL_XFER_DIAGNOISTIC_LOGGING
 	LL_INFOS("Xfer") << "LLXferManager ack throttle min rate: " << min_bps << LL_ENDL;
 	LL_INFOS("Xfer") << "LLXferManager ack throttle actual rate: " << actual_rate << LL_ENDL;
@@ -270,11 +270,11 @@ void LLXferManager::removeXfer(LLXfer *delp, xfer_list_t & xfer_list)
 		{
 			if ((*iter) == delp)
 			{
-				/*// _LL_DEBUGS("Xfer") << "Deleting xfer to host " << (*iter)->mRemoteHost
+				LL_DEBUGS("Xfer") << "Deleting xfer to host " << (*iter)->mRemoteHost
 					<< " of " << (*iter)->mXferSize << " bytes"
 					<< ", status " << (S32)((*iter)->mStatus)
 					<< " from the " << direction << " list"
-					<< LL_ENDL;*/
+					<< LL_ENDL;
 
 				xfer_list.erase(iter);
 				delete (delp);
@@ -918,7 +918,7 @@ void LLXferManager::processFileRequest (LLMessageSystem *mesgsys, void ** /*user
 			{	// Not many transfers in progress already, so start immediately
 				xferp->sendNextPacket();
 				changeNumActiveXfers(xferp->mRemoteHost,1);
-				// _LL_DEBUGS("Xfer") << "Starting xfer ID " << U64_to_str(id) << " immediately" << LL_ENDL;
+				LL_DEBUGS("Xfer") << "Starting xfer ID " << U64_to_str(id) << " immediately" << LL_ENDL;
 			}
 			else if (mHardLimitOutgoingXfersPerCircuit == 0 ||
 				     (host_statusp->mNumActive + host_statusp->mNumPending) < mHardLimitOutgoingXfersPerCircuit)
@@ -1103,7 +1103,7 @@ void LLXferManager::retransmitUnackedPackets()
 				}
 				else
 				{	// No error re-opening the file, send the first packet
-					// _LL_DEBUGS("Xfer") << "Moving pending xfer ID " << U64_to_str(xferp->mID) << " to active" << LL_ENDL;
+					LL_DEBUGS("Xfer") << "Moving pending xfer ID " << U64_to_str(xferp->mID) << " to active" << LL_ENDL;
 					xferp->sendNextPacket();
 					changeNumActiveXfers(xferp->mRemoteHost,1);
 				}
@@ -1210,9 +1210,9 @@ void LLXferManager::startPendingDownloads()
 
 	S32 start_count = mMaxIncomingXfers - download_count;
 
-	/*// _LL_DEBUGS("Xfer") << "LLXferManager::startPendingDownloads() - XFER_IN_PROGRESS: "
+	LL_DEBUGS("Xfer") << "LLXferManager::startPendingDownloads() - XFER_IN_PROGRESS: "
 			 << download_count << " XFER_PENDING: " << pending_count
-			 << " startring " << llmin(start_count, pending_count) << LL_ENDL;*/
+			 << " startring " << llmin(start_count, pending_count) << LL_ENDL;
 
 	if((start_count > 0) && (pending_count > 0))
 	{

@@ -102,12 +102,12 @@ void LLXfer_File::cleanup ()
 
 	if (mDeleteLocalOnCompletion)
 	{
-		// _LL_DEBUGS("Xfer") << "Removing file: " << mLocalFilename << LL_ENDL;
+		LL_DEBUGS("Xfer") << "Removing file: " << mLocalFilename << LL_ENDL;
 		LLFile::remove(mLocalFilename, ENOENT);
 	}
 	else
 	{
-		// _LL_DEBUGS("Xfer") << "Keeping local file: " << mLocalFilename << LL_ENDL;
+		LL_DEBUGS("Xfer") << "Keeping local file: " << mLocalFilename << LL_ENDL;
 	}
 
 	LLXfer::cleanup();

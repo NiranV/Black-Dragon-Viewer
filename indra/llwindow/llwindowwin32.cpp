@@ -1368,13 +1368,14 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen& size, BO
     // don't post quit messages when destroying old windows
     mPostQuit = FALSE;
 
+
     // create window
-    /*LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
+    LL_DEBUGS("Window") << "Creating window with X: " << window_rect.left
         << " Y: " << window_rect.top
         << " Width: " << (window_rect.right - window_rect.left)
         << " Height: " << (window_rect.bottom - window_rect.top)
         << " Fullscreen: " << mFullscreen
-        << LL_ENDL;*/
+        << LL_ENDL;
 
 	recreateWindow(window_rect, dw_ex_style, dw_style);
 
@@ -1729,19 +1730,19 @@ const	S32   max_format  = (S32)num_formats - 1;
 			{
 			case WGL_SWAP_EXCHANGE_ARB:
 				mSwapMethod = SWAP_METHOD_EXCHANGE;
-				// _LL_DEBUGS("Window") << "Swap Method: Exchange" << LL_ENDL;
+				LL_DEBUGS("Window") << "Swap Method: Exchange" << LL_ENDL;
 				break;
 			case WGL_SWAP_COPY_ARB:
 				mSwapMethod = SWAP_METHOD_COPY;
-				// _LL_DEBUGS("Window") << "Swap Method: Copy" << LL_ENDL;
+				LL_DEBUGS("Window") << "Swap Method: Copy" << LL_ENDL;
 				break;
 			case WGL_SWAP_UNDEFINED_ARB:
 				mSwapMethod = SWAP_METHOD_UNDEFINED;
-				// _LL_DEBUGS("Window") << "Swap Method: Undefined" << LL_ENDL;
+				LL_DEBUGS("Window") << "Swap Method: Undefined" << LL_ENDL;
 				break;
 			default:
 				mSwapMethod = SWAP_METHOD_UNDEFINED;
-				// _LL_DEBUGS("Window") << "Swap Method: Unknown" << LL_ENDL;
+				LL_DEBUGS("Window") << "Swap Method: Unknown" << LL_ENDL;
 				break;
 			}
 		}		
@@ -1846,7 +1847,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
          &promise]
         ()
         {
-            //LL_DEBUGS("Window") << "recreateWindow(): window_work entry" << LL_ENDL;
+            LL_DEBUGS("Window") << "recreateWindow(): window_work entry" << LL_ENDL;
             self->mWindowHandle = 0;
             self->mhDC = 0;
 
@@ -1897,7 +1898,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
 
             // It's important to wake up the future either way.
             promise.set_value(std::make_pair(self->mWindowHandle, self->mhDC));
-            //LL_DEBUGS("Window") << "recreateWindow(): window_work done" << LL_ENDL;
+            LL_DEBUGS("Window") << "recreateWindow(): window_work done" << LL_ENDL;
         };
     // But how we pass window_work to the window thread depends on whether we
     // already have a window handle.
@@ -1905,7 +1906,7 @@ void LLWindowWin32::recreateWindow(RECT window_rect, DWORD dw_ex_style, DWORD dw
     {
         // Pass window_work using the WorkQueue: without an existing window
         // handle, the window thread can't call GetMessage().
-        //LL_DEBUGS("Window") << "posting window_work to WorkQueue" << LL_ENDL;
+        LL_DEBUGS("Window") << "posting window_work to WorkQueue" << LL_ENDL;
         mWindowThread->post(window_work);
     }
     else
@@ -3206,7 +3207,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
     else
     {
         // (NULL == window_imp)
-        // _LL_DEBUGS("Window") << "No window implementation to handle message with, message code: " << U32(u_msg) << LL_ENDL;
+        LL_DEBUGS("Window") << "No window implementation to handle message with, message code: " << U32(u_msg) << LL_ENDL;
     }
 
     // pass unhandled messages down to Windows
@@ -3478,7 +3479,7 @@ BOOL LLWindowWin32::restoreGamma()
     ASSERT_MAIN_THREAD();
 	if (mCustomGammaSet != FALSE)
 	{
-        // _LL_DEBUGS("Window") << "Restoring gamma" << LL_ENDL;
+        LL_DEBUGS("Window") << "Restoring gamma" << LL_ENDL;
 		mCustomGammaSet = FALSE;
 		return SetDeviceGammaRamp(mhDC, mPrevGammaRamp);
 	}
@@ -3495,7 +3496,7 @@ BOOL LLWindowWin32::setGamma(const F32 gamma)
 	{
         if (!gGLManager.mIsIntel) // skip for Intel GPUs (see SL-11341)
         {
-            // _LL_DEBUGS("Window") << "Getting the previous gamma ramp to restore later" << LL_ENDL;
+            LL_DEBUGS("Window") << "Getting the previous gamma ramp to restore later" << LL_ENDL;
             if(GetDeviceGammaRamp(mhDC, mPrevGammaRamp) == FALSE)
             {
                 LL_WARNS("Window") << "Failed to get the previous gamma ramp" << LL_ENDL;
@@ -3505,7 +3506,7 @@ BOOL LLWindowWin32::setGamma(const F32 gamma)
 		mCustomGammaSet = TRUE;
 	}
 
-	// _LL_DEBUGS("Window") << "Setting gamma to " << gamma << LL_ENDL;
+	LL_DEBUGS("Window") << "Setting gamma to " << gamma << LL_ENDL;
 
 	for ( int i = 0; i < 256; ++i )
 	{
@@ -3674,7 +3675,7 @@ BOOL LLWindowWin32::setFullscreenResolution()
 // protected
 BOOL LLWindowWin32::resetDisplayResolution()
 {
-	// _LL_DEBUGS("Window") << "resetDisplayResolution START" << LL_ENDL;
+	LL_DEBUGS("Window") << "resetDisplayResolution START" << LL_ENDL;
 
 	LONG cds_result = ChangeDisplaySettings(NULL, 0);
 
@@ -3685,7 +3686,7 @@ BOOL LLWindowWin32::resetDisplayResolution()
 		LL_WARNS("Window") << "resetDisplayResolution failed" << LL_ENDL;
 	}
 
-	// _LL_DEBUGS("Window") << "resetDisplayResolution END" << LL_ENDL;
+	LL_DEBUGS("Window") << "resetDisplayResolution END" << LL_ENDL;
 
 	return success;
 }
@@ -4684,21 +4685,21 @@ public:
     {
         // This odd construct ensures that the stringize() call is only
         // executed if DEBUG logging is enabled for the passed tag.
-        /*LL_DEBUGS(mTag.c_str());
+        LL_DEBUGS(mTag.c_str());
         log(LL_CONT, stringize(std::forward<Items>(items)...));
-        LL_ENDL;*/
+        LL_ENDL;
     }
 
     template <typename... Items>
     void onChange(Items&&... items)
     {
-        /*LL_DEBUGS(mTag.c_str());
+        LL_DEBUGS(mTag.c_str());
         auto str = stringize(std::forward<Items>(items)...);
         if (str != mPrev)
         {
             log(LL_CONT, str);
         }
-        LL_ENDL;*/
+        LL_ENDL;
     }
 
 private:
@@ -5020,9 +5021,9 @@ void LLWindowWin32::kickWindowThread(HWND windowHandle)
         // case any functions are pending and no windows events came
         // through this frame
         WPARAM wparam{ 0xB0B0 };
-        /*LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
+        LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
                             << ", " << WM_DUMMY_
-                            << ", " << wparam << ")" << std::dec << LL_ENDL;*/
+                            << ", " << wparam << ")" << std::dec << LL_ENDL;
         PostMessage(windowHandle, WM_DUMMY_, wparam, 0x1337);
     }
 }

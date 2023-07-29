@@ -196,7 +196,7 @@ BOOL LLVorbisDecodeState::initDecode()
 	cache_callbacks.close_func = cache_close;
 	cache_callbacks.tell_func = cache_tell;
 
-	// _LL_DEBUGS("AudioEngine") << "Initing decode from vfile: " << mUUID << LL_ENDL;
+	LL_DEBUGS("AudioEngine") << "Initing decode from vfile: " << mUUID << LL_ENDL;
 
 	mInFilep = new LLFileSystem(mUUID, LLAssetType::AT_SOUND);
 	if (!mInFilep || !mInFilep->getSize())
@@ -514,7 +514,7 @@ BOOL LLVorbisDecodeState::finishDecode()
 	
 	mDone = TRUE;
 
-	// _LL_DEBUGS("AudioEngine") << "Finished decode for " << getUUID() << LL_ENDL;
+	LL_DEBUGS("AudioEngine") << "Finished decode for " << getUUID() << LL_ENDL;
 
 	return TRUE;
 }
@@ -784,7 +784,7 @@ BOOL LLAudioDecodeMgr::addDecodeRequest(const LLUUID &uuid)
 	if (gAudiop && gAudiop->hasDecodedFile(uuid))
 	{
 		// Already have a decoded version, don't need to decode it.
-		// _LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has decoded file already" << LL_ENDL;
+		LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " has decoded file already" << LL_ENDL;
 		return TRUE;
 	}
 
@@ -796,6 +796,6 @@ BOOL LLAudioDecodeMgr::addDecodeRequest(const LLUUID &uuid)
 		return TRUE;
 	}
 
-	// _LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " no file available" << LL_ENDL;
+	LL_DEBUGS("AudioEngine") << "addDecodeRequest for " << uuid << " no file available" << LL_ENDL;
 	return FALSE;
 }

@@ -141,7 +141,7 @@ LLIOPipe::EStatus LLHTTPPipe::process_impl(
 {
     LL_PROFILE_ZONE_SCOPED;
 	PUMP_DEBUG;
-    // _LL_DEBUGS() << "LLSDHTTPServer::process_impl" << LL_ENDL;
+    LL_DEBUGS() << "LLSDHTTPServer::process_impl" << LL_ENDL;
 
     // Once we have all the data, We need to read the sd on
     // the the in channel, and respond on  the out channel
@@ -228,9 +228,9 @@ LLIOPipe::EStatus LLHTTPPipe::process_impl(
 		// Log all HTTP transactions.
 		// TODO: Add a way to log these to their own file instead of indra.log
 		// It is just too spammy to be in indra.log.
-		/*// _LL_DEBUGS() << verb << " " << context[CONTEXT_REQUEST][CONTEXT_PATH].asString()
+		LL_DEBUGS() << verb << " " << context[CONTEXT_REQUEST][CONTEXT_PATH].asString()
 			<< " " << mStatusCode << " " <<  mStatusMessage << " " << delta
-			<< "s" << LL_ENDL;*/
+			<< "s" << LL_ENDL;
 
 		// Log Internal Server Errors
 		//if(mStatusCode == HTTP_INTERNAL_SERVER_ERROR)
@@ -603,7 +603,7 @@ LLHTTPResponder::LLHTTPResponder(const LLHTTPNode& tree, const LLSD& ctx) :
 // virtual
 LLHTTPResponder::~LLHTTPResponder()
 {
-	//// _LL_DEBUGS() << "destroying LLHTTPResponder" << LL_ENDL;
+	//LL_DEBUGS() << "destroying LLHTTPResponder" << LL_ENDL;
 }
 
 bool LLHTTPResponder::readHeaderLine(
@@ -620,7 +620,7 @@ bool LLHTTPResponder::readHeaderLine(
 	{
 		if(len)
 		{
-			// _LL_DEBUGS() << "readLine failed - too long maybe?" << LL_ENDL;
+			LL_DEBUGS() << "readLine failed - too long maybe?" << LL_ENDL;
 			markBad(channels, buffer);
 		}
 		return false;
@@ -701,10 +701,10 @@ LLIOPipe::EStatus LLHTTPResponder::process_impl(
 					header >> mAbsPathAndQuery;
 					header >> mVersion;
 
-					/*// _LL_DEBUGS() << "http request: "
+					LL_DEBUGS() << "http request: "
 							 << mVerb
 							 << " " << mAbsPathAndQuery
-							 << " " << mVersion << LL_ENDL;*/
+							 << " " << mVersion << LL_ENDL;
 
 					std::string::size_type delimiter
 						= mAbsPathAndQuery.find('?');
@@ -734,7 +734,7 @@ LLIOPipe::EStatus LLHTTPResponder::process_impl(
 				{
 					read_next_line = false;
 					parse_all = false;
-					// _LL_DEBUGS() << "unknown http verb: " << mVerb << LL_ENDL;
+					LL_DEBUGS() << "unknown http verb: " << mVerb << LL_ENDL;
 					markBad(channels, buffer);
 				}
 			}
@@ -769,7 +769,7 @@ LLIOPipe::EStatus LLHTTPResponder::process_impl(
 					if(NULL == pos_colon)
 					{
 						keep_parsing = false;
-						// _LL_DEBUGS() << "bad header: " << buf << LL_ENDL;
+						LL_DEBUGS() << "bad header: " << buf << LL_ENDL;
 						markBad(channels, buffer);
 						break;
 					}
@@ -780,7 +780,7 @@ LLIOPipe::EStatus LLHTTPResponder::process_impl(
 					LLStringUtil::toLower(name);
 					if(HTTP_IN_HEADER_CONTENT_LENGTH == name)
 					{
-						// _LL_DEBUGS() << "Content-Length: " << value << LL_ENDL;
+						LL_DEBUGS() << "Content-Length: " << value << LL_ENDL;
 						mContentLength = atoi(value.c_str());
 					}
 					else
@@ -865,7 +865,7 @@ LLIOPipe::EStatus LLHTTPResponder::process_impl(
 				= node->getProtocolHandler();
 			if (protocolHandler)
 			{
-				// _LL_DEBUGS() << "HTTP context: " << context << LL_ENDL;
+				LL_DEBUGS() << "HTTP context: " << context << LL_ENDL;
 				protocolHandler->build(chain, context);
 			}
 			else

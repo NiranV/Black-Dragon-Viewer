@@ -134,7 +134,7 @@ int warnif(const std::string& desc, const std::string& filename, int rc, int acc
 		if (errn == EACCES)         // *not* EPERM
 		{
 			// Only do any of this stuff (before LL_ENDL) if it will be logged.
-			// _LL_DEBUGS("LLFile") << empty;
+			LL_DEBUGS("LLFile") << empty;
 			// would be nice to use LLDir for this, but dependency goes the
 			// wrong way
 			const char* TEMP = LLFile::tmpdir();

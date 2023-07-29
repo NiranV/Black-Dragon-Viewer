@@ -145,6 +145,8 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 
 BOOL LLPanelMainInventory::postBuild()
 {
+	gInventory.addObserver(this);
+	
 	mFilterTabs = getChild<LLTabContainer>("inventory filter tabs");
 	mFilterTabs->setCommitCallback(boost::bind(&LLPanelMainInventory::onFilterSelected, this));
     
@@ -306,6 +308,7 @@ LLPanelMainInventory::~LLPanelMainInventory( void )
 		filtersFile.close();
     }
     
+	gInventory.removeObserver(this);
 	delete mSavedFolderState;
 
 	auto menu = mMenuAddHandle.get();
@@ -709,6 +712,12 @@ BOOL LLPanelMainInventory::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 	return handled;
 }
 
+// virtual
+void LLPanelMainInventory::changed(U32)
+{
+	updateItemcountText();
+}
+
 void LLPanelMainInventory::setFocusFilterEditor()
 {
 	if(mFilterEditor)
@@ -766,6 +775,19 @@ void LLPanelMainInventory::draw()
 		mResortActivePanel = false;
 	}
 	LLPanel::draw();
+	updateItemcountText();
+}
+
+void LLPanelMainInventory::updateItemcountText()
+{
+	if(mItemCount != gInventory.getItemCount())
+	{
+		mItemCount = gInventory.getItemCount();
+		mItemCountString = "";
+		LLLocale locale(LLLocale::USER_LOCALE);
+		LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
+	}
+
 	if(mCategoryCount != gInventory.getCategoryCount())
 	{
 		mCategoryCount = gInventory.getCategoryCount();

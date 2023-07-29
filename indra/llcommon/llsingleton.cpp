@@ -272,9 +272,7 @@ void LLSingletonBase::reset_initializing(list_t::size_type size)
 
 void LLSingletonBase::MasterList::LockedInitializing::log(const char* verb, const char* name)
 {
-    /*if (oktolog())
-    {
-        _LL_DEBUGS("LLSingleton") << verb << ' ' << demangle(name) << ';';
+        LL_DEBUGS("LLSingleton") << verb << ' ' << demangle(name) << ';';
         if (mList)
         {
             for (list_t::const_reverse_iterator ri(mList->rbegin()), rend(mList->rend());
@@ -285,7 +283,6 @@ void LLSingletonBase::MasterList::LockedInitializing::log(const char* verb, cons
             }
         }
         LL_ENDL;
-    }*/
 }
 
 void LLSingletonBase::capture_dependency()
@@ -476,7 +473,7 @@ void LLSingletonBase::loginfos(const string_params& args)
 //static
 void LLSingletonBase::logdebugs(const string_params& args)
 {
-    //LL_DEBUGS("LLSingleton") << args << LL_ENDL;
+    LL_DEBUGS("LLSingleton") << args << LL_ENDL;
 }
 
 //static

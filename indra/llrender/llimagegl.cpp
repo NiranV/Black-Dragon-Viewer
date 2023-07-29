@@ -518,7 +518,7 @@ void LLImageGL::init(BOOL usemipmaps)
 	// so that it is obvious by visual inspection if we forgot to
 	// init a field.
 
-	mTextureMemory = S64Bytes(0);
+	mTextureMemory = (S32Bytes)0;
 	mLastBindTime = 0.f;
 
 	mPickMask = NULL;
@@ -1944,7 +1944,7 @@ void LLImageGL::destroyGLTexture()
 
 	if (mTexName != 0)
 	{
-		if(mTextureMemory != S64Bytes(0))
+		if(mTextureMemory != S32Bytes(0))
 		{
 			mTextureMemory = (S32Bytes)0;
 		}

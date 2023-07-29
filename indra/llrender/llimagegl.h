@@ -211,7 +211,7 @@ public:
 
 public:
 	// Various GL/Rendering options
-	S64Bytes mTextureMemory;
+	S32Bytes mTextureMemory;
 	mutable F32  mLastBindTime;	// last time this was bound, by discard level
 	
 private:

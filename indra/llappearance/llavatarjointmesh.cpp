@@ -53,7 +53,7 @@ LLAvatarJoint *getBaseSkeletonAncestor(LLAvatarJoint* joint)
     LLJoint *ancestor = joint->getParent();
     while (ancestor->getParent() && (ancestor->getSupport() != LLJoint::SUPPORT_BASE))
     {
-        // _LL_DEBUGS("Avatar") << "skipping non-base ancestor " << ancestor->getName() << LL_ENDL;
+        LL_DEBUGS("Avatar") << "skipping non-base ancestor " << ancestor->getName() << LL_ENDL;
         ancestor = ancestor->getParent();
     }
     return (LLAvatarJoint*) ancestor;
@@ -329,7 +329,7 @@ void LLAvatarJointMesh::setMesh( LLPolyMesh *mesh )
 	if (!mMesh->isLOD())
 	{
 		setupJoint((LLAvatarJoint*)getRoot());
-        // _LL_DEBUGS("Avatar") << getName() << " joint render entries: " << mMesh->mJointRenderData.size() << LL_ENDL;
+        LL_DEBUGS("Avatar") << getName() << " joint render entries: " << mMesh->mJointRenderData.size() << LL_ENDL;
 	}
 
 }
@@ -351,7 +351,7 @@ void LLAvatarJointMesh::setupJoint(LLAvatarJoint* current_joint)
 		}
 
 		// we've found a skinjoint for this joint..
-        // _LL_DEBUGS("Avatar") << "Mesh: " << getName() << " joint " << current_joint->getName() << " matches skinjoint " << sj << LL_ENDL;
+        LL_DEBUGS("Avatar") << "Mesh: " << getName() << " joint " << current_joint->getName() << " matches skinjoint " << sj << LL_ENDL;
 
 		// is the last joint in the array our parent?
 
@@ -366,15 +366,15 @@ void LLAvatarJointMesh::setupJoint(LLAvatarJoint* current_joint)
 			// ...then just add ourselves
 			LLAvatarJoint* jointp = js.mJoint;
 			jrd.push_back(new LLJointRenderData(&jointp->getWorldMatrix(), &js));
-			// _LL_DEBUGS("Avatar") << "add joint[" << (jrd.size()-1) << "] = " << js.mJoint->getName() << LL_ENDL;
+			LL_DEBUGS("Avatar") << "add joint[" << (jrd.size()-1) << "] = " << js.mJoint->getName() << LL_ENDL;
 		}
 		// otherwise add our ancestor and ourselves
 		else
 		{
 			jrd.push_back(new LLJointRenderData(&ancestor->getWorldMatrix(), NULL));
-			// _LL_DEBUGS("Avatar") << "add2 ancestor joint[" << (jrd.size()-1) << "] = " << ancestor->getName() << LL_ENDL;
+			LL_DEBUGS("Avatar") << "add2 ancestor joint[" << (jrd.size()-1) << "] = " << ancestor->getName() << LL_ENDL;
 			jrd.push_back(new LLJointRenderData(&current_joint->getWorldMatrix(), &js));
-            // _LL_DEBUGS("Avatar") << "add2 joint[" << (jrd.size()-1) << "] = " << current_joint->getName() << LL_ENDL;
+            LL_DEBUGS("Avatar") << "add2 joint[" << (jrd.size()-1) << "] = " << current_joint->getName() << LL_ENDL;
 		}
 	}
 

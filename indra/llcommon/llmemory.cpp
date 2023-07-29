@@ -85,13 +85,12 @@ void LLMemory::updateMemoryInfo()
 {
 	LL_PROFILE_ZONE_SCOPED
 #if LL_WINDOWS
-	PROCESS_MEMORY_COUNTERS_EX counters;
-	counters.cb = sizeof(counters);
+	PROCESS_MEMORY_COUNTERS counters;
 
-	if (!GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*) &counters, sizeof(counters)))
+	if (!GetProcessMemoryInfo(GetCurrentProcess(), &counters, sizeof(counters)))
 	{
 		LL_WARNS() << "GetProcessMemoryInfo failed" << LL_ENDL;
-		return;
+		return ;
 	}
 
 	sAllocatedMemInKB = U32Kilobytes::convert(U64Bytes(counters.WorkingSetSize));
@@ -99,28 +98,20 @@ void LLMemory::updateMemoryInfo()
 	sAllocatedPageSizeInKB = U32Kilobytes::convert(U64Bytes(counters.PagefileUsage));
 	sample(sVirtualMem, sAllocatedPageSizeInKB);
 
-	MEMORYSTATUSEX memorystat;
-	memorystat.dwLength = sizeof(memorystat);
-	if (!GlobalMemoryStatusEx(&memorystat))
+	U32Kilobytes avail_phys, avail_virtual;
+	LLMemoryInfo::getAvailableMemoryKB(avail_phys, avail_virtual) ;
+	sMaxPhysicalMemInKB = llmin(avail_phys + sAllocatedMemInKB, sMaxHeapSizeInKB);
+
+	if(sMaxPhysicalMemInKB > sAllocatedMemInKB)
 	{
-		LL_WARNS() << "GlobalMemoryStatusEx failed" << LL_ENDL;
-		return;
-	}
-#if (ADDRESS_SIZE==64)
-	sMaxPhysicalMemInKB = U32Kilobytes::convert(U64Bytes(memorystat.ullTotalPhys));
-	sAvailPhysicalMemInKB = U32Kilobytes::convert(U64Bytes(memorystat.ullAvailPhys));
-#else
-	sMaxPhysicalMemInKB = llmin(U32Kilobytes::convert(U64Bytes(memorystat.ullTotalPhys)), sMaxHeapSizeInKB);
-	if (sMaxPhysicalMemInKB > sAllocatedMemInKB)
-	{
-		sAvailPhysicalMemInKB = U32Kilobytes::convert(U64Bytes(memorystat.ullAvailPhys));
+		sAvailPhysicalMemInKB = sMaxPhysicalMemInKB - sAllocatedMemInKB ;
 	}
 	else
 	{
 		sAvailPhysicalMemInKB = U32Kilobytes(0);
 	}
 
-#else_if defined(LL_DARWIN)
+#elif defined(LL_DARWIN)
     task_vm_info info;
     mach_msg_type_number_t  infoCount = TASK_VM_INFO_COUNT;
     // MACH_TASK_BASIC_INFO reports the same resident_size, but does not tell us the reusable bytes or phys_footprint.
@@ -169,6 +160,8 @@ void LLMemory::updateMemoryInfo()
 	sMaxPhysicalMemInKB = U64Bytes(U32_MAX);
 	sAvailPhysicalMemInKB = U64Bytes(U32_MAX);
 #endif
+
+	return ;
 }
 
 //

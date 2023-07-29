@@ -100,7 +100,7 @@ bool LLMessageConfigFile::loadFile()
         
         if (file.is_open())
         {
-			// _LL_DEBUGS("AppInit") << "Loading message.xml file at " << filename() << LL_ENDL;
+			LL_DEBUGS("AppInit") << "Loading message.xml file at " << filename() << LL_ENDL;
             LLSDSerialize::fromXML(data, file);
         }
 
@@ -163,8 +163,8 @@ void LLMessageConfigFile::loadCapBans(const LLSD& data)
     
 	mCapBans = bans;
     
-    /*// _LL_DEBUGS("AppInit") << "LLMessageConfigFile::loadCapBans: "
-        << bans.size() << " ban tests" << LL_ENDL;*/
+    LL_DEBUGS("AppInit") << "LLMessageConfigFile::loadCapBans: "
+        << bans.size() << " ban tests" << LL_ENDL;
 }
 
 void LLMessageConfigFile::loadMessageBans(const LLSD& data)
@@ -182,7 +182,7 @@ void LLMessageConfigFile::loadMessageBans(const LLSD& data)
 
 bool LLMessageConfigFile::isCapBanned(const std::string& cap_name) const
 {
-	// _LL_DEBUGS() << "mCapBans is " << LLSDNotationStreamer(mCapBans) << LL_ENDL;
+	LL_DEBUGS() << "mCapBans is " << LLSDNotationStreamer(mCapBans) << LL_ENDL;
     return mCapBans[cap_name];
 }
 
@@ -197,8 +197,8 @@ void LLMessageConfig::initClass(const std::string& server_name,
 	sServerName = server_name;
 	sConfigDir = config_dir;
 	(void) LLMessageConfigFile::instance();
-	/*// _LL_DEBUGS("AppInit") << "LLMessageConfig::initClass config file "
-			<< config_dir << "/" << messageConfigFileName << LL_ENDL;*/
+	LL_DEBUGS("AppInit") << "LLMessageConfig::initClass config file "
+			<< config_dir << "/" << messageConfigFileName << LL_ENDL;
 }
 
 //static

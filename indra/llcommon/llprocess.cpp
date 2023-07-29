@@ -82,7 +82,7 @@ public:
 		// incrementing, listen on "mainloop".
 		if (mCount++ == 0)
 		{
-			// _LL_DEBUGS("LLProcess") << "listening on \"mainloop\"" << LL_ENDL;
+			LL_DEBUGS("LLProcess") << "listening on \"mainloop\"" << LL_ENDL;
 			mConnection = LLEventPumps::instance().obtain("mainloop")
 				.listen("LLProcessListener", boost::bind(&LLProcessListener::tick, this, _1));
 		}
@@ -94,7 +94,7 @@ public:
 		// stop listening on "mainloop".
 		if (--mCount == 0)
 		{
-			// _LL_DEBUGS("LLProcess") << "disconnecting from \"mainloop\"" << LL_ENDL;
+			LL_DEBUGS("LLProcess") << "disconnecting from \"mainloop\"" << LL_ENDL;
 			mConnection.disconnect();
 		}
 	}
@@ -119,7 +119,7 @@ private:
 		// centralize such calls, using "mainloop" to ensure it happens once
 		// per frame, and refcounting running LLProcess objects to remain
 		// registered only while needed.
-		// _LL_DEBUGS("LLProcess") << "calling apr_proc_other_child_refresh_all()" << LL_ENDL;
+		LL_DEBUGS("LLProcess") << "calling apr_proc_other_child_refresh_all()" << LL_ENDL;
 		apr_proc_other_child_refresh_all(APR_OC_REASON_RUNNING);
 		return false;
 	}
@@ -217,13 +217,13 @@ public:
 					remainptr += written;
 					remainlen -= written;
 
-					//char msgbuf[512];
-					/*// _LL_DEBUGS("LLProcess") << "wrote " << written << " of " << towrite
+					char msgbuf[512];
+					LL_DEBUGS("LLProcess") << "wrote " << written << " of " << towrite
 										   << " bytes to " << mDesc
 										   << " (original " << total << "),"
 										   << " code " << err << ": "
 										   << apr_strerror(err, msgbuf, sizeof(msgbuf))
-										   << LL_ENDL;*/
+										   << LL_ENDL;
 
 					// The parent end of this pipe is nonblocking. If we weren't able
 					// to write everything we wanted, don't keep banging on it -- that
@@ -394,7 +394,7 @@ public:
 					// Handle EOF specially: it's part of normal-case processing.
 					if (err == APR_EOF)
 					{
-						// _LL_DEBUGS("LLProcess") << "EOF on " << mDesc << LL_ENDL;
+						LL_DEBUGS("LLProcess") << "EOF on " << mDesc << LL_ENDL;
 					}
 					else
 					{
@@ -414,8 +414,8 @@ public:
 				// received. Make sure we commit those later. (Don't commit them
 				// now, that would invalidate the buffer iterator sequence!)
 				tocommit += gotten;
-				/*// _LL_DEBUGS("LLProcess") << "filled " << gotten << " of " << toread
-									   << " bytes from " << mDesc << LL_ENDL;*/
+				LL_DEBUGS("LLProcess") << "filled " << gotten << " of " << toread
+									   << " bytes from " << mDesc << LL_ENDL;
 
 				// The parent end of this pipe is nonblocking. If we weren't even
 				// able to fill this buffer, don't loop to try to fill the next --
@@ -754,7 +754,7 @@ LLProcess::LLProcess(const LLSDOrParams& params):
 		// Removed temporaily for Xcode 7 build tests: error was:
 		// "error: expression with side effects will be evaluated despite 
 		// being used as an operand to 'typeid' [-Werror,-Wpotentially-evaluated-expression]""
-		//// _LL_DEBUGS("LLProcess") << "Instantiating " << typeid(mPipes[i]).name()
+		//LL_DEBUGS("LLProcess") << "Instantiating " << typeid(mPipes[i]).name()
 		//					   << "('" << desc << "')" << LL_ENDL;
 	}
 }
@@ -944,9 +944,9 @@ static struct ReasonCode
 void LLProcess::handle_status(int reason, int status)
 {
 	{
-		// This odd appearance of // _LL_DEBUGS is just to bracket a lookup that will
+		// This odd appearance of LL_DEBUGS is just to bracket a lookup that will
 		// only be performed if in fact we're going to produce the log message.
-		/*// _LL_DEBUGS("LLProcess") << empty;
+		LL_DEBUGS("LLProcess") << empty;
 		std::string reason_str;
 		BOOST_FOREACH(const ReasonCode& rcp, reasons)
 		{
@@ -960,7 +960,7 @@ void LLProcess::handle_status(int reason, int status)
 		{
 			reason_str = STRINGIZE("unknown reason " << reason);
 		}
-		LL_CONT << mDesc << ": handle_status(" << reason_str << ", " << status << ")" << LL_ENDL;*/
+		LL_CONT << mDesc << ": handle_status(" << reason_str << ", " << status << ")" << LL_ENDL;
 	}
 
 	if (! (reason == APR_OC_REASON_DEATH || reason == APR_OC_REASON_LOST))
@@ -1088,7 +1088,7 @@ boost::optional<PIPETYPE&> LLProcess::getOptPipe(FILESLOT slot)
 	PIPETYPE* wp = getPipePtr<PIPETYPE>(error, slot);
 	if (! wp)
 	{
-		// _LL_DEBUGS("LLProcess") << error << LL_ENDL;
+		LL_DEBUGS("LLProcess") << error << LL_ENDL;
 		return boost::optional<PIPETYPE&>();
 	}
 	return *wp;

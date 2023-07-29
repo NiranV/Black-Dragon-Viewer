@@ -1273,7 +1273,7 @@ template <class T,LLVertexBuffer::AttributeType type> struct VertexBufferStrider
 
 			U8* ptr = vbo.mapVertexBuffer(type, index, count);
 
-			if (ptr == nullptr)
+			if (ptr == NULL)
 			{
 				LL_WARNS() << "mapVertexBuffer failed!" << LL_ENDL;
 				return false;

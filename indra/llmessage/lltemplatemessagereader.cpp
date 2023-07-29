@@ -118,9 +118,6 @@ void LLTemplateMessageReader::getData(const char *blockname, const char *varname
 	{   
 		switch( vardata_size )
 		{ 
-		case 0:
-			// This is here to prevent a memcpy from a null value which is undefined behavior.
-			break;
 		case 1:
 			*((U8*)datap) = *((U8*)vardata.getData());
 			break;
@@ -700,7 +697,7 @@ BOOL LLTemplateMessageReader::decodeData(const U8* buffer, const LLHost& sender 
 	if (mCurrentRMessageData->mMemberBlocks.empty()
 		&& !mCurrentRMessageTemplate->mMemberBlocks.empty())
 	{
-		// _LL_DEBUGS() << "Empty message '" << mCurrentRMessageTemplate->mName << "' (no blocks)" << LL_ENDL;
+		LL_DEBUGS() << "Empty message '" << mCurrentRMessageTemplate->mName << "' (no blocks)" << LL_ENDL;
 		return FALSE;
 	}
 
@@ -743,9 +740,9 @@ BOOL LLTemplateMessageReader::decodeData(const U8* buffer, const LLHost& sender 
 
 				if(decode_time > LLMessageReader::getTimeDecodesSpamThreshold())
 				{
-					/*// _LL_DEBUGS() << "--------- Message " << mCurrentRMessageTemplate->mName << " decode took " << decode_time << " seconds. (" <<
+					LL_DEBUGS() << "--------- Message " << mCurrentRMessageTemplate->mName << " decode took " << decode_time << " seconds. (" <<
 						mCurrentRMessageTemplate->mMaxDecodeTimePerMsg << " max, " <<
-						(mCurrentRMessageTemplate->mTotalDecodeTime / mCurrentRMessageTemplate->mTotalDecoded) << " avg)" << LL_ENDL;*/
+						(mCurrentRMessageTemplate->mTotalDecodeTime / mCurrentRMessageTemplate->mTotalDecoded) << " avg)" << LL_ENDL;
 				}
 			}
 		}
@@ -763,7 +760,7 @@ BOOL LLTemplateMessageReader::validateMessage(const U8* buffer,
 	if(valid)
 	{
 		mCurrentRMessageTemplate->mReceiveCount++;
-		//// _LL_DEBUGS() << "MessageRecvd:"
+		//LL_DEBUGS() << "MessageRecvd:"
 		//						 << mCurrentRMessageTemplate->mName 
 		//						 << " from " << sender << LL_ENDL;
 	}

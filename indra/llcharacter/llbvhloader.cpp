@@ -165,8 +165,8 @@ LLBVHLoader::LLBVHLoader(const char* buffer, ELoadStatus &loadStatus, S32 &error
 	S32 error_line;
 	mStatus = loadBVHFile(buffer, error_text, error_line); //Reads all joints in BVH file.
 
-	// _LL_DEBUGS("BVH") << "============================================================" << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "Raw data from file" << LL_ENDL;
+	LL_DEBUGS("BVH") << "============================================================" << LL_ENDL;
+	LL_DEBUGS("BVH") << "Raw data from file" << LL_ENDL;
 	dumpBVHInfo();
 	
 	if (mStatus != E_ST_OK)
@@ -180,8 +180,8 @@ LLBVHLoader::LLBVHLoader(const char* buffer, ELoadStatus &loadStatus, S32 &error
 	applyTranslations();  //Maps between joints found in file and the aliased names.
 	optimize();
 	
-	// _LL_DEBUGS("BVH") << "============================================================" << LL_ENDL;
-	// _LL_DEBUGS("BVH") << "After translations and optimize" << LL_ENDL;
+	LL_DEBUGS("BVH") << "============================================================" << LL_ENDL;
+	LL_DEBUGS("BVH") << "After translations and optimize" << LL_ENDL;
 	dumpBVHInfo();
 
 	mInitialized = TRUE;
@@ -545,7 +545,7 @@ void LLBVHLoader::dumpBVHInfo()
 	for (U32 j=0; j<mJoints.size(); j++)
 	{
 		Joint *joint = mJoints[j];
-		// _LL_DEBUGS("BVH") << joint->mName << LL_ENDL;
+		LL_DEBUGS("BVH") << joint->mName << LL_ENDL;
 		for (S32 i=0; i<mNumFrames; i++)
 		{
             if (i<joint->mKeys.size()) // Check this in case file load failed.
@@ -561,9 +561,9 @@ void LLBVHLoader::dumpBVHInfo()
                     (key.mRot[2] != prevkey.mRot[2])
                     )
                 {
-                    /*// _LL_DEBUGS("BVH") << "FRAME " << i 
+                    LL_DEBUGS("BVH") << "FRAME " << i 
                                      << " POS " << key.mPos[0] << "," << key.mPos[1] << "," << key.mPos[2]
-                                     << " ROT " << key.mRot[0] << "," << key.mRot[1] << "," << key.mRot[2] << LL_ENDL;*/
+                                     << " ROT " << key.mRot[0] << "," << key.mRot[1] << "," << key.mRot[2] << LL_ENDL;
                 }
             }
 		}
@@ -702,14 +702,14 @@ ELoadStatus LLBVHLoader::loadBVHFile(const char *buffer, char* error_text, S32 &
 		//----------------------------------------------------------------
 		mJoints.push_back( new Joint( jointName ) );
 		Joint *joint = mJoints.back();
-		// _LL_DEBUGS("BVH") << "Created joint " << jointName << LL_ENDL;
-		// _LL_DEBUGS("BVH") << "- index " << mJoints.size()-1 << LL_ENDL;
+		LL_DEBUGS("BVH") << "Created joint " << jointName << LL_ENDL;
+		LL_DEBUGS("BVH") << "- index " << mJoints.size()-1 << LL_ENDL;
 
 		S32 depth = 1;
 		for (S32 j = (S32)parent_joints.size() - 1; j >= 0; j--)
 		{
 			Joint *pjoint = mJoints[parent_joints[j]];
-			// _LL_DEBUGS("BVH") << "- ancestor " << pjoint->mName << LL_ENDL;
+			LL_DEBUGS("BVH") << "- ancestor " << pjoint->mName << LL_ENDL;
 			if (depth > pjoint->mChildTreeMaxDepth)
 			{
 				pjoint->mChildTreeMaxDepth = depth;
@@ -913,7 +913,7 @@ ELoadStatus LLBVHLoader::loadBVHFile(const char *buffer, char* error_text, S32 &
             }
             float_token_iter++;
 		}
-		// _LL_DEBUGS("BVH") << "Got " << floats.size() << " floats " << LL_ENDL;
+		LL_DEBUGS("BVH") << "Got " << floats.size() << " floats " << LL_ENDL;
 		for (U32 j=0; j<mJoints.size(); j++)
 		{
 			Joint *joint = mJoints[j];

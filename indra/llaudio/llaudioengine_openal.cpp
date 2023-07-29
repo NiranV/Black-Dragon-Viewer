@@ -46,6 +46,7 @@ LLAudioEngine_OpenAL::LLAudioEngine_OpenAL()
 {
 }
 
+// virtual
 LLAudioEngine_OpenAL::~LLAudioEngine_OpenAL()
 {
 }

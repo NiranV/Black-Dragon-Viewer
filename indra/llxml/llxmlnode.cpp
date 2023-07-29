@@ -623,7 +623,7 @@ bool LLXMLNode::updateNode(
 				child->getAttributeString("value", nodeName);
 			}
 
-			if ((!nodeName.empty()) && (updateName == nodeName))
+			if ((nodeName != "") && (updateName == nodeName))
 			{
 				updateNode(child, updateChild);
 				last_child = child;
@@ -654,7 +654,7 @@ bool LLXMLNode::updateNode(
 bool LLXMLNode::parseFile(const std::string& filename, LLXMLNodePtr& node, LLXMLNode* defaults_tree)
 {
 	// Read file
-	// _LL_DEBUGS("XMLNode") << "parsing XML file: " << filename << LL_ENDL;
+	LL_DEBUGS("XMLNode") << "parsing XML file: " << filename << LL_ENDL;
 	LLFILE* fp = LLFile::fopen(filename, "rb");		/* Flawfinder: ignore */
 	if (fp == NULL)
 	{
@@ -829,7 +829,7 @@ bool LLXMLNode::getLayeredXMLNode(LLXMLNodePtr& root,
 {
 	if (paths.empty()) return false;
 
-	std::string const& filename = paths.front();
+	std::string filename = paths.front();
 	if (filename.empty())
 	{
 		return false;
@@ -919,7 +919,7 @@ void LLXMLNode::writeToOstream(std::ostream& output_stream, const std::string& i
 	if (use_type_decorations)
 	{
 		// ID
-		if (!mID.empty())
+		if (mID != "")
 		{
 			output_stream << indent << " id=\"" << mID << "\"\n";
 		}
@@ -1024,7 +1024,7 @@ void LLXMLNode::writeToOstream(std::ostream& output_stream, const std::string& i
 	// erase last \n before attaching final > or />
 	output_stream.seekp(-1, std::ios::cur);
 
-	if (mChildren.isNull() && mValue.empty())
+	if (mChildren.isNull() && mValue == "")
 	{
 		output_stream << " />\n";
 		return;
@@ -1299,7 +1299,7 @@ BOOL LLXMLNode::getAttributeU8(const char* name, U8& value )
 BOOL LLXMLNode::getAttributeS8(const char* name, S8& value )
 {
 	LLXMLNodePtr node;
-	S32 val = 0;
+	S32 val;
 	if (!(getAttribute(name, node) && node->getIntValue(1, &val)))
 	{
 		return false;
@@ -1311,7 +1311,7 @@ BOOL LLXMLNode::getAttributeS8(const char* name, S8& value )
 BOOL LLXMLNode::getAttributeU16(const char* name, U16& value )
 {
 	LLXMLNodePtr node;
-	U32 val = 0;
+	U32 val;
 	if (!(getAttribute(name, node) && node->getUnsignedValue(1, &val)))
 	{
 		return false;
@@ -1323,7 +1323,7 @@ BOOL LLXMLNode::getAttributeU16(const char* name, U16& value )
 BOOL LLXMLNode::getAttributeS16(const char* name, S16& value )
 {
 	LLXMLNodePtr node;
-	S32 val = 0;
+	S32 val;
 	if (!(getAttribute(name, node) && node->getIntValue(1, &val)))
 	{
 		return false;
@@ -1542,35 +1542,35 @@ const char *LLXMLNode::parseFloat(const char *str, F64 *dest, U32 precision, Enc
 	{
 		str = skipWhitespace(str);
 
-		if (strncmp(str, "inf", 3) == 0)
+		if (memcmp(str, "inf", 3) == 0)
 		{
 			*(U64 *)dest = 0x7FF0000000000000ll;
 			return str + 3;
 		}
-		if (strncmp(str, "-inf", 4) == 0)
+		if (memcmp(str, "-inf", 4) == 0)
 		{
 			*(U64 *)dest = 0xFFF0000000000000ll;
 			return str + 4;
 		}
-		if (strncmp(str, "1.#INF", 6) == 0)
+		if (memcmp(str, "1.#INF", 6) == 0)
 		{
 			*(U64 *)dest = 0x7FF0000000000000ll;
 			return str + 6;
 		}
-		if (strncmp(str, "-1.#INF", 7) == 0)
+		if (memcmp(str, "-1.#INF", 7) == 0)
 		{
 			*(U64 *)dest = 0xFFF0000000000000ll;
 			return str + 7;
 		}
 
-		F64 negative = 1.0;
+		F64 negative = 1.0f;
 		if (str[0] == '+')
 		{
 			++str;
 		}
 		if (str[0] == '-')
 		{
-			negative = -1.0;
+			negative = -1.0f;
 			++str;
 		}
 
@@ -1647,7 +1647,7 @@ const char *LLXMLNode::parseFloat(const char *str, F64 *dest, U32 precision, Enc
 		
 		F64 ret = F64(int_part) + (F64(f_part)/F64(1LL<<61));
 
-		F64 exponent = 1.0;
+		F64 exponent = 1.f;
 		if (str[0] == 'e')
 		{
 			// Scientific notation!
@@ -1733,9 +1733,9 @@ U32 LLXMLNode::getBoolValue(U32 expected_length, BOOL *array)
 #if LL_DEBUG
 	if (ret_length != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getBoolValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << ret_length << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getBoolValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << ret_length << LL_ENDL;
 	}
 #endif
 	return ret_length;
@@ -1786,9 +1786,9 @@ U32 LLXMLNode::getByteValue(U32 expected_length, U8 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getByteValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getByteValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 	return i;
@@ -1839,9 +1839,9 @@ U32 LLXMLNode::getIntValue(U32 expected_length, S32 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getIntValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getIntValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 	return i;
@@ -1893,9 +1893,9 @@ U32 LLXMLNode::getUnsignedValue(U32 expected_length, U32 *array, Encoding encodi
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getUnsignedValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getUnsignedValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 
@@ -1947,9 +1947,9 @@ U32 LLXMLNode::getLongValue(U32 expected_length, U64 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getLongValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getLongValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 
@@ -1993,9 +1993,9 @@ U32 LLXMLNode::getFloatValue(U32 expected_length, F32 *array, Encoding encoding)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getFloatValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getFloatValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 	return i;
@@ -2038,9 +2038,9 @@ U32 LLXMLNode::getDoubleValue(U32 expected_length, F64 *array, Encoding encoding
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getDoubleValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getDoubleValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 	return i;
@@ -2086,9 +2086,9 @@ U32 LLXMLNode::getStringValue(U32 expected_length, std::string *array)
 #if LL_DEBUG
 	if (num_returned_strings != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getStringValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << num_returned_strings << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getStringValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << num_returned_strings << LL_ENDL;
 	}
 #endif
 
@@ -2131,9 +2131,9 @@ U32 LLXMLNode::getUUIDValue(U32 expected_length, LLUUID *array)
 #if LL_DEBUG
 	if (i != expected_length)
 	{
-		// _LL_DEBUGS() << "LLXMLNode::getUUIDValue() failed for node named '" 
-		//	<< mName->mString << "' -- expected " << expected_length << " but "
-		//	<< "only found " << i << LL_ENDL;
+		LL_DEBUGS() << "LLXMLNode::getUUIDValue() failed for node named '" 
+			<< mName->mString << "' -- expected " << expected_length << " but "
+			<< "only found " << i << LL_ENDL;
 	}
 #endif
 	return i;
@@ -2330,6 +2330,7 @@ void LLXMLNode::setUnsignedValue(U32 length, const U32* array, Encoding encoding
 				new_value.append(llformat("%08X", array[pos]));
 			}
 		}
+		mValue = new_value;
 	}
 	// TODO -- Handle Base32
 
@@ -2559,7 +2560,7 @@ void LLXMLNode::setNodeRefValue(U32 length, const LLXMLNode **array)
 	std::string new_value;
 	for (U32 pos=0; pos<length; ++pos)
 	{
-		if (!array[pos]->mID.empty())
+		if (array[pos]->mID != "")
 		{
 			new_value.append(array[pos]->mID);
 		}
@@ -2900,8 +2901,7 @@ void LLXMLNode::createUnitTest(S32 max_num_children)
 				{
 					random_node_array[value] = get_rand_node(root);
 					const char *node_name = random_node_array[value]->mName->mString;
-					U32 node_name_size = strlen(node_name);
-					for (U32 pos=0; pos<node_name_size; ++pos)		/* Flawfinder: ignore */
+					for (U32 pos=0; pos<strlen(node_name); ++pos)		/* Flawfinder: ignore */
 					{
 						U32 hash_contrib = U32(node_name[pos]) << ((pos % 4) * 8);
 						noderef_checksum ^= hash_contrib;
@@ -3073,8 +3073,7 @@ BOOL LLXMLNode::performUnitTest(std::string &error_buffer)
 				for (U32 pos=0; pos<node->mLength; ++pos)
 				{
 					const char *node_name = node_array[pos]->mName->mString;
-					U32 node_name_size = strlen(node_name);
-					for (U32 pos2=0; pos2<node_name_size; ++pos2)		/* Flawfinder: ignore */
+					for (U32 pos2=0; pos2<strlen(node_name); ++pos2)		/* Flawfinder: ignore */
 					{
 						U32 hash_contrib = U32(node_name[pos2]) << ((pos2 % 4) * 8);
 						noderef_checksum ^= hash_contrib;

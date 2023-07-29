@@ -185,7 +185,7 @@ LLSD LLHTTPNode::simpleDel(const LLSD&) const
 void  LLHTTPNode::options(ResponsePtr response, const LLSD& context) const
 {
 	//LL_INFOS() << "options context: " << context << LL_ENDL;
-	// _LL_DEBUGS("LLHTTPNode") << "context: " << context << LL_ENDL;
+	LL_DEBUGS("LLHTTPNode") << "context: " << context << LL_ENDL;
 
 	// default implementation constructs an url to the documentation.
 	// *TODO: Check for 'Host' header instead of 'host' header?
@@ -252,10 +252,10 @@ const LLHTTPNode* LLHTTPNode::traverse(
 		LLHTTPNode* child = node->getChild(*iter, context);
 		if(!child) 
 		{
-			// _LL_DEBUGS() << "LLHTTPNode::traverse: Couldn't find '" << *iter << "'" << LL_ENDL;
+			LL_DEBUGS() << "LLHTTPNode::traverse: Couldn't find '" << *iter << "'" << LL_ENDL;
 			break; 
 		}
-		// _LL_DEBUGS() << "LLHTTPNode::traverse: Found '" << *iter << "'" << LL_ENDL;
+		LL_DEBUGS() << "LLHTTPNode::traverse: Found '" << *iter << "'" << LL_ENDL;
 
 		node = child;
 	}
@@ -463,8 +463,8 @@ void LLHTTPRegistrar::buildAllServices(LLHTTPNode& root)
     FactoryMap::const_iterator end = map.end();
     for (; i != end; ++i)
     {
-		/*// _LL_DEBUGS("AppInit") << "LLHTTPRegistrar::buildAllServices adding node for path "
-			<< i->first << LL_ENDL;*/
+		LL_DEBUGS("AppInit") << "LLHTTPRegistrar::buildAllServices adding node for path "
+			<< i->first << LL_ENDL;
 		
         root.addNode(i->first, i->second->build());
     }

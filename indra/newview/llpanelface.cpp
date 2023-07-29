@@ -37,6 +37,7 @@
 #include "llfontgl.h"
 
 // project includes
+#include "llagent.h"
 #include "llagentdata.h"
 #include "llbutton.h"
 #include "llcheckboxctrl.h"
@@ -56,7 +57,9 @@
 #include "llmaterialeditor.h"
 #include "llmediactrl.h"
 #include "llmediaentry.h"
+#include "llmenubutton.h"
 #include "llnotificationsutil.h"
+#include "llpanelcontents.h"
 #include "llradiogroup.h"
 #include "llresmgr.h"
 #include "llselectmgr.h"
@@ -66,6 +69,8 @@
 #include "lltexturectrl.h"
 #include "lltextureentry.h"
 #include "lltooldraganddrop.h"
+#include "lltoolface.h"
+#include "lltoolmgr.h"
 #include "lltrans.h"
 #include "llui.h"
 #include "llviewercontrol.h"
@@ -179,6 +184,8 @@ void readSelectedGLTFMaterial(std::function<T(const LLGLTFMaterial*)> func, T& v
     } select_func(func);
     identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&select_func, value, has_tolerance, tolerance);
 }
+
+BOOST_STATIC_ASSERT(MATTYPE_DIFFUSE == LLRender::DIFFUSE_MAP && MATTYPE_NORMAL == LLRender::NORMAL_MAP && MATTYPE_SPECULAR == LLRender::SPECULAR_MAP);
 
 //
 // "Use texture" label for normal/specular type comboboxes

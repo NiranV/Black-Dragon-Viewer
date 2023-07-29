@@ -464,7 +464,7 @@ BOOL LLCacheName::getGroupName(const LLUUID& id, std::string& group)
 		// COUNTER-HACK to combat James' HACK in exportFile()...
 		// this group name was loaded from a name cache that did not
 		// bother to save the group name ==> we must ask for it
-		// _LL_DEBUGS() << "LLCacheName queuing HACK group request: " << id << LL_ENDL;
+		LL_DEBUGS() << "LLCacheName queuing HACK group request: " << id << LL_ENDL;
 		entry = NULL;
 	}
 
@@ -562,13 +562,13 @@ std::string LLCacheName::buildLegacyName(const std::string& complete_name)
 {
 	//boost::regexp was showing up in the crashreporter, so doing  
 	//painfully manual parsing using substr. LF
-	size_t open_paren = complete_name.rfind(" (");
-	size_t close_paren = complete_name.rfind(')');
+	S32 open_paren = complete_name.rfind(" (");
+	S32 close_paren = complete_name.rfind(')');
 
 	if (open_paren != std::string::npos &&
 		close_paren == complete_name.length()-1)
 	{
-		size_t length = close_paren - open_paren - 2;
+		S32 length = close_paren - open_paren - 2;
 		std::string legacy_name = complete_name.substr(open_paren+2, length);
 		
 		if (legacy_name.length() > 0)
@@ -577,7 +577,7 @@ std::string LLCacheName::buildLegacyName(const std::string& complete_name)
 			LLStringUtil::toUpper(cap_letter);
 			legacy_name = cap_letter + legacy_name.substr(1);
 	
-			size_t separator = legacy_name.find('.');
+			S32 separator = legacy_name.find('.');
 
 			if (separator != std::string::npos)
 			{
@@ -675,8 +675,8 @@ void LLCacheName::processPending()
 
 	if(!impl.mUpstreamHost.isOk())
 	{
-		/*// _LL_DEBUGS() << "LLCacheName::processPending() - bad upstream host."
-				 << LL_ENDL;*/
+		LL_DEBUGS() << "LLCacheName::processPending() - bad upstream host."
+				 << LL_ENDL;
 		return;
 	}
 

@@ -233,7 +233,7 @@ void LLCoros::rethrow()
 
 void LLCoros::setStackSize(S32 stacksize)
 {
-    // _LL_DEBUGS("LLCoros") << "Setting coroutine stack size to " << stacksize << LL_ENDL;
+    LL_DEBUGS("LLCoros") << "Setting coroutine stack size to " << stacksize << LL_ENDL;
     mStackSize = stacksize;
 }
 

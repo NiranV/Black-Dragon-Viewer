@@ -381,6 +381,8 @@ void LLAvatarAppearance::initClass(const std::string& avatar_file_name_arg, cons
 	root->getFastAttributeS32( wearable_definition_version_string, wearable_def_version );
 	LLWearable::setCurrentDefinitionVersion( wearable_def_version );
 
+	std::string mesh_file_name;
+
 	LLXmlTreeNode* skeleton_node = root->getChildByName( "skeleton" );
 	if (!skeleton_node)
 	{
@@ -470,13 +472,13 @@ void LLAvatarAppearance::compareJointStateMaps(joint_state_map_t& last_state,
             const std::string& key = pair.first;
             if (last_state[key] != curr_state[key])
             {
-                // _LL_DEBUGS("AvatarBodySize") << "BodySize change " << key << " " << last_state[key] << "->" << curr_state[key] << LL_ENDL;
+                LL_DEBUGS("AvatarBodySize") << "BodySize change " << key << " " << last_state[key] << "->" << curr_state[key] << LL_ENDL;
                 diff_count++;
             }
         }
         if (diff_count > 0)
         {
-            // _LL_DEBUGS("AvatarBodySize") << "Total of BodySize changes " << diff_count << LL_ENDL;
+            LL_DEBUGS("AvatarBodySize") << "Total of BodySize changes " << diff_count << LL_ENDL;
         }
         
     }
@@ -620,11 +622,11 @@ BOOL LLAvatarAppearance::setupBone(const LLAvatarBoneInfo* info, LLJoint* parent
 {
 	LLJoint* joint = NULL;
 
-    /*// _LL_DEBUGS("BVH") << "bone info: name " << info->mName
+    LL_DEBUGS("BVH") << "bone info: name " << info->mName
                      << " isJoint " << info->mIsJoint
                      << " volume_num " << volume_num
                      << " joint_num " << joint_num
-                     << LL_ENDL;*/
+                     << LL_ENDL;
 
 	if (info->mIsJoint)
 	{
@@ -712,7 +714,7 @@ BOOL LLAvatarAppearance::allocateCharacterJoints( U32 num )
 //-----------------------------------------------------------------------------
 BOOL LLAvatarAppearance::buildSkeleton(const LLAvatarSkeletonInfo *info)
 {
-    // _LL_DEBUGS("BVH") << "numBones " << info->mNumBones << " numCollisionVolumes " << info->mNumCollisionVolumes << LL_ENDL;
+    LL_DEBUGS("BVH") << "numBones " << info->mNumBones << " numCollisionVolumes " << info->mNumCollisionVolumes << LL_ENDL;
 
 	// allocate joints
 	if (!allocateCharacterJoints(info->mNumBones))
@@ -829,7 +831,7 @@ void LLAvatarAppearance::buildCharacter()
 	stop_glerror();
 
 // 	gPrintMessagesThisFrame = TRUE;
-	// _LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
+	LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
 
 	if (!status)
 	{
@@ -1733,6 +1735,7 @@ void LLAvatarAppearance::makeJointAliases(LLAvatarBoneInfo *bone_info)
 
 const LLAvatarAppearance::joint_alias_map_t& LLAvatarAppearance::getJointAliases ()
 {
+    LLAvatarAppearance::joint_alias_map_t alias_map;
     if (mJointAliasMap.empty())
     {
         
@@ -1936,7 +1939,6 @@ BOOL LLAvatarAppearance::LLAvatarXmlInfo::parseXmlMeshNodes(LLXmlTreeNode* root)
 				{
 					LL_WARNS() << "Unknown param type." << LL_ENDL;
 				}
-				delete info;
                 return FALSE;
 			}
 

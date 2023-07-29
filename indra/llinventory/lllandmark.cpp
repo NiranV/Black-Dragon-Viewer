@@ -138,7 +138,7 @@ LLLandmark* LLLandmark::constructFromString(const char *buffer, const S32 buffer
                 }
                 else
                 {
-                    //LL_DEBUGS("Landmark") << "Landmark read: " << pos << LL_ENDL;
+                    LL_DEBUGS("Landmark") << "Landmark read: " << pos << LL_ENDL;
                     result = new LLLandmark(pos);
                 }
                 break;
@@ -220,7 +220,7 @@ void LLLandmark::requestRegionHandle(
 	if(region_id.isNull())
 	{
 		// don't bother with checking - it's 0.
-		//LL_DEBUGS("Landmark") << "requestRegionHandle: null" << LL_ENDL;
+		LL_DEBUGS("Landmark") << "requestRegionHandle: null" << LL_ENDL;
 		if(callback)
 		{
 			const U64 U64_ZERO = 0;
@@ -231,7 +231,7 @@ void LLLandmark::requestRegionHandle(
 	{
 		if(region_id == mLocalRegion.first)
 		{
-			//LL_DEBUGS("Landmark") << "requestRegionHandle: local" << LL_ENDL;
+			LL_DEBUGS("Landmark") << "requestRegionHandle: local" << LL_ENDL;
 			if(callback)
 			{
 				callback(region_id, mLocalRegion.second);
@@ -242,14 +242,14 @@ void LLLandmark::requestRegionHandle(
 			region_map_t::iterator it = mRegions.find(region_id);
 			if(it == mRegions.end())
 			{
-				//LL_DEBUGS("Landmark") << "requestRegionHandle: upstream" << LL_ENDL;
+				LL_DEBUGS("Landmark") << "requestRegionHandle: upstream" << LL_ENDL;
 				if(callback)
 				{
 					region_callback_map_t::value_type vt(region_id, callback);
 					sRegionCallbackMap.insert(vt);
 				}
-				//LL_DEBUGS("Landmark") << "Landmark requesting information about: "
-				//		 << region_id << LL_ENDL;
+				LL_DEBUGS("Landmark") << "Landmark requesting information about: "
+						 << region_id << LL_ENDL;
 				msg->newMessage("RegionHandleRequest");
 				msg->nextBlock("RequestBlock");
 				msg->addUUID("RegionID", region_id);
@@ -258,7 +258,7 @@ void LLLandmark::requestRegionHandle(
 			else if(callback)
 			{
 				// we have the answer locally - just call the callack.
-				//LL_DEBUGS("Landmark") << "requestRegionHandle: ready" << LL_ENDL;
+				LL_DEBUGS("Landmark") << "requestRegionHandle: ready" << LL_ENDL;
 				callback(region_id, (*it).second.mRegionHandle);
 			}
 		}
@@ -292,8 +292,8 @@ void LLLandmark::processRegionIDAndHandle(LLMessageSystem* msg, void**)
 #if LL_DEBUG
 	U32 grid_x, grid_y;
 	grid_from_region_handle(info.mRegionHandle, &grid_x, &grid_y);
-	// _LL_DEBUGS() << "Landmark got reply for region: " << region_id << " "
-	//		 << grid_x << "," << grid_y << LL_ENDL;
+	LL_DEBUGS() << "Landmark got reply for region: " << region_id << " "
+			 << grid_x << "," << grid_y << LL_ENDL;
 #endif
 
 	// make all the callbacks here.

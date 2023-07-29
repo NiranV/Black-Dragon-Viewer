@@ -103,7 +103,7 @@ bool LLLiveFile::Impl::check()
             {
                 mLastExists = false;
                 detected_change = true;	// no longer existing is a change!
-                // _LL_DEBUGS() << "detected deleted file '" << mFilename << "'" << LL_ENDL;
+                LL_DEBUGS() << "detected deleted file '" << mFilename << "'" << LL_ENDL;
             }
         }
         else
@@ -112,13 +112,13 @@ bool LLLiveFile::Impl::check()
             if ( ! mLastExists )
             {
                 // last check, it did not exist - that counts as a change
-                // _LL_DEBUGS() << "detected created file '" << mFilename << "'" << LL_ENDL;
+                LL_DEBUGS() << "detected created file '" << mFilename << "'" << LL_ENDL;
                 detected_change = true;
             }
             else if ( stat_data.st_mtime > mLastModTime )
             {
                 // file modification time is newer than last check
-                // _LL_DEBUGS() << "detected updated file '" << mFilename << "'" << LL_ENDL;
+                LL_DEBUGS() << "detected updated file '" << mFilename << "'" << LL_ENDL;
                 detected_change = true;
             }
             mLastExists = true;

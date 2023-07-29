@@ -144,7 +144,7 @@ public:
 	S32        getDiscardLevel() const;
 	S8         getComponents() const;
 	BOOL       getBoundRecently() const;
-	S64Bytes   getTextureMemory() const ;
+	S32Bytes   getTextureMemory() const ;
 	LLGLenum   getPrimaryFormat() const;
 	BOOL       getIsAlphaMask() const ;
 	LLTexUnit::eTextureType getTarget(void) const ;

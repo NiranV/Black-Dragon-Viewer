@@ -1324,7 +1324,7 @@ void LLTransferSourceParamsInvItem::setAsset(const LLUUID &asset_id, const LLAss
 
 void LLTransferSourceParamsInvItem::packParams(LLDataPacker &dp) const
 {
-	// _LL_DEBUGS() << "LLTransferSourceParamsInvItem::packParams()" << LL_ENDL;
+	LL_DEBUGS() << "LLTransferSourceParamsInvItem::packParams()" << LL_ENDL;
 	dp.packUUID(mAgentID, "AgentID");
 	dp.packUUID(mSessionID, "SessionID");
 	dp.packUUID(mOwnerID, "OwnerID");

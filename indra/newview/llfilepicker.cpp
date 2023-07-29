@@ -64,7 +64,6 @@ LLFilePicker LLFilePicker::sInstance;
 #define MATERIAL_TEXTURES_FILTER L"GLTF Import (*.gltf; *.glb; *.tga; *.bmp; *.jpg; *.jpeg; *.png)\0*.gltf;*.glb;*.tga;*.bmp;*.jpg;*.jpeg;*.png\0"
 #define SCRIPT_FILTER L"Script files (*.lsl)\0*.lsl\0"
 #define DICTIONARY_FILTER L"Dictionary files (*.dic; *.xcu)\0*.dic;*.xcu\0"
-#define ZIP_FILTER L"ZIP files (*.zip)\0*.zip\0"
 #endif
 
 #ifdef LL_DARWIN
@@ -235,10 +234,6 @@ BOOL LLFilePicker::setupFilter(ELoadFilter filter)
 		break;
 	case FFLOAD_DICTIONARY:
 		mOFN.lpstrFilter = DICTIONARY_FILTER \
-			L"\0";
-		break;
-	case FFLOAD_ZIP:
-		mOFN.lpstrFilter = ZIP_FILTER \
 			L"\0";
 		break;
 	default:
@@ -683,9 +678,6 @@ std::unique_ptr<std::vector<std::string>> LLFilePicker::navOpenFilterProc(ELoadF
         case FFLOAD_DICTIONARY:
             allowedv->push_back("dic");
             allowedv->push_back("xcu");
-            break;
-        case FFLOAD_ZIP:
-            allowedv.push_back("zip");
             break;
         case FFLOAD_DIRECTORY:
             break;
@@ -1135,7 +1127,7 @@ void LLFilePicker::add_to_selectedfiles(gpointer data, gpointer user_data)
 	if (filename_utf8)
 	{
 		picker->mFiles.push_back(std::string(filename_utf8));
-		// _LL_DEBUGS() << "ADDED FILE " << filename_utf8 << LL_ENDL;
+		LL_DEBUGS() << "ADDED FILE " << filename_utf8 << LL_ENDL;
 		g_free(filename_utf8);
 	}
 
@@ -1147,7 +1139,7 @@ void LLFilePicker::chooser_responder(GtkWidget *widget, gint response, gpointer 
 {
 	LLFilePicker* picker = (LLFilePicker*)user_data;
 
-	// _LL_DEBUGS() << "GTK DIALOG RESPONSE " << response << LL_ENDL;
+	LL_DEBUGS() << "GTK DIALOG RESPONSE " << response << LL_ENDL;
 
 	if (response == GTK_RESPONSE_ACCEPT)
 	{
@@ -1350,12 +1342,6 @@ static std::string add_dictionary_filter_to_gtkchooser(GtkWindow *picker)
 							LLTrans::getString("dictionary_files") + " (*.dic; *.xcu)");
 }
 
-static std::string add_zip_filter_to_gtkchooser(GtkWindow *picker)
-{
-	return add_simple_mime_filter_to_gtkchooser(picker, HTTP_CONTENT_TEXT_PLAIN,
-												LLTrans::getString("zip_files") + " (*.zip)");
-}
-
 static std::string add_save_texture_filter_to_gtkchooser(GtkWindow *picker)
 {
 	GtkFileFilter *gfilter_tga = gtk_file_filter_new();
@@ -1536,9 +1522,6 @@ BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 			break;
 		case FFLOAD_DICTIONARY:
 			filtername = add_dictionary_filter_to_gtkchooser(picker);
-			break;
-		case FFLOAD_ZIP:
-			filtername = add_zip_filter_to_gtkchooser(picker);
 			break;
 		default:;
 			break;
