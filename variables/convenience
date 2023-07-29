@@ -1,0 +1,90 @@
+function toupper {
+    echo "$*" | tr '[a-z]' '[A-Z]'
+}
+
+# Usage:
+# switches="$(remove_switch -DPIC $LL_BUILD)"
+# It's important NOT to quote whichever compiler-arguments string you pass to
+# remove_switch (LL_BUILD in the example above), just as it's important not to
+# quote it when passing it to the compiler itself: bash must parse into
+# separate tokens.
+function remove_switch {
+    local todel="$1"
+    shift
+    local out=()
+    for sw
+    do if [ "$sw" != "$todel" ]
+       then # append $sw to out
+            out[${#out[*]}]="$sw"
+       fi
+    done
+    echo "${out[@]}"
+}
+
+# Usage:
+# switches="$(replace_switch -DPIC -DPOC $LL_BUILD)"
+# It's important NOT to quote whichever compiler-arguments string you pass to
+# replace_switch (LL_BUILD in the example above), just as it's important not to
+# quote it when passing it to the compiler itself: bash must parse into
+# separate tokens.
+function replace_switch {
+    local todel="$1"
+    local toins="$2"
+    shift
+    shift
+    echo "$toins $(remove_switch "$todel" "$@")"
+}
+
+# Bring in the variables from the 'variables' script in the same directory as
+# this script. Beware: since this script is itself sourced, its name is NOT in
+# $0, but rather in $BASH_SOURCE!
+source "$(dirname "$BASH_SOURCE")/variables"
+
+# Enumerate the known universe of buildtypes and suffixes.
+# Alternatively we could trawl the output of 'set' for variables whose name
+# matches a regexp, but this way feels more predictable.
+T=(BASE RELEASE RELWITHDEBINFO DEBUG)
+X=(_MACROS _SWITCHES "")
+
+case "$OSTYPE" in
+    cygwin)
+        p="WINDOWS"
+        ;;
+    darwin*)
+        p="DARWIN"
+        ;;
+    linux*)
+        p="LINUX"
+        ;;
+    *)
+        echo "Unrecognized platform $OSTYPE" 1>&2
+        exit 2
+        ;;
+esac
+
+# make aliases for all LL_BUILD_{platform}_{buildtype}{suffix}
+# variables that eliminate the {platform} part:
+# LL_BUILD_{buildtype}{suffix}
+# e.g. LL_BUILD_RELEASE has Release switches for current platform
+for t in "${T[@]}"
+do for x in "${X[@]}"
+   do eval LL_BUILD_$t$x=\$LL_BUILD_${p}_$t$x
+   done
+done
+
+# further, if $1 is passed as a buildtype (Release, RelWithDebInfo, Debug),
+# make aliases that eliminate the {buildtype} part: just
+# LL_BUILD{suffix}
+# e.g. if we assume 'source convenience Release', then
+# LL_BUILD has Release switches for current platform
+if [ -n "$1" ]
+then # uppercase the buildtype so that's not on our caller
+     t="$(toupper "$1")"
+     for x in "${X[@]}"
+     do eval LL_BUILD$x=\$LL_BUILD_$t$x
+     done
+fi
+
+# Since this script is designed to be sourced, explicitly delete temporary
+# variables.
+unset p T X t x
