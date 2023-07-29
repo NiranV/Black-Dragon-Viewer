@@ -437,10 +437,6 @@ void LLPipeline::init()
 	gOctreeMaxCapacity = gSavedSettings.getU32("OctreeMaxNodeCapacity");
 	gOctreeMinSize = gSavedSettings.getF32("OctreeMinimumNodeSize");
 	sDynamicLOD = gSavedSettings.getBOOL("RenderDynamicLOD");
-	sUseTriStrips = gSavedSettings.getBOOL("RenderUseTriStrips");
-	LLVertexBuffer::sUseStreamDraw = gSavedSettings.getBOOL("RenderUseStreamVBO");
-	LLVertexBuffer::sUseVAO = gSavedSettings.getBOOL("RenderUseVAO");
-	LLVertexBuffer::sPreferStreamDraw = gSavedSettings.getBOOL("RenderPreferStreamDraw");
 	sRenderAttachedParticles = gSavedSettings.getBOOL("RenderAttachedParticles");
 
 	//BD
@@ -988,8 +984,8 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	if (RenderMotionBlur)
 	{
 		//allocate velocity map
-		mVelocityMap.allocate(resX, resY, GL_RGB, FALSE, FALSE, LLTexUnit::TT_RECT_TEXTURE);
-		mRT.shareDepthBuffer(mVelocityMap);
+		mVelocityMap.allocate(resX, resY, GL_RGB, FALSE, LLTexUnit::TT_RECT_TEXTURE);
+		mRT->deferredScreen.shareDepthBuffer(mVelocityMap);
 	}
 	else
 	{

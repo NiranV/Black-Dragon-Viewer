@@ -47,11 +47,9 @@ class LLComboBox;
 class LLFloaterTexturePicker;
 class LLInventoryItem;
 class LLViewerFetchedTexture;
-<<<<<<< HEAD
-class LLTabContainer;
-=======
 class LLFetchedGLTFMaterial;
->>>>>>> Linden_Release/DRTVWR-559
+//BD
+class LLTabContainer;
 
 // used for setting drag & drop callbacks.
 typedef boost::function<BOOL (LLUICtrl*, LLInventoryItem*)> drag_n_drop_callback;

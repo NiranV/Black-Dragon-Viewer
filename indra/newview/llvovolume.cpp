@@ -1196,7 +1196,6 @@ BOOL LLVOVolume::setVolume(const LLVolumeParams &params_in, const S32 detail, bo
                             notifySkinInfoLoaded(skin_info);
                         }
                     }
->>>>>>> Linden_Release/DRTVWR-559
 				}
 			}
 			else // otherwise is sculptie
@@ -1295,20 +1294,6 @@ void LLVOVolume::notifyMeshLoaded()
 		cav->notifyAttachmentMeshLoaded();
 	}
 	updateVisualComplexity();
-}
-
-void LLVOVolume::notifySkinInfoLoaded(const LLMeshSkinInfo* skin)
-{
-	mSkinInfoFailed = false;
-	mSkinInfo = skin;
-
-	notifyMeshLoaded();
-}
-
-void LLVOVolume::notifySkinInfoUnavailable()
-{
-	mSkinInfoFailed = true;
-	mSkinInfo = nullptr;
 }
 
 void LLVOVolume::notifySkinInfoLoaded(const LLMeshSkinInfo* skin)

@@ -1268,7 +1268,6 @@ class LLAdvancedToggleWireframe : public view_listener_t
 {
 	bool handleEvent(const LLSD& userdata)
 	{
-<<<<<<< HEAD
 // [RLVa:KB] - Checked: RLVa-2.0.0
 		bool fRlvBlockWireframe = gRlvAttachmentLocks.hasLockedHUD();
 		if ( (!gUseWireframe) && (fRlvBlockWireframe) )
@@ -1289,24 +1288,21 @@ void set_use_wireframe(bool useWireframe)
 //		gUseWireframe = !(gUseWireframe);
 		gWindowResized = TRUE;
 
-		LLPipeline::updateRenderDeferred();
+		bool initial_deferred = false;
 		if (gUseWireframe)
 		{
-			gInitialDeferredModeForWireframe = LLPipeline::sRenderDeferred;
+			initial_deferred = LLPipeline::sRenderDeferred;
 		}
 
 		gPipeline.resetVertexBuffers();
 
-		if (!gUseWireframe && !gInitialDeferredModeForWireframe && LLPipeline::sRenderDeferred != bool(gInitialDeferredModeForWireframe) && gPipeline.isInit())
+		if (!gUseWireframe && !initial_deferred && LLPipeline::sRenderDeferred != bool(initial_deferred) && gPipeline.isInit())
 		{
 			LLPipeline::refreshCachedSettings();
 			gPipeline.releaseGLBuffers();
 			gPipeline.createGLBuffers();
 			LLViewerShaderMgr::instance()->setShaders();
 		}
-=======
-		gUseWireframe = !(gUseWireframe);
->>>>>>> Linden_Release/DRTVWR-559
 
 //		return true;
 	}
@@ -2958,16 +2954,10 @@ void handle_object_show_original()
 }
 
 
-<<<<<<< HEAD
-static void init_default_item_label(LLUICtrl* ctrl, const std::string& item_name)
-{
-	auto it = sDefaultItemLabels.find(item_name);
-=======
 static void init_default_item_label(LLUICtrl* ctrl)
 {
 	const std::string& item_name = ctrl->getName();
 	boost::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
->>>>>>> Linden_Release/DRTVWR-559
 	if (it == sDefaultItemLabels.end())
 	{
 		// *NOTE: This will not work for items of type LLMenuItemCheckGL because they return boolean value
@@ -3003,7 +2993,6 @@ bool enable_object_touch(LLUICtrl* ctrl)
 		new_value = obj->flagHandleTouch() || (parent && parent->flagHandleTouch());
 	}
 
-<<<<<<< HEAD
 // [RLVa:KB] - Checked: 2010-11-12 (RLVa-1.2.1g) | Added: RLVa-1.2.1g
 	if ( (RlvActions::isRlvEnabled()) && (new_value) )
 	{
@@ -3012,11 +3001,7 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 // [/RLVa:KB]
 
-	const std::string& item_name = ctrl->getName();
-	init_default_item_label(ctrl, item_name);
-=======
 	init_default_item_label(ctrl);
->>>>>>> Linden_Release/DRTVWR-559
 
 	// Update label based on the node touch name if available.
 	LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -3026,11 +3011,7 @@ bool enable_object_touch(LLUICtrl* ctrl)
 	}
 	else
 	{
-<<<<<<< HEAD
-		ctrl->setValue(get_default_item_label(item_name));
-=======
 		ctrl->setValue(get_default_item_label(ctrl->getName()));
->>>>>>> Linden_Release/DRTVWR-559
 	}
 
 	return new_value;
@@ -3570,16 +3551,12 @@ class LLAvatarCheckImpostorMode : public view_listener_t
 // [/RLVa:KB]
 //				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
 			case 2:
-<<<<<<< HEAD
 // [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
 				return LLRenderMuteList::instance().getSavedVisualMuteSetting(avatar->getID()) == LLVOAvatar::AV_ALWAYS_RENDER;
 // [/RLVa:KB]
 //				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
-=======
-				return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
             case 4:
                 return (avatar->getVisualMuteSettings() != LLVOAvatar::AV_RENDER_NORMALLY);
->>>>>>> Linden_Release/DRTVWR-559
 			default:
 				return false;
 		}
@@ -7021,15 +6998,8 @@ bool enable_object_sit(LLUICtrl* ctrl)
 	bool sitting_on_sel = sitting_on_selection();
 	if (!sitting_on_sel)
 	{
-<<<<<<< HEAD
-		const std::string& item_name = ctrl->getName();
-
-		// init default labels
-		init_default_item_label(ctrl, item_name);
-=======
 		// init default labels
 		init_default_item_label(ctrl);
->>>>>>> Linden_Release/DRTVWR-559
 
 		// Update label
 		LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->getFirstRootNode();
@@ -7039,11 +7009,7 @@ bool enable_object_sit(LLUICtrl* ctrl)
 		}
 		else
 		{
-<<<<<<< HEAD
-			ctrl->setValue(get_default_item_label(item_name));
-=======
 			ctrl->setValue(get_default_item_label(ctrl->getName()));
->>>>>>> Linden_Release/DRTVWR-559
 		}
 	}
 

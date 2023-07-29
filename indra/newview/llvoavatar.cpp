@@ -11405,7 +11405,7 @@ void LLVOAvatar::calculateUpdateOriginalRenderComplexity()
 			<< LL_ENDL;
 	}*/
 	mOriginalVisualComplexity = cost;
-=======
+
                 attachment_volume_cost += volume->getRenderCost(textures);
 
                 const_child_list_t children = volume->getChildren();
@@ -11522,7 +11522,6 @@ void LLVOAvatar::calculateUpdateOriginalRenderComplexity()
             hud_complexity_list.push_back(hud_object_complexity);
         }
     }
->>>>>>> Linden_Release/DRTVWR-559
 }
 
 //BD - Altered Complexity Calculation

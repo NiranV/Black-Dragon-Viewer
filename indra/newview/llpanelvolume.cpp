@@ -803,7 +803,6 @@ void LLPanelVolume::doSendIsReflectionProbe(const LLSD & notification, const LLS
         // cancelled, touch up UI state
         getChild<LLUICtrl>("Reflection Probe")->setValue(false);
     }
->>>>>>> Linden_Release/DRTVWR-559
 }
 
 void LLPanelVolume::sendIsFlexible()

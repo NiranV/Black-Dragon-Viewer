@@ -101,7 +101,7 @@ else (ADDRESS_SIZE EQUAL 32)
   endif()
 endif (ADDRESS_SIZE EQUAL 32)
 
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   set(WINDOWS ON BOOL FORCE)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
@@ -224,4 +224,3 @@ set(USE_PRECOMPILED_HEADERS ON CACHE BOOL "Enable use of precompiled header dire
 source_group("CMake Rules" FILES CMakeLists.txt)
 
 get_property(LL_GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-

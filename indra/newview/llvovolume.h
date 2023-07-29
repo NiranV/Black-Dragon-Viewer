@@ -129,8 +129,6 @@ public:
 
 	void	deleteFaces();
 
-	void	animateTextures();
-
 				void	animateTextures();
 	
 	            BOOL    isVisible() const ;
@@ -175,6 +173,9 @@ public:
 				LLVector3 volumePositionToAgent(const LLVector3& dir) const;
 				LLVector3 volumeDirectionToAgent(const LLVector3& dir) const;
 
+				// [FS:Beq] - Patch: Appearance-RebuildAttachments | Checked: Catznip-5.3
+				void    forceLOD(S32 lod);
+				// [/FS]
 				
 				BOOL	getVolumeChanged() const				{ return mVolumeChanged; }
 				

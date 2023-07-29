@@ -61,13 +61,7 @@ private:
 //----------------------------------------------------------------------------
 
 // MAIN THREAD
-<<<<<<< HEAD
-LLImageDecodeThread::LLImageDecodeThread(bool threaded)
-	: LLQueuedThread("imagedecode", threaded)
-	, mCreationListSize(0)
-=======
 LLImageDecodeThread::LLImageDecodeThread(bool /*threaded*/)
->>>>>>> Linden_Release/DRTVWR-559
 {
     mThreadPool.reset(new LL::ThreadPool("ImageDecode", 8));
     mThreadPool->start();
@@ -81,21 +75,9 @@ LLImageDecodeThread::~LLImageDecodeThread()
 // virtual
 size_t LLImageDecodeThread::update(F32 max_time_ms)
 {
-<<<<<<< HEAD
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
-	LLMutexLock lock(mCreationMutex);
-	for (creation_list_t::iterator iter = mCreationList.begin();
-		iter != mCreationList.end(); ++iter)
-	{
-		creation_info& info = *iter;
-		ImageRequest* req = new ImageRequest(info.handle, info.image,
-			info.priority, info.discard, info.needs_aux,
-			info.responder);
-=======
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
     return getPending();
 }
->>>>>>> Linden_Release/DRTVWR-559
 
 size_t LLImageDecodeThread::getPending()
 {

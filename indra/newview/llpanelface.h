@@ -232,7 +232,6 @@ protected:
     static void 	onClickBtnLoadInvPBR(void* userdata);
     static void 	onClickBtnEditPBR(void* userdata);
     static void 	onClickBtnSavePBR(void* userdata);
->>>>>>> Linden_Release/DRTVWR-559
 
 	//BD
 	void			onCommitMaterialGloss();

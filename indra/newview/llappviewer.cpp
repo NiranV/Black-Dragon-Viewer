@@ -1158,9 +1158,10 @@ bool LLAppViewer::init()
 	}
 
 	gGLActive = FALSE;
-
+	
+	/*
 #if LL_RELEASE_FOR_DOWNLOAD
-    /*if (!gSavedSettings.getBOOL("CmdLineSkipUpdater") && !gNonInteractive)
+    if (!gSavedSettings.getBOOL("CmdLineSkipUpdater") && !gNonInteractive)
     {
         LLProcess::Params updater;
         updater.desc = "updater process";
@@ -1445,21 +1446,10 @@ bool LLAppViewer::doFrame()
         LLWorld::createInstance();
     }
 
-<<<<<<< HEAD
-	LLEventPump& mainloop(LLEventPumps::instance().obtain("mainloop"));
-	LLSD newFrame;
-
-	LLTimer frameTimer;
-
-	{
-        LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df LLTrace");
-        if (LLFloaterReg::instanceVisible("block_timers"))
-=======
     LLEventPump& mainloop(LLEventPumps::instance().obtain("mainloop"));
     LLSD newFrame;
     {
         LLPerfStats::RecordSceneTime T (LLPerfStats::StatType_t::RENDER_IDLE); // perf stats
->>>>>>> Linden_Release/DRTVWR-559
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df LLTrace");
             if (LLFloaterReg::instanceVisible("block_timers"))
@@ -1546,13 +1536,9 @@ bool LLAppViewer::doFrame()
 				&& (gHeadlessClient || !gViewerWindow->getShowProgress())
 				&& !gFocusMgr.focusLocked())
 			{
-<<<<<<< HEAD
+				LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
 				//BD
-				gJoystick->scanJoystick();
-=======
-                LLPerfStats::RecordSceneTime T (LLPerfStats::StatType_t::RENDER_IDLE);
-				joystick->scanJoystick();
->>>>>>> Linden_Release/DRTVWR-559
+				gJoystick->scanJoystick();k();
 				gKeyboard->scanKeyboard();
                 gViewerInput.scanMouse();
 			}
@@ -1601,11 +1587,11 @@ bool LLAppViewer::doFrame()
 
                 display();
 
-<<<<<<< HEAD
 				{
-					LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df Snapshot" )
-
+					LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
+					LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df Snapshot");
 					pingMainloopTimeout("Main:Snapshot");
+					gPipeline.mReflectionMapManager.update();
 					LLFloaterSnapshot::update(); // take snapshots
 					LLFloaterSimpleOutfitSnapshot::update();
 					gGLActive = FALSE;
@@ -1626,18 +1612,6 @@ bool LLAppViewer::doFrame()
 				}
 				last_call = LLTimer::getTotalTime();
 			}
-=======
-                {
-                    LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
-                    LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df Snapshot");
-                    pingMainloopTimeout("Main:Snapshot");
-                    gPipeline.mReflectionMapManager.update();
-                    LLFloaterSnapshot::update(); // take snapshots
-                    LLFloaterSimpleOutfitSnapshot::update();
-                    gGLActive = FALSE;
-                }
-            }
->>>>>>> Linden_Release/DRTVWR-559
 		}
 
 		{

@@ -1221,20 +1221,6 @@ namespace
 
 		std::string escaped_message;
 
-<<<<<<< HEAD
-		LLMutexLock lock(&s->mRecorderMutex);
-		for (Recorders::const_iterator i = s->mRecorders.begin();
-			i != s->mRecorders.end();
-			++i)
-		{
-			LLError::RecorderPtr r = *i;
-
-			if (!r->enabled())
-			{
-				continue;
-			}
-
-=======
         LLMutexLock lock(&s->mRecorderMutex);
 		for (LLError::RecorderPtr& r : s->mRecorders)
 		{
@@ -1243,7 +1229,6 @@ namespace
                 continue;
             }
             
->>>>>>> Linden_Release/DRTVWR-559
 			std::ostringstream message_stream;
 
 			if (r->wantsTime() && s->mTimeFunction != NULL)

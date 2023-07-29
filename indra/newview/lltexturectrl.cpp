@@ -181,13 +181,9 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
 	mOnFloaterCommitCallback(NULL),
 	mOnFloaterCloseCallback(NULL),
 	mSetImageAssetIDCallback(NULL),
-<<<<<<< HEAD
-	mOnUpdateImageStatsCallback(NULL)
-=======
 	mOnUpdateImageStatsCallback(NULL),
 	mBakeTextureEnabled(FALSE),
     mInventoryPickType(LLTextureCtrl::PICK_TEXTURE)
->>>>>>> Linden_Release/DRTVWR-559
 {
 	mCanApplyImmediately = can_apply_immediately;
 	buildFromFile("floater_texture_ctrl.xml");

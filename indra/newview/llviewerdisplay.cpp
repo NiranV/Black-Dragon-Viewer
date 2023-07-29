@@ -1426,10 +1426,10 @@ void render_ui(F32 zoom_factor, int subfield)
                 render_ui_3d();
                 LLGLState::checkStates();
             }
-            else
+            /*
             {
                 render_disconnected_background();
-            }
+            }*/
         }
 
         if (render_ui)

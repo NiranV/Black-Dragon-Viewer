@@ -344,13 +344,6 @@ public:
 //	//BD - Performance Indicator
 	U32				getAvatarPerfRank() { return mPerfRank; };							// performance rank of this avatar
 
-    
-    // avatar render cost
-	U32				getVisualComplexity()			{ return mVisualComplexity;				};
-
-    // surface area calculation
-	F32				getAttachmentSurfaceArea()		{ return mAttachmentSurfaceArea;		};
-
 	U32				getReportedVisualComplexity()					{ return mReportedVisualComplexity;				};	// Numbers as reported by the SL server
 	void			setReportedVisualComplexity(U32 value)			{ mReportedVisualComplexity = value;			};
 	

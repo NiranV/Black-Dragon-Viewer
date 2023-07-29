@@ -242,7 +242,7 @@ public:
         {
             LL_CONT << buffer.str().substr(0, truncate) << "...";
         }
-        LL_CONT << LL_ENDL;*/
+        LL_CONT << LL_ENDL;
 
         LLProcess::WritePipe& childin(mChild->getWritePipe(LLProcess::STDIN));
         childin.get_ostream() << static_cast<U64>(buffer.tellp())

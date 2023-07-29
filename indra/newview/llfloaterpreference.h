@@ -132,15 +132,10 @@ public:
 	void updateClickActionViews();
     void updateSearchableItems();
 
-<<<<<<< HEAD
 protected:	
 	//BD
 	void		onBtnOK();
 	void		onBtnCancel();
-=======
-	void		onBtnOK(const LLSD& userdata);
-	void		onBtnCancel(const LLSD& userdata);
->>>>>>> Linden_Release/DRTVWR-559
 
 protected:	
 
@@ -206,12 +201,6 @@ public:
 	void onClickRememberedUsernames();
 	void onClickAutoReplace();
 	void onClickSpellChecker();
-<<<<<<< HEAD
-=======
-	void onClickRenderExceptions();
-	void onClickAutoAdjustments();
-	void onClickAdvanced();
->>>>>>> Linden_Release/DRTVWR-559
 	void applyUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void getUIColor(LLUICtrl* ctrl, const LLSD& param);
 	void onLogChatHistorySaved();	
@@ -298,12 +287,7 @@ private:
 	void onDeleteTranscripts();
 	void onDeleteTranscriptsResponse(const LLSD& notification, const LLSD& response);
 	void updateDeleteTranscriptsButton();
-<<<<<<< HEAD
 
-=======
-	void updateMaxComplexity();
-    void updateComplexityText();
->>>>>>> Linden_Release/DRTVWR-559
 	static bool loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map);
 	
 	void loadUserSkins();

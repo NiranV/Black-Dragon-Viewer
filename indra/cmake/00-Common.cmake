@@ -16,6 +16,14 @@ include_guard()
 
 include(Variables)
 
+# We go to some trouble to set LL_BUILD to the set of relevant compiler flags.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} $ENV{LL_BUILD}")
+# Given that, all the flags you see added below are flags NOT present in
+# https://bitbucket.org/lindenlab/viewer-build-variables/src/tip/variables.
+# Before adding new ones here, it's important to ask: can this flag really be
+# applied to the viewer only, or should/must it be applied to all 3p libraries
+# as well?
+
 # Portable compilation flags.
 add_compile_definitions( ADDRESS_SIZE=${ADDRESS_SIZE})
 
@@ -40,25 +48,12 @@ if (WINDOWS)
   # Don't build DLLs.
   set(BUILD_SHARED_LIBS OFF)
 
-  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-  elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m${ADDRESS_SIZE}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m${ADDRESS_SIZE}")
-  endif ()
-
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi /MDd /EHsc -D_SCL_SECURE_NO_WARNINGS=1")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Od /Zi /MD /Ob0 /EHsc -D_ITERATOR_DEBUG_LEVEL=0")
-
-  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS_RELEASE
-        "${CMAKE_CXX_FLAGS_RELEASE} /O2 /Oi /Ot /Gy /Zi /MD /Ob2 /Oy- /Zc:inline /EHsc /fp:fast -D_ITERATOR_DEBUG_LEVEL=0")
-  elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    set(CMAKE_CXX_FLAGS_RELEASE
-        "${CMAKE_CXX_FLAGS_RELEASE} /clang:-Ofast /clang:-ffast-math /Oi /Ot /Gy /Zi /MD /Ob2 /Oy- /Zc:inline /EHsc /fp:fast -D_ITERATOR_DEBUG_LEVEL=0")
-  endif()
+  # for "backwards compatibility", cmake sneaks in the Zm1000 option which royally
+  # screws incredibuild. this hack disables it.
+  # for details see: http://connect.microsoft.com/VisualStudio/feedback/details/368107/clxx-fatal-error-c1027-inconsistent-values-for-ym-between-creation-and-use-of-precompiled-headers
+  # http://www.ogre3d.org/forums/viewtopic.php?f=2&t=60015
+  # http://www.cmake.org/pipermail/cmake/2009-September/032143.html
+  string(REPLACE "/Zm1000" " " CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
   # Without PreferredToolArchitecture=x64, as of 2020-06-26 the 32-bit
   # compiler on our TeamCity build hosts has started running out of virtual
@@ -69,7 +64,6 @@ if (WINDOWS)
   if(ADDRESS_SIZE EQUAL 32 AND DEFINED ENV{"TEAMCITY_PROJECT_NAME"})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /p:PreferredToolArchitecture=x64")  
   endif()
-  
   # zlib has assembly-language object files incompatible with SAFESEH
   add_link_options(/LARGEADDRESSAWARE
           /SAFESEH:NO
@@ -195,6 +189,3 @@ if (LINUX OR DARWIN)
   add_compile_options(${GCC_WARNINGS})
   add_compile_options(-m${ADDRESS_SIZE})
 endif (LINUX OR DARWIN)
-
-
-

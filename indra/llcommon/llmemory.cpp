@@ -120,7 +120,7 @@ void LLMemory::updateMemoryInfo()
 		sAvailPhysicalMemInKB = U32Kilobytes(0);
 	}
 
-#elif defined(LL_DARWIN)
+#else_if defined(LL_DARWIN)
     task_vm_info info;
     mach_msg_type_number_t  infoCount = TASK_VM_INFO_COUNT;
     // MACH_TASK_BASIC_INFO reports the same resident_size, but does not tell us the reusable bytes or phys_footprint.
