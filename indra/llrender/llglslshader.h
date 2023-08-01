@@ -59,7 +59,7 @@ public:
     bool attachNothing = false;
 
 //	//BD - Motion Blur
-	bool hasMotionBlur;
+	//bool hasMotionBlur;
 };
 
 // ============= Structure for caching shader uniforms ===============

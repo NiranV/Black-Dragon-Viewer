@@ -37,15 +37,9 @@
 extern BOOL gHackGodmode;
 #endif
 
-bool toggle_show_navigation_panel(const LLSD& newvalue);
-bool toggle_show_favorites_panel(const LLSD& newvalue);
-
 // These functions found in llcontroldef.cpp *TODO: clean this up!
 //setting variables are declared in this function
 void settings_setup_listeners();
-
-// for the graphics settings
-void create_graphics_group(LLControlGroup& group);
 
 // saved at end of session
 extern LLControlGroup gSavedSettings;

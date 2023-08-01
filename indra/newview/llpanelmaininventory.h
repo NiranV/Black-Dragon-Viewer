@@ -29,6 +29,7 @@
 #define LL_LLPANELMAININVENTORY_H
 
 #include "llpanel.h"
+#include "llinventoryobserver.h"
 #include "lldndbutton.h"
 
 #include "llfolderview.h"
@@ -53,7 +54,7 @@ class LLFloater;
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //BD
-class LLPanelMainInventory : public LLPanel
+class LLPanelMainInventory : public LLPanel, LLInventoryObserver
 {
 public:
 	friend class LLFloaterInventoryFinder;
@@ -71,6 +72,7 @@ public:
 									   void* cargo_data,
 									   EAcceptance* accept,
 									   std::string& tooltip_msg);
+	/*virtual*/ void changed(U32) {};
 	/*virtual*/ void draw();
 	/*virtual*/ void 	onVisibilityChange ( BOOL new_visibility );
 
@@ -100,7 +102,6 @@ public:
 	void toggleFindOptions();
 
     void resetFilters();
-    void resetAllItemsFilters();
 
 protected:
 	//
@@ -192,7 +193,6 @@ protected:
 	void setUploadCostIfNeeded();
 private:
 	LLDragAndDropButton*		mTrashButton;
-	LLHandle<LLView>			mMenuAddHandle;
 
 	bool						mNeedUploadCost;
 	// List Commands                                                              //

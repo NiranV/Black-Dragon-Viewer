@@ -126,8 +126,8 @@ public:
 	void handleIRCallback(void **data, const S32 number);
 
 	//BD - Automatic Memory Management
-	void updateMaxResidentTexMem(S32Megabytes mem);
-	void idleUpdateMaxResidentTexMem();
+	//void updateMaxResidentTexMem(S32Megabytes mem);
+	//void idleUpdateMaxResidentTexMem();
 
 	S32 getNumImages()					{ return mImageList.size(); }
 

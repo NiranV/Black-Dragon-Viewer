@@ -511,7 +511,7 @@ void LLFloaterWaterAdjust::onButtonDelete()
 
 void LLFloaterWaterAdjust::onButtonImport()
 {   // Load a a legacy Windlight XML from disk.
-	(new LLFilePickerReplyThread(boost::bind(&LLFloaterWaterAdjust::loadWaterSettingFromFile, this, _1), LLFilePicker::FFLOAD_XML, false))->getFile();
+	LLFilePickerReplyThread::startPicker(boost::bind(&LLFloaterWaterAdjust::loadWaterSettingFromFile, this, _1), LLFilePicker::FFLOAD_XML, false);
 }
 
 void LLFloaterWaterAdjust::loadWaterSettingFromFile(const std::vector<std::string>& filenames)

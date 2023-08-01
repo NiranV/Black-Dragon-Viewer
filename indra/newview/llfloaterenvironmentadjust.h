@@ -119,8 +119,6 @@ private:
 
 	void						loadSkySettingFromFile(const std::vector<std::string>& filenames);
 
-    void                        onButtonReset();
-
     LLSettingsSky::ptr_t        mLiveSky;
     LLEnvironment::connection_t mEventConnection;
 

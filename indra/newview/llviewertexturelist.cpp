@@ -124,6 +124,8 @@ void LLViewerTextureList::doPreloadImages()
 	// Set the default flat normal map
 	LLViewerFetchedTexture::sFlatNormalImagep = LLViewerTextureManager::getFetchedTextureFromFile("flatnormal.tga", FTT_LOCAL_FILE, MIPMAP_NO, LLViewerFetchedTexture::BOOST_BUMP);
 
+	LLViewerFetchedTexture::sPixieSmallImagep = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.j2c", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI);
+
 	// PBR: irradiance
 	LLViewerFetchedTexture::sDefaultIrradiancePBRp = LLViewerTextureManager::getFetchedTextureFromFile("default_irradiance.png", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI);
 
@@ -1338,7 +1340,7 @@ LLPointer<LLImageJ2C> LLViewerTextureList::convertToUploadFile(LLPointer<LLImage
 
 const S32Megabytes VIDEO_CARD_FRAMEBUFFER_MEM(12);
 const S32Megabytes MIN_MEM_FOR_NON_TEXTURE(512);
-void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
+/*void LLViewerTextureList::updateMaxResidentTexMem(S32Megabytes mem)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
 	// Initialize the image pipeline VRAM settings
@@ -1398,7 +1400,7 @@ void LLViewerTextureList::idleUpdateMaxResidentTexMem()
 
 	mMaxResidentTexMemInMegaBytes = new_cur_mem;
 	mMaxTotalTextureMemInMegaBytes = new_sys_mem;
-}
+}*/
 
 ///////////////////////////////////////////////////////////////////////////////
 

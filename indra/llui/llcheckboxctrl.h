@@ -31,6 +31,8 @@
 #include "llbutton.h"
 #include "lltextbox.h"
 #include "v4color.h"
+ //BD
+#include "llsearchablecontrol.h"
 
 //
 // Constants

@@ -574,7 +574,6 @@ static void init_texture_ctrl(LLPanelEditWearable* self, LLPanel* panel, const L
                 // Don't allow (no copy) or (notransfer) textures to be selected.
                 texture_ctrl->setImmediateFilterPermMask(PERM_NONE);
                 texture_ctrl->setDnDFilterPermMask(PERM_NONE);
-                texture_ctrl->setNonImmediateFilterPermMask(PERM_NONE);
 				
 				//BD - Don't allow local textures in BOM bakes.
 				//     We should disable Bakes for clothing items as Bakes are only used on objects.

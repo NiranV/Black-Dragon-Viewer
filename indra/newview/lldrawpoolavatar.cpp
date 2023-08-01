@@ -276,7 +276,7 @@ void LLDrawPoolAvatar::renderPostDeferred(S32 pass)
 }
 
 //BD - Motion Blur
-void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
+/*void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
 {
 	glh::matrix4f last(gGLLastModelView);
 	glh::matrix4f last_inv = last.inverse();
@@ -359,7 +359,7 @@ void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
 
 		avatarp->renderSkinned();
 	}
-}
+}*/
 
 
 S32 LLDrawPoolAvatar::getNumShadowPasses()

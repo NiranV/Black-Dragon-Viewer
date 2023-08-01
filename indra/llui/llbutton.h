@@ -38,6 +38,9 @@
 #include "lluiimage.h"
 #include "lluistring.h"
 
+ //BD
+#include "llsearchablecontrol.h"
+
 //
 // Constants
 //

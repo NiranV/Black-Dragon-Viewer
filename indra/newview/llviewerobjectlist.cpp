@@ -796,7 +796,7 @@ void LLViewerObjectList::setAllObjectDefaultTextures(U32 nChannel, bool fShowDef
 			}
 
 			if (LLVOVolume* pVoVolume = pDrawable->getVOVolume())
-				pVoVolume->markForUpdate(true);
+				pVoVolume->markForUpdate();
 		}
 	}
 }

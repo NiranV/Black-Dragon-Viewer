@@ -1294,8 +1294,6 @@ void set_use_wireframe(bool useWireframe)
 			initial_deferred = LLPipeline::sRenderDeferred;
 		}
 
-		gPipeline.resetVertexBuffers();
-
 		if (!gUseWireframe && !initial_deferred && LLPipeline::sRenderDeferred != bool(initial_deferred) && gPipeline.isInit())
 		{
 			LLPipeline::refreshCachedSettings();

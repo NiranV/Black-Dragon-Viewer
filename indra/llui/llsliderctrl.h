@@ -33,6 +33,8 @@
 #include "lltextbox.h"
 #include "llrect.h"
 #include "lllineeditor.h"
+//BD
+#include "llsearchablecontrol.h"
 
 
 class LLSliderCtrl : public LLF32UICtrl, public LLSearchableControl

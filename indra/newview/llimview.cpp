@@ -3664,16 +3664,23 @@ void LLIMMgr::addPendingAgentListUpdates(
 	{
 		//new school update
 		LLSD update_types = LLSD::emptyArray();
+		LLSD::array_iterator array_iter;
 		update_types.append("agent_updates");
 		update_types.append("updates");
 
-		for (const auto& update_type : update_types.array())
+		for (
+			array_iter = update_types.beginArray();
+			array_iter != update_types.endArray();
+			++array_iter)
 		{
 			//we only want to include the last update for a given agent
-			for (const auto& update_pair : updates[update_type.asStringRef()].map())
+			for (
+				iter = updates[array_iter->asString()].beginMap();
+				iter != updates[array_iter->asString()].endMap();
+				++iter)
 			{
-				mPendingAgentListUpdates[session_id.asString()][update_type.asStringRef()][update_pair.first] =
-					update_pair.second;
+				mPendingAgentListUpdates[session_id.asString()][array_iter->asString()][iter->first] =
+					iter->second;
 			}
 		}
 	}
@@ -3685,10 +3692,13 @@ void LLIMMgr::addPendingAgentListUpdates(
 		//of agent_id -> "LEAVE"/"ENTER"
 
 		//only want to keep last update for each agent
-		for (const auto& update_pair : updates["updates"].map())
+		for (
+			iter = updates["updates"].beginMap();
+			iter != updates["updates"].endMap();
+			++iter)
 		{
-			mPendingAgentListUpdates[session_id.asString()]["updates"][update_pair.first] =
-				update_pair.second;
+			mPendingAgentListUpdates[session_id.asString()]["updates"][iter->first] =
+				iter->second;
 		}
 	}
 }

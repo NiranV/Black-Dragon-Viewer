@@ -97,10 +97,12 @@ public:
     LLUUID                      getEditingAssetId() { return mEditDay ? mEditDay->getAssetId() : LLUUID::null; }
     LLUUID                      getEditingInventoryId() { return mInventoryId; }
 
+    virtual LLSettingsBase::ptr_t getEditSettings()   const { return mEditDay; }
 
     BOOL			            handleKeyUp(KEY key, MASK mask, BOOL called_from_parent) override;
 
-    BOOL                        isDirty() const override { return getIsDirty(); } 
+protected:
+    virtual void                setEditSettingsAndUpdate(const LLSettingsBase::ptr_t& settings);
 
 private:
     typedef std::function<void()> on_confirm_fn;

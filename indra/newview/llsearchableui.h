@@ -27,6 +27,8 @@
 #define LL_SEARCHABLE_UI_H
 
 #include "llsearchablecontrol.h"
+#include "llmenugl.h"
+#include "llview.h"
 
 class LLMenuItemGL;
 class LLView;
@@ -104,6 +106,15 @@ public:
 
 	void setNotHighlighted();
 	virtual bool hightlightAndHide(LLWString const &aFilter);
+
+	virtual std::string _getSearchText() const
+	{
+		return 0;
+	}
+
+	virtual void onSetHighlight() const // When highlight, really do highlight the label
+	{
+	}
 };
 
 class LLSearchableEntry : public LLSearchableControl
@@ -120,6 +131,17 @@ public:
 
 	void setNotHighlighted();
 	virtual bool hightlightAndHide(LLWString const &aFilter, bool hide = true);
+
+	virtual std::string _getSearchText() const
+	{
+		return mMenu->getLabel() + mMenu->getToolTip();
+	}
+
+	virtual void onSetHighlight() const // When highlight, really do highlight the label
+	{
+		if (mMenu)
+			mMenu->setHighlighted(getHighlighted());
+	}
 };
 
 #endif

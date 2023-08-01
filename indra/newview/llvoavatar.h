@@ -299,19 +299,20 @@ public:
 	void			addNameTagLine(const std::string& line, const LLColor4& color, S32 style, const LLFontGL* font, const bool use_ellipses = false);
 	void 			idleUpdateRenderComplexity();
 	void 			idleUpdateDebugInfo();
-    void 			accountRenderOriginalComplexityForObject(const LLViewerObject *attached_object,
-                                                     /*const F32 max_attachment_complexity,*/
-                                                     LLVOVolume::texture_cost_t& textures,
-                                                     U32& cost,
-                                                     hud_complexity_list_t& hud_complexity_list);
-	void			calculateUpdateOriginalRenderComplexity();
+	void 			accountRenderComplexityForObject(LLViewerObject* attached_object,
+													const F32 max_attachment_complexity,
+													LLVOVolume::texture_cost_t& textures,
+													U32& cost,
+													hud_complexity_list_t& hud_complexity_list,
+													object_complexity_list_t& object_complexity_list);
+	void			calculateUpdateRenderComplexity();
 	//BD - Altered Complexity Calculation
-	void 			accountRenderComplexityForObject(const LLViewerObject *attached_object,
-													/*const F32 max_attachment_complexity,*/
+	/*void 			accountBDRenderComplexityForObject(const LLViewerObject* attached_object,
 													LLVOVolume::texture_cost_t& textures,
 													U32& cost,
 													hud_complexity_list_t& hud_complexity_list);
-	void			calculateUpdateRenderComplexity();
+	void			calculateBDUpdateRenderComplexity();*/
+
 	static const U32 VISUAL_COMPLEXITY_UNKNOWN;
 	void			updateVisualComplexity();
 	
@@ -336,11 +337,12 @@ public:
     // return 0.f if this avatar has not been profiled using gPipeline.mProfileAvatar
     F32             getCPURenderTime() { return mCPURenderTime; }
 
-
-	//BD - Altered Complexity Calculation
-	U32				getOriginalVisualComplexity() { return mOriginalVisualComplexity; };		// Numbers calculated here by rendering AV
 	U32				getVisualComplexity() { return mVisualComplexity; };		// Numbers calculated here by rendering AV
+	//BD - Altered Complexity Calculation
+	U32				getBDVisualComplexity() { return mBDVisualComplexity; };		// Numbers calculated here by rendering AV
+
 	F32				getAttachmentSurfaceArea() { return mAttachmentSurfaceArea; };		// estimated surface area of attachments
+
 //	//BD - Performance Indicator
 	U32				getAvatarPerfRank() { return mPerfRank; };							// performance rank of this avatar
 
@@ -595,9 +597,6 @@ private:
     // CPU render time in ms
     F32 mCPURenderTime = 0.f;
 
-	//BD - Altered Complexity Calculation
-	mutable U32  mOriginalVisualComplexity;
-
 	// the isTooComplex method uses these mutable values to avoid recalculating too frequently
     // DEPRECATED -- obsolete avatar render cost values
 	mutable U32  mVisualComplexity;
@@ -605,7 +604,8 @@ private:
 	mutable F64  mVisualComplexityUpdateTime = 0.f;
 	U32          mReportedVisualComplexity; // from other viewers through the simulator
 
-	//BD
+	//BD - Altered Complexity Calculation
+	mutable U32			mBDVisualComplexity;
 	mutable U32			mTotalTriangleCount;
 	mutable U32			mTotalVerticeCount;
 	//mutable S32Megabytes  mTextureMemoryUsage;

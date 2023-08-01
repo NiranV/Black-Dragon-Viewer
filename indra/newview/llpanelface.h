@@ -50,6 +50,8 @@ class LLViewerObject;
 class LLFloater;
 class LLRadioGroup;
 class LLMaterialID;
+class LLMediaCtrl;
+class LLMenuButton;
 
 // Represents an edit for use in replicating the op across one or more materials in the selection set.
 //
@@ -122,6 +124,12 @@ public:
     LLRender::eTexIndex getTextureDropChannel();
 
 protected:
+	void            navigateToTitleMedia(const std::string url);
+	bool            selectedMediaEditable();
+	void            clearMediaSettings();
+	void            updateMediaSettings();
+	void            updateMediaTitle();
+	
 	void			getState();
 
 	void			sendTexture();				// applies and sends texture
@@ -241,6 +249,14 @@ protected:
 	static F32     valueGlow(LLViewerObject* object, S32 face);
 
 public:
+	// needs to be accessible to selection manager
+	void            onCopyColor(); // records all selected faces
+	void            onPasteColor(); // to specific face
+	void            onPasteColor(LLViewerObject* objectp, S32 te); // to specific face
+	void            onCopyTexture();
+	void            onPasteTexture();
+	void            onPasteTexture(LLViewerObject* objectp, S32 te);
+
 	LLTextureCtrl*	mTextureCtrl;
 	LLTextureCtrl*	mShinyTextureCtrl;
 	LLTextureCtrl*	mBumpyTextureCtrl;
@@ -282,6 +298,10 @@ public:
 	LLUICtrl* mTexOffsetV;
 	LLUICtrl* mTexRot;
 	LLUICtrl* mRepeats;
+
+	LLComboBox*		mComboMatMedia;
+	LLMediaCtrl*	mTitleMedia;
+	LLTextBox*		mTitleMediaText;
 
 private:
 	bool		isAlpha() { return mIsAlpha; }

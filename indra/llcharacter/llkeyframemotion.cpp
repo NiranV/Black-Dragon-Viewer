@@ -2182,7 +2182,7 @@ bool LLKeyframeMotion::dumpToFile(const std::string& name, bool from_upload)
         S32 file_size = getFileSize();
         U8* buffer = new U8[file_size];
 
-        LL_DEBUGS("BVH") << "Dumping " << outfilename << LL_ENDL;
+        LL_DEBUGS("BVH") << "Dumping " << filename << LL_ENDL;
         LLDataPackerBinaryBuffer dp(buffer, file_size);
         if (serialize(dp))
         {

@@ -307,7 +307,6 @@ void LLFloaterEnvironmentAdjust::onClose(bool app_quitting)
 //-------------------------------------------------------------------------
 void LLFloaterEnvironmentAdjust::refresh()
 {
-<<<<<<< HEAD
 	if (!mLiveSky)
 	{
 		setAllChildrenEnabled(FALSE);
@@ -866,7 +865,7 @@ void LLFloaterEnvironmentAdjust::onButtonDelete()
 
 void LLFloaterEnvironmentAdjust::onButtonImport()
 {   // Load a a legacy Windlight XML from disk.
-	(new LLFilePickerReplyThread(boost::bind(&LLFloaterEnvironmentAdjust::loadSkySettingFromFile, this, _1), LLFilePicker::FFLOAD_XML, false))->getFile();
+	LLFilePickerReplyThread::startPicker(boost::bind(&LLFloaterEnvironmentAdjust::loadSkySettingFromFile, this, _1), LLFilePicker::FFLOAD_XML, false);
 }
 
 void LLFloaterEnvironmentAdjust::loadSkySettingFromFile(const std::vector<std::string>& filenames)

@@ -61,25 +61,6 @@ public:
 	BOOL loadShadersWater();
 	BOOL loadShadersInterface();
 
-//	//BD - Fast Shader Toggles
-	BOOL resetDeferredShaders();
-	BOOL loadShadersMaterials(bool success);
-	BOOL loadShadersDOF(bool success);
-	BOOL loadShadersSpotlights(bool success);
-	BOOL loadShadersSSAO(bool success);
-	BOOL loadShadersShadows(bool success);
-	BOOL loadShadersBlurLight(bool success);
-
-//	//BD - Screen Space Reflections
-	BOOL loadShadersSSR(bool success);
-
-//	//BD - Exodus Post Process
-	void unloadExodusPostShaders();
-	BOOL loadExodusPostShaders();
-
-	//BD - Volumetric Lighting
-	BOOL loadShadersGodrays(bool success);
-
 	std::vector<S32> mShaderLevel;
 	S32	mMaxAvatarShaderLevel;
 
@@ -277,7 +258,6 @@ extern LLGLSLShader			gDeferredFullbrightAlphaMaskWaterProgram;
 extern LLGLSLShader			gDeferredEmissiveProgram;
 extern LLGLSLShader			gDeferredAvatarEyesProgram;
 extern LLGLSLShader			gDeferredAvatarAlphaProgram;
-extern LLGLSLShader			gDeferredAvatarAlphaWaterProgram;
 extern LLGLSLShader			gDeferredWLSkyProgram;
 extern LLGLSLShader			gDeferredWLCloudProgram;
 extern LLGLSLShader			gDeferredWLSunProgram;
@@ -299,27 +279,4 @@ extern LLGLSLShader         gDeferredPBROpaqueProgram;
 extern LLGLSLShader         gDeferredPBRAlphaProgram;
 extern LLGLSLShader         gDeferredPBRAlphaWaterProgram;
 extern LLGLSLShader         gHUDPBRAlphaProgram;
-
-//BD - Exodus Post Process
-extern LLGLSLShader         gColorGradePost;
-extern LLGLSLShader         gLinearToneMapping;
-extern LLGLSLShader         gReinhardToneMapping;
-extern LLGLSLShader         gFilmicToneMapping;
-extern LLGLSLShader         gVignettePost;
-extern LLGLSLShader         gColorGradePostLegacy;
-extern LLGLSLShader         gFilmicToneMappingAdv;
-
-extern LLGLSLShader         gLensFlare;
-extern LLGLSLShader         gSpecialPost;
-
-//BD - Volumetric Lighting
-extern LLGLSLShader			gVolumetricLightProgram;
-
-//BD - Motion Blur
-extern LLGLSLShader			gVelocityProgram;
-extern LLGLSLShader			gVelocityAlphaProgram;
-extern LLGLSLShader			gAvatarVelocityProgram;
-extern LLGLSLShader			gSkinnedVelocityProgram;
-extern LLGLSLShader			gSkinnedVelocityAlphaProgram;
-extern LLGLSLShader			gMotionBlurProgram;
 #endif

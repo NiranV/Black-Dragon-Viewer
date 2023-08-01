@@ -1277,7 +1277,7 @@ void LLFloaterTexturePicker::setInventoryPickType(LLTextureCtrl::EPickInventoryT
     }
     else
     {
-        S32 index = mModeSelector->getValue().asInteger();
+        S32 index = mTabModes->getCurrentPanelIndex();
         getChild<LLButton>("Pipette")->setVisible(index == 0);
     }
 

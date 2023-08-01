@@ -191,7 +191,7 @@ void LLViewerJointMesh::uploadJointMatrices()
 		{
 			LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLViewerShaderMgr::AVATAR_MATRIX, 45, mat);
 //			//BD - Motion Blur
-			if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
+			/*if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
 			{
 				if (!mLastMatrixPalette)
 				{
@@ -207,7 +207,7 @@ void LLViewerJointMesh::uploadJointMatrices()
 
 				memcpy(mLastMatrixPalette, mat, sizeof(F32) * 45 * 4);
 				mLastMatrixPaletteUpdated = gFrameCount;
-			}
+			}*/
 		}
 		stop_glerror();
 	}

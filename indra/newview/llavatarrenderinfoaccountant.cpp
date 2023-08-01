@@ -225,10 +225,10 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoReportCoro(std::string url, U
             !avatar->isControlAvatar() &&						// Not part of an animated object
             avatar->getObjectHost() == regionp->getHost())		// Ensure it's on the same region
         {
-            avatar->calculateUpdateOriginalRenderComplexity();	// Make sure the numbers are up-to-date
+            avatar->calculateUpdateRenderComplexity();	// Make sure the numbers are up-to-date
 
             LLSD info = LLSD::emptyMap();
-            U32 avatar_complexity = avatar->getOriginalVisualComplexity();
+            U32 avatar_complexity = avatar->getVisualComplexity();
             if (avatar_complexity > 0)
             {
                 // the weight/complexity is unsigned, but LLSD only stores signed integers,

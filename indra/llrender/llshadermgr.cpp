@@ -397,13 +397,13 @@ BOOL LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
 	}
 
 //	//BD - Motion Blur
-	if (features->hasMotionBlur)
+	/*/if (features->hasMotionBlur)
 	{
 		if (!shader->attachVertexObject("deferred/velocityFuncV.glsl"))
 		{
 			return FALSE;
 		}
-	}
+	}*/
 
 	return TRUE;
 }

@@ -1261,7 +1261,7 @@ BOOL LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK m
 	//     case we didn't move outside the right-click slope threshold.
 	if(gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
 	{
-		return handleAnyMouseClick(window,pos,mask,CLICK_RIGHT,FALSE);
+		return gViewerInput.handleMouse(window,pos,mask,CLICK_RIGHT,FALSE);
 	}
 	else
 	{
@@ -5125,10 +5125,10 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 			//     Hence why we pulled the view rect update out of this section and made it always apply.
 			if (type == LLSnapshotModel::SNAPSHOT_TYPE_COLOR)
 			{
-				if (scratch_space.allocate(image_width, image_height, GL_RGBA, true, true))
+				if (scratch_space.allocate(image_width, image_height, GL_RGBA, true))
 				{
-					original_width = gPipeline.mDeferredScreen.getWidth();
-					original_height = gPipeline.mDeferredScreen.getHeight();
+					original_width = gPipeline.mRT->deferredScreen.getWidth();
+					original_height = gPipeline.mRT->deferredScreen.getHeight();
 
 					if (gPipeline.allocateScreenBuffer(image_width, image_height))
 					{

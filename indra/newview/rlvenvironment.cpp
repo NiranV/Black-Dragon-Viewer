@@ -18,6 +18,7 @@
 
 #include "llinventoryfunctions.h"
 #include "llsettingsvo.h"
+#include "llsettingssky.h"
 #include <boost/algorithm/string.hpp>
 
 #include "rlvactions.h"

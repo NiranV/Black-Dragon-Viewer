@@ -175,27 +175,6 @@ BOOL LLPanelSettingsSkyAtmosTab::postBuild()
 	return TRUE;
 }
 
-//virtual
-void LLPanelSettingsSkyAtmosTab::setEnabled(BOOL enabled)
-{
-    LLPanelSettingsSky::setEnabled(enabled);
-
-    // Make sure we have initialized children (initialized)
-    if (getFirstChild())
-    {
-        getChild<LLUICtrl>(FIELD_SKY_HAZE_HORIZON)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_HAZE_DENSITY)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_SCENE_GAMMA)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MULTIP)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DISTANCE_MULTIP)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_MAX_ALT)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_MOISTURE_LEVEL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_DROPLET_RADIUS)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_SKY_DENSITY_ICE_LEVEL)->setEnabled(enabled);
-        getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->setEnabled(enabled);
-    }
-}
-
 void LLPanelSettingsSkyAtmosTab::refresh()
 {
 	if (!mSkySettings)

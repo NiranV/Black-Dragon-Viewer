@@ -23,7 +23,10 @@
 #include "llavatarnamecache.h"
 #include "llcharacter.h"
 #include "lldrawable.h"
+#include "llface.h"
 #include "llmeshrepository.h"
+#include "llprimitive.h"
+#include "llpartdata.h"
 #include "llselectmgr.h"
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
@@ -31,8 +34,8 @@
 #include "llviewerjointattachment.h"
 #include "llviewerobjectlist.h"
 #include "llviewerobject.h"
-#include "llvovolume.h"
-#include "llface.h"
+#include "llviewerpartsource.h"
+#include "llvolumemgr.h"
 //BD - Animesh Support
 //#include "llcontrolavatar.h"
 
@@ -261,7 +264,7 @@ void BDFloaterComplexity::calcARC()
 									attachment_total_triangles, attachment_total_vertices);
 
 								//BD - Get all necessary data.
-								volume->getRenderCostValues(flexible_cost, particle_cost, light_cost, projector_cost,
+								getRenderCostValues(volume, flexible_cost, particle_cost, light_cost, projector_cost,
 									alpha_cost, rigged_cost, animesh_cost, media_cost, bump_cost, shiny_cost,
 									glow_cost, animated_cost);
 
@@ -279,7 +282,7 @@ void BDFloaterComplexity::calcARC()
 											attachment_volume_cost, attachment_base_cost,
 											attachment_total_triangles, attachment_total_vertices);
 
-										child->getRenderCostValues(flexible_cost, particle_cost, light_cost, projector_cost,
+										getRenderCostValues(child, flexible_cost, particle_cost, light_cost, projector_cost,
 											alpha_cost, rigged_cost, animesh_cost, media_cost, bump_cost, shiny_cost,
 											glow_cost, animated_cost);
 
@@ -299,16 +302,16 @@ void BDFloaterComplexity::calcARC()
 								}
 
 								//BD - Count the texture impact and memory usage here now that we got all textures collected.
-								for (auto volume_texture : textures)
+								/*for (auto volume_texture : textures)
 								{
-									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture.first);
+									LLViewerFetchedTexture *texture = LLViewerTextureManager::getFetchedTexture(volume_texture);
 									if (texture)
 									{
 										attachment_memory_usage += (texture->getTextureMemory() / 1024);
 									}
-									attachment_texture_cost += volume_texture.second;
+									//attachment_texture_cost += volume_texture.second;
 									++texture_count;
-								}
+								}*/
 
 								//BD - Final results.
 								//     Do not add HUDs to this.
@@ -522,7 +525,7 @@ void BDFloaterComplexity::checkObject(LLVOVolume* vovolume, LLVOVolume::texture_
 	//BD - Check all the easy costs and counts first.
 	volume_cost = vovolume->getRenderCost(textures);
 	base_cost += vovolume->mRenderComplexityBase;
-	total_triangles += vovolume->getHighLODTriangleCount64();
+	total_triangles += getHighLODTriangleCount64(vovolume);
 	total_vertices += vovolume->getNumVertices();
 }
 
@@ -583,4 +586,559 @@ void BDFloaterComplexity::onSelectAttachment()
 			}
 		}
 	}
+}
+
+void BDFloaterComplexity::getRenderCostValues(LLVOVolume* volume, U32& flexible_cost, U32& particle_cost, U32& light_cost, U32& projector_cost,
+	U32& alpha_cost, U32& rigged_cost, U32& animesh_cost, U32& media_cost, U32& bump_cost,
+	U32& shiny_cost, U32& glow_cost, U32& animated_cost) const
+{
+	/*****************************************************************
+	* This calculation should not be modified by third party viewers,
+	* since it is used to limit rendering and should be uniform for
+	* everyone. If you have suggested improvements, submit them to
+	* the official viewer for consideration.
+	*****************************************************************/
+
+	// Get access to params we'll need at various points.  
+	// Skip if this is object doesn't have a volume (e.g. is an avatar).
+	BOOL has_volume = (volume != NULL);
+	LLVolumeParams volume_params;
+	LLPathParams path_params;
+	LLProfileParams profile_params;
+
+	U32 num_triangles = 0;
+
+	//BD - Experimental new ARC
+	// per-prim costs
+	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
+	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
+	//     noticeably.
+	static const U32 ARC_PARTICLE_COST = 8; //16
+	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
+	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
+	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
+	static const U32 ARC_LIGHT_COST = 256; //512
+	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
+	//     work of any good framerate.
+	static const U32 ARC_PROJECTOR_COST = 8192; //16384
+	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
+	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
+	//     those alone will significantly draw resources both RAM and FPS.
+	static const U32 ARC_MEDIA_FACE_COST = 50000; //100000 - static cost per media-enabled face 
+
+	// per-prim multipliers
+	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
+	//     uses, putting up hundreds of glowing prims does nothing, it's a global post processing effect.
+	static const F32 ARC_GLOW_MULT = 0.05f;
+	//BD - Bump has nearly no impact, it's biggest impact is texture memory which we really shouldn't be including.
+	static const F32 ARC_BUMP_MULT = 0.05f;
+	//BD - I'm unsure about flexi, on one side its very efficient but if huge amounts of flexi are active at the same
+	//     time they can quickly become extremely slow which is hardly ever the case.
+	static const F32 ARC_FLEXI_MULT = 0.15f;
+	//BD - Shiny has nearly no impact, it's basically a global post process effect.
+	static const F32 ARC_SHINY_MULT = 0.05f;
+	//BD - Invisible prims are not rendered anymore in Black Dragon.
+	//static const F32 ARC_INVISI_COST = 1.0f;
+	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
+	static const F32 ARC_WEIGHTED_MESH = 2.0f; //4.0
+
+	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
+	static const F32 ARC_ANIM_TEX_COST = 1.f;
+	//BD - Alpha's are bad.
+	static const F32 ARC_ALPHA_COST = 1.0f;
+	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
+	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
+	static const F32 ARC_RIGGED_ALPHA_COST = 0.25f;
+	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
+	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
+	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
+	static const F32 ARC_ANIMATED_MESH_COST = -0.05f;
+
+	U32 shiny = 0;
+	U32 glow = 0;
+	U32 alpha = 0;
+	U32 animtex = 0;
+	U32 bump = 0;
+	U32 weighted_mesh = 0;
+	U32 media_faces = 0;
+
+	LLDrawable* drawablep = volume->mDrawable;
+	U32 num_faces = drawablep->getNumFaces();
+
+	if (has_volume)
+	{
+		volume_params = volume->getVolume()->getParams();
+		num_triangles = drawablep->getVOVolume()->getHighLODTriangleCount();
+	}
+
+	if (num_triangles == 0)
+	{
+		num_triangles = 4;
+	}
+
+	if (volume->isSculpted())
+	{
+		if (volume->isMesh())
+		{
+			S32 size = gMeshRepo.getMeshSize(volume_params.getSculptID(), volume->getLOD());
+			if (size > 0)
+			{
+				if (volume->getSkinInfo())
+				{
+					weighted_mesh = 1;
+				}
+			}
+		}
+	}
+
+	for (S32 i = 0; i < num_faces; ++i)
+	{
+		const LLFace* face = drawablep->getFace(i);
+		if (!face) continue;
+		const LLTextureEntry* te = face->getTextureEntry();
+
+		if (face->getPoolType() == LLDrawPool::POOL_ALPHA)
+		{
+			alpha = 1;
+		}
+
+		if (face->hasMedia())
+		{
+			media_faces++;
+		}
+
+		if (te)
+		{
+			if (te->getBumpmap())
+			{
+				bump = 1;
+			}
+			if (te->getShiny())
+			{
+				shiny = 1;
+			}
+			if (te->getGlow() > 0.f)
+			{
+				glow = 1;
+			}
+			if (face->mTextureMatrix != NULL)
+			{
+				animtex = 1;
+			}
+		}
+	}
+
+	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
+	U32 shame = volume->mRenderComplexityBase;
+
+	if (animtex)
+	{
+		animated_cost += (shame * ARC_ANIM_TEX_COST);
+	}
+
+	if (glow)
+	{
+		glow_cost += (shame * ARC_GLOW_MULT);
+	}
+
+	if (bump)
+	{
+		bump_cost += (shame * ARC_BUMP_MULT);
+	}
+
+	if (shiny)
+	{
+		shiny_cost += (shame * ARC_SHINY_MULT);
+	}
+
+	if (weighted_mesh)
+	{
+		rigged_cost += (shame * ARC_WEIGHTED_MESH);
+
+		if (alpha)
+		{
+			alpha_cost += (shame * ARC_ALPHA_COST);
+		}
+	}
+	else
+	{
+		if (alpha)
+		{
+			alpha_cost += (shame * ARC_RIGGED_ALPHA_COST);
+		}
+	}
+
+	if (volume->isAnimatedObject())
+	{
+		animesh_cost += (shame * ARC_ANIMATED_MESH_COST);
+	}
+
+	// multiply shame by multipliers
+	if (volume->isFlexible())
+	{
+		flexible_cost += (shame * ARC_FLEXI_MULT);
+	}
+
+	// add additional costs
+	if (volume->isParticleSource())
+	{
+		const LLPartSysData* part_sys_data = &(drawablep->getVObj()->getParticleSource()->mPartSysData);
+		const LLPartData* part_data = &(part_sys_data->mPartData);
+		U32 num_particles = (U32)(part_sys_data->mBurstPartCount * llceil(part_data->mMaxAge / part_sys_data->mBurstRate));
+		//BD
+		F32 part_size = (llmax(part_data->mStartScale[0], part_data->mEndScale[0]) + llmax(part_data->mStartScale[1], part_data->mEndScale[1])) / 2.f;
+		particle_cost += num_particles * part_size * ARC_PARTICLE_COST;
+	}
+
+	if (volume->getIsLight())
+	{
+		light_cost += ARC_LIGHT_COST;
+	}
+	else if (volume->getHasShadow())
+	{
+		projector_cost += ARC_PROJECTOR_COST;
+	}
+
+	if (media_faces)
+	{
+		media_cost += media_faces * ARC_MEDIA_FACE_COST;
+	}
+}
+
+//BD - Altered Complexity Calculation
+// Returns a base cost and adds textures to passed in set.
+// total cost is returned value + 5 * size of the resulting set.
+// Cannot include cost of textures, as they may be re-used in linked
+// children, and cost should only be increased for unique textures  -Nyx
+U32 BDFloaterComplexity::getRenderCost(LLVOVolume* volume, texture_cost& textures) const
+{
+	/*****************************************************************
+	 * This calculation should not be modified by third party viewers,
+	 * since it is used to limit rendering and should be uniform for
+	 * everyone. If you have suggested improvements, submit them to
+	 * the official viewer for consideration.
+	 *****************************************************************/
+
+	 // Get access to params we'll need at various points.  
+	 // Skip if this is object doesn't have a volume (e.g. is an avatar).
+	LLVolumeParams volume_params;
+	LLPathParams path_params;
+	LLProfileParams profile_params;
+
+	U32 num_triangles = 0;
+
+	//BD - Experimental new ARC
+	// per-prim costs
+	//BD - Particles need to be punished extremely harsh, they are besides all other features, the single biggest
+	//     performance hog in Second Life. Just having them enabled and a tiny bunch around drops the framerate
+	//     noticeably.
+	static const U32 ARC_PARTICLE_COST = 4; //16
+	//BD - Textures don't directly influence performance impact on a large scale but allocating a lot of textures
+	//     and filling the Viewer memory as well as texture memory grinds at the Viewer's overall performance, the
+	//     lost performance does not fully recover when leaving the area in question, textures overall have a lingering
+	//     performance impact that slowly drives down the Viewer's performance, we should punish them much harder.
+	//     Textures are not free after all and not everyone can have 2+GB texture memory for SL.
+	static const U32 ARC_TEXTURE_COST = 1.25; //5
+	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
+	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
+	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
+	static const U32 ARC_LIGHT_COST = 128; //512
+	//BD - Projectors have a huge impact, whether or not they cast a shadow or not, multiple of these will make quick
+	//     work of any good framerate.
+	static const U32 ARC_PROJECTOR_COST = 4096; //16384
+	//BD - Media faces have a huge impact on performance, they should never ever be attached and should be used
+	//     carefully. Punish them with extreme measure, besides, by default we can only have 6-8 active at any time
+	//     those alone will significantly draw resources both RAM and FPS.
+	static const U32 ARC_MEDIA_FACE_COST = 25000; //100000 - static cost per media-enabled face 
+
+	// per-prim multipliers
+	//BD - Glow has nearly no impact, the impact is already there due to the omnipresent ambient glow Black Dragon
+	//     uses, putting up hundreds of glowing prims does nothing, it's a global post processing effect.
+	static const F32 ARC_GLOW_MULT = 0.05f;
+	//BD - Bump has nearly no impact, it's biggest impact is texture memory which we really shouldn't be including.
+	static const F32 ARC_BUMP_MULT = 0.05f;
+	//BD - I'm unsure about flexi, on one side its very efficient but if huge amounts of flexi are active at the same
+	//     time they can quickly become extremely slow which is hardly ever the case.
+	static const F32 ARC_FLEXI_MULT = 0.15f;
+	//BD - Shiny has nearly no impact, it's basically a global post process effect.
+	static const F32 ARC_SHINY_MULT = 0.05f;
+	//BD - Invisible prims are not rendered anymore in Black Dragon.
+	//static const F32 ARC_INVISI_COST = 1.0f;
+	//BD - Weighted mesh does have quite some impact and it only gets worse with more triangles to transform.
+	static const F32 ARC_WEIGHTED_MESH = 2.0f; //4.0
+
+	//BD - Animated textures hit quite hard, not as hard as quick alpha state changes.
+	static const F32 ARC_ANIM_TEX_COST = 1.f;
+	//BD - Alpha's are bad.
+	static const F32 ARC_ALPHA_COST = 1.0f;
+	//BD - Alpha's aren't that bad as normal alphas if they are rigged and worn, static ones are evil.
+	//     Besides, as long as they are fully invisible Black Dragon won't render them anyway.
+	static const F32 ARC_RIGGED_ALPHA_COST = 0.25f;
+	//BD - In theory animated mesh are pretty limited and they are rendering wise not different to normal avatars.
+	//     Thus they should not be weighted differently, however, since they are just basic dummy avatars with no
+	//     super extensive information, relations, name tag and so on they deserve a tiny complexity discount.
+	static const F32 ARC_ANIMATED_MESH_COST = -0.05f;
+
+	F32 shame = 0;
+
+	U32 shiny = 0;
+	U32 glow = 0;
+	U32 alpha = 0;
+	U32 animtex = 0;
+	U32 bump = 0;
+	U32 weighted_mesh = 0;
+	U32 animated_mesh = 0;
+	U32 media_faces = 0;
+
+	LLDrawable* drawablep = volume->mDrawable;
+	U32 num_faces = drawablep->getNumFaces();
+
+	if (volume->isMeshFast() && volume->getVolume())
+	{
+		volume_params = volume->getVolume()->getParams();
+		path_params = volume_params.getPathParams();
+		profile_params = volume_params.getProfileParams();
+
+		//BD - Punish high triangle counts.
+		num_triangles = drawablep->getVOVolume()->getHighLODTriangleCount();
+	}
+
+	if (num_triangles <= 0)
+	{
+		num_triangles = 4;
+	}
+
+	if (volume->isSculpted())
+	{
+		if (volume->isMesh())
+		{
+			// base cost is dependent on mesh complexity
+			// note that 3 is the highest LOD as of the time of this coding.
+			S32 size = gMeshRepo.getMeshSize(volume_params.getSculptID(), volume->getLOD());
+			if (size > 0)
+			{
+				if (volume->isRiggedMesh())
+				{
+					// weighted attachment - 1 point for every 3 bytes
+					weighted_mesh = 1;
+				}
+			}
+			else
+			{
+				// something went wrong - user should know their content isn't render-free
+				return 0;
+			}
+
+			if (volume->isAnimatedObject())
+			{
+				animated_mesh = 1;
+			}
+		}
+		else
+		{
+			const LLSculptParams* sculpt_params = (LLSculptParams*)drawablep->getVObj()->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+			LLUUID sculpt_id = sculpt_params->getSculptTexture();
+			LLViewerFetchedTexture* texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
+			if (textures.find(texture) == textures.end())
+			{
+				if (texture)
+				{
+					//BD - Punish sculpt usage compared to normal prims or the much faster mesh.
+					//S32 texture_cost = 256 + (S32)(((ARC_TEXTURE_COST * 2) * (texture->getFullHeight() * texture->getFullWidth())) / 1024);
+					//textures.insert(texture_cost::value_type(texture));
+					//vovolume->mRenderComplexityTextures += texture_cost;
+				}
+			}
+		}
+	}
+
+	for (S32 i = 0; i < num_faces; ++i)
+	{
+		const LLFace* face = drawablep->getFace(i);
+		if (!face) continue;
+		const LLTextureEntry* te = face->getTextureEntry();
+
+		S32 j = 0;
+		while (j < LLRender::NUM_TEXTURE_CHANNELS)
+		{
+			const LLViewerTexture* img = face->getTexture(j);
+			if (img)
+			{
+				if (textures.find(img) == textures.end())
+				{
+					S32 texture_cost = 256 + (S32)((ARC_TEXTURE_COST * (img->getFullHeight() * img->getFullWidth())) / 1024);
+					//textures.insert(texture_cost::value_type(img));
+					volume->mRenderComplexityTextures += texture_cost;
+				}
+			}
+			++j;
+		}
+
+		if (face->getPoolType() == LLDrawPool::POOL_ALPHA)
+		{
+			alpha = 1;
+		}
+
+		if (face->hasMedia())
+		{
+			media_faces++;
+		}
+
+		if (te)
+		{
+			if (te->getBumpmap())
+			{
+				// bump is a multiplier, don't add per-face
+				bump = 1;
+			}
+			if (te->getShiny())
+			{
+				// shiny is a multiplier, don't add per-face
+				shiny = 1;
+				//BD
+				volume->setHasShiny(true);
+			}
+			if (te->getGlow() > 0.f)
+			{
+				// glow is a multiplier, don't add per-face
+				glow = 1;
+				//BD
+				volume->setHasGlow(true);
+			}
+			if (face->mTextureMatrix != NULL)
+			{
+				animtex = 1;
+				//BD
+				volume->setIsAnimated(true);
+			}
+		}
+	}
+
+	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
+	shame = num_triangles / 10; //5
+	shame = shame < 2.f ? 2.f : shame;
+
+	volume->setRenderComplexityBase((S32)shame);
+	F32 extra_shame = 0.f;
+	if (animtex)
+	{
+		extra_shame += (shame * ARC_ANIM_TEX_COST);
+	}
+
+	if (glow)
+	{
+		extra_shame += (shame * ARC_GLOW_MULT);
+	}
+
+	if (bump)
+	{
+		extra_shame += (shame * ARC_BUMP_MULT);
+	}
+
+	if (shiny)
+	{
+		extra_shame += (shame * ARC_SHINY_MULT);
+	}
+
+	if (weighted_mesh)
+	{
+		extra_shame += (shame * ARC_WEIGHTED_MESH);
+
+		if (alpha)
+		{
+			extra_shame += (shame * ARC_ALPHA_COST);
+		}
+	}
+	else
+	{
+		if (alpha)
+		{
+			extra_shame += (shame * ARC_RIGGED_ALPHA_COST);
+		}
+	}
+
+	if (animated_mesh)
+	{
+		extra_shame += (shame * ARC_ANIMATED_MESH_COST);
+	}
+
+	// multiply shame by multipliers
+	if (volume->isFlexible())
+	{
+		extra_shame += (shame * ARC_FLEXI_MULT);
+	}
+
+	// Streaming cost for animated objects includes a fixed cost
+	// per linkset. Add a corresponding charge here translated into
+	// triangles, but not weighted by any graphics properties.
+	/*if (isAnimatedObject() && isRootEdit())
+	{
+		shame += (ANIMATED_OBJECT_BASE_COST / 0.06) * 5.0f;
+	}*/
+
+	// add additional costs
+	if (volume->isParticleSource())
+	{
+		const LLPartSysData* part_sys_data = &(drawablep->getVObj()->getParticleSource()->mPartSysData);
+		const LLPartData* part_data = &(part_sys_data->mPartData);
+		U32 num_particles = (U32)(part_sys_data->mBurstPartCount * llceil(part_data->mMaxAge / part_sys_data->mBurstRate));
+		//BD
+		F32 part_size = (llmax(part_data->mStartScale[0], part_data->mEndScale[0]) + llmax(part_data->mStartScale[1], part_data->mEndScale[1])) / 2.f;
+		shame += num_particles * part_size * ARC_PARTICLE_COST;
+	}
+
+	shame += extra_shame;
+
+	if (volume->getIsLight())
+	{
+		shame += ARC_LIGHT_COST;
+	}
+
+	if (volume->getHasShadow())
+	{
+		shame += ARC_PROJECTOR_COST;
+	}
+
+	if (media_faces)
+	{
+		shame += (media_faces * ARC_MEDIA_FACE_COST);
+	}
+
+	/*vovolume->mRenderComplexityTotal = (S32)shame;
+
+	if (shame > mRenderComplexity_current)
+	{
+		mRenderComplexity_current = (S32)shame;
+	}*/
+
+	return (U32)shame;
+}
+
+U64 BDFloaterComplexity::getHighLODTriangleCount64(LLVOVolume* volume)
+{
+	U64 ret = 0;
+	LLVolume* vol = volume->getVolume();
+
+	if (!volume->isSculpted())
+	{
+		LLVolume* ref = LLPrimitive::getVolumeManager()->refVolume(vol->getParams(), 3);
+		ret = ref->getNumTriangles64();
+		LLPrimitive::getVolumeManager()->unrefVolume(ref);
+	}
+	else if (volume->isMesh())
+	{
+		LLVolume* ref = LLPrimitive::getVolumeManager()->refVolume(vol->getParams(), 3);
+		if (!ref->isMeshAssetLoaded() || ref->getNumVolumeFaces() == 0)
+		{
+			gMeshRepo.loadMesh(volume, vol->getParams(), LLModel::LOD_HIGH);
+		}
+		ret = ref->getNumTriangles64();
+		LLPrimitive::getVolumeManager()->unrefVolume(ref);
+	}
+	else
+	{ //default sculpts have a constant number of triangles
+		ret = 31 * 2 * 31;  //31 rows of 31 columns of quads for a 32x32 vertex patch
+	}
+
+	return ret;
 }

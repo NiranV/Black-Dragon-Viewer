@@ -493,6 +493,26 @@
              name="environment"
              width="135" />-->
             <!-- label is blank because control places it below the box -->
+            <combo_box
+             height="23"
+             layout="topleft"
+             left="10"
+             name="combobox matmedia"
+             top_pad="5"
+             width="90">
+                <combo_box.item
+                 label="Blinn-Phong"
+                 name="Materials"
+                 value="Materials" />
+                <combo_box.item
+                 label="PBR Metallic Roughness"
+                 name="PBR"
+                 value="PBR" />
+                <combo_box.item
+                 label="Media"
+                 name="Media"
+                 value="Media" />
+            </combo_box>
             <radio_group
      layout="topleft"
      left="5"

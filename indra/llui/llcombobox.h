@@ -37,6 +37,8 @@
 #include "llscrolllistctrl.h"
 #include "lllineeditor.h"
 #include <boost/function.hpp>
+//BD
+#include "llsearchablecontrol.h"
 
 #include "lliconctrl.h"
 

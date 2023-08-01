@@ -47,6 +47,14 @@ private:
 	void onSelectEntry();
 	void onSelectAttachment();
 
+	const typedef std::unordered_set<const LLViewerTexture*> texture_cost;
+	U32	 getRenderCost(LLVOVolume* volume, texture_cost& textures) const;
+	void getRenderCostValues(LLVOVolume* volume, U32& flexible_cost, U32& particle_cost, U32& light_cost, U32& projector_cost,
+							U32& alpha_cost, U32& rigged_cost, U32& animesh_cost, U32& media_cost, U32& bump_cost,
+							U32& shiny_cost, U32& glow_cost, U32& animated_cost) const;
+
+	U64  getHighLODTriangleCount64(LLVOVolume* volume);
+
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
 

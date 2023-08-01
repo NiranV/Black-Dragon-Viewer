@@ -52,8 +52,6 @@
 #include "llfloaterreg.h"
 #include "llfloaterabout.h"
 #include "llfavoritesbar.h"
-#include "llfloaterpreferencesgraphicsadvanced.h"
-#include "llfloaterperformance.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llfloaterimsession.h"
 #include "llkeyboard.h"
@@ -147,7 +145,6 @@
 #include <json/json.h>
 #include <utility>
 
-#include "llsearchableui.h"
 #include "llperfstats.h"
 
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
@@ -1187,10 +1184,11 @@ LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	mCommitCallbackRegistrar.add("Pref.RememberedUsernames",    boost::bind(&LLFloaterPreference::onClickRememberedUsernames, this));
 	mCommitCallbackRegistrar.add("Pref.SpellChecker",           boost::bind(&LLFloaterPreference::onClickSpellChecker, this));
 
-	mCommitCallbackRegistrar.add("Pref.AddSkin",				boost::bind(&LLFloaterPreference::onAddSkin, this));
+	//BD - Custom User Skins ~ Currently disabled.
+	/*mCommitCallbackRegistrar.add("Pref.AddSkin", boost::bind(&LLFloaterPreference::onAddSkin, this));
 	mCommitCallbackRegistrar.add("Pref.RemoveSkin",				boost::bind(&LLFloaterPreference::onRemoveSkin, this));
 	mCommitCallbackRegistrar.add("Pref.ApplySkin",				boost::bind(&LLFloaterPreference::onApplySkin, this));
-	mCommitCallbackRegistrar.add("Pref.SelectSkin",				boost::bind(&LLFloaterPreference::onSelectSkin, this, _2));
+	mCommitCallbackRegistrar.add("Pref.SelectSkin",				boost::bind(&LLFloaterPreference::onSelectSkin, this, _2));*/
 
 	gSavedSettings.getControl("NameTagShowUsernames")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
 	gSavedSettings.getControl("NameTagShowFriends")->getCommitSignal()->connect(boost::bind(&handleNameTagOptionChanged, _2));
@@ -1949,10 +1947,10 @@ void LLFloaterPreference::refreshEverything()
 
 			//BD - Motion Blur
 			//================
-			bool blur_enabled = (gPipeline.RenderMotionBlur && deferred_enabled);
+			/*bool blur_enabled = (gPipeline.RenderMotionBlur && deferred_enabled);
 			mRenderRiggedMotionBlurQuality->setEnabled(blur_enabled);
 			mMotionBlurQuality->setEnabled(blur_enabled);
-			mWarning13->setBackgroundVisible(blur_enabled);
+			mWarning13->setBackgroundVisible(blur_enabled);*/
 
 			//BD - Volumetric Lighting
 			//========================
@@ -1967,7 +1965,7 @@ void LLFloaterPreference::refreshEverything()
 
 		//BD - Tone Mapping
 		//=================
-		LLRect tone_rect = mDisplayTabs[2]->calcScreenRect();
+		/*LLRect tone_rect = mDisplayTabs[2]->calcScreenRect();
 		if (scroll_rect.overlaps(tone_rect))
 		{
 			//BD - Tone Mapping
@@ -2005,7 +2003,7 @@ void LLFloaterPreference::refreshEverything()
 			mExodusRenderVignette[0]->setEnabled(deferred_enabled);
 			mExodusRenderVignette[1]->setEnabled(deferred_enabled);
 			mExodusRenderVignette[2]->setEnabled(deferred_enabled);
-		}
+		}*/
 	}
 
 	if (mTabContainer->getCurrentPanelIndex() == 8)
@@ -2325,9 +2323,6 @@ void LLFloaterPreference::refreshCameraControls()
 	getChild<LLUICtrl>("FocusOffset_Y")->setValue(vec3d.mdV[VY]);
 	getChild<LLUICtrl>("FocusOffset_Z")->setValue(vec3d.mdV[VZ]);
 	LLLogChat::getInstance()->setSaveHistorySignal(boost::bind(&LLFloaterPreference::onLogChatHistorySaved, this));
-	
-	loadUserSkins();
-	
 
 	//BD - Disable the delete button when we have a default preset selected.
 	//     We will instead use the default buttons which essentially do the same
@@ -2430,7 +2425,7 @@ void LLFloaterPreference::deleteGraphicPreset()
 ////////////////////////////////////////////////////
 // Skins panel
 
-skin_t manifestFromJson(const std::string& filename, const ESkinType type)
+/*skin_t manifestFromJson(const std::string& filename, const ESkinType type)
 {
 	skin_t skin;
 	Json::Reader reader;
@@ -2685,7 +2680,7 @@ void LLFloaterPreference::refreshSkinInfo(const skin_t& skin)
 	getChild<LLTextBase>("skin_compatibility")->setText(skin.mCompatVer);
 	getChild<LLTextBase>("skin_notes")->setText(skin.mNotes);
 }
-
+*/
 
 void LLFloaterPreference::refreshGraphicPresets()
 {
@@ -4989,7 +4984,7 @@ void collectChildren(LLView const *aView, LLSearchableUI::LLPanelDataPtr aParent
 		//}
 		else if (pSCtrl && pSCtrl->getSearchText().size())
 		{
-			LLSearchableUI::LLSearchableItemPtr item = LLSearchableUI::LLSearchableItemPtr(new LLSearchableItem());
+			LLSearchableUI::LLSearchableItemPtr item = LLSearchableUI::LLSearchableItemPtr(new LLSearchableItem);
 			item->mView = pView;
 			item->mCtrl = pSCtrl;
 

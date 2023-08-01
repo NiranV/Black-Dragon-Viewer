@@ -310,13 +310,6 @@ LLPanelMainInventory::~LLPanelMainInventory( void )
     
 	gInventory.removeObserver(this);
 	delete mSavedFolderState;
-
-	auto menu = mMenuAddHandle.get();
-	if(menu)
-	{
-		menu->die();
-		mMenuAddHandle.markDead();
-	}
 }
 
 LLInventoryPanel* LLPanelMainInventory::getAllItemsPanel()
@@ -712,12 +705,6 @@ BOOL LLPanelMainInventory::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 	return handled;
 }
 
-// virtual
-void LLPanelMainInventory::changed(U32)
-{
-	updateItemcountText();
-}
-
 void LLPanelMainInventory::setFocusFilterEditor()
 {
 	if(mFilterEditor)
@@ -775,29 +762,6 @@ void LLPanelMainInventory::draw()
 		mResortActivePanel = false;
 	}
 	LLPanel::draw();
-	updateItemcountText();
-}
-
-void LLPanelMainInventory::updateItemcountText()
-{
-	if(mItemCount != gInventory.getItemCount())
-	{
-		mItemCount = gInventory.getItemCount();
-		mItemCountString = "";
-		LLLocale locale(LLLocale::USER_LOCALE);
-		LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
-	}
-
-	if(mCategoryCount != gInventory.getCategoryCount())
-	{
-		mCategoryCount = gInventory.getCategoryCount();
-		mCategoryCountString = "";
-		LLLocale locale(LLLocale::USER_LOCALE);
-		LLResMgr::getInstance()->getIntegerString(mCategoryCountString, mCategoryCount);
-	}
-
-	//string_args["[CATEGORY_COUNT]"] = mCategoryCountString;
-    //mCounterCtrl->setToolTip(text);
 }
 
 void LLPanelMainInventory::onFocusReceived()
@@ -1351,13 +1315,13 @@ void LLPanelMainInventory::initListCommandsHandlers()
 	mCommitCallbackRegistrar.add("Inventory.GearDefault.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.GearDefault.Check", boost::bind(&LLPanelMainInventory::isActionChecked, this, _2));
 	mEnableCallbackRegistrar.add("Inventory.GearDefault.Enable", boost::bind(&LLPanelMainInventory::isActionEnabled, this, _2));
-	mMenuGearDefault = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_gear_default.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	mGearMenuButton->setMenu(mMenuGearDefault, LLMenuButton::MP_TOP_LEFT, true);
-	LLMenuGL* menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>("menu_inventory_add.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	mMenuAddHandle = menu->getHandle();
+	//mMenuGearDefault = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_gear_default.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	//mGearMenuButton->setMenu(mMenuGearDefault, LLMenuButton::MP_TOP_LEFT, true);
+	//LLMenuGL* menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>("menu_inventory_add.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	//mMenuAddHandle = menu->getHandle();
 
-	mMenuVisibility = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_search_visibility.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	mVisibilityMenuButton->setMenu(mMenuVisibility, LLMenuButton::MP_BOTTOM_LEFT, true);
+	//mMenuVisibility = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_inventory_search_visibility.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+	//mVisibilityMenuButton->setMenu(mMenuVisibility, LLMenuButton::MP_BOTTOM_LEFT, true);
 
 	// Update the trash button when selected item(s) get worn or taken off.
 	LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLPanelMainInventory::updateListCommands, this));
@@ -1707,11 +1671,6 @@ void LLPanelMainInventory::setUploadCostIfNeeded()
 			upload_menu->getChild<LLView>("Upload Animation")->setLabelArg("[COST]", animation_upload_cost_str);
 		}
 	}
-}
-
-bool LLPanelMainInventory::hasSettingsInventory()
-{
-    return LLEnvironment::instance().isInventoryEnabled();
 }
 
 bool LLPanelMainInventory::hasMaterialsInventory()

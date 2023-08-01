@@ -822,11 +822,6 @@ void show_item_original(const LLUUID& item_uuid)
     LLSidepanelInventory *sidepanel_inventory =	LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
     if (sidepanel_inventory)
     {
-        LLPanelMainInventory* main_inventory = sidepanel_inventory->getMainInventoryPanel();
-        if (main_inventory)
-        {
-            main_inventory->resetAllItemsFilters();
-        }
         reset_inventory_filter();
 
 		//BD - Show the item in the main inventory tab, always.

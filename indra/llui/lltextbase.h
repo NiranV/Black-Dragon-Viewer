@@ -35,6 +35,9 @@
 #include "llkeywords.h"
 #include "llpanel.h"
 
+ //BD
+#include "llsearchablecontrol.h"
+
 #include <string>
 #include <vector>
 #include <set>

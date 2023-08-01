@@ -201,13 +201,11 @@ LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
         U32 matmedia_selection = mComboMatMedia->getCurrentIndex();
         if (matmedia_selection == MATMEDIA_MATERIAL)
         {
-            LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getSelectedIndex();
+            channel_to_edit = (LLRender::eTexIndex)mRadioMaterialType->getSelectedIndex();
         }
         if (matmedia_selection == MATMEDIA_PBR)
         {
-            LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_pbr_type");
-            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getSelectedIndex();
+            channel_to_edit = (LLRender::eTexIndex)mRadioMaterialType->getSelectedIndex();
         }
     }
 
@@ -388,6 +386,10 @@ BOOL	LLPanelFace::postBuild()
 	mComboTexGen = getChild<LLComboBox>("combobox texgen");
 	mComboTexGen->setCommitCallback(LLPanelFace::onCommitTexGen, this);
 
+    mComboMatMedia = getChild<LLComboBox>("combobox matmedia");
+    mComboMatMedia->setCommitCallback(LLPanelFace::onCommitMaterialsMedia, this);
+    mComboMatMedia->selectNthItem(MATMEDIA_MATERIAL);
+
 	//BD
 	mRadioMaterialType = getChild<LLRadioGroup>("radio mattype");
 	mRadioMaterialType->setCommitCallback(LLPanelFace::onCommitMaterialType, this);
@@ -411,10 +413,14 @@ BOOL	LLPanelFace::postBuild()
 }
 
 LLPanelFace::LLPanelFace()
-	: LLPanel(),
-	mIsAlpha(false)
+    : LLPanel(),
+    mIsAlpha(false),
+    mComboMatMedia(NULL),
+    mTitleMedia(NULL),
+    mTitleMediaText(NULL),
+    mNeedMediaTitle(true)
 {
-	USE_TEXTURE = LLTrans::getString("use_texture");
+    USE_TEXTURE = LLTrans::getString("use_texture");
 }
 
 
@@ -452,14 +458,14 @@ void LLPanelFace::sendTexture()
 			id = mTextureCtrl->getImageAssetID();
 		}
 
-		//		//BD - We have to do this to make sure selection a different texture channel
-				//     doesnt interfere the diffuse texture picker. If we don't do this our
-				//     selected diffuse map will always be applied to the currently selected
-				//     texture channel for some reason, this behavior doesnt apply to the
-				//     other texture pickers, probably because they got a special function to
-				//     set their normal/specular image, this function here seems to be
-				//     generalized, taking whatever texture channel is currently selected.
-		LLSelectMgr::getInstance()->setTextureChannel(LLRender::DIFFUSE_MAP);
+//		//BD - We have to do this to make sure selection a different texture channel
+		//     doesnt interfere the diffuse texture picker. If we don't do this our
+		//     selected diffuse map will always be applied to the currently selected
+		//     texture channel for some reason, this behavior doesnt apply to the
+		//     other texture pickers, probably because they got a special function to
+		//     set their normal/specular image, this function here seems to be
+		//     generalized, taking whatever texture channel is currently selected.
+		//LLSelectMgr::getInstance()->setTextureChannel(LLRender::DIFFUSE_MAP);
 		LLSelectMgr::getInstance()->selectionSetImage(id);
 
         if (!LLSelectMgr::getInstance()->selectionSetImage(id))
@@ -597,16 +603,16 @@ void LLPanelFace::sendGlow()
 
 struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
 {
-	LLPanelFaceSetTEFunctor(LLPanelFace* panel) : mPanel(panel) {}
-	virtual bool apply(LLViewerObject* object, S32 te)
-	{
-		BOOL valid;
-		F32 value;
+    LLPanelFaceSetTEFunctor(LLPanelFace* panel) : mPanel(panel) {}
+    virtual bool apply(LLViewerObject* object, S32 te)
+    {
+        BOOL valid;
+        F32 value;
         std::string prefix;
 
         // Effectively the same as MATMEDIA_PBR sans using different radio,
         // separate for the sake of clarity
-        LLRadioGroup * radio_mat_type = mPanel->getChild<LLRadioGroup>("radio_material_type");
+        LLRadioGroup* radio_mat_type = mPanel->getChild<LLRadioGroup>("radio_material_type");
         switch (radio_mat_type->getSelectedIndex())
         {
         case MATTYPE_DIFFUSE:
@@ -620,232 +626,305 @@ struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
             break;
         }
 
-		llassert(object);
+        LLSpinCtrl* ctrlTexScaleS = mPanel->getChild<LLSpinCtrl>(prefix + "ScaleU");
+        LLSpinCtrl* ctrlTexScaleT = mPanel->getChild<LLSpinCtrl>(prefix + "ScaleV");
+        LLSpinCtrl* ctrlTexOffsetS = mPanel->getChild<LLSpinCtrl>(prefix + "OffsetU");
+        LLSpinCtrl* ctrlTexOffsetT = mPanel->getChild<LLSpinCtrl>(prefix + "OffsetV");
+        LLSpinCtrl* ctrlTexRotation = mPanel->getChild<LLSpinCtrl>(prefix + "Rot");
 
-		if (mPanel->mTexScaleU)
-		{
-			valid = !mPanel->mTexScaleU->getTentative(); // || !checkFlipScaleS->getTentative();
-			if (valid || align_planar)
-			{
-				value = mPanel->mTexScaleU->getValue().asReal();
-				if (mPanel->mComboTexGen &&
-					mPanel->mComboTexGen->getCurrentIndex() == 1)
-				{
-					value *= 0.5f;
-				}
-				object->setTEScaleS(te, value);
+        LLComboBox* comboTexGen = mPanel->getChild<LLComboBox>("combobox texgen");
+        LLCheckBoxCtrl* cb_planar_align = mPanel->getChild<LLCheckBoxCtrl>("checkbox planar align");
+        bool align_planar = (cb_planar_align && cb_planar_align->get());
 
-				if (align_planar)
-				{
-					LLPanelFace::LLSelectedTEMaterial::setNormalRepeatX(mPanel, value, te);
-					LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatX(mPanel, value, te);
-				}
-			}
-		}
+        llassert(comboTexGen);
+        llassert(object);
 
-		if (mPanel->mTexScaleV)
-		{
-			valid = !mPanel->mTexScaleV->getTentative(); // || !checkFlipScaleT->getTentative();
-			if (valid || align_planar)
-			{
-				value = mPanel->mTexScaleV->getValue().asReal();
-				//if( checkFlipScaleT->get() )
-				//{
-				//	value = -value;
-				//}
-				if (mPanel->mComboTexGen &&
-					mPanel->mComboTexGen->getCurrentIndex() == 1)
-				{
-					value *= 0.5f;
-				}
-				object->setTEScaleT(te, value);
+        if (ctrlTexScaleS)
+        {
+            valid = !ctrlTexScaleS->getTentative(); // || !checkFlipScaleS->getTentative();
+            if (valid || align_planar)
+            {
+                value = ctrlTexScaleS->get();
+                if (comboTexGen &&
+                    comboTexGen->getCurrentIndex() == 1)
+                {
+                    value *= 0.5f;
+                }
+                object->setTEScaleS(te, value);
 
-				if (align_planar)
-				{
-					LLPanelFace::LLSelectedTEMaterial::setNormalRepeatY(mPanel, value, te);
-					LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatY(mPanel, value, te);
-				}
-			}
-		}
+                if (align_planar)
+                {
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRepeatX(mPanel, value, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatX(mPanel, value, te, object->getID());
+                }
+            }
+        }
 
-		if (mPanel->mTexOffsetU)
-		{
-			valid = !mPanel->mTexOffsetU->getTentative();
-			if (valid || align_planar)
-			{
-				value = mPanel->mTexOffsetU->getValue().asReal();
-				object->setTEOffsetS(te, value);
+        if (ctrlTexScaleT)
+        {
+            valid = !ctrlTexScaleT->getTentative(); // || !checkFlipScaleT->getTentative();
+            if (valid || align_planar)
+            {
+                value = ctrlTexScaleT->get();
+                //if( checkFlipScaleT->get() )
+                //{
+                //	value = -value;
+                //}
+                if (comboTexGen &&
+                    comboTexGen->getCurrentIndex() == 1)
+                {
+                    value *= 0.5f;
+                }
+                object->setTEScaleT(te, value);
 
-				if (align_planar)
-				{
-					LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, value, te);
-					LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, value, te);
-				}
-			}
-		}
+                if (align_planar)
+                {
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRepeatY(mPanel, value, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatY(mPanel, value, te, object->getID());
+                }
+            }
+        }
 
-		if (mPanel->mTexOffsetV)
-		{
-			valid = !mPanel->mTexOffsetV->getTentative();
-			if (valid || align_planar)
-			{
-				value = mPanel->mTexOffsetV->getValue().asReal();
-				object->setTEOffsetT(te, value);
+        if (ctrlTexOffsetS)
+        {
+            valid = !ctrlTexOffsetS->getTentative();
+            if (valid || align_planar)
+            {
+                value = ctrlTexOffsetS->get();
+                object->setTEOffsetS(te, value);
 
-				if (align_planar)
-				{
-					LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, value, te);
-					LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, value, te);
-				}
-			}
-		}
+                if (align_planar)
+                {
+                    LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, value, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, value, te, object->getID());
+                }
+            }
+        }
 
-		if (mPanel->mTexRot)
-		{
-			valid = !mPanel->mTexRot->getTentative();
-			if (valid || align_planar)
-			{
-				value = mPanel->mTexRot->getValue().asReal() * DEG_TO_RAD;
-				object->setTERotation(te, value);
+        if (ctrlTexOffsetT)
+        {
+            valid = !ctrlTexOffsetT->getTentative();
+            if (valid || align_planar)
+            {
+                value = ctrlTexOffsetT->get();
+                object->setTEOffsetT(te, value);
 
-				if (align_planar)
-				{
-					LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, value, te);
-					LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, value, te);
-				}
-			}
-		}
-		return true;
-	}
+                if (align_planar)
+                {
+                    LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, value, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, value, te, object->getID());
+                }
+            }
+        }
+
+        if (ctrlTexRotation)
+        {
+            valid = !ctrlTexRotation->getTentative();
+            if (valid || align_planar)
+            {
+                value = ctrlTexRotation->get() * DEG_TO_RAD;
+                object->setTERotation(te, value);
+
+                if (align_planar)
+                {
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, value, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, value, te, object->getID());
+                }
+            }
+        }
+        return true;
+    }
 private:
-	LLPanelFace* mPanel;
+    LLPanelFace* mPanel;
 };
 
 // Functor that aligns a face to mCenterFace
 struct LLPanelFaceSetAlignedTEFunctor : public LLSelectedTEFunctor
 {
-	LLPanelFaceSetAlignedTEFunctor(LLPanelFace* panel, LLFace* center_face) :
-		mPanel(panel),
-		mCenterFace(center_face) {}
+    LLPanelFaceSetAlignedTEFunctor(LLPanelFace* panel, LLFace* center_face) :
+        mPanel(panel),
+        mCenterFace(center_face) {}
 
-	virtual bool apply(LLViewerObject* object, S32 te)
-	{
-		LLFace* facep = object->mDrawable->getFace(te);
-		if (!facep)
-		{
-			return true;
-		}
+    virtual bool apply(LLViewerObject* object, S32 te)
+    {
+        LLFace* facep = object->mDrawable->getFace(te);
+        if (!facep)
+        {
+            return true;
+        }
 
-		if (facep->getViewerObject()->getVolume()->getNumVolumeFaces() <= te)
-		{
-			return true;
-		}
+        if (facep->getViewerObject()->getVolume()->getNumVolumeFaces() <= te)
+        {
+            return true;
+        }
 
-		bool set_aligned = true;
-		if (facep == mCenterFace)
-		{
-			set_aligned = false;
-		}
-		if (set_aligned)
-		{
-			LLVector2 uv_offset, uv_scale;
-			F32 uv_rot;
-			set_aligned = facep->calcAlignedPlanarTE(mCenterFace, &uv_offset, &uv_scale, &uv_rot);
-			if (set_aligned)
-			{
-				object->setTEOffset(te, uv_offset.mV[VX], uv_offset.mV[VY]);
-				object->setTEScale(te, uv_scale.mV[VX], uv_scale.mV[VY]);
-				object->setTERotation(te, uv_rot);
+        bool set_aligned = true;
+        if (facep == mCenterFace)
+        {
+            set_aligned = false;
+        }
+        if (set_aligned)
+        {
+            LLVector2 uv_offset, uv_scale;
+            F32 uv_rot;
+            set_aligned = facep->calcAlignedPlanarTE(mCenterFace, &uv_offset, &uv_scale, &uv_rot);
+            if (set_aligned)
+            {
+                object->setTEOffset(te, uv_offset.mV[VX], uv_offset.mV[VY]);
+                object->setTEScale(te, uv_scale.mV[VX], uv_scale.mV[VY]);
+                object->setTERotation(te, uv_rot);
 
-				LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, uv_rot, te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, uv_rot, te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, uv_rot, te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, uv_rot, te, object->getID());
 
-				LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setNormalRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setNormalRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setNormalRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setNormalRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
 
-				LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
-				LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
-			}
-		}
-		if (!set_aligned)
-		{
-			LLPanelFaceSetTEFunctor setfunc(mPanel);
-			setfunc.apply(object, te);
-		}
-		return true;
-	}
+                LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
+                LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
+            }
+        }
+        if (!set_aligned)
+        {
+            LLPanelFaceSetTEFunctor setfunc(mPanel);
+            setfunc.apply(object, te);
+        }
+        return true;
+    }
 private:
-	LLPanelFace* mPanel;
-	LLFace* mCenterFace;
+    LLPanelFace* mPanel;
+    LLFace* mCenterFace;
+};
+
+struct LLPanelFaceSetAlignedConcreteTEFunctor : public LLSelectedTEFunctor
+{
+    LLPanelFaceSetAlignedConcreteTEFunctor(LLPanelFace* panel, LLFace* center_face, LLRender::eTexIndex map) :
+        mPanel(panel),
+        mChefFace(center_face),
+        mMap(map)
+    {}
+
+    virtual bool apply(LLViewerObject* object, S32 te)
+    {
+        LLFace* facep = object->mDrawable->getFace(te);
+        if (!facep)
+        {
+            return true;
+        }
+
+        if (facep->getViewerObject()->getVolume()->getNumVolumeFaces() <= te)
+        {
+            return true;
+        }
+
+        if (mChefFace != facep)
+        {
+            LLVector2 uv_offset, uv_scale;
+            F32 uv_rot;
+            if (facep->calcAlignedPlanarTE(mChefFace, &uv_offset, &uv_scale, &uv_rot, mMap))
+            {
+                switch (mMap)
+                {
+                case LLRender::DIFFUSE_MAP:
+                    object->setTEOffset(te, uv_offset.mV[VX], uv_offset.mV[VY]);
+                    object->setTEScale(te, uv_scale.mV[VX], uv_scale.mV[VY]);
+                    object->setTERotation(te, uv_rot);
+                    break;
+                case LLRender::NORMAL_MAP:
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRotation(mPanel, uv_rot, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setNormalOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setNormalOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setNormalRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
+                    break;
+                case LLRender::SPECULAR_MAP:
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRotation(mPanel, uv_rot, te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetX(mPanel, uv_offset.mV[VX], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularOffsetY(mPanel, uv_offset.mV[VY], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatX(mPanel, uv_scale.mV[VX], te, object->getID());
+                    LLPanelFace::LLSelectedTEMaterial::setSpecularRepeatY(mPanel, uv_scale.mV[VY], te, object->getID());
+                    break;
+                default: /*make compiler happy*/
+                    break;
+                }
+            }
+        }
+
+        return true;
+    }
+private:
+    LLPanelFace* mPanel;
+    LLFace* mChefFace;
+    LLRender::eTexIndex mMap;
 };
 
 // Functor that tests if a face is aligned to mCenterFace
 struct LLPanelFaceGetIsAlignedTEFunctor : public LLSelectedTEFunctor
 {
-	LLPanelFaceGetIsAlignedTEFunctor(LLFace* center_face) :
-		mCenterFace(center_face) {}
+    LLPanelFaceGetIsAlignedTEFunctor(LLFace* center_face) :
+        mCenterFace(center_face) {}
 
-	virtual bool apply(LLViewerObject* object, S32 te)
-	{
-		LLFace* facep = object->mDrawable->getFace(te);
-		if (!facep)
-		{
-			return false;
-		}
+    virtual bool apply(LLViewerObject* object, S32 te)
+    {
+        LLFace* facep = object->mDrawable->getFace(te);
+        if (!facep)
+        {
+            return false;
+        }
 
-		if (facep->getViewerObject()->getVolume()->getNumVolumeFaces() <= te)
-		{ //volume face does not exist, can't be aligned
-			return false;
-		}
+        if (facep->getViewerObject()->getVolume()->getNumVolumeFaces() <= te)
+        { //volume face does not exist, can't be aligned
+            return false;
+        }
 
-		if (facep == mCenterFace)
-		{
-			return true;
-		}
+        if (facep == mCenterFace)
+        {
+            return true;
+        }
 
-		LLVector2 aligned_st_offset, aligned_st_scale;
-		F32 aligned_st_rot;
-		if (facep->calcAlignedPlanarTE(mCenterFace, &aligned_st_offset, &aligned_st_scale, &aligned_st_rot))
-		{
-			const LLTextureEntry* tep = facep->getTextureEntry();
-			LLVector2 st_offset, st_scale;
-			tep->getOffset(&st_offset.mV[VX], &st_offset.mV[VY]);
-			tep->getScale(&st_scale.mV[VX], &st_scale.mV[VY]);
-			F32 st_rot = tep->getRotation();
+        LLVector2 aligned_st_offset, aligned_st_scale;
+        F32 aligned_st_rot;
+        if (facep->calcAlignedPlanarTE(mCenterFace, &aligned_st_offset, &aligned_st_scale, &aligned_st_rot))
+        {
+            const LLTextureEntry* tep = facep->getTextureEntry();
+            LLVector2 st_offset, st_scale;
+            tep->getOffset(&st_offset.mV[VX], &st_offset.mV[VY]);
+            tep->getScale(&st_scale.mV[VX], &st_scale.mV[VY]);
+            F32 st_rot = tep->getRotation();
 
-			bool eq_offset_x = is_approx_equal_fraction(st_offset.mV[VX], aligned_st_offset.mV[VX], 12);
-			bool eq_offset_y = is_approx_equal_fraction(st_offset.mV[VY], aligned_st_offset.mV[VY], 12);
-			bool eq_scale_x = is_approx_equal_fraction(st_scale.mV[VX], aligned_st_scale.mV[VX], 12);
-			bool eq_scale_y = is_approx_equal_fraction(st_scale.mV[VY], aligned_st_scale.mV[VY], 12);
-			bool eq_rot = is_approx_equal_fraction(st_rot, aligned_st_rot, 6);
+            bool eq_offset_x = is_approx_equal_fraction(st_offset.mV[VX], aligned_st_offset.mV[VX], 12);
+            bool eq_offset_y = is_approx_equal_fraction(st_offset.mV[VY], aligned_st_offset.mV[VY], 12);
+            bool eq_scale_x = is_approx_equal_fraction(st_scale.mV[VX], aligned_st_scale.mV[VX], 12);
+            bool eq_scale_y = is_approx_equal_fraction(st_scale.mV[VY], aligned_st_scale.mV[VY], 12);
+            bool eq_rot = is_approx_equal_fraction(st_rot, aligned_st_rot, 6);
 
-			// needs a fuzzy comparison, because of fp errors
-			if (eq_offset_x &&
-				eq_offset_y &&
-				eq_scale_x &&
-				eq_scale_y &&
-				eq_rot)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+            // needs a fuzzy comparison, because of fp errors
+            if (eq_offset_x &&
+                eq_offset_y &&
+                eq_scale_x &&
+                eq_scale_y &&
+                eq_rot)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 private:
-	LLFace* mCenterFace;
+    LLFace* mCenterFace;
 };
 
 struct LLPanelFaceSendFunctor : public LLSelectedObjectFunctor
 {
-	virtual bool apply(LLViewerObject* object)
-	{
-		object->sendTEUpdate();
-		return true;
-	}
+    virtual bool apply(LLViewerObject* object)
+    {
+        object->sendTEUpdate();
+        return true;
+    }
 };
 
 void LLPanelFace::sendTextureInfo()
@@ -866,6 +945,16 @@ void LLPanelFace::sendTextureInfo()
 
 	LLPanelFaceSendFunctor sendfunc;
 	LLSelectMgr::getInstance()->getSelection()->applyToObjects(&sendfunc);
+}
+
+void LLPanelFace::alignTestureLayer()
+{
+    LLFace* last_face = NULL;
+    bool identical_face = false;
+    LLSelectedTE::getFace(last_face, identical_face);
+
+    LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(mRadioMaterialType->getSelectedIndex()));
+    LLSelectMgr::getInstance()->getSelection()->applyToTEs(&setfunc);
 }
 
 void LLPanelFace::getState()
@@ -909,12 +998,12 @@ void LLPanelFace::updateUI(bool force_set_values)
 
         mComboMatMedia->setEnabled(editable);
 
-        LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-        if (radio_mat_type->getSelectedIndex() < MATTYPE_DIFFUSE)
+        if (mRadioMaterialType->getSelectedIndex() < MATTYPE_DIFFUSE)
         {
-            radio_mat_type->selectNthItem(MATTYPE_DIFFUSE);
+            mRadioMaterialType->selectNthItem(MATTYPE_DIFFUSE);
         }
-        radio_mat_type->setEnabled(editable);
+        mRadioMaterialType->setEnabled(editable);
+        U32 material_type = mRadioMaterialType->getSelectedIndex();
 
         LLRadioGroup* radio_pbr_type = getChild<LLRadioGroup>("radio_pbr_type");
         if (radio_pbr_type->getSelectedIndex() < PBRTYPE_RENDER_MATERIAL_ID)
@@ -1090,18 +1179,18 @@ void LLPanelFace::updateUI(bool force_set_values)
 
 			updateAlphaControls();
 
-			if (texture_ctrl)
+			if (mTextureCtrl)
 			{
 				if (identical_diffuse)
 				{
-					texture_ctrl->setTentative(FALSE);
-					texture_ctrl->setEnabled(editable && !has_pbr_material);
-					texture_ctrl->setImageAssetID(id);
+                    mTextureCtrl->setTentative(FALSE);
+                    mTextureCtrl->setEnabled(editable && !has_pbr_material);
+                    mTextureCtrl->setImageAssetID(id);
 					mComboAlpha->setEnabled(editable && mIsAlpha && transparency <= 0.f && !has_pbr_material);
 					mLabelAlpha->setEnabled(editable && mIsAlpha && !has_pbr_material);
 					mMaskCutoff->setEnabled(editable && mIsAlpha && !has_pbr_material);
 
-					texture_ctrl->setBakeTextureEnabled(TRUE);
+                    mTextureCtrl->setBakeTextureEnabled(TRUE);
 				}
 				else if (id.isNull())
 				{
@@ -1458,7 +1547,7 @@ void LLPanelFace::updateUI(bool force_set_values)
             U32 material_type = MATTYPE_DIFFUSE;
             if (material_selection == MATMEDIA_MATERIAL)
             {
-                material_type = radio_mat_type->getSelectedIndex();
+                material_type = mRadioMaterialType->getSelectedIndex();
             }
             else if (material_selection == MATMEDIA_PBR)
             {
@@ -2581,7 +2670,7 @@ void LLPanelFace::updateVisibility()
     bool show_material = materials_media == MATMEDIA_MATERIAL;
 	bool show_texture = (show_media || (show_material && (material_type == MATTYPE_DIFFUSE) && mComboMatMedia->getEnabled()));
 	bool show_bumpiness = show_material && (material_type == MATTYPE_NORMAL) && mComboMatMedia->getEnabled();
-	bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
+	//bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
     const bool show_pbr = mComboMatMedia->getCurrentIndex() == MATMEDIA_PBR && mComboMatMedia->getEnabled();
     const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
     const LLGLTFMaterial::TextureInfo texture_info = texture_info_from_pbrtype(pbr_type);
@@ -2713,12 +2802,11 @@ void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_sh
 		}
 	}
 
-	LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
 	U32 materials_media = mComboMatMedia->getCurrentIndex();
-	U32 material_type = radio_mat_type->getSelectedIndex();
+	U32 material_type = mRadioMaterialType->getSelectedIndex();
 	bool show_material = (materials_media == MATMEDIA_MATERIAL);
 	bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
-	U32 shiny_value = comboShiny->getCurrentIndex();
+	U32 shiny_value = mComboShiny->getCurrentIndex();
 	bool show_shinyctrls = (shiny_value == SHINY_TEXTURE) && show_shininess; // Use texture
 	getChildView("label glossiness")->setVisible(show_shinyctrls);
 	getChildView("glossiness")->setVisible(show_shinyctrls);
@@ -4077,14 +4165,6 @@ void LLPanelFace::onPasteTexture(LLViewerObject* objectp, S32 te)
     }
 }
 
-// TODO: I don't know who put these in or what these are for???
-void LLPanelFace::setMediaURL(const std::string& url)
-{
-}
-void LLPanelFace::setMediaType(const std::string& mime_type)
-{
-}
-
 // static
 void LLPanelFace::onCommitPlanarAlign(LLUICtrl* ctrl, void* userdata)
 {
@@ -4632,14 +4712,4 @@ void LLPanelFace::LLSelectedTE::getMaxDiffuseRepeats(F32& repeats, bool& identic
 
 	} max_diff_repeats_func;
 	identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&max_diff_repeats_func, repeats);
-}
-
-LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
-{
-	//BD
-	LLRender::eTexIndex channel_to_edit = (LLRender::eTexIndex)mRadioMaterialType->getSelectedIndex();
-
-	channel_to_edit = (channel_to_edit == LLRender::NORMAL_MAP) ? (getCurrentNormalMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
-	channel_to_edit = (channel_to_edit == LLRender::SPECULAR_MAP) ? (getCurrentSpecularMap().isNull() ? LLRender::DIFFUSE_MAP : channel_to_edit) : channel_to_edit;
-	return channel_to_edit;
 }

@@ -1538,7 +1538,7 @@ bool LLAppViewer::doFrame()
 			{
 				LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
 				//BD
-				gJoystick->scanJoystick();k();
+				gJoystick->scanJoystick();
 				gKeyboard->scanKeyboard();
                 gViewerInput.scanMouse();
 			}

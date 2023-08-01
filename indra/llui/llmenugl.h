@@ -38,6 +38,8 @@
 #include "lluistring.h"
 #include "llview.h"
 #include <boost/function.hpp>
+ //BD
+#include "llsearchablecontrol.h"
 
 extern S32 MENU_BAR_HEIGHT;
 extern S32 MENU_BAR_WIDTH;
@@ -756,13 +758,13 @@ public:
 	// onCommit() - do the primary funcationality of the menu item.
 	virtual void	onCommit( void );
 
-	LLContextMenu*	getBranch() { return mBranchHandle.get(); }
+	LLContextMenu*	getBranch() { return mBranch.get(); }
 	void			setHighlight( BOOL highlight );
 
 protected:
 	void	showSubMenu();
 
-	LLHandle<LLContextMenu> mBranchHandle;
+	LLHandle<LLContextMenu> mBranch;
 };
 
 

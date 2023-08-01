@@ -298,9 +298,9 @@ public:
     void renderFullbrightMaskedObjects(U32 type, bool texture = true, bool batch_texture = false, bool rigged = false);
 
 	//	//BD - Motion Blur
-	void renderMotionBlur(U32 type);
+	/*void renderMotionBlur(U32 type);
 	void renderMotionBlurWithTexture(U32 type);
-	void renderGeomMotionBlur();
+	void renderGeomMotionBlur();*/
 
 	void renderGroups(LLRenderPass* pass, U32 type, bool texture);
     void renderRiggedGroups(LLRenderPass* pass, U32 type, bool texture);
@@ -1104,9 +1104,9 @@ public:
 	static F32 RenderGodraysFalloffMultiplier;
 
 	//    //BD - Motion Blur
-	static BOOL RenderMotionBlur;
+	/*static BOOL RenderMotionBlur;
 	static U32 RenderMotionBlurStrength;
-	static U32 RenderMotionBlurQuality;
+	static U32 RenderMotionBlurQuality;*/
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);

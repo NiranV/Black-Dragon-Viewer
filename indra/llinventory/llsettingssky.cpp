@@ -40,31 +40,32 @@ namespace
     const LLUUID IMG_HALO("12149143-f599-91a7-77ac-b52a3c0f59cd");
 }
 
-namespace {
-    LLQuaternion convert_azimuth_and_altitude_to_quat(F32 azimuth, F32 altitude)
-    {
-        F32 sinTheta = sin(azimuth);
-        F32 cosTheta = cos(azimuth);
-        F32 sinPhi   = sin(altitude);
-        F32 cosPhi   = cos(altitude);
+//BD
+//namespace {
+LLQuaternion convert_azimuth_and_altitude_to_quat(F32 azimuth, F32 altitude)
+{
+    F32 sinTheta = sin(azimuth);
+    F32 cosTheta = cos(azimuth);
+    F32 sinPhi   = sin(altitude);
+    F32 cosPhi   = cos(altitude);
 
-        LLVector3 dir;
-        // +x right, +z up, +y at...	
-        dir.mV[0] = cosTheta * cosPhi;
-        dir.mV[1] = sinTheta * cosPhi;	
-        dir.mV[2] = sinPhi;
+    LLVector3 dir;
+    // +x right, +z up, +y at...	
+    dir.mV[0] = cosTheta * cosPhi;
+    dir.mV[1] = sinTheta * cosPhi;	
+    dir.mV[2] = sinPhi;
 
-        LLVector3 axis = LLVector3::x_axis % dir;
-        axis.normalize();
+    LLVector3 axis = LLVector3::x_axis % dir;
+    axis.normalize();
 
-        F32 angle = acos(LLVector3::x_axis * dir);
+    F32 angle = acos(LLVector3::x_axis * dir);
 
-        LLQuaternion quat;
-        quat.setAngleAxis(angle, axis);
+    LLQuaternion quat;
+    quat.setAngleAxis(angle, axis);
 
-        return quat;
-    }
+    return quat;
 }
+//}
 
 //=========================================================================
 const std::string LLSettingsSky::SETTING_AMBIENT("ambient");

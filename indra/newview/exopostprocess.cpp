@@ -47,8 +47,8 @@ BOOL		exoPostProcess::sRenderLensFlare;
 exoPostProcess::exoPostProcess()
 {
     
-    mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1, 0);
-	mExoPostBuffer->allocateBuffer(8, 0, true);
+    mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1);
+	mExoPostBuffer->allocateBuffer(8, 0);
     
     LLStrider<LLVector3> vert; 
     mExoPostBuffer->getVertexStrider(vert);
@@ -161,14 +161,14 @@ void exoPostProcess::ExodusRenderPostSettingsUpdate()
 void exoPostProcess::ExodusRenderPostUpdate()
 {
     etc1.setVec(0,0);
-	etc2.setVec((F32) gPipeline.mScreen.getWidth(),
-               (F32) gPipeline.mScreen.getHeight());
+	etc2.setVec((F32) gPipeline.mRT->screen.getWidth(),
+               (F32) gPipeline.mRT->screen.getHeight());
     if (!gPipeline.sRenderDeferred)
     {
         // Destroy our old buffer, and create a new vertex buffer for the screen (shamelessly ganked from pipeline.cpp).
         mExoPostBuffer = NULL;
-        mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1, 0);
-		mExoPostBuffer->allocateBuffer(3,0,TRUE);
+        mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1);
+		mExoPostBuffer->allocateBuffer(3,0);
         
 		LLStrider<LLVector3> v;
 		LLStrider<LLVector2> uv1;
@@ -190,11 +190,11 @@ void exoPostProcess::ExodusRenderPostUpdate()
 		v[1] = LLVector3(-1,3,0);
 		v[2] = LLVector3(3,-1,0);
         
-		mExoPostBuffer->flush();
+		mExoPostBuffer->unmapBuffer();
     } else {
         mExoPostBuffer = NULL;
-        mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1, 0);
-        mExoPostBuffer->allocateBuffer(8, 0, true);
+        mExoPostBuffer = new LLVertexBuffer(LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1);
+        mExoPostBuffer->allocateBuffer(8, 0);
         
         LLStrider<LLVector3> vert; 
         mExoPostBuffer->getVertexStrider(vert);
@@ -242,7 +242,7 @@ void exoPostProcess::ExodusRenderToneMapping(LLRenderTarget *src, LLRenderTarget
     }
 
     shader->bind();
-    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    mExoPostBuffer->setBuffer();
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN, 0);
     shader->uniform1f(LLShaderMgr::EXO_RENDER_EXPOSURE, sExodusRenderToneExposure);
     if (type == EXODUS_RENDER_TONE_FILMIC_ADV)
@@ -265,7 +265,7 @@ void exoPostProcess::ExodusRenderColorGrade(LLRenderTarget *src, LLRenderTarget 
         {
             src->bindTarget();
             gColorGradePost.bind();
-            mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+            mExoPostBuffer->setBuffer();
             exoShader::BindRenderTarget(dst, &gColorGradePost, LLShaderMgr::EXO_RENDER_SCREEN, 0);
             exoShader::BindTex2D(LLViewerFetchedTexture::sExodusColorGradeTexp, &gColorGradePost, LLShaderMgr::EXO_RENDER_GRADE, 1);
             
@@ -280,7 +280,7 @@ void exoPostProcess::ExodusRenderColorGrade(LLRenderTarget *src, LLRenderTarget 
     {
         src->bindTarget();
         gColorGradePostLegacy.bind();
-        mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+        mExoPostBuffer->setBuffer();
         exoShader::BindRenderTarget(dst, &gColorGradePostLegacy, LLShaderMgr::EXO_RENDER_SCREEN, 0);
         
         gColorGradePostLegacy.uniform3fv(LLShaderMgr::EXO_RENDER_GAMMA, 1, sExodusRenderGamma.mV);
@@ -300,7 +300,7 @@ void exoPostProcess::ExodusRenderVignette(LLRenderTarget* src, LLRenderTarget* d
     LLGLSLShader *shader = &gVignettePost;
     shader->bind();
     
-    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    mExoPostBuffer->setBuffer();
     
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
     
@@ -318,7 +318,7 @@ void exoPostProcess::ExodusRenderSpecial(LLRenderTarget* src, LLRenderTarget* ds
     LLGLSLShader *shader = &gSpecialPost;
     shader->bind();
     
-    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    mExoPostBuffer->setBuffer();
     
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
     
@@ -338,7 +338,7 @@ void exoPostProcess::ExodusRenderLens(LLRenderTarget* src, LLRenderTarget* dst)
     LLGLSLShader *shader = &gLensFlare;
     shader->bind();
     
-    mExoPostBuffer->setBuffer(LLVertexBuffer::MAP_VERTEX);
+    mExoPostBuffer->setBuffer();
     
     exoShader::BindRenderTarget(dst, shader, LLShaderMgr::EXO_RENDER_SCREEN);
 

@@ -258,7 +258,8 @@ void LLFloaterFixedEnvironment::refresh()
 
 void LLFloaterFixedEnvironment::populatePresetsList()
 {
-    mSettings = settings; // shouldn't this do buildDeepCloneAndUncompress() ?
+	if (!mSettings)
+		return;
     updateEditEnvironment();
     syncronizeTabs();
     refresh();

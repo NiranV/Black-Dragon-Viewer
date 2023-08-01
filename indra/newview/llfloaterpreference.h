@@ -40,6 +40,7 @@
 #include "lllistcontextmenu.h"
 #include "llmutelist.h"
 #include "llsearchableui.h"
+#include "llsearchablecontrol.h"
 #include "llnamelistctrl.h"
 #include "llsearcheditor.h"
 
@@ -57,8 +58,6 @@ class LLTextBox;
 class LLNameListCtrl;
 class LLProgressBar;
 class LLTabContainer;
-class LLSearchableUI;
-class LLSearchableControl;
 struct skin_t;
 
 typedef std::map<std::string, std::string> notifications_map;
@@ -279,7 +278,6 @@ public:
 	void deleteGraphicPreset();
 	void refreshGraphicPresets();
 
-    void setRecommendedSettings();
     void resetAutotuneSettings();
 
 private:
@@ -290,7 +288,8 @@ private:
 
 	static bool loadFromFilename(const std::string& filename, std::map<std::string, std::string> &label_map);
 	
-	void loadUserSkins();
+	//BD - Custom User Skins ~ Currently disabled.
+	/*void loadUserSkins();
 	void reloadSkinList();
 	void onAddSkin();
 	void onRemoveSkin();
@@ -298,7 +297,7 @@ private:
 	void onApplySkin();
 	void callbackApplySkin(const LLSD& notification, const LLSD& response);
 	void onSelectSkin(const LLSD& data);
-	void refreshSkinInfo(const skin_t& skin);
+	void refreshSkinInfo(const skin_t& skin);*/
 
 	static std::string sSkin;
 	notifications_map mNotificationOptions;

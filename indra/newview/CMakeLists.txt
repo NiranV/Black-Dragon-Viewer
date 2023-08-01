@@ -283,7 +283,6 @@ set(viewer_SOURCE_FILES
     llfloaterpathfindinglinksets.cpp
     llfloaterpathfindingobjects.cpp
     llfloaterpay.cpp
-    llfloaterperformance.cpp
     llfloaterperms.cpp
     llfloaterpostprocess.cpp
     llfloaterprofile.cpp
@@ -953,7 +952,6 @@ set(viewer_HEADER_FILES
     llfloaterpathfindinglinksets.h
     llfloaterpathfindingobjects.h
     llfloaterpay.h
-    llfloaterperformance.h
     llfloaterperms.h
     llfloaterpostprocess.h
     llfloaterprofile.h
