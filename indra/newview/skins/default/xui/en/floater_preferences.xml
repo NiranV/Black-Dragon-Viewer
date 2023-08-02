@@ -311,12 +311,12 @@ width="669">
   label="Browser"
   layout="topleft"
   name="browser" />
-  <panel
+  <!--<panel
   class="panel_preference"
   filename="panel_preferences_rlva.xml"
   label="Restrained Love"
   layout="topleft"
-  name="rlva" />
+  name="rlva" />-->
   <panel
   class="panel_preference"
   filename="panel_preferences_uploads.xml"
