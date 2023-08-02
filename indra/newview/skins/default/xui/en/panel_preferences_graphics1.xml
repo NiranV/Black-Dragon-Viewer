@@ -433,7 +433,7 @@ width="510">
    follows="top|left"
    left="155"
    height="18"
-   control_name="MaxTextureMemoryAllowed"
+   control_name="RenderMaxVRAMBudget"
    name="maxtexturememory"
    tool_tip=""
    use_ticker="true"
@@ -1713,62 +1713,37 @@ width="510">
  name="ReflectionAmount"
  top_pad="10"
  width="120">
- Reflection Amount:
+ Reflection Probe:
  </text>
    <combo_box
    follows="top|left"
    left="155"
    height="18"
-   control_name="RenderReflectionDetail"
+   control_name="RenderReflectionProbeLevel"
    name="uisize_combo"
    use_ticker="true"
    tool_tip=""
    top_delta="-2"
    width="219">
       <combo_box.item
-       label="Sky Only"
+       label="Disable"
        value="0"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option prevents everything from being reflected in water reflections."
+       tool_tip="Unknown."
        name="item0"/>
       <combo_box.item
-       label="Terrain"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option allows the terrain to be reflected in water reflections."
+       label="Manual Only"
+       tool_tip="Unknown."
        value="1"
        name="item2"/>
       <combo_box.item
-       label="Objects"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option allows the terrain and objects to be reflected in water reflections."
+       label="Manual and Terrain"
+       tool_tip="Unknown."
        value="2"
        name="item3"/>
       <combo_box.item
-       label="Avatars"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option allows the terrain, objects and avatars to be reflected in water reflections."
+       label="Manual, Terrain and Objects"
+       tool_tip="Unknown."
        value="3"
-       name="item4"/>
-      <combo_box.item
-       label="Everything"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option allows everything to be reflected in water reflections."
-       value="4"
        name="item4"/>
       <combo_box.drop_down_button
        pad_right="4"
@@ -1778,30 +1753,6 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
- <panel
-       follows="top|left|right"
-       height="39"
-       background_visible="true"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="0"
-       name="warning_reflection_quality"
-       visible="false"
-       top_pad="3"
-       width="508">
-  <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_reflection_quality2"
-  mouse_opaque="false"
-  tool_tip="WARNING: Higher than 'normal' Reflection Quality may noticably impact performance negatively."
-  width="16"
-  left="472"
-  top="11"/>
- </panel>
  <text
  type="string"
  length="1"
@@ -1809,92 +1760,41 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="Reflectiontext"
- top_delta="2"
+ name="ReflectionAmount"
+ top_pad="10"
  width="120">
- Reflection Quality:
+ Reflection Probe Detail:
  </text>
- <combo_box
+   <combo_box
    follows="top|left"
    left="155"
    height="18"
-   control_name="RenderWaterRefResolution"
+   control_name="RenderReflectionProbeDetail"
    name="uisize_combo"
    use_ticker="true"
    tool_tip=""
    top_delta="-2"
    width="219">
       <combo_box.item
-       label="Very Low"
-       value="256"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;256&lt;/blue&gt;"
+       label="Disable"
+       value="-1"
+       tool_tip="Unknown."
        name="item0"/>
       <combo_box.item
-       label="Low"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;512&lt;/blue&gt;"
-       value="512"
+       label="Static Only"
+       tool_tip="Unknown."
+       value="1"
        name="item2"/>
       <combo_box.item
-       label="Medium"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;768&lt;/blue&gt;
-||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
-|This option is equivalent of the maximum (Ultra) available in the official Viewer."
-       value="768"
+       label="Static and Dynamic"
+       tool_tip="Unknown."
+       value="2"
        name="item3"/>
       <combo_box.item
-       label="High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1024&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="1024"
+       label="Realtime"
+       tool_tip="Unknown."
+       value="3"
        name="item4"/>
-      <combo_box.item
-       label="Very High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;1536&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="1536"
-       name="item4"/>
-      <combo_box.item
-       label="Ultra"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the resolution of water reflections.
-||RenderWaterRefResolution: &lt;blue&gt;2048&lt;/blue&gt;
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This option is higher than the maximum (Ultra) available in the official Viewer."
-       value="2048"
-       name="item4"/>
-      <combo_box.combo_icon
-       default_index="2"
-       warns_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -2731,7 +2631,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1240"
+	  height="955"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -2798,37 +2698,7 @@ width="510">
    name="RenderOwnAttachedLights"
    top_pad="0"
    width="115" />
-	  <check_box
-   control_name="RenderDeferredEnvironmentMap"
-   enabled_control="RenderDeferred"
-   height="16"
-   label="Render Environment Map"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles rendering the cheap and outdated environment map on shiny surfaces in Deferred Rendering on or off."
-   layout="topleft"
-   left="10"
-   name="RenderDeferredEnvironmentMap"
-   top_pad="0"
-   width="115" />
-   <check_box
-   control_name="RenderHighPrecisionNormals"
-   enabled_control="RenderDeferred"
-   height="16"
-   label="Render High Precision Normals"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles whether the Viewer should use high precision normal buffers or not. This directly affects the accuracy of light reflections on objects most noticably those of projector images. This increase memory usage by a varying amount depending on your screen resolution. To see the effects of this option you have to toggle Deferred Rendering off and on again."
-   layout="topleft"
-   left="10"
-   name="RenderHighPrecisionNormals"
-   top_pad="0"
-   width="115" />
-   <check_box
+   <!--<check_box
    control_name="RenderWaterLightReflections"
    enabled_control="RenderDeferred"
    height="16"
@@ -2878,7 +2748,7 @@ width="510">
    left="10"
    name="RenderSpotLightImages"
    top_pad="0"
-   width="115" />
+   width="115" />-->
 	  
    <panel
        follows="top|left|right"
@@ -2958,7 +2828,7 @@ width="510">
        image_disabled="Transparent" />
     </combo_box>
  
- <check_box
+ <!--<check_box
      control_name="RenderDeferredBlurLight"
      enabled_control="RenderDeferred"
      height="16"
@@ -2973,7 +2843,7 @@ width="510">
      left="10"
      name="RenderDeferredBlurLight"
      top_pad="10"
-     width="115" />
+     width="115" />-->
  <slider
       control_name="RenderShadowBlurSize"
       decimal_digits="1"
@@ -4077,71 +3947,26 @@ width="510">
    width="220">
    Requires Deferred Rendering
    </text>
-     <check_box
-     control_name="RenderSSRRoughness"
-     enabled_control="RenderDeferred"
-     height="16"
-     initial_value="true"
-     label="Include Roughness into Reflections"
-     tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option toggles whether Screen Space Reflections should scatter the reflection randomly based on the material roughness (glossiness) or not. This will drastically affect the performance of SSR even with lower SSR Resolution."
-     layout="topleft"
-     left="10"
-     name="RenderSSRRoughness"
-     top_pad="10"
-     width="115" />
-     <panel
-       follows="top|left|right"
-       height="16"
-       background_visible="true"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="0"
-       name="warning_ssr_resolution"
-       visibility_control="RenderScreenSpaceReflections"
-       visible="false"
-       top_pad="9"
-       width="508">
-  <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_ssr2"
-  mouse_opaque="false"
-  tool_tip="WARNING: Screen Space Reflections may cause drastic performance degradation depending on the surface it is rendered on and the screen space resolution used."
-  width="16"
-  left="472"
-  top_pad="0"/>
- </panel>
       <slider
-      control_name="RenderSSRResolution"
+      control_name="RenderScreenSpaceReflectionIterations"
       decimal_digits="0"
       can_edit_text="true"
       follows="left|top"
       height="14"
       increment="1"
       initial_value="10"
-		tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the amount of iterations the screen space reflection shader should go through. More iterations mean finer grained reflections but also much higher performance impact."
-      label="SSR Resolution:"
+		tool_tip="Unknown."
+      label="Iterations:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="64"
-      min_val="2"
-      name="RenderSSRResolution"
-      top_delta="1"/>
+      max_val="128"
+      min_val="10"
+      name="RenderScreenSpaceReflectionIterations"
+      top_pad="10"/>
 		<button
  follows="left|top"
- control_name="RenderSSRResolution"
+ control_name="RenderScreenSpaceReflectionIterations"
  height="14"
  is_toggle="false"
  label="⌊default⌉"
@@ -4156,25 +3981,157 @@ width="510">
                                  function="Pref.Default"/>
       </button>
 		<slider
-      control_name="RenderSSRBrightness"
+      control_name="RenderScreenSpaceReflectionGlossySamples"
+      decimal_digits="1"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="1"
+      initial_value="1"
+		tool_tip="Unknown."
+      label="Glossy Samples:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="1"
+      name="RenderScreenSpaceReflectionGlossySamples"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderScreenSpaceReflectionGlossySamples"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderScreenSpaceReflectionRayStep"
+      decimal_digits="1"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0.1"
+		tool_tip="Unknown."
+      label="Ray Step:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="0.5"
+      min_val="0.01"
+      name="RenderScreenSpaceReflectionRayStep"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderScreenSpaceReflectionRayStep"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderScreenSpaceReflectionAdaptiveStepMultiplier"
       decimal_digits="1"
       can_edit_text="true"
       follows="left|top"
       height="14"
       increment="0.1"
-      initial_value="1"
-		tool_tip="This option controls the brightness of reflections on shiny surfaces from Screen Space Reflections."
-      label="SSR Brightness:"
+      initial_value="1.6"
+		tool_tip="Unknown."
+      label="Adaptive Step Multiplier:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="10"
-      min_val="0.1"
-      name="RenderSSRBrightness"
+      max_val="8"
+      min_val="0.5"
+      name="RenderScreenSpaceReflectionAdaptiveStepMultiplier"
       top_pad="2" />
       <button
  follows="left|top"
- control_name="RenderSSRBrightness"
+ control_name="RenderScreenSpaceReflectionAdaptiveStepMultiplier"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderScreenSpaceReflectionDepthRejectBias"
+      decimal_digits="1"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.001"
+      initial_value="0.001"
+		tool_tip="Unknown."
+      label="Depth Reject Bias:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="0.100"
+      min_val="0.001"
+      name="RenderScreenSpaceReflectionDepthRejectBias"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderScreenSpaceReflectionDepthRejectBias"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderScreenSpaceReflectionDepthRejectBias"
+      decimal_digits="1"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.001"
+      initial_value="0.015"
+		tool_tip="Unknown."
+      label="Distance Bias:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="0.200"
+      min_val="0.001"
+      name="RenderScreenSpaceReflectionDepthRejectBias"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderScreenSpaceReflectionDepthRejectBias"
  height="14"
  is_toggle="false"
  label="⌊default⌉"
@@ -4713,217 +4670,8 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      <text
- type="string"
- length="1"
- follows="right|top"
- height="12"
- layout="topleft"
- left="25"
- halign="center"
- name="separator_label"
- top_pad="7"
- width="450">
- Motion Blur
- </text>
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="0"/>
-   <check_box
-   control_name="RenderMotionBlur"
-   enabled_control="RenderDeferred"
-   height="16"
-   initial_value="false"
-   label="Motion Blur"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option toggles whether the Viewer should blur fast movement."
-   layout="topleft"
-   left="10"
-   name="MotionBlur"
-   top_pad="7"
-   width="115" />
-   <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- left="10"
- name="AVPhys"
- top_pad="10"
- width="120">
- Motion Blur Inclusion:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   control_name="RenderRiggedMotionBlurQuality"
-   name="RenderRiggedMotionBlurQuality"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="Objects Only"
-       value="0"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option sets Motion Blur to include only objects and unrigged attachments."
-       name="item0"/>
-      <combo_box.item
-       label="Self Only"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option sets Motion Blur to include all objects and your own rigged attachments."
-       value="1"
-       name="item1"/>
-      <combo_box.item
-       label="Objects and Others"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option sets Motion Blur to include all objects and other people's rigged attachments but not your own."
-       value="2"
-       name="item2"/>
-      <combo_box.item
-       label="Everything"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option sets Motion Blur to include all objects, unrigged and rigged on everyone."
-       value="3"
-       name="item2"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
- 
- <panel
-       follows="top|left|right"
-       height="20"
-       background_visible="true"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="0"
-       name="warning_blur_quality"
-       visible="true"
-       top_pad="3"
-       width="508">
-  <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_blur_quality2"
-  mouse_opaque="false"
-  tool_tip="WARNING: Motion Blur may look too strong and noticeable a low Motion Blur Quality setting."
-  width="16"
-  left="472"
-  top="0"/>
- </panel>
- <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- left="10"
- name="AVPhys"
- top_delta="4"
- width="120">
- Motion Blur Quality:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   control_name="RenderMotionBlurStrength"
-   enabled_control=""
-   name="RenderMotionBlurStrength"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="Low"
-       value="40"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the quality and strength of Motion Blur.
-||RenderMotionBlurStrength: &lt;blue&gt;40&lt;/blue&gt;"
-       name="item0"/>
-      <combo_box.item
-       label="Medium"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the quality and strength of Motion Blur.
-||RenderMotionBlurStrength: &lt;blue&gt;80&lt;/blue&gt;"
-       value="80"
-       name="item1"/>
-      <combo_box.item
-       label="High"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the quality and strength of Motion Blur.
-||RenderMotionBlurStrength: &lt;blue&gt;120&lt;/blue&gt;"
-       value="120"
-       name="item2"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
   
-  <text
+  <!--<text
  type="string"
  length="1"
  follows="right|top"
@@ -5112,7 +4860,7 @@ width="510">
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
-      </button>
+      </button>-->
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -5156,14 +4904,14 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="873"
+	  height="253"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
 	  name="finetuning_layout_panel"
 	  width="515">
    
-   <check_box
+   <!--<check_box
    control_name="ExodusRenderToneMapping"
    enabled_control="RenderDeferred"
    height="16"
@@ -5191,786 +4939,7 @@ width="510">
    height="12"
    width="220">
    Requires Deferred Rendering
-   </text>
-      <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- left="10"
- name="AVPhys"
- top_pad="10"
- width="120">
- Tone Mapping Style:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   control_name="ExodusRenderToneMappingTech"
-   name="ExodusRenderToneMappingTech"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="Filmic"
-       value="0"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option switches the Tone Mapping algorythm to 'Filmic'."
-       name="item0"/>
-      <combo_box.item
-       label="Linear"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option switches the Tone Mapping algorythm to 'Linear', similar to 'Custom' but without customizations."
-       value="1"
-       name="item1"/>
-      <combo_box.item
-       label="Rheinard"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option switches the Tone Mapping algorythm to 'Rheinard'."
-       value="2"
-       name="item2"/>
-      <combo_box.item
-       label="Custom"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option allows full control over the weights of the Tone Mapping algorythm."
-       value="3"
-       name="item3"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
-      <slider
-      can_edit_text="true"
-      control_name="ExodusRenderToneExposure"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="0.0"
-		tool_tip="This option controls the exposure or overall brightness for Tone Mapping."
-      label="Tone Exposure:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="0.01"
-      name="ExodusRenderToneExposure"
-      top_pad="10"/>
-      <button
- follows="left|top"
- control_name="ExodusRenderToneExposure"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="1.0"
-		tool_tip="This option controls the shoulder strength for Tone Mapping."
-      label="Shoulder Strength:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="ExodusRenderToneAdvOptA_X"
-      top_pad="5">
-         <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderToneAdvOptA"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="1.0"
-		tool_tip="This option controls the linear strength for Tone Mapping."
-      label="Linear Strength:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="ExodusRenderToneAdvOptA_Y"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderToneAdvOptA"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="1.0"
-		tool_tip="This option controls the linear angle for Tone Mapping."
-      label="Linear Angle:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="ExodusRenderToneAdvOptA_Z"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderToneAdvOptA"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderToneAdvOptA"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.24"
-		tool_tip="This option controls the toe strength for Tone Mapping."
-      label="Toe Strength:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3"
-      min_val="0"
-      name="ExodusRenderToneAdvOptB_X"
-      top_pad="5">
-         <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderToneAdvOptB"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.02"
-		tool_tip="This option controls the the numerator for Tone Mapping."
-      label="Toe Numerator:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="0.1"
-      min_val="-0.5"
-      name="ExodusRenderToneAdvOptB_Y"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderToneAdvOptB"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.18"
-		tool_tip="This option controls the toe denominator for Tone Mapping."
-      label="Toe Denominator:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3"
-      min_val="0.01"
-      name="ExodusRenderToneAdvOptB_Z"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderToneAdvOptB"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderToneAdvOptB"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <button
- follows="left|top"
- height="47"
- is_toggle="true"
- label="⌊lock⌉"
- image_selected="Transparent"
- image_unselected="Transparent"
- layout="topleft"
- left_pad="1"
- top_delta="0"
- name="lock"
- width="40">
-   <button.commit_callback
-   parameter="ExodusRenderToneAdvOptB"
-    function="Dragon.LockArray"/>
-   </button>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="25.0"
-		tool_tip="This option controls the linear white for Tone Mapping."
-      label="Linear White:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="50"
-      min_val="0.01"
-      name="ExodusRenderToneAdvOptC_X"
-      top_pad="5">
-         <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderToneAdvOptC"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="1.0"
-		tool_tip="This option controls the exposure bias for Tone Mapping."
-      label="Exposure Bias:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="5"
-      min_val="0.01"
-      name="ExodusRenderToneAdvOptC_Y"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderToneAdvOptC"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderToneAdvOptC"
- height="31"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-16"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-	  <text
- type="string"
- length="1"
- follows="right|top"
- height="12"
- layout="topleft"
- left="25"
- halign="center"
- name="separator_label"
- top_pad="7"
- width="450">
- Color Correction
- </text>
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="0"/>
-   
-   <text
- type="string"
- length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- left="10"
- name="AVPhys"
- top_pad="10"
- width="120">
- Color Correction:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   control_name="ExodusRenderColorGradeTech"
-   name="ExodusRenderColorGradeTech"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="None"
-       value="1"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option disables Color Correction."
-       name="item0"/>
-      <combo_box.item
-       label="Linear"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option enables linear Color Correction and allows altering the algorythm."
-       value="0"
-       name="item1"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
-
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="0.0"
-		tool_tip="This option controls how much the red color channel should be exposed."
-      label="Exposure Red:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="-4"
-      name="ExodusRenderExposure_X"
-      top_pad="10">
-      <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderExposure"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="0.0"
-		tool_tip="This option controls how much the green color channel should be exposed."
-      label="Exposure Green:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="-4"
-      name="ExodusRenderExposure_Y"
-      top_pad="2">
-      <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderExposure"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="0.0"
-		tool_tip="This option controls how much the blue color channel should be exposed."
-      label="Exposure Blue:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="4"
-      min_val="-4"
-      name="ExodusRenderExposure_Z"
-      top_pad="2">
-      <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderExposure"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderExposure"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <button
- follows="left|top"
- height="47"
- is_toggle="true"
- label="⌊lock⌉"
- image_selected="Transparent"
- image_unselected="Transparent"
- layout="topleft"
- left_pad="1"
- top_delta="0"
- name="lock"
- width="40">
-   <button.commit_callback
-   parameter="ExodusRenderExposure"
-    function="Dragon.LockArray"/>
-	  </button>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.0"
-		tool_tip="This option controls how much the red color channel should be offsetted."
-      label="Offset Red:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="0.5"
-      min_val="-0.5"
-      name="ExodusRenderOffset_X"
-      top_pad="5">
-         <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderOffset"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.0"
-		tool_tip="This option controls how much the green color channel should be offsetted."
-      label="Offset Green:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="0.5"
-      min_val="-0.5"
-      name="ExodusRenderOffset_Y"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderOffset"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      initial_value="0.0"
-		tool_tip="This option controls how much the blue color channel should be offsetted."
-      label="Offset Blue:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="0.5"
-      min_val="-0.5"
-      name="ExodusRenderOffset_Z"
-      top_pad="2">
-      <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderOffset"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderOffset"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <button
- follows="left|top"
- height="47"
- is_toggle="true"
- label="⌊lock⌉"
- image_selected="Transparent"
- image_unselected="Transparent"
- layout="topleft"
- left_pad="1"
- top_delta="0"
- name="lock"
- width="40">
-   <button.commit_callback
-   parameter="ExodusRenderOffset"
-    function="Dragon.LockArray"/>
-     </button> 
-      
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="1.0"
-		tool_tip="This option controls how much gamma the red color channel should use."
-      label="Gamma Red:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3"
-      min_val="0"
-      name="ExodusRenderGamma_X"
-      top_pad="5">
-         <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderGamma"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="1.0"
-		tool_tip="This option controls how much gamma the green color channel should use."
-      label="Gamma Green:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3"
-      min_val="0"
-      name="ExodusRenderGamma_Y"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderGamma"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="1.0"
-		tool_tip="This option controls how much gamma the blue color channel should use."
-      label="Gamma Blue:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="3"
-      min_val="0"
-      name="ExodusRenderGamma_Z"
-      top_pad="2">
-         <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderGamma"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderGamma"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-      <button
- follows="left|top"
- height="47"
- is_toggle="true"
- label="⌊lock⌉"
- image_selected="Transparent"
- image_unselected="Transparent"
- layout="topleft"
- left_pad="1"
- top_delta="0"
- name="lock"
- width="40">
-   <button.commit_callback
-   parameter="ExodusRenderGamma"
-    function="Dragon.LockArray"/>
-      </button>
-      
-      <text
- type="string"
- length="1"
- follows="right|top"
- height="12"
- layout="topleft"
- left="25"
- halign="center"
- name="separator_label"
- top_pad="7"
- width="450">
- Vignette
- </text>
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="0"/>
-      <slider
-      can_edit_text="true"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="0.0"
-		tool_tip="This option controls the overall size of the vignette effect."
-      label="Amount:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="10"
-      min_val="0"
-      name="ExodusRenderVignette_X"
-      top_pad="10">
-      <slider.commit_callback
-      function="Dragon.ArrayX"
-      parameter="ExodusRenderVignette"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="1.0"
-		tool_tip="This option controls the overall strength of the vignette effect."
-      label="Power:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="10"
-      min_val="0"
-      name="ExodusRenderVignette_Y"
-      top_pad="2">
-      <slider.commit_callback
-      function="Dragon.ArrayY"
-      parameter="ExodusRenderVignette"/>
-      </slider>
-      <slider
-      can_edit_text="true"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="3.0"
-		tool_tip="This option multiplies both size and strength of the vignette effect."
-      label="Multiplier:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="10"
-      min_val="0"
-      name="ExodusRenderVignette_Z"
-      top_pad="2">
-      <slider.commit_callback
-      function="Dragon.ArrayZ"
-      parameter="ExodusRenderVignette"/>
-      </slider>
-      <button
- follows="left|top"
- control_name="ExodusRenderVignette"
- height="47"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="-32"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
+   </text>-->
       
       
       
@@ -6399,196 +5368,6 @@ width="510">
    <button.commit_callback
    parameter="RenderGlowWarmthWeights"
     function="Dragon.LockArray"/>
-      </button>
-      <text
- type="string"
- length="1"
- follows="right|top"
- height="12"
- layout="topleft"
- left="25"
- halign="center"
- name="separator_label"
- top_pad="7"
- width="450">
- Post Effects
- </text>
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="0"/>
-      
-      <check_box
-   control_name="RenderLensFlare"
-   enabled_control="RenderDeferred"
-   height="16"
-   initial_value="true"
-   label="Lens Flare Effect"
-tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles a lens reflection of the sun in your camera on or off."
-   layout="topleft"
-   left="10"
-   name="LensFlare"
-   top_pad="7"
-   width="115"/>
-      <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
-   <slider
-      can_edit_text="true"
-      control_name="RenderPostGreyscaleStrength"
-      enabled_control="RenderDeferred"
-      decimal_digits="2"
-      follows="left|top"
-      height="15"
-      increment="0.01"
-      initial_value="0"
-		tool_tip="This option controls the percentage the screen should be decolored."
-      label="Greyscale Strength:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="GreyscaleStrength"
-      top_pad="10"/>
-   <button
- follows="left|top"
- control_name="RenderPostGreyscaleStrength"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   <slider
-      can_edit_text="true"
-      control_name="RenderPostSepiaStrength"
-      enabled_control="RenderDeferred"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="0"
-		tool_tip="This option controls the percentage the screen colors should be transformed to a Sepia color palette."
-      label="Sepia Strength:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="1"
-      min_val="0"
-      name="SepiaStrength"
-      top_pad="1"/>
-   <button
- follows="left|top"
- control_name="RenderPostSepiaStrength"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   <slider
-      can_edit_text="true"
-      control_name="RenderPostPosterizationSamples"
-      enabled_control="RenderDeferred"
-      decimal_digits="0"
-      follows="left|top"
-      height="14"
-      increment="1"
-      initial_value="1"
-		tool_tip="This option controls the amount of times all colors onscreen should be posterized."
-      label="Posterize Samples:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="64"
-      min_val="1"
-      name="PosterizeSamples"
-      top_pad="1"/>
-   <button
- follows="left|top"
- control_name="RenderPostPosterizationSamples"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   <slider
-      can_edit_text="true"
-      control_name="RenderChromaStrength"
-      enabled_control="RenderDeferred"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="0"
-		tool_tip="This option controls the offset of the edge color fringing."
-      label="Chromatic Aberration:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="50"
-      min_val="0"
-      name="ChromaStrength"
-      top_pad="1"/>
-   <button
- follows="left|top"
- control_name="RenderChromaStrength"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
       </button>
       </layout_panel>
       </layout_stack>
