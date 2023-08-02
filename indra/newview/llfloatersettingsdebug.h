@@ -73,7 +73,6 @@ private:
 	
 protected:
 	LLTextEditor* mComment;
-	LLComboBox* mSettingsCombo;
 	LLUICtrl* mBool;
 	LLUICtrl* mText;
 	LLColorSwatchCtrl* mColor;

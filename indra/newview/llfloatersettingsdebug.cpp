@@ -52,7 +52,6 @@ LLFloaterSettingsDebug::~LLFloaterSettingsDebug()
 
 BOOL LLFloaterSettingsDebug::postBuild()
 {
-	mSettingsCombo = getChild<LLComboBox>("settings_combo");
 	mBool = getChild<LLUICtrl>("boolean_combo");
 	mText = getChild<LLUICtrl>("val_text");
 	mColor = getChild<LLColorSwatchCtrl>("val_color_swatch");
@@ -63,19 +62,6 @@ BOOL LLFloaterSettingsDebug::postBuild()
 	mDefaultBtn = getChild<LLButton>("default_btn");
 	mComment = getChild<LLTextEditor>("comment_text");
 
-	struct f : public LLControlGroup::ApplyFunctor
-	{
-		LLComboBox* combo;
-		f(LLComboBox* c) : combo(c) {}
-		virtual void apply(const std::string& name, LLControlVariable* control)
-		{
-			if (!control->isHiddenFromSettingsEditor())
-			{
-				combo->add(name, (void*)control);
-			}
-		}
-	} func(mSettingsCombo);
-
     getChild<LLFilterEditor>("filter_input")->setCommitCallback(boost::bind(&LLFloaterSettingsDebug::setSearchFilter, this, _2));
 
     mSettingList = getChild<LLScrollListCtrl>("setting_list");
@@ -85,9 +71,6 @@ BOOL LLFloaterSettingsDebug::postBuild()
     updateList();
 
     gSavedSettings.getControl("DebugSettingsHideDefault")->getCommitSignal()->connect(boost::bind(&LLFloaterSettingsDebug::updateList, this, false));
-
-	mSettingsCombo->sortByName();
-	mSettingsCombo->updateSelection();
 	return TRUE;
 }
 

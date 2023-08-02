@@ -2,33 +2,11 @@
 <floater
  legacy_header_height="18"
  can_minimize="false"
- height="215"
+ height="352"
  layout="topleft"
  name="settings_debug"
  title="Debug Settings"
  width="350">
-    <combo_box
-     allow_text_entry="true"
-     follows="top|left"
-     height="22"
-     layout="topleft"
-     left="15"
-     max_chars="255"
-     name="settings_combo"
-     top="30"
-     width="320">
-      <combo_box.commit_callback
-       function="SettingSelect" />
-    </combo_box>
-    <text_editor
-     enabled="false"
-     height="60"
-     layout="topleft"
-     left_delta="0"
-     name="comment_text"
-     top_pad="10"
-     width="320"
-     word_wrap="true" />
   <filter_editor
    follows="left|top|right"
    height="23"
@@ -39,20 +17,24 @@
    max_length_chars="300"
    name="filter_input"
    text_pad_left="10"
-   top="30" />
+   top="20"
+   background_image="TextField_Off"
+			background_image_disabled="TextField_Disabled"
+			background_image_focused="TextField_Active"/>
   <scroll_list
    column_padding="0"
    draw_heading="true"
    draw_stripes="false"
    heading_height="23"
-   height="266"
+   height="100"
    layout="topleft"
    search_column="1"
-   left="10"
-   follows="left|top|bottom"
+   left="8"
+   right="-8"
+   follows="left|top"
    name="setting_list"
    top_pad="2"
-   width="300">
+   width="320">
     <scroll_list.columns
      name="changed_setting"
      relative_width="0.05"  />
@@ -68,23 +50,26 @@
    layout="topleft"
    name="setting_name_txt"
    font="SansSerifSmallBold"
-   top_delta="8"
-   left_pad="10"
-   visible="false"
+   left="8"
+   right="-8"
+   top_pad="0"
+   visible="true"
    use_ellipses="true"
    text_color="White"
-   width="240">
+   width="320">
     Debug setting name
   </text>
   <text_editor
    enabled="false"
    height="75"
    layout="topleft"
-   visible="false"
+   visible="true"
+   left="8"
+   right="-8"
    name="comment_text"
    follows="left|top"
-   width="240"
-   top_delta="20"
+   width="320"
+   top_pad="0"
    word_wrap="true" />
   <radio_group
    follows="top|left"
@@ -112,7 +97,8 @@
     <line_editor
      height="20"
      layout="topleft"
-     left_delta="0"
+     left="8"
+     right="-8"
      name="val_text"
      top_delta="0"
      visible="false"
@@ -121,7 +107,7 @@
        function="CommitSettings" />
     </line_editor>
     <color_swatch
-     bottom="185"
+     top_delta="0"
      can_apply_immediately="true"
      height="55"
      name="val_color_swatch"
@@ -134,67 +120,60 @@
     <spinner
      height="20"
      label="x"
+     label_width="20"
      layout="topleft"
      left_delta="0"
      max_val="1e+007"
      name="val_spinner_1"
-     top_delta="10"
+     top_delta="0"
      visible="false"
-     width="120" >
+     width="100" >
       <spinner.commit_callback
        function="CommitSettings" />
     </spinner>
     <spinner
      height="20"
      label="x"
+     label_width="20"
      layout="topleft"
-     left_pad="15"
+     left_pad="5"
      max_val="1e+007"
      name="val_spinner_2"
      top_delta="0"
      visible="false"
-     width="120">
+     width="100">
       <spinner.commit_callback
        function="CommitSettings" />
     </spinner>
     <spinner
      height="20"
      label="x"
+     label_width="20"
      layout="topleft"
-     left="15"
+     left="8"
      max_val="1e+007"
      name="val_spinner_3"
-     top="160"
+     top_pad="5"
      visible="false"
-     width="120">
+     width="100">
       <spinner.commit_callback
        function="CommitSettings" />
     </spinner>
     <spinner
      height="20"
      label="x"
+     label_width="20"
      layout="topleft"
-     left_pad="15"
+     left_pad="5"
      max_val="1e+007"
      name="val_spinner_4"
      top_delta="0"
      visible="false"
-     width="120" >
+     width="100" >
       <spinner.commit_callback
        function="CommitSettings" />
     </spinner>
-    <button
-     height="22"
-     label="Reset to default"
-     layout="topleft"
-     left="15"
-     name="default_btn"
-     top="186"
-     width="150" >
-      <button.commit_callback
-       function="ClickDefault" />
-    </button>
-    <check_box
+  <check_box
       control_name="DebugSettingsHideDefault"
       height="16"
       initial_value="true"
@@ -206,4 +185,15 @@
       name="hide_default"
       width="330">
     </check_box>
+    <button
+     height="22"
+     label="Reset to default"
+     layout="topleft"
+     left="10"
+     name="default_btn"
+     top_pad="5"
+     width="150" >
+      <button.commit_callback
+       function="ClickDefault" />
+    </button>
 </floater>
