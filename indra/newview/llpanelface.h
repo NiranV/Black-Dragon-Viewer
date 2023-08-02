@@ -1,25 +1,25 @@
-/**
+/** 
  * @file llpanelface.h
  * @brief Panel in the tools floater for editing face textures, colors, etc.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * 
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -42,13 +42,11 @@ class LLComboBox;
 class LLInventoryItem;
 class LLLineEditor;
 class LLSpinCtrl;
-class LLSliderCtrl;
 class LLTextBox;
 class LLTextureCtrl;
 class LLUICtrl;
 class LLViewerObject;
 class LLFloater;
-class LLRadioGroup;
 class LLMaterialID;
 class LLMediaCtrl;
 class LLMenuButton;
@@ -65,7 +63,7 @@ template<
 	typename DataType,
 	typename SetValueType,
 	void (LLMaterial::*MaterialEditFunc)(SetValueType data) >
-	class LLMaterialEditFunctor
+class LLMaterialEditFunctor
 {
 public:
 	LLMaterialEditFunctor(const DataType& data) : _data(data) {}
@@ -76,8 +74,8 @@ public:
 
 template<
 	typename DataType,
-	DataType(LLMaterial::*MaterialGetFunc)() >
-	class LLMaterialGetFunctor
+	DataType (LLMaterial::*MaterialGetFunc)() >
+class LLMaterialGetFunctor
 {
 public:
 	LLMaterialGetFunctor() {}
@@ -86,8 +84,8 @@ public:
 
 template<
 	typename DataType,
-	DataType(LLTextureEntry::*TEGetFunc)() >
-	class LLTEGetFunctor
+	DataType (LLTextureEntry::*TEGetFunc)() >
+class LLTEGetFunctor
 {
 public:
 	LLTEGetFunctor() {}
@@ -124,19 +122,19 @@ public:
     LLRender::eTexIndex getTextureDropChannel();
 
 protected:
-	void            navigateToTitleMedia(const std::string url);
-	bool            selectedMediaEditable();
-	void            clearMediaSettings();
-	void            updateMediaSettings();
-	void            updateMediaTitle();
-	
+    void			navigateToTitleMedia(const std::string url);
+    bool			selectedMediaEditable();
+    void			clearMediaSettings();
+    void			updateMediaSettings();
+    void			updateMediaTitle();
+
 	void			getState();
 
-	void			sendTexture();				// applies and sends texture
-	void			sendTextureInfo();			// applies and sends texture scale, offset, etc.
-	void			sendColor();				// applies and sends color
-	void			sendAlpha();				// applies and sends transparency
-	void			sendBump(U32 bumpiness);	// applies and sends bump map
+	void			sendTexture();			// applies and sends texture
+	void			sendTextureInfo();		// applies and sends texture scale, offset, etc.
+	void			sendColor();			// applies and sends color
+	void			sendAlpha();			// applies and sends transparency
+	void			sendBump(U32 bumpiness);				// applies and sends bump map
 	void			sendTexGen();				// applies and sends bump map
 	void			sendShiny(U32 shininess);			// applies and sends shininess
 	void			sendFullbright();		// applies and sends full bright
@@ -164,12 +162,16 @@ protected:
 	void 	onSelectNormalTexture(const LLSD& data);
 	void 	onCommitColor(const LLSD& data);
 	void 	onCommitShinyColor(const LLSD& data);
+	void 	onCommitAlpha(const LLSD& data);
 	void 	onCancelColor(const LLSD& data);
 	void 	onCancelShinyColor(const LLSD& data);
 	void 	onSelectColor(const LLSD& data);
 	void 	onSelectShinyColor(const LLSD& data);
 
 	void 	onCloseTexturePicker(const LLSD& data);
+
+    static bool deleteMediaConfirm(const LLSD& notification, const LLSD& response);
+    static bool multipleFacesSelectedConfirm(const LLSD& notification, const LLSD& response);
 
 	// Make UI reflect state of currently selected material (refresh)
 	// and UI mode (e.g. editing normal map v diffuse map)
@@ -241,67 +243,21 @@ protected:
     static void 	onClickBtnEditPBR(void* userdata);
     static void 	onClickBtnSavePBR(void* userdata);
 
-	//BD
-	void			onCommitMaterialGloss();
-	void			onCommitMaterialEnv();
-	void			onCommitMaterialMaskCutoff();
+public: // needs to be accessible to selection manager
+    void            onCopyColor(); // records all selected faces
+    void            onPasteColor(); // to specific face
+    void            onPasteColor(LLViewerObject* objectp, S32 te); // to specific face
+    void            onCopyTexture();
+    void            onPasteTexture();
+    void            onPasteTexture(LLViewerObject* objectp, S32 te);
+
+protected:
+    void            menuDoToSelected(const LLSD& userdata);
+    bool            menuEnableItem(const LLSD& userdata);
 
 	static F32     valueGlow(LLViewerObject* object, S32 face);
 
-public:
-	// needs to be accessible to selection manager
-	void            onCopyColor(); // records all selected faces
-	void            onPasteColor(); // to specific face
-	void            onPasteColor(LLViewerObject* objectp, S32 te); // to specific face
-	void            onCopyTexture();
-	void            onPasteTexture();
-	void            onPasteTexture(LLViewerObject* objectp, S32 te);
-
-	LLTextureCtrl*	mTextureCtrl;
-	LLTextureCtrl*	mShinyTextureCtrl;
-	LLTextureCtrl*	mBumpyTextureCtrl;
-
-	LLColorSwatchCtrl*	mColorSwatch;
-	LLColorSwatchCtrl*	mColorSwatchShiny;
-
-	LLSliderCtrl* mColorTransparency;
-
-	LLComboBox*		mComboShiny;
-	LLComboBox*		mComboBumpy;
-	LLComboBox*		mComboAlpha;
-	LLComboBox*		mComboTexGen;
-
-	LLRadioGroup* mRadioMaterialType;
-
-	LLCheckBoxCtrl*	mCheckFullbright;
-	LLCheckBoxCtrl* mCheckAlignPlanar;
-
-	LLButton* mBtnAlign;
-
-	LLTextBox* mLabelShiny;
-	LLTextBox* mLabelBumpy;
-	LLTextBox* mLabelAlpha;
-	LLTextBox* mLabelTexGen;
-
-	LLUICtrl* mLockDiffuse;
-	LLUICtrl* mLockSpec;
-	LLUICtrl* mLockBump;
-
-	LLSliderCtrl* mGlossiness;
-	LLSliderCtrl* mEnvironment;
-	LLSliderCtrl* mMaskCutoff;
-	LLSliderCtrl* mGlow;
-
-	LLUICtrl* mTexScaleU;
-	LLUICtrl* mTexScaleV;
-	LLUICtrl* mTexOffsetU;
-	LLUICtrl* mTexOffsetV;
-	LLUICtrl* mTexRot;
-	LLUICtrl* mRepeats;
-
-	LLComboBox*		mComboMatMedia;
-	LLMediaCtrl*	mTitleMedia;
-	LLTextBox*		mTitleMediaText;
+	
 
 private:
 	bool		isAlpha() { return mIsAlpha; }
@@ -327,16 +283,16 @@ private:
 	F32		getCurrentShinyOffsetU();
 	F32		getCurrentShinyOffsetV();
 
+    LLComboBox *mComboMatMedia;
+    LLMediaCtrl *mTitleMedia;
+    LLTextBox *mTitleMediaText;
+
 	// Update visibility of controls to match current UI mode
 	// (e.g. materials vs media editing)
 	//
 	// Do NOT call updateUI from within this function.
 	//
 	void updateVisibility();
-
-	// Make material(s) reflect current state of UI (apply edit)
-	//
-	void updateMaterial();
 
 	// Hey look everyone, a type-safe alternative to copy and paste! :)
 	//
@@ -347,7 +303,7 @@ private:
 		typename DataType,
 		typename SetValueType,
 		void (LLMaterial::*MaterialEditFunc)(SetValueType data) >
-		static void edit(LLPanelFace* p, DataType data, int te = -1, const LLUUID &only_for_object_id = LLUUID())
+	static void edit(LLPanelFace* p, DataType data, int te = -1, const LLUUID &only_for_object_id = LLUUID())
 	{
 		LLMaterialEditFunctor< DataType, SetValueType, MaterialEditFunc > edit(data);
 		struct LLSelectedTEEditMaterial : public LLSelectedTEMaterialFunctor
@@ -372,7 +328,7 @@ private:
 					// need to keep this original answer for valid comparisons in logic below
 					//
 					U8 original_default_alpha_mode = is_alpha_face ? LLMaterial::DIFFUSE_ALPHA_MODE_BLEND : LLMaterial::DIFFUSE_ALPHA_MODE_NONE;
-
+					
 					U8 default_alpha_mode = original_default_alpha_mode;
 
 					if (!current_material.isNull())
@@ -399,19 +355,19 @@ private:
 						new_material->setDiffuseAlphaMode(LLMaterial::DIFFUSE_ALPHA_MODE_NONE);
 					}
 
-					bool is_default_blend_mode = (new_alpha_mode == original_default_alpha_mode);
-					bool is_need_material = !is_default_blend_mode || !new_normal_map_id.isNull() || !new_spec_map_id.isNull();
+					bool is_default_blend_mode		= (new_alpha_mode == original_default_alpha_mode);
+					bool is_need_material			= !is_default_blend_mode || !new_normal_map_id.isNull() || !new_spec_map_id.isNull();
 
 					if (!is_need_material)
 					{
-						// _LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
-						LLMaterialMgr::getInstance()->remove(object->getID(), face);
+						LL_DEBUGS("Materials") << "Removing material from object " << object->getID() << " face " << face << LL_ENDL;
+						LLMaterialMgr::getInstance()->remove(object->getID(),face);
 						new_material = NULL;
 					}
 					else
 					{
-						// _LL_DEBUGS("Materials") << "Putting material on object " << object->getID() << " face " << face << ", material: " << new_material->asLLSD() << LL_ENDL;
-						LLMaterialMgr::getInstance()->put(object->getID(), face, *new_material);
+						LL_DEBUGS("Materials") << "Putting material on object " << object->getID() << " face " << face << ", material: " << new_material->asLLSD() << LL_ENDL;
+						LLMaterialMgr::getInstance()->put(object->getID(),face,*new_material);
 					}
 
 					object->setTEMaterialParams(face, new_material);
@@ -429,8 +385,8 @@ private:
 	template<
 		typename DataType,
 		typename ReturnType,
-		ReturnType(LLMaterial::* const MaterialGetFunc)() const  >
-		static void getTEMaterialValue(DataType& data_to_return, bool& identical, DataType default_value, bool has_tolerance = false, DataType tolerance = DataType())
+		ReturnType (LLMaterial::* const MaterialGetFunc)() const  >
+	static void getTEMaterialValue(DataType& data_to_return, bool& identical,DataType default_value, bool has_tolerance = false, DataType tolerance = DataType())
 	{
 		DataType data_value;
 		struct GetTEMaterialVal : public LLSelectedTEGetFunctor<DataType>
@@ -455,15 +411,15 @@ private:
 			}
 			DataType _default;
 		} GetFunc(default_value);
-		identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&GetFunc, data_value, has_tolerance, tolerance);
+		identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue( &GetFunc, data_value, has_tolerance, tolerance);
 		data_to_return = data_value;
 	}
 
 	template<
 		typename DataType,
 		typename ReturnType, // some kids just have to different...
-		ReturnType(LLTextureEntry::* const TEGetFunc)() const >
-		static void getTEValue(DataType& data_to_return, bool& identical, DataType default_value, bool has_tolerance = false, DataType tolerance = DataType())
+		ReturnType (LLTextureEntry::* const TEGetFunc)() const >
+	static void getTEValue(DataType& data_to_return, bool& identical, DataType default_value, bool has_tolerance = false, DataType tolerance = DataType())
 	{
 		DataType data_value;
 		struct GetTEVal : public LLSelectedTEGetFunctor<DataType>
@@ -477,7 +433,7 @@ private:
 			}
 			DataType _default;
 		} GetTEValFunc(default_value);
-		identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue(&GetTEValFunc, data_value, has_tolerance, tolerance);
+		identical = LLSelectMgr::getInstance()->getSelection()->getSelectedTEValue( &GetTEValFunc, data_value, has_tolerance, tolerance );
 		data_to_return = data_value;
 	}
 
@@ -493,7 +449,6 @@ private:
 	 * If agent selects texture which is not allowed to be applied for the currently selected object,
 	 * all controls of the floater texture picker which allow to apply the texture will be disabled.
 	 */
-
     void onTextureSelectionChanged(LLInventoryItem* itemp);
     void onPbrSelectionChanged(LLInventoryItem* itemp);
 
@@ -552,43 +507,43 @@ private:
     static Selection sMaterialOverrideSelection;
 
 public:
-#if defined(DEF_GET_MAT_STATE)
-#undef DEF_GET_MAT_STATE
-#endif
+	#if defined(DEF_GET_MAT_STATE)
+		#undef DEF_GET_MAT_STATE
+	#endif
 
-#if defined(DEF_GET_TE_STATE)
-#undef DEF_GET_TE_STATE
-#endif
+	#if defined(DEF_GET_TE_STATE)
+		#undef DEF_GET_TE_STATE
+	#endif
 
-#if defined(DEF_EDIT_MAT_STATE)
-	DEF_EDIT_MAT_STATE
-#endif
+	#if defined(DEF_EDIT_MAT_STATE)
+		DEF_EDIT_MAT_STATE
+	#endif
 
-		// Accessors for selected TE material state
-		//
-#define DEF_GET_MAT_STATE(DataType,ReturnType,MaterialMemberFunc,DefaultValue,HasTolerance,Tolerance)                                           \
+    // Accessors for selected TE material state
+    //
+    #define DEF_GET_MAT_STATE(DataType,ReturnType,MaterialMemberFunc,DefaultValue,HasTolerance,Tolerance)                                           \
         static void MaterialMemberFunc(DataType& data, bool& identical, bool has_tolerance = HasTolerance, DataType tolerance = Tolerance)          \
         {                                                                                                                                           \
             getTEMaterialValue< DataType, ReturnType, &LLMaterial::MaterialMemberFunc >(data, identical, DefaultValue, has_tolerance, tolerance);   \
         }
 
-	// Mutators for selected TE material
-	//
-#define DEF_EDIT_MAT_STATE(DataType,ReturnType,MaterialMemberFunc)                                                              \
+    // Mutators for selected TE material
+    //
+    #define DEF_EDIT_MAT_STATE(DataType,ReturnType,MaterialMemberFunc)                                                              \
         static void MaterialMemberFunc(LLPanelFace* p, DataType data, int te = -1, const LLUUID &only_for_object_id = LLUUID())     \
         {                                                                                                                           \
             edit< DataType, ReturnType, &LLMaterial::MaterialMemberFunc >(p, data, te, only_for_object_id);                         \
         }
 
-	// Accessors for selected TE state proper (legacy settings etc)
-	//
-#define DEF_GET_TE_STATE(DataType,ReturnType,TexEntryMemberFunc,DefaultValue,HasTolerance,Tolerance)                                        \
+    // Accessors for selected TE state proper (legacy settings etc)
+    //
+    #define DEF_GET_TE_STATE(DataType,ReturnType,TexEntryMemberFunc,DefaultValue,HasTolerance,Tolerance)                                        \
         static void TexEntryMemberFunc(DataType& data, bool& identical, bool has_tolerance = HasTolerance, DataType tolerance = Tolerance)      \
         {                                                                                                                                       \
             getTEValue< DataType, ReturnType, &LLTextureEntry::TexEntryMemberFunc >(data, identical, DefaultValue, has_tolerance, tolerance);   \
         }
 
-		class LLSelectedTEMaterial
+	class LLSelectedTEMaterial
 	{
 	public:
 		static void getCurrent(LLMaterialPtr& material_ptr, bool& identical_material);
@@ -645,18 +600,19 @@ public:
 		static void getObjectScaleT(F32& scale_t, bool& identical);
 		static void getMaxDiffuseRepeats(F32& repeats, bool& identical);
 
-		DEF_GET_TE_STATE(U8, U8, getBumpmap, 0, false, 0)
-			DEF_GET_TE_STATE(U8, U8, getShiny, 0, false, 0)
-			DEF_GET_TE_STATE(U8, U8, getFullbright, 0, false, 0)
-			DEF_GET_TE_STATE(F32, F32, getRotation, 0.0f, true, 0.001f)
-			DEF_GET_TE_STATE(F32, F32, getOffsetS, 0.0f, true, 0.001f)
-			DEF_GET_TE_STATE(F32, F32, getOffsetT, 0.0f, true, 0.001f)
-			DEF_GET_TE_STATE(F32, F32, getScaleS, 1.0f, true, 0.001f)
-			DEF_GET_TE_STATE(F32, F32, getScaleT, 1.0f, true, 0.001f)
-			DEF_GET_TE_STATE(F32, F32, getGlow, 0.0f, true, 0.001f)
-			DEF_GET_TE_STATE(LLTextureEntry::e_texgen, LLTextureEntry::e_texgen, getTexGen, LLTextureEntry::TEX_GEN_DEFAULT, false, LLTextureEntry::TEX_GEN_DEFAULT)
-			DEF_GET_TE_STATE(LLColor4, const LLColor4&, getColor, LLColor4::white, false, LLColor4::black);
+		DEF_GET_TE_STATE(U8,U8,getBumpmap,0, false, 0)
+		DEF_GET_TE_STATE(U8,U8,getShiny,0, false, 0)
+		DEF_GET_TE_STATE(U8,U8,getFullbright,0, false, 0)
+		DEF_GET_TE_STATE(F32,F32,getRotation,0.0f, true, 0.001f)
+		DEF_GET_TE_STATE(F32,F32,getOffsetS,0.0f, true, 0.001f)
+		DEF_GET_TE_STATE(F32,F32,getOffsetT,0.0f, true, 0.001f)
+		DEF_GET_TE_STATE(F32,F32,getScaleS,1.0f, true, 0.001f)
+		DEF_GET_TE_STATE(F32,F32,getScaleT,1.0f, true, 0.001f)
+		DEF_GET_TE_STATE(F32,F32,getGlow,0.0f, true, 0.001f)
+		DEF_GET_TE_STATE(LLTextureEntry::e_texgen,LLTextureEntry::e_texgen,getTexGen,LLTextureEntry::TEX_GEN_DEFAULT, false, LLTextureEntry::TEX_GEN_DEFAULT)
+		DEF_GET_TE_STATE(LLColor4,const LLColor4&,getColor,LLColor4::white, false, LLColor4::black);
 	};
 };
 
 #endif
+

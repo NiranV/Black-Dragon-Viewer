@@ -30,10 +30,6 @@
 #include "llpanel.h"
 #include "llstyle.h"
 #include "lluuid.h"
-#include "llgroupiconctrl.h"
-#include "llavatariconctrl.h"
-#include "lllineeditor.h"
-#include "llcombobox.h"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class llpanelpermissions
@@ -45,8 +41,6 @@ class LLAvatarName;
 class LLTextBox;
 class LLNameBox;
 class LLViewerInventoryItem;
-//BD - SSFUI
-class LLTextBox;
 
 class LLPanelPermissions : public LLPanel
 {
@@ -61,32 +55,32 @@ public:
 
 protected:
 	// statics
-	void onClickClaim();
-	void onClickRelease();
-	void onClickGroup();
-	void cbGroupID(LLUUID group_id);
-	void onClickDeedToGroup();
+	static void onClickClaim(void*);
+	static void onClickRelease(void*);
+		   void onClickGroup();
+		   void cbGroupID(LLUUID group_id);
+	static void onClickDeedToGroup(void*);
 
-	void onCommitPerm(LLUICtrl *ctrl, U8 field, U32 perm);
+	static void onCommitPerm(LLUICtrl *ctrl, void *data, U8 field, U32 perm);
 
-	void onCommitGroupShare(LLUICtrl *ctrl);
+	static void onCommitGroupShare(LLUICtrl *ctrl, void *data);
 
-	void onCommitEveryoneMove(LLUICtrl *ctrl);
-	void onCommitEveryoneCopy(LLUICtrl *ctrl);
+	static void onCommitEveryoneMove(LLUICtrl *ctrl, void *data);
+	static void onCommitEveryoneCopy(LLUICtrl *ctrl, void *data);
 
-	void onCommitNextOwnerModify(LLUICtrl* ctrl);
-	void onCommitNextOwnerCopy(LLUICtrl* ctrl);
-	void onCommitNextOwnerTransfer(LLUICtrl* ctrl);
+	static void onCommitNextOwnerModify(LLUICtrl* ctrl, void* data);
+	static void onCommitNextOwnerCopy(LLUICtrl* ctrl, void* data);
+	static void onCommitNextOwnerTransfer(LLUICtrl* ctrl, void* data);
 	
-	void onCommitName(LLUICtrl* ctrl);
-	void onCommitDesc(LLUICtrl* ctrl);
+	static void onCommitName(LLUICtrl* ctrl, void* data);
+	static void onCommitDesc(LLUICtrl* ctrl, void* data);
 
-	void onCommitSaleInfo(LLUICtrl* ctrl);
-	void onCommitSaleType(LLUICtrl* ctrl);	
+	static void onCommitSaleInfo(LLUICtrl* ctrl, void* data);
+	static void onCommitSaleType(LLUICtrl* ctrl, void* data);	
 	void setAllSaleInfo();
 
-	void onCommitClickAction(LLUICtrl* ctrl);
-	void onCommitIncludeInSearch(LLUICtrl* ctrl);
+	static void	onCommitClickAction(LLUICtrl* ctrl, void*);
+	static void onCommitIncludeInSearch(LLUICtrl* ctrl, void*);
 
 	static LLViewerInventoryItem* findItem(LLUUID &object_id);
 
@@ -97,60 +91,9 @@ private:
 	LLNameBox*		mLabelGroupName;		// group name
 	LLTextBox*		mLabelOwnerName;
 	LLTextBox*		mLabelCreatorName;
-//	//BD - SSFUI
-	LLTextBox*		mGroupNameSLURL;
 	LLUUID			mCreatorID;
 	LLUUID			mOwnerID;
 	LLUUID			mLastOwnerID;
-
-	LLButton*		mBtnDeedToGroup;
-
-	LLLineEditor* mLabelName;
-	LLLineEditor* mLabelDescription;
-
-	LLLineEditor* mObjectName;
-	LLLineEditor* mObjectDescription;
-
-	LLComboBox* mSaleType;
-	LLComboBox* mClickAction;
-
-	LLButton* mBtnSetGroup;
-	LLCheckBoxCtrl* mCheckboxGroupShare;
-
-	LLCheckBoxCtrl* mCheckboxEveryoneMove;
-	LLCheckBoxCtrl* mCheckboxEveryoneCopy;
-	LLCheckBoxCtrl* mCheckboxForSale;
-	LLUICtrl* mEditCost;
-
-	LLCheckBoxCtrl* mCheckboxNextOwnerModify;
-	LLCheckBoxCtrl* mCheckboxNextOwnerCopy;
-	LLCheckBoxCtrl* mCheckboxNextOwnerTransfer;
-
-	LLUICtrl* mPermModify;
-	LLUICtrl* mPathfindingAttributes;
-
-	LLUICtrl* mCreator;
-	LLUICtrl* mOwner;
-	LLUICtrl* mGroup;
-	LLUICtrl* mName;
-	LLUICtrl* mDescription;
-	LLUICtrl* mCost;
-
-	LLUICtrl* mB;
-	LLUICtrl* mO;
-	LLUICtrl* mG;
-	LLUICtrl* mE;
-	LLUICtrl* mN;
-	LLUICtrl* mF;
-
-	LLUICtrl* mNextOwner;
-	LLUICtrl* mNextOwnerModify;
-	LLUICtrl* mNextOwnerCopy;
-	LLUICtrl* mNextOwnerTransfer;
-
-	LLCheckBoxCtrl* mCheckboxSearch;
-
-	LLUICtrl* mLabelClickAction;
 
 	boost::signals2::connection mOwnerCacheConnection;
 	boost::signals2::connection mCreatorCacheConnection;

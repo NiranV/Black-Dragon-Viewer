@@ -42,7 +42,6 @@ class LLViewerObject;
 class LLComboBox;
 class LLColorSwatchCtrl;
 class LLVOVolume;
-class LLTextureCtrl;
 
 class LLPanelVolume : public LLPanel
 {
@@ -67,8 +66,6 @@ public:
     void            doSendIsReflectionProbe(const LLSD& notification, const LLSD& response);
 
 	void			sendIsFlexible();
-	//BD
-	void			sendHasShadow();
 
 	static bool		precommitValidate(const LLSD& data);
 	
@@ -81,8 +78,6 @@ public:
     void            onCommitAnimatedMeshCheckbox(LLUICtrl* ctrl, void* userdata);
 	static void     onCommitPhysicsParam(       LLUICtrl* ctrl, void* userdata);
 	static void 	onCommitMaterial(		LLUICtrl* ctrl, void* userdata);
-	//BD
-	static void 	onCommitShadow(LLUICtrl* ctrl, void* userdata);
 
 	void		onLightCancelColor(const LLSD& data);
 	void		onLightSelectColor(const LLSD& data);
@@ -146,36 +141,6 @@ protected:
 	LLSpinCtrl*     mSpinPhysicsFriction;
 	LLSpinCtrl*     mSpinPhysicsDensity;
 	LLSpinCtrl*     mSpinPhysicsRestitution;
-
-	LLCheckBoxCtrl* mCheckLight;
-	LLCheckBoxCtrl* mCheckShadow;
-	LLSpinCtrl*	mLightFoV;
-	LLSpinCtrl*	mLightFocus;
-	LLSpinCtrl*	mLightAmbiance;
-	LLSpinCtrl* mLightIntensity;
-	LLSpinCtrl* mLightRadius;
-	LLSpinCtrl* mLightFalloff;
-	LLTextureCtrl* mLightTextureCtrl;
-	LLColorSwatchCtrl* mLightColorSwatch;
-
-	LLTextBox* mLabelLights;
-	LLTextBox* mLabelPhysicsShape;
-	LLTextBox* mLabelMaterialType;
-	LLTextBox* mLabelDensity;
-
-	LLUICtrl* mSelectSingle;
-	LLUICtrl* mEditObject;
-
-	LLCheckBoxCtrl* mCheckFlexible;
-	LLCheckBoxCtrl* mCheckAnimatedMesh;
-	LLSpinCtrl* mSpinFlexSections;
-	LLSpinCtrl* mSpinFlexGravity;
-	LLSpinCtrl* mSpinFlexTension;
-	LLSpinCtrl* mSpinFlexFriction;
-	LLSpinCtrl* mSpinFlexWind;
-	LLSpinCtrl* mSpinFlexForceX;
-	LLSpinCtrl* mSpinFlexForceY;
-	LLSpinCtrl* mSpinFlexForceZ;
 
     LLMenuButton*   mMenuClipboardFeatures;
     LLMenuButton*   mMenuClipboardLight;

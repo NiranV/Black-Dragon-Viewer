@@ -66,10 +66,6 @@
 #include "llviewercontrol.h"
 #include "lluictrlfactory.h"
 //#include "llfirstuse.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvhandler.h"
-#include "llvoavatarself.h"
-// [/RLVa:KB]
 
 #include "lldrawpool.h"
 
@@ -244,13 +240,6 @@ BOOL	LLPanelObject::postBuild()
 	childSetCommitCallback("Revolutions",onCommitParametric,this);
 	mSpinRevolutions->setValidateBeforeCommit( &precommitValidate );
 
-	//BD
-	mScaleHole = getChild<LLTextBox>("scale_hole");
-	mScaleTaper = getChild<LLTextBox>("scale_taper");
-	mAdvancedCut = getChild<LLTextBox>("advanced_cut");
-	mAdvancedDimple = getChild<LLTextBox>("advanced_dimple");
-	mAdvancedSlice = getChild<LLTextBox>("advanced_slice");
-
 	// Sculpt
 	mCtrlSculptTexture = getChild<LLTextureCtrl>("sculpt texture control");
 	if (mCtrlSculptTexture)
@@ -319,13 +308,11 @@ LLPanelObject::~LLPanelObject()
 
 void LLPanelObject::getState( )
 {
-	LLSelectMgr* select_mgr = LLSelectMgr::getInstance();
-	LLObjectSelectionHandle selection = select_mgr->getSelection();
-	LLViewerObject* objectp = selection->getFirstRootObject();
+	LLViewerObject* objectp = LLSelectMgr::getInstance()->getSelection()->getFirstRootObject();
 	LLViewerObject* root_objectp = objectp;
 	if(!objectp)
 	{
-		objectp = selection->getFirstObject();
+		objectp = LLSelectMgr::getInstance()->getSelection()->getFirstObject();
 		// *FIX: shouldn't we just keep the child?
 		if (objectp)
 		{
@@ -364,26 +351,17 @@ void LLPanelObject::getState( )
 		return;
 	}
 
-	//BD
-	S32 selected_count = selection->getObjectCount();
-	BOOL single_volume = (select_mgr->selectionAllPCode(LL_PCODE_VOLUME))
+	S32 selected_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
+	BOOL single_volume = (LLSelectMgr::getInstance()->selectionAllPCode( LL_PCODE_VOLUME ))
 						 && (selected_count == 1);
 
 	bool enable_move;
 	bool enable_modify;
 
-	select_mgr->selectGetEditMoveLinksetPermissions(enable_move, enable_modify);
+	LLSelectMgr::getInstance()->selectGetEditMoveLinksetPermissions(enable_move, enable_modify);
 
 	BOOL enable_scale = enable_modify;
 	BOOL enable_rotate = enable_move; // already accounts for a case of children, which needs permModify() as well
-
-// [RLVa:KB] - Checked: 2010-03-31 (RLVa-1.2.0c) | Modified: RLVa-1.0.0g
-	if ( (rlv_handler_t::isEnabled()) && ((gRlvHandler.hasBehaviour(RLV_BHVR_UNSIT)) || (gRlvHandler.hasBehaviour(RLV_BHVR_SITTP))) )
-	{
-		if ( (isAgentAvatarValid()) && (gAgentAvatarp->isSitting()) && (gAgentAvatarp->getRoot() == objectp->getRootEdit()) )
-			enable_move = enable_scale = enable_rotate = FALSE;
-	}
-// [/RLVa:KB]
 
 	LLVector3 vec;
 	if (enable_move)
@@ -411,22 +389,6 @@ void LLPanelObject::getState( )
 	mCtrlPosX->setEnabled(enable_move);
 	mCtrlPosY->setEnabled(enable_move);
 	mCtrlPosZ->setEnabled(enable_move);
-
-	//BD
-	if (objectp->isAttachment())
-	{
-		mCtrlPosX->setMaxValue(3.5f);
-		mCtrlPosY->setMaxValue(3.5f);
-		mCtrlPosZ->setMaxValue(3.5f);
-	}
-	else
-	{
-		LLWorld* world = LLWorld::getInstance();
-		F32 region_width = world->getRegionWidthInMeters();
-		mCtrlPosX->setMaxValue(region_width);
-		mCtrlPosY->setMaxValue(region_width);
-		mCtrlPosZ->setMaxValue(world->getRegionMaxHeight());
-	}
 
 	if (enable_scale)
 	{
@@ -488,10 +450,10 @@ void LLPanelObject::getState( )
 
 	LLUUID owner_id;
 	std::string owner_name;
-	select_mgr->selectGetOwner(owner_id, owner_name);
+	LLSelectMgr::getInstance()->selectGetOwner(owner_id, owner_name);
 
 	// BUG? Check for all objects being editable?
-	S32 roots_selected = selection->getRootObjectCount();
+	S32 roots_selected = LLSelectMgr::getInstance()->getSelection()->getRootObjectCount();
 	BOOL editable = root_objectp->permModify();
 
 	BOOL is_flexible = volobjp && volobjp->isFlexible();
@@ -508,7 +470,7 @@ void LLPanelObject::getState( )
 	BOOL valid;
 	U32 owner_mask_on;
 	U32 owner_mask_off;
-	valid = select_mgr->selectGetPerm(PERM_OWNER, &owner_mask_on, &owner_mask_off);
+	valid = LLSelectMgr::getInstance()->selectGetPerm(PERM_OWNER, &owner_mask_on, &owner_mask_off);
 
 	if(valid)
 	{
@@ -1002,20 +964,19 @@ void LLPanelObject::getState( )
 	mLabelSkew		->setEnabled( enabled );
 	mSpinSkew		->setEnabled( enabled );
 
-	mScaleHole		->setVisible(FALSE);
-	mScaleTaper		->setVisible(FALSE);
-
+	getChildView("scale_hole")->setVisible( FALSE);
+	getChildView("scale_taper")->setVisible( FALSE);
 	if (top_size_x_visible || top_size_y_visible)
 	{
 		if (size_is_hole)
 		{
-			mScaleHole->setVisible(TRUE);
-			mScaleHole->setEnabled(enabled);
+			getChildView("scale_hole")->setVisible( TRUE);
+			getChildView("scale_hole")->setEnabled(enabled);
 		}
 		else
 		{
-			mScaleTaper->setVisible(TRUE);
-			mScaleTaper->setEnabled(enabled);
+			getChildView("scale_taper")->setVisible( TRUE);
+			getChildView("scale_taper")->setEnabled(enabled);
 		}
 	}
 	
@@ -1026,27 +987,27 @@ void LLPanelObject::getState( )
 	mSpinShearX		->setEnabled( enabled );
 	mSpinShearY		->setEnabled( enabled );
 
-	mAdvancedCut	->setVisible(FALSE);
-	mAdvancedDimple	->setVisible(FALSE);
-	mAdvancedSlice	->setVisible(FALSE);
+	getChildView("advanced_cut")->setVisible( FALSE);
+	getChildView("advanced_dimple")->setVisible( FALSE);
+	getChildView("advanced_slice")->setVisible( FALSE);
 
 	if (advanced_cut_visible)
 	{
 		if (advanced_is_dimple)
 		{
-			mAdvancedDimple->setVisible(TRUE);
-			mAdvancedDimple->setEnabled(enabled);
+			getChildView("advanced_dimple")->setVisible( TRUE);
+			getChildView("advanced_dimple")->setEnabled(enabled);
 		}
 
 		else if (advanced_is_slice)
 		{
-			mAdvancedSlice->setVisible(TRUE);
-			mAdvancedSlice->setEnabled(enabled);
+			getChildView("advanced_slice")->setVisible( TRUE);
+			getChildView("advanced_slice")->setEnabled(enabled);
 		}
 		else
 		{
-			mAdvancedCut->setVisible(TRUE);
-			mAdvancedCut->setEnabled(enabled);
+			getChildView("advanced_cut")->setVisible( TRUE);
+			getChildView("advanced_cut")->setEnabled(enabled);
 		}
 	}
 	
@@ -1738,11 +1699,6 @@ void LLPanelObject::sendPosition(BOOL btn_down)
 	// Make sure new position is in a valid region, so the object
 	// won't get dumped by the simulator.
 	LLVector3d new_pos_global = regionp->getPosGlobalFromRegion(newpos);
-
-
-	//BD - We do an exception here for attachments otherwise they will bug out when using negative values.
-	//if ( LLWorld::getInstance()->positionRegionValidGlobal(new_pos_global) || mObject->isAttachment())
-
     bool is_valid_pos = true;
     if (mObject->isAttachment())
     {
@@ -1853,9 +1809,9 @@ void LLPanelObject::refresh()
 	
 	F32 max_scale = get_default_max_prim_scale(LLPickInfo::isFlora(mObject));
 
-	mCtrlScaleX->setMaxValue(max_scale);
-	mCtrlScaleY->setMaxValue(max_scale);
-	mCtrlScaleZ->setMaxValue(max_scale);
+	getChild<LLSpinCtrl>("Scale X")->setMaxValue(max_scale);
+	getChild<LLSpinCtrl>("Scale Y")->setMaxValue(max_scale);
+	getChild<LLSpinCtrl>("Scale Z")->setMaxValue(max_scale);
 }
 
 
@@ -1957,11 +1913,11 @@ void LLPanelObject::clearCtrls()
 	mLabelRadiusOffset->setEnabled( FALSE );
 	mLabelRevolutions->setEnabled( FALSE );
 	
-	mScaleHole->setEnabled(FALSE);
-	mScaleTaper->setEnabled(FALSE);
-	mAdvancedCut->setEnabled(FALSE);
-	mAdvancedDimple->setEnabled(FALSE);
-	mAdvancedSlice->setEnabled(FALSE);
+	getChildView("scale_hole")->setEnabled(FALSE);
+	getChildView("scale_taper")->setEnabled(FALSE);
+	getChildView("advanced_cut")->setEnabled(FALSE);
+	getChildView("advanced_dimple")->setEnabled(FALSE);
+	getChildView("advanced_slice")->setVisible( FALSE);
 }
 
 //
