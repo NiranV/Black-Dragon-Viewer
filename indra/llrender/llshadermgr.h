@@ -146,7 +146,7 @@ public:
         DEFERRED_SSAO_MAX_RADIUS,           //  "ssao_max_radius"
         DEFERRED_SSAO_FACTOR,               //  "ssao_factor"
         DEFERRED_SSAO_FACTOR_INV,           //  "ssao_factor_inv"
-        DEFERRED_SSAO_EFFECT,				//  "ssao_effect"
+        DEFERRED_SSAO_EFFECT_MAT,			//  "ssao_effect_mat"
         DEFERRED_SCREEN_RES,                //  "screen_res"
         DEFERRED_NEAR_CLIP,                 //  "near_clip"
         DEFERRED_SHADOW_OFFSET,             //  "shadow_offset"

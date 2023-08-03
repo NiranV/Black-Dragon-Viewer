@@ -174,6 +174,7 @@ F32 LLPipeline::CameraFocalLength;
 F32 LLPipeline::CameraFieldOfView;
 F32 LLPipeline::RenderShadowNoise;
 F32 LLPipeline::RenderShadowBlurSize;
+LLVector3 LLPipeline::RenderSSAOEffect;
 F32 LLPipeline::RenderSSAOScale;
 U32 LLPipeline::RenderSSAOMaxScale;
 F32 LLPipeline::RenderSSAOFactor;
@@ -209,7 +210,6 @@ S32 LLPipeline::RenderBufferVisualization;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 //BD - Special Options
-F32 LLPipeline::RenderSSAOEffect;
 BOOL LLPipeline::CameraFreeDoFFocus;
 BOOL LLPipeline::CameraDoFLocked;
 BOOL LLPipeline::RenderDeferredBlurLight;
@@ -1294,7 +1294,7 @@ void LLPipeline::refreshCachedSettings()
 
 
 //	//BD - Special Options
-	RenderSSAOEffect = gSavedSettings.getF32("RenderSSAOEffect");
+	RenderSSAOEffect = gSavedSettings.getVector3("RenderSSAOEffect");
 	RenderLocalLights = sRenderOtherAttachedLights || sRenderOwnAttachedLights || sRenderDeferredLights;
 	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	CameraDoFLocked = gSavedSettings.getBOOL("CameraDoFLocked");
@@ -7835,7 +7835,7 @@ void LLPipeline::renderFinalize()
 
 	gDeferredPostNoDoFProgram.unbind();
 
-			gGL.flush();
+	gGL.setSceneBlendType(LLRender::BT_ALPHA);
 
     if (hasRenderDebugMask(LLPipeline::RENDER_DEBUG_PHYSICS_SHAPES))
     {
@@ -8105,7 +8105,15 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR, ssao_factor);
 	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_FACTOR_INV, 1.0/ssao_factor);
 
-	shader.uniform1f(LLShaderMgr::DEFERRED_SSAO_EFFECT, RenderSSAOEffect);
+	LLVector3 ssao_effect = RenderSSAOEffect;
+	F32 matrix_diag = (ssao_effect[0] + 2.0 * ssao_effect[1]) / 3.0;
+	F32 matrix_nondiag = (ssao_effect[0] - ssao_effect[1]) / 3.0;
+	// This matrix scales (proj of color onto <1/rt(3),1/rt(3),1/rt(3)>) by
+	// value factor, and scales remainder by saturation factor
+	F32 ssao_effect_mat[] = { matrix_diag, matrix_nondiag, matrix_nondiag,
+								matrix_nondiag, matrix_diag, matrix_nondiag,
+								matrix_nondiag, matrix_nondiag, matrix_diag };
+	shader.uniformMatrix3fv(LLShaderMgr::DEFERRED_SSAO_EFFECT_MAT, 1, GL_FALSE, ssao_effect_mat);
 
 	F32 shadow_bias_error = RenderShadowBiasError * fabsf(LLViewerCamera::getInstance()->getOrigin().mV[2]) / 3000.f;
 	F32 shadow_bias = RenderShadowBias + shadow_bias_error;
@@ -8286,7 +8294,7 @@ void LLPipeline::renderDeferredLighting()
             bindDeferredShader(gDeferredBlurLightProgram);
 
             LLVector3 go = RenderShadowGaussian;
-            //const U32 kern_length = 4;
+            const U32 kern_length = 4;
             F32       blur_size = RenderShadowBlurSize;
             F32       dist_factor = RenderShadowBlurDistFactor;
 
@@ -8300,28 +8308,28 @@ void LLPipeline::renderDeferredLighting()
 
 
 			// sample symmetrically with the middle sample falling exactly on 0.0
-			//F32 x = 0.f;
+			F32 x = 0.f;
 
 			LLVector3 gauss[32]; // xweight, yweight, offset
 
+			for (U32 i = 0; i < kern_length; i++)
             {
-                LLGLDisable   blend(GL_BLEND);
-                LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_ALWAYS);
-                mScreenTriangleVB->setBuffer();
-                mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
+				gauss[i].mV[0] = llgaussian(x, go.mV[0]);
+				gauss[i].mV[1] = llgaussian(x, go.mV[1]);
+				gauss[i].mV[2] = x;
+				x += 1.f;
             }
 
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
-			//gDeferredBlurLightProgram.uniform3fv(sKern, kern_length, gauss[0].mV);
-			gDeferredBlurLightProgram.uniform2f(sKernScale, blur_size, ssao_blur);
+			gDeferredBlurLightProgram.uniform3fv(sKern, kern_length, gauss[0].mV);
+			gDeferredBlurLightProgram.uniform1f(sKernScale, blur_size * (kern_length / 2.f - 0.5f));
 		
 			{
 				LLGLDisable blend(GL_BLEND);
 				LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_ALWAYS);
-				stop_glerror();
-				mDeferredVB->drawArrays(LLRender::TRIANGLES, 0, 3);
-				stop_glerror();
+				mScreenTriangleVB->setBuffer();
+				mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
 			}
 			
             screen_target->flush();
