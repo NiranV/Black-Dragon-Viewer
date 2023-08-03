@@ -44,9 +44,6 @@
 #include "llhints.h"
 #include "lltabcontainer.h"
 #include "llvoavatarself.h"
-// [RLVa:KB] - @setcam
-#include "rlvactions.h"
-// [/RLVa:KB]
 
 //BD - Bone Camera
 #include "llvoavatarself.h"
@@ -712,26 +709,6 @@ void LLFloaterCamera::switchToPreset()
 {
 	LLScrollListItem* item = mPresetsScroll->getFirstSelected();
 	if (!item) return;
-
-	sFreeCamera = false;
-	clear_camera_tool();
-	if (PRESETS_REAR_VIEW == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
-	}
-	else if (PRESETS_SIDE_VIEW == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_GROUP_VIEW);
-	}
-	else if (PRESETS_FRONT_VIEW == name)
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_FRONT_VIEW);
-	}
-	else
-	{
-		gAgentCamera.switchCameraPreset(CAMERA_PRESET_CUSTOM);
-	}
-// [/RLVa:KB]
 
 	sFreeCamera = false;
 	clear_camera_tool();

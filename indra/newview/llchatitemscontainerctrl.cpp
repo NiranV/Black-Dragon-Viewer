@@ -186,10 +186,6 @@ void LLFloaterIMNearbyChatToastPanel::init(LLSD& notification)
 	mFromID = notification["from_id"].asUUID();		// agent id or object id
 	mFromName = fromName;
 
-// [RLVa:KB] - Checked: 2010-04-22 (RLVa-1.2.0f) | Added: RLVa-1.2.0f
-	mShowIconTooltip = notification.has("show_icon_tooltip") ? notification["show_icon_tooltip"].asBoolean() : true;
-// [/RLVa:KB]
-
 	int sType = notification["source"].asInteger();
     mSourceType = (EChatSourceType)sType;
 	

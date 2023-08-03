@@ -537,17 +537,8 @@ void LLFloaterMove::clearStandStopFlyingMode(EStandStopFlyingMode mode)
 
 void LLFloaterMove::onStandButtonClick()
 {
-// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
-	if ( (!RlvActions::isRlvEnabled()) || (RlvActions::canStand()) )
-{
-	LLFirstUse::sit(false);
-
 	LLSelectMgr::getInstance()->deselectAllForStandingUp();
 	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
-	}
-// [/RLVa:KB]
-//	LLSelectMgr::getInstance()->deselectAllForStandingUp();
-//	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
 }
 
 void LLFloaterMove::onStopFlyingButtonClick()

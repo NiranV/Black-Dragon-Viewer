@@ -123,7 +123,6 @@
 #include "llviewertexturelist.h"
 #include "bdsidebar.h"
 #include "bdfunctions.h"
-#include "exopostprocess.h"
 #include "llkeyconflict.h"
 
 //BD - Avatar Rendering Settings
@@ -3394,12 +3393,6 @@ void LLFloaterPreference::refreshEnabledState()
 	//BD
 	bool started = LLStartUp::getStartupState() == STATE_STARTED;
 	getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(started);
-// [RLVa:KB] - Checked: 2013-05-11 (RLVa-1.4.9)
-	if (rlv_handler_t::isEnabled() && started)
-	{
-		getChild<LLUICtrl>("do_not_disturb_response")->setEnabled(!RlvActions::hasBehaviour(RLV_BHVR_SENDIM));
-	}
-// [/RLVa:KB]
 
 	getChildView("block_list")->setEnabled(LLLoginInstance::getInstance()->authSuccess());
 }

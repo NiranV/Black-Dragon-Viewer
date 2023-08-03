@@ -57,10 +57,6 @@
 #include "llsculptidsize.h"
 #include "llmeshrepository.h"
 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
 #if LL_LINUX
 // Work-around spurious used before init warning on Vector4a
 //

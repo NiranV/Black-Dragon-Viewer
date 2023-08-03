@@ -1255,14 +1255,6 @@ BOOL LLToolPie::handleToolTip(S32 local_x, S32 local_y, MASK mask)
 
 	LLViewerObject* hover_object = mHoverPick.getObject();
 
-// [RLVa:KB] - Checked: RLVa-2.1.0
-	// Block the tooltip of anything the user can't interact with
-	if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(hover_object, mHoverPick.mObjectOffset)) )
-	{
-		return TRUE;
-	}
-// [/RLVa:KB]
-
 	// update hover object and hover parcel
 	LLSelectMgr::getInstance()->setHoverObject(hover_object, mHoverPick.mObjectFace);
 	
@@ -1899,41 +1891,42 @@ BOOL LLToolPie::handleRightClickPick()
 				muted_msg = LLTrans::getString("MuteVoice");
 			}
 
-				if (is_other_attachment)
-				{
+			if (is_other_attachment)
+			{
 //					//BD - Pie Menu
-					if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
-					{
-						gPieMenuAttachmentOther->show(x, y);
-					}
-					else
-					{
-						//BD - Right Click Menu
-						//     Doesn't work in submenus for some reason.
-						gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-						gMenuAttachmentOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
-						gMenuAttachmentOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
-
-						gMenuAttachmentOther->show(x, y);
-					}
+				if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+				{
+					gPieMenuAttachmentOther->show(x, y);
 				}
 				else
 				{
-//					//BD - Pie Menu
-					if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
-					{
-						gPieMenuAvatarOther->show(x, y);
-					}
-					else
-					{
-						//BD - Right Click Menu
-						//     Doesn't work in submenus for some reason.
-						gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
-						gMenuAvatarOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
-						gMenuAvatarOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
+					//BD - Right Click Menu
+					//     Doesn't work in submenus for some reason.
+					gMenuAttachmentOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+					gMenuAttachmentOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
+					gMenuAttachmentOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
 
-						gMenuAvatarOther->show(x, y);
-					}
+					gMenuAttachmentOther->show(x, y);
+				}
+			}
+			else
+			{
+				//					//BD - Pie Menu
+				if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
+				{
+					gPieMenuAvatarOther->show(x, y);
+				}
+				else
+				{
+					//BD - Right Click Menu
+					//     Doesn't work in submenus for some reason.
+					gMenuAvatarOther->getChild<LLUICtrl>("Avatar Mute")->setValue(mute_msg);
+					gMenuAvatarOther->getChild<LLUICtrl>("MuteVoice")->setValue(muted_msg);
+					gMenuAvatarOther->getChild<LLUICtrl>("MuteText")->setValue(blocked_msg);
+
+					gMenuAvatarOther->show(x, y);
+				}
+			}
 		}
 		else if (object->isAttachment())
 		{

@@ -65,14 +65,11 @@ public:
 	static void enableInstance();
 	/*virtual*/ void onOpen(const LLSD& key);
 
+	static void sUpdateFlyingStatus();
+
 	//BD
 	void setStandStopFlyingMode(EStandStopFlyingMode mode);
 	void clearStandStopFlyingMode(EStandStopFlyingMode mode);
-
-//	static void sUpdateFlyingStatus();
-// [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
-	static void sUpdateMovementStatus();
-// [/RLVa:KB]
 
 protected:
 	void turnLeft();

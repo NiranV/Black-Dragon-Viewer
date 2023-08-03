@@ -3756,12 +3756,6 @@ bool LLVOAvatar::isVisuallyMuted()
         {
             muted = true;
         }
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-		else if (isRlvSilhouette())
-		{
-			muted = true;
-		}
-// [/RLVa:KB]
 		else
 		{
 			muted = isTooComplex() || isTooSlow();
@@ -11383,21 +11377,9 @@ void LLVOAvatar::calcMutedAVColor()
 
     if (getVisualMuteSettings() == AV_DO_NOT_RENDER)
     {
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-		 if (isRlvSilhouette())
-		 {
-			 new_color = LLColor4::silhouette;
-			 change_msg = " not rendered: color is silhouette";
-		 }
-		 else
-		 {
-// [/RLVa:KB]
-			 // explicitly not-rendered avatars are light grey
-			 new_color = LLColor4::grey4;
-			 change_msg = " not rendered: color is grey4";
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-		 }
-// [/RLVa:KB]
+		// explicitly not-rendered avatars are light grey
+		new_color = LLColor4::grey4;
+		change_msg = " not rendered: color is grey4";
     }
     else if (isInMuteList()) // the user blocked them
     {
@@ -11411,10 +11393,7 @@ void LLVOAvatar::calcMutedAVColor()
         change_msg = " simple imposter ";
     }
 #ifdef COLORIZE_JELLYDOLLS
-//    else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 )
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-	else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 || mMutedAVColor == LLColor4::silhouette)
-// [/RLVa:KB]
+    else if ( mMutedAVColor == LLColor4::white || mMutedAVColor == LLColor4::grey3 || mMutedAVColor == LLColor4::grey4 )
 	{
 		// select a color based on the first byte of the agents uuid so any muted agent is always the same color
 		F32 color_value = (F32)(av_id.mData[0]);
@@ -11948,3 +11927,23 @@ void LLVOAvatar::calculateBDUpdateRenderComplexity()
 			}
 		}
 	}*/
+
+//BD - Refresh Attachments
+void LLVOAvatar::rebuildAttachments()
+{
+	for (const auto& kvpAttachPt : mAttachmentPoints)
+	{
+		for (LLViewerObject* pAttachObj : kvpAttachPt.second->mAttachedObjects)
+		{
+			if (LLVOVolume* pAttachVol = (pAttachObj->isMesh()) ? dynamic_cast<LLVOVolume*>(pAttachObj) : nullptr)
+			{
+				pAttachVol->forceLOD(3);
+				for (LLViewerObject* pChildObj : pAttachObj->getChildren())
+				{
+					if (LLVOVolume* pChildVol = (pChildObj->isMesh()) ? dynamic_cast<LLVOVolume*>(pChildObj) : nullptr)
+						pAttachVol->forceLOD(3);
+				}
+			}
+		}
+	}
+}

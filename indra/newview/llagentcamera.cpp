@@ -243,10 +243,6 @@ void LLAgentCamera::init()
 	//BD - Unlimited Camera Presets
 	mCameraPresetName = gSavedSettings.getString("CameraPresetName");
 	initializeCameraPresets();
-	
-	/*mCameraPreset = (ECameraPreset) gSavedSettings.getU32("CameraPresetType");
-
-	mCameraPreset = (ECameraPreset) gSavedSettings.getU32("CameraPresetType");
 
 	mCameraCollidePlane.clearVec();
 	mCurrentCameraDistance = getCameraOffsetInitial().magVec() * gSavedSettings.getF32("CameraOffsetScale");
@@ -859,16 +855,15 @@ void LLAgentCamera::setCameraZoomFraction(F32 fraction)
 		//BD - Allow infinite zoom.
 		F32 max_zoom = mDrawDistance;
 
-			if (mFocusObject.notNull())
+		if (mFocusObject.notNull())
+		{
+			if (mFocusObject->isAvatar())
 			{
-				if (mFocusObject->isAvatar())
-				{
-					min_zoom = AVATAR_MIN_ZOOM;
-				}
-				else
-				{
-					min_zoom = OBJECT_MIN_ZOOM;
-				}
+				min_zoom = AVATAR_MIN_ZOOM;
+			}
+			else
+			{
+				min_zoom = OBJECT_MIN_ZOOM;
 			}
 		}
 
@@ -2599,27 +2594,8 @@ void LLAgentCamera::switchCameraPreset(std::string preset_name)
 	//BD - Unlimited Camera Presets
 	initializeCameraPresets();
 
-
-			//BD - Reinitialize our presets, this should reload the RLVa preset values.
-			initializeCameraPresets();
-			/*if (CAMERA_RLV_SETCAM_VIEW == preset)
-			{
-				if (CAMERA_RLV_SETCAM_VIEW == mCameraPreset)
-				{
-					// Don't reset anything if our view is already current
-					return;
-				}
-				else
-				{
-					// When switching to our view, copy the current values
-					mRlvCameraOffsetInitialControl->setDefaultValue(convert_to_llsd(getCameraOffsetInitial()));
-					mRlvFocusOffsetInitialControl->setDefaultValue(convert_to_llsd(getFocusOffsetInitial()));
-					mRlvCameraOffsetScaleControl->setDefaultValue(getCameraOffsetScale());
-				}
-			}*/
-		}
-	}
-// [/RLVa:KB]
+	//BD - Reinitialize our presets, this should reload the RLVa preset values.
+	initializeCameraPresets();
 
 	//zoom is supposed to be reset for the front and group views
 	mCameraZoomFraction = 1.f;

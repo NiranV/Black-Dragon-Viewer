@@ -728,14 +728,6 @@ void LLNavigationBar::handleLoginComplete()
 	mCmbLocation->handleLoginComplete();
 }
 
-// [RLVa:KB] - Checked: 2014-03-23 (RLVa-1.4.10)
-void LLNavigationBar::refreshLocationCtrl()
-{
-	if (mCmbLocation)
-		mCmbLocation->refresh();
-}
-// [/RLVa:KB]
-
 void LLNavigationBar::clearHistoryCache()
 {
 	mCmbLocation->removeall();

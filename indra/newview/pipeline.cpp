@@ -3334,15 +3334,8 @@ void LLPipeline::stateSort(LLDrawable* drawablep, LLCamera& camera)
 
 	if (LLSelectMgr::getInstance()->mHideSelectedObjects)
 	{
-//		if (drawablep->getVObj().notNull() &&
-//			drawablep->getVObj()->isSelected())
-// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.2.1f
-		const LLViewerObject* pObj = drawablep->getVObj();
-		if ( (pObj) && (pObj->isSelected()) && 
-			 ( (!RlvActions::isRlvEnabled()) || 
-			   ( ((!pObj->isHUDAttachment()) || (!gRlvAttachmentLocks.isLockedAttachment(pObj->getRootEdit()))) && 
-			     (RlvActions::canEdit(pObj)) ) ) )
-// [/RVLa:KB]
+		if (drawablep->getVObj().notNull() &&
+			drawablep->getVObj()->isSelected())
 		{
 			return;
 		}

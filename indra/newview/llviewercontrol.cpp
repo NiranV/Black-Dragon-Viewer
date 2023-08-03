@@ -81,6 +81,7 @@
 #include "llviewerregion.h"
 #include "lldrawpoolwlsky.h"
 #include "llfloatersnapshot.h"
+#include "llselectmgr.h"
 #include "lltoolfocus.h"
 #include "llviewerobjectlist.h"
 #include "bdsidebar.h"
@@ -585,8 +586,6 @@ bool toggle_show_object_render_cost(const LLSD& newvalue)
 	LLFloaterTools::sShowObjectCost = newvalue.asBoolean();
 	return true;
 }
-
-void handleRenderAutoMuteByteLimitChanged(const LLSD& new_value);
 
 //BD
 /////////////////////////////////////////////////////////////////////////////
@@ -1246,9 +1245,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("DebugAvatarJoints")->getCommitSignal()->connect(boost::bind(&handleDebugAvatarJointsChanged, _2));
 	gSavedSettings.getControl("RenderAutoMuteByteLimit")->getSignal()->connect(boost::bind(&handleRenderAutoMuteByteLimitChanged, _2));
 	gSavedPerAccountSettings.getControl("AvatarHoverOffsetZ")->getCommitSignal()->connect(boost::bind(&handleAvatarHoverOffsetChanged, _2));*/
-// [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
-	gSavedSettings.getControl("RestrainedLove")->getSignal()->connect(boost::bind(&RlvSettings::onChangedSettingMain, _2));
-// [/RLVa:KB]
 	
 	//BD - Special Debugs and handles
 	//BD - Misc

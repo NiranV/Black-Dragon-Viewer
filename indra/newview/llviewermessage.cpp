@@ -117,6 +117,9 @@
 #include "llviewerregion.h"
 #include "llfloaterregionrestarting.h"
 
+//BD
+#include "llsidepanelinventory.h"
+
 #include <boost/foreach.hpp>
 
 #include "llnotificationmanager.h" //

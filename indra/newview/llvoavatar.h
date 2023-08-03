@@ -501,6 +501,8 @@ public:
 	bool		isVisuallyMuted();
 	bool 		isInMuteList() const;
 	void		forceUpdateVisualMuteSettings();
+	//BD
+	bool        isInBuddyList() const;
 
 	// Visual Mute Setting is an input. Does not necessarily determine
 	// what the avatar looks like, because it interacts with other
@@ -513,7 +515,6 @@ public:
 	};
 	void		setVisualMuteSettings(VisualMuteSettings set);
 
-protected:
 	// If you think you need to access this outside LLVOAvatar, you probably want getOverallAppearance()
 	VisualMuteSettings  getVisualMuteSettings()						{ return mVisuallyMuteSetting;	};
 

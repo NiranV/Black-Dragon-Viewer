@@ -7717,9 +7717,6 @@ BOOL LLSelectMgr::canDoDelete() const
 			can_delete = true;
 		}
 	}
-// [RLVa:KB] - Checked: 2010-03-23 (RLVa-1.2.0e) | Added: RLVa-1.2.0a
-	can_delete &= (!rlv_handler_t::isEnabled()) || (rlvCanDeleteOrReturn());
-// [/RLVa:KB]
 
 	return can_delete;
 }

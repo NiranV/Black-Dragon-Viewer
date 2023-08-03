@@ -959,14 +959,7 @@ bool LLAgent::isSitting()
 
 void LLAgent::standUp()
 {
-//	setControlFlags(AGENT_CONTROL_STAND_UP);
-// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
-	// RELEASE-RLVa: [SL-2.0.0] Check this function's callers since usually they require explicit blocking
-	if ( (!rlv_handler_t::isEnabled()) || (RlvActions::canStand()) )
-	{
-		setControlFlags(AGENT_CONTROL_STAND_UP);
-	}
-// [/RLVa:KB]
+	setControlFlags(AGENT_CONTROL_STAND_UP);
 }
 
 void LLAgent::changeParcels()
@@ -4519,40 +4512,17 @@ void LLAgent::doTeleportViaLocation(const LLVector3d& pos_global)
 	}
 }
 
-// Teleport to global position, but keep facing in the same direction 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global, const LLVector3& look_at)
+void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
 {
-	if ( (RlvActions::isRlvEnabled()) && (!RlvUtil::isForceTp()) )
-	{
-		if ( (RlvActions::isLocalTp(pos_global)) ? !RlvActions::canTeleportToLocal(pos_global) : !RlvActions::canTeleportToLocation() )
-		{
-			RlvUtil::notifyBlocked(RLV_STRING_BLOCKED_TELEPORT);
-			return;
-		}
-
-		if ( (gRlvHandler.getCurrentCommand()) && (RLV_BHVR_TPTO == gRlvHandler.getCurrentCommand()->getBehaviourType()) )
-		{
-			gRlvHandler.setCanCancelTp(false);
-		}
-	}
-
-	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global, (look_at.isExactlyZero()) ? LLViewerCamera::getInstance()->getAtAxis() : look_at));
+	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global));
 	startTeleportRequest();
 }
-// [/RLVa:KB]
-//void LLAgent::teleportViaLocationLookAt(const LLVector3d& pos_global)
-//{
-//	mTeleportRequest = LLTeleportRequestPtr(new LLTeleportRequestViaLocationLookAt(pos_global));
-//	startTeleportRequest();
-//}
 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global, const LLVector3& look_at)
+void LLAgent::doTeleportViaLocationLookAt(const LLVector3d& pos_global)
 {
-	mbTeleportKeepsLookAt = look_at.isExactlyZero();
+	mbTeleportKeepsLookAt = true;
 
-	if(!gAgentCamera.isfollowCamLocked())
+	if (!gAgentCamera.isfollowCamLocked())
 	{
 		gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);	// detach camera form avatar, so it keeps direction
 	}

@@ -7562,33 +7562,8 @@ class LLAttachmentEnableDetach : public view_listener_t
 };
 
 // Used to tell if the selected object can be attached to your avatar.
-//BOOL object_selected_and_point_valid()
-// [RLVa:KB] - Checked: 2010-03-16 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
-BOOL object_selected_and_point_valid(const LLSD& sdParam)
-// [/RLVa:KB]
+BOOL object_selected_and_point_valid()
 {
-// [RLVa:KB] - Checked: 2010-09-28 (RLVa-1.2.1f) | Modified: RLVa-1.2.1f
-	if (rlv_handler_t::isEnabled())
-	{
-		if (!isAgentAvatarValid())
-			return FALSE;
-
-		// RELEASE-RLVa: [SL-2.2.0] Look at the caller graph for this function on every new release
-		//   - object_is_wearable() => dead code [sdParam == 0 => default attach point => OK!]
-		//   - enabler set up in LLVOAvatarSelf::buildMenus() => Rezzed prim / Put On / "Attach To" [sdParam == idxAttachPt]
-		//   - "Object.EnableWear" enable => Rezzed prim / Put On / "Wear" or "Add" [sdParam blank]
-		// RELEASE-RLVa: [SL-2.2.0] If 'idxAttachPt != 0' then the object will be "add attached" [see LLSelectMgr::sendAttach()]
-		const LLViewerJointAttachment* pAttachPt = 
-			get_if_there(gAgentAvatarp->mAttachmentPoints, sdParam.asInteger(), (LLViewerJointAttachment*)NULL);
-		if ( ((!pAttachPt) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY))) ||		// Can't wear on default attach point
-			 ((pAttachPt) && ((RLV_WEAR_ADD & gRlvAttachmentLocks.canAttach(pAttachPt)) == 0)) ||	// or non-attachable attach point
-			 (gRlvHandler.hasBehaviour(RLV_BHVR_REZ)) )												// Attach on object == "Take"
-		{
-			return FALSE;
-		}
-	}
-// [/RLVa:KB]
-
 	LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
 	for (LLObjectSelection::root_iterator iter = selection->root_begin();
 		 iter != selection->root_end(); iter++)
@@ -7619,7 +7594,6 @@ BOOL object_selected_and_point_valid(const LLSD& sdParam)
 BOOL object_is_wearable()
 {
 	if (!isAgentAvatarValid())
-	if (!object_selected_and_point_valid(LLSD(0)))
 	{
 		return FALSE;
 	}
@@ -9428,10 +9402,7 @@ class LLAvatarRemoveFriend : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
-		//		if(avatar && !LLAvatarActions::isFriend(avatar->getID()))
-		// [RLVa:KB] - Checked: RLVa-1.2.0
-		if ((avatar && LLAvatarActions::isFriend(avatar->getID())) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID())))
-			// [/RLVa:KB]
+		if(avatar && !LLAvatarActions::isFriend(avatar->getID()))
 		{
 			remove_friendship(avatar->getID());
 		}
@@ -9453,10 +9424,7 @@ class LLAvatarEnableRemoveFriend : public view_listener_t
 	bool handleEvent(const LLSD& userdata)
 	{
 		LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject());
-		//		bool new_value = avatar && !LLAvatarActions::isFriend(avatar->getID());
-		// [RLVa:KB] - Checked: RLVa-1.2.0
-		bool new_value = avatar && LLAvatarActions::isFriend(avatar->getID()) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, avatar->getID()));
-		// [/RLVa:KB]
+		bool new_value = avatar && !LLAvatarActions::isFriend(avatar->getID());
 		return new_value;
 	}
 };
@@ -9645,17 +9613,6 @@ class BDCheckGodStatus : public view_listener_t
 // static
 void script_recompile(bool mono)
 {
-	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
-			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
-	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
-	{
-		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
-		RlvSelectHasLockedAttach f;
-		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
-			return;
-	}
-	// [/RLVa:KB]
-
 	std::string name = "compile_queue";
 	std::string msg = "Recompile";
 	std::string title = LLTrans::getString("CompileQueueTitle");
@@ -9675,17 +9632,6 @@ void script_recompile(bool mono)
 
 void script_reset()
 {
-	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
-			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
-	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
-	{
-		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
-		RlvSelectHasLockedAttach f;
-		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
-			return;
-	}
-	// [/RLVa:KB]
-
 	bool mono = false;
 	std::string name = "reset_queue";
 	std::string msg = "Reset";
@@ -9706,17 +9652,6 @@ void script_reset()
 
 void script_set_running(bool running)
 {
-	// [RLVa:KB] - Checked: 2010-04-19 (RLVa-1.2.0f) | Modified: RLVa-1.0.5a
-			// We'll allow resetting the scripts of objects on a non-attachable attach point since they wouldn't be able to circumvent anything
-	if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)))
-	{
-		LLObjectSelectionHandle hSel = LLSelectMgr::getInstance()->getSelection();
-		RlvSelectHasLockedAttach f;
-		if ((hSel->isAttachment()) && (hSel->getFirstNode(&f) != NULL))
-			return;
-	}
-	// [/RLVa:KB]
-
 	std::string name, msg, title;
 	if (running)
 	{
@@ -9895,9 +9830,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLWorldLindenHome(), "World.LindenHome");
 
 	view_listener_t::addMenu(new LLWorldEnableCreateLandmark(), "World.EnableCreateLandmark");
-// [RLVa:KB]
-	enable.add("World.EnablePlaceProfile", boost::bind(&enable_place_profile));
-// [/RLVa:KB]
 	view_listener_t::addMenu(new LLWorldEnableSetHomeLocation(), "World.EnableSetHomeLocation");
 	view_listener_t::addMenu(new LLWorldEnableTeleportHome(), "World.EnableTeleportHome");
 	view_listener_t::addMenu(new LLWorldEnableBuyLand(), "World.EnableBuyLand");

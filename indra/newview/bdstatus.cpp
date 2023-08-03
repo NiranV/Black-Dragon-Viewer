@@ -28,8 +28,6 @@
 #include "llviewercontrol.h"
 #include "llviewerjoystick.h"
 
-#include "rlvactions.h"
-
 BDStatus *gDragonStatus = NULL;
 
 BDStatus::BDStatus(const LLRect& rect)
@@ -184,15 +182,8 @@ BOOL BDStatus::postBuild()
 
 void BDStatus::onSittingButtonClick()
 {
-	// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
-	if ((!RlvActions::isRlvEnabled()) || (RlvActions::canStand()))
-	{
-		LLSelectMgr::getInstance()->deselectAllForStandingUp();
-		gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
-	}
-	// [/RLVa:KB]
-	//	LLSelectMgr::getInstance()->deselectAllForStandingUp();
-	//	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
+	LLSelectMgr::getInstance()->deselectAllForStandingUp();
+	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
 
 	setFocus(FALSE);
 }

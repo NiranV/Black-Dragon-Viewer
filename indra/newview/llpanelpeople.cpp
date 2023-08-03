@@ -860,6 +860,8 @@ void LLPanelPeople::updateRecentList()
 void LLPanelPeople::updateButtons()
 {
 	std::string cur_tab		= getActiveTabName();
+	//BD
+	bool nearby_tab_active	= (cur_tab == NEARBY_TAB_NAME);
 	bool friends_tab_active = (cur_tab == FRIENDS_TAB_NAME);
 	bool group_tab_active	= (cur_tab == GROUP_TAB_NAME);
 	bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);

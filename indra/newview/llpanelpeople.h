@@ -61,6 +61,9 @@ public:
 
     //bool mTryToConnectToFacebook;
 
+	//BD
+	LLAvatarList* getNearbyList() { return mNearbyList; }
+	void          updateNearbyList();
 
 	//BD - Empower someone with rights or revoke them.
 	void		onEmpowerFriend(const LLSD& userdata);
