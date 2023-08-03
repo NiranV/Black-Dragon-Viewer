@@ -39,10 +39,6 @@
 //static
 const std::string LLFloaterSidePanelContainer::sMainPanelName("main_panel");
 
-// [RLVa:KB] - Checked: 2012-02-07 (RLVa-1.4.5) | Added: RLVa-1.4.5
-LLFloaterSidePanelContainer::validate_signal_t LLFloaterSidePanelContainer::mValidateSignal;
-// [/RLVa:KB]
-
 LLFloaterSidePanelContainer::LLFloaterSidePanelContainer(const LLSD& key, const Params& params)
 :	LLFloater(key, params)
 {
@@ -120,25 +116,10 @@ LLPanel* LLFloaterSidePanelContainer::openChildPanel(const std::string& panel_na
 	return panel;
 }
 
-// [RLVa:KB] - Checked: 2012-02-07 (RLVa-1.4.5) | Added: RLVa-1.4.5
-bool LLFloaterSidePanelContainer::canShowPanel(const std::string& floater_name, const LLSD& key)
-{
-	return mValidateSignal(floater_name, sMainPanelName, key);
-}
-
-bool LLFloaterSidePanelContainer::canShowPanel(const std::string& floater_name, const std::string& panel_name, const LLSD& key)
-{
-	return mValidateSignal(floater_name, panel_name, key);
-}
-// [/RLVa:KB]
-	
 void LLFloaterSidePanelContainer::showPanel(const std::string& floater_name, const LLSD& key)
 {
 	LLFloaterSidePanelContainer* floaterp = LLFloaterReg::getTypedInstance<LLFloaterSidePanelContainer>(floater_name);
-//	if (floaterp)
-// [RLVa:KB] - Checked: 2013-04-16 (RLVa-1.4.8)
-	if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(floater_name, key))) && (canShowPanel(floater_name, key)) )
-// [/RLVa:KB]
+	if (floaterp)
 	{
 		floaterp->openChildPanel(sMainPanelName, key);
 	}
@@ -147,10 +128,7 @@ void LLFloaterSidePanelContainer::showPanel(const std::string& floater_name, con
 void LLFloaterSidePanelContainer::showPanel(const std::string& floater_name, const std::string& panel_name, const LLSD& key)
 {
 	LLFloaterSidePanelContainer* floaterp = LLFloaterReg::getTypedInstance<LLFloaterSidePanelContainer>(floater_name);
-//	if (floaterp)
-// [RLVa:KB] - Checked: 2013-04-16 (RLVa-1.4.8)
-	if ( (floaterp) && ((floaterp->getVisible()) || (LLFloaterReg::canShowInstance(floater_name, key))) && (canShowPanel(floater_name, panel_name, key)) )
-// [/RLVa:KB]
+	if (floaterp)
 	{
 		floaterp->openChildPanel(panel_name, key);
 	}

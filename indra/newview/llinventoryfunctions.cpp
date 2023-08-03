@@ -87,10 +87,6 @@
 #include "llviewerwindow.h"
 #include "llvoavatarself.h"
 #include "llwearablelist.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvactions.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 #include <boost/foreach.hpp>
 
@@ -383,10 +379,7 @@ void update_all_marketplace_count()
     return;
 }
 
-//void rename_category(LLInventoryModel* model, const LLUUID& cat_id, const std::string& new_name)
-// [RLVa:KB] - Checked: RLVa-2.3 (Give-to-#RLV)
-void rename_category(LLInventoryModel* model, const LLUUID& cat_id, const std::string& new_name, LLPointer<LLInventoryCallback> cb)
-// [/RLVa:KB]
+void rename_category(LLInventoryModel* model, const LLUUID& cat_id, const std::string& new_name)
 {
 	LLViewerInventoryCategory* cat;
 
@@ -400,10 +393,7 @@ void rename_category(LLInventoryModel* model, const LLUUID& cat_id, const std::s
 
 	LLSD updates;
 	updates["name"] = new_name;
-// [RLVa:KB] - Checked: RLVa-2.3 (Give-to-#RLV)
-	update_inventory_category(cat_id, updates, cb);
-// [/RLVa:KB]
-//	update_inventory_category(cat_id, updates, NULL);
+	update_inventory_category(cat_id, updates, NULL);
 }
 
 void copy_inventory_category(LLInventoryModel* model,
@@ -545,11 +535,10 @@ BOOL get_is_item_worn(const LLUUID& id)
         return FALSE;
     }
 	// Consider the item as worn if it has links in COF.
-// [SL:KB] - The code below causes problems across the board so it really just needs to go
-//	if (LLAppearanceMgr::instance().isLinkedInCOF(id))
-//	{
-//		return TRUE;
-//	}
+	if (LLAppearanceMgr::instance().isLinkedInCOF(id))
+	{
+		return TRUE;
+	}
 
 	switch(item->getType())
 	{
@@ -660,14 +649,6 @@ BOOL get_is_item_removable(const LLInventoryModel* model, const LLUUID& id)
 		}
 	}
 
-// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
-	if ( (RlvActions::isRlvEnabled()) && 
-		 (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveItem(id)) )
-	{
-		return FALSE;
-	}
-// [/RLVa:KB]
-
 	const LLInventoryObject *obj = model->getItem(id);
 	if (obj && obj->getIsLinkType())
 	{
@@ -740,14 +721,6 @@ BOOL get_is_category_removable(const LLInventoryModel* model, const LLUUID& id)
 		return FALSE;
 	}
 
-// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
-	if ( ((RlvActions::isRlvEnabled()) && 
-		 (RlvFolderLocks::instance().hasLockedFolder(RLV_LOCK_ANY)) && (!RlvFolderLocks::instance().canRemoveFolder(id))) )
-	{
-		return FALSE;
-	}
-// [/RLVa:KB]
-
 	if (!isAgentAvatarValid()) return FALSE;
 
 	const LLInventoryCategory* category = model->getCategory(id);
@@ -782,13 +755,6 @@ BOOL get_is_category_renameable(const LLInventoryModel* model, const LLUUID& id)
 	{
 		return FALSE;
 	}
-
-// [RLVa:KB] - Checked: 2011-03-29 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g
-	if ( (RlvActions::isRlvEnabled()) && (model == &gInventory) && (!RlvFolderLocks::instance().canRenameFolder(id)) )
-	{
-		return FALSE;
-	}
-// [/RLVa:KB]
 
 	LLViewerInventoryCategory* cat = model->getCategory(id);
 

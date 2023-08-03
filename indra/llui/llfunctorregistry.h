@@ -95,7 +95,7 @@ public:
 		}
 		else
 		{
-			// _LL_DEBUGS() << "tried to find '" << name << "' in LLFunctorRegistry, but it wasn't there." << LL_ENDL;
+			LL_DEBUGS() << "tried to find '" << name << "' in LLFunctorRegistry, but it wasn't there." << LL_ENDL;
 			return mMap[LOGFUNCTOR];
 		}
 	}
@@ -107,7 +107,7 @@ private:
 
 	static void log_functor(const LLSD& notification, const LLSD& payload)
 	{
-		// _LL_DEBUGS() << "log_functor called with payload: " << payload << LL_ENDL;
+		LL_DEBUGS() << "log_functor called with payload: " << payload << LL_ENDL;
 	}
 
 	static void do_nothing(const LLSD& notification, const LLSD& payload)

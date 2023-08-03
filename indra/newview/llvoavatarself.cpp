@@ -167,9 +167,6 @@ LLVOAvatarSelf::LLVOAvatarSelf(const LLUUID& id,
 							   const LLPCode pcode,
 							   LLViewerRegion* regionp) :
 	LLVOAvatar(id, pcode, regionp),
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-	mAttachmentSignal(NULL),
-// [/RLVa:KB]
 	mScreenp(NULL),
 	mLastRegionHandle(0),
 	mRegionCrossingCount(0),
@@ -230,10 +227,6 @@ void LLVOAvatarSelf::initInstance()
 		mDebugBakedTextureTimes[i][0] = -1.0f;
 		mDebugBakedTextureTimes[i][1] = -1.0f;
 	}
-
-// [RLVa:KB] - Checked: 2010-12-12 (RLVa-1.2.2c) | Added: RLVa-1.2.2c
-	RlvAttachPtLookup::initLookupTable();
-// [/RLVa:KB]
 
 	status &= buildMenus();
 	if (!status)
@@ -851,10 +844,6 @@ void LLVOAvatarSelf::cleanup()
 LLVOAvatarSelf::~LLVOAvatarSelf()
 {
 	cleanup();
-
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-	delete mAttachmentSignal;
-// [/RLVa:KB]
 }
 
 /**
@@ -1342,28 +1331,6 @@ LLViewerObject* LLVOAvatarSelf::getWornAttachment(const LLUUID& inv_item_id)
 	}
 	return NULL;
 }
-
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-boost::signals2::connection LLVOAvatarSelf::setAttachmentCallback(const attachment_signal_t::slot_type& cb)
-{
-	if (!mAttachmentSignal)
-		mAttachmentSignal = new attachment_signal_t();
-	return mAttachmentSignal->connect(cb);
-}
-// [/RLVa:KB]
-// [RLVa:KB] - Checked: 2010-03-14 (RLVa-1.2.0a) | Modified: RLVa-1.2.0a
-LLViewerJointAttachment* LLVOAvatarSelf::getWornAttachmentPoint(const LLUUID& idItem) const
-{
-	const LLUUID& idItemBase = gInventory.getLinkedItemID(idItem);
-	for (attachment_map_t::const_iterator itAttachPt = mAttachmentPoints.begin(); itAttachPt != mAttachmentPoints.end(); ++itAttachPt)
-	{
-		LLViewerJointAttachment* pAttachPt = itAttachPt->second;
- 		if (pAttachPt->getAttachedObject(idItemBase))
-			return pAttachPt;
-	}
-	return NULL;
-}
-// [/RLVa:KB]
 
 bool LLVOAvatarSelf::getAttachedPointName(const LLUUID& inv_item_id, std::string& name) const
 {

@@ -290,10 +290,7 @@ public:
 	S32 numChildren() const { return mChildList.size(); }
 	void addThisAndAllChildren(std::vector<LLViewerObject*>& objects);
 	void addThisAndNonJointChildren(std::vector<LLViewerObject*>& objects);
-//	BOOL isChild(LLViewerObject *childp) const;
-// [RLVa:KB] - Checked: 2011-05-28 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
-	BOOL isChild(const LLViewerObject *childp) const;
-// [/RLVa:KB]
+	BOOL isChild(LLViewerObject *childp) const;
 	BOOL isSeat() const;
 	
 
@@ -417,10 +414,7 @@ public:
 
 	void sendShapeUpdate();
 
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
-	U8 getAttachmentState() const					{ return mAttachmentState; }
-// [/RLVa:KB]
-//	U8 getAttachmentState()							{ return mAttachmentState; }
+	U8 getAttachmentState()							{ return mAttachmentState; }
 
 	F32 getAppAngle() const					{ return mAppAngle; }
 	F32 getPixelArea() const				{ return mPixelArea; }

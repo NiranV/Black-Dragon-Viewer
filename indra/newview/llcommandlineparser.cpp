@@ -302,19 +302,19 @@ bool LLCommandLineParser::parseAndStoreResults(po::command_line_parser& clp)
         po::basic_parsed_options<char> opts = clp.run();
         po::store(opts, gVariableMap);
     }
-    catch(const po::error& e)
+    catch(po::error& e)
     {
         LL_WARNS() << "Caught Error:" << e.what() << LL_ENDL;
 		mErrorMsg = e.what();
         return false;
     }
-    catch(const LLCLPError& e)
+    catch(LLCLPError& e)
     {
         LL_WARNS() << "Caught Error:" << e.what() << LL_ENDL;
 		mErrorMsg = e.what();
         return false;
     }
-    catch(const LLCLPLastOption&)
+    catch(LLCLPLastOption&) 
     {
 		// This exception means a token was read after an option 
 		// that must be the last option was reached (see url and slurl options)

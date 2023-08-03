@@ -46,10 +46,7 @@ public:
 
 	// this can return NULL at any time, as parcel selection
 	// might have been invalidated.
-// [RLVa:KB] - Checked: 2012-02-09 (RLVa-1.4.5) | Modified: RLVa-1.4.5
-	LLParcel* getParcel() const { return mParcel; }
-// [/RLVa:KB]
-//	LLParcel* getParcel() { return mParcel; }
+	LLParcel* getParcel() { return mParcel; }
 
 	// Return the number of grid units that are owned by you within
 	// the selection (computed by server).

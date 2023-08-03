@@ -386,7 +386,7 @@ BOOL LLScrollbar::handleHover(S32 x, S32 y, MASK mask)
 		}
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
-		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
 		handled = TRUE;
 	}
 	else
@@ -398,7 +398,7 @@ BOOL LLScrollbar::handleHover(S32 x, S32 y, MASK mask)
 	if( !handled )
 	{
 		getWindow()->setCursor(UI_CURSOR_ARROW);
-		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)"  << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)"  << LL_ENDL;		
 		handled = TRUE;
 	}
 

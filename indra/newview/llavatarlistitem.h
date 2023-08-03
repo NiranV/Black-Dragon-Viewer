@@ -105,9 +105,6 @@ public:
 	void setShowPermissions(bool show) { mShowPermissions = show; };
 	void setLastInteractionTime(U32 secs_since);
 	void setShowCompleteName(bool show) { mShowCompleteName = show;};
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	void setRlvCheckShowNames(bool fRlvCheckShowNames) { mRlvCheckShowNames = fRlvCheckShowNames; }
-// [/RLVa:KB]
 
 	//BD - Developer tracker
 	void setOnline(bool online, bool is_dev = false);
@@ -178,9 +175,6 @@ private:
 	//Flag indicating that info/profile button shouldn't be shown at all.
 	//Speaker indicator and avatar name coords are translated accordingly
 	bool mShowInfoBtn;
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	bool mRlvCheckShowNames;
-// [/RLVa:KB]
 
 	/// indicates whether to show icons representing permissions granted
 	bool mShowPermissions;

@@ -243,8 +243,8 @@ LLNotificationForm::LLNotificationForm(const std::string& name, const LLNotifica
 		}
 	}
 
-	// _LL_DEBUGS("Notifications") << name << LL_ENDL;
-	// _LL_DEBUGS("Notifications") << ll_pretty_print_sd(mFormData) << LL_ENDL;
+	LL_DEBUGS("Notifications") << name << LL_ENDL;
+	LL_DEBUGS("Notifications") << ll_pretty_print_sd(mFormData) << LL_ENDL;
 }
 
 LLNotificationForm::LLNotificationForm(const LLSD& sd)
@@ -449,11 +449,11 @@ LLNotificationTemplate::LLNotificationTemplate(const LLNotificationTemplate::Par
 		mUniqueContext.push_back(context.value);
 	}
 	
-	// _LL_DEBUGS("Notifications") << "notification \"" << mName << "\": tag count is " << p.tags.size() << LL_ENDL;
+	LL_DEBUGS("Notifications") << "notification \"" << mName << "\": tag count is " << p.tags.size() << LL_ENDL;
 	
 	BOOST_FOREACH(const LLNotificationTemplate::Tag& tag, p.tags)
 	{
-		// _LL_DEBUGS("Notifications") << "    tag \"" << std::string(tag.value) << "\"" << LL_ENDL;
+		LL_DEBUGS("Notifications") << "    tag \"" << std::string(tag.value) << "\"" << LL_ENDL;
 		mTags.push_back(tag.value);
 	}
 
@@ -1496,7 +1496,7 @@ void replaceSubstitutionStrings(LLXMLNodePtr node, StringMap& replacements)
 			if (found != replacements.end())
 			{
 				replacement = found->second;
-				// _LL_DEBUGS("Notifications") << "replaceSubstitutionStrings: value: \"" << value << "\" repl: \"" << replacement << "\"." << LL_ENDL;
+				LL_DEBUGS("Notifications") << "replaceSubstitutionStrings: value: \"" << value << "\" repl: \"" << replacement << "\"." << LL_ENDL;
 				it->second->setValue(replacement);
 			}
 			else
@@ -1790,7 +1790,7 @@ LLNotificationPtr LLNotifications::find(LLUUID uuid)
 	LLNotificationSet::iterator it=mItems.find(target);
 	if (it == mItems.end())
 	{
-		// _LL_DEBUGS("Notifications") << "Tried to dereference uuid '" << uuid << "' as a notification key but didn't find it." << LL_ENDL;
+		LL_DEBUGS("Notifications") << "Tried to dereference uuid '" << uuid << "' as a notification key but didn't find it." << LL_ENDL;
 		return LLNotificationPtr((LLNotification*)NULL);
 	}
 	else
@@ -1853,13 +1853,13 @@ bool LLNotifications::isVisibleByRules(LLNotificationPtr n)
 	for(it = mVisibilityRules.begin(); it != mVisibilityRules.end(); it++)
 	{
 		// An empty type/tag/name string will match any notification, so only do the comparison when the string is non-empty in the rule.
-		/*// _LL_DEBUGS("Notifications")
+		LL_DEBUGS("Notifications")
 			<< "notification \"" << n->getName() << "\" " 
 			<< "testing against " << ((*it)->mVisible?"show":"hide") << " rule, "
 			<< "name = \"" << (*it)->mName << "\" "
 			<< "tag = \"" << (*it)->mTag << "\" "
 			<< "type = \"" << (*it)->mType << "\" "
-			<< LL_ENDL;*/
+			<< LL_ENDL;
 
 		if(!(*it)->mType.empty())
 		{
@@ -1898,7 +1898,7 @@ bool LLNotifications::isVisibleByRules(LLNotificationPtr n)
 			if((*it)->mResponse.empty())
 			{
 				// Response property is empty.  Cancel this notification.
-				// _LL_DEBUGS("Notifications") << "cancelling notification " << n->getName() << LL_ENDL;
+				LL_DEBUGS("Notifications") << "cancelling notification " << n->getName() << LL_ENDL;
 
 				cancel(n);
 			}
@@ -1909,7 +1909,7 @@ bool LLNotifications::isVisibleByRules(LLNotificationPtr n)
 				// TODO: verify that the response template has an item with the correct name
 				response[(*it)->mResponse] = true;
 
-				// _LL_DEBUGS("Notifications") << "responding to notification " << n->getName() << " with response = " << response << LL_ENDL;
+				LL_DEBUGS("Notifications") << "responding to notification " << n->getName() << " with response = " << response << LL_ENDL;
 				
 				n->respond(response);
 			}
@@ -1921,7 +1921,7 @@ bool LLNotifications::isVisibleByRules(LLNotificationPtr n)
 		break;
 	}
 	
-	// _LL_DEBUGS("Notifications") << "allowing notification " << n->getName() << LL_ENDL;
+	LL_DEBUGS("Notifications") << "allowing notification " << n->getName() << LL_ENDL;
 
 	return true;
 }

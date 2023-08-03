@@ -72,10 +72,6 @@
 #include "llweb.h"
 #include "pipeline.h"	// setHighlightObject
 #include "lluiusage.h"
-// [RLVa:KB] - Checked: 2010-03-06 (RLVa-1.2.0c)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 //BD - Pie Menu
 #include "piemenu.h"
@@ -307,14 +303,6 @@ BOOL LLToolPie::handleLeftClickPick()
 	// If it's a left-click, and we have a special action, do it.
 	if (useClickAction(mask, object, parent))
 	{
-// [RLVa:KB] - Checked: RLVa-1.1.0
-		// Blanket block all left-click special actions on objects the user can't interact with
-		if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(object, mPick.mObjectOffset)) )
-		{
-			return TRUE;
-		}
-// [/RLVa:KB]
-
 		mClickAction = 0;
 		if (object && object->getClickAction()) 
 		{
@@ -442,14 +430,6 @@ BOOL LLToolPie::handleLeftClickPick()
 		&& parent->flagUsePhysics())) || touchable && !disallow_grab) 
 		)
 	{
-// [RLVa:KB] - Checked: RLVa-1.1.0
-		// Triggered by left-clicking on a touchable object
-		if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canTouch(object, mPick.mObjectOffset)) )
-		{
-			return LLTool::handleMouseDown(x, y, mask);
-		}
-// [/RLVa:KB]
-
 		gGrabTransientTool = this;
 		mMouseButtonDown = false;
 		LLToolGrab::getInstance()->setClickedInMouselook(gAgentCamera.cameraMouselook());
@@ -551,11 +531,7 @@ ECursorType LLToolPie::cursorFromObject(LLViewerObject* object)
 	{
 	case CLICK_ACTION_SIT:
 		{
-//			if (isAgentAvatarValid() && !gAgentAvatarp->isSitting()) // not already sitting?
-// [RLVa:KB] - Checked: 2010-03-06 (RLVa-1.2.0c) | Modified: RLVa-1.2.0g
-			if ( (isAgentAvatarValid() && !gAgentAvatarp->isSitting()) && 
-				 ((!rlv_handler_t::isEnabled()) || (RlvActions::canSit(object, LLToolPie::getInstance()->getHoverPick().mObjectOffset))) )
-// [/RLVa:KB]
+			if (isAgentAvatarValid() && !gAgentAvatarp->isSitting()) // not already sitting?
 			{
 				cursor = UI_CURSOR_TOOLSIT;
 			}
@@ -789,14 +765,6 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 	mHoverPick = gViewerWindow->pickImmediate(x, y, FALSE, pick_rigged);
 	LLViewerObject *parent = NULL;
 	LLViewerObject *object = mHoverPick.getObject();
-// [RLVa:KB] - Checked: RLVa-1.1.0
-	// Blanket block all left-click special actions on objects the user can't interact with
-	if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(object, mHoverPick.mObjectOffset)) )
-	{
-		gViewerWindow->setCursor(UI_CURSOR_ARROW);
-		return TRUE;
-	}
-// [/RLVa:KB]
 	LLSelectMgr::getInstance()->setHoverObject(object, mHoverPick.mObjectFace);
 	if (object)
 	{
@@ -839,32 +807,26 @@ BOOL LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 		{
 			ECursorType cursor = cursorFromObject(click_action_object);
 			gViewerWindow->setCursor(cursor);
-			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
-// [RLVa:KB] - Checked: RLVa-1.1.0
-		else if ( (object) && (RlvActions::isRlvEnabled()) && (!RlvActions::canTouch(object, mHoverPick.mObjectOffset)) )
-		{
-			// Block showing the "grab" or "touch" cursor if we can't touch/grab the object
-			gViewerWindow->setCursor(UI_CURSOR_ARROW);
-		}
-// [/RLVa:KB]
+		
 		else if ((object && !object->isAvatar() && object->flagUsePhysics()) 
 				 || (parent && !parent->isAvatar() && parent->flagUsePhysics()))
 		{
 			gViewerWindow->setCursor(UI_CURSOR_TOOLGRAB);
-			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 		else if ((!object || object->getClickAction() != CLICK_ACTION_DISABLED)
 				 && ((object && object->flagHandleTouch()) || (parent && parent->flagHandleTouch()))
 				 && (!object || !object->isAvatar()))
 		{
 			gViewerWindow->setCursor(UI_CURSOR_HAND);
-			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 		else
 		{
 			gViewerWindow->setCursor(UI_CURSOR_ARROW);
-			// _LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLToolPie (inactive)" << LL_ENDL;
 		}
 	}
 
@@ -1144,23 +1106,13 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 			LLAvatarName av_name;
 			if (LLAvatarNameCache::get(hover_object->getID(), &av_name))
 			{
-// [RLVa:KB] - Checked: RLVa-1.2.2
-				final_name = (RlvActions::canShowName(RlvActions::SNC_DEFAULT, hover_object->getID())) ? av_name.getCompleteName() : RlvStrings::getAnonym(av_name);
-// [/RLVa:KB]
-//				final_name = av_name.getCompleteName();
+				final_name = av_name.getCompleteName();
 			}
 			else
 			{
 				final_name = LLTrans::getString("TooltipPerson");;
 			}
 
-			// *HACK: We may select this object, so pretend it was clicked
-			mPick = mHoverPick;
-// [RLVa:KB] - Checked: RLVa-1.2.0
-			if ( (!RlvActions::isRlvEnabled()) ||
-			     ( (RlvActions::canInteract(hover_object, mHoverPick.mObjectOffset)) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, hover_object->getID())) ) )
-			{
-// [/RLVa:KB]
 				LLInspector::Params p;
 				p.fillFrom(LLUICtrlFactory::instance().getDefaultParams<LLInspector>());
 				p.message(final_name);
@@ -1172,13 +1124,6 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 				p.wrap(false);
 				
 				LLToolTipMgr::instance().show(p);
-// [RLVa:KB] - Checked: RLVa-1.2.0
-			}
-//			else
-//			{
-//				LLToolTipMgr::instance().show(final_name);
-//			}
-// [/RLVa:KB]
 		}
 	}
 	else
@@ -1271,18 +1216,14 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 			// also check the primary node since sometimes it can have an action even though
 			// the root node doesn't
 			
-			bool needs_tip = (!is_media_displaying || for_sale) 
-				&& (has_media || needs_tooltip(nodep) 
-				|| needs_tooltip(LLSelectMgr::getInstance()->getPrimaryHoverNode()));
+			bool needs_tip = (!is_media_displaying || 
+				              for_sale) &&
+				(has_media || 
+				 needs_tooltip(nodep) || 
+				 needs_tooltip(LLSelectMgr::getInstance()->getPrimaryHoverNode()));
 			
-			if (show_all_object_tips && needs_tip)
+			if (show_all_object_tips || needs_tip)
 			{
-				// We may select this object, so pretend it was clicked
-				mPick = mHoverPick;
-// [RLVa:KB] - Checked: RLVa-1.2.1
-				if ( (!RlvActions::isRlvEnabled()) || (RlvActions::canInteract(hover_object, mHoverPick.mObjectOffset)) )
-				{
-// [/RLVa:KB]
 					LLInspector::Params p;
 					p.fillFrom(LLUICtrlFactory::instance().getDefaultParams<LLInspector>());
 					p.message(tooltip_msg);
@@ -1299,13 +1240,6 @@ BOOL LLToolPie::handleTooltipObject( LLViewerObject* hover_object, std::string l
 					p.wrap(false);
 					
 					LLToolTipMgr::instance().show(p);
-// [RLVa:KB] - Checked: RLVa-2.1.0
-				}
-//				else
-//				{
-//					LLToolTipMgr::instance().show(tooltip_msg);
-//				}
-// [/RLVa:KB]
 			}
 		}
 	}
@@ -1965,12 +1899,6 @@ BOOL LLToolPie::handleRightClickPick()
 				muted_msg = LLTrans::getString("MuteVoice");
 			}
 
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
-			// Don't show the context menu on empty selection when fartouch restricted [see LLToolSelect::handleObjectSelection()]
-			if ( (!rlv_handler_t::isEnabled()) || (!LLSelectMgr::getInstance()->getSelection()->isEmpty()) ||
-				 (!gRlvHandler.hasBehaviour(RLV_BHVR_FARTOUCH)) )
-			{
-// [/RLVa:KB]
 				if (is_other_attachment)
 				{
 //					//BD - Pie Menu
@@ -2006,15 +1934,6 @@ BOOL LLToolPie::handleRightClickPick()
 
 						gMenuAvatarOther->show(x, y);
 					}
-
-				}
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.0e) | Modified: RLVa-1.1.0l
-			}
-			else
-			{
-				make_ui_sound("UISndInvalidOp");
-			}
-// [/RLVa:KB]
 		}
 		else if (object->isAttachment())
 		{
@@ -2049,13 +1968,6 @@ BOOL LLToolPie::handleRightClickPick()
 				mute_msg = LLTrans::getString("MuteObject2");
 			}
 
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.el) | Modified: RLVa-1.1.0l
-			// Don't show the pie menu on empty selection when fartouch/interaction restricted
-			// (not entirely accurate in case of Tools / Select Only XXX [see LLToolSelect::handleObjectSelection()]
-			if ( (!rlv_handler_t::isEnabled()) || (!LLSelectMgr::getInstance()->getSelection()->isEmpty()) ||
-				 (!gRlvHandler.hasBehaviour(RLV_BHVR_FARTOUCH)) )
-			{
-// [/RLVa:KB]
 //				//BD - Pie Menu
 				if (gSavedPerAccountSettings.getBOOL("UsePieMenu"))
 				{
@@ -2067,13 +1979,6 @@ BOOL LLToolPie::handleRightClickPick()
 				}
 
 				showVisualContextMenuEffect();
-// [RLVa:KB] - Checked: 2010-04-11 (RLVa-1.2.el) | Modified: RLVa-1.1.0l
-			}
-			else
-			{
-				make_ui_sound("UISndInvalidOp");
-			}
-// [/RLVa:KB]
 		}
 	}
 	else if (mPick.mParticleOwnerID.notNull())

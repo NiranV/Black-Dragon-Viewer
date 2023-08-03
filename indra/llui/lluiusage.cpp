@@ -89,26 +89,26 @@ void LLUIUsage::setLLSDNested(LLSD& sd, const std::vector<std::string>& fields, 
 void LLUIUsage::logCommand(const std::string& command)
 {
 	mCommandCounts[sanitized(command)]++;
-	//LL_DEBUGS("UIUsage") << "command " << command << LL_ENDL;
+	LL_DEBUGS("UIUsage") << "command " << command << LL_ENDL;
 }
 
 void LLUIUsage::logControl(const std::string& control)
 {
 	mControlCounts[sanitized(control)]++;
-	//LL_DEBUGS("UIUsage") << "control " << control << LL_ENDL;
+	LL_DEBUGS("UIUsage") << "control " << control << LL_ENDL;
 }
 
 
 void LLUIUsage::logFloater(const std::string& floater)
 {
 	mFloaterCounts[sanitized(floater)]++;
-	//LL_DEBUGS("UIUsage") << "floater " << floater << LL_ENDL;
+	LL_DEBUGS("UIUsage") << "floater " << floater << LL_ENDL;
 }
 
 void LLUIUsage::logPanel(const std::string& p)
 {
 	mPanelCounts[sanitized(p)]++;
-	//LL_DEBUGS("UIUsage") << "panel " << p << LL_ENDL;
+	LL_DEBUGS("UIUsage") << "panel " << p << LL_ENDL;
 }
 
 LLSD LLUIUsage::asLLSD() const
@@ -137,7 +137,7 @@ LLSD LLUIUsage::asLLSD() const
 void LLUIUsage::clear()
 {
 
-	//LL_DEBUGS("UIUsage") << "clear" << LL_ENDL;
+	LL_DEBUGS("UIUsage") << "clear" << LL_ENDL;
 	mCommandCounts.clear();
 	mControlCounts.clear();
 	mFloaterCounts.clear();

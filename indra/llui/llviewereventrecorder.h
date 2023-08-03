@@ -26,8 +26,6 @@
 #ifndef LL_VIEWER_EVENT_RECORDER
 #define LL_VIEWER_EVENT_RECORDER
 
-// Global 
-#define AL_VIEWER_EVENT_RECORDER 0
 
 #include "linden_common.h" 
 
@@ -63,7 +61,7 @@ public:
   std::string get_xui();
   void update_xui(std::string xui);
 
-  static bool getLoggingStatus(){return sLogEvents;};
+  bool getLoggingStatus(){return logEvents;};
   void setEventLoggingOn();
   void setEventLoggingOff();
 
@@ -74,7 +72,7 @@ public:
 
  protected:
   // On if we wish to log events at the moment - toggle via Develop/Recorder submenu
-  static bool sLogEvents;
+  bool logEvents;
 
   std::string mLogFilename;
   llofstream  mLog; 

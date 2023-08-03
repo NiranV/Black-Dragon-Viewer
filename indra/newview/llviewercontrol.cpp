@@ -75,10 +75,6 @@
 #include "llstartup.h"
 #include "llperfstats.h"
 
-// [RLVa:KB] - Checked: 2015-12-27 (RLVa-1.5.0)
-#include "rlvactions.h"
-#include "rlvcommon.h"
-// [/RLVa:KB]
 
 //BD - Includes we need for special features
 #include "llvoavatar.h"
@@ -161,15 +157,6 @@ static bool handleAvatarHoverOffsetChanged(const LLSD& newvalue)
 
 static bool handleSetShaderChanged(const LLSD& newvalue)
 {
-// [RLVa:KB] - @setenv
-	if ( (!RlvActions::canChangeEnvironment()) && (LLFeatureManager::getInstance()->isFeatureAvailable("WindLightUseAtmosShaders")) && (!gSavedSettings.getBOOL("WindLightUseAtmosShaders")) )
-	{
-		gSavedSettings.setBOOL("WindLightUseAtmosShaders", TRUE);
-		return true;
-	}
-// [/RLVa:KB]
-
-
 	// changing shader level may invalidate existing cached bump maps, as the shader type determines the format of the bump map it expects - clear and repopulate the bump cache
 	gBumpImageList.destroyGL();
 	gBumpImageList.restoreGL();
@@ -1157,9 +1144,6 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderDebugGL")->getSignal()->connect(boost::bind(&handleRenderDebugGLChanged, _2));
 	gSavedSettings.getControl("RenderDebugPipeline")->getSignal()->connect(boost::bind(&handleRenderDebugPipelineChanged, _2));
 	gSavedSettings.getControl("RenderResolutionDivisor")->getSignal()->connect(boost::bind(&handleRenderResolutionDivisorChanged, _2));
-// [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
-	gSavedSettings.getControl("RenderResolutionMultiplier")->getSignal()->connect(boost::bind(&handleRenderResolutionDivisorChanged, _2));
-// [/SL:KB]
 	gSavedSettings.getControl("RenderDeferred")->getSignal()->connect(boost::bind(&handleRenderDeferredChanged, _2));
 	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));

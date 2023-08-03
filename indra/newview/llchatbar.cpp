@@ -59,10 +59,6 @@
 #include "llui.h"
 #include "lluictrlfactory.h"
 #include "lluiusage.h"
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b)
-#include "rlvactions.h"
-#include "rlvcommon.h"
-// [/RLVa:KB]
 
 //
 // Globals
@@ -82,10 +78,7 @@ private:
 };
 
 
-//extern void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-0.2.2)
-extern void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel);
-// [/RLVa:KB]
+extern void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
 
 //
 // Functions
@@ -479,11 +472,7 @@ void LLChatBar::onInputEditorKeystroke( LLLineEditor* caller, void* userdata )
 
 	S32 length = raw_text.length();
 
-//	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
-// [RLVa:KB] - Checked: 2010-03-26 (RLVa-1.2.0b) | Modified: RLVa-1.0.0d
-	// RELEASE-RLVa: [SL-2.0.0] This entire class appears to be dead/non-functional?
-	if ( (length > 0) && (raw_text[0] != '/') && (!RlvActions::hasBehaviour(RLV_BHVR_REDIRCHAT)) )
-// [/RLVa:KB]
+	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
 	{
 		gAgent.startTyping();
 	}
@@ -595,32 +584,22 @@ void LLChatBar::sendChatFromViewer(const LLWString &wtext, EChatType type, BOOL 
 		utf8_text = utf8str_truncate(utf8_text, MAX_STRING - 1);
 	}
 
-// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.2.0b) | Modified: RLVa-1.2.0b
-	// RELEASE-RLVa: [SL-2.0.0] This entire class appears to be dead/non-functional?
-	if ( (0 == channel) && (RlvActions::isRlvEnabled()) )
-	{
-		// Adjust the (public) chat "volume" on chat and gestures (also takes care of playing the proper animation)
-		type = RlvActions::checkChatVolume(type);
-		animate &= !RlvActions::hasBehaviour( (!RlvUtil::isEmote(utf8_text)) ? RLV_BHVR_REDIRCHAT : RLV_BHVR_REDIREMOTE );
-	}
-// [/RLVa:KB]
-
 	// Don't animate for chats people can't hear (chat to scripts)
 	if (animate && (channel == 0))
 	{
 		if (type == CHAT_TYPE_WHISPER)
 		{
-			// _LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_WHISPER, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_NORMAL)
 		{
-			// _LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_TALK, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_SHOUT)
 		{
-			// _LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_SHOUT, ANIM_REQUEST_START);
 		}
 		else
@@ -633,7 +612,7 @@ void LLChatBar::sendChatFromViewer(const LLWString &wtext, EChatType type, BOOL 
 	{
 		if (type != CHAT_TYPE_START && type != CHAT_TYPE_STOP)
 		{
-			// _LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
 		}
 	}
 

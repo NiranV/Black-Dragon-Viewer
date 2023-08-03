@@ -362,10 +362,10 @@ void LLTextEditor::selectNext(const std::string& search_text_in, BOOL case_insen
 		}
 	}
 	
-	size_t loc = text.find(search_text,mCursorPos);
+	S32 loc = text.find(search_text,mCursorPos);
 	
 	// If Maybe we wrapped, search again
-	if (wrap && (std::string::npos == loc))
+	if (wrap && (-1 == loc))
 	{	
 		loc = text.find(search_text);
 	}
@@ -802,7 +802,7 @@ BOOL LLTextEditor::handleHover(S32 x, S32 y, MASK mask)
 			setCursorAtLocalPos( clamped_x, clamped_y, true );
 			mSelectionEnd = mCursorPos;
 		}
-		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
 		getWindow()->setCursor(UI_CURSOR_IBEAM);
 		handled = TRUE;
 	}
@@ -1069,33 +1069,6 @@ void LLTextEditor::removeChar()
 	{
 		setCursorPos(mCursorPos - 1);
 		removeChar(mCursorPos);
-	}
-	else
-	{
-		LLUI::getInstance()->reportBadKeystroke();
-	}
-}
-
-// Remove a word (set of characters up to next space/punctuation) from the text
-void LLTextEditor::removeWord(bool prev)
-{
-	const S32 pos(mCursorPos);
-	if (prev ? pos > 0 : pos < getLength())
-	{
-		S32 new_pos(prev ? prevWordPos(pos) : nextWordPos(pos));
-		if (new_pos == pos) // Other character we don't jump over
-			new_pos = prev ? prevWordPos(new_pos-1) : nextWordPos(new_pos+1);
-
-		const S32 diff(llabs((pos - new_pos)));
-		if (prev)
-		{
-			remove(new_pos, diff, false);
-			setCursorPos(new_pos);
-		}
-		else
-		{
-			remove(pos, diff, false);
-		}
 	}
 	else
 	{
@@ -1536,7 +1509,7 @@ void LLTextEditor::pasteTextWithLinebreaks(LLWString & clean_string)
 	std::basic_string<llwchar>::size_type start = 0;
 	std::basic_string<llwchar>::size_type pos = clean_string.find('\n',start);
 	
-	while((pos != std::basic_string<llwchar>::npos) && (pos != clean_string.length() -1))
+	while((pos != -1) && (pos != clean_string.length() -1))
 	{
 		if(pos!=start)
 		{
@@ -1692,10 +1665,7 @@ BOOL LLTextEditor::handleSpecialKey(const KEY key, const MASK mask)
 		else
 		if( 0 < mCursorPos )
 		{
-			if (mask == MASK_CONTROL)
-				removeWord(true);
-			else
-				removeCharOrTab();
+			removeCharOrTab();
 		}
 		else
 		{
@@ -1703,16 +1673,6 @@ BOOL LLTextEditor::handleSpecialKey(const KEY key, const MASK mask)
 		}
 		break;
 
-	case KEY_DELETE:
-		if (getEnabled() && mask == MASK_CONTROL)
-		{
-			removeWord(false);
-		}
-		else
-		{
-			handled = false;
-		}
-		break;
 
 	case KEY_RETURN:
 		if (mask == MASK_NONE)
@@ -1835,7 +1795,7 @@ BOOL LLTextEditor::handleKeyHere(KEY key, MASK mask )
 				}
 
 				std::basic_string<llwchar>::size_type pos = tool_tip_text.find('\n',0);
-				if (pos != std::basic_string<llwchar>::npos)
+				if (pos != -1)
 				{	// Extract the first line of the tooltip
 					tool_tip_text = std::basic_string<llwchar>(tool_tip_text, 0, pos);
 				}

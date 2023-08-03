@@ -112,10 +112,6 @@
 #include "llscenemonitor.h"
 #include "llprogressview.h"
 #include "llcleanup.h"
-// [RLVa:KB] - Checked: RLVa-2.0.0
-#include "rlvactions.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 #include "llenvironment.h"
 #include "llsettingsvo.h"

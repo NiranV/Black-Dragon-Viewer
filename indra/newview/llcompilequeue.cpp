@@ -785,7 +785,7 @@ void LLFloaterScriptQueue::objectScriptProcessingQueueCoro(std::string action, L
 
             // TODO: Get the name of the object we are looking at here so that we can display it below.
             //std::string objName = (dynamic_cast<LLInventoryObject *>(obj.get()))->getName();
-            // _LL_DEBUGS("SCRIPTQ") << "Object has " << inventory.size() << " items." << LL_ENDL;
+            LL_DEBUGS("SCRIPTQ") << "Object has " << inventory.size() << " items." << LL_ENDL;
 
             for (LLInventoryObject::object_list_t::iterator itInv = inventory.begin();
                 itInv != inventory.end(); ++itInv)
@@ -797,7 +797,7 @@ void LLFloaterScriptQueue::objectScriptProcessingQueueCoro(std::string action, L
 
                 if (((*itInv)->getType() == LLAssetType::AT_LSL_TEXT))
                 {
-                    // _LL_DEBUGS("SCRIPTQ") << "Inventory item " << (*itInv)->getUUID().asString() << "\"" << (*itInv)->getName() << "\"" << LL_ENDL;
+                    LL_DEBUGS("SCRIPTQ") << "Inventory item " << (*itInv)->getUUID().asString() << "\"" << (*itInv)->getName() << "\"" << LL_ENDL;
                     if (firstForObject)
                     {
                         //floater->addStringMessage(objName + ":");
@@ -820,10 +820,10 @@ void LLFloaterScriptQueue::objectScriptProcessingQueueCoro(std::string action, L
         floater->addStringMessage("Done");
         floater->getChildView("close")->setEnabled(TRUE);
     }
-    catch (const LLCheckedHandleBase::Stale &)
+    catch (LLCheckedHandleBase::Stale &)
     {
         // This is expected.  It means that floater has been closed before 
         // processing was completed.
-        // _LL_DEBUGS("SCRIPTQ") << "LLExeceptionStaleHandle caught! Floater has most likely been closed." << LL_ENDL;
+        LL_DEBUGS("SCRIPTQ") << "LLExeceptionStaleHandle caught! Floater has most likely been closed." << LL_ENDL;
     }
 }

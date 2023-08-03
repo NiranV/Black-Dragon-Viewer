@@ -67,7 +67,7 @@ void LLAutoReplace::autoreplaceCallback(S32& replacement_start, S32& replacement
 				{
 					word_start--; // walk word_start back to the beginning of the word
 				}
-				// _LL_DEBUGS("AutoReplace") << "word_start: " << word_start << " word_end: " << word_end << LL_ENDL;
+				LL_DEBUGS("AutoReplace") << "word_start: " << word_start << " word_end: " << word_end << LL_ENDL;
 				LLWString old_string = input_text.substr(word_start, word_end - word_start + 1);
 				std::string last_word = wstring_to_utf8str(old_string);
 				std::string replacement_word(mSettings.replaceWord(last_word));
@@ -345,7 +345,7 @@ std::string LLAutoReplaceSettings::replacementFor(std::string keyword, std::stri
 				)
 			{
 				replacement = thisList[AUTOREPLACE_LIST_REPLACEMENTS][keyword].asString();
-				// _LL_DEBUGS("AutoReplace")<<"'"<<keyword<<"' -> '"<<replacement<<"'"<<LL_ENDL;
+				LL_DEBUGS("AutoReplace")<<"'"<<keyword<<"' -> '"<<replacement<<"'"<<LL_ENDL;
 			}
 		}
 		if (!foundList)
@@ -362,7 +362,7 @@ std::string LLAutoReplaceSettings::replacementFor(std::string keyword, std::stri
 
 LLSD LLAutoReplaceSettings::getListNames()
 {
-	// _LL_DEBUGS("AutoReplace")<<"====="<<LL_ENDL;
+	LL_DEBUGS("AutoReplace")<<"====="<<LL_ENDL;
 	LLSD toReturn = LLSD::emptyArray();
 	S32 counter=0;
 	for( LLSD::array_const_iterator list = mLists.beginArray(), endList = mLists.endArray();
@@ -376,7 +376,7 @@ LLSD LLAutoReplaceSettings::getListNames()
 			if ( thisList.has(AUTOREPLACE_LIST_NAME) )
 			{
 				std::string name = thisList[AUTOREPLACE_LIST_NAME].asString();
-				// _LL_DEBUGS("AutoReplace")<<counter<<" '"<<name<<"'"<<LL_ENDL;
+				LL_DEBUGS("AutoReplace")<<counter<<" '"<<name<<"'"<<LL_ENDL;
 				toReturn.append(LLSD(name));
 			}
 			else
@@ -390,7 +390,7 @@ LLSD LLAutoReplaceSettings::getListNames()
 		}
 		counter++;
 	}
-	// _LL_DEBUGS("AutoReplace")<<"^^^^^^"<<LL_ENDL;
+	LL_DEBUGS("AutoReplace")<<"^^^^^^"<<LL_ENDL;
 	return toReturn;
 }
 
@@ -545,7 +545,7 @@ LLAutoReplaceSettings::AddListResult LLAutoReplaceSettings::replaceList(const LL
 			{
 				if ( listNameMatches( targetList, listName) )
 				{
-					// _LL_DEBUGS("AutoReplace")<<"list to replace found at "<<search_index<<LL_ENDL;
+					LL_DEBUGS("AutoReplace")<<"list to replace found at "<<search_index<<LL_ENDL;
 					mLists.erase(search_index);
 					mLists.insert(search_index, newList);
 					listFound = true;
@@ -573,7 +573,7 @@ bool LLAutoReplaceSettings::removeReplacementList(std::string listName)
 	{
 		if( listNameMatches(mLists.get(index), listName) )
 		{
-			// _LL_DEBUGS("AutoReplace")<<"list '"<<listName<<"'"<<LL_ENDL;
+			LL_DEBUGS("AutoReplace")<<"list '"<<listName<<"'"<<LL_ENDL;
 			mLists.erase(index);
 			found = true;
 		}
@@ -584,7 +584,7 @@ bool LLAutoReplaceSettings::removeReplacementList(std::string listName)
 /// Move the named list up in the priority order
 bool LLAutoReplaceSettings::increaseListPriority(std::string listName)
 {
-	// _LL_DEBUGS("AutoReplace")<<listName<<LL_ENDL;
+	LL_DEBUGS("AutoReplace")<<listName<<LL_ENDL;
 	bool found = false;
 	S32 search_index, previous_index;
 	LLSD targetList;
@@ -599,13 +599,13 @@ bool LLAutoReplaceSettings::increaseListPriority(std::string listName)
 		{
 			if ( listNameMatches( targetList, listName) )
 			{
-				// _LL_DEBUGS("AutoReplace")<<"found at "<<search_index<<", previous is "<<previous_index<<LL_ENDL;
+				LL_DEBUGS("AutoReplace")<<"found at "<<search_index<<", previous is "<<previous_index<<LL_ENDL;
 				found = true;
 				if (previous_index >= 0)
 				{
-					// _LL_DEBUGS("AutoReplace") << "erase "<<search_index<<LL_ENDL;
+					LL_DEBUGS("AutoReplace") << "erase "<<search_index<<LL_ENDL;
 					mLists.erase(search_index);
-					// _LL_DEBUGS("AutoReplace") << "insert at "<<previous_index<<LL_ENDL;
+					LL_DEBUGS("AutoReplace") << "insert at "<<previous_index<<LL_ENDL;
 					mLists.insert(previous_index, targetList);
 				} 
 				else
@@ -620,7 +620,7 @@ bool LLAutoReplaceSettings::increaseListPriority(std::string listName)
 		}
 		else
 		{
-			// _LL_DEBUGS("AutoReplace") << search_index<<" is "<<LLSD::typeString(targetList.type())<<LL_ENDL;
+			LL_DEBUGS("AutoReplace") << search_index<<" is "<<LLSD::typeString(targetList.type())<<LL_ENDL;
 		}		
 	}
 	return found;
@@ -629,7 +629,7 @@ bool LLAutoReplaceSettings::increaseListPriority(std::string listName)
 /// Move the named list down in the priority order
 bool LLAutoReplaceSettings::decreaseListPriority(std::string listName)
 {
-	// _LL_DEBUGS("AutoReplace")<<listName<<LL_ENDL;
+	LL_DEBUGS("AutoReplace")<<listName<<LL_ENDL;
 	S32 found_index = -1;	
 	S32 search_index;
 	for ( search_index = 0;
@@ -639,7 +639,7 @@ bool LLAutoReplaceSettings::decreaseListPriority(std::string listName)
 	{
 		if ( listNameMatches( mLists[search_index], listName) )
 		{
-			// _LL_DEBUGS("AutoReplace")<<"found at index "<<search_index<<LL_ENDL;
+			LL_DEBUGS("AutoReplace")<<"found at index "<<search_index<<LL_ENDL;
 			found_index = search_index;
 		}
 	}
@@ -657,9 +657,9 @@ bool LLAutoReplaceSettings::decreaseListPriority(std::string listName)
 		if ( next_index < mLists.size() )
 		{
 			LLSD next_list = mLists[next_index];
-			// _LL_DEBUGS("AutoReplace") << "erase "<<next_index<<LL_ENDL;
+			LL_DEBUGS("AutoReplace") << "erase "<<next_index<<LL_ENDL;
 			mLists.erase(next_index);
-			// _LL_DEBUGS("AutoReplace") << "insert at "<<found_index<<LL_ENDL;
+			LL_DEBUGS("AutoReplace") << "insert at "<<found_index<<LL_ENDL;
 			mLists.insert(found_index, next_list);
 		}
 		else
@@ -681,7 +681,7 @@ std::string LLAutoReplaceSettings::replaceWord(const std::string currentWord)
 	static LLCachedControl<bool> autoreplace_enabled(gSavedSettings, "AutoReplace", false);
 	if ( autoreplace_enabled )
 	{
-		// _LL_DEBUGS("AutoReplace")<<"checking '"<<currentWord<<"'"<< LL_ENDL;
+		LL_DEBUGS("AutoReplace")<<"checking '"<<currentWord<<"'"<< LL_ENDL;
 		//loop through lists in order
 		bool found = false;
 		for( LLSD::array_const_iterator list = mLists.beginArray(), endLists = mLists.endArray();
@@ -695,10 +695,10 @@ std::string LLAutoReplaceSettings::replaceWord(const std::string currentWord)
 			if ( replacements.has(currentWord) )
 			{
 				found = true;
-				/*// _LL_DEBUGS("AutoReplace")
+				LL_DEBUGS("AutoReplace")
 					<< "  found in list '" << checkList[AUTOREPLACE_LIST_NAME].asString()
 					<< " => '" << replacements[currentWord].asString() << "'"
-					<< LL_ENDL;*/
+					<< LL_ENDL;
 				returnedWord = replacements[currentWord].asString();
 			}
 		}
@@ -773,7 +773,7 @@ bool LLAutoReplaceSettings::removeEntryFromList(std::string keyword, std::string
 
 LLSD LLAutoReplaceSettings::getExampleLLSD()
 {
-	// _LL_DEBUGS("AutoReplace")<<LL_ENDL;
+	LL_DEBUGS("AutoReplace")<<LL_ENDL;
 	LLSD example = LLSD::emptyArray();
 
 	example[0] = LLSD::emptyMap();

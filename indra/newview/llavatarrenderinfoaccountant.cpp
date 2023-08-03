@@ -131,8 +131,8 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoGetCoro(std::string url, U64 
                     const LLSD & agent_info_map = agent_iter->second;
                     if (agent_info_map.isMap())
                     {
-                        /*// _LL_DEBUGS("AvatarRenderInfo") << " Agent " << target_agent_id 
-                                                      << ": " << agent_info_map << LL_ENDL;*/
+                        LL_DEBUGS("AvatarRenderInfo") << " Agent " << target_agent_id 
+                                                      << ": " << agent_info_map << LL_ENDL;
 
                         if (agent_info_map.has(KEY_WEIGHT))
                         {
@@ -149,7 +149,7 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoGetCoro(std::string url, U64 
                 }
                 else
                 {
-                    // _LL_DEBUGS("AvatarRenderInfo") << "Unknown agent " << target_agent_id << LL_ENDL;
+                    LL_DEBUGS("AvatarRenderInfo") << "Unknown agent " << target_agent_id << LL_ENDL;
                 }
             } // for agent_iter
         }
@@ -169,7 +169,7 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoGetCoro(std::string url, U64 
         U32 reporting = result[KEY_REPORTING_COMPLEXITY_LIMIT].asInteger();
         U32 overlimit = result[KEY_OVER_COMPLEXITY_LIMIT].asInteger();
 
-        // _LL_DEBUGS("AvatarRenderInfo") << "complexity limit: "<<reporting<<" reporting, "<<overlimit<<" over limit"<<LL_ENDL;
+        LL_DEBUGS("AvatarRenderInfo") << "complexity limit: "<<reporting<<" reporting, "<<overlimit<<" over limit"<<LL_ENDL;
 
         LLAvatarRenderNotifier::getInstance()->updateNotificationRegion(reporting, overlimit);
     }
@@ -207,9 +207,9 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoReportCoro(std::string url, U
         return;
     }
 
-    /*// _LL_DEBUGS("AvatarRenderInfoAccountant")
+    LL_DEBUGS("AvatarRenderInfoAccountant")
         << "Sending avatar render info for region " << regionp->getName()
-        << " to " << url << LL_ENDL;*/
+        << " to " << url << LL_ENDL;
 
     U32 num_avs = 0;
     // Build the render info to POST to the region
@@ -218,14 +218,14 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoReportCoro(std::string url, U
     std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
     while( iter != LLCharacter::sInstances.end() )
     {
-        LLVOAvatar* avatar = static_cast<LLVOAvatar*>(*iter);
+        LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*iter);
         if (avatar &&
             avatar->getRezzedStatus() >= 2 &&					// Mostly rezzed (maybe without baked textures downloaded)
             !avatar->isDead() &&								// Not dead yet
             !avatar->isControlAvatar() &&						// Not part of an animated object
             avatar->getObjectHost() == regionp->getHost())		// Ensure it's on the same region
         {
-            avatar->calculateUpdateRenderComplexity();	// Make sure the numbers are up-to-date
+            avatar->calculateUpdateRenderComplexity();			// Make sure the numbers are up-to-date
 
             LLSD info = LLSD::emptyMap();
             U32 avatar_complexity = avatar->getVisualComplexity();
@@ -237,8 +237,8 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoReportCoro(std::string url, U
                 info[KEY_TOO_COMPLEX]  = LLSD::Boolean(avatar->isTooComplex());
                 agents[avatar->getID().asString()] = info;
 
-                /*// _LL_DEBUGS("AvatarRenderInfo") << "Sending avatar render info for " << avatar->getID()
-                                              << ": " << info << LL_ENDL;*/
+                LL_DEBUGS("AvatarRenderInfo") << "Sending avatar render info for " << avatar->getID()
+                                              << ": " << info << LL_ENDL;
                 num_avs++;
             }
         }
@@ -295,10 +295,10 @@ void LLAvatarRenderInfoAccountant::avatarRenderInfoReportCoro(std::string url, U
         }
         else
         {
-            /*// _LL_DEBUGS("AvatarRenderInfoAccountant")
+            LL_DEBUGS("AvatarRenderInfoAccountant")
                 << "POST result for region " << regionp->getName()
                 << ": " << result
-                << LL_ENDL;*/
+                << LL_ENDL;
         }
     }
     else
@@ -342,10 +342,10 @@ void LLAvatarRenderInfoAccountant::getRenderInfoFromRegion(LLViewerRegion * regi
         && regionp->getRenderInfoRequestTimer().hasExpired()
         )
 	{
-        /*// _LL_DEBUGS("AvatarRenderInfo")
+        LL_DEBUGS("AvatarRenderInfo")
             << "Requesting avatar render info for region " << regionp->getName() 
             << " from " << url
-            << LL_ENDL;*/
+            << LL_ENDL;
 
         // make sure we won't re-request, coro will update timer with correct time later
         regionp->getRenderInfoRequestTimer().resetWithExpiry(SECS_BETWEEN_REGION_REQUEST);
@@ -369,8 +369,8 @@ void LLAvatarRenderInfoAccountant::idle()
 {
 	if (mRenderInfoScanTimer.hasExpired() && !LLApp::isExiting())
 	{
-		/*// _LL_DEBUGS("AvatarRenderInfo") << "Scanning regions for render info updates"
-									  << LL_ENDL;*/
+		LL_DEBUGS("AvatarRenderInfo") << "Scanning regions for render info updates"
+									  << LL_ENDL;
 
 		// Check all regions
 		for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
@@ -406,7 +406,7 @@ void LLAvatarRenderInfoAccountant::resetRenderInfoScanTimer()
 // are returned for a new LLViewerRegion, and is the earliest time to get render info
 void LLAvatarRenderInfoAccountant::scanNewRegion(const LLUUID& region_id)
 {
-	// _LL_DEBUGS("AvatarRenderInfo") << region_id << LL_ENDL;
+	LL_DEBUGS("AvatarRenderInfo") << region_id << LL_ENDL;
 
 	// Reset the global timer so it will scan regions on the next call to ::idle
 	LLAvatarRenderInfoAccountant::getInstance()->resetRenderInfoScanTimer();

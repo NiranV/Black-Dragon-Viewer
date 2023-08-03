@@ -46,10 +46,6 @@
 #include "llwearableitemslist.h"
 #include "llsdserialize.h"
 #include "llclipboard.h"
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-#include "rlvcommon.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 // Context menu and Gear menu helper.
 static void edit_outfit()
@@ -128,9 +124,6 @@ protected:
 		bool bp_selected			= false;	// true if body parts selected
 		bool clothes_selected		= false;
 		bool attachments_selected	= false;
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-		S32 rlv_locked_count = 0;
-// [/RLVa:KB]
 
 		// See what types of wearables are selected.
 		for (uuid_vec_t::const_iterator it = mUUIDs.begin(); it != mUUIDs.end(); ++it)
@@ -156,18 +149,9 @@ protected:
 			{
 				attachments_selected = true;
 			}
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-			if ( (rlv_handler_t::isEnabled()) && (!rlvPredCanRemoveItem(*it)) )
-			{
-				rlv_locked_count++;
-			}
-// [/RLVa:KB]
 		}
 
 		// Enable/disable some menu items depending on the selection.
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-		bool rlv_blocked = (mUUIDs.size() == rlv_locked_count);
-// [/RLVa:KB]
 		bool show_touch = !bp_selected && !clothes_selected && attachments_selected;
 		bool show_edit = bp_selected || clothes_selected || attachments_selected;
 		bool allow_detach = !bp_selected && !clothes_selected && attachments_selected;
@@ -177,12 +161,8 @@ protected:
 		menu->setItemEnabled("touch_attach",       1 == mUUIDs.size() && enable_attachment_touch(mUUIDs.front()));
 		menu->setItemVisible("edit_item",          show_edit);
 		menu->setItemEnabled("edit_item",          1 == mUUIDs.size() && get_is_item_editable(mUUIDs.front()));
-		//menu->setItemVisible("take_off",			allow_take_off);
-		//menu->setItemVisible("detach",			allow_detach);
-// [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
-		menu->setItemEnabled("take_off", allow_take_off && !rlv_blocked);
-		menu->setItemEnabled("detach", allow_detach && !rlv_blocked);
-// [/RLVa:KB]
+		menu->setItemVisible("take_off",	allow_take_off);
+		menu->setItemVisible("detach",		allow_detach);
 		menu->setItemVisible("edit_outfit_separator", show_touch | show_edit | allow_take_off || allow_detach);
 		menu->setItemVisible("show_original", mUUIDs.size() == 1);
 	}

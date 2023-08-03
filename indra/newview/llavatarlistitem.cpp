@@ -41,10 +41,6 @@
 #include "llavatariconctrl.h"
 #include "lloutputmonitorctrl.h"
 #include "lltooldraganddrop.h"
-// [RLVa:KB] - Checked: RLVa-2.0.1
-#include "rlvactions.h"
-#include "rlvcommon.h"
-// [/RLVa:KB]
 //BD
 #include "llpanelpeople.h"
 
@@ -78,9 +74,6 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
 	mInfoBtn(NULL),
 	mSelectedIcon(NULL),
 	mOnlineStatus(E_UNKNOWN),
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	mRlvCheckShowNames(false),
-// [/RLVa:KB]
 	mShowPermissions(false),
 	mShowCompleteName(false),
 	mHovered(false),
@@ -386,16 +379,8 @@ void LLAvatarListItem::onAvatarNameCache(const LLAvatarName& av_name)
 	    mGreyOutUsername = "[ " + av_name.getUserName(true) + " ]";
 	    LLStringUtil::toLower(mGreyOutUsername);
 	}
-//	setAvatarName(name_string);
-//	setAvatarToolTip(av_name.getUserName());
-// [RLVa:KB] - Checked: RLVa-1.2.2
-	bool fRlvCanShowName = (!mRlvCheckShowNames) || (RlvActions::canShowName(RlvActions::SNC_DEFAULT, mAvatarId));
-
-	setAvatarName( (fRlvCanShowName) ?  name_string : RlvStrings::getAnonym(av_name) );
-	setAvatarToolTip( (fRlvCanShowName) ? av_name.getUserName() : RlvStrings::getAnonym(av_name) );
-	// TODO-RLVa: bit of a hack putting this here. Maybe find a better way?
-	mAvatarIcon->setDrawTooltip(fRlvCanShowName);
-// [/RLVa:KB]
+	setAvatarName(name_string);
+	setAvatarToolTip(av_name.getUserName());
 
 	//requesting the list to resort
 	notifyParent(LLSD().with("sort", LLSD()));

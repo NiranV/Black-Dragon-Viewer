@@ -500,10 +500,6 @@ public:
 	U32 		renderImpostor(LLColor4U color = LLColor4U(255,255,255,255), S32 diffuse_channel = 0);
 	bool		isVisuallyMuted();
 	bool 		isInMuteList() const;
-	bool		isInBuddyList() const;
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-	bool        isRlvSilhouette();
-// [/RLVa:KB]
 	void		forceUpdateVisualMuteSettings();
 
 	// Visual Mute Setting is an input. Does not necessarily determine
@@ -516,12 +512,10 @@ public:
 		AV_ALWAYS_RENDER   = 2
 	};
 	void		setVisualMuteSettings(VisualMuteSettings set);
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-	VisualMuteSettings  getVisualMuteSettings()						{ return (!isRlvSilhouette()) ? mVisuallyMuteSetting : AV_DO_NOT_RENDER; };
-// [/RLVa:KB]
-//protected:
+
+protected:
 	// If you think you need to access this outside LLVOAvatar, you probably want getOverallAppearance()
-//	VisualMuteSettings  getVisualMuteSettings()						{ return mVisuallyMuteSetting; };
+	VisualMuteSettings  getVisualMuteSettings()						{ return mVisuallyMuteSetting;	};
 
 public:
 
@@ -622,10 +616,6 @@ private:
 	mutable bool		mCachedInBuddyList;
 	mutable F64			mCachedBuddyListUpdateTime;
 
-// [RLVa:KB] - Checked: RLVa-2.2 (@setcam_avdist)
-	mutable bool mCachedIsRlvSilhouette = false;
-	mutable F64  mCachedRlvSilhouetteUpdateTime = 0.f;
-// [/RLVa:KB]
 
 	VisualMuteSettings		mVisuallyMuteSetting;			// Always or never visually mute this AV
 

@@ -149,10 +149,10 @@ LLInventoryFetchItemsObserver::LLInventoryFetchItemsObserver(const uuid_vec_t& i
 
 void LLInventoryFetchItemsObserver::changed(U32 mask)
 {
-	/*// _LL_DEBUGS() << this << " remaining incomplete " << mIncomplete.size()
+	LL_DEBUGS() << this << " remaining incomplete " << mIncomplete.size()
 			 << " complete " << mComplete.size()
 			 << " wait period " << mFetchingPeriod.getRemainingTimeF32()
-			 << LL_ENDL;*/
+			 << LL_ENDL;
 
 	// scan through the incomplete items and move or erase them as
 	// appropriate.
@@ -191,8 +191,8 @@ void LLInventoryFetchItemsObserver::changed(U32 mask)
 
 	if (mIncomplete.empty())
 	{
-		/*// _LL_DEBUGS() << this << " done at remaining incomplete "
-				 << mIncomplete.size() << " complete " << mComplete.size() << LL_ENDL;*/
+		LL_DEBUGS() << this << " done at remaining incomplete "
+				 << mIncomplete.size() << " complete " << mComplete.size() << LL_ENDL;
 		done();
 	}
 	//LL_INFOS() << "LLInventoryFetchItemsObserver::changed() mComplete size " << mComplete.size() << LL_ENDL;
@@ -229,7 +229,7 @@ void fetch_items_from_llsd(const LLSD& items_llsd)
 		}
 
 		if (0 == body[i]["items"].size()) {
-			// _LL_DEBUGS() << "Skipping body with no items to fetch" << LL_ENDL;
+			LL_DEBUGS() << "Skipping body with no items to fetch" << LL_ENDL;
 			continue;
 		}
 
@@ -481,7 +481,7 @@ void LLInventoryAddItemByAssetObserver::changed(U32 mask)
 		{
 			if (isAssetWatched(asset_uuid))
 			{
-				// _LL_DEBUGS("Inventory_Move") << "Found asset UUID: " << asset_uuid << LL_ENDL;
+				LL_DEBUGS("Inventory_Move") << "Found asset UUID: " << asset_uuid << LL_ENDL;
 				mAddedItems.push_back(item->getUUID());
 			}
 		}
@@ -489,7 +489,7 @@ void LLInventoryAddItemByAssetObserver::changed(U32 mask)
 	
 	if (mAddedItems.size() == mWatchedAssets.size())
 	{
-		// _LL_DEBUGS("Inventory_Move") << "All watched items are added & processed." << LL_ENDL;
+		LL_DEBUGS("Inventory_Move") << "All watched items are added & processed." << LL_ENDL;
 		done();
 		mAddedItems.clear();
 
@@ -505,7 +505,7 @@ void LLInventoryAddItemByAssetObserver::watchAsset(const LLUUID& asset_id)
 	{
 		if (mIsDirty)
 		{
-			// _LL_DEBUGS("Inventory_Move") << "Watched items are dirty. Clean them." << LL_ENDL;
+			LL_DEBUGS("Inventory_Move") << "Watched items are dirty. Clean them." << LL_ENDL;
 			mWatchedAssets.clear();
 			mIsDirty = false;
 		}

@@ -89,10 +89,6 @@
 #include "llsculptidsize.h"
 #include "llavatarappearancedefines.h"
 #include "llgltfmateriallist.h"
-// [RLVa:KB] - Checked: RLVa-2.0.0
-#include "rlvactions.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //BD
 #include "lltoolmgr.h"
@@ -5297,17 +5293,9 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 		LL_WARNS_ONCE("RenderMaterials") << "Oh no! No binormals for this alpha blended face!" << LL_ENDL;
 	}
 
-	//	bool selected = facep->getViewerObject()->isSelected();
-	//
-	//	if (selected && LLSelectMgr::getInstance()->mHideSelectedObjects)
-// [RLVa:KB] - Checked: 2010-11-29 (RLVa-1.3.0c) | Modified: RLVa-1.3.0c
-	const LLViewerObject* pObj = facep->getViewerObject();
-	//bool selected = pObj->isSelected();
-	if ((pObj->isSelected() && LLSelectMgr::getInstance()->mHideSelectedObjects) &&
-		((!RlvActions::isRlvEnabled()) ||
-		(((!pObj->isHUDAttachment()) || (!gRlvAttachmentLocks.isLockedAttachment(pObj->getRootEdit()))) &&
-			(RlvActions::canEdit(pObj)))))
-// [/RVLa:KB]
+	bool selected = facep->getViewerObject()->isSelected();
+
+	if (selected && LLSelectMgr::getInstance()->mHideSelectedObjects)
 	{
 		return;
 	}

@@ -43,10 +43,6 @@
 
 #include "llslurl.h"
 
-// [RLVa:KB] - Checked: 2010-04-21 (RLVa-1.2.0f)
-#include "rlvhandler.h"
-// [/RLVa:KB]
-
 static const S32 msg_left_offset = 10;
 static const S32 msg_right_offset = 10;
 static const S32 msg_height_pad = 5;
@@ -240,15 +236,8 @@ void LLFloaterIMNearbyChatToastPanel::init(LLSD& notification)
 			style_params_name.font.name(font_name);
 			style_params_name.font.size(font_style_size);
 
-//			style_params_name.link_href = notification["sender_slurl"].asString();
-//			style_params_name.is_link = true;
-// [RLVa:KB] - Checked: 2011-12-13 (RLVa-1.4.6) | Added: RLVa-1.4.6
-			if (notification.has("sender_slurl"))
-			{
 				style_params_name.link_href = notification["sender_slurl"].asString();
 				style_params_name.is_link = true;
-			}
-// [/RLVa:KB]
 
 			mMsgText->appendText(str_sender, FALSE, style_params_name);
 
@@ -411,10 +400,7 @@ void LLFloaterIMNearbyChatToastPanel::draw()
 		LLAvatarIconCtrl* icon = getChild<LLAvatarIconCtrl>("avatar_icon", false);
 		if(icon)
 		{
-//			icon->setDrawTooltip(mSourceType == CHAT_SOURCE_AGENT);
-// [RLVa:KB] - Checked: 2010-04-200 (RLVa-1.2.0f) | Added: RLVa-1.2.0f
-			icon->setDrawTooltip( (mShowIconTooltip) && (mSourceType == CHAT_SOURCE_AGENT) );
-// [/RLVa:KB]
+			icon->setDrawTooltip(mSourceType == CHAT_SOURCE_AGENT);
 			if(mSourceType == CHAT_SOURCE_OBJECT)
 				icon->setValue(LLSD("OBJECT_Icon"));
 			else if(mSourceType == CHAT_SOURCE_SYSTEM)

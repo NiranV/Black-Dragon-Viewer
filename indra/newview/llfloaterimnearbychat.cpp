@@ -68,11 +68,6 @@
 #include "lltranslate.h"
 #include "llautoreplace.h"
 #include "lluiusage.h"
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b)
-#include "rlvactions.h"
-#include "rlvcommon.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 S32 LLFloaterIMNearbyChat::sLastSpecialChatChannel = 0;
 
@@ -81,10 +76,7 @@ const S32 COLLAPSED_HEIGHT = 60;
 const S32 EXPANDED_MIN_HEIGHT = 150;
 
 // legacy callback glue
-//void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-0.2.2)
-void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel);
-// [/RLVa:KB]
+void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
 
 struct LLChatTypeTrigger {
 	std::string name;
@@ -489,10 +481,7 @@ void LLFloaterIMNearbyChat::onChatBoxKeystroke()
 
 	S32 length = raw_text.length();
 
-//	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
-// [RLVa:KB] - Checked: 2010-03-26 (RLVa-1.2.0b) | Modified: RLVa-1.0.0d
-	if ( (length > 0) && (raw_text[0] != '/') && (!RlvActions::hasBehaviour(RLV_BHVR_REDIRCHAT)) )
-// [/RLVa:KB]
+	if( (length > 0) && (raw_text[0] != '/') )  // forward slash is used for escape (eg. emote) sequences
 	{
 		gAgent.startTyping();
 	}
@@ -738,31 +727,22 @@ void LLFloaterIMNearbyChat::sendChatFromViewer(const LLWString &wtext, EChatType
 		utf8_text = utf8str_truncate(utf8_text, MAX_STRING - 1);
 	}
 
-// [RLVa:KB] - Checked: 2010-03-27 (RLVa-1.2.0b) | Modified: RLVa-1.2.0b
-	if ( (0 == channel) && (RlvActions::isRlvEnabled()) )
-	{
-		// Adjust the (public) chat "volume" on chat and gestures (also takes care of playing the proper animation)
-		type = RlvActions::checkChatVolume(type);
-		animate &= !RlvActions::hasBehaviour( (!RlvUtil::isEmote(utf8_text)) ? RLV_BHVR_REDIRCHAT : RLV_BHVR_REDIREMOTE );
-	}
-// [/RLVa:KB]
-
 	// Don't animate for chats people can't hear (chat to scripts)
 	if (animate && (channel == 0))
 	{
 		if (type == CHAT_TYPE_WHISPER)
 		{
-			// _LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You whisper " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_WHISPER, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_NORMAL)
 		{
-			// _LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You say " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_TALK, ANIM_REQUEST_START);
 		}
 		else if (type == CHAT_TYPE_SHOUT)
 		{
-			// _LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
+			LL_DEBUGS() << "You shout " << utf8_text << LL_ENDL;
 			gAgent.sendAnimationRequest(ANIM_AGENT_SHOUT, ANIM_REQUEST_START);
 		}
 		else
@@ -775,39 +755,7 @@ void LLFloaterIMNearbyChat::sendChatFromViewer(const LLWString &wtext, EChatType
 	{
 		if (type != CHAT_TYPE_START && type != CHAT_TYPE_STOP)
 		{
-			// _LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
-		}
-	}
-
-//	//BD - Auto Close Out Of Character
-	if (gSavedSettings.getBOOL("AutoCloseOOC"))
-	{
-		// Try to find any unclosed OOC chat (i.e. an opening
-		// double parenthesis without a matching closing double
-		// parenthesis.
-		if (utf8_out_text.find("((") != -1 && utf8_out_text.find("))") == -1)
-		{
-			if (utf8_out_text.at(utf8_out_text.length() - 1) == ')')
-			{
-				// cosmetic: add a space first to avoid a closing triple parenthesis
-				utf8_out_text += " ";
-			}
-			// add the missing closing double parenthesis.
-			utf8_out_text += "))";
-		}
-	}
-	
-//	//BD - MU Style Pose
-	// Convert MU*s style poses into IRC emotes here.
-	if (gSavedSettings.getBOOL("AllowMUpose") && utf8_out_text.find(":") == 0 && utf8_out_text.length() > 3)
-	{
-		if (utf8_out_text.find(":'") == 0)
-		{
-			utf8_out_text.replace(0, 1, "/me");
-		}
-		else if (isalpha(utf8_out_text.at(1)))	// Do not prevent smileys and such.
-		{
-			utf8_out_text.replace(0, 1, "/me ");
+			LL_DEBUGS() << "Channel chat: " << utf8_text << LL_ENDL;
 		}
 	}
 
@@ -924,52 +872,8 @@ LLWString LLFloaterIMNearbyChat::stripChannelNumber(const LLWString &mesg, S32* 
 	}
 }
 
-//void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel)
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b) | Modified: RLVa-0.2.2a
-void send_chat_from_viewer(std::string utf8_out_text, EChatType type, S32 channel)
-// [/RLVa:KB]
+void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel)
 {
-// [RLVa:KB] - Checked: 2010-02-27 (RLVa-1.2.0b) | Modified: RLVa-1.2.0a
-	// Only process chat messages (ie not CHAT_TYPE_START, CHAT_TYPE_STOP, etc)
-	if ( (RlvActions::isRlvEnabled()) && ( (CHAT_TYPE_WHISPER == type) || (CHAT_TYPE_NORMAL == type) || (CHAT_TYPE_SHOUT == type) ) )
-	{
-		if (0 == channel)
-		{
-			// Clamp the volume of the chat if needed
-			type = RlvActions::checkChatVolume(type);
-
-			// Redirect chat if needed
-			if ( ( (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT) || (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE)) ) && 
-				 (gRlvHandler.redirectChatOrEmote(utf8_out_text)) ) )
-			{
-				return;
-			}
-
-			// Filter public chat if sendchat restricted
-			if (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT))
-				gRlvHandler.filterChat(utf8_out_text, true);
-		}
-		else
-		{
-			// Don't allow chat on a non-public channel if sendchannel restricted (unless the channel is an exception)
-			if (!RlvActions::canSendChannel(channel))
-				return;
-
-			// Don't allow chat on debug channel if @sendchat, @redirchat or @rediremote restricted (shows as public chat on viewers)
-			if (CHAT_CHANNEL_DEBUG == channel)
-			{
-				bool fIsEmote = RlvUtil::isEmote(utf8_out_text);
-				if ( (gRlvHandler.hasBehaviour(RLV_BHVR_SENDCHAT)) || 
-					 ((!fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIRCHAT))) || 
-					 ((fIsEmote) && (gRlvHandler.hasBehaviour(RLV_BHVR_REDIREMOTE))) )
-				{
-					return;
-				}
-			}
-		}
-	}
-// [/RLVa:KB]
-
 	LL_DEBUGS("UIUsage") << "Nearby chat, text " << utf8_out_text << " type " << type << " channel " << channel << LL_ENDL;
 	if (type != CHAT_TYPE_START && type != CHAT_TYPE_STOP) // prune back some redundant logging
 	{

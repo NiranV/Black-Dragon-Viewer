@@ -88,7 +88,7 @@ void LLWMIMethods::initCOMObjects()
     mHR = CoInitializeEx(0, COINIT_MULTITHREADED);
     if (FAILED(mHR))
     {
-        //LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << std::hex << mHR << LL_ENDL;
+        LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << std::hex << mHR << LL_ENDL;
         return;
     }
 
@@ -159,7 +159,7 @@ void LLWMIMethods::initCOMObjects()
         return;               // Program has failed.
     }
 
-    //LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
+    LL_DEBUGS("AppInit") << "Connected to ROOT\\CIMV2 WMI namespace" << LL_ENDL;
 
     // Step 5: --------------------------------------------------
     // Set security levels on the proxy -------------------------
@@ -417,7 +417,7 @@ S32 LLMachineID::init()
     if (comInit.getComputerSystemProductUUID(static_unique_id, len))
     {
         has_static_unique_id = true;
-        //LL_DEBUGS("AppInit") << "Using product uuid as unique id" << LL_ENDL;
+        LL_DEBUGS("AppInit") << "Using product uuid as unique id" << LL_ENDL;
     }
 
     // Fallback to legacy
@@ -430,7 +430,7 @@ S32 LLMachineID::init()
             // to not cause retry's in sechandler
             has_static_legacy_id = false;
             has_static_unique_id = true;
-            //LL_DEBUGS("AppInit") << "Using legacy serial" << LL_ENDL;
+            LL_DEBUGS("AppInit") << "Using legacy serial" << LL_ENDL;
         }
         else
         {
@@ -473,7 +473,7 @@ S32 LLMachineID::init()
 #endif
 
         LL_INFOS("AppInit") << "UniqueID: 0x";
-        // Code between here and LL_ENDL is not executed unless the // _LL_DEBUGS
+        // Code between here and LL_ENDL is not executed unless the LL_DEBUGS
         // actually produces output
         for (size_t i = 0; i < len; ++i)
         {

@@ -312,7 +312,7 @@ void LLCrashLogger::gatherFiles()
         }
         else
         {
-            // _LL_DEBUGS("CRASHREPORT") << "empty file in list for " << itr->first << LL_ENDL;
+            LL_DEBUGS("CRASHREPORT") << "empty file in list for " << itr->first << LL_ENDL;
         }
 	}
 	
@@ -356,17 +356,17 @@ void LLCrashLogger::gatherFiles()
                     }
                     else
                     {
-                        // _LL_DEBUGS("CRASHREPORT") << "MDMP not found in " << fullname << LL_ENDL;
+                        LL_DEBUGS("CRASHREPORT") << "MDMP not found in " << fullname << LL_ENDL;
                     }
                 }
                 else
                 {
-                    // _LL_DEBUGS("CRASHREPORT") << "failed to open " << fullname << LL_ENDL;
+                    LL_DEBUGS("CRASHREPORT") << "failed to open " << fullname << LL_ENDL;
                 }
             }
             else
             {
-                // _LL_DEBUGS("CRASHREPORT") << "Name does not match minidump name pattern " << *iter << LL_ENDL;
+                LL_DEBUGS("CRASHREPORT") << "Name does not match minidump name pattern " << *iter << LL_ENDL;
             }            
         }
     }
@@ -454,7 +454,7 @@ bool LLCrashLogger::sendCrashLog(std::string dump_dir)
                                                            "BlackDragonCrashReport");
     std::string report_file = dump_path + ".log";
 
-    // _LL_DEBUGS("CRASHREPORT") << "sending " << report_file << LL_ENDL;
+    LL_DEBUGS("CRASHREPORT") << "sending " << report_file << LL_ENDL;
 
 	gatherFiles();
     
@@ -560,7 +560,7 @@ void LLCrashLogger::updateApplication(const std::string& message)
 
 bool LLCrashLogger::init()
 {
-    // _LL_DEBUGS("CRASHREPORT") << LL_ENDL;
+    LL_DEBUGS("CRASHREPORT") << LL_ENDL;
     
     LLCore::LLHttp::initialize();
 

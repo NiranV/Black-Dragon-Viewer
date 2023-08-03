@@ -75,9 +75,6 @@
 
 #include "llagentui.h"
 #include "llslurl.h"
-// [RLVa:KB] - Checked: RLVa-1.2.2
-#include "rlvactions.h"
-// [/RLVa:KB]
 
 //BD
 #include "llblocklist.h"
@@ -670,10 +667,6 @@ BOOL LLPanelPeople::postBuild()
 	mNearbyList->setNoItemsMsg(getString("no_one_near"));
 	mNearbyList->setNoFilteredItemsMsg(getString("no_one_filtered_near"));
 	mNearbyList->setShowCompleteName(!gSavedSettings.getBOOL("NearbyListHideUsernames"));
-	mNearbyList->setShowExtraInformation(true);
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	mNearbyList->setRlvCheckShowNames(true);
-// [/RLVa:KB]
 	mMiniMap = (LLNetMap*)getChildView("Net Map",true);
 	mMiniMap->setToolTipMsg(gSavedSettings.getBOOL("DoubleClickTeleport") ? 
 		getString("AltMiniMapToolTipMsg") :	getString("MiniMapToolTipMsg"));
@@ -848,18 +841,7 @@ void LLPanelPeople::updateNearbyList()
 
 	std::vector<LLVector3d> positions;
 
-// [RLVa:KB] - Checked: RLVa-2.0.3
-	if (RlvActions::canShowNearbyAgents())
-	{
-// [/RLVa:KB]
-		LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), 4800.f);
-// [RLVa:KB] - Checked: RLVa-2.0.3
-	}
-	else
-	{
-		mNearbyList->getIDs().clear();
-	}
-// [/RLVa:KB]
+	LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
 	mNearbyList->setDirty();
 
 	DISTANCE_COMPARATOR.updateAvatarsPositions(positions, mNearbyList->getIDs());
@@ -878,9 +860,6 @@ void LLPanelPeople::updateRecentList()
 void LLPanelPeople::updateButtons()
 {
 	std::string cur_tab		= getActiveTabName();
-// [RLVa:KB] - Checked: RLVa-1.4.9
-	bool nearby_tab_active = (cur_tab == NEARBY_TAB_NAME);
-// [/RLVa:KB]
 	bool friends_tab_active = (cur_tab == FRIENDS_TAB_NAME);
 	bool group_tab_active	= (cur_tab == GROUP_TAB_NAME);
 	bool recent_tab_active	= (cur_tab == RECENT_TAB_NAME);
@@ -944,11 +923,6 @@ void LLPanelPeople::updateButtons()
 		{
 			if (friends_tab_active)
 			{
-// [RLVa:KB] - Checked: RLVa-1.2.0
-				//mFriendAddBtn->setEnabled(item_selected && !is_friend && ((RlvActions::canShowName(RlvActions::SNC_DEFAULT, selected_id))));
-// [/RLBa:KB]
-//			if (cur_panel->hasChild("add_friend_btn", TRUE))
-//				cur_panel->getChildView("add_friend_btn")->setEnabled(item_selected && !is_friend && !is_self);
 				mFriendGearBtn->setEnabled(multiple_selected);
 			}
 
@@ -968,17 +942,6 @@ void LLPanelPeople::updateButtons()
 			}
 		}
 	}
-
-	//BD - Eh what? Shouldn't this be further up? Need to check.
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	if ( (nearby_tab_active) && (RlvActions::isRlvEnabled()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT)) )
-	{
-		bool fCanShowNames = true;
-		std::for_each(selected_uuids.begin(), selected_uuids.end(), [&fCanShowNames](const LLUUID& idAgent) { fCanShowNames &= RlvActions::canShowName(RlvActions::SNC_DEFAULT, idAgent); });
-		if (!fCanShowNames)
-			item_selected = multiple_selected = false;
-	}
-// [/RLBa:KB]
 }
 
 std::string LLPanelPeople::getActiveTabName() const
@@ -1160,12 +1123,6 @@ void LLPanelPeople::onAvatarListDoubleClicked(LLUICtrl* ctrl)
 		return;
 	}
 	
-// [RLVa:KB] - Checked: RLVa-2.0.1
-	if ( (RlvActions::isRlvEnabled()) && (NEARBY_TAB_NAME == getActiveTabName()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT, clicked_id)) )
-	{
-		return;
-	}
-// [/RLVa:KB]
 
 	//BD - Double Click Action Preferences
 	//     0 - Start IM
@@ -1286,15 +1243,6 @@ void LLPanelPeople::onImButtonClicked()
 {
 	uuid_vec_t selected_uuids;
 	getCurrentItemIDs(selected_uuids);
-// [RLVa:KB] - Checked: RLVa-2.0.1
-	if ( (RlvActions::isRlvEnabled()) && (NEARBY_TAB_NAME == getActiveTabName()) && (!RlvActions::canShowName(RlvActions::SNC_DEFAULT)) )
-	{
-		bool fCanShowNames = true;
-		std::for_each(selected_uuids.begin(), selected_uuids.end(), [&fCanShowNames](const LLUUID& idAgent) { fCanShowNames &= RlvActions::canShowName(RlvActions::SNC_DEFAULT, idAgent); });
-		if (!fCanShowNames)
-			return;
-	}
-// [/RLVa:KB]
 	if ( selected_uuids.size() == 1 )
 	{
 		// if selected only one person then start up IM

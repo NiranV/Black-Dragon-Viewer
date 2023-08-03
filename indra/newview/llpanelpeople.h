@@ -61,10 +61,6 @@ public:
 
     //bool mTryToConnectToFacebook;
 
-// [RLVa:KB] - Checked: RLVa-1.2.0
-	LLAvatarList* getNearbyList() { return mNearbyList; }
-	void          updateNearbyList();
-// [/RLVa:KB]
 
 	//BD - Empower someone with rights or revoke them.
 	void		onEmpowerFriend(const LLSD& userdata);

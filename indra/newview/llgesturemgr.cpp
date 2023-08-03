@@ -56,10 +56,6 @@
 #include "llappearancemgr.h"
 #include "llgesturelistener.h"
 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-#include "rlvactions.h"
-// [/RLVa:KB]
-
 // Longest time, in seconds, to wait for all animations to stop playing
 const F32 MAX_WAIT_ANIM_SECS = 30.f;
 
@@ -536,11 +532,6 @@ void LLGestureMgr::playGesture(LLMultiGesture* gesture)
 {
 	if (!gesture) return;
 
-// [RLVa:KB] - Checked: RLVa-2.0.0 | Handles: @sendgesture
-	if (!RlvActions::canPlayGestures())
-		return;
-// [/RLVa:KB]
-
 	// Reset gesture to first step
 	gesture->mCurrentStep = 0;
 
@@ -1015,11 +1006,8 @@ void LLGestureMgr::runStep(LLMultiGesture* gesture, LLGestureStep* step)
 
 			const BOOL animate = FALSE;
 
-			if(!chat_text.empty())
-			{
-				(LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat"))->
-						sendChatFromViewer(chat_text, CHAT_TYPE_NORMAL, animate);
-			}
+			(LLFloaterReg::getTypedInstance<LLFloaterIMNearbyChat>("nearby_chat"))->
+					sendChatFromViewer(chat_text, CHAT_TYPE_NORMAL, animate);
 
 			gesture->mCurrentStep++;
 			break;
@@ -1119,14 +1107,14 @@ void LLGestureMgr::onLoadComplete(const LLUUID& asset_uuid,
             if (it == self.mActive.end())
             {
                 // Gesture is supposed to be present, active, but NULL
-                //LL_DEBUGS("GestureMgr") << "Gesture " << item_id << " not found in active list" << LL_ENDL;
+                LL_DEBUGS("GestureMgr") << "Gesture " << item_id << " not found in active list" << LL_ENDL;
             }
             else
             {
                 LLMultiGesture* old_gesture = (*it).second;
                 if (old_gesture && old_gesture != gesture)
                 {
-                    //LL_DEBUGS("GestureMgr") << "Received dupplicate " << item_id << " callback" << LL_ENDL;
+                    LL_DEBUGS("GestureMgr") << "Received dupplicate " << item_id << " callback" << LL_ENDL;
                     // In case somebody managest to activate, deactivate and
                     // then activate gesture again, before asset finishes loading.
                     // LLLoadInfo will have a different pointer, asset storage will
@@ -1396,7 +1384,7 @@ void LLGestureMgr::removeObserver(LLGestureManagerObserver* observer)
 // from the list.
 void LLGestureMgr::notifyObservers()
 {
-	// _LL_DEBUGS() << "LLGestureMgr::notifyObservers" << LL_ENDL;
+	LL_DEBUGS() << "LLGestureMgr::notifyObservers" << LL_ENDL;
 
 	for(std::vector<LLGestureManagerObserver*>::iterator iter = mObservers.begin(); 
 		iter != mObservers.end(); 

@@ -32,10 +32,6 @@
 #include "llinventoryfunctions.h"
 #include "llinventorymodel.h"
 #include "llviewerinventory.h"
-// [RLVa:KB] - Checked: 2012-07-08 (RLVa-1.4.7)
-#include "rlvcommon.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 //virtual
 bool LLPanelAppearanceTab::canTakeOffSelected()
@@ -49,11 +45,6 @@ bool LLPanelAppearanceTab::canTakeOffSelected()
 	{
 		LLViewerInventoryItem* item = gInventory.getItem(*it);
 		if (!item) continue;
-
-// [RLVa:KB] - Checked: 2012-07-08 (RLVa-1.4.7)
-		if ( (rlv_handler_t::isEnabled()) && (rlvPredCanNotRemoveItem(item)) )
-			return false;
-// [/RLVa:KB]
 
 		if (is_worn(NULL, item)) return true;
 	}

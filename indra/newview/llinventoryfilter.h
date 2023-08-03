@@ -45,8 +45,7 @@ public:
 		SHOW_NO_FOLDERS
 	};
 
-	enum EFilterType	
-	{
+	enum EFilterType	{
 		FILTERTYPE_NONE = 0,
 		FILTERTYPE_OBJECT = 0x1 << 0,	// normal default search-by-object-type
 		FILTERTYPE_CATEGORY = 0x1 << 1,	// search by folder type

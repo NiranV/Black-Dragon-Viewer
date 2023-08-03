@@ -1429,10 +1429,10 @@ bool LLPanelRegionTerrainInfo::refreshFromRegion(LLViewerRegion* region)
 			texture_ctrl = getChild<LLTextureCtrl>(buffer);
 			if(texture_ctrl)
 			{
-				/*// _LL_DEBUGS() << "Detail Texture " << i << ": "
+				LL_DEBUGS() << "Detail Texture " << i << ": "
 						 << compp->getDetailTextureID(i) << LL_ENDL;
 				LLUUID tmp_id(compp->getDetailTextureID(i));
-				texture_ctrl->setImageAssetID(tmp_id);*/
+				texture_ctrl->setImageAssetID(tmp_id);
 			}
 		}
 
@@ -1446,7 +1446,7 @@ bool LLPanelRegionTerrainInfo::refreshFromRegion(LLViewerRegion* region)
 	}
 	else
 	{
-		// _LL_DEBUGS() << "no region set" << LL_ENDL;
+		LL_DEBUGS() << "no region set" << LL_ENDL;
 		getChild<LLUICtrl>("region_text")->setValue(LLSD(""));
 	}
 
@@ -2425,7 +2425,7 @@ bool LLDispatchEstateUpdateInfo::operator()(
 		const LLUUID& invoice,
 		const sparam_t& strings)
 {
-	// _LL_DEBUGS() << "Received estate update" << LL_ENDL;
+	LL_DEBUGS() << "Received estate update" << LL_ENDL;
 
 	// Update estate info model.
 	// This will call LLPanelEstateInfo::refreshFromEstate().
@@ -3801,7 +3801,7 @@ bool LLPanelRegionEnvironment::refreshFromRegion(LLViewerRegion* region)
 
 void LLPanelRegionEnvironment::refreshFromSource()
 {
-    // _LL_DEBUGS("ENVIRONMENT") << "Requesting environment for region, known version " << mCurEnvVersion << LL_ENDL;
+    LL_DEBUGS("ENVIRONMENT") << "Requesting environment for region, known version " << mCurEnvVersion << LL_ENDL;
     LLHandle<LLPanel> that_h = getHandle();
 
     if (mCurEnvVersion < UNSET_PARCEL_ENVIRONMENT_VERSION)

@@ -108,10 +108,6 @@
 #include "llteleporthistorystorage.h"
 #include "llproxy.h"
 #include "llweb.h"
-// [RLVa:KB] - Checked: 2010-03-18 (RLVa-1.2.0a)
-#include "rlvactions.h"
-#include "rlvhandler.h"
-// [/RLVa:KB]
 
 //BD
 #include "lldefs.h"

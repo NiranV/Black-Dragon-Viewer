@@ -581,34 +581,34 @@ void LLFriendCardsManager::addFriendCardToInventory(const LLUUID& avatarID)
 	bool shouldBeAdded = true;
 	LLAvatarName av_name;
 	LLAvatarNameCache::get(avatarID, &av_name);
-	//const std::string& name = av_name.getAccountName();
+	const std::string& name = av_name.getAccountName();
 
-	/*// _LL_DEBUGS() << "Processing buddy name: " << name 
+	LL_DEBUGS() << "Processing buddy name: " << name 
 		<< ", id: " << avatarID
-		<< LL_ENDL; */
+		<< LL_ENDL; 
 
     if (shouldBeAdded && !isManagerReady())
     {
         shouldBeAdded = false;
-        // _LL_DEBUGS() << "Calling cards manager not ready, state: " << getManagerState() << LL_ENDL;
+        LL_DEBUGS() << "Calling cards manager not ready, state: " << getManagerState() << LL_ENDL;
     }
 
 	if (shouldBeAdded && findFriendCardInventoryUUIDImpl(avatarID).notNull())
 	{
 		shouldBeAdded = false;
-		// _LL_DEBUGS() << "is found in Inventory: " << name << LL_ENDL; 
+		LL_DEBUGS() << "is found in Inventory: " << name << LL_ENDL; 
 	}
 
 	if (shouldBeAdded && isAvatarDataStored(avatarID))
 	{
 		shouldBeAdded = false;
-		// _LL_DEBUGS() << "is found in sentRequests: " << name << LL_ENDL; 
+		LL_DEBUGS() << "is found in sentRequests: " << name << LL_ENDL; 
 	}
 
 	if (shouldBeAdded)
 	{
 		putAvatarData(avatarID);
-		// _LL_DEBUGS() << "Sent create_inventory_item for " << avatarID << ", " << name << LL_ENDL;
+		LL_DEBUGS() << "Sent create_inventory_item for " << avatarID << ", " << name << LL_ENDL;
 
 		// TODO: mantipov: Is CreateFriendCardCallback really needed? Probably not
 		LLPointer<LLInventoryCallback> cb = new CreateFriendCardCallback;

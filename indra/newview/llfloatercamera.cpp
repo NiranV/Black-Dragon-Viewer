@@ -713,10 +713,23 @@ void LLFloaterCamera::switchToPreset()
 	LLScrollListItem* item = mPresetsScroll->getFirstSelected();
 	if (!item) return;
 
-// [RLVa:KB] - @setcam family
-	if (RlvActions::isCameraPresetLocked())
+	sFreeCamera = false;
+	clear_camera_tool();
+	if (PRESETS_REAR_VIEW == name)
 	{
-		return;
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_REAR_VIEW);
+	}
+	else if (PRESETS_SIDE_VIEW == name)
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_GROUP_VIEW);
+	}
+	else if (PRESETS_FRONT_VIEW == name)
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_FRONT_VIEW);
+	}
+	else
+	{
+		gAgentCamera.switchCameraPreset(CAMERA_PRESET_CUSTOM);
 	}
 // [/RLVa:KB]
 

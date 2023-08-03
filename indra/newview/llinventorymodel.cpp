@@ -62,10 +62,6 @@
 #include "bufferarray.h"
 #include "bufferstream.h"
 #include "llcorehttputil.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvhandler.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 //#define DIFF_INVENTORY_FILES
 #ifdef DIFF_INVENTORY_FILES
@@ -691,7 +687,7 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 
 	if(LLFolderType::lookup(preferred_type) == LLFolderType::badLookup())
 	{
-		// _LL_DEBUGS(LOG_INV) << "Attempt to create undefined category." << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Attempt to create undefined category." << LL_ENDL;
 		// FIXME failing but still returning an id?
 		return id;
 	}
@@ -733,7 +729,7 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 		request["message"] = "CreateInventoryCategory";
 		request["payload"] = body;
 
-		// _LL_DEBUGS(LOG_INV) << "Creating category via request: " << ll_pretty_print_sd(request) << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Creating category via request: " << ll_pretty_print_sd(request) << LL_ENDL;
         LLCoros::instance().launch("LLInventoryModel::createNewCategoryCoro",
             boost::bind(&LLInventoryModel::createNewCategoryCoro, this, url, body, callback));
 
@@ -758,7 +754,7 @@ LLUUID LLInventoryModel::createNewCategory(const LLUUID& parent_id,
 	accountForUpdate(update);
 	updateCategory(cat);
 
-	//LL_DEBUGS(LOG_INV) << "Creating category via UDP message CreateInventoryFolder, type " << preferred_type << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "Creating category via UDP message CreateInventoryFolder, type " << preferred_type << LL_ENDL;
 
 	// Create the category on the server. We do this to prevent people
 	// from munging their protected folders.
@@ -929,19 +925,11 @@ void LLInventoryModel::collectDescendents(const LLUUID& id,
 	collectDescendentsIf(id, cats, items, include_trash, always);
 }
 
-//void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
-//											cat_array_t& cats,
-//											item_array_t& items,
-//											BOOL include_trash,
-//											LLInventoryCollectFunctor& add)
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
 void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 											cat_array_t& cats,
 											item_array_t& items,
 											BOOL include_trash,
-											LLInventoryCollectFunctor& add,
-											bool follow_folder_links)
-// [/RLVa:KB]
+											LLInventoryCollectFunctor& add)
 {
 	// Start with categories
 	if(!include_trash)
@@ -961,10 +949,7 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			{
 				cats.push_back(cat);
 			}
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
-			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add, follow_folder_links);
-// [/RLVa:KB]
-//			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
+			collectDescendentsIf(cat->getUUID(), cats, items, include_trash, add);
 		}
 	}
 
@@ -984,44 +969,6 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
 			}
 		}
 	}
-
-// [RLVa:KB] - Checked: 2010-09-30 (RLVa-1.2.1d) | Added: RLVa-1.2.1d
-	// The problem is that we want some way for the functor to know that it's being asked to decide on a folder link
-	// but it won't know that until after it has encountered the folder link item (which doesn't happen until *after* 
-	// it has already collected all items from it the way the code was originally laid out)
-	// This breaks the "finish collecting all folders before collecting items (top to bottom and then bottom to top)" 
-	// assumption but no functor is (currently) relying on it (and likely never should since it's an implementation detail?)
-	// [Only LLAppearanceMgr actually ever passes in 'follow_folder_links == TRUE']
-	// Follow folder links recursively.  Currently never goes more
-	// than one level deep (for current outfit support)
-	// Note: if making it fully recursive, need more checking against infinite loops.
-	if (follow_folder_links && item_array)
-	{
-		S32 count = item_array->size();
-		for(S32 i = 0; i < count; ++i)
-		{
-			item = item_array->at(i);
-			if (item && item->getActualType() == LLAssetType::AT_LINK_FOLDER)
-			{
-				LLViewerInventoryCategory *linked_cat = item->getLinkedCategory();
-				if (linked_cat && linked_cat->getPreferredType() != LLFolderType::FT_OUTFIT)
-					// BAP - was 
-					// LLAssetType::lookupIsEnsembleCategoryType(linked_cat->getPreferredType()))
-					// Change back once ensemble typing is in place.
-				{
-					if(add(linked_cat,NULL))
-					{
-						// BAP should this be added here?  May not
-						// matter if it's only being used in current
-						// outfit traversal.
-						cats.push_back(LLPointer<LLViewerInventoryCategory>(linked_cat));
-					}
-					collectDescendentsIf(linked_cat->getUUID(), cats, items, include_trash, add, false);
-				}
-			}
-		}
-	}
-// [/RLVa:KB]
 }
 
 void LLInventoryModel::addChangedMaskForLinks(const LLUUID& object_id, U32 mask)
@@ -1392,7 +1339,7 @@ void LLInventoryModel::updateCategory(const LLViewerInventoryCategory* cat, U32 
 
 void LLInventoryModel::moveObject(const LLUUID& object_id, const LLUUID& cat_id)
 {
-	// _LL_DEBUGS(LOG_INV) << "LLInventoryModel::moveObject()" << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "LLInventoryModel::moveObject()" << LL_ENDL;
 	if(!isInventoryUsable())
 	{
 		LL_WARNS(LOG_INV) << "Inventory is broken." << LL_ENDL;
@@ -1438,8 +1385,8 @@ void LLInventoryModel::changeItemParent(LLViewerInventoryItem* item,
 {
 	if (item->getParentUUID() == new_parent_id)
 	{
-		/*// _LL_DEBUGS(LOG_INV) << "'" << item->getName() << "' (" << item->getUUID()
-						   << ") is already in folder " << new_parent_id << LL_ENDL;*/
+		LL_DEBUGS(LOG_INV) << "'" << item->getName() << "' (" << item->getUUID()
+						   << ") is already in folder " << new_parent_id << LL_ENDL;
 	}
 	else
 	{
@@ -1510,7 +1457,7 @@ void LLInventoryModel::onItemUpdated(const LLUUID& item_id, const LLSD& updates,
 	U32 mask = LLInventoryObserver::NONE;
 
 	LLPointer<LLViewerInventoryItem> item = gInventory.getItem(item_id);
-	// _LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << (item ? item->getName() : "(NOT FOUND)") << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << (item ? item->getName() : "(NOT FOUND)") << LL_ENDL;
 	if(item)
 	{
 		for (LLSD::map_const_iterator it = updates.beginMap();
@@ -1551,7 +1498,7 @@ void LLInventoryModel::onCategoryUpdated(const LLUUID& cat_id, const LLSD& updat
 	U32 mask = LLInventoryObserver::NONE;
 
 	LLPointer<LLViewerInventoryCategory> cat = gInventory.getCategory(cat_id);
-	// _LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (cat ? cat->getName() : "(NOT FOUND)") << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (cat ? cat->getName() : "(NOT FOUND)") << LL_ENDL;
 	if(cat)
 	{
 		for (LLSD::map_const_iterator it = updates.beginMap();
@@ -1689,7 +1636,7 @@ void LLInventoryModel::onObjectDeletedFromServer(const LLUUID& object_id, bool f
 // Delete a particular inventory object by ID.
 void LLInventoryModel::deleteObject(const LLUUID& id, bool fix_broken_links, bool do_notify_observers)
 {
-	// _LL_DEBUGS(LOG_INV) << "LLInventoryModel::deleteObject()" << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "LLInventoryModel::deleteObject()" << LL_ENDL;
 	LLPointer<LLInventoryObject> obj = getObject(id);
 	if (!obj) 
 	{
@@ -1700,7 +1647,7 @@ void LLInventoryModel::deleteObject(const LLUUID& id, bool fix_broken_links, boo
     //collect the links before removing the item from mItemMap
     LLInventoryModel::item_array_t links = collectLinksTo(id);
 	
-	// _LL_DEBUGS(LOG_INV) << "Deleting inventory object " << id << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "Deleting inventory object " << id << LL_ENDL;
 	mLastItem = NULL;
 	LLUUID parent_id = obj->getParentUUID();
 	mCategoryMap.erase(id);
@@ -1997,8 +1944,8 @@ void LLInventoryModel::cache(
 	const LLUUID& parent_folder_id,
 	const LLUUID& agent_id)
 {
-	/*// _LL_DEBUGS(LOG_INV) << "Caching " << parent_folder_id << " for " << agent_id
-					   << LL_ENDL;*/
+	LL_DEBUGS(LOG_INV) << "Caching " << parent_folder_id << " for " << agent_id
+					   << LL_ENDL;
 	LLViewerInventoryCategory* root_cat = getCategory(parent_folder_id);
 	if(!root_cat) return;
 	cat_array_t categories;
@@ -2110,9 +2057,9 @@ void LLInventoryModel::addItem(LLViewerInventoryItem* item)
 			if (item->getType() >= LLAssetType::AT_COUNT)
 			{
 				// Not yet supported.
-				/*// _LL_DEBUGS(LOG_INV) << "Got unknown asset type for item [ name: " << item->getName()
+				LL_DEBUGS(LOG_INV) << "Got unknown asset type for item [ name: " << item->getName()
 					<< " type: " << item->getType()
-					<< " inv-type: " << item->getInventoryType() << " ]." << LL_ENDL;*/
+					<< " inv-type: " << item->getInventoryType() << " ]." << LL_ENDL;
 			}
 			else
 			{
@@ -2177,9 +2124,9 @@ void LLInventoryModel::accountForUpdate(const LLCategoryUpdate& update) const
 				descendents_actual += update.mDescendentDelta;
 				cat->setDescendentCount(descendents_actual);
 				cat->setVersion(++version);
-				/*// _LL_DEBUGS(LOG_INV) << "accounted: '" << cat->getName() << "' "
+				LL_DEBUGS(LOG_INV) << "accounted: '" << cat->getName() << "' "
 								   << version << " with " << descendents_actual
-								   << " descendents." << LL_ENDL;*/
+								   << " descendents." << LL_ENDL;
 			}
 			else
 			{
@@ -2281,7 +2228,7 @@ bool LLInventoryModel::loadSkeleton(
 	const LLSD& options,
 	const LLUUID& owner_id)
 {
-	// _LL_DEBUGS(LOG_INV) << "importing inventory skeleton for " << owner_id << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "importing inventory skeleton for " << owner_id << LL_ENDL;
 
 	typedef std::set<LLPointer<LLViewerInventoryCategory>, InventoryIDPtrLess> cat_set_t;
 	cat_set_t temp_cats;
@@ -2439,10 +2386,10 @@ bool LLInventoryModel::loadSkeleton(
 						if (item->getIsBrokenLink())
 						{
 							//bad_link_count++;
-							/*// _LL_DEBUGS(LOG_INV) << "Attempted to add cached link item without baseobj present ( name: "
+							LL_DEBUGS(LOG_INV) << "Attempted to add cached link item without baseobj present ( name: "
 											   << item->getName() << " itemID: " << item->getUUID()
 											   << " assetID: " << item->getAssetUUID()
-											   << " ).  Ignoring and invalidating " << cat->getName() << " . " << LL_ENDL;*/
+											   << " ).  Ignoring and invalidating " << cat->getName() << " . " << LL_ENDL;
 							possible_broken_links.push_back(item);
 							continue;
 						}
@@ -2481,11 +2428,11 @@ bool LLInventoryModel::loadSkeleton(
 					}
 				}
 
- 				/*LL_DEBUGS(LOG_INV) << "Attempted to add " << bad_link_count
+ 				LL_DEBUGS(LOG_INV) << "Attempted to add " << bad_link_count
 								   << " cached link items without baseobj present. "
 								   << good_link_count << " link items were successfully added. "
 								   << recovered_link_count << " links added in recovery. "
-								   << "The corresponding categories were invalidated." << LL_ENDL;*/
+								   << "The corresponding categories were invalidated." << LL_ENDL;
 			}
 
 		}
@@ -2509,11 +2456,11 @@ bool LLInventoryModel::loadSkeleton(
 		{
 			LLViewerInventoryCategory* cat = (*invalid_cat_it).get();
 			cat->setVersion(NO_VERSION);
-			// _LL_DEBUGS(LOG_INV) << "Invalidating category name: " << cat->getName() << " UUID: " << cat->getUUID() << " due to invalid descendents cache" << LL_ENDL;
+			LL_DEBUGS(LOG_INV) << "Invalidating category name: " << cat->getName() << " UUID: " << cat->getUUID() << " due to invalid descendents cache" << LL_ENDL;
 		}
 		if (invalid_categories.size() > 0)
 		{
-			//LL_DEBUGS(LOG_INV) << "Invalidated " << invalid_categories.size() << " categories due to invalid descendents cache" << LL_ENDL;
+			LL_DEBUGS(LOG_INV) << "Invalidated " << invalid_categories.size() << " categories due to invalid descendents cache" << LL_ENDL;
 		}
 
 		// At this point, we need to set the known descendents for each
@@ -3187,8 +3134,8 @@ bool LLInventoryModel::messageUpdateCore(LLMessageSystem* msg, bool account, U32
 	{
 		LLPointer<LLViewerInventoryItem> titem = new LLViewerInventoryItem;
 		titem->unpackMessage(msg, _PREHASH_InventoryData, i);
-		/*// _LL_DEBUGS(LOG_INV) << "LLInventoryModel::messageUpdateCore() item id: "
-						   << titem->getUUID() << LL_ENDL;*/
+		LL_DEBUGS(LOG_INV) << "LLInventoryModel::messageUpdateCore() item id: "
+						   << titem->getUUID() << LL_ENDL;
 		items.push_back(titem);
 		// examine update for changes.
 		LLViewerInventoryItem* itemp = gInventory.getItem(titem->getUUID());
@@ -3234,17 +3181,17 @@ void LLInventoryModel::removeInventoryItem(LLUUID agent_id, LLMessageSystem* msg
 {
 	LLUUID item_id;
 	S32 count = msg->getNumberOfBlocksFast(msg_label);
-	// _LL_DEBUGS(LOG_INV) << "Message has " << count << " item blocks" << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "Message has " << count << " item blocks" << LL_ENDL;
 	uuid_vec_t item_ids;
 	update_map_t update;
 	for(S32 i = 0; i < count; ++i)
 	{
 		msg->getUUIDFast(msg_label, _PREHASH_ItemID, item_id, i);
-		// _LL_DEBUGS(LOG_INV) << "Checking for item-to-be-removed " << item_id << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Checking for item-to-be-removed " << item_id << LL_ENDL;
 		LLViewerInventoryItem* itemp = gInventory.getItem(item_id);
 		if(itemp)
 		{
-			// _LL_DEBUGS(LOG_INV) << "Item will be removed " << item_id << LL_ENDL;
+			LL_DEBUGS(LOG_INV) << "Item will be removed " << item_id << LL_ENDL;
 			// we only bother with the delete and account if we found
 			// the item - this is usually a back-up for permissions,
 			// so frequently the item will already be gone.
@@ -3255,7 +3202,7 @@ void LLInventoryModel::removeInventoryItem(LLUUID agent_id, LLMessageSystem* msg
 	gInventory.accountForUpdate(update);
 	for(uuid_vec_t::iterator it = item_ids.begin(); it != item_ids.end(); ++it)
 	{
-		// _LL_DEBUGS(LOG_INV) << "Calling deleteObject " << *it << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Calling deleteObject " << *it << LL_ENDL;
 		gInventory.deleteObject(*it);
 	}
 }
@@ -3263,7 +3210,7 @@ void LLInventoryModel::removeInventoryItem(LLUUID agent_id, LLMessageSystem* msg
 // 	static
 void LLInventoryModel::processRemoveInventoryItem(LLMessageSystem* msg, void**)
 {
-	// _LL_DEBUGS(LOG_INV) << "LLInventoryModel::processRemoveInventoryItem()" << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "LLInventoryModel::processRemoveInventoryItem()" << LL_ENDL;
 	LLUUID agent_id, item_id;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id);
 	if(agent_id != gAgent.getID())
@@ -3280,7 +3227,7 @@ void LLInventoryModel::processRemoveInventoryItem(LLMessageSystem* msg, void**)
 void LLInventoryModel::processUpdateInventoryFolder(LLMessageSystem* msg,
 													void**)
 {
-	// _LL_DEBUGS(LOG_INV) << "LLInventoryModel::processUpdateInventoryFolder()" << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "LLInventoryModel::processUpdateInventoryFolder()" << LL_ENDL;
 	LLUUID agent_id, folder_id, parent_id;
 	//char name[DB_INV_ITEM_NAME_BUF_SIZE];
 	msg->getUUIDFast(_PREHASH_FolderData, _PREHASH_AgentID, agent_id);
@@ -3365,7 +3312,7 @@ void LLInventoryModel::removeInventoryFolder(LLUUID agent_id,
 void LLInventoryModel::processRemoveInventoryFolder(LLMessageSystem* msg,
 													void**)
 {
-	// _LL_DEBUGS() << "LLInventoryModel::processRemoveInventoryFolder()" << LL_ENDL;
+	LL_DEBUGS() << "LLInventoryModel::processRemoveInventoryFolder()" << LL_ENDL;
 	LLUUID agent_id, session_id;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id);
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_SessionID, session_id);
@@ -3383,7 +3330,7 @@ void LLInventoryModel::processRemoveInventoryFolder(LLMessageSystem* msg,
 void LLInventoryModel::processRemoveInventoryObjects(LLMessageSystem* msg,
 													void**)
 {
-	// _LL_DEBUGS() << "LLInventoryModel::processRemoveInventoryObjects()" << LL_ENDL;
+	LL_DEBUGS() << "LLInventoryModel::processRemoveInventoryObjects()" << LL_ENDL;
 	LLUUID agent_id, session_id;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id);
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_SessionID, session_id);
@@ -3417,8 +3364,8 @@ void LLInventoryModel::processSaveAssetIntoInventory(LLMessageSystem* msg,
 	// The viewer ignores the asset id because this message is only
 	// used for attachments/objects, so the asset id is not used in
 	// the viewer anyway.
-	/*// _LL_DEBUGS() << "LLInventoryModel::processSaveAssetIntoInventory itemID="
-		<< item_id << LL_ENDL;*/
+	LL_DEBUGS() << "LLInventoryModel::processSaveAssetIntoInventory itemID="
+		<< item_id << LL_ENDL;
 	LLViewerInventoryItem* item = gInventory.getItem( item_id );
 	if( item )
 	{
@@ -3432,14 +3379,6 @@ void LLInventoryModel::processSaveAssetIntoInventory(LLMessageSystem* msg,
 		LL_INFOS() << "LLInventoryModel::processSaveAssetIntoInventory item"
 			" not found: " << item_id << LL_ENDL;
 	}
-
-// [RLVa:KB] - Checked: 2010-03-05 (RLVa-1.2.0a) | Added: RLVa-0.2.0e
-	if (rlv_handler_t::isEnabled())
-	{
-		RlvAttachmentLockWatchdog::instance().onSavedAssetIntoInventory(item_id);
-	}
-// [/RLVa:KB]
-
 	if(gViewerWindow)
 	{
 		gViewerWindow->getWindow()->decBusyCount();
@@ -3467,7 +3406,7 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 	LLUUID tid;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_TransactionID, tid);
 #ifndef LL_RELEASE_FOR_DOWNLOAD
-	// _LL_DEBUGS("Inventory") << "Bulk inventory: " << tid << LL_ENDL;
+	LL_DEBUGS("Inventory") << "Bulk inventory: " << tid << LL_ENDL;
 #endif
 
 	update_map_t update;
@@ -3479,9 +3418,9 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 	{
 		LLPointer<LLViewerInventoryCategory> tfolder = new LLViewerInventoryCategory(gAgent.getID());
 		tfolder->unpackMessage(msg, _PREHASH_FolderData, i);
-		/*// _LL_DEBUGS("Inventory") << "unpacked folder '" << tfolder->getName() << "' ("
+		LL_DEBUGS("Inventory") << "unpacked folder '" << tfolder->getName() << "' ("
 							   << tfolder->getUUID() << ") in " << tfolder->getParentUUID()
-							   << LL_ENDL;*/
+							   << LL_ENDL;
         
         // If the folder is a listing or a version folder, all we need to do is update the SLM data
         int depth_folder = depth_nesting_in_marketplace(tfolder->getUUID());
@@ -3501,20 +3440,6 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 			{
 				if(tfolder->getParentUUID() == folderp->getParentUUID())
 				{
-// [RLVa:KB] - Checked: 2010-04-18 (RLVa-1.2.0e) | Added: RLVa-1.2.0e
-					// NOTE-RLVa: not sure if this is a hack or a bug-fix :o
-					//		-> if we rename the folder on the first BulkUpdateInventory message subsequent messages will still contain
-					//         the old folder name and gInventory.updateCategory() below will "undo" the folder name change but on the
-					//         viewer-side *only* so the folder name actually becomes out of sync with what's on the inventory server
-					//      -> so instead we keep the name of the existing folder and only do it for #RLV/~ in case this causes issues
-					//		-> a better solution would be to only do the rename *after* the transaction completes but there doesn't seem
-					//		   to be any way to accomplish that either *sighs*
-					if ( (rlv_handler_t::isEnabled()) && (!folderp->getName().empty()) && (tfolder->getName() != folderp->getName()) &&
-						 ((tfolder->getName().find(RLV_PUTINV_PREFIX) == 0)) )
-					{
-						tfolder->rename(folderp->getName());
-					}
-// [/RLVa:KB]
 					update[tfolder->getParentUUID()];
 				}
 				else
@@ -3546,8 +3471,8 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 	{
 		LLPointer<LLViewerInventoryItem> titem = new LLViewerInventoryItem;
 		titem->unpackMessage(msg, _PREHASH_ItemData, i);
-		/*// _LL_DEBUGS("Inventory") << "unpacked item '" << titem->getName() << "' in "
-							   << titem->getParentUUID() << LL_ENDL;*/
+		LL_DEBUGS("Inventory") << "unpacked item '" << titem->getName() << "' in "
+							   << titem->getParentUUID() << LL_ENDL;
 		U32 callback_id;
 		msg->getU32Fast(_PREHASH_ItemData, _PREHASH_CallbackID, callback_id);
 		if(titem->getUUID().notNull() ) // && callback_id.notNull() )
@@ -3629,7 +3554,7 @@ void LLInventoryModel::processBulkUpdateInventory(LLMessageSystem* msg, void**)
 // static
 void LLInventoryModel::processMoveInventoryItem(LLMessageSystem* msg, void**)
 {
-	// _LL_DEBUGS() << "LLInventoryModel::processMoveInventoryItem()" << LL_ENDL;
+	LL_DEBUGS() << "LLInventoryModel::processMoveInventoryItem()" << LL_ENDL;
 	LLUUID agent_id;
 	msg->getUUIDFast(_PREHASH_AgentData, _PREHASH_AgentID, agent_id);
 	if(agent_id != gAgent.getID())
@@ -3654,8 +3579,8 @@ void LLInventoryModel::processMoveInventoryItem(LLMessageSystem* msg, void**)
 			msg->getUUIDFast(_PREHASH_InventoryData, _PREHASH_FolderID, folder_id, i);
 			msg->getString("InventoryData", "NewName", new_name, i);
 
-			/*// _LL_DEBUGS() << "moving item " << item_id << " to folder "
-					 << folder_id << LL_ENDL;*/
+			LL_DEBUGS() << "moving item " << item_id << " to folder "
+					 << folder_id << LL_ENDL;
 			update_list_t update;
 			LLCategoryUpdate old_folder(item->getParentUUID(), -1);
 			update.push_back(old_folder);
@@ -4247,7 +4172,7 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 				ft_counts_under_root[folder_type]++;
 				if (folder_type != LLFolderType::FT_NONE)
 				{
-					//LL_DEBUGS("Inventory") << "Under root cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
+					LL_DEBUGS("Inventory") << "Under root cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
 				}
 			}
 			else
@@ -4255,7 +4180,7 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 				ft_counts_elsewhere[folder_type]++;
 				if (folder_type != LLFolderType::FT_NONE)
 				{
-					//LL_DEBUGS("Inventory") << "Elsewhere cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
+					LL_DEBUGS("Inventory") << "Elsewhere cat: " << getFullPath(cat) << " folder_type " << folder_type << LL_ENDL;
 				}
 			}
 		}
@@ -4369,11 +4294,11 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 	// Check system folders
 	for (auto fit=ft_counts_under_root.begin(); fit != ft_counts_under_root.end(); ++fit)
 	{
-		//LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " under root" << LL_ENDL;
+		LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " under root" << LL_ENDL;
 	}
 	for (auto fit=ft_counts_elsewhere.begin(); fit != ft_counts_elsewhere.end(); ++fit)
 	{
-		//LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " elsewhere" << LL_ENDL;
+		LL_DEBUGS("Inventory") << "Folder type " << fit->first << " count " << fit->second << " elsewhere" << LL_ENDL;
 	}
 
 	static LLCachedControl<bool> fake_system_folder_issues(gSavedSettings, "QAModeFakeSystemFolderIssues", false);
@@ -4453,16 +4378,16 @@ LLPointer<LLInventoryValidationInfo> LLInventoryModel::validate() const
 
 	if (cat_lock > 0 || item_lock > 0)
 	{
-		/*LL_INFOS("Inventory") << "Found locks on some categories: sub-cat arrays "
-				<< cat_lock << ", item arrays " << item_lock << LL_ENDL;*/
+		LL_INFOS("Inventory") << "Found locks on some categories: sub-cat arrays "
+				<< cat_lock << ", item arrays " << item_lock << LL_ENDL;
 	}
 	if (desc_unknown_count != 0)
 	{
-		//LL_DEBUGS() << "Found " << desc_unknown_count << " cats with unknown descendent count" << LL_ENDL; 
+		LL_DEBUGS() << "Found " << desc_unknown_count << " cats with unknown descendent count" << LL_ENDL; 
 	}
 	if (version_unknown_count != 0)
 	{
-		//LL_DEBUGS("Inventory") << "Found " << version_unknown_count << " cats with unknown version" << LL_ENDL;
+		LL_DEBUGS("Inventory") << "Found " << version_unknown_count << " cats with unknown version" << LL_ENDL;
 	}
 
 	// FIXME need to fail login and tell user to retry, contact support if problem persists.
@@ -4646,8 +4571,8 @@ void LLInventoryModel::FetchItemHttpHandler::processData(LLSD & content, LLCore:
 		LLPointer<LLViewerInventoryItem> titem = new LLViewerInventoryItem;
 		titem->unpackMessage(content_items[i]);
 		
-		/*// _LL_DEBUGS(LOG_INV) << "ItemHttpHandler::httpSuccess item id: "
-						   << titem->getUUID() << LL_ENDL;*/
+		LL_DEBUGS(LOG_INV) << "ItemHttpHandler::httpSuccess item id: "
+						   << titem->getUUID() << LL_ENDL;
 		items.push_back(titem);
 		
 		// examine update for changes.

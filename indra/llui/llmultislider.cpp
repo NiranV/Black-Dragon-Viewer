@@ -506,7 +506,7 @@ BOOL LLMultiSlider::handleHover(S32 x, S32 y, MASK mask)
 		onCommit();
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
-		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (active)" << LL_ENDL;		
 	}
 	else
 	{
@@ -529,7 +529,7 @@ BOOL LLMultiSlider::handleHover(S32 x, S32 y, MASK mask)
         }
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
-		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)" << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)" << LL_ENDL;		
 	}
 	return TRUE;
 }

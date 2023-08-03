@@ -158,7 +158,7 @@ void LLRegionInfoModel::update(LLMessageSystem* msg)
 
 	// actually the "last set" sun hour, not the current sun hour. JC
 	msg->getF32(_PREHASH_RegionInfo, _PREHASH_SunHour, mSunHour);
-	// _LL_DEBUGS("WindlightSync") << "Got region sun hour: " << mSunHour << LL_ENDL;
+	LL_DEBUGS("WindlightSync") << "Got region sun hour: " << mSunHour << LL_ENDL;
 
 	msg->getS32Fast(_PREHASH_RegionInfo2, _PREHASH_HardMaxAgents, mHardAgentLimit);
 
@@ -244,7 +244,7 @@ void LLRegionInfoModel::sendEstateOwnerMessage(
 		std::vector<std::string>::const_iterator end = strings.end();
 		for (unsigned i = 0; it != end; ++it, ++i)
 		{
-			// _LL_DEBUGS() << "- [" << i << "] " << (*it) << LL_ENDL;
+			LL_DEBUGS() << "- [" << i << "] " << (*it) << LL_ENDL;
 			msg->nextBlock("ParamList");
 			msg->addString("Parameter", *it);
 		}

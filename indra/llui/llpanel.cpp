@@ -826,7 +826,7 @@ BOOL LLPanel::buildFromFile(const std::string& filename, const LLPanel::Params& 
 		return didPost;
 	}
 
-	// _LL_DEBUGS() << "Building panel " << filename << LL_ENDL;
+	LL_DEBUGS() << "Building panel " << filename << LL_ENDL;
 
 	LLUICtrlFactory::instance().pushFileName(filename);
 	{

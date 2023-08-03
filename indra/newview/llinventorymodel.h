@@ -277,19 +277,11 @@ public:
 							cat_array_t& categories,
 							item_array_t& items,
 							BOOL include_trash);
-// [RLVa:KB] - Checked: 2013-04-15 (RLVa-1.4.8)
 	void collectDescendentsIf(const LLUUID& id,
 							  cat_array_t& categories,
 							  item_array_t& items,
 							  BOOL include_trash,
-							  LLInventoryCollectFunctor& add,
-							  bool follow_folder_links = false);
-// [/RLVa:KB]
-//	void collectDescendentsIf(const LLUUID& id,
-//							  cat_array_t& categories,
-//							  item_array_t& items,
-//							  BOOL include_trash,
-//							  LLInventoryCollectFunctor& add);
+							  LLInventoryCollectFunctor& add);
 
 	// Collect all items in inventory that are linked to item_id.
 	// Assumes item_id is itself not a linked item.

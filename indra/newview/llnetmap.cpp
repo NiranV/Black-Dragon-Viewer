@@ -66,10 +66,6 @@
 #include "llviewerwindow.h"
 #include "llworld.h"
 #include "llworldmapview.h"		// shared draw code
-// [RLVa:KB] - Checked: RLVa-2.0.1
-#include "rlvactions.h"
-#include "rlvcommon.h"
-// [/RLVa:KB]
 
 static LLDefaultChildRegistry::Register<LLNetMap> r1("net_map");
 
@@ -426,10 +422,7 @@ void LLNetMap::draw()
 
 			pos_map = globalPosToView(positions[i]);
 
-// [RLVa:KB] - Checked: RLVa-1.2.0
-			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, uuid));
-// [/RLVa:KB]
-//			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL);
+			bool show_as_friend = (LLAvatarTracker::instance().getBuddyInfo(uuid) != NULL);
 
 			LLColor4 color = show_as_friend ? map_avatar_friend_color : map_avatar_color;
 
@@ -765,13 +758,9 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
 
 	// If the cursor is near an avatar on the minimap, a mini-inspector will be
 	// shown for the avatar, instead of the normal map tooltip.
-	//	if (handleToolTipAgent(mClosestAgentToCursor))
-// [RLVa:KB] - Checked: RLVa-1.2.2
-	bool fRlvCanShowName = (mClosestAgentToCursor.notNull()) && (RlvActions::canShowName(RlvActions::SNC_DEFAULT, mClosestAgentToCursor));
-	if ((fRlvCanShowName) && (handleToolTipAgent(mClosestAgentToCursor)))
-// [/RLVa:KB]
+    if (handleToolTipAgent(mClosestAgentToCursor))
 	{
-		return TRUE;
+        return true;
 	}
 
     // The popup menu uses the hover parcel when it is open and the mouse is on
@@ -782,11 +771,6 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
     {
         return false;
     }
-
-// [RLVa:KB] - Checked: RLVa-1.2.2
-	LLStringUtil::format_map_t args; LLAvatarName avName;
-	args["[AGENT]"] = ((!fRlvCanShowName) && (mClosestAgentToCursor.notNull()) && (LLAvatarNameCache::get(mClosestAgentToCursor, &avName))) ? RlvStrings::getAnonym(avName) + "\n" : "";
-// [/RLVa:KB]
 
     LLRect sticky_rect;
     S32 SLOP = 4;
@@ -804,10 +788,7 @@ BOOL LLNetMap::handleToolTip(S32 x, S32 y, MASK mask)
     LLViewerRegion *region    = LLWorld::getInstance()->getRegionFromPosGlobal(posGlobal);
     if (region)
     {
-//		region_name = region->getName();
-// [RLVa:KB] - Checked: RLVa-1.2.2
-		std::string region_name = (RlvActions::canShowLocation()) ? region->getName() : RlvStrings::getString(RLV_STRING_HIDDEN_REGION);
-// [/RLVa:KB]
+        std::string region_name = region->getName();
         if (!region_name.empty())
         {
             region_name_msg = mRegionNameMsg;

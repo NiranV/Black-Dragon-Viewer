@@ -71,9 +71,6 @@
 #include "llclipboard.h"
 #include "llhttpretrypolicy.h"
 #include "llsettingsvo.h"
-// [RLVa:KB] - Checked: 2014-11-02 (RLVa-1.4.11)
-#include "rlvcommon.h"
-// [/RLVa:KB]
 
 // do-nothing ops for use in callbacks.
 void no_op_inventory_func(const LLUUID&) {} 
@@ -114,7 +111,7 @@ public:
 	 */
 	bool localizeInventoryObjectName(std::string& object_name)
 	{
-		// _LL_DEBUGS(LOG_LOCAL) << "Searching for localization: " << object_name << LL_ENDL;
+		LL_DEBUGS(LOG_LOCAL) << "Searching for localization: " << object_name << LL_ENDL;
 
 		std::map<std::string, std::string>::const_iterator dictionary_iter = mInventoryItemsDict.find(object_name);
 
@@ -122,7 +119,7 @@ public:
 		if(found)
 		{
 			object_name = dictionary_iter->second;
-			// _LL_DEBUGS(LOG_LOCAL) << "Found, new name is: " << object_name << LL_ENDL;
+			LL_DEBUGS(LOG_LOCAL) << "Found, new name is: " << object_name << LL_ENDL;
 		}
 		return found;
 	}
@@ -656,7 +653,7 @@ bool LLViewerInventoryCategory::fetch()
 	if((VERSION_UNKNOWN == getVersion())
 	   && mDescendentsRequested.hasExpired())	//Expired check prevents multiple downloads.
 	{
-		// _LL_DEBUGS(LOG_INV) << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Fetching category children: " << mName << ", UUID: " << mUUID << LL_ENDL;
 		const F32 FETCH_TIMER_EXPIRY = 10.0f;
 		mDescendentsRequested.reset();
 		mDescendentsRequested.setTimerExpirySec(FETCH_TIMER_EXPIRY);
@@ -1224,10 +1221,10 @@ void link_inventory_array(const LLUUID& category,
 		links.append(link);
 
 #ifndef LL_RELEASE_FOR_DOWNLOAD
-		// _LL_DEBUGS(LOG_INV) << "Linking Object [ name:" << baseobj->getName() 
-		//				   << " UUID:" << baseobj->getUUID() 
-		//				   << " ] into Category [ name:" << cat_name 
-		//				   << " UUID:" << category << " ] " << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Linking Object [ name:" << baseobj->getName() 
+						   << " UUID:" << baseobj->getUUID() 
+						   << " ] into Category [ name:" << cat_name 
+						   << " UUID:" << category << " ] " << LL_ENDL;
 #endif
 	}
     LLSD new_inventory = LLSD::emptyMap();
@@ -1306,7 +1303,7 @@ void update_inventory_category(
 	LLPointer<LLInventoryCallback> cb)
 {
 	LLPointer<LLViewerInventoryCategory> obj = gInventory.getCategory(cat_id);
-	// _LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (obj ? obj->getName() : "(NOT FOUND)") << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] name " << (obj ? obj->getName() : "(NOT FOUND)") << LL_ENDL;
 	if(obj)
 	{
 		if (LLFolderType::lookupIsProtectedType(obj->getPreferredType()))
@@ -1348,7 +1345,7 @@ void remove_inventory_item(
 	}
 	else
 	{
-		// _LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << "(NOT FOUND)" << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << "(NOT FOUND)" << LL_ENDL;
 	}
 }
 
@@ -1360,7 +1357,7 @@ void remove_inventory_item(
 	if(obj)
 	{
 		const LLUUID item_id(obj->getUUID());
-		// _LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << obj->getName() << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "item_id: [" << item_id << "] name " << obj->getName() << LL_ENDL;
         if (AISAPI::isAvailable())
 		{
             AISAPI::completion_t cr = (cb) ? boost::bind(&doInventoryCb, cb, _1) : AISAPI::completion_t();
@@ -1428,7 +1425,7 @@ void remove_inventory_category(
 	const LLUUID& cat_id,
 	LLPointer<LLInventoryCallback> cb)
 {
-	// _LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] " << LL_ENDL;
+	LL_DEBUGS(LOG_INV) << "cat_id: [" << cat_id << "] " << LL_ENDL;
 	LLPointer<LLViewerInventoryCategory> obj = gInventory.getCategory(cat_id);
 	if(obj)
 	{
@@ -1474,7 +1471,7 @@ void purge_descendents_of(const LLUUID& id, LLPointer<LLInventoryCallback> cb)
 	LLInventoryModel::EHasChildren children = gInventory.categoryHasChildren(id);
 	if(children == LLInventoryModel::CHILDREN_NO)
 	{
-		// _LL_DEBUGS(LOG_INV) << "No descendents to purge for " << id << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "No descendents to purge for " << id << LL_ENDL;
 		return;
 	}
 	LLPointer<LLViewerInventoryCategory> cat = gInventory.getCategory(id);
@@ -1521,7 +1518,7 @@ void purge_descendents_of(const LLUUID& id, LLPointer<LLInventoryCallback> cb)
 		else // no cap
 		{
 			// Fast purge
-			// _LL_DEBUGS(LOG_INV) << "purge_descendents_of fast case " << cat->getName() << LL_ENDL;
+			LL_DEBUGS(LOG_INV) << "purge_descendents_of fast case " << cat->getName() << LL_ENDL;
 
 			// send it upstream
 			LLMessageSystem* msg = gMessageSystem;
@@ -1665,71 +1662,12 @@ void create_new_item(const std::string& name,
 						  cb);
 }	
 
-// [RLVa:KB] - Checked: 2014-11-02 (RLVa-1.4.11)
-void sync_inventory_folder(const LLUUID& folder_id, const LLInventoryModel::item_array_t& items, LLInventoryModel::item_array_t& items_to_add, LLInventoryModel::item_array_t& items_to_remove)
-{
-	LLInventoryModel::item_array_t curItems, newItems = items;
-
-	// Grab the current contents
-	LLInventoryModel::cat_array_t cats;
-	gInventory.collectDescendents(folder_id, cats, curItems, LLInventoryModel::EXCLUDE_TRASH);
-
-	// Purge everything in curItems that isn't part of newItems
-	for (LLInventoryModel::item_array_t::const_iterator itCurItem = curItems.begin(); itCurItem != curItems.end(); ++itCurItem)
-	{
-		LLViewerInventoryItem* pItem = *itCurItem;
-		if (std::find_if(newItems.begin(), newItems.end(), RlvPredIsEqualOrLinkedItem(pItem)) == newItems.end())
-		{
-			// Item doesn't exist in newItems => purge (if it's a link)
-			if ( (pItem->getIsLinkType()) && 
-				 (LLAssetType::AT_LINK_FOLDER != pItem->getActualType()) && 
-			     (items_to_remove.end() == std::find(items_to_remove.begin(), items_to_remove.end(), pItem)) )
-			{
-				items_to_remove.push_back(pItem);
-			}
-		}
-		else
-		{
-			// Item exists in newItems => remove *all* occurances in newItems (removes duplicate COF links to this item as well)
-			newItems.erase(std::remove_if(newItems.begin(), newItems.end(), RlvPredIsEqualOrLinkedItem(pItem)), newItems.end());
-		}
-	}
-
-	// Whatever remains in newItems will need to have a link created
-	for (LLInventoryModel::item_array_t::const_iterator itNewItem = newItems.begin(); itNewItem != newItems.end(); ++itNewItem)
-	{
-		LLViewerInventoryItem* pItem = *itNewItem;
-		if (items_to_add.end() == std::find(items_to_add.begin(), items_to_add.end(), pItem))
-			items_to_add.push_back(pItem);
-	}
-}
-
-void link_inventory_items(const LLUUID& folder_id, const LLInventoryModel::item_array_t& items, LLPointer<LLInventoryCallback> cb)
-{
-	for (LLInventoryModel::item_array_t::const_iterator itItem = items.begin(); itItem != items.end(); ++itItem)
-	{
-		const LLViewerInventoryItem* pItem = *itItem;
-		link_inventory_object(folder_id, pItem, cb);
-	}
-}
-
-void remove_inventory_items(const LLInventoryModel::item_array_t& items, LLPointer<LLInventoryCallback> cb)
-{
-	for (LLInventoryModel::item_array_t::const_iterator itItem = items.begin(); itItem != items.end(); ++itItem)
-	{
-		const LLViewerInventoryItem* pItem = *itItem;
-		if (pItem->getIsLinkType())
-			remove_inventory_item(pItem->getUUID(), cb);
-	}
-}
-// [/RLVa:KB]
-
 void slam_inventory_folder(const LLUUID& folder_id,
 						   const LLSD& contents,
 						   LLPointer<LLInventoryCallback> cb)
 {
-    /*// _LL_DEBUGS(LOG_INV) << "using AISv3 to slam folder, id " << folder_id
-                       << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;*/
+    LL_DEBUGS(LOG_INV) << "using AISv3 to slam folder, id " << folder_id
+                       << " new contents: " << ll_pretty_print_sd(contents) << LL_ENDL;
 
     AISAPI::completion_t cr = boost::bind(&doInventoryCb, cb, _1);
     AISAPI::SlamFolder(folder_id, contents, cr);

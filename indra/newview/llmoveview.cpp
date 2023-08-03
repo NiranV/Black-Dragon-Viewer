@@ -50,9 +50,6 @@
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
 #include "lltooltip.h"
-// [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c)
-#include "rlvactions.h"
-// [/RLVa:KB]
 
 //
 // Constants
@@ -154,10 +151,7 @@ BOOL LLFloaterMove::postBuild()
 	mStandButton->setVisible(FALSE);
 	mStopFlyingButton->setVisible(FALSE);
 
-//	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateFlyingStatus);
-// [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
-	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateMovementStatus);
-// [/RLVa:KB]
+	gAgent.addParcelChangedCallback(LLFloaterMove::sUpdateFlyingStatus);
 
 	return TRUE;
 }
@@ -205,12 +199,12 @@ void LLFloaterMove::setFlyingMode(BOOL fly)
 			&& avatar_object->isSitting();
 		instance->showModeButtons(!fly && !is_sitting);
 
-		if (fly)
-		{
+	if (fly)
+	{
 			instance->setStandStopFlyingMode(SSFM_STOP_FLYING);
-		}
-		else
-		{
+	}
+	else
+	{
 			instance->clearStandStopFlyingMode(SSFM_STOP_FLYING);
 		}
 	}
@@ -243,18 +237,18 @@ void LLFloaterMove::setSittingMode(BOOL bSitting)
 {
 	LLFloaterMove* instance = LLFloaterReg::findTypedInstance<LLFloaterMove>("moveview");
 	if (instance)
+{
+	if (bSitting)
 	{
-		if (bSitting)
-		{
 			instance->setStandStopFlyingMode(SSFM_STAND);
-		}
-		else
-		{
+	}
+	else
+	{
 			instance->clearStandStopFlyingMode(SSFM_STAND);
 
-			// show "Stop Flying" button if needed. EXT-871
-			if (gAgent.getFlying())
-			{
+		// show "Stop Flying" button if needed. EXT-871
+		if (gAgent.getFlying())
+		{
 				instance->setStandStopFlyingMode(SSFM_STOP_FLYING);
 			}
 		}
@@ -332,32 +326,23 @@ void LLFloaterMove::setMovementMode(const EMovementMode mode)
 	{
 	case MM_RUN:
 		gAgent.setAlwaysRun();
-//		gAgent.setRunning();
+		gAgent.setRunning();
 		break;
 	case MM_WALK:
 		gAgent.clearAlwaysRun();
-//		gAgent.clearRunning();
+		gAgent.clearRunning();
 		break;
 	default:
 		//do nothing for other modes (MM_FLY)
 		break;
 	}
 	// tell the simulator.
-//	gAgent.sendWalkRun(gAgent.getAlwaysRun());
-//	
-//	updateButtonsWithMovementMode(mode);
-//
-//	bool bHideModeButtons = MM_FLY == mode
-//		|| (isAgentAvatarValid() && gAgentAvatarp->isSitting());
-// [RLVa:KB] - Checked: 2011-05-11 (RLVa-1.3.0i) | Added: RLVa-1.3.0i
-	// Running may have been restricted so update walk-vs-run from the agent's actual running state
-	if ( (MM_WALK == mode) || (MM_RUN == mode) )
-		mCurrentMode = (gAgent.getRunning()) ? MM_RUN : MM_WALK;
+	gAgent.sendWalkRun(gAgent.getAlwaysRun());
+	
+	updateButtonsWithMovementMode(mode);
 
-	updateButtonsWithMovementMode(mCurrentMode);
-
-	bool bHideModeButtons = (MM_FLY == mCurrentMode) || (isAgentAvatarValid() && gAgentAvatarp->isSitting());
-// [/RLVa:KB]
+	bool bHideModeButtons = MM_FLY == mode
+		|| (isAgentAvatarValid() && gAgentAvatarp->isSitting());
 
 	showModeButtons(!bHideModeButtons);
 
@@ -460,23 +445,12 @@ void LLFloaterMove::setModeTitle(const EMovementMode mode)
 }
 
 //static
-//void LLFloaterMove::sUpdateFlyingStatus()
-//{
-//	LLFloaterMove *floater = LLFloaterReg::findTypedInstance<LLFloaterMove>("moveview");
-//	if (floater) floater->mModeControlButtonMap[MM_FLY]->setEnabled(gAgent.canFly());
-//	
-//}
-// [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
-void LLFloaterMove::sUpdateMovementStatus()
+void LLFloaterMove::sUpdateFlyingStatus()
 {
-	LLFloaterMove* pFloater = LLFloaterReg::findTypedInstance<LLFloaterMove>("moveview");
-	if (pFloater)
-	{
-		pFloater->mModeControlButtonMap[MM_RUN]->setEnabled(!RlvActions::hasBehaviour(RLV_BHVR_ALWAYSRUN));
-		pFloater->mModeControlButtonMap[MM_FLY]->setEnabled(gAgent.canFly());
-	}
+	LLFloaterMove *floater = LLFloaterReg::findTypedInstance<LLFloaterMove>("moveview");
+	if (floater) floater->mModeControlButtonMap[MM_FLY]->setEnabled(gAgent.canFly());
+	
 }
-// [/RLVa:KB]
 
 void LLFloaterMove::showModeButtons(BOOL bShow)
 {
@@ -516,10 +490,7 @@ void LLFloaterMove::onOpen(const LLSD& key)
 		showModeButtons(FALSE);
 	}
 
-//	sUpdateFlyingStatus();
-// [RLVa:KB] - Checked: 2011-05-27 (RLVa-1.4.0a) | Added: RLVa-1.4.0a
-	sUpdateMovementStatus();
-// [/RLVa:KB]
+	sUpdateFlyingStatus();
 }
 
 void LLFloaterMove::setModeButtonToggleState(const EMovementMode mode)
@@ -535,7 +506,7 @@ void LLFloaterMove::setModeButtonToggleState(const EMovementMode mode)
 	mModeControlButtonMap[mode]->setToggleState(TRUE);
 }
 
-//static
+// static
 void LLFloaterMove::setStandStopFlyingMode(EStandStopFlyingMode mode)
 {
 	if (mode == SSFM_STAND)
@@ -568,11 +539,11 @@ void LLFloaterMove::onStandButtonClick()
 {
 // [RLVa:KB] - Checked: 2010-03-07 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
 	if ( (!RlvActions::isRlvEnabled()) || (RlvActions::canStand()) )
-	{
-		LLFirstUse::sit(false);
+{
+	LLFirstUse::sit(false);
 
-		LLSelectMgr::getInstance()->deselectAllForStandingUp();
-		gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
+	LLSelectMgr::getInstance()->deselectAllForStandingUp();
+	gAgent.setControlFlags(AGENT_CONTROL_STAND_UP);
 	}
 // [/RLVa:KB]
 //	LLSelectMgr::getInstance()->deselectAllForStandingUp();

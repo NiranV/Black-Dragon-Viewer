@@ -380,7 +380,7 @@ void LLHUDRenderNotifier::updateNotificationHUD(hud_complexity_list_t complexity
     }
     else if (warning_level >= 0)
     {
-        // _LL_DEBUGS("HUDdetail") << "HUD individual warning postponed" << LL_ENDL;
+        LL_DEBUGS("HUDdetail") << "HUD individual warning postponed" << LL_ENDL;
     }
 
     if (mLatestHUDComplexity.objectsCost != new_total_complexity.objectsCost
@@ -419,9 +419,9 @@ LLHUDRenderNotifier::EWarnLevel LLHUDRenderNotifier::getWarningType(LLHUDComplex
     {
         // Note: Memory might not be accurate since texture is still loading or discard level changes
 
-        /*// _LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " memory usage over limit, "
+        LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " memory usage over limit, "
             << " was " << cmp_complexity.texturesMemoryTotal
-            << " is " << object_complexity.texturesMemoryTotal << LL_ENDL;*/
+            << " is " << object_complexity.texturesMemoryTotal << LL_ENDL;
 
         return WARN_MEMORY;
     }
@@ -430,33 +430,33 @@ LLHUDRenderNotifier::EWarnLevel LLHUDRenderNotifier::getWarningType(LLHUDComplex
         && max_render_cost > 0
         && object_complexity.objectsCost + object_complexity.texturesCost > max_render_cost)
     {
-        /*// _LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " complexity over limit,"
+        LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " complexity over limit,"
             << " HUD textures cost: " << object_complexity.texturesCost
-            << " HUD objects cost: " << object_complexity.objectsCost << LL_ENDL;*/
+            << " HUD objects cost: " << object_complexity.objectsCost << LL_ENDL;
 
         return WARN_COST;
     }
     else if (cmp_complexity.largeTexturesCount < object_complexity.largeTexturesCount
         && object_complexity.largeTexturesCount > max_oversized_count)
     {
-        /*// _LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains to many large textures: "
-            << object_complexity.largeTexturesCount << LL_ENDL;*/
+        LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains to many large textures: "
+            << object_complexity.largeTexturesCount << LL_ENDL;
 
         return WARN_HEAVY;
     }
     else if (cmp_complexity.texturesCount < object_complexity.texturesCount
         && object_complexity.texturesCount > max_textures_count)
     {
-        /*// _LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains too many textures: "
-            << object_complexity.texturesCount << LL_ENDL;*/
+        LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains too many textures: "
+            << object_complexity.texturesCount << LL_ENDL;
 
         return WARN_CRAMPED;
     }
     else if (cmp_complexity.objectsCount < object_complexity.objectsCount
         && object_complexity.objectsCount > max_objects_count)
     {
-        /*// _LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains too many objects: "
-            << object_complexity.objectsCount << LL_ENDL;*/
+        LL_DEBUGS("HUDdetail") << "HUD " << object_complexity.objectName << " contains too many objects: "
+            << object_complexity.objectsCount << LL_ENDL;
 
         return WARN_TEXTURES;
     }

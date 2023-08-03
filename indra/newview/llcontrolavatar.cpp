@@ -137,20 +137,20 @@ void LLControlAvatar::getNewConstraintFixups(LLVector3& new_pos_fixup, F32& new_
 			}
 			if (new_pos_fixup != mPositionConstraintFixup)
 			{
-				/*// _LL_DEBUGS("ConstraintFix") << getFullname() << " pos fix, offset_dist " << offset_dist << " pos fixup " 
-										   << new_pos_fixup << " was " << mPositionConstraintFixup << LL_ENDL;*/
-				// _LL_DEBUGS("ConstraintFix") << "vol_pos " << vol_pos << LL_ENDL;
-				// _LL_DEBUGS("ConstraintFix") << "extents " << extents[0] << " " << extents[1] << LL_ENDL;
-				// _LL_DEBUGS("ConstraintFix") << "unshift_extents " << unshift_extents[0] << " " << unshift_extents[1] << LL_ENDL;
+				LL_DEBUGS("ConstraintFix") << getFullname() << " pos fix, offset_dist " << offset_dist << " pos fixup " 
+										   << new_pos_fixup << " was " << mPositionConstraintFixup << LL_ENDL;
+				LL_DEBUGS("ConstraintFix") << "vol_pos " << vol_pos << LL_ENDL;
+				LL_DEBUGS("ConstraintFix") << "extents " << extents[0] << " " << extents[1] << LL_ENDL;
+				LL_DEBUGS("ConstraintFix") << "unshift_extents " << unshift_extents[0] << " " << unshift_extents[1] << LL_ENDL;
 				
 			}
 		}
         if (box_size/mScaleConstraintFixup > max_legal_size)
         {
             new_scale_fixup = mScaleConstraintFixup*max_legal_size/box_size;
-            /*// _LL_DEBUGS("ConstraintFix") << getFullname() << " scale fix, box_size " << box_size << " fixup " 
+            LL_DEBUGS("ConstraintFix") << getFullname() << " scale fix, box_size " << box_size << " fixup " 
 									   << mScaleConstraintFixup << " max legal " << max_legal_size 
-									   << " -> new scale " << new_scale_fixup << LL_ENDL;*/
+									   << " -> new scale " << new_scale_fixup << LL_ENDL;
         }
     }
 }
@@ -234,7 +234,7 @@ void LLControlAvatar::matchVolumeTransform()
 	        const LLMeshSkinInfo* skin_info = mRootVolp->getSkinInfo();
 			if (skin_info)
 			{
-                // _LL_DEBUGS("BindShape") << getFullname() << " bind shape " << skin_info->mBindShapeMatrix << LL_ENDL;
+                LL_DEBUGS("BindShape") << getFullname() << " bind shape " << skin_info->mBindShapeMatrix << LL_ENDL;
                 bind_rot = LLSkinningUtil::getUnscaledQuaternion(LLMatrix4(skin_info->mBindShapeMatrix));
 			}
 #endif
@@ -538,7 +538,7 @@ void LLControlAvatar::getAnimatedVolumes(std::vector<LLVOVolume*>& volumes)
 		 iter != child_list.end(); ++iter)
 	{
 		LLViewerObject* childp = *iter;
-        LLVOVolume *child_volp = childp ? childp->asVolume() : nullptr;
+        LLVOVolume *child_volp = dynamic_cast<LLVOVolume*>(childp);
         if (child_volp && child_volp->isAnimatedObject())
         {
             volumes.push_back(child_volp);
@@ -582,7 +582,7 @@ void LLControlAvatar::updateAnimations()
                 // Animation not already present, use this sequence id.
                 anims[anim_it->first] = anim_it->second;
             }
-            // _LL_DEBUGS("AnimatedObjectsNotify") << "found anim for vol " << volp->getID() << " anim " << anim_it->first << " root " << mRootVolp->getID() << LL_ENDL;
+            LL_DEBUGS("AnimatedObjectsNotify") << "found anim for vol " << volp->getID() << " anim " << anim_it->first << " root " << mRootVolp->getID() << LL_ENDL;
         }
     }
     if (!mPlaying)

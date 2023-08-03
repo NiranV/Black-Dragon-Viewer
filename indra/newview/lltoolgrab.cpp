@@ -58,9 +58,6 @@
 #include "llvoavatarself.h"
 #include "llworld.h"
 #include "llmenugl.h"
-// [RLVa:KB] - Checked: RLVa-2.1.0
-#include "rlvactions.h"
-// [/RLVa:KB]
 
 const S32 SLOP_DIST_SQ = 4;
 
@@ -195,11 +192,7 @@ void LLToolGrabBase::pickCallback(const LLPickInfo& pick_info)
 	}
 
 	// if not over object, do nothing
-//	if (!objectp)
-// [RLVa:KB] - Checked: RLVa-1.1.0
-	// Block initiating a drag operation on an object that can't be touched
-	if ( (!objectp) || ((RlvActions::isRlvEnabled()) && (!RlvActions::canTouch(objectp, pick_info.mObjectOffset))) )
-// [/RLVa:KB]
+	if (!objectp)
 	{
 		LLToolGrab::getInstance()->setMouseCapture(TRUE);
 		LLToolGrab::getInstance()->mMode = GRAB_NOOBJECT;
@@ -459,21 +452,6 @@ BOOL LLToolGrabBase::handleHover(S32 x, S32 y, MASK mask)
 		setMouseCapture(FALSE);
 		return TRUE;
 	}
-
-// [RLVa:KB] - Checked: RLVa-1.1.0
-	// Block dragging an object beyond touch range
-	if ( (RlvActions::isRlvEnabled()) && (GRAB_INACTIVE != mMode) && (GRAB_NOOBJECT != mMode) && (hasMouseCapture()) && (!RlvActions::canTouch(mGrabPick.getObject(), mGrabPick.mObjectOffset)) )
-	{
-		if (gGrabTransientTool)
-		{
-			// Prevent the grab tool from popping up as soon as we kill the drag operation
-			gBasicToolset->selectTool(gGrabTransientTool);
-			gGrabTransientTool = NULL;
-		}
-		setMouseCapture(FALSE);
-		return TRUE;
-	}
-// [/RLVa:KB]
 
 	// Do the right hover based on mode
 	switch( mMode )

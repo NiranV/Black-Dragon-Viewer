@@ -103,10 +103,7 @@ void LLFloaterBuyContents::show(const LLSaleInfo& sale_info)
 	if (list)
 		list->deleteAllItems();
 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-	floater->mObjectSelection = LLSelectMgr::getInstance()->getSelection();
-// [/RLVa:KB]
-//	floater->mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
+	floater->mObjectSelection = LLSelectMgr::getInstance()->getEditSelection();
 
 	LLUUID owner_id;
 	std::string owner_name;

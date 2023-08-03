@@ -3489,7 +3489,7 @@ bool LLFloater::buildFromFile(const std::string& filename)
 	
 	bool res = true;
 	
-	// _LL_DEBUGS() << "Building floater " << filename << LL_ENDL;
+	LL_DEBUGS() << "Building floater " << filename << LL_ENDL;
 	LLUICtrlFactory::instance().pushFileName(filename);
 	{
 		if (!getFactoryMap().empty())

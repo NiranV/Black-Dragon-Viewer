@@ -87,7 +87,7 @@ protected:
 private:
 	void reset();
 
-public:
+	// *FIXME: Duplicated code from LLPanelRegionInfo
 	static void sendEstateOwnerMessage(
 		LLMessageSystem* msg,
 		const std::string& request,
