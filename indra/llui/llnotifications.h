@@ -535,10 +535,6 @@ public:
 		return mTimestamp;
 	}
 
-// [SL:KB] - Patch: UI-Notifications | Checked: 2011-04-11 (Catznip-2.5.0a) | Added: Catznip-2.5.0a
-	bool hasLabel() const;
-// [/SL:KB]
-
 	bool getOfferFromAgent() const
 	{
 		return mOfferFromAgent;

@@ -725,13 +725,6 @@ void LLAgent::moveLeftNudge(S32 direction)
 //-----------------------------------------------------------------------------
 void LLAgent::moveUp(S32 direction, bool reset)
 {
-// [RLVa:KB] - Checked: RLVa-2.2 (@jump)
-	if ( (!RlvActions::canJump()) && (direction > 0) && (!getFlying()) )
-	{
-		return;
-	}
-// [/Sl:KB]
-
 	mMoveTimer.reset();
 	LLFirstUse::notMoving(false);
 

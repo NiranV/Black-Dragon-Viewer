@@ -4393,9 +4393,6 @@ void LLFolderBridge::buildContextMenuFolderOptions(U32 flags,   menuentry_vec_t&
 	const bool is_system_folder = LLFolderType::lookupIsProtectedType(type);
 	// BAP change once we're no longer treating regular categories as ensembles.
 	const bool is_agent_inventory = isAgentInventory();
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2010-11-24 (Catznip-2.4)
-	const bool is_outfit = (type == LLFolderType::FT_OUTFIT);
-// [/SL:KB]
 
 	// Only enable calling-card related options for non-system folders.
 	if (!is_system_folder && is_agent_inventory)
@@ -4456,21 +4453,10 @@ void LLFolderBridge::buildContextMenuFolderOptions(U32 flags,   menuentry_vec_t&
 					disabled_items.push_back(std::string("Remove From Outfit"));
 			}
 		}
-//		if (!LLAppearanceMgr::instance().getCanReplaceCOF(mUUID))
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2010-11-24 (Catznip-2.4)
-		if ( ((is_outfit) && (!LLAppearanceMgr::instance().getCanReplaceCOF(mUUID))) || 
-			 ((!is_outfit) && (gAgentWearables.isCOFChangeInProgress())) )
-// [/SL:KB]
+		if (!LLAppearanceMgr::instance().getCanReplaceCOF(mUUID))
 		{
 			disabled_items.push_back(std::string("Replace Outfit"));
 		}
-// [RLVa:KB] - Checked: RLVa-2.0.3
-		// Block "Replace Current Outfit" if the user can't wear the new folder
-		if ( (RlvActions::isRlvEnabled()) && (RlvFolderLocks::instance().isLockedFolder(mUUID, RLV_LOCK_ADD)) )
-		{
-			disabled_items.push_back(std::string("Replace Outfit"));
-		}
-// [/RLVa:KB]
 		if (!LLAppearanceMgr::instance().getCanAddToCOF(mUUID))
 		{
 			disabled_items.push_back(std::string("Add To Outfit"));
@@ -6601,11 +6587,7 @@ void LLObjectBridge::performAction(LLInventoryModel* model, std::string action)
 		else if(item && item->isFinished())
 		{
 			// must be in library. copy it to our inventory and put it on.
-//			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2013-02-04 (Catznip-3.4)
-			// "Wear" from inventory replaces, so library items should too
-			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0, true));
-// [/SL;KB]
+			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
 			copy_inventory_item(
 				gAgent.getID(),
 				item->getPermissions().getOwner(),
@@ -7126,36 +7108,18 @@ void LLWearableBridge::buildContextMenu(LLMenuGL& menu, U32 flags)
 					{
 						disabled_items.push_back(std::string("Wearable And Object Wear"));
 						disabled_items.push_back(std::string("Wearable Add"));
-// [RLVa:KB] - Checked: 2010-04-04 (RLVa-1.2.0c) | Added: RLVa-1.2.0c
-						if ( (rlv_handler_t::isEnabled()) && (!gRlvWearableLocks.canRemove(item)) )
-							disabled_items.push_back(std::string("Take Off"));
-// [/RLVa:KB]
 					}
 					else
 					{
 						items.push_back(std::string("Wearable And Object Wear"));
 						disabled_items.push_back(std::string("Take Off"));
 						disabled_items.push_back(std::string("Wearable Edit"));
-
-// [RLVa:KB] - Checked: 2010-06-09 (RLVa-1.2.0g) | Modified: RLVa-1.2.0g
-						if (rlv_handler_t::isEnabled())
-						{
-							ERlvWearMask eWearMask = gRlvWearableLocks.canWear(item);
-							if ((eWearMask & RLV_WEAR_REPLACE) == 0)
-								disabled_items.push_back(std::string("Wearable And Object Wear"));
-							if ((eWearMask & RLV_WEAR_ADD) == 0)
-								disabled_items.push_back(std::string("Wearable Add"));
-						}
-// [/RLVa:KB]
 					}
 
 					if (LLWearableType::getInstance()->getAllowMultiwear(mWearableType))
 					{
 						items.push_back(std::string("Wearable Add"));
-//						if (!gAgentWearables.canAddWearable(mWearableType))
-// [SL:KB] - Patch: Appearance-WearableDuplicateAssets | Checked: 2011-07-24 (Catznip-2.6.0e) | Added: Catznip-2.6.0e
-						if ( (!gAgentWearables.canAddWearable(mWearableType)) || (gAgentWearables.getWearableFromAssetID(item->getAssetUUID())) )
-// [/SL:KB]
+						if (!gAgentWearables.canAddWearable(mWearableType))
 						{
 							disabled_items.push_back(std::string("Wearable Add"));
 						}

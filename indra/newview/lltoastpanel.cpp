@@ -55,10 +55,7 @@ LLToastPanel::~LLToastPanel()
 std::string LLToastPanel::getTitle()
 {
 	// *TODO: create Title and localize it. If it will be required.
-//	return mNotification->getMessage();
-// [SL:KB] - Patch: UI-Notifications | Checked: 2011-04-11 (Catznip-2.5.0a) | Added: Catznip-2.5.0a
-	return (mNotification->hasLabel()) ? mNotification->getLabel() : mNotification->getMessage();
-// [/SL:KB]
+	return mNotification->getMessage();
 }
 
 //virtual

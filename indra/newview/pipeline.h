@@ -676,9 +676,6 @@ public:
 	static S32				sVisibleLightCount;
 	static bool				sRenderingHUDs;
     static F32              sDistortionWaterClipPlaneMargin;
-// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
-	static bool				sRenderTextures;
-// [/SL:KB]
 
 	//BD
 	static bool                sRenderOtherAttachedLights;

@@ -973,9 +973,8 @@ public:
 	/*virtual*/ BOOL	isWearingWearableType(LLWearableType::EType type ) const;
 	LLViewerObject *	findAttachmentByID( const LLUUID & target_id ) const;
 	LLViewerJointAttachment* getTargetAttachmentPoint(LLViewerObject* viewer_object);
-// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
+	//BD - Refresh Attachments
 	void				rebuildAttachments();
-// [/SL:KB]
 
 protected:
 	void 				lazyAttach();

@@ -72,12 +72,6 @@ public:
 
 	BOOL			isWearableCopyable(LLWearableType::EType type, U32 index /*= 0*/) const;
 	BOOL			areWearablesLoaded() const;
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	bool			areInitalWearablesLoaded() const { return mInitialWearablesLoaded; }
-// [/SL:KB]
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
-	bool			areInitialAttachmentsRequested() const { return mInitialAttachmentsRequested;  }
-// [/RLVa:KB]
 	bool			isCOFChangeInProgress() const { return mCOFChangeInProgress; }
 	F32				getCOFChangeTime() const { return mCOFChangeTimer.getElapsedTimeF32(); }
 	void			updateWearablesLoaded();
@@ -212,9 +206,6 @@ public:
 	typedef boost::function<void()>			loaded_callback_t;
 	typedef boost::signals2::signal<void()>	loaded_signal_t;
 	boost::signals2::connection				addLoadedCallback(loaded_callback_t cb);
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	boost::signals2::connection				addInitialWearablesLoadedCallback(const loaded_callback_t& cb);
-// [/SL:KB]
 
 	bool									changeInProgress() const;
 	void									notifyLoadingStarted();
@@ -223,21 +214,12 @@ public:
 private:
 	loading_started_signal_t				mLoadingStartedSignal; // should be called before wearables are changed
 	loaded_signal_t							mLoadedSignal; // emitted when all agent wearables get loaded
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.1)
-	loaded_signal_t							mInitialWearablesLoadedSignal; // emitted once when the initial wearables are loaded
-// [/SL:KB]
 
 	//--------------------------------------------------------------------
 	// Member variables
 	//--------------------------------------------------------------------
 private:
 	static BOOL		mInitialWearablesUpdateReceived;
-// [SL:KB] - Patch: Appearance-InitialWearablesLoadedCallback | Checked: 2010-08-14 (Catznip-2.2)
-	static bool		mInitialWearablesLoaded;
-// [/SL:KB]
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1)
-	static bool		mInitialAttachmentsRequested;
-// [/RLVa:KB]
 	BOOL			mWearablesLoaded;
 
 	/**

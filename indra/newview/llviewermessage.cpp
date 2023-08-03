@@ -367,18 +367,6 @@ bool friendship_offer_callback(const LLSD& notification, const LLSD& response)
 	    // modified_form->setElementEnabled("Accept", false);
 	    // modified_form->setElementEnabled("Decline", false);
 	    // notification_ptr->updateForm(modified_form);
-// [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
-//		// Assume that any offer notification with "getCanBeStored() == true" is the result of RLVa routing it to the notifcation syswell
-//		/*const*/ LLNotificationsUI::LLScreenChannel* pChannel = LLNotificationsUI::LLChannelManager::instance().getNotificationScreenChannel();
-//		/*const*/ LLNotificationsUI::LLToast* pToast = (pChannel) ? pChannel->getToastByNotificationID(notification["id"].asUUID()) : NULL;
-//		if ( (!pToast) || (!pToast->getCanBeStored()) )
-//		{
-// [/SL:KB]
-//			notification_ptr->repost();
-// [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
-//		}
-// [/SL:KB]
-
     }
 
 	return false;
@@ -2070,7 +2058,7 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 		}
 		else
 		{
-/*
+
 			LLAvatarName av_name;
 			if (LLAvatarNameCache::get(mFromID, &av_name))
 			{
@@ -2084,22 +2072,6 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
 				+ mFromName + LLTrans::getString("'")+" " + LLTrans::getString("InvOfferOwnedByUnknownUser");
 				chatHistory_string = mFromName + " " + LLTrans::getString("InvOfferOwnedByUnknownUser");
 			}
-*/
-// [SL:KB] - Checked: 2010-11-02 (RLVa-1.2.2a) | Added: RLVa-1.2.2a
-			std::string name_slurl = LLSLURL("agent", mFromID, "about").getSLURLString();
-
-// [RLVa:KB] - Checked: RLVa-2.0.1
-			// RELEASE-RLVa: [RLVa-2.0.1] Make sure this stays in sync with the condition in inventory_offer_handler()
-			bool fRlvCanShowName = (!RlvActions::isRlvEnabled()) ||
-				(RlvActions::canShowName(RlvActions::SNC_DEFAULT, mFromID)) || (!RlvUtil::isNearbyAgent(mFromID)) || (RlvUIEnabler::hasOpenIM(mFromID)) || (RlvUIEnabler::hasOpenProfile(mFromID));
-			if (!fRlvCanShowName)
-				name_slurl = LLSLURL("agent", mFromID, "rlvanonym").getSLURLString();
-// [/RLVa:KB]
-
-			from_string = LLTrans::getString("InvOfferAnObjectNamed") + " "+ LLTrans::getString("'") + mFromName 
-				+ LLTrans::getString("'")+" " + LLTrans::getString("InvOfferOwnedBy") + name_slurl;
-			chatHistory_string = mFromName + " " + LLTrans::getString("InvOfferOwnedBy") + " " + name_slurl;
-// [/SL:KB]
 		}
 	}
 	else
@@ -2257,18 +2229,7 @@ bool lure_callback(const LLSD& notification, const LLSD& response)
 		modified_form->setElementEnabled("Teleport", false);
 		modified_form->setElementEnabled("Cancel", false);
 		notification_ptr->updateForm(modified_form);
-
-// [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
-		// Assume that any offer notification with "getCanBeStored() == true" is the result of RLVa routing it to the notifcation syswell
-		/*const*/ LLNotificationsUI::LLScreenChannel* pChannel = LLNotificationsUI::LLChannelManager::instance().getNotificationScreenChannel();
-		/*const*/ LLNotificationsUI::LLToast* pToast = (pChannel) ? pChannel->getToastByNotificationID(notification["id"].asUUID()) : NULL;
-		if ( (!pToast) || (!pToast->getCanBeStored()) )
-		{
-// [/SL:KB]
-			notification_ptr->repost();
-// [SL:KB] - Patch: UI-Notifications | Checked: 2013-05-09 (Catznip-3.5)
-		}
-// [/SL:KB]
+		notification_ptr->repost();
 	}
 
 	return false;
@@ -4047,15 +4008,6 @@ void process_kill_object(LLMessageSystem *mesgsys, void **user_data)
 			LLViewerObject *objectp = gObjectList.findObject(id);
 			if (objectp)
 			{
-// [SL:KB] - Patch: Appearance-TeleportAttachKill | Checked: Catznip-4.0
-				if ( (objectp->isAttachment()) && (!objectp->isTempAttachment()) && (LLAgent::TELEPORT_NONE != gAgent.getTeleportState()) &&
-					 (gAgentAvatarp) && (objectp->permYouOwner()) && (gSavedSettings.getBOOL("BlockAttachmentKillsOnTeleport")) )
-				{
-					//gAgentAvatarp->addPendingDetach(objectp->getRootEdit()->getID());
-					continue;
-				}
-// [/SL:KB]
-
 				// Display green bubble on kill
 				if ( gShowObjectUpdates )
 				{
@@ -6665,19 +6617,10 @@ void send_lures(const LLSD& notification, const LLSD& response)
 
 		// Record the offer.
 		{
-// [RLVa:KB] - Checked: RLVa-2.0.1
-			bool fRlvCanShowName = (!notification["payload"].has("rlv_shownames")) ? true : !notification["payload"]["rlv_shownames"].asBoolean();
-// [/RLVa:KB]
 			LLAvatarName av_name;
 			LLAvatarNameCache::get(target_id, &av_name);  // for im log filenames
 			LLSD args;
-// [SL:KB] - Patch: Notification-Logging | Checked: 2012-08-23 (Catznip-3.3)
-// [RLVa:KB] - Checked: RLVa-2.0.1
-			args["TO_NAME"] = LLSLURL("agent", target_id, (fRlvCanShowName) ? "completename" : "rlvanonym").getSLURLString();;
-// [/RLVa:KB]
-//			args["TO_NAME"] = LLSLURL("agent", target_id, "completename").getSLURLString();;
-// [/SL:KB]
-//			args["TO_NAME"] = LLSLURL("agent", target_id, "displayname").getSLURLString();;
+			args["TO_NAME"] = LLSLURL("agent", target_id, "displayname").getSLURLString();;
 
 	
 			LLSD payload;
@@ -6688,11 +6631,7 @@ void send_lures(const LLSD& notification, const LLSD& response)
 			LLNotificationsUtil::add("TeleportOfferSent", args, payload);
 
 			// Add the recepient to the recent people list.
-// [RLVa:KB] - Checked: RLVa-2.0.1
-			if (fRlvCanShowName)
-				LLRecentPeople::instance().add(target_id);
-// [/RLVa:KB]
-//			LLRecentPeople::instance().add(target_id);
+			LLRecentPeople::instance().add(target_id);
 		}
 	}
 	gAgent.sendReliableMessage();

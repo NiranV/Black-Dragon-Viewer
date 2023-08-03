@@ -73,14 +73,9 @@ public:
 	};
 	typedef std::deque<AttachmentsInfo> attachments_vec_t;
 
-// [RLVa:KB] - Checked: 2010-09-13 (RLVa-1.2.1)
 	void addAttachmentRequest(const LLUUID& item_id,
                               const U8 attachment_pt,
-                              const BOOL add, const BOOL fRlvForce = FALSE);
-// [/RLVa:KB]
-//	void addAttachmentRequest(const LLUUID& item_id,
-//                              const U8 attachment_pt,
-//                              const BOOL add);
+                              const BOOL add);
     void onAttachmentRequested(const LLUUID& item_id);
 	void requestAttachments(attachments_vec_t& attachment_requests);
 	static void onIdle(void *);
@@ -91,16 +86,6 @@ public:
     void onDetachCompleted(const LLUUID& inv_item_id);
 
     bool isAttachmentStateComplete() const;
-
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-2.1
-public:
-	void clearPendingAttachmentLink(const LLUUID& idItem);
-	bool getPendingAttachments(std::set<LLUUID>& ids) const;
-	void refreshAttachments();
-protected:
-	void onRegisterAttachmentComplete(const LLUUID& idAttachLink);
-	friend class LLRegisterAttachmentCallback;
-// [/SL:KB]
 
 private:
 
@@ -140,13 +125,9 @@ private:
     std::set<LLUUID> mRecentlyArrivedAttachments;
     LLTimer mCOFLinkBatchTimer;
 
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-2.1
-	// Attachments that have pending link creation
-	std::set<LLUUID> mPendingAttachLinks;
-// [/SL:KB]
 
 //    // Attachments that are linked in the COF but may be invalid.
-//	LLItemRequestTimes mQuestionableCOFLinks;
+	LLItemRequestTimes mQuestionableCOFLinks;
 };
 
 #endif

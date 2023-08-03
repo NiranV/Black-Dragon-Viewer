@@ -52,9 +52,6 @@
 #include "llagentui.h"
 #include "llagentwearables.h"
 #include "llagentpilot.h"
-// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
-#include "llattachmentsmgr.h"
-// [/SL:KB]
 #include "llcompilequeue.h"
 #include "llconsole.h"
 #include "lldebugview.h"
@@ -2078,15 +2075,12 @@ class LLAdvancedRebakeTextures : public view_listener_t
 	}
 };
 	
-	
-// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
+//BD - Refresh Attachments
 void handle_refresh_attachments()
 {
 	if (isAgentAvatarValid())
 		gAgentAvatarp->rebuildAttachments();
-	LLAttachmentsMgr::instance().refreshAttachments();
 }
-// [/SL:KB]
 
 #if 1 //ndef LL_RELEASE_FOR_DOWNLOAD
 ///////////////////////////
@@ -4696,13 +4690,6 @@ void handle_reset_view()
 	gAgentCamera.setFocusOnAvatar(TRUE, FALSE, FALSE);
 	reset_view_final( TRUE );
 	LLFloaterCamera::resetCameraMode();
-
-// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
-	if (isAgentAvatarValid())
-	{
-		gAgentAvatarp->rebuildAttachments();
-	}
-// [/SL:KB]
 }
 
 class LLViewResetView : public view_listener_t
@@ -4752,24 +4739,6 @@ class LLViewMouselook : public view_listener_t
 		return true;
 	}
 };
-
-//BD - Unused.
-// [SL:KB] - Patch: Viewer-FullscreenWindow | Checked: 2010-07-09 (Catznip-2.1.2a) | Modified: Catznip-2.1.1a
-/*class LLViewFullscreen : public view_listener_t
-{
-	bool handleEvent(const LLSD& userdata)
-	{
-		if ((gViewerWindow) && (gViewerWindow->canFullscreenWindow()))
-			gViewerWindow->setFullscreenWindow(!gViewerWindow->getFullscreenWindow());
-		return true;
-	}
-};
-
-bool view_enable_fullscreen()
-{
-	return (gViewerWindow) && (gViewerWindow->canFullscreenWindow());
-}*/
-// [/SL:KB]
 
 class LLViewDefaultUISize : public view_listener_t
 {
@@ -6833,9 +6802,7 @@ class LLAvatarResetSkeleton: public view_listener_t
 		if(avatar)
         {
             avatar->resetSkeleton(false);
-// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
 			avatar->rebuildAttachments();
-// [/SL:KB]
         }
         return true;
     }
@@ -6863,9 +6830,7 @@ class LLAvatarResetSkeletonAndAnimations : public view_listener_t
 		if (avatar)
 		{
 			avatar->resetSkeleton(true);
-// [SL:KB] - Patch: Appearance-RefreshAttachments | Checked: Catznip-5.3
 			avatar->rebuildAttachments();
-// [/SL:KB]
 		}
 		return true;
 	}
@@ -9134,9 +9099,6 @@ void handle_rebake_textures(void*)
 	gAgentAvatarp->forceBakeAllTextures(slam_for_debug);
 	if (gAgent.getRegion() && gAgent.getRegion()->getCentralBakeVersion())
 	{
-// [SL:KB] - Patch: Appearance-Misc | Checked: 2015-06-27 (Catznip-3.7)
-//		LLAppearanceMgr::instance().syncCofVersionAndRefresh();
-// [/SL:KB]
 		LLAppearanceMgr::instance().requestServerAppearanceUpdate();
 	}
 }
@@ -10542,9 +10504,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAdvancedCheckDebugCharacterVis(), "Advanced.CheckDebugCharacterVis");
 	view_listener_t::addMenu(new LLAdvancedDumpAttachments(), "Advanced.DumpAttachments");
 	view_listener_t::addMenu(new LLAdvancedRebakeTextures(), "Advanced.RebakeTextures");
-// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
-	commit.add("Advanced.RefreshAttachments", boost::bind(&handle_refresh_attachments));
-// [/SL:KB]
 	view_listener_t::addMenu(new LLAdvancedDebugAvatarTextures(), "Advanced.DebugAvatarTextures");
 	view_listener_t::addMenu(new LLAdvancedDumpAvatarLocalTextures(), "Advanced.DumpAvatarLocalTextures");
 	// Advanced > Network
@@ -10638,10 +10597,7 @@ void initialize_menus()
 	commit.add("Avatar.ShowInspector", boost::bind(&handle_avatar_show_inspector));
 	view_listener_t::addMenu(new LLAvatarSendIM(), "Avatar.SendIM");
 	view_listener_t::addMenu(new LLAvatarCall(), "Avatar.Call");
-//	enable.add("Avatar.EnableCall", boost::bind(&LLAvatarActions::canCall));
-// [RLVa:KB] - Checked: 2010-08-25 (RLVa-1.2.1b) | Added: RLVa-1.2.1b
-	enable.add("Avatar.EnableCall", boost::bind(&enable_avatar_call));
-// [/RLVa:KB]
+	enable.add("Avatar.EnableCall", boost::bind(&LLAvatarActions::canCall));
 	view_listener_t::addMenu(new LLAvatarReportAbuse(), "Avatar.ReportAbuse");
 	view_listener_t::addMenu(new LLAvatarToggleMyProfile(), "Avatar.ToggleMyProfile");
 	view_listener_t::addMenu(new LLAvatarToggleSearch(), "Avatar.ToggleSearch");
@@ -10761,11 +10717,6 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
 
-// [RLVa:KB] - Checked: RLVa-2.0.0
-	enable.add("RLV.MainToggleVisible", boost::bind(&rlvMenuMainToggleVisible, _1));
-	enable.add("RLV.CanShowName", boost::bind(&rlvMenuCanShowName));
-	enable.add("RLV.EnableIfNot", boost::bind(&rlvMenuEnableIfNot, _2));
-// [/RLVa:KB]
 //	//BD - Re/DeAlpha
 	view_listener_t::addMenu(new BDObjectSetAlpha(), "Object.SetAlphaMode");
 
@@ -10783,6 +10734,7 @@ void initialize_menus()
 //	//BD - Additional features
 	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
 	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
+	commit.add("Advanced.RefreshAttachments", boost::bind(&handle_refresh_attachments));
 
 //	//BD - SSFUI
 	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));

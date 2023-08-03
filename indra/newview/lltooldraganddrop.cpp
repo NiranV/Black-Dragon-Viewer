@@ -1878,11 +1878,7 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
 	{
 		if(mSource == SOURCE_LIBRARY)
 		{
-//			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-2.2)
-			// Make this behave consistent with dad3dWearItem
-			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0, fReplace));
-// [/SL:KB]
+			LLPointer<LLInventoryCallback> cb = new LLBoostFuncInventoryCallback(boost::bind(rez_attachment_cb, _1, (LLViewerJointAttachment*)0));
 			copy_inventory_item(
 				gAgent.getID(),
 				item->getPermissions().getOwner(),
@@ -1893,11 +1889,7 @@ EAcceptance LLToolDragAndDrop::dad3dRezAttachmentFromInv(
 		}
 		else
 		{
-// [SL:KB] - Patch: Appearance-DnDWear | Checked: 2010-09-28 (Catznip-2.2)
-			// Make this behave consistent with dad3dWearItem
-			rez_attachment(item, 0, !(mask & MASK_CONTROL));
-// [/SL:KB]
-//			rez_attachment(item, 0);
+			rez_attachment(item, 0);
 		}
 	}
 	return ACCEPT_YES_SINGLE;

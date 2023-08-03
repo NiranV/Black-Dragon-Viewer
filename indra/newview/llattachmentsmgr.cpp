@@ -35,41 +35,16 @@
 #include "llviewerinventory.h"
 #include "llviewerregion.h"
 #include "message.h"
-// [RLVa:KB] - Checked: 2011-05-22 (RLVa-1.3.1a)
-#include "rlvactions.h"
-#include "rlvlocks.h"
-// [/RLVa:KB]
 
 const F32 COF_LINK_BATCH_TIME = 5.0F;
 const F32 MAX_ATTACHMENT_REQUEST_LIFETIME = 30.0F;
 const F32 MIN_RETRY_REQUEST_TIME = 5.0F;
 const F32 MAX_BAD_COF_TIME = 30.0F;
 
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-3.7
-class LLRegisterAttachmentCallback : public LLRequestServerAppearanceUpdateOnDestroy
-{
-public:
-	LLRegisterAttachmentCallback()
-		: LLRequestServerAppearanceUpdateOnDestroy()
-	{
-	}
-
-	~LLRegisterAttachmentCallback() override
-	{
-	}
-
-	void fire(const LLUUID& idItem) override
-	{
-		LLAttachmentsMgr::instance().onRegisterAttachmentComplete(idItem);
-		LLRequestServerAppearanceUpdateOnDestroy::fire(idItem);
-	}
-};
-// [/SL:KB]
-
 LLAttachmentsMgr::LLAttachmentsMgr():
     mAttachmentRequests("attach",MIN_RETRY_REQUEST_TIME),
     mDetachRequests("detach",MIN_RETRY_REQUEST_TIME)
-//  ,  mQuestionableCOFLinks("badcof",MAX_BAD_COF_TIME)
+  ,  mQuestionableCOFLinks("badcof",MAX_BAD_COF_TIME)
 {
 }
 
@@ -77,14 +52,9 @@ LLAttachmentsMgr::~LLAttachmentsMgr()
 {
 }
 
-//void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
-//                                            const U8 attachment_pt,
-//                                            const BOOL add)
-// [RLVa:KB] - Checked: 2010-09-13 (RLVa-1.2.1)
 void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
                                             const U8 attachment_pt,
-                                            const BOOL add, const BOOL fRlvForce /*=FALSE*/)
-// [/RLVa:KB]
+                                            const BOOL add)
 {
 	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
 
@@ -103,25 +73,6 @@ void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
 	attachment.mAttachmentPt = attachment_pt;
 	attachment.mAdd = add;
 
-// [RLVa:KB] - Checked: 2010-09-23 (RLVa-1.2.1)
-	if ( (RlvActions::isRlvEnabled()) && (!fRlvForce) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_ANY)) && (gAgentWearables.areInitialAttachmentsRequested()) )
-	{
-		const LLInventoryItem* pItem = gInventory.getItem(item_id); 
-		if (!pItem)
-			return;
-
-		LLViewerJointAttachment* pAttachPt = NULL;
-		ERlvWearMask eWearMask = gRlvAttachmentLocks.canAttach(pItem, &pAttachPt);
-		if ( ((add) && ((RLV_WEAR_ADD & eWearMask) == 0)) || ((!add) && ((RLV_WEAR_REPLACE & eWearMask) == 0)) )
-			return;
-
-		if ( (0 == attachment_pt) && (NULL != pAttachPt) )
-			attachment.mAttachmentPt = RlvAttachPtLookup::getAttachPointIndex(pAttachPt);
-		RlvAttachmentLockWatchdog::instance().onWearAttachment(pItem, (add) ? RLV_WEAR_ADD : RLV_WEAR_REPLACE);
-		attachment.mAdd = true;
-	}
-// [/RLVa:KB]
-
 	mPendingAttachments.push_back(attachment);
 
     mAttachmentRequests.addTime(item_id);
@@ -129,14 +80,10 @@ void LLAttachmentsMgr::addAttachmentRequest(const LLUUID& item_id,
 
 void LLAttachmentsMgr::onAttachmentRequested(const LLUUID& item_id)
 {
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-3.7
-	if (item_id.isNull())
-		return;
-// [/SL:KB]
 
-	//LLViewerInventoryItem *item = gInventory.getItem(item_id);
-	/*// _LL_DEBUGS("Avatar") << "ATT attachment was requested "
-						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;*/
+	LLViewerInventoryItem *item = gInventory.getItem(item_id);
+	LL_DEBUGS("Avatar") << "ATT attachment was requested "
+						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
     mAttachmentRequests.addTime(item_id);
 }
 
@@ -276,13 +223,6 @@ void LLAttachmentsMgr::linkRecentlyArrivedAttachments()
 {
     if (mRecentlyArrivedAttachments.size())
     {
- // [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-3.7
-		if (!LLAppearanceMgr::instance().getAttachmentInvLinkEnable())
-		{
-			return;
-		}
-// [/SL:KB]
-
         // One or more attachments have arrived but have not yet been
         // processed for COF links
         if (mAttachmentRequests.empty())
@@ -322,62 +262,16 @@ void LLAttachmentsMgr::linkRecentlyArrivedAttachments()
         }
         if (ids_to_link.size())
         {
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-3.7
-			LLPointer<LLInventoryCallback> cb = new LLRegisterAttachmentCallback();
-			for (const LLUUID& idAttach : ids_to_link)
-			{
-				if (std::find(mPendingAttachLinks.begin(), mPendingAttachLinks.end(), idAttach) == mPendingAttachLinks.end())
-				{
-					LLAppearanceMgr::instance().addCOFItemLink(idAttach, cb);
-					mPendingAttachLinks.insert(idAttach);
-				}
-			}
-// [/SL:KB]
-//            LLPointer<LLInventoryCallback> cb = new LLRequestServerAppearanceUpdateOnDestroy();
-//            for (uuid_vec_t::const_iterator uuid_it = ids_to_link.begin();
-//                 uuid_it != ids_to_link.end(); ++uuid_it)
-//            {
-//                LLAppearanceMgr::instance().addCOFItemLink(*uuid_it, cb);
-//            }
+            LLPointer<LLInventoryCallback> cb = new LLRequestServerAppearanceUpdateOnDestroy();
+            for (uuid_vec_t::const_iterator uuid_it = ids_to_link.begin();
+                 uuid_it != ids_to_link.end(); ++uuid_it)
+            {
+                LLAppearanceMgr::instance().addCOFItemLink(*uuid_it, cb);
+            }
         }
         mRecentlyArrivedAttachments.clear();
     }
 }
-
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-2.2
-bool LLAttachmentsMgr::getPendingAttachments(std::set<LLUUID>& ids) const
-{
-	ids.clear();
-
-	// Returns the union of the LL maintained list of attachments that are waiting for link creation and our maintained list of attachments that are pending link creation
-	set_union(mRecentlyArrivedAttachments.begin(), mRecentlyArrivedAttachments.end(), mPendingAttachLinks.begin(), mPendingAttachLinks.end(), std::inserter(ids, ids.begin()));
-
-	return !ids.empty();
-}
-
-void LLAttachmentsMgr::clearPendingAttachmentLink(const LLUUID& idItem)
-{
-	mPendingAttachLinks.erase(idItem);
-}
-
-void LLAttachmentsMgr::onRegisterAttachmentComplete(const LLUUID& idAttachLink)
-{
-	const LLViewerInventoryItem* pAttachLink = gInventory.getItem(idAttachLink);
-	if (!pAttachLink)
-		return;
-
-	const LLUUID& idAttachBase = pAttachLink->getLinkedUUID();
-
-	// Remove the attachment from the pending list
-	clearPendingAttachmentLink(idAttachBase);
-
-	// It may have been detached already in which case we should remove the COF link
-	if ( (isAgentAvatarValid()) && (!gAgentAvatarp->isWearingAttachment(idAttachBase)) )
-	{
-		LLAppearanceMgr::instance().removeCOFItemLinks(idAttachBase, NULL, true);
-	}
-}
-// [/SL:KB]
 
 LLAttachmentsMgr::LLItemRequestTimes::LLItemRequestTimes(const std::string& op_name, F32 timeout):
     mOpName(op_name),
@@ -507,11 +401,6 @@ void LLAttachmentsMgr::onDetachRequested(const LLUUID& inv_item_id)
 
 void LLAttachmentsMgr::onDetachCompleted(const LLUUID& inv_item_id)
 {
-// [SL:KB] - Patch: Appearance-SyncAttach | Checked: Catznip-2.2
-	// (mRecentlyArrivedAttachments doesn't need pruning since it'll check the attachment is actually worn before linking)
-	clearPendingAttachmentLink(inv_item_id);
-// [/SL:KB]
-
     LLTimer timer;
     LLInventoryItem *item = gInventory.getItem(inv_item_id);
     if (mDetachRequests.getTime(inv_item_id, timer))
@@ -537,18 +426,11 @@ void LLAttachmentsMgr::onDetachCompleted(const LLUUID& inv_item_id)
 
 bool LLAttachmentsMgr::isAttachmentStateComplete() const
 {
-// [SL:KB] - Patch: Appearance-Misc | Checked: Catznip-4.3
-	return  mPendingAttachments.empty()
-		&& mAttachmentRequests.empty()
-		&& mDetachRequests.empty()
-		&& mRecentlyArrivedAttachments.empty()
-		&& mPendingAttachLinks.empty();
-// [/SL:KB]
-//    return  mPendingAttachments.empty()
-//        && mAttachmentRequests.empty()
-//        && mDetachRequests.empty()
-//        && mRecentlyArrivedAttachments.empty()
-//        && mQuestionableCOFLinks.empty();
+    return  mPendingAttachments.empty()
+        && mAttachmentRequests.empty()
+        && mDetachRequests.empty()
+        && mRecentlyArrivedAttachments.empty()
+        && mQuestionableCOFLinks.empty();
 }
 
 // Check for attachments that are (a) linked in COF and (b) not
@@ -653,28 +535,3 @@ void LLAttachmentsMgr::spamStatusInfo()
     }
 #endif
 }
-
-// [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
-void LLAttachmentsMgr::refreshAttachments()
-{
-	if (!isAgentAvatarValid())
-		return;
-
-	for (const auto& kvpAttachPt : gAgentAvatarp->mAttachmentPoints)
-	{
-		for (const LLViewerObject* pAttachObj : kvpAttachPt.second->mAttachedObjects)
-		{
-			const LLUUID& idItem = pAttachObj->getAttachmentItemID();
-			if ( (mAttachmentRequests.wasRequestedRecently(idItem)) || (pAttachObj->isTempAttachment()) )
-				continue;
-
-			AttachmentsInfo attachment;
-			attachment.mItemID = idItem;
-			attachment.mAttachmentPt = kvpAttachPt.first;
-			attachment.mAdd = true;
-			mPendingAttachments.push_back(attachment);
-			mAttachmentRequests.addTime(idItem);
-		}
-	}
-}
-// [/SL:KB]

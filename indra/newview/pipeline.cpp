@@ -355,9 +355,6 @@ bool	LLPipeline::sReflectionProbesEnabled = false;
 S32		LLPipeline::sVisibleLightCount = 0;
 bool	LLPipeline::sRenderingHUDs;
 F32     LLPipeline::sDistortionWaterClipPlaneMargin = 1.0125f;
-// [SL:KB] - Patch: Render-TextureToggle (Catznip-4.0)
-bool	LLPipeline::sRenderTextures = true;
-// [/SL:KB]
 
 //BD
 bool    LLPipeline::sRenderOtherAttachedLights = true;
@@ -8161,9 +8158,6 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
 	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
 	shader.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderGodraysFalloffMultiplier);
-
-    LLEnvironment& environment = LLEnvironment::instance();
-    LLSettingsSky::ptr_t sky = environment.getCurrentSky();
 }
 
 
@@ -8313,12 +8307,12 @@ void LLPipeline::renderDeferredLighting()
 			LLVector3 gauss[32]; // xweight, yweight, offset
 
 			for (U32 i = 0; i < kern_length; i++)
-            {
+			{
 				gauss[i].mV[0] = llgaussian(x, go.mV[0]);
 				gauss[i].mV[1] = llgaussian(x, go.mV[1]);
 				gauss[i].mV[2] = x;
 				x += 1.f;
-            }
+			}
 
 			gDeferredBlurLightProgram.uniform2f(sDelta, 1.f, 0.f);
 			gDeferredBlurLightProgram.uniform1f(sDistFactor, dist_factor);
