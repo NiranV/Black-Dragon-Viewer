@@ -11955,6 +11955,94 @@ Unpacking: [UNPACK_TIME]s [USIZE]KB
     </form>
   </notification>
   
+  <notification
+   icon="alertmodal.tga"
+   label="Create subfolder"
+   name="CreateSubfolder"
+   type="alertmodal">
+    <unique/>
+    Name the new folder:
+    <tag>confirm</tag>
+    <form name="form">
+      <input name="message" type="text">
+        [DESC]
+      </input>
+      <button
+       default="true"
+       index="0"
+       name="OK"
+       text="OK"/>
+      <button
+       index="1"
+       name="Cancel"
+       text="Cancel"/>
+    </form>
+  </notification>
+  <notification
+   icon="alertmodal.tga"
+   name="SameFolderRequired"
+   type="alert">
+    Selected items must be in the same folder.
+    <tag>fail</tag>
+    <usetemplate
+      name="okbutton"
+      yestext="OK"/>
+  </notification>
+
+  <notification
+    icon="alertmodal.tga"
+    name="RiggedMeshAttachedToHUD"
+    type="alertmodal">
+    An object "[NAME]" attached to HUD point "[POINT]" contains rigged mesh.
+
+Rigged mesh objects are designed for attachment to the avatar. You will see this object but no one else will.
+
+If you want others to see this object, remove it and re-attach it to an avatar attachment point.
+    <tag>confirm</tag>
+    <usetemplate
+        ignoretext="Warn me when rigged mesh is attached to HUD point."
+        name="okignore"
+        yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="EnableAutoFPSWarning"
+   type="alertmodal">
+You are about to enable AutoFPS. All unsaved graphics settings will be lost.
+
+Would you like to save them first?
+      <tag>confirm</tag>
+      <usetemplate
+       name="okcancelbuttons"
+       notext="No"
+       yestext="Yes"/>
+  </notification>
+    
+  <notification
+    icon="notifytip.tga"
+    name="ReflectionProbeApplied"
+    persist="true"
+    type="alertmodal">
+    WARNING: You have made your object a Reflection Probe.  This will implicitly change the object to mimic its influence volume and will make irreversible changes to the object.  Do you want to continue?
+   <usetemplate
+       ignoretext="Reflection Probe tips"
+       name="okcancelignore"
+       notext="Cancel"
+       yestext="OK"/>
+  </notification>
+
+  <notification
+    icon="notifytip.tga"
+    name="AutoAdjustHDRSky"
+    type="alertmodal">
+      You are editing a non-HDR sky that has been automatically converted to HDR. To remove HDR and tone mapping, set Reflection Probe Ambiance to zero.
+    <usetemplate
+        ignoretext="HDR Sky adjustment warning"
+        name="okignore"
+        yestext="OK"/>
+  </notification>
+  
   <!-- Black Dragon Notifications -->
   <notification
    icon="alertmodal.tga"
