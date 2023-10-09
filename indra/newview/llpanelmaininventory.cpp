@@ -717,7 +717,7 @@ void LLPanelMainInventory::setFocusFilterEditor()
 void LLPanelMainInventory::draw()
 {
 	//BD
-	U32 item_count = getTotalItemCount();
+	U32 item_count = gInventory.getItemCount();
 	llassert(mFreshCountCtrl != NULL);
 	if (item_count > 0)
 	{
@@ -899,17 +899,7 @@ const U32 LLPanelMainInventory::getFreshItemCount()
 
 const U32 LLPanelMainInventory::getTotalItemCount()
 {
-	U32 item_count = 0;
-	if (mInventoryInboxPanel)
-	{
-		const LLFolderViewFolder * inbox_folder = mInventoryInboxPanel->getRootFolder();
-
-		if (inbox_folder)
-		{
-			item_count += inbox_folder->getFoldersCount();
-			item_count += inbox_folder->getItemsCount();
-		}
-	}
+	U32 item_count = gInventory.getItemCount();
 
 	return item_count;
 }
