@@ -2115,6 +2115,13 @@ void LLPipeline::updateMoveDampedAsync(LLDrawable* drawablep)
 	assertInitialized();
 
 	// update drawable now
+	//BD - Force undamped in mouselook to prevent animated linksets from falling apart.
+	//     I figured it would be best to do it right here since both damped and undamped
+	//     functions are the same and instead of adding conditions all over the place
+	//     having a single one right here to catch everything seems a lot better.
+	if (gAgentCamera.cameraMouselook())
+		drawablep->setState(LLDrawable::MOVE_UNDAMPED); // force to UNDAMPED
+	else
 	drawablep->clearState(LLDrawable::MOVE_UNDAMPED); // force to DAMPED
 	drawablep->updateMove(); // returns done
 	drawablep->setState(LLDrawable::EARLY_MOVE); // flag says we already did an undamped move this frame

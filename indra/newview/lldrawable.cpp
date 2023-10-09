@@ -54,6 +54,9 @@
 #include "llcontrolavatar.h"
 #include "lldrawpoolavatar.h"
 
+//BD
+#include "llagentcamera.h"
+
 const F32 MIN_INTERPOLATE_DISTANCE_SQUARED = 0.001f * 0.001f;
 const F32 MAX_INTERPOLATE_DISTANCE_SQUARED = 10.f * 10.f;
 const F32 OBJECT_DAMPING_TIME_CONSTANT = 0.06f;
@@ -820,10 +823,18 @@ BOOL LLDrawable::updateMove()
 	{
 		return FALSE;
 	}
+
+	//BD
+	bool allow_dampen = isState(MOVE_UNDAMPED);
+	if (gAgentCamera.cameraMouselook() && mVObjp->isAttachment() && !mVObjp->isRiggedMesh())
+	{
+		allow_dampen = false;
+	}
 	
 	makeActive();
 
-	return isState(MOVE_UNDAMPED) ? updateMoveUndamped() : updateMoveDamped();
+	//BD
+	return allow_dampen ? updateMoveUndamped() : updateMoveDamped();
 }
 
 BOOL LLDrawable::updateMoveUndamped()
