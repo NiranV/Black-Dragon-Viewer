@@ -277,8 +277,8 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
             return; // this error condition is not recoverable.
         }
         LLViewerRegionImpl* impl = regionp->getRegionImplNC();
-        /*LL_DEBUGS("AppInit", "Capabilities") << "requesting seed caps for handle " << regionHandle 
-                                             << " name " << regionp->getName() << LL_ENDL;*/
+        LL_DEBUGS("AppInit", "Capabilities") << "requesting seed caps for handle " << regionHandle 
+                                             << " name " << regionp->getName() << LL_ENDL;
 
         std::string url = regionp->getCapability("Seed");
         if (url.empty())
@@ -308,7 +308,7 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
                                             << " region id " << regionp->getRegionID()
                                             << " handle " << regionp->getHandle()
                                             << " (attempt #" << impl->mSeedCapAttempts + 1 << ")" << LL_ENDL;
-		// _LL_DEBUGS("AppInit", "Capabilities") << "Capabilities requested: " << capabilityNames << LL_ENDL;
+		LL_DEBUGS("AppInit", "Capabilities") << "Capabilities requested: " << capabilityNames << LL_ENDL;
 
         regionp = NULL;
         impl = NULL;
@@ -374,16 +374,16 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCoro(U64 regionHandle)
         {
             regionp->setCapability(iter->first, iter->second);
 
-            /*// _LL_DEBUGS("AppInit", "Capabilities")
-                << "Capability '" << iter->first << "' is '" << iter->second << "'" << LL_ENDL;*/
+            LL_DEBUGS("AppInit", "Capabilities")
+                << "Capability '" << iter->first << "' is '" << iter->second << "'" << LL_ENDL;
         }
 
 #if 0
         log_capabilities(mCapabilities);
 #endif
 
-        /* _LL_DEBUGS("AppInit", "Capabilities", "Teleport") << "received caps for handle " << regionHandle 
-														 << " region name " << regionp->getName() << LL_ENDL;*/
+        LL_DEBUGS("AppInit", "Capabilities", "Teleport") << "received caps for handle " << regionHandle 
+														 << " region name " << regionp->getName() << LL_ENDL;
         regionp->setCapabilitiesReceived(true);
 
         break;
@@ -525,7 +525,7 @@ void LLViewerRegionImpl::requestBaseCapabilitiesCompleteCoro(U64 regionHandle)
         }
         else
         {
-            // _LL_DEBUGS("CrossingCaps") << "Sim sent multiple base cap grants with matching sizes." << LL_ENDL;
+            LL_DEBUGS("CrossingCaps") << "Sim sent multiple base cap grants with matching sizes." << LL_ENDL;
         }
         impl->mSecondCapabilitiesTracker.clear();
     } 
@@ -2170,7 +2170,7 @@ bool LLViewerRegion::isAlive()
 	return mAlive;
 }
 
-BOOL LLViewerRegion::isOwnedSelf(const LLVector3& pos) const
+BOOL LLViewerRegion::isOwnedSelf(const LLVector3& pos)
 {
 	if (mParcelOverlay)
 	{
@@ -2181,7 +2181,7 @@ BOOL LLViewerRegion::isOwnedSelf(const LLVector3& pos) const
 }
 
 // Owned by a group you belong to?  (officer or member)
-BOOL LLViewerRegion::isOwnedGroup(const LLVector3& pos) const
+BOOL LLViewerRegion::isOwnedGroup(const LLVector3& pos)
 {
 	if (mParcelOverlay)
 	{
@@ -2357,8 +2357,8 @@ void LLViewerRegion::getInfo(LLSD& info)
 
 void LLViewerRegion::requestSimulatorFeatures()
 {
-    /*// _LL_DEBUGS("SimulatorFeatures") << "region " << getName() << " ptr " << this
-                                   << " trying to request SimulatorFeatures" << LL_ENDL;*/
+    LL_DEBUGS("SimulatorFeatures") << "region " << getName() << " ptr " << this
+                                   << " trying to request SimulatorFeatures" << LL_ENDL;
     // kick off a request for simulator features
     std::string url = getCapability("SimulatorFeatures");
     if (!url.empty())
@@ -2620,7 +2620,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 		// we've seen this object before
 		if (entry->getCRC() == crc)
 		{
-            // _LL_DEBUGS("AnimatedObjects") << " got dupe for local_id " << local_id << LL_ENDL;
+            LL_DEBUGS("AnimatedObjects") << " got dupe for local_id " << local_id << LL_ENDL;
             dumpStack("AnimatedObjectsStack");
 
 			// Record a hit
@@ -2629,7 +2629,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 		}
 		else //CRC changed
 		{
-            // _LL_DEBUGS("AnimatedObjects") << " got update for local_id " << local_id << LL_ENDL;
+            LL_DEBUGS("AnimatedObjects") << " got update for local_id " << local_id << LL_ENDL;
             dumpStack("AnimatedObjectsStack");
 
 			// Update the cache entry 
@@ -2642,7 +2642,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 	}
 	else
 	{
-        // _LL_DEBUGS("AnimatedObjects") << " got first notification for local_id " << local_id << LL_ENDL;
+        LL_DEBUGS("AnimatedObjects") << " got first notification for local_id " << local_id << LL_ENDL;
         dumpStack("AnimatedObjectsStack");
 
 		// we haven't seen this object before
@@ -2826,7 +2826,7 @@ void LLViewerRegion::requestCacheMisses()
 		msg->addU8Fast(_PREHASH_CacheMissType, (*iter).mType);
 		msg->addU32Fast(_PREHASH_ID, (*iter).mID);
 
-        // _LL_DEBUGS("AnimatedObjects") << "Requesting cache missed object " << (*iter).mID << LL_ENDL;
+        LL_DEBUGS("AnimatedObjects") << "Requesting cache missed object " << (*iter).mID << LL_ENDL;
         
 		blocks++;
 
@@ -3522,17 +3522,17 @@ void LLViewerRegion::resetMaterialsCapThrottle()
 				<< requests_per_sec << " per second"
 				<< LL_ENDL;
 		}
-		/*// _LL_DEBUGS("Materials") << "region '" << getName()
+		LL_DEBUGS("Materials") << "region '" << getName()
 							   << "' RenderMaterialsCapability " << requests_per_sec
-							   << LL_ENDL;*/
+							   << LL_ENDL;
 	}
 	else
 	{
-		/*// _LL_DEBUGS("Materials")
+		LL_DEBUGS("Materials")
 			<< "region '" << getName()
 			<< "' did not return RenderMaterialsCapability, using default "
 			<< requests_per_sec << " per second"
-			<< LL_ENDL;*/
+			<< LL_ENDL;
 	}
 	
 	mMaterialsCapThrottleTimer.resetWithExpiry( 1.0f / requests_per_sec );

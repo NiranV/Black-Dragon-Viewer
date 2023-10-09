@@ -750,7 +750,7 @@ public:
 			std::vector<LLCharacter*>::iterator sort_iter = LLCharacter::sInstances.begin();
 			while (sort_iter != LLCharacter::sInstances.end())
 			{
-				LLVOAvatar* avatar = static_cast<LLVOAvatar*>(*sort_iter);
+				LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*sort_iter);
 				if (avatar &&
 					!avatar->isDead())						// Not dead yet
 				{
@@ -884,7 +884,7 @@ public:
 			U32 old_y = ypos ;
 			for(S32 i = LLViewerTexture::BOOST_NONE; i < LLViewerTexture::MAX_GL_IMAGE_CATEGORY; i++)
 			{
-				if(gTotalTextureBytesPerBoostLevel[i] > U64Bytes(0))
+				if(gTotalTextureBytesPerBoostLevel[i] > (S32Bytes)0)
 				{
 					addText(xpos, ypos, llformat("Boost_Level %d:  %.3f MB", i, F32Megabytes(gTotalTextureBytesPerBoostLevel[i]).value()));
 					ypos += y_inc;
@@ -1101,14 +1101,11 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 			BOOL r = mouse_captor->handleAnyMouseClick(local_x, local_y, mask, clicktype, down); 
 			if (r) {
 
-				// _LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick viewer with mousecaptor calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x  << "local/global y " << local_y << " " << y << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
-				if (LLViewerEventRecorder::getLoggingStatus())
-				{
+				LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick viewer with mousecaptor calling updatemouseeventinfo - local_x|global x  "<< local_x << " " << x  << "local/global y " << local_y << " " << y << LL_ENDL;
+
 					LLViewerEventRecorder::instance().setMouseGlobalCoords(x,y);
 					LLViewerEventRecorder::instance().logMouseEvent(std::string(buttonstatestr),std::string(buttonname)); 
-				}
-#endif
+
 			}
 			else if (down && clicktype == CLICK_RIGHT)
 			{
@@ -1129,11 +1126,8 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 		if (r) 
 		{
 
-			// _LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick calling updatemouseeventinfo - global x  "<< " " << x	<< "global y " << y	 << "buttonstate: " << buttonstatestr << " buttonname " << buttonname << LL_ENDL;
+			LL_DEBUGS() << "LLViewerWindow::handleAnyMouseClick calling updatemouseeventinfo - global x  "<< " " << x	<< "global y " << y	 << "buttonstate: " << buttonstatestr << " buttonname " << buttonname << LL_ENDL;
 
-#if AL_VIEWER_EVENT_RECORDER
-			if (LLViewerEventRecorder::getLoggingStatus())
-			{
 				LLViewerEventRecorder::instance().setMouseGlobalCoords(x,y);
 
 				// Clear local coords - this was a click on root window so these are not needed
@@ -1145,13 +1139,11 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 				// For this reason it's best to provide hints where possible here by leaving out local coordinates
 				LLViewerEventRecorder::instance().setMouseLocalCoords(-1,-1);
 				LLViewerEventRecorder::instance().logMouseEvent(buttonstatestr,buttonname); 
-			}
 
 			if (LLView::sDebugMouseHandling)
 			{
 				LL_INFOS() << buttonname << " Mouse " << buttonstatestr << " " << LLViewerEventRecorder::instance().get_xui()	<< LL_ENDL;
 			} 
-#endif
 			return TRUE;
 		} else if (LLView::sDebugMouseHandling)
 			{
@@ -1169,9 +1161,7 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 	// Do not allow tool manager to handle mouseclicks if we have disconnected	
 	if(!gDisconnected && LLToolMgr::getInstance()->getCurrentTool()->handleAnyMouseClick( x, y, mask, clicktype, down ) )
 	{
-#if AL_VIEWER_EVENT_RECORDER
 		LLViewerEventRecorder::instance().clear_xui(); 
-#endif
         is_toolmgr_action = true;
 		return TRUE;
 	}
@@ -1325,10 +1315,9 @@ LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *wi
 					S32 object_face = pick_info.mObjectFace;
 					std::string url = data;
 
-					// _LL_DEBUGS() << "Object: picked at " << pos.mX << ", " << pos.mY << " - face = " << object_face << " - URL = " << url << LL_ENDL;
+					LL_DEBUGS() << "Object: picked at " << pos.mX << ", " << pos.mY << " - face = " << object_face << " - URL = " << url << LL_ENDL;
 
-					LLViewerObject* vobjp = static_cast<LLViewerObject*>(pick_info.getObject());
-					LLVOVolume *obj = vobjp ? vobjp->asVolume() : nullptr;
+					LLVOVolume *obj = dynamic_cast<LLVOVolume*>(static_cast<LLViewerObject*>(pick_info.getObject()));
 				
 					if (obj && !obj->getRegion()->getCapability("ObjectMedia").empty())
 					{
@@ -2039,7 +2028,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	// We want to set this stuff up BEFORE we initialize the pipeline, so we can turn off
 	// stuff like AGP if we think that it'll crash the viewer.
 	//
-	// _LL_DEBUGS("Window") << "Loading feature tables." << LL_ENDL;
+	LL_DEBUGS("Window") << "Loading feature tables." << LL_ENDL;
 
 	// Initialize OpenGL Renderer
 	LLVertexBuffer::initClass(mWindow);
@@ -2132,7 +2121,7 @@ void LLViewerWindow::initBase()
 	// Create global views
 
 	// Login screen and main_view.xml need edit menus for preferences and browser
-	// _LL_DEBUGS("AppInit") << "initializing edit menu" << LL_ENDL;
+	LL_DEBUGS("AppInit") << "initializing edit menu" << LL_ENDL;
 	initialize_edit_menu();
 
     LLFontGL::loadCommonFonts();
@@ -2840,7 +2829,7 @@ BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
 {
     if (LLSetKeyBindDialog::recordKey(key, mask, FALSE))
     {
-        //LL_DEBUGS() << "KeyUp handled by LLSetKeyBindDialog" << LL_ENDL;
+        LL_DEBUGS() << "KeyUp handled by LLSetKeyBindDialog" << LL_ENDL;
         LLViewerEventRecorder::instance().logKeyEvent(key, mask);
         return TRUE;
     }
@@ -2867,14 +2856,12 @@ BOOL LLViewerWindow::handleKeyUp(KEY key, MASK mask)
 	{
 		if (keyboard_focus->handleKeyUp(key, mask, FALSE))
 		{
-			// _LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned true" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned true" << LL_ENDL;
 			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-#endif
 			return TRUE;
 		}
 		else {
-			// _LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned FALSE" << LL_ENDL;
+			LL_DEBUGS() << "LLviewerWindow::handleKeyUp - in 'traverse up' - no loops seen... just called keyboard_focus->handleKeyUp an it returned FALSE" << LL_ENDL;
 		}
 	}
 
@@ -2894,7 +2881,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
     // so keybindings have to be recorded before that
     if (LLSetKeyBindDialog::recordKey(key, mask, TRUE))
     {
-        //LL_DEBUGS() << "Key handled by LLSetKeyBindDialog" << LL_ENDL;
+        LL_DEBUGS() << "Key handled by LLSetKeyBindDialog" << LL_ENDL;
         LLViewerEventRecorder::instance().logKeyEvent(key,mask);
         return TRUE;
     }
@@ -2978,10 +2965,8 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		//||(gLoginMenuBarView && gLoginMenuBarView->handleKey(key, mask, TRUE))
 		||(gMenuHolder && gMenuHolder->handleKey(key, mask, TRUE)))
 	{
-		// _LL_DEBUGS() << "LLviewerWindow::handleKey handle nav keys for nav" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+		LL_DEBUGS() << "LLviewerWindow::handleKey handle nav keys for nav" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 
@@ -2995,9 +2980,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 			&& keyboard_focus 
 			&& keyboard_focus->handleKey(key,mask,FALSE))
 		{
-#if AL_VIEWER_EVENT_RECORDER
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 			return TRUE;
 		}
 
@@ -3006,18 +2989,14 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 			&& gMenuBarView
 			&& gMenuBarView->handleAcceleratorKey(key, mask))
 		{
-#if AL_VIEWER_EVENT_RECORDER
 			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-#endif
 			return TRUE;
 		}
 
 		//BD
 		/*if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
 		{
-#if AL_VIEWER_EVENT_RECORDER
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 			return TRUE;
 		}*/
 	}
@@ -3042,17 +3021,13 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		{
 			mRootView->focusNextRoot();
 		}
-#if AL_VIEWER_EVENT_RECORDER
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 	// hidden edit menu for cut/copy/paste
 	if (gEditMenu && gEditMenu->handleAcceleratorKey(key, mask))
 	{
-#if AL_VIEWER_EVENT_RECORDER
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 
@@ -3095,32 +3070,26 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		if (keyboard_focus->handleKey(key, mask, FALSE))
 		{
 
-			// _LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned true" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned true" << LL_ENDL;
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask); 
-#endif
 			return TRUE;
 		} else {
-			// _LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned FALSE" << LL_ENDL;
+			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned FALSE" << LL_ENDL;
 		}
 	}
 
 	if( LLToolMgr::getInstance()->getCurrentTool()->handleKey(key, mask) )
 	{
-		// _LL_DEBUGS() << "LLviewerWindow::handleKey toolbar handling?" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+		LL_DEBUGS() << "LLviewerWindow::handleKey toolbar handling?" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 
 	// Try for a new-format gesture
 	if (LLGestureMgr::instance().triggerGesture(key, mask))
 	{
-		// _LL_DEBUGS() << "LLviewerWindow::handleKey new gesture feature" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+		LL_DEBUGS() << "LLviewerWindow::handleKey new gesture feature" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 
@@ -3128,10 +3097,8 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 	// don't pass it down to the menus.
 	if (gGestureList.trigger(key, mask))
 	{
-		// _LL_DEBUGS() << "LLviewerWindow::handleKey check gesture trigger" << LL_ENDL;
-#if AL_VIEWER_EVENT_RECORDER
+		LL_DEBUGS() << "LLviewerWindow::handleKey check gesture trigger" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-#endif
 		return TRUE;
 	}
 
@@ -3165,9 +3132,7 @@ BOOL LLViewerWindow::handleKey(KEY key, MASK mask)
 		&& gMenuBarView
 		&& gMenuBarView->handleAcceleratorKey(key, mask))
 	{
-#if AL_VIEWER_EVENT_RECORDER
 		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-#endif
 		return TRUE;
 	}
 
@@ -3690,7 +3655,7 @@ void LLViewerWindow::updateUI()
 
 			if( !handled )
 			{
-				// _LL_DEBUGS("UserInput") << "hover not handled by mouse captor" << LL_ENDL;
+				LL_DEBUGS("UserInput") << "hover not handled by mouse captor" << LL_ENDL;
 			}
 		}
 		else

@@ -936,7 +936,7 @@ BOOL LLViewerTextEditor::handleDragAndDrop(S32 x, S32 y, MASK mask,
 	}
 
 	handled = TRUE;
-	// _LL_DEBUGS("UserInput") << "dragAndDrop handled by LLViewerTextEditor " << getName() << LL_ENDL;
+	LL_DEBUGS("UserInput") << "dragAndDrop handled by LLViewerTextEditor " << getName() << LL_ENDL;
 
 	return handled;
 }

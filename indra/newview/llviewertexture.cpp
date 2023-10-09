@@ -539,7 +539,7 @@ void LLViewerTexture::getGPUMemoryForTextures(S32Megabytes &gpu, S32Megabytes &p
 //static
 void LLViewerTexture::updateClass()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
 	sCurrentTime = gFrameTimeSeconds;
 
 	LLTexturePipelineTester* tester = (LLTexturePipelineTester*)LLMetricPerformanceTesterBasic::getTester(sTesterName);
@@ -550,94 +550,29 @@ void LLViewerTexture::updateClass()
 
 	LLViewerMediaTexture::updateClass();
 
-    static LLCachedControl<U32> max_vram_budget(gSavedSettings, "RenderMaxVRAMBudget", 0);
+	static LLCachedControl<U32> max_vram_budget(gSavedSettings, "RenderMaxVRAMBudget");
 
-	//BD - Automatic Memory Management
-	//     Do memory management here, check whether we need more memory
-	//     and if enough memory is available.
-	/*gTextureList.idleUpdateMaxResidentTexMem();
+	F64 texture_bytes_alloc = LLImageGL::getTextureBytesAllocated() / 1024.0 / 512.0;
+	F64 vertex_bytes_alloc = LLVertexBuffer::getBytesAllocated() / 1024.0 / 512.0;
 
-	if (sBoundTextureMemory >= sMaxBoundTextureMemory ||
-		sTotalTextureMemory >= sMaxTotalTextureMem)
+	// get an estimate of how much video memory we're using 
+	// NOTE: our metrics miss about half the vram we use, so this biases high but turns out to typically be within 5% of the real number
+	F32 used = (F32)ll_round(texture_bytes_alloc + vertex_bytes_alloc);
+
+	F32 budget = max_vram_budget == 0 ? gGLManager.mVRAM : max_vram_budget;
+
+	// try to leave half a GB for everyone else, but keep at least 768MB for ourselves
+	F32 target = llmax(budget - 512.f, 768.f);
+
+	F32 over_pct = llmax((used - target) / target, 0.f);
+	sDesiredDiscardBias = llmax(sDesiredDiscardBias, 1.f + over_pct);
+
+	if (sDesiredDiscardBias > 1.f)
 	{
-		if (!sGracePeriodTimer.getStarted())
-		{
-			sGracePeriodTimer.start();
-		}
-
-		//BD - Give it two seconds before starting to trash textures.
-		if (sGracePeriodTimer.getElapsedTimeF32() > 2.0f)
-		{
-			//when texture memory overflows, lower down the threshold to release the textures more aggressively.
-			sMaxDesiredTextureMem = llmin(sMaxDesiredTextureMem * 0.75f, F32Bytes(gMaxVideoRam));
-
-			// If we are using more texture memory than we should,
-			// scale up the desired discard level
-			if (sEvaluationTimer.getElapsedTimeF32() > discard_delta_time)
-			{
-				sDesiredDiscardBias += discard_bias_delta;
-				sEvaluationTimer.reset();
-			}
-		}
+		sDesiredDiscardBias -= gFrameIntervalSeconds * 0.01;
 	}
-	else if(isMemoryForTextureLow())
-	{
-		// Note: isMemoryForTextureLow() uses 1s delay, make sure we waited enough for it to recheck
-		if (sEvaluationTimer.getElapsedTimeF32() > GPU_MEMORY_CHECK_WAIT_TIME)
-		{
-			//BD - Give it two seconds before starting to trash textures.
-			if (sGracePeriodTimer.getElapsedTimeF32() > 2.0f)
-			{
-				sDesiredDiscardBias += discard_bias_delta;
-				sEvaluationTimer.reset();
-				//BD - Stop our grace period timer.
-				sGracePeriodTimer.stop();
-			}
-		}
-	}
-	//BD
-	else if (sDesiredDiscardBias > 0.0f
-			 && sBoundTextureMemory < sMaxBoundTextureMemory
-			 && sTotalTextureMemory < sMaxTotalTextureMem
-			 && isMemoryForTextureSuficientlyFree())
-	{
-		// If we are using less texture memory than we should,
-		// scale down the desired discard level
-		if (sEvaluationTimer.getElapsedTimeF32() > discard_delta_time)
-		{
-			sDesiredDiscardBias -= discard_bias_delta;
-			sEvaluationTimer.reset();
-		}
-	}
-	else
-	{
-		//BD - Stop the grace period timer immediately when we are out of the "overflow"
-		//     zone, to prevent texture trashing from going off still.
-		if (sGracePeriodTimer.getStarted())
-		{
-			sGracePeriodTimer.stop();
-		}
-	}
-	sDesiredDiscardBias = llclamp(sDesiredDiscardBias, desired_discard_bias_min, desired_discard_bias_max);
-	*/
-    // get an estimate of how much video memory we're using 
-    // NOTE: our metrics miss about half the vram we use, so this biases high but turns out to typically be within 5% of the real number
-    F32 used = (LLImageGL::getTextureBytesAllocated() + LLVertexBuffer::getBytesAllocated()) / 1024 / 512;
-    
-    F32 budget = max_vram_budget == 0 ? gGLManager.mVRAM : max_vram_budget;
 
-    // try to leave half a GB for everyone else, but keep at least 768MB for ourselves
-    F32 target = llmax(budget - 512.f, 768.f);
-
-    F32 over_pct = llmax((used-target) / target, 0.f);
-    sDesiredDiscardBias = llmax(sDesiredDiscardBias, 1.f + over_pct);
-
-    if (sDesiredDiscardBias > 1.f)
-    {
-        sDesiredDiscardBias -= gFrameIntervalSeconds * 0.01;
-    }
-
-    LLViewerTexture::sFreezeImageUpdates = false; // sDesiredDiscardBias > (desired_discard_bias_max - 1.0f);
+	LLViewerTexture::sFreezeImageUpdates = false; // sDesiredDiscardBias > (desired_discard_bias_max - 1.0f);
 }
 
 //end of static functions

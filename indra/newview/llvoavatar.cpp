@@ -712,7 +712,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	//BD - Toggle Crouching
 	mIsCrouching(false)
 {
-	// _LL_DEBUGS("AvatarRender") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
+	LL_DEBUGS("AvatarRender") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
 
 	//VTResume();  // VTune
 	setHoverOffset(LLVector3(0.0, 0.0, 0.0));
@@ -721,7 +721,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
 	const BOOL needsSendToSim = false; // currently, this HUD effect doesn't need to pack and unpack data to do its job
 	mVoiceVisualizer = ( LLVoiceVisualizer *)LLHUDManager::getInstance()->createViewerEffect( LLHUDObject::LL_HUD_EFFECT_VOICE_VISUALIZER, needsSendToSim );
 
-	// _LL_DEBUGS("Avatar","Message") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
+	LL_DEBUGS("Avatar","Message") << "LLVOAvatar Constructor (0x" << this << ") id:" << mID << LL_ENDL;
 	mPelvisp = NULL;
 
 	mDirtyMesh = 2;	// Dirty geometry, need to regenerate.
@@ -846,7 +846,7 @@ LLVOAvatar::~LLVOAvatar()
 
 	logPendingPhases();
 	
-	// _LL_DEBUGS("Avatar") << "LLVOAvatar Destructor (0x" << this << ") id:" << mID << LL_ENDL;
+	LL_DEBUGS("Avatar") << "LLVOAvatar Destructor (0x" << this << ") id:" << mID << LL_ENDL;
 
 	std::for_each(mAttachmentPoints.begin(), mAttachmentPoints.end(), DeletePairedPointer());
 	mAttachmentPoints.clear();
@@ -858,7 +858,7 @@ LLVOAvatar::~LLVOAvatar()
 
 	getPhases().clearPhases();
 	
-	// _LL_DEBUGS() << "LLVOAvatar Destructor end" << LL_ENDL;
+	LL_DEBUGS() << "LLVOAvatar Destructor end" << LL_ENDL;
 }
 
 void LLVOAvatar::markDead()
@@ -2112,7 +2112,7 @@ void LLVOAvatar::applyDefaultParams()
 //-----------------------------------------------------------------------------
 void LLVOAvatar::resetSkeleton(bool reset_animations)
 {
-    //LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
+    LL_DEBUGS("Avatar") << avString() << " reset starts" << LL_ENDL;
     if (!isControlAvatar() && !mLastProcessedAppearance)
     {
         LL_WARNS() << "Can't reset avatar; no appearance message has been received yet." << LL_ENDL;
@@ -2219,7 +2219,7 @@ void LLVOAvatar::resetSkeleton(bool reset_animations)
         }
     }
     
-    // _LL_DEBUGS("Avatar") << avString() << " reset ends" << LL_ENDL;
+    LL_DEBUGS("Avatar") << avString() << " reset ends" << LL_ENDL;
 }
 
 //-----------------------------------------------------------------------------
@@ -2507,7 +2507,7 @@ LLViewerFetchedTexture *LLVOAvatar::getBakedTextureImage(const U8 te, const LLUU
 			LL_WARNS() << "unable to determine URL for te " << te << " uuid " << uuid << LL_ENDL;
 			return NULL;
 		}
-		// _LL_DEBUGS("Avatar") << avString() << "get server-bake image from URL " << url << LL_ENDL;
+		LL_DEBUGS("Avatar") << avString() << "get server-bake image from URL " << url << LL_ENDL;
 		result = LLViewerTextureManager::getFetchedTextureFromUrl(
 			url, FTT_SERVER_BAKE, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE, 0, 0, uuid);
 		if (result->isMissingAsset())
@@ -2598,9 +2598,7 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 		mNeedsExtentUpdate = ((LLDrawable::getCurrentFrame()+mID.mData[0])%upd_freq==0);
 	}
     
-#ifdef ENABLE_DEBUG
     LLScopedContextString str("avatar_idle_update " + getFullname());
-#endif
     
 	checkTextureLoading() ;
 	
@@ -3608,7 +3606,7 @@ void LLVOAvatar::invalidateNameTag(const LLUUID& agent_id)
 	LLViewerObject* obj = gObjectList.findObject(agent_id);
 	if (!obj) return;
 
-	LLVOAvatar* avatar = obj->asAvatar();
+	LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(obj);
 	if (!avatar) return;
 
 	avatar->clearNameTag();
@@ -3620,7 +3618,7 @@ void LLVOAvatar::invalidateNameTags()
 	std::vector<LLCharacter*>::iterator it = LLCharacter::sInstances.begin();
 	for ( ; it != LLCharacter::sInstances.end(); ++it)
 	{
-		LLVOAvatar* avatar = static_cast<LLVOAvatar*>(*it);
+		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*it);
 		if (!avatar) continue;
 		if (avatar->isDead()) continue;
 
@@ -3956,7 +3954,7 @@ void LLVOAvatar::updateAnimationDebugText()
             {
                 if (isControlAvatar())
                 {
-                    LLControlAvatar *control_av = static_cast<LLControlAvatar*>(this);
+                    LLControlAvatar *control_av = dynamic_cast<LLControlAvatar*>(this);
                     // Try to get name from inventory of associated object
                     LLVOVolume *volp = control_av->mRootVolp;
                     LLViewerInventoryItem *item = recursiveGetObjectInventoryItem(volp,motionp->getID());
@@ -4238,76 +4236,76 @@ void LLVOAvatar::computeUpdatePeriod()
 //------------------------------------------------------------------------
 void LLVOAvatar::updateOrientation(LLAgent& agent, F32 speed, F32 delta_time)
 {
-			LLQuaternion iQ;
-			LLVector3 upDir( 0.0f, 0.0f, 1.0f );
+	LLQuaternion iQ;
+	LLVector3 upDir( 0.0f, 0.0f, 1.0f );
 			
-			// Compute a forward direction vector derived from the primitive rotation
-			// and the velocity vector.  When walking or jumping, don't let body deviate
-			// more than 90 from the view, if necessary, flip the velocity vector.
+	// Compute a forward direction vector derived from the primitive rotation
+	// and the velocity vector.  When walking or jumping, don't let body deviate
+	// more than 90 from the view, if necessary, flip the velocity vector.
 
-			LLVector3 primDir;
-			if (isSelf())
-			{
-				primDir = agent.getAtAxis() - projected_vec(agent.getAtAxis(), agent.getReferenceUpVector());
-				primDir.normalize();
-			}
-			else
-			{
-				primDir = getRotation().getMatrix3().getFwdRow();
-			}
-			LLVector3 velDir = getVelocity();
-			velDir.normalize();
+	LLVector3 primDir;
+	if (isSelf())
+	{
+		primDir = agent.getAtAxis() - projected_vec(agent.getAtAxis(), agent.getReferenceUpVector());
+		primDir.normalize();
+	}
+	else
+	{
+		primDir = getRotation().getMatrix3().getFwdRow();
+	}
+	LLVector3 velDir = getVelocity();
+	velDir.normalize();
 	F32 vpD = velDir * primDir;
 //  //BD - Allow Walking Backwards
 	if (!gDragonLibrary.mAllowWalkingBackwards && (mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end()))
-			{
-				if (vpD < -0.5f)
-				{
-					velDir *= -1.0f;
-				}
-			}
+	{
+		if (vpD < -0.5f)
+		{
+			velDir *= -1.0f;
+		}
+	}
 
-			LLVector3 fwdDir = lerp(primDir, velDir, clamp_rescale(speed, 0.5f, 2.0f, 0.0f, 1.0f));
-			if (isSelf() && gAgentCamera.cameraMouselook())
-			{
-				// make sure fwdDir stays in same general direction as primdir
+	LLVector3 fwdDir = lerp(primDir, velDir, clamp_rescale(speed, 0.5f, 2.0f, 0.0f, 1.0f));
+	if (isSelf() && gAgentCamera.cameraMouselook())
+	{
+		// make sure fwdDir stays in same general direction as primdir
 		if (gAgent.getFlying() || (vpD != 0.0f && gSavedSettings.getBOOL("BDFirstPersonAim")))
-				{
-					fwdDir = LLViewerCamera::getInstance()->getAtAxis();
-				}
-				else
-				{
-					LLVector3 at_axis = LLViewerCamera::getInstance()->getAtAxis();
-					LLVector3 up_vector = gAgent.getReferenceUpVector();
-					at_axis -= up_vector * (at_axis * up_vector);
-					at_axis.normalize();
+		{
+			fwdDir = LLViewerCamera::getInstance()->getAtAxis();
+		}
+		else
+		{
+			LLVector3 at_axis = LLViewerCamera::getInstance()->getAtAxis();
+			LLVector3 up_vector = gAgent.getReferenceUpVector();
+			at_axis -= up_vector * (at_axis * up_vector);
+			at_axis.normalize();
 					
-					F32 dot = fwdDir * at_axis;
-					if (dot < 0.f)
-					{
-						fwdDir -= 2.f * at_axis * dot;
-						fwdDir.normalize();
-					}
-				}
+			F32 dot = fwdDir * at_axis;
+			if (dot < 0.f)
+			{
+				fwdDir -= 2.f * at_axis * dot;
+				fwdDir.normalize();
 			}
+		}
+	}
 
-			LLQuaternion root_rotation = mRoot->getWorldMatrix().quaternion();
-			F32 root_roll, root_pitch, root_yaw;
-			root_rotation.getEulerAngles(&root_roll, &root_pitch, &root_yaw);
+	LLQuaternion root_rotation = mRoot->getWorldMatrix().quaternion();
+	F32 root_roll, root_pitch, root_yaw;
+	root_rotation.getEulerAngles(&root_roll, &root_pitch, &root_yaw);
 
-			// When moving very slow, the pelvis is allowed to deviate from the
+	// When moving very slow, the pelvis is allowed to deviate from the
     // forward direction to allow it to hold its position while the torso
-			// and head turn.  Once in motion, it must conform however.
-			BOOL self_in_mouselook = isSelf() && gAgentCamera.cameraMouselook();
+	// and head turn.  Once in motion, it must conform however.
+	BOOL self_in_mouselook = isSelf() && gAgentCamera.cameraMouselook();
 
-			LLVector3 pelvisDir( mRoot->getWorldMatrix().getFwdRow4().mV );
+	LLVector3 pelvisDir( mRoot->getWorldMatrix().getFwdRow4().mV );
 
 	//BD
 	F32 pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, gDragonLibrary.mAvatarRotateThresholdSlow, gDragonLibrary.mAvatarRotateThresholdFast);
 						
 	//BD
-			if (self_in_mouselook)
-			{
+	if (self_in_mouselook)
+	{
 		pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, gDragonLibrary.mAvatarRotateThresholdMouselook, gDragonLibrary.mAvatarRotateThresholdFast);
 	}
 
@@ -4316,79 +4314,79 @@ void LLVOAvatar::updateOrientation(LLAgent& agent, F32 speed, F32 delta_time)
 	if (gDragonLibrary.mUseFreezeWorld)
 	{
 		pelvis_rot_threshold = clamp_rescale(speed, 0.1f, 1.0f, 360.0f, 360.0f);
-			}
-			pelvis_rot_threshold *= DEG_TO_RAD;
+	}
+	pelvis_rot_threshold *= DEG_TO_RAD;
 
-			F32 angle = angle_between( pelvisDir, fwdDir );
+	F32 angle = angle_between( pelvisDir, fwdDir );
 
-			// The avatar's root is allowed to have a yaw that deviates widely
-			// from the forward direction, but if roll or pitch are off even
-			// a little bit we need to correct the rotation.
-			if(root_roll < 1.f * DEG_TO_RAD
-			   && root_pitch < 5.f * DEG_TO_RAD)
-			{
-				// smaller correction vector means pelvis follows prim direction more closely
-				if (!mTurning && angle > pelvis_rot_threshold*0.75f)
-				{
-					mTurning = TRUE;
-				}
+	// The avatar's root is allowed to have a yaw that deviates widely
+	// from the forward direction, but if roll or pitch are off even
+	// a little bit we need to correct the rotation.
+	if(root_roll < 1.f * DEG_TO_RAD
+		&& root_pitch < 5.f * DEG_TO_RAD)
+	{
+		// smaller correction vector means pelvis follows prim direction more closely
+		if (!mTurning && angle > pelvis_rot_threshold*0.75f)
+		{
+			mTurning = TRUE;
+		}
 
-				// use tighter threshold when turning
-				if (mTurning)
-				{
-					pelvis_rot_threshold *= 0.4f;
-				}
+		// use tighter threshold when turning
+		if (mTurning)
+		{
+			pelvis_rot_threshold *= 0.4f;
+		}
 
-				// am I done turning?
-				if (angle < pelvis_rot_threshold)
-				{
-					mTurning = FALSE;
-				}
+		// am I done turning?
+		if (angle < pelvis_rot_threshold)
+		{
+			mTurning = FALSE;
+		}
 
-				LLVector3 correction_vector = (pelvisDir - fwdDir) * clamp_rescale(angle, pelvis_rot_threshold*0.75f, pelvis_rot_threshold, 1.0f, 0.0f);
-				fwdDir += correction_vector;
-			}
-			else
-			{
-				mTurning = FALSE;
-			}
+		LLVector3 correction_vector = (pelvisDir - fwdDir) * clamp_rescale(angle, pelvis_rot_threshold*0.75f, pelvis_rot_threshold, 1.0f, 0.0f);
+		fwdDir += correction_vector;
+	}
+	else
+	{
+		mTurning = FALSE;
+	}
 
-			// Now compute the full world space rotation for the whole body (wQv)
-			LLVector3 leftDir = upDir % fwdDir;
-			leftDir.normalize();
-			fwdDir = leftDir % upDir;
-			LLQuaternion wQv( fwdDir, leftDir, upDir );
+	// Now compute the full world space rotation for the whole body (wQv)
+	LLVector3 leftDir = upDir % fwdDir;
+	leftDir.normalize();
+	fwdDir = leftDir % upDir;
+	LLQuaternion wQv( fwdDir, leftDir, upDir );
 
-			if (isSelf() && mTurning)
-			{
-				if ((fwdDir % pelvisDir) * upDir > 0.f)
-				{
-					gAgent.setControlFlags(AGENT_CONTROL_TURN_RIGHT);
-				}
-				else
-				{
-					gAgent.setControlFlags(AGENT_CONTROL_TURN_LEFT);
-				}
-			}
+	if (isSelf() && mTurning)
+	{
+		if ((fwdDir % pelvisDir) * upDir > 0.f)
+		{
+			gAgent.setControlFlags(AGENT_CONTROL_TURN_RIGHT);
+		}
+		else
+		{
+			gAgent.setControlFlags(AGENT_CONTROL_TURN_LEFT);
+		}
+	}
 
-			// Set the root rotation, but do so incrementally so that it
-			// lags in time by some fixed amount.
-			//F32 u = LLSmoothInterpolation::getInterpolant(PELVIS_LAG);
+	// Set the root rotation, but do so incrementally so that it
+	// lags in time by some fixed amount.
+	//F32 u = LLSmoothInterpolation::getInterpolant(PELVIS_LAG);
 //	//BD - Custom Avatar Rotation Speed
 	F32 pelvis_lag_time = gDragonLibrary.mMovementRotationSpeed;
-			if (self_in_mouselook)
-			{
-				pelvis_lag_time = PELVIS_LAG_MOUSELOOK;
-			}
-			else if (mInAir)
-			{
-				pelvis_lag_time = PELVIS_LAG_FLYING;
-				// increase pelvis lag time when moving slowly
-				pelvis_lag_time *= clamp_rescale(mSpeedAccum, 0.f, 15.f, 3.f, 1.f);
-			}
+	if (self_in_mouselook)
+	{
+		pelvis_lag_time = PELVIS_LAG_MOUSELOOK;
+	}
+	else if (mInAir)
+	{
+		pelvis_lag_time = PELVIS_LAG_FLYING;
+		// increase pelvis lag time when moving slowly
+		pelvis_lag_time *= clamp_rescale(mSpeedAccum, 0.f, 15.f, 3.f, 1.f);
+	}
     F32 u = llclamp((delta_time / pelvis_lag_time), 0.0f, 1.0f);	
 
-			mRoot->setWorldRotation( slerp(u, mRoot->getWorldRotation(), wQv) );
+	mRoot->setWorldRotation( slerp(u, mRoot->getWorldRotation(), wQv) );
 }
 
 //------------------------------------------------------------------------
@@ -4528,10 +4526,11 @@ void LLVOAvatar::updateRootPositionAndRotation(LLAgent& agent, F32 speed, bool w
 		// 						<< LL_ENDL;
 		// }
 
-        if (isControlAvatar())
+        LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(this);
+        if (cav)
         {
             // SL-1350: Moved to LLDrawable::updateXform()
-            static_cast<LLControlAvatar*>(this)->matchVolumeTransform();
+            cav->matchVolumeTransform();
         }
         else
         {
@@ -4637,20 +4636,18 @@ bool LLVOAvatar::updateCharacter(LLAgent &agent)
 	}
 
 	BOOL visible = isVisible();
-#ifdef ENABLE_DEBUG
     bool is_control_avatar = isControlAvatar(); // capture state to simplify tracing
 	bool is_attachment = false;
 
 	if (is_control_avatar)
 	{
-        LLControlAvatar *cav = static_cast<LLControlAvatar*>(this);
-        is_attachment = cav->mRootVolp && cav->mRootVolp->isAttachment(); // For attached animated objects
+        LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(this);
+		is_attachment = cav && cav->mRootVolp && cav->mRootVolp->isAttachment(); // For attached animated objects
 	}
 
     LLScopedContextString str("updateCharacter " + getFullname() + " is_control_avatar "
                               + boost::lexical_cast<std::string>(is_control_avatar) 
                               + " is_attachment " + boost::lexical_cast<std::string>(is_attachment));
-#endif
 
 	// For fading out the names above heads, only let the timer
 	// run if we're visible.
@@ -4810,49 +4807,49 @@ void LLVOAvatar::debugBodySize() const
 
 	// some of the joints have not been cached
 	LLVector3 skull = mSkullp->getPosition();
-    //LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
+    LL_DEBUGS("Avatar") << "skull pos " << skull << LL_ENDL;
 	//LLVector3 skull_scale = mSkullp->getScale();
 
 	LLVector3 neck = mNeckp->getPosition();
 	LLVector3 neck_scale = mNeckp->getScale();
-    //LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "neck pos " << neck << " neck_scale " << neck_scale << LL_ENDL;
 
 	LLVector3 chest = mChestp->getPosition();
 	LLVector3 chest_scale = mChestp->getScale();
-    //LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "chest pos " << chest << " chest_scale " << chest_scale << LL_ENDL;
 
 	// the rest of the joints have been cached
 	LLVector3 head = mHeadp->getPosition();
 	LLVector3 head_scale = mHeadp->getScale();
-    //LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "head pos " << head << " head_scale " << head_scale << LL_ENDL;
 
 	LLVector3 torso = mTorsop->getPosition();
 	LLVector3 torso_scale = mTorsop->getScale();
-    //LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "torso pos " << torso << " torso_scale " << torso_scale << LL_ENDL;
 
 	LLVector3 hip = mHipLeftp->getPosition();
 	LLVector3 hip_scale = mHipLeftp->getScale();
-    //LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "hip pos " << hip << " hip_scale " << hip_scale << LL_ENDL;
 
 	LLVector3 knee = mKneeLeftp->getPosition();
 	LLVector3 knee_scale = mKneeLeftp->getScale();
-    // _LL_DEBUGS("Avatar") << "knee pos " << knee << " knee_scale " << knee_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "knee pos " << knee << " knee_scale " << knee_scale << LL_ENDL;
 
 	LLVector3 ankle = mAnkleLeftp->getPosition();
 	LLVector3 ankle_scale = mAnkleLeftp->getScale();
-    //LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
+    LL_DEBUGS("Avatar") << "ankle pos " << ankle << " ankle_scale " << ankle_scale << LL_ENDL;
 
 	LLVector3 foot  = mFootLeftp->getPosition();
-    //LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
+    LL_DEBUGS("Avatar") << "foot pos " << foot << LL_ENDL;
 
-	//F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
-    //LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
+	F32 new_offset = (const_cast<LLVOAvatar*>(this))->getVisualParamWeight(AVATAR_HOVER);
+    LL_DEBUGS("Avatar") << "new_offset " << new_offset << LL_ENDL;
 
 	F32 new_pelvis_to_foot = hip.mV[VZ] * pelvis_scale.mV[VZ] -
         knee.mV[VZ] * hip_scale.mV[VZ] -
         ankle.mV[VZ] * knee_scale.mV[VZ] -
         foot.mV[VZ] * ankle_scale.mV[VZ];
-    //LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
+    LL_DEBUGS("Avatar") << "new_pelvis_to_foot " << new_pelvis_to_foot << LL_ENDL;
 
 	LLVector3 new_body_size;
 	new_body_size.mV[VZ] = new_pelvis_to_foot +
@@ -4868,7 +4865,7 @@ void LLVOAvatar::debugBodySize() const
 	new_body_size.mV[VX] = DEFAULT_AGENT_DEPTH;
 	new_body_size.mV[VY] = DEFAULT_AGENT_WIDTH;
 
-    //LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
+    LL_DEBUGS("Avatar") << "new_body_size " << new_body_size << LL_ENDL;
 }
    
 //------------------------------------------------------------------------
@@ -4923,7 +4920,7 @@ void LLVOAvatar::updateVisibility()
 			LLNameValue* firstname = getNVPair("FirstName");
 			if (firstname)
 			{
-				// _LL_DEBUGS("Avatar") << avString() << " updating visibility" << LL_ENDL;
+				LL_DEBUGS("Avatar") << avString() << " updating visibility" << LL_ENDL;
 			}
 			else
 			{
@@ -5012,7 +5009,7 @@ void LLVOAvatar::updateVisibility()
 
     if ( visible != mVisible )
     {
-        // _LL_DEBUGS("AvatarRender") << "visible was " << mVisible << " now " << visible << LL_ENDL;
+        LL_DEBUGS("AvatarRender") << "visible was " << mVisible << " now " << visible << LL_ENDL;
     }
 	mVisible = visible;
 }
@@ -5129,7 +5126,7 @@ U32 LLVOAvatar::renderSkinned()
 		LLNameValue* firstname = getNVPair("FirstName");
 		if (firstname)
 		{
-			// _LL_DEBUGS("Avatar") << avString() << " in render" << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << " in render" << LL_ENDL;
 		}
 		else
 		{
@@ -5527,7 +5524,7 @@ void LLVOAvatar::releaseOldTextures()
 	S32Bytes new_total_mem = totalTextureMemForUUIDS(new_texture_ids);
 
 	//S32 old_total_mem = totalTextureMemForUUIDS(mTextureIDs);
-	//// _LL_DEBUGS("Avatar") << getFullname() << " old_total_mem: " << old_total_mem << " new_total_mem (L/B): " << new_total_mem << " (" << new_local_mem <<", " << new_baked_mem << ")" << LL_ENDL;  
+	//LL_DEBUGS("Avatar") << getFullname() << " old_total_mem: " << old_total_mem << " new_total_mem (L/B): " << new_total_mem << " (" << new_local_mem <<", " << new_baked_mem << ")" << LL_ENDL;  
 	if (!isSelf() && new_total_mem > new_baked_mem)
 	{
 			LL_WARNS() << "extra local textures stored for non-self av" << LL_ENDL;
@@ -6328,9 +6325,7 @@ bool LLVOAvatar::jointIsRiggedTo(const LLJoint *joint) const
 
 void LLVOAvatar::clearAttachmentOverrides()
 {
-#ifdef ENABLE_DEBUG
     LLScopedContextString str("clearAttachmentOverrides " + getFullname());
-#endif
 
     for (S32 i=0; i<LL_CHARACTER_MAX_ANIMATED_JOINTS; i++)
 	{
@@ -6362,23 +6357,22 @@ void LLVOAvatar::clearAttachmentOverrides()
 //-----------------------------------------------------------------------------
 void LLVOAvatar::rebuildAttachmentOverrides()
 {
-#ifdef ENABLE_DEBUG
     LLScopedContextString str("rebuildAttachmentOverrides " + getFullname());
 
-    // _LL_DEBUGS("AnimatedObjects") << "rebuilding" << LL_ENDL;
+    LL_DEBUGS("AnimatedObjects") << "rebuilding" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
-#endif
     
     clearAttachmentOverrides();
 
     // Handle the case that we're resetting the skeleton of an animated object.
-    if (isControlAvatar())
+    LLControlAvatar *control_av = dynamic_cast<LLControlAvatar*>(this);
+    if (control_av)
 	{
-        LLVOVolume *volp = static_cast<LLControlAvatar*>(this)->mRootVolp;
+        LLVOVolume *volp = control_av->mRootVolp;
         if (volp)
         {
-            /*// _LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
-                                << (S32) (1+volp->numChildren()) << LL_ENDL;*/
+            LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
+                                << (S32) (1+volp->numChildren()) << LL_ENDL;
             addAttachmentOverridesForObject(volp);
         }
     }
@@ -6414,24 +6408,22 @@ void LLVOAvatar::rebuildAttachmentOverrides()
 // -----------------------------------------------------------------------------
 void LLVOAvatar::updateAttachmentOverrides()
 {
-#ifdef ENABLE_DEBUG
     LLScopedContextString str("updateAttachmentOverrides " + getFullname());
 
-    // _LL_DEBUGS("AnimatedObjects") << "updating" << LL_ENDL;
+    LL_DEBUGS("AnimatedObjects") << "updating" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
-#endif
 
     std::set<LLUUID> meshes_seen;
     
     // Handle the case that we're updating the skeleton of an animated object.
-    if (isControlAvatar())
+    LLControlAvatar *control_av = dynamic_cast<LLControlAvatar*>(this);
+    if (control_av)
     {
-		LLControlAvatar* control_av = static_cast<LLControlAvatar*>(this);
 		LLVOVolume *volp = control_av->mRootVolp;
         if (volp)
         {
-            /*// _LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
-                                << (S32) (1+volp->numChildren()) << LL_ENDL;*/
+            LL_DEBUGS("Avatar") << volp->getID() << " adding attachment overrides for root vol, prim count " 
+                                << (S32) (1+volp->numChildren()) << LL_ENDL;
             addAttachmentOverridesForObject(volp, &meshes_seen);
         }
     }
@@ -6548,7 +6540,6 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
         return;
 	}
 
-#ifdef ENABLE_DEBUG
     LLScopedContextString str("addAttachmentOverridesForObject " + getFullname());
 
 	if (getOverallAppearance() != AOA_NORMAL)
@@ -6556,9 +6547,8 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 		return;
 	}
     
-    // _LL_DEBUGS("AnimatedObjects") << "adding" << LL_ENDL;
+    LL_DEBUGS("AnimatedObjects") << "adding" << LL_ENDL;
     dumpStack("AnimatedObjectsStack");
-#endif
     
 	// Process all children
     if (recursive)
@@ -6572,7 +6562,7 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
         }
 	}
 
-	LLVOVolume *vobj = vo->asVolume();
+	LLVOVolume *vobj = dynamic_cast<LLVOVolume*>(vo);
 	bool pelvisGotSet = false;
 
 	if (!vobj)
@@ -6580,17 +6570,17 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
 		return;
 	}
 
-	//LLViewerObject *root_object = (LLViewerObject*)vobj->getRoot();
-    // _LL_DEBUGS("AnimatedObjects") << "trying to add attachment overrides for root object " << root_object->getID() << " prim is " << vobj << LL_ENDL;
+	LLViewerObject *root_object = (LLViewerObject*)vobj->getRoot();
+    LL_DEBUGS("AnimatedObjects") << "trying to add attachment overrides for root object " << root_object->getID() << " prim is " << vobj << LL_ENDL;
 	if (vobj->isMesh() &&
 		((vobj->getVolume() && !vobj->getVolume()->isMeshAssetLoaded()) || !gMeshRepo.meshRezEnabled()))
 	{
-        // _LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " mesh asset not loaded" << LL_ENDL;
+        LL_DEBUGS("AnimatedObjects") << "failed to add attachment overrides for root object " << root_object->getID() << " mesh asset not loaded" << LL_ENDL;
 		return;
 	}
-	const LLMeshSkinInfo*  pSkinData = nullptr;
+	const LLMeshSkinInfo*  pSkinData = vobj->getSkinInfo();
 
-	if ( vobj && vobj->isMesh() && (pSkinData = vobj->getSkinInfo()) && vobj->getVolume() && vobj->getVolume()->isMeshAssetLoaded() && gMeshRepo.meshRezEnabled())
+	if ( vobj && vobj->isMesh() && pSkinData )
 	{
 		const int bindCnt = pSkinData->mAlternateBindMatrix.size();								
         const int jointCnt = pSkinData->mJointNames.size();
@@ -6610,15 +6600,15 @@ void LLVOAvatar::addAttachmentOverridesForObject(LLViewerObject *vo, std::set<LL
             bool mesh_overrides_loaded = (mActiveOverrideMeshes.find(mesh_id) != mActiveOverrideMeshes.end());
             if (mesh_overrides_loaded)
             {
-                /*// _LL_DEBUGS("AnimatedObjects") << "skipping add attachment overrides for " << mesh_id 
+                LL_DEBUGS("AnimatedObjects") << "skipping add attachment overrides for " << mesh_id 
                                              << " to root object " << root_object->getID()
                                              << ", already loaded"
-                                             << LL_ENDL;*/
+                                             << LL_ENDL;
             }
             else
             {
-                /*// _LL_DEBUGS("AnimatedObjects") << "adding attachment overrides for " << mesh_id 
-                                             << " to root object " << root_object->getID() << LL_ENDL;*/
+                LL_DEBUGS("AnimatedObjects") << "adding attachment overrides for " << mesh_id 
+                                             << " to root object " << root_object->getID() << LL_ENDL;
             }
 			bool fullRig = (jointCnt>=JOINT_COUNT_REQUIRED_FOR_FULLRIG) ? true : false;								
 			if ( fullRig && !mesh_overrides_loaded )
@@ -7342,13 +7332,13 @@ BOOL LLVOAvatar::setParent(LLViewerObject* parent)
 void LLVOAvatar::addChild(LLViewerObject *childp)
 {
 	childp->extractAttachmentItemID(); // find the inventory item this object is associated with.
-	/*if (isSelf())
+	if (isSelf())
 	{
 	    const LLUUID& item_id = childp->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
 		LL_DEBUGS("Avatar") << "ATT attachment child added " << (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
 
-	}*/
+	}
 
 	LLViewerObject::addChild(childp);
 	if (childp->mDrawable)
@@ -7425,13 +7415,13 @@ LLViewerJointAttachment* LLVOAvatar::getTargetAttachmentPoint(LLViewerObject* vi
 //-----------------------------------------------------------------------------
 const LLViewerJointAttachment *LLVOAvatar::attachObject(LLViewerObject *viewer_object)
 {
-	/*if (isSelf())
+	if (isSelf())
 	{
 		const LLUUID& item_id = viewer_object->getAttachmentItemID();
 		LLViewerInventoryItem *item = gInventory.getItem(item_id);
 		LL_DEBUGS("Avatar") << "ATT attaching object "
 							<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
-	}*/
+	}
 	LLViewerJointAttachment* attachment = getTargetAttachmentPoint(viewer_object);
 
 	if (!attachment || !attachment->addObject(viewer_object))
@@ -7557,13 +7547,13 @@ void LLVOAvatar::lazyAttach()
 		{
 			if (cur_attachment->mDrawable)
 			{
-				/*if (isSelf())
+				if (isSelf())
 				{
 					const LLUUID& item_id = cur_attachment->getAttachmentItemID();
 					LLViewerInventoryItem *item = gInventory.getItem(item_id);
 					LL_DEBUGS("Avatar") << "ATT attaching object "
 						<< (item ? item->getName() : "UNKNOWN") << " id " << item_id << LL_ENDL;
-				}*/
+				}
 				if (!attachObject(cur_attachment))
 				{	// Drop it
 					LL_WARNS() << "attachObject() failed for "
@@ -8171,17 +8161,17 @@ void LLVOAvatar::startPhase(const std::string& phase_name)
 	F32 elapsed = 0.0;
 	bool completed = false;
 	bool found = getPhases().getPhaseValues(phase_name, elapsed, completed);
-	//// _LL_DEBUGS("Avatar") << avString() << " phase state " << phase_name
+	//LL_DEBUGS("Avatar") << avString() << " phase state " << phase_name
 	//					<< " found " << found << " elapsed " << elapsed << " completed " << completed << LL_ENDL;
 	if (found)
 	{
 		if (!completed)
 		{
-			// _LL_DEBUGS("Avatar") << avString() << "no-op, start when started already for " << phase_name << LL_ENDL;
+			LL_DEBUGS("Avatar") << avString() << "no-op, start when started already for " << phase_name << LL_ENDL;
 			return;
 		}
 	}
-	// _LL_DEBUGS("Avatar") << "started phase " << phase_name << LL_ENDL;
+	LL_DEBUGS("Avatar") << "started phase " << phase_name << LL_ENDL;
 	getPhases().startPhase(phase_name);
 }
 

@@ -173,7 +173,7 @@ void LLViewerStatsRecorder::writeToLog( F32 interval )
 	if ( delta_time < interval || total_objects == 0) return;
 
 	mLastSnapshotTime = LLTimer::getTotalSeconds();
-	/*// _LL_DEBUGS() << "ILX: " 
+	LL_DEBUGS() << "ILX: " 
 		<< mObjectCacheHitCount << " hits, " 
 		<< mObjectCacheMissFullCount << " full misses, "
 		<< mObjectCacheMissCrcCount << " crc misses, "
@@ -186,7 +186,7 @@ void LLViewerStatsRecorder::writeToLog( F32 interval )
 		<< mObjectCacheUpdateAdds << " cache update adds, "
 		<< mObjectCacheUpdateReplacements << " cache update replacements, "
 		<< mObjectUpdateFailures << " update failures"
-		<< LL_ENDL;*/
+		<< LL_ENDL;
 
 	if (mObjectCacheFile == NULL)
 	{
