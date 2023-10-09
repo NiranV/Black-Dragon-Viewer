@@ -1812,8 +1812,9 @@ LLVector3d LLAgentCamera::calcThirdPersonFocusOffset()
 		agent_rot *= ((LLViewerObject*)(gAgentAvatarp->getParent()))->getRenderRotation();
 	}
 
-    static LLCachedControl<LLVector3d> focus_offset_initial(gSavedSettings, "FocusOffsetRearView", LLVector3d());
-	return focus_offset_initial * agent_rot;
+	//BD - Camera Presets
+	focus_offset = mFocusOffsetInitial[mCameraPresetName];
+	return focus_offset * agent_rot;
 }
 
 void LLAgentCamera::setupSitCamera()
@@ -2170,15 +2171,13 @@ bool LLAgentCamera::isJoystickCameraUsed()
 
 LLVector3 LLAgentCamera::getCameraOffsetInitial()
 {
-    // getCameraOffsetInitial and getFocusOffsetInitial can be called on update from idle before init()
-    static LLCachedControl<LLVector3> camera_offset_initial (gSavedSettings, "CameraOffsetRearView", LLVector3());
-	return camera_offset_initial;
+    //BD - Camera Presets
+	return mCameraOffsetInitial[mCameraPresetName];
 }
 
 LLVector3d LLAgentCamera::getFocusOffsetInitial()
 {
-    static LLCachedControl<LLVector3d> focus_offset_initial(gSavedSettings, "FocusOffsetRearView", LLVector3d());
-	return focus_offset_initial;
+	return mFocusOffsetInitial[mCameraPresetName];
 }
 
 F32 LLAgentCamera::getCameraMaxZoomDistance()
