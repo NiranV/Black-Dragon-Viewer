@@ -2122,7 +2122,7 @@ void LLPipeline::updateMoveDampedAsync(LLDrawable* drawablep)
 	if (gAgentCamera.cameraMouselook())
 		drawablep->setState(LLDrawable::MOVE_UNDAMPED); // force to UNDAMPED
 	else
-	drawablep->clearState(LLDrawable::MOVE_UNDAMPED); // force to DAMPED
+		drawablep->clearState(LLDrawable::MOVE_UNDAMPED); // force to DAMPED
 	drawablep->updateMove(); // returns done
 	drawablep->setState(LLDrawable::EARLY_MOVE); // flag says we already did an undamped move this frame
 	// Put on move list so that EARLY_MOVE gets cleared
@@ -7564,6 +7564,8 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 			static F32 transition_time = 1.f;
 
 			LLVector3 focus_point;
+			//BD - Lock Camera Focus
+			LLVector3 prev_focus_point;
 
 			LLViewerObject* obj = LLViewerMediaFocus::getInstance()->getFocusedObject();
 			if (obj && obj->mDrawable && obj->isSelected())
@@ -7579,11 +7581,18 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 				}
 			}
 
+			if (CameraDoFLocked)
+			{
+				focus_point = PrevDoFFocusPoint;
+			}
+
 			if (focus_point.isExactlyZero())
 			{
-				if (LLViewerJoystick::getInstance()->getOverrideCamera())
+				//BD - Free Camera Focus
+				if ((LLViewerJoystick::getInstance()->getOverrideCamera() || CameraFreeDoFFocus))
 				{ // focus on point under cursor
 					focus_point.set(gDebugRaycastIntersection.getF32ptr());
+
 				}
 				else if (gAgentCamera.cameraMouselook())
 				{ // focus on point under mouselook crosshairs
@@ -7593,6 +7602,11 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 					gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, FALSE, TRUE, TRUE, NULL, &result);
 
 					focus_point.set(result.getF32ptr());
+
+					//BD - Safeguard against sudden all-blurry-screen in rare
+					//     inconsistent situations caused by unknown reasons.
+					focus_point.clamp(LLVector3(0, 0, 0), focus_point);
+
 				}
 				else
 				{
@@ -7610,6 +7624,8 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 			if (!focus_point.isExactlyZero())
 			{
 				target_distance = LLViewerCamera::getInstance()->getAtAxis() * (focus_point - eye);
+				//BD - Lock Camera Focus
+				PrevDoFFocusPoint = focus_point;
 			}
 
 			if (transition_time >= 1.f && fabsf(current_distance - target_distance) / current_distance > 0.01f)
