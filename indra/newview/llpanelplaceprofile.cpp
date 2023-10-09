@@ -618,8 +618,9 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	LLPanelPlaceInfo::processParcelInfo(parcel_data);
 
 	mYouAreHerePanel->setVisible(is_current_parcel);
-	getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
-	mAccordionCtrl->arrange();
+	//BD
+	//getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
+	//mAccordionCtrl->arrange();
 }
 
 void LLPanelPlaceProfile::updateEstateName(const std::string& name)
