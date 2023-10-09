@@ -88,11 +88,11 @@ set(viewer_SOURCE_FILES
     bdfloaterobjects.cpp
     bdfloaterposer.cpp
     bdfloaterposecreator.cpp
+    bdmlaimmotion.cpp
     bdsidebar.cpp
     bdstatus.cpp
     bdheadrotmotion.cpp
     bdposingmotion.cpp
-    exopostprocess.cpp
     piemenu.cpp
     pieseparator.cpp
     pieslice.cpp
@@ -740,11 +740,11 @@ set(viewer_HEADER_FILES
     bdfloaterobjects.h
     bdfloaterposer.h
     bdfloaterposecreator.h
+    bdmlaimmotion.h
     bdsidebar.h
     bdstatus.h
     bdheadrotmotion.h
     bdposingmotion.h
-    exopostprocess.h
     piemenu.h
     pieseparator.h
     pieslice.h
