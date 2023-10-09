@@ -62,14 +62,14 @@ vec2 getKern(int i)
 {
     vec2 kern[8];
     // exponentially (^2) distant occlusion samples spread around origin
-    kern[0] = vec2(-1.0, 0.0) * 0.2*0.2;
-    kern[1] = vec2(1.0, 0.0) * 0.300*0.300;
+    kern[0] = vec2(-1.0, 0.0) * 0.125*0.125;
+    kern[1] = vec2(1.0, 0.0) * 0.250*0.250;
     kern[2] = vec2(0.0, 1.0) * 0.375*0.375;
-    kern[3] = vec2(0.0, -1.0) * 0.450*0.45;
-    kern[4] = vec2(0.7071, 0.7071) * 0.5250*0.525;
-    kern[5] = vec2(-0.7071, -0.7071) * 0.60*0.60;
-    kern[6] = vec2(-0.7071, 0.7071) * 0.675*0.675;
-    kern[7] = vec2(0.7071, -0.7071) * .775*.775;
+    kern[3] = vec2(0.0, -1.0) * 0.500*0.500;
+    kern[4] = vec2(0.7071, 0.7071) * 0.625*0.625;
+    kern[5] = vec2(-0.7071, -0.7071) * 0.750*0.750;
+    kern[6] = vec2(-0.7071, 0.7071) * 0.875*0.875;
+    kern[7] = vec2(0.7071, -0.7071) * 1.000*1.000;
        
     return kern[i] / screen_res;
 }
@@ -80,6 +80,7 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm, vec2 pos_screen)
     float ret = 1.0;
     vec3 pos_world = pos.xyz;
     vec2 noise_reflect = texture(noiseMap, pos_screen.xy * (screen_res / 128)).xy;
+
     float angle_hidden = 0.0;
     float points = 0;
         

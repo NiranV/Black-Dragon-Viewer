@@ -47,17 +47,15 @@ void main()
     vec2 tc = vary_fragcoord.xy;
     vec3 norm = getNorm(tc);
     vec3 pos = getPosition(tc).xyz;
-
     vec4 ccol = texture(lightMap, tc).rgba;
   
     vec2 dlt = kern_scale * delta / (1.0+norm.xy*norm.xy);
     dlt /= max(-pos.z*dist_factor, 1.0);
     
-    vec2 defined_weight = kern_[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
-    vec4 col = defined_weight.xyyy * ccol;
-   
-    // relax tolerance according to distance to avoid speckling artifacts, as angles and distances are a lot more abrupt within a small screen area at larger distances
+    vec2 defined_weight = kern[0].xy; // special case the first (centre) sample's weight in the blur; we have to sample it anyway so we get it for 'free'
+    vec4 col = defined_weight.xyxx * ccol;
 
+    // relax tolerance according to distance to avoid speckling artifacts, as angles and distances are a lot more abrupt within a small screen area at larger distances
     float pointplanedist_tolerance_pow2 = pos.z*pos.z*0.00005;
 
     // perturb sampling origin slightly in screen-space to hide edge-ghosting artifacts where smoothing radius is quite large
@@ -115,8 +113,8 @@ void main()
 
 #ifdef IS_AMD_CARD
     // If it's AMD make sure the GLSL compiler sees the arrays referenced once by static index. Otherwise it seems to optimise the storage awawy which leads to unfun crashes and artifacts.
-    vec3 dummy1 = kern_[0];
-    vec3 dummy2 = kern_[7];
+    vec3 dummy1 = kern[0];
+    vec3 dummy2 = kern[3];
 #endif
 }
 

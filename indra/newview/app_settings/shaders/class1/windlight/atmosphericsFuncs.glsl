@@ -92,6 +92,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     // SL-13539: This "if" clause causes an "additive" white artifact at roughly 77 degreees.
     //    if (length(light_dir) > 0.01)
     haze_glow *= max(0.0f, dot(light_dir, rel_pos_norm));
+
     haze_glow = 1. - haze_glow;
     // haze_glow is 0 at the sun and increases away from sun
     haze_glow = max(haze_glow, .001);  // set a minimum "angle" (smaller glow.y allows tighter, brighter hotspot)
@@ -108,7 +109,6 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     vec3 amb_color = ambient_color;
 
     // increase ambient when there are more clouds
-
     vec3 tmpAmbient = amb_color + (vec3(1.) - amb_color) * cloud_shadow * 0.5;
 
     // Similar/Shared Algorithms:

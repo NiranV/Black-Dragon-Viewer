@@ -63,8 +63,6 @@ uniform vec3 light_direction[8];
 uniform vec4 light_attenuation[8]; 
 uniform vec3 light_diffuse[8];
 
-uniform float global_light_strength;
-
 void waterClip(vec3 pos);
 
 #ifdef WATER_FOG
@@ -293,7 +291,6 @@ void main()
     LIGHT_LOOP(7)
 
     // sum local light contrib in linear colorspace
-    light.rgb *= global_light_strength;
 #if !defined(LOCAL_LIGHT_KILL)
     color.rgb += light.rgb;
 #endif // !defined(LOCAL_LIGHT_KILL)

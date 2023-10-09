@@ -47,3 +47,4 @@ void main()
     frag_data[3] = vec4(0);
 #endif
 }
+

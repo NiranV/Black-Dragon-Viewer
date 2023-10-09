@@ -77,8 +77,6 @@ void main()
 #endif
 
     color.rgb *= vertex_color.rgb;
-    color.rgb = fullbrightAtmosTransport(color.rgb);
-    color.rgb = fullbrightScaleSoftClip(color.rgb);
 
     vec3 pos = vary_position;
 

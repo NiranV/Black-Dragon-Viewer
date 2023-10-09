@@ -36,7 +36,7 @@ uniform float res_scale;
 
 in vec2 vary_fragcoord;
 
-float weightByColor(vec4 s)
+void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc)
 {
 	vec4 s = texture(diffuseRect, tc);
 
@@ -55,7 +55,7 @@ float weightByColor(vec4 s)
 	}
 }
 
-void dofSample(inout vec4 diff, inout float w, vec2 tc)
+void dofSampleNear(inout vec4 diff, inout float w, float min_sc, vec2 tc)
 {
 	vec4 s = texture(diffuseRect, tc);
 
