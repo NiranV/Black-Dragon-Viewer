@@ -1706,12 +1706,12 @@ void LLEnvironment::updateCloudScroll()
         }
         else
         {
-			//BD - Lock Cloud Scroll
 			LLVector2 cloud_delta = static_cast<F32>(delta_t)* (mCurrentEnvironment->getSky()->getCloudScrollRate()) / 100.0;
-			if (!mCloudScrollXLocked)
-				mCloudScrollDelta.mV[0] += cloud_delta.mV[0];
-			if (!mCloudScrollYLocked)
-				mCloudScrollDelta.mV[1] += cloud_delta.mV[1];
+            //BD - Lock Cloud Scroll
+			if (mCloudScrollXLocked)
+				cloud_delta.mV[0] = 0.0f;
+			if (mCloudScrollYLocked)
+                cloud_delta.mV[1] = 0.0f;
 
             mCloudScrollDelta += cloud_delta;
         }
