@@ -1265,6 +1265,8 @@ void LLAgentCamera::updateCamera()
         return;
     }
 
+	//BD - Camera Rolling
+	//     Make sure we always start with a neutral camera roll.
 	// - changed camera_skyward to the new global "mCameraUpVector"
 	mCameraUpVector = LLVector3::z_axis;
 	//LLVector3	camera_skyward(0.f, 0.f, 1.f);
@@ -1272,10 +1274,6 @@ void LLAgentCamera::updateCamera()
 	U32 camera_mode = mCameraAnimating ? mLastCameraMode : mCameraMode;
 
 	validateFocusObject();
-
-	//BD - Camera Rolling
-	//     Make sure we always start with a neutral camera roll.
-	mCameraUpVector = LLVector3::z_axis;
 
 	//BD
 	if (isAgentAvatarValid() && 
