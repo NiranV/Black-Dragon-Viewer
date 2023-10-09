@@ -2178,6 +2178,36 @@ void LLFloaterPreference::refreshMemoryControls()
 	mProgressBar->setValue(percent);
 	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", total_viewer_usage));
 	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));*/
+
+	S32 max_vram = 0;
+	S32 used_vram = 0;
+	S32 free_vram = 0;
+	F32 percent = 0.0f;
+
+	if (gGLManager.mIsNVIDIA)
+	{
+		//BD - We cannot trust LL with gGLManager.mVRAM on NVIDIA cards.
+		//     For NVIDIA they don't even seem to set mVRAM, no idea where they get it from.
+		//     Nor does it report the correct value at all. We opt to take it directly from
+		//     the GPU instead.
+		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &max_vram);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &free_vram);
+		max_vram /=  1024;
+		free_vram /= 1024;
+	}
+	else if (gGLManager.mIsAMD)
+	{
+		S32 meminfo[4];
+		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
+		S32Megabytes free = (S32Megabytes)meminfo[0];
+		free_vram = max_vram - free.value();
+	}
+	used_vram = max_vram - free_vram;
+	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
+
+	mProgressBar->setValue(percent);
+	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
+	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));
 }
 
 //BD - Unlimited Camera Presets
