@@ -100,7 +100,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsViewerVisible"
 	  layout="topleft"
-	  height="925"
+	  height="945"
 	  auto_resize="false"
       visible="false"
 	  name="basic_layout_panel"
@@ -1703,6 +1703,22 @@ width="510">
    name="MipMaps"
    top_pad="7"
    width="115" />
+   <check_box
+   control_name="RenderReflectionsEnabled"
+   enabled_control="RenderDeferred"
+   height="16"
+   initial_value="true"
+   label="Use Reflection Probes"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;Very High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;Very High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option toggles the usage of Reflection Probes on water and reflective surfaces. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not."
+   layout="topleft"
+   left="10"
+   name="RenderReflectionsEnabled"
+   top_pad="1"
+   width="115" />
    <text
  type="string"
  length="1"
@@ -1728,21 +1744,45 @@ width="510">
       <combo_box.item
        label="Disable"
        value="0"
-       tool_tip="Unknown."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles the usage of additional Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting disables all extra probes and only uses the environmental probe.
+||RenderReflectionProbeLevel: &lt;blue&gt;0&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Manual Only"
-       tool_tip="Unknown."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting allows manual probes in addition to the environmental probe.
+||RenderReflectionProbeLevel: &lt;blue&gt;1&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
        label="Manual and Terrain"
-       tool_tip="Unknown."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting allows the terrain and water in addition to manual and enviromental probes.
+||RenderReflectionProbeLevel: &lt;blue&gt;2&lt;/blue&gt;"
        value="2"
        name="item3"/>
       <combo_box.item
        label="Manual, Terrain and Objects"
-       tool_tip="Unknown."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting allows everything to be included in probes.
+||RenderReflectionProbeLevel: &lt;blue&gt;0&lt;/blue&gt;"
        value="3"
        name="item4"/>
       <combo_box.drop_down_button
@@ -1778,22 +1818,46 @@ width="510">
       <combo_box.item
        label="Disable"
        value="-1"
-       tool_tip="Unknown."
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Nothing 
+|&lt;b&gt;GPU:&lt;/b&gt; Nothing
+|&lt;b&gt;Performance:&lt;/b&gt; Nothing
+|&lt;b&gt;Graphics:&lt;/b&gt; Nothing
+||This option controls the detail of Reflection Probes. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting disables all Reflection Probes.
+||RenderReflectionProbeDetail: &lt;blue&gt;-1&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Static Only"
-       tool_tip="Unknown."
-       value="1"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Low
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting only allows static Reflection Probes.
+||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
+       value="0"
        name="item2"/>
       <combo_box.item
        label="Static and Dynamic"
-       tool_tip="Unknown."
-       value="2"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Low
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting allows dynamic Reflection Probes in addition to static ones.
+||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
+       value="1"
        name="item3"/>
       <combo_box.item
        label="Realtime"
-       tool_tip="Unknown."
-       value="3"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+       |&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
+       |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
+       |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+       ||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+       ||This setting only allows realtime Reflection Probe updates in addition to static and dynamic Reflection Probes.
+       ||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
+       value="2"
        name="item4"/>
       <combo_box.drop_down_button
        pad_right="4"
@@ -2631,7 +2695,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="955"
+	  height="1055"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -4156,6 +4220,211 @@ width="510">
  name="separator_label"
  top_pad="7"
  width="450">
+ Reflection Probes
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+  <slider  
+      control_name="RenderReflectionProbeDrawDistance"
+      decimal_digits="0"
+      follows="left|top"
+      layout="topleft"
+      height="14"
+      can_edit_text="true"
+      increment="4" 
+      initial_value="64"
+      top_pad="12"
+		tool_tip="This option controls the draw distance of each reflection probe, how far it can see and thus how far things will be included."
+      label="Draw Distance:"
+      label_width="150"
+      left="10"
+      max_val="1024"
+      min_val="4"
+      mouse_opaque="true"
+      name="RenderReflectionProbeDrawDistance"
+      show_text="true"/>
+      <button
+ follows="left|top"
+ control_name="RenderReflectionProbeDrawDistance"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider  
+      control_name="RenderReflectionProbeAmbiance"
+      decimal_digits="3"
+      follows="left|top"
+      layout="topleft"
+      height="14"
+      can_edit_text="true"
+      increment="0.001" 
+      initial_value="0"
+      top_pad="1"
+		tool_tip="This option controls how much Reflection Probes should contribute to the ambient environmental light."
+      label="Ambiance Contribution:"
+      label_width="150"
+      left="10"
+      max_val="1"
+      min_val="0"
+      mouse_opaque="true"
+      name="RenderReflectionProbeAmbiance"
+      show_text="true"/>
+      <button
+ follows="left|top"
+ control_name="RenderReflectionProbeAmbiance"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider  
+      control_name="RenderReflectionProbeMaxLocalLightAmbiance"
+      decimal_digits="3"
+      follows="left|top"
+      layout="topleft"
+      height="14"
+      can_edit_text="true"
+      increment="0.001" 
+      initial_value="4"
+      top_pad="1"
+		tool_tip="This option controls the maximum amount Reflection Probes can contribute to local lights and projectors."
+      label="Light Contribution:"
+      label_width="150"
+      left="10"
+      max_val="6"
+      min_val="0"
+      mouse_opaque="true"
+      name="RenderReflectionProbeMaxLocalLightAmbiance"
+      show_text="true"/>
+      <button
+ follows="left|top"
+ control_name="RenderReflectionProbeMaxLocalLightAmbiance"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ enabled_control="RenderDeferred"
+ text_readonly_color="LabelDisabledColor"
+ left="10"
+ name="RefResolution"
+ top_pad="7"
+ width="150">
+ Reflection Resolution:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   name="RenderReflectionProbeResolution"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Low (64x)"
+       control_name="RenderReflectionProbeResolution"
+       value="64"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of all Refletion Probes. Affects the precision and quality of the reflections on water and shiny surfaces.
+||RenderReflectionProbeResolution: &lt;blue&gt;64&lt;/blue&gt;
+|&lt;blue&gt;64x * 6 = 0.094MB VRAM usage per Probe&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="Medium (128x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;128&lt;/blue&gt;
+|&lt;blue&gt;128x * 6 = 0.375MB VRAM usage per Probe&lt;/blue&gt;"
+       value="128"
+       name="item2"/>
+      <combo_box.item
+       label="High (256x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x * 6 = 1.5MB VRAM usage per Probe&lt;/blue&gt;"
+       value="256"
+       name="item3"/>
+      <combo_box.item
+       label="Very High (512x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 6MB VRAM usage per Probe&lt;/blue&gt;"
+       value="512"
+       name="item4"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
  Screen Space Ambient Occlusion
  </text>
  <icon
@@ -5544,4 +5813,3 @@ width="510">
       </layout_panel>
  </layout_stack>
 </panel>
-
