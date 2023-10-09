@@ -70,6 +70,7 @@ extern const LLUUID ANIM_AGENT_TARGET;
 extern const LLUUID ANIM_AGENT_WALK_ADJUST;
 //BD
 extern const LLUUID ANIM_BD_POSING_MOTION;
+extern const LLUUID ANIM_BD_ML_AIM_MOTION;
 
 class LLViewerWearable;
 class LLVoiceVisualizer;

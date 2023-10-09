@@ -41,6 +41,9 @@
 #include "llglheaders.h"
 #include "llxmltree.h"
 
+//BD
+#include "llviewercontrol.h"
+
 
 BOOL LLHUDEffectLookAt::sDebugLookAt = FALSE;
 
@@ -561,10 +564,30 @@ void LLHUDEffectLookAt::update()
 	{
 		if (calcTargetPosition())
 		{
-			LLMotion* head_motion = ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->findMotion(ANIM_AGENT_HEAD_ROT);
-			if (!head_motion || head_motion->isStopped())
+			//BD - Depending on if we want, play our special first person aiming animation for better shooter-like feeling.
+			LLMotion* ml_aim_motion = ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->findMotion(ANIM_BD_ML_AIM_MOTION);
+			if (mTargetType == LOOKAT_TARGET_MOUSELOOK)
 			{
-				((LLVOAvatar*)(LLViewerObject*)mSourceObject)->startMotion(ANIM_AGENT_HEAD_ROT);
+				if (gSavedSettings.getBOOL("BDFirstPersonAim"))
+				{
+					if ((!ml_aim_motion || ml_aim_motion->isStopped()))
+					{
+						((LLVOAvatar*)(LLViewerObject*)mSourceObject)->startMotion(ANIM_BD_ML_AIM_MOTION);
+					}
+				}
+			}
+			else
+			{
+				LLMotion* head_motion = ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->findMotion(ANIM_AGENT_HEAD_ROT);
+				if (!head_motion || head_motion->isStopped())
+				{
+					((LLVOAvatar*)(LLViewerObject*)mSourceObject)->startMotion(ANIM_AGENT_HEAD_ROT);
+				}
+
+				if (mTargetType != LOOKAT_TARGET_MOUSELOOK && (ml_aim_motion && !ml_aim_motion->isStopped()))
+				{
+					((LLVOAvatar*)(LLViewerObject*)mSourceObject)->stopMotion(ANIM_BD_ML_AIM_MOTION);
+				}
 			}
 		}
 	}

@@ -3,6 +3,17 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>BDFirstPersonAim</key>
+  <map>
+    <key>Comment</key>
+    <string>Controls the pitch movement speed</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>AvatarPitchMultiplier</key>
   <map>
     <key>Comment</key>
@@ -2194,4 +2205,3 @@
     </map>
   </map>
 </llsd>
-

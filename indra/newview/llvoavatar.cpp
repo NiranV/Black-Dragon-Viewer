@@ -104,6 +104,7 @@
 //BD
 #include "llfloaterreg.h"
 #include "bdposingmotion.h"
+#include "bdmlaimmotion.h"
 #include "bdfunctions.h"
 
 #include "llgesturemgr.h" //needed to trigger the voice gesticulations
@@ -158,6 +159,7 @@ const LLUUID ANIM_AGENT_TARGET = LLUUID("0e4896cb-fba4-926c-f355-8720189d5b55");
 const LLUUID ANIM_AGENT_WALK_ADJUST	= LLUUID("829bc85b-02fc-ec41-be2e-74cc6dd7215d");  //"walk_adjust"
 const LLUUID ANIM_AGENT_PHYSICS_MOTION = LLUUID("7360e029-3cb8-ebc4-863e-212df440d987");  //"physics_motion"
 const LLUUID ANIM_BD_POSING_MOTION = LLUUID("fd29b117-9429-09c4-10cb-933d0b2ab653");  //"custom_motion"
+const LLUUID ANIM_BD_ML_AIM_MOTION = LLUUID("bd32048e-efa7-b57b-ac42-943678b40b08");  //"ml_aim"
 
 //-----------------------------------------------------------------------------
 // Constants
@@ -1165,6 +1167,7 @@ void LLVOAvatar::initClass()
 
 	//BD
 	gAnimLibrary.animStateSetString(ANIM_BD_POSING_MOTION, "custom_pose");
+	gAnimLibrary.animStateSetString(ANIM_BD_ML_AIM_MOTION, "ml_aim");
 
     // Where should this be set initially?
     LLJoint::setDebugJointNames(gSavedSettings.getString("DebugAvatarJoints"));
@@ -1242,6 +1245,7 @@ void LLVOAvatar::initInstance()
 
 		//BD - Poser.
 		registerMotion(	ANIM_BD_POSING_MOTION,				BDPosingMotion::create);
+		registerMotion( ANIM_BD_ML_AIM_MOTION,				BDMLAimMotion::create);
 	}
 	
 	LLAvatarAppearance::initInstance();
@@ -4253,20 +4257,21 @@ void LLVOAvatar::updateOrientation(LLAgent& agent, F32 speed, F32 delta_time)
 			}
 			LLVector3 velDir = getVelocity();
 			velDir.normalize();
+	F32 vpD = velDir * primDir;
 //  //BD - Allow Walking Backwards
 	if (!gDragonLibrary.mAllowWalkingBackwards && (mSignaledAnimations.find(ANIM_AGENT_WALK) != mSignaledAnimations.end()))
 			{
-				F32 vpD = velDir * primDir;
 				if (vpD < -0.5f)
 				{
 					velDir *= -1.0f;
 				}
 			}
+
 			LLVector3 fwdDir = lerp(primDir, velDir, clamp_rescale(speed, 0.5f, 2.0f, 0.0f, 1.0f));
 			if (isSelf() && gAgentCamera.cameraMouselook())
 			{
 				// make sure fwdDir stays in same general direction as primdir
-				if (gAgent.getFlying())
+		if (gAgent.getFlying() || (vpD != 0.0f && gSavedSettings.getBOOL("BDFirstPersonAim")))
 				{
 					fwdDir = LLViewerCamera::getInstance()->getAtAxis();
 				}

@@ -1,32 +1,32 @@
-/** 
+/**
  * @file llheadrotmotion.cpp
  * @brief Implementation of LLHeadRotMotion class.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
 
-//-----------------------------------------------------------------------------
-// Header Files
-//-----------------------------------------------------------------------------
+ //-----------------------------------------------------------------------------
+ // Header Files
+ //-----------------------------------------------------------------------------
 #include "linden_common.h"
 
 #include "llheadrotmotion.h"
@@ -42,10 +42,10 @@
 //-----------------------------------------------------------------------------
 // Constants
 //-----------------------------------------------------------------------------
-const F32 TORSO_LAG	= 0.35f;	// torso rotation factor
+const F32 TORSO_LAG = 0.35f;	// torso rotation factor
 const F32 NECK_LAG = 0.5f;		// neck rotation factor
-const F32 HEAD_LOOKAT_LAG_HALF_LIFE	= 0.15f;		// half-life of lookat targeting for head
-const F32 TORSO_LOOKAT_LAG_HALF_LIFE	= 0.27f;		// half-life of lookat targeting for torso
+const F32 HEAD_LOOKAT_LAG_HALF_LIFE = 0.15f;		// half-life of lookat targeting for head
+const F32 TORSO_LOOKAT_LAG_HALF_LIFE = 0.27f;		// half-life of lookat targeting for torso
 const F32 MIN_HEAD_LOOKAT_DISTANCE = 0.3f;	// minimum distance from head before we turn to look at it
 const F32 EYE_JITTER_MIN_TIME = 0.3f; // min amount of time between eye "jitter" motions
 const F32 EYE_JITTER_MAX_TIME = 2.5f; // max amount of time between eye "jitter" motions
@@ -68,7 +68,7 @@ const F32 EYE_BLINK_TIME_DELTA = 0.005f; // time between one eye starting a blin
 // LLHeadRotMotion()
 // Class Constructor
 //-----------------------------------------------------------------------------
-LLHeadRotMotion::LLHeadRotMotion(const LLUUID &id) : 
+LLHeadRotMotion::LLHeadRotMotion(const LLUUID& id) :
 	LLMotion(id),
 	mCharacter(NULL),
 	mTorsoJoint(NULL),
@@ -95,56 +95,56 @@ LLHeadRotMotion::~LLHeadRotMotion()
 //-----------------------------------------------------------------------------
 // LLHeadRotMotion::onInitialize(LLCharacter *character)
 //-----------------------------------------------------------------------------
-LLMotion::LLMotionInitStatus LLHeadRotMotion::onInitialize(LLCharacter *character)
+LLMotion::LLMotionInitStatus LLHeadRotMotion::onInitialize(LLCharacter* character)
 {
 	if (!character)
 		return STATUS_FAILURE;
 	mCharacter = character;
 
 	mPelvisJoint = character->getJoint("mPelvis");
-	if ( ! mPelvisJoint )
+	if (!mPelvisJoint)
 	{
 		LL_INFOS() << getName() << ": Can't get pelvis joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
 	mRootJoint = character->getJoint("mRoot");
-	if ( ! mRootJoint )
+	if (!mRootJoint)
 	{
 		LL_INFOS() << getName() << ": Can't get root joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
 	mTorsoJoint = character->getJoint("mTorso");
-	if ( ! mTorsoJoint )
+	if (!mTorsoJoint)
 	{
 		LL_INFOS() << getName() << ": Can't get torso joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
 	mHeadJoint = character->getJoint("mHead");
-	if ( ! mHeadJoint )
+	if (!mHeadJoint)
 	{
 		LL_INFOS() << getName() << ": Can't get head joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mTorsoState->setJoint( character->getJoint("mTorso") );
-	if ( ! mTorsoState->getJoint() )
+	mTorsoState->setJoint(character->getJoint("mTorso"));
+	if (!mTorsoState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get torso joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mNeckState->setJoint( character->getJoint("mNeck") );
-	if ( ! mNeckState->getJoint() )
+	mNeckState->setJoint(character->getJoint("mNeck"));
+	if (!mNeckState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get neck joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mHeadState->setJoint( character->getJoint("mHead") );
-	if ( ! mHeadState->getJoint() )
+	mHeadState->setJoint(character->getJoint("mHead"));
+	if (!mHeadState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get head joint." << LL_ENDL;
 		return STATUS_FAILURE;
@@ -154,9 +154,9 @@ LLMotion::LLMotionInitStatus LLHeadRotMotion::onInitialize(LLCharacter *characte
 	mNeckState->setUsage(LLJointState::ROT);
 	mHeadState->setUsage(LLJointState::ROT);
 
-	addJointState( mTorsoState );
-	addJointState( mNeckState );
-	addJointState( mHeadState );
+	addJointState(mTorsoState);
+	addJointState(mNeckState);
+	addJointState(mHeadState);
 
 	mLastHeadRot.loadIdentity();
 
@@ -178,7 +178,7 @@ BOOL LLHeadRotMotion::onActivate()
 //-----------------------------------------------------------------------------
 BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 	LLQuaternion	targetHeadRotWorld;
 	LLQuaternion	currentRootRotWorld = mRootJoint->getWorldRotation();
 	LLQuaternion	currentInvRootRotWorld = ~currentRootRotWorld;
@@ -192,7 +192,7 @@ BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 	{
 		LLVector3 headLookAt = *targetPos;
 
-//		LL_INFOS() << "Look At: " << headLookAt + mHeadJoint->getWorldPosition() << LL_ENDL;
+		//		LL_INFOS() << "Look At: " << headLookAt + mHeadJoint->getWorldPosition() << LL_ENDL;
 
 		F32 lookatDistance = headLookAt.normVec();
 
@@ -220,7 +220,7 @@ BOOL LLHeadRotMotion::onUpdate(F32 time, U8* joint_mask)
 
 				left = root_up % headLookAt;
 			}
-			
+
 			// Make sure look_at and skyward and not parallel
 			// and neither are zero length
 			LLVector3 up(headLookAt % left);
@@ -270,7 +270,7 @@ void LLHeadRotMotion::onDeactivate()
 // LLEyeMotion()
 // Class Constructor
 //-----------------------------------------------------------------------------
-LLEyeMotion::LLEyeMotion(const LLUUID &id) : LLMotion(id)
+LLEyeMotion::LLEyeMotion(const LLUUID& id) : LLMotion(id)
 {
 	mCharacter = NULL;
 	mEyeJitterTime = 0.f;
@@ -283,7 +283,7 @@ LLEyeMotion::LLEyeMotion(const LLUUID &id) : LLMotion(id)
 
 	mEyeBlinkTime = 0.f;
 	mEyesClosed = FALSE;
-	
+
 	mHeadJoint = NULL;
 
 	mName = "eye_rot";
@@ -309,40 +309,40 @@ LLEyeMotion::~LLEyeMotion()
 //-----------------------------------------------------------------------------
 // LLEyeMotion::onInitialize(LLCharacter *character)
 //-----------------------------------------------------------------------------
-LLMotion::LLMotionInitStatus LLEyeMotion::onInitialize(LLCharacter *character)
+LLMotion::LLMotionInitStatus LLEyeMotion::onInitialize(LLCharacter* character)
 {
 	mCharacter = character;
 
 	mHeadJoint = character->getJoint("mHead");
-	if ( ! mHeadJoint )
+	if (!mHeadJoint)
 	{
 		LL_INFOS() << getName() << ": Can't get head joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mLeftEyeState->setJoint( character->getJoint("mEyeLeft") );
-	if ( ! mLeftEyeState->getJoint() )
+	mLeftEyeState->setJoint(character->getJoint("mEyeLeft"));
+	if (!mLeftEyeState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get left eyeball joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mAltLeftEyeState->setJoint( character->getJoint("mFaceEyeAltLeft") );
-	if ( ! mAltLeftEyeState->getJoint() )
+	mAltLeftEyeState->setJoint(character->getJoint("mFaceEyeAltLeft"));
+	if (!mAltLeftEyeState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get alt left eyeball joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mRightEyeState->setJoint( character->getJoint("mEyeRight") );
-	if ( ! mRightEyeState->getJoint() )
+	mRightEyeState->setJoint(character->getJoint("mEyeRight"));
+	if (!mRightEyeState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get right eyeball joint." << LL_ENDL;
 		return STATUS_FAILURE;
 	}
 
-	mAltRightEyeState->setJoint( character->getJoint("mFaceEyeAltRight") );
-	if ( ! mAltRightEyeState->getJoint() )
+	mAltRightEyeState->setJoint(character->getJoint("mFaceEyeAltRight"));
+	if (!mAltRightEyeState->getJoint())
 	{
 		LL_INFOS() << getName() << ": Can't get alt right eyeball joint." << LL_ENDL;
 		return STATUS_FAILURE;
@@ -354,11 +354,11 @@ LLMotion::LLMotionInitStatus LLEyeMotion::onInitialize(LLCharacter *character)
 	mRightEyeState->setUsage(LLJointState::ROT);
 	mAltRightEyeState->setUsage(LLJointState::ROT);
 
-	addJointState( mLeftEyeState );
-	addJointState( mAltLeftEyeState );
+	addJointState(mLeftEyeState);
+	addJointState(mAltLeftEyeState);
 
-	addJointState( mRightEyeState );
-	addJointState( mAltRightEyeState );
+	addJointState(mRightEyeState);
+	addJointState(mAltRightEyeState);
 
 	return STATUS_SUCCESS;
 }
@@ -437,7 +437,7 @@ void LLEyeMotion::adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_s
 
 	// calculate vergence of eyes as an object gets closer to the avatar's head
 	LLQuaternion vergence_quat;
-		
+
 	if (has_eye_target)
 	{
 		vergence_quat.setQuat(vergence, LLVector3(0.f, 0.f, 1.f));
@@ -455,8 +455,8 @@ void LLEyeMotion::adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_s
 	vergence_quat.transQuat();
 	right_eye_rot = vergence_quat * eye_jitter_rot * right_eye_rot;
 
-	left_eye_state.setRotation( left_eye_rot );
-	right_eye_state.setRotation( right_eye_rot );
+	left_eye_state.setRotation(left_eye_rot);
+	right_eye_state.setRotation(right_eye_rot);
 }
 
 //-----------------------------------------------------------------------------
@@ -464,7 +464,7 @@ void LLEyeMotion::adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_s
 //-----------------------------------------------------------------------------
 BOOL LLEyeMotion::onUpdate(F32 time, U8* joint_mask)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 	//calculate jitter
 	if (mEyeJitterTimer.getElapsedTimeF32() > mEyeJitterTime)
 	{
@@ -474,7 +474,7 @@ BOOL LLEyeMotion::onUpdate(F32 time, U8* joint_mask)
 		// make sure lookaway time count gets updated, because we're resetting the timer
 		mEyeLookAwayTime -= llmax(0.f, mEyeJitterTimer.getElapsedTimeF32());
 		mEyeJitterTimer.reset();
-	} 
+	}
 	else if (mEyeJitterTimer.getElapsedTimeF32() > mEyeLookAwayTime)
 	{
 		if (ll_frand() > 0.1f)
@@ -539,8 +539,8 @@ BOOL LLEyeMotion::onUpdate(F32 time, U8* joint_mask)
 
 	LLVector3* targetPos = (LLVector3*)mCharacter->getAnimationData("LookAtPoint");
 
-    adjustEyeTarget(targetPos, *mLeftEyeState, *mRightEyeState); 
-    adjustEyeTarget(targetPos, *mAltLeftEyeState, *mAltRightEyeState); 
+	adjustEyeTarget(targetPos, *mLeftEyeState, *mRightEyeState);
+	adjustEyeTarget(targetPos, *mAltLeftEyeState, *mAltRightEyeState);
 
 	return TRUE;
 }
@@ -577,4 +577,3 @@ void LLEyeMotion::onDeactivate()
 }
 
 // End
-

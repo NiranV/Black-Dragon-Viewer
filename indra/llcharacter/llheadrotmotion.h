@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llheadrotmotion.h
  * @brief Implementation of LLHeadRotMotion class.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -27,9 +27,9 @@
 #ifndef LL_LLHEADROTMOTION_H
 #define LL_LLHEADROTMOTION_H
 
-//-----------------------------------------------------------------------------
-// Header files
-//-----------------------------------------------------------------------------
+ //-----------------------------------------------------------------------------
+ // Header files
+ //-----------------------------------------------------------------------------
 #include "llmotion.h"
 #include "llframetimer.h"
 
@@ -44,7 +44,7 @@ class LLHeadRotMotion :
 {
 public:
 	// Constructor
-	LLHeadRotMotion(const LLUUID &id);
+	LLHeadRotMotion(const LLUUID& id);
 
 	// Destructor
 	virtual ~LLHeadRotMotion();
@@ -56,7 +56,7 @@ public:
 
 	// static constructor
 	// all subclasses must implement such a function and register it
-	static LLMotion *create(const LLUUID &id) { return new LLHeadRotMotion(id); }
+	static LLMotion* create(const LLUUID& id) { return new LLHeadRotMotion(id); }
 
 public:
 	//-------------------------------------------------------------------------
@@ -86,7 +86,7 @@ public:
 	// run-time (post constructor) initialization,
 	// called after parameters have been set
 	// must return true to indicate success and be available for activation
-	virtual LLMotionInitStatus onInitialize(LLCharacter *character);
+	virtual LLMotionInitStatus onInitialize(LLCharacter* character);
 
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
@@ -108,12 +108,12 @@ public:
 	//-------------------------------------------------------------------------
 	// joint states to be animated
 	//-------------------------------------------------------------------------
-	LLCharacter			*mCharacter;
+	LLCharacter* mCharacter;
 
-	LLJoint				*mTorsoJoint;
-	LLJoint				*mHeadJoint;
-	LLJoint				*mRootJoint;
-	LLJoint				*mPelvisJoint;
+	LLJoint* mTorsoJoint;
+	LLJoint* mHeadJoint;
+	LLJoint* mRootJoint;
+	LLJoint* mPelvisJoint;
 
 	LLPointer<LLJointState> mTorsoState;
 	LLPointer<LLJointState> mNeckState;
@@ -133,7 +133,7 @@ class LLEyeMotion :
 {
 public:
 	// Constructor
-	LLEyeMotion(const LLUUID &id);
+	LLEyeMotion(const LLUUID& id);
 
 	// Destructor
 	virtual ~LLEyeMotion();
@@ -145,7 +145,7 @@ public:
 
 	// static constructor
 	// all subclasses must implement such a function and register it
-	static LLMotion *create( const LLUUID &id) { return new LLEyeMotion(id); }
+	static LLMotion* create(const LLUUID& id) { return new LLEyeMotion(id); }
 
 public:
 	//-------------------------------------------------------------------------
@@ -175,14 +175,14 @@ public:
 	// run-time (post constructor) initialization,
 	// called after parameters have been set
 	// must return true to indicate success and be available for activation
-	virtual LLMotionInitStatus onInitialize(LLCharacter *character);
+	virtual LLMotionInitStatus onInitialize(LLCharacter* character);
 
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
 	// it will be deactivated
 	virtual BOOL onActivate();
 
-    void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
+	void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
 
 	//BD
 	void setEyeConstrains(U32 degrees) { mEyeConstrains = degrees; }
@@ -199,9 +199,9 @@ public:
 	//-------------------------------------------------------------------------
 	// joint states to be animated
 	//-------------------------------------------------------------------------
-	LLCharacter			*mCharacter;
+	LLCharacter* mCharacter;
 
-	LLJoint				*mHeadJoint;
+	LLJoint* mHeadJoint;
 	LLPointer<LLJointState> mLeftEyeState;
 	LLPointer<LLJointState> mRightEyeState;
 	LLPointer<LLJointState> mAltLeftEyeState;
@@ -225,4 +225,3 @@ public:
 };
 
 #endif // LL_LLHEADROTMOTION_H
-
