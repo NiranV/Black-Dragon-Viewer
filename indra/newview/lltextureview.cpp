@@ -537,8 +537,14 @@ void LLGLTexMemBar::draw()
 
 	if (gGLManager.mIsNVIDIA)
 	{
+		//BD - We cannot trust LL with gGLManager.mVRAM on NVIDIA cards.
+		//     For NVIDIA they don't even seem to set mVRAM, no idea where they get it from.
+		//     Nor does it report the correct value at all. We opt to take it directly from
+		//     the GPU instead.
+		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &max_vram);
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &free_vram);
-		free_vram = (free_vram / 1024);
+		max_vram /= 1024;
+		free_vram /= 1024;
 	}
 	else if (gGLManager.mIsAMD)
 	{
