@@ -433,6 +433,7 @@ void BDFloaterPoser::onPoseStart()
 			gAgent.stopFidget();
 			gDragonStatus->setPosing(true);
 		}
+		avatar->startDefaultMotions();
 		avatar->startMotion(ANIM_BD_POSING_MOTION);
 	}
 	else
@@ -1039,11 +1040,11 @@ void BDFloaterPoser::onJointChangeState()
 //BD - We use this to reset everything at once.
 void BDFloaterPoser::onJointRotPosScaleReset()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
 	//BD - We don't support resetting bones for anyone else yet.
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
 
 	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
@@ -1058,13 +1059,11 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 
 	for (S32 it = 0; it < 3; ++it)
 	{
-		//BD - We use this bool to determine whether or not we'll be in need for a full skeleton
-		//     reset and to prevent checking for it every single time.
-		for (auto new_item : mJointScrolls[it]->getAllData())
+		for (auto item : mJointScrolls[it]->getAllData())
 		{
-			if (new_item)
+			if (item)
 			{
-				LLJoint* joint = (LLJoint*)new_item->getUserdata();
+				LLJoint* joint = (LLJoint*)item->getUserdata();
 				if (joint)
 				{
 					//BD - Resetting rotations first if there are any.
@@ -1081,48 +1080,6 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 
 						quat.setEulerAngles(0, 0, 0);
 						joint->setTargetRotation(quat);
-
-						//BD - If we are in Mirror mode, try to find the opposite bone of our currently
-						//     selected one, for now this simply means we take the name and replace "Left"
-						//     with "Right" and vise versa since all bones are conveniently that way.
-						//     TODO: Do this when creating the joint list so we don't try to find the joint
-						//     over and over again.
-						if (mMirrorMode)
-						{
-							LLJoint* mirror_joint = nullptr;
-							std::string mirror_joint_name = joint->getName();
-							S32 idx = joint->getName().find("Left");
-							if (idx != -1)
-								mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
-
-							idx = joint->getName().find("Right");
-							if (idx != -1)
-								mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
-
-							if (mirror_joint_name != joint->getName())
-							{
-								mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
-							}
-
-							if (mirror_joint)
-							{
-								//BD - We also need to find the opposite joint's list entry and change its values to reflect
-								//     the new ones, doing this here is still better than causing a complete refresh.
-								LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
-								if (item2)
-								{
-									col_rot_x = item2->getColumn(COL_ROT_X);
-									col_rot_y = item2->getColumn(COL_ROT_Y);
-									col_rot_z = item2->getColumn(COL_ROT_Z);
-
-									col_rot_x->setValue(0.000f);
-									col_rot_y->setValue(0.000f);
-									col_rot_z->setValue(0.000f);
-
-									mirror_joint->setTargetRotation(quat);
-								}
-							}
-						}
 					}
 
 					//BD - Resetting positions next.
@@ -1134,9 +1091,9 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					//     as well as all attachment bones and collision volumes.
 					if (joint->mHasPosition || it > JOINTS)
 					{
-						LLScrollListCell* col_pos_x = new_item->getColumn(COL_POS_X);
-						LLScrollListCell* col_pos_y = new_item->getColumn(COL_POS_Y);
-						LLScrollListCell* col_pos_z = new_item->getColumn(COL_POS_Z);
+						LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+						LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+						LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
 						LLVector3 pos = mDefaultPositions[joint->getName()];
 
 						col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
@@ -1146,9 +1103,9 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					}
 
 					//BD - Resetting scales last.
-					LLScrollListCell* col_scale_x = new_item->getColumn(COL_SCALE_X);
-					LLScrollListCell* col_scale_y = new_item->getColumn(COL_SCALE_Y);
-					LLScrollListCell* col_scale_z = new_item->getColumn(COL_SCALE_Z);
+					LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
+					LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
+					LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
 					LLVector3 scale = mDefaultScales[joint->getName()];
 
 					col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
