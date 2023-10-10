@@ -107,109 +107,109 @@ public:
         return true;
     }
     
-	bool handle(const LLSD& params, const LLSD& query_map, LLMediaCtrl* web)
-	{
-		if (LLStartUp::getStartupState() < STATE_STARTED)
-		{
-			return true;
-		}
+	bool handle(const LLSD& params, const LLSD& query_map, const std::string& grid, LLMediaCtrl* web)
+    {
+        if (LLStartUp::getStartupState() < STATE_STARTED)
+        {
+            return true;
+        }
 
-		if (!LLUI::getInstance()->mSettingGroups["config"]->getBOOL("EnableClassifieds"))
-		{
-			LLNotificationsUtil::add("NoClassifieds", LLSD(), LLSD(), std::string("SwitchToStandardSkinAndQuit"));
-			return true;
-		}
+        if (!LLUI::getInstance()->mSettingGroups["config"]->getBOOL("EnableClassifieds"))
+        {
+            LLNotificationsUtil::add("NoClassifieds", LLSD(), LLSD(), std::string("SwitchToStandardSkinAndQuit"));
+            return true;
+        }
 
-		// handle app/classified/create urls first
-		if (params.size() == 1 && params[0].asString() == "create")
-		{
-			LLAvatarActions::createClassified();
-			return true;
-		}
+        // handle app/classified/create urls first
+        if (params.size() == 1 && params[0].asString() == "create")
+        {
+            LLAvatarActions::createClassified();
+            return true;
+        }
 
-		// then handle the general app/classified/{UUID}/{CMD} urls
-		if (params.size() < 2)
-		{
-			return false;
-		}
+        // then handle the general app/classified/{UUID}/{CMD} urls
+        if (params.size() < 2)
+        {
+            return false;
+        }
 
-		// get the ID for the classified
-		LLUUID classified_id;
-		if (!classified_id.set(params[0], FALSE))
-		{
-			return false;
-		}
+        // get the ID for the classified
+        LLUUID classified_id;
+        if (!classified_id.set(params[0], FALSE))
+        {
+            return false;
+        }
 
-		// show the classified in the side tray.
-		// need to ask the server for more info first though...
-		const std::string verb = params[1].asString();
-		if (verb == "about")
-		{
-			mRequestVerb = verb;
-			mClassifiedIds.insert(classified_id);
-			LLAvatarPropertiesProcessor::getInstance()->addObserver(LLUUID(), this);
-			LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(classified_id);
-			return true;
-		}
-		else if (verb == "edit")
-		{
-			LLAvatarActions::showClassified(gAgent.getID(), classified_id, true);
-			return true;
-		}
+        // show the classified in the side tray.
+        // need to ask the server for more info first though...
+        const std::string verb = params[1].asString();
+        if (verb == "about")
+        {
+            mRequestVerb = verb;
+            mClassifiedIds.insert(classified_id);
+            LLAvatarPropertiesProcessor::getInstance()->addObserver(LLUUID(), this);
+            LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(classified_id);
+            return true;
+        }
+        else if (verb == "edit")
+        {
+            LLAvatarActions::showClassified(gAgent.getID(), classified_id, true);
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	void openClassified(LLAvatarClassifiedInfo* c_info)
-	{
-		if (mRequestVerb == "about")
-		{
-			if (c_info->creator_id == gAgent.getID())
-			{
-				LLAvatarActions::showClassified(gAgent.getID(), c_info->classified_id, false);
-			}
-			else
-			{
-				LLSD params;
-				params["id"] = c_info->creator_id;
-				params["classified_id"] = c_info->classified_id;
-				params["classified_creator_id"] = c_info->creator_id;
-				params["classified_snapshot_id"] = c_info->snapshot_id;
-				params["classified_name"] = c_info->name;
-				params["classified_desc"] = c_info->description;
-				params["from_search"] = true;
+    void openClassified(LLAvatarClassifiedInfo* c_info)
+    {
+        if (mRequestVerb == "about")
+        {
+            if (c_info->creator_id == gAgent.getID())
+            {
+                LLAvatarActions::showClassified(gAgent.getID(), c_info->classified_id, false);
+            }
+            else
+            {
+                LLSD params;
+                params["id"] = c_info->creator_id;
+                params["classified_id"] = c_info->classified_id;
+                params["classified_creator_id"] = c_info->creator_id;
+                params["classified_snapshot_id"] = c_info->snapshot_id;
+                params["classified_name"] = c_info->name;
+                params["classified_desc"] = c_info->description;
+                params["from_search"] = true;
 
-				LLFloaterClassified* floaterp = LLFloaterReg::getTypedInstance<LLFloaterClassified>("classified", params);
-				if (floaterp)
-				{
-					floaterp->openFloater(params);
-					floaterp->setVisibleAndFrontmost();
-				}
-			}
-		}
-	}
+                LLFloaterClassified* floaterp = LLFloaterReg::getTypedInstance<LLFloaterClassified>("classified", params);
+                if (floaterp)
+                {
+                    floaterp->openFloater(params);
+                    floaterp->setVisibleAndFrontmost();
+                }
+            }
+        }
+    }
 
-	void processProperties(void* data, EAvatarProcessorType type)
-	{
-		if (APT_CLASSIFIED_INFO != type)
-		{
-			return;
-		}
+    void processProperties(void* data, EAvatarProcessorType type)
+    {
+        if (APT_CLASSIFIED_INFO != type)
+        {
+            return;
+        }
 
-		// is this the classified that we asked for?
-		LLAvatarClassifiedInfo* c_info = static_cast<LLAvatarClassifiedInfo*>(data);
-		if (!c_info || mClassifiedIds.find(c_info->classified_id) == mClassifiedIds.end())
-		{
-			return;
-		}
+        // is this the classified that we asked for?
+        LLAvatarClassifiedInfo* c_info = static_cast<LLAvatarClassifiedInfo*>(data);
+        if (!c_info || mClassifiedIds.find(c_info->classified_id) == mClassifiedIds.end())
+        {
+            return;
+        }
 
-		// open the detail side tray for this classified
-		openClassified(c_info);
+        // open the detail side tray for this classified
+        openClassified(c_info);
 
-		// remove our observer now that we're done
-		mClassifiedIds.erase(c_info->classified_id);
-		LLAvatarPropertiesProcessor::getInstance()->removeObserver(LLUUID(), this);
-	}
+        // remove our observer now that we're done
+        mClassifiedIds.erase(c_info->classified_id);
+        LLAvatarPropertiesProcessor::getInstance()->removeObserver(LLUUID(), this);
+    }
 };
 LLClassifiedHandler gClassifiedHandler;
 

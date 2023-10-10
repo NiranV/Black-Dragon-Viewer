@@ -555,11 +555,11 @@ void LLViewerTexture::updateClass()
 	F64 texture_bytes_alloc = LLImageGL::getTextureBytesAllocated() / 1024.0 / 512.0;
 	F64 vertex_bytes_alloc = LLVertexBuffer::getBytesAllocated() / 1024.0 / 512.0;
 
-	// get an estimate of how much video memory we're using 
-	// NOTE: our metrics miss about half the vram we use, so this biases high but turns out to typically be within 5% of the real number
+    // get an estimate of how much video memory we're using 
+    // NOTE: our metrics miss about half the vram we use, so this biases high but turns out to typically be within 5% of the real number
 	F32 used = (F32)ll_round(texture_bytes_alloc + vertex_bytes_alloc);
-
-	F32 budget = max_vram_budget == 0 ? gGLManager.mVRAM : max_vram_budget;
+    
+    F32 budget = max_vram_budget == 0 ? gGLManager.mVRAM : max_vram_budget;
 
 	// try to leave half a GB for everyone else, but keep at least 768MB for ourselves
 	F32 target = llmax(budget - 512.f, 768.f);
@@ -2117,7 +2117,8 @@ bool LLViewerFetchedTexture::updateFetch()
 		}
 	}
 	
-	llassert_always(mRawImage.notNull() || (!mNeedsCreateTexture && !mIsRawImageValid));
+	llassert_always(mRawImage.notNull() || !mIsRawImageValid);
+	llassert_always(mRawImage.notNull() || !mNeedsCreateTexture);
 	
 	return mIsFetching ? true : false;
 }

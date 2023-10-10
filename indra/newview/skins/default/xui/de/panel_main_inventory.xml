@@ -6,6 +6,7 @@
 	<panel.string name="ItemcountCompleted">
 	[ITEM_COUNT]
 	</panel.string>
+    <panel.string name="inventory_title">INVENTAR</panel.string>
 	<text name="ItemcountText">
 		---
 	</text>

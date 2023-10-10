@@ -235,11 +235,17 @@ with the same filename but different name
   <texture name="Icon_Close_Foreground" file_name="windows/Icon_Close_Foreground.png" preload="true" />
   <texture name="Icon_Close_Press" file_name="windows/Icon_Close_Press.png" preload="true" />
   <texture name="Icon_Close_Toast" file_name="windows/Icon_Close_Toast.png" preload="true" />
+  
+  <texture name="Icon_Copy" file_name="icons/copy_clipboard.png" preload="true" />
+  
+  <texture name="Icon_Delete" file_name="icons/delete_icon.png" preload="true" />
 
   <texture name="Icon_Dock_Foreground" file_name="windows/Icon_Dock_Foreground.png" preload="true" />
   <texture name="Icon_Dock_Press" file_name="windows/Icon_Dock_Press.png" preload="true" />
   <texture name="Icon_Undock_Foreground" file_name="windows/Icon_Undock_Foreground.png" preload="true" />
 
+  <texture name="Icon_File_Upload" file_name="icons/file_upload.png" preload="true" />
+  
   <texture name="Icon_For_Sale" file_name="icons/Icon_For_Sale.png" preload="false" />
 
   <texture name="Icon_Gear_Background" file_name="windows/Icon_Gear_Background.png" preload="false" />
@@ -252,9 +258,15 @@ with the same filename but different name
 
   <texture name="Icon_Minimize_Foreground" file_name="windows/Icon_Minimize_Foreground.png" preload="true" />
   <texture name="Icon_Minimize_Press" file_name="windows/Icon_Minimize_Press.png" preload="true" />
+  
+  <texture name="Icon_Paste" file_name="icons/paste_clipboard.png" preload="true" />
 
   <texture name="Icon_Restore_Foreground" file_name="windows/Icon_Restore_Foreground.png" preload="false" />
   <texture name="Icon_Restore_Press" file_name="windows/Icon_Restore_Press.png" preload="false" />
+
+  <texture name="Icon_Snapshot" file_name="icons/snapshot_icon.png" preload="true" />
+  
+  <texture name="Icon_Use_Texture" file_name="icons/texture_icon.png" preload="true" />
 
   <texture name="Info" file_name="icons/Info.png" preload="false" />
   <texture name="Info_Small" file_name="icons/Info_Small.png" preload="false" />
@@ -663,6 +675,7 @@ with the same filename but different name
   <texture name="TextField_Active" file_name="widgets/TextField_Active.png" preload="true" scale.left="2" scale.top="21" scale.right="254" scale.bottom="2" />
   <texture name="TextField_Search_Highlight" file_name="widgets/TextField_Search_Highlight.png" preload="true" scale.left="9" scale.top="12" scale.right="248" scale.bottom="12" />
 
+  <texture name="Thumbnail_Fallback" file_name="icons/thumbnail_fallback_icon.png" preload="true" />
 
   <texture name="Toast_CloseBtn" file_name="windows/Toast_CloseBtn.png" preload="true" />
   <texture name="Toast_Background" file_name="windows/Toast_Background.png" preload="true"
@@ -837,7 +850,13 @@ with the same filename but different name
   <texture name="System_Notification" file_name="icons/SL_Logo.png" preload="true"/>
   <texture name="Icon_Attachment_Small" file_name="icons/Icon_Attachment_Small.png"	preload="true"/>
   <texture name="Icon_Attachment_Large" file_name="icons/Icon_Attachment_Large.png"	preload="true"/>
-  
+
+  <texture name="Single_Folder_Mode" file_name="icons/single_folder_mode.png" preload="true"/>
+  <texture name="Multi_Folder_Mode" file_name="icons/multi_folder_mode.png" preload="true"/>
+  <texture name="Single_Folder_Back" file_name="icons/single_folder_back.png" preload="true"/>
+  <texture name="Single_Folder_Forward" file_name="icons/single_folder_forward.png" preload="true"/>
+  <texture name="Single_Folder_Up" file_name="icons/single_folder_up.png" preload="true"/>
+
   <!-- Back Dragon textures-->
   
   <texture name="Button_A" file_name="xbox/button_a.png" preload="false" />
@@ -984,11 +1003,4 @@ with the same filename but different name
   <texture name="Performance_Medium" file_name="perf/Perf_Medium_32.png" preload="false" />
   <texture name="Performance_Good" file_name="perf/Perf_Good_32.png" preload="false" />
   <texture name="Performance_Excellent" file_name="perf/Perf_Great_32.png" preload="false" />
-  
-  <!--WARNING OLD ART BELOW *do not use*-->
-
-  <!--<texture name="jump_left_out.tga" file_name="widgets/jump_left_out.png" />
-  <texture name="jump_left_in.tga" file_name="widgets/jump_left_in.png" />
-  <texture name="jump_right_out.tga" file_name="widgets/jump_right_out.png" />
-  <texture name="jump_right_in.tga" file_name="widgets/jump_right_in.png" />-->
 </textures>

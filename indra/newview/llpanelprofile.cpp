@@ -71,6 +71,7 @@
 #include "llpanelblockedlist.h"
 #include "llpanelprofileclassifieds.h"
 #include "llpanelprofilepicks.h"
+#include "llthumbnailctrl.h"
 #include "lltrans.h"
 #include "llviewercontrol.h"
 #include "llviewermenu.h" //is_agent_mappable
@@ -366,7 +367,7 @@ LLUUID post_profile_image(std::string cap_url, const LLSD &first_data, std::stri
 	httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
 	status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
 
-	LL_WARNS("AvatarProperties") << result << LL_ENDL;
+    LL_DEBUGS("AvatarProperties") << result << LL_ENDL;
 
 	if (!status)
 	{
@@ -461,8 +462,10 @@ public:
 	// requires trusted browser to trigger
 	LLProfileHandler() : LLCommandHandler("profile", UNTRUSTED_THROTTLE) { }
 
-	bool handle(const LLSD& params, const LLSD& query_map,
-		LLMediaCtrl* web)
+	bool handle(const LLSD& params,
+                const LLSD& query_map,
+                const std::string& grid,
+                LLMediaCtrl* web)
 	{
 		if (params.size() < 1) return false;
 		std::string agent_name = params[0];
@@ -509,8 +512,10 @@ public:
         return false;
     }
 
-	bool handle(const LLSD& params, const LLSD& query_map,
-		LLMediaCtrl* web)
+	bool handle(const LLSD& params,
+                const LLSD& query_map,
+                const std::string& grid,
+                LLMediaCtrl* web)
 	{
 		if (params.size() < 2) return false;
 		LLUUID avatar_id;
@@ -909,37 +914,37 @@ LLPanelProfileSecondLife::~LLPanelProfileSecondLife()
 
 BOOL LLPanelProfileSecondLife::postBuild()
 {
-	mGroupList = getChild<LLGroupList>("group_list");
-	mShowInSearchCombo = getChild<LLComboBox>("show_in_search");
-	mSecondLifePic = getChild<LLIconCtrl>("2nd_life_pic");
-	mSecondLifePicLayout = getChild<LLPanel>("image_panel");
-	mDescriptionEdit = getChild<LLTextEditor>("sl_description_edit");
-	mAgentActionMenuButton = getChild<LLMenuButton>("agent_actions_menu");
-	mSaveDescriptionChanges = getChild<LLButton>("save_description_changes");
-	mDiscardDescriptionChanges = getChild<LLButton>("discard_description_changes");
-	mCanSeeOnlineIcon = getChild<LLIconCtrl>("can_see_online");
-	mCantSeeOnlineIcon = getChild<LLIconCtrl>("cant_see_online");
-	mCanSeeOnMapIcon = getChild<LLIconCtrl>("can_see_on_map");
-	mCantSeeOnMapIcon = getChild<LLIconCtrl>("cant_see_on_map");
-	mCanEditObjectsIcon = getChild<LLIconCtrl>("can_edit_objects");
-	mCantEditObjectsIcon = getChild<LLIconCtrl>("cant_edit_objects");
+    mGroupList              = getChild<LLGroupList>("group_list");
+    mShowInSearchCombo      = getChild<LLComboBox>("show_in_search");
+    mSecondLifePic          = getChild<LLThumbnailCtrl>("2nd_life_pic");
+    mSecondLifePicLayout    = getChild<LLPanel>("image_panel");
+    mDescriptionEdit        = getChild<LLTextEditor>("sl_description_edit");
+    mAgentActionMenuButton  = getChild<LLMenuButton>("agent_actions_menu");
+    mSaveDescriptionChanges = getChild<LLButton>("save_description_changes");
+    mDiscardDescriptionChanges = getChild<LLButton>("discard_description_changes");
+    mCanSeeOnlineIcon       = getChild<LLIconCtrl>("can_see_online");
+    mCantSeeOnlineIcon      = getChild<LLIconCtrl>("cant_see_online");
+    mCanSeeOnMapIcon        = getChild<LLIconCtrl>("can_see_on_map");
+    mCantSeeOnMapIcon       = getChild<LLIconCtrl>("cant_see_on_map");
+    mCanEditObjectsIcon     = getChild<LLIconCtrl>("can_edit_objects");
+    mCantEditObjectsIcon    = getChild<LLIconCtrl>("cant_edit_objects");
 
-	mShowInSearchCombo->setCommitCallback([this](LLUICtrl*, void*) { onShowInSearchCallback(); }, nullptr);
-	mGroupList->setDoubleClickCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { LLPanelProfileSecondLife::openGroupProfile(); });
-	mGroupList->setReturnCallback([this](LLUICtrl*, const LLSD&) { LLPanelProfileSecondLife::openGroupProfile(); });
-	mSaveDescriptionChanges->setCommitCallback([this](LLUICtrl*, void*) { onSaveDescriptionChanges(); }, nullptr);
-	mDiscardDescriptionChanges->setCommitCallback([this](LLUICtrl*, void*) { onDiscardDescriptionChanges(); }, nullptr);
-	mDescriptionEdit->setKeystrokeCallback([this](LLTextEditor* caller) { onSetDescriptionDirty(); });
+    mShowInSearchCombo->setCommitCallback([this](LLUICtrl*, void*) { onShowInSearchCallback(); }, nullptr);
+    mGroupList->setDoubleClickCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { LLPanelProfileSecondLife::openGroupProfile(); });
+    mGroupList->setReturnCallback([this](LLUICtrl*, const LLSD&) { LLPanelProfileSecondLife::openGroupProfile(); });
+    mSaveDescriptionChanges->setCommitCallback([this](LLUICtrl*, void*) { onSaveDescriptionChanges(); }, nullptr);
+    mDiscardDescriptionChanges->setCommitCallback([this](LLUICtrl*, void*) { onDiscardDescriptionChanges(); }, nullptr);
+    mDescriptionEdit->setKeystrokeCallback([this](LLTextEditor* caller) { onSetDescriptionDirty(); });
 
-	mCanSeeOnlineIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mCantSeeOnlineIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mCanSeeOnMapIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mCantSeeOnMapIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mCanEditObjectsIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mCantEditObjectsIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
-	mSecondLifePic->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentProfileTexture(); });
+    mCanSeeOnlineIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mCantSeeOnlineIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mCanSeeOnMapIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mCantSeeOnMapIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mCanEditObjectsIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mCantEditObjectsIcon->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentPermissionsDialog(); });
+    mSecondLifePic->setMouseUpCallback([this](LLUICtrl*, S32 x, S32 y, MASK mask) { onShowAgentProfileTexture(); });
 
-	return TRUE;
+    return TRUE;
 }
 
 void LLPanelProfileSecondLife::onOpen(const LLSD& key)
@@ -1495,7 +1500,6 @@ void LLPanelProfileSecondLife::setLoaded()
 }
 
 
-
 class LLProfileImagePicker : public LLFilePickerThread
 {
 public:
@@ -1536,23 +1540,28 @@ void LLProfileImagePicker::notify(const std::vector<std::string>& filenames)
 		return;
 	}
 
-	// generate a temp texture file for coroutine
-	std::string temp_file = gDirUtilp->getTempFilename();
-	U32 codec = LLImageBase::getCodecFromExtension(gDirUtilp->getExtension(file_path));
-	const S32 MAX_DIM = 256;
-	if (!LLViewerTextureList::createUploadFile(file_path, temp_file, codec, MAX_DIM))
-	{
-		//todo: image not supported notification
-		LL_WARNS("AvatarProperties") << "Failed to upload profile image of type " << (S32)PROFILE_IMAGE_SL << ", failed to open image" << LL_ENDL;
-		return;
-	}
+    // generate a temp texture file for coroutine
+    std::string temp_file = gDirUtilp->getTempFilename();
+    U32 codec = LLImageBase::getCodecFromExtension(gDirUtilp->getExtension(file_path));
+    const S32 MAX_DIM = 256;
+    if (!LLViewerTextureList::createUploadFile(file_path, temp_file, codec, MAX_DIM))
+    {
+        LLSD notif_args;
+        notif_args["REASON"] = LLImage::getLastError().c_str();
+        LLNotificationsUtil::add("CannotUploadTexture", notif_args);
+        LL_WARNS("AvatarProperties") << "Failed to upload profile image of type " << (S32)mType << ", " << notif_args["REASON"].asString() << LL_ENDL;
+        return;
+    }
 
-	std::string cap_url = gAgent.getRegionCapability(PROFILE_IMAGE_UPLOAD_CAP);
-	if (cap_url.empty())
-	{
-		LL_WARNS("AvatarProperties") << "Failed to upload profile image of type " << (S32)PROFILE_IMAGE_SL << ", no cap found" << LL_ENDL;
-		return;
-	}
+    std::string cap_url = gAgent.getRegionCapability(PROFILE_IMAGE_UPLOAD_CAP);
+    if (cap_url.empty())
+    {
+        LLSD args;
+        args["CAPABILITY"] = PROFILE_IMAGE_UPLOAD_CAP;
+        LLNotificationsUtil::add("RegionCapabilityRequestError", args);
+        LL_WARNS("AvatarProperties") << "Failed to upload profile image of type " << (S32)mType << ", no cap found" << LL_ENDL;
+        return;
+    }
 
 	switch (mType)
 	{
@@ -1963,30 +1972,16 @@ void LLPanelProfileSecondLife::onShowTexturePicker()
 
             mFloaterTexturePickerHandle = texture_floaterp->getHandle();
 
-            texture_floaterp->setOnFloaterCommitCallback([this](LLTextureCtrl::ETexturePickOp op, LLUUID id)
+            texture_floaterp->setOnFloaterCommitCallback([this](LLTextureCtrl::ETexturePickOp op, LLPickerSource source, const LLUUID& asset_id, const LLUUID&)
             {
                 if (op == LLTextureCtrl::TEXTURE_SELECT)
                 {
-                    LLUUID image_asset_id;
-                    LLFloaterTexturePicker* floaterp = (LLFloaterTexturePicker*)mFloaterTexturePickerHandle.get();
-                    if (floaterp)
-                    {
-                        if (id.notNull())
-                        {
-                            image_asset_id = id;
-                        }
-                        else
-                        {
-                            image_asset_id = floaterp->getAssetID();
-                        }
-                    }
-
-                    onCommitProfileImage(image_asset_id);
+                    onCommitProfileImage(asset_id);
                 }
             });
             texture_floaterp->setLocalTextureEnabled(FALSE);
             texture_floaterp->setBakeTextureEnabled(FALSE);
-            texture_floaterp->setCanApply(false, true);
+            texture_floaterp->setCanApply(false, true, false);
 
             parent_floater->addDependentFloater(mFloaterTexturePickerHandle);
 
@@ -2200,8 +2195,8 @@ LLPanelProfileFirstLife::~LLPanelProfileFirstLife()
 
 BOOL LLPanelProfileFirstLife::postBuild()
 {
-	mDescriptionEdit = getChild<LLTextEditor>("fl_description_edit");
-	mPicture = getChild<LLIconCtrl>("real_world_pic");
+    mDescriptionEdit = getChild<LLTextEditor>("fl_description_edit");
+    mPicture = getChild<LLThumbnailCtrl>("real_world_pic");
 
 	mUploadPhoto = getChild<LLButton>("fl_upload_image");
 	mChangePhoto = getChild<LLButton>("fl_change_image");
@@ -2303,29 +2298,15 @@ void LLPanelProfileFirstLife::onChangePhoto()
 
             mFloaterTexturePickerHandle = texture_floaterp->getHandle();
 
-            texture_floaterp->setOnFloaterCommitCallback([this](LLTextureCtrl::ETexturePickOp op, LLUUID id)
+            texture_floaterp->setOnFloaterCommitCallback([this](LLTextureCtrl::ETexturePickOp op, LLPickerSource source, const LLUUID& asset_id, const LLUUID&)
             {
                 if (op == LLTextureCtrl::TEXTURE_SELECT)
                 {
-                    LLUUID image_asset_id;
-                    LLFloaterTexturePicker* floaterp = (LLFloaterTexturePicker*)mFloaterTexturePickerHandle.get();
-                    if (floaterp)
-                    {
-                        if (id.notNull())
-                        {
-                            image_asset_id = id;
-                        }
-                        else
-                        {
-                            image_asset_id = floaterp->getAssetID();
-                        }
-                    }
-
-                    onCommitPhoto(image_asset_id);
+                    onCommitPhoto(asset_id);
                 }
             });
             texture_floaterp->setLocalTextureEnabled(FALSE);
-            texture_floaterp->setCanApply(false, true);
+            texture_floaterp->setCanApply(false, true, false);
 
             parent_floater->addDependentFloater(mFloaterTexturePickerHandle);
 

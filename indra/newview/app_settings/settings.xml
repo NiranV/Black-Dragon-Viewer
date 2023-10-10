@@ -261,7 +261,7 @@
     <key>TextureLivePreview</key>
     <map>
       <key>Comment</key>
-      <string>Preview selections in texture picker immediately</string>
+      <string>Preview selections in texture picker or material picker immediately</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -5053,17 +5053,6 @@
         <key>Value</key>
         <integer>0</integer>
     </map>
-    <key>InventoryInboxToggleState</key>
-    <map>
-        <key>Comment</key>
-        <string>Stores the open/closed state of inventory Received items panel</string>
-        <key>Persist</key>
-        <integer>1</integer>
-        <key>Type</key>
-        <string>Boolean</string>
-        <key>Value</key>
-        <integer>0</integer>
-    </map>
 	<key>InventoryLinking</key>
 	<map>
 		<key>Comment</key>
@@ -5558,6 +5547,17 @@
       <string>S32</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>LastUIFeatureVersion</key>
+    <map>
+        <key>Comment</key>
+        <string>UI Feature Version number for tracking feature notification between viewer builds</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>LLSD</string>
+        <key>Value</key>
+        <string></string>
     </map>
     <key>LastFindPanel</key>
     <map>
@@ -7121,6 +7121,17 @@
     <map>
       <key>Comment</key>
       <string>Disable audio playback.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>UseMediaPluginsForStreamingAudio</key>
+    <map>
+      <key>Comment</key>
+      <string>Use media plugins (VLC) for streaming audio.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -9107,16 +9118,16 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderLocalLights</key>
+  <key>RenderLocalLightCount</key>
   <map>
     <key>Comment</key>
-    <string>Whether or not to render local lights.</string>
+    <string>Number of local lights to render.</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>Boolean</string>
+    <string>S32</string>
     <key>Value</key>
-    <integer>1</integer>
+    <integer>256</integer>
   </map>
   <key>RenderShadowSplitExponent</key>
   <map>
@@ -9731,7 +9742,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>-0.001</real>
+    <real>-0.0002</real>
   </map>
   <key>RenderSpotShadowOffset</key>
   <map>
@@ -10806,7 +10817,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.5</real>
+    <real>1.0</real>
   </map>
   <key>RenderSkyAutoAdjustHDRScale</key>
   <map>
@@ -10819,6 +10830,73 @@
     <key>Value</key>
     <real>2.0</real>
   </map>
+  <key>RendeSkyAutoAdjustBlueHorizonScale</key>
+  <map>
+    <key>Comment</key>
+    <string>Blue Horizon Scale value to use when auto-adjusting legacy skies</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
+  <key>RendeSkyAutoAdjustBlueDensityScale</key>
+  <map>
+    <key>Comment</key>
+    <string>Blue Horizon Scale value to use when auto-adjusting legacy skies</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
+  <key>RenderSkyAutoAdjustSunColorScale</key>
+  <map>
+    <key>Comment</key>
+    <string>Sun color scalar when auto-adjusting legacy skies</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
+  <key>RenderSkyAutoAdjustProbeAmbiance</key>
+  <map>
+    <key>Comment</key>
+    <string>Probe ambiance value when auto-adjusting legacy skies</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.001</real>
+  </map>
+  <key>RenderSkySunlightScale</key>
+  <map>
+    <key>Comment</key>
+    <string>Sunlight scale fudge factor for matching with pre-PBR viewer</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>1.0</real>
+  </map>
+  <key>RenderSkyAmbientScale</key>
+  <map>
+    <key>Comment</key>
+    <string>Ambient scale fudge factor for matching with pre-PBR viewer</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.7</real>
+  </map>
+  
   <key>RenderReflectionProbeMaxLocalLightAmbiance</key>
   <map>
     <key>Comment</key>
@@ -11713,6 +11791,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+  <key>SelectReflectionProbes</key>
+    <map>
+      <key>Comment</key>
+      <string>Select reflection probes</string>
+      <key>Persist</key>
+      <integer>0</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>SelectOwnedOnly</key>
     <map>
       <key>Comment</key>
@@ -11848,11 +11937,11 @@
     <key>ShowBanLines</key>
     <map>
       <key>Comment</key>
-      <string>Show in-world ban/access borders</string>
+      <string>Show in-world ban/access borders, 0 - do not show, 1 - show on collision, 2 - show on proximity</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
-      <string>Boolean</string>
+      <string>S32</string>
       <key>Value</key>
       <integer>1</integer>
     </map>
@@ -15647,6 +15736,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>BatchSizeAIS3</key>
+    <map>
+        <key>Comment</key>
+        <string>Amount of folder ais packs into category subset request</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>S32</string>
+        <key>Value</key>
+        <integer>20</integer>
+    </map>
     <key>PoolSizeAIS</key>
         <map>
         <key>Comment</key>
@@ -15654,7 +15754,7 @@
         <key>Type</key>
             <string>U32</string>
         <key>Value</key>
-            <integer>1</integer>
+            <integer>20</integer>
         </map>
     <key>PoolSizeUpload</key>
         <map>
@@ -17343,17 +17443,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-  <key>360CaptureUseInterestListCap</key>
-  <map>
-    <key>Comment</key>
-    <string>Flag if set, uses the new InterestList cap to ask the simulator for full content</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>1</integer>
-  </map>
   <key>360CaptureJPEGEncodeQuality</key>
   <map>
     <key>Comment</key>
@@ -17476,14 +17565,79 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-
+  <key>FindOriginalOpenWindow</key>
+  <map>
+    <key>Comment</key>
+    <string>Sets the action for 'Find original' and 'Show in Inventory' (0 - shows item in main Inventory, 1 - opens a new single-folder window)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>StatsReportMaxDuration</key>
+  <map>
+    <key>Comment</key>
+    <string>Maximum seconds for viewer stats file data, prevents huge file</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>300</real>
+  </map>
+	<key>StatsReportFileInterval</key>
+	<map>
+		<key>Comment</key>
+		<string>Interval to save viewer stats file data</string>
+		<key>Persist</key>
+		<integer>1</integer>
+		<key>Type</key>
+		<string>F32</string>
+		<key>Value</key>
+		<real>0.2</real>
+	</map>
+  <key>StatsReportSkipZeroDataSaves</key>
+  <map>
+    <key>Comment</key>
+    <string>In viewer stats data file, skip saving entry if there is no data</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+<key>MultiModeDoubleClickFolder</key>
+<map>
+  <key>Comment</key>
+  <string>Sets the action for Double-click on folder in multi-folder view (0 - expands and collapses folder, 1 - opens a new window, 2 – stays in current floater but switches to SFV)</string>
+  <key>Persist</key>
+  <integer>1</integer>
+  <key>Type</key>
+  <string>U32</string>
+  <key>Value</key>
+  <integer>0</integer>
+</map>
+<key>SingleModeDoubleClickOpenWindow</key>
+<map>
+  <key>Comment</key>
+  <string>Sets the action for Double-click on folder in single-folder view (0 - stays in current window, 1 - opens a new window)</string>
+  <key>Persist</key>
+  <integer>1</integer>
+  <key>Type</key>
+  <string>Boolean</string>
+  <key>Value</key>
+  <integer>0</integer>
+</map>
 <!-- Black Dragon Debugs -->
-  <key>Include</key>
-  <array>
-    <!-- Black Dragon Debugs -->
-    <string>settings_blackdragon.xml</string>
-    <!-- RLVa Debugs -->
-    <string>settings_rlva.xml</string>
-  </array>
+<key>Include</key>
+<array>
+  <!-- Black Dragon Debugs -->
+  <string>settings_blackdragon.xml</string>
+  <!-- RLVa Debugs -->
+  <!--<string>settings_rlva.xml</string>-->
+</array>
 </map>
 </llsd>

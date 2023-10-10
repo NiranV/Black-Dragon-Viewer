@@ -69,6 +69,7 @@ public:
 	struct Params : public LLInitParam::Block<Params, LLPanel::Params> 
 	{
 		typedef boost::function<void(void)> click_callback_t;
+		typedef boost::function<LLToolTip*(LLToolTip::Params)> create_callback_t;
 
 		Optional<std::string>		message;
 		Multiple<StyledText>		styled_message;
@@ -85,6 +86,8 @@ public:
 		Optional<bool>				time_based_media,
 									web_based_media,
 									media_playing;
+		Optional<create_callback_t>	create_callback;
+		Optional<LLSD>				create_params;
 		Optional<click_callback_t>	click_callback,
 									click_playmedia_callback,
 									click_homepage_callback;
@@ -104,11 +107,15 @@ public:
 	bool hasClickCallback();
 
 	LLToolTip(const Params& p);
-	void initFromParams(const LLToolTip::Params& params);
+	virtual void initFromParams(const LLToolTip::Params& params);
 
 	void getToolTipMessage(std::string & message);
 
-private:
+protected:
+	void updateTextBox();
+	void snapToChildren();
+
+protected:
 	class LLTextBox*	mTextBox;
 	class LLButton*     mInfoButton;
 	class LLButton*     mPlayMediaButton;
@@ -118,6 +125,7 @@ private:
 	LLFrameTimer	mVisibleTimer;
 	bool			mHasClickCallback;
 	S32				mPadding;	// pixels
+	S32				mMaxWidth;
 };
 
 // used for the inspector tooltips which need different background images etc.

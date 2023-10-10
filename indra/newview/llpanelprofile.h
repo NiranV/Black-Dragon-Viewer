@@ -58,6 +58,7 @@ class LLTextBase;
 class LLMenuButton;
 class LLLineEditor;
 class LLTextEditor;
+class LLThumbnailCtrl;
 class LLPanelProfileClassifieds;
 class LLPanelProfilePicks;
 class LLViewerFetchedTexture;
@@ -191,8 +192,8 @@ private:
 	void					openGroupProfile();
 
 	LLGroupList*		mGroupList;
-	LLComboBox*			mShowInSearchCombo;
-	LLIconCtrl*			mSecondLifePic;
+    LLComboBox*			mShowInSearchCombo;
+    LLThumbnailCtrl*	mSecondLifePic;
 	LLPanel*			mSecondLifePicLayout;
 	LLTextEditor*		mDescriptionEdit;
 	LLMenuButton*		mAgentActionMenuButton;
@@ -301,18 +302,18 @@ protected:
 	void onDiscardDescriptionChanges();
 
 	LLTextEditor*	mDescriptionEdit;
-	LLIconCtrl*		mPicture;
-	LLButton* mUploadPhoto;
-	LLButton* mChangePhoto;
-	LLButton* mRemovePhoto;
-	LLButton* mSaveChanges;
-	LLButton* mDiscardChanges;
+    LLThumbnailCtrl* mPicture;
+    LLButton* mUploadPhoto;
+    LLButton* mChangePhoto;
+    LLButton* mRemovePhoto;
+    LLButton* mSaveChanges;
+    LLButton* mDiscardChanges;
 
-	LLHandle<LLFloater>	mFloaterTexturePickerHandle;
+    LLHandle<LLFloater>	mFloaterTexturePickerHandle;
 
-	std::string		mCurrentDescription;
-	LLUUID			mImageId;
-	bool			mHasUnsavedChanges;
+    std::string		mCurrentDescription;
+    LLUUID			mImageId;
+    bool			mHasUnsavedChanges;
 };
 
 /**

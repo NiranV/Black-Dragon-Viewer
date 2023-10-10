@@ -4692,7 +4692,7 @@ BOOL LLVOVolume::lineSegmentIntersect(const LLVector4a& start, const LLVector4a&
 
     if (!pick_unselectable)
     {
-        if (!LLSelectMgr::instance().canSelectObject(this))
+        if (!LLSelectMgr::instance().canSelectObject(this, TRUE))
         {
             return FALSE;
         }
@@ -5176,6 +5176,30 @@ LLControlAVBridge::LLControlAVBridge(LLDrawable* drawablep, LLViewerRegion* regi
 {
 	mDrawableType = LLPipeline::RENDER_TYPE_CONTROL_AV;
 	mPartitionType = LLViewerRegion::PARTITION_CONTROL_AV;
+}
+
+void LLControlAVBridge::updateSpatialExtents()
+{
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+
+	LLSpatialGroup* root = (LLSpatialGroup*)mOctree->getListener(0);
+
+	bool rootWasDirty = root->isDirty();
+
+	super::updateSpatialExtents(); // root becomes non-dirty here
+
+	// SL-18251 "On-screen animesh characters using pelvis offset animations
+	// disappear when root goes off-screen"
+	//
+	// Expand extents to include Control Avatar placed outside of the bounds
+    LLControlAvatar* controlAvatar = getVObj() ? getVObj()->getControlAvatar() : NULL;
+    if (controlAvatar
+        && controlAvatar->mDrawable
+        && controlAvatar->mDrawable->getEntry()
+        && (rootWasDirty || controlAvatar->mPlaying))
+	{
+		root->expandExtents(controlAvatar->mDrawable->getSpatialExtents(), *mDrawable->getXform());
+	}
 }
 
 bool can_batch_texture(LLFace* facep)
@@ -5912,7 +5936,16 @@ void LLVolumeGeometryManager::rebuildGeom(LLSpatialGroup* group)
 						}
 						else
 						{
-							if (te->getColor().mV[3] > 0.f || te->getGlow() > 0.f)
+                            F32 alpha;
+                            if (is_pbr)
+                            {
+                                alpha = gltf_mat ? gltf_mat->mBaseColor.mV[3] : 1.0;
+                            }
+                            else
+                            {
+                                alpha = te->getColor().mV[3];
+                            }
+                            if (alpha > 0.f || te->getGlow() > 0.f)
 							{ //only treat as alpha in the pipeline if < 100% transparent
 								drawablep->setState(LLDrawable::HAS_ALPHA);
 								add_face(sAlphaFaces, alpha_count, facep);
@@ -6154,12 +6187,18 @@ void LLVolumeGeometryManager::rebuildMesh(LLSpatialGroup* group)
 							LLVertexBuffer* buff = face->getVertexBuffer();
 							if (buff)
 							{
-								if (!face->getGeometryVolume(*volume, face->getTEOffset(),
-									vobj->getRelativeXform(), vobj->getRelativeXformInvTrans(), face->getGeomIndex()))
-								{ //something's gone wrong with the vertex buffer accounting, rebuild this group 
-									group->dirtyGeom();
-									gPipeline.markRebuild(group);
-								}
+                                if (!face->getGeometryVolume(*volume, // volume
+                                    face->getTEOffset(),              // face_index
+                                    vobj->getRelativeXform(),         // mat_vert_in
+                                    vobj->getRelativeXformInvTrans(), // mat_norm_in
+                                    face->getGeomIndex(),             // index_offset
+                                    false,                            // force_rebuild
+                                    true))                            // no_debug_assert
+                                {   // Something's gone wrong with the vertex buffer accounting,
+                                    // rebuild this group with no debug assert because MESH_DIRTY
+                                    group->dirtyGeom();
+                                    gPipeline.markRebuild(group);
+                                }
 
                                 buff->unmapBuffer();
 							}

@@ -134,7 +134,6 @@ S32 LLPipeline::RenderShadowDetail;
 S32 LLPipeline::RenderShadowSplits;
 bool LLPipeline::RenderDeferredSSAO;
 F32 LLPipeline::RenderShadowResolutionScale;
-bool LLPipeline::RenderLocalLights;
 bool LLPipeline::RenderDelayCreation;
 bool LLPipeline::RenderAnimateRes;
 bool LLPipeline::FreezeTime;
@@ -394,8 +393,7 @@ LLPipeline::LLPipeline() :
 	mResetVertexBuffers(false),
 	mLastRebuildPool(NULL),
 	mLightMask(0),
-	mLightMovingMask(0),
-	mLightingDetail(0)
+	mLightMovingMask(0)
 {
 	mNoiseMap = 0;
 	mTrueNoiseMap = 0;
@@ -521,8 +519,6 @@ void LLPipeline::init()
         mScreenTriangleVB->unmapBuffer();
     }
 
-    setLightingDetail(-1);
-	
 	//
 	// Update all settings to trigger a cached settings refresh
 	//
@@ -544,7 +540,6 @@ void LLPipeline::init()
     connectRefreshCachedSettingsSafe("RenderShadowSplits");
 	connectRefreshCachedSettingsSafe("RenderDeferredSSAO");
 	connectRefreshCachedSettingsSafe("RenderShadowResolutionScale");
-	connectRefreshCachedSettingsSafe("RenderLocalLights");
 	connectRefreshCachedSettingsSafe("RenderDelayCreation");
 	connectRefreshCachedSettingsSafe("RenderAnimateRes");
 	connectRefreshCachedSettingsSafe("FreezeTime");
@@ -1640,39 +1635,6 @@ void LLPipeline::enableShadows(const bool enable_shadows)
 	//should probably do something here to wrangle shadows....	
 }
 
-S32 LLPipeline::getMaxLightingDetail() const
-{
-	/*if (mShaderLevel[SHADER_OBJECT] >= LLDrawPoolSimple::SHADER_LEVEL_LOCAL_LIGHTS)
-	{
-		return 3;
-	}
-	else*/
-	{
-		return 1;
-	}
-}
-
-S32 LLPipeline::setLightingDetail(S32 level)
-{
-	refreshCachedSettings();
-
-	if (level < 0)
-	{
-		if (RenderLocalLights)
-		{
-			level = 1;
-		}
-		else
-		{
-			level = 0;
-		}
-	}
-	level = llclamp(level, 0, getMaxLightingDetail());
-	mLightingDetail = level;
-	
-	return mLightingDetail;
-}
-
 class LLOctreeDirtyTexture : public OctreeTraveler
 {
 public:
@@ -2757,8 +2719,11 @@ void LLPipeline::doOcclusion(LLCamera& camera)
 		for (LLCullResult::sg_iterator iter = sCull->beginOcclusionGroups(); iter != sCull->endOcclusionGroups(); ++iter)
 		{
 			LLSpatialGroup* group = *iter;
-			group->doOcclusion(&camera);
-			group->clearOcclusionState(LLSpatialGroup::ACTIVE_OCCLUSION);
+            if (!group->isDead())
+            {
+                group->doOcclusion(&camera);
+                group->clearOcclusionState(LLSpatialGroup::ACTIVE_OCCLUSION);
+            }
 		}
 	
 		//apply occlusion culling to object cache tree
@@ -3203,6 +3168,10 @@ void LLPipeline::stateSort(LLCamera& camera, LLCullResult &result)
 	for (LLCullResult::sg_iterator iter = sCull->beginDrawableGroups(); iter != sCull->endDrawableGroups(); ++iter)
 	{
 		LLSpatialGroup* group = *iter;
+        if (group->isDead())
+        {
+            continue;
+        }
 		group->checkOcclusion();
 		if (sUseOcclusion > 1 && group->isOcclusionState(LLSpatialGroup::OCCLUDED))
 		{
@@ -3262,6 +3231,10 @@ void LLPipeline::stateSort(LLCamera& camera, LLCullResult &result)
 	for (LLCullResult::sg_iterator iter = sCull->beginVisibleGroups(); iter != sCull->endVisibleGroups(); ++iter)
 	{
 		LLSpatialGroup* group = *iter;
+        if (group->isDead())
+        {
+            continue;
+        }
 		group->checkOcclusion();
 		if (sUseOcclusion > 1 && group->isOcclusionState(LLSpatialGroup::OCCLUDED))
 		{
@@ -3421,7 +3394,12 @@ void forAllDrawables(LLCullResult::sg_iterator begin,
 {
 	for (LLCullResult::sg_iterator i = begin; i != end; ++i)
 	{
-		for (LLSpatialGroup::element_iter j = (*i)->getDataBegin(); j != (*i)->getDataEnd(); ++j)
+        LLSpatialGroup* group = *i;
+        if (group->isDead())
+        {
+            continue;
+        }
+		for (LLSpatialGroup::element_iter j = group->getDataBegin(); j != group->getDataEnd(); ++j)
 		{
 			if((*j)->hasDrawable())
 			{
@@ -3630,6 +3608,10 @@ void LLPipeline::postSort(LLCamera &camera)
         for (LLCullResult::sg_iterator i = sCull->beginDrawableGroups(); i != sCull->endDrawableGroups(); ++i)
         {
             LLSpatialGroup *group = *i;
+            if (group->isDead())
+            {
+                continue;
+            }
             if (!sUseOcclusion || !group->isOcclusionState(LLSpatialGroup::OCCLUDED))
             {
                 group->rebuildGeom();
@@ -3648,6 +3630,12 @@ void LLPipeline::postSort(LLCamera &camera)
     for (LLCullResult::sg_iterator i = sCull->beginVisibleGroups(); i != sCull->endVisibleGroups(); ++i)
     {
         LLSpatialGroup *group = *i;
+
+        if (group->isDead())
+        {
+            continue;
+        }
+
         if ((sUseOcclusion && group->isOcclusionState(LLSpatialGroup::OCCLUDED)) ||
             (RenderAutoHideSurfaceAreaLimit > 0.f &&
              group->mSurfaceArea > RenderAutoHideSurfaceAreaLimit * llmax(group->mObjectBoxSize, 10.f)))
@@ -5516,7 +5504,9 @@ void LLPipeline::calcNearbyLights(LLCamera& camera)
 		return;
 	}
 
-	if (mLightingDetail >= 1)
+    static LLCachedControl<S32> local_light_count(gSavedSettings, "RenderLocalLightCount", 256);
+
+	if (local_light_count >= 1)
 	{
 		// mNearbyLight (and all light_set_t's) are sorted such that
 		// begin() == the closest light and rbegin() == the farthest light
@@ -5804,7 +5794,9 @@ void LLPipeline::setupHWLights()
 
 	mLightMovingMask = 0;
 	
-	if (mLightingDetail >= 1)
+    static LLCachedControl<S32> local_light_count(gSavedSettings, "RenderLocalLightCount", 256);
+
+	if (local_light_count >= 1)
 	{
 		for (light_set_t::iterator iter = mNearbyLights.begin();
 			 iter != mNearbyLights.end(); ++iter)
@@ -5959,10 +5951,6 @@ void LLPipeline::enableLights(U32 mask)
 {
 	assertInitialized();
 
-	if (mLightingDetail == 0)
-	{
-		mask &= 0xf003; // sun and backlight only (and fullbright bit)
-	}
 	if (mLightMask != mask)
 	{
 		stop_glerror();
@@ -5990,28 +5978,13 @@ void LLPipeline::enableLights(U32 mask)
 	}
 }
 
-void LLPipeline::enableLightsStatic()
-{
-	assertInitialized();
-	U32 mask = 0x01; // Sun
-	if (mLightingDetail >= 2)
-	{
-		mask |= mLightMovingMask; // Hardware moving lights
-	}
-	else
-	{
-		mask |= 0xff & (~2); // Hardware local lights
-	}
-	enableLights(mask);
-}
-
 void LLPipeline::enableLightsDynamic()
 {
 	assertInitialized();
 	U32 mask = 0xff & (~2); // Local lights
 	enableLights(mask);
 	
-	if (isAgentAvatarValid() && getLightingDetail() <= 0)
+	if (isAgentAvatarValid())
 	{
 		if (gAgentAvatarp->mSpecialRenderMode == 0) // normal
 		{
@@ -8152,7 +8125,17 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 		shader.uniformMatrix4fv(LLShaderMgr::DEFERRED_NORM_MATRIX, 1, FALSE, norm_mat.m);
 	}
 
-    shader.uniform3fv(LLShaderMgr::SUNLIGHT_COLOR, 1, mSunDiffuse.mV);
+    // auto adjust legacy sun color if needed
+    static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
+    static LLCachedControl<F32> auto_adjust_sun_color_scale(gSavedSettings, "RenderSkyAutoAdjustSunColorScale", 1.f);
+    LLSettingsSky::ptr_t psky = LLEnvironment::instance().getCurrentSky();
+    LLColor3 sun_diffuse(mSunDiffuse.mV);
+    if (should_auto_adjust && psky->canAutoAdjust())
+    {
+        sun_diffuse *= auto_adjust_sun_color_scale;
+    }
+
+    shader.uniform3fv(LLShaderMgr::SUNLIGHT_COLOR, 1, sun_diffuse.mV);
     shader.uniform3fv(LLShaderMgr::MOONLIGHT_COLOR, 1, mMoonDiffuse.mV);
 
 	shader.uniform1f(LLShaderMgr::REFLECTION_PROBE_MAX_LOD, mReflectionMapManager.mMaxProbeLOD);
@@ -8396,9 +8379,9 @@ void LLPipeline::renderDeferredLighting()
             unbindDeferredShader(LLPipeline::sUnderWaterRender ? gDeferredSoftenWaterProgram : gDeferredSoftenProgram);
         }
 
-        bool render_local = RenderLocalLights; // && !gCubeSnapshot;
+        static LLCachedControl<S32> local_light_count(gSavedSettings, "RenderLocalLightCount", 256);
 
-        if (render_local)
+        if (local_light_count > 0)
         {
             gGL.setSceneBlendType(LLRender::BT_ADD);
             std::list<LLVector4>        fullscreen_lights;
@@ -8433,8 +8416,15 @@ void LLPipeline::renderDeferredLighting()
                 // mNearbyLights already includes distance calculation and excludes muted avatars.
                 // It is calculated from mLights
                 // mNearbyLights also provides fade value to gracefully fade-out out of range lights
+                S32 count = 0;
                 for (light_set_t::iterator iter = mNearbyLights.begin(); iter != mNearbyLights.end(); ++iter)
                 {
+                    count++;
+                    if (count > local_light_count)
+                    { //stop collecting lights once we hit the limit
+                        break;
+                    }
+
                     LLDrawable * drawablep = iter->drawable;
                     LLVOVolume * volume = drawablep->getVOVolume();
                     if (!volume)
@@ -8518,24 +8508,20 @@ void LLPipeline::renderDeferredLighting()
                         camera->getOrigin().mV[1] > c[1] + s + 0.2f || camera->getOrigin().mV[1] < c[1] - s - 0.2f ||
                         camera->getOrigin().mV[2] > c[2] + s + 0.2f || camera->getOrigin().mV[2] < c[2] - s - 0.2f)
                     {  // draw box if camera is outside box
-                        if (render_local)
+                        if (volume->isLightSpotlight())
                         {
-                            if (volume->isLightSpotlight())
-                            {
-                                drawablep->getVOVolume()->updateSpotLightPriority();
-                                spot_lights.push_back(drawablep);
-                                continue;
-                            }
-
-                            gDeferredLightProgram.uniform3fv(LLShaderMgr::LIGHT_CENTER, 1, c);
-                            gDeferredLightProgram.uniform1f(LLShaderMgr::LIGHT_SIZE, s);
-                            gDeferredLightProgram.uniform3fv(LLShaderMgr::DIFFUSE_COLOR, 1, col.mV);
-                            gDeferredLightProgram.uniform1f(LLShaderMgr::LIGHT_FALLOFF, volume->getLightFalloff(DEFERRED_LIGHT_FALLOFF));
-                            gGL.syncMatrices();
-
-                            mCubeVB->drawRange(LLRender::TRIANGLE_FAN, 0, 7, 8, get_box_fan_indices(camera, center));
-                            stop_glerror();
+                            drawablep->getVOVolume()->updateSpotLightPriority();
+                            spot_lights.push_back(drawablep);
+                            continue;
                         }
+
+                        gDeferredLightProgram.uniform3fv(LLShaderMgr::LIGHT_CENTER, 1, c);
+                        gDeferredLightProgram.uniform1f(LLShaderMgr::LIGHT_SIZE, s);
+                        gDeferredLightProgram.uniform3fv(LLShaderMgr::DIFFUSE_COLOR, 1, col.mV);
+                        gDeferredLightProgram.uniform1f(LLShaderMgr::LIGHT_FALLOFF, volume->getLightFalloff(DEFERRED_LIGHT_FALLOFF));
+                        gGL.syncMatrices();
+
+                        mCubeVB->drawRange(LLRender::TRIANGLE_FAN, 0, 7, 8, get_box_fan_indices(camera, center));
                     }
                     else
                     {

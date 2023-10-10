@@ -69,9 +69,6 @@ BOOL LLPanelMarketplaceInbox::postBuild()
 
 void LLPanelMarketplaceInbox::onSelectionChange()
 {
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-		
-	sidepanel_inventory->updateVerbs();
 }
 
 void LLPanelMarketplaceInbox::onFocusReceived()

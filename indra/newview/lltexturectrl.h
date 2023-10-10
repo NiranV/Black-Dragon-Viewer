@@ -66,6 +66,14 @@ bool get_is_predefined_texture(LLUUID asset_id);
 LLUUID get_copy_free_item_by_asset_id(LLUUID image_id, bool no_trans_perm = false);
 bool get_can_copy_texture(LLUUID image_id);
 
+enum LLPickerSource
+{
+    PICKER_INVENTORY,
+    PICKER_LOCAL,
+    PICKER_BAKE,
+    PICKER_UNKNOWN, // on cancel, default ids
+};
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // LLTextureCtrl
 
@@ -186,8 +194,7 @@ public:
 
 	void			setCanApply(bool can_preview, bool can_apply);
 
-	void			setImmediateFilterPermMask(PermissionMask mask)
-					{ mImmediateFilterPermMask = mask; }
+	void			setImmediateFilterPermMask(PermissionMask mask);
 	void			setDnDFilterPermMask(PermissionMask mask)
 						{ mDnDFilterPermMask = mask; }
 	PermissionMask	getImmediateFilterPermMask() { return mImmediateFilterPermMask; }
@@ -195,7 +202,7 @@ public:
 	void			closeDependentFloater();
 
 	void			onFloaterClose();
-	void			onFloaterCommit(ETexturePickOp op, LLUUID id);
+	void			onFloaterCommit(ETexturePickOp op, LLPickerSource source, const LLUUID& local_id, const LLUUID& inv_id);
 
 	// This call is returned when a drag is detected. Your callback
 	// should return TRUE if the drag is acceptable.
@@ -267,7 +274,7 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // LLFloaterTexturePicker
-typedef boost::function<void(LLTextureCtrl::ETexturePickOp op, LLUUID id)> floater_commit_callback;
+typedef boost::function<void(LLTextureCtrl::ETexturePickOp op, LLPickerSource source, const LLUUID& asset_id, const LLUUID& inventory_id)> floater_commit_callback;
 typedef boost::function<void()> floater_close_callback;
 typedef boost::function<void(const LLUUID& asset_id)> set_image_asset_id_callback;
 typedef boost::function<void(LLPointer<LLViewerTexture> texture)> set_on_update_image_stats_callback;
@@ -305,7 +312,7 @@ public:
 
 	// New functions
 	void setImageID(const LLUUID& image_asset_id, bool set_selection = true);
-	void updateImageStats();
+	bool updateImageStats(); // true if within limits
 	const LLUUID&	getAssetID() { return mImageAssetID; }
 	const LLUUID&	findItemID(const LLUUID& asset_id, BOOL copyable_only, BOOL ignore_library = FALSE);
 	void			setCanApplyImmediately(BOOL b);
@@ -317,11 +324,13 @@ public:
 	void			stopUsingPipette();
 
 	void commitIfImmediateSet();
+    void commitCallback(LLTextureCtrl::ETexturePickOp op);
 	void commitCancel();
 
 	void onFilterEdit(const std::string& search_string);
 
-	void setCanApply(bool can_preview, bool can_apply);
+	void setCanApply(bool can_preview, bool can_apply, bool inworld_image = true);
+    void setMinDimentionsLimits(S32 min_dim);
 	void setTextureSelectedCallback(const texture_selected_callback& cb) { mTextureSelectedCallback = cb; }
 	void setOnFloaterCloseCallback(const floater_close_callback& cb) { mOnFloaterCloseCallback = cb; }
 	void setOnFloaterCommitCallback(const floater_commit_callback& cb) { mOnFloaterCommitCallback = cb; }
@@ -354,12 +363,14 @@ public:
 	void 			setBakeTextureEnabled(BOOL enabled);
 
     void setInventoryPickType(LLTextureCtrl::EPickInventoryType type);
+    void setImmediateFilterPermMask(PermissionMask mask);
 
     static void		onPickerCallback(const std::vector<std::string>& filenames, LLHandle<LLFloater> handle);
 
 protected:
     void refreshLocalList();
     void refreshInventoryFilter();
+    void setImageIDFromItem(const LLInventoryItem* itemp, bool set_selection = true);
 
 	LLPointer<LLViewerTexture> mTexturep;
     LLPointer<LLFetchedGLTFMaterial> mGLTFMaterial;
@@ -378,6 +389,7 @@ protected:
 
 	LLTextBox*			mTentativeLabel;
 	LLTextBox*			mResolutionLabel;
+    LLTextBox*          mResolutionWarning;
 
 	std::string			mPendingName;
 	BOOL				mActive;
@@ -393,6 +405,12 @@ protected:
 	BOOL				mSelectedItemPinned;
 
 	LLScrollListCtrl*	mLocalScrollCtrl;
+    LLButton*           mDefaultBtn;
+    LLButton*           mNoneBtn;
+    LLButton*           mBlankBtn;
+    LLButton*           mPipetteBtn;
+    LLButton*           mSelectBtn;
+    LLButton*           mCancelBtn;
 
 	//BD
 	LLTabContainer*		mTabModes;
@@ -401,6 +419,9 @@ private:
 	bool mCanApply;
 	bool mCanPreview;
 	bool mPreviewSettingChanged;
+    bool mLimitsSet;
+    S32 mMaxDim;
+    S32 mMinDim;
     LLTextureCtrl::EPickInventoryType mInventoryPickType;
 
 
