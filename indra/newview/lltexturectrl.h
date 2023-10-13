@@ -308,6 +308,7 @@ public:
 
 	// LLFloater overrides
 	/*virtual*/ BOOL    postBuild();
+    /*virtual*/ void	onOpen(const LLSD& key);
 	/*virtual*/ void	onClose(bool app_settings);
 
 	// New functions
@@ -368,6 +369,7 @@ public:
     static void		onPickerCallback(const std::vector<std::string>& filenames, LLHandle<LLFloater> handle);
 
 protected:
+    void changeMode();
     void refreshLocalList();
     void refreshInventoryFilter();
     void setImageIDFromItem(const LLInventoryItem* itemp, bool set_selection = true);
@@ -432,6 +434,8 @@ private:
 	set_on_update_image_stats_callback mOnUpdateImageStatsCallback;
 
 	BOOL mBakeTextureEnabled;
+
+    static S32 sLastPickerMode;
 };
 
 #endif  // LL_LLTEXTURECTRL_H

@@ -6965,6 +6965,26 @@ Please try again.
   </notification>
 
   <notification
+   icon="alertmodal.tga"
+   name="UnableToLoadMaterial"
+   type="alertmodal">
+Unable to load material.
+Please try again.
+    <tag>fail</tag>
+    <usetemplate
+     name="okbutton"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="notifytip.tga"
+   name="MissingMaterialCaps"
+   type="notifytip">
+    <tag>fail</tag>
+    Not connected to a materials capable region.
+  </notification>
+
+  <notification
    icon="notifytip.tga"
    name="ScriptMissing"
    type="notifytip">
