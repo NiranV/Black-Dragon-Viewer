@@ -80,9 +80,7 @@ public:
 	LLUICtrl*		mLabelItemDescTitle;
 	LLLineEditor*	mLabelItemDesc;
 	LLUICtrl*		mLabelCreatorTitle;
-	LLUICtrl*		mLabelCreatorName;
 	LLUICtrl*		mLabelOwnerTitle;
-	LLUICtrl*		mLabelOwnerName;
 
 protected:
 	void refresh() override;

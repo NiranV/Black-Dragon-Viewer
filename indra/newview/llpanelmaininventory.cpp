@@ -668,10 +668,11 @@ void LLPanelMainInventory::setSortBy(const LLSD& userdata)
 	{
 		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
 	}
-    if(mSingleFolderMode && !isListViewMode())
-    {
-        mCombinationGalleryPanel->setSortOrder(sort_order_mask, true);
-    }
+	if (mSingleFolderMode && !isListViewMode())
+	{
+		mCombinationGalleryPanel->setSortOrder(sort_order_mask, true);
+	}
+}
 
 void LLPanelMainInventory::setSortObjects()
 {
@@ -2338,6 +2339,21 @@ BOOL LLPanelMainInventory::isActionChecked(const LLSD& userdata)
 	return FALSE;
 }
 
+bool LLPanelMainInventory::handleDragAndDropToTrash(BOOL drop, EDragAndDropType cargo_type, EAcceptance* accept)
+{
+	*accept = ACCEPT_NO;
+
+	const bool is_enabled = isActionEnabled("delete");
+	if (is_enabled) *accept = ACCEPT_YES_MULTI;
+
+	if (is_enabled && drop)
+	{
+		onClipboardAction("delete");
+	}
+	return true;
+}
+
+
 void LLPanelMainInventory::setUploadCostIfNeeded()
 {
 	// *NOTE dzaporozhan
@@ -2410,11 +2426,6 @@ void LLPanelMainInventory::disableAddIfNeeded()
         menu->setItemEnabled("New Body Parts", enable);
         menu->setItemEnabled("New Settings", enable);
     }
-}
-
-bool LLPanelMainInventory::hasSettingsInventory()
-{
-    return LLEnvironment::instance().isInventoryEnabled();
 }
 
 bool LLPanelMainInventory::hasMaterialsInventory()

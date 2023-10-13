@@ -147,8 +147,6 @@ LLSidepanelInventory::~LLSidepanelInventory()
 	delete mBalanceTimer;
 	mBalanceTimer = NULL;
 
-	LLLayoutPanel* inbox_layout_panel = getChild<LLLayoutPanel>(INBOX_LAYOUT_PANEL_NAME);
-
 	// Save the InventoryMainPanelHeight in settings per account
 	gSavedPerAccountSettings.setS32("InventoryInboxHeight", mInboxLayoutPanel->getTargetDim());
 
@@ -191,24 +189,6 @@ BOOL LLSidepanelInventory::postBuild()
 
 		mBoxBalance = getChild<LLTextBox>("balance");
 		mBoxBalance->setClickedCallback( &LLSidepanelInventory::onClickBalance, this );
-
-		mInfoBtn = mInventoryPanel->getChild<LLButton>("info_btn");
-		mInfoBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onInfoButtonClicked, this));
-		
-		mShareBtn = mInventoryPanel->getChild<LLButton>("share_btn");
-		mShareBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onShareButtonClicked, this));
-		
-		mShopBtn = mInventoryPanel->getChild<LLButton>("shop_btn");
-		mShopBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onShopButtonClicked, this));
-
-		mWearBtn = mInventoryPanel->getChild<LLButton>("wear_btn");
-		mWearBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onWearButtonClicked, this));
-		
-		mPlayBtn = mInventoryPanel->getChild<LLButton>("play_btn");
-		mPlayBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onPlayButtonClicked, this));
-		
-		mTeleportBtn = mInventoryPanel->getChild<LLButton>("teleport_btn");
-		mTeleportBtn->setClickedCallback(boost::bind(&LLSidepanelInventory::onTeleportButtonClicked, this));
 		
 		mPanelMainInventory = mInventoryPanel->getChild<LLPanelMainInventory>("panel_main_inventory");
 		mPanelMainInventory->setSelectCallback(boost::bind(&LLSidepanelInventory::onSelectionChange, this, _1, _2));

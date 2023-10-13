@@ -433,7 +433,6 @@ void LLPipeline::init()
 	sRenderOtherAttachedLights = gSavedSettings.getBOOL("RenderOtherAttachedLights");
 	sRenderOwnAttachedLights = gSavedSettings.getBOOL("RenderOwnAttachedLights");
 	sRenderDeferredLights = gSavedSettings.getBOOL("RenderDeferredLights");
-	RenderLocalLights = sRenderOtherAttachedLights || sRenderOwnAttachedLights || sRenderDeferredLights;
 
 	mInitialized = true;
 	
@@ -1283,7 +1282,6 @@ void LLPipeline::refreshCachedSettings()
 
 //	//BD - Special Options
 	RenderSSAOEffect = gSavedSettings.getVector3("RenderSSAOEffect");
-	RenderLocalLights = sRenderOtherAttachedLights || sRenderOwnAttachedLights || sRenderDeferredLights;
 	CameraFreeDoFFocus = gSavedSettings.getBOOL("CameraFreeDoFFocus");
 	CameraDoFLocked = gSavedSettings.getBOOL("CameraDoFLocked");
 	RenderDeferredBlurLight = gSavedSettings.getBOOL("RenderDeferredBlurLight");

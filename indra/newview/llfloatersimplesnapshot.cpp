@@ -159,20 +159,20 @@ void post_thumbnail_image_coro(std::string cap_url, std::string path_to_image, L
 /// Class LLFloaterSimpleSnapshot::Impl
 ///----------------------------------------------------------------------------
 
-LLSnapshotModel::ESnapshotFormat LLFloaterSimpleSnapshot::Impl::getImageFormat(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotFormat LLFloaterSimpleSnapshot::getImageFormat()
 {
     return LLSnapshotModel::SNAPSHOT_FORMAT_PNG;
 }
 
-LLSnapshotModel::ESnapshotLayerType LLFloaterSimpleSnapshot::Impl::getLayerType(LLFloaterSnapshotBase* floater)
+LLSnapshotModel::ESnapshotLayerType LLFloaterSimpleSnapshot::getLayerType()
 {
     return LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
 }
 
-void LLFloaterSimpleSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floater)
+void LLFloaterSimpleSnapshot::updateControls()
 {
     LLSnapshotLivePreview* previewp = getPreviewView();
-    updateResolution(floater);
+    updateResolution(this);
     if (previewp)
     {
         previewp->setSnapshotType(LLSnapshotModel::ESnapshotType::SNAPSHOT_TEXTURE);
@@ -181,12 +181,12 @@ void LLFloaterSimpleSnapshot::Impl::updateControls(LLFloaterSnapshotBase* floate
     }
 }
 
-std::string LLFloaterSimpleSnapshot::Impl::getSnapshotPanelPrefix()
+std::string LLFloaterSimpleSnapshot::getSnapshotPanelPrefix()
 {
     return "panel_outfit_snapshot_";
 }
 
-void LLFloaterSimpleSnapshot::Impl::updateResolution(void* data)
+void LLFloaterSimpleSnapshot::updateResolution(void* data)
 {
     LLFloaterSimpleSnapshot *view = (LLFloaterSimpleSnapshot *)data;
 
@@ -218,24 +218,23 @@ void LLFloaterSimpleSnapshot::Impl::updateResolution(void* data)
         if (original_width != width || original_height != height)
         {
             // hide old preview as the aspect ratio could be wrong
-            checkAutoSnapshot(previewp, FALSE);
             previewp->updateSnapshot(TRUE);
         }
     }
 }
 
-void LLFloaterSimpleSnapshot::Impl::setStatus(EStatus status, bool ok, const std::string& msg)
+void LLFloaterSimpleSnapshot::setStatus(EStatus status, bool ok, const std::string& msg)
 {
     switch (status)
     {
     case STATUS_READY:
-        mFloater->setCtrlsEnabled(true);
+        setCtrlsEnabled(true);
         break;
     case STATUS_WORKING:
-        mFloater->setCtrlsEnabled(false);
+        setCtrlsEnabled(false);
         break;
     case STATUS_FINISHED:
-        mFloater->setCtrlsEnabled(true);
+        setCtrlsEnabled(true);
         break;
     }
 
@@ -247,11 +246,10 @@ void LLFloaterSimpleSnapshot::Impl::setStatus(EStatus status, bool ok, const std
 ///----------------------------------------------------------------------------
 
 LLFloaterSimpleSnapshot::LLFloaterSimpleSnapshot(const LLSD& key)
-    : LLFloaterSnapshotBase(key)
+    : LLFloaterSnapshot(key)
     , mOwner(NULL)
     , mContextConeOpacity(0.f)
 {
-    impl = new Impl(this);
 }
 
 LLFloaterSimpleSnapshot::~LLFloaterSimpleSnapshot()
@@ -260,7 +258,7 @@ LLFloaterSimpleSnapshot::~LLFloaterSimpleSnapshot()
 
 BOOL LLFloaterSimpleSnapshot::postBuild()
 {
-    childSetAction("new_snapshot_btn", ImplBase::onClickNewSnapshot, this);
+    childSetAction("new_snapshot_btn", boost::bind(&LLFloaterSimpleSnapshot::onClickNewSnapshot, this));
     childSetAction("save_btn", boost::bind(&LLFloaterSimpleSnapshot::onSend, this));
     childSetAction("cancel_btn", boost::bind(&LLFloaterSimpleSnapshot::onCancel, this));
 
@@ -275,11 +273,10 @@ BOOL LLFloaterSimpleSnapshot::postBuild()
     // Do not move LLFloaterSimpleSnapshot floater into gSnapshotFloaterView
     // since it can be a dependednt floater and does not draw UI
 
-    impl->mPreviewHandle = previewp->getHandle();
+    mPreviewHandle = previewp->getHandle();
     previewp->setContainer(this);
-    impl->updateControls(this);
-    impl->setAdvanced(true);
-    impl->setSkipReshaping(true);
+    updateControls();
+    setAdvanced(true);
 
     previewp->mKeepAspectRatio = FALSE;
     previewp->setThumbnailPlaceholderRect(getThumbnailPlaceholderRect());
@@ -313,7 +310,7 @@ void LLFloaterSimpleSnapshot::draw()
     {		
         if(previewp->getThumbnailImage())
         {
-            bool working = impl->getStatus() == ImplBase::STATUS_WORKING;
+            bool working = getStatus() == STATUS_WORKING;
             const S32 thumbnail_w = previewp->getThumbnailWidth();
             const S32 thumbnail_h = previewp->getThumbnailHeight();
 
@@ -330,7 +327,7 @@ void LLFloaterSimpleSnapshot::draw()
                 previewp->getThumbnailImage(), color % alpha);
         }
     }
-    impl->updateLayout(this);
+    updateLayout();
 }
 
 void LLFloaterSimpleSnapshot::onOpen(const LLSD& key)
@@ -345,8 +342,8 @@ void LLFloaterSimpleSnapshot::onOpen(const LLSD& key)
     gSnapshotFloaterView->setVisible(TRUE);
     gSnapshotFloaterView->adjustToFitScreen(this, FALSE);
 
-    impl->updateControls(this);
-    impl->setStatus(ImplBase::STATUS_READY);
+    updateControls();
+    setStatus(STATUS_READY);
 
     mInventoryId = key["item_id"].asUUID();
     mTaskId = key["task_id"].asUUID();
@@ -377,7 +374,7 @@ void LLFloaterSimpleSnapshot::onSend()
 
 void LLFloaterSimpleSnapshot::postSave()
 {
-    impl->setStatus(ImplBase::STATUS_WORKING);
+    setStatus(STATUS_WORKING);
 }
 
 // static
@@ -455,7 +452,7 @@ void LLFloaterSimpleSnapshot::update()
         LLFloaterSimpleSnapshot* floater = dynamic_cast<LLFloaterSimpleSnapshot*>(*iter);
         if (floater)
         {
-            floater->impl->updateLivePreview();
+            floater->updateLivePreview();
         }
     }
 }
@@ -484,6 +481,18 @@ void LLFloaterSimpleSnapshot::saveTexture()
 
     previewp->saveTexture(TRUE, getInventoryId().asString());
     closeFloater();
+}
+
+// static
+void LLFloaterSimpleSnapshot::onClickNewSnapshot()
+{
+    LLSnapshotLivePreview* previewp = getPreviewView();
+    if (previewp)
+    {
+        setStatus(STATUS_READY);
+        LL_DEBUGS() << "updating snapshot" << LL_ENDL;
+        previewp->mForceUpdateSnapshot = TRUE;
+    }
 }
 
 ///----------------------------------------------------------------------------

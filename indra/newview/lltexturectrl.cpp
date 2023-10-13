@@ -405,7 +405,7 @@ bool LLFloaterTexturePicker::updateImageStats()
     // Hide buttons and pipete to make space for mResolutionWarning
     // Hiding buttons is suboptimal, but at the moment limited to inventory thumbnails
     // may be this should be an info/warning icon with a tooltip?
-    S32 index = mModeSelector->getValue().asInteger();
+    S32 index = mTabModes->getValue().asInteger();
     if (index == 0)
     {
         mDefaultBtn->setVisible(result);
@@ -899,7 +899,7 @@ void LLFloaterTexturePicker::commitCallback(LLTextureCtrl::ETexturePickOp op)
     }
     LLUUID asset_id = mImageAssetID;
     LLUUID inventory_id;
-    LLPickerSource mode = (LLPickerSource)mModeSelector->getValue().asInteger();
+    LLPickerSource mode = (LLPickerSource)mTabModes->getValue().asInteger();
 
     switch (mode)
     {

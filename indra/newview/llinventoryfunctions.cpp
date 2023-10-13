@@ -870,7 +870,7 @@ void show_item_original(const LLUUID& item_uuid)
             {
                 main_inventory->toggleViewMode();
             }
-            main_inventory->resetAllItemsFilters();
+            main_inventory->resetFilters();
         }
         reset_inventory_filter();
 
@@ -3026,7 +3026,7 @@ void LLInventoryAction::doToSelected(LLInventoryModel* model, LLFolderView* root
 	if ("delete" == action)
 	{
 		//BD - Making it a permanently mutable notification.
-		const LLUUID &marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
+		const LLUUID &marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS);
 		bool marketplacelistings_item = false;
 		LLAllDescendentsPassedFilter f;
 		for (std::set<LLFolderViewItem*>::iterator it = selected_items.begin(); (it != selected_items.end()) && (f.allDescendentsPassedFilter()); ++it)

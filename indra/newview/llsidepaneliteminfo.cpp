@@ -156,16 +156,12 @@ LLSidepanelItemInfo::~LLSidepanelItemInfo()
 // virtual
 BOOL LLSidepanelItemInfo::postBuild()
 {
-	LLSidepanelInventorySubpanel::postBuild();
-
 	mLabelItemNameTitle = getChild<LLUICtrl>("LabelItemNameTitle");
 	mLabelItemName = getChild<LLLineEditor>("LabelItemName");
 	mLabelItemDescTitle = getChild<LLUICtrl>("LabelItemDescTitle");
 	mLabelItemDesc = getChild<LLLineEditor>("LabelItemDesc");
 	mLabelCreatorTitle = getChild<LLUICtrl>("LabelCreatorTitle");
-	mLabelCreatorName = getChild<LLUICtrl>("LabelCreatorName");
 	mLabelOwnerTitle = getChild<LLUICtrl>("LabelOwnerTitle");
-	mLabelOwnerName = getChild<LLUICtrl>("LabelOwnerName");
 	mChangeThumbnailBtn = getChild<LLUICtrl>("change_thumbnail_btn");
 	mItemTypeIcon = getChild<LLIconCtrl>("item_type_icon");
 	mLabelOwnerName = getChild<LLTextBox>("LabelOwnerName");

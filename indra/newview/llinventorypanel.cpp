@@ -298,10 +298,10 @@ void LLInventoryPanel::initFolderRoot()
 
 	LLRect scroll_rect;
 	scroll_rect.setOriginAndSize( 
-		params.left_delta() - scrollbar_size,
+		mParams.left_delta() - scrollbar_size,
 		0,
-		params.rect().getWidth() - 4,
-		getRect().getHeight() - params.top_pad());
+		mParams.rect().getWidth() - 4,
+		getRect().getHeight() - mParams.top_pad());
 
 	LLScrollContainer::Params scroller_params(mParams.scroll());
 	scroller_params.rect(scroll_rect);
@@ -1249,7 +1249,7 @@ LLFolderViewItem* LLInventoryPanel::buildViewsTree(const LLUUID& id,
 				// Example: Happens when we add assets of new, not yet supported type to library
 				LL_DEBUGS("Inventory") << "LLInventoryPanel::buildViewsTree called with unknown objectp->mType : "
 				<< ((S32) objectp->getType()) << " name " << objectp->getName() << " UUID " << objectp->getUUID()
-				<< LL_ENDL;*/
+				<< LL_ENDL;
 
 				LLInventoryItem* item = (LLInventoryItem*)objectp;
 				if (item)

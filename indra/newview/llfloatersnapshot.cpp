@@ -1278,7 +1278,7 @@ void LLFloaterSnapshot::saveTexture()
 		return;
 	}
 
-	BOOL is_outfit_snapshot = getOutfitID().notNull();
+	/*BOOL is_outfit_snapshot = getOutfitID().notNull();
 	if (is_outfit_snapshot && mOutfitGallery)
 	{
 		mOutfitGallery->onBeforeOutfitSnapshotSave();
@@ -1287,7 +1287,7 @@ void LLFloaterSnapshot::saveTexture()
 	if (is_outfit_snapshot && mOutfitGallery)
 	{
 		mOutfitGallery->onAfterOutfitSnapshotSave();
-	}
+	}*/
 }
 
 void LLFloaterSnapshot::saveLocal(const snapshot_saved_signal_t::slot_type& success_cb, const snapshot_saved_signal_t::slot_type& failure_cb)
@@ -1648,7 +1648,7 @@ void LLFloaterSnapshot::saveOutfitTexture()
 		return;
 	}
 
-	if (mOutfitGallery)
+	/*if (mOutfitGallery)
 	{
 		mOutfitGallery->onBeforeOutfitSnapshotSave();
 	}
@@ -1656,7 +1656,7 @@ void LLFloaterSnapshot::saveOutfitTexture()
 	if (mOutfitGallery)
 	{
 		mOutfitGallery->onAfterOutfitSnapshotSave();
-	}
+	}*/
 	closeFloater();
 }
 

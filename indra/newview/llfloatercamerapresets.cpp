@@ -41,7 +41,6 @@ LLFloaterCameraPresets::~LLFloaterCameraPresets()
 BOOL LLFloaterCameraPresets::postBuild()
 {
     mPresetList = getChild<LLFlatListView>("preset_list");
-    mPresetList->setCommitCallback(boost::bind(&LLFloaterCameraPresets::onSelectionChange, this));
     mPresetList->setCommitOnSelectionChange(true);
     LLPresetsManager::getInstance()->setPresetListChangeCameraCallback(boost::bind(&LLFloaterCameraPresets::populateList, this));
 
@@ -73,15 +72,6 @@ void LLFloaterCameraPresets::populateList()
         {
             mPresetList->selectItem(item);
         }
-    }
-}
-
-void LLFloaterCameraPresets::onSelectionChange()
-{
-    LLCameraPresetFlatItem* selected_preset = dynamic_cast<LLCameraPresetFlatItem*>(mPresetList->getSelectedItem());
-    if(selected_preset)
-    {
-        LLFloaterCamera::switchToPreset(selected_preset->getPresetName());
     }
 }
 

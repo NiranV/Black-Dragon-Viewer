@@ -581,7 +581,7 @@ void LLFloaterFixedEnvironment::onSaveAsCommit(const LLSD& notification, const L
 		}
 		else if (mInventoryItem)
 		{
-			const LLUUID &marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS, false);
+			const LLUUID &marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS);
 			LLUUID parent_id = mInventoryItem->getParentUUID();
 			if (marketplacelistings_id == parent_id)
 			{

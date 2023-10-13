@@ -262,7 +262,7 @@ public:
 	*/
 	static void report(const LLUUID& id);
 
-	static std::set<LLUUID> getInventorySelectedUUIDs();
+	static std::set<LLUUID> getInventorySelectedUUIDs(LLInventoryPanel* active_panel = NULL);
 
 	//BD - Empower someone with rights or revoke them.
 	static void empowerFriend(const LLUUID& id, S32 power);

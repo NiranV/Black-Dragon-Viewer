@@ -35,7 +35,7 @@
 /// Class LLFloaterSimpleSnapshot
 ///----------------------------------------------------------------------------
 
-class LLFloaterSimpleSnapshot : public LLFloaterSnapshotBase
+class LLFloaterSimpleSnapshot : public LLFloaterSnapshot
 {
     LOG_CLASS(LLFloaterSimpleSnapshot);
 
@@ -65,8 +65,7 @@ public:
     static void uploadThumbnail(const std::string &file_path, const LLUUID &inventory_id, const LLUUID &task_id);
     static void uploadThumbnail(LLPointer<LLImageRaw> raw_image, const LLUUID& inventory_id, const LLUUID& task_id);
 
-    class Impl;
-    friend class Impl;
+    void onClickNewSnapshot();
 
     static const S32 THUMBNAIL_SNAPSHOT_DIM_MAX;
     static const S32 THUMBNAIL_SNAPSHOT_DIM_MIN;
@@ -83,30 +82,20 @@ private:
 
     LLView* mOwner;
     F32	 mContextConeOpacity;
-};
 
-///----------------------------------------------------------------------------
-/// Class LLFloaterSimpleSnapshot::Impl
-///----------------------------------------------------------------------------
-
-class LLFloaterSimpleSnapshot::Impl : public LLFloaterSnapshotBase::ImplBase
-{
-    LOG_CLASS(LLFloaterSimpleSnapshot::Impl);
 public:
     void updateResolution(void* data);
 
-    static void onSnapshotUploadFinished(LLFloaterSnapshot* floater, bool status);
-
     LLPanel* getActivePanel(LLFloaterSnapshot* floater, bool ok_if_not_found = true) { return NULL; }
-    LLSnapshotModel::ESnapshotFormat getImageFormat(LLFloaterSnapshot* floater);
+    LLSnapshotModel::ESnapshotFormat getImageFormat();
     std::string getSnapshotPanelPrefix();
 
-    void updateControls(LLFloaterSnapshot* floater);
+    void updateControls();
 
     void setStatus(EStatus status, bool ok = true, const std::string& msg = LLStringUtil::null);
 
 private:
-    LLSnapshotModel::ESnapshotLayerType getLayerType(LLFloaterSnapshot* floater);
+    LLSnapshotModel::ESnapshotLayerType getLayerType();
     void setFinished(bool finished, bool ok = true, const std::string& msg = LLStringUtil::null) {};
 };
 
