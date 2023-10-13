@@ -3398,8 +3398,9 @@ void LLViewerWindow::updateUI()
 	// animate layout stacks so we have up to date rect for world view
 	LLLayoutStack::updateClass();
 
-	//BD - Always use full window for rendering the world view.
-	updateWorldViewRect(true);
+	// use full window for world view when not rendering UI
+	bool world_view_uses_full_window = gAgentCamera.cameraMouselook() || !gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
+	updateWorldViewRect(world_view_uses_full_window);
 
 	LLView::sMouseHandlerMessage.clear();
 
@@ -5076,6 +5077,9 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 						snapshot_width = image_width;
 						snapshot_height = image_height;
 						reset_deferred = true;
+					mWorldViewRectRaw.set(0, image_height, image_width, 0);
+					LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
+					LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
 						scratch_space.bindTarget();
 					}
 					else
@@ -5233,7 +5237,7 @@ BOOL LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 						}
 						else // LLSnapshotModel::SNAPSHOT_TYPE_DEPTH
 						{
-							LLPointer<LLImageRaw> depth_line_buffer = new LLImageRaw(read_width, 1, sizeof(GLfloat)); // need to store floating point values
+							LLPointer<LLImageRaw> depth_line_buffer = new LLImageRaw(read_width, 1, sizeof(GL_FLOAT)); // need to store floating point values
 							glReadPixels(
 										 subimage_x_offset, out_y + subimage_y_offset,
 										 read_width, 1,

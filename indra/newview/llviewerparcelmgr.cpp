@@ -1454,7 +1454,7 @@ void LLViewerParcelMgr::setHoverParcel(const LLVector3d& pos)
 		last_south = south_parcel_step;
 		last_region = region_id;
 
-		// _LL_DEBUGS("ParcelMgr") << "Requesting parcel properties on hover, for " << pos << LL_ENDL;
+		LL_DEBUGS("ParcelMgr") << "Requesting parcel properties on hover, for " << pos << LL_ENDL;
 
 
 		// Send a rectangle around the point.
@@ -1667,7 +1667,7 @@ void LLViewerParcelMgr::processParcelProperties(LLMessageSystem *msg, void **use
 
 	msg->getS32("ParcelData", "OtherCleanTime", other_clean_time );
 
-	// _LL_DEBUGS("ParcelMgr") << "Processing parcel " << local_id << " update, target(sequence): " << sequence_id << LL_ENDL;
+	LL_DEBUGS("ParcelMgr") << "Processing parcel " << local_id << " update, target(sequence): " << sequence_id << LL_ENDL;
 
 	// Actually extract the data.
 	if (parcel)
@@ -1748,7 +1748,7 @@ void LLViewerParcelMgr::processParcelProperties(LLMessageSystem *msg, void **use
 				}
 			}
             parcel->setParcelEnvironmentVersion(parcel_environment_version);
-            //LL_DEBUGS("ENVIRONMENT") << "Parcel environment version is " << parcel->getParcelEnvironmentVersion() << LL_ENDL;
+            LL_DEBUGS("ENVIRONMENT") << "Parcel environment version is " << parcel->getParcelEnvironmentVersion() << LL_ENDL;
 
             // Notify anything that wants to know when the agent changes parcels
             gAgent.changeParcels();
@@ -1761,7 +1761,7 @@ void LLViewerParcelMgr::processParcelProperties(LLMessageSystem *msg, void **use
             parcel_mgr.mAgentParcel->unpackMessage(msg);
             if ((LLEnvironment::instance().isExtendedEnvironmentEnabled() && environment_changed))
             {
-                // _LL_DEBUGS("ENVIRONMENT") << "Parcel environment version is " << parcel->getParcelEnvironmentVersion() << LL_ENDL;
+                LL_DEBUGS("ENVIRONMENT") << "Parcel environment version is " << parcel->getParcelEnvironmentVersion() << LL_ENDL;
                 LLEnvironment::instance().requestParcel(local_id);
             }
         }

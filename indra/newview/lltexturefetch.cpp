@@ -1170,8 +1170,8 @@ bool LLTextureFetchWorker::doWork(S32 param)
 		setState(LOAD_FROM_TEXTURE_CACHE);
 		mInCache = FALSE;
 		mDesiredSize = llmax(mDesiredSize, TEXTURE_CACHE_ENTRY_SIZE); // min desired size is TEXTURE_CACHE_ENTRY_SIZE
-		/*// _LL_DEBUGS(LOG_TXT) << mID << ": Priority: " << llformat("%8.0f",mImagePriority)
-						   << " Desired Discard: " << mDesiredDiscard << " Desired Size: " << mDesiredSize << LL_ENDL;*/
+		LL_DEBUGS(LOG_TXT) << mID << ": Priority: " << llformat("%8.0f",mImagePriority)
+						   << " Desired Discard: " << mDesiredDiscard << " Desired Size: " << mDesiredSize << LL_ENDL;
 
 		// fall through
 	}
@@ -1238,7 +1238,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 				//
 				//This should never happen
 				//
-				// _LL_DEBUGS(LOG_TXT) << mID << " this should never happen" << LL_ENDL;
+				LL_DEBUGS(LOG_TXT) << mID << " this should never happen" << LL_ENDL;
 				return false;
 			}
 		}
@@ -1266,9 +1266,9 @@ bool LLTextureFetchWorker::doWork(S32 param)
 			setState(DECODE_IMAGE);
 			mInCache = TRUE;
 			mWriteToCacheState = NOT_WRITE ;
-			/*// _LL_DEBUGS(LOG_TXT) << mID << ": Cached. Bytes: " << mFormattedImage->getDataSize()
+			LL_DEBUGS(LOG_TXT) << mID << ": Cached. Bytes: " << mFormattedImage->getDataSize()
 							   << " Size: " << llformat("%dx%d",mFormattedImage->getWidth(),mFormattedImage->getHeight())
-							   << " Desired Discard: " << mDesiredDiscard << " Desired Size: " << mDesiredSize << LL_ENDL;*/
+							   << " Desired Discard: " << mDesiredDiscard << " Desired Size: " << mDesiredSize << LL_ENDL;
 			record(LLTextureFetch::sCacheHitRate, LLUnits::Ratio::fromValue(1));
 		}
 		else
@@ -1282,7 +1282,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 			// need more data
 			else
 			{
-				// _LL_DEBUGS(LOG_TXT) << mID << ": Not in Cache" << LL_ENDL;
+				LL_DEBUGS(LOG_TXT) << mID << ": Not in Cache" << LL_ENDL;
 				setState(LOAD_FROM_NETWORK);
 			}
 			record(LLTextureFetch::sCacheHitRate, LLUnits::Ratio::fromValue(0));
@@ -1324,7 +1324,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
                         LL_WARNS(LOG_TXT) << "Trying to fetch a texture of non-default type by UUID. This probably won't work!" << LL_ENDL;
 					}
 					setUrl(http_url + "/?texture_id=" + mID.asString().c_str());
-					// _LL_DEBUGS(LOG_TXT) << "Texture URL: " << mUrl << LL_ENDL;
+					LL_DEBUGS(LOG_TXT) << "Texture URL: " << mUrl << LL_ENDL;
 					mWriteToCacheState = CAN_WRITE ; //because this texture has a fixed texture id.
                     mCanUseCapability = true;
                     mRegionRetryAttempt = 0;
@@ -1477,15 +1477,15 @@ bool LLTextureFetchWorker::doWork(S32 param)
 		mLoaded = FALSE;
 		mGetStatus = LLCore::HttpStatus();
 		mGetReason.clear();
-		/*// _LL_DEBUGS(LOG_TXT) << "HTTP GET: " << mID << " Offset: " << mRequestedOffset
+		LL_DEBUGS(LOG_TXT) << "HTTP GET: " << mID << " Offset: " << mRequestedOffset
 						   << " Bytes: " << mRequestedSize
 						   << " Bandwidth(kbps): " << mFetcher->getTextureBandwidth() << "/" << mFetcher->mMaxBandwidth
-						   << LL_ENDL;*/
+						   << LL_ENDL;
 
 		// Will call callbackHttpGet when curl request completes
 		// Only server bake images use the returned headers currently, for getting retry-after field.
 		LLCore::HttpOptions::ptr_t options = (mFTType == FTT_SERVER_BAKE) ? mFetcher->mHttpOptionsWithHeaders: mFetcher->mHttpOptions;
-		/*if (disable_range_req)
+		if (disable_range_req)
 		{
 			// 'Range:' requests may be disabled in which case all HTTP
 			// texture fetches result in full fetches.  This can be used
@@ -1497,7 +1497,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 															 mFetcher->mHttpHeaders,
                                                              LLCore::HttpHandler::ptr_t(this, &NoOpDeletor));
 		}
-		else*/
+		else
 		{
 			mHttpHandle = mFetcher->mHttpRequest->requestGetByteRange(mHttpPolicyClass,
 																	  mUrl,
@@ -1767,7 +1767,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 		{
 			// We aborted, don't decode
 			setState(DONE);
-			// _LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: desired discard " << mDesiredDiscard << "<0" << LL_ENDL;
+			LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: desired discard " << mDesiredDiscard << "<0" << LL_ENDL;
 			return true;
 		}
 		
@@ -1777,7 +1777,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 			
 			//abort, don't decode
 			setState(DONE);
-			// _LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: (mFormattedImage->getDataSize() <= 0)" << LL_ENDL;
+			LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: (mFormattedImage->getDataSize() <= 0)" << LL_ENDL;
 			return true;
 		}
 		if (mLoadedDiscard < 0)
@@ -1786,7 +1786,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 
 			//abort, don't decode
 			setState(DONE);
-			// _LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: mLoadedDiscard < 0" << LL_ENDL;
+			LL_DEBUGS(LOG_TXT) << mID << " DECODE_IMAGE abort: mLoadedDiscard < 0" << LL_ENDL;
 			return true;
 		}
 		mDecodeTimer.reset();
@@ -1815,7 +1815,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 				if (mCachedSize > 0 && !mInLocalCache && mRetryAttempt == 0)
 				{
 					// Cache file should be deleted, try again
- 					// _LL_DEBUGS(LOG_TXT) << mID << ": Decode of cached file failed (removed), retrying" << LL_ENDL;
+ 					LL_DEBUGS(LOG_TXT) << mID << ": Decode of cached file failed (removed), retrying" << LL_ENDL;
 					llassert_always(mDecodeHandle == 0);
 					mFormattedImage = NULL;
 					++mRetryAttempt;
@@ -1825,7 +1825,7 @@ bool LLTextureFetchWorker::doWork(S32 param)
 				}
 				else
 				{
-					// _LL_DEBUGS(LOG_TXT) << "Failed to Decode image " << mID << " after " << mRetryAttempt << " retries" << LL_ENDL;
+					LL_DEBUGS(LOG_TXT) << "Failed to Decode image " << mID << " after " << mRetryAttempt << " retries" << LL_ENDL;
 					setState(DONE); // failed
 				}
 			}
@@ -1990,10 +1990,10 @@ void LLTextureFetchWorker::onCompleted(LLCore::HttpHandle handle, LLCore::HttpRe
 	
 	std::string reason(status.toString());
 	setGetStatus(status, reason);
-	/*// _LL_DEBUGS(LOG_TXT) << "HTTP COMPLETE: " << mID
+	LL_DEBUGS(LOG_TXT) << "HTTP COMPLETE: " << mID
 					   << " status: " << status.toTerseString()
 					   << " '" << reason << "'"
-					   << LL_ENDL;*/
+					   << LL_ENDL;
 
 	if (! status)
 	{
@@ -2174,7 +2174,7 @@ S32 LLTextureFetchWorker::callbackHttpGet(LLCore::HttpResponse * response,
 		LLCore::BufferArray * body(response->getBody());
 		data_size = body ? body->size() : 0;
 
-		// _LL_DEBUGS(LOG_TXT) << "HTTP RECEIVED: " << mID.asString() << " Bytes: " << data_size << LL_ENDL;
+		LL_DEBUGS(LOG_TXT) << "HTTP RECEIVED: " << mID.asString() << " Bytes: " << data_size << LL_ENDL;
 		if (data_size > 0)
 		{
 			// *TODO: set the formatted image data here directly to avoid the copy
@@ -2325,8 +2325,8 @@ void LLTextureFetchWorker::callbackDecoded(bool success, LLImageRaw* raw, LLImag
 		mRawImage = raw;
 		mAuxImage = aux;
 		mDecodedDiscard = mFormattedImage->getDiscardLevel();
- 		/*// _LL_DEBUGS(LOG_TXT) << mID << ": Decode Finished. Discard: " << mDecodedDiscard
-						   << " Raw Image: " << llformat("%dx%d",mRawImage->getWidth(),mRawImage->getHeight()) << LL_ENDL;*/
+ 		LL_DEBUGS(LOG_TXT) << mID << ": Decode Finished. Discard: " << mDecodedDiscard
+						   << " Raw Image: " << llformat("%dx%d",mRawImage->getWidth(),mRawImage->getHeight()) << LL_ENDL;
 	}
 	else
 	{
@@ -2418,9 +2418,8 @@ LLTextureFetch::LLTextureFetch(LLTextureCache* cache, bool threaded, bool qa_mod
 	  mNetworkQueueMutex(),
 	  mTextureCache(cache),
 	  mTextureBandwidth(0),
-	  mHTTPTextureBits((U32Bits)0),
+	  mHTTPTextureBits(0),
 	  mTotalHTTPRequests(0),
-  	  mCommandsSize(0),
 	  mQAMode(qa_mode),
 	  mHttpRequest(NULL),
 	  mHttpOptions(),
@@ -2476,7 +2475,6 @@ LLTextureFetch::~LLTextureFetch()
 		mCommands.erase(mCommands.begin());
 		delete req;
 	}
-	mCommandsSize = 0;
 
 	mHttpWaitResource.clear();
 	
@@ -2497,7 +2495,7 @@ S32 LLTextureFetch::createRequest(FTType f_type, const std::string& url, const L
 
 	if (f_type == FTT_SERVER_BAKE)
 	{
-		// _LL_DEBUGS("Avatar") << " requesting " << id << " " << w << "x" << h << " discard " << desired_discard << " type " << f_type << LL_ENDL;
+		LL_DEBUGS("Avatar") << " requesting " << id << " " << w << "x" << h << " discard " << desired_discard << " type " << f_type << LL_ENDL;
 	}
 	LLTextureFetchWorker* worker = getWorker(id) ;
 	if (worker)
@@ -2522,13 +2520,13 @@ S32 LLTextureFetch::createRequest(FTType f_type, const std::string& url, const L
 		llassert(!url.empty() && (!exten.empty() && LLImageBase::getCodecFromExtension(exten) != IMG_CODEC_J2C));
 
 		// Do full requests for baked textures to reduce interim blurring.
-		// _LL_DEBUGS(LOG_TXT) << "full request for " << id << " texture is FTT_SERVER_BAKE" << LL_ENDL;
+		LL_DEBUGS(LOG_TXT) << "full request for " << id << " texture is FTT_SERVER_BAKE" << LL_ENDL;
 		desired_size = MAX_IMAGE_DATA_SIZE;
 		desired_discard = 0;
 	}
 	else if (!url.empty() && (!exten.empty() && LLImageBase::getCodecFromExtension(exten) != IMG_CODEC_J2C))
 	{
-		// _LL_DEBUGS(LOG_TXT) << "full request for " << id << " exten is not J2C: " << exten << LL_ENDL;
+		LL_DEBUGS(LOG_TXT) << "full request for " << id << " exten is not J2C: " << exten << LL_ENDL;
 		// Only do partial requests for J2C at the moment
 		desired_size = MAX_IMAGE_DATA_SIZE;
 		desired_discard = 0;
@@ -2624,7 +2622,7 @@ void LLTextureFetch::removeFromHTTPQueue(const LLUUID& id, S32Bytes received_siz
     LL_PROFILE_ZONE_SCOPED;
 	LLMutexLock lock(&mNetworkQueueMutex);								// +Mfnq
 	mHTTPTextureQueue.erase(id);
-	mHTTPTextureBits = U32Bits(mHTTPTextureBits) + received_size;
+	mHTTPTextureBits += received_size; // Approximate - does not include header bits	
 }																		// -Mfnq
 
 // NB:  If you change deleteRequest() you should probably make
@@ -2799,7 +2797,7 @@ bool LLTextureFetch::getRequestFinished(const LLUUID& id, S32& discard_level,
 			skipped_states_time = worker->mSkippedStatesTime;
 			worker->mStateTimer.reset();
 			res = true;
-			// _LL_DEBUGS(LOG_TXT) << id << ": Request Finished. State: " << worker->mState << " Discard: " << discard_level << LL_ENDL;
+			LL_DEBUGS(LOG_TXT) << id << ": Request Finished. State: " << worker->mState << " Discard: " << discard_level << LL_ENDL;
 			worker->unlockWorkMutex();									// -Mw
 			
 			sample(sTexDecodeLatency, decode_time);
@@ -2956,9 +2954,13 @@ size_t LLTextureFetch::update(F32 max_time_ms)
 	static LLCachedControl<F32> band_width(gSavedSettings,"ThrottleBandwidthKBPS", 3000.0);
 
 	{
+		mNetworkQueueMutex.lock();										// +Mfnq
 		mMaxBandwidth = band_width();
 
-		add(LLStatViewer::TEXTURE_NETWORK_DATA_RECEIVED, mHTTPTextureBits.exchange((U32Bits)0));
+		add(LLStatViewer::TEXTURE_NETWORK_DATA_RECEIVED, mHTTPTextureBits);
+		mHTTPTextureBits = (U32Bits)0;
+
+		mNetworkQueueMutex.unlock();									// -Mfnq
 	}
 
 	size_t res = LLWorkerThread::update(max_time_ms);
@@ -3036,6 +3038,7 @@ void LLTextureFetch::threadedUpdate()
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
 // Threads:  T*
 // Locks:  Mw
 bool LLTextureFetchWorker::insertPacket(S32 index, U8* data, S32 size)
@@ -3447,7 +3450,6 @@ void LLTextureFetch::cmdEnqueue(TFRequest * req)
     LL_PROFILE_ZONE_SCOPED;
 	lockQueue();														// +Mfq
 	mCommands.push_back(req);
-	mCommandsSize = mCommands.size();
 	unlockQueue();														// -Mfq
 
 	unpause();
@@ -3463,9 +3465,8 @@ LLTextureFetch::TFRequest * LLTextureFetch::cmdDequeue()
 	if (! mCommands.empty())
 	{
 		ret = mCommands.front();
-		mCommands.pop_front();
+		mCommands.erase(mCommands.begin());
 	}
-	mCommandsSize = mCommands.size();
 	unlockQueue();														// -Mfq
 
 	return ret;
@@ -3513,8 +3514,8 @@ public:
 
 		if (status)
 		{
-			/*// _LL_DEBUGS(LOG_TXT) << "Successfully delivered asset metrics to grid."
-							   << LL_ENDL;*/
+			LL_DEBUGS(LOG_TXT) << "Successfully delivered asset metrics to grid."
+							   << LL_ENDL;
 		}
 		else
 		{

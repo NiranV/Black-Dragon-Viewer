@@ -1,25 +1,25 @@
-/**
+/** 
  * @file llviewerpartsim.cpp
  * @brief LLViewerPart class implementation
  *
  * $LicenseInfo:firstyear=2003&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * 
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -59,8 +59,8 @@ const F32 LLViewerPartSim::PART_THROTTLE_THRESHOLD = 0.9f;
 const F32 LLViewerPartSim::PART_ADAPT_RATE_MULT = 2.0f;
 
 //static
-const F32 LLViewerPartSim::PART_THROTTLE_RESCALE = PART_THROTTLE_THRESHOLD / (1.0f - PART_THROTTLE_THRESHOLD);
-const F32 LLViewerPartSim::PART_ADAPT_RATE_MULT_RECIP = 1.0f / PART_ADAPT_RATE_MULT;
+const F32 LLViewerPartSim::PART_THROTTLE_RESCALE = PART_THROTTLE_THRESHOLD / (1.0f-PART_THROTTLE_THRESHOLD);
+const F32 LLViewerPartSim::PART_ADAPT_RATE_MULT_RECIP = 1.0f/PART_ADAPT_RATE_MULT;
 
 
 U32 LLViewerPart::sNextPartID = 1;
@@ -69,7 +69,7 @@ F32 calc_desired_size(LLViewerCamera* camera, LLVector3 pos, LLVector2 scale)
 {
 	F32 desired_size = (pos - camera->getOrigin()).magVec();
 	desired_size /= 4;
-	return llclamp(desired_size, scale.magVec()*0.5f, PART_SIM_BOX_SIDE * 2);
+	return llclamp(desired_size, scale.magVec()*0.5f, PART_SIM_BOX_SIDE*2);
 }
 
 LLViewerPart::LLViewerPart() :
@@ -82,7 +82,7 @@ LLViewerPart::LLViewerPart() :
 	mPartSourcep = NULL;
 	mParent = NULL;
 	mChild = NULL;
-	++LLViewerPartSim::sParticleCount2;
+	++LLViewerPartSim::sParticleCount2 ;
 }
 
 LLViewerPart::~LLViewerPart()
@@ -101,13 +101,13 @@ LLViewerPart::~LLViewerPart()
 
 	if (mChild)
 	{
-		llassert(mChild->mParent == this);
+		llassert (mChild->mParent == this);
 		mChild->mParent = mParent;
 	}
 
 	mPartSourcep = NULL;
 
-	--LLViewerPartSim::sParticleCount2;
+	--LLViewerPartSim::sParticleCount2 ;
 }
 
 void LLViewerPart::init(LLPointer<LLViewerPartSource> sourcep, LLViewerTexture *imagep, LLVPCallback cb)
@@ -134,21 +134,21 @@ void LLViewerPart::init(LLPointer<LLViewerPartSource> sourcep, LLViewerTexture *
 
 
 LLViewerPartGroup::LLViewerPartGroup(const LLVector3 &center_agent, const F32 box_side, bool hud)
-	: mHud(hud)
+ : mHud(hud)
 {
 	mVOPartGroupp = NULL;
 	mUniformParticles = TRUE;
 
 	mRegionp = LLWorld::getInstance()->getRegionFromPosAgent(center_agent);
 	llassert_always(center_agent.isFinite());
-
+	
 	if (!mRegionp)
 	{
 		//LL_WARNS() << "No region at position, using agent region!" << LL_ENDL;
 		mRegionp = gAgent.getRegion();
 	}
 	mCenterAgent = center_agent;
-	mBoxRadius = F_SQRT3 * box_side*0.5f;
+	mBoxRadius = F_SQRT3*box_side*0.5f;
 
 	if (mHud)
 	{
@@ -156,17 +156,17 @@ LLViewerPartGroup::LLViewerPartGroup(const LLVector3 &center_agent, const F32 bo
 	}
 	else
 	{
-		mVOPartGroupp = (LLVOPartGroup *)gObjectList.createObjectViewer(LLViewerObject::LL_VO_PART_GROUP, getRegion());
+	mVOPartGroupp = (LLVOPartGroup *)gObjectList.createObjectViewer(LLViewerObject::LL_VO_PART_GROUP, getRegion());
 	}
 	mVOPartGroupp->setViewerPartGroup(this);
 	mVOPartGroupp->setPositionAgent(getCenterAgent());
-
+	
 	mBoxSide = box_side;
 
 	F32 scale = box_side * 0.5f;
 
-	mVOPartGroupp->setScale(LLVector3(scale, scale, scale));
-
+	mVOPartGroupp->setScale(LLVector3(scale,scale,scale));
+	
 	//gPipeline.addObject(mVOPartGroupp);
 	gPipeline.createObject(mVOPartGroupp);
 
@@ -180,7 +180,7 @@ LLViewerPartGroup::LLViewerPartGroup(const LLVector3 &center_agent, const F32 bo
 		mMinObjPos = center - size;
 		mMaxObjPos = center + size;
 	}
-	else
+	else 
 	{
 		// Not sure what else to set the obj bounds to when the drawable has no spatial group.
 		LLVector3 extents(mBoxRadius, mBoxRadius, mBoxRadius);
@@ -197,14 +197,14 @@ LLViewerPartGroup::LLViewerPartGroup(const LLVector3 &center_agent, const F32 bo
 LLViewerPartGroup::~LLViewerPartGroup()
 {
 	cleanup();
-
-	S32 count = (S32)mParticles.size();
-	for (S32 i = 0; i < count; i++)
+	
+	S32 count = (S32) mParticles.size();
+	for(S32 i = 0 ; i < count ; i++)
 	{
-		delete mParticles[i];
+		delete mParticles[i] ;
 	}
 	mParticles.clear();
-
+	
 	LLViewerPartSim::decPartCount(count);
 }
 
@@ -236,9 +236,9 @@ BOOL LLViewerPartGroup::posInGroup(const LLVector3 &pos, const F32 desired_size)
 		return FALSE;
 	}
 
-	if (desired_size > 0 &&
+	if (desired_size > 0 && 
 		(desired_size < mBoxRadius*0.5f ||
-			desired_size > mBoxRadius*2.f))
+		desired_size > mBoxRadius*2.f))
 	{
 		return FALSE;
 	}
@@ -254,8 +254,8 @@ BOOL LLViewerPartGroup::addPart(LLViewerPart* part, F32 desired_size)
 		return FALSE;
 	}
 
-	BOOL uniform_part = part->mScale.mV[0] == part->mScale.mV[1] &&
-		!(part->mFlags & LLPartData::LL_PART_FOLLOW_VELOCITY_MASK);
+	BOOL uniform_part = part->mScale.mV[0] == part->mScale.mV[1] && 
+					!(part->mFlags & LLPartData::LL_PART_FOLLOW_VELOCITY_MASK);
 
 	if (!posInGroup(part->mPosAgent, desired_size) ||
 		(mUniformParticles && !uniform_part) ||
@@ -263,10 +263,11 @@ BOOL LLViewerPartGroup::addPart(LLViewerPart* part, F32 desired_size)
 	{
 		return FALSE;
 	}
+
 	gPipeline.markRebuild(mVOPartGroupp->mDrawable, LLDrawable::REBUILD_ALL);
 	
 	mParticles.push_back(part);
-	part->mSkipOffset = mSkippedTime;
+	part->mSkipOffset=mSkippedTime;
 	LLViewerPartSim::incPartCount(1);
 	return TRUE;
 }
@@ -275,18 +276,18 @@ BOOL LLViewerPartGroup::addPart(LLViewerPart* part, F32 desired_size)
 void LLViewerPartGroup::updateParticles(const F32 lastdt)
 {
 	F32 dt;
-
+	
 	LLVector3 gravity(0.f, 0.f, GRAVITY);
 
 	LLViewerPartSim::checkParticleCount(mParticles.size());
 
 	LLViewerCamera* camera = LLViewerCamera::getInstance();
 	LLViewerRegion *regionp = getRegion();
-	S32 end = (S32)mParticles.size();
-	for (S32 i = 0; i < (S32)mParticles.size();)
+	S32 end = (S32) mParticles.size();
+	for (S32 i = 0 ; i < (S32)mParticles.size();)
 	{
 		LLVector3 a(0.f, 0.f, 0.f);
-		LLViewerPart* part = mParticles[i];
+		LLViewerPart* part = mParticles[i] ;
 
 		dt = lastdt + mSkippedTime - part->mSkipOffset;
 		part->mSkipOffset = 0.f;
@@ -329,21 +330,21 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 			delta_pos /= remaining;
 
 			part->mVelocity *= (1.f - step);
-			part->mVelocity += step * delta_pos;
+			part->mVelocity += step*delta_pos;
 		}
 
 
 		if (part->mFlags & LLPartData::LL_PART_TARGET_LINEAR_MASK)
 		{
-			LLVector3 delta_pos = part->mPartSourcep->mTargetPosAgent - part->mPartSourcep->mPosAgent;
+			LLVector3 delta_pos = part->mPartSourcep->mTargetPosAgent - part->mPartSourcep->mPosAgent;			
 			part->mPosAgent = part->mPartSourcep->mPosAgent;
-			part->mPosAgent += frac * delta_pos;
+			part->mPosAgent += frac*delta_pos;
 			part->mVelocity = delta_pos;
 		}
 		else
 		{
 			// Do velocity interpolation
-			part->mPosAgent += dt * part->mVelocity;
+			part->mPosAgent += dt*part->mVelocity;
 			part->mPosAgent += 0.5f*dt*dt*part->mAccel;
 			part->mVelocity += part->mAccel*dt;
 		}
@@ -377,7 +378,7 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 			//       LLColor4's v*k means multiply-rgb-only
 			part->mColor *= 1.f - frac; // rgb*k
 			part->mColor %= 1.f - frac; // alpha*k
-			part->mColor += frac % (frac*part->mEndColor); // rgb,alpha
+			part->mColor += frac%(frac*part->mEndColor); // rgb,alpha
 		}
 
 		// Do scale interpolation
@@ -385,11 +386,11 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 		{
 			part->mScale.setVec(part->mStartScale);
 			part->mScale *= 1.f - frac;
-			part->mScale += frac * part->mEndScale;
+			part->mScale += frac*part->mEndScale;
 		}
 
 		// Do glow interpolation
-		part->mGlow.mV[3] = (U8)ll_round(lerp(part->mStartGlow, part->mEndGlow, frac)*255.f);
+		part->mGlow.mV[3] = (U8) ll_round(lerp(part->mStartGlow, part->mEndGlow, frac)*255.f);
 
 		// Set the last update time to now.
 		part->mLastUpdateTime = cur_time;
@@ -398,23 +399,23 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 		// Kill dead particles (either flagged dead, or too old)
 		if ((part->mLastUpdateTime > part->mMaxAge) || (LLViewerPart::LL_PART_DEAD_MASK == part->mFlags))
 		{
-			mParticles[i] = mParticles.back();
-			mParticles.pop_back();
-			delete part;
+			mParticles[i] = mParticles.back() ;
+			mParticles.pop_back() ;
+			delete part ;
 		}
-		else
+		else 
 		{
 			F32 desired_size = calc_desired_size(camera, part->mPosAgent, part->mScale);
 			if (!posInGroup(part->mPosAgent, desired_size))
 			{
 				// Transfer particles between groups
-				LLViewerPartSim::getInstance()->put(part);
-				mParticles[i] = mParticles.back();
-				mParticles.pop_back();
+				LLViewerPartSim::getInstance()->put(part) ;
+				mParticles[i] = mParticles.back() ;
+				mParticles.pop_back() ;
 			}
 			else
 			{
-				i++;
+				i++ ;
 			}
 		}
 	}
@@ -429,7 +430,7 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 		}
 		LLViewerPartSim::decPartCount(removed);
 	}
-
+	
 	// Kill the viewer object if this particle group is empty
 	if (mParticles.empty())
 	{
@@ -437,7 +438,7 @@ void LLViewerPartGroup::updateParticles(const F32 lastdt)
 		mVOPartGroupp = NULL;
 	}
 
-	LLViewerPartSim::checkParticleCount();
+	LLViewerPartSim::checkParticleCount() ;
 }
 
 
@@ -447,7 +448,7 @@ void LLViewerPartGroup::shift(const LLVector3 &offset)
 	mMinObjPos += offset;
 	mMaxObjPos += offset;
 
-	for (S32 i = 0; i < (S32)mParticles.size(); i++)
+	for (S32 i = 0 ; i < (S32)mParticles.size(); i++)
 	{
 		mParticles[i]->mPosAgent += offset;
 	}
@@ -457,10 +458,10 @@ void LLViewerPartGroup::removeParticlesByID(const U32 source_id)
 {
 	for (S32 i = 0; i < (S32)mParticles.size(); i++)
 	{
-		if (mParticles[i]->mPartSourcep->getID() == source_id)
+		if(mParticles[i]->mPartSourcep->getID() == source_id)
 		{
 			mParticles[i]->mFlags = LLViewerPart::LL_PART_DEAD_MASK;
-		}
+		}		
 	}
 }
 
@@ -473,14 +474,14 @@ void LLViewerPartGroup::removeParticlesByID(const U32 source_id)
 //static
 void LLViewerPartSim::checkParticleCount(U32 size)
 {
-	if (LLViewerPartSim::sParticleCount2 != LLViewerPartSim::sParticleCount)
+	if(LLViewerPartSim::sParticleCount2 != LLViewerPartSim::sParticleCount)
 	{
-		LL_ERRS() << "sParticleCount: " << LLViewerPartSim::sParticleCount << " ; sParticleCount2: " << LLViewerPartSim::sParticleCount2 << LL_ENDL;
+		LL_ERRS() << "sParticleCount: " << LLViewerPartSim::sParticleCount << " ; sParticleCount2: " << LLViewerPartSim::sParticleCount2 << LL_ENDL ;
 	}
 
-	if (size > (U32)LLViewerPartSim::sParticleCount2)
+	if(size > (U32)LLViewerPartSim::sParticleCount2)
 	{
-		LL_ERRS() << "curren particle size: " << LLViewerPartSim::sParticleCount2 << " array size: " << size << LL_ENDL;
+		LL_ERRS() << "curren particle size: " << LLViewerPartSim::sParticleCount2 << " array size: " << size << LL_ENDL ;
 	}
 }
 
@@ -494,11 +495,11 @@ LLViewerPartSim::LLViewerPartSim()
 //enable/disable particle system
 void LLViewerPartSim::enable(bool enabled)
 {
-	if (!enabled && sMaxParticleCount > 0)
+	if(!enabled && sMaxParticleCount > 0)
 	{
 		sMaxParticleCount = 0; //disable
 	}
-	else if (enabled && sMaxParticleCount < 1)
+	else if(enabled && sMaxParticleCount < 1)
 	{
 		sMaxParticleCount = llmin(gSavedSettings.getS32("RenderMaxPartCount"), LL_MAX_PARTICLE_COUNT);
 	}
@@ -512,7 +513,7 @@ void LLViewerPartSim::destroyClass()
 	S32 count;
 
 	// Kill all of the groups (and particles)
-	count = (S32)mViewerPartGroups.size();
+	count = (S32) mViewerPartGroups.size();
 	for (i = 0; i < count; i++)
 	{
 		delete mViewerPartGroups[i];
@@ -533,7 +534,7 @@ BOOL LLViewerPartSim::shouldAddPart()
 
 	if (sParticleCount > PART_THROTTLE_THRESHOLD*sMaxParticleCount)
 	{
-		F32 frac = (F32)sParticleCount / (F32)sMaxParticleCount;
+		F32 frac = (F32)sParticleCount/(F32)sMaxParticleCount;
 		frac -= PART_THROTTLE_THRESHOLD;
 		frac *= PART_THROTTLE_RESCALE;
 		if (ll_frand() < frac)
@@ -562,8 +563,8 @@ void LLViewerPartSim::addPart(LLViewerPart* part)
 	else
 	{
 		//delete the particle if can not add it in
-		delete part;
-		part = NULL;
+		delete part ;
+		part = NULL ;
 	}
 }
 
@@ -571,7 +572,7 @@ void LLViewerPartSim::addPart(LLViewerPart* part)
 LLViewerPartGroup *LLViewerPartSim::put(LLViewerPart* part)
 {
 	const F32 MAX_MAG = 1000000.f*1000000.f; // 1 million
-	LLViewerPartGroup *return_group = NULL;
+	LLViewerPartGroup *return_group = NULL ;
 	if (part->mPosAgent.magVecSquared() > MAX_MAG || !part->mPosAgent.isFinite())
 	{
 #if 0 && !LL_RELEASE_FOR_DOWNLOAD
@@ -580,49 +581,49 @@ LLViewerPartGroup *LLViewerPartSim::put(LLViewerPart* part)
 #endif
 	}
 	else
-	{
+	{	
 		LLViewerCamera* camera = LLViewerCamera::getInstance();
 		F32 desired_size = calc_desired_size(camera, part->mPosAgent, part->mScale);
 
-		S32 count = (S32)mViewerPartGroups.size();
+		S32 count = (S32) mViewerPartGroups.size();
 		for (S32 i = 0; i < count; i++)
 		{
 			if (mViewerPartGroups[i]->addPart(part, desired_size))
 			{
 				// We found a spatial group that we fit into, add us and exit
 				return_group = mViewerPartGroups[i];
-				break;
+				break ;
 			}
 		}
 
 		// Hmm, we didn't fit in any of the existing spatial groups
 		// Create a new one...
-		if (!return_group)
+		if(!return_group)
 		{
 			llassert_always(part->mPosAgent.isFinite());
 			LLViewerPartGroup *groupp = createViewerPartGroup(part->mPosAgent, desired_size, part->mFlags & LLPartData::LL_PART_HUD);
-			groupp->mUniformParticles = (part->mScale.mV[0] == part->mScale.mV[1] &&
-				!(part->mFlags & LLPartData::LL_PART_FOLLOW_VELOCITY_MASK));
+			groupp->mUniformParticles = (part->mScale.mV[0] == part->mScale.mV[1] && 
+									!(part->mFlags & LLPartData::LL_PART_FOLLOW_VELOCITY_MASK));
 			if (!groupp->addPart(part))
 			{
 				LL_WARNS() << "LLViewerPartSim::put - Particle didn't go into its box!" << LL_ENDL;
 				LL_INFOS() << groupp->getCenterAgent() << LL_ENDL;
 				LL_INFOS() << part->mPosAgent << LL_ENDL;
-				mViewerPartGroups.pop_back();
+				mViewerPartGroups.pop_back() ;
 				delete groupp;
-				groupp = NULL;
+				groupp = NULL ;
 			}
 			return_group = groupp;
 		}
 	}
 
-	if (!return_group) //failed to insert the particle
+	if(!return_group) //failed to insert the particle
 	{
-		delete part;
-		part = NULL;
+		delete part ;
+		part = NULL ;
 	}
 
-	return return_group;
+	return return_group ;
 }
 
 LLViewerPartGroup *LLViewerPartSim::createViewerPartGroup(const LLVector3 &pos_agent, const F32 desired_size, bool hud)
@@ -640,7 +641,7 @@ void LLViewerPartSim::shift(const LLVector3 &offset)
 	S32 i;
 	S32 count;
 
-	count = (S32)mViewerPartSources.size();
+	count = (S32) mViewerPartSources.size();
 	for (i = 0; i < count; i++)
 	{
 		mViewerPartSources[i]->mPosAgent += offset;
@@ -648,7 +649,7 @@ void LLViewerPartSim::shift(const LLVector3 &offset)
 		mViewerPartSources[i]->mLastUpdatePosAgent += offset;
 	}
 
-	count = (S32)mViewerPartGroups.size();
+	count = (S32) mViewerPartGroups.size();
 	for (i = 0; i < count; i++)
 	{
 		mViewerPartGroups[i]->shift(offset);
@@ -663,7 +664,7 @@ void LLViewerPartSim::updateSimulation()
 
 	const F32 dt = llmin(update_timer.getElapsedTimeAndResetF32(), 0.1f);
 
-	if (!(gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_PARTICLES)))
+ 	if (!(gPipeline.hasRenderType(LLPipeline::RENDER_TYPE_PARTICLES)))
 	{
 		return;
 	}
@@ -676,7 +677,7 @@ void LLViewerPartSim::updateSimulation()
 	// order or something, but sorting particle sources will be a big
 	// pain.
 	S32 i;
-	S32 count = (S32)mViewerPartSources.size();
+	S32 count = (S32) mViewerPartSources.size();
 	S32 start = (S32)ll_frand((F32)count);
 	S32 dir = 1;
 	S32 deldir = 0;
@@ -708,7 +709,7 @@ void LLViewerPartSim::updateSimulation()
 				upd = FALSE;
 			}
 
-			if (vobj && vobj->isOwnerInMuteList(mViewerPartSources[i]->getOwnerUUID()))
+			if(vobj && vobj->isOwnerInMuteList(mViewerPartSources[i]->getOwnerUUID()))
 			{
 				upd = FALSE;
 			}
@@ -727,7 +728,7 @@ void LLViewerPartSim::updateSimulation()
 				}
 			}
 
-			if (upd)
+			if (upd) 
 			{
 				mViewerPartSources[i]->update(dt);
 			}
@@ -737,16 +738,16 @@ void LLViewerPartSim::updateSimulation()
 		{
 			mViewerPartSources.erase(mViewerPartSources.begin() + i);
 			count--;
-			i += deldir;
+			i+=deldir;
 		}
 		else
-		{
-			i += dir;
-		}
+        {
+			 i += dir;
+        }
 		num_updates++;
 	}
 
-	count = (S32)mViewerPartGroups.size();
+	count = (S32) mViewerPartGroups.size();
 	for (i = 0; i < count; i++)
 	{
 		LLViewerObject* vobj = mViewerPartGroups[i]->mVOPartGroupp;
@@ -761,14 +762,14 @@ void LLViewerPartSim::updateSimulation()
 			}
 		}
 
-		if ((LLDrawable::getCurrentFrame() + mViewerPartGroups[i]->mID) % visirate == 0)
+		if ((LLDrawable::getCurrentFrame()+mViewerPartGroups[i]->mID)%visirate == 0)
 		{
 			if (vobj && !vobj->isDead())
 			{
 				gPipeline.markRebuild(vobj->mDrawable, LLDrawable::REBUILD_ALL);
 			}
 			mViewerPartGroups[i]->updateParticles(dt * visirate);
-			mViewerPartGroups[i]->mSkippedTime = 0.0f;
+			mViewerPartGroups[i]->mSkippedTime=0.0f;
 			if (!mViewerPartGroups[i]->getCount())
 			{
 				delete mViewerPartGroups[i];
@@ -778,29 +779,29 @@ void LLViewerPartSim::updateSimulation()
 			}
 		}
 		else
-		{
-			mViewerPartGroups[i]->mSkippedTime += dt;
+		{	
+			mViewerPartGroups[i]->mSkippedTime+=dt;
 		}
 
 	}
-	if (LLDrawable::getCurrentFrame() % 16 == 0)
+	if (LLDrawable::getCurrentFrame()%16==0)
 	{
 		if (sParticleCount > sMaxParticleCount * 0.875f
-			&& sParticleAdaptiveRate < 2.0f)
+		    && sParticleAdaptiveRate < 2.0f)
 		{
 			sParticleAdaptiveRate *= PART_ADAPT_RATE_MULT;
 		}
 		else
 		{
 			if (sParticleCount < sMaxParticleCount * 0.5f
-				&& sParticleAdaptiveRate > 0.03125f)
+			    && sParticleAdaptiveRate > 0.03125f)
 			{
 				sParticleAdaptiveRate *= PART_ADAPT_RATE_MULT_RECIP;
 			}
 		}
 	}
 
-	updatePartBurstRate();
+	updatePartBurstRate() ;
 
 	//LL_INFOS() << "Particles: " << sParticleCount << " Adaptive Rate: " << sParticleAdaptiveRate << LL_ENDL;
 }
@@ -811,27 +812,27 @@ void LLViewerPartSim::updatePartBurstRate()
 	{
 		if (sParticleCount >= MAX_PART_COUNT) //set rate to zero
 		{
-			sParticleBurstRate = 0.0f;
+			sParticleBurstRate = 0.0f ;
 		}
-		else if (sParticleCount > 0)
+		else if(sParticleCount > 0)
 		{
-			if (sParticleBurstRate > 0.0000001f)
-			{
-				F32 total_particles = sParticleCount / sParticleBurstRate; //estimated
-				F32 new_rate = llclamp(0.9f * sMaxParticleCount / total_particles, 0.0f, 1.0f);
-				F32 delta_rate_threshold = llmin(0.1f * llmax(new_rate, sParticleBurstRate), 0.1f);
-				F32 delta_rate = llclamp(new_rate - sParticleBurstRate, -1.0f * delta_rate_threshold, delta_rate_threshold);
+			if(sParticleBurstRate > 0.0000001f)
+			{				
+				F32 total_particles = sParticleCount / sParticleBurstRate ; //estimated
+				F32 new_rate = llclamp(0.9f * sMaxParticleCount / total_particles, 0.0f, 1.0f) ;
+				F32 delta_rate_threshold = llmin(0.1f * llmax(new_rate, sParticleBurstRate), 0.1f) ;
+				F32 delta_rate = llclamp(new_rate - sParticleBurstRate, -1.0f * delta_rate_threshold, delta_rate_threshold) ;
 
-				sParticleBurstRate = llclamp(sParticleBurstRate + 0.5f * delta_rate, 0.0f, 1.0f);
+				sParticleBurstRate = llclamp(sParticleBurstRate + 0.5f * delta_rate, 0.0f, 1.0f) ;
 			}
 			else
 			{
-				sParticleBurstRate += 0.0000001f;
+				sParticleBurstRate += 0.0000001f ;
 			}
 		}
 		else
 		{
-			sParticleBurstRate += 0.00125f;
+			sParticleBurstRate += 0.00125f ;
 		}
 	}
 }
@@ -843,7 +844,7 @@ void LLViewerPartSim::addPartSource(LLPointer<LLViewerPartSource> sourcep)
 		LL_WARNS() << "Null part source!" << LL_ENDL;
 		return;
 	}
-	sourcep->setStart();
+	sourcep->setStart() ;
 	mViewerPartSources.push_back(sourcep);
 }
 
@@ -861,7 +862,7 @@ void LLViewerPartSim::cleanupRegion(LLViewerRegion *regionp)
 		if ((*iter)->getRegion() == regionp)
 		{
 			delete *iter;
-			i = mViewerPartGroups.erase(iter);
+			i = mViewerPartGroups.erase(iter);			
 		}
 	}
 }
@@ -876,11 +877,11 @@ void LLViewerPartSim::clearParticlesByID(const U32 system_id)
 	{
 		if ((*i)->getID() == system_id)
 		{
-			(*i)->setDead();
+			(*i)->setDead();	
 			break;
 		}
 	}
-
+	
 }
 
 void LLViewerPartSim::clearParticlesByOwnerID(const LLUUID& task_id)

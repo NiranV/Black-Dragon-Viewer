@@ -62,6 +62,8 @@ const std::string BLOCKED_PARAM_NAME = "blocked_to_select";
 LLPanelBlockedList::LLPanelBlockedList()
 :	LLPanel()
 {
+	mCommitCallbackRegistrar.add("Block.Action",	boost::bind(&LLPanelBlockedList::onCustomAction,  this, _2));
+	mEnableCallbackRegistrar.add("Block.Check",		boost::bind(&LLPanelBlockedList::isActionChecked, this, _2));
 }
 
 void LLPanelBlockedList::removePicker()
@@ -99,6 +101,7 @@ BOOL LLPanelBlockedList::postBuild()
 		getChild<LLMenuButton>("blocked_gear_btn")->setMenu(blocked_gear_menu, LLMenuButton::MP_BOTTOM_LEFT);
 	}
 
+	getChild<LLButton>("unblock_btn")->setCommitCallback(boost::bind(&LLPanelBlockedList::unblockItem, this));
 	getChild<LLFilterEditor>("blocked_filter_input")->setCommitCallback(boost::bind(&LLPanelBlockedList::onFilterEdit, this, _2));
 
 	return LLPanel::postBuild();
@@ -137,6 +140,7 @@ void LLPanelBlockedList::showPanelAndSelect(const LLUUID& idToSelect)
 void LLPanelBlockedList::updateButtons()
 {
 	bool hasSelected = NULL != mBlockedList->getSelectedItem();
+	getChildView("unblock_btn")->setEnabled(hasSelected);
 	getChildView("blocked_gear_btn")->setEnabled(hasSelected);
 
 	getChild<LLUICtrl>("block_limit")->setTextArg("[COUNT]", llformat("%d", mBlockedList->getMuteListSize()));
@@ -151,6 +155,70 @@ void LLPanelBlockedList::unblockItem()
 		LLMute mute(item->getUUID(), item->getName());
 		LLMuteList::instance().remove(mute);
 	}
+}
+
+void LLPanelBlockedList::onCustomAction(const LLSD& userdata)
+{
+	const std::string command_name = userdata.asString();
+
+	if ("block_obj_by_name" == command_name)
+	{
+		blockObjectByName();
+	}
+	else if ("block_res_by_name" == command_name)
+	{
+		blockResidentByName();
+	}
+	else if ("sort_by_name" == command_name)
+	{
+		mBlockedList->sortByName();
+		gSavedSettings.setU32("BlockPeopleSortOrder", E_SORT_BY_NAME);
+	}
+	else if ("sort_by_type" == command_name)
+	{
+		mBlockedList->sortByType();
+		gSavedSettings.setU32("BlockPeopleSortOrder", E_SORT_BY_TYPE);
+	}
+}
+
+BOOL LLPanelBlockedList::isActionChecked(const LLSD& userdata)
+{
+	std::string item = userdata.asString();
+	U32 sort_order = gSavedSettings.getU32("BlockPeopleSortOrder");
+
+	if ("sort_by_name" == item)
+	{
+		return E_SORT_BY_NAME == sort_order;
+	}
+	else if ("sort_by_type" == item)
+	{
+		return E_SORT_BY_TYPE == sort_order;
+	}
+
+	return false;
+}
+
+void LLPanelBlockedList::blockResidentByName()
+{
+	const BOOL allow_multiple = FALSE;
+	const BOOL close_on_select = TRUE;
+    
+    LLView * button = findChild<LLButton>("plus_btn", TRUE);
+    LLFloater* root_floater = gFloaterView->getParentFloater(this);
+	LLFloaterAvatarPicker * picker = LLFloaterAvatarPicker::show(boost::bind(&LLPanelBlockedList::callbackBlockPicked, this, _1, _2), 
+                                                                                    allow_multiple, close_on_select, FALSE, root_floater->getName(), button);
+    
+    if (root_floater)
+    {
+        root_floater->addDependentFloater(picker);
+    }
+
+    mPicker = picker->getHandle();
+}
+
+void LLPanelBlockedList::blockObjectByName()
+{
+	LLFloaterGetBlockedObjectName::show(&LLPanelBlockedList::callbackBlockByName);
 }
 
 void LLPanelBlockedList::onFilterEdit(const std::string& search_string)

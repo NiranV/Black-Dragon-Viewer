@@ -683,9 +683,8 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				settings.flip_pixels_y = true;
 				settings.frame_rate = 60;
 				settings.force_wave_audio = true;
-				//BD - Using 1024 breaks the scaling on webpages, tested on Youtube. 1000 and everything below is fine.
-				settings.initial_height = 1000;
-				settings.initial_width = 1000;
+				settings.initial_height = 1024;
+				settings.initial_width = 1024;
 				settings.java_enabled = false;
 				settings.javascript_enabled = mJavascriptEnabled;
 				settings.media_stream_enabled = false; // MAINT-6060 - WebRTC media removed until we can add granularity/query UI
@@ -716,9 +715,8 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
 				// Plugin gets to decide the texture parameters to use.
 				mDepth = 4;
 				LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "texture_params");
-				//BD - Using 1024 breaks the scaling on webpages, tested on Youtube. 1000 and everything below is fine.
-				message.setValueS32("default_width", 1000);
-				message.setValueS32("default_height", 1000);
+				message.setValueS32("default_width", 1024);
+				message.setValueS32("default_height", 1024);
 				message.setValueS32("depth", mDepth);
 				message.setValueU32("internalformat", GL_RGB);
 				message.setValueU32("format", GL_BGRA);

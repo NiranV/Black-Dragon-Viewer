@@ -403,9 +403,9 @@ struct LLWindowWin32::LLWindowWin32Thread : public LL::ThreadPool
         // internal heap allocation it likely requires to store func.
         auto ptr = new FuncType(std::move(func));
         WPARAM wparam{ 0xF1C };
-        /*LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
+        LL_DEBUGS("Window") << "PostMessage(" << std::hex << windowHandle
                             << ", " << WM_POST_FUNCTION_
-                            << ", " << wparam << std::dec << LL_ENDL;*/
+                            << ", " << wparam << std::dec << LL_ENDL;
         PostMessage(windowHandle, WM_POST_FUNCTION_, wparam, LPARAM(ptr));
     }
 
@@ -881,7 +881,7 @@ LLWindowWin32::~LLWindowWin32()
 
 void LLWindowWin32::show()
 {
-    // _LL_DEBUGS("Window") << "Setting window to show" << LL_ENDL;
+    LL_DEBUGS("Window") << "Setting window to show" << LL_ENDL;
 	ShowWindow(mWindowHandle, SW_SHOW);
 	SetForegroundWindow(mWindowHandle);
 	SetFocus(mWindowHandle);
@@ -969,7 +969,7 @@ void LLWindowWin32::setFullscreenWindow(BOOL fFullscreen)
 // Usually called from LLWindowManager::destroyWindow()
 void LLWindowWin32::close()
 {
-	// _LL_DEBUGS("Window") << "Closing LLWindowWin32" << LL_ENDL;
+	LL_DEBUGS("Window") << "Closing LLWindowWin32" << LL_ENDL;
 	// Is window is already closed?
 	if (!mWindowHandle)
 	{
@@ -1000,7 +1000,7 @@ void LLWindowWin32::close()
 		gGLManager.shutdownGL();
 	}
 
-	// _LL_DEBUGS("Window") << "Releasing Context" << LL_ENDL;
+	LL_DEBUGS("Window") << "Releasing Context" << LL_ENDL;
 	if (mhRC)
 	{
 		if (!wglMakeCurrent(NULL, NULL))

@@ -64,11 +64,8 @@
 
 // extern
 const S32Megabytes gMinVideoRam(32);
-#if defined(_WIN64) || defined(__amd64__) || defined(__x86_64__)
-const S32Megabytes gMaxVideoRam(3072);
-#else
 const S32Megabytes gMaxVideoRam(512);
-#endif
+
 
 // statics
 LLPointer<LLViewerTexture>        LLViewerTexture::sNullImagep = NULL;
@@ -487,8 +484,8 @@ void LLViewerTexture::initClass()
 // tuning params
 const F32 GPU_MEMORY_CHECK_WAIT_TIME = 1.0f;
 // non-const (used externally
-//F32 texmem_lower_bound_scale = 0.85f;
-//F32 texmem_middle_bound_scale = 0.925f;
+F32 texmem_lower_bound_scale = 0.85f;
+F32 texmem_middle_bound_scale = 0.925f;
 
 //static 
 bool LLViewerTexture::isMemoryForTextureLow()
@@ -550,7 +547,7 @@ void LLViewerTexture::updateClass()
 
 	LLViewerMediaTexture::updateClass();
 
-	static LLCachedControl<U32> max_vram_budget(gSavedSettings, "RenderMaxVRAMBudget");
+    static LLCachedControl<U32> max_vram_budget(gSavedSettings, "RenderMaxVRAMBudget", 0);
 
 	F64 texture_bytes_alloc = LLImageGL::getTextureBytesAllocated() / 1024.0 / 512.0;
 	F64 vertex_bytes_alloc = LLVertexBuffer::getBytesAllocated() / 1024.0 / 512.0;

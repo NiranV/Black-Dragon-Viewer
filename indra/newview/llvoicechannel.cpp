@@ -651,8 +651,8 @@ void LLVoiceChannelGroup::voiceCallCapCoro(std::string url)
     LLSD::map_const_iterator iter;
     for (iter = result.beginMap(); iter != result.endMap(); ++iter)
     {
-        /*// _LL_DEBUGS("Voice") << "LLVoiceCallCapResponder::result got "
-            << iter->first << LL_ENDL;*/
+        LL_DEBUGS("Voice") << "LLVoiceCallCapResponder::result got "
+            << iter->first << LL_ENDL;
     }
 
     channelp->setChannelInfo(

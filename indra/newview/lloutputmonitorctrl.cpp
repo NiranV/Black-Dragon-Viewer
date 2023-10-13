@@ -353,7 +353,7 @@ void LLOutputMonitorCtrl::switchIndicator(bool switch_on)
 //////////////////////////////////////////////////////////////////////////
 void LLOutputMonitorCtrl::notifyParentVisibilityChanged()
 {
-	// _LL_DEBUGS("SpeakingIndicator") << "Notify parent that visibility was changed: " << mSpeakerId << ", new_visibility: " << getVisible() << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Notify parent that visibility was changed: " << mSpeakerId << ", new_visibility: " << getVisible() << LL_ENDL;
 
 	LLSD params = LLSD().with("visibility_changed", getVisible());
 

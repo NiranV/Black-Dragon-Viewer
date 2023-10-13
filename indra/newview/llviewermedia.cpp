@@ -1207,10 +1207,10 @@ void LLViewerMedia::setOpenIDCookie(const std::string& url)
 {
 	if(!gNonInteractive && !mOpenIDCookie.empty())
 	{
-        //std::string profileUrl = getProfileURL("");
+        std::string profileUrl = getProfileURL("");
 
-        //LLCoros::instance().launch("LLViewerMedia::getOpenIDCookieCoro",
-        //    boost::bind(&LLViewerMedia::getOpenIDCookieCoro, profileUrl));
+        LLCoros::instance().launch("LLViewerMedia::getOpenIDCookieCoro",
+            boost::bind(&LLViewerMedia::getOpenIDCookieCoro, profileUrl));
 	}
 }
 
@@ -3719,11 +3719,11 @@ void LLViewerMediaImpl::setPriority(LLPluginClassMedia::EPriority priority)
 {
 	if(mPriority != priority)
 	{
-		/*// _LL_DEBUGS("PluginPriority")
+		LL_DEBUGS("PluginPriority")
 			<< "changing priority of media id " << mTextureId
 			<< " from " << LLPluginClassMedia::priorityToString(mPriority)
 			<< " to " << LLPluginClassMedia::priorityToString(priority)
-			<< LL_ENDL;*/
+			<< LL_ENDL;
 	}
 
 	mPriority = priority;
@@ -3762,19 +3762,19 @@ void LLViewerMediaImpl::setNavState(EMediaNavState state)
 {
 	mMediaNavState = state;
 
-	/*switch (state)
+	switch (state)
 	{
-		case MEDIANAVSTATE_NONE: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_NONE" << LL_ENDL; break;
-		case MEDIANAVSTATE_BEGUN: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_BEGUN" << LL_ENDL; break;
-		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED" << LL_ENDL; break;
-		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS" << LL_ENDL; break;
-		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED" << LL_ENDL; break;
-		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS" << LL_ENDL; break;
-		case MEDIANAVSTATE_SERVER_SENT: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_SENT" << LL_ENDL; break;
-		case MEDIANAVSTATE_SERVER_BEGUN: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_BEGUN" << LL_ENDL; break;
-		case MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED" << LL_ENDL; break;
-		case MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED: // _LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED" << LL_ENDL; break;
-	}*/
+		case MEDIANAVSTATE_NONE: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_NONE" << LL_ENDL; break;
+		case MEDIANAVSTATE_BEGUN: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_BEGUN" << LL_ENDL; break;
+		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED" << LL_ENDL; break;
+		case MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_FIRST_LOCATION_CHANGED_SPURIOUS" << LL_ENDL; break;
+		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED" << LL_ENDL; break;
+		case MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_COMPLETE_BEFORE_LOCATION_CHANGED_SPURIOUS" << LL_ENDL; break;
+		case MEDIANAVSTATE_SERVER_SENT: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_SENT" << LL_ENDL; break;
+		case MEDIANAVSTATE_SERVER_BEGUN: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_BEGUN" << LL_ENDL; break;
+		case MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_FIRST_LOCATION_CHANGED" << LL_ENDL; break;
+		case MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED: LL_DEBUGS("Media") << "Setting nav state to MEDIANAVSTATE_SERVER_COMPLETE_BEFORE_LOCATION_CHANGED" << LL_ENDL; break;
+	}
 }
 
 void LLViewerMediaImpl::setNavigateSuspended(bool suspend)

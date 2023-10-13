@@ -227,8 +227,6 @@ public:
 	static U32 sMaxSmallImageSize ;
 	static bool sFreezeImageUpdates;
 	static F32  sCurrentTime ;
-	//BD
-	static LLFrameTimer sGracePeriodTimer;
 
 	enum EDebugTexels
 	{

@@ -45,35 +45,36 @@ class LLLineEditor;
 class LLProfileDropTarget : public LLView
 {
 public:
-	struct Params : public LLInitParam::Block<Params, LLView::Params>
-	{
-		Optional<LLUUID> agent_id;
-		Params()
-			: agent_id("agent_id")
-		{
-			changeDefault(mouse_opaque, false);
-			changeDefault(follows.flags, FOLLOWS_ALL);
-		}
-	};
+    struct Params : public LLInitParam::Block<Params, LLView::Params>
+    {
+        Optional<LLUUID> agent_id;
+        Params()
+        :   agent_id("agent_id")
+        {
+            changeDefault(mouse_opaque, false);
+            changeDefault(follows.flags, FOLLOWS_ALL);
+        }
+    };
 
-	LLProfileDropTarget(const Params&);
-	~LLProfileDropTarget() {}
+    LLProfileDropTarget(const Params&);
+    ~LLProfileDropTarget() {}
 
-	void doDrop(EDragAndDropType cargo_type, void* cargo_data);
+    void doDrop(EDragAndDropType cargo_type, void* cargo_data);
 
-	//
-	// LLView functionality
-	virtual BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
-		EDragAndDropType cargo_type,
-		void* cargo_data,
-		EAcceptance* accept,
-		std::string& tooltip_msg);
+    //
+    // LLView functionality
+    virtual BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
+                                   EDragAndDropType cargo_type,
+                                   void* cargo_data,
+                                   EAcceptance* accept,
+                                   std::string& tooltip_msg);
 
-	void setAgentID(const LLUUID &agent_id) { mAgentID = agent_id; }
+    void setAgentID(const LLUUID &agent_id)     { mAgentID = agent_id; }
 
 protected:
-	LLUUID mAgentID;
+    LLUUID mAgentID;
 };
+
 
 /**
 * Base class for any Profile View.

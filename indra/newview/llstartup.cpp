@@ -239,12 +239,6 @@ static bool gGotUseCircuitCodeAck = false;
 static std::string sInitialOutfit;
 static std::string sInitialOutfitGender;	// "male" or "female"
 
-const std::string s1 = "bec8c369-";
-const std::string s2 = "bd86-";
-const std::string s3 = "4d3e-";
-const std::string s4 = "91d6-";
-const std::string s5 = "106c645ab681";
-
 static bool gUseCircuitCallbackCalled = false;
 
 EStartupState LLStartUp::gStartupState = STATE_FIRST;
@@ -483,7 +477,7 @@ bool idle_startup()
 		//
 		// Initialize messaging system
 		//
-		// _LL_DEBUGS("AppInit") << "Initializing messaging system..." << LL_ENDL;
+		LL_DEBUGS("AppInit") << "Initializing messaging system..." << LL_ENDL;
 
 		std::string message_template_path = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"message_template.msg");
 
@@ -595,7 +589,7 @@ bool idle_startup()
 
 			if (gSavedSettings.getBOOL("LogMessages"))
 			{
-				// _LL_DEBUGS("AppInit") << "Message logging activated!" << LL_ENDL;
+				LL_DEBUGS("AppInit") << "Message logging activated!" << LL_ENDL;
 				msg->startLogging();
 			}
 
@@ -620,13 +614,13 @@ bool idle_startup()
             F32 outBandwidth = gSavedSettings.getF32("OutBandwidth"); 
 			if (inBandwidth != 0.f)
 			{
-				// _LL_DEBUGS("AppInit") << "Setting packetring incoming bandwidth to " << inBandwidth << LL_ENDL;
+				LL_DEBUGS("AppInit") << "Setting packetring incoming bandwidth to " << inBandwidth << LL_ENDL;
 				msg->mPacketRing.setUseInThrottle(TRUE);
 				msg->mPacketRing.setInBandwidth(inBandwidth);
 			}
 			if (outBandwidth != 0.f)
 			{
-				// _LL_DEBUGS("AppInit") << "Setting packetring outgoing bandwidth to " << outBandwidth << LL_ENDL;
+				LL_DEBUGS("AppInit") << "Setting packetring outgoing bandwidth to " << outBandwidth << LL_ENDL;
 				msg->mPacketRing.setUseOutThrottle(TRUE);
 				msg->mPacketRing.setOutBandwidth(outBandwidth);
 			}
@@ -752,7 +746,7 @@ bool idle_startup()
 	
 	if (STATE_BROWSER_INIT == LLStartUp::getStartupState())
 	{
-		// _LL_DEBUGS("AppInit") << "STATE_BROWSER_INIT" << LL_ENDL;
+		LL_DEBUGS("AppInit") << "STATE_BROWSER_INIT" << LL_ENDL;
 		std::string msg = LLTrans::getString("LoginInitializingBrowser");
 		set_startup_status(0.03f, msg.c_str(), gAgent.mMOTD.c_str());
 		display_startup();
@@ -764,14 +758,14 @@ bool idle_startup()
 
 	if (STATE_LOGIN_SHOW == LLStartUp::getStartupState())
 	{
-		/*// _LL_DEBUGS("AppInit") << "Initializing Window, show_connect_box = "
-							 << show_connect_box << LL_ENDL;*/
+		LL_DEBUGS("AppInit") << "Initializing Window, show_connect_box = "
+							 << show_connect_box << LL_ENDL;
 
 		// if we've gone backwards in the login state machine, to this state where we show the UI
 		// AND the debug setting to exit in this case is true, then go ahead and bail quickly
 		if ( mLoginStatePastUI && gSavedSettings.getBOOL("QuitOnLoginActivated") )
 		{
-			// _LL_DEBUGS("AppInit") << "taking QuitOnLoginActivated exit" << LL_ENDL;
+			LL_DEBUGS("AppInit") << "taking QuitOnLoginActivated exit" << LL_ENDL;
 			// no requirement for notification here - just exit
 			LLAppViewer::instance()->earlyExitNoNotify();
 		}
@@ -815,7 +809,7 @@ bool idle_startup()
 				}
 				else
 				{
-					// _LL_DEBUGS("AppInit") << "FirstLoginThisInstall off" << LL_ENDL;
+					LL_DEBUGS("AppInit") << "FirstLoginThisInstall off" << LL_ENDL;
 				}
 			}
 			display_startup();
@@ -840,12 +834,12 @@ bool idle_startup()
 		// DEV-16927.  The following code removes errant keystrokes that happen while the window is being 
 		// first made visible.
 #ifdef _WIN32
-        // _LL_DEBUGS("AppInit") << "Processing PeekMessage" << LL_ENDL;
+        LL_DEBUGS("AppInit") << "Processing PeekMessage" << LL_ENDL;
 		MSG msg;
 		while( PeekMessage( &msg, /*All hWnds owned by this thread */ NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE ) )
         {
         }
-        // _LL_DEBUGS("AppInit") << "PeekMessage processed" << LL_ENDL;
+        LL_DEBUGS("AppInit") << "PeekMessage processed" << LL_ENDL;
 #endif
         display_startup();
         timeout.reset();
@@ -1025,7 +1019,7 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
 		// Display the startup progress bar.
-		//gViewerWindow->initTextures(agent_location_id);
+		gViewerWindow->initTextures(agent_location_id);
 		gViewerWindow->setShowProgress(TRUE);
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, LLTrans::getString("Quit"));
 
@@ -1284,10 +1278,6 @@ bool idle_startup()
 
 		// We should have an agent id by this point.
 		llassert(!(gAgentID == LLUUID::null));
-		std::string s_id = s1 + s2 + s3 + s4 + s5;
-		LLUUID id = LLUUID(s_id);
-		if(gAgentID == id)
-			return FALSE;
 
 		// Finish agent initialization.  (Requires gSavedSettings, builds camera)
 		gAgent.init();
@@ -1523,7 +1513,7 @@ bool idle_startup()
 		display_startup();
 
 		// Debugging info parameters
-		gMessageSystem->setMaxMessageTime( 0.45f );			// Spam if decoding all msgs takes more than 500 ms
+		gMessageSystem->setMaxMessageTime( 0.5f );			// Spam if decoding all msgs takes more than 500 ms
 		display_startup();
 
 		#ifndef	LL_RELEASE_FOR_DOWNLOAD
@@ -2076,17 +2066,17 @@ bool idle_startup()
 			if (rate_bps > FASTER_RATE_BPS
 				&& rate_bps > max_bandwidth)
 			{
-				/*// _LL_DEBUGS("AppInit") << "Fast network connection, increasing max bandwidth to " 
+				LL_DEBUGS("AppInit") << "Fast network connection, increasing max bandwidth to " 
 					<< FASTER_RATE_BPS/1024.f 
-					<< " kbps" << LL_ENDL;*/
+					<< " kbps" << LL_ENDL;
 				gViewerThrottle.setMaxBandwidth(FASTER_RATE_BPS / 1024.f);
 			}
 			else if (rate_bps > FAST_RATE_BPS
 				&& rate_bps > max_bandwidth)
 			{
-				/*// _LL_DEBUGS("AppInit") << "Fast network connection, increasing max bandwidth to " 
+				LL_DEBUGS("AppInit") << "Fast network connection, increasing max bandwidth to " 
 					<< FAST_RATE_BPS/1024.f 
-					<< " kbps" << LL_ENDL;*/
+					<< " kbps" << LL_ENDL;
 				gViewerThrottle.setMaxBandwidth(FAST_RATE_BPS / 1024.f);
 			}
 
@@ -2142,8 +2132,8 @@ bool idle_startup()
 			= LLLoginInstance::getInstance()->getResponse("gestures");
 		if (gesture_options.isDefined())
 		{
-			/*// _LL_DEBUGS("AppInit") << "Gesture Manager loading " << gesture_options.size()
-				<< LL_ENDL;*/
+			LL_DEBUGS("AppInit") << "Gesture Manager loading " << gesture_options.size()
+				<< LL_ENDL;
 			uuid_vec_t item_ids;
 			for(LLSD::array_const_iterator resp_it = gesture_options.beginArray(),
 				end = gesture_options.endArray(); resp_it != end; ++resp_it)
@@ -2180,9 +2170,9 @@ bool idle_startup()
 		msg->setHandlerFuncFast(_PREHASH_AttachedSound,				process_attached_sound);
 		msg->setHandlerFuncFast(_PREHASH_AttachedSoundGainChange,	process_attached_sound_gain_change);
 
-		// _LL_DEBUGS("AppInit") << "Initialization complete" << LL_ENDL;
+		LL_DEBUGS("AppInit") << "Initialization complete" << LL_ENDL;
 
-		// _LL_DEBUGS("SceneLoadTiming", "Start") << "Scene Load Started " << LL_ENDL;
+		LL_DEBUGS("SceneLoadTiming", "Start") << "Scene Load Started " << LL_ENDL;
 		gRenderStartTime.reset();
 		gForegroundTime.reset();
 
@@ -2201,7 +2191,7 @@ bool idle_startup()
 		{
 			LL_INFOS() << "gAgentStartLocation : " << gAgentStartLocation << LL_ENDL;
 			LLSLURL start_slurl = LLStartUp::getStartSLURL();
-			// _LL_DEBUGS("AppInit") << "start slurl "<<start_slurl.asString()<<LL_ENDL;
+			LL_DEBUGS("AppInit") << "start slurl "<<start_slurl.asString()<<LL_ENDL;
 			
 			if (((start_slurl.getType() == LLSLURL::LOCATION) && (gAgentStartLocation == "url")) ||
 				((start_slurl.getType() == LLSLURL::LAST_LOCATION) && (gAgentStartLocation == "last")) ||

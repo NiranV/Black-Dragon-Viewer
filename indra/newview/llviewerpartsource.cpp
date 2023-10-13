@@ -360,7 +360,8 @@ void LLViewerPartSourceScript::update(const F32 dt)
 					part_dir_vector.mV[VY] = ll_frand(2.f) - 1.f;
 					part_dir_vector.mV[VZ] = ll_frand(2.f) - 1.f;
 					mvs = part_dir_vector.magVecSquared();
-				} while ((mvs > 1.f) || (mvs < 0.01f));
+				}
+				while ((mvs > 1.f) || (mvs < 0.01f));
 
 				part_dir_vector.normVec();
 				part->mPosAgent += mPartSysData.mBurstRadius*part_dir_vector;

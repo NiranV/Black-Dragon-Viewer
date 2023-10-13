@@ -228,11 +228,11 @@ BOOL LLManip::handleHover(S32 x, S32 y, MASK mask)
 			setMouseCapture( FALSE );
 		}
 
-		// _LL_DEBUGS("UserInput") << "hover handled by LLManip (active)" << LL_ENDL;
+		LL_DEBUGS("UserInput") << "hover handled by LLManip (active)" << LL_ENDL;
 	}
 	else
 	{
-		// _LL_DEBUGS("UserInput") << "hover handled by LLManip (inactive)" << LL_ENDL;
+		LL_DEBUGS("UserInput") << "hover handled by LLManip (inactive)" << LL_ENDL;
 	}
 	gViewerWindow->setCursor(UI_CURSOR_ARROW);
 	return TRUE;
@@ -464,6 +464,7 @@ void LLManip::renderXYZ(const LLVector3 &vec)
         font->render(utf8str_to_wstring(feedback_string), 0, window_center_x - 102.f + 1.f, window_center_y + vertical_offset - 2.f, LLColor4::black,
             LLFontGL::LEFT, LLFontGL::BASELINE,
             LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, 1000, &right_x);
+
         feedback_string = llformat("Y: %.3f", vec.mV[VY]);
         font->render(utf8str_to_wstring(feedback_string), 0, window_center_x - 27.f + 1.f, window_center_y + vertical_offset - 2.f, LLColor4::black,
             LLFontGL::LEFT, LLFontGL::BASELINE,

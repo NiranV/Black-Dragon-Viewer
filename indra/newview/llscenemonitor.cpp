@@ -491,7 +491,7 @@ void LLSceneMonitor::fetchQueryResult()
 	
 			mDiffResult = sqrtf(count * 0.5f / (mDiff->getWidth() * mDiff->getHeight() * mDiffPixelRatio * mDiffPixelRatio)); //0.5 -> (front face + back face)
 
-			// _LL_DEBUGS("SceneMonitor") << "Frame difference: " << mDiffResult << LL_ENDL;
+			LL_DEBUGS("SceneMonitor") << "Frame difference: " << mDiffResult << LL_ENDL;
 			record(sFramePixelDiff, mDiffResult);
 
 			static LLCachedControl<F32> diff_threshold(gSavedSettings,"SceneLoadingMonitorPixelDiffThreshold");

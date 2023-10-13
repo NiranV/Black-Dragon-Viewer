@@ -2953,7 +2953,7 @@ bool LLAppViewer::initConfiguration()
 	std::string nextLoginLocation = gSavedSettings.getString( "NextLoginLocation" );
 	if ( !nextLoginLocation.empty() )
 	{
-		// _LL_DEBUGS("AppInit")<<"set start from NextLoginLocation: "<<nextLoginLocation<<LL_ENDL;
+		LL_DEBUGS("AppInit")<<"set start from NextLoginLocation: "<<nextLoginLocation<<LL_ENDL;
 		LLStartUp::setStartSLURL(LLSLURL(nextLoginLocation));
 	}
 	else if (   (   clp.hasOption("login") || clp.hasOption("autologin"))
@@ -2962,7 +2962,7 @@ bool LLAppViewer::initConfiguration()
 		// If automatic login from command line with --login switch
 		// init StartSLURL location.
 		std::string start_slurl_setting = gSavedSettings.getString("LoginLocation");
-		// _LL_DEBUGS("AppInit") << "start slurl setting '" << start_slurl_setting << "'" << LL_ENDL;
+		LL_DEBUGS("AppInit") << "start slurl setting '" << start_slurl_setting << "'" << LL_ENDL;
 		LLStartUp::setStartSLURL(LLSLURL(start_slurl_setting));
 	}
 	else
@@ -3576,7 +3576,7 @@ std::string LLAppViewer::getViewerInfoString(bool default_string) const
 	}
 	if (info.has("REGION"))
 	{
-		support << "\n\n" << LLTrans::getString("AboutPosition", args);
+		support << "\n\n" << LLTrans::getString("AboutPosition", args, default_string);
 	}
 	support << "\n\n" << LLTrans::getString("AboutSystem", args, default_string);
 	support << "\n";
@@ -3825,11 +3825,11 @@ bool LLAppViewer::markerIsSameVersion(const std::string& marker_name) const
 		{
 			sameVersion = true;
 		}
-		/*// _LL_DEBUGS("MarkerFile") << "Compare markers for '" << marker_name << "': "
+		LL_DEBUGS("MarkerFile") << "Compare markers for '" << marker_name << "': "
 								<< "\n   mine '" << my_version    << "'"
 								<< "\n marker '" << marker_string << "'"
 								<< "\n " << ( sameVersion ? "same" : "different" ) << " version"
-								<< LL_ENDL;*/
+								<< LL_ENDL;
 		marker_file.close();
 	}
 	return sameVersion;
@@ -3907,11 +3907,11 @@ void LLAppViewer::processMarkerFiles()
 
 		if (s == APR_SUCCESS && mMarkerFile.getFileHandle())
 		{
-			// _LL_DEBUGS("MarkerFile") << "Exec marker file '"<< mMarkerFileName << "' created." << LL_ENDL;
+			LL_DEBUGS("MarkerFile") << "Exec marker file '"<< mMarkerFileName << "' created." << LL_ENDL;
 			if (APR_SUCCESS == apr_file_lock(mMarkerFile.getFileHandle(), APR_FLOCK_NONBLOCK | APR_FLOCK_EXCLUSIVE))
 			{
 				recordMarkerVersion(mMarkerFile);
-				// _LL_DEBUGS("MarkerFile") << "Exec marker file locked." << LL_ENDL;
+				LL_DEBUGS("MarkerFile") << "Exec marker file locked." << LL_ENDL;
 			}
 			else
 			{
@@ -3998,7 +3998,7 @@ void LLAppViewer::removeMarkerFiles()
 		{
 			mMarkerFile.close() ;
 			LLAPRFile::remove( mMarkerFileName );
-			// _LL_DEBUGS("MarkerFile") << "removed exec marker '"<<mMarkerFileName<<"'"<< LL_ENDL;
+			LL_DEBUGS("MarkerFile") << "removed exec marker '"<<mMarkerFileName<<"'"<< LL_ENDL;
 		}
 		else
 		{
@@ -4009,7 +4009,7 @@ void LLAppViewer::removeMarkerFiles()
 		{
 			mLogoutMarkerFile.close();
 			LLAPRFile::remove( mLogoutMarkerFileName );
-			// _LL_DEBUGS("MarkerFile") << "removed logout marker '"<<mLogoutMarkerFileName<<"'"<< LL_ENDL;
+			LL_DEBUGS("MarkerFile") << "removed logout marker '"<<mLogoutMarkerFileName<<"'"<< LL_ENDL;
 		}
 		else
 		{

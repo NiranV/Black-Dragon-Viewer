@@ -516,7 +516,7 @@ bool LLTextureCacheRemoteWorker::doRead()
 		{
 			// No body, we're done.
 			mDataSize = llmax(TEXTURE_CACHE_ENTRY_SIZE - mOffset, 0);
-			// _LL_DEBUGS() << "No body file for: " << filename << LL_ENDL;
+			LL_DEBUGS() << "No body file for: " << filename << LL_ENDL;
 		}	
 		// Nothing else to do at that point...
 		done = true;
@@ -796,8 +796,6 @@ LLTextureCache::LLTextureCache(bool threaded)
 	  mListMutex(),
 	  mFastCacheMutex(),
 	  mHeaderAPRFile(NULL),
-	  mPrioritizeWriteListEmpty(true),
-	  mCompletedListEmpty(true),
 	  mReadOnly(TRUE), //do not allow to change the texture cache until setReadOnly() is called.
 	  mTexturesSizeTotal(0),
 	  mDoPurge(FALSE),
@@ -838,10 +836,11 @@ size_t LLTextureCache::update(F32 max_time_ms)
 	mListMutex.unlock();
 	
 	// call 'completed' with workers list unlocked (may call readComplete() or writeComplete()
-	for (auto& iter1 : completed_list)
-    {
-		Responder *responder = iter1.first;
-		bool success = iter1.second;
+	for (responder_list_t::iterator iter1 = completed_list.begin();
+		 iter1 != completed_list.end(); ++iter1)
+	{
+		Responder *responder = iter1->first;
+		bool success = iter1->second;
 		responder->completed(success);
 	}
 	
@@ -868,7 +867,7 @@ std::string LLTextureCache::getLocalFileName(const LLUUID& id)
 std::string LLTextureCache::getTextureFileName(const LLUUID& id)
 {
 	std::string idstr = id.asString();
-	const std::string& delem = gDirUtilp->getDirDelimiter();
+	std::string delem = gDirUtilp->getDirDelimiter();
 	std::string filename = mTexturesDirName + delem + idstr[0] + delem + idstr + ".texture";
 	return filename;
 }
@@ -944,6 +943,8 @@ const char* fast_cache_filename = "FastCache.cache";
 
 void LLTextureCache::setDirNames(ELLPath location)
 {
+	std::string delem = gDirUtilp->getDirDelimiter();
+
 	mHeaderEntriesFileName = gDirUtilp->getExpandedFilename(location, textures_dirname, entries_filename);
 	mHeaderDataFileName = gDirUtilp->getExpandedFilename(location, textures_dirname, cache_filename);
 	mTexturesDirName = gDirUtilp->getExpandedFilename(location, textures_dirname);
@@ -1680,7 +1681,7 @@ void LLTextureCache::purgeTexturesLazy(F32 time_limit_sec)
 				break;
 			}
 		}
-		// _LL_DEBUGS("TextureCache") << "Formed Purge list of " << mPurgeEntryList.size() << " entries" << LL_ENDL;
+		LL_DEBUGS("TextureCache") << "Formed Purge list of " << mPurgeEntryList.size() << " entries" << LL_ENDL;
 	}
 	else
 	{
@@ -1757,7 +1758,7 @@ void LLTextureCache::purgeTextures(bool validate)
 		validate_idx = gSavedSettings.getU32("CacheValidateCounter");
 		U32 next_idx = (validate_idx + 1) % 256;
 		gSavedSettings.setU32("CacheValidateCounter", next_idx);
-		// _LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Validating: " << validate_idx << LL_ENDL;
+		LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Validating: " << validate_idx << LL_ENDL;
 	}
 
 	S64 cache_size = mTexturesSizeTotal;
@@ -1780,7 +1781,7 @@ void LLTextureCache::purgeTextures(bool validate)
 			if (uuididx == validate_idx)
 			{
 				std::string filename = getTextureFileName(entries[idx].mID);
-				// _LL_DEBUGS("TextureCache") << "Validating: " << filename << "Size: " << entries[idx].mBodySize << LL_ENDL;
+				LL_DEBUGS("TextureCache") << "Validating: " << filename << "Size: " << entries[idx].mBodySize << LL_ENDL;
 				// mHeaderAPRFilePoolp because this is under header mutex in main thread
 				S32 bodysize = LLAPRFile::size(filename, mHeaderAPRFilePoolp);
 				if (bodysize != entries[idx].mBodySize)
@@ -1799,13 +1800,13 @@ void LLTextureCache::purgeTextures(bool validate)
 		{
 			purge_count++;
             std::string filename = getTextureFileName(entries[idx].mID);
-	 		// _LL_DEBUGS("TextureCache") << "PURGING: " << filename << LL_ENDL;
+	 		LL_DEBUGS("TextureCache") << "PURGING: " << filename << LL_ENDL;
 			cache_size -= entries[idx].mBodySize;
 			removeEntry(idx, entries[idx], filename) ;			
 		}
 	}
 
-	// _LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Writing Entries: " << num_entries << LL_ENDL;
+	LL_DEBUGS("TextureCache") << "TEXTURE CACHE: Writing Entries: " << num_entries << LL_ENDL;
 
 	writeEntriesAndClose(entries);
 	
@@ -2194,14 +2195,12 @@ void LLTextureCache::prioritizeWrite(handle_t handle)
 	//   which could create a deadlock
 	LLMutexLock lock(&mListMutex);	
 	mPrioritizeWriteList.push_back(handle);
-	mPrioritizeWriteListEmpty = mPrioritizeWriteList.empty();
 }
 
 void LLTextureCache::addCompleted(Responder* responder, bool success)
 {
 	LLMutexLock lock(&mListMutex);
 	mCompletedList.push_back(std::make_pair(responder,success));
-	mCompletedListEmpty = mCompletedList.empty();
 }
 
 //////////////////////////////////////////////////////////////////////////////

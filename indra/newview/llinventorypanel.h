@@ -362,6 +362,7 @@ protected:
 
     // if certain types are not allowed, no reason to create views
     virtual bool				typedViewsFilter(const LLUUID& id, LLInventoryObject const* objectp) { return true; }
+
 	virtual void				itemChanged(const LLUUID& item_id, U32 mask, const LLInventoryObject* model_item);
 	BOOL				getIsHiddenFolderType(LLFolderType::EType folder_type) const;
 	

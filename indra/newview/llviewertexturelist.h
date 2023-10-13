@@ -134,10 +134,6 @@ public:
 
 	void handleIRCallback(void **data, const S32 number);
 
-	//BD - Automatic Memory Management
-	//void updateMaxResidentTexMem(S32Megabytes mem);
-	//void idleUpdateMaxResidentTexMem();
-
 	S32 getNumImages()					{ return mImageList.size(); }
 
 	// Local UI images
@@ -222,8 +218,6 @@ public:
 	std::set<LLViewerFetchedTexture*> mDirtyTextureList;
 	
 	BOOL mForceResetTextureStats;
-
-	BOOL mAutomaticMemoryManagement;
     
 private:
     typedef std::map< LLTextureKey, LLPointer<LLViewerFetchedTexture> > uuid_map_t;

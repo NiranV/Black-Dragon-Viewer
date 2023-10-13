@@ -83,21 +83,21 @@ bool LLSyntaxIdLSL::syntaxIdChanged()
 				// get and check the hash
 				LLUUID new_syntax_id = sim_features[SYNTAX_ID_SIMULATOR_FEATURE].asUUID();
 				mCapabilityURL = region->getCapability(SYNTAX_ID_CAPABILITY_NAME);
-				// _LL_DEBUGS("SyntaxLSL") << SYNTAX_ID_SIMULATOR_FEATURE << " capability URL: " << mCapabilityURL << LL_ENDL;
+				LL_DEBUGS("SyntaxLSL") << SYNTAX_ID_SIMULATOR_FEATURE << " capability URL: " << mCapabilityURL << LL_ENDL;
 				if (new_syntax_id != mSyntaxId)
 				{
-					// _LL_DEBUGS("SyntaxLSL") << "New SyntaxID '" << new_syntax_id << "' found." << LL_ENDL;
+					LL_DEBUGS("SyntaxLSL") << "New SyntaxID '" << new_syntax_id << "' found." << LL_ENDL;
 					mSyntaxId = new_syntax_id;
 					return true;
 				}
-				//else
-					// _LL_DEBUGS("SyntaxLSL") << "SyntaxID matches what we have." << LL_ENDL;
+				else
+					LL_DEBUGS("SyntaxLSL") << "SyntaxID matches what we have." << LL_ENDL;
 			}
 		}
 		else
 		{
 			region->setCapabilitiesReceivedCallback(boost::bind(&LLSyntaxIdLSL::handleCapsReceived, this, _1));
-			// _LL_DEBUGS("SyntaxLSL") << "Region has not received capabilities. Waiting for caps..." << LL_ENDL;
+			LL_DEBUGS("SyntaxLSL") << "Region has not received capabilities. Waiting for caps..." << LL_ENDL;
 		}
 	}
 	return false;
@@ -110,7 +110,7 @@ void LLSyntaxIdLSL::fetchKeywordsFile(const std::string& filespec)
 {
     LLCoros::instance().launch("LLSyntaxIdLSL::fetchKeywordsFileCoro",
         boost::bind(&LLSyntaxIdLSL::fetchKeywordsFileCoro, this, mCapabilityURL, filespec));
-	// _LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId capability URL is: " << mCapabilityURL << ". Filename to use is: '" << filespec << "'." << LL_ENDL;
+	LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId capability URL is: " << mCapabilityURL << ". Filename to use is: '" << filespec << "'." << LL_ENDL;
 }
 
 //-----------------------------------------------------------------------------
@@ -172,7 +172,7 @@ void LLSyntaxIdLSL::cacheFile(const std::string &fileSpec, const LLSD& content_r
     file.write(xml.c_str(), str.str().size());
     file.close();
 
-    // _LL_DEBUGS("SyntaxLSL") << "Syntax file received, saving as: '" << fileSpec << "'" << LL_ENDL;
+    LL_DEBUGS("SyntaxLSL") << "Syntax file received, saving as: '" << fileSpec << "'" << LL_ENDL;
 }
 
 //-----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ void LLSyntaxIdLSL::initialize()
 	}
 	else if (!mCapabilityURL.empty())
 	{
-		// _LL_DEBUGS("SyntaxLSL") << "LSL version has changed, getting appropriate file." << LL_ENDL;
+		LL_DEBUGS("SyntaxLSL") << "LSL version has changed, getting appropriate file." << LL_ENDL;
 
 		// Need a full spec regardless of file source, so build it now.
 		buildFullFileSpec();
@@ -195,24 +195,24 @@ void LLSyntaxIdLSL::initialize()
 		{
 			if (!gDirUtilp->fileExists(mFullFileSpec))
 			{ // Does not exist, so fetch it from the capability
-				// _LL_DEBUGS("SyntaxLSL") << "LSL syntax not cached, attempting download." << LL_ENDL;
+				LL_DEBUGS("SyntaxLSL") << "LSL syntax not cached, attempting download." << LL_ENDL;
 				fetchKeywordsFile(mFullFileSpec);
 			}
 			else
 			{
-				// _LL_DEBUGS("SyntaxLSL") << "Found cached Syntax file: " << mFullFileSpec << " Loading keywords." << LL_ENDL;
+				LL_DEBUGS("SyntaxLSL") << "Found cached Syntax file: " << mFullFileSpec << " Loading keywords." << LL_ENDL;
 				loadKeywordsIntoLLSD();
 			}
 		}
 		else
 		{
-			// _LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId is null. Loading default values" << LL_ENDL;
+			LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId is null. Loading default values" << LL_ENDL;
 			loadDefaultKeywordsIntoLLSD();
 		}
 	}
 	else
 	{
-		// _LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId capability URL is empty." << LL_ENDL;
+		LL_DEBUGS("SyntaxLSL") << "LSLSyntaxId capability URL is empty." << LL_ENDL;
 		loadDefaultKeywordsIntoLLSD();
 	}
 	mInitialized = true;
@@ -234,7 +234,7 @@ bool LLSyntaxIdLSL::isSupportedVersion(const LLSD& content)
 
 	if (content.has(LLSD_SYNTAX_LSL_VERSION_KEY))
 	{
-		// _LL_DEBUGS("SyntaxLSL") << "LSL syntax version: " << content[LLSD_SYNTAX_LSL_VERSION_KEY].asString() << LL_ENDL;
+		LL_DEBUGS("SyntaxLSL") << "LSL syntax version: " << content[LLSD_SYNTAX_LSL_VERSION_KEY].asString() << LL_ENDL;
 
 		if (content[LLSD_SYNTAX_LSL_VERSION_KEY].asInteger() == LLSD_SYNTAX_LSL_VERSION_EXPECTED)
 		{
@@ -243,7 +243,7 @@ bool LLSyntaxIdLSL::isSupportedVersion(const LLSD& content)
 	}
 	else
 	{
-		// _LL_DEBUGS("SyntaxLSL") << "Missing LSL syntax version key." << LL_ENDL;
+		LL_DEBUGS("SyntaxLSL") << "Missing LSL syntax version key." << LL_ENDL;
 	}
 
 	return is_valid;
@@ -279,7 +279,7 @@ void LLSyntaxIdLSL::loadKeywordsIntoLLSD()
 		{
 			if (isSupportedVersion(content))
 			{
-				// _LL_DEBUGS("SyntaxLSL") << "Deserialized: " << mFullFileSpec << LL_ENDL;
+				LL_DEBUGS("SyntaxLSL") << "Deserialized: " << mFullFileSpec << LL_ENDL;
 			}
 			else
 			{

@@ -1890,10 +1890,9 @@ void renderBoundingBox(LLDrawable* drawable, BOOL set_color = TRUE)
                     	gGL.diffuseColor4f(0,0.5f,0,1); // dark green
 						break;
 				default:
-						auto avatarp = drawable->getVObj()->asAvatar();
-						if (avatarp && avatarp->isControlAvatar())
+						LLControlAvatar *cav = dynamic_cast<LLControlAvatar*>(drawable->getVObj()->asAvatar());
+						if (cav)
 						{
-							LLControlAvatar* cav = static_cast<LLControlAvatar*>(avatarp);
 							bool has_pos_constraint = (cav->mPositionConstraintFixup != LLVector3());
 							bool has_scale_constraint = (cav->mScaleConstraintFixup != 1.0f);
 							if (has_pos_constraint || has_scale_constraint)
@@ -3164,25 +3163,22 @@ public:
 				renderTexelDensity(drawable);
 			}
 
-			LLViewerObject* vobjp = drawable->getVObj();
-			LLVOAvatar* avatar = vobjp ? vobjp->asAvatar() : nullptr;
-			if (avatar)
-			{
-				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_VOLUME))
+			LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(drawable->getVObj().get());
+			
+			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_VOLUME))
 				{
 					renderAvatarCollisionVolumes(avatar);
 				}
 
-				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
+			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AVATAR_JOINTS))
 				{
 					renderAvatarBones(avatar);
 				}
 
-				if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AGENT_TARGET))
+			if (avatar && gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_AGENT_TARGET))
 				{
 					renderAgentTarget(avatar);
 				}
-			}
 			
 #if 0
 			if (gDebugGL)
@@ -3839,7 +3835,6 @@ LLCullResult::LLCullResult()
 		mRenderMap[i].push_back(NULL);
 		mRenderMapEnd[i] = &mRenderMap[i][0];
 		mRenderMapAllocated[i] = 0;
-		mRenderMapSize[i] = 0;
 	}
 
 	clear();

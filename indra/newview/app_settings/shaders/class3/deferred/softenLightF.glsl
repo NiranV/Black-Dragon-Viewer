@@ -51,7 +51,7 @@ uniform float ssao_irradiance_max;
 
 // Inputs
 uniform mat3 env_mat;
-uniform vec3 ssao_effect_mat;
+uniform mat3  ssao_effect_mat;
 uniform vec3 sun_dir;
 uniform vec3 moon_dir;
 uniform int  sun_up_factor;

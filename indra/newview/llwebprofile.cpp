@@ -74,7 +74,7 @@ void LLWebProfile::uploadImage(LLPointer<LLImageFormatted> image, const std::str
 // static
 void LLWebProfile::setAuthCookie(const std::string& cookie)
 {
-	// _LL_DEBUGS("Snapshots") << "Setting auth cookie: " << cookie << LL_ENDL;
+	LL_DEBUGS("Snapshots") << "Setting auth cookie: " << cookie << LL_ENDL;
 	sAuthCookie = cookie;
 }
 
@@ -120,7 +120,7 @@ void LLWebProfile::uploadImageCoro(LLPointer<LLImageFormatted> image, std::strin
     configUrl += "?caption=" + LLURI::escape(caption);
     configUrl += "&add_loc=" + std::string(addLocation ? "1" : "0");
 
-    // _LL_DEBUGS("Snapshots") << "Requesting " << configUrl << LL_ENDL;
+    LL_DEBUGS("Snapshots") << "Requesting " << configUrl << LL_ENDL;
 
     httpHeaders = buildDefaultHeaders();
     httpHeaders->append(HTTP_OUT_HEADER_COOKIE, getAuthCookie());
@@ -177,7 +177,7 @@ void LLWebProfile::uploadImageCoro(LLPointer<LLImageFormatted> image, std::strin
         LLWebProfile::reportImageUploadStatus(false);
     }
 
-    // _LL_DEBUGS("Snapshots") << "Got redirection URL: " << redirUrl << LL_ENDL;
+    LL_DEBUGS("Snapshots") << "Got redirection URL: " << redirUrl << LL_ENDL;
 
     result = httpAdapter->getRawAndSuspend(httpRequest, redirUrl, httpOpts, httpHeaders);
 
@@ -194,7 +194,7 @@ void LLWebProfile::uploadImageCoro(LLPointer<LLImageFormatted> image, std::strin
     //LLSD raw = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS_RAW];
 
     LL_INFOS("Snapshots") << "Image uploaded." << LL_ENDL;
-    //// _LL_DEBUGS("Snapshots") << "Uploading image succeeded. Response: [" << raw.asString() << "]" << LL_ENDL;
+    //LL_DEBUGS("Snapshots") << "Uploading image succeeded. Response: [" << raw.asString() << "]" << LL_ENDL;
     LLWebProfile::reportImageUploadStatus(true);
 
 

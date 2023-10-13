@@ -8926,9 +8926,13 @@ void LLPipeline::setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep)
 		shader.uniform1f(LLShaderMgr::PROJECTOR_SHADOW_FADE, 1.f);
 	}
 
+    // make sure we're not already targeting the same spot light with both shadow maps
+    llassert(mTargetShadowSpotLight[0] != mTargetShadowSpotLight[1] || mTargetShadowSpotLight[0].isNull());
+
+    if (!gCubeSnapshot)
 	{
 		LLDrawable* potential = drawablep;
-		//determine if this is a good light for casting shadows
+		//determine if this light is higher priority than one of the existing spot shadows
 		F32 m_pri = volume->getSpotLightPriority();
 
 		for (U32 i = 0; i < 2; i++)
@@ -8949,6 +8953,9 @@ void LLPipeline::setupSpotLight(LLGLSLShader& shader, LLDrawable* drawablep)
 			}
 		}
 	}
+
+    // make sure we didn't end up targeting the same spot light with both shadow maps
+    llassert(mTargetShadowSpotLight[0] != mTargetShadowSpotLight[1] || mTargetShadowSpotLight[0].isNull());
 
 	LLViewerTexture* img = volume->getLightTexture();
 

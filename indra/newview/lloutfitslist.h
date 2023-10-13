@@ -251,11 +251,6 @@ public:
 
     /*virtual*/ bool getHasExpandableFolders() { return TRUE; }
 
-	/**
-	 * Returns true if all selected items can be worn.
-	 */
-	bool canWearSelected();
-
 protected:
     LLOutfitListGearMenuBase* createGearMenu();
 
@@ -316,6 +311,11 @@ private:
 	 * @see applyFilter()
 	 */
 	void applyFilterToTab(const LLUUID& category_id, LLAccordionCtrlTab* tab, const std::string& filter_substring);
+
+	/**
+	 * Returns true if all selected items can be worn.
+	 */
+	bool canWearSelected();
 
 	void onWearableItemsListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
 	void onCOFChanged();

@@ -67,7 +67,7 @@ void LLEnvironmentRequest::onRegionCapsReceived(const LLUUID& region_id, LLEnvir
 		return;
 	}
 
-	// _LL_DEBUGS("WindlightCaps") << "Received region capabilities" << LL_ENDL;
+	LL_DEBUGS("WindlightCaps") << "Received region capabilities" << LL_ENDL;
 	doRequest(cb);
 }
 
@@ -181,7 +181,7 @@ bool LLEnvironmentApply::initiateRequest(const LLSD& content, LLEnvironment::env
 	}
 
     LL_INFOS("WindlightCaps") << "Sending windlight settings to " << url << LL_ENDL;
-    // _LL_DEBUGS("WindlightCaps") << "content: " << content << LL_ENDL;
+    LL_DEBUGS("WindlightCaps") << "content: " << content << LL_ENDL;
 
     std::string coroname =
         LLCoros::instance().launch("LLEnvironmentApply::environmentApplyCoro",
@@ -252,7 +252,7 @@ void LLEnvironmentApply::environmentApplyCoro(std::string url, LLSD content, LLE
             break;
         }
 
-        // _LL_DEBUGS("WindlightCaps") << "Success in applying windlight settings to region " << result["regionID"].asUUID() << LL_ENDL;
+        LL_DEBUGS("WindlightCaps") << "Success in applying windlight settings to region " << result["regionID"].asUUID() << LL_ENDL;
 
     } while (false);
 

@@ -870,7 +870,7 @@ void show_item_original(const LLUUID& item_uuid)
             {
                 main_inventory->toggleViewMode();
             }
-            main_inventory->resetFilters();
+            main_inventory->resetAllItemsFilters();
         }
         reset_inventory_filter();
 

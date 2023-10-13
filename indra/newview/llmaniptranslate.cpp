@@ -410,7 +410,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	// Bail out if mouse not down.
 	if( !hasMouseCapture() )
 	{
-		// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (inactive)" << LL_ENDL;		
+		LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (inactive)" << LL_ENDL;		
 		// Always show cursor
 		// gViewerWindow->setCursor(UI_CURSOR_ARROW);
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
@@ -446,7 +446,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	// rotation above.
 	if( x == mLastHoverMouseX && y == mLastHoverMouseY && !rotated)
 	{
-		// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse unmoved)" << LL_ENDL;
+		LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse unmoved)" << LL_ENDL;
 		gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 		return TRUE;
 	}
@@ -459,7 +459,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	{
 		if (abs(mMouseDownX - x) < MOUSE_DRAG_SLOP && abs(mMouseDownY - y) < MOUSE_DRAG_SLOP )
 		{
-			// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse inside slop)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (mouse inside slop)" << LL_ENDL;
 			gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 			return TRUE;
 		}
@@ -476,7 +476,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 
 				// When we make the copy, we don't want to do any other processing.
 				// If so, the object will also be moved, and the copy will be offset.
-				// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (made copy)" << LL_ENDL;
+				LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (made copy)" << LL_ENDL;
 				gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 			}
 		}
@@ -529,7 +529,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 
 		if (relative_move.magVecSquared() > max_drag_distance * max_drag_distance)
 		{
-			// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (too far)" << LL_ENDL;
+			LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (too far)" << LL_ENDL;
 			gViewerWindow->setCursor(UI_CURSOR_NOLOCKED);
 			return TRUE;
 		}
@@ -769,7 +769,7 @@ BOOL LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
 	gAgentCamera.clearFocusObject();
 	dialog_refresh_all();		// ??? is this necessary?
 
-	// _LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (active)" << LL_ENDL;
+	LL_DEBUGS("UserInput") << "hover handled by LLManipTranslate (active)" << LL_ENDL;
 	gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
 	return TRUE;
 }

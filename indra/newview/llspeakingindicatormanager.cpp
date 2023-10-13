@@ -143,7 +143,7 @@ void SpeakingIndicatorManager::registerSpeakingIndicator(const LLUUID& speaker_i
 {
 	// do not exclude agent's indicators. They should be processed in the same way as others. See EXT-3889.
 
-	// _LL_DEBUGS("SpeakingIndicator") << "Registering indicator: " << speaker_id << "|"<< speaking_indicator << ", session: " << session_id << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Registering indicator: " << speaker_id << "|"<< speaking_indicator << ", session: " << session_id << LL_ENDL;
 
 
 	ensureInstanceDoesNotExist(speaking_indicator);
@@ -162,14 +162,14 @@ void SpeakingIndicatorManager::registerSpeakingIndicator(const LLUUID& speaker_i
 
 void SpeakingIndicatorManager::unregisterSpeakingIndicator(const LLUUID& speaker_id, const LLSpeakingIndicator* const speaking_indicator)
 {
-	// _LL_DEBUGS("SpeakingIndicator") << "Unregistering indicator: " << speaker_id << "|"<< speaking_indicator << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Unregistering indicator: " << speaker_id << "|"<< speaking_indicator << LL_ENDL;
 	speaking_indicators_mmap_t::iterator it;
 	it = mSpeakingIndicators.find(speaker_id);
 	for (;it != mSpeakingIndicators.end(); ++it)
 	{
 		if (it->second == speaking_indicator)
 		{
-			// _LL_DEBUGS("SpeakingIndicator") << "Unregistered." << LL_ENDL;
+			LL_DEBUGS("SpeakingIndicator") << "Unregistered." << LL_ENDL;
 			mSpeakingIndicators.erase(it);
 			break;
 		}
@@ -207,17 +207,17 @@ void SpeakingIndicatorManager::sOnCurrentChannelChanged(const LLUUID& /*session_
 
 void SpeakingIndicatorManager::onParticipantsChanged()
 {
-	// _LL_DEBUGS("SpeakingIndicator") << "Voice participant list was changed, updating indicators" << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Voice participant list was changed, updating indicators" << LL_ENDL;
 
 	speaker_ids_t speakers_uuids;
 	LLVoiceClient::getInstance()->getParticipantList(speakers_uuids);
 
-	// _LL_DEBUGS("SpeakingIndicator") << "Switching all OFF, count: " << mSwitchedIndicatorsOn.size() << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Switching all OFF, count: " << mSwitchedIndicatorsOn.size() << LL_ENDL;
 	// switch all indicators off
 	switchSpeakerIndicators(mSwitchedIndicatorsOn, FALSE);
 	mSwitchedIndicatorsOn.clear();
 
-	// _LL_DEBUGS("SpeakingIndicator") << "Switching all ON, count: " << speakers_uuids.size() << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Switching all ON, count: " << speakers_uuids.size() << LL_ENDL;
 	// then switch current voice participants indicators on
 	switchSpeakerIndicators(speakers_uuids, TRUE);
 }
@@ -234,7 +234,7 @@ void SpeakingIndicatorManager::switchSpeakerIndicators(const speaker_ids_t& spea
 	speaker_ids_t::const_iterator it_uuid = speakers_uuids.begin(); 
 	for (; it_uuid != speakers_uuids.end(); ++it_uuid)
 	{
-		// _LL_DEBUGS("SpeakingIndicator") << "Looking for indicator: " << *it_uuid << LL_ENDL;
+		LL_DEBUGS("SpeakingIndicator") << "Looking for indicator: " << *it_uuid << LL_ENDL;
 		indicator_range_t it_range = mSpeakingIndicators.equal_range(*it_uuid);
 		indicator_const_iterator it_indicator = it_range.first;
 		bool was_found = false;
@@ -250,11 +250,11 @@ void SpeakingIndicatorManager::switchSpeakerIndicators(const speaker_ids_t& spea
 
 		if (was_found)
 		{
-			// _LL_DEBUGS("SpeakingIndicator") << mSpeakingIndicators.count(*it_uuid) << " indicators were found" << LL_ENDL;
+			LL_DEBUGS("SpeakingIndicator") << mSpeakingIndicators.count(*it_uuid) << " indicators were found" << LL_ENDL;
 
 			if (switch_on && !was_switched_on)
 			{
-				// _LL_DEBUGS("SpeakingIndicator") << "but none of them were switched on" << LL_ENDL;
+				LL_DEBUGS("SpeakingIndicator") << "but none of them were switched on" << LL_ENDL;
 			}
 
 			if (was_switched_on)
@@ -268,13 +268,13 @@ void SpeakingIndicatorManager::switchSpeakerIndicators(const speaker_ids_t& spea
 
 void SpeakingIndicatorManager::ensureInstanceDoesNotExist(LLSpeakingIndicator* const speaking_indicator)
 {
-	// _LL_DEBUGS("SpeakingIndicator") << "Searching for an registered indicator instance: " << speaking_indicator << LL_ENDL;
+	LL_DEBUGS("SpeakingIndicator") << "Searching for an registered indicator instance: " << speaking_indicator << LL_ENDL;
 	speaking_indicators_mmap_t::iterator it = mSpeakingIndicators.begin();
 	for (;it != mSpeakingIndicators.end(); ++it)
 	{
 		if (it->second == speaking_indicator)
 		{
-			// _LL_DEBUGS("SpeakingIndicator") << "Found" << LL_ENDL;
+			LL_DEBUGS("SpeakingIndicator") << "Found" << LL_ENDL;
 			break;
 		}
 	}

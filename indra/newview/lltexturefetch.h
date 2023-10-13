@@ -319,12 +319,12 @@ private:
 	queue_t mHTTPTextureQueue;											// Mfnq
 	typedef std::map<LLHost,std::set<LLUUID> > cancel_queue_t;
 	F32 mTextureBandwidth;												// <none>
-	std::atomic<F32> mMaxBandwidth;
+	F32 mMaxBandwidth;													// Mfnq
 	LLTextureInfo mTextureInfo;
 	LLTextureInfo mTextureInfoMainThread;
 
 	// XXX possible delete
-	std::atomic<U32Bits> mHTTPTextureBits;
+	U32Bits mHTTPTextureBits;												// Mfnq
 
 	// XXX possible delete
 	//debug use
@@ -334,9 +334,8 @@ private:
 	// is logically tied to LLQueuedThread's list of
 	// QueuedRequest instances and so must be covered by the
 	// same locks.
-	typedef std::deque<TFRequest *> command_queue_t;
+	typedef std::vector<TFRequest *> command_queue_t;
 	command_queue_t mCommands;											// Mfq
-	std::atomic<S32> mCommandsSize;
 
 	// If true, modifies some behaviors that help with QA tasks.
 	const bool mQAMode;

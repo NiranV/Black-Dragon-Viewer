@@ -465,10 +465,10 @@ void LLVOCacheEntry::updateDebugSettings()
 	sRearPixelThreshold = rear_pixel_threshold;
 	sRearPixelThreshold = llmax(sRearPixelThreshold, sFrontPixelThreshold); //can not be smaller than sFrontPixelThreshold.
 
-	//BD - Make the above parameters adaptive to memory usage
-	//     Starts to put restrictions from low_mem_bound_MB, apply tightest restrictions when hits high_mem_bound_MB
-	static U32 low_mem_bound_MB = (LLMemory::getAvailableMemKB().value() / 1024) * 0.8f;
-	static U32 high_mem_bound_MB = (LLMemory::getAvailableMemKB().value() / 1024) * 0.9f;
+	//make parameters adaptive to memory usage
+	//starts to put restrictions from low_mem_bound_MB, apply tightest restrictions when hits high_mem_bound_MB
+	static LLCachedControl<U32> low_mem_bound_MB(gSavedSettings,"SceneLoadLowMemoryBound");
+	static LLCachedControl<U32> high_mem_bound_MB(gSavedSettings,"SceneLoadHighMemoryBound");
 	
 	LLMemory::updateMemoryInfo() ;
 	U32 allocated_mem = LLMemory::getAllocatedMemKB().value();

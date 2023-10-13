@@ -556,8 +556,6 @@ class LLMeshCostData
 public:
 	LLMeshCostData();
 
-	bool init(const LLSD& header);
-
     bool init(const LLMeshHeader& header);
     
     // Size for given LOD
@@ -654,7 +652,6 @@ public:
 	LLModel::Decomposition* getDecomposition(const LLUUID& mesh_id);
 	void fetchPhysicsShape(const LLUUID& mesh_id);
 	bool hasPhysicsShape(const LLUUID& mesh_id);
-
     bool hasSkinInfo(const LLUUID& mesh_id);
     bool hasHeader(const LLUUID& mesh_id);
 	
@@ -711,6 +708,7 @@ public:
 	std::queue<LLUUID> mPendingPhysicsShapeRequests;
 
 	U32 mMeshThreadCount;
+	
 	LLMeshRepoThread* mThread;
 	std::vector<LLMeshUploadThread*> mUploads;
 	std::vector<LLMeshUploadThread*> mUploadWaitList;
