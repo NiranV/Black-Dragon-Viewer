@@ -110,7 +110,7 @@ void LLDrawable::init(bool new_entry)
 	mDistanceWRTCamera = 0.0f;
 	mState     = 0;
 //	//BD - Motion Blur
-	mLastRenderMatrix = NULL;
+	//mLastRenderMatrix = NULL;
 
 	// mFaces
 	mRadius = 0.f;
@@ -196,11 +196,11 @@ void LLDrawable::destroy()
 	}*/	
 
 //	//BD - Motion Blur
-	if (mLastRenderMatrix)
+	/*if (mLastRenderMatrix)
 	{
 		delete mLastRenderMatrix;
 		mLastRenderMatrix = NULL;
-	}
+	}*/
 }
 
 void LLDrawable::markDead()
@@ -244,7 +244,7 @@ const LLMatrix4& LLDrawable::getRenderMatrix() const
 }
 
 //BD - Motion Blur
-LLMatrix4& LLDrawable::getLastRenderMatrix()
+/*LLMatrix4& LLDrawable::getLastRenderMatrix()
 {
 	if (isState(LLDrawable::ANIMATED_CHILD) || isRoot())
 	{
@@ -258,7 +258,7 @@ LLMatrix4& LLDrawable::getLastRenderMatrix()
 	{
 		return getParent()->getLastRenderMatrix();
 	}
-}
+}*/
 
 BOOL LLDrawable::isLight() const
 {
@@ -645,10 +645,10 @@ F32 LLDrawable::updateXform(BOOL undamped)
 	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
 
 //	//BD - Motion Blur
-	if (mLastRenderMatrix)
+	/*if (mLastRenderMatrix)
 	{
 		*mLastRenderMatrix = mXform.getWorldMatrix();
-	}
+	}*/
 
 	BOOL damped = !undamped;
 

@@ -164,7 +164,7 @@ void LLFace::init(LLDrawable* drawablep, LLViewerObject* objp)
 	mTextureMatrix = NULL;
 	mDrawInfo = NULL;
 //	//BD - Motion Blur
-	mLastMatrixPalette = NULL;
+	//mLastMatrixPalette = NULL;
 
 	mFaceColor = LLColor4(1,0,0,1);
 
@@ -219,11 +219,11 @@ void LLFace::destroy()
 	}
 
 //	//BD - Motion Blur
-	if (mLastMatrixPalette)
+	/*if (mLastMatrixPalette)
 	{
 		delete[] mLastMatrixPalette;
 		mLastMatrixPalette = NULL;
-	}
+	}*/
 
 	setDrawInfo(NULL);
 

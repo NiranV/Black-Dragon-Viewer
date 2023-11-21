@@ -77,8 +77,8 @@ LLViewerJointMesh::LLViewerJointMesh()
 	LLAvatarJointMesh()
 {
 //	//BD - Motion Blur
-	mLastMatrixPalette = NULL;
-	mLastMatrixPaletteUpdated = 0;
+	//mLastMatrixPalette = NULL;
+	//mLastMatrixPaletteUpdated = 0;
 }
 
 
@@ -89,10 +89,10 @@ LLViewerJointMesh::LLViewerJointMesh()
 LLViewerJointMesh::~LLViewerJointMesh()
 {
 //	//BD - Motion Blur
-	if (mLastMatrixPalette)
+	/*if (mLastMatrixPalette)
 	{
 		delete[] mLastMatrixPalette;
-	}
+	}*/
 }
 
 const S32 NUM_AXES = 3;

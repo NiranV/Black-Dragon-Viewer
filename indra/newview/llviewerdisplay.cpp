@@ -973,11 +973,11 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 //			//BD - Motion Blur
 			//store this frame's modelview matrix for use
 			//when rendering next frame's occlusion queries
-			for (U32 i = 0; i < 16; i++)
+			/*for (U32 i = 0; i < 16; i++)
 			{
 				gGLLastModelView[i] = gGLModelView[i];
 				gGLLastProjection[i] = gGLProjection[i];
-			}
+			}*/
 			stop_glerror();
 
 			gGL.setColorMask(true, true);

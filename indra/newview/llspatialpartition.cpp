@@ -3758,9 +3758,9 @@ LLDrawInfo::LLDrawInfo(U16 start, U16 end, U32 count, U32 offset,
 	mBlendFuncDst(LLRender::BF_ONE_MINUS_SOURCE_ALPHA),
 	mHasGlow(false),
 	mEnvIntensity(0.0f),
-	mAlphaMaskCutoff(0.5f),
+	mAlphaMaskCutoff(0.5f)
 //	//BD - Motion Blur
-	mLastModelMatrix(NULL)
+	//mLastModelMatrix(NULL)
 {
 	mVertexBuffer->validateRange(mStart, mEnd, mCount, mOffset);
 }

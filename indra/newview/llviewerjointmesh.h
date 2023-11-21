@@ -69,8 +69,8 @@ public:
 	/*virtual*/ BOOL isAnimatable() const { return FALSE; }
 
 //	//BD - Motion Blur
-	F32*						mLastMatrixPalette;
-	U32							mLastMatrixPaletteUpdated;
+	//F32*						mLastMatrixPalette;
+	//U32							mLastMatrixPaletteUpdated;
 
 private:
 

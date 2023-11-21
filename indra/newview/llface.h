@@ -265,7 +265,7 @@ public:
     U64 getSkinHash();
 
 	//	//BD - Motion Blur
-	LLMatrix4*  mLastMatrixPalette;
+	//LLMatrix4*  mLastMatrixPalette;
 
 private:
 	LLPointer<LLVertexBuffer> mVertexBuffer;

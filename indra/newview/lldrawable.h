@@ -116,7 +116,7 @@ public:
 	S32					  getLOD() const				{ return mVObjp ? mVObjp->getLOD() : 1; }
 
 //	//BD - Motion Blur
-	LLMatrix4&			  getLastRenderMatrix();
+	//LLMatrix4&			  getLastRenderMatrix();
 
 	void  getMinMax(LLVector3& min,LLVector3& max) const { mXform.getMinMax(min,max); }
 	LLXformMatrix*		getXform() { return &mXform; }
@@ -297,7 +297,7 @@ public:
 public:
 	LLXformMatrix       mXform;
 //	//BD - Motion Blur
-	LLMatrix4*			mLastRenderMatrix;
+	//LLMatrix4*			mLastRenderMatrix;
 
 	// vis data
 	LLPointer<LLDrawable> mParent;

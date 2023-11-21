@@ -111,7 +111,7 @@ public:
     const LLMatrix4* mModelMatrix = nullptr;
 
 //	//BD - Motion Blur
-	/*const*/ LLMatrix4* mLastModelMatrix = nullptr;
+	///*const*/ LLMatrix4* mLastModelMatrix = nullptr;
 
     LLPointer<LLVOAvatar> mAvatar = nullptr;
     LLMeshSkinInfo* mSkinInfo = nullptr;
