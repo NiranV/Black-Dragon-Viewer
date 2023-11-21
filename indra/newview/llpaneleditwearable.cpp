@@ -1137,6 +1137,9 @@ void LLPanelEditWearable::revertChanges()
         updatePanelPickerControls(mWearablePtr->getType());
         updateTypeSpecificControls(mWearablePtr->getType());
         gAgentAvatarp->wearableUpdated(mWearablePtr->getType());
+        //BD - Force param update after reverting.
+        mWearablePtr->writeToAvatar(gAgentAvatarp);
+        gAgentAvatarp->updateVisualParams();
 }
 
 void LLPanelEditWearable::showWearable(LLViewerWearable* wearable, BOOL show, BOOL disable_camera_switch)
