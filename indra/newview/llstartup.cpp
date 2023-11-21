@@ -1019,7 +1019,6 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
 		// Display the startup progress bar.
-		gViewerWindow->initTextures(agent_location_id);
 		gViewerWindow->setShowProgress(TRUE);
 		gViewerWindow->setProgressCancelButtonVisible(TRUE, LLTrans::getString("Quit"));
 
@@ -2020,26 +2019,29 @@ bool idle_startup()
 		LLMessageSystem* msg = gMessageSystem;
 		LL_INFOS() << " Inventory" << LL_ENDL;
 		LLInventoryModel::registerCallbacks(msg);
+		set_startup_status(0.66f, LLTrans::getString("InventorySend"), "Registering Inventory Callbacks");
+		display_startup();
 		LL_INFOS() << " AvatarTracker" << LL_ENDL;
+		set_startup_status(0.67f, LLTrans::getString("InventorySend"), "Registering Avatar Tracker Callbacks");
 		LLAvatarTracker::instance().registerCallbacks(msg);
+		display_startup();
 		LL_INFOS() << " Landmark" << LL_ENDL;
+		set_startup_status(0.67f, LLTrans::getString("InventorySend"), "Registering Landmark Callbacks");
 		LLLandmark::registerCallbacks(msg);
 		display_startup();
 		// request all group information
 		LL_INFOS() << "Requesting Agent Data" << LL_ENDL;
+		set_startup_status(0.68f, LLTrans::getString("InventorySend"), "Requesting Agent Update");
 		gAgent.sendAgentDataUpdateRequest();
-		set_startup_status(0.67f, LLTrans::getString("InventorySend"), "Loading Inventory");
+		display_startup();
+
+		set_startup_status(0.69f, LLTrans::getString("InventorySend"), "Creating Inventory Window");
 		display_startup();
 		// Create the inventory views
 		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
 		LLFloaterReg::getInstance("inventory");
-		display_startup();
-		
-		set_startup_status(0.68f, LLTrans::getString("InventorySend"), "Checking RLVa");
-		display_startup();
 
 		LLStartUp::setStartupState( STATE_MISC );
-		set_startup_status(0.69f, LLTrans::getString("InventorySend"), "");
 		display_startup();
 
 		return FALSE;
@@ -2090,9 +2092,8 @@ bool idle_startup()
 			gSavedSettings.setBOOL("ShowStartLocation", TRUE);
 		}
 
-		set_startup_status(0.70f, LLTrans::getString("Misc"), "Initializing Initial Windows");
+		set_startup_status(0.70f, LLTrans::getString("Misc"), "Loading Environment Settings");
 		display_startup();
-
         // Load stored local environment if needed.
         LLEnvironment::instance().loadFromSettings();
 
@@ -2112,17 +2113,19 @@ bool idle_startup()
 		// We're successfully logged in.
 		gSavedSettings.setBOOL("FirstLoginThisInstall", FALSE);
 
+		set_startup_status(0.71f, LLTrans::getString("Misc"), "Initializing Initial Windows");
+		display_startup();
+
 		LLFloaterReg::showInitialVisibleInstances();
 
 		LLFloaterGridStatus::getInstance()->startGridStatusTimer();
 
-		set_startup_status(0.71f, LLTrans::getString("Misc"), "Initializing Audio");
+		set_startup_status(0.72f, LLTrans::getString("Misc"), "Initializing Audio");
 		display_startup();
 
 		//display_startup();
 		// JC: Initializing audio requests many sounds for download.
 		init_audio();
-		set_startup_status(0.72f, LLTrans::getString("Misc"), "");
 		display_startup();
 
 		// JC: Initialize "active" gestures.  This may also trigger
@@ -2304,7 +2307,7 @@ bool idle_startup()
 		else
 		{
 			update_texture_fetch();
-			set_startup_status(0.76f + llclamp(0.16f * timeout_frac, 0.0f, 0.16f), LLTrans::getString("Precache"), "");
+			set_startup_status(0.76f + llclamp(0.13f * timeout_frac, 0.0f, 0.13f), LLTrans::getString("Precache"), "");
 			display_startup();
 		}
 		
@@ -2338,11 +2341,14 @@ bool idle_startup()
 			//     it happen because of this.
 			LLStartUp::setStartupState( STATE_CLEANUP );
 		}
-		set_startup_status(0.94f, LLTrans::getString("WearablesWait"), "Checking");
+
+		F32 timeout_frac = wearables_time / max_wearables_time;
+		set_startup_status(0.90f + llclamp(0.04f * timeout_frac, 0.0f, 0.04f), LLTrans::getString("WearablesWait"), "Attempting To Fully Load Outfit");
 		display_startup();
 
 		if (gAgent.isOutfitChosen() && (wearables_time > max_wearables_time))
 		{
+			display_startup();
 			if (gInventory.isInventoryUsable())
 			{
 				LLNotificationsUtil::add("ClothingLoading");
