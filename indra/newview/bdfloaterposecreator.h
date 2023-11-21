@@ -82,6 +82,7 @@ private:
 	void onKeyframeRemove();
 	void onKeyframeTime();
 	void onKeyframeRefresh();
+	void onKeyframesRebuild();
 
 	//BD - Misc
 	LLKeyframeMotion* onReadyTempMotion(std::string filename = "_poser_temp.anim", bool eternal = false);

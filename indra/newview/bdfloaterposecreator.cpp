@@ -59,7 +59,8 @@ const F32 FRAMETIME = 1.f / 60.f;
 
 
 BDFloaterPoseCreator::BDFloaterPoseCreator(const LLSD& key)
-	:	LLFloater(key)
+	:	LLFloater(key),
+	mJointScrolls()
 {
 	//BD - Save our current pose as XML or ANIM file to be used or uploaded later.
 	mCommitCallbackRegistrar.add("Pose.Save", boost::bind(&BDFloaterPoseCreator::onClickPoseSave, this, _2));
@@ -206,6 +207,91 @@ void BDFloaterPoseCreator::onClose(bool app_quitting)
 ////////////////////////////////
 //BD - Keyframes
 ////////////////////////////////
+void BDFloaterPoseCreator::onKeyframesRebuild()
+{
+	if (!gDragonAnimator.mPoseCreatorMotion)
+		return;
+
+	//BD - Now write an entry with all given information into our list so we can use it.
+	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
+	if (!joint_list)
+		return;
+
+	mKeyframeScroll->clearRows();
+	mTimelineScroll->clearRows();
+
+	for(S32 joint_idx = 0; joint_idx < joint_list->getNumJointMotions(); joint_idx++)
+	{
+		LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint_idx);
+		if (!joint_motion)
+			return;
+
+		LLKeyframeMotion::RotationCurve rot_curve = joint_motion->mRotationCurve;
+		LLKeyframeMotion::PositionCurve pos_curve = joint_motion->mPositionCurve;
+		LLKeyframeMotion::ScaleCurve scale_curve = joint_motion->mScaleCurve;
+
+		LLScrollListMultiSlider* col_slider = nullptr;
+		if (!rot_curve.mKeys.empty()
+			|| !pos_curve.mKeys.empty()
+			|| !scale_curve.mKeys.empty())
+		{
+			LLSD slider;
+			const std::string joint_name = joint_motion->mJointName;
+			slider["columns"][0]["column"] = "joint";
+			slider["columns"][0]["value"] = joint_name;
+			slider["columns"][1]["column"] = "multislider";
+			slider["columns"][1]["type"] = "multislider";
+			slider["columns"][1]["min_value"] = 0;
+			slider["columns"][1]["max_value"] = 3600;
+			slider["columns"][1]["increment"] = 1.f;
+			LLScrollListItem* element = mTimelineScroll->addElement(slider);
+			col_slider = (LLScrollListMultiSlider*)element->getColumn(1);
+		}
+
+		for (auto& rot_key : rot_curve.mKeys)
+		{
+			F32 roll, pitch, yaw;
+			LLQuaternion rot_quat = rot_key.second.mRotation;
+			rot_quat.getEulerAngles(&roll, &pitch, &yaw);
+
+			S32 time_frames = (S32)ll_round(rot_key.second.mTime / FRAMETIME, 1.f);
+
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)rot_key.first);
+			}
+		}
+
+		for (auto& pos_key : pos_curve.mKeys)
+		{
+			//if (joint->mHasPosition)
+			{
+				LLVector3 pos = pos_key.second.mPosition;
+				S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
+
+				if (col_slider)
+				{
+					//F32 time_key = time_frames / col_slider->getMaxValue();
+					col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
+				}
+			}
+		}
+
+		for (auto& scale_key : scale_curve.mKeys)
+		{
+			LLVector3 scale = scale_key.second.mScale;
+			S32 time_frames = (S32)ll_round(scale_key.second.mTime / FRAMETIME, 1.f);
+
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)scale_key.first);
+			}
+		}
+	}
+}
+
 void BDFloaterPoseCreator::onKeyframeRefresh()
 {
 	S32 idx = mJointTabs->getCurrentPanelIndex();
@@ -361,6 +447,7 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 	mKeyframeScroll->selectNthItem(mKeyframeScroll->getItemCount() - 1);
 
 	onJointControlsRefresh();
+	onKeyframeSelect();
 }
 
 void BDFloaterPoseCreator::onKeyframeSelect()
@@ -1399,10 +1486,12 @@ void BDFloaterPoseCreator::onPoseImport()
 
 		onJointRefresh();
 		onPoseReapply();
+		onKeyframesRebuild();
+		//onKeyframeRefresh();
 
 		//BD - Always select the last entry whenever we switch bones to allow quickly making
 		//     changes or adding new keyframes.
-		mKeyframeScroll->selectNthItem(mKeyframeScroll->getItemCount() - 1);
+		//mKeyframeScroll->selectNthItem(mKeyframeScroll->getItemCount() - 1);
 	}
 }
 
@@ -1908,30 +1997,61 @@ void BDFloaterPoseCreator::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 			mirror_joint->setTargetRotation(inv_quat);
 
 			LLKeyframeMotion::JointMotion* mirror_joint_motion = joint_list->getJointMotion(mirror_joint->getJointNum());
-			LLKeyframeMotion::RotationCurve mirror_rot_curve = mirror_joint_motion->mRotationCurve;
+			LLKeyframeMotion::RotationCurve mirror_rot_curve = joint_motion->mRotationCurve;
 
-			//BD - Attempt to find the mirror bone's keyframe at the same time.
-			found = false;
-			for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = mirror_joint_motion->mRotationCurve.mKeys.begin();
-				it != mirror_joint_motion->mRotationCurve.mKeys.end(); )
+			//BD - Attempt to find the keyframe first.
+			bool found = false;
+
+			LLScrollListItem* key_item = mKeyframeScroll->getItemByLabel(mirror_joint_name);
+			if (key_item)
 			{
-				std::map<F32, LLKeyframeMotion::RotationKey>::iterator curr_it = it;
-				//BD - We did try to find keyframes by their key time before and it was a disaster
-				//     but we have to do it, also this time we are doing it with integers rather than
-				//     floats.
-				S32 mirror_time = (S32)ll_round((curr_it->second.mTime / FRAMETIME), 1.f);
-				if (mirror_time == time)
+				for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = mirror_joint_motion->mRotationCurve.mKeys.begin();
+					it != mirror_joint_motion->mRotationCurve.mKeys.end(); )
 				{
-					found = true;
-					curr_it->second.mRotation = mirror_joint->getTargetRotation();
-					break;
+					std::map<F32, LLKeyframeMotion::RotationKey>::iterator curr_it = it;
+					//BD - Previously we were rounding the keyframe time and comparing it to the time set
+					//     in the keyframe list entry, this was ugly and had a big downside, having two
+					//     or more entries with the same time resulting in all of them getting changed.
+					//     Lucky for us, adding new keyframes into any transformation curve automatically
+					//     counts a float value (used here as S32 since its whole numbers anyway) up by 1
+					//     for every keyframe added, this allows us to easily "compare" the what seems to be
+					//     the index number of the keyframe, against the index number in the list.
+					//     This should work for now until we decide to allow reordering keyframes.
+					//if (ll_round(curr_it->second.mTime, 0.1f) == ll_round(time, 0.1f))
+					if ((S32)curr_it->first == si)
+					{
+						found = true;
+						curr_it->second.mRotation = mirror_joint->getTargetRotation();
+
+						F32 roll, pitch, yaw;
+						LLQuaternion rot_quat = mirror_joint->getTargetRotation();
+						rot_quat.getEulerAngles(&roll, &pitch, &yaw);
+						//BD - Should we really be able to get here? The comparison above should already
+						//     prevent ever getting here since a missing selection means we will never
+						//     find a keyframe. I don't trust anything.
+						if (key_item)
+						{
+							key_item->getColumn(2)->setValue(ll_round(roll, 0.001f));
+							key_item->getColumn(3)->setValue(ll_round(pitch, 0.001f));
+							key_item->getColumn(4)->setValue(ll_round(yaw, 0.001f));
+						}
+						break;
+					}
+					++it;
 				}
-				++it;
 			}
 
+			//BD - We couldn't find a keyframe, create one automatically.
 			if (!found)
 			{
 				onKeyframeAdd((time * FRAMETIME), mirror_joint);
+
+				//BD - Refresh the keyframes.
+				onKeyframeRefresh();
+
+				//BD - Always select the last entry whenever we switch bones to allow quickly making
+				//     changes or adding new keyframes.
+				//mKeyframeScroll->selectNthItem(mKeyframeScroll->getChildCount() - 1);
 			}
 		}
 	}
