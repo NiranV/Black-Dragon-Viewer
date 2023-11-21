@@ -2115,7 +2115,7 @@ void LLFloaterPreference::refreshWarnings()
 																|| gPipeline.RenderProjectorShadowResolution.mV[VY] > 2048);
 
 	//BD - Motion Blur Options
-	mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 80);
+	//mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 80);
 
 	//BD - Volumetric Lighting Options
 	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 48);
