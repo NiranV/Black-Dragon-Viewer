@@ -528,7 +528,7 @@ BOOL LLFloaterTexturePicker::handleKeyHere(KEY key, MASK mask)
 void LLFloaterTexturePicker::onOpen(const LLSD& key)
 {
     if (sLastPickerMode != 0
-        && mModeSelector->selectByValue(sLastPickerMode))
+        && mTabModes->selectTab(sLastPickerMode))
     {
         changeMode();
     }
@@ -541,7 +541,7 @@ void LLFloaterTexturePicker::onClose(bool app_quitting)
 		mOnFloaterCloseCallback();
 	}
 	stopUsingPipette();
-    sLastPickerMode = mModeSelector->getValue().asInteger();
+    sLastPickerMode = mTabModes->getCurrentPanelIndex();
 }
 
 // virtual
@@ -1339,26 +1339,25 @@ void LLFloaterTexturePicker::onFilterEdit(const std::string& search_string )
 
 void LLFloaterTexturePicker::changeMode()
 {
-	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*)userdata;
-	int index = self->mTabModes->getCurrentPanelIndex();
+	int index = mTabModes->getCurrentPanelIndex();
 
-	self->mDefaultBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
-	self->mBlankBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
-	self->mNoneBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
-	self->getChild<LLFilterEditor>("inventory search editor")->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
-	self->getChild<LLInventoryPanel>("inventory panel")->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
+	mDefaultBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
+	mBlankBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
+	mNoneBtn->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
+	getChild<LLFilterEditor>("inventory search editor")->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
+	getChild<LLInventoryPanel>("inventory panel")->setVisible(index == PICKER_INVENTORY ? TRUE : FALSE);
 
-	self->getChild<LLButton>("l_add_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
-	self->getChild<LLButton>("l_rem_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
-	self->getChild<LLButton>("l_upl_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
-	self->getChild<LLScrollListCtrl>("l_name_list")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
+	getChild<LLButton>("l_add_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
+	getChild<LLButton>("l_rem_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
+	getChild<LLButton>("l_upl_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
+	getChild<LLScrollListCtrl>("l_name_list")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
 
-	self->getChild<LLComboBox>("l_bake_use_texture_combo_box")->setVisible(index == PICKER_BAKE ? TRUE : FALSE);
-	self->getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setVisible(FALSE);// index == 2 ? TRUE : FALSE);
+	getChild<LLComboBox>("l_bake_use_texture_combo_box")->setVisible(index == PICKER_BAKE ? TRUE : FALSE);
+	getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setVisible(FALSE);// index == 2 ? TRUE : FALSE);
 
 	bool pipette_visible = (index == PICKER_INVENTORY)
-		&& (self->mInventoryPickType != LLTextureCtrl::PICK_MATERIAL);
-	self->mPipetteBtn->setVisible(pipette_visible);
+		&& (mInventoryPickType != LLTextureCtrl::PICK_MATERIAL);
+	mPipetteBtn->setVisible(pipette_visible);
 
     if (index == PICKER_BAKE)
     {
