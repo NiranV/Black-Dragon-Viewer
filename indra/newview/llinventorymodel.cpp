@@ -67,6 +67,10 @@
 #include "llcorehttputil.h"
 #include "hbxxh.h"
 
+//BD
+#include "lltrans.h"
+#include "llviewerdisplay.h"
+
 //#define DIFF_INVENTORY_FILES
 #ifdef DIFF_INVENTORY_FILES
 #include "process.h"
@@ -145,6 +149,14 @@ struct InventoryCallbackInfo
     U32 mCallback;
     LLUUID mInvID;
 };
+
+void set_startup_status(const F32 frac, const std::string& string, const std::string& msg)
+{
+	gViewerWindow->setProgressPercent(frac * 100);
+	gViewerWindow->setProgressString(string);
+
+	gViewerWindow->setProgressMessage(msg);
+}
 
 ///----------------------------------------------------------------------------
 /// Class LLDispatchClassifiedClickThrough
@@ -2648,6 +2660,11 @@ bool LLInventoryModel::loadSkeleton(
 	cat_set_t temp_cats;
 	bool rv = true;
 
+	//BD - Inventory Progress
+	F32 perc = 0.0f;
+	S32 perc_c = 0;
+	LLUIString temp_text = "Importing Inventory Categories [COUNT] / [MAX]";
+
 	for(LLSD::array_const_iterator it = options.beginArray(),
 		end = options.endArray(); it != end; ++it)
 	{
@@ -2667,6 +2684,13 @@ bool LLInventoryModel::loadSkeleton(
 			cat->setUUID(folder_id.asUUID());
 			cat->setParent(parent_id.asUUID());
 
+			//BD - Inventory Progress
+			perc = (F32)perc_c / (F32)options.size();
+			temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+			temp_text.setArg("[MAX]", llformat("%d", (S32)options.size()));
+			set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+			display_startup();
+
 			LLFolderType::EType preferred_type = LLFolderType::FT_NONE;
 			LLSD type_default = (*it)["type_default"];
 			if(type_default.isDefined())
@@ -2682,7 +2706,10 @@ bool LLInventoryModel::loadSkeleton(
 			LL_WARNS(LOG_INV) << "Unable to import near " << name.asString() << LL_ENDL;
             rv = false;
 		}
+		++perc_c;
 	}
+
+	display_startup();
 
 	S32 cached_category_count = 0;
 	S32 cached_item_count = 0;
@@ -2704,6 +2731,9 @@ bool LLInventoryModel::loadSkeleton(
 		{
 			fclose(fp);
 			fp = NULL;
+
+			display_startup();
+
 			if(gunzip_file(gzip_filename, inventory_filename))
 			{
 				// we only want to remove the inventory file if it was
@@ -2716,9 +2746,17 @@ bool LLInventoryModel::loadSkeleton(
 				LL_INFOS(LOG_INV) << "Unable to gunzip " << gzip_filename << LL_ENDL;
 			}
 		}
+
+		//BD - Inventory Progress
+		display_startup();
+
 		bool is_cache_obsolete = false;
 		if (loadFromFile(inventory_filename, categories, items, categories_to_update, is_cache_obsolete))
 		{
+			//BD - Inventory Progress
+			perc_c = 0;
+			display_startup();
+
 			// We were able to find a cache of files. So, use what we
 			// found to generate a set of categories we should add. We
 			// will go through each category loaded and if the version
@@ -2728,8 +2766,20 @@ bool LLInventoryModel::loadSkeleton(
 			std::set<LLUUID> cached_ids;
 			for(S32 i = 0; i < count; ++i)
 			{
+				//BD - Inventory Progress
+				temp_text = "Checking Cached Inventory Categories [COUNT] / [MAX]";
+				perc = (F32)i / (F32)count;
+				temp_text.setArg("[COUNT]", llformat("%d", i));
+				temp_text.setArg("[MAX]", llformat("%d", count));
+				set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+				display_startup();
+
 				LLViewerInventoryCategory* cat = categories[i];
 				cat_set_t::iterator cit = temp_cats.find(cat);
+
+				//BD - Inventory Progress
+				display_startup();
+
 				if (cit == temp_cats.end())
 				{
 					continue; // cache corruption?? not sure why this happens -SJB
@@ -2763,15 +2813,33 @@ bool LLInventoryModel::loadSkeleton(
                     // uuid, use the one from cache
                     tcat->setThumbnailUUID(cat->getThumbnailUUID());
 				}
+
+				//BD - Inventory Progress
+				display_startup();
+				++perc_c;
 			}
+
+			//BD - Inventory Progress
+			perc_c = 0;
 
 			// go ahead and add the cats returned during the download
 			std::set<LLUUID>::const_iterator not_cached_id = cached_ids.end();
 			cached_category_count = cached_ids.size();
 			for(cat_set_t::iterator it = temp_cats.begin(); it != temp_cats.end(); ++it)
 			{
+				//BD - Inventory Progress
+				temp_text = "Adding Inventory Categories [COUNT] / [MAX]";
+				perc = (F32)perc_c / (F32)temp_cats.size();
+				temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+				temp_text.setArg("[MAX]", llformat("%d", temp_cats.size()));
+				set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+				display_startup();
+
 				if(cached_ids.find((*it)->getUUID()) == not_cached_id)
 				{
+					//BD - Inventory Progress
+					display_startup();
+
 					// this check is performed so that we do not
 					// mark new folders in the skeleton (and not in cache)
 					// as being cached.
@@ -2780,7 +2848,12 @@ bool LLInventoryModel::loadSkeleton(
 				}
 				addCategory(*it);
 				++child_counts[(*it)->getParentUUID()];
+				++perc_c;
 			}
+
+			//BD - Inventory Progress
+			perc_c = 0;
+			display_startup();
 
 			// Add all the items loaded which are parented to a
 			// category with a correctly cached parent
@@ -2795,6 +2868,14 @@ bool LLInventoryModel::loadSkeleton(
 				LLViewerInventoryItem *item = (*item_iter).get();
 				const cat_map_t::iterator cit = mCategoryMap.find(item->getParentUUID());
 				
+				//BD - Inventory Progress
+				temp_text = "Adding Linked Items to Parents [COUNT] / [MAX]";
+				perc = (F32)perc_c / (F32)items.size();
+				temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+				temp_text.setArg("[MAX]", llformat("%d", items.size()));
+				set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+				display_startup();
+
 				if(cit != unparented)
 				{
 					const LLViewerInventoryCategory* cat = cit->second.get();
@@ -2818,8 +2899,14 @@ bool LLInventoryModel::loadSkeleton(
 						addItem(item);
 						cached_item_count += 1;
 						++child_counts[cat->getUUID()];
+
+						//BD - Inventory Progress
+						display_startup();
 					}
 				}
+
+				//BD - Inventory Progress
+				++perc_c;
 			}
 			if (possible_broken_links.size() > 0)
 			{
@@ -2827,9 +2914,16 @@ bool LLInventoryModel::loadSkeleton(
 				    item_iter != possible_broken_links.end();
 				    ++item_iter)
 				{
+					//BD - Inventory Progress
+					display_startup();
+
 					LLViewerInventoryItem *item = (*item_iter).get();
 					const cat_map_t::iterator cit = mCategoryMap.find(item->getParentUUID());
 					const LLViewerInventoryCategory* cat = cit->second.get();
+
+					//BD - Inventory Progress
+					display_startup();
+
 					if (item->getIsBrokenLink())
 					{
 						bad_link_count++;
@@ -2856,15 +2950,29 @@ bool LLInventoryModel::loadSkeleton(
 		}
 		else
 		{
+			//BD - Inventory Progress
+			perc_c = 0;
+
 			// go ahead and add everything after stripping the version
 			// information.
 			for(cat_set_t::iterator it = temp_cats.begin(); it != temp_cats.end(); ++it)
 			{
+				//BD - Inventory Progress
+				temp_text = "Adding Inventory Categories [COUNT] / [MAX]";
+				perc = (F32)perc_c / (F32)temp_cats.size();
+				temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+				temp_text.setArg("[MAX]", llformat("%d", temp_cats.size()));
+				set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+				display_startup();
+
 				LLViewerInventoryCategory *llvic = (*it);
 				llvic->setVersion(NO_VERSION);
 				addCategory(*it);
 			}
 		}
+
+		//BD - Inventory Progress
+		perc_c = 0;
 
 		// Invalidate all categories that failed fetching descendents for whatever
 		// reason (e.g. one of the descendents was a broken link).
@@ -2872,6 +2980,14 @@ bool LLInventoryModel::loadSkeleton(
 			 invalid_cat_it != invalid_categories.end();
 			 invalid_cat_it++)
 		{
+			//BD - Inventory Progress
+			temp_text = "Invalidating Failed Categories [COUNT] / [MAX]";
+			perc = (F32)perc_c / (F32)invalid_categories.size();
+			temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+			temp_text.setArg("[MAX]", llformat("%d", invalid_categories.size()));
+			set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+			display_startup();
+
 			LLViewerInventoryCategory* cat = (*invalid_cat_it).get();
 			cat->setVersion(NO_VERSION);
 			LL_DEBUGS(LOG_INV) << "Invalidating category name: " << cat->getName() << " UUID: " << cat->getUUID() << " due to invalid descendents cache" << LL_ENDL;
@@ -2881,12 +2997,22 @@ bool LLInventoryModel::loadSkeleton(
 			LL_DEBUGS(LOG_INV) << "Invalidated " << invalid_categories.size() << " categories due to invalid descendents cache" << LL_ENDL;
 		}
 
+		//BD - Inventory Progress
+		perc_c = 0;
+
 		// At this point, we need to set the known descendents for each
 		// category which successfully cached so that we do not
 		// needlessly fetch descendents for categories which we have.
 		update_map_t::const_iterator no_child_counts = child_counts.end();
 		for(cat_set_t::iterator it = temp_cats.begin(); it != temp_cats.end(); ++it)
 		{
+			//BD - Inventory Progress
+			perc = (F32)perc_c / (F32)temp_cats.size();
+			temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+			temp_text.setArg("[MAX]", llformat("%d", temp_cats.size()));
+			set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+			display_startup();
+
 			LLViewerInventoryCategory* cat = (*it).get();
 			if(cat->getVersion() != NO_VERSION)
 			{
@@ -2900,20 +3026,29 @@ bool LLInventoryModel::loadSkeleton(
 				{
 					cat->setDescendentCount(0);
 				}
+				display_startup();
 			}
+			++perc_c;
 		}
 
 		if(remove_inventory_file)
 		{
+			set_startup_status(perc, LLTrans::getString("InventorySend"), "Cleaning Up Unpacked Cache");
+			display_startup();
 			// clean up the gunzipped file.
 			LLFile::remove(inventory_filename);
 		}
 		if(is_cache_obsolete)
 		{
+			set_startup_status(perc, LLTrans::getString("InventorySend"), "Cleaning Up Obsolete Cache");
+			display_startup();
 			// If out of date, remove the gzipped file too.
 			LL_WARNS(LOG_INV) << "Inv cache out of date, removing" << LL_ENDL;
 			LLFile::remove(gzip_filename);
 		}
+
+		set_startup_status(perc, LLTrans::getString("InventorySend"), "Cleaning Up");
+		display_startup();
 		categories.clear(); // will unref and delete entries
 	}
 
@@ -3330,10 +3465,22 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 
 	llifstream file(filename.c_str());
 
+	//BD - Inventory Progress
+	F32 perc = 0.0f;
+	S32 perc_c = 0;
+	S64 read = 0;
+	S64 file_size = 0;
+	LLUIString temp_text = "Reading Inventory Cache File ([COUNT])";
+
 	if (!file.is_open())
 	{
 		LL_INFOS(LOG_INV) << "unable to load inventory from: " << filename << LL_ENDL;
 		return false;
+	}
+	else
+	{
+		file.seekg(0, std::ios::end);
+		file_size = file.tellg();
 	}
 
 	is_cache_obsolete = true; // Obsolete until proven current
@@ -3342,6 +3489,13 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 	LLPointer<LLSDParser> parser = new LLSDNotationParser();
 	while (std::getline(file, line)) 
 	{
+		//BD - Inventory Progress
+		read += file.gcount();
+		perc = (F64)read / (F64)file_size;
+		temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+		set_startup_status(perc, LLTrans::getString("InventorySend"), temp_text);
+		display_startup();
+
 		LLSD s_item;
 		std::istringstream iss(line);
 		if (parser->parse(iss, s_item, line.length()) == LLSDParser::PARSE_FAILURE)
@@ -3370,9 +3524,15 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 			if (is_cache_obsolete)
 				break;
 
+			//BD - Inventory Progress
+			display_startup();
+
 			LLPointer<LLViewerInventoryCategory> inv_cat = new LLViewerInventoryCategory(LLUUID::null);
 			if(inv_cat->importLLSD(s_item))
 			{
+				//BD - Inventory Progress
+				display_startup();
+
 				categories.push_back(inv_cat);
 			}
 		}
@@ -3381,9 +3541,15 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 			if (is_cache_obsolete)
 				break;
 
+			//BD - Inventory Progress
+			display_startup();
+
 			LLPointer<LLViewerInventoryItem> inv_item = new LLViewerInventoryItem;
 			if( inv_item->fromLLSD(s_item) )
 			{
+				//BD - Inventory Progress
+				display_startup();
+
 				if(inv_item->getUUID().isNull())
 				{
 					LL_WARNS(LOG_INV) << "Ignoring inventory with null item id: "
@@ -3402,6 +3568,7 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 				}
 			}	
 		}
+		++perc_c;
 	}
 
 	file.close();
@@ -3498,24 +3665,31 @@ void LLInventoryModel::registerCallbacks(LLMessageSystem* msg)
 	//msg->setHandlerFuncFast(_PREHASH_UseCachedInventory,
 	//					processUseCachedInventory,
 	//					NULL);
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_UpdateCreateInventoryItem,
 						processUpdateCreateInventoryItem,
 						NULL);
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryItem,
 						processRemoveInventoryItem,
 						NULL);
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryFolder,
 						processRemoveInventoryFolder,
 						NULL);
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryObjects,
 							processRemoveInventoryObjects,
 							NULL);	
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_SaveAssetIntoInventory,
 						processSaveAssetIntoInventory,
 						NULL);
+	display_startup();
 	msg->setHandlerFuncFast(_PREHASH_BulkUpdateInventory,
 							processBulkUpdateInventory,
 							NULL);
+	display_startup();
 	msg->setHandlerFunc("MoveInventoryItem", processMoveInventoryItem);
 }
 
