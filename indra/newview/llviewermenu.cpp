@@ -10302,6 +10302,8 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLAvatarShare(), "Avatar.Share");
 	view_listener_t::addMenu(new LLAvatarRemoveFriend(), "Avatar.RemoveFriend");
 	view_listener_t::addMenu(new LLAvatarEnableRemoveFriend(), "Avatar.EnableRemoveFriend");
+	enable.add("Self.EnableSit", boost::bind(&enable_sitdown_self));
+	enable.add("Self.EnableStand", boost::bind(&enable_standup_self));
 
 //	//BD - Permissions
 	view_listener_t::addMenu(new LLAvatarGrantPermissions(), "Avatar.GrantPermissions");
