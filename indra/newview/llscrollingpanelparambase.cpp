@@ -54,7 +54,8 @@ LLScrollingPanelParamBase::LLScrollingPanelParamBase( const LLPanel::Params& pan
 	getChild<LLUICtrl>("param slider")->setValue(weightToPercent(param->getWeight()));
 
 	std::string display_name = LLTrans::getString(param->getDisplayName());
-	getChild<LLUICtrl>("param slider")->setLabelArg("[DESC]", display_name);
+	//BD
+	getChild<LLUICtrl>("desc")->setTextArg("[DESC]", display_name);
 	getChildView("param slider")->setEnabled(mAllowModify);
 	childSetCommitCallback("param slider", LLScrollingPanelParamBase::onSliderMoved, this);
 

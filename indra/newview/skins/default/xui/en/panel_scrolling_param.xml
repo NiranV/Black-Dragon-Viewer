@@ -106,6 +106,18 @@
      tab_stop="false"
      top_delta="0"
      width="132" />
+     <text
+     type="string"
+     length="1"
+     follows="left|top"
+     height="10"
+     layout="topleft"
+     left="6"
+     name="desc"
+     top="0"
+     width="128">
+        [DESC]
+    </text>
     <slider
      can_edit_text="true"
      decimal_digits="0"
@@ -113,7 +125,7 @@
      height="16"
      increment="1"
      initial_value="0"
-     label="[DESC]"
+     label=""
      layout="bottom|left"
      left="6"
      max_val="100"
