@@ -115,6 +115,7 @@ public:
 	void toggleFindOptions();
 
     void resetFilters();
+	void resetAllItemsFilters();
 
     void findLinks(const LLUUID& item_id, const std::string& item_name);
 
