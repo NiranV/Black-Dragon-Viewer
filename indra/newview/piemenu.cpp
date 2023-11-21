@@ -320,6 +320,7 @@ void PieMenu::draw()
 			// check if this is a submenu or a normal click slice
 			PieSlice* currentSlice = dynamic_cast<PieSlice*>(item);
 			PieMenu* currentSubmenu = dynamic_cast<PieMenu*>(item);
+
 			// advance internally to the next slice item
 			cur_item_iter++;
 
@@ -355,26 +356,33 @@ void PieMenu::draw()
 					}
 
 					// look at the next item in the pie
-					LLView* lookAhead = (*cur_item_iter);
-					// check if this is a normal click slice
-					PieSlice* lookSlice = dynamic_cast<PieSlice*>(lookAhead);
-					if (lookSlice)
+					if (cur_item_iter != mSlices->end())
 					{
-						// if the next item is part of the current autohide chain as well ...
-						if (lookSlice->getAutohide() && !lookSlice->getStartAutohide())
+						//BD - Make sure we aren't iterating to an invalid piece
+						LLView* lookAhead = (*cur_item_iter);
+						if (lookAhead) // THIS WAS MISSING
 						{
-							// ... it's visible and it's enabled, skip the current one.
-							// the first visible and enabled item in autohide chains wins
-							// this is useful for Sit/Stand toggles
-							lookSlice->updateEnabled();
-							lookSlice->updateVisible();
-							if (lookSlice->getVisible() && lookSlice->getEnabled())
+							// check if this is a normal click slice
+							PieSlice* lookSlice = dynamic_cast<PieSlice*>(lookAhead);
+							if (lookSlice)
 							{
-								continue;
-							}
+								// if the next item is part of the current autohide chain as well ...
+								if (lookSlice->getAutohide() && !lookSlice->getStartAutohide())
+								{
+									// ... it's visible and it's enabled, skip the current one.
+									// the first visible and enabled item in autohide chains wins
+									// this is useful for Sit/Stand toggles
+									lookSlice->updateEnabled();
+									lookSlice->updateVisible();
+									if (lookSlice->getVisible() && lookSlice->getEnabled())
+									{
+										continue;
+									}
 
-							// this item won the autohide contest
-							wasAutohide = true;
+									// this item won the autohide contest
+									wasAutohide = true;
+								}
+							}
 						}
 					}
 				}
