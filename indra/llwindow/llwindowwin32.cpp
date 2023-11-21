@@ -943,10 +943,10 @@ void LLWindowWin32::setFullscreenWindow(BOOL fFullscreen)
 		return;
 
 	DWORD dwStyle = GetWindowLong(mWindowHandle, GWL_STYLE);
+    HMONITOR hMonitor = MonitorFromWindow(mWindowHandle, MONITOR_DEFAULTTONULL);
+    MONITORINFO infoMonitor = { sizeof(infoMonitor) };
 	if (fFullscreen)
 	{
-		HMONITOR hMonitor = MonitorFromWindow(mWindowHandle, MONITOR_DEFAULTTONULL);
-		MONITORINFO infoMonitor = { sizeof(infoMonitor) };
 		if ((GetWindowPlacement(mWindowHandle, &mRestoredPlacement)) && (hMonitor) && (GetMonitorInfo(hMonitor, &infoMonitor)))
 		{
 			SetWindowLong(mWindowHandle, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
@@ -961,6 +961,8 @@ void LLWindowWin32::setFullscreenWindow(BOOL fFullscreen)
 		SetWindowLong(mWindowHandle, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
 		SetWindowPlacement(mWindowHandle, &mRestoredPlacement);
 		SetWindowPos(mWindowHandle, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+        //BD - Required to fix the UI not updating to match.
+        restore();
 	}
 }
 // [/SL:KB]
