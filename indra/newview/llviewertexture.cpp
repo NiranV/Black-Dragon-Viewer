@@ -101,9 +101,6 @@ U32 LLViewerTexture::sMaxSmallImageSize = MAX_CACHED_RAW_IMAGE_AREA;
 bool LLViewerTexture::sFreezeImageUpdates = false;
 F32 LLViewerTexture::sCurrentTime = 0.0f;
 
-//BD
-LLFrameTimer LLViewerTexture::sGracePeriodTimer;
-
 //BD - Exodus Post Process
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
 

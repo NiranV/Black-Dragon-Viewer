@@ -721,7 +721,7 @@ public:
     LLRenderTarget          mPostMap;
 
 //	//BD - Motion Blur
-	LLRenderTarget			mVelocityMap;
+	//LLRenderTarget			mVelocityMap;
 
     LLCullResult            mSky;
     LLCullResult            mReflectedObjects;
@@ -1091,7 +1091,7 @@ public:
 	static F32 RenderGodraysMultiplier;
 	static F32 RenderGodraysFalloffMultiplier;
 
-	//    //BD - Motion Blur
+//  //BD - Motion Blur
 	/*static BOOL RenderMotionBlur;
 	static U32 RenderMotionBlurStrength;
 	static U32 RenderMotionBlurQuality;*/
