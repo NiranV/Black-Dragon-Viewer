@@ -373,7 +373,6 @@ name="Object Pie">
       </pie_slice>
    </pie_menu>
    <pie_slice
-   enabled="false"
    autohide="true"
    label="Sit Here"
    name="Object Sit Pie">

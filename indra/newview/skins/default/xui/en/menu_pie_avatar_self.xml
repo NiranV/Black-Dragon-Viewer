@@ -478,17 +478,18 @@ name="Self Pie">
     autohide="true"
     name="Sit Down Here">
         <pie_slice.on_click
-        function="Self.SitDown" />
+        function="Self.ToggleSitStand" />
         <pie_slice.on_enable
-        function="Self.EnableSitDown" />
+        function="Self.EnableSit" />
     </pie_slice>
     <pie_slice
     label="Stand Up"
     autohide="true"
+    enabled="false"
     name="Stand Up">
         <pie_slice.on_click
-        function="Self.StandUp" />
+        function="Self.ToggleSitStand" />
         <pie_slice.on_enable
-        function="Self.EnableStandUp" />
+        function="Self.EnableStand" />
     </pie_slice>
 </pie_menu>
