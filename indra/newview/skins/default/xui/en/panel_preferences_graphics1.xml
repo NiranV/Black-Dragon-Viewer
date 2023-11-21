@@ -446,7 +446,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;12GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;512&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;512&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="1024 MB"
@@ -455,7 +457,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;12GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;1024&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;1024&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="1536 MB"
@@ -463,7 +467,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;12GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;1536&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;1536&lt;/blue&gt;"
        value="1536"
        name="item2"/>
       <combo_box.item
@@ -472,7 +478,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;2048&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;2048&lt;/blue&gt;"
        value="2048"
        name="item3"/>
       <combo_box.item
@@ -481,7 +489,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;3072&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;3072&lt;/blue&gt;"
        value="3072"
        name="item4"/>
       <combo_box.item
@@ -490,7 +500,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;4096&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;4096&lt;/blue&gt;"
        value="4096"
        name="item4"/>
       <combo_box.item
@@ -499,7 +511,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;6144&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;6144&lt;/blue&gt;"
        value="6144"
        name="item4"/>
       <combo_box.item
@@ -508,7 +522,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;8196&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;8196&lt;/blue&gt;"
        value="8196"
        name="item4"/>
       <combo_box.item
@@ -517,7 +533,9 @@ width="510">
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. Unlimited means the Viewer can load as many textures both into VRAM as well as RAM as it can before it crashes. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
-||MaxTextureMemoryAllowed: &lt;blue&gt;0&lt;/blue&gt;"
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;0&lt;/blue&gt;"
        value="0"
        name="item4"/>
       <combo_box.combo_icon
