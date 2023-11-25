@@ -1022,7 +1022,21 @@
         name="selection_count"
         top_delta="0"
         width="285" />
-    <text
+        <text
+	  type="string"
+	  length="1"
+	  height="16"
+	  follows="left|top"
+	  font="SansSerifSmall"
+	  layout="topleft"
+	  left="10"
+	  name="selection_faces"
+	  top_pad="-3"
+	  visible="true"
+	  width="285">
+    Faces selected: [FACES_STRING]
+    </text>
+    <!--<text
         type="string"
         length="1"
         height="16"
@@ -1035,7 +1049,7 @@
         visible="true"
         width="285">
 	  [CAPACITY_STRING] [secondlife:///app/openfloater/object_weights More info]
-	</text>
+	</text>-->
     <tab_container
         follows="left|top"
         height="413"
@@ -1981,7 +1995,7 @@
                 image_selected="ClipboardSmallMenu_Press"
                 image_unselected="ClipboardSmallMenu_Off"
                 layout="topleft"
-                left_delta="144"
+                left_delta="142"
                 top_delta="0"
                 name="clipboard_obj_params_btn"
                 tool_tip="Paste options"

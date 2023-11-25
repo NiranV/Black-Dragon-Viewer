@@ -201,13 +201,13 @@ LLRender::eTexIndex LLPanelFace::getTextureChannelToEdit()
         U32 matmedia_selection = mComboMatMedia->getCurrentIndex();
         if (matmedia_selection == MATMEDIA_MATERIAL)
         {
-            LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getSelectedIndex();
+            LLComboBox* radio_mat_type = getChild<LLComboBox>("combobox_material_type");
+            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getCurrentIndex();
         }
         if (matmedia_selection == MATMEDIA_PBR)
         {
-            LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_pbr_type");
-            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getSelectedIndex();
+            LLComboBox* radio_mat_type = getChild<LLComboBox>("combobox_pbr_type");
+            channel_to_edit = (LLRender::eTexIndex)radio_mat_type->getCurrentIndex();
         }
     }
 
@@ -443,14 +443,14 @@ BOOL	LLPanelFace::postBuild()
         mComboMatMedia->selectNthItem(MATMEDIA_MATERIAL);
 	}
 
-	LLRadioGroup* radio_mat_type = findChild<LLRadioGroup>("radio_material_type");
+    LLComboBox* radio_mat_type = findChild<LLComboBox>("combobox_material_type");
     if(radio_mat_type)
     {
         radio_mat_type->setCommitCallback(LLPanelFace::onCommitMaterialType, this);
         radio_mat_type->selectNthItem(MATTYPE_DIFFUSE);
     }
 
-    LLRadioGroup* radio_pbr_type = findChild<LLRadioGroup>("radio_pbr_type");
+    LLComboBox* radio_pbr_type = findChild<LLComboBox>("combobox_pbr_type");
     if (radio_pbr_type)
     {
         radio_pbr_type->setCommitCallback(LLPanelFace::onCommitPbrType, this);
@@ -1097,21 +1097,21 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
 
         mComboMatMedia->setEnabled(editable);
 
-        LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-        if (radio_mat_type->getSelectedIndex() < MATTYPE_DIFFUSE)
+        LLComboBox* radio_mat_type = getChild<LLComboBox>("combobox_material_type");
+        if (radio_mat_type->getCurrentIndex() < MATTYPE_DIFFUSE)
         {
             radio_mat_type->selectNthItem(MATTYPE_DIFFUSE);
         }
         radio_mat_type->setEnabled(editable);
 
-        LLRadioGroup* radio_pbr_type = getChild<LLRadioGroup>("radio_pbr_type");
-        if (radio_pbr_type->getSelectedIndex() < PBRTYPE_RENDER_MATERIAL_ID)
+        LLComboBox* radio_pbr_type = getChild<LLComboBox>("combobox_pbr_type");
+        if (radio_pbr_type->getCurrentIndex() < PBRTYPE_RENDER_MATERIAL_ID)
         {
             radio_pbr_type->selectNthItem(PBRTYPE_RENDER_MATERIAL_ID);
         }
         radio_pbr_type->setEnabled(editable);
         const bool pbr_selected = mComboMatMedia->getCurrentIndex() == MATMEDIA_PBR;
-        const bool texture_info_selected = pbr_selected && radio_pbr_type->getSelectedIndex() != PBRTYPE_RENDER_MATERIAL_ID;
+        const bool texture_info_selected = pbr_selected && radio_pbr_type->getCurrentIndex() != PBRTYPE_RENDER_MATERIAL_ID;
 
 		getChildView("checkbox_sync_settings")->setEnabled(editable);
 		childSetValue("checkbox_sync_settings", gSavedSettings.getBOOL("SyncMaterialSettings"));
@@ -1645,12 +1645,12 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
                 U32 material_type = MATTYPE_DIFFUSE;
                 if (material_selection == MATMEDIA_MATERIAL)
                 {
-                    material_type = radio_mat_type->getSelectedIndex();
+                    material_type = radio_mat_type->getCurrentIndex();
                 }
                 else if (material_selection == MATMEDIA_PBR)
                 {
                     enabled = editable && has_pbr_material;
-                    material_type = radio_pbr_type->getSelectedIndex();
+                    material_type = radio_pbr_type->getCurrentIndex();
                 }
 
                 switch (material_type)
@@ -1994,10 +1994,10 @@ void LLPanelFace::updateVisibilityGLTF(LLViewerObject* objectp /*= nullptr */)
     const bool show_pbr = mComboMatMedia->getCurrentIndex() == MATMEDIA_PBR && mComboMatMedia->getEnabled();
     const bool inventory_pending = objectp && objectp->isInventoryPending();
 
-    LLRadioGroup* radio_pbr_type = findChild<LLRadioGroup>("radio_pbr_type");
+    LLComboBox* radio_pbr_type = findChild<LLComboBox>("combobox_pbr_type");
     radio_pbr_type->setVisible(show_pbr);
 
-    const U32 pbr_type = radio_pbr_type->getSelectedIndex();
+    const U32 pbr_type = radio_pbr_type->getCurrentIndex();
     const bool show_pbr_render_material_id = show_pbr && (pbr_type == PBRTYPE_RENDER_MATERIAL_ID);
 
     getChildView("pbr_control")->setVisible(show_pbr_render_material_id);
@@ -2849,8 +2849,8 @@ void LLPanelFace::onCommitMaterialsMedia(LLUICtrl* ctrl, void* userdata)
 
 void LLPanelFace::updateVisibility(LLViewerObject* objectp /* = nullptr */)
 {
-    LLRadioGroup* radio_mat_type = findChild<LLRadioGroup>("radio_material_type");
-    LLRadioGroup* radio_pbr_type = findChild<LLRadioGroup>("radio_pbr_type");
+    LLComboBox* radio_mat_type = findChild<LLComboBox>("combobox_material_type");
+    LLComboBox* radio_pbr_type = findChild<LLComboBox>("combobox_pbr_type");
     LLComboBox* combo_shininess = findChild<LLComboBox>("combobox shininess");
     LLComboBox* combo_bumpiness = findChild<LLComboBox>("combobox bumpiness");
 	if (!radio_mat_type || !radio_pbr_type || !mComboMatMedia || !combo_shininess || !combo_bumpiness)
@@ -2859,14 +2859,14 @@ void LLPanelFace::updateVisibility(LLViewerObject* objectp /* = nullptr */)
 		return;
 	}
 	U32 materials_media = mComboMatMedia->getCurrentIndex();
-	U32 material_type = radio_mat_type->getSelectedIndex();
+	U32 material_type = radio_mat_type->getCurrentIndex();
 	bool show_media = (materials_media == MATMEDIA_MEDIA) && mComboMatMedia->getEnabled();
     bool show_material = materials_media == MATMEDIA_MATERIAL;
 	bool show_texture = (show_media || (show_material && (material_type == MATTYPE_DIFFUSE) && mComboMatMedia->getEnabled()));
 	bool show_bumpiness = show_material && (material_type == MATTYPE_NORMAL) && mComboMatMedia->getEnabled();
 	bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
     const bool show_pbr = mComboMatMedia->getCurrentIndex() == MATMEDIA_PBR && mComboMatMedia->getEnabled();
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     const LLGLTFMaterial::TextureInfo texture_info = texture_info_from_pbrtype(pbr_type);
     const bool show_pbr_asset = show_pbr && texture_info == LLGLTFMaterial::GLTF_TEXTURE_INFO_COUNT;
 
@@ -3782,13 +3782,13 @@ void LLPanelFace::onCommitRepeatsPerMeter(LLUICtrl* ctrl, void* userdata)
     U32 material_type = 0;
     if (materials_media == MATMEDIA_PBR)
     {
-        LLRadioGroup* radio_mat_type = self->getChild<LLRadioGroup>("radio_pbr_type");
-        material_type = radio_mat_type->getSelectedIndex();
+        LLComboBox* radio_mat_type = self->getChild<LLComboBox>("combobox_pbr_type");
+        material_type = radio_mat_type->getCurrentIndex();
     }
     if (materials_media == MATMEDIA_MATERIAL)
     {
-        LLRadioGroup* radio_mat_type = self->getChild<LLRadioGroup>("radio_material_type");
-        material_type = radio_mat_type->getSelectedIndex();
+        LLComboBox* radio_mat_type = self->getChild<LLComboBox>("combobox_material_type");
+        material_type = radio_mat_type->getCurrentIndex();
     }
 
 	F32 repeats_per_meter	= repeats_ctrl->getValue().asReal();
@@ -4822,7 +4822,7 @@ void LLPanelFace::updateGLTFTextureTransform(float value, U32 pbr_type, std::fun
 
 void LLPanelFace::setMaterialOverridesFromSelection()
 {
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     const LLGLTFMaterial::TextureInfo texture_info = texture_info_from_pbrtype(pbr_type);
     U32 texture_info_start;
     U32 texture_info_end;
@@ -4992,7 +4992,7 @@ bool LLPanelFace::Selection::compareSelection()
 void LLPanelFace::onCommitGLTFTextureScaleU(LLUICtrl* ctrl)
 {
     const float value = ctrl->getValue().asReal();
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     updateGLTFTextureTransform(value, pbr_type, [&](LLGLTFMaterial::TextureTransform* new_transform)
     {
         new_transform->mScale.mV[VX] = value;
@@ -5002,7 +5002,7 @@ void LLPanelFace::onCommitGLTFTextureScaleU(LLUICtrl* ctrl)
 void LLPanelFace::onCommitGLTFTextureScaleV(LLUICtrl* ctrl)
 {
     const float value = ctrl->getValue().asReal();
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     updateGLTFTextureTransform(value, pbr_type, [&](LLGLTFMaterial::TextureTransform* new_transform)
     {
         new_transform->mScale.mV[VY] = value;
@@ -5012,7 +5012,7 @@ void LLPanelFace::onCommitGLTFTextureScaleV(LLUICtrl* ctrl)
 void LLPanelFace::onCommitGLTFRotation(LLUICtrl* ctrl)
 {
     const float value = ctrl->getValue().asReal() * DEG_TO_RAD;
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     updateGLTFTextureTransform(value, pbr_type, [&](LLGLTFMaterial::TextureTransform* new_transform)
     {
         new_transform->mRotation = value;
@@ -5022,7 +5022,7 @@ void LLPanelFace::onCommitGLTFRotation(LLUICtrl* ctrl)
 void LLPanelFace::onCommitGLTFTextureOffsetU(LLUICtrl* ctrl)
 {
     const float value = ctrl->getValue().asReal();
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     updateGLTFTextureTransform(value, pbr_type, [&](LLGLTFMaterial::TextureTransform* new_transform)
     {
         new_transform->mOffset.mV[VX] = value;
@@ -5032,7 +5032,7 @@ void LLPanelFace::onCommitGLTFTextureOffsetU(LLUICtrl* ctrl)
 void LLPanelFace::onCommitGLTFTextureOffsetV(LLUICtrl* ctrl)
 {
     const float value = ctrl->getValue().asReal();
-    const U32 pbr_type = findChild<LLRadioGroup>("radio_pbr_type")->getSelectedIndex();
+    const U32 pbr_type = findChild<LLComboBox>("combobox_pbr_type")->getCurrentIndex();
     updateGLTFTextureTransform(value, pbr_type, [&](LLGLTFMaterial::TextureTransform* new_transform)
     {
         new_transform->mOffset.mV[VY] = value;
