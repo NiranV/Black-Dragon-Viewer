@@ -2252,7 +2252,7 @@ Muraverse - [https://marketplace.secondlife.com/stores/242928 Marketplace] - [ht
     follows="left|top"
     commit_on_focus_lost="false"
     height="22"
-    max_length_bytes="16"
+    max_length_chars="16"
     name="password_edit"
     label="Password"
     is_password="true" 
