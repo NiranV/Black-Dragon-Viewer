@@ -281,7 +281,7 @@ static void update_tp_display(bool minimized)
 			if (!minimized)
 			{
 				gViewerWindow->setShowProgress(TRUE);
-				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f));
+				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f), llmin(teleport_percent, 0.0f));
 				gViewerWindow->setProgressString(msg);
 			}
 			gAgent.setTeleportMessage(msg);
@@ -300,7 +300,7 @@ static void update_tp_display(bool minimized)
 			if (!minimized)
 			{
 				gViewerWindow->setShowProgress(TRUE);
-				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f));
+				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f), llmin(teleport_percent, 0.0f));
 				gViewerWindow->setProgressString(msg);
 				gViewerWindow->setProgressMessage(gAgent.mMOTD);
 			}
@@ -311,7 +311,7 @@ static void update_tp_display(bool minimized)
 			// Waiting for source simulator to respond
 			if (!minimized)
 			{
-				gViewerWindow->setProgressPercent(llmin(teleport_percent, 37.5f));
+				gViewerWindow->setProgressPercent(llmin(teleport_percent, 37.5f), llmin(teleport_percent, 37.5f));
 				gViewerWindow->setProgressString(message);
 			}
 			break;
@@ -320,7 +320,7 @@ static void update_tp_display(bool minimized)
 			// Viewer has received destination location from source simulator
 			if (!minimized)
 			{
-				gViewerWindow->setProgressPercent(llmin(teleport_percent, 75.f));
+				gViewerWindow->setProgressPercent(llmin(teleport_percent, 75.f), llmin(teleport_percent, 75.f));
 				gViewerWindow->setProgressString(message);
 			}
 			break;
@@ -338,7 +338,7 @@ static void update_tp_display(bool minimized)
 			if (!minimized)
 			{
 				gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
-				gViewerWindow->setProgressPercent(75.f);
+				gViewerWindow->setProgressPercent(75.f, 75.f);
 			}
 			break;
 
@@ -356,7 +356,7 @@ static void update_tp_display(bool minimized)
 			if (!minimized)
 			{
 				gViewerWindow->setProgressCancelButtonVisible(FALSE, LLTrans::getString("Cancel"));
-				gViewerWindow->setProgressPercent(arrival_fraction * 25.f + 75.f);
+				gViewerWindow->setProgressPercent(arrival_fraction * 25.f + 75.f, arrival_fraction * 25.f + 75.f);
 				gViewerWindow->setProgressString(message);
 			}
 			break;
@@ -565,7 +565,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			percent_done = 100.f;
 		}
 		
-		gViewerWindow->setProgressPercent( percent_done );
+		gViewerWindow->setProgressPercent( percent_done, percent_done);
 		gViewerWindow->setProgressMessage(std::string());
 	}
 	else
@@ -586,7 +586,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				percent_done = 100.f;
 			}
 			
-			gViewerWindow->setProgressPercent( percent_done );
+			gViewerWindow->setProgressPercent( percent_done, percent_done);
 		}
 		gViewerWindow->setProgressMessage(std::string());
 	}

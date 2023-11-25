@@ -61,7 +61,7 @@ public:
 	//BD
 	void setProgressVisible(BOOL visible, BOOL logout = false);
 
-	void setPercent(const F32 percent);
+	void setPercent(const F32 meta, const F32 sub = 1.f);
 
 	//BD
 	// Set a random Tip every X seconds
@@ -89,11 +89,12 @@ public:
 
 	// note - this is not just hiding the intro panel - it also hides the parent panel
 	// and is used when the intro is finished and we want to show the world
-	void removeIntroPanel();
+	//void removeIntroPanel();
 
 protected:
-	LLProgressBar* mProgressBar;
-	F32 mPercentDone;
+	LLProgressBar* mMetaProgressBar;
+	LLProgressBar* mSubProgressBar;
+	//F32 mPercentDone;
 	LLButton*	mCancelBtn;
 	LLFrameTimer mFadeToWorldTimer;
 	LLFrameTimer mFadeFromLoginTimer;

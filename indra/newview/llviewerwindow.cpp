@@ -5768,11 +5768,11 @@ void LLViewerWindow::setProgressMessage(const std::string& msg)
 	}
 }
 
-void LLViewerWindow::setProgressPercent(const F32 percent)
+void LLViewerWindow::setProgressPercent(const F32 meta, const F32 sub)
 {
 	if (mProgressView)
 	{
-		mProgressView->setPercent(percent);
+		mProgressView->setPercent(meta, sub);
 	}
 }
 

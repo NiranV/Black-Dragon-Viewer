@@ -73,7 +73,7 @@ static LLPanelInjector<LLProgressView> r("progress_view");
 // XUI: Translate
 LLProgressView::LLProgressView() 
 :	LLPanel(),
-	mPercentDone( 0.f ),
+	//mPercentDone( 0.f ),
 	mMouseDownInActiveArea( false ),
 	mUpdateEvents("LLProgressView"),
 	mFadeToWorldTimer(),
@@ -87,7 +87,8 @@ LLProgressView::LLProgressView()
 
 BOOL LLProgressView::postBuild()
 {
-	mProgressBar = getChild<LLProgressBar>("login_progress_bar");
+	mMetaProgressBar = getChild<LLProgressBar>("meta_progress_bar");
+	mSubProgressBar = getChild<LLProgressBar>("sub_progress_bar");
 
 	mCancelBtn = getChild<LLButton>("cancel_btn");
 	mCancelBtn->setClickedCallback(  LLProgressView::onCancelButtonClicked, NULL );
@@ -289,12 +290,16 @@ void LLProgressView::draw()
 	LLPanel::draw();
 }
 
-void LLProgressView::setPercent(const F32 percent)
+void LLProgressView::setPercent(const F32 meta, const F32 sub)
 {
 	//BD
-	S32 percent_label = std::min(100.f, percent);
-	mPercentText->setValue(percent_label);
-	mProgressBar->setValue(percent);
+	if (meta >= 0.0f)
+	{
+		S32 percent_label = std::min(100.f, meta);
+		mPercentText->setValue(percent_label);
+		mMetaProgressBar->setValue(meta);
+	}
+	mSubProgressBar->setValue(sub);
 }
 
 /*void LLProgressView::setMessage(const std::string& msg)

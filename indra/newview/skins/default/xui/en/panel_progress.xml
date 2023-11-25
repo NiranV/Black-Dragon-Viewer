@@ -94,16 +94,44 @@ width="1024">
   width="720"
   left="0"
   top="65"/>
+  <icon
+  follows="top|right"
+  height="16"
+  image_name="ProgressTrack"
+  color="1 1 1 1"
+  layout="topleft"
+  name="progress_bg"
+  mouse_opaque="false"
+  visible="true"
+  width="700"
+  left="10"
+  top="75"/>
     <progress_bar
-    top="49"
+    top="46"
     color_bar="1 1 1 1"
     color_bg="1 1 1 1"
+    image_bar="Transparent"
+    image_fill="ProgressBar"
     follows="left|bottom|right"
-    height="12"
+    height="11"
+    value="50"
     width="700"
     layout="topleft"
     left="10"
-    name="login_progress_bar" />
+    name="meta_progress_bar" />
+    <progress_bar
+    top="53"
+    color_bar="1 1 1 1"
+    color_bg="1 1 1 1"
+    image_bar="Transparent"
+    image_fill="ProgressBar"
+    follows="left|bottom|right"
+    height="7"
+    value="75"
+    width="700"
+    layout="topleft"
+    left="10"
+    name="sub_progress_bar" />
     <text
     follows="left|right|bottom"
     font="SansSerif"
@@ -142,7 +170,7 @@ width="1024">
     width="680"
     line_spacing.pixels="2"
     name="message_text"
-    top="40"
+    top="35"
     word_wrap="false">
     Useful tips will be displayed here.
     </text>
@@ -177,7 +205,7 @@ width="1024">
     width="100"
     line_spacing.pixels="2"
     name="status_text"
-    top="-51"
+    top="-55"
     word_wrap="false">
     Initializing World
     </text>
@@ -191,7 +219,7 @@ width="1024">
     width="100"
     line_spacing.pixels="2"
     name="state_text"
-    top="-37"
+    top="-43"
     word_wrap="false">
     Loading
     </text>

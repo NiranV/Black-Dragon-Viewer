@@ -5170,7 +5170,7 @@ void LLAppViewer::idleShutdown()
 		gViewerWindow->setShowProgress(TRUE);
 		S32 finished_uploads = total_uploads - pending_uploads;
 		F32 percent = 100.f * finished_uploads / total_uploads;
-		gViewerWindow->setProgressPercent(percent);
+		gViewerWindow->setProgressPercent(percent, 100.0f);
 		gViewerWindow->setProgressString(LLTrans::getString("SavingSettings"));
 		return;
 	}
@@ -5189,7 +5189,7 @@ void LLAppViewer::idleShutdown()
 
 		// Wait for a LogoutReply message
 		gViewerWindow->setShowProgress(TRUE, TRUE);
-		gViewerWindow->setProgressPercent(100.f);
+		gViewerWindow->setProgressPercent(100.f, 100.f);
 		gViewerWindow->setProgressString(LLTrans::getString("LoggingOut"));
 		return;
 	}
