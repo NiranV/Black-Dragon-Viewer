@@ -1572,10 +1572,6 @@ bool LLViewerInput::scanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level)
 	// Consider keyboard scanning as NOT mouse event. JC
 	MASK mask = gKeyboard->currentMask(FALSE);
 
-	LLKeyBinding* binding = mBindings[mode];
-	S32 binding_count = mBindingCount[mode];
-
-
 	if (mKeyHandledByUI[key])
 	{
 		return false;
@@ -1584,31 +1580,31 @@ bool LLViewerInput::scanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level)
 	// don't process key down on repeated keys
 	BOOL repeat = gKeyboard->getKeyRepeated(key);
 
-	for (S32 i = 0; i < binding_count; i++)
+	for (S32 i = 0; i < mBindingCount[mode]; i++)
 	{
 		//for (S32 key = 0; key < KEY_COUNT; key++)
-		if (binding[i].mKey == key)
+		if (mBindings[mode][i].mKey == key)
 		{
 			//if (binding[i].mKey == key && binding[i].mMask == mask)
-			if (binding[i].mMask == mask)
+			if (mBindings[mode][i].mMask == mask)
 			{
 				if (key_down && !repeat)
 				{
 					// ...key went down this frame, call function
-					binding[i].mFunction(KEYSTATE_DOWN);
+					mBindings[mode][i].mFunction(KEYSTATE_DOWN);
 					return true;
 				}
 				else if (key_up)
 				{
 					// ...key went down this frame, call function
-					binding[i].mFunction(KEYSTATE_UP);
+					mBindings[mode][i].mFunction(KEYSTATE_UP);
 					return true;
 				}
 				else if (key_level)
 				{
 					// ...key held down from previous frame
 					// Not windows, just call the function.
-					binding[i].mFunction(KEYSTATE_LEVEL);
+					mBindings[mode][i].mFunction(KEYSTATE_LEVEL);
 					return true;
 				}//if
 			}//if
