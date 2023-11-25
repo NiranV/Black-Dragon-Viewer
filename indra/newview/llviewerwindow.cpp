@@ -3399,8 +3399,8 @@ void LLViewerWindow::updateUI()
 	LLLayoutStack::updateClass();
 
 	// use full window for world view when not rendering UI
-	bool world_view_uses_full_window = gAgentCamera.cameraMouselook() || !gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-	updateWorldViewRect(world_view_uses_full_window);
+	//bool world_view_uses_full_window = gAgentCamera.cameraMouselook() || !gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
+	updateWorldViewRect(true);
 
 	LLView::sMouseHandlerMessage.clear();
 
@@ -4024,7 +4024,7 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 	// start off using whole window to render world
 	LLRect new_world_rect = mWindowRectRaw;
 	//BD
-	/* if (use_full_window == false && mWorldViewPlaceholder.get())
+	if (use_full_window == false && mWorldViewPlaceholder.get())
 	{
 		new_world_rect = mWorldViewPlaceholder.get()->calcScreenRect();
 		// clamp to at least a 1x1 rect so we don't try to allocate zero width gl buffers
@@ -4035,7 +4035,7 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 		new_world_rect.mRight = ll_round((F32)new_world_rect.mRight * mDisplayScale.mV[VX]);
 		new_world_rect.mBottom = ll_round((F32)new_world_rect.mBottom * mDisplayScale.mV[VY]);
 		new_world_rect.mTop = ll_round((F32)new_world_rect.mTop * mDisplayScale.mV[VY]);
-	} */
+	}
 
 	if (mWorldViewRectRaw != new_world_rect)
 	{
