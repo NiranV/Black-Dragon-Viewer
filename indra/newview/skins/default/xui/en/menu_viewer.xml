@@ -1932,6 +1932,26 @@
                  parameter="clouds" />
             </menu_item_check>
             <menu_item_check
+               label="Reflection Probes"
+               name="Reflection Probes">
+               <menu_item_check.on_check
+               function="Advanced.CheckInfoDisplay"
+               parameter="reflection probes" />
+               <menu_item_check.on_click
+               function="Advanced.ToggleInfoDisplay"
+               parameter="reflection probes" />
+            </menu_item_check>
+            <menu_item_check
+               label="Probe Updates"
+               name="Probe Updates">
+               <menu_item_check.on_check
+               function="Advanced.CheckInfoDisplay"
+               parameter="probe updates" />
+               <menu_item_check.on_click
+               function="Advanced.ToggleInfoDisplay"
+               parameter="probe updates" />
+            </menu_item_check>
+            <menu_item_check
              label="Particles"
              name="Rendering Type Particles"
              shortcut="control|alt|shift|=">
@@ -3041,13 +3061,20 @@
                 <menu_item_call.on_click
                  function="Advanced.DumpRegionObjectCache" />
             </menu_item_call>
-        
-<menu_item_call
-             label="Interest List: Full Update"
-             name="Interest List: Full Update"
+            <menu_item_check
+            label="Interest Lists 360 Mode"
+              name="Interest List: 360 Mode"
               shortcut="alt|shift|I">
+             <menu_item_check.on_check
+             function="Advanced.CheckInterestList360Mode" />
+             <menu_item_check.on_click
+               function="Advanced.ToggleInterestList360Mode" />
+             </menu_item_check>
+          <menu_item_call
+              label="Reset Interest Lists"
+              name="Reset Interest Lists">
              <menu_item_call.on_click
-                 function="Advanced.InterestListFullUpdate" />
+                  function="Advanced.ResetInterestLists" />
           </menu_item_call>
         </menu>
         <menu
