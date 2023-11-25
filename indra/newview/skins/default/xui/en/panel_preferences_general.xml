@@ -229,13 +229,30 @@ width="510">
    Start Location:
    </text>
    <radio_group
-   control_name="LoginLocation"
+   control_name="NextLoginLocation"
    height="19"
    layout="topleft"
    left="10"
    name="start_location_radio"
    top_pad="5"
    width="600">
+   <radio_item
+    height="16"
+    label="Custom"
+    value="custom"
+    tool_tip="This option sets the starting position for future log-in attempts to the currently on login selected location."
+    layout="topleft"
+    name="CustomLocation"
+    top="0"
+    width="70">
+    <radio_item.check_button
+    image_unselected="Checkbox_Off"
+    image_selected="Checkbox_On"
+    image_disabled="Checkbox_Off_Disabled"
+    image_disabled_selected="Checkbox_On_Disabled"
+    image_pressed="Checkbox_Press"
+    image_pressed_selected="Checkbox_On_Press" />
+    </radio_item>
     <radio_item
     height="16"
     label="My Home"
@@ -243,7 +260,8 @@ width="510">
     tool_tip="This option sets the starting position for future log-in attempts to your home point."
     layout="topleft"
     name="MyHome"
-    top="0"
+    left_pad="10"
+    top_delta="0"
     width="70">
     <radio_item.check_button
     image_unselected="Checkbox_Off"

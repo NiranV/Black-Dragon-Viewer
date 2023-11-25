@@ -1855,7 +1855,20 @@ void LLFloaterPreference::inputOutput()
 //BD - Refresh Display Settings
 void LLFloaterPreference::refreshEverything()
 {
-	//BD - Start with global preferences stuff
+	//BD - General
+	if (mTabContainer->getCurrentPanelIndex() == 0)
+	{
+		//BD - Set the login location radio to "Custom" whenever we selected a custom one
+		//     on login.
+		//     Switching the last location radio to a combo would obsolete this.
+		std::string val = gSavedSettings.getString("NextLoginLocation");
+		if (val != "home" && val != "last")
+		{
+			getChild<LLRadioGroup>("start_location_radio")->setSelectedIndex(0, true);
+		}
+	}
+
+	//BD - Display
 	if (mTabContainer->getCurrentPanelIndex() == 1)
 	{
 //		//BD - Warning System
