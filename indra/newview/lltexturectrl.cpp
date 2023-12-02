@@ -378,13 +378,15 @@ bool LLFloaterTexturePicker::updateImageStats()
                 )
             {
                 std::string formatted_dims = llformat("%dx%d", width, height);
-                mResolutionWarning->setTextArg("[TEXDIM]", formatted_dims);
+				//BD
+                //mResolutionWarning->setTextArg("[TEXDIM]", formatted_dims);
                 result = false;
             }
             else
             {
                 std::string formatted_dims = llformat("%d x %d", width, height);
-                mResolutionLabel->setTextArg("[DIMENSIONS]", formatted_dims);
+				//BD
+                //mResolutionLabel->setTextArg("[DIMENSIONS]", formatted_dims);
             }
 
             if (mOnUpdateImageStatsCallback)
@@ -402,7 +404,8 @@ bool LLFloaterTexturePicker::updateImageStats()
 		mResolutionLabel->setTextArg("[DIMENSIONS]", std::string(""));
 	}
     mResolutionLabel->setVisible(result);
-    mResolutionWarning->setVisible(!result);
+	//BD
+    //mResolutionWarning->setVisible(!result);
 
     // Hide buttons and pipete to make space for mResolutionWarning
     // Hiding buttons is suboptimal, but at the moment limited to inventory thumbnails
@@ -558,7 +561,8 @@ BOOL LLFloaterTexturePicker::postBuild()
 	mTentativeLabel = getChild<LLTextBox>("Multiple");
 
 	mResolutionLabel = getChild<LLTextBox>("size_lbl");
-    mResolutionWarning = getChild<LLTextBox>("over_limit_lbl");
+	//BD
+    //mResolutionWarning = getChild<LLTextBox>("over_limit_lbl");
 
 
     mDefaultBtn = getChild<LLButton>("Default");
@@ -639,7 +643,7 @@ BOOL LLFloaterTexturePicker::postBuild()
 
 	LLToolPipette::getInstance()->setToolSelectCallback(boost::bind(&LLFloaterTexturePicker::onTextureSelect, this, _1));
 	
-	getChild<LLComboBox>("l_bake_use_texture_combo_box")->setCommitCallback(onBakeTextureSelect, this);
+	getChild<LLScrollListCtrl>("l_bake_use_texture_combo_box")->setCommitCallback(onBakeTextureSelect, this);
 
 	setBakeTextureEnabled(TRUE);
 	return TRUE;
@@ -708,7 +712,7 @@ void LLFloaterTexturePicker::draw()
 
 	//BD
 	// if we're inactive, gray out "apply immediate" checkbox
-	getChildView("show_folders_check")->setEnabled(mActive && mCanApplyImmediately && !mNoCopyTextureSelected);
+	//getChildView("show_folders_check")->setEnabled(mActive && mCanApplyImmediately && !mNoCopyTextureSelected);
 	mSelectBtn->setEnabled(mActive && mCanApply && valid_dims);
 	mPipetteBtn->setEnabled(mActive);
     mPipetteBtn->setValue(LLToolMgr::getInstance()->getCurrentTool() == LLToolPipette::getInstance());
