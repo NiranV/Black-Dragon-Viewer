@@ -220,8 +220,8 @@ LLRender::eTexIndex LLPanelFace::getTextureDropChannel()
 {
     if (mComboMatMedia && mComboMatMedia->getCurrentIndex() == MATMEDIA_MATERIAL)
     {
-        LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-        return LLRender::eTexIndex(radio_mat_type->getSelectedIndex());
+        LLComboBox* combo_mat_type = getChild<LLComboBox>("combo_material_type");
+        return LLRender::eTexIndex(combo_mat_type->getCurrentIndex());
     }
 
     return LLRender::eTexIndex(MATTYPE_DIFFUSE);
@@ -650,8 +650,8 @@ struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
 
         // Effectively the same as MATMEDIA_PBR sans using different radio,
         // separate for the sake of clarity
-        LLRadioGroup * radio_mat_type = mPanel->getChild<LLRadioGroup>("radio_material_type");
-        switch (radio_mat_type->getSelectedIndex())
+        LLComboBox * combo_mat_type = mPanel->getChild<LLComboBox>("combo_material_type");
+        switch (combo_mat_type->getCurrentIndex())
         {
         case MATTYPE_DIFFUSE:
             prefix = "Tex";
@@ -991,8 +991,8 @@ void LLPanelFace::alignTestureLayer()
     bool identical_face = false;
     LLSelectedTE::getFace(last_face, identical_face);
 
-    LLRadioGroup * radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-    LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(radio_mat_type->getSelectedIndex()));
+    LLComboBox * combo_mat_type = getChild<LLComboBox>("combo_material_type");
+    LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(combo_mat_type->getCurrentIndex()));
     LLSelectMgr::getInstance()->getSelection()->applyToTEs(&setfunc);
 }
 
@@ -1851,10 +1851,10 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
 			mColorSwatch->setFallbackImage(LLUI::getUIImage("locked_image.j2c") );
 			mColorSwatch->setValid(FALSE);
 		}
-		LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-		if (radio_mat_type)
+		LLComboBox* combo_mat_type = getChild<LLComboBox>("combo_material_type");
+		if (combo_mat_type)
 		{
-			radio_mat_type->setSelectedIndex(0);
+			combo_mat_type->setCurrentByIndex(0);
 		}
 		getChildView("color trans")->setEnabled(FALSE);
 		getChildView("rptctrl")->setEnabled(FALSE);
@@ -3025,9 +3025,9 @@ void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_sh
 	}
 
 
-	LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
+	LLComboBox* combo_mat_type = getChild<LLComboBox>("combobox_material_type");
 	U32 materials_media = mComboMatMedia->getCurrentIndex();
-	U32 material_type = radio_mat_type->getSelectedIndex();
+	U32 material_type = combo_mat_type->getCurrentIndex();
 	bool show_material = (materials_media == MATMEDIA_MATERIAL);
 	bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
 	U32 shiny_value = comboShiny->getCurrentIndex();
@@ -3110,10 +3110,10 @@ void LLPanelFace::updateAlphaControls()
     }
     
     U32 mat_type = MATTYPE_DIFFUSE;
-    LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-    if(radio_mat_type)
+    LLComboBox* combo_mat_type = getChild<LLComboBox>("combobox_material_type");
+    if(combo_mat_type)
     {
-        mat_type = radio_mat_type->getSelectedIndex();
+        mat_type = combo_mat_type->getCurrentIndex();
     }
 
     show_alphactrls = show_alphactrls && (mat_media == MATMEDIA_MATERIAL);
@@ -5042,12 +5042,12 @@ void LLPanelFace::onCommitGLTFTextureOffsetV(LLUICtrl* ctrl)
 void LLPanelFace::onTextureSelectionChanged(LLInventoryItem* itemp)
 {
 	LL_DEBUGS("Materials") << "item asset " << itemp->getAssetUUID() << LL_ENDL;
-	LLRadioGroup* radio_mat_type = findChild<LLRadioGroup>("radio_material_type");
-	if(!radio_mat_type)
+	LLComboBox* combo_mat_type = findChild<LLComboBox>("combobox_material_type");
+	if(!combo_mat_type)
 	{
 	    return;
 	}
-	U32 mattype = radio_mat_type->getSelectedIndex();
+	U32 mattype = combo_mat_type->getCurrentIndex();
 	std::string which_control="texture control";
 	switch (mattype)
 	{
