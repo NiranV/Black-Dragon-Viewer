@@ -255,9 +255,9 @@ width="510">
                   width="600">
                         <radio_item
                         height="16"
-                        label="Linden"
-                        value="3"
-                        tool_tip="This option changes the selection outline to look similar to the new default of Linden Labs."
+                        label="Lines"
+                        value="1"
+                        tool_tip="This option changes the selection outlines to use lines to draw around selections."
                         layout="topleft"
                         name="0"
                         top="0"
@@ -274,47 +274,10 @@ width="510">
                         height="16"
                         label="Dots"
                         halign="right"
-                        value="2"
+                        value="0"
                         tool_tip="This option changes the selection outline to only show dots on vertices."
                         layout="topleft"
                         name="2"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Wireframe"
-                        halign="right"
-                        value="0"
-                        tool_tip="This option changes the selection outline to look like wireframe only with a minimal outline."
-                        layout="topleft"
-                        name="3"
-                        left_pad="10"
-                        top_delta="0"
-                        width="70">
-                              <radio_item.check_button
-                              image_unselected="Checkbox_Off"
-                              image_selected="Checkbox_On"
-                              image_disabled="Checkbox_Off_Disabled"
-                              image_disabled_selected="Checkbox_On_Disabled"
-                              image_pressed="Checkbox_Press"
-                              image_pressed_selected="Checkbox_On_Press" />
-                        </radio_item>
-                        <radio_item
-                        height="16"
-                        label="Black Dragon"
-                        value="1"
-                        tool_tip="This option changes the selection outline to have an outline and small dots on vertices, highlighting transparent with wireframe."
-                        layout="topleft"
-                        name="0"
                         left_pad="10"
                         top_delta="0"
                         width="70">
