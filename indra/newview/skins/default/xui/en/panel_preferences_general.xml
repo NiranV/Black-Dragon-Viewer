@@ -239,7 +239,6 @@ width="510">
    <radio_item
     height="16"
     label="Custom"
-    value="custom"
     tool_tip="This option sets the starting position for future log-in attempts to the currently on login selected location."
     layout="topleft"
     name="CustomLocation"
