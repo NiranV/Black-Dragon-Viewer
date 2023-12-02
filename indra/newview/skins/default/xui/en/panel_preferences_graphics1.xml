@@ -5663,53 +5663,6 @@ width="510">
       </layout_panel>
       <layout_panel
 	  follows="top|left|right"
-   visible="true"
-	  layout="topleft"
-	  height="21"
-   min_dim="21"
-	  auto_resize="false"
-	  name="warning_multi_panel"
-	  width="510">
-       <panel
-       follows="top|left|right"
-       height="20"
-       background_visible="true"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="1"
-       name="warning_bg_panel"
-       top="1"
-       width="508">
-        <icon
-  follows="top|left"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_intel_gpu"
-  mouse_opaque="false"
-  tool_tip="WARNING: You are using an Intel Graphics Card, Deferred Rendering is not available, this makes up 80% of the Viewer's graphical capabilities. Please consult the internet on how to enable your dedicated graphics card if your computer has one, you may ask
-   secondlife:///app/agent/a7fe20fa-1e95-4f87-aa8f-86496c78c1e5/about."
-  width="16"
-  left="5"
-  top="3"/>
-   <text
-        follows="left|top|right"
-        font="SansSerif"
-        font_shadow="soft"
-        halign="left"
-        height="20"
-        top="4"
-        left="25"
-        name="app_name_text"
-        width="994"
-        word_wrap="false">
-&lt;red&gt;Intel Graphics Card detected&lt;/red&gt; - Deferred Rendering unavailable.
-        </text>
-       </panel>
-      </layout_panel>
-      <layout_panel
-	  follows="top|left|right"
 	  layout="topleft"
 	  height="22"
    min_dim="22"

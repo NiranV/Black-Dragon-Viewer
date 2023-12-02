@@ -103,31 +103,6 @@ width="996">
  function="Floater.Show"
  parameter="sl_about"/>
  </button>
- <panel
- follows="bottom|left|right"
- height="23"
- background_visible="true"
- bg_alpha_color="0.5 0.2 0.2 0.35"
- layout="topleft"
- left="0"
- name="intel_warning_panel"
- bottom="-6"
- width="994">
- <text
- follows="left|top|right"
- font="SansSerifBig"
- font_shadow="soft"
- font.style="BOLD"
- halign="center"
- height="20"
- top="3"
- left="0"
- name="intel_warning_text"
- width="994"
- word_wrap="false">
- &lt;red&gt;Intel Graphics Card detected&lt;/red&gt;                                            Performance will be impacted.
- </text>
- </panel>
  <layout_stack
  border_size="0"
  follows="all"
@@ -2327,30 +2302,6 @@ Muraverse - [https://marketplace.secondlife.com/stores/242928 Marketplace] - [ht
     name="connect_btn"
     top_pad="3"
     width="152"/>
-    <icon
-    follows="top|left|right"
-    height="15"
-    image_name="Popup_Caution"
-    color="1 1 1 1"
-    layout="topleft"
-    name="intel_warning_icon1"
-    mouse_opaque="false"
-    visible="true"
-    width="16"
-    left_pad="2"
-    top_delta="3"/>
-    <icon
-    follows="top|left|right"
-    height="15"
-    image_name="Popup_Caution"
-    color="1 1 1 1"
-    layout="topleft"
-    name="intel_warning_icon2"
-    mouse_opaque="false"
-    visible="true"
-    width="16"
-    left_delta="-172"
-    top_delta="0"/>
    </layout_panel>
    <layout_panel
    auto_resize="true"

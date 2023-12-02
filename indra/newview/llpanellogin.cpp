@@ -302,12 +302,12 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	channel_text->setLabelArg("[VIEWER_VERSION_LOCAL]", LLTrans::getString("VIEWER_VERSION_LOCAL"));
 	channel_text->setLabelArg("[VIEWER_VERSION_IDENTIFIER]", LLTrans::getString("VIEWER_VERSION_IDENTIFIER"));
 
-	//BD - Intel GPU's are trash and their performance is lackluster, show the
-	//     user a warning that they will have to expect subpar performance.
-	bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsAMD);
-	getChild<LLPanel>("intel_warning_panel")->setVisible(!is_good_gpu);
-	getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
-	getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
+	//BD - It should no longer be required to lock out Intel as newer ones can and must handle
+	//     deferred now with PBR.
+	//bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsAMD);
+	//getChild<LLPanel>("intel_warning_panel")->setVisible(!is_good_gpu);
+	//getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
+	//getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
 
 	//BD - Force preferences to initialize.
 	LLFloaterReg::getInstance("preferences");
