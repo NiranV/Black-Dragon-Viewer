@@ -384,8 +384,21 @@ bool idle_startup()
 	//note: Removing this line will cause incorrect button size in the login screen. -- bao.
 	gTextureList.updateImages(0.01f) ;
 
+	//BD - Disable VSync during login.
+	//     VSync on login is evil, it slowls the Viewer login, inventory creation and precaching
+	//     as well as the wearable wait to a crawl. Without VSync we get 10-100x the speed.
+	//     VSync has caused several people to "hang" on inventory creation, resulting in a timeout
+	//     shortly after and it also doesn't play nice with 'display_startup()' as it is dependent
+	//     on VSync and can get stuck.
+	if (gSavedSettings.getBOOL("RenderVSyncEnable"))
+	{
+		LL_INFOS("Window") << "Temporarily disabling vertical sync" << LL_ENDL;
+		wglSwapIntervalEXT(0);
+	}
+
 	if ( STATE_FIRST == LLStartUp::getStartupState() )
 	{
+
 		static bool first_call = true;
 		if (first_call)
 		{
@@ -2503,6 +2516,13 @@ bool idle_startup()
 		LLUIUsage::instance().clear();
 
         LLPerfStats::StatsRecorder::setAutotuneInit();
+
+		//BD - Turn VSync back on if it was.
+		if (gSavedSettings.getBOOL("RenderVSyncEnable"))
+		{
+			LL_INFOS("Window") << "Re-enabling vertical sync" << LL_ENDL;
+			wglSwapIntervalEXT(1);
+		}
 
 		return TRUE;
 	}
