@@ -730,7 +730,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		S32 index = mComboGridMode->getCurrentIndex();
 		mComboGridMode->removeall();
 
-		switch (mObjectSelection->getSelectType())
+		/*switch (mObjectSelection->getSelectType())
 		{
 			case SELECT_TYPE_HUD:
 				mComboGridMode->add(getString("grid_screen_text"));
@@ -746,7 +746,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 				mComboGridMode->add(getString("grid_local_text"));
 				mComboGridMode->add(getString("grid_reference_text"));
 				break;
-		}
+		}*/
 
 		mComboGridMode->setCurrentByIndex(index);
 	}
