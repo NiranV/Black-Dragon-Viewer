@@ -265,16 +265,13 @@ void BDFloaterPoseCreator::onKeyframesRebuild()
 
 		for (auto& pos_key : pos_curve.mKeys)
 		{
-			//if (joint->mHasPosition)
-			{
-				LLVector3 pos = pos_key.second.mPosition;
-				S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
+			LLVector3 pos = pos_key.second.mPosition;
+			S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
 
-				if (col_slider)
-				{
-					//F32 time_key = time_frames / col_slider->getMaxValue();
-					col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
-				}
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
 			}
 		}
 
@@ -390,28 +387,25 @@ void BDFloaterPoseCreator::onKeyframeRefresh()
 	{
 		for (auto& pos_key : pos_curve.mKeys)
 		{
-			if (joint->mHasPosition)
-			{
-				LLVector3 pos = pos_key.second.mPosition;
-				S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
-				LLSD row;
-				row["columns"][0]["column"] = "time";
-				row["columns"][0]["value"] = ll_round(time_frames, 1.f);
-				row["columns"][1]["column"] = "value";
-				row["columns"][1]["value"] = pos_key.first;
-				row["columns"][2]["column"] = "x";
-				row["columns"][2]["value"] = ll_round(pos.mV[VX], 0.001f);
-				row["columns"][3]["column"] = "y";
-				row["columns"][3]["value"] = ll_round(pos.mV[VY], 0.001f);
-				row["columns"][4]["column"] = "z";
-				row["columns"][4]["value"] = ll_round(pos.mV[VZ], 0.001f);
-				mKeyframeScroll->addElement(row);
+			LLVector3 pos = pos_key.second.mPosition;
+			S32 time_frames = (S32)ll_round(pos_key.second.mTime / FRAMETIME, 1.f);
+			LLSD row;
+			row["columns"][0]["column"] = "time";
+			row["columns"][0]["value"] = ll_round(time_frames, 1.f);
+			row["columns"][1]["column"] = "value";
+			row["columns"][1]["value"] = pos_key.first;
+			row["columns"][2]["column"] = "x";
+			row["columns"][2]["value"] = ll_round(pos.mV[VX], 0.001f);
+			row["columns"][3]["column"] = "y";
+			row["columns"][3]["value"] = ll_round(pos.mV[VY], 0.001f);
+			row["columns"][4]["column"] = "z";
+			row["columns"][4]["value"] = ll_round(pos.mV[VZ], 0.001f);
+			mKeyframeScroll->addElement(row);
 
-				if (col_slider)
-				{
-					//F32 time_key = time_frames / col_slider->getMaxValue();
-					col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
-				}
+			if (col_slider)
+			{
+				//F32 time_key = time_frames / col_slider->getMaxValue();
+				col_slider->addKeyframe(time_frames, (LLSD)pos_key.first);
 			}
 		}
 	}
@@ -546,21 +540,18 @@ void BDFloaterPoseCreator::onKeyframeAdd(F32 time, LLJoint* joint)
 		}
 		else if (modifier_idx == 1)
 		{
-			if (joint->mHasPosition)
+			//BD - Create a position key and put it into the position curve.
+			LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
+			//BD - Increase the key number since we are adding another key.
+			joint_motion->mPositionCurve.mNumKeys++;
+
+			joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys] = position_key;
+
+			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+			if (joint_state->getUsage() ^ LLJointState::POS)
 			{
-				//BD - Create a position key and put it into the position curve.
-				LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
-
-				//BD - Increase the key number since we are adding another key.
-				joint_motion->mPositionCurve.mNumKeys++;
-
-				joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys] = position_key;
-
-				LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
-				if (joint_state->getUsage() ^ LLJointState::POS)
-				{
-					joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
-				}
+				joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
 			}
 		}
 		else if (modifier_idx == 2)
@@ -692,85 +683,82 @@ void BDFloaterPoseCreator::onKeyframeAdd()
 		}
 		else if (modifier_idx == 1)
 		{
-			if (joint->mHasPosition)
+			//BD - Put the key at the end of the list if SHIFT is held while pressing the add key button.
+			if (multiple || joint_motion->mPositionCurve.mNumKeys == 0 || gKeyboard->currentMask(TRUE) == MASK_SHIFT)
 			{
-				//BD - Put the key at the end of the list if SHIFT is held while pressing the add key button.
-				if (multiple || joint_motion->mPositionCurve.mNumKeys == 0 || gKeyboard->currentMask(TRUE) == MASK_SHIFT)
+				//BD - Add a bit of time to differentiate the keys.
+				//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
+				//     entry we assume its the first keyframe, so simply use 1.f.
+				if (joint_motion->mPositionCurve.mNumKeys > 0)
+					time = joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys].mTime + FRAMETIME;
+
+				//BD - Create a position key and put it into the position curve.
+				LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
+				//BD - Increase the key number since we are adding another key.
+				joint_motion->mPositionCurve.mNumKeys++;
+
+				joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys] = position_key;
+			}
+			//BD - Conversely put the key at the start of the list if CTRL is held while adding a key.
+			else if (gKeyboard->currentMask(TRUE) == MASK_CONTROL)
+			{
+				LLKeyframeMotion::PositionCurve pos_curve;
+
+				//BD - Create a position key and put it into the position curve.
+				LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
+				pos_curve.mNumKeys++;
+				pos_curve.mKeys[count] = position_key;
+				count++;
+
+				//BD - We have to rewrite the entire rotation curve in order to push a key to the beginning.
+				for (auto& it : joint_motion->mPositionCurve.mKeys)
 				{
-					//BD - Add a bit of time to differentiate the keys.
-					//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
-					//     entry we assume its the first keyframe, so simply use 1.f.
-					if (joint_motion->mPositionCurve.mNumKeys > 0)
-						time = joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys].mTime + FRAMETIME;
-
-					//BD - Create a position key and put it into the position curve.
-					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
-
-					//BD - Increase the key number since we are adding another key.
-					joint_motion->mPositionCurve.mNumKeys++;
-
-					joint_motion->mPositionCurve.mKeys[joint_motion->mPositionCurve.mNumKeys] = position_key;
-				}
-				//BD - Conversely put the key at the start of the list if CTRL is held while adding a key.
-				else if (gKeyboard->currentMask(TRUE) == MASK_CONTROL)
-				{
-					LLKeyframeMotion::PositionCurve pos_curve;
-
-					//BD - Create a position key and put it into the position curve.
-					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
-
 					pos_curve.mNumKeys++;
-					pos_curve.mKeys[count] = position_key;
+					pos_curve.mKeys[count] = it.second;
+					count++;
+				}
+
+				joint_motion->mPositionCurve = pos_curve;
+			}
+			//BD - Put the key after whatever is currently selected.
+			else
+			{
+				LLKeyframeMotion::PositionCurve pos_curve;
+
+				//BD - We have to rewrite the entire rotation curve in order to push a key inbetween others.
+				for (auto& it : joint_motion->mPositionCurve.mKeys)
+				{
+					pos_curve.mNumKeys++;
+					pos_curve.mKeys[count] = it.second;
 					count++;
 
-					//BD - We have to rewrite the entire rotation curve in order to push a key to the beginning.
-					for (auto& it : joint_motion->mPositionCurve.mKeys)
+					if ((S32)it.first == selected_idx)
 					{
+						//BD - Add a bit of time to differentiate the keys.
+						//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
+						//     entry we assume its the first keyframe, so simply use 1.f.
+						time = it.second.mTime + FRAMETIME;
+
+						//BD - Create a position key and put it into the position curve.
+						LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
 						pos_curve.mNumKeys++;
-						pos_curve.mKeys[count] = it.second;
+						pos_curve.mKeys[count] = position_key;
 						count++;
 					}
-
-					joint_motion->mPositionCurve = pos_curve;
-				}
-				//BD - Put the key after whatever is currently selected.
-				else
-				{
-					LLKeyframeMotion::PositionCurve pos_curve;
-
-					//BD - We have to rewrite the entire rotation curve in order to push a key inbetween others.
-					for (auto& it : joint_motion->mPositionCurve.mKeys)
-					{
-						pos_curve.mNumKeys++;
-						pos_curve.mKeys[count] = it.second;
-						count++;
-
-						if ((S32)it.first == selected_idx)
-						{
-							//BD - Add a bit of time to differentiate the keys.
-							//     This also kinda determines if this is the first keyframe or not. If we can't find a previous
-							//     entry we assume its the first keyframe, so simply use 1.f.
-							time = it.second.mTime + FRAMETIME;
-
-							//BD - Create a position key and put it into the position curve.
-							LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
-
-							pos_curve.mNumKeys++;
-							pos_curve.mKeys[count] = position_key;
-							count++;
-						}
-					}
-
-					joint_motion->mPositionCurve = pos_curve;
 				}
 
-				keys = joint_motion->mPositionCurve.mNumKeys;
+				joint_motion->mPositionCurve = pos_curve;
+			}
 
-				LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
-				if (joint_state->getUsage() ^ LLJointState::POS)
-				{
-					joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
-				}
+			keys = joint_motion->mPositionCurve.mNumKeys;
+
+			LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+			if (joint_state->getUsage() ^ LLJointState::POS)
+			{
+				joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
 			}
 		}
 		else if (modifier_idx == 2)
@@ -1273,13 +1261,10 @@ void BDFloaterPoseCreator::onPoseReapply()
 				joint->setTargetRotation(rot);
 			}
 
-			if (joint->mHasPosition)
+			for (auto& pos_key : pos_curve.mKeys)
 			{
-				for (auto& pos_key : pos_curve.mKeys)
-				{
-					LLVector3 pos = pos_key.second.mPosition;
-					joint->setTargetPosition(pos);
-				}
+				LLVector3 pos = pos_key.second.mPosition;
+				joint->setTargetPosition(pos);
 			}
 
 			for (auto& scale_key : scale_curve.mKeys)
@@ -1425,17 +1410,13 @@ bool BDFloaterPoseCreator::onPoseExport()
 				joint_state->setUsage(joint_state->getUsage() | LLJointState::ROT);
 
 				//BD - Fill general position data in.
-				joint_motion->mPositionCurve.mNumKeys = joint->mHasPosition ? 1 : 0;
+				joint_motion->mPositionCurve.mNumKeys = 1;
 				joint_motion->mPositionCurve.mInterpolationType = LLKeyframeMotion::IT_LINEAR;
 
-				LLKeyframeMotion::PositionKey position_key;
-				if (joint->mHasPosition)
-				{
-					//BD - Create a position key and put it into the position curve.
-					LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(1.f, joint->getTargetPosition());
-					joint_motion->mPositionCurve.mKeys[0] = position_key;
-					joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
-				}
+				//BD - Create a position key and put it into the position curve.
+				LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(1.f, joint->getTargetPosition());
+				joint_motion->mPositionCurve.mKeys[0] = position_key;
+				joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
 
 				temp_motion->addJointState(joint_state);
 
@@ -1560,34 +1541,14 @@ void BDFloaterPoseCreator::onJointRefresh()
 			row["columns"][COL_ROT_Z]["column"] = "z";
 			row["columns"][COL_ROT_Z]["value"] = ll_round(rot.mV[VZ], 0.001f);
 
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			if (joint->mHasPosition)
-			{
-				pos = joint->getTargetPosition();
-				row["columns"][COL_POS_X]["column"] = "pos_x";
-				row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
-				row["columns"][COL_POS_Y]["column"] = "pos_y";
-				row["columns"][COL_POS_Y]["value"] = ll_round(pos.mV[VY], 0.001f);
-				row["columns"][COL_POS_Z]["column"] = "pos_z";
-				row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
-			}
-			//BD - It's stupid but we have to define the empty columns here and fill them with
-			//     nothing otherwise the addRow() function is assuming that the sometimes missing
-			//     position columns have an "empty" name and thus creates faulty extra columns.
-			else
-			{
-				pos = joint->getTargetPosition();
-				row["columns"][COL_POS_X]["column"] = "pos_x";
-				row["columns"][COL_POS_X]["value"] = "";
-				row["columns"][COL_POS_Y]["column"] = "pos_y";
-				row["columns"][COL_POS_Y]["value"] = "";
-				row["columns"][COL_POS_Z]["column"] = "pos_z";
-				row["columns"][COL_POS_Z]["value"] = "";
-			}
+			//BD - Bone Positions
+			pos = joint->getTargetPosition();
+			row["columns"][COL_POS_X]["column"] = "pos_x";
+			row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
+			row["columns"][COL_POS_Y]["column"] = "pos_y";
+			row["columns"][COL_POS_Y]["value"] = ll_round(pos.mV[VY], 0.001f);
+			row["columns"][COL_POS_Z]["column"] = "pos_z";
+			row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
 
 			//BD - Bone Scales
 			scale = joint->getScale();
@@ -1748,7 +1709,6 @@ void BDFloaterPoseCreator::onJointRefresh()
 
 void BDFloaterPoseCreator::onJointControlsRefresh()
 {
-	bool can_position = false;
 	bool is_pelvis = false;
 	bool is_posing = (gAgentAvatarp->isFullyLoaded() && gAgentAvatarp->getPosing());
 	bool is_previewing = false;
@@ -1768,30 +1728,11 @@ void BDFloaterPoseCreator::onJointControlsRefresh()
 				mRotationSliders[VZ]->setValue(item->getColumn(COL_ROT_Z)->getValue());
 			}
 
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			//     as well as all attachment bones and collision volumes.
-			if (joint->mHasPosition || index > JOINTS)
-			{
-				can_position = true;
-				is_pelvis = (joint->mJointNum == 0);
+			is_pelvis = (joint->mJointNum == 0);
 
-				mPositionSliders[VX]->setValue(item->getColumn(COL_POS_X)->getValue());
-				mPositionSliders[VY]->setValue(item->getColumn(COL_POS_Y)->getValue());
-				mPositionSliders[VZ]->setValue(item->getColumn(COL_POS_Z)->getValue());
-			}
-			else
-			{
-				//BD - If we didn't select a positionable bone kill all values. We might
-				//     end up with numbers that are too big for the min/max values when
-				//     changed below.
-				mPositionSliders[VX]->setValue(0.000f);
-				mPositionSliders[VY]->setValue(0.000f);
-				mPositionSliders[VZ]->setValue(0.000f);
-			}
+			mPositionSliders[VX]->setValue(item->getColumn(COL_POS_X)->getValue());
+			mPositionSliders[VY]->setValue(item->getColumn(COL_POS_Y)->getValue());
+			mPositionSliders[VZ]->setValue(item->getColumn(COL_POS_Z)->getValue());
 
 			//BD - Bone Scales
 			mScaleSliders[VX]->setValue(item->getColumn(COL_SCALE_X)->getValue());
@@ -1827,7 +1768,7 @@ void BDFloaterPoseCreator::onJointControlsRefresh()
 	S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
 	mModifierTabs->setEnabled(item && is_posing && !is_previewing);
 	mModifierTabs->enableTabButton(0, (item && is_posing && index == JOINTS));
-	mModifierTabs->enableTabButton(1, (item && is_posing && can_position));
+	mModifierTabs->enableTabButton(1, (item && is_posing));
 	mModifierTabs->enableTabButton(2, (item && is_posing && index == COLLISION_VOLUMES));
 	//BD - Swap out of "Position" tab when it's not available.
 	if (curr_idx == 1 && !mModifierTabs->getTabButtonEnabled(1))
@@ -2071,9 +2012,6 @@ void BDFloaterPoseCreator::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 	if (!gDragonAnimator.mPoseCreatorMotion)
 		return;
 
-	if (!joint->mHasPosition || index < JOINTS)
-		return;
-
 	LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
 
 	//BD - We could just check whether position information is available since only joints
@@ -2161,9 +2099,6 @@ void BDFloaterPoseCreator::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 
 	LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
 	if (!key_item)
-		return;
-
-	if (!joint->mHasPosition || index < JOINTS)
 		return;
 
 	F32 val = ctrl->getValue().asReal();
@@ -2321,24 +2256,15 @@ void BDFloaterPoseCreator::onJointRotPosScaleReset()
 					}
 
 					//BD - Resetting positions next.
-					//BD - We could just check whether position information is available since only joints
-					//     which can have their position changed will have position information but we
-					//     want this to be a minefield for crashes.
-					//     Bones that can support position
-					//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-					//     as well as all attachment bones and collision volumes.
-					if (joint->mHasPosition || it > JOINTS)
-					{
-						LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-						LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-						LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
-						LLVector3 pos = mDefaultPositions[joint->getName()];
+					LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+					LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+					LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+					LLVector3 pos = mDefaultPositions[joint->getName()];
 
-						col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-						col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-						col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-						joint->setTargetPosition(pos);
-					}
+					col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+					col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+					col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+					joint->setTargetPosition(pos);
 
 					//BD - Resetting scales last.
 					LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
@@ -2462,24 +2388,15 @@ void BDFloaterPoseCreator::onJointPositionReset()
 			LLJoint* joint = (LLJoint*)item->getUserdata();
 			if (joint)
 			{
-				//BD - We could just check whether position information is available since only joints
-				//     which can have their position changed will have position information but we
-				//     want this to be a minefield for crashes.
-				//     Bones that can support position
-				//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-				//     as well as all attachment bones and collision volumes.
-				if (joint->mHasPosition || index > JOINTS)
-				{
-					LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-					LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-					LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
-					LLVector3 pos = mDefaultPositions[joint->getName()];
+				LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+				LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+				LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+				LLVector3 pos = mDefaultPositions[joint->getName()];
 
-					col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-					col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-					col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-					joint->setTargetPosition(pos);
-				}
+				col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+				col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+				col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+				joint->setTargetPosition(pos);
 			}
 		}
 	}
@@ -3087,7 +3004,7 @@ void BDFloaterPoseCreator::onCreateTempMotion()
 				joint_state->setUsage(joint_state->getUsage() | LLJointState::ROT);*/
 
 				//BD - Fill general position data in.
-				joint_motion->mPositionCurve.mNumKeys = /*joint->mHasPosition ? 1 :*/ 0;
+				joint_motion->mPositionCurve.mNumKeys = 0;
 				joint_motion->mPositionCurve.mInterpolationType = LLKeyframeMotion::IT_LINEAR;
 
 				/*LLKeyframeMotion::PositionKey position_key;
@@ -3172,18 +3089,10 @@ void BDFloaterPoseCreator::onCollectDefaults()
 		scale = joint->getScale();
 		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
 
-		//BD - We could just check whether position information is available since only joints
-		//     which can have their position changed will have position information but we
-		//     want this to be a minefield for crashes.
-		//     Bones that can support position
-		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-		if (joint->mHasPosition)
-		{
-			//BD - We always get the values but we don't write them out as they are not relevant for the
-			//     user yet but we need them to establish default values we revert to later on.
-			pos = joint->getPosition();
-			mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-		}
+		//BD - We always get the values but we don't write them out as they are not relevant for the
+		//     user yet but we need them to establish default values we revert to later on.
+		pos = joint->getPosition();
+		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
 	}
 
 	//BD - Collision Volumes

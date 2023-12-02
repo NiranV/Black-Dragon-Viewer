@@ -320,17 +320,9 @@ bool BDFloaterPoser::onPoseSave()
 				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 				record[bone_name]["rotation"] = vec3.getValue();
 
-				//BD - We could just check whether position information is available since only joints
-				//     which can have their position changed will have position information but we
-				//     want this to be a minefield for crashes.
-				//     Bones that can support position
-				//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-				//     as well as all attachment bones and collision volumes.
-				if (joint->mHasPosition || it > JOINTS)
-				{
-					vec3 = it > JOINTS ? joint->getPosition() : joint->getTargetPosition();
-					record[bone_name]["position"] = vec3.getValue();
-				}
+				//BD - All bones support positions now.
+				vec3 = it > JOINTS ? joint->getPosition() : joint->getTargetPosition();
+				record[bone_name]["position"] = vec3.getValue();
 
 				vec3 = joint->getScale();
 				record[bone_name]["scale"] = vec3.getValue();
@@ -558,34 +550,14 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_ROT_Z]["column"] = "z";
 			row["columns"][COL_ROT_Z]["value"] = ll_round(rot.mV[VZ], 0.001f);
 
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			if (joint->mHasPosition)
-			{
-				pos = joint->getTargetPosition();
-				row["columns"][COL_POS_X]["column"] = "pos_x";
-				row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
-				row["columns"][COL_POS_Y]["column"] = "pos_y";
-				row["columns"][COL_POS_Y]["value"] = ll_round(pos.mV[VY], 0.001f);
-				row["columns"][COL_POS_Z]["column"] = "pos_z";
-				row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
-			}
-			//BD - It's stupid but we have to define the empty columns here and fill them with
-			//     nothing otherwise the addRow() function is assuming that the sometimes missing
-			//     position columns have an "empty" name and thus creates faulty extra columns.
-			else
-			{
-				pos = joint->getTargetPosition();
-				row["columns"][COL_POS_X]["column"] = "pos_x";
-				row["columns"][COL_POS_X]["value"] = "";
-				row["columns"][COL_POS_Y]["column"] = "pos_y";
-				row["columns"][COL_POS_Y]["value"] = "";
-				row["columns"][COL_POS_Z]["column"] = "pos_z";
-				row["columns"][COL_POS_Z]["value"] = "";
-			}
+			//BD - All bones support positions now.
+			pos = joint->getTargetPosition();
+			row["columns"][COL_POS_X]["column"] = "pos_x";
+			row["columns"][COL_POS_X]["value"] = ll_round(pos.mV[VX], 0.001f);
+			row["columns"][COL_POS_Y]["column"] = "pos_y";
+			row["columns"][COL_POS_Y]["value"] = ll_round(pos.mV[VY], 0.001f);
+			row["columns"][COL_POS_Z]["column"] = "pos_z";
+			row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
 
 			//BD - Bone Scales
 			scale = joint->getScale();
@@ -752,7 +724,6 @@ void BDFloaterPoser::onJointControlsRefresh()
 	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
-	bool can_position = false;
 	bool is_pelvis = false;
 	bool is_posing = (avatar->isFullyLoaded() && avatar->getPosing());
 	S32 index = mJointTabs->getCurrentPanelIndex();
@@ -770,30 +741,12 @@ void BDFloaterPoser::onJointControlsRefresh()
 				mRotationSliders[VZ]->setValue(item->getColumn(COL_ROT_Z)->getValue());
 			}
 
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			//     as well as all attachment bones and collision volumes.
-			if (joint->mHasPosition || index > JOINTS)
-			{
-				can_position = true;
-				is_pelvis = (joint->mJointNum == 0);
+			//BD - All bones support positions now.
+			is_pelvis = (joint->mJointNum == 0);
 
-				mPositionSliders[VX]->setValue(item->getColumn(COL_POS_X)->getValue());
-				mPositionSliders[VY]->setValue(item->getColumn(COL_POS_Y)->getValue());
-				mPositionSliders[VZ]->setValue(item->getColumn(COL_POS_Z)->getValue());
-			}
-			else
-			{
-				//BD - If we didn't select a positionable bone kill all values. We might
-				//     end up with numbers that are too big for the min/max values when
-				//     changed below.
-				mPositionSliders[VX]->setValue(0.000f);
-				mPositionSliders[VY]->setValue(0.000f);
-				mPositionSliders[VZ]->setValue(0.000f);
-			}
+			mPositionSliders[VX]->setValue(item->getColumn(COL_POS_X)->getValue());
+			mPositionSliders[VY]->setValue(item->getColumn(COL_POS_Y)->getValue());
+			mPositionSliders[VZ]->setValue(item->getColumn(COL_POS_Z)->getValue());
 
 			//BD - Bone Scales
 			mScaleSliders[VX]->setValue(item->getColumn(COL_SCALE_X)->getValue());
@@ -829,7 +782,7 @@ void BDFloaterPoser::onJointControlsRefresh()
 	S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
 	mModifierTabs->setEnabled(item && is_posing);
 	mModifierTabs->enableTabButton(0, (item && is_posing && index == JOINTS));
-	mModifierTabs->enableTabButton(1, (item && is_posing && can_position));
+	mModifierTabs->enableTabButton(1, (item && is_posing));
 	mModifierTabs->enableTabButton(2, (item && is_posing && index != ATTACHMENT_BONES));
 	//BD - Swap out of "Position" tab when it's not available.
 	if (curr_idx == 1 && !mModifierTabs->getTabButtonEnabled(1))
@@ -959,25 +912,17 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 		LLJoint* joint = (LLJoint*)item->getUserdata();
 		if (joint)
 		{
-			//BD - We could just check whether position information is available since only joints
-			//     which can have their position changed will have position information but we
-			//     want this to be a minefield for crashes.
-			//     Bones that can support position
-			//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-			//     as well as all attachment bones and collision volumes.
-			if (joint->mHasPosition || index > JOINTS)
-			{
-				F32 val = ctrl->getValue().asReal();
-				LLScrollListCell* cell[3] = { item->getColumn(COL_POS_X), item->getColumn(COL_POS_Y), item->getColumn(COL_POS_Z) };
-				LLVector3 vec3 = { F32(cell[VX]->getValue().asReal()),
-								   F32(cell[VY]->getValue().asReal()),
-								   F32(cell[VZ]->getValue().asReal()) };
+			//BD - All bones support positions now.
+			F32 val = ctrl->getValue().asReal();
+			LLScrollListCell* cell[3] = { item->getColumn(COL_POS_X), item->getColumn(COL_POS_Y), item->getColumn(COL_POS_Z) };
+			LLVector3 vec3 = { F32(cell[VX]->getValue().asReal()),
+								F32(cell[VY]->getValue().asReal()),
+								F32(cell[VZ]->getValue().asReal()) };
 
-				S32 dir = param.asInteger();
-				vec3.mV[dir] = val;
-				cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
-				joint->setTargetPosition(vec3);
-			}
+			S32 dir = param.asInteger();
+			vec3.mV[dir] = val;
+			cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
+			joint->setTargetPosition(vec3);
 		}
 	}
 }
@@ -1083,24 +1028,16 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 					}
 
 					//BD - Resetting positions next.
-					//BD - We could just check whether position information is available since only joints
-					//     which can have their position changed will have position information but we
-					//     want this to be a minefield for crashes.
-					//     Bones that can support position
-					//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-					//     as well as all attachment bones and collision volumes.
-					if (joint->mHasPosition || it > JOINTS)
-					{
-						LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-						LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-						LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
-						LLVector3 pos = mDefaultPositions[joint->getName()];
+					//     All bones support positions now.
+					LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+					LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+					LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+					LLVector3 pos = mDefaultPositions[joint->getName()];
 
-						col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-						col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-						col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-						joint->setTargetPosition(pos);
-					}
+					col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+					col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+					col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+					joint->setTargetPosition(pos);
 
 					//BD - Resetting scales last.
 					LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
@@ -1861,18 +1798,11 @@ void BDFloaterPoser::onCollectDefaults()
 		scale = joint->getScale();
 		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
 
-		//BD - We could just check whether position information is available since only joints
-		//     which can have their position changed will have position information but we
-		//     want this to be a minefield for crashes.
-		//     Bones that can support position
-		//     0, 9-37, 39-43, 45-59, 77, 97-107, 110, 112, 115, 117-121, 125, 128-129, 132
-		if (joint->mHasPosition)
-		{
-			//BD - We always get the values but we don't write them out as they are not relevant for the
-			//     user yet but we need them to establish default values we revert to later on.
-			pos = joint->getPosition();
-			mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-		}
+		//BD - All bones support positions now.
+		//     We always get the values but we don't write them out as they are not relevant for the
+		//     user yet but we need them to establish default values we revert to later on.
+		pos = joint->getPosition();
+		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
 	}
 
 	//BD - Collision Volumes
@@ -2211,173 +2141,3 @@ void BDFloaterPoser::onAvatarsRefresh()
 	//BD - Make sure we don't have a scrollbar unless we need it.
 	mAvatarScroll->updateLayout();
 }
-
-
-////////////////////////////////
-//BD - Experimental Functions
-////////////////////////////////
-
-/*void BDFloaterPoser::onAnimEdit(LLUICtrl* ctrl, const LLSD& param)
-{
-	getChild<LLMultiSliderCtrl>("key_slider")->clear();
-	LLUUID id = LLUUID("cd9b0386-b26d-e860-0114-d879ee12a777");
-
-	//LLKeyframeMotion* motion = (LLKeyframeMotion*)gAgentAvatarp->findMotion(id);
-	typedef std::map<LLUUID, class LLKeyframeMotion::JointMotionList*> keyframe_data_map_t;
-
-	LLKeyframeMotion::JointMotionList* jointmotion_list;
-	jointmotion_list = LLKeyframeDataCache::getKeyframeData(id);
-	S32 i = 0;
-
-	if (!jointmotion_list)
-	{
-		return;
-	}
-
-	LLScrollListItem* item = mJointScrolls[JOINTS]->getLastSelectedItem();
-	if (!item)
-	{
-		return;
-	}
-
-	LLJoint* joint = (LLJoint*)item->getUserdata();
-	i = joint->mJointNum;
-
-	LLKeyframeMotion::JointMotion* joint_motion = jointmotion_list->getJointMotion(i);
-	LLKeyframeMotion::RotationCurve rot_courve = joint_motion->mRotationCurve;
-	LLKeyframeMotion::RotationKey rot_key;
-	LLQuaternion rotation;
-	F32 time;
-	LLKeyframeMotion::RotationCurve::key_map_t keys = rot_courve.mKeys;
-
-	for (LLKeyframeMotion::RotationCurve::key_map_t::const_iterator iter = keys.begin();
-		iter != keys.end(); ++iter)
-	{
-		time = iter->first;
-		rot_key = iter->second;
-
-		//const std::string& sldr_name = getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
-		getChild<LLMultiSliderCtrl>("key_slider")->addSlider(time);
-		//getChild<LLMultiSliderCtrl>("key_slider")->getSliderValue();
-	}
-}
-
-void BDFloaterPoser::onAddKey()
-{
-	//S32 max_sliders = 60;
-
-	//if ((S32)mSliderToKey.size() >= max_sliders)
-	//{
-	//	LLSD args;
-	//	args["MAX"] = max_sliders;
-	//	//LLNotificationsUtil::add("DayCycleTooManyKeyframes", args, LLSD(), LLNotificationFunctorRegistry::instance().DONOTHING);
-	//	return;
-	//}
-
-	// add the slider key
-	std::string key_val = mPoseScroll->getFirstSelected()->getColumn(0)->getValue().asString();
-	BDPoseKey pose_params(key_val);
-
-	F32 time = mTimeSlider->getCurSliderValue();
-	addSliderKey(time, pose_params);
-}
-
-void BDFloaterPoser::addSliderKey(F32 time, BDPoseKey keyframe)
-{
-	// make a slider
-	const std::string& sldr_name = mKeySlider->addSlider(time);
-	if (sldr_name.empty())
-	{
-		return;
-	}
-
-	// set the key
-	SliderKey newKey(keyframe, mKeySlider->getCurSliderValue());
-
-	// add to map
-	mSliderToKey.insert(std::pair<std::string, SliderKey>(sldr_name, newKey));
-}
-
-void BDFloaterPoser::onTimeSliderMoved()
-{
-}
-
-void BDFloaterPoser::onKeyTimeMoved()
-{
-	if (mKeySlider->getValue().size() == 0)
-	{
-		return;
-	}
-
-	// make sure we have a slider
-	const std::string& cur_sldr = mKeySlider->getCurSlider();
-	if (cur_sldr == "")
-	{
-		return;
-	}
-
-	F32 time24 = mKeySlider->getCurSliderValue();
-
-	// check to see if a key exists
-	BDPoseKey key = mSliderToKey[cur_sldr].keyframe;
-	//// _LL_DEBUGS() << "Setting key time: " << time24 << LL_ENDL;
-	mSliderToKey[cur_sldr].time = time24;
-
-	// if it exists, turn on check box
-	//mSkyPresetsCombo->selectByValue(key.toStringVal());
-
-	//mTimeCtrl->setTime24(time24);
-}
-
-void BDFloaterPoser::onKeyTimeChanged()
-{
-	// if no keys, skipped
-	if (mSliderToKey.size() == 0)
-	{
-		return;
-	}
-
-	F32 time24 = getChild<LLTimeCtrl>("time_control")->getTime24();
-
-	const std::string& cur_sldr = mKeySlider->getCurSlider();
-	mKeySlider->setCurSliderValue(time24, TRUE);
-	F32 time = mKeySlider->getCurSliderValue() / 60;
-
-	// now set the key's time in the sliderToKey map
-	//// _LL_DEBUGS() << "Setting key time: " << time << LL_ENDL;
-	mSliderToKey[cur_sldr].time = time;
-
-	//applyTrack();
-}
-
-void BDFloaterPoser::onDeleteKey()
-{
-	if (mSliderToKey.size() == 0)
-	{
-		return;
-	}
-
-	// delete from map
-	const std::string& sldr_name = mKeySlider->getCurSlider();
-	std::map<std::string, SliderKey>::iterator mIt = mSliderToKey.find(sldr_name);
-	mSliderToKey.erase(mIt);
-
-	mKeySlider->deleteCurSlider();
-
-	if (mSliderToKey.size() == 0)
-	{
-		return;
-	}
-
-	const std::string& name = mKeySlider->getCurSlider();
-	//mSkyPresetsCombo->selectByValue(mSliderToKey[name].keyframe.toStringVal());
-	F32 time24 = mSliderToKey[name].time;
-
-	getChild<LLTimeCtrl>("time_control")->setTime24(time24);
-}
-
-void BDFloaterPoser::onAnimSetValue(LLUICtrl* ctrl, const LLSD& param)
-{
-	F32 val = ctrl->getValue().asReal();
-	mKeySlider->setValue(val);
-}*/
