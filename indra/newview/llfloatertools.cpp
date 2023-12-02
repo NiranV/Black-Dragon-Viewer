@@ -88,6 +88,9 @@
 #include "lluictrlfactory.h"
 #include "llmeshrepository.h"
 
+//BD
+#include "qtoolalign.h"
+
 // Globals
 LLFloaterTools *gFloaterTools = NULL;
 bool LLFloaterTools::sShowObjectCost = true;
@@ -677,7 +680,9 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 						tool == LLToolCompScale::getInstance() ||
 						tool == LLToolFace::getInstance() ||
 						tool == LLToolIndividual::getInstance() ||
-						tool == LLToolPipette::getInstance();
+						tool == LLToolPipette::getInstance() ||
+						//BD - Qarl's Aligning Tool
+						tool == QToolAlign::getInstance();
 
 	mBtnEdit	->setToggleState( edit_visible );
 	mRadioGroupEdit->setVisible( edit_visible );
@@ -712,6 +717,12 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	{
 		mRadioGroupEdit->setValue("radio select face");
 	}
+	//BD - Qarl's Aligning Tool
+	else if (tool == QToolAlign::getInstance())
+	{
+		mRadioGroupEdit->setValue("radio align");
+	}
+
 
 	if (mComboGridMode) 
 	{
@@ -1033,6 +1044,12 @@ void commit_radio_group_edit(LLUICtrl *ctrl)
 	{
 		LLFloaterTools::setEditTool( LLToolFace::getInstance() );
 	}
+	//BD - Qarl's Aligning Tool
+	else if (selected == "radio align")
+	{
+		LLFloaterTools::setEditTool(QToolAlign::getInstance());
+	}
+
 	gSavedSettings.setBOOL("ShowParcelOwners", show_owners);
 }
 
