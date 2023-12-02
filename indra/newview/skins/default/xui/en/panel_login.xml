@@ -143,13 +143,150 @@ width="996">
     name="login_scroll_panel"
     top="0"
     width="980">
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="1234"
+     top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Custom variables to allow the viewer to be configured with.
+Added: Several Screen Space Reflection options to preferences.
+Added: Several Reflection Probe options to preferences.
+Added: Experimental Improved Mouselook Aiming option.
+Added: Option to toggle Reflection Probes.
+Added: Descriptions to all new PBR options in preferences.
+Added: Reflection Probe Draw Distance option.
+Added: Reflection Probe Ambiance weight option.
+Added: Reflection Probe Light weight option.
+Added: Reflection Probe Resolution option.
+Added: Missing Performance floater menu entry.
+Added: "Custom" location to Next Login Location to show the user when a custom choice was made.
+Added: Missing Interest List options to Dragon - Develop menu.
+Changed: Make sure we start all default motions after exiting the Poser.
+Changed: Added the new mouselook code files to Cmake and removed the old exopostprocess files still causing a compile error.
+Changed: Completely nuked all shaders, back to LL defaults.
+Changed: Completely overhauled all of the tools window except Texture tab which needs some figuring out.
+Changed: Make Viewer more responsive during login inventory skeleton creation, show progress to the user.
+Changed: Shift around some login progress and space out Wearable Wait a bit to give the user less the impression that the Viewer is hanging/freezing.
+Changed: Updated tooltips for Max Texture Memory option.
+Changed: Reworked Progress Screen display. Show sub progress bar.
+Changed: Reworked "Texture" tab in Tools window.
+Changed: Bring back full and partial UI view internally, we might use it in the future to fix HUDs at the top going behind the UI.
+Changed: Allow posing all bones in the Poser and Animator.
+Changed: Vastly improved and sped up inventory skeleton creation part of the new loading screen.
+Changed: Version to 5.0 - Probing Dragon
+Fixed: First scale key being created twice when adding a keyframe.
+Fixed: Many configuration and compile errors. Still many more to go.
+Fixed: A lot more compile errors. Still more to go.
+Fixed: Viewer crashing on login. Reset tools window to LL layout.
+Fixed: Debug settings layout being broken.
+Fixed: Ambient Occlusion not working.
+Fixed: Sound being broken.
+Fixed: Camera Presets not working.
+Fixed: Linkset items breaking apart when animating while in mouselook.
+Fixed: Cloud Scroll Lock options.
+Fixed: More crashes in Land floater.
+Fixed: Excessive logspam in Place Profile.
+Fixed: Inventory item count being broken.
+Fixed: Depth of Field Focus Lock not working.
+Fixed: Search fields becoming unreadable when highlighted.
+Fixed: Reflection Detail options using the wrong values.
+Fixed: Several error notifications that notification X couldn't be found such as when trying to create a subfolder.
+Fixed: Preferences window texture memory display.
+Fixed: Compile.
+Fixed: Deleting a group notification with attachment automatically accepts the attachment.
+Fixed: UI not properly being resized when switching from Borderless back to Window mode.
+Fixed: Pose Creator corrupting animations when reimporting, changing and then re-exporting them.
+Fixed: Random crash on right-click with pie menus enabled. (Finally?)
+Fixed: Some pie menus falsely showing "Stand Up" when already standing.
+Fixed: Missing "Upload Material" option in Inventory.
+Fixed: Shape Edit showing "[DESC]" on all shape sliders.
+Fixed: Viewer instantly hogging up all available VRAM.
+Fixed: Enabled all pie menus to properly benefit from enabling/disabling Sit/Stand slices depending on context.
+Fixed: "Revert Changes" in Shape Edit not actually applying the changes.
+Fixed: Next Login Location in Preferences - General does not work.
+Fixed: (POTENTIAL) Issues with login when user password is 15 or 16 characters long.
+Fixed: Added Missing "Create New" menu in right-click Inventory.
+Fixed: Added Missing create "Material" menu entry in Inventory.
+Fixed: Face selection info in Tools window.
+Fixed: Minor layout inconsistencies in Tools window.
+Fixed: Massive framedrop while the Texture Picker is open.
+Fixed: Aligning tool not working.
+Fixed: Selection Outlines look and options.
+Fixed: Medium framedrop and log spammery while tools window was open.
+Fixed: Selection Outlines option in tools window not properly changing visibility on mode switch.
+Fixed: VSync vastly slowing down inventory skeleton creation and login causing people to get stuck or corrupt their login.
+Fixed: Material controls not properly updating their visibility when switching modes.
+Removed: RLVa Preferences tab.
+Removed: A lot of broken options from Preferences - Display.
+Removed: Broken RLVa (part 1).
+Removed: Broken RLVa (Part 2)
+Removed: Broken RLVa (Part 3).
+Removed: Automatic Memory Management.
+Removed: Motion Blur related warning.
+Removed: RLVa submenu and enable checks for the BD main menu.
+Removed: Intel GPU warning as it should no longer apply.
+Removed: Unused files.
+Misc: Synced over some changes/improvements from the Poser Creator to the Poser.
+Misc: Fixed all compile errors, Viewer is crashing on startup due to faulty mFactoryMap.
+Misc: Increase targeted Windows version to minimum Vista to allow the Viewer to compile properly.
+Misc: Updated some Poser code from the Animator.
+Misc: Cleaned up some camera code.
+Misc: Bringing more code on par with the official code.
+Misc: Code cleanup in texture console.
+Misc: Match more code with official LL code.
+Misc: Disabled all Motion Blur code.
+Misc: Some Viewer cleanup.
+Misc: Compile fixes.
+Misc: More LL code matching.
+Misc: More compile fixes.
+Misc: More LL code matching.
+Misc: Cleanup in llviewerinputcpp.
+Merge Linden GLTF RC.
+Merge GLTF Linden Viewer.
+Merge GLTF Linden Viewer.
+Misc: Some code cleanup and removal.
+Misc: More code cleanup.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     4.3.2
+     </text>
      <text
      follows="top|left"
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
      height="247"
-     top="10"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
