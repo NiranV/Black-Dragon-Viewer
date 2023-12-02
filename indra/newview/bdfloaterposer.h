@@ -21,88 +21,12 @@
 #include "llfloater.h"
 #include "llscrolllistctrl.h"
 #include "llsliderctrl.h"
-//#include "llmultisliderctrl.h"
-//#include "lltimectrl.h"
 #include "lltabcontainer.h"
 #include "llkeyframemotion.h"
 #include "lltoggleablemenu.h"
 #include "llmenubutton.h"
 
 #include "llviewerobject.h"
-
-/*struct BDPoseKey
-{
-public:
-	// source of a pose set
-	std::string name;
-
-	// for conversion from LLSD
-	static const int NAME_IDX = 0;
-	static const int SCOPE_IDX = 1;
-
-	inline BDPoseKey(const std::string& n)
-		: name(n)
-	{
-	}
-
-	inline BDPoseKey(LLSD llsd)
-		: name(llsd[NAME_IDX].asString())
-	{
-	}
-
-	inline BDPoseKey() // NOT really valid, just so std::maps can return a default of some sort
-		: name("")
-	{
-	}
-
-	inline BDPoseKey(std::string& stringVal)
-	{
-		size_t len = stringVal.length();
-		if (len > 0)
-		{
-			name = stringVal.substr(0, len - 1);
-		}
-	}
-
-	inline std::string toStringVal() const
-	{
-		std::stringstream str;
-		str << name;
-		return str.str();
-	}
-
-	inline LLSD toLLSD() const
-	{
-		LLSD llsd = LLSD::emptyArray();
-		llsd.append(LLSD(name));
-		return llsd;
-	}
-
-	inline void fromLLSD(const LLSD& llsd)
-	{
-		name = llsd[NAME_IDX].asString();
-	}
-
-	inline bool operator <(const BDPoseKey other) const
-	{
-		if (name < other.name)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	inline bool operator ==(const BDPoseKey other) const
-	{
-		return (name == other.name);
-	}
-
-	std::string toString() const;
-};*/
-
 
 typedef enum E_BoneTypes
 {
@@ -224,32 +148,6 @@ private:
 	LLButton*									mSavePosesBtn;
 
 	LLSD										mClipboard;
-
-	//BD - Experimental
-	/*void onAnimEdit(LLUICtrl* ctrl, const LLSD& param);
-	void onAddKey();
-	void onDeleteKey();
-	void addSliderKey(F32 time, BDPoseKey keyframe);
-	void onTimeSliderMoved();
-	void onKeyTimeMoved();
-	void onKeyTimeChanged();
-	void onAnimSetValue(LLUICtrl* ctrl, const LLSD& param);
-
-	/// convenience class for holding keyframes mapped to sliders
-	struct SliderKey
-	{
-	public:
-		SliderKey(BDPoseKey kf, F32 t) : keyframe(kf), time(t) {}
-		SliderKey() : keyframe(), time(0.f) {} // Don't use this default constructor
-
-		BDPoseKey keyframe;
-		F32 time;
-	};
-
-	LLSD 									mAnimJointMap[134][200][2]; // 134 bones, 200 keyframes , 2 stats (rotation | time)
-	std::map<std::string, SliderKey>		mSliderToKey;
-	LLMultiSliderCtrl*						mTimeSlider;
-	LLMultiSliderCtrl*						mKeySlider; */
 };
 
 #endif

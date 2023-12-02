@@ -109,6 +109,7 @@ void LLFloaterBuildOptions::refreshGridMode()
 	S32 index = combo->getCurrentIndex();
 	combo->removeall();
 
+	//BD
 	switch (options_floater->mObjectSelection->getSelectType())
 	{
 	case SELECT_TYPE_HUD:
