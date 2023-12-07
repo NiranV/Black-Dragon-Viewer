@@ -244,6 +244,16 @@ BOOL	LLFloaterTools::postBuild()
 	mBtnGridOptions		= getChild<LLButton>("Options...");
 	mBtnLink			= getChild<LLButton>("link_btn");
 	mBtnUnlink			= getChild<LLButton>("unlink_btn");
+	//BD - Next / Previous Element
+	mNextElement		= getChild<LLButton>("next_part_btn");
+	mPrevElement		= getChild<LLButton>("prev_part_btn");
+
+	//BD
+	mFocusPanel = getChild<LLPanel>("focus_panel");
+	mGrabPanel = getChild<LLPanel>("grab_panel");
+	mEditPanel = getChild<LLPanel>("select_panel");
+	mCreatePanel = getChild<LLPanel>("create_panel");
+	mLandPanel = getChild<LLPanel>("land_panel");
 	
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
 	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
@@ -338,6 +348,16 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mCheckStretchUniformLabel(NULL),
 	//BD
 	mCheckSelectionOutlines(NULL),
+	//BD - Next / Previous Element
+	mNextElement(NULL),
+	mPrevElement(NULL),
+
+	//BD
+	mFocusPanel(NULL),
+	mGrabPanel(NULL),
+	mEditPanel(NULL),
+	mCreatePanel(NULL),
+	mLandPanel(NULL),
 
 	mBtnRotateLeft(NULL),
 	mBtnRotateReset(NULL),
@@ -545,6 +565,13 @@ void LLFloaterTools::refresh()
 		selection_info << getString("status_selectcount", selection_args);
 
 		getChild<LLTextBox>("selection_count")->setText(selection_info.str());
+
+		//BD - Selected Face / Link index.
+		bool is_link_select = mCheckSelectIndividual->getValue().asBoolean();
+		bool is_face_select = LLToolMgr::getInstance()->getCurrentToolset()->getSelectedTool() == LLToolFace::getInstance();
+		bool have_selection = !mObjectSelection->isEmpty();
+		mNextElement->setEnabled(have_selection && (is_link_select || is_face_select));
+		mPrevElement->setEnabled(have_selection && (is_link_select || is_face_select));
 	}
 
 
@@ -622,6 +649,8 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	// Focus buttons
 	BOOL focus_visible = (	tool == LLToolCamera::getInstance() );
 
+	//BD
+	mFocusPanel->setVisible(focus_visible);
 	mBtnFocus	->setToggleState( focus_visible );
 
 	mRadioGroupFocus->setVisible( focus_visible );
@@ -656,6 +685,9 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	// Move buttons
 	BOOL move_visible = (tool == LLToolGrab::getInstance());
 
+	//BD
+	mGrabPanel->setVisible(move_visible);
+
 	if (mBtnMove) mBtnMove	->setToggleState( move_visible );
 
 	// HACK - highlight buttons for next click
@@ -688,6 +720,8 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 						//BD - Qarl's Aligning Tool
 						tool == QToolAlign::getInstance();
 
+	//BD
+	mEditPanel->setVisible(edit_visible);
 	mBtnEdit	->setToggleState( edit_visible );
 	mRadioGroupEdit->setVisible( edit_visible );
 	//bool linked_parts = gSavedSettings.getBOOL("EditLinkedParts");
@@ -695,6 +729,10 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 
 	mBtnLink->setVisible(edit_visible);
 	mBtnUnlink->setVisible(edit_visible);
+
+	//BD - Selected Face / Link index.
+	mNextElement->setVisible(edit_visible);
+	mPrevElement->setVisible(edit_visible);
 
 	mBtnLink->setEnabled(LLSelectMgr::instance().enableLinkObjects());
 	mBtnUnlink->setEnabled(LLSelectMgr::instance().enableUnlinkObjects());
@@ -769,6 +807,9 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	// Create buttons
 	BOOL create_visible = (tool == LLToolCompCreate::getInstance());
 
+	//BD
+	mCreatePanel->setVisible(create_visible);
+
 	mBtnCreate	->setToggleState(	tool == LLToolCompCreate::getInstance() );
 
 	if (mCheckCopySelection
@@ -804,6 +845,9 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 
 	// Land buttons
 	BOOL land_visible = (tool == LLToolBrushLand::getInstance() || tool == LLToolSelectLand::getInstance() );
+
+	//BD
+	mLandPanel->setVisible(land_visible);
 
 	mCostTextBorder->setVisible(!land_visible);
 

@@ -137,6 +137,16 @@ public:
 	LLCheckBoxCtrl*	mCheckStretchTexture;
 	//BD
 	LLCheckBoxCtrl* mCheckSelectionOutlines;
+	//BD - Next / Previous Element
+	LLButton*		mNextElement;
+	LLButton*		mPrevElement;
+
+	//BD
+	LLPanel*		mFocusPanel;
+	LLPanel*		mGrabPanel;
+	LLPanel*		mEditPanel;
+	LLPanel*		mCreatePanel;
+	LLPanel*		mLandPanel;
 
 	// !HACK! Replacement of mCheckStretchUniform label because LLCheckBoxCtrl
 	//  doesn't support word_wrap of its label. Need to fix truncation bug EXT-6658
