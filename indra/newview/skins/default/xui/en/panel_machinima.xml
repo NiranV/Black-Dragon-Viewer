@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1427"
+            height="1077"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -63,7 +63,7 @@ width="345">
                   width="250">
                   Shader Toggles:
                   </text>
-                  <check_box
+                  <!--<check_box
                   control_name="RenderDeferred"
                   height="16"
                   label="Deferred Rendering"
@@ -335,14 +335,14 @@ width="345">
                   top_delta="16"
                   width="10">
                   ┃
-                  </text>
+                  </text>-->
                   <radio_group
                   control_name="RenderShadowDetail"
                   height="38"
                   layout="topleft"
-                  left_pad="0"
+                  left="10"
                   name="TerrainDetailRadio"
-                  top_delta="-17"
+                  top_pad="7"
                   width="200">
                         <radio_item
                         height="16"
@@ -438,7 +438,7 @@ width="345">
                   width="10">
                   ╸
                   </text>
-                  <text
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -451,8 +451,8 @@ width="345">
                   top_pad="1"
                   width="10">
                   ┃
-                  </text>
-                  <text
+                  </text>-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -460,18 +460,18 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="24"
+                  left_delta="-83"
                   name="shaders"
-                  top_delta="-1"
+                  top_pad="1"
                   width="10">
                   ┗
                   </text>
                   <check_box
                   control_name="RenderGodrays"
-                  enabled_control="RenderDeferred"
+                  enabled="false"
                   height="16"
                   initial_value="false"
-                  label="Volumetric Lighting"
+                  label="&lt;red&gt;[Volumetric Lighting]&lt;/red&gt;"
                   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
 |&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
@@ -481,8 +481,8 @@ width="345">
                   left_pad="0"
                   name="Godrays"
                   top_delta="0"
-                  width="115" />
-                  <text
+                  width="115" />-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -495,8 +495,8 @@ width="345">
                   top_pad="1"
                   width="10">
                   ┃
-                  </text>
-                  <text
+                  </text>-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -504,9 +504,9 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="41"
+                  left_delta="7"
                   name="shaders"
-                  top_delta="0"
+                  top_pad="1"
                   width="10">
                   ┗
                   </text>
@@ -514,14 +514,15 @@ width="345">
                   control_name="RenderGodraysDirectional"
                   height="16"
                   initial_value="false"
-                  label="Directional Volumetric Lighting"
+                  enabled="false"
+                  label="&lt;red&gt;[Directional Volumetric Lighting]&lt;/red&gt;"
                   tool_tip="This option controls whether Volumtric Lighting should fade out when looking away from the sun."
                   layout="topleft"
                   left_pad="0"
                   name="RenderGodraysDirectional"
                   top_delta="0"
-                  width="115" />
-                  <text
+                  width="115" />-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -534,7 +535,7 @@ width="345">
                   top_pad="0"
                   width="10">
                   ┣
-                  </text>
+                  </text>-->
                   <check_box
                   control_name="RenderDeferredSSAO"
                   enabled_control="RenderDeferred"
@@ -546,11 +547,11 @@ width="345">
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option toggles Screen Space Ambient Occlusion (SSAO) emulating indirect lighting and the lack thereof giving objects a more realistic, less flat look."
                   layout="topleft"
-                  left_pad="0"
+                  left="10"
                   name="UseSSAO"
-                  top_delta="0"
+                  top_pad="1"
                   width="115" />
-                  <text
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -563,7 +564,7 @@ width="345">
                   top_pad="0"
                   width="10">
                   ┣
-                  </text>
+                  </text>-->
                   <check_box
                   control_name="RenderScreenSpaceReflections"
                   height="16"
@@ -575,11 +576,11 @@ width="345">
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option toggles cheap looking but performance costly reflections based on a copy what you see on screen."
                   layout="topleft"
-                  left_pad="0"
+                  left_delta="0"
                   name="RenderScreenSpaceReflections"
-                  top_delta="0"
+                  top_pad="0"
                   width="115" />
-                  <text
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -592,7 +593,7 @@ width="345">
                   top_pad="0"
                   width="10">
                   ┣
-                  </text>
+                  </text>-->
                   <check_box
                   control_name="RenderDepthOfField"
                   enabled_control="RenderDeferred"
@@ -604,11 +605,11 @@ width="345">
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option toggles Depth of Field on or off, it is often used to blur out the background or unfocused parts of the scene."
                   layout="topleft"
-                  left_pad="0"
+                  left_delta="0"
                   name="UseDoF"
-                  top_delta="0"
+                  top_pad="0"
                   width="115" />
-                  <text
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -621,8 +622,8 @@ width="345">
                   top_pad="0"
                   width="10">
                   ┃
-                  </text>
-                  <text
+                  </text>-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -630,9 +631,9 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="7"
+                  left_delta="7"
                   name="shaders"
-                  top_delta="0"
+                  top_pad="0"
                   width="10">
                   ┣
                   </text>
@@ -640,14 +641,15 @@ width="345">
                   control_name="RenderDepthOfFieldAlphas"
                   height="16"
                   initial_value="true"
-                  label="Include Alphas into Depth"
+                  enabled="false"
+                  label="&lt;red&gt;[Include Alphas into Depth]&lt;/red&gt;"
                   tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
                   layout="topleft"
                   left_pad="0"
                   name="RenderDepthOfFieldAlphas"
                   top_delta="0"
-                  width="115" />
-                  <text
+                  width="115" />-->
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -660,7 +662,7 @@ width="345">
                   top_pad="0"
                   width="10">
                   ┣
-                  </text>
+                  </text>-->
                   <text
                   font="SansSerif"
                   font.style="BOLD"
@@ -669,9 +671,9 @@ width="345">
                   height="20"
                   text_color="BeaconColor"
                   layout="topleft"
-                  left_pad="7"
+                  left_delta="7"
                   name="shaders"
-                  top_delta="0"
+                  top_pad="0"
                   width="10">
                   ┗
                   </text>
@@ -690,7 +692,7 @@ width="345">
                   name="RenderDepthOfFieldHighQuality"
                   top_delta="0"
                   width="115" />
-                  <text
+                  <!--<text
                   font="SansSerif"
                   font.style="BOLD"
                   font_shadow="soft"
@@ -843,7 +845,7 @@ width="345">
                   left_pad="0"
                   name="LensFlare"
                   top_delta="0"
-                  width="115" />
+                  width="115" />-->
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -1567,49 +1569,114 @@ width="345">
                   Screen Space Reflections (SSR):
                   </text>
                   <slider
-                  control_name="RenderSSRResolution"
-                  enabled_control="RenderScreenSpaceReflections"
+                  control_name="RenderScreenSpaceReflectionIterations"
                   decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
-                  height="15"
+                  height="14"
                   increment="1"
                   initial_value="10"
-                  label="Resolution:"
+                  tool_tip="Unknown."
+                  label="Iterations:"
                   label_width="110"
                   layout="topleft"
                   left="10"
-                  max_val="64"
-                  min_val="2"
-                  tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option controls the amount of iterations the screen space reflection shader should go through. More iterations mean finer grained reflections but also much higher performance impact."
-                  name="RenderSSRResolution"
+                  max_val="128"
+                  min_val="10"
+                  name="RenderScreenSpaceReflectionIterations"
                   top_pad="15"
-                  width="310" />
+                  width="310"/>
                   <slider
-                  control_name="RenderSSRBrightness"
-                  enabled_control="RenderScreenSpaceReflections"
-                  decimal_digits="1"
-                  enabled="false"
+                  control_name="RenderScreenSpaceReflectionGlossySamples"
+                  decimal_digits="0"
                   can_edit_text="true"
                   follows="left|top"
-                  height="15"
-                  increment="0.1"
+                  height="14"
+                  increment="1"
                   initial_value="1"
-                  label="Brightness:"
+                  tool_tip="Unknown."
+                  label="Glossy Samples:"
                   label_width="110"
                   layout="topleft"
                   left="10"
                   max_val="10"
-                  min_val="0.0"
-                  tool_tip="This option controls the brightness of reflections on shiny surfaces from Screen Space Reflections."
-                  name="RenderSSRBrightness"
-                  top_pad="1"
-                  width="310" />
-                  <panel
+                  min_val="1"
+                  name="RenderScreenSpaceReflectionGlossySamples"
+                  top_pad="2" 
+                  width="310"/>
+                  <slider
+                  control_name="RenderScreenSpaceReflectionRayStep"
+                  decimal_digits="2"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="14"
+                  increment="0.01"
+                  initial_value="0.1"
+                  tool_tip="Unknown."
+                  label="Ray Step:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.5"
+                  min_val="0.01"
+                  name="RenderScreenSpaceReflectionRayStep"
+                  top_pad="2" 
+                  width="310"/>
+                  <slider
+                  control_name="RenderScreenSpaceReflectionAdaptiveStepMultiplier"
+                  decimal_digits="1"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="14"
+                  increment="0.1"
+                  initial_value="1.6"
+                  tool_tip="Unknown."
+                  label="Adaptive Step X:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="8"
+                  min_val="0.5"
+                  name="RenderScreenSpaceReflectionAdaptiveStepMultiplier"
+                  top_pad="2" 
+                  width="310"/>
+                  <slider
+                  control_name="RenderScreenSpaceReflectionDepthRejectBias"
+                  decimal_digits="3"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.001"
+                  tool_tip="Unknown."
+                  label="Depth Reject Bias:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.100"
+                  min_val="0.001"
+                  name="RenderScreenSpaceReflectionDepthRejectBias"
+                  top_pad="2" 
+                  width="310"/>
+                  <slider
+                  control_name="RenderScreenSpaceReflectionDistanceBias"
+                  decimal_digits="3"
+                  can_edit_text="true"
+                  follows="left|top"
+                  height="14"
+                  increment="0.001"
+                  initial_value="0.015"
+                  tool_tip="Unknown."
+                  label="Distance Bias:"
+                  label_width="110"
+                  layout="topleft"
+                  left="10"
+                  max_val="0.200"
+                  min_val="0.001"
+                  name="RenderScreenSpaceReflectionDitanceBias"
+                  top_pad="2" 
+                  width="310"/>
+                  <!--<panel
                   follows="left|top|right"
                   height="20"
                   bg_visible="true"
@@ -1850,7 +1917,7 @@ width="345">
                   <slider.commit_callback
                   function="Dragon.ArrayZ"
                   parameter="ExodusRenderVignette"/>
-                  </slider>
+                  </slider>-->
                   <panel
                   follows="left|top|right"
                   height="20"
@@ -2057,4 +2124,3 @@ width="345">
             </panel>
       </scroll_container>
 </panel>
-
