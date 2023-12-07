@@ -1304,7 +1304,7 @@ void LLFloaterTexturePicker::setMinDimentionsLimits(S32 min_dim)
     mLimitsSet = true;
 
     std::string formatted_dims = llformat("%dx%d", mMinDim, mMinDim);
-    mResolutionWarning->setTextArg("[MINTEXDIM]", formatted_dims);
+    //mResolutionWarning->setTextArg("[MINTEXDIM]", formatted_dims);
 }
 
 void LLFloaterTexturePicker::onFilterEdit(const std::string& search_string )
