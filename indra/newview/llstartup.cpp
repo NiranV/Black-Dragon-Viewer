@@ -1789,12 +1789,11 @@ bool idle_startup()
 					/*// _LL_DEBUGS("AppInit") << "Awaiting AvatarInitComplete, got "
 										 << gMessageSystem->getMessageName() << LL_ENDL;*/
 				}
+				set_startup_status(0.46f, 1.f, LLTrans::getString("AgentWait"), "");
 				display_startup();
 			}
 			lmc.processAcks();
 		}
-
-		set_startup_status(0.46f, 1.f, LLTrans::getString("AgentWait"), "");
 		display_startup();
 
 		if (gAgentMovementCompleted)
