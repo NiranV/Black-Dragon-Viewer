@@ -1262,7 +1262,7 @@ void settings_setup_listeners()
 	//gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
 	//gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	//gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
-	//gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleEnvironmentMapChanged, _2));
 	gSavedSettings.getControl("RenderHighPrecisionNormals")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 
@@ -1271,14 +1271,14 @@ void settings_setup_listeners()
 	//gSavedSettings.getControl("RenderSSRRoughness")->getSignal()->connect(boost::bind(&handleSSRChanged, _2));
 	//gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
-	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
+	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 //	//BD - Motion Blur
 	//gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
 //	//BD - Depth of Field
-	//gSavedSettings.getControl("RenderDepthOfFieldFront")->getSignal()->connect(boost::bind(&handleDepthOfFieldChanged, _2));
+	gSavedSettings.getControl("RenderDepthOfFieldFront")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 
 	//BD - Rendering (General)
 	gSavedSettings.getControl("RenderAttachedParticles")->getSignal()->connect(boost::bind(&handleRenderAttachedParticlesChanged, _2));

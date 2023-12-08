@@ -2442,8 +2442,19 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
         gDeferredPostProgram.mFeatures.isDeferred = true;
 		gDeferredPostProgram.mShaderFiles.clear();
 		gDeferredPostProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
-		gDeferredPostProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredF.glsl", GL_FRAGMENT_SHADER));
+		if (gSavedSettings.getBOOL("RenderDepthOfFieldHighQuality"))
+		{
+			gDeferredPostProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredHQDoFF.glsl", GL_FRAGMENT_SHADER));
+		}
+		else
+		{
+			gDeferredPostProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredF.glsl", GL_FRAGMENT_SHADER));
+		}
 		gDeferredPostProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
+		if (gSavedSettings.getBOOL("RenderDepthOfFieldFront"))
+		{
+			gDeferredAvatarAlphaProgram.addPermutation("FRONT_BLUR", "1");
+		}
 		success = gDeferredPostProgram.createShader(NULL, NULL);
 		llassert(success);
 	}
