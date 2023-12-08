@@ -1707,7 +1707,6 @@ width="510">
     </combo_box>
  <check_box
    control_name="RenderWaterMipNormal"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Use Water Mip-maps"
@@ -1723,7 +1722,6 @@ width="510">
    width="115" />
    <check_box
    control_name="RenderReflectionsEnabled"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Use Reflection Probes"
@@ -2713,31 +2711,15 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1055"
+	  height="1210"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
       visible="false"
 	  name="advanced_layout_panel"
 	  width="515">
-       <check_box
-   control_name="RenderDeferred"
-   height="16"
-   initial_value="true"
-   label="Deferred Rendering"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Medium
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
-||This option toggles Deferred Rendering, improves and softens lighting, allows infinite light sources, directional projector lights, realtime shadows, Screen Space Ambient Occlusion (SSAO) and more. This option is absolutely required for any of the advanced effects and tweaks to be visible."
-   layout="topleft"
-   left="10"
-   name="Deferred"
-   top="15"
-   width="115" />
          <check_box
    control_name="RenderDeferredLights"
-   enabled_control="RenderDeferred"
    height="16"
    label="Render World Lights"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -2748,11 +2730,10 @@ width="510">
    layout="topleft"
    left="10"
    name="RenderDeferredLights"
-   top_pad="10"
+   top_pad="15"
    width="115" />
 		<check_box
    control_name="RenderOtherAttachedLights"
-   enabled_control="RenderDeferred"
    height="16"
    label="Render Other Attached Lights"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -2767,7 +2748,6 @@ width="510">
    width="115" />
 	  <check_box
    control_name="RenderOwnAttachedLights"
-   enabled_control="RenderDeferred"
    height="16"
    label="Render Own Attached Lights"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -4214,6 +4194,309 @@ width="510">
       <button
  follows="left|top"
  control_name="RenderScreenSpaceReflectionDistanceBias"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ High Dynamic Range (HDR)
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+ <check_box
+     control_name="RenderSkyAutoAdjustLegacy"
+     height="16"
+     initial_value="true"
+     label="Auto Adjust Legacy Skies"
+     tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles whether legacy (pre PBR without Probe Ambiance) windlights should be automatically adjusted to take advantage of HDR and Tone Mapping."
+     layout="topleft"
+     left="10"
+     name="RenderSkyAutoAdjustLegacy"
+     top_pad="7"
+     width="115" />
+		<slider
+      control_name="RenderSkyAutoAdjustAmbientScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the strength of legacy sky ambient auto adjustments."
+      label="Auto Ambient Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustAmbientScale"
+      top_pad="10" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustAmbientScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAutoAdjustBlueDensityScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the strength of legacy sky blue density auto adjustments."
+      label="Auto Blue Density Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustBlueDensityScale"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustBlueDensityScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAutoAdjustBlueHorizonScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the strength of legacy sky blue horizon auto adjustments."
+      label="Auto Blue Horizon Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustBlueHorizonScale"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustBlueHorizonScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAutoAdjustHDRScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the strength of legacy sky HDR auto adjustments."
+      label="Auto HDR Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustHDRScale"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustHDRScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAutoAdjustProbeAmbiance"
+      decimal_digits="3"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.001"
+      initial_value="1"
+		tool_tip="This option controls the value to use when making automatic adjustments for legacy skies."
+      label="Auto Probe Ambiance:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustProbeAmbiance"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustProbeAmbiance"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAutoAdjustSunColorScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the sun color strength of legacy sky sun color auto adjustments."
+      label="Auto Sun Color Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAutoAdjustSunColorScale"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkyAutoAdjustSunColorScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkySunlightScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the fudge factor for ambient lighting to match pre-PBR Viewers."
+      label="Sunlight Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkySunlightScale"
+      top_pad="2" />
+      <button
+ follows="left|top"
+ control_name="RenderSkySunlightScale"
+ height="14"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderSkyAmbientScale"
+      decimal_digits="2"
+      can_edit_text="true"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="10"
+		tool_tip="This option controls the fudge factor for ambient lighting to match pre-PBR Viewers."
+      label="Sky Ambient Scale:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="10"
+      min_val="0"
+      name="RenderSkyAmbientScale"
+      top_pad="2"/>
+		<button
+ follows="left|top"
+ control_name="RenderSkyAmbientScale"
  height="14"
  is_toggle="false"
  label="⌊default⌉"
