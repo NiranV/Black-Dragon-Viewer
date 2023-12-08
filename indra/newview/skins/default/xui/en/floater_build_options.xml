@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
  legacy_header_height="18"
- height="266"
+ height="316"
  layout="topleft"
  name="build options floater"
  help_topic="build_options_floater"
@@ -180,6 +180,43 @@
       function="BuildTool.toggleSelectSurrounding"/>
  </check_box>
  <check_box
+     control_name="SelectInvisibleObjects"
+     height="16"
+     initial_value="true"
+     label="Select Invisible Objects"
+     layout="topleft"
+     left_delta="0"
+     name="checkbox select invisible"
+     top_pad="0"
+     follows="left|top"
+     width="134" >
+  <check_box.commit_callback
+      function="BuildTool.toggleSelectInvisible"/>
+ </check_box>
+ <check_box
+     control_name="SelectReflectionProbes"
+     height="16"
+     initial_value="true"
+     label="Select Reflection Probes"
+     layout="topleft"
+     left_delta="0"
+     name="checkbox select probes"
+     top_pad="0"
+     follows="left|top"
+     width="134" >
+  <check_box.commit_callback
+      function="BuildTool.toggleSelectProbes"/>
+ </check_box>
+ <view_border
+    bevel_style="none"
+    follows="top|left"
+    height="0"
+    layout="topleft"
+    left="10"
+    name="cost_text_border"
+    top_pad="10"
+    width="200"/>
+ <check_box
      control_name="ShowSelectionBeam"
      height="16"
      initial_value="true"
@@ -187,7 +224,7 @@
      layout="topleft"
      left_delta="0"
      name="checkbox show selection beam"
-     top_pad="0"
+     top_pad="7"
      follows="left|top"
      width="134" />
  <check_box
