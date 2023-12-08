@@ -101,6 +101,9 @@ public:
 
 	static void setGridMode(S32 mode);
 
+	//BD - Next / Previous Element
+	void onSelectElement(LLUICtrl* ctrl, const LLSD& userdata);
+
 	LLPanelFace* getPanelFace() { return mPanelFace; }
 
 private:
