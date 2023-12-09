@@ -84,7 +84,7 @@ Account: [ACCTTYPE]
    
    </layout_stack>
    
-   <icon
+   <thumbnail
        name="2nd_life_pic"
        image_name="Generic_Person_Large"
        layout="topleft"
