@@ -148,8 +148,68 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="1234"
+     height="273"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Screen Space Reflection options to Machinima Sidebar.
+Added: Option to select invisible objects to menu.
+Added: Option to select Reflection Probes to menu.
+Added: Option to select invisible to Build options window.
+Added: Option to select Reflection Probes to Build options window.
+Added: Reimplemented HQ Depth of Field (WIP).
+Added: Option to opt out of automatic legacy sky adjustments.
+Added: Several options to tune automatic sky adjustments.
+Added: Option to change sunlight brightness.
+Changed: Sped up inventory skeleton creation process over a hundred times and prevent the Viewer from completely locking up on some peculiar setups that force some sort of VSync.
+Changed: Version to 5.0.1.
+Fixed: Next/Prev Item buttons in Tools floater not showing/hiding when appropiate.
+Fixed: Land Edit panel in Tools floater not showing up.
+Fixed: Loading screen jumping between 45% and 46% for a second or two when passing.
+Fixed: SSR Distance Bias option not working.
+Fixed: Several SSR sliders not using the correct decimal digit amount.
+Fixed: Crash when opening Texture Picker coming from image selection for an Inventory item/folder.
+Fixed: Next/Previous item buttons in Tools floater not working.
+Fixed: DoF Front Blur option not working.
+Fixed: Profile images not working in Second Life profile window.
+Removed: Lots of options from Machinima Sidebar which are no longer functional.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.0.0
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="1234"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
