@@ -367,17 +367,18 @@
 </panel>-->
 
 <panel
-border="false"
-bevel_style="none"
 follows="left|top|right|bottom"
 height="196"
-label="Atmosphere &amp; Lighting"
+label="Lighting"
 layout="topleft"
 left="0"
 mouse_opaque="false"
 name="panel_settings_sky_atmos"
 top="60"
 width="698">
+<string name="hdr_string">HDR Scale:</string>
+  <string name="brightness_string">Brightness:</string>
+  <string name="hdr_tooltip">Intensity of lightning effects such as realistically bright skies and dynamic exposure. 1.0 is the default, 0 is off, values between 0 and 1 are mixing Ambient with HDR.</string>
     <text
     type="string"
     length="1"
@@ -508,70 +509,7 @@ width="698">
     top_pad="2"
     width="55" />
     
-    <text
-    type="string"
-    length="1"
-    follows="left|top"
-    font="SansSerif"
-    height="16"
-    layout="topleft"
-    left="235"
-    top="91"
-    name="BDensText"
-    width="200">
-    Moisture / Droplet / Ice
-    </text>
-    <slider
-    decimal_digits="3"
-    follows="left|top"
-    height="16"
-    increment="0.001"
-    label_width="8"
-    initial_value="0.25"
-    min_val="0"
-    max_val="1"
-    label="M"
-    layout="topleft"
-    show_text="true"
-    can_edit_text="true"
-    left_delta="0"
-    top_pad="1"
-    name="moisture_level"
-    width="196" />
-    <slider
-    decimal_digits="2"
-    follows="left|top"
-    height="16"
-    increment="0.01"
-    show_text="true"
-    can_edit_text="true"
-    label_width="8"
-    initial_value="0.7"
-    min_val="5"
-    max_val="1000"
-    label="D"
-    layout="topleft"
-    left_delta="0"
-    name="droplet_radius"
-    top_pad="5"
-    width="196" />
-    <slider
-    decimal_digits="3"
-    follows="left|top"
-    height="16"
-    increment="0.001"
-    label_width="8"
-    show_text="true"
-    can_edit_text="true"
-    initial_value="0.7"
-    min_val="0"
-    max_val="1"
-    label="I"
-    layout="topleft"
-    left_delta="0"
-    name="ice_level"
-    top_pad="5"
-    width="196" />
+    
     
     <text
     type="string"
@@ -580,9 +518,9 @@ width="698">
     font="SansSerif"
     height="16"
     layout="topleft"
-    left="470"
+    left="235"
     name="DensMultText"
-    top="7"
+    top="91"
     width="200">
     Density Multiplier
     </text>
@@ -609,9 +547,9 @@ width="698">
     font="SansSerif"
     height="16"
     layout="topleft"
-    left="470"
+    left="235"
     name="WLDistanceMultText"
-    top="49"
+    top="133"
     width="200">
     Distance Multiplier
     </text>
@@ -639,7 +577,7 @@ width="698">
     layout="topleft"
     left="470"
     name="MaxAltText"
-    top="91"
+    top="7"
     width="200">
     Max Altitude
     </text>
@@ -659,6 +597,31 @@ width="698">
     top_pad="1"
     width="196" />
     <text
+    follows="left|top"
+    height="16"
+    layout="topleft"
+    left="470"
+    top="49"
+    tooltip="Irradiance control.  When not zero, enables HDR lighting model."
+    width="200">
+    Reflection Probe Ambiance (HDR):
+    </text>
+    <slider
+    decimal_digits="2"
+    follows="left|top"
+    height="16"
+    increment="0.01"
+    initial_value="0"
+    layout="topleft"
+    left_delta="0"
+    min_val="0"
+    max_val="10"
+    name="probe_ambiance"
+    tool_tip="Intensity of environment based indirect lighting. At zero HDR scale becomes Brightness"
+    top_pad="1"
+    width="196"
+    can_edit_text="true"/>
+    <text
     type="string"
     length="1"
     follows="left|top"
@@ -667,9 +630,9 @@ width="698">
     layout="topleft"
     left="470"
     name="SceneGammaText"
-    top="133"
+    top="91"
     width="200">
-    Scene Gamma
+    Brightness
     </text>
     <slider
     decimal_digits="2"
