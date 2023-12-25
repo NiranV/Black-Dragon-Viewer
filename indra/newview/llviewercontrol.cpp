@@ -859,7 +859,7 @@ static bool handleTerrainScaleChanged(const LLSD& inputvalue)
 {
 	gPipeline.handleReflectionChanges();
 	return true;
-}
+}*/
 
 static bool handleShadowMapsChanged(const LLSD& newvalue)
 {
@@ -867,7 +867,7 @@ static bool handleShadowMapsChanged(const LLSD& newvalue)
 	return true;
 }
 
-static bool handleDepthOfFieldChanged(const LLSD& newvalue)
+/*static bool handleDepthOfFieldChanged(const LLSD& newvalue)
 {
 	BOOL success = gPipeline.sRenderDeferred;
 	return LLViewerShaderMgr::instance()->loadShadersDOF(success);
@@ -910,24 +910,13 @@ static bool handleEnvironmentMapChanged(const LLSD& newvalue)
 	BOOL success = gPipeline.sRenderDeferred;
 	success = LLViewerShaderMgr::instance()->loadShadersSSR(success);
 	return LLViewerShaderMgr::instance()->loadShadersMaterials(success);
-}
+}*/
 
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
-	BOOL success = gPipeline.sRenderDeferred;
-	if (success)
-	{
-		success = LLViewerShaderMgr::instance()->resetDeferredShaders();
-	}
-	success = LLViewerShaderMgr::instance()->loadShadersMaterials(success);
-	success = LLViewerShaderMgr::instance()->loadShadersSSAO(success);
-	success = LLViewerShaderMgr::instance()->loadShadersShadows(success);
-	if (success)
-	{
-		gPipeline.allocateShadowMaps(newvalue);
-	}
-	return success;
-}*/
+	gPipeline.allocateShadowMaps(true);
+	return true;
+}
 
 static bool handleTimeFactorChanged(const LLSD& newvalue)
 {
@@ -1260,8 +1249,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderTerrainScale")->getSignal()->connect(boost::bind(&handleTerrainScaleChanged, _2));
 	//gSavedSettings.getControl("RenderWaterRefResolution")->getSignal()->connect(boost::bind(&handleWaterResolutionChanged, _2));
 	//gSavedSettings.getControl("RenderNormalMapScale")->getSignal()->connect(boost::bind(&handleResetVertexBuffersChanged, _2));
-	//gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
-	//gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
+	gSavedSettings.getControl("RenderProjectorShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
+	gSavedSettings.getControl("RenderShadowResolution")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	gSavedSettings.getControl("RenderDepthOfFieldHighQuality")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredEnvironmentMap")->getSignal()->connect(boost::bind(&handleEnvironmentMapChanged, _2));
 	gSavedSettings.getControl("RenderHighPrecisionNormals")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
@@ -1272,7 +1261,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	//gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
+	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 //	//BD - Motion Blur
