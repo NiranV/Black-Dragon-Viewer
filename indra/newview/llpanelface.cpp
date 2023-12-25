@@ -220,7 +220,7 @@ LLRender::eTexIndex LLPanelFace::getTextureDropChannel()
 {
     if (mComboMatMedia && mComboMatMedia->getCurrentIndex() == MATMEDIA_MATERIAL)
     {
-        LLComboBox* combo_mat_type = getChild<LLComboBox>("combo_material_type");
+        LLComboBox* combo_mat_type = getChild<LLComboBox>("combobox_material_type");
         return LLRender::eTexIndex(combo_mat_type->getCurrentIndex());
     }
 
@@ -650,7 +650,7 @@ struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
 
         // Effectively the same as MATMEDIA_PBR sans using different radio,
         // separate for the sake of clarity
-        LLComboBox * combo_mat_type = mPanel->getChild<LLComboBox>("combo_material_type");
+        LLComboBox * combo_mat_type = mPanel->getChild<LLComboBox>("combobox_material_type");
         switch (combo_mat_type->getCurrentIndex())
         {
         case MATTYPE_DIFFUSE:
@@ -991,7 +991,7 @@ void LLPanelFace::alignTestureLayer()
     bool identical_face = false;
     LLSelectedTE::getFace(last_face, identical_face);
 
-    LLComboBox * combo_mat_type = getChild<LLComboBox>("combo_material_type");
+    LLComboBox * combo_mat_type = getChild<LLComboBox>("combobox_material_type");
     LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(combo_mat_type->getCurrentIndex()));
     LLSelectMgr::getInstance()->getSelection()->applyToTEs(&setfunc);
 }
@@ -1851,7 +1851,7 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
 			mColorSwatch->setFallbackImage(LLUI::getUIImage("locked_image.j2c") );
 			mColorSwatch->setValid(FALSE);
 		}
-		LLComboBox* combo_mat_type = getChild<LLComboBox>("combo_material_type");
+		LLComboBox* combo_mat_type = getChild<LLComboBox>("combobox_material_type");
 		if (combo_mat_type)
 		{
 			combo_mat_type->setCurrentByIndex(0);
