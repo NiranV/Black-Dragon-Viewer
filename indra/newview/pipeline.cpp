@@ -778,11 +778,10 @@ void LLPipeline::requestResizeShadowTexture()
 
 void LLPipeline::resizeShadowTexture()
 {
-	//allocateShadowMaps(false);
-	//releaseShadowTargets();
     releaseSunShadowTargets();
     releaseSpotShadowTargets();
-    allocateShadowBuffer(mRT->width, mRT->height);
+    //allocateShadowBuffer(mRT->width, mRT->height);
+	allocateShadowMaps(true);
     gResizeShadowTexture = FALSE;
 }
 
@@ -964,7 +963,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
     allocateShadowBuffer(resX, resY);
 
 //  //BD - Shadow Map Allocation
-	//allocateShadowMaps(true);
+	allocateShadowMaps(true);
 
 //	//BD - Motion Blur
 	/*if (RenderMotionBlur)
@@ -1018,74 +1017,100 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 inline U32 BlurHappySize(U32 x, F32 scale) { return U32(x * scale + 16.0f) & ~0xF; }
 
 //BD - Shadow Map Allocation
-/*void LLPipeline::allocateShadowMaps(bool allocate)
+void LLPipeline::allocateShadowMaps(bool allocate)
 {
 	LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
 	LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	const U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
 
-	const U32 occlusion_divisor = 3;
-
 	//BD - Go through all shadow maps and either clear them or decide weither we want to
 	//     allocate them (when enabling shadows) or just resize them (when changing shadow
 	//     resolution) and which.
-	for (U32 i = 0; i < 6; i++)
+	if (shadow_detail > 0)
 	{
-		if ((shadow_detail > 0 && i < 4)
-			|| (shadow_detail > 1 && i > 3))
+		for (U32 i = 0; i < 4; i++)
 		{
 			if (i < 4)
 			{
 				//BD - Shadowmap mismatch.
-				if (U32(scale.mV[i]) != mShadow[i].getWidth())
+				if (U32(scale.mV[i]) != mRT->shadow[i].getWidth())
 				{
 					if (allocate)
 					{
 						//BD - Now reallocate the released map with the new resolution.
-						mShadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+						if (mRT->shadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, true))
+						{
+							LLRenderTarget* shadow_target = getSunShadowTarget(i);
+							if (shadow_target)
+							{
+								gGL.getTexUnit(0)->bind(getSunShadowTarget(i), TRUE);
+								gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
+								gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
 
-						mShadowOcclusion[i].allocate(U32(scale.mV[i]) / occlusion_divisor, U32(scale.mV[i]) / occlusion_divisor, 0, TRUE, FALSE, LLTexUnit::TT_TEXTURE);
+								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+							}
+						}
 					}
 					else
 					{
 						//BD - Resizing it should be sufficient.
-						mShadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
-
-						mShadowOcclusion[i].resize(U32(scale.mV[i]) / occlusion_divisor, U32(scale.mV[i]) / occlusion_divisor);
+						mRT->shadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
 					}
 				}
 			}
-			else
-			{
-				//BD - Projector Shadows mismatched.
-				if (U32(proj_scale.mV[i - 4]) != mShadow[i].getWidth())
-				{
-					if (allocate)
-					{
-						//BD - Now reallocate the released map with the new resolution.
-						mShadow[i].allocate(U32(proj_scale.mV[i - 4]), U32(proj_scale.mV[i - 4]), 0, TRUE, FALSE);
-
-						mShadowOcclusion[i].allocate(U32(proj_scale.mV[i - 4]) / occlusion_divisor, U32(proj_scale.mV[i - 4]) / occlusion_divisor, 0, TRUE, FALSE);
-					}
-					else
-					{
-						//BD - Resizing it should be sufficient.
-						mShadow[i].resize(U32(proj_scale.mV[i - 4]), U32(proj_scale.mV[i - 4]));
-
-						mShadowOcclusion[i].resize(U32(proj_scale.mV[i - 4]) / occlusion_divisor, U32(proj_scale.mV[i - 4]) / occlusion_divisor);
-					}
-				}
-			}
-		}
-		else
-		{
-			//BD - Flush all shadowmaps.
-			mShadow[i].release();
-
-			mShadowOcclusion[i].release();
 		}
 	}
-}*/
+	else
+	{
+		//BD - Flush all shadowmaps.
+		//releaseSunShadowTarget(0);
+		//releaseSunShadowTarget(1);
+		//releaseSunShadowTarget(2);
+		//releaseSunShadowTarget(3);
+	}
+
+	if (shadow_detail > 1)
+	{
+		for (U32 i = 0; i < 2; i++)
+		{
+			if (!gCubeSnapshot)
+			{
+				//BD - Projector Shadows mismatched.
+				if (U32(proj_scale.mV[i]) != mSpotShadow[i].getWidth())
+				{
+					if (allocate)
+					{
+						//BD - Now reallocate the released map with the new resolution.
+						if (mSpotShadow[i].allocate(U32(proj_scale.mV[i]), U32(proj_scale.mV[i]), 0, true))
+						{
+							LLRenderTarget* shadow_target = getSpotShadowTarget(i);
+							if (shadow_target)
+							{
+								gGL.getTexUnit(0)->bind(shadow_target, TRUE);
+								gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
+								gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
+
+								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+							}
+						}
+					}
+					else
+					{
+						//BD - Resizing it should be sufficient.
+						mSpotShadow[i].resize(U32(proj_scale.mV[i]), U32(proj_scale.mV[i]));
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		//BD - Flush all shadowmaps.
+		releaseSpotShadowTargets();
+	}
+}
 
 bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
 {
