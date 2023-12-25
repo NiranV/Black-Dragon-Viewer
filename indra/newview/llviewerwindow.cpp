@@ -2083,6 +2083,9 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 
 	//BD
 	gDragonLibrary.initializeControls();
+
+	//BD - Borderless Window Mode
+	mWindow->setFullscreenWindow(gSavedSettings.getBOOL("FullScreenWindow"));
 }
 
 std::string LLViewerWindow::getLastSnapshotDir()
