@@ -148,8 +148,53 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="273"
+     height="78"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Missing HDR options to the Sky Editor.
+Changed: Version to 5.0.2.
+Removed: ImagePipelineUseHTTP debug setting and forced it to on to prevent texture loading issues for some people.
+Fixed: Shadow Resolution options not working.
+Fixed: Borderless Window mode not staying past sessions.
+Fixed: Build texture control spinners breaking and resetting to 0 scale at all times.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.0.1
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="273"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
