@@ -4,7 +4,7 @@
   can_dock="false"
   can_minimize="false"
   can_resize="false"
-  height="252"
+  height="272"
   layout="topleft"
   legacy_header_height="18"
   name="Toybox"
