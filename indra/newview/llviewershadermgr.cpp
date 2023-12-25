@@ -227,6 +227,10 @@ LLGLSLShader            gDeferredSkinnedPBRAlphaProgram;
 LLGLSLShader            gDeferredPBRAlphaWaterProgram;
 LLGLSLShader            gDeferredSkinnedPBRAlphaWaterProgram;
 
+//BD - Volumetric Lighting
+LLGLSLShader			gVolumetricLightProgram;
+
+
 //helper for making a rigged variant of a given shader
 bool make_rigged_variant(LLGLSLShader& shader, LLGLSLShader& riggedShader)
 {
@@ -305,7 +309,8 @@ LLViewerShaderMgr::LLViewerShaderMgr() :
     mShaderList.push_back(&gDeferredPostGammaCorrectProgram); // for gamma
     mShaderList.push_back(&gNoPostGammaCorrectProgram);
     mShaderList.push_back(&gLegacyPostGammaCorrectProgram);
-
+//	//BD - Volumetric Lighting
+	mShaderList.push_back(&gVolumetricLightProgram);
 }
 
 LLViewerShaderMgr::~LLViewerShaderMgr()
@@ -995,6 +1000,9 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
         gDeferredSkinnedPBRAlphaProgram.unload();
         gDeferredPBRAlphaWaterProgram.unload();
         gDeferredSkinnedPBRAlphaWaterProgram.unload();
+
+//		//BD - Volumetric Lighting
+		gVolumetricLightProgram.unload();
 
 		return TRUE;
 	}
@@ -2458,6 +2466,21 @@ BOOL LLViewerShaderMgr::loadShadersDeferred()
 		success = gDeferredPostProgram.createShader(NULL, NULL);
 		llassert(success);
 	}
+
+//	//BD - Volumetric Lighting
+	/*if (success)
+	{
+		gVolumetricLightProgram.mName = "Volumetric Light Shader";
+		gVolumetricLightProgram.mShaderFiles.clear();
+		gVolumetricLightProgram.mFeatures.isDeferred = true;
+		gVolumetricLightProgram.mFeatures.hasAtmospherics = true;
+		gVolumetricLightProgram.mFeatures.hasShadows = true;
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
+		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER));
+		gVolumetricLightProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
+		success = gVolumetricLightProgram.createShader(NULL, NULL);
+		llassert(success);
+	}*/
 
 	if (success)
 	{

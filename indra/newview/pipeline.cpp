@@ -7760,6 +7760,37 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 	}
 }
 
+//BD - Volumetric Lighting
+void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
+{
+//	//BD - Volumetric Lighting
+	if (RenderShadowDetail
+		&& RenderGodrays)
+	{
+		dst->bindTarget();
+		//mRT->screen.bindTarget();
+
+		gVolumetricLightProgram.bind();
+		gVolumetricLightProgram.bindTexture(LLShaderMgr::DEFERRED_DIFFUSE, src, LLTexUnit::TFO_POINT);
+		gVolumetricLightProgram.bindTexture(LLShaderMgr::DEFERRED_LIGHT, &mRT->deferredLight, LLTexUnit::TFO_POINT);
+
+		gVolumetricLightProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, dst->getWidth(), dst->getHeight());
+		//gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_MAX_COF, CameraMaxCoF);
+		//gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_RES_SCALE, CameraDoFResScale);
+		gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_RES_SCALE, RenderDepthOfField ? CameraDoFResScale : 1.0f);
+
+		mScreenTriangleVB->setBuffer();
+		mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
+
+		gVolumetricLightProgram.unbind();
+		//mRT->deferredLight.flush();
+		dst->flush();
+
+		//src->flush();
+		//gGL.setColorMask(true, true);
+	}
+}
+
 void LLPipeline::renderFinalize()
 {
     llassert(!gCubeSnapshot);
@@ -7803,6 +7834,8 @@ void LLPipeline::renderFinalize()
 	glViewport(gGLViewport[0], gGLViewport[1], gGLViewport[2], gGLViewport[3]);
 
 	renderDoF(&mRT->screen, &mPostMap);
+
+	//renderVolumetric(&mRT->screen, &mPostMap);
 
 	applyFXAA(&mPostMap, &mRT->screen);
 	LLRenderTarget* finalBuffer = &mRT->screen;

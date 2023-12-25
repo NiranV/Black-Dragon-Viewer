@@ -166,6 +166,9 @@ public:
 	void combineGlow(LLRenderTarget* src, LLRenderTarget* dst);
 	void visualizeBuffers(LLRenderTarget* src, LLRenderTarget* dst, U32 bufferIndex);
 
+	//BD - Volumetric Lighting
+	void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
+
 	void init();
 	void cleanup();
 	bool isInit() { return mInitialized; };

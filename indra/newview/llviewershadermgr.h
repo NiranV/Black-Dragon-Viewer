@@ -279,4 +279,8 @@ extern LLGLSLShader         gDeferredPBROpaqueProgram;
 extern LLGLSLShader         gDeferredPBRAlphaProgram;
 extern LLGLSLShader         gDeferredPBRAlphaWaterProgram;
 extern LLGLSLShader         gHUDPBRAlphaProgram;
+
+//BD - Volumetric Lighting
+extern LLGLSLShader			gVolumetricLightProgram;
+
 #endif
