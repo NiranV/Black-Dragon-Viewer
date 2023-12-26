@@ -914,7 +914,7 @@ static bool handleEnvironmentMapChanged(const LLSD& newvalue)
 
 static bool handleShadowsChanged(const LLSD& newvalue)
 {
-	gPipeline.allocateShadowMaps(true);
+	gPipeline.allocateShadowMaps(false);
 	return true;
 }
 
