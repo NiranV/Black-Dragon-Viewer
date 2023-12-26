@@ -101,7 +101,7 @@ void main()
 			}
 		}
 		else if (sc < -0.5)
-#elseif
+#else
 		if (sc < -0.5)
 #endif
 		{
