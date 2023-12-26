@@ -4373,7 +4373,7 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">5.0.2</string>
+	<string name="VIEWER_VERSION_LOCAL">5.0.3</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Probing Dragon</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
