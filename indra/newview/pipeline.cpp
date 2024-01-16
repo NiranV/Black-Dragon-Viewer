@@ -780,8 +780,7 @@ void LLPipeline::resizeShadowTexture()
 {
     releaseSunShadowTargets();
     releaseSpotShadowTargets();
-    //allocateShadowBuffer(mRT->width, mRT->height);
-	allocateShadowMaps(true);
+    allocateShadowBuffer();
     gResizeShadowTexture = FALSE;
 }
 
@@ -959,11 +958,7 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 	{
 		mRT->deferredLight.release();
 	}
-
-    allocateShadowBuffer(resX, resY);
-
-//  //BD - Shadow Map Allocation
-	allocateShadowMaps(true);
+    allocateShadowBuffer();
 
 //	//BD - Motion Blur
 	/*if (RenderMotionBlur)
@@ -1016,116 +1011,16 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 // must be even to avoid a stripe in the horizontal shadow blur
 inline U32 BlurHappySize(U32 x, F32 scale) { return U32(x * scale + 16.0f) & ~0xF; }
 
-//BD - Shadow Map Allocation
-void LLPipeline::allocateShadowMaps(bool allocate)
-{
-	if (!mRT)
-		return;
-
-	LLVector4 scale = gSavedSettings.getVector4("RenderShadowResolution");
-	LLVector2 proj_scale = gSavedSettings.getVector2("RenderProjectorShadowResolution");
-	const U32 shadow_detail = gSavedSettings.getS32("RenderShadowDetail");
-
-	//BD - Go through all shadow maps and either clear them or decide weither we want to
-	//     allocate them (when enabling shadows) or just resize them (when changing shadow
-	//     resolution) and which.
-	if (shadow_detail > 0)
-	{
-		for (U32 i = 0; i < 4; i++)
-		{
-			//BD - Shadowmap mismatch.
-			if (U32(scale.mV[i]) != mRT->shadow[i].getWidth())
-			{
-				if (allocate)
-				{
-					//BD - Now reallocate the released map with the new resolution.
-					if (mRT->shadow[i].allocate(U32(scale.mV[i]), U32(scale.mV[i]), 0, true))
-					{
-						LLRenderTarget* shadow_target = getSunShadowTarget(i);
-						if (shadow_target)
-						{
-							gGL.getTexUnit(0)->bind(getSunShadowTarget(i), TRUE);
-							gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
-							gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
-
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-							glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-						}
-					}
-				}
-				else
-				{
-					//BD - Resizing it should be sufficient.
-					mRT->shadow[i].resize(U32(scale.mV[i]), U32(scale.mV[i]));
-				}
-			}
-		}
-	}
-	else
-	{
-		//BD - Flush all shadowmaps.
-		for (U32 i = 0; i < 4; i++)
-		{
-			releaseSunShadowTarget(i);
-		}
-	}
-
-	if (shadow_detail > 1)
-	{
-		for (U32 i = 0; i < 2; i++)
-		{
-			if (!gCubeSnapshot)
-			{
-				//BD - Projector Shadows mismatched.
-				if (U32(proj_scale.mV[i]) != mSpotShadow[i].getWidth())
-				{
-					if (allocate)
-					{
-						//BD - Now reallocate the released map with the new resolution.
-						if (mSpotShadow[i].allocate(U32(proj_scale.mV[i]), U32(proj_scale.mV[i]), 0, true))
-						{
-							LLRenderTarget* shadow_target = getSpotShadowTarget(i);
-							if (shadow_target)
-							{
-								gGL.getTexUnit(0)->bind(shadow_target, TRUE);
-								gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
-								gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
-
-								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-								glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-							}
-						}
-					}
-					else
-					{
-						//BD - Resizing it should be sufficient.
-						mSpotShadow[i].resize(U32(proj_scale.mV[i]), U32(proj_scale.mV[i]));
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		//BD - Flush all shadowmaps.
-		releaseSpotShadowTargets();
-	}
-}
-
-bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
+bool LLPipeline::allocateShadowBuffer()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DISPLAY;
     S32 shadow_detail = RenderShadowDetail;
-
-    F32 scale = llmax(0.f, RenderShadowResolutionScale);
-    U32 sun_shadow_map_width = BlurHappySize(resX, scale);
-    U32 sun_shadow_map_height = BlurHappySize(resY, scale);
 
     if (shadow_detail > 0)
     { //allocate 4 sun shadow maps
         for (U32 i = 0; i < 4; i++)
         {
-            if (!mRT->shadow[i].allocate(sun_shadow_map_width, sun_shadow_map_height, 0, true))
+            if (!mRT->shadow[i].allocate(RenderShadowResolution.mV[i], RenderShadowResolution.mV[i], 0, true))
             {
                 return false;
             }
@@ -1141,16 +1036,11 @@ bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
 
     if (!gCubeSnapshot) // hack to not allocate spot shadow maps during ReflectionMapManager init
     {
-        U32 width = (U32)(resX * scale);
-        U32 height = width;
-
         if (shadow_detail > 1)
         { //allocate two spot shadow maps
-            U32 spot_shadow_map_width = width;
-            U32 spot_shadow_map_height = height;
             for (U32 i = 0; i < 2; i++)
             {
-                if (!mSpotShadow[i].allocate(spot_shadow_map_width, spot_shadow_map_height, 0, true))
+                if (!mSpotShadow[i].allocate(RenderProjectorShadowResolution.mV[i], RenderProjectorShadowResolution.mV[i], 0, true))
                 {
                     return false;
                 }
@@ -7761,7 +7651,7 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 }
 
 //BD - Volumetric Lighting
-void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
+/*void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
 {
 //	//BD - Volumetric Lighting
 	if (RenderShadowDetail
@@ -7789,7 +7679,7 @@ void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
 		//src->flush();
 		//gGL.setColorMask(true, true);
 	}
-}
+}*/
 
 void LLPipeline::renderFinalize()
 {

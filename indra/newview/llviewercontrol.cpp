@@ -863,8 +863,13 @@ static bool handleTerrainScaleChanged(const LLSD& inputvalue)
 
 static bool handleShadowMapsChanged(const LLSD& newvalue)
 {
-	gPipeline.allocateShadowMaps(false);
-	return true;
+	if (STATE_STARTED == LLStartUp::getStartupState())
+	{
+		gPipeline.allocateShadowBuffer();
+		return true;
+	}
+	else
+		return false;
 }
 
 /*static bool handleDepthOfFieldChanged(const LLSD& newvalue)
@@ -911,12 +916,6 @@ static bool handleEnvironmentMapChanged(const LLSD& newvalue)
 	success = LLViewerShaderMgr::instance()->loadShadersSSR(success);
 	return LLViewerShaderMgr::instance()->loadShadersMaterials(success);
 }*/
-
-static bool handleShadowsChanged(const LLSD& newvalue)
-{
-	gPipeline.allocateShadowMaps(false);
-	return true;
-}
 
 static bool handleTimeFactorChanged(const LLSD& newvalue)
 {
@@ -1261,7 +1260,7 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderGodrays")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleBlurLightChanged, _2));
 	gSavedSettings.getControl("RenderDeferredBlurLight")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
-	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowsChanged, _2));
+	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
 //	//BD - Motion Blur

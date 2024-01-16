@@ -98,9 +98,6 @@ public:
 	//BD - Change water reflection resolution on the way.
 	void handleReflectionChanges();
 
-//	//BD - Shadow Map Allocation
-	void allocateShadowMaps(bool allocate = false);
-
 	void destroyGL();
 	void restoreGL();
 	void requestResizeScreenTexture(); // set flag only, no work, safer for callbacks...
@@ -135,7 +132,7 @@ public:
 	//attempt to allocate screen buffers at resX, resY
 	//returns true if allocation successful, false otherwise
 	bool allocateScreenBuffer(U32 resX, U32 resY, U32 samples);
-	bool allocateShadowBuffer(U32 resX, U32 resY);
+	bool allocateShadowBuffer();
 
     // rebuild all LLVOVolume render batches
     void rebuildDrawInfo();
@@ -167,7 +164,7 @@ public:
 	void visualizeBuffers(LLRenderTarget* src, LLRenderTarget* dst, U32 bufferIndex);
 
 	//BD - Volumetric Lighting
-	void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
+	//void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
 
 	void init();
 	void cleanup();
