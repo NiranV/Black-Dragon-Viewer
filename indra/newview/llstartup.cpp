@@ -1771,7 +1771,7 @@ bool idle_startup()
 	if (STATE_AGENT_WAIT == LLStartUp::getStartupState())
 	{
 		{
-			set_startup_status(0.45f, 1.f, LLTrans::getString("AgentWait"), "");
+			set_startup_status(0.45f, 1.f, LLTrans::getString("AgentWait"), "Processing Messages");
 			display_startup();
 			LockMessageChecker lmc(gMessageSystem);
 			while (lmc.checkAllMessages(gFrameCount, gServicePump))
@@ -1789,18 +1789,17 @@ bool idle_startup()
 					/*// _LL_DEBUGS("AppInit") << "Awaiting AvatarInitComplete, got "
 										 << gMessageSystem->getMessageName() << LL_ENDL;*/
 				}
-				set_startup_status(0.46f, 1.f, LLTrans::getString("AgentWait"), "");
-				display_startup();
 			}
 			lmc.processAcks();
 		}
+
+		set_startup_status(0.46f, 1.f, LLTrans::getString("AgentWait"), "");
 		display_startup();
 
 		if (gAgentMovementCompleted)
 		{
 			LLStartUp::setStartupState( STATE_INVENTORY_SEND );
 		}
-		display_startup();
 
 		if (!gAgentMovementCompleted && timeout.getElapsedTimeF32() > STATE_AGENT_WAIT_TIMEOUT)
 		{
@@ -1823,9 +1822,8 @@ bool idle_startup()
 	//---------------------------------------------------------------------
 	if (STATE_INVENTORY_SEND == LLStartUp::getStartupState())
 	{
-		display_startup();
-
 		set_startup_status(0.47f, 1.f, LLTrans::getString("InventorySend"), "Requesting Mute List");
+		display_startup();
         // request mute list
         LL_INFOS() << "Requesting Mute List" << LL_ENDL;
         LLMuteList::getInstance()->requestFromServer(gAgent.getID());
@@ -1835,7 +1833,6 @@ bool idle_startup()
         LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
 		//BD
 		LLSidepanelInventory::sendMoneyBalanceRequest();
-
         display_startup();
 
 		// Inform simulator of our language preference
@@ -2158,7 +2155,6 @@ bool idle_startup()
 		//display_startup();
 		// JC: Initializing audio requests many sounds for download.
 		init_audio();
-		display_startup();
 
 		set_startup_status(0.72f, 1.f, LLTrans::getString("Misc"), "Initializing Gestures");
 		display_startup();
@@ -2309,13 +2305,9 @@ bool idle_startup()
 		// compute appearance from that.
 		if (isAgentAvatarValid() && !gAgent.isFirstLogin() && !gAgent.isOutfitChosen())
 		{
-			display_startup();
 			gAgentWearables.notifyLoadingStarted();
-			display_startup();
 			gAgent.setOutfitChosen(TRUE);
-			display_startup();
 			gAgentWearables.sendDummyAgentWearablesUpdate();
-			display_startup();
             callAfterCOFFetch(set_flags_and_update_appearance);
 		}
 
@@ -2405,7 +2397,6 @@ bool idle_startup()
 		}
 		else
 		{
-			display_startup();
 			// OK to just get the wearables
 			if ( gAgentWearables.areWearablesLoaded() )
 			{

@@ -3505,7 +3505,6 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 	}
 	
 	//BD - Inventory Progress
-	display_startup();
 	file.seekg(0, std::ios::end);
 	F32 perc = 0.0f;
 	S32 perc_c = 0;
@@ -3526,7 +3525,6 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 		perc = (F64)read / (F64)file_size;
 		temp_text.setArg("[COUNT]", llformat("%d", perc_c));
 		set_startup_status(-0.01f ,perc, meta_text, temp_text);
-		//display_startup();
 
 		LLSD s_item;
 		std::istringstream iss(line);
@@ -3559,15 +3557,9 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 			if (is_cache_obsolete)
 				break;
 
-			//BD - Inventory Progress
-			//display_startup();
-
 			LLPointer<LLViewerInventoryCategory> inv_cat = new LLViewerInventoryCategory(LLUUID::null);
 			if(inv_cat->importLLSD(s_item))
 			{
-				//BD - Inventory Progress
-				//display_startup();
-
 				categories.push_back(inv_cat);
 			}
 		}
@@ -3576,15 +3568,9 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 			if (is_cache_obsolete)
 				break;
 
-			//BD - Inventory Progress
-			//display_startup();
-
 			LLPointer<LLViewerInventoryItem> inv_item = new LLViewerInventoryItem;
 			if( inv_item->fromLLSD(s_item) )
 			{
-				//BD - Inventory Progress
-				display_startup();
-
 				if(inv_item->getUUID().isNull())
 				{
 					LL_WARNS(LOG_INV) << "Ignoring inventory with null item id: "
@@ -3700,31 +3686,24 @@ void LLInventoryModel::registerCallbacks(LLMessageSystem* msg)
 	//msg->setHandlerFuncFast(_PREHASH_UseCachedInventory,
 	//					processUseCachedInventory,
 	//					NULL);
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_UpdateCreateInventoryItem,
 						processUpdateCreateInventoryItem,
 						NULL);
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryItem,
 						processRemoveInventoryItem,
 						NULL);
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryFolder,
 						processRemoveInventoryFolder,
 						NULL);
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_RemoveInventoryObjects,
 							processRemoveInventoryObjects,
 							NULL);	
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_SaveAssetIntoInventory,
 						processSaveAssetIntoInventory,
 						NULL);
-	//display_startup();
 	msg->setHandlerFuncFast(_PREHASH_BulkUpdateInventory,
 							processBulkUpdateInventory,
 							NULL);
-	//display_startup();
 	msg->setHandlerFunc("MoveInventoryItem", processMoveInventoryItem);
 }
 
