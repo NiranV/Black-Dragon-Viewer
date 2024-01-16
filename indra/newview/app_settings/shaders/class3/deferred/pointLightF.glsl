@@ -50,6 +50,9 @@ uniform vec2 screen_res;
 uniform mat4 inv_proj;
 uniform vec4 viewport;
 
+//BD
+uniform float global_light_strength;
+
 void calcHalfVectors(vec3 lv, vec3 n, vec3 v, out vec3 h, out vec3 l, out float nh, out float nl, out float nv, out float vh, out float lightDist);
 float calcLegacyDistanceAttenuation(float distance, float falloff);
 vec4 getNormalEnvIntensityFlags(vec2 screenpos, out vec3 n, out float envIntensity);
@@ -143,6 +146,9 @@ void main()
             discard;
         }
     }
+
+    //BD
+    final_color *= global_light_strength;
 
     frag_color.rgb = max(final_color, vec3(0));
     frag_color.a = 0.0;

@@ -69,6 +69,9 @@ uniform vec2 screen_res;
 
 uniform mat4 inv_proj;
 
+//BD
+uniform float global_light_strength;
+
 void calcHalfVectors(vec3 lv, vec3 n, vec3 v, out vec3 h, out vec3 l, out float nh, out float nl, out float nv, out float vh, out float lightDist);
 float calcLegacyDistanceAttenuation(float distance, float falloff);
 bool clipProjectedLightVars(vec3 center, vec3 pos, out float dist, out float l_dist, out vec3 lv, out vec4 proj_tc );
@@ -260,6 +263,9 @@ void main()
 
     //not sure why, but this line prevents MATBUG-194
     final_color = max(final_color, vec3(0.0));
+
+    //BD
+    final_color *= global_light_strength;
 
     //output linear
     frag_color.rgb = final_color;
