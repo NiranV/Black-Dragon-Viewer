@@ -272,7 +272,9 @@ void LLFloaterFixedEnvironment::populatePresetsList()
 	gDragonLibrary.addInventoryPresets(mTxtName, mSettings);
 
     // teach user about HDR settings
-    if (mSettings && ((LLSettingsSky*)mSettings.get())->canAutoAdjust())
+    if (mSettings
+        && mSettings->getSettingsType() == "sky"
+        && ((LLSettingsSky*)mSettings.get())->canAutoAdjust())
     {
         LLNotificationsUtil::add("AutoAdjustHDRSky");
     }

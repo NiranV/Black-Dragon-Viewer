@@ -28,11 +28,12 @@
 #define LL_LLVIEWERINPUT_H
 
 #include "llkeyboard.h" // For EKeystate
-#include "llinitparam.h"
 
 const S32 MAX_KEY_BINDINGS = 128; // was 60
 const S32 keybindings_xml_version = 1;
 const std::string script_mouse_handler_name = "script_trigger_lbutton";
+
+class LLWindow;
 
 class LLNamedFunction
 {
@@ -51,7 +52,9 @@ public:
 	EMouseClickType	mMouse;
 	MASK			mMask;
 
-	LLKeyFunc		mFunction;
+    LLKeyFunc		mFunction;
+    std::string     mFunctionName;
+>>>>>>> Linden_Release/main
 };
 
 class LLMouseBinding
@@ -60,7 +63,9 @@ public:
 	EMouseClickType	mMouse;
 	MASK			mMask;
 
-	LLKeyFunc		mFunction;
+    LLKeyFunc		mFunction;
+    std::string     mFunctionName;
+>>>>>>> Linden_Release/main
 };
 
 
@@ -74,11 +79,7 @@ typedef enum e_keyboard_mode
 	MODE_COUNT
 } EKeyboardMode;
 
-class LLWindow;
-
-void bind_keyboard_functions();
-
-class LLViewerInput
+class LLViewerInput : public LLKeyBindingToStringHandler
 {
 public:
 	struct KeyBinding : public LLInitParam::Block<KeyBinding>
@@ -110,14 +111,15 @@ public:
 	};
 
 	LLViewerInput();
+    virtual ~LLViewerInput();
 
 	BOOL			handleKey(KEY key, MASK mask, BOOL repeated);
 	BOOL			handleKeyUp(KEY key, MASK mask);
 
 	EKeyboardMode	getMode() const;
 
-	static BOOL		modeFromString(const std::string& string, S32 *mode);			// False on failure
-	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode, bool translate = false);// False on failure
+	static bool		modeFromString(const std::string& string, S32 *mode);			// False on failure
+	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode);// False on failure
 
 //	//BD - Custom Keyboard Layout
 	std::string		stringFromMouse(EMouseClickType click, bool translate);
@@ -139,6 +141,10 @@ public:
 
 	BOOL			bindControl(const S32 mode, const KEY key, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
 	BOOL			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
+
+    // inherited from LLKeyBindingToStringHandler
+    virtual std::string getKeyBindingAsString(const std::string& mode, const std::string& control) const override;
+
 private:
 	bool            scanKey(const std::vector<LLKeyboardBinding> &binding,
 		S32 binding_count,

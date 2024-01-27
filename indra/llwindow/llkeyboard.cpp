@@ -368,6 +368,45 @@ std::string LLKeyboard::stringFromKey(KEY key, bool translate)
 }
 
 //static
+std::string LLKeyboard::stringFromMouse(EMouseClickType click, bool translate)
+{
+    std::string res;
+    switch (click)
+    {
+        case CLICK_LEFT:
+            res = "LMB";
+            break;
+        case CLICK_MIDDLE:
+            res = "MMB";
+            break;
+        case CLICK_RIGHT:
+            res = "RMB";
+            break;
+        case CLICK_BUTTON4:
+            res = "MB4";
+            break;
+        case CLICK_BUTTON5:
+            res = "MB5";
+            break;
+        case CLICK_DOUBLELEFT:
+            res = "Double LMB";
+            break;
+        default:
+            break;
+    }
+
+    if (translate && !res.empty())
+    {
+        LLKeyStringTranslatorFunc* trans = gKeyboard->mStringTranslator;
+        if (trans != NULL)
+        {
+            res = trans(res.c_str());
+        }
+    }
+    return res;
+}
+
+//static
 std::string LLKeyboard::stringFromAccelerator(MASK accel_mask)
 {
     std::string res;
@@ -479,6 +518,19 @@ std::string LLKeyboard::stringFromMask(MASK mask, bool for_ui)
 	}
 
 	return res;
+}
+
+//static
+std::string LLKeyboard::stringFromAccelerator(MASK accel_mask, EMouseClickType click)
+{
+    std::string res;
+    if (CLICK_NONE == click)
+    {
+        return res;
+    }
+    res.append(stringFromAccelerator(accel_mask));
+    res.append(stringFromMouse(click));
+    return res;
 }
 
 //static

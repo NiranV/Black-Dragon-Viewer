@@ -1118,13 +1118,49 @@ protected:
 	LLFloaterPreference* mFloaterSettings;
 };
 
+// handle secondlife:///app/worldmap/{NAME}/{COORDS} URLs
+// Also see LLUrlEntryKeybinding, the value of this command type
+// is ability to show up to date value in chat
+class LLKeybindingHandler: public LLCommandHandler
+{
+public:
+    // requires trusted browser to trigger
+    LLKeybindingHandler(): LLCommandHandler("keybinding", UNTRUSTED_CLICK_ONLY)
+    {
+    }
+
+    bool handle(const LLSD& params, const LLSD& query_map,
+                const std::string& grid, LLMediaCtrl* web)
+    {
+        if (params.size() < 1) return false;
+
+        LLFloaterPreference* prefsfloater = dynamic_cast<LLFloaterPreference*>
+            (LLFloaterReg::showInstance("preferences"));
+
+        if (prefsfloater)
+        {
+            // find 'controls' panel and bring it the front
+            LLTabContainer* tabcontainer = prefsfloater->getChild<LLTabContainer>("pref core");
+            LLPanel* panel = prefsfloater->getChild<LLPanel>("controls");
+            if (tabcontainer && panel)
+            {
+                tabcontainer->selectTabPanel(panel);
+            }
+        }
+
+        return true;
+    }
+};
+LLKeybindingHandler gKeybindHandler;
+
 class LLAvatarRenderMuteListObserver : public LLMuteListObserver
 {
-//	//BD - Multithreading Experiments
-	/* virtual */ void onChange()  { LLFloaterPreference::triggerUpdate(); }
+	//	//BD - Multithreading Experiments
+	/* virtual */ void onChange() { LLFloaterPreference::triggerUpdate(); }
 };
 
 static LLAvatarRenderMuteListObserver sAvatarRenderMuteListObserver;
+
 
 LLFloaterPreference::LLFloaterPreference(const LLSD& key)
 	: LLFloater(key),

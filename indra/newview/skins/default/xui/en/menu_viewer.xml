@@ -1284,7 +1284,6 @@
                      function="ToggleControl"
                      parameter="ShowSelectionBeam" />
                 </menu_item_check>
-
         <menu_item_separator/>
 
                 <menu_item_check
@@ -1761,6 +1760,15 @@
                  function="View.HighlightTransparent" />
             </menu_item_check>
             <menu_item_check
+            label="No Post-processing"
+            name="No Post">
+            <menu_item_check.on_check
+             control="RenderDisablePostProcessing" />
+            <menu_item_check.on_click
+             function="ToggleControl"
+             parameter="RenderDisablePostProcessing" />
+          </menu_item_check>
+            <menu_item_check
              label="Show Mouselook Crosshairs"
              name="ShowCrosshairs">
                 <menu_item_check.on_check
@@ -2023,6 +2031,16 @@
                 <menu_item_check.on_click
                  function="Advanced.ToggleRenderType"
                  parameter="fullbright_shiny" />
+            </menu_item_check>
+            <menu_item_check
+             label="PBR"
+             name="Rendering Type PBR">
+                <menu_item_check.on_check
+                 function="Advanced.CheckRenderType"
+                 parameter="pbr" />
+                <menu_item_check.on_click
+                 function="Advanced.ToggleRenderType"
+                 parameter="pbr" />
             </menu_item_check>
         </menu>
         <menu
@@ -2648,8 +2666,18 @@
            parameter="build queue" />
         </menu_item_check>
         <menu_item_check
-         label="Lights"
-         name="Lights">
+         label="Probe Updates"
+         name="Probe Updates">
+          <menu_item_check.on_check
+           function="Advanced.CheckInfoDisplay"
+           parameter="probe updates" />
+          <menu_item_check.on_click
+           function="Advanced.ToggleInfoDisplay"
+           parameter="probe updates" />
+        </menu_item_check>
+        <menu_item_check
+        label="Lights"
+        name="Lights">
           <menu_item_check.on_check
            function="Advanced.CheckInfoDisplay"
            parameter="lights" />

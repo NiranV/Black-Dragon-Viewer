@@ -391,6 +391,20 @@ void LLSnapshotLivePreview::generateThumbnailImage(BOOL force_update)
             raw = NULL ;
         }
     }
+    else
+    {
+        // The thumbnail is a screen view with screen grab positioning preview
+        if(!gViewerWindow->thumbnailSnapshot(raw,
+                                         mThumbnailWidth, mThumbnailHeight,
+                                         mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
+                                         gSavedSettings.getBOOL("RenderHUDInSnapshot"),
+                                         FALSE,
+                                         gSavedSettings.getBOOL("RenderSnapshotNoPost"),
+                                         mSnapshotBufferType) )
+        {
+            raw = NULL ;
+        }
+    }
     
 	if (raw)
 	{
@@ -519,21 +533,28 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 				previewp->getHeight(),
 				previewp->mKeepAspectRatio,//gSavedSettings.getBOOL("KeepAspectForSnapshot"),
                 previewp->getSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE,
-				previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
-				gSavedSettings.getBOOL("RenderHUDInSnapshot"),
-				FALSE,
-				previewp->mSnapshotBufferType,
-				previewp->getMaxImageSize()))
-		{
-			// Invalidate/delete any existing encoded image
-			previewp->mPreviewImageEncoded = NULL;
-			// Invalidate/delete any existing formatted image
-			previewp->mFormattedImage = NULL;
-			// Update the data size
-			previewp->estimateDataSize();
+                previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
+                gSavedSettings.getBOOL("RenderHUDInSnapshot"),
+                FALSE,
+                gSavedSettings.getBOOL("RenderSnapshotNoPost"),
+                previewp->mSnapshotBufferType,
+                previewp->getMaxImageSize()))
+        {
+            // Invalidate/delete any existing encoded image
+            previewp->mPreviewImageEncoded = NULL;
+            // Invalidate/delete any existing formatted image
+            previewp->mFormattedImage = NULL;
+            // Update the data size
+            previewp->estimateDataSize();
 
-			// The snapshot is updated now...
-			previewp->mSnapshotUpToDate = TRUE;
+            // Full size preview is set: get the decoded image result and save it for animation
+            if (gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview)
+            {
+                previewp->prepareFreezeFrame();
+            }
+
+            // The snapshot is updated now...
+            previewp->mSnapshotUpToDate = TRUE;
         
 			// We need to update the thumbnail though
 			previewp->setThumbnailImageSize();

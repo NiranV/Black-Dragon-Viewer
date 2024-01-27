@@ -88,6 +88,8 @@ const F32 LIGHT_MAX_CUTOFF = 180.f;
 const F32 REFLECTION_PROBE_MIN_AMBIANCE = 0.f;
 const F32 REFLECTION_PROBE_MAX_AMBIANCE = 100.f;
 const F32 REFLECTION_PROBE_DEFAULT_AMBIANCE = 0.f;
+// *NOTE: Clip distances are clamped in LLCamera::setNear. The max clip
+// distance is currently limited by the skybox
 const F32 REFLECTION_PROBE_MIN_CLIP_DISTANCE = 0.f;
 const F32 REFLECTION_PROBE_MAX_CLIP_DISTANCE = 1024.f;
 const F32 REFLECTION_PROBE_DEFAULT_CLIP_DISTANCE = 0.f;
@@ -2430,42 +2432,6 @@ void LLRenderMaterialParams::copy(const LLNetworkData& data)
     mEntries = param.mEntries;
 }
 
-LLSD LLRenderMaterialParams::asLLSD() const
-{
-    LLSD ret;
-
-    for (int i = 0; i < mEntries.size(); ++i)
-    {
-        ret[i]["te_idx"] = mEntries[i].te_idx;
-        ret[i]["id"] = mEntries[i].id;
-    }
-
-    return ret;
-}
-
-bool LLRenderMaterialParams::fromLLSD(LLSD& sd)
-{
-    if (sd.isArray())
-    {
-        mEntries.resize(sd.size());
-        for (int i = 0; i < sd.size(); ++i)
-        {
-            if (sd[i].has("te_idx") && sd.has("id"))
-            {
-                mEntries[i].te_idx = sd[i]["te_idx"].asInteger();
-                mEntries[i].id = sd[i]["id"].asUUID();
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    return false;
-}
 
 void LLRenderMaterialParams::setMaterial(U8 te, const LLUUID& id)
 {
