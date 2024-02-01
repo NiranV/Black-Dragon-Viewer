@@ -1823,12 +1823,13 @@ bool LLViewerInput::isMouseBindUsed(const EMouseClickType mouse, const MASK mask
         if (mouse == mMouseBindings[mode][index].mMouse && mask == mMouseBindings[mode][index].mMask)
             return true;
     }
-    size = mGlobalMouseBindings[mode].size();
+	//BD - TODO Investigate
+    /*size = mGlobalMouseBindings[mode].size();
     for (S32 index = 0; index < size; index++)
     {
         if (mouse == mGlobalMouseBindings[mode][index].mMouse && mask == mGlobalMouseBindings[mode][index].mMask)
             return true;
-    }
+    }*/
     return false;
 }
 

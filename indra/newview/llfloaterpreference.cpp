@@ -1714,7 +1714,7 @@ void LLFloaterPreference::onListClickAction()
 				EMouseClickType mouse = CLICK_NONE;
 				gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &key);
 				gKeyboard->maskFromString(row->getColumn(4)->getValue().asString(), &mask);
-				gViewerInput.mouseFromString(row->getColumn(3)->getValue().asString(), &mouse);
+				gViewerInput.mouseFromString(row->getColumn(3)->getValue().asString(), &mouse, false);
 
 				dialog->setParent(this);
 				dialog->setMode(mode);

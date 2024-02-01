@@ -273,7 +273,7 @@ void LLKeyConflictHandler::loadFromSettings(const LLViewerInput::KeyMode& keymod
         EMouseClickType mouse = CLICK_NONE;
         if (it->mouse.isProvided())
         {
-            LLViewerInput::mouseFromString(it->mouse.getValue(), &mouse);
+            LLViewerInput::mouseFromString(it->mouse.getValue(), &mouse, false);
         }
         if (it->key.getValue().empty())
         {

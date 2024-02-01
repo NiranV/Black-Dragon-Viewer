@@ -547,12 +547,6 @@ BOOL LLSnapshotLivePreview::onIdle( void* snapshot_preview )
             // Update the data size
             previewp->estimateDataSize();
 
-            // Full size preview is set: get the decoded image result and save it for animation
-            if (gSavedSettings.getBOOL("UseFreezeFrame") && previewp->mAllowFullScreenPreview)
-            {
-                previewp->prepareFreezeFrame();
-            }
-
             // The snapshot is updated now...
             previewp->mSnapshotUpToDate = TRUE;
         

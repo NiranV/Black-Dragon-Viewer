@@ -54,7 +54,6 @@ public:
 
     LLKeyFunc		mFunction;
     std::string     mFunctionName;
->>>>>>> Linden_Release/main
 };
 
 class LLMouseBinding
@@ -65,7 +64,6 @@ public:
 
     LLKeyFunc		mFunction;
     std::string     mFunctionName;
->>>>>>> Linden_Release/main
 };
 
 
@@ -119,7 +117,8 @@ public:
 	EKeyboardMode	getMode() const;
 
 	static bool		modeFromString(const std::string& string, S32 *mode);			// False on failure
-	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode);// False on failure
+	//BD
+	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode, bool translate);// False on failure
 
 //	//BD - Custom Keyboard Layout
 	std::string		stringFromMouse(EMouseClickType click, bool translate);

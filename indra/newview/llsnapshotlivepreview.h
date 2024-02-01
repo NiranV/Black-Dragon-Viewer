@@ -114,7 +114,6 @@ public:
 	void generateThumbnailImage(BOOL force_update = FALSE) ;
 	void resetThumbnailImage() { mThumbnailImage = NULL ; }
 	void drawPreviewRect(S32 offset_x, S32 offset_y, LLColor4 alpha_color = LLColor4(0.5f, 0.5f, 0.5f, 0.8f));
-	void prepareFreezeFrame();
     
 	LLViewerTexture* getBigThumbnailImage();
 	S32  getBigThumbnailWidth() const { return mBigThumbnailWidth ; }
