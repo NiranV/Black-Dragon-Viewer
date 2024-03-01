@@ -859,6 +859,14 @@ with the same filename but different name
 
   <!-- Back Dragon textures-->
   
+  <texture name="PieMenu_Background" file_name="widgets/PieMenu_Background.png" preload="true" />
+  <texture name="PieMenu_Back" file_name="widgets/PieMenu_Back.png" preload="true" />
+  <texture name="PieMenu_Center" file_name="widgets/PieMenu_Center.png" preload="true" />
+  <texture name="PieMenu_SubMenu_0" file_name="widgets/PieMenu_SubMenu_1.png" preload="true" />
+  <texture name="PieMenu_SubMenu_1" file_name="widgets/PieMenu_SubMenu_2.png" preload="true" />
+  <texture name="PieMenu_SubMenu_2" file_name="widgets/PieMenu_SubMenu_3.png" preload="true" />
+  <texture name="PieMenu_SubMenu_3" file_name="widgets/PieMenu_SubMenu_4.png" preload="true" />
+
   <texture name="Button_A" file_name="xbox/button_a.png" preload="false" />
   <texture name="Button_B" file_name="xbox/button_b.png" preload="false" />
   <texture name="Button_Y" file_name="xbox/button_y.png" preload="false" />

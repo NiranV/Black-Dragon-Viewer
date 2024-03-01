@@ -42,7 +42,6 @@ struct PieChildRegistry : public LLChildRegistry<PieChildRegistry>
 class PieMenu : public LLMenuGL
 {
 public:
-	// parameter block for the XUI factory
 	struct Params : public LLInitParam::Block<Params, LLMenuGL::Params>
 	{
 		Optional<std::string> name;
@@ -60,7 +59,7 @@ public:
 
 	/*virtual*/ void setVisible(BOOL visible);
 
-	// adding and removing "child" slices to the pie
+	// Adding and removing "child" slices to the pie
 	/*virtual*/ bool addChild(LLView* child, S32 tab_group = 0);
 	/*virtual*/ void removeChild(LLView* child);
 
@@ -68,49 +67,53 @@ public:
 	/*virtual*/ BOOL handleMouseUp(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL handleRightMouseUp(S32 x, S32 y, MASK mask);
 
-	// does all the hard work of bringing the menu on the screen
 	void draw();
 
-	// showing/hiding the menu
+	// Showing/hiding the menu
 	void show(S32 x, S32 y, LLView* spawning_view = NULL);
 	void hide();
 
-	// our item list type definition
+	// Our item list type definition
 	typedef std::list<LLView*> slice_list_t;
-	// the actual item list
+	// The actual item list
 	slice_list_t mMySlices;
-	// pointer to the currently used list
+	// Pointer to the currently used list
 	slice_list_t* mSlices;
 
-	// appends a sub pie menu to the current pie
+	// Appends a sub pie menu to the current pie
 	BOOL appendContextSubMenu(PieMenu* menu);
 
-	// we never rearrange our menu
-	void needsArrange() {};
-	// arranging does nothing
-	virtual void arrange( void ) {};
-	// arranging does nothing
-	void arrangeAndClear( void ) {};
-
 protected:
-	// general mouse button handling
 	BOOL handleMouseButtonUp(S32 x, S32 y, MASK mask);
-	// font used for the menu
+	// Font used for the menu
 	const LLFontGL* mFont;
-	// currently highlighted item, must be tested if it's a slice or submenu
+	// Currently highlighted item, must be tested if it's a slice or submenu
 	LLView* mSlice;
-	// used to play UI sounds only once on hover slice change, do not dereference!
+	// Used to play UI sounds only once on hover slice change, do not dereference!
 	LLView* mOldSlice;
 
-	// timer for visual popup effect
+	// Timer for visual effects
 	LLFrameTimer mPopupTimer;
-
-	// this is TRUE when the first mouseclick came to display the menu, used for borderless menu
-	bool mFirstClick;
+	LLFrameTimer mInsideCenterTimer;
 
 	F32 getScaleFactor();
+	F32 getOutsideFactor();
+	F32 mSliceCount;
+	F32 mCurrentAngle;
+	F32 mOldAngle;
 
 	S32 mCurrentSegment;
+	S32 mSnapSegment;
+
+	LLPointer<LLUIImage> mBGImage;
+	LLPointer<LLUIImage> mCenterImage;
+	LLPointer<LLUIImage> mSubMenuImage;
+	LLPointer<LLUIImage> mBackImage;
+
+	bool mFirstClick;
+	bool mInsidePie;
+	bool mInsideCenter;
+	bool mTopMenu;
 };
 
 #endif // PIEMENU_H
