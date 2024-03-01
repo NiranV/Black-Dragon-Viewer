@@ -1278,13 +1278,13 @@ void LLFloaterSnapshot::saveTexture()
 		return;
 	}
 
-	/*BOOL is_outfit_snapshot = getOutfitID().notNull();
-	if (is_outfit_snapshot && mOutfitGallery)
+	BOOL is_outfit_snapshot = getOutfitID().notNull();
+	/*if (is_outfit_snapshot && mOutfitGallery)
 	{
 		mOutfitGallery->onBeforeOutfitSnapshotSave();
-	}
+	}*/
 	previewp->saveTexture(is_outfit_snapshot, is_outfit_snapshot ? getOutfitID().asString() : "");
-	if (is_outfit_snapshot && mOutfitGallery)
+	/*if (is_outfit_snapshot && mOutfitGallery)
 	{
 		mOutfitGallery->onAfterOutfitSnapshotSave();
 	}*/
