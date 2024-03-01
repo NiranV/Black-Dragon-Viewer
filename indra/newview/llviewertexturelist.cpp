@@ -72,7 +72,8 @@ LLViewerTextureList gTextureList;
 
 ETexListType get_element_type(S32 priority)
 {
-    return (priority == LLViewerFetchedTexture::BOOST_ICON || priority == LLViewerFetchedTexture::BOOST_THUMBNAIL) ? TEX_LIST_SCALE : TEX_LIST_STANDARD;
+	//BD - Don't include thumbnails or they will get scaled down to nothing.
+    return priority == LLViewerFetchedTexture::BOOST_ICON ? TEX_LIST_SCALE : TEX_LIST_STANDARD;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
