@@ -643,7 +643,8 @@ BOOL LLFloaterTexturePicker::postBuild()
 
 	LLToolPipette::getInstance()->setToolSelectCallback(boost::bind(&LLFloaterTexturePicker::onTextureSelect, this, _1));
 	
-	getChild<LLScrollListCtrl>("l_bake_use_texture_combo_box")->setCommitCallback(onBakeTextureSelect, this);
+	getChild<LLScrollListCtrl>("l_bake_use_texture_ctrl")->setCommitCallback(onBakeTextureSelect, this);
+	getChild<LLScrollListCtrl>("l_bake_use_texture_ctrl")->setCommitOnSelectionChange(true);
 
 	setBakeTextureEnabled(TRUE);
 	return TRUE;
@@ -1367,7 +1368,7 @@ void LLFloaterTexturePicker::changeMode()
 	getChild<LLButton>("l_upl_btn")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
 	getChild<LLScrollListCtrl>("l_name_list")->setVisible(index == PICKER_LOCAL ? TRUE : FALSE);
 
-	getChild<LLComboBox>("l_bake_use_texture_combo_box")->setVisible(index == PICKER_BAKE ? TRUE : FALSE);
+	//getChild<LLComboBox>("l_bake_use_texture_combo_box")->setVisible(index == PICKER_BAKE ? TRUE : FALSE);
 	getChild<LLCheckBoxCtrl>("hide_base_mesh_region")->setVisible(FALSE);// index == 2 ? TRUE : FALSE);
 
 	bool pipette_visible = (index == PICKER_INVENTORY)
@@ -1426,7 +1427,8 @@ void LLFloaterTexturePicker::changeMode()
             val = 10;
         }
 
-        getChild<LLComboBox>("l_bake_use_texture_combo_box")->setSelectedByValue(val, TRUE);
+		//BD
+        getChild<LLComboBox>("l_bake_use_texture_ctrl")->selectNthItem(val);
     }
 }
 
