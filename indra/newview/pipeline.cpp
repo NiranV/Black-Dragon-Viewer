@@ -221,6 +221,7 @@ U32 LLPipeline::RenderNumColors;
 F32 LLPipeline::RenderSnapshotMultiplier;
 F32 LLPipeline::RenderShadowFarClip;
 F32 LLPipeline::RenderGlobalLightStrength;
+F32 LLPipeline::RenderGlowMinLuminance;
 LLVector4 LLPipeline::RenderShadowFarClipVec;
 BOOL LLPipeline::RenderImpostors;
 
@@ -647,6 +648,7 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlobalLightStrength");
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
+	connectRefreshCachedSettingsSafe("RenderGlowMinLuminance");
 	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderImpostors");
 
@@ -1206,6 +1208,7 @@ void LLPipeline::refreshCachedSettings()
 	RenderSnapshotMultiplier = gSavedSettings.getF32("RenderSnapshotMultiplier");
 	RenderShadowFarClip = gSavedSettings.getF32("RenderShadowFarClip");
 	RenderGlobalLightStrength = gSavedSettings.getF32("RenderGlobalLightStrength");
+	RenderGlowMinLuminance = gSavedSettings.getF32("RenderGlowMinLuminance");
 	RenderShadowFarClipVec = gSavedSettings.getVector4("RenderShadowDistance");
 	RenderSSAOBlurSize = gSavedSettings.getF32("RenderSSAOBlurSize");
 	RenderImpostors = gSavedSettings.getBOOL("RenderImpostors");
@@ -7226,8 +7229,10 @@ void LLPipeline::generateGlow(LLRenderTarget* src)
 		F32 warmthAmount = RenderGlowWarmthAmount;
 		LLVector3 lumWeights = RenderGlowLumWeights;
 		LLVector3 warmthWeights = RenderGlowWarmthWeights;
+		//BD
+		F32 minLuminance = RenderGlowMinLuminance;
 
-		gGlowExtractProgram.uniform1f(LLShaderMgr::GLOW_MIN_LUMINANCE, 9999);
+		gGlowExtractProgram.uniform1f(LLShaderMgr::GLOW_MIN_LUMINANCE, minLuminance);
 		gGlowExtractProgram.uniform1f(LLShaderMgr::GLOW_MAX_EXTRACT_ALPHA, maxAlpha);
 		gGlowExtractProgram.uniform3f(LLShaderMgr::GLOW_LUM_WEIGHTS, lumWeights.mV[0], lumWeights.mV[1],
 			lumWeights.mV[2]);
