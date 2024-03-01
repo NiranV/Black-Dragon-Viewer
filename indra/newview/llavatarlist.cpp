@@ -119,6 +119,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
 //BD
+, mShowExtraInformation(false)
 , mExtraDataUpdateTimer(new LLTimer())
 , mShowSpeakingIndicator(p.show_speaking_indicator)
 , mShowPermissions(p.show_permissions_granted)
