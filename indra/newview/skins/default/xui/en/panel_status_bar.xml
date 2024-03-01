@@ -127,7 +127,10 @@
 		layout="topleft"
 		left="0"
 		name="FPSText"
-		tool_tip="Your current FPS"
+		tool_tip="Displays your framerate statistics.
+|&lt;red&gt;[MIN_FPS]&lt;/red&gt;: Lowest in the past 2 minutes.
+|&lt;green&gt;[MAX_FPS]&lt;/green&gt;: Highest ever recorded.
+|&lt;b&gt;[MEAN_FPS]&lt;/b&gt;: Current mean recorded."
 		width="36">
 			10.00
 		</text>

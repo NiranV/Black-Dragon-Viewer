@@ -99,6 +99,10 @@ private:
 //	//BD - Quick Draw Distance Slider
 	void onMouseEnterDrawDistance();
 
+//	//BD - Statusbar Framerate Count
+	void onToggleFPSType();
+	void onSetFPSType(S32 type);
+
 	static void onClickMediaToggle(void* data);
 
 private:
@@ -106,6 +110,9 @@ private:
 //	//BD - Statusbar Framerate Count
 	LLTextBox	*mFPSText;
 	LLFrameTimer	mFPSUpdateTimer;
+	LLFrameTimer	mFPSHistoryTimer;
+	S32			mFPSType;
+	LLVector2	mFPSHistory;
 
 	LLStatGraph *mSGBandwidth;
 	LLStatGraph *mSGPacketLoss;

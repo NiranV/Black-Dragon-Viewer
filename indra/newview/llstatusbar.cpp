@@ -119,7 +119,9 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	mSquareMetersCommitted(0),
 	//BD
 	mMediaEnabled(false),
-	mShowNetStats(false)
+	mShowNetStats(false),
+	mFPSType(0),
+	mFPSHistory(100, 0)
 {
 	setRect(rect);
 	
@@ -163,6 +165,8 @@ BOOL LLStatusBar::postBuild()
 	mTextTime = getChild<LLTextBox>("TimeText" );
 //	//BD - Statusbar Framerate Count
 	mFPSText = getChild<LLTextBox>("FPSText");
+	mFPSText->setMouseUpCallback(boost::bind(&LLStatusBar::onToggleFPSType, this));
+	mFPSType = gSavedSettings.getS32("FPSDisplayType");
 
 	//BD
 	mMediaEnabled = (gSavedSettings.getBOOL("AudioStreamingMusic") || gSavedSettings.getBOOL("AudioStreamingMedia"));
@@ -276,7 +280,35 @@ void LLStatusBar::refresh()
 	{
 		mFPSUpdateTimer.reset();
 		LLTrace::Recording& recording = LLTrace::get_frame_recording().getLastRecording();
-		mFPSText->setValue(recording.getPerSec(LLStatViewer::FPS));
+		F32 max = recording.getMax(LLStatViewer::FPS_SAMPLE);
+		F32 min = recording.getMin(LLStatViewer::FPS_SAMPLE);
+		F32 mean = recording.getMean(LLStatViewer::FPS_SAMPLE);
+		F32 last = recording.getPerSec(LLStatViewer::FPS);
+
+		if (mFPSHistory.mV[VY] < max || mFPSHistory.mV[VY] < last)
+		{
+			mFPSHistory.mV[VY] = llmax(max, last);
+		}
+
+		//BD - Every 2 minutes we purge minimum recorded FPS otherwise it would just
+		//     display 0.1 or 0.0 at all times which wouldn't really be helpful.
+		if (mFPSHistoryTimer.getElapsedTimeF32() > 120.f)
+		{
+			mFPSHistoryTimer.reset();
+			mFPSHistory.mV[VX] = max;
+		}
+		else
+		{
+			if (mFPSHistory.mV[VX] > min || mFPSHistory.mV[VX] > last)
+			{
+				mFPSHistory.mV[VX] = llmin(min, last);
+			}
+		}
+
+		mFPSText->setValue(mFPSType == 0 ? last : mean);
+		mFPSText->setToolTipArg(LLStringExplicit("[MAX_FPS]"), llformat("%.1f", mFPSHistory.mV[VY]));
+		mFPSText->setToolTipArg(LLStringExplicit("[MIN_FPS]"), llformat("%.1f", mFPSHistory.mV[VX]));
+		mFPSText->setToolTipArg(LLStringExplicit("[MEAN_FPS]"), llformat("%.1f", mean));
 	}
 	
 	// update clock every 10 seconds
@@ -326,6 +358,12 @@ void LLStatusBar::setVisibleForMouselook(bool visible)
 	{
 		setVisible(visible);
 	}
+}
+
+void LLStatusBar::onToggleFPSType()
+{
+	mFPSType = (mFPSType + 1) % 2;
+	gSavedSettings.setS32("FPSDisplayType", mFPSType);
 }
 
 // static

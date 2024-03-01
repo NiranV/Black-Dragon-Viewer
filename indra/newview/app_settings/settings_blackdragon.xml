@@ -47,6 +47,17 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+  <key>FPSDisplayType</key>
+  <map>
+    <key>Comment</key>
+    <string>Test.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>UploadLocalSnapshots</key>
   <map>
     <key>Comment</key>
