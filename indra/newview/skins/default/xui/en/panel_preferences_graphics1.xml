@@ -97,14 +97,14 @@ width="510">
    </text>
    </layout_panel>
       <layout_panel
-	  follows="top|left|right"
-      visibility_control="PrefsViewerVisible"
-	  layout="topleft"
-	  height="945"
-	  auto_resize="false"
-      visible="false"
-	  name="basic_layout_panel"
-	  width="515">
+       follows="top|left|right"
+       visibility_control="PrefsViewerVisible"
+       layout="topleft"
+       height="1050"
+       auto_resize="false"
+       visible="false"
+       name="basic_layout_panel"
+       width="515">
    <check_box
    control_name="FullScreenWindow"
    height="16"
@@ -1356,6 +1356,229 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
+    <panel
+       follows="top|left|right"
+       height="20"
+       background_visible="true"
+       invisibility_control="RenderFSAASamples"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_fxaa"
+       visible="true"
+       top_pad="1"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_fxaa2"
+  mouse_opaque="false"
+  tool_tip="WARNING: FXAA has basically zero impact on performance, not using it will cause aliasing on edges and may impact overall visual fidelity negatively."
+  width="16"
+  left="472"
+  top="2"/>
+   </panel>
+ <text
+ type="string"
+ length="1"
+ follows="left|top"
+ enabled_control="RenderDeferred"
+ text_readonly_color="LabelDisabledColor"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="AVPhys"
+ top_delta="4"
+ width="120">
+ Antialiasing:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   label="Antialiasing"
+   control_name="RenderFSAASamples"
+   enabled_control="RenderDeferred"
+   name="RenderFSAASamples"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Off"
+       value="0"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option disables antialiasing. It will cause jagged edges."
+       name="item0"/>
+      <combo_box.item
+       label="FXAA"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option enables fast approximate antialiasing. A cheap antialiasing reliably getting rid of jagged edges with no performance cost."
+       value="2"
+       name="item2"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+    <check_box
+   control_name="RenderDeferredLights"
+   height="16"
+   label="Render World Lights"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles unattached normal and projected lights in Deferred Rendering on or off."
+   layout="topleft"
+   left="10"
+   name="RenderDeferredLights"
+   top_pad="7"
+   width="115" />
+		<check_box
+   control_name="RenderOtherAttachedLights"
+   height="16"
+   label="Render Other Attached Lights"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles rendering attached lights on or off. Useful for annoying facelights."
+   layout="topleft"
+   left="10"
+   name="RenderOtherAttachedLights"
+   top_pad="0"
+   width="115" />
+	  <check_box
+   control_name="RenderOwnAttachedLights"
+   height="16"
+   label="Render Own Attached Lights"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles rendering your own attached lights on or off."
+   layout="topleft"
+   left="10"
+   name="RenderOwnAttachedLights"
+   top_pad="0"
+   width="115" />
+   <text
+ type="string"
+ length="1"
+ follows="left|top"
+ enabled_control="RenderDeferred"
+ text_readonly_color="LabelDisabledColor"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="AVPhys"
+ top_pad="10"
+ width="120">
+ Max. Light Count:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   control_name="RenderLocalLightCount"
+   name="RenderLocalLightCount"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Off"
+       value="0"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; None
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;0&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="Very Low"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;0&lt;/blue&gt;"
+       value="32"
+       name="item2"/>
+       <combo_box.item
+       label="Low"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;256&lt;/blue&gt;"
+       value="256"
+       name="item2"/>
+       <combo_box.item
+       label="Medium"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;1024&lt;/blue&gt;"
+       value="1024"
+       name="item2"/>
+       <combo_box.item
+       label="High"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;2048&lt;/blue&gt;"
+       value="2048"
+       name="item2"/>
+       <combo_box.item
+       label="Very High"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;4096&lt;/blue&gt;"
+       value="4096"
+       name="item2"/>
+       <combo_box.item
+       label="Ultra"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
+||RenderLocalLightCount: &lt;blue&gt;8192&lt;/blue&gt;"
+       value="8192"
+       name="item2"/>
+       <combo_box.combo_icon
+       default_index="2"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
  <check_box
    control_name="RenderAttachedParticles"
    height="16"
@@ -1818,7 +2041,7 @@ width="510">
  left="10"
  name="ReflectionAmount"
  top_pad="10"
- width="120">
+ width="140">
  Reflection Probe Detail:
  </text>
    <combo_box
@@ -2711,55 +2934,13 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1210"
+	  height="1120"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
       visible="false"
 	  name="advanced_layout_panel"
 	  width="515">
-         <check_box
-   control_name="RenderDeferredLights"
-   height="16"
-   label="Render World Lights"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles unattached normal and projected lights in Deferred Rendering on or off."
-   layout="topleft"
-   left="10"
-   name="RenderDeferredLights"
-   top_pad="15"
-   width="115" />
-		<check_box
-   control_name="RenderOtherAttachedLights"
-   height="16"
-   label="Render Other Attached Lights"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles rendering attached lights on or off. Useful for annoying facelights."
-   layout="topleft"
-   left="10"
-   name="RenderOtherAttachedLights"
-   top_pad="0"
-   width="115" />
-	  <check_box
-   control_name="RenderOwnAttachedLights"
-   height="16"
-   label="Render Own Attached Lights"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles rendering your own attached lights on or off."
-   layout="topleft"
-   left="10"
-   name="RenderOwnAttachedLights"
-   top_pad="0"
-   width="115" />
    <!--<check_box
    control_name="RenderWaterLightReflections"
    enabled_control="RenderDeferred"
@@ -2811,84 +2992,6 @@ width="510">
    name="RenderSpotLightImages"
    top_pad="0"
    width="115" />-->
-	  
-   <panel
-       follows="top|left|right"
-       height="20"
-       background_visible="true"
-       invisibility_control="RenderFSAASamples"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="0"
-       name="warning_fxaa"
-       visible="false"
-       top_pad="6"
-       width="508">
-    <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_fxaa2"
-  mouse_opaque="false"
-  tool_tip="WARNING: FXAA has basically zero impact on performance, not using it will cause aliasing on edges and may impact overall visual fidelity negatively."
-  width="16"
-  left="472"
-  top="2"/>
-   </panel>
- <text
- type="string"
- length="1"
- follows="left|top"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- height="12"
- layout="topleft"
- left="10"
- name="AVPhys"
- top_delta="4"
- width="120">
- Antialiasing:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   label="Antialiasing"
-   control_name="RenderFSAASamples"
-   enabled_control="RenderDeferred"
-   name="RenderFSAASamples"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="Off"
-       value="0"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; None
-|&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; None
-||This option disables antialiasing. It will cause jagged edges."
-       name="item0"/>
-      <combo_box.item
-       label="FXAA"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option enables fast approximate antialiasing. A cheap antialiasing reliably getting rid of jagged edges with no performance cost."
-       value="2"
-       name="item2"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
  
  <!--<check_box
      control_name="RenderDeferredBlurLight"
