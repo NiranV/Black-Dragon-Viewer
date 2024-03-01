@@ -558,7 +558,7 @@ class Windows_x86_64_Manifest(ViewerManifest):
                 self.path("alut.dll")
 
             # For textures
-            self.path("openjp2.dll")
+            self.path("openjpeg.dll")
 
             # Uriparser
             self.path("uriparser.dll")
@@ -1321,7 +1321,7 @@ class Linux_i686_Manifest(LinuxManifest):
             self.path("libdirectfb-1.*.so.*")
             self.path("libfusion-1.*.so.*")
             self.path("libdirect-1.*.so.*")
-            self.path("libopenjp2.so*")
+            self.path("libopenjpeg.so*")
             self.path("libdirectfb-1.4.so.5")
             self.path("libfusion-1.4.so.5")
             self.path("libdirect-1.4.so.5*")
