@@ -75,9 +75,6 @@ private:
 	void                    onDensityMultipChanged();
 	void                    onDistanceMultipChanged();
 	void                    onMaxAltChanged();
-	void                    onMoistureLevelChanged();
-	void                    onDropletRadiusChanged();
-	void                    onIceLevelChanged();
 	void                    onReflectionProbeAmbianceChanged();
 	void                    updateGammaLabel(bool auto_adjust = false);
 
@@ -91,9 +88,6 @@ private:
 	LLUICtrl* mDensityMult;
 	LLUICtrl* mDistanceMult;
 	LLUICtrl* mMaxAltitude;
-	LLUICtrl* mMoisture;
-	LLUICtrl* mDroplet;
-	LLUICtrl* mIceLevel;
 };
 
 class LLPanelSettingsSkyCloudTab : public LLPanelSettingsSky
@@ -214,5 +208,14 @@ protected:
 
 	// update the settings for our profile type
 	void updateProfile();
+
+private:
+	void                    onMoistureLevelChanged();
+	void                    onDropletRadiusChanged();
+	void                    onIceLevelChanged();
+
+	LLUICtrl* mMoisture;
+	LLUICtrl* mDroplet;
+	LLUICtrl* mIceLevel;
 };
 #endif // LLPANEL_EDIT_SKY_H
