@@ -1038,7 +1038,7 @@ public:
 	static F32 CameraFieldOfView;
 	static F32 RenderShadowNoise;
 	static F32 RenderShadowBlurSize;
-	static LLVector3 RenderSSAOEffect;
+	static F32 RenderSSAOEffect;
 	static F32 RenderSSAOScale;
 	static U32 RenderSSAOMaxScale;
 	static F32 RenderSSAOFactor;
