@@ -34,6 +34,7 @@
 #include "llavatarnamecache.h"	// IDEVO
 #include "llsd.h"
 #include "llnotifications.h"
+#include "llnotificationsutil.h"
 #include "roles_constants.h"    // for GP_MEMBER_INVITE
 
 #include "llagent.h"
@@ -59,7 +60,6 @@
 #include "llfloaterimcontainer.h"
 #include "llimview.h"			// for gIMMgr
 #include "llmutelist.h"
-#include "llnotificationsutil.h"	// for LLNotificationsUtil
 #include "llpaneloutfitedit.h"
 #include "llpanelprofile.h"
 #include "llparcel.h"
@@ -853,7 +853,7 @@ namespace action_give_inventory
 		uuid_vec_t mAvatarUuids;
 	};
 
-	static void give_inventory_cb(const LLSD& notification, const LLSD& response)
+	static void give_inventory_cb(const LLSD& notification, const LLSD& response, std::set<LLUUID> inventory_selected_uuids)
 	{
 		S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
 		// if Cancel pressed
@@ -862,7 +862,6 @@ namespace action_give_inventory
 			return;
 		}
 
-		const std::set<LLUUID> inventory_selected_uuids = LLAvatarActions::getInventorySelectedUUIDs();
 		if (inventory_selected_uuids.empty())
 		{
 			return;
@@ -872,7 +871,7 @@ namespace action_give_inventory
 		bool shared = count && !inventory_selected_uuids.empty();
 
 		// iterate through avatars
-		for(S32 i = 0; i < count; ++i)
+		for (S32 i = 0; i < count; ++i)
 		{
 			const LLUUID& avatar_uuid = LLShareInfo::instance().mAvatarUuids[i];
 
@@ -973,6 +972,17 @@ namespace action_give_inventory
 				folders_count++;
 			}
 		}
+
+		// EXP-1599
+		// In case of sharing multiple folders, make the confirmation
+		// dialog contain a warning that only one folder can be shared at a time.
+		std::string notification = (folders_count > 1) ? "ShareFolderConfirmation" : "ShareItemsConfirmation";
+		LLSD substitutions;
+		substitutions["RESIDENTS"] = residents;
+		substitutions["ITEMS"] = items;
+		LLShareInfo::instance().mAvatarNames = avatar_names;
+		LLShareInfo::instance().mAvatarUuids = avatar_uuids;
+		LLNotificationsUtil::add(notification, substitutions, LLSD(), boost::bind(&give_inventory_cb, _1, _2, inventory_selected_uuids));
 	}
 
     static void give_inventory(const uuid_vec_t& avatar_uuids, const std::vector<LLAvatarName> avatar_names, LLInventoryPanel* panel = NULL)
