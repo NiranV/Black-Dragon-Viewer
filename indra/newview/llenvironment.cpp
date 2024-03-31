@@ -1526,7 +1526,8 @@ void LLEnvironment::updateEnvironment(LLSettingsBase::Seconds transition, bool f
 
     if ((mCurrentEnvironment != pinstance) || forced)
     {
-        if (transition != TRANSITION_INSTANT)
+        //BD - Always use the animator, not doing so causes the reflection probes to bug out.
+        //if (transition != TRANSITION_INSTANT)
         {
 	        DayInstance::ptr_t trans = std::make_shared<DayTransition>(
 	            mCurrentEnvironment->getSky(), mCurrentEnvironment->getWater(), pinstance, transition);
@@ -1535,10 +1536,10 @@ void LLEnvironment::updateEnvironment(LLSettingsBase::Seconds transition, bool f
 	
 	        mCurrentEnvironment = trans;
         }
-        else
+        /*else
         {
             mCurrentEnvironment = pinstance;
-        }
+        }*/
 
         updateSettingsUniforms();
     }
@@ -3607,12 +3608,13 @@ namespace
         {   // An attempt to animate to itself... don't do it.
             return;
         }
-        if (transition == LLEnvironment::TRANSITION_INSTANT)
+        //BD - Always use the animator, not doing so causes the reflection probes to bug out.
+        /*if (transition == LLEnvironment::TRANSITION_INSTANT)
         {
             mBlenderSky.reset();
             mInjectedSky->setSource(psky);
         }
-        else
+        else*/
         {
             LLSettingsSky::ptr_t start_sky(mInjectedSky->getSource()->buildClone());
             LLSettingsSky::ptr_t target_sky(start_sky->buildClone());
