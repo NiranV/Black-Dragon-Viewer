@@ -5589,7 +5589,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="253"
+	  height="333"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -6054,6 +6054,165 @@ width="510">
    parameter="RenderGlowWarmthWeights"
     function="Dragon.LockArray"/>
       </button>
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Post Effects
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+      
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostGreyscaleStrength"
+      decimal_digits="2"
+      follows="left|top"
+      height="15"
+      increment="0.01"
+      initial_value="0"
+		tool_tip="This option controls the percentage the screen should be decolored."
+      label="Greyscale Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="GreyscaleStrength"
+      top_pad="10"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostGreyscaleStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostSepiaStrength"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0"
+		tool_tip="This option controls the percentage the screen colors should be transformed to a Sepia color palette."
+      label="Sepia Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="SepiaStrength"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostSepiaStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderPostPosterizationSamples"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="1"
+      initial_value="1"
+		tool_tip="This option controls the amount of times all colors onscreen should be posterized."
+      label="Posterize Samples:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="64"
+      min_val="1"
+      name="PosterizeSamples"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderPostPosterizationSamples"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <!--<slider
+      can_edit_text="true"
+      control_name="RenderChromaStrength"
+      enabled_control="RenderDeferred"
+      decimal_digits="1"
+      follows="left|top"
+      height="14"
+      increment="0.1"
+      initial_value="0"
+		tool_tip="This option controls the offset of the edge color fringing."
+      label="Chromatic Aberration:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="50"
+      min_val="0"
+      name="ChromaStrength"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderChromaStrength"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>-->
+
       </layout_panel>
       </layout_stack>
   </panel>

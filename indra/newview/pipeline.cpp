@@ -7172,6 +7172,12 @@ void LLPipeline::gammaCorrect(LLRenderTarget* src, LLRenderTarget* dst) {
 
         shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, src->getWidth(), src->getHeight());
 
+		//BD - Post Process
+		shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
+		shader.uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderGreyscaleStrength);
+		shader.uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderSepiaStrength);
+		shader.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, RenderNumColors);
+
 		static LLCachedControl<F32> exposure(gSavedSettings, "RenderExposure", 1.f);
 
 		F32 e = llclamp(exposure(), 0.5f, 4.f);
