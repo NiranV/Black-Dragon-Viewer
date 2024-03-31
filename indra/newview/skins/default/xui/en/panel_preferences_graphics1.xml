@@ -110,7 +110,8 @@ width="510">
    height="16"
    initial_value="false"
    label="Borderless Window Mode"
-   tool_tip="Toggle between maximized borderless window mode and normal window mode."
+   tool_tip="Maximizes the window and removes Windows's borders and controls, useful for when recording the Viewer. 
+||Borderless Window Mode allows making use of all the upsides of having the application windowed such as being able to easily tab out and have other applications in the foreground while the Viewer keeps running in the background as well as taking the best part of Fullscreen Mode without its flaws and instability."
    layout="topleft"
    left="10"
    name="FullscreenWindow"
@@ -120,8 +121,10 @@ width="510">
    control_name="RenderVSyncEnable"
    height="16"
    initial_value="false"
-   label="Enable VSync"
-   tool_tip="Toggle whether the Viewer should use vertical synchronisation. This will lock the framerate to your screen refresh rate and prevent screen tearing. It is highly recommended not using this option as it slows down the Viewer internal processes greatly increasing rezzing times."
+   label="Enable Vertical Synchronisation (VSync)"
+   tool_tip="Toggle whether the Viewer should use vertical synchronisation. This will lock the framerate to your screen refresh rate and prevent screen tearing. 
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|It is highly recommended not using this option as it slows down the Viewer internal processes greatly increasing rezzing times  and possibly login times."
    layout="topleft"
    left="10"
    name="RenderVSyncEnable"
@@ -184,7 +187,7 @@ width="510">
        tool_tip="This option changes the UI size to tiny.
 ||UIScaleFactor: &lt;blue&gt;0.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        name="item0"/>
       <combo_box.item
@@ -193,7 +196,7 @@ width="510">
        tool_tip="This option changes the UI size to small.
 ||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        name="item0"/>
       <combo_box.item
@@ -201,7 +204,7 @@ width="510">
        tool_tip="This option changes the UI size to default.
 ||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset."
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset."
        value="1"
        name="item2"/>
       <combo_box.item
@@ -209,7 +212,7 @@ width="510">
        tool_tip="This option changes the UI size to big.
 ||UIScaleFactor: &lt;blue&gt;1.25&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="1.25"
        name="item3"/>
@@ -218,7 +221,7 @@ width="510">
        tool_tip="This option changes the UI size to large.
 ||UIScaleFactor: &lt;blue&gt;1.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="1.5"
        name="item3"/>
@@ -227,7 +230,7 @@ width="510">
        tool_tip="This option changes the UI size to huge.
 ||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option needs a restart otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="2"
        name="item4"/>
@@ -442,7 +445,7 @@ width="510">
     <combo_box.item
        label="512 MB"
        value="512"
-       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures. Too low values will cause texture trashing.
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
 ||&lt;b&gt;12GB RAM is recommended as minimum for this option.&lt;/b&gt;
@@ -779,7 +782,8 @@ width="510">
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts depending on distance."
+||This option toggles dynamic Level-of-Detail which automatically adjusts the detail of meshes, prims and sculpts depending on distance to your camera. 
+||With Dynamic Level of Detail on, Object Quality scales the multiplier for the different distances at which objects switch their detail level. With Dynamic Level of Detail off, Object Quality determines the overall detail level of all objects equally."
    layout="topleft"
    left="10"
    name="DynamicLOD"
@@ -1147,7 +1151,9 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 ||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;12&lt;/blue&gt;"
+||RenderTerrainScale: &lt;blue&gt;12&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="12"
        name="item3"/>
       <combo_box.item
@@ -1157,7 +1163,9 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;9&lt;/blue&gt;"
+||RenderTerrainScale: &lt;blue&gt;9&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="9"
        name="item4"/>
       <combo_box.item
@@ -1167,7 +1175,9 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;6&lt;/blue&gt;"
+||RenderTerrainScale: &lt;blue&gt;6&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="6"
        name="item4"/>
       <combo_box.item
@@ -1177,7 +1187,9 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls the repeats of the default terrain textures. Higher means less repeats.
-||RenderTerrainScale: &lt;blue&gt;5&lt;/blue&gt;"
+||RenderTerrainScale: &lt;blue&gt;5&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
        value="5"
        name="item4"/>
       <combo_box.combo_icon
@@ -1422,7 +1434,7 @@ width="510">
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option enables fast approximate antialiasing. A cheap antialiasing reliably getting rid of jagged edges with no performance cost."
+||This option enables (F)ast (A)pproximate (A)nti(a)liasing. A cheap antialiasing reliably getting rid of jagged edges with near zero performance cost."
        value="2"
        name="item2"/>
       <combo_box.drop_down_button
@@ -1450,7 +1462,7 @@ width="510">
 		<check_box
    control_name="RenderOtherAttachedLights"
    height="16"
-   label="Render Other Attached Lights"
+   label="Render Attached Lights on others"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -1464,7 +1476,7 @@ width="510">
 	  <check_box
    control_name="RenderOwnAttachedLights"
    height="16"
-   label="Render Own Attached Lights"
+   label="Render Attached Lights on yourself"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -1516,7 +1528,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
-||RenderLocalLightCount: &lt;blue&gt;0&lt;/blue&gt;"
+||RenderLocalLightCount: &lt;blue&gt;32&lt;/blue&gt;"
        value="32"
        name="item2"/>
        <combo_box.item
@@ -1566,11 +1578,13 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option controls the maximum amount of lights that can be rendered on screen at any time. This includes normal local lights as well as projectors.
-||RenderLocalLightCount: &lt;blue&gt;8192&lt;/blue&gt;"
+||RenderLocalLightCount: &lt;blue&gt;8192&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
        value="8192"
        name="item2"/>
        <combo_box.combo_icon
-       default_index="2"/>
+       default_index="6"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -1701,9 +1715,9 @@ width="510">
    layout="topleft"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option toggles Avatar Physics on or off. It simulates gravity and physical interaction for breasts, the butt and belly."
+||This option toggles Avatar Physics on or off. It simulates gravity and physical interaction for breasts, butt and belly."
    left="10"
    name="AvatarPhysics"
    top_pad="10"
@@ -1952,7 +1966,7 @@ width="510">
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;Very High&lt;/red&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;Very High&lt;/red&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option toggles the usage of Reflection Probes on water and reflective surfaces. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not."
+||This option toggles the usage of Reflection Probes on water and reflective surfaces. Reflection Probes are used to generate textures that include the surroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not."
    layout="topleft"
    left="10"
    name="RenderReflectionsEnabled"
@@ -2040,7 +2054,7 @@ width="510">
  layout="topleft"
  left="10"
  name="ReflectionAmount"
- top_pad="10"
+ top_pad="7"
  width="140">
  Reflection Probe Detail:
  </text>
@@ -2090,14 +2104,101 @@ width="510">
       <combo_box.item
        label="Realtime"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
-       |&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
-       |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
-       |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-       ||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
-       ||This setting only allows realtime Reflection Probe updates in addition to static and dynamic Reflection Probes.
-       ||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;Very High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option toggles the usage of Reflection Probes and how much should be included in them. Reflection Probes are used to generate textures that include the sorroundings in order to display them on reflective surfaces, they are a slower, more static approach to Reflections but can be much faster than realtime reflections. Sadly they are not.
+||This setting allows realtime Reflection Probe updates in addition to static and dynamic Reflection Probes. This will heavily impact performance.
+||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
        value="2"
        name="item4"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+    <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ enabled_control="RenderDeferred"
+ text_readonly_color="LabelDisabledColor"
+ left="10"
+ name="RefResolution"
+ top_pad="7"
+ width="150">
+ Reflection Resolution:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   name="RenderReflectionProbeResolution"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Low (64x)"
+       control_name="RenderReflectionProbeResolution"
+       value="64"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of all Refletion Probes. Affects the precision and quality of the reflections on water and shiny surfaces.
+||RenderReflectionProbeResolution: &lt;blue&gt;64&lt;/blue&gt;
+|&lt;blue&gt;64x * 6 = 0.094MB VRAM usage per Probe&lt;/blue&gt;
+||&lt;icon&gt;Default_Widget_Mini&lt;/icon&gt; Blue Badge
+|This option is equivalent of the maximum (Ultra) available in the official Viewer."
+       name="item0"/>
+      <combo_box.item
+       label="Medium (128x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;128&lt;/blue&gt;
+|&lt;blue&gt;128x * 6 = 0.375MB VRAM usage per Probe&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
+       value="128"
+       name="item2"/>
+      <combo_box.item
+       label="High (256x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;256&lt;/blue&gt;
+|&lt;blue&gt;256x * 6 = 1.5MB VRAM usage per Probe&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
+       value="256"
+       name="item3"/>
+      <combo_box.item
+       label="Very High (512x)"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
+||RenderReflectionProbeResolution: &lt;blue&gt;512&lt;/blue&gt;
+|&lt;blue&gt;512x = 6MB VRAM usage per Probe&lt;/blue&gt;
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|This option is higher than the maximum (Ultra) available in the official Viewer."
+       value="512"
+       name="item4"/>
+       <combo_box.combo_icon
+       default_index="1"
+       warns_index="2"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -2934,7 +3035,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1120"
+	  height="1104"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -4088,7 +4189,7 @@ width="510">
      enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
-     label="Render Screen Space Reflections"
+     label="Screen Space Reflections (SSR)"
      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; Medium
@@ -4745,82 +4846,6 @@ width="510">
       <text
  type="string"
  length="1"
- follows="left|top"
- height="12"
- layout="topleft"
- enabled_control="RenderDeferred"
- text_readonly_color="LabelDisabledColor"
- left="10"
- name="RefResolution"
- top_pad="7"
- width="150">
- Reflection Resolution:
- </text>
- <combo_box
-   follows="top|left"
-   left="155"
-   height="18"
-   name="RenderReflectionProbeResolution"
-   use_ticker="true"
-   tool_tip=""
-   top_delta="-2"
-   width="219">
-      <combo_box.item
-       label="Low (64x)"
-       control_name="RenderReflectionProbeResolution"
-       value="64"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; Medium
-|&lt;b&gt;Performance:&lt;/b&gt; Medium
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of all Refletion Probes. Affects the precision and quality of the reflections on water and shiny surfaces.
-||RenderReflectionProbeResolution: &lt;blue&gt;64&lt;/blue&gt;
-|&lt;blue&gt;64x * 6 = 0.094MB VRAM usage per Probe&lt;/blue&gt;"
-       name="item0"/>
-      <combo_box.item
-       label="Medium (128x)"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||RenderReflectionProbeResolution: &lt;blue&gt;128&lt;/blue&gt;
-|&lt;blue&gt;128x * 6 = 0.375MB VRAM usage per Probe&lt;/blue&gt;"
-       value="128"
-       name="item2"/>
-      <combo_box.item
-       label="High (256x)"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||RenderReflectionProbeResolution: &lt;blue&gt;256&lt;/blue&gt;
-|&lt;blue&gt;256x * 6 = 1.5MB VRAM usage per Probe&lt;/blue&gt;"
-       value="256"
-       name="item3"/>
-      <combo_box.item
-       label="Very High (512x)"
-       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
-||This option controls the resolution of the second projector shadowmap. Affects the precision of the second projector and might cause artifacts if set too low.
-||RenderReflectionProbeResolution: &lt;blue&gt;512&lt;/blue&gt;
-|&lt;blue&gt;512x = 6MB VRAM usage per Probe&lt;/blue&gt;"
-       value="512"
-       name="item4"/>
-      <combo_box.drop_down_button
-       pad_right="4"
-       image_unselected="Transparent"
-       image_selected="Transparent"
-       image_pressed="Transparent" 
-       image_pressed_selected="Transparent"
-       image_disabled="Transparent" />
-    </combo_box>
-      <text
- type="string"
- length="1"
  follows="right|top"
  height="12"
  layout="topleft"
@@ -4858,19 +4883,6 @@ width="510">
    name="UseSSAO"
    top_pad="7"
    width="115" />
- <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
      <slider
       control_name="RenderSSAOBlurSize"
       decimal_digits="3"
@@ -5064,7 +5076,7 @@ width="510">
      enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
-     label="Depth of Field"
+     label="Depth of Field (DoF)"
      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
@@ -5088,7 +5100,7 @@ width="510">
    width="220">
    Requires Deferred Rendering
    </text>
- <check_box
+ <!--<check_box
    control_name="RenderDepthOfFieldAlphas"
    enabled_control="RenderDeferred"
    height="16"
@@ -5099,7 +5111,7 @@ width="510">
    tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
    name="RenderDepthOfFieldAlphas"
    top_pad="10"
-   width="115"/>
+   width="115"/>-->
  <check_box
    control_name="RenderDepthOfFieldFront"
    height="16"
@@ -5113,7 +5125,7 @@ width="510">
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
    name="RenderDepthOfFieldFront"
-   top_pad="0"
+   top_pad="10"
    width="115"/>
  <check_box
    control_name="RenderDepthOfFieldInEditMode"
