@@ -783,6 +783,56 @@ bool LLAppViewer::init()
 
 	LL_INFOS("InitInfo") << "Configuration initialized." << LL_ENDL ;
 
+	//BD - Only keep logs around for a user-defined amount of days or until they
+	//     reach a certain size.
+	S32 max_days = gSavedSettings.getS32("KeepLogsMaxDays");
+	S32 max_size = gSavedSettings.getS32("KeepLogsMaxSize");
+	std::string dir = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "");
+	std::string file;
+	LLDirIterator dir_iter(dir, "BlackDragon_*.log");
+	while (dir_iter.next(file))
+	{
+		LLDate date;
+		LLDate date_now = LLDate::now();
+		bool deleted = false;
+		S32 year, month, day = 0;
+		//BD - Extract everything past "BlackDragon_", yieding us "1.1.2024.log"
+		std::string date_str = file.substr(12);
+		//BD - Remove the file ending.
+		date_str = date_str.erase(date_str.length() - 4);
+		//BD - Parse the date.
+		sscanf(date_str.c_str(), "%d.%d.%d", &month, &day, &year);
+		//BD - Construct a date from our extracted numbers.
+		date.fromYMDHMS(year, month, day);
+		//BD - Subtract the file age from our current date.
+		day = (date_now.secondsSinceEpoch() - date.secondsSinceEpoch()) / (60 * 60 * 24);
+
+		std::string path = gDirUtilp->add(dir, file);
+		LLAPRFile infile;
+		infile.open(path, LL_APR_RB);
+
+		U32 physical_file_size = infile.seek(APR_END, 0);
+		U32 file_size = physical_file_size / (1024 * 1024);
+
+		infile.close();
+		if (day > max_days)
+		{
+			//BD - Delete the file if its too old.
+			LLFile::remove(path);
+			LL_INFOS() << "Deleting log file because its too old: " << file << " (Age: " << day << ") " << date_str << LL_ENDL;
+			continue;
+		}
+
+		if (!deleted && file_size > max_size)
+		{
+			//BD - Delete the file if its too big.
+			LLFile::remove(path);
+			LL_INFOS() << "Deleting log file because its too big: " << file << " (File size: " << file_size << ")" << LL_ENDL;
+			continue;
+		}
+		LL_INFOS() << "Log file: " << file << " (File size: " << file_size << " | Age: " << day << ") " << date_str << LL_ENDL;
+	}
+
 	//set the max heap size.
 	initMaxHeapSize() ;
 	LLCoros::instance().setStackSize(gSavedSettings.getS32("CoroutineStackSize"));
@@ -2370,21 +2420,28 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 	LLError::addGenericRecorder(&errorCallback);
 	//LLError::setTimeFunction(getRuntime);
 
-	//BD - Remove the last ".old" log file.
-	//     We disabled the remove and rename this will mean that the Viewer
-	//     will always use today's log file and continue writing into it, this
-	//     might get messy but its mainly for myself anyway to allow people
-	//     to give me relevant log files without worrying that they will be
-	//     removed when restarting.
-	//std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
-	//						     "BlackDragon.old");
-	//LLFile::remove(old_log_file);
-
 	//BD - Get name of the log file
 	//     We use the date to allow one file per day.
 	std::string log_date;
 	LLDateUtil::stringFromDate(log_date, LLDate::now());
 	std::string log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "BlackDragon_" + log_date + ".log");
+
+	LLAPRFile infile;
+	infile.open(log_file, LL_APR_RB);
+
+	U32 physical_file_size = infile.seek(APR_END, 0);
+	U32 file_size = physical_file_size / (1024 * 1024);
+
+	//BD - Clean the log file if it ever goes above 100mb, remember we keep
+	//     adding to today's log unntil today ends.
+	if (file_size > 100)
+	{
+		infile.close();
+		//BD - Delete the file if its too big.
+		LLFile::remove(log_file);
+		LL_INFOS() << "Deleting log file because its too big: " << log_file << " (File size: " << file_size << ")" << LL_ENDL;
+	}
+
  	/*
 	 * Before touching any log files, compute the duration of the last run
 	 * by comparing the ctime of the previous start marker file with the ctime
@@ -2418,9 +2475,6 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 		gLastExecDuration = -1; // unknown
 	}
 	std::string duration_log_msg(duration_log_stream.str());
-
-	//BD - Do not rename current log file to ".old"
-	//LLFile::rename(log_file, old_log_file);
 
 	// Set the log file to SecondLife.log
 	LLError::logToFile(log_file);

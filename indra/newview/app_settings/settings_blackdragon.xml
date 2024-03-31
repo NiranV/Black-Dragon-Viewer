@@ -2214,5 +2214,27 @@
       <key>Value</key>
       <integer>0</integer>        
     </map>
+    <key>KeepLogsMaxDays</key>
+    <map>
+      <key>Comment</key>
+      <string>Keep log files only for X days.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>30</integer>        
+    </map>
+    <key>KeepLogsMaxSize</key>
+    <map>
+      <key>Comment</key>
+      <string>Keep log files only if they are smaller than X megabytes.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>10</integer>        
+    </map>
   </map>
 </llsd>
