@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel
- follows="left|top|right|bottom"
+ follows="all"
  height="300"
  layout="topleft"
  name="world_map"
@@ -56,6 +56,7 @@
     <text
      type="string"
      length="1"
+     width="20"
      label="N"
      layout="topleft"
      name="floater_map_north"
@@ -91,7 +92,7 @@
     </text>
     <text
      type="string"
-     length="1"
+     length="2"
      label="SE"
      layout="topleft"
      name="floater_map_southeast"
@@ -100,7 +101,7 @@
     </text>
     <text
      type="string"
-     length="1"
+     length="2"
      label="NE"
      layout="topleft"
      name="floater_map_northeast"
@@ -109,7 +110,7 @@
     </text>
     <text
      type="string"
-     length="1"
+     length="2"
      label="SW"
      layout="topleft"
      name="floater_map_southwest"
@@ -118,7 +119,7 @@
     </text>
     <text
      type="string"
-     length="1"
+     length="2"
      label="NW"
      layout="topleft"
      name="floater_map_northwest"

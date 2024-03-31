@@ -460,12 +460,19 @@ BOOL LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (!isMinimized() && isFrontmost())
 	{
-		S32 map_x = x - mMapView->getRect().mLeft;
+		//BD - Make sure we check if the legend is visible and alter the far most left coordinate
+		//     otherwise the map becomes hard to use because getRect does not give us the real rect
+		//     but rather the original, any scaling done dynamically in the UI is ignored.
+		LLLayoutPanel* legend = getChild<LLLayoutPanel>("legend_panel");
+		S32 map_x = x - (legend->getVisibleAmount() > 0.05f ? legend->getRect().mRight : mMapView->getRect().mLeft);
 		S32 map_y = y - mMapView->getRect().mBottom;
 		if (mMapView->pointInView(map_x, map_y))
 		{
-			F32 old_slider_zoom = (F32)getChild<LLUICtrl>("zoom slider")->getValue().asReal();
-			F32 slider_zoom = old_slider_zoom + ((F32)clicks * -0.3333f);
+			LLSliderCtrl* zoom_slider = getChild<LLSliderCtrl>("zoom slider");
+			F32 old_slider_zoom = zoom_slider->getValue().asReal();
+			F32 max_slider_zoom = zoom_slider->getMaxValue();
+			F32 min_slider_zoom = zoom_slider->getMinValue();
+			F32 slider_zoom = llclamp(old_slider_zoom + ((F32)clicks * -0.3333f), min_slider_zoom, max_slider_zoom);
 			getChild<LLUICtrl>("zoom slider")->setValue(LLSD(slider_zoom));
 			mMapView->zoomWithPivot(slider_zoom, map_x, map_y);
 			return true;
