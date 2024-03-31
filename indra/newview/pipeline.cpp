@@ -133,7 +133,6 @@ bool LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
 S32 LLPipeline::RenderShadowSplits;
 bool LLPipeline::RenderDeferredSSAO;
-F32 LLPipeline::RenderShadowResolutionScale;
 bool LLPipeline::RenderDelayCreation;
 bool LLPipeline::RenderAnimateRes;
 bool LLPipeline::FreezeTime;
@@ -540,7 +539,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderShadowDetail");
     connectRefreshCachedSettingsSafe("RenderShadowSplits");
 	connectRefreshCachedSettingsSafe("RenderDeferredSSAO");
-	connectRefreshCachedSettingsSafe("RenderShadowResolutionScale");
 	connectRefreshCachedSettingsSafe("RenderDelayCreation");
 	connectRefreshCachedSettingsSafe("RenderAnimateRes");
 	connectRefreshCachedSettingsSafe("FreezeTime");
@@ -649,7 +647,6 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderShadowDistance");
 	connectRefreshCachedSettingsSafe("RenderShadowFarClip");
 	connectRefreshCachedSettingsSafe("RenderGlowMinLuminance");
-	connectRefreshCachedSettingsSafe("RenderSSAOBlurSize");
 	connectRefreshCachedSettingsSafe("RenderImpostors");
 
 //    //BD - Post Processing
@@ -659,8 +656,8 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
 
 //    //BD - Shadow Map Allocation
-	connectRefreshCachedSettingsSafe("RenderShadowResolution");
-	connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
+	//connectRefreshCachedSettingsSafe("RenderShadowResolution");
+	//connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
 
 //	//BD - Motion Blur
 	/*connectRefreshCachedSettingsSafe("RenderMotionBlur");
@@ -1021,10 +1018,25 @@ bool LLPipeline::allocateShadowBuffer()
     { //allocate 4 sun shadow maps
         for (U32 i = 0; i < 4; i++)
         {
-            if (!mRT->shadow[i].allocate(RenderShadowResolution.mV[i], RenderShadowResolution.mV[i], 0, true))
-            {
-                return false;
-            }
+			//BD - Stop allocating massive shadow maps for reflection probes, you can hardly see that in the low
+			//     resolution cube snapshots.
+			if (gCubeSnapshot)
+			{
+				if (!mRT->shadow[i].allocate(1024, 1024, 0, true))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (mRT->shadow[i].getWidth() != RenderShadowResolution.mV[i])
+				{
+					if (!mRT->shadow[i].allocate(RenderShadowResolution.mV[i], RenderShadowResolution.mV[i], 0, true))
+					{
+						return false;
+					}
+				}
+			}
         }
     }
     else
@@ -1125,7 +1137,6 @@ void LLPipeline::refreshCachedSettings()
 	RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
     RenderShadowSplits = gSavedSettings.getS32("RenderShadowSplits");
 	RenderDeferredSSAO = gSavedSettings.getBOOL("RenderDeferredSSAO");
-	RenderShadowResolutionScale = gSavedSettings.getF32("RenderShadowResolutionScale");
 	RenderDelayCreation = gSavedSettings.getBOOL("RenderDelayCreation");
 	RenderAnimateRes = gSavedSettings.getBOOL("RenderAnimateRes");
 	FreezeTime = gSavedSettings.getBOOL("FreezeTime");
@@ -1280,6 +1291,8 @@ void LLPipeline::releaseGLBuffers()
 	}
 
 	releaseScreenBuffers();
+	//BD - Also release shadows, we will reallocate them when necessary.
+	releaseShadowBuffers();
 
 	gBumpImageList.destroyGL();
 	LLVOAvatar::resetImpostors();
@@ -1322,6 +1335,7 @@ void LLPipeline::releaseSunShadowTarget(U32 index)
 {
     llassert(index < 4);
     mRT->shadow[index].release();
+	mAuxillaryRT.shadow[index].release();
 }
 
 void LLPipeline::releaseSunShadowTargets()
@@ -7627,6 +7641,8 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 				gDeferredPostProgram.uniform1f(LLShaderMgr::DOF_MAX_COF, CameraMaxCoF);
 				gDeferredPostProgram.uniform1f(LLShaderMgr::DOF_RES_SCALE, CameraDoFResScale);
 
+				gDeferredPostProgram.uniform1f(LLShaderMgr::DOF_MAX_COF, CameraMaxCoF);
+
 				mScreenTriangleVB->setBuffer();
 				mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
 
@@ -8089,8 +8105,16 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 
 	shader.uniform3fv(LLShaderMgr::DEFERRED_SUN_DIR, 1, mTransformedSunDir.mV);
     shader.uniform3fv(LLShaderMgr::DEFERRED_MOON_DIR, 1, mTransformedMoonDir.mV);
-	shader.uniform2f(LLShaderMgr::DEFERRED_SHADOW_RES, mRT->shadow[0].getWidth(), mRT->shadow[0].getHeight());
+	if (!gCubeSnapshot)
+	{
+		shader.uniform2f(LLShaderMgr::DEFERRED_SHADOW_RES, mRT->shadow[0].getWidth(), mRT->shadow[0].getHeight());
+	}
+	else
+	{
+		shader.uniform2f(LLShaderMgr::DEFERRED_SHADOW_RES, mAuxillaryRT.shadow[0].getWidth(), mAuxillaryRT.shadow[0].getHeight());
+	}
 	shader.uniform2f(LLShaderMgr::DEFERRED_PROJ_SHADOW_RES, mSpotShadow[0].getWidth(), mSpotShadow[0].getHeight());
+
 	shader.uniform1f(LLShaderMgr::DEFERRED_DEPTH_CUTOFF, RenderEdgeDepthCutoff);
 	shader.uniform1f(LLShaderMgr::DEFERRED_NORM_CUTOFF, RenderEdgeNormCutoff);
 	
@@ -9734,7 +9758,10 @@ void LLPipeline::renderHighlight(const LLViewerObject* obj, F32 fade)
 LLRenderTarget* LLPipeline::getSunShadowTarget(U32 i)
 {
     llassert(i < 4);
-    return &mRT->shadow[i];
+	if (gCubeSnapshot)
+		return &mAuxillaryRT.shadow[i];
+	else
+		return &mRT->shadow[i];
 }
 
 LLRenderTarget* LLPipeline::getSpotShadowTarget(U32 i)

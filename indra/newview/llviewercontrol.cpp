@@ -865,6 +865,9 @@ static bool handleShadowMapsChanged(const LLSD& newvalue)
 {
 	if (STATE_STARTED == LLStartUp::getStartupState())
 	{
+		//BD - Force refresh the pipeline cached values, otherwise they lag behind.
+		gPipeline.RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
+		gPipeline.RenderProjectorShadowResolution = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 		gPipeline.allocateShadowBuffer();
 		return true;
 	}
