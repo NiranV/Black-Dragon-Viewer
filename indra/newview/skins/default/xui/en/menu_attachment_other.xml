@@ -182,6 +182,15 @@ name="Avatar Pie">
    <menu_item_call.on_visible
    function="Avatar.EnableFreezeEject"/>
    </menu_item_call>
+
+   <menu_item_separator />
+   <menu_item_call
+   label="Refresh Textures"
+   name="RefreshTextures"
+   enabled="true">
+   <menu_item_call.on_click
+   function="Object.RefreshTextures" />
+   </menu_item_call>
    
    <menu_item_separator />
    

@@ -2781,6 +2781,34 @@ class LLObjectDerender : public view_listener_t
 	}
 };
 
+//BD - Refresh Textures
+class LLObjectRefreshTextures : public view_listener_t
+{
+	bool handleEvent(const LLSD& userdata)
+	{
+		LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+		if (selection.notNull())
+		{
+			for (LLObjectSelection::iterator iter = selection->begin(); iter != selection->end(); ++iter)
+			{
+				LLSelectNode* node = *iter;
+				LLViewerObject* objectp = node->getObject();
+				if (!objectp) continue;
+
+				for (S32 i = 0; i != objectp->getNumTEs(); ++i)
+				{
+					LLViewerTexture* texture = objectp->getTEImage(i);
+					if (texture)
+					{
+						texture->destroyGLTexture();
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
 //BD - Re/DeAlpha + Set Alpha Mode
 class BDObjectSetAlpha : public view_listener_t
 {
@@ -10288,6 +10316,9 @@ void initialize_menus()
 //	//BD - Derender
 	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
 	view_listener_t::addMenu(new LLObjectDerender(), "Object.Derender");
+
+//	//BD - Refresh Textures
+	view_listener_t::addMenu(new LLObjectRefreshTextures(), "Object.RefreshTextures");
 
 //	//BD - Save/Load Camera Position
 	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));

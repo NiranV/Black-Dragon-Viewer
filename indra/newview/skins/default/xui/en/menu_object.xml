@@ -238,6 +238,16 @@
    <menu_item_call.on_click
       function="Object.GetUUID" />
    </menu_item_call>
+
+   <menu_item_separator
+       layout="topleft" />
+   <menu_item_call
+   label="Refresh Textures"
+   name="RefreshTextures"
+   enabled="true">
+   <menu_item_call.on_click
+      function="Object.RefreshTextures" />
+   </menu_item_call>
   
   <menu_item_separator
        layout="topleft" />
