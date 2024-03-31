@@ -60,7 +60,6 @@ void BDAnimator::update()
 			{
 				if (!joint)	continue;
 
-				LLSD row;
 				if (joint->mJointNum > 7 &&	//mHead
 					joint->mJointNum < 58)	//mCollarLeft
 				{
