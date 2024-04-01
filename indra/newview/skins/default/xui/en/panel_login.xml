@@ -148,8 +148,65 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="520"
+     height="234"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Functions to automatically delete log files older than 30 days or bigger than 10 megabytes.
+Added: Posterize, Sepia and Greyscale post processing effects back.
+Added: Really hacky and experimental Texture Refresh.
+Changed: Freyjaskadi Resident to Wet Waifu in the Patreon section due to request.
+Changed: Some general cleanup in Preferences - Display, moving options around, adding and improving tooltips and relabeling unclear options.
+Changed: Version to 5.1.2.
+Fixed: Reflection probes resetting and not updating anymore when windlights are changed with the transition time set to instant.
+Fixed: Share via right-click inventory not working.
+Fixed: World map allowing to be zoomed past limits, overloading the map tile request pipeline and killing framerate.
+Fixed: World map not being interactable in some parts depending on whether the legend is opened or not.
+Fixed: RenderSSAOEffect setting type mismatch.
+Fixed: Shadow Resolution option lagging behind one selection.
+Fixed: Reflection Probes allocating desired shadow resolution again.
+Fixed: Reflection Probes not deallocating shadow maps when turned off.
+Fixed: Several windlight sky options related to making rainbows no longer working.
+Fixed: Compilation error.
+Fixed: Prefereces - Display layout issues.
+Misc: Cleaned up bdanimator.cpp a bit.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.1.1
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="520"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
