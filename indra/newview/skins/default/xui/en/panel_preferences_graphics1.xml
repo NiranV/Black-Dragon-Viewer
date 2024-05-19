@@ -3035,7 +3035,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1084"
+	  height="1064"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -4884,38 +4884,6 @@ width="510">
    top_pad="7"
    width="115" />
      <slider
-      control_name="RenderSSAOBlurSize"
-      decimal_digits="3"
-      follows="left|top"
-      height="14"
-      increment="0.001"
-      can_edit_text="true"
-      label="SSAO Blur Size:"
-      label_width="150"
-      tool_tip="This option controls the strength of each blur pass of SSAO."
-      layout="topleft"
-      left="10"
-      max_val="1.0"
-      min_val="0.0"
-      name="RenderSSAOBlurSize"
-      top_pad="10"/>
- <button
- follows="left|top"
- control_name="RenderSSAOBlurSize"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-     <slider
       decimal_digits="2"
       control_name="RenderSSAOEffect"
       can_edit_text="true"
@@ -4931,7 +4899,7 @@ width="510">
       max_val="10"
       min_val="-10"
       name="SSAOEffect"
-      top_pad="1"/>
+      top_pad="10"/>
      <button
  follows="left|top"
  control_name="RenderSSAOEffect"

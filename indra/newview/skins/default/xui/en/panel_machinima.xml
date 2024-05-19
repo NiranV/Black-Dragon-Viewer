@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1077"
+            height="1057"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -1317,25 +1317,6 @@ width="345">
                   width="250">
                   Screen Space Ambient Occlusion (SSAO):
                   </text>
-                  <slider
-                  control_name="RenderSSAOBlurSize"
-                  enabled_control="RenderDeferredSSAO"
-                  decimal_digits="3"
-                  follows="left|top"
-                  height="15"
-                  increment="0.001"
-                  initial_value="0.4"
-                  can_edit_text="true"
-                  label="Blur Size:"
-                  label_width="110"
-                  tool_tip="Set the strength of each blur pass of SSAO"
-                  layout="topleft"
-                  left="10"
-                  max_val="1.0"
-                  min_val="0"
-                  name="SSAOBlurSize"
-                  top_pad="15"
-                  width="310"/>
                   <slider
                   control_name="RenderSSAOEffect"
                   enabled_control="RenderDeferredSSAO"
