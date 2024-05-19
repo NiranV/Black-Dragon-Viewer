@@ -100,7 +100,7 @@ width="510">
        follows="top|left|right"
        visibility_control="PrefsViewerVisible"
        layout="topleft"
-       height="1070"
+       height="1105"
        auto_resize="false"
        visible="false"
        name="basic_layout_panel"
@@ -1304,6 +1304,20 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
+    <check_box
+   control_name="RenderGlowHDR"
+   height="16"
+   label="Render HDR Glow"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||This option toggles whether glow should use HDR or not."
+   layout="topleft"
+   left="10"
+   name="RenderGlowHDR"
+   top_pad="7"
+   width="115" />
  <text
  type="string"
  length="1"
@@ -1312,7 +1326,7 @@ width="510">
  layout="topleft"
  left="10"
  name="GlowResolution"
- top_pad="5"
+ top_pad="10"
  width="120">
  Glow Quality:
  </text>
@@ -1328,7 +1342,7 @@ width="510">
    width="219">
       <combo_box.item
        label="Low"
-       value="8"
+       value="7"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
@@ -1732,7 +1746,7 @@ width="510">
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
- top_pad="7"
+ top_pad="10"
  width="120">
  Avatar Physics:
  </text>
@@ -1956,6 +1970,21 @@ width="510">
    left="10"
    name="MipMaps"
    top_pad="7"
+   width="115" />
+   <check_box
+   control_name="RenderTransparentWater"
+   height="16"
+   initial_value="true"
+   label="Use Transparent Water"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles whether the Viewer should render the water surface with transparency or not. Without transparency the water will be completely opaque and you will not be able to see anything below the water surface if above vice versa. Some windlight settings such as refraction based settings depend on this being turned on, otherwise you will not see refractions."
+   layout="topleft"
+   left="10"
+   name="RenderTransparentWater"
+   top_pad="1"
    width="115" />
    <check_box
    control_name="RenderReflectionsEnabled"
