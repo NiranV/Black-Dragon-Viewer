@@ -191,30 +191,35 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 {
 	if( hasMouseCapture() )
 	{
+		LLVector2 delta = LLVector2(x - (S32)mInitPos.mV[VX], y - (S32)mInitPos.mV[VY]);
+		if (mask == MASK_CONTROL)
+		{
+			delta *= 0.1;
+		}
+		F32 t = 0;
+		LLVector2 new_pos = LLVector2(mInitPos.mV[VX] + delta.mV[VX], mInitPos.mV[VY] + delta.mV[VY]);
 		if ( mOrientation == HORIZONTAL )
 		{
 			S32 thumb_half_width = mThumbImage->getWidth()/2;
 			//BD - UI Improvements
 			S32 left_edge = thumb_half_width;
 			S32 right_edge = getRect().getWidth() - (thumb_half_width);
-
-			F32 t = F32(x - left_edge) / (right_edge - left_edge);
-			//BD - UI Improvements
-			F32 val = llclamp(t * (mMaxValue - mMinValue) + mMinValue, mMinValue, mMaxValue);
-			if (mInitPos.mV[VX] != x)
-				setValueAndCommit(val);
+			t = F32(new_pos.mV[VX] - left_edge) / (right_edge - left_edge);
 		}
 		else // mOrientation == VERTICAL
 		{
 			S32 thumb_half_height = mThumbImage->getHeight()/2;
 			S32 top_edge = thumb_half_height;
 			S32 bottom_edge = getRect().getHeight() - (thumb_half_height);
+			t = F32(new_pos.mV[VY] - top_edge) / (bottom_edge - top_edge);
+		}
 
-			F32 t = F32(y - top_edge) / (bottom_edge - top_edge);
-			//BD - UI Improvements
-			F32 val = llclamp(t * (mMaxValue - mMinValue) + mMinValue, mMinValue, mMaxValue);
-			if (mInitPos.mV[VX] != y)
-				setValueAndCommit(val);
+		//BD - UI Improvements
+		F32 val = llclamp(t * (mMaxValue - mMinValue) + mMinValue, mMinValue, mMaxValue);
+		if ((mOrientation == HORIZONTAL && delta.mV[VX] != 0)
+			|| mOrientation == VERTICAL && delta.mV[VY] != 0)
+		{
+			setValueAndCommit(val);
 		}
 
 		getWindow()->setCursor(UI_CURSOR_ARROW);
@@ -223,7 +228,7 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 	else
 	{
 		//BD - Right Mouse down will interrupt hover but will not immediately fire left mouse up.
-		//     If we previously fire right mouse down, cancel out and revert out value.
+		//     If we previously fire right mouse down, cancel out and revert our value.
 		if (mRightMousePressed)
 		{
 			gFocusMgr.setMouseCapture(NULL);
@@ -269,50 +274,43 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	if (mMouseDownSignal)
 		(*mMouseDownSignal)( this, getValueF32() );
 
-	if (MASK_CONTROL & mask) // if CTRL is modifying
+	mMouseOffset = 0;
+	// Find the offset of the actual mouse location from the center of the thumb.
+	if (mThumbRect.pointInRect(x, y))
 	{
-		setValueAndCommit(mInitialValue);
-	}
-	else
-	{
-		// Find the offset of the actual mouse location from the center of the thumb.
-		if (mThumbRect.pointInRect(x, y))
+		//BD - If this is our first click on the widget don't immediately change our value
+		//     depending on the position, center the mouse on the thumb to give the user
+		//     a chance of selecting the slider without changing the value.
+		if (!hasMouseCapture())
 		{
 			//BD - Figure out how far we are from the center of the thumb.
-			S32 mMouseOffset = (mOrientation == HORIZONTAL) 
-				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x 
-				: (mThumbRect.mBottom + mThumbImage->getHeight()) - y;
+			S32 mMouseOffset = (mOrientation == HORIZONTAL)
+				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x
+				: (mThumbRect.mBottom + mThumbImage->getHeight() / 2) - y;
 
-			//BD - If this is our first click on the widget don't immediately change our value
-			//     depending on the position, center the mouse on the thumb to give the user
-			//     a chance of selecting the slider without changing the value.
-			if (!hasMouseCapture())
+			if (mOrientation == HORIZONTAL)
 			{
-				if (mOrientation == HORIZONTAL)
-				{
-					x += mMouseOffset;
-				}
-				else
-				{
-					y += mMouseOffset;
-				}
-
-				LLUI::getInstance()->setMousePositionLocal(this, x, y);
-
-				mInitPos = LLVector2(x,y);
+				x += mMouseOffset;
 			}
+			else
+			{
+				y += mMouseOffset;
+			}
+
+			mInitPos = LLVector2(x,y);
+
+			// No handler needed for focus lost since this class has no state that depends on it.
+			gFocusMgr.setMouseCapture(this);
+
+			LLUI::getInstance()->setMousePositionLocal(this, x, y);
 		}
-
-		mMouseOffset = 0;
-
-		mOriginalValue = getValueF32();
-
-		// No handler needed for focus lost since this class has no state that depends on it.
-		gFocusMgr.setMouseCapture(this);
-
-		// Start dragging the thumb
-		mDragStartThumbRect = mThumbRect;
 	}
+
+	mOriginalValue = getValueF32();
+
+	// Start dragging the thumb
+	mDragStartThumbRect = mThumbRect;
+
 	make_ui_sound("UISndClick");
 
 	return TRUE;
