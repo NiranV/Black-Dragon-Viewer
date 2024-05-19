@@ -92,6 +92,7 @@
 
 //BD
 #include "lltoolmgr.h"
+#include "llhudtext.h"
 
 const F32 FORCE_SIMPLE_RENDER_AREA = 512.f;
 const F32 FORCE_CULL_AREA = 8.f;
@@ -6559,7 +6560,18 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
                 is_alpha = (is_alpha || blinn_phong_transparent) ? TRUE : FALSE;
             }
 
-			if (gltf_mat || (mat && !hud_group))
+			//BD - Objects and prims with HUD texts pollute the depth buffer resulting in
+			//     for example Depth of Field acting like the object is fully opaque, they
+			//     also hide/cut away other HUD texts behind them, basically becoming what
+			//     invisiprims were. We don't want that. Treat completely invisible faces
+			//     as invisible, not as normal alpha or opaque.
+			if ((blinn_phong_alpha <= 0.f
+				|| tex->getPrimaryFormat() == GL_ALPHA)
+				&& !facep->getViewerObject()->mHudText.empty())
+			{
+				registerFace(group, facep, LLRenderPass::PASS_ALPHA_INVISIBLE);
+			}
+			else if (gltf_mat || (mat && !hud_group))
 			{
 				bool material_pass = false;
 
@@ -6621,6 +6633,7 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 				}
 				else if (blinn_phong_transparent)
 				{
+
 					registerFace(group, facep, LLRenderPass::PASS_ALPHA);
 				}
 				else if (use_legacy_bump)
