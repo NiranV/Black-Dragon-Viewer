@@ -92,7 +92,9 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 	//BD - Mirror the current bone's rotation to match what the other body side's rotation should be.
 	mCommitCallbackRegistrar.add("Joint.Mirror", boost::bind(&BDFloaterPoser::onJointMirror, this));
 	//BD - Copy and mirror the other body side's bone rotation.
-	mCommitCallbackRegistrar.add("Joint.Symmetrize", boost::bind(&BDFloaterPoser::onJointSymmetrize, this));
+	mCommitCallbackRegistrar.add("Joint.SymmetrizeFrom", boost::bind(&BDFloaterPoser::onJointSymmetrize, this, true));
+	//BD - Copy and mirror the other body side's bone rotation.
+	mCommitCallbackRegistrar.add("Joint.SymmetrizeTo", boost::bind(&BDFloaterPoser::onJointSymmetrize, this, false));
 
 	//BD - Toggle Mirror Mode on/off.
 	mCommitCallbackRegistrar.add("Joint.ToggleMirror", boost::bind(&BDFloaterPoser::toggleMirrorMode, this, _1));
@@ -180,17 +182,6 @@ BOOL BDFloaterPoser::postBuild()
 	LLContextMenu* joint_menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>("menu_poser_joints.xml",
 		gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
 	mJointScrolls[JOINTS]->setContextMenu(joint_menu);
-
-	//BD - Experimental
-	/*mTimeSlider = getChild<LLMultiSliderCtrl>("time_slider");
-	mKeySlider = getChild<LLMultiSliderCtrl>("key_slider");
-
-	mTimeSlider->addSlider();
-	addSliderKey(0.f, BDPoseKey(std::string("Default")));
-	mTimeSlider->setCommitCallback(boost::bind(&BDFloaterPoser::onTimeSliderMoved, this));
-	mKeySlider->setCommitCallback(boost::bind(&BDFloaterPoser::onKeyTimeMoved, this));
-	getChild<LLButton>("add_key")->setClickedCallback(boost::bind(&BDFloaterPoser::onAddKey, this));
-	getChild<LLButton>("delete_key")->setClickedCallback(boost::bind(&BDFloaterPoser::onDeleteKey, this));*/
 
 	return TRUE;
 }
@@ -467,10 +458,8 @@ void BDFloaterPoser::onPoseDelete()
 
 void BDFloaterPoser::onPoseControlsRefresh()
 {
-	bool is_playing = gDragonAnimator.getIsPlaying();
 	LLScrollListItem* item = mPoseScroll->getFirstSelected();
 	getChild<LLUICtrl>("delete_poses")->setEnabled(bool(item));
-	getChild<LLUICtrl>("add_entry")->setEnabled(!is_playing && item);
 	mLoadPosesBtn->setEnabled(bool(item));
 }
 
@@ -1687,7 +1676,7 @@ void BDFloaterPoser::onJointMirror()
 	}
 }
 
-void BDFloaterPoser::onJointSymmetrize()
+void BDFloaterPoser::onJointSymmetrize(bool from)
 {
 	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
 	{
@@ -1711,22 +1700,43 @@ void BDFloaterPoser::onJointSymmetrize()
 
 			//BD - Get the rotation of the mirror bone (if available).
 			//     Flip the mirror bone's rotation (if available) and apply it to our current bone.
+			//     ELSE
+			//     Flip the our bone's rotation and apply it to the mirror bone (if available).
 			if (mirror_joint)
 			{
 				LLVector3 mirror_rot;
 				LLQuaternion mirror_rot_quat;
-				mirror_rot_quat = mirror_joint->getTargetRotation();
-				LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
-				inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
-				joint->setTargetRotation(inv_mirror_rot_quat);
+				LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+				if (from)
+				{
+					mirror_rot_quat = mirror_joint->getTargetRotation();
+					LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
+					inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+					joint->setTargetRotation(inv_mirror_rot_quat);
 
-				LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-				LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-				LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+					LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+					LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+					LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-				col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
-				col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
-				col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+					col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
+					col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
+					col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+				}
+				else
+				{
+					mirror_rot_quat = joint->getTargetRotation();
+					LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
+					inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+					mirror_joint->setTargetRotation(inv_mirror_rot_quat);
+
+					LLScrollListCell* col_rot_x = item2->getColumn(COL_ROT_X);
+					LLScrollListCell* col_rot_y = item2->getColumn(COL_ROT_Y);
+					LLScrollListCell* col_rot_z = item2->getColumn(COL_ROT_Z);
+
+					col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
+					col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
+					col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+				}
 			}
 		}
 	}
@@ -1825,9 +1835,13 @@ void BDFloaterPoser::onJointContextMenuAction(const LLSD& param)
 		onJointPastePosition();
 		onJointPasteScale();
 	}
-	else if (action == "symmetrize")
+	else if (action == "symmetrize_from")
 	{
-		onJointSymmetrize();
+		onJointSymmetrize(true);
+	}
+	else if (action == "symmetrize_to")
+	{
+		onJointSymmetrize(false);
 	}
 	else if (action == "mirror")
 	{
@@ -2151,7 +2165,7 @@ void BDFloaterPoser::onAvatarsRefresh()
 		create_new = true;
 		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
 		if (avatar && !avatar->isControlAvatar()
-			&& avatar->isSelf())
+			&& (gDragonLibrary.checkKonamiCode() || avatar->isSelf()))
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
@@ -2193,9 +2207,6 @@ void BDFloaterPoser::onAvatarsRefresh()
 				row["columns"][3]["value"] = false;
 				LLScrollListItem* item = mAvatarScroll->addElement(row);
 				item->setUserdata(avatar);
-
-				//BD - We're just here to find ourselves, break out immediately when we are done.
-				//break;
 			}
 		}
 	}

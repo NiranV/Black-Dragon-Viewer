@@ -438,6 +438,14 @@ S32 BDFunctions::checkDeveloper(LLUUID id)
 		return 0;
 }
 
+//BD
+bool BDFunctions::checkKonamiCode()
+{
+	std::string dir = gDirUtilp->getOSUserAppDir();
+	std::string path = gDirUtilp->add(dir, "uuddlrlrba");
+	return gDirUtilp->fileExists(path);
+}
+
 //BD - Factory Reset
 void BDFunctions::askFactoryReset(const LLSD& param)
 {

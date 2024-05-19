@@ -83,6 +83,8 @@ BDFloaterPoseCreator::BDFloaterPoseCreator(const LLSD& key)
 	mCommitCallbackRegistrar.add("Keyframe.Time", boost::bind(&BDFloaterPoseCreator::onKeyframeTime, this));
 	//BD - Refresh the keyframe scroll list and fill it with all relevant keys.
 	mCommitCallbackRegistrar.add("Keyframe.Refresh", boost::bind(&BDFloaterPoseCreator::onKeyframeRefresh, this));
+	//BD - Refresh the keyframe scroll list and fill it with all relevant keys.
+	mCommitCallbackRegistrar.add("Keyframe.ResetAll", boost::bind(&BDFloaterPoseCreator::onKeyframeResetAll, this));
 
 	//BD - Change a bone's rotation.
 	mCommitCallbackRegistrar.add("Joint.Set", boost::bind(&BDFloaterPoseCreator::onJointSet, this, _1, _2));
@@ -287,6 +289,52 @@ void BDFloaterPoseCreator::onKeyframesRebuild()
 			}
 		}
 	}
+}
+
+void BDFloaterPoseCreator::onKeyframeResetAll()
+{
+	if (!gDragonAnimator.mPoseCreatorMotion)
+		return;
+
+	S32 usage = 0;
+	LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
+	if (!joint_list)
+		return;
+
+	for (S32 joint_idx = 0; joint_idx < joint_list->getNumJointMotions(); joint_idx++)
+	{
+		LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint_idx);
+		if (!joint_motion)
+			continue;
+
+		LLJoint* joint = gAgentAvatarp->getJoint(joint_motion->mJointName);
+		if (!joint)
+			continue;
+
+		//BD - Kill all rotation, position and scale keyframes.
+		LLKeyframeMotion::RotationCurve rot_curve;
+		joint_motion->mRotationCurve = rot_curve;
+
+		LLKeyframeMotion::PositionCurve pos_curve;
+		joint_motion->mPositionCurve = pos_curve;
+
+		LLKeyframeMotion::ScaleCurve scale_curve;
+		joint_motion->mScaleCurve = scale_curve;
+
+		//BD - Reset the usage.
+		LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+		joint_state->setUsage(usage);
+	}
+
+	//BD - Reset the pose.
+	onJointRotPosScaleReset();
+
+	//BD - Refresh the keyframes.
+	onKeyframeRefresh();
+	onKeyframesRebuild();
+
+	//BD - Check if our animation duration needs changing.
+	onAnimationDurationCheck();
 }
 
 void BDFloaterPoseCreator::onKeyframeRefresh()
@@ -1216,7 +1264,10 @@ void BDFloaterPoseCreator::onPoseStartStop()
 			{
 				gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
 				//BD - We need to reset the skeleton here and reapply all the latest keyframes.
-				onJointRotPosScaleReset();
+				if (!gDragonLibrary.checkKonamiCode())
+				{
+					onJointRotPosScaleReset();
+				}
 				onPoseReapply();
 			}
 			else

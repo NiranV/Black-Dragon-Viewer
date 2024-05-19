@@ -57,6 +57,8 @@ public:
 
 	static S32 checkDeveloper(LLUUID id);
 
+	static bool checkKonamiCode();
+
 	static void askFactoryReset(const LLSD& param);
 	static void doFactoryReset(const LLSD& notification, const LLSD& response);
 

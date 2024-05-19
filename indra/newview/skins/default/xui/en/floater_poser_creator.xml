@@ -79,7 +79,7 @@ width="654">
 		width="644">
 				<icon
 				follows="all"
-				height="426"
+				height="428"
 				color="1 1 1 1"
 				image_name="Panel_Background"
 				layout="topleft"
@@ -389,8 +389,8 @@ width="654">
 				tool_tip="Import pose from disk."
 				name="import_poses"
 				width="75"
-				top="-24"
-				left="3">
+				top="-22"
+				left="2">
 					<button.commit_callback
 					function="Pose.Import"/>
 				</button>
@@ -451,33 +451,20 @@ width="654">
 				width="220"
 				top_pad="-2"
 				left="0"/>
-				
-				<icon
-				follows="top|left"
-				height="304"
-				color="1 1 1 1"
-				image_name="Panel_Background"
-				layout="topleft"
-				name="vicon"
-				mouse_opaque="false"
-				visible="true"
-				width="420"
-				top_delta="0"
-				left_pad="2"/>
-				
-							<tab_container
+
+				<tab_container
 							follows="top|left"
 							halign="center"
 							height="279"
 							layout="topleft"
-							left="0"
+							left_delta="-1"
 							enabled="false"
 							name="joints_tabs"
 							tab_height="20"
 							tab_group="1"
 							tab_position="top"
 							top="0"
-							width="220">
+							width="221">
 								<panel
 								follows="all"
 								background_visible="false"
@@ -724,6 +711,19 @@ width="654">
 									</scroll_list>
 								</panel>
 							</tab_container>
+				
+				<icon
+				follows="top|left"
+				height="302"
+				color="1 1 1 1"
+				image_name="Panel_Background"
+				layout="topleft"
+				name="vicon"
+				mouse_opaque="false"
+				visible="true"
+				width="420"
+				top_delta="0"
+				left_pad="2"/>
 						
 									<scroll_list
 									column_padding="2"
@@ -732,7 +732,7 @@ width="654">
 									follows="top|left"
 									can_sort="false"
 									layout="topleft"
-									left_pad="3"
+									left_delta="0"
 									width="417"
 									multi_select="true"
 									name="timeframe_scroll"
@@ -780,9 +780,9 @@ width="654">
 							button_flash_count="64"
 							button_flash_rate="0.5"
 							name="activate"
-							width="114"
+							width="115"
 							top_pad="0"
-							left="3">
+							left="2">
 							<button.commit_callback
 							function="Pose.Start"/>
 							</button>
@@ -815,7 +815,7 @@ width="654">
 							top_delta="0"
 							max_chars="135"
 							name="interpolation"
-							width="139">
+							width="137">
 							<combo_box.combo_button
 							image_unselected="ToolbarDropDown_Off"
 							image_selected="ToolbarDropDown_Press"
@@ -939,11 +939,27 @@ width="654">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				name="flip_pose"
-				width="151"
+				width="70"
 				top_pad="40"
-				left="3">
+				left="2">
 				<button.commit_callback
 				function="Joint.FlipPose"/>
+				</button>
+				<button
+				height="21"
+				follows="top|left"
+				layout="topleft"
+				enabled="true"
+				label="New Anim"
+				image_hover_unselected="Toolbar_Middle_Over"
+				image_selected="Toolbar_Middle_Selected"
+				image_unselected="Toolbar_Middle_Off"
+				name="flip_pose"
+				width="81"
+				top_delta="0"
+				left_pad="1">
+				<button.commit_callback
+				function="Keyframe.ResetAll"/>
 				</button>
 				
 				<icon
@@ -970,7 +986,7 @@ width="654">
 				tab_group="1"
 				tab_position="top"
 				top_delta="2"
-				width="481">
+				width="479">
 					<panel
 					follows="all"
 					background_visible="false"
@@ -1065,7 +1081,7 @@ width="654">
 							name="reset_bone_rot"
 							width="159"
 							top="0"
-							left_delta="2">
+							left_delta="0">
 							<button.commit_callback
 							function="Joint.ResetJointRotation"/>
 							</button>
@@ -1298,7 +1314,7 @@ width="654">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				name="toggle_bone"
-				width="157"
+				width="155"
 				top_pad="-19"
 				left_delta="322">
 				<button.commit_callback

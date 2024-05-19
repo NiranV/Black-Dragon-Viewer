@@ -12,7 +12,13 @@
      label="Symmetrize Rotation from Mirror Bone"
      layout="topleft"
      name="rotations">
-        <on_click function="Joints.Menu" parameter="symmetrize"/>
+        <on_click function="Joints.Menu" parameter="symmetrize_from"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Symmetrize Rotation to Mirror Bone"
+     layout="topleft"
+     name="rotations">
+        <on_click function="Joints.Menu" parameter="symmetrize_to"/>
     </menu_item_call>
     <menu_item_call
      label="Recapture Bone"
