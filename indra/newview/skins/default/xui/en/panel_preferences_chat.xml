@@ -693,10 +693,11 @@ width="510">
    
    <check_box
    height="16"
+   control_name="FlashTaskbarOnIM"
    label="Flash taskbar icon when receiving IM's"
    layout="topleft"
    left_delta="0"
-   name="send_im_to_email"
+   name="FlashTaskbarOnIM"
    tool_tip="This option toggles whether the Black Dragon icon in your taskbar should flash (and show the taskbar if it is set to autohide) whenever you receive a new IM."
    top_pad="15"
    width="400" />
