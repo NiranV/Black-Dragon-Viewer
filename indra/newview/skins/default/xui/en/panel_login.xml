@@ -148,8 +148,64 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="234"
+     height="221"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability to slowly and precisely drag sliders by holding down CTRL while dragging, similar to what Blender can do.
+Added: Symmetrize TO other bone option.
+Added: Option to Pose Creator to reset the animation to make a new one without relog.
+Added: Render HDR Glow option to Preferences - Display.
+Added: Render Transparent Water option to Preferences - Display.
+Changed: Poser Version to 15.
+Changed: Fixed a lot of layout inconsistencies in the Pose creator.
+Changed: Improved shadow accuracy enough to do some visual difference without leaving the artifacts out (for now).
+Changed: Login screen video back to original.
+Changed: Version to 5.1.3 - Birthday Dragon.
+Fixed: A warning on poser open.
+Fixed: SSAOFactor complaining about wrong setting type and also fixing SSAO in the process.
+Fixed: Faces/Prims with hover text polluting depth and acting as opaque.
+Fixed: Flash Taskbar icon when receiving IM option.
+Removed: Broken SSAO Blur option from Machinima Sidebar.
+Removed: Broken SSAO Blur option from Preferences.
+Misc: Cleaned up poser code.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.1.2
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="234"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
