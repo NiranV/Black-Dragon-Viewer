@@ -274,37 +274,14 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	if (mMouseDownSignal)
 		(*mMouseDownSignal)( this, getValueF32() );
 
-	mMouseOffset = 0;
 	// Find the offset of the actual mouse location from the center of the thumb.
 	if (mThumbRect.pointInRect(x, y))
 	{
-		//BD - If this is our first click on the widget don't immediately change our value
-		//     depending on the position, center the mouse on the thumb to give the user
-		//     a chance of selecting the slider without changing the value.
-		if (!hasMouseCapture())
-		{
-			//BD - Figure out how far we are from the center of the thumb.
-			S32 mMouseOffset = (mOrientation == HORIZONTAL)
-				? (mThumbRect.mLeft + mThumbImage->getWidth() / 2) - x
-				: (mThumbRect.mBottom + mThumbImage->getHeight() / 2) - y;
-
-			if (mOrientation == HORIZONTAL)
-			{
-				x += mMouseOffset;
-			}
-			else
-			{
-				y += mMouseOffset;
-			}
-
-			mInitPos = LLVector2(x,y);
-
-			// No handler needed for focus lost since this class has no state that depends on it.
-			gFocusMgr.setMouseCapture(this);
-
-			LLUI::getInstance()->setMousePositionLocal(this, x, y);
-		}
+		mInitPos = LLVector2(x, y);
 	}
+
+	// No handler needed for focus lost since this class has no state that depends on it.
+	gFocusMgr.setMouseCapture(this);
 
 	mOriginalValue = getValueF32();
 
