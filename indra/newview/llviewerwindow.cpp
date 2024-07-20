@@ -1159,12 +1159,19 @@ BOOL LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
 		LLToolPie::getInstance()->handleRightMouseDown(x, y, mask);
 	}
 
-	// Do not allow tool manager to handle mouseclicks if we have disconnected	
-	if(!gDisconnected && LLToolMgr::getInstance()->getCurrentTool()->handleAnyMouseClick( x, y, mask, clicktype, down ) )
+//	//BD - Do to our special way of handling right-click up and down events we need to
+	//     prevent the tool manager from handling the click as it crashes the Viewer
+	//     we will still fire the right-click menu tho.
+	if(!(LLToolMgr::getInstance()->getCurrentTool() == LLToolCamera::getInstance()
+		&& clicktype == CLICK_RIGHT))
 	{
-		LLViewerEventRecorder::instance().clear_xui(); 
-        is_toolmgr_action = true;
-		return TRUE;
+		// Do not allow tool manager to handle mouseclicks if we have disconnected	
+		if (!gDisconnected && LLToolMgr::getInstance()->getCurrentTool()->handleAnyMouseClick(x, y, mask, clicktype, down))
+		{
+			LLViewerEventRecorder::instance().clear_xui();
+			is_toolmgr_action = true;
+			return TRUE;
+		}
 	}
 
 	if (down && clicktype == CLICK_RIGHT)

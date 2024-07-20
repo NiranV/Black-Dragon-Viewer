@@ -390,8 +390,8 @@ BOOL LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	//     Appearance Mode or if we are in any sort of camera movement 
 	//     mode, this prevents crashing.
 	if (mOutsideSlopRightX || mOutsideSlopRightY ||
-		CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() ||
-		LLToolMgr::getInstance()->getCurrentTool() == LLToolCamera::getInstance())
+		CAMERA_MODE_CUSTOMIZE_AVATAR == gAgentCamera.getCameraMode() /* ||
+		LLToolMgr::getInstance()->getCurrentTool() == LLToolCamera::getInstance()*/)
 	{
 		return TRUE;
 	}
