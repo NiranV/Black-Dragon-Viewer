@@ -864,14 +864,18 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	if (mBtn[mMappedButtons[TOGGLE_RUN]] && !w_button_held)
 	{
 		w_button_held = true;
-		if (gAgent.getAlwaysRun())
+		bool run = gAgent.getAlwaysRun();
+		if (run)
 		{
 			gAgent.clearAlwaysRun();
+			gAgent.clearRunning();
 		}
 		else
 		{
 			gAgent.setAlwaysRun();
+			gAgent.setRunning();
 		}
+		gAgent.sendWalkRun(!run);
 	}
 	else if (!mBtn[mMappedButtons[TOGGLE_RUN]] && w_button_held)
 	{
@@ -906,9 +910,6 @@ void LLViewerJoystick::moveAvatar(bool reset)
 	F32 cur_delta[6];
 	F32 val, dom_mov = 0.f;
 	U32 dom_axis = Z_I;
-//	//BD - Remappable Joystick Controls
-	mAxes[Z_AXIS] += (F32)mBtn[mMappedButtons[JUMP]];
-	mAxes[Z_AXIS] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 	// remove dead zones and determine biggest movement on the joystick 
 	for (U32 i = 0; i < 6; i++)
@@ -964,6 +965,13 @@ void LLViewerJoystick::moveAvatar(bool reset)
 		
 		setCameraNeedsUpdate(true);
 	}
+
+//	//BD - Remappable Joystick Controls
+	//     Pressing Jump or Crouch should ignore the deadzone mechanic, since
+	//     if we pressed it we REALLY do want to jump or crouch, theres no fine
+	//     movement here, they are just buttons.
+	cur_delta[Y_I] += (F32)mBtn[mMappedButtons[JUMP]];
+	cur_delta[Y_I] -= (F32)mBtn[mMappedButtons[CROUCH]];
 
 //	//BD - Invertable Pitch Controls
 	if (!mJoystickInvertPitch)
