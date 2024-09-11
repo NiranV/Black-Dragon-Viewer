@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llviewerobjectlist.h
  * @brief Description of LLViewerObjectList class.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -78,7 +78,7 @@ public:
 	typedef std::vector<LLPointer<LLViewerObject> > vobj_list_t;
 
 //	//BD - Derender
-	BOOL killObject(LLViewerObject *objectp, bool derendered = false);
+	bool killObject(LLViewerObject *objectp, bool derendered = false);
 
 	void killObjects(LLViewerRegion *regionp); // Kill all objects owned by a particular region.
 	void killAllObjects();
@@ -99,7 +99,7 @@ public:
 //	//BD - Misc
 	vobj_list_t getAllObjects() { return mObjects; }
 
-	void cleanDeadObjects(const BOOL use_timer = TRUE);	// Clean up the dead object list.
+	void cleanDeadObjects(const bool use_timer = true);	// Clean up the dead object list.
 
 	// Simulator and viewer side object updates...
 	void processUpdateCore(LLViewerObject* objectp, void** data, U32 block, const EObjectUpdateType update_type, 
@@ -190,7 +190,7 @@ public:
 
 	// if we paused in the last frame
 	// used to discount stats from this frame
-	BOOL mWasPaused;
+	bool mWasPaused;
 
 	static void getUUIDFromLocal(LLUUID &id,
 								const U32 local_id,
@@ -201,7 +201,7 @@ public:
 								const U32 ip,
 								const U32 port); // Requires knowledge of message system info!
 
-	static BOOL removeFromLocalIDTable(const LLViewerObject* objectp);
+	static bool removeFromLocalIDTable(const LLViewerObject* objectp);
 	// Used ONLY by the orphaned object code.
 	static U64 getIndex(const U32 local_id, const U32 ip, const U32 port);
 
@@ -212,37 +212,37 @@ public:
 //	//BD - Derender
 	std::set<LLUUID> mDerenderList;
 protected:
-	std::vector<U64>	mOrphanParents;	// LocalID/ip,port of orphaned objects
-	std::vector<OrphanInfo> mOrphanChildren;	// UUID's of orphaned objects
-	S32 mNumOrphans;
+    std::vector<U64>    mOrphanParents; // LocalID/ip,port of orphaned objects
+    std::vector<OrphanInfo> mOrphanChildren;    // UUID's of orphaned objects
+    S32 mNumOrphans;
 
 	vobj_list_t mObjects;
 	std::vector<LLPointer<LLViewerObject> > mActiveObjects;
 
-	vobj_list_t mMapObjects;
+    vobj_list_t mMapObjects;
 
     uuid_set_t   mDeadObjects;
 
-	std::map<LLUUID, LLPointer<LLViewerObject> > mUUIDObjectMap;
+    std::map<LLUUID, LLPointer<LLViewerObject> > mUUIDObjectMap;
 
-	//set of objects that need to update their cost
+    //set of objects that need to update their cost
     uuid_set_t   mStaleObjectCost;
     uuid_set_t   mPendingObjectCost;
 
-	//set of objects that need to update their physics flags
+    //set of objects that need to update their physics flags
     uuid_set_t   mStalePhysicsFlags;
     uuid_set_t   mPendingPhysicsFlags;
 
-	std::vector<LLDebugBeacon> mDebugBeacons;
+    std::vector<LLDebugBeacon> mDebugBeacons;
 
-	S32 mCurLazyUpdateIndex;
+    S32 mCurLazyUpdateIndex;
 
-	static U32 sSimulatorMachineIndex;
-	static std::map<U64, U32> sIPAndPortToIndex;
+    static U32 sSimulatorMachineIndex;
+    static std::map<U64, U32> sIPAndPortToIndex;
 
-	static std::map<U64, LLUUID> sIndexAndLocalIDToUUID;
+    static std::map<U64, LLUUID> sIndexAndLocalIDToUUID;
 
-	friend class LLViewerObject;
+    friend class LLViewerObject;
 
 private:
     static void reportObjectCostFailure(LLSD &objectList);
@@ -257,14 +257,14 @@ private:
 class LLDebugBeacon
 {
 public:
-	~LLDebugBeacon();
+    ~LLDebugBeacon();
 
-	LLVector3 mPositionAgent;
-	std::string mString;
-	LLColor4 mColor;
-	LLColor4 mTextColor;
-	S32 mLineWidth;
-	LLPointer<class LLHUDObject> mHUDObject;
+    LLVector3 mPositionAgent;
+    std::string mString;
+    LLColor4 mColor;
+    LLColor4 mTextColor;
+    S32 mLineWidth;
+    LLPointer<class LLHUDObject> mHUDObject;
 };
 
 
@@ -275,45 +275,45 @@ extern LLViewerObjectList gObjectList;
 // Inlines
 /**
  * Note:
- * it will return NULL for offline avatar_id 
+ * it will return NULL for offline avatar_id
  */
 inline LLViewerObject *LLViewerObjectList::findObject(const LLUUID &id)
 {
-	std::map<LLUUID, LLPointer<LLViewerObject> >::iterator iter = mUUIDObjectMap.find(id);
-	if(iter != mUUIDObjectMap.end())
-	{
-		return iter->second;
-	}
-	else
-	{
-		return NULL;
-	}
+    std::map<LLUUID, LLPointer<LLViewerObject> >::iterator iter = mUUIDObjectMap.find(id);
+    if(iter != mUUIDObjectMap.end())
+    {
+        return iter->second;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 inline LLViewerObject *LLViewerObjectList::getObject(const S32 index)
 {
-	LLViewerObject *objectp;
-	objectp = mObjects[index];
-	if (objectp->isDead())
-	{
-		//LL_WARNS() << "Dead object " << objectp->mID << " in getObject" << LL_ENDL;
-		return NULL;
-	}
-	return objectp;
+    LLViewerObject *objectp;
+    objectp = mObjects[index];
+    if (objectp->isDead())
+    {
+        //LL_WARNS() << "Dead object " << objectp->mID << " in getObject" << LL_ENDL;
+        return NULL;
+    }
+    return objectp;
 }
 
 inline void LLViewerObjectList::addToMap(LLViewerObject *objectp)
 {
-	mMapObjects.push_back(objectp);
+    mMapObjects.push_back(objectp);
 }
 
 inline void LLViewerObjectList::removeFromMap(LLViewerObject *objectp)
 {
-	std::vector<LLPointer<LLViewerObject> >::iterator iter = std::find(mMapObjects.begin(), mMapObjects.end(), objectp);
-	if (iter != mMapObjects.end())
-	{
-		mMapObjects.erase(iter);
-	}
+    std::vector<LLPointer<LLViewerObject> >::iterator iter = std::find(mMapObjects.begin(), mMapObjects.end(), objectp);
+    if (iter != mMapObjects.end())
+    {
+        mMapObjects.erase(iter);
+    }
 }
 
 

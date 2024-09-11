@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llnavigationbar.h
  * @brief Navigation bar definition
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -46,67 +46,67 @@ class LLFilterEditor;
  * This button is able to handle click-dragging mouse event.
  * It has appropriated signal for this event.
  * Dragging direction can be set from xml attribute called 'direction'
- * 
- * *TODO: move to llui?  
+ *
+ * *TODO: move to llui?
  */
 
 class LLPullButton: public LLButton
 {
-	LOG_CLASS(LLPullButton);
+    LOG_CLASS(LLPullButton);
 
 public:
-	struct Params: public LLInitParam::Block<Params, LLButton::Params>
-	{
-		Optional<std::string> direction; // left, right, down, up
+    struct Params: public LLInitParam::Block<Params, LLButton::Params>
+    {
+        Optional<std::string> direction; // left, right, down, up
 
-		Params() 
-		:	direction("direction", "down")
-		{
-		}
-	};
-	
-	/*virtual*/ BOOL handleMouseDown(S32 x, S32 y, MASK mask);
+        Params()
+        :   direction("direction", "down")
+        {
+        }
+    };
 
-	/*virtual*/ BOOL handleMouseUp(S32 x, S32 y, MASK mask);
+    /*virtual*/ bool handleMouseDown(S32 x, S32 y, MASK mask);
 
-	/*virtual*/ void onMouseLeave(S32 x, S32 y, MASK mask);
+    /*virtual*/ bool handleMouseUp(S32 x, S32 y, MASK mask);
 
-	boost::signals2::connection setClickDraggingCallback(const commit_signal_t::slot_type& cb);
+    /*virtual*/ void onMouseLeave(S32 x, S32 y, MASK mask);
+
+    boost::signals2::connection setClickDraggingCallback(const commit_signal_t::slot_type& cb);
 
 protected:
-	friend class LLUICtrlFactory;
-	// convert string name into direction vector
-	void setDirectionFromName(const std::string& name);
-	LLPullButton(const LLPullButton::Params& params);
+    friend class LLUICtrlFactory;
+    // convert string name into direction vector
+    void setDirectionFromName(const std::string& name);
+    LLPullButton(const LLPullButton::Params& params);
 
-	commit_signal_t mClickDraggingSignal;
-	LLVector2 mLastMouseDown;
-	LLVector2 mDraggingDirection;
+    commit_signal_t mClickDraggingSignal;
+    LLVector2 mLastMouseDown;
+    LLVector2 mDraggingDirection;
 };
 
 /**
  * Web browser-like navigation bar.
- */ 
+ */
 class LLNavigationBar
-	:	public LLPanel, public LLSingleton<LLNavigationBar>, private LLDestroyClass<LLNavigationBar>
+    :   public LLPanel, public LLSingleton<LLNavigationBar>, private LLDestroyClass<LLNavigationBar>
 {
-	LLSINGLETON(LLNavigationBar);
-	virtual ~LLNavigationBar();
-	LOG_CLASS(LLNavigationBar);
-	friend class LLDestroyClass<LLNavigationBar>;
+    LLSINGLETON(LLNavigationBar);
+    virtual ~LLNavigationBar();
+    LOG_CLASS(LLNavigationBar);
+    friend class LLDestroyClass<LLNavigationBar>;
 
 public:
-	
-	/*virtual*/ void	draw();
-	/*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL	postBuild();
-	/*virtual*/ void	setVisible(BOOL visible);
 
-	void handleLoginComplete();
-	void clearHistoryCache();
+    /*virtual*/ void    draw() override;
+    /*virtual*/ bool handleRightMouseDown(S32 x, S32 y, MASK mask) override;
+    /*virtual*/ bool    postBuild() override;
+    /*virtual*/ void    setVisible(bool visible) override;
 
-	int getDefNavBarHeight();
-	int getDefFavBarHeight();
+    void handleLoginComplete();
+    void clearHistoryCache();
+
+    int getDefNavBarHeight();
+    int getDefFavBarHeight();
 
     bool isRebakeNavMeshAvailable();
 	
@@ -153,7 +153,7 @@ private:
 	{
 		if (LLNavigationBar::instanceExists())
 		{
-			LLNavigationBar::getInstance()->setEnabled(FALSE);
+			LLNavigationBar::getInstance()->setEnabled(false);
 		}
 	}
 

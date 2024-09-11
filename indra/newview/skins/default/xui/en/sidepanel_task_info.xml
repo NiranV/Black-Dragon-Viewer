@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
 	 height="500"
 	 layout="topleft"
@@ -343,6 +343,10 @@
                  label="None"
                  name="None"
                  value="None" />
+                <combo_box.item
+                 label="Ignore object"
+                 name="Ignoreobject"
+                 value="Ignore" />
             </combo_box>
 			<check_box
 			 height="20"

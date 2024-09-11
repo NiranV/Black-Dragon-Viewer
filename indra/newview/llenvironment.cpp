@@ -5,21 +5,21 @@
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2011, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -94,7 +94,7 @@ namespace
     const std::string KEY_ACTION("action");
     const std::string KEY_ACTIONDATA("action_data");
     const std::string KEY_EXPERIENCEID("public_id");
-    const std::string KEY_OBJECTNAME("ObjectName");     // some of these do not conform to the '_' format.  
+    const std::string KEY_OBJECTNAME("ObjectName");     // some of these do not conform to the '_' format.
     const std::string KEY_PARCELNAME("ParcelName");     // But changing these would also alter the Experience Log requirements.
     const std::string KEY_COUNT("Count");
 
@@ -370,13 +370,13 @@ namespace
         virtual ~LLSettingsInjected() {};
 
         typename SETTINGT::ptr_t getSource() const                    { return this->mSource; }
-        void setSource(const typename SETTINGT::ptr_t &source)        
+        void setSource(const typename SETTINGT::ptr_t &source)
         {
             if (source.get() == this) // do not set a source to itself.
                 return;
-            this->mSource = source; 
-            this->setDirtyFlag(true); 
-            this->mLastSourceHash = 0; 
+            this->mSource = source;
+            this->setDirtyFlag(true);
+            this->mLastSourceHash = 0;
         }
 
         virtual bool isDirty() const override { return SETTINGT::isDirty() || (this->mSource->isDirty()); }
@@ -565,7 +565,7 @@ namespace
             if (!this->mSource)
                 return;
 
-            // clears the dirty flag on this object.  Need to prevent triggering 
+            // clears the dirty flag on this object.  Need to prevent triggering
             // more calls into this updateSettings
             LLSettingsBase::updateSettings();
 
@@ -757,7 +757,7 @@ namespace
         LLEnvironment::DayInstance::ptr_t   getBaseDayInstance() const  { return mBaseDayInstance; }
         void                                setBaseDayInstance(const LLEnvironment::DayInstance::ptr_t &baseday);
 
-        S32                                 countExperiencesActive() const { return mActiveExperiences.size(); }
+        S32                                 countExperiencesActive() const { return static_cast<S32>(mActiveExperiences.size()); }
 
         bool                                isOverriddenSky() const { return !mSkyExperience.isNull(); }
         bool                                isOverriddenWater() const { return !mWaterExperience.isNull(); }
@@ -815,7 +815,7 @@ const F64Seconds LLEnvironment::TRANSITION_SLOW(10.0f);
 const F64Seconds LLEnvironment::TRANSITION_ALTITUDE(5.0f);
 
 const LLUUID LLEnvironment::KNOWN_SKY_SUNRISE("01e41537-ff51-2f1f-8ef7-17e4df760bfb");
-const LLUUID LLEnvironment::KNOWN_SKY_MIDDAY("651510b8-5f4d-8991-1592-e7eeab2a5a06");
+const LLUUID LLEnvironment::KNOWN_SKY_MIDDAY("c46226b4-0e43-5a56-9708-d27ca1df3292");
 const LLUUID LLEnvironment::KNOWN_SKY_LEGACY_MIDDAY("cef49723-0292-af49-9b14-9598a616b8a3");
 const LLUUID LLEnvironment::KNOWN_SKY_SUNSET("084e26cd-a900-28e8-08d0-64a9de5c15e2");
 const LLUUID LLEnvironment::KNOWN_SKY_MIDNIGHT("8a01b97a-cb20-c1ea-ac63-f7ea84ad0090");
@@ -824,7 +824,7 @@ const S32 LLEnvironment::NO_TRACK(-1);
 const S32 LLEnvironment::NO_VERSION(-3); // For viewer sided change, like ENV_LOCAL. -3 since -1 and -2 are taken by parcel initial server/viewer version
 const S32 LLEnvironment::VERSION_CLEANUP(-4); // for cleanups
 
-const F32 LLEnvironment::SUN_DELTA_YAW(F_PI);   // 180deg 
+const F32 LLEnvironment::SUN_DELTA_YAW(F_PI);   // 180deg
 
 
 const U32 LLEnvironment::DayInstance::NO_ANIMATE_SKY(0x01);
@@ -900,6 +900,14 @@ void LLEnvironment::initSingleton()
         gGenericDispatcher.addHandler(MESSAGE_PUSHENVIRONMENT, &environment_push_dispatch_handler);
     }
 
+    gSavedSettings.getControl("RenderSkyAutoAdjustProbeAmbiance")->getSignal()->connect(
+        [](LLControlVariable*, const LLSD& new_val, const LLSD& old_val)
+        {
+            LLSettingsSky::sAutoAdjustProbeAmbiance = new_val.asReal();
+        }
+    );
+    LLSettingsSky::sAutoAdjustProbeAmbiance = gSavedSettings.getF32("RenderSkyAutoAdjustProbeAmbiance");
+
     LLEventPumps::instance().obtain(PUMP_EXPERIENCE).stopListening(LISTENER_NAME);
     LLEventPumps::instance().obtain(PUMP_EXPERIENCE).listen(LISTENER_NAME, [this](LLSD message) { listenExperiencePump(message); return false; });
 }
@@ -926,9 +934,9 @@ bool LLEnvironment::canEdit() const
     return true;
 }
 
-LLSettingsSky::ptr_t LLEnvironment::getCurrentSky() const 
-{ 
-    LLSettingsSky::ptr_t psky = mCurrentEnvironment->getSky(); 
+LLSettingsSky::ptr_t LLEnvironment::getCurrentSky() const
+{
+    LLSettingsSky::ptr_t psky = mCurrentEnvironment->getSky();
 
     if (!psky && mCurrentEnvironment->getEnvironmentSelection() >= ENV_EDIT)
     {
@@ -944,9 +952,9 @@ LLSettingsSky::ptr_t LLEnvironment::getCurrentSky() const
     return psky;
 }
 
-LLSettingsWater::ptr_t LLEnvironment::getCurrentWater() const 
+LLSettingsWater::ptr_t LLEnvironment::getCurrentWater() const
 {
-    LLSettingsWater::ptr_t pwater = mCurrentEnvironment->getWater(); 
+    LLSettingsWater::ptr_t pwater = mCurrentEnvironment->getWater();
 
     if (!pwater && mCurrentEnvironment->getEnvironmentSelection() >= ENV_EDIT)
     {
@@ -1232,7 +1240,7 @@ void LLEnvironment::setEnvironment(LLEnvironment::EnvSelection_t env, LLEnvironm
             }
         }
     }
-        
+
     if (fixed.second)
     {
         logEnvironment(env, fixed.second, env_version);
@@ -1529,12 +1537,12 @@ void LLEnvironment::updateEnvironment(LLSettingsBase::Seconds transition, bool f
         //BD - Always use the animator, not doing so causes the reflection probes to bug out.
         //if (transition != TRANSITION_INSTANT)
         {
-	        DayInstance::ptr_t trans = std::make_shared<DayTransition>(
-	            mCurrentEnvironment->getSky(), mCurrentEnvironment->getWater(), pinstance, transition);
-	
-	        trans->animate();
-	
-	        mCurrentEnvironment = trans;
+            DayInstance::ptr_t trans = std::make_shared<DayTransition>(
+                mCurrentEnvironment->getSky(), mCurrentEnvironment->getWater(), pinstance, transition);
+
+            trans->animate();
+
+            mCurrentEnvironment = trans;
         }
         /*else
         {
@@ -1645,7 +1653,7 @@ LLVector4 LLEnvironment::getRotatedLightNorm() const
     return toLightNorm(light_direction);
 }
 
-extern BOOL gCubeSnapshot;
+extern bool gCubeSnapshot;
 
 //-------------------------------------------------------------------------
 void LLEnvironment::update(const LLViewerCamera * cam)
@@ -1673,18 +1681,20 @@ void LLEnvironment::update(const LLViewerCamera * cam)
 
     updateSettingsUniforms();
 
-    // *TODO: potential optimization - this block may only need to be
-    // executed some of the time.  For example for water shaders only.
     {
         LLViewerShaderMgr::shader_iter shaders_iter, end_shaders;
         end_shaders = LLViewerShaderMgr::instance()->endShaders();
         for (shaders_iter = LLViewerShaderMgr::instance()->beginShaders(); shaders_iter != end_shaders; ++shaders_iter)
         {
-            if ((shaders_iter->mProgramObject != 0)
-                && (gPipeline.canUseWindLightShaders()
-                || shaders_iter->mShaderGroup == LLGLSLShader::SG_WATER))
+            shaders_iter->mUniformsDirty = true;
+            if (shaders_iter->mRiggedVariant)
             {
-                shaders_iter->mUniformsDirty = TRUE;
+                shaders_iter->mRiggedVariant->mUniformsDirty = true;
+            }
+
+            for (auto& variant : shaders_iter->mGLTFVariants)
+            {
+                variant.mUniformsDirty = true;
             }
         }
     }
@@ -1692,12 +1702,12 @@ void LLEnvironment::update(const LLViewerCamera * cam)
 
 void LLEnvironment::updateCloudScroll()
 {
-    // This is a function of the environment rather than the sky, since it should 
+    // This is a function of the environment rather than the sky, since it should
     // persist through sky transitions.
     static LLTimer s_cloud_timer;
 
     F64 delta_t = s_cloud_timer.getElapsedTimeAndResetF64();
-    
+
     if (mCurrentEnvironment->getSky() && !mCloudScrollPaused)
     {
         LLVector2 rate = mCurrentEnvironment->getSky()->getCloudScrollRate();
@@ -1772,8 +1782,10 @@ void LLEnvironment::updateGLVariablesForSettings(LLShaderUniforms* uniforms, con
         case LLSD::TypeArray:
         {
             LLVector4 vect4(value);
+            // always identify as a radiance pass if desaturating irradiance is disabled
+            static LLCachedControl<bool> desaturate_irradiance(gSavedSettings, "RenderDesaturateIrradiance", true);
 
-            if (gCubeSnapshot && !gPipeline.mReflectionMapManager.isRadiancePass())
+            if (desaturate_irradiance && gCubeSnapshot && !gPipeline.mReflectionMapManager.isRadiancePass())
             { // maximize and remove tinting if this is an irradiance map render pass and the parameter feeds into the sky background color
                 auto max_vec = [](LLVector4 col)
                 {
@@ -1786,7 +1798,7 @@ void LLEnvironment::updateGLVariablesForSettings(LLShaderUniforms* uniforms, con
                 };
 
                 switch (it.second.getShaderKey())
-                { 
+                {
                 case LLShaderMgr::BLUE_HORIZON:
                 case LLShaderMgr::BLUE_DENSITY:
                     vect4 = max_vec(vect4);
@@ -2116,7 +2128,7 @@ void LLEnvironment::coroRequestEnvironment(S32 parcel_id, LLEnvironment::environ
     {
         LL_WARNS("ENVIRONMENT") << "Couldn't retrieve environment settings for " << ((parcel_id == INVALID_PARCEL_ID) ? ("region!") : ("parcel!")) << LL_ENDL;
     }
-    else if (LLApp::isExiting())
+    else if (LLApp::isExiting() || gDisconnected)
     {
         return;
     }
@@ -2188,7 +2200,7 @@ void LLEnvironment::coroUpdateEnvironment(S32 parcel_id, S32 track_no, UpdateInf
                 query << "&";
         }
         if (track_no != NO_TRACK)
-        { 
+        {
             query << "trackno=" << track_no;
         }
         url += query.str();
@@ -2271,7 +2283,7 @@ void LLEnvironment::coroResetEnvironment(S32 parcel_id, S32 track_no, environmen
     LLSD result = httpAdapter->deleteAndSuspend(httpRequest, url);
     // results that come back may contain the new settings
 
-    LLSD notify; 
+    LLSD notify;
 
     LLSD httpResults = result["http_result"];
     LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
@@ -2559,7 +2571,7 @@ LLSettingsDay::ptr_t LLEnvironment::createDayCycleFromEnvironment(EnvSelection_t
 
     if (type == "sky")
     {
-        for (S32 idx = 1; idx < LLSettingsDay::TRACK_MAX; ++idx)
+        for (U32 idx = 1; idx < LLSettingsDay::TRACK_MAX; ++idx)
             day->clearCycleTrack(idx);
         day->setSettingsAtKeyframe(settings, 0.0f, 1);
     }
@@ -2598,7 +2610,7 @@ void LLEnvironment::onAgentPositionHasChanged(const LLVector3 &localpos)
 S32 LLEnvironment::calculateSkyTrackForAltitude(F64 altitude)
 {
     auto it = std::find_if_not(mTrackAltitudes.begin(), mTrackAltitudes.end(), [altitude](F32 test) { return altitude > test; });
-    
+
     if (it == mTrackAltitudes.begin())
         return 1;
     else if (it == mTrackAltitudes.end())
@@ -2622,19 +2634,19 @@ void LLEnvironment::handleEnvironmentPush(LLSD &message)
 
 
     if (action == ACTION_CLEARENVIRONMENT)
-    { 
+    {
         handleEnvironmentPushClear(experience_id, action_data, transition_time);
     }
     else if (action == ACTION_PUSHFULLENVIRONMENT)
-    { 
+    {
         handleEnvironmentPushFull(experience_id, action_data, transition_time);
     }
     else if (action == ACTION_PUSHPARTIALENVIRONMENT)
-    { 
+    {
         handleEnvironmentPushPartial(experience_id, action_data, transition_time);
     }
     else
-    { 
+    {
         LL_WARNS("ENVIRONMENT", "GENERICMESSAGES") << "Unknown environment push action '" << action << "'" << LL_ENDL;
     }
 }
@@ -2848,9 +2860,9 @@ bool LLEnvironment::DayInstance::setSky(const LLSettingsSky::ptr_t &psky)
     mInitialized = false;
 
     bool changed = psky == nullptr || mSky == nullptr || mSky->getHash() != psky->getHash();
-    
+
     bool different_sky = mSky != psky;
-    
+
     mSky = psky;
     mSky->mReplaced |= different_sky;
     mSky->update();
@@ -2985,7 +2997,7 @@ LLEnvironment::DayTransition::DayTransition(const LLSettingsSky::ptr_t &skystart
     mNextInstance(end),
     mTransitionTime(time)
 {
-    
+
 }
 
 bool LLEnvironment::DayTransition::applyTimeDelta(const LLSettingsBase::Seconds& delta)
@@ -3001,23 +3013,24 @@ void LLEnvironment::DayTransition::animate()
 {
 	mNextInstance->animate();
 
-	if (mStartWater)
+    //BD
+    if (mStartWater)
 	{
-		mWater = mStartWater->buildClone();
-		mBlenderWater = std::make_shared<LLSettingsBlenderTimeDelta>(mWater, mStartWater, mNextInstance->getWater(), mTransitionTime);
-		mBlenderWater->setOnFinished(
-			[this](LLSettingsBlender::ptr_t blender) {
-			mBlenderWater.reset();
+        mWater = mStartWater->buildClone();
+        mBlenderWater = std::make_shared<LLSettingsBlenderTimeDelta>(mWater, mStartWater, mNextInstance->getWater(), mTransitionTime);
+        mBlenderWater->setOnFinished(
+            [this](LLSettingsBlender::ptr_t blender) {
+        mBlenderWater.reset();
 
-			if (!mBlenderSky && !mBlenderWater)
-				LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
-			else
-				setWater(mNextInstance->getWater());
+        if (!mBlenderSky && !mBlenderWater)
+            LLEnvironment::instance().mCurrentEnvironment = mNextInstance;
+        else
+            setWater(mNextInstance->getWater());
 		});
 	}
 
     // pause probe updates and reset reflection maps on sky change
-    gPipeline.mReflectionMapManager.pause();
+    gPipeline.mReflectionMapManager.pause(mTransitionTime);
     gPipeline.mReflectionMapManager.reset();
 
     mSky = mStartSky->buildClone();
@@ -3415,8 +3428,8 @@ namespace
         return changed;
     }
 
-    void DayInjection::setBaseDayInstance(const LLEnvironment::DayInstance::ptr_t &baseday) 
-    { 
+    void DayInjection::setBaseDayInstance(const LLEnvironment::DayInstance::ptr_t &baseday)
+    {
         mBaseDayInstance = baseday;
 
         if (mSkyExperience.isNull())
@@ -3621,12 +3634,12 @@ namespace
             mInjectedSky->setSource(target_sky);
 
             // clear reflection probes and pause updates during sky change
-            gPipeline.mReflectionMapManager.pause();
+            gPipeline.mReflectionMapManager.pause(transition);
             gPipeline.mReflectionMapManager.reset();
 
             mBlenderSky = std::make_shared<LLSettingsBlenderTimeDelta>(target_sky, start_sky, psky, transition);
             mBlenderSky->setOnFinished(
-                [this, psky](LLSettingsBlender::ptr_t blender) 
+                [this, psky](LLSettingsBlender::ptr_t blender)
                 {
                     mBlenderSky.reset();
                     mInjectedSky->setSource(psky);
@@ -3650,7 +3663,7 @@ namespace
             return;
         }
         if (transition == LLEnvironment::TRANSITION_INSTANT)
-        { 
+        {
             mBlenderWater.reset();
             mInjectedWater->setSource(pwater);
         }
@@ -3662,7 +3675,7 @@ namespace
 
             mBlenderWater = std::make_shared<LLSettingsBlenderTimeDelta>(scratch_Water, start_Water, pwater, transition);
             mBlenderWater->setOnFinished(
-                [this, pwater](LLSettingsBlender::ptr_t blender) 
+                [this, pwater](LLSettingsBlender::ptr_t blender)
                 {
                     mBlenderWater.reset();
                     mInjectedWater->setSource(pwater);
@@ -3683,7 +3696,7 @@ namespace
             LLEnvironment::EnvSelection_t base_env(mBaseDayInstance->getEnvironmentSelection());
             LLEnvironment::DayInstance::ptr_t nextbase = LLEnvironment::instance().getSharedEnvironmentInstance();
 
-            if ((base_env == LLEnvironment::ENV_NONE) || (nextbase == mBaseDayInstance) || 
+            if ((base_env == LLEnvironment::ENV_NONE) || (nextbase == mBaseDayInstance) ||
                     (!mSkyExperience.isNull() && !mWaterExperience.isNull()))
             {   // base instance completely overridden, or not changed no transition will happen
                 return;
@@ -3715,7 +3728,7 @@ namespace
     void DayInjection::checkExperience()
     {
         if ((!mDayExperience.isNull()) && (mSkyExperience != mDayExperience) && (mWaterExperience != mDayExperience))
-        {   // There was a day experience but we've replaced it with a water and a sky experience. 
+        {   // There was a day experience but we've replaced it with a water and a sky experience.
             mDayExperience.setNull();
             mBaseDayInstance = LLEnvironment::instance().getSharedEnvironmentInstance();
         }

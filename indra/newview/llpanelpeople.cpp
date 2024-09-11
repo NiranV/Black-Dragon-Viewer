@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llpanelpeople.cpp
  * @brief Side tray "People" panel
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -52,7 +52,7 @@
 #include "llavatarlist.h"
 #include "llavatarlistitem.h"
 #include "llavatarnamecache.h"
-#include "llcallingcard.h"			// for LLAvatarTracker
+#include "llcallingcard.h"          // for LLAvatarTracker
 #include "llcallbacklist.h"
 #include "llerror.h"
 #include "llfloateravatarpicker.h"
@@ -65,8 +65,8 @@
 #include "llparticipantlist.h"
 #include "llsidetraypanelcontainer.h"
 #include "llrecentpeople.h"
-#include "llviewercontrol.h"		// for gSavedSettings
-#include "llviewermenu.h"			// for gMenuHolder
+#include "llviewercontrol.h"        // for gSavedSettings
+#include "llviewermenu.h"           // for gMenuHolder
 #include "llviewerregion.h"
 #include "llvoiceclient.h"
 #include "llworld.h"
@@ -84,37 +84,37 @@
 #define FRIEND_LIST_UPDATE_TIMEOUT	0.5
 #define NEARBY_LIST_UPDATE_INTERVAL 1
 
-static const std::string NEARBY_TAB_NAME	= "nearby_panel";
-static const std::string FRIENDS_TAB_NAME	= "friends_panel";
-static const std::string GROUP_TAB_NAME		= "groups_panel";
-static const std::string RECENT_TAB_NAME	= "recent_panel";
-static const std::string BLOCKED_TAB_NAME	= "blocked_panel"; // blocked avatars
+static const std::string NEARBY_TAB_NAME    = "nearby_panel";
+static const std::string FRIENDS_TAB_NAME   = "friends_panel";
+static const std::string GROUP_TAB_NAME     = "groups_panel";
+static const std::string RECENT_TAB_NAME    = "recent_panel";
+static const std::string BLOCKED_TAB_NAME   = "blocked_panel"; // blocked avatars
 static const std::string COLLAPSED_BY_USER  = "collapsed_by_user";
 
 /** Comparator for comparing avatar items by last interaction date */
 class LLAvatarItemRecentComparator : public LLAvatarItemComparator
 {
 public:
-	LLAvatarItemRecentComparator() {};
-	virtual ~LLAvatarItemRecentComparator() {};
+    LLAvatarItemRecentComparator() {};
+    virtual ~LLAvatarItemRecentComparator() {};
 
 protected:
-	virtual bool doCompare(const LLAvatarListItem* avatar_item1, const LLAvatarListItem* avatar_item2) const
-	{
-		LLRecentPeople& people = LLRecentPeople::instance();
-		const LLDate& date1 = people.getDate(avatar_item1->getAvatarId());
-		const LLDate& date2 = people.getDate(avatar_item2->getAvatarId());
+    virtual bool doCompare(const LLAvatarListItem* avatar_item1, const LLAvatarListItem* avatar_item2) const
+    {
+        LLRecentPeople& people = LLRecentPeople::instance();
+        const LLDate& date1 = people.getDate(avatar_item1->getAvatarId());
+        const LLDate& date2 = people.getDate(avatar_item2->getAvatarId());
 
-		//older comes first
-		return date1 > date2;
-	}
+        //older comes first
+        return date1 > date2;
+    }
 };
 
 /** Compares avatar items by online status, then by name */
 class LLAvatarItemStatusComparator : public LLAvatarItemComparator
 {
 public:
-	LLAvatarItemStatusComparator() {};
+    LLAvatarItemStatusComparator() {};
 
 protected:
 	/**
@@ -162,25 +162,25 @@ public:
 	LLAvatarItemDistanceComparator() {};
 	id_to_pos_map_t mAvatarsPositions;
 
-	void updateAvatarsPositions(std::vector<LLVector3d>& positions, uuid_vec_t& uuids)
-	{
-		std::vector<LLVector3d>::const_iterator
-			pos_it = positions.begin(),
-			pos_end = positions.end();
+    void updateAvatarsPositions(std::vector<LLVector3d>& positions, uuid_vec_t& uuids)
+    {
+        std::vector<LLVector3d>::const_iterator
+            pos_it = positions.begin(),
+            pos_end = positions.end();
 
-		uuid_vec_t::const_iterator
-			id_it = uuids.begin(),
-			id_end = uuids.end();
+        uuid_vec_t::const_iterator
+            id_it = uuids.begin(),
+            id_end = uuids.end();
 
-		LLAvatarItemDistanceComparator::id_to_pos_map_t pos_map;
+        LLAvatarItemDistanceComparator::id_to_pos_map_t pos_map;
 
-		mAvatarsPositions.clear();
+        mAvatarsPositions.clear();
 
-		for (;pos_it != pos_end && id_it != id_end; ++pos_it, ++id_it )
-		{
-			mAvatarsPositions[*id_it] = *pos_it;
-		}
-	};
+        for (;pos_it != pos_end && id_it != id_end; ++pos_it, ++id_it )
+        {
+            mAvatarsPositions[*id_it] = *pos_it;
+        }
+    };
 
 protected:
 	virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
@@ -197,61 +197,61 @@ protected:
 class LLAvatarItemRecentSpeakerComparator : public  LLAvatarItemNameComparator
 {
 public:
-	LLAvatarItemRecentSpeakerComparator() {};
-	virtual ~LLAvatarItemRecentSpeakerComparator() {};
+    LLAvatarItemRecentSpeakerComparator() {};
+    virtual ~LLAvatarItemRecentSpeakerComparator() {};
 
 protected:
-	virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
-	{
-		LLPointer<LLSpeaker> lhs = LLActiveSpeakerMgr::instance().findSpeaker(item1->getAvatarId());
-		LLPointer<LLSpeaker> rhs = LLActiveSpeakerMgr::instance().findSpeaker(item2->getAvatarId());
-		if ( lhs.notNull() && rhs.notNull() )
-		{
-			// Compare by last speaking time
-			if( lhs->mLastSpokeTime != rhs->mLastSpokeTime )
-				return ( lhs->mLastSpokeTime > rhs->mLastSpokeTime );
-		}
-		else if ( lhs.notNull() )
-		{
-			// True if only item1 speaker info available
-			return true;
-		}
-		else if ( rhs.notNull() )
-		{
-			// False if only item2 speaker info available
-			return false;
-		}
-		// By default compare by name.
-		return LLAvatarItemNameComparator::doCompare(item1, item2);
-	}
+    virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
+    {
+        LLPointer<LLSpeaker> lhs = LLActiveSpeakerMgr::instance().findSpeaker(item1->getAvatarId());
+        LLPointer<LLSpeaker> rhs = LLActiveSpeakerMgr::instance().findSpeaker(item2->getAvatarId());
+        if ( lhs.notNull() && rhs.notNull() )
+        {
+            // Compare by last speaking time
+            if( lhs->mLastSpokeTime != rhs->mLastSpokeTime )
+                return ( lhs->mLastSpokeTime > rhs->mLastSpokeTime );
+        }
+        else if ( lhs.notNull() )
+        {
+            // True if only item1 speaker info available
+            return true;
+        }
+        else if ( rhs.notNull() )
+        {
+            // False if only item2 speaker info available
+            return false;
+        }
+        // By default compare by name.
+        return LLAvatarItemNameComparator::doCompare(item1, item2);
+    }
 };
 
 class LLAvatarItemRecentArrivalComparator : public  LLAvatarItemNameComparator
 {
 public:
-	LLAvatarItemRecentArrivalComparator() {};
-	virtual ~LLAvatarItemRecentArrivalComparator() {};
+    LLAvatarItemRecentArrivalComparator() {};
+    virtual ~LLAvatarItemRecentArrivalComparator() {};
 
 protected:
-	virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
-	{
+    virtual bool doCompare(const LLAvatarListItem* item1, const LLAvatarListItem* item2) const
+    {
 
-		F32 arr_time1 = LLRecentPeople::instance().getArrivalTimeByID(item1->getAvatarId());
-		F32 arr_time2 = LLRecentPeople::instance().getArrivalTimeByID(item2->getAvatarId());
+        F32 arr_time1 = LLRecentPeople::instance().getArrivalTimeByID(item1->getAvatarId());
+        F32 arr_time2 = LLRecentPeople::instance().getArrivalTimeByID(item2->getAvatarId());
 
-		if (arr_time1 == arr_time2)
-		{
-			std::string name1 = item1->getAvatarName();
-			std::string name2 = item2->getAvatarName();
+        if (arr_time1 == arr_time2)
+        {
+            std::string name1 = item1->getAvatarName();
+            std::string name2 = item2->getAvatarName();
 
-			LLStringUtil::toUpper(name1);
-			LLStringUtil::toUpper(name2);
+            LLStringUtil::toUpper(name1);
+            LLStringUtil::toUpper(name2);
 
-			return name1 < name2;
-		}
+            return name1 < name2;
+        }
 
-		return arr_time1 > arr_time2;
-	}
+        return arr_time1 > arr_time2;
+    }
 };
 
 static const LLAvatarItemRecentComparator RECENT_COMPARATOR;
@@ -265,35 +265,35 @@ static LLPanelInjector<LLPanelPeople> t_people("panel_people");
 //=============================================================================
 
 /**
- * Updates given list either on regular basis or on external events (up to implementation). 
+ * Updates given list either on regular basis or on external events (up to implementation).
  */
 class LLPanelPeople::Updater
 {
 public:
-	typedef boost::function<void()> callback_t;
-	Updater(callback_t cb)
-	: mCallback(cb)
-	{
-	}
+    typedef boost::function<void()> callback_t;
+    Updater(callback_t cb)
+    : mCallback(cb)
+    {
+    }
 
-	virtual ~Updater()
-	{
-	}
+    virtual ~Updater()
+    {
+    }
 
-	/**
-	 * Activate/deactivate updater.
-	 *
-	 * This may start/stop regular updates.
-	 */
-	virtual void setActive(bool) {}
+    /**
+     * Activate/deactivate updater.
+     *
+     * This may start/stop regular updates.
+     */
+    virtual void setActive(bool) {}
 
 protected:
-	void update()
-	{
-		mCallback();
-	}
+    void update()
+    {
+        mCallback();
+    }
 
-	callback_t		mCallback;
+    callback_t      mCallback;
 };
 
 /**
@@ -302,67 +302,67 @@ protected:
 class LLButtonsUpdater : public LLPanelPeople::Updater, public LLFriendObserver
 {
 public:
-	LLButtonsUpdater(callback_t cb)
-	:	LLPanelPeople::Updater(cb)
-	{
-		LLAvatarTracker::instance().addObserver(this);
-	}
+    LLButtonsUpdater(callback_t cb)
+    :   LLPanelPeople::Updater(cb)
+    {
+        LLAvatarTracker::instance().addObserver(this);
+    }
 
-	~LLButtonsUpdater()
-	{
-		LLAvatarTracker::instance().removeObserver(this);
-	}
+    ~LLButtonsUpdater()
+    {
+        LLAvatarTracker::instance().removeObserver(this);
+    }
 
-	/*virtual*/ void changed(U32 mask)
-	{
-		(void) mask;
-		update();
-	}
+    /*virtual*/ void changed(U32 mask)
+    {
+        (void) mask;
+        update();
+    }
 };
 
 class LLAvatarListUpdater : public LLPanelPeople::Updater, public LLEventTimer
 {
 public:
-	LLAvatarListUpdater(callback_t cb, F32 period)
-	:	LLEventTimer(period),
-		LLPanelPeople::Updater(cb)
-	{
-		mEventTimer.stop();
-	}
+    LLAvatarListUpdater(callback_t cb, F32 period)
+    :   LLEventTimer(period),
+        LLPanelPeople::Updater(cb)
+    {
+        mEventTimer.stop();
+    }
 
-	virtual BOOL tick() // from LLEventTimer
-	{
-		return FALSE;
-	}
+    virtual bool tick() // from LLEventTimer
+    {
+        return false;
+    }
 };
 
 /**
  * Updates the friends list.
- * 
- * Updates the list on external events which trigger the changed() method. 
+ *
+ * Updates the list on external events which trigger the changed() method.
  */
 class LLFriendListUpdater : public LLAvatarListUpdater, public LLFriendObserver
 {
-	LOG_CLASS(LLFriendListUpdater);
-	class LLInventoryFriendCardObserver;
+    LOG_CLASS(LLFriendListUpdater);
+    class LLInventoryFriendCardObserver;
 
-public: 
-	friend class LLInventoryFriendCardObserver;
-	LLFriendListUpdater(callback_t cb)
-	:	LLAvatarListUpdater(cb, FRIEND_LIST_UPDATE_TIMEOUT)
-	,	mIsActive(false)
-	{
-		LLAvatarTracker::instance().addObserver(this);
+public:
+    friend class LLInventoryFriendCardObserver;
+    LLFriendListUpdater(callback_t cb)
+    :   LLAvatarListUpdater(cb, FRIEND_LIST_UPDATE_TIMEOUT)
+    ,   mIsActive(false)
+    {
+        LLAvatarTracker::instance().addObserver(this);
 
-		// For notification when SIP online status changes.
-		LLVoiceClient::getInstance()->addObserver(this);
-		mInvObserver = new LLInventoryFriendCardObserver(this);
-	}
+        // For notification when SIP online status changes.
+        LLVoiceClient::getInstance()->addObserver(this);
+        mInvObserver = new LLInventoryFriendCardObserver(this);
+    }
 
-	~LLFriendListUpdater()
-	{
-		// will be deleted by ~LLInventoryModel
-		//delete mInvObserver;
+    ~LLFriendListUpdater()
+    {
+        // will be deleted by ~LLInventoryModel
+        //delete mInvObserver;
         if (LLVoiceClient::instanceExists())
         {
             LLVoiceClient::getInstance()->removeObserver(this);
@@ -384,9 +384,9 @@ public:
 	}
 
 
-	/*virtual*/ BOOL tick()
+	/*virtual*/ bool tick()
 	{
-		if (!mIsActive) return FALSE;
+		if (!mIsActive) return false;
 
 		//BD - TODO: When powers change refresh the display
 		if (mMask & (LLFriendObserver::ADD | LLFriendObserver::REMOVE | LLFriendObserver::ONLINE | LLFriendObserver::POWERS))
@@ -398,7 +398,7 @@ public:
 		mEventTimer.stop();
 		mMask = 0;
 
-		return FALSE;
+		return false;
 	}
 
 	// virtual
@@ -497,40 +497,40 @@ private:
 
 /**
  * Periodically updates the nearby people list while the Nearby tab is active.
- * 
+ *
  * The period is defined by NEARBY_LIST_UPDATE_INTERVAL constant.
  */
 class LLNearbyListUpdater : public LLAvatarListUpdater
 {
-	LOG_CLASS(LLNearbyListUpdater);
+    LOG_CLASS(LLNearbyListUpdater);
 
 public:
-	LLNearbyListUpdater(callback_t cb)
-	:	LLAvatarListUpdater(cb, NEARBY_LIST_UPDATE_INTERVAL)
-	{
-		setActive(false);
-	}
+    LLNearbyListUpdater(callback_t cb)
+    :   LLAvatarListUpdater(cb, NEARBY_LIST_UPDATE_INTERVAL)
+    {
+        setActive(false);
+    }
 
-	/*virtual*/ void setActive(bool val)
-	{
-		if (val)
-		{
-			// update immediately and start regular updates
-			update();
-			mEventTimer.start(); 
-		}
-		else
-		{
-			// stop regular updates
-			mEventTimer.stop();
-		}
-	}
+    /*virtual*/ void setActive(bool val)
+    {
+        if (val)
+        {
+            // update immediately and start regular updates
+            update();
+            mEventTimer.start();
+        }
+        else
+        {
+            // stop regular updates
+            mEventTimer.stop();
+        }
+    }
 
-	/*virtual*/ BOOL tick()
-	{
-		update();
-		return FALSE;
-	}
+    /*virtual*/ bool tick()
+    {
+        update();
+        return false;
+    }
 private:
 };
 
@@ -539,14 +539,14 @@ private:
  */
 class LLRecentListUpdater : public LLAvatarListUpdater, public boost::signals2::trackable
 {
-	LOG_CLASS(LLRecentListUpdater);
+    LOG_CLASS(LLRecentListUpdater);
 
 public:
-	LLRecentListUpdater(callback_t cb)
-	:	LLAvatarListUpdater(cb, 0)
-	{
-		LLRecentPeople::instance().setChangedCallback(boost::bind(&LLRecentListUpdater::update, this));
-	}
+    LLRecentListUpdater(callback_t cb)
+    :   LLAvatarListUpdater(cb, 0)
+    {
+        LLRecentPeople::instance().setChangedCallback(boost::bind(&LLRecentListUpdater::update, this));
+    }
 };
 
 //=============================================================================
@@ -602,15 +602,15 @@ LLPanelPeople::LLPanelPeople()
 
 LLPanelPeople::~LLPanelPeople()
 {
-	delete mButtonsUpdater;
-	delete mNearbyListUpdater;
-	delete mFriendListUpdater;
-	delete mRecentListUpdater;
+    delete mButtonsUpdater;
+    delete mNearbyListUpdater;
+    delete mFriendListUpdater;
+    delete mRecentListUpdater;
 
-	if(LLVoiceClient::instanceExists())
-	{
-		LLVoiceClient::getInstance()->removeObserver(this);
-	}
+    if(LLVoiceClient::instanceExists())
+    {
+        LLVoiceClient::getInstance()->removeObserver(this);
+    }
 }
 
 void LLPanelPeople::removePicker()
@@ -621,7 +621,7 @@ void LLPanelPeople::removePicker()
     }
 }
 
-BOOL LLPanelPeople::postBuild()
+bool LLPanelPeople::postBuild()
 {
 	S32 max_premium = LLAgentBenefitsMgr::get("Premium").getGroupMembershipLimit();
 
@@ -739,18 +739,18 @@ BOOL LLPanelPeople::postBuild()
 
 	mNearbyList->setExtraDataCallback(boost::bind(&LLPanelPeople::getAvatarInformation, this, _1));
 
-	return TRUE;
+	return true;
 }
 
 // virtual
-void LLPanelPeople::onChange(EStatusType status, const std::string &channelURI, bool proximal)
+void LLPanelPeople::onChange(EStatusType status, const LLSD& channelInfo, bool proximal)
 {
-	if(status == STATUS_JOINING || status == STATUS_LEFT_CHANNEL)
-	{
-		return;
-	}
-	
-	updateButtons();
+    if(status == STATUS_JOINING || status == STATUS_LEFT_CHANNEL)
+    {
+        return;
+    }
+
+    updateButtons();
 }
 
 void LLPanelPeople::updateFriendListHelpText()
@@ -838,25 +838,25 @@ void LLPanelPeople::updateFriendList()
 
 void LLPanelPeople::updateNearbyList()
 {
-	if (!mNearbyList)
-		return;
+    if (!mNearbyList)
+        return;
 
-	std::vector<LLVector3d> positions;
+    std::vector<LLVector3d> positions;
 
-	LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
-	mNearbyList->setDirty();
+    LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+    mNearbyList->setDirty();
 
-	DISTANCE_COMPARATOR.updateAvatarsPositions(positions, mNearbyList->getIDs());
-	LLActiveSpeakerMgr::instance().update(TRUE);
+    DISTANCE_COMPARATOR.updateAvatarsPositions(positions, mNearbyList->getIDs());
+    LLActiveSpeakerMgr::instance().update(true);
 }
 
 void LLPanelPeople::updateRecentList()
 {
-	if (!mRecentList)
-		return;
+    if (!mRecentList)
+        return;
 
-	LLRecentPeople::instance().get(mRecentList->getIDs());
-	mRecentList->setDirty();
+    LLRecentPeople::instance().get(mRecentList->getIDs());
+    mRecentList->setDirty();
 }
 
 void LLPanelPeople::updateButtons()
@@ -950,32 +950,32 @@ void LLPanelPeople::updateButtons()
 
 std::string LLPanelPeople::getActiveTabName() const
 {
-	return mTabContainer->getCurrentPanel()->getName();
+    return mTabContainer->getCurrentPanel()->getName();
 }
 
 LLUUID LLPanelPeople::getCurrentItemID() const
 {
-	std::string cur_tab = getActiveTabName();
+    std::string cur_tab = getActiveTabName();
 
 	if (cur_tab == FRIENDS_TAB_NAME) // this tab has two lists
 	{
 		return mAllFriendList->getSelectedUUID();
 	}
 
-	if (cur_tab == NEARBY_TAB_NAME)
-		return mNearbyList->getSelectedUUID();
+    if (cur_tab == NEARBY_TAB_NAME)
+        return mNearbyList->getSelectedUUID();
 
-	if (cur_tab == RECENT_TAB_NAME)
-		return mRecentList->getSelectedUUID();
+    if (cur_tab == RECENT_TAB_NAME)
+        return mRecentList->getSelectedUUID();
 
-	if (cur_tab == GROUP_TAB_NAME)
-		return mGroupList->getSelectedUUID();
+    if (cur_tab == GROUP_TAB_NAME)
+        return mGroupList->getSelectedUUID();
 
-	if (cur_tab == BLOCKED_TAB_NAME)
-		return LLUUID::null; // FIXME?
+    if (cur_tab == BLOCKED_TAB_NAME)
+        return LLUUID::null; // FIXME?
 
-	llassert(0 && "unknown tab selected");
-	return LLUUID::null;
+    llassert(0 && "unknown tab selected");
+    return LLUUID::null;
 }
 
 void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
@@ -997,7 +997,7 @@ void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
 	else
 		llassert(0 && "unknown tab selected");
 
-}
+    }
 
 void LLPanelPeople::setSortOrder(LLAvatarList* list, ESortOrder order, bool save)
 {
@@ -1076,36 +1076,36 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
 	{
 		mAllFriendList->setNameFilter(filter);
     }
-	else if (cur_tab == GROUP_TAB_NAME)
-	{
-		mGroupList->setNameFilter(filter);
-	}
-	else if (cur_tab == RECENT_TAB_NAME)
-	{
-		mRecentList->setNameFilter(filter);
-	}
+    else if (cur_tab == GROUP_TAB_NAME)
+    {
+        mGroupList->setNameFilter(filter);
+    }
+    else if (cur_tab == RECENT_TAB_NAME)
+    {
+        mRecentList->setNameFilter(filter);
+    }
 }
 
 void LLPanelPeople::onGroupLimitInfo()
 {
-	LLSD args;
+    LLSD args;
 
-	S32 max_basic = LLAgentBenefitsMgr::get("Base").getGroupMembershipLimit();
-	S32 max_premium = LLAgentBenefitsMgr::get("Premium").getGroupMembershipLimit();
-	
-	args["MAX_BASIC"] = max_basic;
-	args["MAX_PREMIUM"] = max_premium;
+    S32 max_basic = LLAgentBenefitsMgr::get("Base").getGroupMembershipLimit();
+    S32 max_premium = LLAgentBenefitsMgr::get("Premium").getGroupMembershipLimit();
 
-	if (LLAgentBenefitsMgr::has("Premium_Plus"))
-	{
-		S32 max_premium_plus = LLAgentBenefitsMgr::get("Premium_Plus").getGroupMembershipLimit();
-		args["MAX_PREMIUM_PLUS"] = max_premium_plus;
-		LLNotificationsUtil::add("GroupLimitInfoPlus", args);
-	}
-	else
-	{
-		LLNotificationsUtil::add("GroupLimitInfo", args);
-	}	
+    args["MAX_BASIC"] = max_basic;
+    args["MAX_PREMIUM"] = max_premium;
+
+    if (LLAgentBenefitsMgr::has("Premium_Plus"))
+    {
+        S32 max_premium_plus = LLAgentBenefitsMgr::get("Premium_Plus").getGroupMembershipLimit();
+        args["MAX_PREMIUM_PLUS"] = max_premium_plus;
+        LLNotificationsUtil::add("GroupLimitInfoPlus", args);
+    }
+    else
+    {
+        LLNotificationsUtil::add("GroupLimitInfo", args);
+    }
 }
 
 void LLPanelPeople::onTabSelected(const LLSD& param)
@@ -1172,91 +1172,91 @@ void LLPanelPeople::onAddFriendButtonClicked()
 
 bool LLPanelPeople::isItemsFreeOfFriends(const uuid_vec_t& uuids)
 {
-	const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
-	for ( uuid_vec_t::const_iterator
-			  id = uuids.begin(),
-			  id_end = uuids.end();
-		  id != id_end; ++id )
-	{
-		if (av_tracker.isBuddy (*id))
-		{
-			return false;
-		}
-	}
-	return true;
+    const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
+    for ( uuid_vec_t::const_iterator
+              id = uuids.begin(),
+              id_end = uuids.end();
+          id != id_end; ++id )
+    {
+        if (av_tracker.isBuddy (*id))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 void LLPanelPeople::onAddFriendWizButtonClicked()
 {
     LLPanel* cur_panel = mTabContainer->getCurrentPanel();
-    LLView * button = cur_panel->findChild<LLButton>("add_friend_btn", TRUE);
+    LLView * button = cur_panel->findChild<LLButton>("add_friend_btn", true);
 
-	// Show add friend wizard.
+    // Show add friend wizard.
     LLFloater* root_floater = gFloaterView->getParentFloater(this);
-	LLFloaterAvatarPicker* picker = LLFloaterAvatarPicker::show(boost::bind(&LLPanelPeople::onAvatarPicked, _1, _2), FALSE, TRUE, FALSE, root_floater->getName(), button);
-	if (!picker)
-	{
-		return;
-	}
+    LLFloaterAvatarPicker* picker = LLFloaterAvatarPicker::show(boost::bind(&LLPanelPeople::onAvatarPicked, _1, _2), false, true, false, root_floater->getName(), button);
+    if (!picker)
+    {
+        return;
+    }
 
-	// Need to disable 'ok' button when friend occurs in selection
-	picker->setOkBtnEnableCb(boost::bind(&LLPanelPeople::isItemsFreeOfFriends, this, _1));
-	
-	if (root_floater)
-	{
-		root_floater->addDependentFloater(picker);
-	}
+    // Need to disable 'ok' button when friend occurs in selection
+    picker->setOkBtnEnableCb(boost::bind(&LLPanelPeople::isItemsFreeOfFriends, this, _1));
+
+    if (root_floater)
+    {
+        root_floater->addDependentFloater(picker);
+    }
 
     mPicker = picker->getHandle();
 }
 
 void LLPanelPeople::onDeleteFriendButtonClicked()
 {
-	uuid_vec_t selected_uuids;
-	getCurrentItemIDs(selected_uuids);
+    uuid_vec_t selected_uuids;
+    getCurrentItemIDs(selected_uuids);
 
-	if (selected_uuids.size() == 1)
-	{
-		LLAvatarActions::removeFriendDialog( selected_uuids.front() );
-	}
-	else if (selected_uuids.size() > 1)
-	{
-		LLAvatarActions::removeFriendsDialog( selected_uuids );
-	}
+    if (selected_uuids.size() == 1)
+    {
+        LLAvatarActions::removeFriendDialog( selected_uuids.front() );
+    }
+    else if (selected_uuids.size() > 1)
+    {
+        LLAvatarActions::removeFriendsDialog( selected_uuids );
+    }
 }
 
 void LLPanelPeople::onChatButtonClicked()
 {
-	LLUUID group_id = getCurrentItemID();
-	if (group_id.notNull())
-		LLGroupActions::startIM(group_id);
+    LLUUID group_id = getCurrentItemID();
+    if (group_id.notNull())
+        LLGroupActions::startIM(group_id);
 }
 
 void LLPanelPeople::onGearButtonClicked(LLUICtrl* btn)
 {
-	uuid_vec_t selected_uuids;
-	getCurrentItemIDs(selected_uuids);
-	// Spawn at bottom left corner of the button.
-	if (getActiveTabName() == NEARBY_TAB_NAME)
-		LLPanelPeopleMenus::gNearbyPeopleContextMenu.show(btn, selected_uuids, 0, 0);
-	else
-		LLPanelPeopleMenus::gPeopleContextMenu.show(btn, selected_uuids, 0, 0);
+    uuid_vec_t selected_uuids;
+    getCurrentItemIDs(selected_uuids);
+    // Spawn at bottom left corner of the button.
+    if (getActiveTabName() == NEARBY_TAB_NAME)
+        LLPanelPeopleMenus::gNearbyPeopleContextMenu.show(btn, selected_uuids, 0, 0);
+    else
+        LLPanelPeopleMenus::gPeopleContextMenu.show(btn, selected_uuids, 0, 0);
 }
 
 void LLPanelPeople::onImButtonClicked()
 {
-	uuid_vec_t selected_uuids;
-	getCurrentItemIDs(selected_uuids);
-	if ( selected_uuids.size() == 1 )
-	{
-		// if selected only one person then start up IM
-		LLAvatarActions::startIM(selected_uuids.at(0));
-	}
-	else if ( selected_uuids.size() > 1 )
-	{
-		// for multiple selection start up friends conference
-		LLAvatarActions::startConference(selected_uuids);
-	}
+    uuid_vec_t selected_uuids;
+    getCurrentItemIDs(selected_uuids);
+    if ( selected_uuids.size() == 1 )
+    {
+        // if selected only one person then start up IM
+        LLAvatarActions::startIM(selected_uuids.at(0));
+    }
+    else if ( selected_uuids.size() > 1 )
+    {
+        // for multiple selection start up friends conference
+        LLAvatarActions::startConference(selected_uuids);
+    }
 }
 
 // static
@@ -1273,19 +1273,19 @@ bool LLPanelPeople::onGroupPlusButtonValidate()
 		return false;
 	}
 
-	return true;
+    return true;
 }
 
 void LLPanelPeople::onGroupMinusButtonClicked()
 {
-	LLUUID group_id = getCurrentItemID();
-	if (group_id.notNull())
-		LLGroupActions::leave(group_id);
+    LLUUID group_id = getCurrentItemID();
+    if (group_id.notNull())
+        LLGroupActions::leave(group_id);
 }
 
 void LLPanelPeople::onGroupPlusMenuItemClicked(const LLSD& userdata)
 {
-	std::string chosen_item = userdata.asString();
+    std::string chosen_item = userdata.asString();
 
 	if (!gAgent.canJoinGroups())
 	{
@@ -1334,12 +1334,12 @@ void LLPanelPeople::onFriendsViewSortMenuItemClicked(const LLSD& userdata)
 
 void LLPanelPeople::onGroupsViewSortMenuItemClicked(const LLSD& userdata)
 {
-	std::string chosen_item = userdata.asString();
+    std::string chosen_item = userdata.asString();
 
-	if (chosen_item == "show_icons")
-	{
-		mGroupList->toggleIcons();
-	}
+    if (chosen_item == "show_icons")
+    {
+        mGroupList->toggleIcons();
+    }
 }
 
 void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
@@ -1380,19 +1380,19 @@ void LLPanelPeople::onNearbyViewSortMenuItemClicked(const LLSD& userdata)
 
 bool LLPanelPeople::onNearbyViewSortMenuItemCheck(const LLSD& userdata)
 {
-	std::string item = userdata.asString();
-	U32 sort_order = gSavedSettings.getU32("NearbyPeopleSortOrder");
+    std::string item = userdata.asString();
+    U32 sort_order = gSavedSettings.getU32("NearbyPeopleSortOrder");
 
-	if (item == "sort_by_recent_speakers")
-		return sort_order == E_SORT_BY_RECENT_SPEAKERS;
-	if (item == "sort_name")
-		return sort_order == E_SORT_BY_NAME;
-	if (item == "sort_distance")
-		return sort_order == E_SORT_BY_DISTANCE;
-	if (item == "sort_arrival")
-		return sort_order == E_SORT_BY_RECENT_ARRIVAL;
+    if (item == "sort_by_recent_speakers")
+        return sort_order == E_SORT_BY_RECENT_SPEAKERS;
+    if (item == "sort_name")
+        return sort_order == E_SORT_BY_NAME;
+    if (item == "sort_distance")
+        return sort_order == E_SORT_BY_DISTANCE;
+    if (item == "sort_arrival")
+        return sort_order == E_SORT_BY_RECENT_ARRIVAL;
 
-	return false;
+    return false;
 }
 
 void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
@@ -1413,30 +1413,30 @@ void LLPanelPeople::onRecentViewSortMenuItemClicked(const LLSD& userdata)
 	}
 }
 
-bool LLPanelPeople::onFriendsViewSortMenuItemCheck(const LLSD& userdata) 
+bool LLPanelPeople::onFriendsViewSortMenuItemCheck(const LLSD& userdata)
 {
-	std::string item = userdata.asString();
-	U32 sort_order = gSavedSettings.getU32("FriendsSortOrder");
+    std::string item = userdata.asString();
+    U32 sort_order = gSavedSettings.getU32("FriendsSortOrder");
 
-	if (item == "sort_name") 
-		return sort_order == E_SORT_BY_NAME;
-	if (item == "sort_status")
-		return sort_order == E_SORT_BY_STATUS;
+    if (item == "sort_name")
+        return sort_order == E_SORT_BY_NAME;
+    if (item == "sort_status")
+        return sort_order == E_SORT_BY_STATUS;
 
-	return false;
+    return false;
 }
 
-bool LLPanelPeople::onRecentViewSortMenuItemCheck(const LLSD& userdata) 
+bool LLPanelPeople::onRecentViewSortMenuItemCheck(const LLSD& userdata)
 {
-	std::string item = userdata.asString();
-	U32 sort_order = gSavedSettings.getU32("RecentPeopleSortOrder");
+    std::string item = userdata.asString();
+    U32 sort_order = gSavedSettings.getU32("RecentPeopleSortOrder");
 
-	if (item == "sort_recent")
-		return sort_order == E_SORT_BY_MOST_RECENT;
-	if (item == "sort_name") 
-		return sort_order == E_SORT_BY_NAME;
+    if (item == "sort_recent")
+        return sort_order == E_SORT_BY_MOST_RECENT;
+    if (item == "sort_name")
+        return sort_order == E_SORT_BY_NAME;
 
-	return false;
+    return false;
 }
 
 //BD - Empower someone with rights or revoke them.
@@ -1539,13 +1539,13 @@ void LLPanelPeople::onBlockedPlusMenuItemClicked(const LLSD& userdata)
 
 void LLPanelPeople::blockResidentByName()
 {
-	const BOOL allow_multiple = FALSE;
-	const BOOL close_on_select = TRUE;
+	const bool allow_multiple = false;
+	const bool close_on_select = true;
 
-	LLView * button = findChild<LLButton>("plus_btn", TRUE);
+	LLView * button = findChild<LLButton>("plus_btn", true);
 	LLFloater* root_floater = gFloaterView->getParentFloater(this);
 	LLFloaterAvatarPicker * picker = LLFloaterAvatarPicker::show(boost::bind(&LLPanelPeople::callbackBlockPicked, this, _1, _2),
-		allow_multiple, close_on_select, FALSE, root_floater->getName(), button);
+		allow_multiple, close_on_select, false, root_floater->getName(), button);
 
 	if (root_floater)
 	{
@@ -1574,7 +1574,7 @@ void LLPanelPeople::callbackBlockByName(const std::string& text)
 	if (text.empty()) return;
 
 	LLMute mute(LLUUID::null, text, LLMute::BY_NAME);
-	BOOL success = LLMuteList::getInstance()->add(mute);
+	bool success = LLMuteList::getInstance()->add(mute);
 	if (!success)
 	{
 		LLNotificationsUtil::add("MuteByNameFailed");
@@ -1638,12 +1638,12 @@ std::string LLPanelPeople::getAvatarInformation(const LLUUID& avatar)
 
 bool LLPanelPeople::updateNearbyArrivalTime()
 {
-	std::vector<LLVector3d> positions;
-	std::vector<LLUUID> uuids;
-	static LLCachedControl<F32> range(gSavedSettings, "NearMeRange");
-	LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), range);
-	LLRecentPeople::instance().updateAvatarsArrivalTime(uuids);
-	return LLApp::isExiting();
+    std::vector<LLVector3d> positions;
+    std::vector<LLUUID> uuids;
+    static LLCachedControl<F32> range(gSavedSettings, "NearMeRange");
+    LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), range);
+    LLRecentPeople::instance().updateAvatarsArrivalTime(uuids);
+    return LLApp::isExiting();
 }
 
 

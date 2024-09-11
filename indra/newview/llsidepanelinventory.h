@@ -1,25 +1,25 @@
-/** 
+/**
  * @file LLSidepanelInventory.h
  * @brief Side Bar "Inventory" panel
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -49,8 +49,8 @@ class LLTextBox;
 class LLSidepanelInventory : public LLPanel, LLInventoryObserver
 {
 public:
-	LLSidepanelInventory();
-	virtual ~LLSidepanelInventory();
+    LLSidepanelInventory();
+    virtual ~LLSidepanelInventory();
 
 private:
 	void updateInbox();
@@ -59,10 +59,10 @@ private:
 	static void onClickBalance(void* data);
 	
 public:
-	void observeInboxCreation();
-	void observeInboxModifications(const LLUUID& inboxID);
+    void observeInboxCreation();
+    void observeInboxModifications(const LLUUID& inboxID);
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	/*virtual*/ void onOpen(const LLSD& key);
 	//BD
 	/*virtual*/ void draw();
@@ -77,7 +77,7 @@ public:
 	void setLandCredit(S32 credit);
 	void setLandCommitted(S32 committed);
 
-	BOOL isUserTiered() const;
+	bool isUserTiered() const;
 
 	S32 getSquareMetersCommitted() const;
 	S32 getSquareMetersLeft() const;
@@ -87,65 +87,72 @@ public:
 	static void sendMoneyBalanceRequest();
 
 
-	LLInventoryPanel* getActivePanel(); // Returns an active inventory panel, if any.
-	void selectAllItemsPanel();
-	LLInventoryPanel* getInboxPanel() const { return mInventoryPanelInbox.get(); }
+    LLInventoryPanel* getActivePanel(); // Returns an active inventory panel, if any.
+    void selectAllItemsPanel();
+    LLInventoryPanel* getInboxPanel() const { return mInventoryPanelInbox.get(); }
 
-	LLPanelMainInventory* getMainInventoryPanel() const { return mPanelMainInventory; }
-	BOOL isMainInventoryPanelActive() const;
+    LLPanelMainInventory* getMainInventoryPanel() const { return mPanelMainInventory; }
+    bool isMainInventoryPanelActive() const;
 
-	void clearSelections(bool clearMain, bool clearInbox);
+    void clearSelections(bool clearMain, bool clearInbox);
     std::set<LLFolderViewItem*> getInboxSelectionList();
 
-	void showInventoryPanel();
+    void showInventoryPanel();
     void initInventoryViews();
 
-	// checks can share selected item(s)
-	bool canShare();
+    // checks can share selected item(s)
+    bool canShare();
 
-	void onToggleInboxBtn();
+    void onToggleInboxBtn();
 
-	void enableInbox(bool enabled);
+    void enableInbox(bool enabled);
     void toggleInbox();
     void hideInbox();
-	
-	void openInbox();
-	
-	bool isInboxEnabled() const { return mInboxEnabled; }
 
-	static void cleanup();
+    void openInbox();
+
+    bool isInboxEnabled() const { return mInboxEnabled; }
+
+    static void cleanup();
 
 protected:
-	// Tracks highlighted (selected) item in inventory panel.
-	LLInventoryItem *getSelectedItem();
-	U32 getSelectedCount();
-	void onSelectionChange(const std::deque<LLFolderViewItem*> &items, BOOL user_action);
-	// "wear", "teleport", etc.
-	void performActionOnSelection(const std::string &action);
+    // Tracks highlighted (selected) item in inventory panel.
+    LLInventoryItem *getSelectedItem();
+    U32 getSelectedCount();
+    void onSelectionChange(const std::deque<LLFolderViewItem*> &items, bool user_action);
+    // "wear", "teleport", etc.
+    void performActionOnSelection(const std::string &action);
 
-	bool canWearSelected(); // check whether selected items can be worn
+    bool canWearSelected(); // check whether selected items can be worn
 
-	void onInboxChanged(const LLUUID& inbox_id);
+    void onInboxChanged(const LLUUID& inbox_id);
 
+<<<<<<< HEAD
 	//BD
 	void updateItemcountText();
 
 	//
 	// UI Elements
 	//
+=======
+    //
+    // UI Elements
+    //
+>>>>>>> Linden_Release/release/2024.06-atlasaurus
 private:
-	LLPanel*					mInventoryPanel; // Main inventory view
-	LLHandle<LLInventoryPanel>	mInventoryPanelInbox;
-	LLPanelMainInventory*		mPanelMainInventory;
+    LLPanel*                    mInventoryPanel; // Main inventory view
+    LLHandle<LLInventoryPanel>  mInventoryPanelInbox;
+    LLPanelMainInventory*       mPanelMainInventory;
 
     LLLayoutPanel* mInboxLayoutPanel;
 
 protected:
-	void 						onBackButtonClicked();
+    void                        onBackButtonClicked();
 
 private:
-	bool						mInboxEnabled;
+    bool                        mInboxEnabled;
 
+<<<<<<< HEAD
 	LLInventoryCategoriesObserver* 	mCategoriesObserver;
 	LLInboxAddedObserver*			mInboxAddedObserver;
 
@@ -162,6 +169,10 @@ private:
 	LLTextBox					*mBoxBalance;
 
 	LLFrameTimer*				mBalanceTimer;
+=======
+    LLInventoryCategoriesObserver*  mCategoriesObserver;
+    LLInboxAddedObserver*           mInboxAddedObserver;
+>>>>>>> Linden_Release/release/2024.06-atlasaurus
 };
 
 #endif //LL_LLSIDEPANELINVENTORY_H

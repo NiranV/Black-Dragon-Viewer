@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llvieweraudio.cpp
  * @brief Audio functions that used to be in viewer.cpp
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -48,314 +48,316 @@
 #include "llstreamingaudio.h"
 
 /////////////////////////////////////////////////////////
+const U32 FMODEX_DECODE_BUFFER_SIZE = 1000; // in milliseconds
+const U32 FMODEX_STREAM_BUFFER_SIZE = 7000; // in milliseconds
 
 LLViewerAudio::LLViewerAudio() :
-	mDone(true),
-	mFadeState(FADE_IDLE),
-	mFadeTime(),
+    mDone(true),
+    mFadeState(FADE_IDLE),
+    mFadeTime(),
     mIdleListnerActive(false),
-	mForcedTeleportFade(false),
-	mWasPlaying(false)
+    mForcedTeleportFade(false),
+    mWasPlaying(false)
 {
-	mTeleportFailedConnection = LLViewerParcelMgr::getInstance()->
-		setTeleportFailedCallback(boost::bind(&LLViewerAudio::onTeleportFailed, this));
-	mTeleportFinishedConnection = LLViewerParcelMgr::getInstance()->
-		setTeleportFinishedCallback(boost::bind(&LLViewerAudio::onTeleportFinished, this, _1, _2));
-	mTeleportStartedConnection = LLViewerMessage::getInstance()->
-		setTeleportStartedCallback(boost::bind(&LLViewerAudio::onTeleportStarted, this));
+    mTeleportFailedConnection = LLViewerParcelMgr::getInstance()->
+        setTeleportFailedCallback(boost::bind(&LLViewerAudio::onTeleportFailed, this));
+    mTeleportFinishedConnection = LLViewerParcelMgr::getInstance()->
+        setTeleportFinishedCallback(boost::bind(&LLViewerAudio::onTeleportFinished, this, _1, _2));
+    mTeleportStartedConnection = LLViewerMessage::getInstance()->
+        setTeleportStartedCallback(boost::bind(&LLViewerAudio::onTeleportStarted, this));
 }
 
 LLViewerAudio::~LLViewerAudio()
 {
-	mTeleportFailedConnection.disconnect();
-	mTeleportFinishedConnection.disconnect();
-	mTeleportStartedConnection.disconnect();
+    mTeleportFailedConnection.disconnect();
+    mTeleportFinishedConnection.disconnect();
+    mTeleportStartedConnection.disconnect();
 }
 
 void LLViewerAudio::registerIdleListener()
 {
-	if(mIdleListnerActive==false)
-	{
-		mIdleListnerActive = true;
-		doOnIdleRepeating(boost::bind(boost::bind(&LLViewerAudio::onIdleUpdate, this)));
-	}
+    if (!mIdleListnerActive)
+    {
+        mIdleListnerActive = true;
+        doOnIdleRepeating(boost::bind(boost::bind(&LLViewerAudio::onIdleUpdate, this)));
+    }
 }
 
 void LLViewerAudio::startInternetStreamWithAutoFade(const std::string &streamURI)
 {
     //LL_DEBUGS("AudioEngine") << "Start with outo fade: " << streamURI << LL_ENDL;
 
-	// Old and new stream are identical
-	if (mNextStreamURI == streamURI)
-	{
-		return;
-	}
+    // Old and new stream are identical
+    if (mNextStreamURI == streamURI)
+    {
+        return;
+    }
 
-	if (!gAudiop)
-	{
-		LL_WARNS("AudioEngine") << "LLAudioEngine instance doesn't exist!" << LL_ENDL;
-		return;
-	}
+    if (!gAudiop)
+    {
+        LL_WARNS("AudioEngine") << "LLAudioEngine instance doesn't exist!" << LL_ENDL;
+        return;
+    }
 
-	// Record the URI we are going to be switching to
-	mNextStreamURI = streamURI;
+    // Record the URI we are going to be switching to
+    mNextStreamURI = streamURI;
 
-	switch (mFadeState)
-	{
-	case FADE_IDLE:
-		// If a stream is playing fade it out first
-		if (!gAudiop->getInternetStreamURL().empty())
-		{
-			// The order of these tests is important, state FADE_OUT will be processed below
-			mFadeState = FADE_OUT;
-		}
-		// Otherwise the new stream can be faded in
-		else
-		{
-			mFadeState = FADE_IN;
+    switch (mFadeState)
+    {
+    case FADE_IDLE:
+        // If a stream is playing fade it out first
+        if (!gAudiop->getInternetStreamURL().empty())
+        {
+            // The order of these tests is important, state FADE_OUT will be processed below
+            mFadeState = FADE_OUT;
+        }
+        // Otherwise the new stream can be faded in
+        else
+        {
+            mFadeState = FADE_IN;
 
-			LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
-			if (stream && stream->supportsAdjustableBufferSizes())
-				stream->setBufferSizes(gSavedSettings.getU32("FMODExStreamBufferSize"), gSavedSettings.getU32("FMODExDecodeBufferSize"));
+            LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
+            if (stream && stream->supportsAdjustableBufferSizes())
+                stream->setBufferSizes(FMODEX_STREAM_BUFFER_SIZE, FMODEX_DECODE_BUFFER_SIZE);
 
-			gAudiop->startInternetStream(mNextStreamURI);
-		}
+            gAudiop->startInternetStream(mNextStreamURI);
+        }
 
-		startFading();
-		break;
+        startFading();
+        break;
 
-	case FADE_OUT:
-		startFading();
-		break;
+    case FADE_OUT:
+        startFading();
+        break;
 
-	case FADE_IN:
-		break;
+    case FADE_IN:
+        break;
 
-	default:
-		LL_WARNS() << "Unknown fading state: " << mFadeState << LL_ENDL;
-		return;
-	}
+    default:
+        LL_WARNS() << "Unknown fading state: " << mFadeState << LL_ENDL;
+        return;
+    }
 
-	registerIdleListener();
+    registerIdleListener();
 }
 
 // A return of false from onIdleUpdate means it will be called again next idle update.
 // A return of true means we have finished with it and the callback will be deleted.
 bool LLViewerAudio::onIdleUpdate()
 {
-	bool fadeIsFinished = false;
+    bool fadeIsFinished = false;
 
-	// There is a delay in the login sequence between when the parcel information has
-	// arrived and the music stream is started and when the audio system is called to set
-	// initial volume levels.  This code extends the fade time so you hear a full fade in.
-	if ((LLStartUp::getStartupState() < STATE_STARTED))
-	{
-		stream_fade_timer.reset();
-		stream_fade_timer.setTimerExpirySec(mFadeTime);
-	}
+    // There is a delay in the login sequence between when the parcel information has
+    // arrived and the music stream is started and when the audio system is called to set
+    // initial volume levels.  This code extends the fade time so you hear a full fade in.
+    if ((LLStartUp::getStartupState() < STATE_STARTED))
+    {
+        stream_fade_timer.reset();
+        stream_fade_timer.setTimerExpirySec(mFadeTime);
+    }
 
-	if (mDone)
-	{
-		//  This should be a rare or never occurring state.
-		if (mFadeState == FADE_IDLE)
-		{
-			deregisterIdleListener();
-			fadeIsFinished = true; // Stop calling onIdleUpdate
-		}
+    if (mDone)
+    {
+        //  This should be a rare or never occurring state.
+        if (mFadeState == FADE_IDLE)
+        {
+            deregisterIdleListener();
+            fadeIsFinished = true; // Stop calling onIdleUpdate
+        }
 
-		// we have finished the current fade operation
-		if (mFadeState == FADE_OUT)
-		{
-			if (gAudiop)
-			{
-				// Clear URI
-                //LL_DEBUGS("AudioEngine") << "Done with audio fade" << LL_ENDL;
-				gAudiop->startInternetStream(LLStringUtil::null);
-				gAudiop->stopInternetStream();
-			}
-				
-			if (!mNextStreamURI.empty())
-			{
-				mFadeState = FADE_IN;
+        // we have finished the current fade operation
+        if (mFadeState == FADE_OUT)
+        {
+            if (gAudiop)
+            {
+                // Clear URI
+                LL_DEBUGS("AudioEngine") << "Done with audio fade" << LL_ENDL;
+                gAudiop->startInternetStream(LLStringUtil::null);
+                gAudiop->stopInternetStream();
+            }
 
-				if (gAudiop)
-				{
-                    //LL_DEBUGS("AudioEngine") << "Audio fade in: " << mNextStreamURI << LL_ENDL;
-					LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
-					if(stream && stream->supportsAdjustableBufferSizes())
-						stream->setBufferSizes(gSavedSettings.getU32("FMODStreamBufferSize"),gSavedSettings.getU32("FMODDecodeBufferSize"));
+            if (!mNextStreamURI.empty())
+            {
+                mFadeState = FADE_IN;
 
-					gAudiop->startInternetStream(mNextStreamURI);
-				}
+                if (gAudiop)
+                {
+                    LL_DEBUGS("AudioEngine") << "Audio fade in: " << mNextStreamURI << LL_ENDL;
+                    LLStreamingAudioInterface *stream = gAudiop->getStreamingAudioImpl();
+                    if(stream && stream->supportsAdjustableBufferSizes())
+                        stream->setBufferSizes(FMODEX_STREAM_BUFFER_SIZE, FMODEX_DECODE_BUFFER_SIZE);
 
-				startFading();
-			}
-			else
-			{
-				mFadeState = FADE_IDLE;
-				deregisterIdleListener();
-				fadeIsFinished = true; // Stop calling onIdleUpdate
-			}
-		}
-		else if (mFadeState == FADE_IN)
-		{
-			if (gAudiop && mNextStreamURI != gAudiop->getInternetStreamURL())
-			{
-				mFadeState = FADE_OUT;
-				startFading();
-			}
-			else
-			{
-				mFadeState = FADE_IDLE;
-				deregisterIdleListener();
-				fadeIsFinished = true; // Stop calling onIdleUpdate
-			}
-		}
-	}
+                    gAudiop->startInternetStream(mNextStreamURI);
+                }
 
-	return fadeIsFinished;
+                startFading();
+            }
+            else
+            {
+                mFadeState = FADE_IDLE;
+                deregisterIdleListener();
+                fadeIsFinished = true; // Stop calling onIdleUpdate
+            }
+        }
+        else if (mFadeState == FADE_IN)
+        {
+            if (gAudiop && mNextStreamURI != gAudiop->getInternetStreamURL())
+            {
+                mFadeState = FADE_OUT;
+                startFading();
+            }
+            else
+            {
+                mFadeState = FADE_IDLE;
+                deregisterIdleListener();
+                fadeIsFinished = true; // Stop calling onIdleUpdate
+            }
+        }
+    }
+
+    return fadeIsFinished;
 }
 
 void LLViewerAudio::stopInternetStreamWithAutoFade()
 {
-	mFadeState = FADE_IDLE;
-	mNextStreamURI = LLStringUtil::null;
-	mDone = true;
-	
-	if (gAudiop)
-	{
-        //LL_DEBUGS("AudioEngine") << "Stop audio fade" << LL_ENDL;
-		gAudiop->startInternetStream(LLStringUtil::null);
-		gAudiop->stopInternetStream();
-	}
+    mFadeState = FADE_IDLE;
+    mNextStreamURI = LLStringUtil::null;
+    mDone = true;
+
+    if (gAudiop)
+    {
+        LL_DEBUGS("AudioEngine") << "Stop audio fade" << LL_ENDL;
+        gAudiop->startInternetStream(LLStringUtil::null);
+        gAudiop->stopInternetStream();
+    }
 }
 
 void LLViewerAudio::startFading()
 {
-	const F32 AUDIO_MUSIC_FADE_IN_TIME = 3.0f;
-	const F32 AUDIO_MUSIC_FADE_OUT_TIME = 2.0f;
-	// This minimum fade time prevents divide by zero and negative times
-	const F32 AUDIO_MUSIC_MINIMUM_FADE_TIME = 0.01f;
+    const F32 AUDIO_MUSIC_FADE_IN_TIME = 3.0f;
+    const F32 AUDIO_MUSIC_FADE_OUT_TIME = 2.0f;
+    // This minimum fade time prevents divide by zero and negative times
+    const F32 AUDIO_MUSIC_MINIMUM_FADE_TIME = 0.01f;
 
-	if (mDone)
-	{
-		// The fade state here should only be one of FADE_IN or FADE_OUT, but, in case it is not,
-		// rather than check for both states assume a fade in and check for the fade out case.
-		mFadeTime = LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT ?
-			AUDIO_MUSIC_FADE_OUT_TIME : AUDIO_MUSIC_FADE_IN_TIME;
+    if (mDone)
+    {
+        // The fade state here should only be one of FADE_IN or FADE_OUT, but, in case it is not,
+        // rather than check for both states assume a fade in and check for the fade out case.
+        mFadeTime = LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT ?
+            AUDIO_MUSIC_FADE_OUT_TIME : AUDIO_MUSIC_FADE_IN_TIME;
 
-		// Prevent invalid fade time
-		mFadeTime = llmax(mFadeTime, AUDIO_MUSIC_MINIMUM_FADE_TIME);
+        // Prevent invalid fade time
+        mFadeTime = llmax(mFadeTime, AUDIO_MUSIC_MINIMUM_FADE_TIME);
 
-		stream_fade_timer.reset();
-		stream_fade_timer.setTimerExpirySec(mFadeTime);
-		mDone = false;
-	}
+        stream_fade_timer.reset();
+        stream_fade_timer.setTimerExpirySec(mFadeTime);
+        mDone = false;
+    }
 }
 
 F32 LLViewerAudio::getFadeVolume()
 {
-	F32 fade_volume = 1.0f;
+    F32 fade_volume = 1.0f;
 
-	if (stream_fade_timer.hasExpired())
-	{
-		mDone = true;
-		// If we have been fading out set volume to 0 until the next fade state occurs to prevent
-		// an audio transient.
-		if (LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT)
-		{
-			fade_volume = 0.0f;
-		}
-	}
+    if (stream_fade_timer.hasExpired())
+    {
+        mDone = true;
+        // If we have been fading out set volume to 0 until the next fade state occurs to prevent
+        // an audio transient.
+        if (LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT)
+        {
+            fade_volume = 0.0f;
+        }
+    }
 
-	if (!mDone)
-	{
-		// Calculate how far we are into the fade time
-		fade_volume = stream_fade_timer.getElapsedTimeF32() / mFadeTime;
-		
-		if (LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT)
-		{
-			// If we are not fading in then we are fading out, so invert the fade
-			// direction; start loud and move towards zero volume.
-			fade_volume = 1.0f - fade_volume;
-		}
-	}
+    if (!mDone)
+    {
+        // Calculate how far we are into the fade time
+        fade_volume = stream_fade_timer.getElapsedTimeF32() / mFadeTime;
 
-	return fade_volume;
+        if (LLViewerAudio::getInstance()->getFadeState() == LLViewerAudio::FADE_OUT)
+        {
+            // If we are not fading in then we are fading out, so invert the fade
+            // direction; start loud and move towards zero volume.
+            fade_volume = 1.0f - fade_volume;
+        }
+    }
+
+    return fade_volume;
 }
 
 void LLViewerAudio::onTeleportStarted()
 {
-	if (gAudiop && !LLViewerAudio::getInstance()->getForcedTeleportFade())
-	{
-		// Even though the music was turned off it was starting up (with autoplay disabled) occasionally
-		// after a failed teleport or after an intra-parcel teleport.  Also, the music sometimes was not
-		// restarting after a successful intra-parcel teleport. Setting mWasPlaying fixes these issues.
-		LLViewerAudio::getInstance()->setWasPlaying(!gAudiop->getInternetStreamURL().empty());
-		LLViewerAudio::getInstance()->setForcedTeleportFade(true);
-		LLViewerAudio::getInstance()->startInternetStreamWithAutoFade(LLStringUtil::null);
-		LLViewerAudio::getInstance()->setNextStreamURI(LLStringUtil::null);
-	}
+    if (gAudiop && !LLViewerAudio::getInstance()->getForcedTeleportFade())
+    {
+        // Even though the music was turned off it was starting up (with autoplay disabled) occasionally
+        // after a failed teleport or after an intra-parcel teleport.  Also, the music sometimes was not
+        // restarting after a successful intra-parcel teleport. Setting mWasPlaying fixes these issues.
+        LLViewerAudio::getInstance()->setWasPlaying(!gAudiop->getInternetStreamURL().empty());
+        LLViewerAudio::getInstance()->setForcedTeleportFade(true);
+        LLViewerAudio::getInstance()->startInternetStreamWithAutoFade(LLStringUtil::null);
+        LLViewerAudio::getInstance()->setNextStreamURI(LLStringUtil::null);
+    }
 }
 
 void LLViewerAudio::onTeleportFailed()
 {
-	// Calling audio_update_volume makes sure that the music stream is properly set to be restored to
-	// its previous value
-	audio_update_volume(false);
+    // Calling audio_update_volume makes sure that the music stream is properly set to be restored to
+    // its previous value
+    audio_update_volume(false);
 
-	if (gAudiop && mWasPlaying)
-	{
-		LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		if (parcel)
-		{
-			mNextStreamURI = parcel->getMusicURL();
-			LL_INFOS() << "Teleport failed -- setting music stream to " << mNextStreamURI << LL_ENDL;
-		}
-	}
-	mWasPlaying = false;
+    if (gAudiop && mWasPlaying)
+    {
+        LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if (parcel)
+        {
+            mNextStreamURI = parcel->getMusicURL();
+            LL_INFOS() << "Teleport failed -- setting music stream to " << mNextStreamURI << LL_ENDL;
+        }
+    }
+    mWasPlaying = false;
 }
 
 void LLViewerAudio::onTeleportFinished(const LLVector3d& pos, const bool& local)
 {
-	// Calling audio_update_volume makes sure that the music stream is properly set to be restored to
-	// its previous value
-	audio_update_volume(false);
+    // Calling audio_update_volume makes sure that the music stream is properly set to be restored to
+    // its previous value
+    audio_update_volume(false);
 
-	if (gAudiop && local && mWasPlaying)
-	{
-		LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		if (parcel)
-		{
-			mNextStreamURI = parcel->getMusicURL();
-			LL_INFOS() << "Intraparcel teleport -- setting music stream to " << mNextStreamURI << LL_ENDL;
-		}
-	}
-	mWasPlaying = false;
+    if (gAudiop && local && mWasPlaying)
+    {
+        LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if (parcel)
+        {
+            mNextStreamURI = parcel->getMusicURL();
+            LL_INFOS() << "Intraparcel teleport -- setting music stream to " << mNextStreamURI << LL_ENDL;
+        }
+    }
+    mWasPlaying = false;
 }
 
-void init_audio() 
+void init_audio()
 {
-	if (!gAudiop) 
-	{
-		LL_WARNS() << "Failed to create an appropriate Audio Engine" << LL_ENDL;
-		return;
-	}
-	LLVector3d lpos_global = gAgentCamera.getCameraPositionGlobal();
-	LLVector3 lpos_global_f;
+    if (!gAudiop)
+    {
+        LL_WARNS() << "Failed to create an appropriate Audio Engine" << LL_ENDL;
+        return;
+    }
+    LLVector3d lpos_global = gAgentCamera.getCameraPositionGlobal();
+    LLVector3 lpos_global_f;
 
-	lpos_global_f.setVec(lpos_global);
-					
-	gAudiop->setListener(lpos_global_f,
-						  LLVector3::zero,	// LLViewerCamera::getInstance()->getVelocity(),    // !!! BUG need to replace this with smoothed velocity!
-						  LLViewerCamera::getInstance()->getUpAxis(),
-						  LLViewerCamera::getInstance()->getAtAxis());
+    lpos_global_f.setVec(lpos_global);
+
+    gAudiop->setListener(lpos_global_f,
+                          LLVector3::zero,  // LLViewerCamera::getInstance()->getVelocity(),    // !!! BUG need to replace this with smoothed velocity!
+                          LLViewerCamera::getInstance()->getUpAxis(),
+                          LLViewerCamera::getInstance()->getAtAxis());
 
 // load up our initial set of sounds we'll want so they're in memory and ready to be played
 
-	BOOL mute_audio = gSavedSettings.getBOOL("MuteAudio");
+	bool mute_audio = gSavedSettings.getBOOL("MuteAudio");
 
-	if (!mute_audio && FALSE == gSavedSettings.getBOOL("NoPreload"))
+	if (!mute_audio && false == gSavedSettings.getBOOL("NoPreload"))
 	{
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndAlert")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndBadKeystroke")));
@@ -411,7 +413,7 @@ void audio_update_volume(bool force_update)
 	bool mute_audio = mute_audio_cc;
 
 	LLProgressView* progress = gViewerWindow->getProgressView();
-	BOOL progress_view_visible = FALSE;
+	bool progress_view_visible = false;
 
 	if (progress)
 	{
@@ -511,9 +513,9 @@ void audio_update_volume(bool force_update)
 
 void audio_update_listener()
 {
-	if (gAudiop)
-	{
-		// update listener position because agent has moved	
+    if (gAudiop)
+    {
+        // update listener position because agent has moved
         static LLUICachedControl<S32> mEarLocation("MediaSoundsEarLocation", 0);
         LLVector3d ear_position;
         switch(mEarLocation)
@@ -527,26 +529,26 @@ void audio_update_listener()
             ear_position = gAgent.getPositionGlobal();
             break;
         }
-		LLVector3d lpos_global = ear_position;		
-		LLVector3 lpos_global_f;
-		lpos_global_f.setVec(lpos_global);
-	
-		gAudiop->setListener(lpos_global_f,
-							 // LLViewerCamera::getInstance()VelocitySmoothed, 
-							 // LLVector3::zero,	
-							 gAgent.getVelocity(),    // !!! *TODO: need to replace this with smoothed velocity!
-							 LLViewerCamera::getInstance()->getUpAxis(),
-							 LLViewerCamera::getInstance()->getAtAxis());
-	}
+        LLVector3d lpos_global = ear_position;
+        LLVector3 lpos_global_f;
+        lpos_global_f.setVec(lpos_global);
+
+        gAudiop->setListener(lpos_global_f,
+                             // LLViewerCamera::getInstance()VelocitySmoothed,
+                             // LLVector3::zero,
+                             gAgent.getVelocity(),    // !!! *TODO: need to replace this with smoothed velocity!
+                             LLViewerCamera::getInstance()->getUpAxis(),
+                             LLViewerCamera::getInstance()->getAtAxis());
+    }
 }
 
 void audio_update_wind(bool force_update)
 {
 #ifdef kAUDIO_ENABLE_WIND
 
-	LLViewerRegion* region = gAgent.getRegion();
-	if (region)
-	{
+    LLViewerRegion* region = gAgent.getRegion();
+    if (region)
+    {
         // Scale down the contribution of weather-simulation wind to the
         // ambient wind noise.  Wind velocity averages 3.5 m/s, with gusts to 7 m/s
         // whereas steady-state avatar walk velocity is only 3.2 m/s.
@@ -554,7 +556,7 @@ void audio_update_wind(bool force_update)
         // standing still.
         static LLUICachedControl<F32> wind_level("AudioLevelWind", 0.5f);
         LLVector3 scaled_wind_vec = gWindVec * wind_level;
-        
+
         // Mix in the avatar's motion, subtract because when you walk north,
         // the apparent wind moves south.
         LLVector3 final_wind_vec = scaled_wind_vec - gAgent.getVelocity();

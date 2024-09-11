@@ -7,7 +7,6 @@
 include(CMakeCopyIfDifferent)
 include(Linking)
 include(OPENAL)
-include(FMODSTUDIO)
 
 # When we copy our dependent libraries, we almost always want to copy them to
 # both the Release and the RelWithDebInfo staging directories. This has
@@ -50,7 +49,7 @@ if(WINDOWS)
     endif (ADDRESS_SIZE EQUAL 64)
 
     #*******************************
-    # Misc shared libs 
+    # Misc shared libs
 
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     set(release_files
@@ -110,13 +109,26 @@ if(WINDOWS)
         set(MSVC_VER 120)
     elseif (MSVC_VERSION GREATER_EQUAL 1910 AND MSVC_VERSION LESS 1920) # Visual Studio 2017
         set(MSVC_VER 140)
+        set(MSVC_TOOLSET_VER 141)
     elseif (MSVC_VERSION GREATER_EQUAL 1920 AND MSVC_VERSION LESS 1930) # Visual Studio 2019
         set(MSVC_VER 140)
-    elseif (MSVC_VERSION GREATER_EQUAL 1930 AND MSVC_VERSION LESS 1940) # Visual Studio 2022
+        set(MSVC_TOOLSET_VER 142)
+    elseif (MSVC_VERSION GREATER_EQUAL 1930 AND MSVC_VERSION LESS 1950) # Visual Studio 2022
         set(MSVC_VER 140)
+        set(MSVC_TOOLSET_VER 143)
     else (MSVC80)
         MESSAGE(WARNING "New MSVC_VERSION ${MSVC_VERSION} of MSVC: adapt Copy3rdPartyLibs.cmake")
     endif (MSVC80)
+
+    if (MSVC_TOOLSET_VER AND DEFINED ENV{VCTOOLSREDISTDIR})
+        if(ADDRESS_SIZE EQUAL 32)
+            set(redist_find_path "$ENV{VCTOOLSREDISTDIR}x86\\Microsoft.VC${MSVC_TOOLSET_VER}.CRT")
+        else(ADDRESS_SIZE EQUAL 32)
+            set(redist_find_path "$ENV{VCTOOLSREDISTDIR}x64\\Microsoft.VC${MSVC_TOOLSET_VER}.CRT")
+        endif(ADDRESS_SIZE EQUAL 32)
+        get_filename_component(redist_path "${redist_find_path}" ABSOLUTE)
+        MESSAGE(STATUS "VC Runtime redist path: ${redist_path}")
+    endif (MSVC_TOOLSET_VER AND DEFINED ENV{VCTOOLSREDISTDIR})
 
     if(ADDRESS_SIZE EQUAL 32)
         # this folder contains the 32bit DLLs.. (yes really!)
@@ -140,7 +152,14 @@ if(WINDOWS)
             vcruntime${MSVC_VER}.dll
             vcruntime${MSVC_VER}_1.dll
             )
-        if(EXISTS "${registry_path}/${release_msvc_file}")
+        if(redist_path AND EXISTS "${redist_path}/${release_msvc_file}")
+            MESSAGE(STATUS "Copying redist file from ${redist_path}/${release_msvc_file}")
+            to_staging_dirs(
+                ${redist_path}
+                third_party_targets
+                ${release_msvc_file})
+        elseif(EXISTS "${registry_path}/${release_msvc_file}")
+            MESSAGE(STATUS "Copying redist file from ${registry_path}/${release_msvc_file}")
             to_staging_dirs(
                 ${registry_path}
                 third_party_targets

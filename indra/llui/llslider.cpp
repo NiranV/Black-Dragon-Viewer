@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llslider.cpp
  * @brief LLSlider base class
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -32,7 +32,7 @@
 #include "llgl.h"
 #include "llwindow.h"
 #include "llfocusmgr.h"
-#include "llkeyboard.h"			// for the MASK constants
+#include "llkeyboard.h"         // for the MASK constants
 #include "llcontrol.h"
 #include "lluictrlfactory.h"
 
@@ -103,12 +103,12 @@ LLSlider::LLSlider(const LLSlider::Params& p)
 
 LLSlider::~LLSlider()
 {
-	delete mMouseDownSignal;
-	delete mMouseUpSignal;
+    delete mMouseDownSignal;
+    delete mMouseUpSignal;
 }
 
 //BD - UI Improvements
-void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override, BOOL overdrive)
+void LLSlider::setValue(F32 value, bool from_event, bool precision_override, bool overdrive)
 {
 	//BD - Allow overdriving sliders if numbers are entered directly.
 	if(!overdrive)
@@ -124,13 +124,13 @@ void LLSlider::setValue(F32 value, BOOL from_event, BOOL precision_override, BOO
 		value += mMinValue;
 	}
 
-	if (!from_event && getValueF32() != value)
-	{
-		setControlValue(value);
-	}
+    if (!from_event && getValueF32() != value)
+    {
+        setControlValue(value);
+    }
 
     LLF32UICtrl::setValue(value);
-	updateThumbRect();
+    updateThumbRect();
 }
 
 void LLSlider::updateThumbRect()
@@ -169,8 +169,8 @@ void LLSlider::updateThumbRect()
 
 void LLSlider::setValueAndCommit(F32 value)
 {
-	F32 old_value = getValueF32();
-	setValue(value);
+    F32 old_value = getValueF32();
+    setValue(value);
 
 	if (getValueF32() != old_value
 		&& mApplyImmediately)
@@ -187,7 +187,7 @@ void LLSlider::onMouseCaptureLost()
 	onCommit();
 }
 
-BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
+bool LLSlider::handleHover(S32 x, S32 y, MASK mask)
 {
 	if( hasMouseCapture() )
 	{
@@ -239,12 +239,12 @@ BOOL LLSlider::handleHover(S32 x, S32 y, MASK mask)
 		getWindow()->setCursor(UI_CURSOR_ARROW);
 		// _LL_DEBUGS("UserInput") << "hover handled by " << getName() << " (inactive)" << LL_ENDL;		
 	}
-	return TRUE;
+	return true;
 }
 
-BOOL LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
+bool LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 {
-	BOOL handled = FALSE;
+    bool handled = false;
 
 	if (hasMouseCapture())
 	{
@@ -253,23 +253,23 @@ BOOL LLSlider::handleMouseUp(S32 x, S32 y, MASK mask)
 		if (mMouseUpSignal)
 			(*mMouseUpSignal)(this, getValueF32());
 
-		handled = TRUE;
-		make_ui_sound("UISndClickRelease");
-	}
-	else
-	{
-		handled = TRUE;
-	}
+        handled = true;
+        make_ui_sound("UISndClickRelease");
+    }
+    else
+    {
+        handled = true;
+    }
 
-	return handled;
+    return handled;
 }
 
-BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
+bool LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 {
 	// only do sticky-focus on non-chrome widgets
 	if (!getIsChrome())
 	{
-		setFocus(TRUE);
+		setFocus(true);
 	}
 	if (mMouseDownSignal)
 		(*mMouseDownSignal)( this, getValueF32() );
@@ -290,11 +290,11 @@ BOOL LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 
 	make_ui_sound("UISndClick");
 
-	return TRUE;
+	return true;
 }
 
 //BD - UI Improvements
-BOOL LLSlider::handleRightMouseUp(S32 x, S32 y, MASK mask)
+bool LLSlider::handleRightMouseUp(S32 x, S32 y, MASK mask)
 {
 	//BD - Right Mouse down will interrupt hover but will not immediately fire left mouse up.
 	//     If we previously fire right mouse down, cancel out and revert out value.
@@ -305,16 +305,16 @@ BOOL LLSlider::handleRightMouseUp(S32 x, S32 y, MASK mask)
 		setValueAndCommit(mOriginalValue);
 	}
 
-	return TRUE;
+	return true;
 }
 
 //BD - UI Improvements
-BOOL LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	// only do sticky-focus on non-chrome widgets
 	if (!getIsChrome())
 	{
-		setFocus(TRUE);
+		setFocus(true);
 	}
 
 	if ((MASK_SHIFT | MASK_CONTROL) & mask)
@@ -324,7 +324,7 @@ BOOL LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		{
 			control->resetToDefault(true);
 			make_ui_sound("UISndClick");
-			return TRUE;
+			return true;
 		}
 	}
 	else
@@ -332,12 +332,12 @@ BOOL LLSlider::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		mRightMousePressed = true;
 	}
 
-	return TRUE;
+	return true;
 }
 
-BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
+bool LLSlider::handleKeyHere(KEY key, MASK mask)
 {
-	BOOL handled = FALSE;
+	bool handled = false;
 	switch(key)
 	{
 	case KEY_DOWN:
@@ -347,13 +347,13 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 			//     We should probably do something to indicate that the increment has changed.
 			setIncrement(mIncrement / 10);
 			onCommit();
-			handled = TRUE;
+			handled = true;
 		}
 		break;
 	case KEY_LEFT:
 		setValueAndCommit(getValueF32() - getIncrement());
 		onCommit();
-		handled = TRUE;
+		handled = true;
 		break;
 	case KEY_UP:
 		if (mask == MASK_SHIFT)
@@ -362,13 +362,13 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 			//     We should probably do something to indicate that the increment has changed.
 			setIncrement(llmin(mIncrement * 10, mMaxValue));
 			onCommit();
-			handled = TRUE;
+			handled = true;
 		}
 		break;
 	case KEY_RIGHT:
 		setValueAndCommit(getValueF32() + getIncrement());
 		onCommit();
-		handled = TRUE;
+		handled = true;
 		break;
 	default:
 		break;
@@ -377,7 +377,7 @@ BOOL LLSlider::handleKeyHere(KEY key, MASK mask)
 }
 
 //BD - UI Improvements
-BOOL LLSlider::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
+bool LLSlider::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	//BD - Only allow using scrollwheel when holding down CTRL.
 	//     But allow using it on both horizontal and vertical sliders.
@@ -390,7 +390,7 @@ BOOL LLSlider::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 		}
 		F32 new_val = getValueF32() - clicks * increment;
 		setValueAndCommit(new_val);
-		return TRUE;
+		return true;
 	}
 	return LLF32UICtrl::handleScrollWheel(x,y,clicks,mask);
 }
@@ -489,14 +489,14 @@ void LLSlider::draw()
 	LLUICtrl::draw();
 }
 
-boost::signals2::connection LLSlider::setMouseDownCallback( const commit_signal_t::slot_type& cb ) 
-{ 
-	if (!mMouseDownSignal) mMouseDownSignal = new commit_signal_t();
-	return mMouseDownSignal->connect(cb); 
+boost::signals2::connection LLSlider::setMouseDownCallback( const commit_signal_t::slot_type& cb )
+{
+    if (!mMouseDownSignal) mMouseDownSignal = new commit_signal_t();
+    return mMouseDownSignal->connect(cb);
 }
 
-boost::signals2::connection LLSlider::setMouseUpCallback(	const commit_signal_t::slot_type& cb )   
-{ 
-	if (!mMouseUpSignal) mMouseUpSignal = new commit_signal_t();
-	return mMouseUpSignal->connect(cb); 
+boost::signals2::connection LLSlider::setMouseUpCallback(   const commit_signal_t::slot_type& cb )
+{
+    if (!mMouseUpSignal) mMouseUpSignal = new commit_signal_t();
+    return mMouseUpSignal->connect(cb);
 }

@@ -1,17 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
  name="panel_profile"
  label="Profile"
  top="0"
  left="0"
  height="480"
- width="420"
+ width="440"
  follows="all"
  layout="topleft"
 >
    <string 
-    name="date_format"
-    value="SL birthdate: [mth,datetime,slt] [day,datetime,slt], [year,datetime,slt]" />
+    name="date_format_full"
+    value="SL birthdate: [mth,datetime,utc] [day,datetime,utc], [year,datetime,utc]" />
+   <string 
+    name="date_format_short"
+    value="SL birthdate: [mth,datetime,utc] [day,datetime,utc]" />
    <string
     name="age_format"
     value="[AGE]" />
@@ -35,6 +38,27 @@ Account: [ACCTTYPE]
  name="title"
  top="1"
  width="415"/>
+
+   <!--Badges-->
+   <string
+   name="BadgeBeta"
+   value="Original Beta Tester" />
+   <string
+   name="BadgeBetaLifetime"
+   value="Beta Lifetime member" />
+   <string
+   name="BadgeLifetime"
+   value="Lifetime member" />
+   <string
+   name="BadgeLinden"
+   value="Linden Lab employee" />
+   <string
+   name="BadgePremiumLifetime"
+   value="Premium lifetime" />
+   <string
+   name="BadgePremiumPlusLifetime"
+   value="Premium Plus lifetime" />
+   
    <text
  name="show_ims_in_label"
  follows="left|top"
@@ -87,6 +111,7 @@ Account: [ACCTTYPE]
    <thumbnail
        name="2nd_life_pic"
        image_name="Generic_Person_Large"
+       show_loading="false"
        layout="topleft"
        follows="top|left"
        interactable="true"
@@ -309,10 +334,33 @@ Account: [ACCTTYPE]
        visible="true"/>
     </layout_panel>
     <layout_panel
+     name="menu_panel"
+     follows="all"
+     layout="topleft"
+     height="55"
+     auto_resize="false"
+     user_resize="false">
+      <menu_button
+       layout="topleft"
+       follows="left|top"
+       left="1"
+       top="25"
+       height="25"
+       width="176"
+       label="Actions"
+       halign="left"
+       image_unselected="DropDown_Off"
+       image_selected="DropDown_On"
+       image_pressed="DropDown_Press"
+       image_pressed_selected="DropDown_Press"
+       image_disabled="DropDown_Disabled"
+       name="agent_actions_menu"/>
+    </layout_panel>
+    <layout_panel
      name="settings_panel"
      follows="all"
      layout="topleft"
-     height="50"
+     height="70"
      auto_resize="false"
      user_resize="false">
       <!-- only for self -->
@@ -329,12 +377,11 @@ Account: [ACCTTYPE]
        name="show_in_search"
        tool_tip="Let people see you in search results"
        left="1"
-       top="18"
-       height="23"
-       width="140"
+       top="5"
+       height="25"
+       width="176"
        follows="left|top"
        layout="topleft"
-       visible="true"
        enabled="false">
        <combo_box.combo_button
             image_unselected="ToolbarDropDown_Off"
@@ -347,13 +394,13 @@ Account: [ACCTTYPE]
             image_pressed_selected="ToolbarDropDown_Press"
             image_disabled="ToolbarDropDown_Off" />
         <combo_box.item
-           name="Hide"
-           label="Hide"
-           value="0" />
-        <combo_box.item
            name="Show"
-           label="Show"
+           label="Show me in search"
            value="1" />
+        <combo_box.item
+           name="Hide"
+           label="Don't show me in search"
+           value="0" />
       </combo_box>
     </layout_panel>
     

@@ -49,9 +49,9 @@ LLControlAvatar::LLControlAvatar(const LLUUID& id, const LLPCode pcode, LLViewer
     mRootVolp(NULL),
     mControlAVBridge(NULL),
     mScaleConstraintFixup(1.0),
-	mRegionChanged(false)
+    mRegionChanged(false)
 {
-    mIsDummy = TRUE;
+    mIsDummy = true;
     mIsControlAvatar = true;
     mEnableDefaultMotions = false;
 }
@@ -59,42 +59,42 @@ LLControlAvatar::LLControlAvatar(const LLUUID& id, const LLPCode pcode, LLViewer
 // virtual
 LLControlAvatar::~LLControlAvatar()
 {
-	// Should already have been unlinked before destruction
-	llassert(!mRootVolp);
+    // Should already have been unlinked before destruction
+    llassert(!mRootVolp);
 }
 
 // virtual
 void LLControlAvatar::initInstance()
 {
-	// Potential optimizations here: avoid creating system
-	// avatar mesh content since it's not used. For now we just clean some
-	// things up after the fact in releaseMeshData().
+    // Potential optimizations here: avoid creating system
+    // avatar mesh content since it's not used. For now we just clean some
+    // things up after the fact in releaseMeshData().
     LLVOAvatar::initInstance();
 
-	createDrawable(&gPipeline);
-	updateJointLODs();
-	updateGeometry(mDrawable);
-	hideSkirt();
+    createDrawable(&gPipeline);
+    updateJointLODs();
+    updateGeometry(mDrawable);
+    hideSkirt();
 
     mInitFlags |= 1<<4;
 }
 
 const LLVOAvatar *LLControlAvatar::getAttachedAvatar() const
 {
-	if (mRootVolp && mRootVolp->isAttachment())
-	{
-		return mRootVolp->getAvatarAncestor();
-	}
-	return NULL;
+    if (mRootVolp && mRootVolp->isAttachment())
+    {
+        return mRootVolp->getAvatarAncestor();
+    }
+    return NULL;
 }
 
 LLVOAvatar *LLControlAvatar::getAttachedAvatar()
 {
-	if (mRootVolp && mRootVolp->isAttachment())
-	{
-		return mRootVolp->getAvatarAncestor();
-	}
-	return NULL;
+    if (mRootVolp && mRootVolp->isAttachment())
+    {
+        return mRootVolp->getAvatarAncestor();
+    }
+    return NULL;
 }
 
 void LLControlAvatar::getNewConstraintFixups(LLVector3& new_pos_fixup, F32& new_scale_fixup) const
@@ -109,49 +109,49 @@ void LLControlAvatar::getNewConstraintFixups(LLVector3& new_pos_fixup, F32& new_
     
     new_pos_fixup = LLVector3();
     new_scale_fixup = 1.0f;
-	LLVector3 vol_pos = mRootVolp->getRenderPosition();
+    LLVector3 vol_pos = mRootVolp->getRenderPosition();
 
     // Fix up position if needed to prevent visual encroachment
     if (box_valid_and_non_zero(getLastAnimExtents())) // wait for state to settle down
     {
-        // The goal here is to ensure that the extent of the avatar's 
+        // The goal here is to ensure that the extent of the avatar's
         // bounding box does not wander too far from the
         // official position of the corresponding volume. We
         // do this by tracking the distance and applying a
         // correction to the control avatar position if
         // needed.
         const LLVector3 *extents = getLastAnimExtents();
-		LLVector3 unshift_extents[2];
-		unshift_extents[0] = extents[0] - mPositionConstraintFixup;
-		unshift_extents[1] = extents[1] - mPositionConstraintFixup;
+        LLVector3 unshift_extents[2];
+        unshift_extents[0] = extents[0] - mPositionConstraintFixup;
+        unshift_extents[1] = extents[1] - mPositionConstraintFixup;
         LLVector3 box_dims = extents[1]-extents[0];
         F32 box_size = llmax(box_dims[0],box_dims[1],box_dims[2]);
 
-		if (!mRootVolp->isAttachment())
-		{
-			LLVector3 pos_box_offset = point_to_box_offset(vol_pos, unshift_extents);
-			F32 offset_dist = pos_box_offset.length();
-			if (offset_dist > max_legal_offset && offset_dist > 0.f)
-			{
-				F32 target_dist = (offset_dist - max_legal_offset);
-				new_pos_fixup = (target_dist/offset_dist)*pos_box_offset;
-			}
-			if (new_pos_fixup != mPositionConstraintFixup)
-			{
-				LL_DEBUGS("ConstraintFix") << getFullname() << " pos fix, offset_dist " << offset_dist << " pos fixup " 
-										   << new_pos_fixup << " was " << mPositionConstraintFixup << LL_ENDL;
-				LL_DEBUGS("ConstraintFix") << "vol_pos " << vol_pos << LL_ENDL;
-				LL_DEBUGS("ConstraintFix") << "extents " << extents[0] << " " << extents[1] << LL_ENDL;
-				LL_DEBUGS("ConstraintFix") << "unshift_extents " << unshift_extents[0] << " " << unshift_extents[1] << LL_ENDL;
-				
-			}
-		}
-        if (box_size/mScaleConstraintFixup > max_legal_size)
+        if (!mRootVolp->isAttachment())
         {
-            new_scale_fixup = mScaleConstraintFixup*max_legal_size/box_size;
-            LL_DEBUGS("ConstraintFix") << getFullname() << " scale fix, box_size " << box_size << " fixup " 
-									   << mScaleConstraintFixup << " max legal " << max_legal_size 
-									   << " -> new scale " << new_scale_fixup << LL_ENDL;
+            LLVector3 pos_box_offset = point_to_box_offset(vol_pos, unshift_extents);
+            F32 offset_dist = pos_box_offset.length();
+            if (offset_dist > MAX_LEGAL_OFFSET && offset_dist > 0.f)
+            {
+                F32 target_dist = (offset_dist - MAX_LEGAL_OFFSET);
+                new_pos_fixup = (target_dist/offset_dist)*pos_box_offset;
+            }
+            if (new_pos_fixup != mPositionConstraintFixup)
+            {
+                LL_DEBUGS("ConstraintFix") << getFullname() << " pos fix, offset_dist " << offset_dist << " pos fixup "
+                                           << new_pos_fixup << " was " << mPositionConstraintFixup << LL_ENDL;
+                LL_DEBUGS("ConstraintFix") << "vol_pos " << vol_pos << LL_ENDL;
+                LL_DEBUGS("ConstraintFix") << "extents " << extents[0] << " " << extents[1] << LL_ENDL;
+                LL_DEBUGS("ConstraintFix") << "unshift_extents " << unshift_extents[0] << " " << unshift_extents[1] << LL_ENDL;
+
+            }
+        }
+        if (box_size/mScaleConstraintFixup > MAX_LEGAL_SIZE)
+        {
+            new_scale_fixup = mScaleConstraintFixup* MAX_LEGAL_SIZE /box_size;
+            LL_DEBUGS("ConstraintFix") << getFullname() << " scale fix, box_size " << box_size << " fixup "
+                                       << mScaleConstraintFixup << " max legal " << MAX_LEGAL_SIZE
+                                       << " -> new scale " << new_scale_fixup << LL_ENDL;
         }
     }
 }
@@ -160,20 +160,20 @@ void LLControlAvatar::matchVolumeTransform()
 {
     if (mRootVolp)
     {
-		LLVector3 new_pos_fixup;
-		F32 new_scale_fixup;
-		if (mRegionChanged)
-		{
-			new_scale_fixup = mScaleConstraintFixup;
-			new_pos_fixup = mPositionConstraintFixup;
-			mRegionChanged = false;
-		}
-		else
-		{
-			getNewConstraintFixups(new_pos_fixup, new_scale_fixup);
-		}
-		mPositionConstraintFixup = new_pos_fixup;
-		mScaleConstraintFixup = new_scale_fixup;
+        LLVector3 new_pos_fixup;
+        F32 new_scale_fixup;
+        if (mRegionChanged)
+        {
+            new_scale_fixup = mScaleConstraintFixup;
+            new_pos_fixup = mPositionConstraintFixup;
+            mRegionChanged = false;
+        }
+        else
+        {
+            getNewConstraintFixups(new_pos_fixup, new_scale_fixup);
+        }
+        mPositionConstraintFixup = new_pos_fixup;
+        mScaleConstraintFixup = new_scale_fixup;
 
         static const LLCachedControl<F32> global_scale(gSavedSettings, "AnimatedObjectsGlobalScale");
 
@@ -187,7 +187,7 @@ void LLControlAvatar::matchVolumeTransform()
                 {
                     setPositionAgent(mRootVolp->getRenderPosition());
                 }
-				attach->updateWorldPRSParent();
+                attach->updateWorldPRSParent();
                 LLVector3 joint_pos = attach->getWorldPosition();
                 LLQuaternion joint_rot = attach->getWorldRotation();
                 LLVector3 obj_pos = mRootVolp->mDrawable->getPosition();
@@ -225,27 +225,27 @@ void LLControlAvatar::matchVolumeTransform()
             {
                 obj_rot = mRootVolp->getRotation();
             }
-            
-			LLMatrix3 bind_mat;
+
+            LLMatrix3 bind_mat;
 
             LLQuaternion bind_rot;
 #define MATCH_BIND_SHAPE
 #ifdef MATCH_BIND_SHAPE
             // MAINT-8671 - based on a patch from Beq Janus
-	        const LLMeshSkinInfo* skin_info = mRootVolp->getSkinInfo();
-			if (skin_info)
-			{
+            const LLMeshSkinInfo* skin_info = mRootVolp->getSkinInfo();
+            if (skin_info)
+            {
                 LL_DEBUGS("BindShape") << getFullname() << " bind shape " << skin_info->mBindShapeMatrix << LL_ENDL;
                 bind_rot = LLSkinningUtil::getUnscaledQuaternion(LLMatrix4(skin_info->mBindShapeMatrix));
-			}
+            }
 #endif
-			setRotation(bind_rot*obj_rot);
+            setRotation(bind_rot*obj_rot);
             mRoot->setWorldRotation(bind_rot*obj_rot);
             if (getRegion() && !isDead())
             {
                 setPositionAgent(vol_pos);
             }
-			mRoot->setPosition(vol_pos + mPositionConstraintFixup);
+            mRoot->setPosition(vol_pos + mPositionConstraintFixup);
 
              setGlobalScale(global_scale * mScaleConstraintFixup);
         }
@@ -272,37 +272,37 @@ void LLControlAvatar::setGlobalScale(F32 scale)
 void LLControlAvatar::recursiveScaleJoint(LLJoint* joint, F32 factor)
 {
     joint->setScale(factor * joint->getScale());
-    
-	for (LLJoint::joints_t::iterator iter = joint->mChildren.begin();
-		 iter != joint->mChildren.end(); ++iter)
-	{
-		LLJoint* child = *iter;
-		recursiveScaleJoint(child, factor);
-	}
+
+    for (LLJoint::joints_t::iterator iter = joint->mChildren.begin();
+         iter != joint->mChildren.end(); ++iter)
+    {
+        LLJoint* child = *iter;
+        recursiveScaleJoint(child, factor);
+    }
 }
 
 // Based on LLViewerJointAttachment::setupDrawable(), without the attaching part.
 void LLControlAvatar::updateVolumeGeom()
 {
-	if (!mRootVolp->mDrawable)
-		return;
-	if (mRootVolp->mDrawable->isActive())
-	{
-		mRootVolp->mDrawable->makeStatic(FALSE);
-	}
-	mRootVolp->mDrawable->makeActive();
-	gPipeline.markMoved(mRootVolp->mDrawable);
-	gPipeline.markTextured(mRootVolp->mDrawable); // face may need to change draw pool to/from POOL_HUD
+    if (!mRootVolp->mDrawable)
+        return;
+    if (mRootVolp->mDrawable->isActive())
+    {
+        mRootVolp->mDrawable->makeStatic(false);
+    }
+    mRootVolp->mDrawable->makeActive();
+    gPipeline.markMoved(mRootVolp->mDrawable);
+    gPipeline.markTextured(mRootVolp->mDrawable); // face may need to change draw pool to/from POOL_HUD
 
-	LLViewerObject::const_child_list_t& child_list = mRootVolp->getChildren();
-	for (LLViewerObject::child_list_t::const_iterator iter = child_list.begin();
-		 iter != child_list.end(); ++iter)
-	{
-		LLViewerObject* childp = *iter;
-		if (childp && childp->mDrawable.notNull())
-		{
-			gPipeline.markTextured(childp->mDrawable); // face may need to change draw pool to/from POOL_HUD
-			gPipeline.markMoved(childp->mDrawable);
+    LLViewerObject::const_child_list_t& child_list = mRootVolp->getChildren();
+    for (LLViewerObject::child_list_t::const_iterator iter = child_list.begin();
+         iter != child_list.end(); ++iter)
+    {
+        LLViewerObject* childp = *iter;
+        if (childp && childp->mDrawable.notNull())
+        {
+            gPipeline.markTextured(childp->mDrawable); // face may need to change draw pool to/from POOL_HUD
+            gPipeline.markMoved(childp->mDrawable);
         }
     }
 
@@ -331,7 +331,7 @@ void LLControlAvatar::updateVolumeGeom()
     // global scale, 3) approximate the original scale by looking at
     // the proportions of the skeleton after joint positions have
     // been applied
-    
+
     //LLVector3 obj_scale = obj->getScale();
     //F32 obj_scale_z = llmax(obj_scale[2],0.1f);
     //setGlobalScale(obj_scale_z/2.0f); // roughly fit avatar height range (2m) into object height
@@ -339,7 +339,7 @@ void LLControlAvatar::updateVolumeGeom()
 
 LLControlAvatar *LLControlAvatar::createControlAvatar(LLVOVolume *obj)
 {
-	LLControlAvatar *cav = (LLControlAvatar*)gObjectList.createObjectViewer(LL_PCODE_LEGACY_AVATAR, gAgent.getRegion(), CO_FLAG_CONTROL_AVATAR);
+    LLControlAvatar *cav = (LLControlAvatar*)gObjectList.createObjectViewer(LL_PCODE_LEGACY_AVATAR, gAgent.getRegion(), CO_FLAG_CONTROL_AVATAR);
 
     if (cav)
     {
@@ -355,6 +355,9 @@ LLControlAvatar *LLControlAvatar::createControlAvatar(LLVOVolume *obj)
 void LLControlAvatar::markForDeath()
 {
     mMarkedForDeath = true;
+    // object unlinked cav and might be dead already
+    // might need to clean mControlAVBridge here as well
+    mRootVolp = NULL;
 }
 
 void LLControlAvatar::idleUpdate(LLAgent &agent, const F64 &time)
@@ -372,35 +375,36 @@ void LLControlAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 
 void LLControlAvatar::markDead()
 {
+    mRootVolp = NULL;
     super::markDead();
     mControlAVBridge = NULL;
 }
 
 bool LLControlAvatar::computeNeedsUpdate()
 {
-	computeUpdatePeriod();
+    computeUpdatePeriod();
 
-	// Animesh attachments are a special case. Should have the same update cadence as their attached parent avatar.
-	LLVOAvatar *attached_av = getAttachedAvatar();
-	if (attached_av)
-	{
-		// Have to run computeNeedsUpdate() for attached av in
-		// case it hasn't run updateCharacter() already this
-		// frame.  Note this means that the attached av will
-		// run computeNeedsUpdate() multiple times per frame
-		// if it has animesh attachments. Results will be
-		// consistent except for the corner case of exceeding
-		// MAX_IMPOSTOR_INTERVAL in one call but not another,
-		// which should be rare.
-		attached_av->computeNeedsUpdate();
-		mNeedsImpostorUpdate = attached_av->mNeedsImpostorUpdate;
-		if (mNeedsImpostorUpdate)
-		{
-			mLastImpostorUpdateReason = 12;
-		}
-		return mNeedsImpostorUpdate;
-	}
-	return LLVOAvatar::computeNeedsUpdate();
+    // Animesh attachments are a special case. Should have the same update cadence as their attached parent avatar.
+    LLVOAvatar *attached_av = getAttachedAvatar();
+    if (attached_av)
+    {
+        // Have to run computeNeedsUpdate() for attached av in
+        // case it hasn't run updateCharacter() already this
+        // frame.  Note this means that the attached av will
+        // run computeNeedsUpdate() multiple times per frame
+        // if it has animesh attachments. Results will be
+        // consistent except for the corner case of exceeding
+        // MAX_IMPOSTOR_INTERVAL in one call but not another,
+        // which should be rare.
+        attached_av->computeNeedsUpdate();
+        mNeedsImpostorUpdate = attached_av->mNeedsImpostorUpdate;
+        if (mNeedsImpostorUpdate)
+        {
+            mLastImpostorUpdateReason = 12;
+        }
+        return mNeedsImpostorUpdate;
+    }
+    return LLVOAvatar::computeNeedsUpdate();
 }
 
 bool LLControlAvatar::updateCharacter(LLAgent &agent)
@@ -417,11 +421,11 @@ void LLControlAvatar::updateDebugText()
         S32 total_linkset_count = 0;
         if (mRootVolp)
         {
-            total_linkset_count = 1 + mRootVolp->getChildren().size();
+            total_linkset_count = 1 + static_cast<S32>(mRootVolp->getChildren().size());
         }
         std::vector<LLVOVolume*> volumes;
         getAnimatedVolumes(volumes);
-        S32 animated_volume_count = volumes.size();
+        S32 animated_volume_count = static_cast<S32>(volumes.size());
         std::string active_string;
         std::string type_string;
         std::string lod_string;
@@ -433,7 +437,7 @@ void LLControlAvatar::updateDebugText()
         F32 streaming_cost = 0.f;
         std::string cam_dist_string = "";
         S32 cam_dist_count = 0;
-        F32 lod_radius = mRootVolp->mLODRadius;
+        F32 lod_radius = mRootVolp ? mRootVolp->mLODRadius : 0.f;
 
         for (std::vector<LLVOVolume*>::iterator it = volumes.begin();
              it != volumes.end(); ++it)
@@ -495,7 +499,7 @@ void LLControlAvatar::updateDebugText()
             }
         }
         addDebugText(llformat("CAV obj %d anim %d active %s impost %d upprd %d strcst %f",
-                              total_linkset_count, animated_volume_count, 
+                              total_linkset_count, animated_volume_count,
                               active_string.c_str(), (S32) isImpostor(), getUpdatePeriod(), streaming_cost));
         addDebugText(llformat("types %s lods %s", type_string.c_str(), lod_string.c_str()));
         addDebugText(llformat("flags %s", animated_object_flag_string.c_str()));
@@ -504,13 +508,13 @@ void LLControlAvatar::updateDebugText()
         addDebugText(llformat("lod_radius %s dists %s", LLStringOps::getReadableNumber(lod_radius).c_str(),cam_dist_string.c_str()));
         if (mPositionConstraintFixup.length() > 0.0f || mScaleConstraintFixup != 1.0f)
         {
-            addDebugText(llformat("pos fix (%.1f %.1f %.1f) scale %f", 
-                                  mPositionConstraintFixup[0], 
+            addDebugText(llformat("pos fix (%.1f %.1f %.1f) scale %f",
+                                  mPositionConstraintFixup[0],
                                   mPositionConstraintFixup[1],
                                   mPositionConstraintFixup[2],
                                   mScaleConstraintFixup));
         }
-        
+
 #if 0
         std::string region_name = "no region";
         if (mRootVolp->getRegion())
@@ -526,7 +530,7 @@ void LLControlAvatar::updateDebugText()
                               mRootVolp->getRegion(), region_name.c_str(),
                               getRegion(), skel_region_name.c_str()));
 #endif
-        
+
     }
     LLVOAvatar::updateDebugText();
 }
@@ -539,12 +543,12 @@ void LLControlAvatar::getAnimatedVolumes(std::vector<LLVOVolume*>& volumes)
     }
 
     volumes.push_back(mRootVolp);
-    
-	LLViewerObject::const_child_list_t& child_list = mRootVolp->getChildren();
-	for (LLViewerObject::const_child_list_t::const_iterator iter = child_list.begin();
-		 iter != child_list.end(); ++iter)
-	{
-		LLViewerObject* childp = *iter;
+
+    LLViewerObject::const_child_list_t& child_list = mRootVolp->getChildren();
+    for (LLViewerObject::const_child_list_t::const_iterator iter = child_list.begin();
+         iter != child_list.end(); ++iter)
+    {
+        LLViewerObject* childp = *iter;
         LLVOVolume *child_volp = dynamic_cast<LLVOVolume*>(childp);
         if (child_volp && child_volp->isAnimatedObject())
         {
@@ -566,9 +570,9 @@ void LLControlAvatar::updateAnimations()
 
     std::vector<LLVOVolume*> volumes;
     getAnimatedVolumes(volumes);
-    
+
     // Rebuild mSignaledAnimations from the associated volumes.
-	std::map<LLUUID, S32> anims;
+    std::map<LLUUID, S32> anims;
     for (std::vector<LLVOVolume*>::iterator vol_it = volumes.begin(); vol_it != volumes.end(); ++vol_it)
     {
         LLVOVolume *volp = *vol_it;
@@ -608,27 +612,27 @@ void LLControlAvatar::updateAnimations()
 
 // virtual
 LLViewerObject* LLControlAvatar::lineSegmentIntersectRiggedAttachments(const LLVector4a& start, const LLVector4a& end,
-									  S32 face,
-									  BOOL pick_transparent,
-									  BOOL pick_rigged,
-                                      BOOL pick_unselectable,
-									  S32* face_hit,
-									  LLVector4a* intersection,
-									  LLVector2* tex_coord,
-									  LLVector4a* normal,
-									  LLVector4a* tangent)
+                                      S32 face,
+                                      bool pick_transparent,
+                                      bool pick_rigged,
+                                      bool pick_unselectable,
+                                      S32* face_hit,
+                                      LLVector4a* intersection,
+                                      LLVector2* tex_coord,
+                                      LLVector4a* normal,
+                                      LLVector4a* tangent)
 {
     if (!mRootVolp)
     {
         return NULL;
     }
 
-	LLViewerObject* hit = NULL;
+    LLViewerObject* hit = NULL;
 
-	if (lineSegmentBoundingBox(start, end))
-	{
-		LLVector4a local_end = end;
-		LLVector4a local_intersection;
+    if (lineSegmentBoundingBox(start, end))
+    {
+        LLVector4a local_end = end;
+        LLVector4a local_intersection;
         if (mRootVolp->lineSegmentIntersect(start, local_end, face, pick_transparent, pick_rigged, pick_unselectable, face_hit, &local_intersection, tex_coord, normal, tangent))
         {
             local_end = local_intersection;
@@ -658,9 +662,9 @@ LLViewerObject* LLControlAvatar::lineSegmentIntersectRiggedAttachments(const LLV
                 }
             }
         }
-	}
-		
-	return hit;
+    }
+
+    return hit;
 }
 
 // virtual
@@ -679,24 +683,24 @@ std::string LLControlAvatar::getFullname() const
 // virtual
 bool LLControlAvatar::shouldRenderRigged() const
 {
-	const LLVOAvatar *attached_av = getAttachedAvatar();
-	if (attached_av)
-	{
-		return attached_av->shouldRenderRigged();
-	}
+    const LLVOAvatar *attached_av = getAttachedAvatar();
+    if (attached_av)
+    {
+        return attached_av->shouldRenderRigged();
+    }
     return true;
 }
 
 // virtual
-BOOL LLControlAvatar::isImpostor()
+bool LLControlAvatar::isImpostor()
 {
-	// Attached animated objects should match state of their attached av.
-	LLVOAvatar *attached_av = getAttachedAvatar();
-	if (attached_av)
-	{
-		return attached_av->isImpostor();
-	}
-	return LLVOAvatar::isImpostor();
+    // Attached animated objects should match state of their attached av.
+    LLVOAvatar *attached_av = getAttachedAvatar();
+    if (attached_av)
+    {
+        return attached_av->isImpostor();
+    }
+    return LLVOAvatar::isImpostor();
 }
 
 //static

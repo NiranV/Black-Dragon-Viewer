@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llstatusbar.h
  * @brief LLStatusBar class definition
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -54,16 +54,16 @@ class BDPanelDrawDistance;
 
 
 class LLStatusBar
-:	public LLPanel
+:   public LLPanel
 {
 public:
-	LLStatusBar(const LLRect& rect );
-	/*virtual*/ ~LLStatusBar();
-	
-	/*virtual*/ void draw();
+    LLStatusBar(const LLRect& rect );
+    /*virtual*/ ~LLStatusBar();
 
-	/*virtual*/ BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL postBuild();
+    /*virtual*/ void draw();
+
+    /*virtual*/ bool handleRightMouseDown(S32 x, S32 y, MASK mask);
+    /*virtual*/ bool postBuild();
 
 	void		setHealth(S32 percent);
 
@@ -74,19 +74,19 @@ public:
 	void setLandCredit(S32 credit);
 	void setLandCommitted(S32 committed);
 
-	void		refresh();
-	void setVisibleForMouselook(bool visible);
-		// some elements should hide in mouselook
+    void        refresh();
+    void setVisibleForMouselook(bool visible);
+        // some elements should hide in mouselook
 
 	// ACCESSORS
 	S32			getHealth() const;
 
-	BOOL isUserTiered() const;
-	S32 getSquareMetersCredit() const;
-	S32 getSquareMetersCommitted() const;
-	S32 getSquareMetersLeft() const;
+    bool isUserTiered() const;
+    S32 getSquareMetersCredit() const;
+    S32 getSquareMetersCommitted() const;
+    S32 getSquareMetersLeft() const;
 
-	LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
+    LLPanelNearByMedia* getNearbyMediaPanel() { return mPanelNearByMedia; }
 
 private:
 	
@@ -140,7 +140,7 @@ private:
 };
 
 // *HACK: Status bar owns your cached money balance. JC
-BOOL can_afford_transaction(S32 cost);
+bool can_afford_transaction(S32 cost);
 
 extern LLStatusBar *gStatusBar;
 

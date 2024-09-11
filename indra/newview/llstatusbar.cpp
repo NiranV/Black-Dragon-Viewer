@@ -1,25 +1,25 @@
-/** 
+/**
 * @file llstatusbar.cpp
 * @brief LLStatusBar class implementation
 *
 * $LicenseInfo:firstyear=2002&license=viewerlgpl$
 * Second Life Viewer Source Code
 * Copyright (C) 2010, Linden Research, Inc.
-* 
+*
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
 * License as published by the Free Software Foundation;
 * version 2.1 of the License only.
-* 
+*
 * This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 * Lesser General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Lesser General Public
 * License along with this library; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-* 
+*
 * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
 * $/LicenseInfo$
 */
@@ -60,7 +60,7 @@
 #include "llworld.h"
 #include "llstatgraph.h"
 #include "llviewermedia.h"
-#include "llviewermenu.h"	// for gMenuBarView
+#include "llviewermenu.h"   // for gMenuBarView
 #include "llviewerparcelmgr.h"
 #include "llviewerthrottle.h"
 #include "lluictrlfactory.h"
@@ -104,7 +104,7 @@ const S32 SIM_STAT_WIDTH = 8;
 const LLColor4 SIM_OK_COLOR(0.f, 1.f, 0.f, 1.f);
 const LLColor4 SIM_WARN_COLOR(1.f, 1.f, 0.f, 1.f);
 const LLColor4 SIM_FULL_COLOR(1.f, 0.f, 0.f, 1.f);
-const F32 ICON_TIMER_EXPIRY		= 3.f; // How long the balance and health icons should flash after a change.
+const F32 ICON_TIMER_EXPIRY     = 3.f; // How long the balance and health icons should flash after a change.
 
 static void onClickVolume(void*);
 
@@ -126,7 +126,7 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 	setRect(rect);
 	
 	// status bar can possible overlay menus?
-	setMouseOpaque(FALSE);
+	setMouseOpaque(false);
 
 	mHealthTimer = new LLFrameTimer();
 
@@ -138,7 +138,7 @@ LLStatusBar::~LLStatusBar()
 	delete mHealthTimer;
 	mHealthTimer = NULL;
 
-	// LLView destructor cleans up children
+    // LLView destructor cleans up children
 }
 
 //-----------------------------------------------------------------------
@@ -148,19 +148,21 @@ LLStatusBar::~LLStatusBar()
 // virtual
 void LLStatusBar::draw()
 {
-	refresh();
-	LLPanel::draw();
+    refresh();
+    LLPanel::draw();
 }
 
-BOOL LLStatusBar::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLStatusBar::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-	show_navbar_context_menu(this,x,y);
-	return TRUE;
+    show_navbar_context_menu(this,x,y);
+    return true;
 }
 
-BOOL LLStatusBar::postBuild()
+bool LLStatusBar::postBuild()
 {
-	gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
+    gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
+
+    mTextTime = getChild<LLTextBox>("TimeText" );
 
 	mTextTime = getChild<LLTextBox>("TimeText" );
 //	//BD - Statusbar Framerate Count
@@ -239,25 +241,25 @@ BOOL LLStatusBar::postBuild()
 	mPanelPresetsPulldown = new LLPanelPresetsPulldown();
 	addChild(mPanelPresetsPulldown);
 	mPanelPresetsPulldown->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
-	mPanelPresetsPulldown->setVisible(FALSE);
+	mPanelPresetsPulldown->setVisible(false);
 
 	mPanelVolumePulldown = new LLPanelVolumePulldown();
 	addChild(mPanelVolumePulldown);
 	mPanelVolumePulldown->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
-	mPanelVolumePulldown->setVisible(FALSE);
+	mPanelVolumePulldown->setVisible(false);
 
 	mPanelNearByMedia = new LLPanelNearByMedia();
 	addChild(mPanelNearByMedia);
 	mPanelNearByMedia->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
-	mPanelNearByMedia->setVisible(FALSE);
+	mPanelNearByMedia->setVisible(false);
 
 //	//BD - Quick Draw Distance Slider
 	mPanelDrawDistance = new BDPanelDrawDistance();
 	addChild(mPanelDrawDistance);
 	mPanelDrawDistance->setFollows(FOLLOWS_TOP|FOLLOWS_RIGHT);
-	mPanelDrawDistance->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(false);
 
-	return TRUE;
+	return true;
 }
 
 // Per-frame updates of visibility
@@ -369,13 +371,13 @@ void LLStatusBar::onToggleFPSType()
 // static
 /*void LLStatusBar::sendMoneyBalanceRequest()
 {
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	msg->nextBlockFast(_PREHASH_MoneyData);
-	msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
+    LLMessageSystem* msg = gMessageSystem;
+    msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    msg->nextBlockFast(_PREHASH_MoneyData);
+    msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
 
     if (gDisconnected)
     {
@@ -389,68 +391,68 @@ void LLStatusBar::onToggleFPSType()
     }
     // Double amount of retries due to this request initially happening during busy stage
     // Ideally this should be turned into a capability
-    gMessageSystem->sendReliable(gAgent.getRegionHost(), LL_DEFAULT_RELIABLE_RETRIES * 2, TRUE, LL_PING_BASED_TIMEOUT_DUMMY, NULL, NULL);
+    gMessageSystem->sendReliable(gAgent.getRegionHost(), LL_DEFAULT_RELIABLE_RETRIES * 2, true, LL_PING_BASED_TIMEOUT_DUMMY, NULL, NULL);
 }*/
 
 void LLStatusBar::setHealth(S32 health)
 {
-	//LL_INFOS() << "Setting health to: " << buffer << LL_ENDL;
-	if( mHealth > health )
-	{
-		if (mHealth > (health + gSavedSettings.getF32("UISndHealthReductionThreshold")))
-		{
-			if (isAgentAvatarValid())
-			{
-				if (gAgentAvatarp->getSex() == SEX_FEMALE)
-				{
-					make_ui_sound("UISndHealthReductionF");
-				}
-				else
-				{
-					make_ui_sound("UISndHealthReductionM");
-				}
-			}
-		}
+    //LL_INFOS() << "Setting health to: " << buffer << LL_ENDL;
+    if( mHealth > health )
+    {
+        if (mHealth > (health + gSavedSettings.getF32("UISndHealthReductionThreshold")))
+        {
+            if (isAgentAvatarValid())
+            {
+                if (gAgentAvatarp->getSex() == SEX_FEMALE)
+                {
+                    make_ui_sound("UISndHealthReductionF");
+                }
+                else
+                {
+                    make_ui_sound("UISndHealthReductionM");
+                }
+            }
+        }
 
-		mHealthTimer->reset();
-		mHealthTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
-	}
+        mHealthTimer->reset();
+        mHealthTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
+    }
 
-	mHealth = health;
+    mHealth = health;
 }
 
 S32 LLStatusBar::getHealth() const
 {
-	return mHealth;
+    return mHealth;
 }
 
 void LLStatusBar::setLandCredit(S32 credit)
 {
-	mSquareMetersCredit = credit;
+    mSquareMetersCredit = credit;
 }
 void LLStatusBar::setLandCommitted(S32 committed)
 {
-	mSquareMetersCommitted = committed;
+    mSquareMetersCommitted = committed;
 }
 
-BOOL LLStatusBar::isUserTiered() const
+bool LLStatusBar::isUserTiered() const
 {
-	return (mSquareMetersCredit > 0);
+    return (mSquareMetersCredit > 0);
 }
 
 S32 LLStatusBar::getSquareMetersCredit() const
 {
-	return mSquareMetersCredit;
+    return mSquareMetersCredit;
 }
 
 S32 LLStatusBar::getSquareMetersCommitted() const
 {
-	return mSquareMetersCommitted;
+    return mSquareMetersCommitted;
 }
 
 S32 LLStatusBar::getSquareMetersLeft() const
 {
-	return mSquareMetersCredit - mSquareMetersCommitted;
+    return mSquareMetersCredit - mSquareMetersCommitted;
 }
 
 
@@ -466,41 +468,41 @@ void LLStatusBar::onMouseEnterPresets()
 			       pulldown_rect.getWidth(),
 			       pulldown_rect.getHeight());
 
-	pulldown_rect.translate(popup_holder->getRect().getWidth() - pulldown_rect.mRight, 0);
-	mPanelPresetsPulldown->setShape(pulldown_rect);
+    pulldown_rect.translate(popup_holder->getRect().getWidth() - pulldown_rect.mRight, 0);
+    mPanelPresetsPulldown->setShape(pulldown_rect);
 
-	// show the master presets pull-down
-	LLUI::getInstance()->clearPopups();
-	LLUI::getInstance()->addPopup(mPanelPresetsPulldown);
-	mPanelNearByMedia->setVisible(FALSE);
-	mPanelVolumePulldown->setVisible(FALSE);
-	mPanelPresetsPulldown->setVisible(TRUE);
+    // show the master presets pull-down
+    LLUI::getInstance()->clearPopups();
+    LLUI::getInstance()->addPopup(mPanelPresetsPulldown);
+    mPanelNearByMedia->setVisible(false);
+    mPanelVolumePulldown->setVisible(false);
+    mPanelPresetsPulldown->setVisible(true);
 }
 
 void LLStatusBar::onMouseEnterVolume()
 {
-	LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
-	LLButton* volbtn =  getChild<LLButton>( "volume_btn" );
-	LLRect vol_btn_rect = volbtn->getRect();
-	LLRect volume_pulldown_rect = mPanelVolumePulldown->getRect();
-	volume_pulldown_rect.setLeftTopAndSize(vol_btn_rect.mLeft -
-	     (volume_pulldown_rect.getWidth() - vol_btn_rect.getWidth()),
-			       vol_btn_rect.mBottom,
-			       volume_pulldown_rect.getWidth(),
-			       volume_pulldown_rect.getHeight());
+    LLView* popup_holder = gViewerWindow->getRootView()->getChildView("popup_holder");
+    LLButton* volbtn =  getChild<LLButton>( "volume_btn" );
+    LLRect vol_btn_rect = volbtn->getRect();
+    LLRect volume_pulldown_rect = mPanelVolumePulldown->getRect();
+    volume_pulldown_rect.setLeftTopAndSize(vol_btn_rect.mLeft -
+         (volume_pulldown_rect.getWidth() - vol_btn_rect.getWidth()),
+                   vol_btn_rect.mBottom,
+                   volume_pulldown_rect.getWidth(),
+                   volume_pulldown_rect.getHeight());
 
-	volume_pulldown_rect.translate(popup_holder->getRect().getWidth() - volume_pulldown_rect.mRight, 0);
-	mPanelVolumePulldown->setShape(volume_pulldown_rect);
+    volume_pulldown_rect.translate(popup_holder->getRect().getWidth() - volume_pulldown_rect.mRight, 0);
+    mPanelVolumePulldown->setShape(volume_pulldown_rect);
 
 
 	// show the master volume pull-down
 	LLUI::getInstance()->clearPopups();
 	LLUI::getInstance()->addPopup(mPanelVolumePulldown);
-	mPanelPresetsPulldown->setVisible(FALSE);
-	mPanelNearByMedia->setVisible(FALSE);
-	mPanelVolumePulldown->setVisible(TRUE);
+	mPanelPresetsPulldown->setVisible(false);
+	mPanelNearByMedia->setVisible(false);
+	mPanelVolumePulldown->setVisible(true);
 //	//BD - Quick Draw Distance Slider
-	mPanelDrawDistance->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(false);
 }
 
 void LLStatusBar::onMouseEnterNearbyMedia()
@@ -522,11 +524,11 @@ void LLStatusBar::onMouseEnterNearbyMedia()
 	LLUI::getInstance()->clearPopups();
 	LLUI::getInstance()->addPopup(mPanelNearByMedia);
 
-	mPanelPresetsPulldown->setVisible(FALSE);
-	mPanelVolumePulldown->setVisible(FALSE);
-	mPanelNearByMedia->setVisible(TRUE);
+	mPanelPresetsPulldown->setVisible(false);
+	mPanelVolumePulldown->setVisible(false);
+	mPanelNearByMedia->setVisible(true);
 //	//BD - Quick Draw Distance Slider
-	mPanelDrawDistance->setVisible(FALSE);
+	mPanelDrawDistance->setVisible(false);
 }
 
 //BD - Quick Draw Distance Slider
@@ -553,28 +555,28 @@ void LLStatusBar::onMouseEnterDrawDistance()
 	LLUI::getInstance()->clearPopups();
 	LLUI::getInstance()->addPopup(mPanelDrawDistance);
 
-	mPanelNearByMedia->setVisible(FALSE);
-	mPanelVolumePulldown->setVisible(FALSE);
-	mPanelDrawDistance->setVisible(TRUE);
+	mPanelNearByMedia->setVisible(false);
+	mPanelVolumePulldown->setVisible(false);
+	mPanelDrawDistance->setVisible(true);
 }
 
 static void onClickVolume(void* data)
 {
-	// toggle the master mute setting
-	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
-	LLAppViewer::instance()->setMasterSystemAudioMute(!mute_audio);	
+    // toggle the master mute setting
+    bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();
+    LLAppViewer::instance()->setMasterSystemAudioMute(!mute_audio);
 }
 
 //static 
 void LLStatusBar::onClickMediaToggle(void* data)
 {
-	LLStatusBar *status_bar = (LLStatusBar*)data;
-	// "Selected" means it was showing the "play" icon (so media was playing), and now it shows "pause", so turn off media
-	bool pause = status_bar->mMediaToggle->getValue();
-	LLViewerMedia::getInstance()->setAllMediaPaused(pause);
+    LLStatusBar *status_bar = (LLStatusBar*)data;
+    // "Selected" means it was showing the "play" icon (so media was playing), and now it shows "pause", so turn off media
+    bool pause = status_bar->mMediaToggle->getValue();
+    LLViewerMedia::getInstance()->setAllMediaPaused(pause);
 }
 
-BOOL can_afford_transaction(S32 cost)
+bool can_afford_transaction(S32 cost)
 {
 	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
@@ -583,7 +585,17 @@ BOOL can_afford_transaction(S32 cost)
 
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
 {
-	refresh();
+    refresh();
+}
+
+void LLStatusBar::onVoiceChanged(const LLSD& newvalue)
+{
+    if (newvalue.asBoolean())
+    {
+        // Second instance starts with "VoiceMute_Off" icon, fix it
+        mBtnVolume->setImageUnselected(LLUI::getUIImage("Audio_Off"));
+    }
+    refresh();
 }
 
 //BD

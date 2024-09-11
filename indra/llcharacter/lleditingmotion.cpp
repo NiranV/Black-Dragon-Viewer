@@ -1,25 +1,25 @@
-/** 
+/**
  * @file lleditingmotion.cpp
  * @brief Implementation of LLEditingMotion class.
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -41,7 +41,7 @@
 // Constants
 //-----------------------------------------------------------------------------
 const LLQuaternion EDIT_MOTION_WRIST_ROTATION(F_PI_BY_TWO * 0.7f, LLVector3(1.0f, 0.0f, 0.0f));
-const F32 TARGET_LAG_HALF_LIFE	= 0.1f;		// half-life of IK targeting
+const F32 TARGET_LAG_HALF_LIFE  = 0.1f;     // half-life of IK targeting
 
 S32 LLEditingMotion::sHandPose = LLHandMotion::HAND_POSE_RELAXED_R;
 S32 LLEditingMotion::sHandPosePriority = 3;
@@ -52,20 +52,20 @@ S32 LLEditingMotion::sHandPosePriority = 3;
 //-----------------------------------------------------------------------------
 LLEditingMotion::LLEditingMotion( const LLUUID &id) : LLMotion(id)
 {
-	mCharacter = NULL;
+    mCharacter = NULL;
 
-	// create kinematic chain
-	mParentJoint.addChild( &mShoulderJoint );
-	mShoulderJoint.addChild( &mElbowJoint );
-	mElbowJoint.addChild( &mWristJoint );
+    // create kinematic chain
+    mParentJoint.addChild( &mShoulderJoint );
+    mShoulderJoint.addChild( &mElbowJoint );
+    mElbowJoint.addChild( &mWristJoint );
 
-	mName = "editing";
+    mName = "editing";
 
-	mParentState = new LLJointState;
-	mShoulderState = new LLJointState;
-	mElbowState = new LLJointState;
-	mWristState = new LLJointState;
-	mTorsoState = new LLJointState;
+    mParentState = new LLJointState;
+    mShoulderState = new LLJointState;
+    mElbowState = new LLJointState;
+    mWristState = new LLJointState;
+    mTorsoState = new LLJointState;
 }
 
 
@@ -171,49 +171,49 @@ LLMotion::LLMotionInitStatus LLEditingMotion::onInitialize(LLCharacter *characte
 //-----------------------------------------------------------------------------
 // LLEditingMotion::onActivate()
 //-----------------------------------------------------------------------------
-BOOL LLEditingMotion::onActivate()
+bool LLEditingMotion::onActivate()
 {
-	// propagate joint positions to kinematic chain
+    // propagate joint positions to kinematic chain
     // SL-315
-	mParentJoint.setPosition(	mParentState->getJoint()->getWorldPosition() );
-	mShoulderJoint.setPosition(	mShoulderState->getJoint()->getPosition() );
-	mElbowJoint.setPosition(	mElbowState->getJoint()->getPosition() );
-	mWristJoint.setPosition(	mWristState->getJoint()->getPosition() + mWristOffset );
+    mParentJoint.setPosition(   mParentState->getJoint()->getWorldPosition() );
+    mShoulderJoint.setPosition( mShoulderState->getJoint()->getPosition() );
+    mElbowJoint.setPosition(    mElbowState->getJoint()->getPosition() );
+    mWristJoint.setPosition(    mWristState->getJoint()->getPosition() + mWristOffset );
 
-	// propagate current joint rotations to kinematic chain
-	mParentJoint.setRotation(	mParentState->getJoint()->getWorldRotation() );
-	mShoulderJoint.setRotation(	mShoulderState->getJoint()->getRotation() );
-	mElbowJoint.setRotation(	mElbowState->getJoint()->getRotation() );
+    // propagate current joint rotations to kinematic chain
+    mParentJoint.setRotation(   mParentState->getJoint()->getWorldRotation() );
+    mShoulderJoint.setRotation( mShoulderState->getJoint()->getRotation() );
+    mElbowJoint.setRotation(    mElbowState->getJoint()->getRotation() );
 
-	return TRUE;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 // LLEditingMotion::onUpdate()
 //-----------------------------------------------------------------------------
-BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
+bool LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 {
     LL_PROFILE_ZONE_SCOPED;
-	LLVector3 focus_pt;
-	LLVector3* pointAtPt = (LLVector3*)mCharacter->getAnimationData("PointAtPoint");
+    LLVector3 focus_pt;
+    LLVector3* pointAtPt = (LLVector3*)mCharacter->getAnimationData("PointAtPoint");
 
 
-	BOOL result = TRUE;
+    bool result = true;
 
-	if (!pointAtPt)
-	{
-		focus_pt = mLastSelectPt;
-		result = FALSE;
-	}
-	else
-	{
-		focus_pt = *pointAtPt;
-		mLastSelectPt = focus_pt;
-	}
+    if (!pointAtPt)
+    {
+        focus_pt = mLastSelectPt;
+        result = false;
+    }
+    else
+    {
+        focus_pt = *pointAtPt;
+        mLastSelectPt = focus_pt;
+    }
 
-	focus_pt += mCharacter->getCharacterPosition();
+    focus_pt += mCharacter->getCharacterPosition();
 
-	// propagate joint positions to kinematic chain
+    // propagate joint positions to kinematic chain
     // SL-315
 	mParentJoint.setPosition(	mParentState->getJoint()->getWorldPosition() );
 	mShoulderJoint.setPosition(	mShoulderState->getJoint()->getPosition() );
@@ -254,33 +254,33 @@ BOOL LLEditingMotion::onUpdate(F32 time, U8* joint_mask)
 	}
 
     // SL-315
-	mTarget.setPosition( target + mParentJoint.getPosition());
+    mTarget.setPosition( target + mParentJoint.getPosition());
 
-//	LL_INFOS() << "Point At: " << mTarget.getPosition() << LL_ENDL;
+//  LL_INFOS() << "Point At: " << mTarget.getPosition() << LL_ENDL;
 
-	// update the ikSolver
-	if (!mTarget.getPosition().isExactlyZero())
-	{
-		LLQuaternion shoulderRot = mShoulderJoint.getRotation();
-		LLQuaternion elbowRot = mElbowJoint.getRotation();
-		mIKSolver.solve();
+    // update the ikSolver
+    if (!mTarget.getPosition().isExactlyZero())
+    {
+        LLQuaternion shoulderRot = mShoulderJoint.getRotation();
+        LLQuaternion elbowRot = mElbowJoint.getRotation();
+        mIKSolver.solve();
 
-		// use blending...
-		F32 slerp_amt = LLSmoothInterpolation::getInterpolant(TARGET_LAG_HALF_LIFE);
-		shoulderRot = slerp(slerp_amt, mShoulderJoint.getRotation(), shoulderRot);
-		elbowRot = slerp(slerp_amt, mElbowJoint.getRotation(), elbowRot);
+        // use blending...
+        F32 slerp_amt = LLSmoothInterpolation::getInterpolant(TARGET_LAG_HALF_LIFE);
+        shoulderRot = slerp(slerp_amt, mShoulderJoint.getRotation(), shoulderRot);
+        elbowRot = slerp(slerp_amt, mElbowJoint.getRotation(), elbowRot);
 
-		// now put blended values back into joints
-		llassert(shoulderRot.isFinite());
-		llassert(elbowRot.isFinite());
-		mShoulderState->setRotation(shoulderRot);
-		mElbowState->setRotation(elbowRot);
-		mWristState->setRotation(LLQuaternion::DEFAULT);
-	}
+        // now put blended values back into joints
+        llassert(shoulderRot.isFinite());
+        llassert(elbowRot.isFinite());
+        mShoulderState->setRotation(shoulderRot);
+        mElbowState->setRotation(elbowRot);
+        mWristState->setRotation(LLQuaternion::DEFAULT);
+    }
 
-	mCharacter->setAnimationData("Hand Pose", &sHandPose);
-	mCharacter->setAnimationData("Hand Pose Priority", &sHandPosePriority);
-	return result;
+    mCharacter->setAnimationData("Hand Pose", &sHandPose);
+    mCharacter->setAnimationData("Hand Pose Priority", &sHandPosePriority);
+    return result;
 }
 
 //-----------------------------------------------------------------------------

@@ -1,25 +1,25 @@
-/** 
+/**
  * @file lliconctrl.h
  * @brief LLIconCtrl base class
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -66,28 +66,32 @@ public:
 								default_index;
 		Ignored					scale_image;
 
-		Params();
-	};
+        Params();
+    };
 protected:
-	LLIconCtrl(const Params&);
-	friend class LLUICtrlFactory;
+    LLIconCtrl(const Params&);
+    friend class LLUICtrlFactory;
 
-	void setValue(const LLSD& value, S32 priority);
+    void setValue(const LLSD& value, S32 priority);
 
 public:
-	virtual ~LLIconCtrl();
-
-	// llview overrides
-	virtual void	draw();
+    virtual ~LLIconCtrl();
 
     // llview overrides
-    virtual BOOL handleHover(S32 x, S32 y, MASK mask);
+    virtual void    draw();
 
-	// lluictrl overrides
-	void onVisibilityChange(BOOL new_visibility);
-	virtual void	setValue(const LLSD& value );
+    // llview overrides
+    virtual bool handleHover(S32 x, S32 y, MASK mask);
 
-	std::string	getImageName() const;
+    // lluictrl overrides
+    void onVisibilityChange(bool new_visibility);
+    virtual void    setValue(const LLSD& value );
+
+    std::string getImageName() const;
+
+    void            setColor(const LLColor4& color) { mColor = color; }
+    void            setImage(LLPointer<LLUIImage> image) { mImagep = image; }
+    const LLPointer<LLUIImage> getImage() { return mImagep; }
 
 	void			setColor(const LLColor4& color) { mColor = color; }
 	void			setImage(LLPointer<LLUIImage> image) { mImagep = image; }
@@ -96,13 +100,13 @@ public:
 	void			setSelected(S32 selected) { mSelected = selected; }
 	
 protected:
-	S32 mPriority;
+    S32 mPriority;
 
-	//the output size of the icon image if set.
-	S32 mMinWidth,
-		mMinHeight,
-		mMaxWidth,
-		mMaxHeight;
+    //the output size of the icon image if set.
+    S32 mMinWidth,
+        mMinHeight,
+        mMaxWidth,
+        mMaxHeight;
 
 	//BD
 	S32 mRepeats;
@@ -119,10 +123,10 @@ protected:
     bool mInteractable;
 
 private:
-	void loadImage(const LLSD& value, S32 priority);
+    void loadImage(const LLSD& value, S32 priority);
 
-	LLUIColor mColor;
-	LLPointer<LLUIImage> mImagep;
+    LLUIColor mColor;
+    LLPointer<LLUIImage> mImagep;
 };
 
 #endif

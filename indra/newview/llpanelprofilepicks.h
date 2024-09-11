@@ -50,15 +50,15 @@ public:
 	LLPanelProfilePicks();
 	/*virtual*/ ~LLPanelProfilePicks();
 
-	BOOL postBuild() override;
+    bool postBuild() override;
 
 	void onOpen(const LLSD& key) override;
 
 	void createPick(const LLPickData &data);
 	void selectPick(const LLUUID& pick_id);
 
-	void processProperties(void* data, EAvatarProcessorType type) override;
-	void processProperties(const LLAvatarPicks* avatar_picks);
+    void processProperties(void* data, EAvatarProcessorType type) override;
+    void processProperties(const LLAvatarData* avatar_picks);
 
 	void resetData() override;
 
@@ -76,8 +76,6 @@ public:
 
 	bool hasUnsavedChanges() override;
 	void commitUnsavedChanges() override;
-
-	friend void request_avatar_properties_coro(std::string cap_url, LLUUID agent_id);
 
 private:
 	void onClickNewBtn();
@@ -110,7 +108,7 @@ public:
 
 	/*virtual*/ ~LLPanelProfilePick();
 
-	BOOL postBuild() override;
+    bool postBuild() override;
 
 	void setAvatarId(const LLUUID& avatar_id) override;
 
@@ -123,10 +121,10 @@ public:
 	void processProperties(void* data, EAvatarProcessorType type) override;
 	void processProperties(const LLPickData* pick_data);
 
-	/**
-	 * Returns true if any of Pick properties was changed by user.
-	 */
-	BOOL isDirty() const override;
+    /**
+     * Returns true if any of Pick properties was changed by user.
+     */
+    bool isDirty() const override;
 
 	/**
 	 * Saves changes.
@@ -140,103 +138,101 @@ public:
 	void setParcelID(const LLUUID& parcel_id) override { mParcelId = parcel_id; }
 	void setErrorStatus(S32 status, const std::string& reason) override {};
 
-protected:
+  protected:
 
-	/**
-	 * Sends remote parcel info request to resolve parcel name from its ID.
-	 */
-	void sendParcelInfoRequest();
+    /**
+     * Sends remote parcel info request to resolve parcel name from its ID.
+     */
+    void sendParcelInfoRequest();
 
-	/**
-	* "Location text" is actually the owner name, the original
-	* name that owner gave the parcel, and the location.
-	*/
-	static std::string createLocationText(
-		const std::string& owner_name,
-		const std::string& original_name,
-		const std::string& sim_name,
-		const LLVector3d& pos_global);
+    /**
+    * "Location text" is actually the owner name, the original
+    * name that owner gave the parcel, and the location.
+    */
+    static std::string createLocationText(
+        const std::string& owner_name,
+        const std::string& original_name,
+        const std::string& sim_name,
+        const LLVector3d& pos_global);
 
-	/**
-	 * Sets snapshot id.
-	 *
-	 * Will mark snapshot control as valid if id is not null.
-	 * Will mark snapshot control as invalid if id is null. If null id is a valid value,
-	 * you have to manually mark snapshot is valid.
-	 */
-	virtual void setSnapshotId(const LLUUID& id);
-	virtual void setPickDesc(const std::string& desc);
-	virtual void setPickLocation(const std::string& location);
+    /**
+     * Sets snapshot id.
+     *
+     * Will mark snapshot control as valid if id is not null.
+     * Will mark snapshot control as invalid if id is null. If null id is a valid value,
+     * you have to manually mark snapshot is valid.
+     */
+    virtual void setSnapshotId(const LLUUID& id);
+    virtual void setPickDesc(const std::string& desc);
+    virtual void setPickLocation(const std::string& location);
 
-	virtual void setPosGlobal(const LLVector3d& pos) { mPosGlobal = pos; }
-	virtual LLVector3d& getPosGlobal() { return mPosGlobal; }
+    virtual void setPosGlobal(const LLVector3d& pos) { mPosGlobal = pos; }
+    virtual LLVector3d& getPosGlobal() { return mPosGlobal; }
 
-	/**
-	 * Callback for "Map" button, opens Map
-	 */
-	void onClickMap();
+    /**
+     * Callback for "Map" button, opens Map
+     */
+    void onClickMap();
 
-	/**
-	 * Callback for "Teleport" button, teleports user to Pick location.
-	 */
-	void onClickTeleport();
+    /**
+     * Callback for "Teleport" button, teleports user to Pick location.
+     */
+    void onClickTeleport();
 
-	/**
-	 * Enables/disables "Save" button
-	 */
-	void enableSaveButton(BOOL enable);
+    /**
+     * Enables/disables "Save" button
+     */
+    void enableSaveButton(bool enable);
 
-	/**
-	 * Called when snapshot image changes.
-	 */
-	void onSnapshotChanged();
+    /**
+     * Called when snapshot image changes.
+     */
+    void onSnapshotChanged();
 
-	/**
-	 * Callback for Pick snapshot, name and description changed event.
-	 */
-	void onPickChanged(LLUICtrl* ctrl);
+    /**
+     * Callback for Pick snapshot, name and description changed event.
+     */
+    void onPickChanged(LLUICtrl* ctrl);
 
-	/**
-	 * Resets panel and all cantrols to unedited state
-	 */
-	void resetDirty() override;
+    /**
+     * Resets panel and all cantrols to unedited state
+     */
+    void resetDirty() override;
 
-	/**
-	 * Callback for "Set Location" button click
-	 */
-	void onClickSetLocation();
+    /**
+     * Callback for "Save" and "Create" button click
+     */
+    void onClickSave();
 
-	/**
-	 * Callback for "Save" and "Create" button click
-	 */
-	void onClickSave();
+    /**
+     * Callback for "Save" button click
+     */
+    void onClickCancel();
 
-	/**
-	 * Callback for "Save" button click
-	 */
-	void onClickCancel();
+    std::string getLocationNotice();
 
-	std::string getLocationNotice();
-
-	/**
-	 * Sends Pick properties to server.
-	 */
-	void sendUpdate();
+    /**
+     * Sends Pick properties to server.
+     */
+    void sendUpdate();
 
 protected:
 
-	LLTextureCtrl*      mSnapshotCtrl;
-	LLLineEditor*       mPickName;
-	LLTextEditor*       mPickDescription;
-	LLButton*           mSetCurrentLocationButton;
-	LLButton*           mSaveButton;
-	LLButton*           mCreateButton;
-	LLButton*           mCancelButton;
+    LLTextureCtrl*      mSnapshotCtrl;
+    LLLineEditor*       mPickName;
+    LLTextEditor*       mPickDescription;
+    LLButton*           mSaveButton;
+    LLButton*           mCreateButton;
+    LLButton*           mCancelButton;
 
-	LLVector3d mPosGlobal;
-	LLUUID mParcelId;
-	LLUUID mPickId;
-	LLUUID mRequestedId;
+    LLVector3d mPosGlobal;
+    LLUUID mParcelId;
+    LLUUID mPickId;
+    LLUUID mRequestedId;
+    std::string mPickNameStr;
+
+    boost::signals2::connection mRegionCallbackConnection;
+    boost::signals2::connection mParcelCallbackConnection;
 
 	bool mLocationChanged;
 	bool mNewPick;

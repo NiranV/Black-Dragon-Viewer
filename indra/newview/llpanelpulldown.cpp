@@ -51,35 +51,36 @@ void LLPanelPulldown::onMouseEnter(S32 x, S32 y, MASK mask)
 /*virtual*/
 void LLPanelPulldown::onTopLost()
 {
-    setFocus(FALSE); // drop focus to prevent transfer to parent
-    setVisible(FALSE);
+    setFocus(false); // drop focus to prevent transfer to parent
+    setVisible(false);
 }
 
 /*virtual*/
-BOOL LLPanelPulldown::handleMouseDown(S32 x, S32 y, MASK mask)
+bool LLPanelPulldown::handleMouseDown(S32 x, S32 y, MASK mask)
 {
     LLPanel::handleMouseDown(x, y, mask);
-    return TRUE;
+    return true;
 }
 
 /*virtual*/
-BOOL LLPanelPulldown::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLPanelPulldown::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
     LLPanel::handleRightMouseDown(x, y, mask);
-    return TRUE;
+    return true;
 }
 
 /*virtual*/
-BOOL LLPanelPulldown::handleDoubleClick(S32 x, S32 y, MASK mask)
+bool LLPanelPulldown::handleDoubleClick(S32 x, S32 y, MASK mask)
 {
     LLPanel::handleDoubleClick(x, y, mask);
-    return TRUE;
+    return true;
 }
 
-BOOL LLPanelPulldown::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
+//BD - UI Improvements
+bool LLPanelPulldown::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    LLPanel::handleScrollWheel(x, y, clicks, mask);
-    return TRUE; //If we got here, then we are in Pulldown's rect, consume the event.
+    LLPanel::handleScrollWheel(x, y, clicks);
+    return true; //If we got here, then we are in Pulldown's rect, consume the event.
 }
 
 /*virtual*/
@@ -90,7 +91,7 @@ void LLPanelPulldown::onMouseLeave(S32 x, S32 y, MASK mask)
 }
 
 /*virtual*/
-void LLPanelPulldown::onVisibilityChange(BOOL new_visibility)
+void LLPanelPulldown::onVisibilityChange(bool new_visibility)
 {
     if (new_visibility)
     {
@@ -114,7 +115,7 @@ void LLPanelPulldown::draw()
 
     if (alpha == 0.f)
     {
-        setFocus(FALSE); // drop focus to prevent transfer to parent
-        setVisible(FALSE);
+        setFocus(false); // drop focus to prevent transfer to parent
+        setVisible(false);
     }
 }

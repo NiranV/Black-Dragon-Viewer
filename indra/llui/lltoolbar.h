@@ -1,4 +1,4 @@
-/** 
+/**
  * @file lltoolbar.h
  * @author Richard Nelson
  * @brief User customizable toolbar class
@@ -6,21 +6,21 @@
  * $LicenseInfo:firstyear=2011&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2011, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -40,70 +40,70 @@ class LLToolBarButton;
 class LLIconCtrl;
 
 typedef boost::function<void (S32 x, S32 y, LLToolBarButton* button)> tool_startdrag_callback_t;
-typedef boost::function<BOOL (S32 x, S32 y, const LLUUID& uuid, LLAssetType::EType type)> tool_handledrag_callback_t;
-typedef boost::function<BOOL (void* data, S32 x, S32 y, LLToolBar* toolbar)> tool_handledrop_callback_t;
+typedef boost::function<bool (S32 x, S32 y, const LLUUID& uuid, LLAssetType::EType type)> tool_handledrag_callback_t;
+typedef boost::function<bool (void* data, S32 x, S32 y, LLToolBar* toolbar)> tool_handledrop_callback_t;
 
 class LLToolBarButton : public LLButton
 {
-	friend class LLToolBar;
+    friend class LLToolBar;
 public:
-	struct Params : public LLInitParam::Block<Params, LLButton::Params>
-	{
-		Optional<LLUI::RangeS32::Params>	button_width;
-		Optional<S32>						desired_height;
+    struct Params : public LLInitParam::Block<Params, LLButton::Params>
+    {
+        Optional<LLUI::RangeS32::Params>    button_width;
+        Optional<S32>                       desired_height;
 
-		Params()
-		:	button_width("button_width"),
-			desired_height("desired_height", 20)
-		{}
+        Params()
+        :   button_width("button_width"),
+            desired_height("desired_height", 20)
+        {}
 
-	};
+    };
 
-	LLToolBarButton(const Params& p);
-	~LLToolBarButton();
+    LLToolBarButton(const Params& p);
+    ~LLToolBarButton();
 
-	BOOL handleMouseDown(S32 x, S32 y, MASK mask);
-	BOOL handleHover(S32 x, S32 y, MASK mask);
+    bool handleMouseDown(S32 x, S32 y, MASK mask);
+    bool handleHover(S32 x, S32 y, MASK mask);
 
-	void reshape(S32 width, S32 height, BOOL called_from_parent = true);
-	void setEnabled(BOOL enabled);
-	void setCommandId(const LLCommandId& id) { mId = id; }
-	LLCommandId getCommandId() { return mId; }
+    void reshape(S32 width, S32 height, bool called_from_parent = true);
+    void setEnabled(bool enabled);
+    void setCommandId(const LLCommandId& id) { mId = id; }
+    LLCommandId getCommandId() { return mId; }
 
-	void setStartDragCallback(tool_startdrag_callback_t cb)   { mStartDragItemCallback  = cb; }
-	void setHandleDragCallback(tool_handledrag_callback_t cb) { mHandleDragItemCallback = cb; }
+    void setStartDragCallback(tool_startdrag_callback_t cb)   { mStartDragItemCallback  = cb; }
+    void setHandleDragCallback(tool_handledrag_callback_t cb) { mHandleDragItemCallback = cb; }
 
-	void onMouseEnter(S32 x, S32 y, MASK mask);
-	void onMouseLeave(S32 x, S32 y, MASK mask);
-	void onMouseCaptureLost();
+    void onMouseEnter(S32 x, S32 y, MASK mask);
+    void onMouseLeave(S32 x, S32 y, MASK mask);
+    void onMouseCaptureLost();
 
-	void onCommit();
+    void onCommit();
 
-	virtual const std::string getToolTip() const;		
+    virtual const std::string getToolTip() const;
 
 private:
-	void callIfEnabled(LLUICtrl::commit_callback_t commit, LLUICtrl* ctrl, const LLSD& param );
+    void callIfEnabled(LLUICtrl::commit_callback_t commit, LLUICtrl* ctrl, const LLSD& param );
 
-	LLCommandId		mId;
-	S32				mMouseDownX;
-	S32				mMouseDownY;
-	LLUI::RangeS32	mWidthRange;
-	S32				mDesiredHeight;
-	bool							mIsDragged;
-	tool_startdrag_callback_t		mStartDragItemCallback;
-	tool_handledrag_callback_t		mHandleDragItemCallback;
+    LLCommandId     mId;
+    S32             mMouseDownX;
+    S32             mMouseDownY;
+    LLUI::RangeS32  mWidthRange;
+    S32             mDesiredHeight;
+    bool                            mIsDragged;
+    tool_startdrag_callback_t       mStartDragItemCallback;
+    tool_handledrag_callback_t      mHandleDragItemCallback;
 
-	enable_signal_t*	mIsEnabledSignal;
-	enable_signal_t*	mIsRunningSignal;
-	enable_signal_t*	mIsStartingSignal;
-	LLPointer<LLUIImage>	mOriginalImageSelected,
-							mOriginalImageUnselected,
-							mOriginalImagePressed,
-							mOriginalImagePressedSelected;
-	LLUIColor				mOriginalLabelColor,
-							mOriginalLabelColorSelected,
-							mOriginalImageOverlayColor,
-							mOriginalImageOverlaySelectedColor;
+    enable_signal_t*    mIsEnabledSignal;
+    enable_signal_t*    mIsRunningSignal;
+    enable_signal_t*    mIsStartingSignal;
+    LLPointer<LLUIImage>    mOriginalImageSelected,
+                            mOriginalImageUnselected,
+                            mOriginalImagePressed,
+                            mOriginalImagePressedSelected;
+    LLUIColor               mOriginalLabelColor,
+                            mOriginalLabelColorSelected,
+                            mOriginalImageOverlayColor,
+                            mOriginalImageOverlaySelectedColor;
 };
 
 
@@ -181,9 +181,9 @@ namespace LLInitParam
 
 
 class LLToolBar
-:	public LLUICtrl
+:   public LLUICtrl
 {
-	friend class LLToolBarButton;
+    friend class LLToolBarButton;
 public:
 
 	class LLCenterLayoutPanel : public LLLayoutPanel
@@ -204,8 +204,8 @@ public:
 
 	private:
 		reshape_callback_t					mReshapeCallback;
-		LLToolBarEnums::EToolBarLocation	mLocationId;
-		LLPanel *							mButtonPanel;
+		LLToolBarEnums::EToolBarLocation    mLocationId{ LLToolBarEnums::EToolBarLocation::TOOLBAR_NONE };
+        LLPanel *                           mButtonPanel{ nullptr };
 	};
 
 	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
@@ -242,9 +242,9 @@ public:
 
 	// virtuals
 	void draw();
-	void reshape(S32 width, S32 height, BOOL called_from_parent = TRUE);
-	BOOL handleRightMouseDown(S32 x, S32 y, MASK mask);
-	virtual BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
+	void reshape(S32 width, S32 height, bool called_from_parent = true);
+	bool handleRightMouseDown(S32 x, S32 y, MASK mask);
+	virtual bool handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
 								   EDragAndDropType cargo_type,
 								   void* cargo_data,
 								   EAcceptance* accept,
@@ -293,18 +293,18 @@ public:
 	LLToolBarEnums::LayoutType getLayoutType() { return mLayoutType; }
 
 private:
-	friend class LLUICtrlFactory;
-	LLToolBar(const Params&);
-	~LLToolBar();
+    friend class LLUICtrlFactory;
+    LLToolBar(const Params&);
+    ~LLToolBar();
 
-	void initFromParams(const Params&);
-	void createContextMenu();
-	void updateLayoutAsNeeded();
-	void createButtons();
-	void resizeButtonsInRow(std::vector<LLToolBarButton*>& buttons_in_row, S32 max_row_girth);
-	BOOL isSettingChecked(const LLSD& userdata);
-	void onSettingEnable(const LLSD& userdata);
-	void onRemoveSelectedCommand();
+    void initFromParams(const Params&);
+    void createContextMenu();
+    void updateLayoutAsNeeded();
+    void createButtons();
+    void resizeButtonsInRow(std::vector<LLToolBarButton*>& buttons_in_row, S32 max_row_girth);
+    bool isSettingChecked(const LLSD& userdata);
+    void onSettingEnable(const LLSD& userdata);
+    void onRemoveSelectedCommand();
 
 private:
 	// static layout state

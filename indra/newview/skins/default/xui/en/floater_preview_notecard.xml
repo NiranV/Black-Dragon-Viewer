@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
  legacy_header_height="18"
  can_resize="true"
@@ -77,6 +77,8 @@
      spellcheck="true"
      tab_group="1"
      top="46"
+     use_color="true"
+     show_emoji_helper="true"
      width="390"
      word_wrap="true">
     </text_editor>

@@ -59,10 +59,10 @@ public:
     static const Seconds DEFAULT_DAYOFFSET;
     static const Seconds MAXIMUM_DAYOFFSET;
 
-    static const S32     TRACK_WATER;
-    static const S32     TRACK_GROUND_LEVEL;
-    static const S32     TRACK_MAX;
-    static const S32     FRAME_MAX;
+    static const U32     TRACK_WATER;
+    static const U32     TRACK_GROUND_LEVEL;
+    static const U32     TRACK_MAX;
+    static const U32     FRAME_MAX;
 
     static const F32     DEFAULT_FRAME_SLOP_FACTOR;
 
@@ -90,7 +90,7 @@ public:
     //---------------------------------------------------------------------
     virtual std::string         getSettingsType() const SETTINGS_OVERRIDE { return std::string("daycycle"); }
 
-    // Settings status 
+    // Settings status
     virtual void                blend(const LLSettingsBase::ptr_t &other, F64 mix) SETTINGS_OVERRIDE;
 
     static LLSD                 defaults();
@@ -128,7 +128,7 @@ public:
     static validation_list_t    validationList();
 
     virtual LLSettingsBase::ptr_t buildDerivedClone() const SETTINGS_OVERRIDE { return buildClone(); }
-	
+
     LLSettingsBase::TrackPosition getUpperBoundFrame(S32 track, const LLSettingsBase::TrackPosition& keyframe);
     LLSettingsBase::TrackPosition getLowerBoundFrame(S32 track, const LLSettingsBase::TrackPosition& keyframe);
 

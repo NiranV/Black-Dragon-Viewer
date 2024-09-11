@@ -77,11 +77,11 @@ static LLPanelInjector<LLPanelProfileClassified> t_panel_profile_classified("pan
 class LLClassifiedHandler : public LLCommandHandler, public LLAvatarPropertiesObserver
 {
 public:
-	// throttle calls from untrusted browsers
-	LLClassifiedHandler() : LLCommandHandler("classified", UNTRUSTED_THROTTLE) {}
+    // throttle calls from untrusted browsers
+    LLClassifiedHandler() : LLCommandHandler("classified", UNTRUSTED_THROTTLE) {}
 
-	std::set<LLUUID> mClassifiedIds;
-	std::string mRequestVerb;
+    std::set<LLUUID> mClassifiedIds;
+    std::string mRequestVerb;
 
     virtual bool canHandleUntrusted(
         const LLSD& params,
@@ -107,8 +107,8 @@ public:
         }
         return true;
     }
-    
-	bool handle(const LLSD& params, const LLSD& query_map, const std::string& grid, LLMediaCtrl* web)
+
+    bool handle(const LLSD& params, const LLSD& query_map, const std::string& grid, LLMediaCtrl* web)
     {
         if (LLStartUp::getStartupState() < STATE_STARTED)
         {
@@ -136,7 +136,7 @@ public:
 
         // get the ID for the classified
         LLUUID classified_id;
-        if (!classified_id.set(params[0], FALSE))
+        if (!classified_id.set(params[0], false))
         {
             return false;
         }
@@ -239,15 +239,15 @@ void LLPanelProfileClassifieds::onOpen(const LLSD& key)
 
 	resetData();
 
-	bool own_profile = getSelfProfile();
-	if (own_profile)
-	{
-		mNewButton->setVisible(TRUE);
-		mNewButton->setEnabled(FALSE);
+    bool own_profile = getSelfProfile();
+    if (own_profile)
+    {
+        mNewButton->setVisible(true);
+        mNewButton->setEnabled(false);
 
-		mDeleteButton->setVisible(TRUE);
-		mDeleteButton->setEnabled(FALSE);
-	}
+        mDeleteButton->setVisible(true);
+        mDeleteButton->setEnabled(false);
+    }
 
 	childSetVisible("buttons_header", own_profile);
 
@@ -255,53 +255,53 @@ void LLPanelProfileClassifieds::onOpen(const LLSD& key)
 
 void LLPanelProfileClassifieds::selectClassified(const LLUUID& classified_id, bool edit)
 {
-	if (getIsLoaded())
-	{
-		for (S32 tab_idx = 0; tab_idx < mTabContainer->getTabCount(); ++tab_idx)
-		{
-			LLPanelProfileClassified* classified_panel = dynamic_cast<LLPanelProfileClassified*>(mTabContainer->getPanelByIndex(tab_idx));
-			if (classified_panel)
-			{
-				if (classified_panel->getClassifiedId() == classified_id)
-				{
-					mTabContainer->selectTabPanel(classified_panel);
-					if (edit)
-					{
-						classified_panel->setEditMode(TRUE);
-					}
-					break;
-				}
-			}
-		}
-	}
-	else
-	{
-		mClassifiedToSelectOnLoad = classified_id;
-		mClassifiedEditOnLoad = edit;
-	}
+    if (getIsLoaded())
+    {
+        for (S32 tab_idx = 0; tab_idx < mTabContainer->getTabCount(); ++tab_idx)
+        {
+            LLPanelProfileClassified* classified_panel = dynamic_cast<LLPanelProfileClassified*>(mTabContainer->getPanelByIndex(tab_idx));
+            if (classified_panel)
+            {
+                if (classified_panel->getClassifiedId() == classified_id)
+                {
+                    mTabContainer->selectTabPanel(classified_panel);
+                    if (edit)
+                    {
+                        classified_panel->setEditMode(true);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        mClassifiedToSelectOnLoad = classified_id;
+        mClassifiedEditOnLoad = edit;
+    }
 }
 
 void LLPanelProfileClassifieds::createClassified()
 {
-	if (getIsLoaded())
-	{
-		mNoItemsLabel->setVisible(FALSE);
-		LLPanelProfileClassified* classified_panel = LLPanelProfileClassified::create();
-		classified_panel->onOpen(LLSD());
-		mTabContainer->addTabPanel(
-			LLTabContainer::TabPanelParams().
-			panel(classified_panel).
-			select_tab(true).
-			label(classified_panel->getClassifiedName()));
-		updateButtons();
-	}
-	else
-	{
-		mSheduledClassifiedCreation = true;
-	}
+    if (getIsLoaded())
+    {
+        mNoItemsLabel->setVisible(false);
+        LLPanelProfileClassified* classified_panel = LLPanelProfileClassified::create();
+        classified_panel->onOpen(LLSD());
+        mTabContainer->addTabPanel(
+            LLTabContainer::TabPanelParams().
+            panel(classified_panel).
+            select_tab(true).
+            label(classified_panel->getClassifiedName()));
+        updateButtons();
+    }
+    else
+    {
+        mSheduledClassifiedCreation = true;
+    }
 }
 
-BOOL LLPanelProfileClassifieds::postBuild()
+bool LLPanelProfileClassifieds::postBuild()
 {
 	mTabContainer = getChild<LLTabContainer>("tab_classifieds");
 	mNoItemsLabel = getChild<LLUICtrl>("classifieds_panel_text");
@@ -311,20 +311,20 @@ BOOL LLPanelProfileClassifieds::postBuild()
 	mNewButton->setCommitCallback(boost::bind(&LLPanelProfileClassifieds::onClickNewBtn, this));
 	mDeleteButton->setCommitCallback(boost::bind(&LLPanelProfileClassifieds::onClickDelete, this));
 
-	return TRUE;
+    return true;
 }
 
 void LLPanelProfileClassifieds::onClickNewBtn()
 {
-	mNoItemsLabel->setVisible(FALSE);
-	LLPanelProfileClassified* classified_panel = LLPanelProfileClassified::create();
-	classified_panel->onOpen(LLSD());
-	mTabContainer->addTabPanel(
-		LLTabContainer::TabPanelParams().
-		panel(classified_panel).
-		select_tab(true).
-		label(classified_panel->getClassifiedName()));
-	updateButtons();
+    mNoItemsLabel->setVisible(false);
+    LLPanelProfileClassified* classified_panel = LLPanelProfileClassified::create();
+    classified_panel->onOpen(LLSD());
+    mTabContainer->addTabPanel(
+        LLTabContainer::TabPanelParams().
+        panel(classified_panel).
+        select_tab(true).
+        label(classified_panel->getClassifiedName()));
+    updateButtons();
 }
 
 void LLPanelProfileClassifieds::onClickDelete()
@@ -365,9 +365,9 @@ void LLPanelProfileClassifieds::callbackDeleteClassified(const LLSD& notificatio
 
 		updateButtons();
 
-		BOOL no_data = !mTabContainer->getTabCount();
-		mNoItemsLabel->setVisible(no_data);
-	}
+        bool no_data = !mTabContainer->getTabCount();
+        mNoItemsLabel->setVisible(no_data);
+    }
 }
 
 void LLPanelProfileClassifieds::processProperties(void* data, EAvatarProcessorType type)
@@ -469,13 +469,13 @@ void LLPanelProfileClassifieds::updateButtons()
 
 void LLPanelProfileClassifieds::updateData()
 {
-	// Send picks request only once
-	LLUUID avatar_id = getAvatarId();
-	if (!getStarted() && avatar_id.notNull())
-	{
-		setIsLoading();
-		mNoItemsLabel->setValue(LLTrans::getString("PicksClassifiedsLoadingText"));
-		mNoItemsLabel->setVisible(TRUE);
+    // Send picks request only once
+    LLUUID avatar_id = getAvatarId();
+    if (!getStarted() && avatar_id.notNull())
+    {
+        setIsLoading();
+        mNoItemsLabel->setValue(LLTrans::getString("PicksClassifiedsLoadingText"));
+        mNoItemsLabel->setVisible(true);
 
 		LLAvatarPropertiesProcessor::getInstance()->sendAvatarClassifiedsRequest(avatar_id);
 	}
@@ -606,176 +606,178 @@ LLPanelProfileClassified* LLPanelProfileClassified::create()
 	return panel;
 }
 
-BOOL LLPanelProfileClassified::postBuild()
+bool LLPanelProfileClassified::postBuild()
 {
-	mScrollContainer = getChild<LLScrollContainer>("profile_scroll");
-	mInfoPanel = getChild<LLView>("info_panel");
-	mInfoScroll = getChild<LLPanel>("info_scroll_content_panel");
-	mEditPanel = getChild<LLPanel>("edit_panel");
+    mScrollContainer    = getChild<LLScrollContainer>("profile_scroll");
+    mInfoPanel          = getChild<LLView>("info_panel");
+    mInfoScroll         = getChild<LLPanel>("info_scroll_content_panel");
+    mEditPanel          = getChild<LLPanel>("edit_panel");
 
-	mSnapshotCtrl = getChild<LLTextureCtrl>("classified_snapshot");
-	mEditIcon = getChild<LLUICtrl>("edit_icon");
+    mSnapshotCtrl       = getChild<LLTextureCtrl>("classified_snapshot");
+    mEditIcon           = getChild<LLUICtrl>("edit_icon");
 
-	//info
-	mClassifiedNameText = getChild<LLUICtrl>("classified_name");
-	mClassifiedDescText = getChild<LLTextEditor>("classified_desc");
-	mLocationText = getChild<LLUICtrl>("classified_location");
-	mCategoryText = getChild<LLUICtrl>("category");
-	mContentTypeText = getChild<LLUICtrl>("content_type");
-	mContentTypeM = getChild<LLIconCtrl>("content_type_moderate");
-	mContentTypeG = getChild<LLIconCtrl>("content_type_general");
-	mPriceText = getChild<LLUICtrl>("price_for_listing");
-	mAutoRenewText = getChild<LLUICtrl>("auto_renew");
+    //info
+    mClassifiedNameText = getChild<LLUICtrl>("classified_name");
+    mClassifiedDescText = getChild<LLTextEditor>("classified_desc");
+    mLocationText       = getChild<LLUICtrl>("classified_location");
+    mCategoryText       = getChild<LLUICtrl>("category");
+    mContentTypeText    = getChild<LLUICtrl>("content_type");
+    mContentTypeM       = getChild<LLIconCtrl>("content_type_moderate");
+    mContentTypeG       = getChild<LLIconCtrl>("content_type_general");
+    mPriceText          = getChild<LLUICtrl>("price_for_listing");
+    mAutoRenewText      = getChild<LLUICtrl>("auto_renew");
 
-	mMapButton = getChild<LLButton>("show_on_map_btn");
-	mTeleportButton = getChild<LLButton>("teleport_btn");
-	mEditButton = getChild<LLButton>("edit_btn");
+    mMapButton          = getChild<LLButton>("show_on_map_btn");
+    mTeleportButton     = getChild<LLButton>("teleport_btn");
+    mEditButton         = getChild<LLButton>("edit_btn");
 
-	//edit
-	mClassifiedNameEdit = getChild<LLLineEditor>("classified_name_edit");
-	mClassifiedDescEdit = getChild<LLTextEditor>("classified_desc_edit");
-	mLocationEdit = getChild<LLUICtrl>("classified_location_edit");
-	mCategoryCombo = getChild<LLComboBox>("category_edit");
-	mContentTypeCombo = getChild<LLComboBox>("content_type_edit");
-	mAutoRenewEdit = getChild<LLUICtrl>("auto_renew_edit");
+    //edit
+    mClassifiedNameEdit = getChild<LLLineEditor>("classified_name_edit");
+    mClassifiedDescEdit = getChild<LLTextEditor>("classified_desc_edit");
+    mLocationEdit       = getChild<LLUICtrl>("classified_location_edit");
+    mCategoryCombo      = getChild<LLComboBox>("category_edit");
+    mContentTypeCombo   = getChild<LLComboBox>("content_type_edit");
+    mAutoRenewEdit      = getChild<LLUICtrl>("auto_renew_edit");
 
-	mSaveButton = getChild<LLButton>("save_changes_btn");
-	mSetLocationButton = getChild<LLButton>("set_to_curr_location_btn");
-	mCancelButton = getChild<LLButton>("cancel_btn");
+    mSaveButton         = getChild<LLButton>("save_changes_btn");
+    mSetLocationButton  = getChild<LLButton>("set_to_curr_location_btn");
+    mCancelButton       = getChild<LLButton>("cancel_btn");
 
-	mUtilityBtnCnt = getChild<LLPanel>("util_buttons_lp");
-	mPublishBtnsCnt = getChild<LLPanel>("publish_layout_panel");
-	mCancelBtnCnt = getChild<LLPanel>("cancel_btn_lp");
-	mSaveBtnCnt = getChild<LLPanel>("save_btn_lp");
+    mUtilityBtnCnt = getChild<LLPanel>("util_buttons_lp");
+    mPublishBtnsCnt = getChild<LLPanel>("publish_layout_panel");
+    mCancelBtnCnt = getChild<LLPanel>("cancel_btn_lp");
+    mSaveBtnCnt = getChild<LLPanel>("save_btn_lp");
 
-	mSnapshotCtrl->setOnSelectCallback(boost::bind(&LLPanelProfileClassified::onTextureSelected, this));
-	mSnapshotCtrl->setMouseEnterCallback(boost::bind(&LLPanelProfileClassified::onTexturePickerMouseEnter, this));
-	mSnapshotCtrl->setMouseLeaveCallback(boost::bind(&LLPanelProfileClassified::onTexturePickerMouseLeave, this));
-	mEditIcon->setVisible(false);
+    mSnapshotCtrl->setOnSelectCallback(boost::bind(&LLPanelProfileClassified::onTextureSelected, this));
+    mSnapshotCtrl->setMouseEnterCallback(boost::bind(&LLPanelProfileClassified::onTexturePickerMouseEnter, this));
+    mSnapshotCtrl->setMouseLeaveCallback(boost::bind(&LLPanelProfileClassified::onTexturePickerMouseLeave, this));
+    mSnapshotCtrl->setAllowLocalTexture(false);
+    mSnapshotCtrl->setBakeTextureEnabled(false);
+    mEditIcon->setVisible(false);
 
-	mMapButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onMapClick, this));
-	mTeleportButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onTeleportClick, this));
-	mEditButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onEditClick, this));
-	mSaveButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onSaveClick, this));
-	mSetLocationButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onSetLocationClick, this));
-	mCancelButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onCancelClick, this));
+    mMapButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onMapClick, this));
+    mTeleportButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onTeleportClick, this));
+    mEditButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onEditClick, this));
+    mSaveButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onSaveClick, this));
+    mSetLocationButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onSetLocationClick, this));
+    mCancelButton->setCommitCallback(boost::bind(&LLPanelProfileClassified::onCancelClick, this));
 
-	LLClassifiedInfo::cat_map::iterator iter;
-	for (iter = LLClassifiedInfo::sCategories.begin();
-		iter != LLClassifiedInfo::sCategories.end();
-		iter++)
-	{
-		mCategoryCombo->add(LLTrans::getString(iter->second));
-	}
+    LLClassifiedInfo::cat_map::iterator iter;
+    for (iter = LLClassifiedInfo::sCategories.begin();
+        iter != LLClassifiedInfo::sCategories.end();
+        iter++)
+    {
+        mCategoryCombo->add(LLTrans::getString(iter->second));
+    }
 
-	mClassifiedNameEdit->setKeystrokeCallback(boost::bind(&LLPanelProfileClassified::onChange, this), NULL);
-	mClassifiedDescEdit->setKeystrokeCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
-	mCategoryCombo->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
-	mContentTypeCombo->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
-	mAutoRenewEdit->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
+    mClassifiedNameEdit->setKeystrokeCallback(boost::bind(&LLPanelProfileClassified::onTitleChange, this), NULL);
+    mClassifiedDescEdit->setKeystrokeCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
+    mCategoryCombo->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
+    mContentTypeCombo->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
+    mAutoRenewEdit->setCommitCallback(boost::bind(&LLPanelProfileClassified::onChange, this));
 
-	return TRUE;
+    return true;
 }
 
 void LLPanelProfileClassified::onOpen(const LLSD& key)
 {
-	mIsNew = key.isUndefined();
+    mIsNew = key.isUndefined();
 
-	resetData();
-	resetControls();
-	scrollToTop();
+    resetData();
+    resetControls();
+    scrollToTop();
 
-	// classified is not created yet
-	bool is_new = isNew() || isNewWithErrors();
+    // classified is not created yet
+    bool is_new = isNew() || isNewWithErrors();
 
-	if (is_new)
-	{
-		LLPanelProfilePropertiesProcessorTab::setAvatarId(gAgent.getID());
+    if(is_new)
+    {
+        LLPanelProfilePropertiesProcessorTab::setAvatarId(gAgent.getID());
 
-		setPosGlobal(gAgent.getPositionGlobal());
+        setPosGlobal(gAgent.getPositionGlobal());
 
-		LLUUID snapshot_id = LLUUID::null;
-		std::string desc;
-		LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
-		if (parcel)
-		{
-			desc = parcel->getDesc();
-			snapshot_id = parcel->getSnapshotID();
-		}
+        LLUUID snapshot_id = LLUUID::null;
+        std::string desc;
+        LLParcel* parcel = LLViewerParcelMgr::getInstance()->getAgentParcel();
+        if(parcel)
+        {
+            desc = parcel->getDesc();
+            snapshot_id = parcel->getSnapshotID();
+        }
 
-		std::string region_name = LLTrans::getString("ClassifiedUpdateAfterPublish");
-		LLViewerRegion* region = gAgent.getRegion();
-		if (region)
-		{
-			region_name = region->getName();
-		}
+        std::string region_name = LLTrans::getString("ClassifiedUpdateAfterPublish");
+        LLViewerRegion* region = gAgent.getRegion();
+        if (region)
+        {
+            region_name = region->getName();
+        }
 
-		setClassifiedName(makeClassifiedName());
-		setDescription(desc);
-		setSnapshotId(snapshot_id);
-		setClassifiedLocation(createLocationText(getLocationNotice(), region_name, getPosGlobal()));
-		// server will set valid parcel id
-		setParcelId(LLUUID::null);
+        setClassifiedName(makeClassifiedName());
+        setDescription(desc);
+        setSnapshotId(snapshot_id);
+        setClassifiedLocation(createLocationText(getLocationNotice(), region_name, getPosGlobal()));
+        // server will set valid parcel id
+        setParcelId(LLUUID::null);
 
-		mSaveButton->setLabelArg("[LABEL]", getString("publish_label"));
+        mSaveButton->setLabelArg("[LABEL]", getString("publish_label"));
 
-		setEditMode(TRUE);
-		enableSave(true);
-		enableEditing(true);
-		resetDirty();
-		setInfoLoaded(false);
-	}
-	else
-	{
-		LLUUID avatar_id = key["classified_creator_id"];
-		if (avatar_id.isNull())
-		{
-			return;
-		}
-		LLPanelProfilePropertiesProcessorTab::setAvatarId(avatar_id);
+        setEditMode(true);
+        enableSave(true);
+        enableEditing(true);
+        resetDirty();
+        setInfoLoaded(false);
+    }
+    else
+    {
+        LLUUID avatar_id = key["classified_creator_id"];
+        if(avatar_id.isNull())
+        {
+            return;
+        }
+        LLPanelProfilePropertiesProcessorTab::setAvatarId(avatar_id);
 
-		setClassifiedId(key["classified_id"]);
-		setClassifiedName(key["classified_name"]);
-		setFromSearch(key["from_search"]);
-		mEditOnLoad = key["edit"];
+        setClassifiedId(key["classified_id"]);
+        setClassifiedName(key["classified_name"]);
+        setFromSearch(key["from_search"]);
+        mEditOnLoad = key["edit"];
 
-		LL_INFOS() << "Opening classified [" << getClassifiedName() << "] (" << getClassifiedId() << ")" << LL_ENDL;
+        LL_INFOS() << "Opening classified [" << getClassifiedName() << "] (" << getClassifiedId() << ")" << LL_ENDL;
 
-		LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(getClassifiedId());
+        LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(getClassifiedId());
 
-		gGenericDispatcher.addHandler("classifiedclickthrough", &sClassifiedClickThrough);
+        gGenericDispatcher.addHandler("classifiedclickthrough", &sClassifiedClickThrough);
 
-		if (gAgent.getRegion())
-		{
-			// While we're at it let's get the stats from the new table if that
-			// capability exists.
-			std::string url = gAgent.getRegion()->getCapability("SearchStatRequest");
-			if (!url.empty())
-			{
-				LL_INFOS() << "Classified stat request via capability" << LL_ENDL;
-				LLSD body;
-				LLUUID classifiedId = getClassifiedId();
-				body["classified_id"] = classifiedId;
-				LLCoreHttpUtil::HttpCoroutineAdapter::callbackHttpPost(url, body,
-					boost::bind(&LLPanelProfileClassified::handleSearchStatResponse, classifiedId, _1));
-			}
-		}
-		// Update classified click stats.
-		// *TODO: Should we do this when opening not from search?
-		if (!fromSearch())
-		{
-			sendClickMessage("profile");
-		}
+        if (gAgent.getRegion())
+        {
+            // While we're at it let's get the stats from the new table if that
+            // capability exists.
+            std::string url = gAgent.getRegion()->getCapability("SearchStatRequest");
+            if (!url.empty())
+            {
+                LL_INFOS() << "Classified stat request via capability" << LL_ENDL;
+                LLSD body;
+                LLUUID classifiedId = getClassifiedId();
+                body["classified_id"] = classifiedId;
+                LLCoreHttpUtil::HttpCoroutineAdapter::callbackHttpPost(url, body,
+                    boost::bind(&LLPanelProfileClassified::handleSearchStatResponse, classifiedId, _1));
+            }
+        }
+        // Update classified click stats.
+        // *TODO: Should we do this when opening not from search?
+        if (!fromSearch() )
+        {
+            sendClickMessage("profile");
+        }
 
-		setInfoLoaded(false);
-	}
+        setInfoLoaded(false);
+    }
 
 
-	bool is_self = getSelfProfile();
-	getChildView("auto_renew_layout_panel")->setVisible(is_self);
-	getChildView("clickthrough_layout_panel")->setVisible(is_self);
+    bool is_self = getSelfProfile();
+    getChildView("auto_renew_layout_panel")->setVisible(is_self);
+    getChildView("clickthrough_layout_panel")->setVisible(is_self);
 
-	updateButtons();
+    updateButtons();
 }
 
 void LLPanelProfileClassified::processProperties(void* data, EAvatarProcessorType type)
@@ -785,17 +787,17 @@ void LLPanelProfileClassified::processProperties(void* data, EAvatarProcessorTyp
 		return;
 	}
 
-	LLAvatarClassifiedInfo* c_info = static_cast<LLAvatarClassifiedInfo*>(data);
-	if (c_info && getClassifiedId() == c_info->classified_id)
-	{
-		// see LLPanelProfileClassified::sendUpdate() for notes
-		if (mIsNewWithErrors)
-		{
-			// We just published it
-			setEditMode(FALSE);
-		}
-		mIsNewWithErrors = false;
-		mIsNew = false;
+    LLAvatarClassifiedInfo* c_info = static_cast<LLAvatarClassifiedInfo*>(data);
+    if(c_info && getClassifiedId() == c_info->classified_id)
+    {
+        // see LLPanelProfileClassified::sendUpdate() for notes
+        if (mIsNewWithErrors)
+        {
+            // We just published it
+            setEditMode(false);
+        }
+        mIsNewWithErrors = false;
+        mIsNew = false;
 
 		setClassifiedName(c_info->name);
 		setDescription(c_info->description);
@@ -838,15 +840,15 @@ void LLPanelProfileClassified::processProperties(void* data, EAvatarProcessorTyp
 		setLoaded();
 		updateButtons();
 
-		if (mEditOnLoad)
-		{
-			setEditMode(TRUE);
-		}
-	}
+        if (mEditOnLoad)
+        {
+            setEditMode(true);
+        }
+    }
 
 }
 
-void LLPanelProfileClassified::setEditMode(BOOL edit_mode)
+void LLPanelProfileClassified::setEditMode(bool edit_mode)
 {
 	mEditMode = edit_mode;
 
@@ -877,23 +879,23 @@ void LLPanelProfileClassified::updateButtons()
 
 void LLPanelProfileClassified::updateInfoRect()
 {
-	if (getEditMode())
-	{
-		// info_scroll_content_panel contains both info and edit panel
-		// info panel can be very large and scroll bar will carry over.
-		// Resize info panel to prevent scroll carry over when in edit mode.
-		mInfoScroll->reshape(mInfoScroll->getRect().getWidth(), DEFAULT_EDIT_CLASSIFIED_SCROLL_HEIGHT, FALSE);
-	}
-	else
-	{
-		// Adjust text height to make description scrollable.
-		S32 new_height = mClassifiedDescText->getTextBoundingRect().getHeight();
-		LLRect visible_rect = mClassifiedDescText->getVisibleDocumentRect();
-		S32 delta_height = new_height - visible_rect.getHeight() + 5;
+    if (getEditMode())
+    {
+        // info_scroll_content_panel contains both info and edit panel
+        // info panel can be very large and scroll bar will carry over.
+        // Resize info panel to prevent scroll carry over when in edit mode.
+        mInfoScroll->reshape(mInfoScroll->getRect().getWidth(), DEFAULT_EDIT_CLASSIFIED_SCROLL_HEIGHT, false);
+    }
+    else
+    {
+        // Adjust text height to make description scrollable.
+        S32 new_height = mClassifiedDescText->getTextBoundingRect().getHeight();
+        LLRect visible_rect = mClassifiedDescText->getVisibleDocumentRect();
+        S32 delta_height = new_height - visible_rect.getHeight() + 5;
 
-		LLRect rect = mInfoScroll->getRect();
-		mInfoScroll->reshape(rect.getWidth(), rect.getHeight() + delta_height, FALSE);
-	}
+        LLRect rect = mInfoScroll->getRect();
+        mInfoScroll->reshape(rect.getWidth(), rect.getHeight() + delta_height, false);
+    }
 }
 
 void LLPanelProfileClassified::enableEditing(bool enable)
@@ -919,30 +921,32 @@ void LLPanelProfileClassified::resetControls()
 
 void LLPanelProfileClassified::onEditClick()
 {
-	setEditMode(TRUE);
+    setEditMode(true);
 }
 
 void LLPanelProfileClassified::onCancelClick()
 {
-	if (isNew())
-	{
-		mClassifiedNameEdit->setValue(mClassifiedNameText->getValue());
-		mClassifiedDescEdit->setValue(mClassifiedDescText->getValue());
-		mLocationEdit->setValue(mLocationText->getValue());
-		mCategoryCombo->setCurrentByIndex(0);
-		mContentTypeCombo->setCurrentByIndex(0);
-		mAutoRenewEdit->setValue(false);
-		mPriceForListing = MINIMUM_PRICE_FOR_LISTING;
-	}
-	else
-	{
-		// Reload data to undo changes to forms
-		LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(getClassifiedId());
-	}
+    if (isNew())
+    {
+        mClassifiedNameEdit->setValue(mClassifiedNameText->getValue());
+        mClassifiedDescEdit->setValue(mClassifiedDescText->getValue());
+        mLocationEdit->setValue(mLocationText->getValue());
+        mCategoryCombo->setCurrentByIndex(0);
+        mContentTypeCombo->setCurrentByIndex(0);
+        mAutoRenewEdit->setValue(false);
+        mPriceForListing = MINIMUM_PRICE_FOR_LISTING;
+    }
+    else
+    {
+        updateTabLabel(mClassifiedNameText->getValue());
+
+        // Reload data to undo changes to forms
+        LLAvatarPropertiesProcessor::getInstance()->sendClassifiedInfoRequest(getClassifiedId());
+    }
 
 	setInfoLoaded(false);
 
-	setEditMode(FALSE);
+    setEditMode(false);
 }
 
 void LLPanelProfileClassified::onSaveClick()
@@ -1005,33 +1009,33 @@ void LLPanelProfileClassified::handleSearchStatResponse(LLUUID classifiedId, LLS
 
 void LLPanelProfileClassified::resetData()
 {
-	setClassifiedName(LLStringUtil::null);
-	setDescription(LLStringUtil::null);
-	setClassifiedLocation(LLStringUtil::null);
-	setClassifiedId(LLUUID::null);
-	setSnapshotId(LLUUID::null);
-	setPosGlobal(LLVector3d::zero);
-	setParcelId(LLUUID::null);
-	setSimName(LLStringUtil::null);
-	setFromSearch(false);
+    setClassifiedName(LLStringUtil::null);
+    setDescription(LLStringUtil::null);
+    setClassifiedLocation(LLStringUtil::null);
+    setClassifiedId(LLUUID::null);
+    setSnapshotId(LLUUID::null);
+    setPosGlobal(LLVector3d::zero);
+    setParcelId(LLUUID::null);
+    setSimName(LLStringUtil::null);
+    setFromSearch(false);
 
-	// reset click stats
-	mTeleportClicksOld = 0;
-	mMapClicksOld = 0;
-	mProfileClicksOld = 0;
-	mTeleportClicksNew = 0;
-	mMapClicksNew = 0;
-	mProfileClicksNew = 0;
+    // reset click stats
+    mTeleportClicksOld  = 0;
+    mMapClicksOld       = 0;
+    mProfileClicksOld   = 0;
+    mTeleportClicksNew  = 0;
+    mMapClicksNew       = 0;
+    mProfileClicksNew   = 0;
 
-	mPriceForListing = MINIMUM_PRICE_FOR_LISTING;
+    mPriceForListing = MINIMUM_PRICE_FOR_LISTING;
 
-	mCategoryText->setValue(LLStringUtil::null);
-	mContentTypeText->setValue(LLStringUtil::null);
-	getChild<LLUICtrl>("click_through_text")->setValue(LLStringUtil::null);
-	mEditButton->setValue(LLStringUtil::null);
-	getChild<LLUICtrl>("creation_date")->setValue(LLStringUtil::null);
-	mContentTypeM->setVisible(FALSE);
-	mContentTypeG->setVisible(FALSE);
+    mCategoryText->setValue(LLStringUtil::null);
+    mContentTypeText->setValue(LLStringUtil::null);
+    getChild<LLUICtrl>("click_through_text")->setValue(LLStringUtil::null);
+    mEditButton->setValue(LLStringUtil::null);
+    getChild<LLUICtrl>("creation_date")->setValue(LLStringUtil::null);
+    mContentTypeM->setVisible(false);
+    mContentTypeG->setVisible(false);
 }
 
 void LLPanelProfileClassified::setClassifiedName(const std::string& name)
@@ -1240,20 +1244,20 @@ void LLPanelProfileClassified::onTeleportClick()
 	}
 }
 
-BOOL LLPanelProfileClassified::isDirty() const
+bool LLPanelProfileClassified::isDirty() const
 {
-	if (mIsNew)
-	{
-		return TRUE;
-	}
+    if(mIsNew)
+    {
+        return true;
+    }
 
-	BOOL dirty = false;
-	dirty |= mSnapshotCtrl->isDirty();
-	dirty |= mClassifiedNameEdit->isDirty();
-	dirty |= mClassifiedDescEdit->isDirty();
-	dirty |= mCategoryCombo->isDirty();
-	dirty |= mContentTypeCombo->isDirty();
-	dirty |= mAutoRenewEdit->isDirty();
+    bool dirty = false;
+    dirty |= mSnapshotCtrl->isDirty();
+    dirty |= mClassifiedNameEdit->isDirty();
+    dirty |= mClassifiedDescEdit->isDirty();
+    dirty |= mCategoryCombo->isDirty();
+    dirty |= mContentTypeCombo->isDirty();
+    dirty |= mAutoRenewEdit->isDirty();
 
 	return dirty;
 }
@@ -1405,6 +1409,12 @@ void LLPanelProfileClassified::onChange()
 	enableSave(isDirty());
 }
 
+void LLPanelProfileClassified::onTitleChange()
+{
+    updateTabLabel(getClassifiedName());
+    onChange();
+}
+
 void LLPanelProfileClassified::doSave()
 {
 	//*TODO: Fix all of this
@@ -1419,18 +1429,26 @@ void LLPanelProfileClassified::doSave()
 		return;
 	}
 
-	if (!isNew() && !isNewWithErrors())
-	{
-		setEditMode(FALSE);
-		return;
-	}
+    if (!isNew() && !isNewWithErrors())
+    {
+        setEditMode(false);
+        return;
+    }
 
 	updateButtons();
 }
 
 void LLPanelProfileClassified::onPublishFloaterPublishClicked()
 {
-	setPriceForListing(mPublishFloater->getPrice());
+    if (mPublishFloater->getPrice() < MINIMUM_PRICE_FOR_LISTING)
+    {
+        LLSD args;
+        args["MIN_PRICE"] = MINIMUM_PRICE_FOR_LISTING;
+        LLNotificationsUtil::add("MinClassifiedPrice", args);
+        return;
+    }
+
+    setPriceForListing(mPublishFloater->getPrice());
 
 	doSave();
 }
@@ -1471,12 +1489,12 @@ void LLPanelProfileClassified::notifyInvalidName()
 
 void LLPanelProfileClassified::onTexturePickerMouseEnter()
 {
-	mEditIcon->setVisible(TRUE);
+    mEditIcon->setVisible(true);
 }
 
 void LLPanelProfileClassified::onTexturePickerMouseLeave()
 {
-	mEditIcon->setVisible(FALSE);
+    mEditIcon->setVisible(false);
 }
 
 void LLPanelProfileClassified::onTextureSelected()
@@ -1509,14 +1527,14 @@ LLPublishClassifiedFloater::~LLPublishClassifiedFloater()
 {
 }
 
-BOOL LLPublishClassifiedFloater::postBuild()
+bool LLPublishClassifiedFloater::postBuild()
 {
 	LLFloater::postBuild();
 
 	childSetAction("publish_btn", boost::bind(&LLFloater::closeFloater, this, false));
 	childSetAction("cancel_btn", boost::bind(&LLFloater::closeFloater, this, false));
 
-	return TRUE;
+    return true;
 }
 
 void LLPublishClassifiedFloater::setPrice(S32 price)

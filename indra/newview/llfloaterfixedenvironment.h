@@ -58,9 +58,9 @@ public:
 	LLFloaterFixedEnvironment(const LLSD &key);
 	~LLFloaterFixedEnvironment();
 
-	virtual BOOL	        postBuild()                 override;
-	virtual void            onOpen(const LLSD& key)     override;
-	virtual void            onClose(bool app_quitting)  override;
+    virtual bool            postBuild()                 override;
+    virtual void            onOpen(const LLSD& key)     override;
+    virtual void            onClose(bool app_quitting)  override;
 
 	virtual void            onFocusReceived()           override;
 	virtual void            onFocusLost()               override;
@@ -68,7 +68,7 @@ public:
 	void                    setEditSettings(const LLSettingsBase::ptr_t &settings) { mSettings = settings; clearDirtyFlag(); syncronizeTabs(); refresh(); }
 	LLSettingsBase::ptr_t   getEditSettings()   const { return mSettings; }
 
-	virtual BOOL            isDirty() const override { return getIsDirty(); }
+	virtual bool            isDirty() const override { return getIsDirty(); }
 
 	//BD - Windlight Stuff
 	bool					loadPreset(std::string filename, std::string type);
@@ -156,7 +156,7 @@ class LLFloaterFixedEnvironmentWater : public LLFloaterFixedEnvironment
 public:
 	LLFloaterFixedEnvironmentWater(const LLSD &key);
 
-	BOOL	                postBuild()                 override;
+    bool                    postBuild()                 override;
 
 	virtual void            onOpen(const LLSD& key)     override;
 
@@ -176,7 +176,7 @@ class LLFloaterFixedEnvironmentSky : public LLFloaterFixedEnvironment
 public:
 	LLFloaterFixedEnvironmentSky(const LLSD &key);
 
-	BOOL	                postBuild()                 override;
+    bool                    postBuild()                 override;
 
 	virtual void            onOpen(const LLSD& key)     override;
 	virtual void            onClose(bool app_quitting)  override;

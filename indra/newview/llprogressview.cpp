@@ -85,7 +85,7 @@ LLProgressView::LLProgressView()
 	mUpdateEvents.listen("self", boost::bind(&LLProgressView::handleUpdate, this, _1));
 }
 
-BOOL LLProgressView::postBuild()
+bool LLProgressView::postBuild()
 {
 	mMetaProgressBar = getChild<LLProgressBar>("meta_progress_bar");
 	mSubProgressBar = getChild<LLProgressBar>("sub_progress_bar");
@@ -104,12 +104,12 @@ BOOL LLProgressView::postBuild()
 	mPercentText = getChild<LLTextBox>("percent_text");
 
 	// hidden initially, until we need it
-	setVisible(FALSE);
+	setVisible(false);
 
 	LLNotifications::instance().getChannel("AlertModal")->connectChanged(boost::bind(&LLProgressView::onAlertModal, this, _1));
 
 	sInstance = this;
-	return TRUE;
+	return true;
 }
 
 
@@ -120,24 +120,24 @@ LLProgressView::~LLProgressView()
 	sInstance = NULL;
 }
 
-BOOL LLProgressView::handleHover(S32 x, S32 y, MASK mask)
+bool LLProgressView::handleHover(S32 x, S32 y, MASK mask)
 {
 	if( childrenHandleHover( x, y, mask ) == NULL )
 	{
 		gViewerWindow->setCursor(UI_CURSOR_WAIT);
 	}
-	return TRUE;
+	return true;
 }
 
 
-BOOL LLProgressView::handleKeyHere(KEY key, MASK mask)
+bool LLProgressView::handleKeyHere(KEY key, MASK mask)
 {
 	// Suck up all keystokes except CTRL-Q.
 	if( ('Q' == key) && (MASK_CONTROL == mask) )
 	{
 		LLAppViewer::instance()->userQuit();
 	}
-	return TRUE;
+	return true;
 }
 
 void LLProgressView::setStartupComplete()
@@ -149,7 +149,7 @@ void LLProgressView::setStartupComplete()
 	mFadeToWorldTimer.start();
 }
 
-void LLProgressView::setProgressVisible(BOOL visible, BOOL logout)
+void LLProgressView::setProgressVisible(bool visible, bool logout)
 {
     if (!visible && mFadeFromLoginTimer.getStarted())
     {
@@ -158,7 +158,7 @@ void LLProgressView::setProgressVisible(BOOL visible, BOOL logout)
 	// hiding progress view
 	if (getVisible() && !visible)
 	{
-		LLPanel::setVisible(FALSE);
+		LLPanel::setVisible(false);
 	}
 	// showing progress view
 	else if (visible && (!getVisible() || mFadeToWorldTimer.getStarted()))
@@ -168,20 +168,20 @@ void LLProgressView::setProgressVisible(BOOL visible, BOOL logout)
 			getChild<LLIconCtrl>("loading_bg")->setVisible(false);
 			LLPanel::setBackgroundVisible(true);
 		}
-		setFocus(TRUE);
+		setFocus(true);
 		mFadeToWorldTimer.stop();
-		LLPanel::setVisible(TRUE);
+		LLPanel::setVisible(true);
 	} 
 }
 
 // ## Zi: Fade teleport screens
-void LLProgressView::fade(BOOL in)
+void LLProgressView::fade(bool in)
 {
 	if(in)
 	{
 		mFadeFromLoginTimer.start();
 		mFadeToWorldTimer.stop();
-		setVisible(TRUE);
+		setVisible(true);
 	}
 	else
 	{
@@ -273,7 +273,7 @@ void LLProgressView::draw()
 			gFocusMgr.releaseFocusIfNeeded( this );
 
 			// turn off panel that hosts intro so we see the world
-			setVisible(FALSE);
+			setVisible(false);
 
 			if (LLStartUp::getStartupState() >= STATE_STARTED)
 			{
@@ -337,7 +337,7 @@ void LLProgressView::loadLogo(const std::string &path,
     raw->expandToPowerOfTwo();
 
     TextureData data;
-    data.mTexturep = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE);
+    data.mTexturep = LLViewerTextureManager::getLocalTexture(raw.get(), false);
     data.mDrawRect = pos_rect;
     data.mClipRect = clip_rect;
     data.mOffsetRect = offset_rect;
@@ -471,7 +471,7 @@ void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
         {
             // HACK: getLocalTexture allows only power of two dimentions
             raw->expandToPowerOfTwo();
-            gStartTexture = LLViewerTextureManager::getLocalTexture(raw.get(), FALSE);
+            gStartTexture = LLViewerTextureManager::getLocalTexture(raw.get(), false);
         }
     }
 
@@ -488,8 +488,8 @@ void LLProgressView::initTextures(S32 location_id, bool is_in_production)
     initStartTexture(location_id, is_in_production);
     initLogos();
 
-    childSetVisible("panel_icons", mLogosList.empty() ? FALSE : TRUE);
-    childSetVisible("panel_top_spacer", mLogosList.empty() ? TRUE : FALSE);
+    childSetVisible("panel_icons", mLogosList.empty() ? false : true);
+    childSetVisible("panel_top_spacer", mLogosList.empty() ? true : false);
 }
 
 void LLProgressView::releaseTextures()
@@ -497,11 +497,11 @@ void LLProgressView::releaseTextures()
     gStartTexture = NULL;
     mLogosList.clear();
 
-    childSetVisible("panel_top_spacer", TRUE);
-    childSetVisible("panel_icons", FALSE);
+    childSetVisible("panel_top_spacer", true);
+    childSetVisible("panel_icons", false);
 }*/
 
-void LLProgressView::setCancelButtonVisible(BOOL b, const std::string& label)
+void LLProgressView::setCancelButtonVisible(bool b, const std::string& label)
 {
 	mCancelBtn->setLabelSelected(label);
 	mCancelBtn->setLabelUnselected(label);
@@ -521,8 +521,8 @@ void LLProgressView::onCancelButtonClicked(void*)
 	else
 	{
 		gAgent.teleportCancel();
-		sInstance->mCancelBtn->setEnabled(FALSE);
-		sInstance->setVisible(FALSE);
+		sInstance->mCancelBtn->setEnabled(false);
+		sInstance->setVisible(false);
 	}
 }
 

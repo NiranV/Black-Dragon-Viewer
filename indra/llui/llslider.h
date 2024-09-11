@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llslider.h
  * @brief A simple slider with no label.
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -53,24 +53,24 @@ public:
 								track_change_horizontal_image,
 								track_change_vertical_image;
 
-		Optional<CommitCallbackParam>	mouse_down_callback,
-										mouse_up_callback;
+        Optional<CommitCallbackParam>   mouse_down_callback,
+                                        mouse_up_callback;
 
 		//BD - UI Improvements
 		Optional<bool>			apply_immediately;
 
 
-		Params();
-	};
+        Params();
+    };
 protected:
-	LLSlider(const Params&);
-	friend class LLUICtrlFactory;
+    LLSlider(const Params&);
+    friend class LLUICtrlFactory;
 public:
 	virtual ~LLSlider();
 	//BD - UI Improvements
-	void			setValue( F32 value, BOOL from_event = FALSE , BOOL precision_override = FALSE, BOOL overdrive = TRUE);
+	void			setValue( F32 value, bool from_event = false , bool precision_override = false, bool overdrive = true);
     // overrides for LLF32UICtrl methods
-	virtual void	setValue(const LLSD& value )	{ setValue((F32)value.asReal(), TRUE); }
+	virtual void	setValue(const LLSD& value )	{ setValue((F32)value.asReal(), true); }
 	
 	virtual void 	setMinValue(const LLSD& min_value) { setMinValue((F32)min_value.asReal()); }
 	virtual void 	setMaxValue(const LLSD& max_value) { setMaxValue((F32)max_value.asReal()); }
@@ -80,16 +80,16 @@ public:
 	boost::signals2::connection setMouseDownCallback( const commit_signal_t::slot_type& cb );
 	boost::signals2::connection setMouseUpCallback(	const commit_signal_t::slot_type& cb );
 
-	virtual BOOL	handleHover(S32 x, S32 y, MASK mask);
-	virtual BOOL	handleMouseUp(S32 x, S32 y, MASK mask);
-	virtual BOOL	handleMouseDown(S32 x, S32 y, MASK mask);
+	virtual bool	handleHover(S32 x, S32 y, MASK mask);
+	virtual bool	handleMouseUp(S32 x, S32 y, MASK mask);
+	virtual bool	handleMouseDown(S32 x, S32 y, MASK mask);
 	//BD - UI Improvements
-	virtual BOOL	handleRightMouseUp(S32 x, S32 y, MASK mask);
-	virtual BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask);
+	virtual bool	handleRightMouseUp(S32 x, S32 y, MASK mask);
+	virtual bool	handleRightMouseDown(S32 x, S32 y, MASK mask);
 
-	virtual BOOL	handleKeyHere(KEY key, MASK mask);
+	virtual bool	handleKeyHere(KEY key, MASK mask);
 	//BD - UI Improvements
-	virtual BOOL	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
+	virtual bool	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 	virtual void	onMouseCaptureLost();
 
 	virtual void	draw();
@@ -98,7 +98,7 @@ private:
 	void			setValueAndCommit(F32 value);
 	void			updateThumbRect();
 
-	BOOL			mVolumeSlider;
+	bool			mVolumeSlider;
 	S32				mMouseOffset;
 	LLRect			mDragStartThumbRect;
 

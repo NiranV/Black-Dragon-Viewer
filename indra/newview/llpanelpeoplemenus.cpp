@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llpanelpeoplemenus.h
  * @brief Menus used by the side tray "People" panel
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -34,12 +34,12 @@
 
 // newview
 #include "llagent.h"
-#include "llagentdata.h"			// for gAgentID
+#include "llagentdata.h"            // for gAgentID
 #include "llavataractions.h"
-#include "llcallingcard.h"			// for LLAvatarTracker
+#include "llcallingcard.h"          // for LLAvatarTracker
 #include "lllogchat.h"
 #include "llparcel.h"
-#include "llviewermenu.h"			// for gMenuHolder
+#include "llviewermenu.h"           // for gMenuHolder
 #include "llconversationmodel.h"
 #include "llviewerobjectlist.h"
 #include "llviewerparcelmgr.h"
@@ -310,13 +310,13 @@ bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 
 bool PeopleContextMenu::checkContextMenuItem(const LLSD& userdata)
 {
-	std::string item = userdata.asString();
-	const LLUUID& id = mUUIDs.front();
+    std::string item = userdata.asString();
+    const LLUUID& id = mUUIDs.front();
 
-	if (item == std::string("is_blocked"))
-	{
-		return LLAvatarActions::isBlocked(id);
-	}
+    if (item == std::string("is_blocked"))
+    {
+        return LLAvatarActions::isBlocked(id);
+    }
 
 	//BD - Right Click Menu
 	if (item == std::string("is_muted"))
@@ -378,62 +378,62 @@ bool PeopleContextMenu::enableFreezeEject(const LLSD& userdata)
 
 void PeopleContextMenu::requestTeleport()
 {
-	// boost::bind cannot recognize overloaded method LLAvatarActions::teleportRequest(),
-	// so we have to use a wrapper.
-	LLAvatarActions::teleportRequest(mUUIDs.front());
+    // boost::bind cannot recognize overloaded method LLAvatarActions::teleportRequest(),
+    // so we have to use a wrapper.
+    LLAvatarActions::teleportRequest(mUUIDs.front());
 }
 
 void PeopleContextMenu::offerTeleport()
 {
-	// boost::bind cannot recognize overloaded method LLAvatarActions::offerTeleport(),
-	// so we have to use a wrapper.
-	LLAvatarActions::offerTeleport(mUUIDs);
+    // boost::bind cannot recognize overloaded method LLAvatarActions::offerTeleport(),
+    // so we have to use a wrapper.
+    LLAvatarActions::offerTeleport(mUUIDs);
 }
 
 void PeopleContextMenu::eject()
 {
-	if((gAgent.getID() == mUUIDs.front()) || (mUUIDs.size() != 1))
-	{
-		return;
-	}
+    if((gAgent.getID() == mUUIDs.front()) || (mUUIDs.size() != 1))
+    {
+        return;
+    }
 
-	const LLUUID& id = mUUIDs.front();
+    const LLUUID& id = mUUIDs.front();
 
-	// Use avatar_id if available, otherwise default to right-click avatar
-	LLVOAvatar* avatar = NULL;
-	if (id.notNull())
-	{
-		LLViewerObject* object = gObjectList.findObject(id);
-		if (object)
-		{
-			if( !object->isAvatar() )
-			{
-				object = NULL;
-			}
-			avatar = (LLVOAvatar*) object;
-		}
-	}
-	if (!avatar) return;
-	LLSD payload;
-	payload["avatar_id"] = avatar->getID();
-	std::string fullname = avatar->getFullname();
+    // Use avatar_id if available, otherwise default to right-click avatar
+    LLVOAvatar* avatar = NULL;
+    if (id.notNull())
+    {
+        LLViewerObject* object = gObjectList.findObject(id);
+        if (object)
+        {
+            if( !object->isAvatar() )
+            {
+                object = NULL;
+            }
+            avatar = (LLVOAvatar*) object;
+        }
+    }
+    if (!avatar) return;
+    LLSD payload;
+    payload["avatar_id"] = avatar->getID();
+    std::string fullname = avatar->getFullname();
 
-	const LLVector3d& pos = avatar->getPositionGlobal();
-	LLParcel* parcel = LLViewerParcelMgr::getInstance()->selectParcelAt(pos)->getParcel();
-	LLAvatarActions::ejectAvatar(id ,LLViewerParcelMgr::getInstance()->isParcelOwnedByAgent(parcel,GP_LAND_MANAGE_BANNED));
+    const LLVector3d& pos = avatar->getPositionGlobal();
+    LLParcel* parcel = LLViewerParcelMgr::getInstance()->selectParcelAt(pos)->getParcel();
+    LLAvatarActions::ejectAvatar(id ,LLViewerParcelMgr::getInstance()->isParcelOwnedByAgent(parcel,GP_LAND_MANAGE_BANNED));
 }
 
 void PeopleContextMenu::startConference()
 {
-	uuid_vec_t uuids;
-	for (uuid_vec_t::const_iterator it = mUUIDs.begin(); it != mUUIDs.end(); ++it)
-	{
-		if(*it != gAgentID)
-		{
-			uuids.push_back(*it);
-		}
-	}
-	LLAvatarActions::startConference(uuids);
+    uuid_vec_t uuids;
+    for (uuid_vec_t::const_iterator it = mUUIDs.begin(); it != mUUIDs.end(); ++it)
+    {
+        if(*it != gAgentID)
+        {
+            uuids.push_back(*it);
+        }
+    }
+    LLAvatarActions::startConference(uuids);
 }
 
 //BD - Right Click Menu

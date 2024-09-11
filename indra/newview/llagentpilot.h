@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llagentpilot.h
  * @brief LLAgentPilot class definition
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -84,13 +84,13 @@ public:
 	void addWaypoint();
 	void moveCamera();
 
-	void setReplaySession(BOOL new_val) { mReplaySession = new_val; }
-	BOOL getReplaySession() { return mReplaySession; }
+	void setReplaySession(bool new_val) { mReplaySession = new_val; }
+	bool getReplaySession() { return mReplaySession; }
 
-	void setLoop(BOOL new_val) { mLoop = new_val; }
-	BOOL getLoop() { return mLoop; }
+	void setLoop(bool new_val) { mLoop = new_val; }
+	bool getLoop() { return mLoop; }
 
-	void setQuitAfterRuns(BOOL quit_val) { mQuitAfterRuns = quit_val; }
+	void setQuitAfterRuns(bool quit_val) { mQuitAfterRuns = quit_val; }
 	void setNumRuns(S32 num_runs) { mNumRuns = num_runs; }
 
 	std::vector<Action> getActions() { return mActions; }
@@ -99,22 +99,22 @@ public:
 	
 private:
 
-	BOOL	mLoop;
-	BOOL 	mReplaySession;
+    bool    mLoop;
+    bool    mReplaySession;
 
-	S32		mNumRuns;
-	BOOL	mQuitAfterRuns;
+    S32     mNumRuns;
+    bool    mQuitAfterRuns;
 
-	void setAutopilotTarget(const S32 id);
+    void setAutopilotTarget(const S32 id);
 
-	BOOL	mRecording;
-	F32		mLastRecordTime;
+    bool    mRecording;
+    F32     mLastRecordTime;
 
-	BOOL	mStarted;
-	BOOL	mPlaying;
-	S32		mCurrentAction;
+    bool    mStarted;
+    bool    mPlaying;
+    S32     mCurrentAction;
 
-	BOOL	mOverrideCamera;
+    bool    mOverrideCamera;
 
 	std::vector<Action>		mActions;
 	LLTimer					mTimer;

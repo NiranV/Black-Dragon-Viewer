@@ -5,21 +5,21 @@
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -46,20 +46,24 @@ class LLProgressView :
 
 {
 public:
-	LLProgressView();
-	virtual ~LLProgressView();
-	
-	BOOL postBuild();
+    LLProgressView();
+    virtual ~LLProgressView();
+
+    bool postBuild();
+
+    /*virtual*/ void draw();
+    void drawStartTexture(F32 alpha);
+    void drawLogos(F32 alpha);
 
 	/*virtual*/ void draw();
 	// ## Zi: Fade teleport screens
 	//void drawStartTexture(F32 alpha);
 
-	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
+	/*virtual*/ bool handleHover(S32 x, S32 y, MASK mask);
+	/*virtual*/ bool handleKeyHere(KEY key, MASK mask);
 
 	//BD
-	void setProgressVisible(BOOL visible, BOOL logout = false);
+	void setProgressVisible(bool visible, bool logout = false);
 
 	void setPercent(const F32 meta, const F32 sub = 1.f);
 
@@ -72,11 +76,11 @@ public:
 	// turns on (under certain circumstances) the into video after login
 	//void revealIntroPanel();
 
-	void fade(BOOL in);		// ## Zi: Fade teleport screens
+	void fade(bool in);		// ## Zi: Fade teleport screens
 
 	void setStartupComplete();
 
-	void setCancelButtonVisible(BOOL b, const std::string& label);
+    void setCancelButtonVisible(bool b, const std::string& label);
 
 	static void onCancelButtonClicked( void* );
 	bool onAlertModal(const LLSD& sd);

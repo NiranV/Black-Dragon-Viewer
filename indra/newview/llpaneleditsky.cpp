@@ -140,7 +140,7 @@ LLPanelSettingsSkyAtmosTab::LLPanelSettingsSkyAtmosTab() :
 }
 
 
-BOOL LLPanelSettingsSkyAtmosTab::postBuild()
+bool LLPanelSettingsSkyAtmosTab::postBuild()
 {
 	//BD - Atmosphere
 	mAmbientLight = getChild<LLColorSwatchCtrl>(FIELD_SKY_AMBIENT_LIGHT);
@@ -173,7 +173,7 @@ void LLPanelSettingsSkyAtmosTab::refresh()
 {
 	if (!mSkySettings)
 	{
-		setAllChildrenEnabled(FALSE);
+		setAllChildrenEnabled(false);
 		return;
 	}
 
@@ -311,7 +311,7 @@ LLPanelSettingsSkyCloudTab::LLPanelSettingsSkyCloudTab() :
 {
 }
 
-BOOL LLPanelSettingsSkyCloudTab::postBuild()
+bool LLPanelSettingsSkyCloudTab::postBuild()
 {
 	//BD - Clouds
 	mCloudColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_CLOUD_COLOR);
@@ -358,7 +358,7 @@ void LLPanelSettingsSkyCloudTab::refresh()
 {
 	if (!mSkySettings)
 	{
-		setAllChildrenEnabled(FALSE);
+		setAllChildrenEnabled(false);
 		return;
 	}
 
@@ -476,7 +476,7 @@ LLPanelSettingsSkySunMoonTab::LLPanelSettingsSkySunMoonTab() :
 }
 
 
-BOOL LLPanelSettingsSkySunMoonTab::postBuild()
+bool LLPanelSettingsSkySunMoonTab::postBuild()
 {
 	//BD - Sun & Moon
 	mSunMoonColor = getChild<LLColorSwatchCtrl>(FIELD_SKY_SUN_MOON_COLOR);
@@ -668,7 +668,7 @@ LLPanelSettingsSkyDensityTab::LLPanelSettingsSkyDensityTab()
 {
 }
 
-BOOL LLPanelSettingsSkyDensityTab::postBuild()
+bool LLPanelSettingsSkyDensityTab::postBuild()
 {
 	getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onRayleighExponentialChanged(); });
 	getChild<LLUICtrl>(FIELD_SKY_DENSITY_RAYLEIGH_EXPONENTIAL_SCALE)->setCommitCallback([this](LLUICtrl *, const LLSD &) { onRayleighExponentialScaleChanged(); });
@@ -705,7 +705,7 @@ void LLPanelSettingsSkyDensityTab::refresh()
 {
 	if (!mSkySettings)
 	{
-		setAllChildrenEnabled(FALSE);
+		setAllChildrenEnabled(false);
 		return;
 	}
 

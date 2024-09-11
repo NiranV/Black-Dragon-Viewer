@@ -5,21 +5,21 @@
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -93,11 +93,11 @@ LLPanelPlaceProfile::LLPanelPlaceProfile()
 // virtual
 LLPanelPlaceProfile::~LLPanelPlaceProfile()
 {
-	gIdleCallbacks.deleteFunction(&LLPanelPlaceProfile::updateYouAreHereBanner, this);
+    gIdleCallbacks.deleteFunction(&LLPanelPlaceProfile::updateYouAreHereBanner, this);
 }
 
 // virtual
-BOOL LLPanelPlaceProfile::postBuild()
+bool LLPanelPlaceProfile::postBuild()
 {
 	LLPanelPlaceInfo::postBuild();
 
@@ -178,57 +178,57 @@ BOOL LLPanelPlaceProfile::postBuild()
 // virtual
 void LLPanelPlaceProfile::resetLocation()
 {
-	LLPanelPlaceInfo::resetLocation();
+    LLPanelPlaceInfo::resetLocation();
 
-	mLastSelectedRegionID = LLUUID::null;
-	mNextCovenantUpdateTime = 0;
+    mLastSelectedRegionID = LLUUID::null;
+    mNextCovenantUpdateTime = 0;
 
-	mForSalePanel->setVisible(FALSE);
-	mYouAreHerePanel->setVisible(FALSE);
+    mForSalePanel->setVisible(false);
+    mYouAreHerePanel->setVisible(false);
 
-	std::string loading = LLTrans::getString("LoadingData");
+    std::string loading = LLTrans::getString("LoadingData");
 
-	mParcelRatingIcon->setValue(loading);
-	mParcelRatingText->setText(loading);
-	mVoiceIcon->setValue(loading);
-	mVoiceText->setText(loading);
-	mFlyIcon->setValue(loading);
-	mFlyText->setText(loading);
-	mPushIcon->setValue(loading);
-	mPushText->setText(loading);
-	mBuildIcon->setValue(loading);
-	mBuildText->setText(loading);
-	mScriptsIcon->setValue(loading);
-	mScriptsText->setText(loading);
-	mDamageIcon->setValue(loading);
-	mDamageText->setText(loading);
-	mSeeAVsIcon->setValue(loading);
-	mSeeAVsText->setText(loading);
+    mParcelRatingIcon->setValue(loading);
+    mParcelRatingText->setText(loading);
+    mVoiceIcon->setValue(loading);
+    mVoiceText->setText(loading);
+    mFlyIcon->setValue(loading);
+    mFlyText->setText(loading);
+    mPushIcon->setValue(loading);
+    mPushText->setText(loading);
+    mBuildIcon->setValue(loading);
+    mBuildText->setText(loading);
+    mScriptsIcon->setValue(loading);
+    mScriptsText->setText(loading);
+    mDamageIcon->setValue(loading);
+    mDamageText->setText(loading);
+    mSeeAVsIcon->setValue(loading);
+    mSeeAVsText->setText(loading);
 
-	mRegionNameText->setValue(loading);
-	mRegionTypeText->setValue(loading);
-	mRegionRatingIcon->setValue(loading);
-	mRegionRatingText->setValue(loading);
-	mRegionOwnerText->setValue(loading);
-	mRegionGroupText->setValue(loading);
+    mRegionNameText->setValue(loading);
+    mRegionTypeText->setValue(loading);
+    mRegionRatingIcon->setValue(loading);
+    mRegionRatingText->setValue(loading);
+    mRegionOwnerText->setValue(loading);
+    mRegionGroupText->setValue(loading);
 
-	mEstateNameText->setValue(loading);
-	mEstateRatingText->setValue(loading);
-	mEstateRatingIcon->setValue(loading);
-	mEstateOwnerText->setValue(loading);
-	mCovenantText->setValue(loading);
+    mEstateNameText->setValue(loading);
+    mEstateRatingText->setValue(loading);
+    mEstateRatingIcon->setValue(loading);
+    mEstateOwnerText->setValue(loading);
+    mCovenantText->setValue(loading);
 
-	mSalesPriceText->setValue(loading);
-	mAreaText->setValue(loading);
-	mTrafficText->setValue(loading);
-	mPrimitivesText->setValue(loading);
-	mParcelScriptsText->setValue(loading);
-	mTerraformLimitsText->setValue(loading);
-	mSubdivideText->setValue(loading);
-	mResaleText->setValue(loading);
-	mSaleToText->setValue(loading);
+    mSalesPriceText->setValue(loading);
+    mAreaText->setValue(loading);
+    mTrafficText->setValue(loading);
+    mPrimitivesText->setValue(loading);
+    mParcelScriptsText->setValue(loading);
+    mTerraformLimitsText->setValue(loading);
+    mSubdivideText->setValue(loading);
+    mResaleText->setValue(loading);
+    mSaleToText->setValue(loading);
 
-	getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(TRUE);
+    getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(true);
 }
 
 // virtual
@@ -298,50 +298,50 @@ void LLPanelPlaceProfile::setInfoType(EInfoType type)
 // virtual
 void LLPanelPlaceProfile::processParcelInfo(const LLParcelData& parcel_data)
 {
-	LLPanelPlaceInfo::processParcelInfo(parcel_data);
+    LLPanelPlaceInfo::processParcelInfo(parcel_data);
 
-	// HACK: Flag 0x2 == adult region,
-	// Flag 0x1 == mature region, otherwise assume PG
-	if (parcel_data.flags & 0x2)
-	{
-		mMaturityRatingIcon->setValue(icon_r);
-		mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_ADULT));
-	}
-	else if (parcel_data.flags & 0x1)
-	{
-		mMaturityRatingIcon->setValue(icon_m);
-		mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_MATURE));
-	}
-	else
-	{
-		mMaturityRatingIcon->setValue(icon_pg);
-		mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_PG));
-	}
+    // HACK: Flag 0x2 == adult region,
+    // Flag 0x1 == mature region, otherwise assume PG
+    if (parcel_data.flags & 0x2)
+    {
+        mMaturityRatingIcon->setValue(icon_r);
+        mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_ADULT));
+    }
+    else if (parcel_data.flags & 0x1)
+    {
+        mMaturityRatingIcon->setValue(icon_m);
+        mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_MATURE));
+    }
+    else
+    {
+        mMaturityRatingIcon->setValue(icon_pg);
+        mMaturityRatingText->setText(LLViewerRegion::accessToString(SIM_ACCESS_PG));
+    }
 }
 
 // virtual
-void LLPanelPlaceProfile::onVisibilityChange(BOOL new_visibility)
+void LLPanelPlaceProfile::onVisibilityChange(bool new_visibility)
 {
-	LLPanel::onVisibilityChange(new_visibility);
+    LLPanel::onVisibilityChange(new_visibility);
 
-	LLViewerParcelMgr* parcel_mgr = LLViewerParcelMgr::getInstance();
-	if (!parcel_mgr)
-		return;
+    LLViewerParcelMgr* parcel_mgr = LLViewerParcelMgr::getInstance();
+    if (!parcel_mgr)
+        return;
 
-	// Remove land selection when panel hides.
-	if (!new_visibility)
-	{
-		if (!parcel_mgr->selectionEmpty())
-		{
-			parcel_mgr->deselectUnused();
-		}
-	}
+    // Remove land selection when panel hides.
+    if (!new_visibility)
+    {
+        if (!parcel_mgr->selectionEmpty())
+        {
+            parcel_mgr->deselectUnused();
+        }
+    }
 }
 
 void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
-													LLViewerRegion* region,
-													const LLVector3d& pos_global,
-													bool is_current_parcel)
+                                                    LLViewerRegion* region,
+                                                    const LLVector3d& pos_global,
+                                                    bool is_current_parcel)
 {
 	if (!region || !parcel)
 		return;
@@ -548,7 +548,7 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 	S32 claim_price;
 	S32 rent_price;
 	F32 dwell;
-	BOOL for_sale;
+	bool for_sale;
 	vpm->getDisplayInfo(&area, &claim_price, &rent_price, &for_sale, &dwell);
 	mForSalePanel->setVisible(for_sale);
 	if (for_sale)
@@ -561,7 +561,7 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 			// Show sales info to a specific person or a group he belongs to.
 			if (auth_buyer_id != gAgent.getID() && !gAgent.isInGroup(auth_buyer_id))
 			{
-				for_sale = FALSE;
+				for_sale = false;
 			}
 		}
 		else
@@ -625,17 +625,17 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
 
 void LLPanelPlaceProfile::updateEstateName(const std::string& name)
 {
-	mEstateNameText->setText(name);
+    mEstateNameText->setText(name);
 }
 
 void LLPanelPlaceProfile::updateEstateOwnerName(const std::string& name)
 {
-	mEstateOwnerText->setText(name);
+    mEstateOwnerText->setText(name);
 }
 
 void LLPanelPlaceProfile::updateCovenantText(const std::string &text)
 {
-	mCovenantText->setText(text);
+    mCovenantText->setText(text);
 }
 
 void LLPanelPlaceProfile::onForSaleBannerClick()
@@ -674,20 +674,20 @@ void LLPanelPlaceProfile::onForSaleBannerClick()
 // static
 void LLPanelPlaceProfile::updateYouAreHereBanner(void* userdata)
 {
-	//YouAreHere Banner should be displayed only for selected places,
-	// If you want to display it for landmark or teleport history item, you should check by mParcelId
+    //YouAreHere Banner should be displayed only for selected places,
+    // If you want to display it for landmark or teleport history item, you should check by mParcelId
 
-	LLPanelPlaceProfile* self = static_cast<LLPanelPlaceProfile*>(userdata);
-	if(!self->getVisible())
-		return;
+    LLPanelPlaceProfile* self = static_cast<LLPanelPlaceProfile*>(userdata);
+    if(!self->getVisible())
+        return;
 
-	if(!gDisconnected && gAgent.getRegion())
-	{
-		static F32 radius = gSavedSettings.getF32("YouAreHereDistance");
+    if(!gDisconnected && gAgent.getRegion())
+    {
+        static F32 radius = gSavedSettings.getF32("YouAreHereDistance");
 
-		BOOL display_banner = gAgent.getRegion()->getRegionID() == self->mLastSelectedRegionID &&
-										LLAgentUI::checkAgentDistance(self->mPosRegion, radius);
+        bool display_banner = gAgent.getRegion()->getRegionID() == self->mLastSelectedRegionID &&
+                                        LLAgentUI::checkAgentDistance(self->mPosRegion, radius);
 
-		self->mYouAreHerePanel->setVisible(display_banner);
-	}
+        self->mYouAreHerePanel->setVisible(display_banner);
+    }
 }

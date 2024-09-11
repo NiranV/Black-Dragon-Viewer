@@ -1,31 +1,31 @@
-/** 
+/**
  * @file llspinctrl.cpp
  * @brief LLSpinCtrl base class
  *
  * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
 
 #include "linden_common.h"
- 
+
 #include "llspinctrl.h"
 
 #include "llgl.h"
@@ -49,24 +49,24 @@ const U32 MAX_STRING_LENGTH = 255;
 static LLDefaultChildRegistry::Register<LLSpinCtrl> r2("spinner");
 
 LLSpinCtrl::Params::Params()
-:	label_width("label_width"),
-	decimal_digits("decimal_digits"),
-	allow_text_entry("allow_text_entry", true),
-	allow_digits_only("allow_digits_only", false),
-	label_wrap("label_wrap", false),
-	text_enabled_color("text_enabled_color"),
-	text_disabled_color("text_disabled_color"),
-	up_button("up_button"),
-	down_button("down_button")
+:   label_width("label_width"),
+    decimal_digits("decimal_digits"),
+    allow_text_entry("allow_text_entry", true),
+    allow_digits_only("allow_digits_only", false),
+    label_wrap("label_wrap", false),
+    text_enabled_color("text_enabled_color"),
+    text_disabled_color("text_disabled_color"),
+    up_button("up_button"),
+    down_button("down_button")
 {}
 
 LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
-:	LLF32UICtrl(p),
-	mLabelBox(NULL),
-	mbHasBeenSet( FALSE ),
-	mPrecision(p.decimal_digits),
-	mTextEnabledColor(p.text_enabled_color()),
-	mTextDisabledColor(p.text_disabled_color())
+:   LLF32UICtrl(p),
+    mLabelBox(NULL),
+    mbHasBeenSet( false ),
+    mPrecision(p.decimal_digits),
+    mTextEnabledColor(p.text_enabled_color()),
+    mTextDisabledColor(p.text_disabled_color())
 {
 	static LLUICachedControl<S32> spinctrl_spacing ("UISpinctrlSpacing", 0);
 	static LLUICachedControl<S32> spinctrl_btn_width ("UISpinctrlBtnWidth", 0);
@@ -105,17 +105,17 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
     // Click callback starts within the button and ends within the button,
     // but LLSpinCtrl handles the action continuosly so subsribers needs to
     // be informed about click ending even if outside view, use 'up' instead
-	up_button_params.mouse_up_callback.function(boost::bind(&LLSpinCtrl::onUpBtn, this, _2));
-	up_button_params.mouse_held_callback.function(boost::bind(&LLSpinCtrl::onUpBtn, this, _2));
+    up_button_params.mouse_up_callback.function(boost::bind(&LLSpinCtrl::onUpBtn, this, _2));
+    up_button_params.mouse_held_callback.function(boost::bind(&LLSpinCtrl::onUpBtn, this, _2));
     up_button_params.commit_on_capture_lost = true;
 
-	mUpBtn = LLUICtrlFactory::create<LLButton>(up_button_params);
-	addChild(mUpBtn);
+    mUpBtn = LLUICtrlFactory::create<LLButton>(up_button_params);
+    addChild(mUpBtn);
 
-	LLButton::Params down_button_params(p.down_button);
-	down_button_params.rect = LLRect(btn_left, getRect().getHeight() - spinctrl_btn_height, btn_right, getRect().getHeight() - 2 * spinctrl_btn_height);
-	down_button_params.mouse_up_callback.function(boost::bind(&LLSpinCtrl::onDownBtn, this, _2));
-	down_button_params.mouse_held_callback.function(boost::bind(&LLSpinCtrl::onDownBtn, this, _2));
+    LLButton::Params down_button_params(p.down_button);
+    down_button_params.rect = LLRect(btn_left, getRect().getHeight() - spinctrl_btn_height, btn_right, getRect().getHeight() - 2 * spinctrl_btn_height);
+    down_button_params.mouse_up_callback.function(boost::bind(&LLSpinCtrl::onDownBtn, this, _2));
+    down_button_params.mouse_held_callback.function(boost::bind(&LLSpinCtrl::onDownBtn, this, _2));
     down_button_params.commit_on_capture_lost = true;
 	mDownBtn = LLUICtrlFactory::create<LLButton>(down_button_params);
 	addChild(mDownBtn);
@@ -145,28 +145,28 @@ LLSpinCtrl::LLSpinCtrl(const LLSpinCtrl::Params& p)
 	//RN: this seems to be a BAD IDEA, as it makes the editor behavior different when it has focus
 	// than when it doesn't.  Instead, if you always have to double click to select all the text, 
 	// it's easier to understand
-	//mEditor->setSelectAllonFocusReceived(TRUE);
-	mEditor->setSelectAllonCommit(FALSE);
+	//mEditor->setSelectAllonFocusReceived(true);
+	mEditor->setSelectAllonCommit(false);
 	addChild(mEditor);
 
 	updateEditor();
-	setUseBoundingRect( TRUE );
+	setUseBoundingRect( true );
 }
 
 F32 clamp_precision(F32 value, S32 decimal_precision)
 {
-	// pow() isn't perfect
-	
-	F64 clamped_value = value;
-	for (S32 i = 0; i < decimal_precision; i++)
-		clamped_value *= 10.0;
+    // pow() isn't perfect
 
-	clamped_value = std::round(clamped_value);
+    F64 clamped_value = value;
+    for (S32 i = 0; i < decimal_precision; i++)
+        clamped_value *= 10.0;
 
-	for (S32 i = 0; i < decimal_precision; i++)
-		clamped_value /= 10.0;
-	
-	return (F32)clamped_value;
+    clamped_value = ll_round(clamped_value);
+
+    for (S32 i = 0; i < decimal_precision; i++)
+        clamped_value /= 10.0;
+
+    return (F32)clamped_value;
 }
 
 
@@ -184,7 +184,7 @@ void LLSpinCtrl::onUpBtn( const LLSD& data )
 			// use getValue()/setValue() to force reload from/to control
 			//BD - UI Improvements
 			F32 val = cur_val;
-			MASK mask = gKeyboard->currentMask(FALSE);
+			MASK mask = gKeyboard->currentMask(false);
 			if (MASK_SHIFT & mask)
 			{
 				val += (mIncrement * 10);
@@ -230,7 +230,7 @@ void LLSpinCtrl::onDownBtn( const LLSD& data )
 
 			//BD - UI Improvements
 			F32 val = cur_val;
-			MASK mask = gKeyboard->currentMask(FALSE);
+			MASK mask = gKeyboard->currentMask(false);
 			if (MASK_SHIFT & mask)
 			{
 				val -= (mIncrement * 10);
@@ -269,226 +269,226 @@ void LLSpinCtrl::onDownBtn( const LLSD& data )
 // static
 void LLSpinCtrl::onEditorGainFocus( LLFocusableElement* caller, void *userdata )
 {
-	LLSpinCtrl* self = (LLSpinCtrl*) userdata;
-	llassert( caller == self->mEditor );
+    LLSpinCtrl* self = (LLSpinCtrl*) userdata;
+    llassert( caller == self->mEditor );
 
-	self->onFocusReceived();
+    self->onFocusReceived();
 }
 
 // static
 void LLSpinCtrl::onEditorLostFocus( LLFocusableElement* caller, void *userdata )
 {
-	LLSpinCtrl* self = (LLSpinCtrl*) userdata;
-	llassert( caller == self->mEditor );
+    LLSpinCtrl* self = (LLSpinCtrl*) userdata;
+    llassert( caller == self->mEditor );
 
-	self->onFocusLost();
+    self->onFocusLost();
 
-	std::string text = self->mEditor->getText();
+    std::string text = self->mEditor->getText();
 
-	LLLocale locale(LLLocale::USER_LOCALE);
-	F32 val = (F32)atof(text.c_str());
+    LLLocale locale(LLLocale::USER_LOCALE);
+    F32 val = (F32)atof(text.c_str());
 
-	F32 saved_val = self->getValueF32();
-	if (saved_val != val && !self->mEditor->isDirty())
-	{
-		// Editor was focused when value update arrived, string
-		// in editor is different from one in spin control.
-		// Since editor is not dirty, it won't commit, so either
-		// attempt to commit value from editor or revert to a more
-		// recent value from spin control
-		self->updateEditor();
-	}
+    F32 saved_val = self->getValueF32();
+    if (saved_val != val && !self->mEditor->isDirty())
+    {
+        // Editor was focused when value update arrived, string
+        // in editor is different from one in spin control.
+        // Since editor is not dirty, it won't commit, so either
+        // attempt to commit value from editor or revert to a more
+        // recent value from spin control
+        self->updateEditor();
+    }
 }
 
 void LLSpinCtrl::setValue(const LLSD& value )
 {
-	F32 v = (F32)value.asReal();
-	if (getValueF32() != v || !mbHasBeenSet)
-	{
-		mbHasBeenSet = TRUE;
+    F32 v = (F32)value.asReal();
+    if (getValueF32() != v || !mbHasBeenSet)
+    {
+        mbHasBeenSet = true;
         LLF32UICtrl::setValue(value);
-		
-		if (!mEditor->hasFocus())
-		{
-			updateEditor();
-		}
-	}
+
+        if (!mEditor->hasFocus())
+        {
+            updateEditor();
+        }
+    }
 }
 
 //no matter if Editor has the focus, update the value
 void LLSpinCtrl::forceSetValue(const LLSD& value )
 {
-	F32 v = (F32)value.asReal();
-	if (getValueF32() != v || !mbHasBeenSet)
-	{
-		mbHasBeenSet = TRUE;
+    F32 v = (F32)value.asReal();
+    if (getValueF32() != v || !mbHasBeenSet)
+    {
+        mbHasBeenSet = true;
         LLF32UICtrl::setValue(value);
-		
-		updateEditor();
-		mEditor->resetScrollPosition();
-	}
+
+        updateEditor();
+        mEditor->resetScrollPosition();
+    }
 }
 
 void LLSpinCtrl::clear()
 {
-	setValue(mMinValue);
-	mEditor->clear();
-	mbHasBeenSet = FALSE;
+    setValue(mMinValue);
+    mEditor->clear();
+    mbHasBeenSet = false;
 }
 
 void LLSpinCtrl::updateLabelColor()
 {
-	if( mLabelBox )
-	{
-		mLabelBox->setColor( getEnabled() ? mTextEnabledColor.get() : mTextDisabledColor.get() );
-	}
+    if( mLabelBox )
+    {
+        mLabelBox->setColor( getEnabled() ? mTextEnabledColor.get() : mTextDisabledColor.get() );
+    }
 }
 
 void LLSpinCtrl::updateEditor()
 {
-	LLLocale locale(LLLocale::USER_LOCALE);
+    LLLocale locale(LLLocale::USER_LOCALE);
 
-	// Don't display very small negative valu	es as -0.000
-	F32 displayed_value = clamp_precision((F32)getValue().asReal(), mPrecision);
+    // Don't display very small negative valu   es as -0.000
+    F32 displayed_value = clamp_precision((F32)getValue().asReal(), mPrecision);
 
-//	if( S32( displayed_value * pow( 10, mPrecision ) ) == 0 )
-//	{
-//		displayed_value = 0.f;
-//	}
+//  if( S32( displayed_value * pow( 10, mPrecision ) ) == 0 )
+//  {
+//      displayed_value = 0.f;
+//  }
 
-	std::string format = llformat("%%.%df", mPrecision);
-	std::string text = llformat(format.c_str(), displayed_value);
-	mEditor->setText( text );
+    std::string format = llformat("%%.%df", mPrecision);
+    std::string text = llformat(format.c_str(), displayed_value);
+    mEditor->setText( text );
 }
 
 void LLSpinCtrl::onEditorCommit( const LLSD& data )
 {
-	BOOL success = FALSE;
-	
-	if( mEditor->evaluateFloat() )
-	{
-		std::string text = mEditor->getText();
+    bool success = false;
 
-		LLLocale locale(LLLocale::USER_LOCALE);
-		F32 val = (F32) atof(text.c_str());
+    if( mEditor->evaluateFloat() )
+    {
+        std::string text = mEditor->getText();
 
-		if (val < mMinValue) val = mMinValue;
-		if (val > mMaxValue) val = mMaxValue;
+        LLLocale locale(LLLocale::USER_LOCALE);
+        F32 val = (F32) atof(text.c_str());
 
-		F32 saved_val = getValueF32();
-		setValue(val);
-		if( !mValidateSignal || (*mValidateSignal)( this, val ) )
-		{
-			success = TRUE;
-			onCommit();
-		}
-		else
-		{
-			setValue(saved_val);
-		}
-	}
-	updateEditor();
+        if (val < mMinValue) val = mMinValue;
+        if (val > mMaxValue) val = mMaxValue;
 
-	if( success )
-	{
-		// We commited and clamped value
-		// try to display as much as possible
-		mEditor->resetScrollPosition();
-	}
-	else
-	{
-		reportInvalidData();		
-	}
+        F32 saved_val = getValueF32();
+        setValue(val);
+        if( !mValidateSignal || (*mValidateSignal)( this, val ) )
+        {
+            success = true;
+            onCommit();
+        }
+        else
+        {
+            setValue(saved_val);
+        }
+    }
+    updateEditor();
+
+    if( success )
+    {
+        // We commited and clamped value
+        // try to display as much as possible
+        mEditor->resetScrollPosition();
+    }
+    else
+    {
+        reportInvalidData();
+    }
 }
 
 
 void LLSpinCtrl::forceEditorCommit()
 {
-	onEditorCommit( LLSD() );
+    onEditorCommit( LLSD() );
 }
 
 
-void LLSpinCtrl::setFocus(BOOL b)
+void LLSpinCtrl::setFocus(bool b)
 {
-	LLUICtrl::setFocus( b );
-	mEditor->setFocus( b );
+    LLUICtrl::setFocus( b );
+    mEditor->setFocus( b );
 }
 
-void LLSpinCtrl::setEnabled(BOOL b)
+void LLSpinCtrl::setEnabled(bool b)
 {
-	LLView::setEnabled( b );
-	mEditor->setEnabled( b );
-	updateLabelColor();
-}
-
-
-void LLSpinCtrl::setTentative(BOOL b)
-{
-	mEditor->setTentative(b);
-	LLUICtrl::setTentative(b);
+    LLView::setEnabled( b );
+    mEditor->setEnabled( b );
+    updateLabelColor();
 }
 
 
-BOOL LLSpinCtrl::isMouseHeldDown() const
+void LLSpinCtrl::setTentative(bool b)
 {
-	return 
-		mDownBtn->hasMouseCapture()
-		|| mUpBtn->hasMouseCapture();
+    mEditor->setTentative(b);
+    LLUICtrl::setTentative(b);
+}
+
+
+bool LLSpinCtrl::isMouseHeldDown() const
+{
+    return
+        mDownBtn->hasMouseCapture()
+        || mUpBtn->hasMouseCapture();
 }
 
 void LLSpinCtrl::onCommit()
 {
-	setTentative(FALSE);
-	setControlValue(getValueF32());
-	LLF32UICtrl::onCommit();
+    setTentative(false);
+    setControlValue(getValueF32());
+    LLF32UICtrl::onCommit();
 }
 
 
 void LLSpinCtrl::setPrecision(S32 precision)
 {
-	if (precision < 0 || precision > 10)
-	{
-		LL_ERRS() << "LLSpinCtrl::setPrecision - precision out of range" << LL_ENDL;
-		return;
-	}
+    if (precision < 0 || precision > 10)
+    {
+        LL_ERRS() << "LLSpinCtrl::setPrecision - precision out of range" << LL_ENDL;
+        return;
+    }
 
-	mPrecision = precision;
-	updateEditor();
+    mPrecision = precision;
+    updateEditor();
 }
 
 void LLSpinCtrl::setLabel(const LLStringExplicit& label)
 {
-	if (mLabelBox)
-	{
-		mLabelBox->setText(label);
-	}
-	else
-	{
-		LL_WARNS() << "Attempting to set label on LLSpinCtrl constructed without one " << getName() << LL_ENDL;
-	}
-	updateLabelColor();
+    if (mLabelBox)
+    {
+        mLabelBox->setText(label);
+    }
+    else
+    {
+        LL_WARNS() << "Attempting to set label on LLSpinCtrl constructed without one " << getName() << LL_ENDL;
+    }
+    updateLabelColor();
 }
 
-void LLSpinCtrl::setAllowEdit(BOOL allow_edit)
+void LLSpinCtrl::setAllowEdit(bool allow_edit)
 {
-	mEditor->setEnabled(allow_edit);
-	mAllowEdit = allow_edit;
+    mEditor->setEnabled(allow_edit);
+    mAllowEdit = allow_edit;
 }
 
 void LLSpinCtrl::onTabInto()
 {
-	mEditor->onTabInto();
+    mEditor->onTabInto();
     LLF32UICtrl::onTabInto();
 }
 
 
 void LLSpinCtrl::reportInvalidData()
 {
-	make_ui_sound("UISndBadKeystroke");
+    make_ui_sound("UISndBadKeystroke");
 }
 
 //BD - UI Improvements
-BOOL LLSpinCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLSpinCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	if ((MASK_SHIFT | MASK_CONTROL) & mask)
 	{
@@ -497,15 +497,15 @@ BOOL LLSpinCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		{
 			control->resetToDefault(true);
 			make_ui_sound("UISndClick");
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 //BD - UI Improvements
-BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
+bool LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if( (MASK_CONTROL & mask) )
 	{
@@ -514,43 +514,43 @@ BOOL LLSpinCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 			while( clicks-- )
 			{
 				onDownBtn(getValue());
-				return TRUE;
+				return true;
 			}
 		}
 		else
 		while( clicks++ )
 		{
 			onUpBtn(getValue());
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
-BOOL LLSpinCtrl::handleKeyHere(KEY key, MASK mask)
+bool LLSpinCtrl::handleKeyHere(KEY key, MASK mask)
 {
-	if (mEditor->hasFocus())
-	{
-		if(key == KEY_ESCAPE)
-		{
-			// text editors don't support revert normally (due to user confusion)
-			// but not allowing revert on a spinner seems dangerous
-			updateEditor();
-			mEditor->resetScrollPosition();
-			mEditor->setFocus(FALSE);
-			return TRUE;
-		}
-		if(key == KEY_UP)
-		{
-			onUpBtn(getValue());
-			return TRUE;
-		}
-		if(key == KEY_DOWN)
-		{
-			onDownBtn(getValue());
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if (mEditor->hasFocus())
+    {
+        if(key == KEY_ESCAPE)
+        {
+            // text editors don't support revert normally (due to user confusion)
+            // but not allowing revert on a spinner seems dangerous
+            updateEditor();
+            mEditor->resetScrollPosition();
+            mEditor->setFocus(false);
+            return true;
+        }
+        if(key == KEY_UP)
+        {
+            onUpBtn(getValue());
+            return true;
+        }
+        if(key == KEY_DOWN)
+        {
+            onDownBtn(getValue());
+            return true;
+        }
+    }
+    return false;
 }
 

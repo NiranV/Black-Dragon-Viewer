@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llpanelland.cpp
  * @brief Land information in the tool floater, NOT the "About Land" floater
  *
  * $LicenseInfo:firstyear=2002&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -50,19 +50,19 @@ LLPanelLandInfo* LLPanelLandInfo::sInstance = NULL;
 class LLPanelLandSelectObserver : public LLParcelObserver
 {
 public:
-	LLPanelLandSelectObserver() {}
-	virtual ~LLPanelLandSelectObserver() {}
-	virtual void changed() { LLPanelLandInfo::refreshAll(); }
+    LLPanelLandSelectObserver() {}
+    virtual ~LLPanelLandSelectObserver() {}
+    virtual void changed() { LLPanelLandInfo::refreshAll(); }
 };
 
 
-BOOL	LLPanelLandInfo::postBuild()
+bool    LLPanelLandInfo::postBuild()
 {
-	childSetAction("button buy land",boost::bind(onClickClaim));
-	childSetAction("button abandon land", boost::bind(onClickRelease));
-	childSetAction("button subdivide land", boost::bind(onClickDivide));
-	childSetAction("button join land", boost::bind(onClickJoin));
-	childSetAction("button about land", boost::bind(onClickAbout));
+    childSetAction("button buy land",boost::bind(onClickClaim));
+    childSetAction("button abandon land", boost::bind(onClickRelease));
+    childSetAction("button subdivide land", boost::bind(onClickDivide));
+    childSetAction("button join land", boost::bind(onClickJoin));
+    childSetAction("button about land", boost::bind(onClickAbout));
 
 	mCheckShowOwners = getChild<LLCheckBoxCtrl>("checkbox show owners");
 
@@ -76,24 +76,24 @@ BOOL	LLPanelLandInfo::postBuild()
 	mBtnJoinLand = getChild<LLButton>("button join land");
 	mBtnAboutLand = getChild<LLButton>("button about land");
 
-	return TRUE;
+    return true;
 }
 //
 // Methods
 //
 LLPanelLandInfo::LLPanelLandInfo()
-:	LLPanel(),
-	mCheckShowOwners(NULL)
+:   LLPanel(),
+    mCheckShowOwners(NULL)
 {
-	if (!sInstance)
-	{
-		sInstance = this;
-	}
-	if (!sObserver)
-	{
-		sObserver = new LLPanelLandSelectObserver();
-		LLViewerParcelMgr::getInstance()->addObserver( sObserver );
-	}
+    if (!sInstance)
+    {
+        sInstance = this;
+    }
+    if (!sObserver)
+    {
+        sObserver = new LLPanelLandSelectObserver();
+        LLViewerParcelMgr::getInstance()->addObserver( sObserver );
+    }
 
 }
 
@@ -101,21 +101,21 @@ LLPanelLandInfo::LLPanelLandInfo()
 // virtual
 LLPanelLandInfo::~LLPanelLandInfo()
 {
-	LLViewerParcelMgr::getInstance()->removeObserver( sObserver );
-	delete sObserver;
-	sObserver = NULL;
+    LLViewerParcelMgr::getInstance()->removeObserver( sObserver );
+    delete sObserver;
+    sObserver = NULL;
 
-	sInstance = NULL;
+    sInstance = NULL;
 }
 
 
 // static
 void LLPanelLandInfo::refreshAll()
 {
-	if (sInstance)
-	{
-		sInstance->refresh();
-	}
+    if (sInstance)
+    {
+        sInstance->refresh();
+    }
 }
 
 
@@ -133,11 +133,11 @@ void LLPanelLandInfo::refresh()
 		
 		mLabelPrice->setValue(LLStringUtil::null);
 
-		mBtnBuyLand->setEnabled(FALSE);
-		mBtnAbandonLand->setEnabled(FALSE);
-		mBtnSubdivideLand->setEnabled(FALSE);
-		mBtnJoinLand->setEnabled(FALSE);
-		mBtnAboutLand->setEnabled(FALSE);
+		mBtnBuyLand->setEnabled(false);
+		mBtnAbandonLand->setEnabled(false);
+		mBtnSubdivideLand->setEnabled(false);
+		mBtnJoinLand->setEnabled(false);
+		mBtnAboutLand->setEnabled(false);
 	}
 	else
 	{
@@ -145,30 +145,30 @@ void LLPanelLandInfo::refresh()
 		const LLUUID& owner_id = parcel->getOwnerID();
 		const LLUUID& auth_buyer_id = parcel->getAuthorizedBuyerID();
 
-		BOOL is_public = parcel->isPublic();
-		BOOL is_for_sale = parcel->getForSale()
+		bool is_public = parcel->isPublic();
+		bool is_for_sale = parcel->getForSale()
 			&& ((parcel->getSalePrice() > 0) || (auth_buyer_id.notNull()));
-		BOOL can_buy = (is_for_sale
+		bool can_buy = (is_for_sale
 						&& (owner_id != gAgent.getID())
 						&& ((gAgent.getID() == auth_buyer_id)
 							|| (auth_buyer_id.isNull())));
 			
 		if (is_public && !LLViewerParcelMgr::getInstance()->getParcelSelection()->getMultipleOwners())
 		{
-			mBtnBuyLand->setEnabled(TRUE);
+			mBtnBuyLand->setEnabled(true);
 		}
 		else
 		{
 			mBtnBuyLand->setEnabled(can_buy);
 		}
 
-		BOOL owner_release = LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_RELEASE);
-		BOOL owner_divide =  LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_DIVIDE_JOIN);
+		bool owner_release = LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_RELEASE);
+		bool owner_divide =  LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_DIVIDE_JOIN);
 
-		BOOL manager_releaseable = ( gAgent.canManageEstate()
+		bool manager_releaseable = ( gAgent.canManageEstate()
 								  && (parcel->getOwnerID() == regionp->getOwner()) );
 		
-		BOOL manager_divideable = ( gAgent.canManageEstate()
+		bool manager_divideable = ( gAgent.canManageEstate()
 								&& ((parcel->getOwnerID() == regionp->getOwner()) || owner_divide) );
 
 		mBtnAbandonLand->setEnabled(owner_release || manager_releaseable || gAgent.isGodlike());
@@ -191,21 +191,21 @@ void LLPanelLandInfo::refresh()
 			//&& LLViewerParcelMgr::getInstance()->getSelfCount() > 1
 			&& !LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
 		{
-			mBtnJoinLand->setEnabled(TRUE);
+			mBtnJoinLand->setEnabled(true);
 		}
 		else
 		{
-			mBtnJoinLand->setEnabled(FALSE);
+			mBtnJoinLand->setEnabled(false);
 			// _LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
 		}
 
-		mBtnAboutLand->setEnabled(TRUE);
+		mBtnAboutLand->setEnabled(true);
 
 		// show pricing information
 		S32 area;
 		S32 claim_price;
 		S32 rent_price;
-		BOOL for_sale;
+		bool for_sale;
 		F32 dwell;
 		LLViewerParcelMgr::getInstance()->getDisplayInfo(&area,
 								   &claim_price,
@@ -232,36 +232,36 @@ void LLPanelLandInfo::refresh()
 //static
 void LLPanelLandInfo::onClickClaim()
 {
-	LLViewerParcelMgr::getInstance()->startBuyLand();
+    LLViewerParcelMgr::getInstance()->startBuyLand();
 }
 
 
 //static
 void LLPanelLandInfo::onClickRelease()
 {
-	LLViewerParcelMgr::getInstance()->startReleaseLand();
+    LLViewerParcelMgr::getInstance()->startReleaseLand();
 }
 
 // static
 void LLPanelLandInfo::onClickDivide()
 {
-	LLViewerParcelMgr::getInstance()->startDivideLand();
+    LLViewerParcelMgr::getInstance()->startDivideLand();
 }
 
 // static
 void LLPanelLandInfo::onClickJoin()
 {
-	LLViewerParcelMgr::getInstance()->startJoinLand();
+    LLViewerParcelMgr::getInstance()->startJoinLand();
 }
 
 //static
 void LLPanelLandInfo::onClickAbout()
 {
-	// Promote the rectangle selection to a parcel selection
-	if (!LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
-	{
-		LLViewerParcelMgr::getInstance()->selectParcelInRectangle();
-	}
+    // Promote the rectangle selection to a parcel selection
+    if (!LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
+    {
+        LLViewerParcelMgr::getInstance()->selectParcelInRectangle();
+    }
 
-	LLFloaterReg::showInstance("about_land");
+    LLFloaterReg::showInstance("about_land");
 }

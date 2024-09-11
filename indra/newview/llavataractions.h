@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llavataractions.h
  * @brief Friend-related actions (add, remove, offer teleport, etc)
  *
  * $LicenseInfo:firstyear=2009&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -108,31 +108,31 @@ public:
     static bool isPickTabSelected(const LLUUID& avatar_id);
     static LLFloater* getProfileFloater(const LLUUID& avatar_id);
 
-	/**
-	 * Show avatar on world map.
-	 */
-	static void showOnMap(const LLUUID& id);
+    /**
+     * Show avatar on world map.
+     */
+    static void showOnMap(const LLUUID& id);
 
-	/**
-	 * Give money to the avatar.
-	 */
-	static void pay(const LLUUID& id);
+    /**
+     * Give money to the avatar.
+     */
+    static void pay(const LLUUID& id);
 
-	/**
-	 * Request teleport from other avatar
-	 */
-	static void teleportRequest(const LLUUID& id);
-	static void teleport_request_callback(const LLSD& notification, const LLSD& response);
+    /**
+     * Request teleport from other avatar
+     */
+    static void teleportRequest(const LLUUID& id);
+    static void teleport_request_callback(const LLSD& notification, const LLSD& response);
 
-	/**
-	 * Share items with the avatar.
-	 */
-	static void share(const LLUUID& id);
+    /**
+     * Share items with the avatar.
+     */
+    static void share(const LLUUID& id);
 
-	/**
-	 * Share items with the picked avatars.
-	 */
-	static void shareWithAvatars(LLView * panel);
+    /**
+     * Share items with the picked avatars.
+     */
+    static void shareWithAvatars(LLView * panel);
     static void shareWithAvatars(const uuid_set_t inventory_selected_uuids, LLFloater* root_floater);
 
 	/**
@@ -269,20 +269,20 @@ public:
 	static void empower(const uuid_vec_t& ids, S32 power);
 
 private:
-	static bool callbackAddFriendWithMessage(const LLSD& notification, const LLSD& response);
-	static bool handleRemove(const LLSD& notification, const LLSD& response);
-	static bool handlePay(const LLSD& notification, const LLSD& response, LLUUID avatar_id);
-	static bool handleFreezeAvatar(const LLSD& notification, const LLSD& response);
-	static bool handleEjectAvatar(const LLSD& notification, const LLSD& response);
-	static bool handleKick(const LLSD& notification, const LLSD& response);
-	static bool handleFreeze(const LLSD& notification, const LLSD& response);
-	static bool handleUnfreeze(const LLSD& notification, const LLSD& response);
-	static void callback_invite_to_group(LLUUID group_id, LLUUID id);
-	//BD - Allow adding multiple friends at the same time.
+    static bool callbackAddFriendWithMessage(const LLSD& notification, const LLSD& response);
+    static bool handleRemove(const LLSD& notification, const LLSD& response);
+    static bool handlePay(const LLSD& notification, const LLSD& response, LLUUID avatar_id);
+    static bool handleFreezeAvatar(const LLSD& notification, const LLSD& response);
+    static bool handleEjectAvatar(const LLSD& notification, const LLSD& response);
+    static bool handleKick(const LLSD& notification, const LLSD& response);
+    static bool handleFreeze(const LLSD& notification, const LLSD& response);
+    static bool handleUnfreeze(const LLSD& notification, const LLSD& response);
+    static void callback_invite_to_group(LLUUID group_id, LLUUID id);
+    //BD - Allow adding multiple friends at the same time.
 	static bool handleAdd(const LLSD& notification, const LLSD& response);
 
-	// Just request friendship, no dialog.
-	static void requestFriendship(const LLUUID& target_id, const std::string& target_name, const std::string& message);
+    // Just request friendship, no dialog.
+    static void requestFriendship(const LLUUID& target_id, const std::string& target_name, const std::string& message);
 };
 
 #endif // LL_LLAVATARACTIONS_H

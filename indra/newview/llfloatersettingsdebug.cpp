@@ -1,25 +1,25 @@
-/** 
+/**
  * @file llfloatersettingsdebug.cpp
  * @brief floater for debugging internal viewer settings
  *
  * $LicenseInfo:firstyear=2022&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2022, Linden Research, Inc.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation;
  * version 2.1 of the License only.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
  * $/LicenseInfo$
  */
@@ -39,18 +39,18 @@
 #include "lltexteditor.h"
 
 
-LLFloaterSettingsDebug::LLFloaterSettingsDebug(const LLSD& key) 
+LLFloaterSettingsDebug::LLFloaterSettingsDebug(const LLSD& key)
 :   LLFloater(key),
     mSettingList(NULL)
 {
-	mCommitCallbackRegistrar.add("CommitSettings",	boost::bind(&LLFloaterSettingsDebug::onCommitSettings, this));
-	mCommitCallbackRegistrar.add("ClickDefault",	boost::bind(&LLFloaterSettingsDebug::onClickDefault, this));
+    mCommitCallbackRegistrar.add("CommitSettings",  boost::bind(&LLFloaterSettingsDebug::onCommitSettings, this));
+    mCommitCallbackRegistrar.add("ClickDefault",    boost::bind(&LLFloaterSettingsDebug::onClickDefault, this));
 }
 
 LLFloaterSettingsDebug::~LLFloaterSettingsDebug()
 {}
 
-BOOL LLFloaterSettingsDebug::postBuild()
+bool LLFloaterSettingsDebug::postBuild()
 {
 	mBool = getChild<LLUICtrl>("boolean_combo");
 	mText = getChild<LLUICtrl>("val_text");
@@ -65,13 +65,14 @@ BOOL LLFloaterSettingsDebug::postBuild()
     getChild<LLFilterEditor>("filter_input")->setCommitCallback(boost::bind(&LLFloaterSettingsDebug::setSearchFilter, this, _2));
 
     mSettingList = getChild<LLScrollListCtrl>("setting_list");
-    mSettingList->setCommitOnSelectionChange(TRUE);
+    mSettingList->setCommitOnSelectionChange(true);
     mSettingList->setCommitCallback(boost::bind(&LLFloaterSettingsDebug::onSettingSelect, this));
 
     updateList();
 
     gSavedSettings.getControl("DebugSettingsHideDefault")->getCommitSignal()->connect(boost::bind(&LLFloaterSettingsDebug::updateList, this, false));
-	return TRUE;
+
+    return true;
 }
 
 void LLFloaterSettingsDebug::draw()
@@ -83,7 +84,7 @@ void LLFloaterSettingsDebug::draw()
         updateControl(controlp);
     }
 
-	LLFloater::draw();
+    LLFloater::draw();
 }
 
 void LLFloaterSettingsDebug::onCommitSettings()
@@ -288,7 +289,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		switch(type)
 		{
 		  case TYPE_U32:
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("value")); // Debug, don't translate
 			if (!mValX->hasFocus())
 			{
@@ -300,7 +301,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			}
 			break;
 		  case TYPE_S32:
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("value")); // Debug, don't translate
 			if (!mValX->hasFocus())
 			{
@@ -312,7 +313,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			}
 			break;
 		  case TYPE_F32:
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("value")); // Debug, don't translate
 			if (!mValX->hasFocus())
 			{
@@ -334,7 +335,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 			}
 			break;
 		  case TYPE_STRING:
-			  mText->setVisible(TRUE);
+			  mText->setVisible(true);
 			  if (!mText->hasFocus())
 			{
 				mText->setValue(sd);
@@ -344,11 +345,11 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			LLVector3 v;
 			v.setValue(sd);
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("X"));
-			mValY->setVisible(TRUE);
+			mValY->setVisible(true);
 			mValY->setLabel(std::string("Y"));
-			mValZ->setVisible(TRUE);
+			mValZ->setVisible(true);
 			mValZ->setLabel(std::string("Z"));
 			if (!mValX->hasFocus())
 			{
@@ -371,11 +372,11 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			LLVector3d v;
 			v.setValue(sd);
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("X"));
-			mValY->setVisible(TRUE);
+			mValY->setVisible(true);
 			mValY->setLabel(std::string("Y"));
-			mValZ->setVisible(TRUE);
+			mValZ->setVisible(true);
 			mValZ->setLabel(std::string("Z"));
 			if (!mValX->hasFocus())
 			{
@@ -398,13 +399,13 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			  LLQuaternion q;
 			  q.setValue(sd);
-			  mValX->setVisible(TRUE);
+			  mValX->setVisible(true);
 			  mValX->setLabel(std::string("X"));
-			  mValY->setVisible(TRUE);
+			  mValY->setVisible(true);
 			  mValY->setLabel(std::string("Y"));
-			  mValZ->setVisible(TRUE);
+			  mValZ->setVisible(true);
 			  mValZ->setLabel(std::string("Z"));
-			  mValW->setVisible(TRUE);
+			  mValW->setVisible(true);
 			  mValW->setLabel(std::string("S"));
 			  if (!mValX->hasFocus())
 			  {
@@ -432,13 +433,13 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			LLRect r;
 			r.setValue(sd);
-			mValX->setVisible(TRUE);
+			mValX->setVisible(true);
 			mValX->setLabel(std::string("Left"));
-			mValY->setVisible(TRUE);
+			mValY->setVisible(true);
 			mValY->setLabel(std::string("Right"));
-			mValZ->setVisible(TRUE);
+			mValZ->setVisible(true);
 			mValZ->setLabel(std::string("Bottom"));
-			mValW->setVisible(TRUE);
+			mValW->setVisible(true);
 			mValW->setLabel(std::string("Top"));
 			if (!mValX->hasFocus())
 			{
@@ -482,13 +483,13 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			LLColor4 clr;
 			clr.setValue(sd);
-			mColor->setVisible(TRUE);
+			mColor->setVisible(true);
 			// only set if changed so color picker doesn't update
 			if (clr != LLColor4(mColor->getValue()))
 			{
-				mColor->set(LLColor4(sd), TRUE, FALSE);
+				mColor->set(LLColor4(sd), true, false);
 			}
-			mValZ->setVisible(TRUE);
+			mValZ->setVisible(true);
 			mValZ->setLabel(std::string("Alpha"));
 			if (!mValZ->hasFocus())
 			{
@@ -503,7 +504,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			LLColor3 clr;
 			clr.setValue(sd);
-			mColor->setVisible(TRUE);
+			mColor->setVisible(true);
 			mColor->setValue(sd);
 			break;
 		  }
@@ -512,9 +513,9 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			  LLVector2 v;
 			  v.setValue(sd);
-			  mValX->setVisible(TRUE);
+			  mValX->setVisible(true);
 			  mValX->setLabel(std::string("X"));
-			  mValY->setVisible(TRUE);
+			  mValY->setVisible(true);
 			  mValY->setLabel(std::string("Y"));
 			  if (!mValX->hasFocus())
 			  {
@@ -533,14 +534,14 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 		  {
 			  LLVector4 v;
 			  v.setValue(sd);
-			  mValX->setVisible(TRUE);
+			  mValX->setVisible(true);
 			  mValX->setLabel(std::string("X"));
-			  mValY->setVisible(TRUE);
+			  mValY->setVisible(true);
 			  mValY->setLabel(std::string("Y"));
-			  mValZ->setVisible(TRUE);
+			  mValZ->setVisible(true);
 			  mValZ->setLabel(std::string("Z"));
 //			  //BD - Vector4
-			  mValW->setVisible(TRUE);
+			  mValW->setVisible(true);
 			  mValW->setLabel(std::string("W"));
 			  if (!mValX->hasFocus())
 			  {
@@ -602,7 +603,7 @@ void LLFloaterSettingsDebug::updateList(bool skip_selection)
         LLFloaterSettingsDebug* floater;
         std::string selected_setting;
         bool skip_selection;
-        f(LLScrollListCtrl* list, LLFloaterSettingsDebug* floater, std::string setting, bool skip_selection) 
+        f(LLScrollListCtrl* list, LLFloaterSettingsDebug* floater, std::string setting, bool skip_selection)
             : setting_list(list), floater(floater), selected_setting(setting), skip_selection(skip_selection) {}
         virtual void apply(const std::string& name, LLControlVariable* control)
         {

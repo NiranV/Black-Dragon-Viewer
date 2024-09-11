@@ -411,11 +411,24 @@ bool LLImageJ2COJ::encodeImpl(LLImageJ2C& base, const LLImageRaw& raw_image, con
 
 inline S32 extractLong4(U8 const* aBuffer, int nOffset)
 {
-	S32 ret = aBuffer[nOffset] << 24;
-	ret += aBuffer[nOffset + 1] << 16;
-	ret += aBuffer[nOffset + 2] << 8;
-	ret += aBuffer[nOffset + 3];
-	return ret;
+    JPEG2KBase* jpeg_codec = static_cast<JPEG2KBase*>(user_data);
+    jpeg_codec->offset += bytes;
+
+    if (jpeg_codec->offset > (OPJ_OFF_T)jpeg_codec->size)
+    {
+        jpeg_codec->offset = jpeg_codec->size;
+        // Indicate end of stream
+        return (OPJ_OFF_T)-1;
+    }
+
+    if (jpeg_codec->offset < 0)
+    {
+        // Shouldn't be possible?
+        jpeg_codec->offset = 0;
+        return (OPJ_OFF_T)-1;
+    }
+
+    return bytes;
 }
 
 inline S32 extractShort2(U8 const* aBuffer, int nOffset)
@@ -438,18 +451,305 @@ inline bool isSIZ(U8 const* aBuffer)
 
 bool getMetadataFast(LLImageJ2C& aImage, S32& aW, S32& aH, S32& aComps)
 {
-	const int J2K_HDR_LEN(42);
-	const int J2K_HDR_X1(8);
-	const int J2K_HDR_Y1(12);
-	const int J2K_HDR_X0(16);
-	const int J2K_HDR_Y0(20);
-	const int J2K_HDR_NUMCOMPS(40);
+public:
+    const OPJ_UINT32 TILE_SIZE = 64 * 64 * 3;
+
+    JPEG2KEncode(const char* comment_text_in, bool reversible)
+    {
+        memset(&parameters, 0, sizeof(opj_cparameters_t));
+        memset(&event_mgr, 0, sizeof(opj_event_mgr_t));
+        event_mgr.error_handler = error_callback;
+        event_mgr.warning_handler = warning_callback;
+        event_mgr.info_handler = info_callback;
+
+        opj_set_default_encoder_parameters(&parameters);
+        parameters.cod_format = OPJ_CODEC_J2K;
+        parameters.cp_disto_alloc = 1;
+        parameters.max_cs_size = (1 << 15);
+
+        if (reversible)
+        {
+            parameters.tcp_numlayers = 1;
+            parameters.tcp_rates[0] = 1.0f;
+        }
+        else
+        {
+            parameters.tcp_numlayers = 5;
+            parameters.tcp_rates[0] = 1920.0f;
+            parameters.tcp_rates[1] = 960.0f;
+            parameters.tcp_rates[2] = 480.0f;
+            parameters.tcp_rates[3] = 120.0f;
+            parameters.tcp_rates[4] = 30.0f;
+            parameters.irreversible = 1;
+            parameters.tcp_mct = 1;
+        }
+
+        if (comment_text)
+        {
+            free(comment_text);
+        }
+        comment_text = comment_text_in ? strdup(comment_text_in) : nullptr;
+
+        parameters.cp_comment = comment_text ? comment_text : (char*)"no comment";
+        llassert(parameters.cp_comment);
+    }
+
+    ~JPEG2KEncode()
+    {
+        if (encoder)
+        {
+            opj_destroy_codec(encoder);
+        }
+        encoder = nullptr;
+
+        if (image)
+        {
+            opj_image_destroy(image);
+        }
+        image = nullptr;
+
+        if (stream)
+        {
+            opj_stream_destroy(stream);
+        }
+        stream = nullptr;
+
+        if (comment_text)
+        {
+            free(comment_text);
+        }
+        comment_text = nullptr;
+    }
+
+    bool encode(const LLImageRaw& rawImageIn, LLImageJ2C &compressedImageOut)
+    {
+        LLImageDataSharedLock lockIn(&rawImageIn);
+        LLImageDataLock lockOut(&compressedImageOut);
+
+        setImage(rawImageIn);
+
+        encoder = opj_create_compress(OPJ_CODEC_J2K);
+
+        parameters.tcp_mct = (image->numcomps >= 3) ? 1 : 0;
+        parameters.cod_format = OPJ_CODEC_J2K;
+        parameters.prog_order = OPJ_RLCP;
+        parameters.cp_disto_alloc = 1;
+
+        if (!opj_setup_encoder(encoder, &parameters, image))
+        {
+            return false;
+        }
+
+        opj_set_info_handler(encoder, opj_info, this);
+        opj_set_warning_handler(encoder, opj_warn, this);
+        opj_set_error_handler(encoder, opj_error, this);
+
+        U32 tile_count = (rawImageIn.getWidth() >> 6) * (rawImageIn.getHeight() >> 6);
+        U32 data_size_guess = tile_count * TILE_SIZE;
+
+        // will be freed in opj_free_user_data_write
+        buffer = (U8*)ll_aligned_malloc_16(data_size_guess);
+        size = data_size_guess;
+        offset = 0;
+
+        memset(buffer, 0, data_size_guess);
+
+        if (stream)
+        {
+            opj_stream_destroy(stream);
+        }
+
+        stream = opj_stream_create(data_size_guess, false);
+        if (!stream)
+        {
+            return false;
+        }
+
+        opj_stream_set_user_data(stream, this, opj_free_user_data_write);
+        opj_stream_set_user_data_length(stream, data_size_guess);
+        opj_stream_set_read_function(stream, opj_read);
+        opj_stream_set_write_function(stream, opj_write);
+        opj_stream_set_skip_function(stream, opj_skip);
+        opj_stream_set_seek_function(stream, opj_seek);
+
+        OPJ_bool started = opj_start_compress(encoder, image, stream);
+
+        if (!started)
+        {
+            return false;
+        }
+
+        if (!opj_encode(encoder, stream))
+        {
+            return false;
+        }
+
+        OPJ_bool encoded = opj_end_compress(encoder, stream);
+
+        // if we successfully encoded, then stream out the compressed data...
+        if (encoded)
+        {
+            // "append" (set) the data we "streamed" (memcopied) for writing to the formatted image
+            // with side-effect of setting the actually encoded size  to same
+            compressedImageOut.allocateData(offset);
+            memcpy(compressedImageOut.getData(), buffer, offset);
+            compressedImageOut.updateData(); // update width, height etc from header
+        }
+        return encoded;
+    }
+
+    void setImage(const LLImageRaw& raw)
+    {
+        opj_image_cmptparm_t cmptparm[MAX_ENCODED_DISCARD_LEVELS];
+        memset(&cmptparm[0], 0, MAX_ENCODED_DISCARD_LEVELS * sizeof(opj_image_cmptparm_t));
+
+        S32 numcomps = raw.getComponents();
+        S32 width = raw.getWidth();
+        S32 height = raw.getHeight();
+
+        for (S32 c = 0; c < numcomps; c++)
+        {
+            cmptparm[c].prec = 8;
+            cmptparm[c].bpp = 8;
+            cmptparm[c].sgnd = 0;
+            cmptparm[c].dx = parameters.subsampling_dx;
+            cmptparm[c].dy = parameters.subsampling_dy;
+            cmptparm[c].w = width;
+            cmptparm[c].h = height;
+        }
+
+        image = opj_image_create(numcomps, &cmptparm[0], OPJ_CLRSPC_SRGB);
+
+        image->x1 = width;
+        image->y1 = height;
+
+        const U8 *src_datap = raw.getData();
+
+        S32 i = 0;
+        for (S32 y = height - 1; y >= 0; y--)
+        {
+            for (S32 x = 0; x < width; x++)
+            {
+                const U8 *pixel = src_datap + (y*width + x) * numcomps;
+                for (S32 c = 0; c < numcomps; c++)
+                {
+                    image->comps[c].data[i] = *pixel;
+                    pixel++;
+                }
+                i++;
+            }
+        }
+
+        // This likely works, but there seems to be an issue openjpeg side
+        // check over after gixing that.
+
+        // De-interleave to component plane data
+        /*
+        switch (numcomps)
+        {
+        case 0:
+        default:
+            break;
+
+        case 1:
+        {
+            U32 rBitDepth = image->comps[0].bpp;
+            U32 bytesPerPixel = rBitDepth >> 3;
+            memcpy(image->comps[0].data, src, width * height * bytesPerPixel);
+        }
+        break;
+
+        case 2:
+        {
+            U32 rBitDepth = image->comps[0].bpp;
+            U32 gBitDepth = image->comps[1].bpp;
+            U32 totalBitDepth = rBitDepth + gBitDepth;
+            U32 bytesPerPixel = totalBitDepth >> 3;
+            U32 stride = width * bytesPerPixel;
+            U32 offset = 0;
+            for (S32 y = height - 1; y >= 0; y--)
+            {
+                const U8* component = src + (y * stride);
+                for (S32 x = 0; x < width; x++)
+                {
+                    image->comps[0].data[offset] = *component++;
+                    image->comps[1].data[offset] = *component++;
+                    offset++;
+                }
+            }
+        }
+        break;
+
+        case 3:
+        {
+            U32 rBitDepth = image->comps[0].bpp;
+            U32 gBitDepth = image->comps[1].bpp;
+            U32 bBitDepth = image->comps[2].bpp;
+            U32 totalBitDepth = rBitDepth + gBitDepth + bBitDepth;
+            U32 bytesPerPixel = totalBitDepth >> 3;
+            U32 stride = width * bytesPerPixel;
+            U32 offset = 0;
+            for (S32 y = height - 1; y >= 0; y--)
+            {
+                const U8* component = src + (y * stride);
+                for (S32 x = 0; x < width; x++)
+                {
+                    image->comps[0].data[offset] = *component++;
+                    image->comps[1].data[offset] = *component++;
+                    image->comps[2].data[offset] = *component++;
+                    offset++;
+                }
+            }
+        }
+        break;
+
+
+        case 4:
+        {
+            U32 rBitDepth = image->comps[0].bpp;
+            U32 gBitDepth = image->comps[1].bpp;
+            U32 bBitDepth = image->comps[2].bpp;
+            U32 aBitDepth = image->comps[3].bpp;
+
+            U32 totalBitDepth = rBitDepth + gBitDepth + bBitDepth + aBitDepth;
+            U32 bytesPerPixel = totalBitDepth >> 3;
+
+            U32 stride = width * bytesPerPixel;
+            U32 offset = 0;
+            for (S32 y = height - 1; y >= 0; y--)
+            {
+                const U8* component = src + (y * stride);
+                for (S32 x = 0; x < width; x++)
+                {
+                    image->comps[0].data[offset] = *component++;
+                    image->comps[1].data[offset] = *component++;
+                    image->comps[2].data[offset] = *component++;
+                    image->comps[3].data[offset] = *component++;
+                    offset++;
+                }
+            }
+        }
+        break;
+        }*/
+    }
+
+    opj_image_t* getImage() { return image; }
+
+private:
+    opj_cparameters_t   parameters;
+    opj_event_mgr_t     event_mgr;
+    opj_image_t*        image = nullptr;
+    opj_codec_t*        encoder = nullptr;
+    opj_stream_t*       stream = nullptr;
+    char*               comment_text = nullptr;
+};
 
 	if (aImage.getDataSize() < J2K_HDR_LEN)
 		return false;
 
-	U8 const* pBuffer = aImage.getData();
-
+LLImageJ2COJ::LLImageJ2COJ()
+    : LLImageJ2CImpl()
+{
 	if (!isSOC(pBuffer) || !isSIZ(pBuffer + 2))
 		return false;
 
@@ -458,99 +758,118 @@ bool getMetadataFast(LLImageJ2C& aImage, S32& aW, S32& aH, S32& aComps)
 	S32 x0 = extractLong4(pBuffer, J2K_HDR_X0);
 	S32 y0 = extractLong4(pBuffer, J2K_HDR_Y0);
 	S32 numComps = extractShort2(pBuffer, J2K_HDR_NUMCOMPS);
+}
 
-	aComps = numComps;
-	aW = x1 - x0;
-	aH = y1 - y0;
+bool LLImageJ2COJ::initDecode(LLImageJ2C &base, LLImageRaw &raw_image, int discard_level, int* region)
+{
+    base.mDiscardLevel = discard_level;
+    return false;
+}
 
-	return true;
+bool LLImageJ2COJ::initEncode(LLImageJ2C &base, LLImageRaw &raw_image, int blocks_size, int precincts_size, int levels)
+{
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
+    // No specific implementation for this method in the OpenJpeg case
+    return false;
 }
 
 bool LLImageJ2COJ::getMetadata(LLImageJ2C& base)
 {
-	//
-	// FIXME: We get metadata by decoding the ENTIRE image.
-	//
+    LLImageDataLock lockIn(&base);
+    LLImageDataLock lockOut(&raw_image);
 
-	// Update the raw discard level
-	base.updateRawDiscardLevel();
+    JPEG2KDecode decoder(0);
 
-	S32 width(0);
-	S32 height(0);
-	S32 img_components(0);
+    U32 image_channels = 0;
+    S32 data_size = base.getDataSize();
+    S32 max_bytes = (base.getMaxBytes() ? base.getMaxBytes() : data_size);
+    bool decoded = decoder.decode(base.getData(), max_bytes, &image_channels, base.mDiscardLevel);
 
-	if (getMetadataFast(base, width, height, img_components))
-	{
-		base.setSize(width, height, img_components);
-		return true;
-	}
+    // set correct channel count early so failed decodes don't miss it...
+    S32 channels = (S32)image_channels - first_channel;
+    channels = llmin(channels, max_channel_count);
 
-	// Do it the old and slow way, decode the image with openjpeg
+    if (!decoded)
+    {
+        // reset the channel count if necessary
+        if (raw_image.getComponents() != channels)
+        {
+            raw_image.resize(raw_image.getWidth(), raw_image.getHeight(), S8(channels));
+        }
 
-	opj_dparameters_t parameters;	/* decompression parameters */
-	opj_event_mgr_t event_mgr = { };		/* event manager */
-	opj_image_t* image = nullptr;
+        LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed to decode image!" << LL_ENDL;
+        return true; // done
+    }
 
-	opj_dinfo_t* dinfo = nullptr;	/* handle to a decompressor */
-	opj_cio_t* cio = nullptr;
+    opj_image_t *image = decoder.getImage();
 
+    // Component buffers are allocated in an image width by height buffer.
+    // The image placed in that buffer is ceil(width/2^factor) by
+    // ceil(height/2^factor) and if the factor isn't zero it will be at the
+    // top left of the buffer with black filled in the rest of the pixels.
+    // It is integer math so the formula is written in ceildivpo2.
+    // (Assuming all the components have the same width, height and
+    // factor.)
+    U32 comp_width = image->comps[0].w; // leave this unshifted by 'f' discard factor, the strides are always for the full buffer width
+    U32 f = image->comps[0].factor;
 
-	/* configure the event callbacks (not required) */
-	event_mgr.error_handler = error_callback;
-	event_mgr.warning_handler = warning_callback;
-	event_mgr.info_handler = info_callback;
+    // do size the texture to the mem we'll acrually use...
+    U32 width = image->comps[0].w;
+    U32 height = image->comps[0].h;
 
-	/* set decoding parameters to default values */
-	opj_set_default_decoder_parameters(&parameters);
+    raw_image.resize(U16(width), U16(height), S8(channels));
 
-	// Only decode what's required to get the size data.
-	parameters.cp_limit_decoding = LIMIT_TO_MAIN_HEADER;
+    U8 *rawp = raw_image.getData();
 
-	//parameters.cp_reduce = mRawDiscardLevel;
+    // first_channel is what channel to start copying from
+    // dest is what channel to copy to.  first_channel comes from the
+    // argument, dest always starts writing at channel zero.
+    for (S32 comp = first_channel, dest = 0; comp < first_channel + channels; comp++, dest++)
+    {
+        llassert(image->comps[comp].data);
+        if (image->comps[comp].data)
+        {
+            S32 offset = dest;
+            for (S32 y = (height - 1); y >= 0; y--)
+            {
+                for (U32 x = 0; x < width; x++)
+                {
+                    rawp[offset] = image->comps[comp].data[y*comp_width + x];
+                    offset += channels;
+                }
+            }
+        }
+        else // Some rare OpenJPEG versions have this bug.
+        {
+            LL_DEBUGS("Texture") << "ERROR -> decodeImpl: failed! (OpenJPEG bug)" << LL_ENDL;
+        }
+    }
 
-	/* decode the code-stream */
-	/* ---------------------- */
+    base.setDiscardLevel(f);
 
-	/* JPEG-2000 codestream */
+    return true; // done
+}
 
-	/* get a decoder handle */
-	dinfo = opj_create_decompress(CODEC_J2K);
+bool LLImageJ2COJ::getMetadata(LLImageJ2C &base)
+{
+    LLImageDataLock lock(&base);
 
-	/* catch events using our callbacks and give a local context */
-	opj_set_event_mgr((opj_common_ptr)dinfo, &event_mgr, stderr);
+    JPEG2KDecode decode(0);
 
-	/* setup the decoder decoding parameters using user parameters */
-	opj_setup_decoder(dinfo, &parameters);
+    S32 width = 0;
+    S32 height = 0;
+    S32 components = 0;
+    S32 discard_level = 0;
 
-	/* open a byte stream */
-	cio = opj_cio_open((opj_common_ptr)dinfo, base.getData(), base.getDataSize());
+    U32 dataSize = base.getDataSize();
+    U8* data = base.getData();
+    bool header_read = decode.readHeader(data, dataSize, width, height, components, discard_level);
+    if (!header_read)
+    {
+        return false;
+    }
 
-	/* decode the stream and fill the image structure */
-	image = opj_decode(dinfo, cio);
-
-	/* close the byte stream */
-	opj_cio_close(cio);
-
-	/* free remaining structures */
-	if (dinfo)
-	{
-		opj_destroy_decompress(dinfo);
-	}
-
-	if (!image)
-	{
-		LL_WARNS() << "ERROR -> getMetadata: failed to decode image!" << LL_ENDL;
-		return false;
-	}
-
-	// Copy image data into our raw image format (instead of the separate channel format
-
-	img_components = image->numcomps;
-	width = image->x1 - image->x0;
-	height = image->y1 - image->y0;
-	base.setSize(width, height, img_components);
-
-	/* free image data structure */
-	opj_image_destroy(image);
-	return true;
+    base.mDiscardLevel = discard_level;
+    base.setSize(width, height, components);
+    return true;
 }

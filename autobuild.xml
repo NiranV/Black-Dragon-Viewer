@@ -104,11 +104,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>59c1827cab82516504a2eb31e0aa7e38035b5085</string>
+              <string>d8d9e1e15ec09c81acfa9ffb80c3f20435373543</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-boost/releases/download/v1.81-90bb2df/boost-1.81-darwin64-90bb2df.tar.zst</string>
+              <string>https://github.com/secondlife/3p-boost/releases/download/v1.84.0-r1/boost-1.84-darwin64-8499892512.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -118,9 +118,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>038853b97307a9b65de20c4c50098023</string>
+              <string>a5552fcd343179c4c7d6dd6289675431a8c0fe8d</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/9675/45694/boost-1.65.1-linux64-509640.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-boost/releases/download/v1.84.0-r1/boost-1.84-linux64-8499892512.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -130,11 +132,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>26214a33c568929ffeeb3463ce183f2888ce4fe4</string>
+              <string>5af9c69093e171eda552720a7acd570496db17db</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-boost/releases/download/v1.81-90bb2df/boost-1.81-windows64-90bb2df.tar.zst</string>
+              <string>https://github.com/secondlife/3p-boost/releases/download/v1.84.0-r1/boost-1.84-windows64-8499892512.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -147,7 +149,7 @@
         <key>copyright</key>
         <string>(see individual source files)</string>
         <key>version</key>
-        <string>1.81</string>
+        <string>1.81-09d25a7</string>
         <key>name</key>
         <string>boost</string>
         <key>description</key>
@@ -162,11 +164,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d152f19f4a5a9c8013f006e19b1fcd88692bccf1</string>
+              <string>cd1f1d55a2488657ec2253774b3a414621f81b24</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-bugsplat/releases/download/v1.0.7-527603a/bugsplat-1.0.7-527603a-darwin64-527603a.tar.zst</string>
+              <string>https://github.com/secondlife/3p-bugsplat/releases/download/v1.1.5-71fc41e/bugsplat-1.1.1-9599607655-darwin64-9599607655.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -176,11 +178,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>1364da04333570b73c771e4f4acd1bacc7fc3f02</string>
+              <string>9fb0615d17988bd89a2e5ae6d4d19e150afb54a9</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-bugsplat/releases/download/v1.0.7-527603a/bugsplat-4.0.3.0-527603a-windows64-527603a.tar.zst</string>
+              <string>https://github.com/secondlife/3p-bugsplat/releases/download/v1.1.5-71fc41e/bugsplat-5.0.1.0-9599607655-windows64-9599607655.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -193,7 +195,7 @@
         <key>copyright</key>
         <string>Copyright 2003-2017, BugSplat</string>
         <key>version</key>
-        <string>4.0.3.0-527603a</string>
+        <string>5.0.1.0-71fc41e</string>
         <key>name</key>
         <string>bugsplat</string>
         <key>description</key>
@@ -208,11 +210,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7f447d30d7add80270a55cf3c53000392821a1cb</string>
+              <string>fd656d2478728c4fc268478ec40d33b0ed1b7d83</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-colladadom/releases/download/v2.3.d1ef72a/colladadom-2.3.d1ef72a-darwin64-d1ef72a.tar.zst</string>
+              <string>https://github.com/secondlife/3p-colladadom/releases/download/v2.3-r4/colladadom-2.3.8500178177-darwin64-8500178177.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -222,9 +224,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>c90613240ba3e3a171d3379275ae4ee3</string>
+              <string>aebc0ddcae18852e78143fbac793cd4a32f0f251</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/9695/45732/colladadom-2.3.509683-linux64-509683.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-colladadom/releases/download/v2.3-r4/colladadom-2.3.8500178177-linux64-8500178177.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -234,11 +238,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b32294a2f31f5b4ca49928e66832aad1bb4a88ac</string>
+              <string>3b25739b1a923c2edcf19864a1c82aeb5042567b</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-colladadom/releases/download/v2.3.d1ef72a/colladadom-2.3.d1ef72a-windows64-d1ef72a.tar.zst</string>
+              <string>https://github.com/secondlife/3p-colladadom/releases/download/v2.3-r4/colladadom-2.3.8500178177-windows64-8500178177.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -251,7 +255,7 @@
         <key>copyright</key>
         <string>Copyright 2006 Sony Computer Entertainment Inc.</string>
         <key>version</key>
-        <string>2.3.d1ef72a</string>
+        <string>2.3.ab0c124</string>
         <key>name</key>
         <string>colladadom</string>
       </map>
@@ -408,11 +412,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>f6835c4d7745cd1cadfbce47b40331d08affb532</string>
+              <string>e03eb77224290c875ff84f75b7fe3d0e7c162c94</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-dictionaries/releases/download/v1.0.1-dev2.gf887629-f887629/dictionaries-common-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-dictionaries/releases/download/v1-a01bb6c/dictionaries-1.a01bb6c-common-a01bb6c.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -425,7 +429,7 @@
         <key>copyright</key>
         <string>Copyright 2014 Apache OpenOffice software</string>
         <key>version</key>
-        <string>None</string>
+        <string>1.a01bb6c</string>
         <key>name</key>
         <string>dictionaries</string>
         <key>description</key>
@@ -477,6 +481,54 @@
         <key>description</key>
         <string>A headless browser SDK that uses the Chromium Embedded Framework (CEF). It is designed to make it easier to write applications that render modern web content directly to a memory buffer, inject synthesized mouse and keyboard events as well as interact with web based features like JavaScript or cookies.</string>
       </map>
+      <key>emoji_shortcodes</key>
+      <map>
+        <key>platforms</key>
+        <map>
+          <key>darwin64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>52c41a4547d2d9aceb4a9a1e9e1680c71e5ffa79</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>darwin64</string>
+          </map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>3137e06d376767a631bc9626832d558c4d5e5aa9</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-windows64-5413f58.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
+          </map>
+        </map>
+        <key>license</key>
+        <string>MIT</string>
+        <key>license_file</key>
+        <string>LICENSES/emojibase-license.txt</string>
+        <key>copyright</key>
+        <string>Copyright 2017-2019 Miles Johnson.</string>
+        <key>version</key>
+        <string>6.1.0.5413f58</string>
+        <key>name</key>
+        <string>emoji_shortcodes</string>
+        <key>canonical_repo</key>
+        <string>https://github.com/secondlife/3p-emoji-shortcodes</string>
+        <key>description</key>
+        <string>Emoji shortcodes</string>
+      </map>
       <key>expat</key>
       <map>
         <key>platforms</key>
@@ -502,7 +554,7 @@
               <key>hash</key>
               <string>4cd82e2dec06ddff19e9b3dc0254f2593ec80452</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>md5</string>
               <key>url</key>
               <string>https://github.com/secondlife/3p-expat/releases/download/v2.1.1.1f36d02/expat-2.1.1.1f36d02-linux64-1f36d02.tar.zst</string>
             </map>
@@ -516,7 +568,7 @@
               <key>hash</key>
               <string>47c01a89bc32c5740efe51be43e459ffd9b7cd34</string>
               <key>hash_algorithm</key>
-              <string>sha1</string>
+              <string>md5</string>
               <key>url</key>
               <string>https://github.com/secondlife/3p-expat/releases/download/v2.1.1.1f36d02/expat-2.1.1.1f36d02-windows64-1f36d02.tar.zst</string>
             </map>
@@ -642,11 +694,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>912d122aae996483ba814fe8e569394ddca0d42e</string>
+              <string>d90a5c2fb4a729eeff3965ea6dd0a35cf146d379</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-freetype/releases/download/v2.4.4.4f739fa/freetype-2.4.4.4f739fa-darwin64-4f739fa.tar.zst</string>
+              <string>https://github.com/secondlife/3p-freetype/releases/download/v.2.12.1.557becd/freetype-2.12.1.557becd-darwin64-557becd.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -656,11 +708,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>14f57822f0cedef957a50a03a7b5372075cf8e1c</string>
+              <string>4a999279562e8f3e4ba02d3e78a844ddf6fe18f1</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-freetype/releases/download/v2.4.4.4f739fa/freetype-2.4.4.4f739fa-linux64-4f739fa.tar.zst</string>
+              <string>https://github.com/secondlife/3p-freetype/releases/download/v.2.12.1.557becd/freetype-2.12.1.557becd-linux64-557becd.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -670,11 +722,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d175b39257b691a957724e655c6cffe0b5a7b104</string>
+              <string>1837fdfd44204c78e79134944f824b0211817883</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-freetype/releases/download/v2.4.4.4f739fa/freetype-2.4.4.4f739fa-windows64-4f739fa.tar.zst</string>
+              <string>https://github.com/secondlife/3p-freetype/releases/download/v.2.12.1.557becd/freetype-2.12.1.557becd-windows64-557becd.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -687,7 +739,7 @@
         <key>copyright</key>
         <string>Copyright 2006, 2007, 2008, 2009, 2010 by David Turner, Robert Wilhelm, and Werner Lemberg.</string>
         <key>version</key>
-        <string>2.4.4.4f739fa</string>
+        <string>2.12.1.557becd</string>
         <key>name</key>
         <string>freetype</string>
         <key>description</key>
@@ -734,11 +786,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6604c1cca515d287e697997a8d5593d1cae172a9</string>
+              <string>066625e7aa7f697a4b6cd461aad960c57181011f</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev2.g3253ed7-3253ed7/glh_linear-common-None.tar.zst</string>
+              <string>https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -751,69 +803,53 @@
         <key>copyright</key>
         <string>Copyright (c) 2000 Cass Everitt</string>
         <key>version</key>
-        <string>None</string>
+        <string>1.0.1-dev4</string>
         <key>name</key>
         <string>glh_linear</string>
         <key>description</key>
         <string>glh - is a platform-indepenedent C++ OpenGL helper library</string>
       </map>
-      <key>googlemock</key>
+      <key>glm</key>
       <map>
+        <key>canonical_repo</key>
+        <string>https://github.com/secondlife/3p-glm</string>
+        <key>copyright</key>
+        <string>Copyright (c) 2005 - G-Truc Creation</string>
+        <key>description</key>
+        <string>OpenGL Mathematics</string>
+        <key>license</key>
+        <string>MIT</string>
+        <key>license_file</key>
+        <string>LICENSES/glm_license.txt</string>
+        <key>name</key>
+        <string>glm</string>
         <key>platforms</key>
         <map>
-          <key>darwin64</key>
+          <key>common</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>c016d7333a3ded88c060119b4e3a5847015a8711</string>
+              <string>353ae3a560143732503a8e14499ae12db1e66056</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-googlemock/releases/download/v1.7.0.77bba00/googlemock-1.7.0.77bba00-darwin64-77bba00.tar.zst</string>
+              <string>https://github.com/secondlife/3p-glm/releases/download/v1.0.1-r1/glm-v1.0.1-common-9066386153.tar.zst</string>
             </map>
             <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>ff459b58695c76838782847a0b792104</string>
-              <key>url</key>
-              <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/9697/45717/googlemock-1.7.0.509686-linux64-509686.tar.bz2</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>df51dff9a820fc96c18c2bc00b64467e541633a5</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-googlemock/releases/download/v1.7.0.77bba00/googlemock-1.7.0.77bba00-windows64-77bba00.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
+            <string>common</string>
           </map>
         </map>
-        <key>license</key>
-        <string>BSD</string>
-        <key>license_file</key>
-        <string>LICENSES/gmock.txt</string>
-        <key>copyright</key>
-        <string>Copyright 2008, Google Inc.</string>
+        <key>source_type</key>
+        <string>git</string>
+        <key>vcs_branch</key>
+        <string>refs/tags/v1.0.1-r1</string>
+        <key>vcs_revision</key>
+        <string>399cd5ba57a9267a560ce07e50a0f8c5fe3dc66f</string>
+        <key>vcs_url</key>
+        <string>git://github.com/secondlife/3p-glm.git</string>
         <key>version</key>
-        <string>1.7.0.77bba00</string>
-        <key>name</key>
-        <string>googlemock</string>
-        <key>description</key>
-        <string>a library for writing and using C++ mock classes</string>
+        <string>v1.0.1</string>
       </map>
       <key>gstreamer</key>
       <map>
@@ -882,11 +918,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>a193ff65d6db48626d65d96c6124c6efca85e8ec</string>
+              <string>ae2c2a215b1bc2e3f37a67e301926dc405902d1a</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-havok-source/releases/assets/108912596</string>
+              <string>https://api.github.com/repos/secondlife/3p-havok-source/releases/assets/136778143</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -910,11 +946,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>ebfb82b6143874e7938b9d1e8a70d0a2e28aa818</string>
+              <string>0393dd75c58f7046bed47e62a8884a78cb02a5c3</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-havok-source/releases/assets/108912599</string>
+              <string>https://api.github.com/repos/secondlife/3p-havok-source/releases/assets/136778145</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1049,66 +1085,6 @@
         <key>description</key>
         <string>JPEG encoding, decoding library</string>
       </map>
-      <key>jsoncpp</key>
-      <map>
-        <key>platforms</key>
-        <map>
-          <key>darwin64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>07761ab01e61d5d6b40d303ffafd85ec055ec9f7</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-jsoncpp/releases/download/v0.5.0.bc46e62/jsoncpp-0.5.0.bc46e62-darwin64-bc46e62.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>97e268754808cb2fbd682c4d3beafd2c598e1ba7</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-jsoncpp/releases/download/v0.5.0.bc46e62/jsoncpp-0.5.0.bc46e62-linux64-bc46e62.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>500e455b210d6bc4985185cef2472987ed3034bf</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-jsoncpp/releases/download/v0.5.0.bc46e62/jsoncpp-0.5.0.bc46e62-windows64-bc46e62.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
-          </map>
-        </map>
-        <key>license</key>
-        <string>public domain</string>
-        <key>license_file</key>
-        <string>LICENSES/jsoncpp.txt</string>
-        <key>copyright</key>
-        <string>Copyright (c) 2007-2010 Baptiste Lepilleur</string>
-        <key>version</key>
-        <string>0.5.0.bc46e62</string>
-        <key>name</key>
-        <string>jsoncpp</string>
-        <key>description</key>
-        <string>jsoncpp is an implementation of a JSON (http://json.org) reader and writer in C++.</string>
-      </map>
       <key>kdu</key>
       <map>
         <key>platforms</key>
@@ -1120,11 +1096,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>bcc7e2c34896fc9cbc41828dee8a4ddf54f10453</string>
+              <string>ad72fa1d103df777906f0d98f3e882b9916aeada</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/108298968</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/136774118</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1136,11 +1112,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>9de772df2ed12e9c742df6c90670c7cbbb9c93a6</string>
+              <string>e46e4ac93a237b5c4a14183766f76ba5d58935a2</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/108298969</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/136774125</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1152,14 +1128,30 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>6bb48e878e7f4e7b6630a6f3a5fd2f89</string>
+              <string>bb37557f78c72b26580a521f8b8dabfa1b34e6e6</string>
               <key>hash_algorithm</key>
-              <string>md5</string>
+              <string>sha1</string>
               <key>url</key>
-              <string>file:///c:/bld/kdu-7.10.4.200681608-windows64-200681608.tar.bz2</string>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/136774126</string>
             </map>
             <key>name</key>
             <string>windows64</string>
+          </map>
+          <key>linux</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>creds</key>
+              <string>github</string>
+              <key>hash</key>
+              <string>711b82f9f588d3a125af7dcd8c81f93d9c343a7d</string>
+              <key>hash_algorithm</key>
+              <string>md5</string>
+              <key>url</key>
+              <string>https://api.github.com/repos/secondlife/3p-kdu/releases/assets/136774121</string>
+            </map>
+            <key>name</key>
+            <string>linux</string>
           </map>
         </map>
         <key>license</key>
@@ -1169,7 +1161,7 @@
         <key>copyright</key>
         <string>Kakadu software</string>
         <key>version</key>
-        <string>7.10.4.539108</string>
+        <string>7.10.4.4b9ec5f</string>
         <key>name</key>
         <string>kdu</string>
         <key>description</key>
@@ -1468,11 +1460,11 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e50ea94bbaa4ff41bf53b84b7192df1a694c5337</string>
+              <string>a9503e1b4e1d9790cf29d18a3d9ab39e6a515679</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/llca/releases/download/v202310121525.0-d22bd98/llca-202310121530.0-common-d22bd98.tar.zst</string>
+              <string>https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
@@ -1486,12 +1478,20 @@
         <string>Copyright (c) 2016, Linden Research, Inc.; data provided by the Mozilla NSS Project.
       </string>
         <key>version</key>
-        <string>202310121530.0</string>
+        <string>202402012004.0</string>
         <key>name</key>
         <string>llca</string>
       </map>
       <key>llphysicsextensions_source</key>
       <map>
+        <key>copyright</key>
+        <string>Copyright (c) 2010, Linden Research, Inc.</string>
+        <key>license</key>
+        <string>internal</string>
+        <key>license_file</key>
+        <string>LICENSES/llphysicsextensions.txt</string>
+        <key>name</key>
+        <string>llphysicsextensions_source</string>
         <key>platforms</key>
         <map>
           <key>darwin64</key>
@@ -1501,11 +1501,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>48bca5d0233d1e724a59f649a2c6c7ac5f40ec3c</string>
+              <string>755a3de464149ae88b048f976828a8c0c46e3bdb</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/117009335</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/172966323</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -1517,11 +1517,11 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>39f52d0350e130f41c5c758f7cb94e87b962c223</string>
+              <string>813e7b5e294d7958e3d69e2252752ff346953b0c</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/117009336</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/172966322</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -1533,26 +1533,18 @@
               <key>creds</key>
               <string>github</string>
               <key>hash</key>
-              <string>7b5e645fb7eb399abbea63bd21e8063bbb32a911</string>
+              <string>67f647538b1b49d0152fd9d03cfb9bdf978e33d1</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/117009339</string>
+              <string>https://api.github.com/repos/secondlife/llphysicsextensions_source/releases/assets/172966328</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
         </map>
-        <key>license</key>
-        <string>internal</string>
-        <key>license_file</key>
-        <string>LICENSES/llphysicsextensions.txt</string>
-        <key>copyright</key>
-        <string>Copyright (c) 2010, Linden Research, Inc.</string>
         <key>version</key>
-        <string>1.0.565768</string>
-        <key>name</key>
-        <string>llphysicsextensions_source</string>
+        <string>1.0.b8b1f73</string>
       </map>
       <key>llphysicsextensions_stub</key>
       <map>
@@ -1582,7 +1574,7 @@
             <key>name</key>
             <string>linux64</string>
           </map>
-          <key>windows</key>
+          <key>windows64</key>
           <map>
             <key>archive</key>
             <map>
@@ -1592,7 +1584,7 @@
               <string>http://automated-builds-secondlife-com.s3.amazonaws.com/ct2/60043/564063/llphysicsextensions_stub-1.0.542456-windows-542456.tar.bz2</string>
             </map>
             <key>name</key>
-            <string>windows</string>
+            <string>windows64</string>
           </map>
         </map>
         <key>license</key>
@@ -1737,11 +1729,11 @@
         <key>canonical_repo</key>
         <string>https://bitbucket.org/lindenlab/3p-mikktspace</string>
         <key>copyright</key>
-        <string>Copyright (C) 2011 by Morten S. Mikkelsen</string>
+        <string>Copyright (C) 2011 by Morten S. Mikkelsen, Copyright (C) 2022 Blender Authors</string>
         <key>description</key>
         <string>Mikktspace Tangent Generator</string>
         <key>license</key>
-        <string>Copyright (C) 2011 by Morten S. Mikkelsen</string>
+        <string>Apache 2.0</string>
         <key>license_file</key>
         <string>mikktspace.txt</string>
         <key>name</key>
@@ -1753,33 +1745,39 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>b48b7ac0792d3ea8f087d99d9e4a29d8</string>
+              <string>65edf85c36a10001e32bdee582bec4732137208b</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/104415/914944/mikktspace-1-darwin64-574859.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
           </map>
-          <key>windows</key>
+          <key>linux64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0a016b9c0c1e2c0b557e0124094da6c5</string>
+              <string>fa9dcee4584df7e7271fdf69c08e6fd3122a47fc</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/104407/914918/mikktspace-1-windows-574859.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst</string>
             </map>
             <key>name</key>
-            <string>windows</string>
+            <string>linux64</string>
           </map>
           <key>windows64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>02e9e5b6fe6788f4d2babb83ec544843</string>
+              <string>130b33a70bdb3a8a188376c6a91840bdb61380a8</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/104406/914909/mikktspace-1-windows64-574859.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-windows64-8756084692.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -1849,6 +1847,62 @@
         <string>https://bitbucket.org/lindenlab/3p-minizip-ng</string>
         <key>description</key>
         <string>minizip-ng is a zip manipulation library. Based on work of Gilles Vollant.</string>
+      </map>
+      <key>nanosvg</key>
+      <map>
+        <key>platforms</key>
+        <map>
+          <key>darwin64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>32ead724319c2ea6f65fc5be0e3157cc</string>
+              <key>url</key>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>darwin64</string>
+          </map>
+          <key>linux</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>84698f044598ff79e255965f3d1c3e80</string>
+              <key>url</key>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115397/993664/nanosvg-2022.09.27-linux-580337.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>linux</string>
+          </map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>ee61ff8b866be04c325f1fe2db516d71</string>
+              <key>url</key>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115454/994144/nanosvg-2022.09.27-windows64-580364.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
+          </map>
+        </map>
+        <key>license</key>
+        <string>Zlib</string>
+        <key>license_file</key>
+        <string>LICENSES/nanosvg.txt</string>
+        <key>copyright</key>
+        <string>Copyright (c) 2013-14 Mikko Mononen</string>
+        <key>version</key>
+        <string>2022.09.27</string>
+        <key>name</key>
+        <string>nanosvg</string>
+        <key>canonical_repo</key>
+        <string>https://bitbucket.org/lindenlab/3p-nanosvg</string>
+        <key>description</key>
+        <string>NanoSVG is a simple single-header-file SVG parser and rasterizer</string>
       </map>
       <key>nghttp2</key>
       <map>
@@ -2020,18 +2074,42 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       </map>
       <key>openal</key>
       <map>
+        <key>copyright</key>
+        <string>Copyright (C) 1999-2007 by authors.</string>
+        <key>description</key>
+        <string>OpenAL Soft is a software implementation of the OpenAL 3D audio API.</string>
+        <key>license</key>
+        <string>LGPL2</string>
+        <key>license_file</key>
+        <string>LICENSES/openal-soft.txt</string>
+        <key>name</key>
+        <string>openal</string>
         <key>platforms</key>
         <map>
+          <key>darwin64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>191e4ef07a35f7147708415465191ce7622e3012</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-8668009/openal-1.23.1-darwin64-8979520327.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>darwin64</string>
+          </map>
           <key>linux64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e0fbc4874acc4167a6e2b6489fbb8258d98fd665</string>
+              <string>3bd8c9028ef42bdb43c7422e7d324e213fdb081e</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-18e315c/openal-1.23.1-linux64-18e315c.tar.zst</string>
+              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-8668009/openal-1.23.1-linux64-8979520327.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2041,42 +2119,18 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>6ae3b5310eb1988741bc55416681ca9d64f76f85</string>
+              <string>4b849609abec790e89be5fad8ddee3717ee301c4</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-18e315c/openal-1.23.1-windows64-18e315c.tar.zst</string>
+              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-8668009/openal-1.23.1-windows64-8979520327.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
-          <key>darwin64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>4edaef5f03a1122eae8467c4a04d9caccaaaf847</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-openal-soft/releases/download/v1.23.1-18e315c/openal-1.23.1-darwin64-18e315c.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>darwin64</string>
-          </map>
         </map>
-        <key>license</key>
-        <string>LGPL2</string>
-        <key>license_file</key>
-        <string>LICENSES/openal-soft.txt</string>
-        <key>copyright</key>
-        <string>Copyright (C) 1999-2007 by authors.</string>
         <key>version</key>
         <string>1.23.1</string>
-        <key>name</key>
-        <string>openal</string>
-        <key>description</key>
-        <string>OpenAL Soft is a software implementation of the OpenAL 3D audio API.</string>
       </map>
       <key>openjpeg</key>
       <map>
@@ -2264,14 +2318,12 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
           <map>
             <key>archive</key>
             <map>
-              <key>creds</key>
-              <string>github</string>
               <key>hash</key>
-              <string>cc7c5bf53f83cff81d874ad66394df0991bd432c</string>
+              <string>1e70b06fe6eb9796097010871b32d8e95167e373</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://api.github.com/repos/secondlife/3p-slvoice/releases/assets/108299352</string>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/gh/secondlife/3p-slvoice/slvoice-4.10.0000.32327.5fc3fe7c.5942f08-darwin64-5942f08.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2293,9 +2345,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>c39735851fd05c194d0be09b8f9e8cb7</string>
+              <string>ddfb7c30d9756915e8b26f44e2ee3a69ee87fb9a</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/98682/871552/slvoice-4.10.0000.32327.5fc3fe7c.571099-windows64-571099.tar.bz2</string>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/gh/secondlife/3p-slvoice/slvoice-4.10.0000.32327.5fc3fe7c.5942f08-windows64-5942f08.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2308,7 +2362,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>2010 Vivox, including audio coding using Polycom¨ Siren14TM (ITU-T Rec. G.722.1 Annex C)</string>
         <key>version</key>
-        <string>4.10.0000.32327.5fc3fe7c.571099</string>
+        <string>4.10.0000.32327.5fc3fe7c.5942f08</string>
         <key>name</key>
         <string>slvoice</string>
         <key>description</key>
@@ -2372,18 +2426,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       </map>
       <key>tinygltf</key>
       <map>
-        <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-tinygltf</string>
-        <key>copyright</key>
-        <string>// Copyright (c) 2015 - Present Syoyo Fujita, Aurélien Chatelain and many contributors.</string>
-        <key>description</key>
-        <string>tinygltf import library</string>
-        <key>license</key>
-        <string>MIT</string>
-        <key>license_file</key>
-        <string>LICENSES/tinygltf_license.txt</string>
-        <key>name</key>
-        <string>tinygltf</string>
         <key>platforms</key>
         <map>
           <key>common</key>
@@ -2391,20 +2433,34 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>4dad1c0948141e1667c01a3ee755e4dc</string>
+              <string>2c47ae2d0c38c86b8c2db8d9317f0ab15edfc74f</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/105849/926137/tinygltf-v2.5.0-common-575729.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
           </map>
         </map>
+        <key>license</key>
+        <string>MIT</string>
+        <key>license_file</key>
+        <string>LICENSES/tinygltf_license.txt</string>
+        <key>copyright</key>
+        <string>// Copyright (c) 2015 - Present Syoyo Fujita, Aurélien Chatelain and many contributors.</string>
+        <key>version</key>
+        <string>v2.5.0</string>
+        <key>name</key>
+        <string>tinygltf</string>
+        <key>canonical_repo</key>
+        <string>https://bitbucket.org/lindenlab/3p-tinygltf</string>
+        <key>description</key>
+        <string>tinygltf import library</string>
         <key>source</key>
         <string>https://bitbucket.org/lindenlab/3p-tinygltf</string>
         <key>source_type</key>
         <string>git</string>
-        <key>version</key>
-        <string>v2.5.0</string>
       </map>
       <key>tracy</key>
       <map>
@@ -2415,9 +2471,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>9b6e1a1f4b0969d38a1ca8ee00aeb548</string>
+              <string>49650353442698c3e05102676fe427d0ebe02f0b</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/110584/960613/tracy-v0.8.1.578241-darwin64-578241.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-tracy/releases/download/v0.8.1-eecbf72/tracy-v0.8.1-eecbf72-darwin64-eecbf72.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2427,11 +2485,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>05b72ae5d733aed7d3bf142287601cc6</string>
+              <string>2b80e7407e4f3e82eff3879add0e9ad63e7fcace</string>
               <key>hash_algorithm</key>
-              <string>md5</string>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/110586/960637/tracy-v0.8.1.578241-windows64-578241.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-tracy/releases/download/v0.8.1-eecbf72/tracy-v0.8.1-eecbf72-windows64-eecbf72.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2444,7 +2502,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2017-2022, Bartosz Taudul (wolf@nereid.pl)</string>
         <key>version</key>
-        <string>v0.8.1.235e98f</string>
+        <string>v0.8.1-eecbf72</string>
         <key>name</key>
         <string>tracy</string>
         <key>canonical_repo</key>
@@ -2455,8 +2513,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <string>https://bitbucket.org/lindenlab/3p-tracy</string>
         <key>source_type</key>
         <string>git</string>
-        <key>version</key>
-        <string>v0.8.1.578241</string>
       </map>
       <key>tut</key>
       <map>
@@ -2550,6 +2606,48 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>description</key>
         <string>uriparser is a strictly RFC 3986 compliant URI parsing and handling library written in C. uriparser is cross-platform, fast, supports Unicode and is licensed under the New BSD license.</string>
       </map>
+      <key>viewer-fonts</key>
+      <map>
+        <key>platforms</key>
+        <map>
+          <key>darwin64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>6041bbd4001e3951f96ac3456c7906da</string>
+              <key>url</key>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/113314/980656/viewer_fonts-1.579464-darwin64-579464.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>darwin64</string>
+          </map>
+          <key>windows64</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>1745ba6eec0108250446fe01d4aa065c</string>
+              <key>url</key>
+              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/113307/980631/viewer_fonts-1.579464-windows64-579464.tar.bz2</string>
+            </map>
+            <key>name</key>
+            <string>windows64</string>
+          </map>
+        </map>
+        <key>license</key>
+        <string>Various open source</string>
+        <key>license_file</key>
+        <string>LICENSES/fonts.txt</string>
+        <key>copyright</key>
+        <string>Copyright 2016-2022 Brad Erickson CC-BY-4.0/MIT, Copyright 2016-2022 Twitter, Inc. CC-BY-4.0, Copyright 2013 Joe Loughry and Terence Eden MIT</string>
+        <key>version</key>
+        <string>1.579464</string>
+        <key>name</key>
+        <string>viewer-fonts</string>
+        <key>description</key>
+        <string>Viewer fonts</string>
+      </map>
       <key>viewer-manager</key>
       <map>
         <key>platforms</key>
@@ -2559,11 +2657,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>eb1316584188dafb591f80b46b357c737f90d1a7</string>
+              <string>8a04e6b3c6ff7f645219955a1389035565eb10d8</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-08bf5ee/viewer_manager-3.0-08bf5ee-darwin64-08bf5ee.tar.zst</string>
+              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-f14b5ec-D591/viewer_manager-3.0-f14b5ec-darwin64-f14b5ec.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
@@ -2573,11 +2671,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>f4677b0ebd9880f29c118af51ada50883dd0a1e4</string>
+              <string>a1e467c08ecbe6ab24fc8756a815a431a9b00f62</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-08bf5ee/viewer_manager-3.0-08bf5ee-linux64-08bf5ee.tar.zst</string>
+              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-f14b5ec-D591/viewer_manager-3.0-f14b5ec-linux64-f14b5ec.tar.zst</string>
             </map>
             <key>name</key>
             <string>linux64</string>
@@ -2587,11 +2685,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>7426c5a1d7eb231b476625637a1f2daba0a6bc55</string>
+              <string>56b613decdd36b2a17646bf3e2cfc2fed8456b8c</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-08bf5ee/viewer_manager-3.0-08bf5ee-windows64-08bf5ee.tar.zst</string>
+              <string>https://github.com/secondlife/viewer-manager/releases/download/v3.0-f14b5ec-D591/viewer_manager-3.0-f14b5ec-windows64-f14b5ec.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
@@ -2603,8 +2701,6 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <string>LICENSE</string>
         <key>copyright</key>
         <string>Copyright (c) 2000-2012, Linden Research, Inc.</string>
-        <key>version</key>
-        <string>3.0-08bf5ee</string>
         <key>name</key>
         <string>viewer-manager</string>
         <key>description</key>
@@ -2613,6 +2709,8 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <string>https://bitbucket.org/lindenlab/vmp-standalone</string>
         <key>source_type</key>
         <string>hg</string>
+        <key>version</key>
+        <string>3.0-f14b5ec</string>
       </map>
       <key>vlc-bin</key>
       <map>
@@ -2720,18 +2818,40 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
       </map>
       <key>vulkan_gltf</key>
       <map>
-        <key>canonical_repo</key>
-        <string>https://bitbucket.org/lindenlab/3p-vulkan-gltf-pbr</string>
-        <key>copyright</key>
-        <string>Copyright (c) 2018 Sascha Willems</string>
-        <key>description</key>
-        <string>Vulkan GLTF Sample Implementation</string>
+        <key>platforms</key>
+        <map>
+          <key>common</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>8e365eff8dcace48d91e2530f8b13e420849aefc</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://github.com/secondlife/3p-vulkan-gltf-pbr/releases/download/v1.0.0-d7c372f/vulkan_gltf-1.0.0-common-d7c372f.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>common</string>
+          </map>
+        </map>
         <key>license</key>
         <string>Copyright (c) 2018 Sascha Willems</string>
         <key>license_file</key>
-        <string>LICENSES/vulkan_gltf.txt</string>
+        <string>vulkan_gltf.txt</string>
+        <key>copyright</key>
+        <string>Copyright (c) 2018 Sascha Willems</string>
+        <key>version</key>
+        <string>1.0.0</string>
         <key>name</key>
         <string>vulkan_gltf</string>
+        <key>canonical_repo</key>
+        <string>https://bitbucket.org/lindenlab/3p-vulkan-gltf-pbr</string>
+        <key>description</key>
+        <string>Vulkan GLTF Sample Implementation</string>
+      </map>
+      <key>webrtc</key>
+      <map>
         <key>platforms</key>
         <map>
           <key>darwin64</key>
@@ -2739,40 +2859,62 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>8cff2060843db3db788511ee34a8e8cc</string>
+              <string>0a0a972036f2b2c9c97dead40c91f7443b8ab339</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/101316/891509/vulkan_gltf-1-darwin64-572743.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-webrtc-build/releases/download/m114.5735.08.61-debug/webrtc-m114.5735.08.61-debug.9571929057-darwin64-9571929057.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
           </map>
-          <key>windows</key>
+          <key>linux64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>58eea384be49ba756ce9c5e66669540b</string>
+              <string>8725ad23f33d946bd5a4e5f28e8c8324925c71a7</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/101318/891520/vulkan_gltf-1-windows-572743.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-webrtc-build/releases/download/m114.5735.08.61-debug/webrtc-m114.5735.08.61-debug.9571929057-linux64-9571929057.tar.zst</string>
             </map>
             <key>name</key>
-            <string>windows</string>
+            <string>linux64</string>
           </map>
           <key>windows64</key>
           <map>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>79b6a11622c2f83cfc2b7cd1fafb867b</string>
+              <string>db560661807db276a3c7d1e7d9531198c9268f68</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/101319/891521/vulkan_gltf-1-windows64-572743.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-webrtc-build/releases/download/m114.5735.08.61-debug/webrtc-m114.5735.08.61-debug.9571929057-windows64-9571929057.tar.zst</string>
             </map>
             <key>name</key>
             <string>windows64</string>
           </map>
         </map>
+        <key>license</key>
+        <string>MIT</string>
+        <key>license_file</key>
+        <string>LICENSES/webrtc-license.txt</string>
+        <key>copyright</key>
+        <string>Copyright (c) 2011, The WebRTC project authors. All rights reserved.</string>
         <key>version</key>
-        <string>1</string>
+        <string>m114.5735.08.61-debug.9571929057</string>
+        <key>name</key>
+        <string>webrtc</string>
+        <key>vcs_branch</key>
+        <string>secondlife</string>
+        <key>vcs_revision</key>
+        <string>d3f62d32bac8694d3c7423c731ae30c113bf6a11</string>
+        <key>vcs_url</key>
+        <string>https://github.com/secondlife/3p-webrtc-build</string>
+        <key>canonical_repo</key>
+        <string>https://github.com/secondlife/3p-webrtc-build</string>
       </map>
       <key>xxhash</key>
       <map>
@@ -2783,54 +2925,14 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>e4f77ba0a9b8ec3cc3fabc51c4da81d2</string>
+              <string>1a73c476b371b62066d1c3eced249660e9467e53</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
               <key>url</key>
-              <string>https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/110070/956941/xxhash-0.8.1.578006-windows-578006.tar.bz2</string>
+              <string>https://github.com/secondlife/3p-xxhash/releases/download/v0.8.1-69ff69a/xxhash-0.8.1-69ff69a-common-69ff69a.tar.zst</string>
             </map>
             <key>name</key>
             <string>common</string>
-          </map>
-          <key>darwin64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>fdcc803a76a3359bb426db7dac161406676d51e7</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-xxhash/releases/download/v0.8.1.7501c90/xxhash-0.8.1.7501c90-darwin64-7501c90.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>darwin64</string>
-          </map>
-          <key>linux64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>7acb3f94a549fbb9bd7bc16604e34f33c5365a9b</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-xxhash/releases/download/v0.8.1.7501c90/xxhash-0.8.1.7501c90-linux64-7501c90.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>linux64</string>
-          </map>
-          <key>windows64</key>
-          <map>
-            <key>archive</key>
-            <map>
-              <key>hash</key>
-              <string>4522d075ea4703ef4b527c3039864ef735ea7953</string>
-              <key>hash_algorithm</key>
-              <string>sha1</string>
-              <key>url</key>
-              <string>https://github.com/secondlife/3p-xxhash/releases/download/v0.8.1.7501c90/xxhash-0.8.1.7501c90-windows64-7501c90.tar.zst</string>
-            </map>
-            <key>name</key>
-            <string>windows64</string>
           </map>
         </map>
         <key>license</key>
@@ -2840,7 +2942,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>copyright</key>
         <string>Copyright (c) 2012-2021 Yann Collet</string>
         <key>version</key>
-        <string>0.8.1.7501c90</string>
+        <string>0.8.1-69ff69a</string>
         <key>name</key>
         <string>xxhash</string>
         <key>description</key>
@@ -2908,6 +3010,46 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
         <key>description</key>
         <string>zlib data compression library for the next generation systems</string>
       </map>
+      <key>tinyexr</key>
+      <map>
+        <key>platforms</key>
+        <map>
+          <key>common</key>
+          <map>
+            <key>archive</key>
+            <map>
+              <key>hash</key>
+              <string>8278a2368136cb12319ca00e7aceb2829bf3ebd8</string>
+              <key>hash_algorithm</key>
+              <string>sha1</string>
+              <key>url</key>
+              <string>https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst</string>
+            </map>
+            <key>name</key>
+            <string>common</string>
+          </map>
+        </map>
+        <key>license</key>
+        <string>3-clause BSD</string>
+        <key>license_file</key>
+        <string>LICENSES/tinyexr_license.txt</string>
+        <key>copyright</key>
+        <string>Copyright (c) 2014 - 2021, Syoyo Fujita and many contributors.</string>
+        <key>version</key>
+        <string>v1.0.8</string>
+        <key>name</key>
+        <string>tinyexr</string>
+        <key>vcs_branch</key>
+        <string>dependabot/github_actions/secondlife/action-autobuild-4</string>
+        <key>vcs_revision</key>
+        <string>4dc4d1d90d82a22843e2adf5130f9ecb5ee5769e</string>
+        <key>vcs_url</key>
+        <string>https://github.com/secondlife/3p-tinyexr</string>
+        <key>description</key>
+        <string>tinyexr import library</string>
+        <key>source_type</key>
+        <string>git</string>
+      </map>
     </map>
     <key>package_description</key>
     <map>
@@ -2929,7 +3071,8 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
                   <string>-DROOT_PROJECT_NAME:STRING=BlackDragon</string>
                   <string>-DINSTALL_PROPRIETARY=TRUE</string>
-</array>
+                  <string>-DUSE_OPENAL:BOOL=ON</string>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -2949,11 +3092,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
                   <string>-DROOT_PROJECT_NAME:STRING=BlackDragon</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>../indra</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>RelWithDebInfoOS</string>
@@ -2970,7 +3113,8 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
                   <string>-DROOT_PROJECT_NAME:STRING=BlackDragon</string>
                   <string>-DINSTALL_PROPRIETARY=TRUE</string>
-</array>
+                  <string>-DUSE_OPENAL:BOOL=ON</string>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -2990,11 +3134,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DADDRESS_SIZE:STRING=$AUTOBUILD_ADDRSIZE</string>
                   <string>-DROOT_PROJECT_NAME:STRING=BlackDragon</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>../indra</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>ReleaseOS</string>
@@ -3015,11 +3159,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-G</string>
                   <string>Xcode</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>../indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3032,7 +3176,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-project</string>
                   <string>BlackDragon.xcodeproj</string>
                   <string>-parallelizeTargets</string>
-</array>
+                </array>
               </map>
               <key>default</key>
               <string>True</string>
@@ -3047,7 +3191,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-G</string>
                   <string>Xcode</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3060,7 +3204,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-project</string>
                   <string>BlackDragon.xcodeproj</string>
                   <string>-parallelizeTargets</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>RelWithDebInfoOS</string>
@@ -3073,11 +3217,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-G</string>
                   <string>Xcode</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>../indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3090,7 +3234,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-project</string>
                   <string>BlackDragon.xcodeproj</string>
                   <string>-parallelizeTargets</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>Release</string>
@@ -3103,7 +3247,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>-G</string>
                   <string>Xcode</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3116,7 +3260,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-project</string>
                   <string>BlackDragon.xcodeproj</string>
                   <string>-parallelizeTargets</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>ReleaseOS</string>
@@ -3140,11 +3284,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-G</string>
                   <string>Ninja</string>
                   <string>-DLL_TESTS=Off</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>../indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3165,7 +3309,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-G</string>
                   <string>Ninja</string>
                   <string>-DLL_TESTS=Off</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3207,7 +3351,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <key>arguments</key>
                 <array>
                   <string>..\indra</string>
-              </array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3241,11 +3385,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DINSTALL_PROPRIETARY=FALSE</string>
                   <string>-DUSE_KDU=FALSE</string>
                   <string>-DUSE_OPENAL:BOOL=ON</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>..\indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3259,11 +3403,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>/p:useenv=true</string>
                   <string>/verbosity:minimal</string>
                   <string>/p:VCBuildAdditionalOptions= /incremental</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>BlackDragon.sln</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>RelWithDebInfoOS</string>
@@ -3278,11 +3422,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>${AUTOBUILD_WIN_CMAKE_GEN|NOTWIN}</string>
                   <string>-A</string>
                   <string>${AUTOBUILD_WIN_VSPLATFORM|NOTWIN}</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>..\indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3292,11 +3436,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                 <array>
                   <string>/build</string>
                   <string>Release|${AUTOBUILD_WIN_VSPLATFORM|NOTWIN}</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>BlackDragon.sln</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>Release</string>
@@ -3318,11 +3462,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>-DUSE_FMODSTUDIO:BOOL=ON</string>
                   <string>-DPACKAGE:BOOL=FALSE</string>
                   <string>-DOPENAL:BOOL=OFF</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>..\indra</string>
-</array>
+                </array>
               </map>
               <key>build</key>
               <map>
@@ -3336,11 +3480,11 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
                   <string>/p:useenv=true</string>
                   <string>/verbosity:minimal</string>
                   <string>/p:VCBuildAdditionalOptions= /incremental</string>
-</array>
+                </array>
                 <key>arguments</key>
                 <array>
                   <string>BlackDragon.sln</string>
-</array>
+                </array>
               </map>
               <key>name</key>
               <string>ReleaseOS</string>

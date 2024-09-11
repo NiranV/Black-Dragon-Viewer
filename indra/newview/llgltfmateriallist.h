@@ -40,8 +40,6 @@ class LLGLTFOverrideCacheEntry;
 class LLGLTFMaterialList
 {
 public:
-    static const LLUUID BLANK_MATERIAL_ASSET_ID;
-
     LLGLTFMaterialList() {}
 
 
@@ -51,8 +49,6 @@ public:
     void removeMaterial(const LLUUID& id);
 
     void flushMaterials();
-
-    static void registerCallbacks();
 
     // Queue an modification of a material that we want to send to the simulator.  Call "flushUpdates" to flush pending updates.
     //  id - ID of object to modify
@@ -83,14 +79,14 @@ public:
     static void flushUpdates(void(*done_callback)(bool) = nullptr);
 
     static void addSelectionUpdateCallback(void(*update_callback)(const LLUUID& object_id, S32 side));
-    
+
     // Queue an explicit LLSD ModifyMaterialParams update apply given override data
     //  overrides -- LLSD map (or array of maps) in the format:
     //      object_id   UUID(required)      id of object
     //      side        integer(required)   TE index of face to set, or -1 for all faces
     //      gltf_json   string(optional)    override data to set, empty string nulls out override data, omissions of this parameter keeps existing data
     //      asset_id    UUID(optional)      id of material asset to set, omission of this parameter keeps existing material asset id
-    //    
+    //
     // NOTE: Unless you already have a gltf_json string you want to send, strongly prefer using queueModify
     // If the queue/flush API is insufficient, extend it.
     static void queueUpdate(const LLSD& data);
@@ -98,8 +94,6 @@ public:
     // Called by batch builder to give LLGLTMaterialList an opportunity to apply
     // any override data that arrived before the object was ready to receive it
     void applyQueuedOverrides(LLViewerObject* obj);
-
-    static void loadCacheOverrides(const LLGLTFOverrideCacheEntry& override);
 
     // Apply an override update with the given data
     void applyOverrideMessage(LLMessageSystem* msg, const std::string& data);
