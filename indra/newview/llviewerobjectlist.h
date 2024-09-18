@@ -170,44 +170,44 @@ public:
 	void findOrphans(LLViewerObject* objectp, U32 ip, U32 port);
 
 public:
-	// Class for keeping track of orphaned objects
-	class OrphanInfo
-	{
-	public:
-		OrphanInfo();
-		OrphanInfo(const U64 parent_info, const LLUUID child_info);
-		bool operator==(const OrphanInfo &rhs) const;
-		bool operator!=(const OrphanInfo &rhs) const;
-		U64 mParentInfo;
-		LLUUID mChildInfo;
-	};
+    // Class for keeping track of orphaned objects
+    class OrphanInfo
+    {
+    public:
+        OrphanInfo();
+        OrphanInfo(const U64 parent_info, const LLUUID child_info);
+        bool operator==(const OrphanInfo &rhs) const;
+        bool operator!=(const OrphanInfo &rhs) const;
+        U64 mParentInfo;
+        LLUUID mChildInfo;
+    };
 
 
-	U32	mCurBin; // Current bin we're working on...
+    U32 mCurBin; // Current bin we're working on...
 
-	// Statistics data (see also LLViewerStats)
-	S32 mNumNewObjects;
+    // Statistics data (see also LLViewerStats)
+    S32 mNumNewObjects;
 
-	// if we paused in the last frame
-	// used to discount stats from this frame
-	bool mWasPaused;
+    // if we paused in the last frame
+    // used to discount stats from this frame
+    bool mWasPaused;
 
-	static void getUUIDFromLocal(LLUUID &id,
-								const U32 local_id,
-								const U32 ip,
-								const U32 port);
-	static void setUUIDAndLocal(const LLUUID &id,
-								const U32 local_id,
-								const U32 ip,
-								const U32 port); // Requires knowledge of message system info!
+    void getUUIDFromLocal(LLUUID &id,
+                                const U32 local_id,
+                                const U32 ip,
+                                const U32 port);
+    void setUUIDAndLocal(const LLUUID &id,
+                                const U32 local_id,
+                                const U32 ip,
+                                const U32 port); // Requires knowledge of message system info!
 
-	static bool removeFromLocalIDTable(const LLViewerObject* objectp);
-	// Used ONLY by the orphaned object code.
-	static U64 getIndex(const U32 local_id, const U32 ip, const U32 port);
+    bool removeFromLocalIDTable(const LLViewerObject* objectp);
+    // Used ONLY by the orphaned object code.
+    U64 getIndex(const U32 local_id, const U32 ip, const U32 port);
 
-	S32 mNumUnknownUpdates;
-	S32 mNumDeadObjectUpdates;
-	S32 mNumDeadObjects;
+    S32 mNumUnknownUpdates;
+    S32 mNumDeadObjectUpdates;
+    S32 mNumDeadObjects;
 
 //	//BD - Derender
 	std::set<LLUUID> mDerenderList;
@@ -238,9 +238,9 @@ protected:
     S32 mCurLazyUpdateIndex;
 
     static U32 sSimulatorMachineIndex;
-    static std::map<U64, U32> sIPAndPortToIndex;
+    std::map<U64, U32> mIPAndPortToIndex;
 
-    static std::map<U64, LLUUID> sIndexAndLocalIDToUUID;
+    std::map<U64, LLUUID> mIndexAndLocalIDToUUID;
 
     friend class LLViewerObject;
 
@@ -279,7 +279,7 @@ extern LLViewerObjectList gObjectList;
  */
 inline LLViewerObject *LLViewerObjectList::findObject(const LLUUID &id)
 {
-    std::map<LLUUID, LLPointer<LLViewerObject> >::iterator iter = mUUIDObjectMap.find(id);
+    auto iter = mUUIDObjectMap.find(id);
     if(iter != mUUIDObjectMap.end())
     {
         return iter->second;

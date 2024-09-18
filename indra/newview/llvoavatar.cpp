@@ -2784,113 +2784,96 @@ void LLVOAvatar::idleUpdate(LLAgent &agent, const F64 &time)
 
 void LLVOAvatar::idleUpdateVoiceVisualizer(bool voice_enabled, const LLVector3 &position)
 {
-	bool render_visualizer = voice_enabled;
-	
-	// Don't render the user's own voice visualizer when in mouselook, or when opening the mic is disabled.
-	if(isSelf())
-	{
-        static const LLCachedControl<bool> voice_disable_mic(gSavedSettings, "VoiceDisableMic");
-		if(gAgentCamera.cameraMouselook() || voice_disable_mic)
-		{
-			render_visualizer = false;
-		}
-	}
-	
-	mVoiceVisualizer->setVoiceEnabled(render_visualizer);
-	
-	if ( voice_enabled )
-	{		
-		//----------------------------------------------------------------
-		// Only do gesture triggering for your own avatar, and only when you're in a proximal channel.
-		//----------------------------------------------------------------
-		if( isSelf() )
-		{
-			//----------------------------------------------------------------------------------------
-			// The following takes the voice signal and uses that to trigger gesticulations. 
-			//----------------------------------------------------------------------------------------
-			int lastGesticulationLevel = mCurrentGesticulationLevel;
-			mCurrentGesticulationLevel = mVoiceVisualizer->getCurrentGesticulationLevel();
-			
-			//---------------------------------------------------------------------------------------------------
-			// If "current gesticulation level" changes, we catch this, and trigger the new gesture
-			//---------------------------------------------------------------------------------------------------
-			if ( lastGesticulationLevel != mCurrentGesticulationLevel )
-			{
-				if ( mCurrentGesticulationLevel != VOICE_GESTICULATION_LEVEL_OFF )
-				{
-					std::string gestureString = "unInitialized";
-					if ( mCurrentGesticulationLevel == 0 )	{ gestureString = "/voicelevel1";	}
-					else	if ( mCurrentGesticulationLevel == 1 )	{ gestureString = "/voicelevel2";	}
-					else	if ( mCurrentGesticulationLevel == 2 )	{ gestureString = "/voicelevel3";	}
-					else	{ LL_INFOS() << "oops - CurrentGesticulationLevel can be only 0, 1, or 2"  << LL_ENDL; }
-					
-					// this is the call that Karl S. created for triggering gestures from within the code.
-					LLGestureMgr::instance().triggerAndReviseString( gestureString );
-				}
-			}
-			
-		} //if( isSelf() )
-		
-		//-----------------------------------------------------------------------------------------------------------------
-		// If the avatar is speaking, then the voice amplitude signal is passed to the voice visualizer.
-		// Also, here we trigger voice visualizer start and stop speaking, so it can animate the voice symbol.
-		//
-		// Notice the calls to "gAwayTimer.reset()". This resets the timer that determines how long the avatar has been
-		// "away", so that the avatar doesn't lapse into away-mode (and slump over) while the user is still talking. 
-		//-----------------------------------------------------------------------------------------------------------------
-		if (LLVoiceClient::getInstance()->getIsSpeaking( mID ))
-		{		
-			if (!mVoiceVisualizer->getCurrentlySpeaking())
-			{
-				mVoiceVisualizer->setStartSpeaking();
-				
-				//printf( "gAwayTimer.reset();\n" );
-			}
-			
-			mVoiceVisualizer->setSpeakingAmplitude( LLVoiceClient::getInstance()->getCurrentPower( mID ) );
-			
-			if( isSelf() )
-			{
-				gAgent.clearAFK();
-			}
-		}
-		else
-		{
-			if ( mVoiceVisualizer->getCurrentlySpeaking() )
-			{
-				mVoiceVisualizer->setStopSpeaking();
-				
-				if ( mLipSyncActive )
-				{
-					if( mOohMorph ) mOohMorph->setWeight(mOohMorph->getMinWeight());
-					if( mAahMorph ) mAahMorph->setWeight(mAahMorph->getMinWeight());
-					
-					mLipSyncActive = false;
-					LLCharacter::updateVisualParams();
-					dirtyMesh();
-				}
-			}
-		}
-		
-		//--------------------------------------------------------------------------------------------
-		// here we get the approximate head position and set as sound source for the voice symbol
-		// (the following version uses a tweak of "mHeadOffset" which handle sitting vs. standing)
-		//--------------------------------------------------------------------------------------------
-		
-		if ( isSitting() )
-		{
-			LLVector3 headOffset = LLVector3( 0.0f, 0.0f, mHeadOffset.mV[2] );
-			mVoiceVisualizer->setVoiceSourceWorldPosition( mRoot->getWorldPosition() + headOffset );
-		}
-		else 
-		{
-			LLVector3 tagPos = mRoot->getWorldPosition();
-			tagPos[VZ] -= mPelvisToFoot;
-			tagPos[VZ] += ( mBodySize[VZ] + 0.125f ); // does not need mAvatarOffset -Nyx
-			mVoiceVisualizer->setVoiceSourceWorldPosition( tagPos );
-		}
-	}//if ( voiceEnabled )
-}		
+    bool render_visualizer = voice_enabled;
+
+    // Don't render the user's own voice visualizer when in mouselook, or when opening the mic is disabled.
+    if(isSelf())
+    {
+        static LLCachedControl<bool> voice_disable_mic(gSavedSettings, "VoiceDisableMic");
+        if(gAgentCamera.cameraMouselook() || voice_disable_mic)
+        {
+            render_visualizer = false;
+        }
+    }
+
+    mVoiceVisualizer->setVoiceEnabled(render_visualizer);
+
+    if ( voice_enabled )
+    {
+        //----------------------------------------------------------------
+        // Only do gesture triggering for your own avatar, and only when you're in a proximal channel.
+        //----------------------------------------------------------------
+        if( isSelf() )
+        {
+            //----------------------------------------------------------------------------------------
+            // The following takes the voice signal and uses that to trigger gesticulations.
+            //----------------------------------------------------------------------------------------
+            int lastGesticulationLevel = mCurrentGesticulationLevel;
+            mCurrentGesticulationLevel = mVoiceVisualizer->getCurrentGesticulationLevel();
+
+            //---------------------------------------------------------------------------------------------------
+            // If "current gesticulation level" changes, we catch this, and trigger the new gesture
+            //---------------------------------------------------------------------------------------------------
+            if ( lastGesticulationLevel != mCurrentGesticulationLevel )
+            {
+                if ( mCurrentGesticulationLevel != VOICE_GESTICULATION_LEVEL_OFF )
+                {
+                    std::string gestureString = "unInitialized";
+                    if ( mCurrentGesticulationLevel == 0 )  { gestureString = "/voicelevel1";   }
+                    else    if ( mCurrentGesticulationLevel == 1 )  { gestureString = "/voicelevel2";   }
+                    else    if ( mCurrentGesticulationLevel == 2 )  { gestureString = "/voicelevel3";   }
+                    else    { LL_INFOS() << "oops - CurrentGesticulationLevel can be only 0, 1, or 2"  << LL_ENDL; }
+
+                    // this is the call that Karl S. created for triggering gestures from within the code.
+                    LLGestureMgr::instance().triggerAndReviseString( gestureString );
+                }
+            }
+
+        } //if( isSelf() )
+
+        //-----------------------------------------------------------------------------------------------------------------
+        // If the avatar is speaking, then the voice amplitude signal is passed to the voice visualizer.
+        // Also, here we trigger voice visualizer start and stop speaking, so it can animate the voice symbol.
+        //
+        // Notice the calls to "gAwayTimer.reset()". This resets the timer that determines how long the avatar has been
+        // "away", so that the avatar doesn't lapse into away-mode (and slump over) while the user is still talking.
+        //-----------------------------------------------------------------------------------------------------------------
+        if (LLVoiceClient::getInstance()->getIsSpeaking( mID ) && (!isInMuteList() || isSelf()))
+        {
+            if (!mVoiceVisualizer->getCurrentlySpeaking())
+            {
+                mVoiceVisualizer->setStartSpeaking();
+
+                //printf( "gAwayTimer.reset();\n" );
+            }
+
+            mVoiceVisualizer->setSpeakingAmplitude( LLVoiceClient::getInstance()->getCurrentPower( mID ) );
+
+            if( isSelf() )
+            {
+                gAgent.clearAFK();
+            }
+        }
+        else
+        {
+            if ( mVoiceVisualizer->getCurrentlySpeaking() )
+            {
+                mVoiceVisualizer->setStopSpeaking();
+
+                if ( mLipSyncActive )
+                {
+                    if( mOohMorph ) mOohMorph->setWeight(mOohMorph->getMinWeight());
+                    if( mAahMorph ) mAahMorph->setWeight(mAahMorph->getMinWeight());
+
+                    mLipSyncActive = false;
+                    LLCharacter::updateVisualParams();
+                    dirtyMesh();
+                }
+            }
+        }
+        mVoiceVisualizer->setPositionAgent(position);
+    }//if ( voiceEnabled )
+}
 
 static void override_bbox(LLDrawable* drawable, LLVector4a* extents)
 {

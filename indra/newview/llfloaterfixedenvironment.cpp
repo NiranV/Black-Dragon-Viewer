@@ -28,9 +28,7 @@
 
 #include "llfloaterfixedenvironment.h"
 
-#include <boost/make_shared.hpp>
-
- // libs
+// libs
 #include "llbutton.h"
 #include "llnotifications.h"
 #include "llnotificationsutil.h"

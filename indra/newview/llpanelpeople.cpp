@@ -355,7 +355,7 @@ public:
         LLAvatarTracker::instance().addObserver(this);
 
         // For notification when SIP online status changes.
-        LLVoiceClient::getInstance()->addObserver(this);
+        LLVoiceClient::addObserver(this);
         mInvObserver = new LLInventoryFriendCardObserver(this);
     }
 
@@ -363,53 +363,50 @@ public:
     {
         // will be deleted by ~LLInventoryModel
         //delete mInvObserver;
-        if (LLVoiceClient::instanceExists())
+        LLVoiceClient::removeObserver(this);
+        LLAvatarTracker::instance().removeObserver(this);
+    }
+
+    /*virtual*/ void changed(U32 mask)
+    {
+        if (mIsActive)
         {
-            LLVoiceClient::getInstance()->removeObserver(this);
+            // events can arrive quickly in bulk - we need not process EVERY one of them -
+            // so we wait a short while to let others pile-in, and process them in aggregate.
+            mEventTimer.start();
         }
-		LLAvatarTracker::instance().removeObserver(this);
-	}
 
-	/*virtual*/ void changed(U32 mask)
-	{
-		if (mIsActive)
-		{
-			// events can arrive quickly in bulk - we need not process EVERY one of them -
-			// so we wait a short while to let others pile-in, and process them in aggregate.
-			mEventTimer.start();
-		}
-
-		// save-up all the mask-bits which have come-in
-		mMask |= mask;
-	}
+        // save-up all the mask-bits which have come-in
+        mMask |= mask;
+    }
 
 
-	/*virtual*/ bool tick()
-	{
-		if (!mIsActive) return false;
+    /*virtual*/ bool tick()
+    {
+        if (!mIsActive) return false;
 
 		//BD - TODO: When powers change refresh the display
-		if (mMask & (LLFriendObserver::ADD | LLFriendObserver::REMOVE | LLFriendObserver::ONLINE | LLFriendObserver::POWERS))
-		{
-			update();
-		}
+        if (mMask & (LLFriendObserver::ADD | LLFriendObserver::REMOVE | LLFriendObserver::ONLINE | LLFriendObserver::POWERS))
+        {
+            update();
+        }
 
-		// Stop updates.
-		mEventTimer.stop();
-		mMask = 0;
+        // Stop updates.
+        mEventTimer.stop();
+        mMask = 0;
 
-		return false;
-	}
+        return false;
+    }
 
-	// virtual
-	void setActive(bool active)
-	{
-		mIsActive = active;
-		if (active)
-		{
-			tick();
-		}
-	}
+    // virtual
+    void setActive(bool active)
+    {
+        mIsActive = active;
+        if (active)
+        {
+            tick();
+        }
+    }
 
 private:
 	U32 mMask;
@@ -607,10 +604,7 @@ LLPanelPeople::~LLPanelPeople()
     delete mFriendListUpdater;
     delete mRecentListUpdater;
 
-    if(LLVoiceClient::instanceExists())
-    {
-        LLVoiceClient::getInstance()->removeObserver(this);
-    }
+    LLVoiceClient::removeObserver(this);
 }
 
 void LLPanelPeople::removePicker()
@@ -732,7 +726,7 @@ bool LLPanelPeople::postBuild()
 	// Must go after setting commit callback and initializing all pointers to children.
 	mTabContainer->selectTabByName(NEARBY_TAB_NAME);
 
-	LLVoiceClient::getInstance()->addObserver(this);
+	LLVoiceClient::addObserver(this);
 
 	// call this method in case some list is empty and buttons can be in inconsistent state
 	updateButtons();

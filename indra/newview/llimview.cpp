@@ -3048,13 +3048,16 @@ void LLIncomingCallDialog::processCallResponse(S32 response, const LLSD &payload
 
             gIMMgr->addSession(correct_session_name, type, session_id, payload["voice_channel_info"]);
 
-            std::string url = gAgent.getRegion()->getCapability(
+            std::string url = gAgent.getRegionCapability(
                 "ChatSessionRequest");
 
             if (voice)
             {
-                LLCoros::instance().launch("chatterBoxInvitationCoro",
-                                           boost::bind(&chatterBoxInvitationCoro, url, session_id, inv_type, payload["voice_channel_info"]));
+                if(!url.empty())
+                {
+                    LLCoros::instance().launch("chatterBoxInvitationCoro",
+                        boost::bind(&chatterBoxInvitationCoro, url, session_id, inv_type, payload["voice_channel_info"]));
+                }
 
                 // send notification message to the corresponding chat
                 if (payload["notify_box_type"].asString() == "VoiceInviteGroup" || payload["notify_box_type"].asString() == "VoiceInviteAdHoc")
@@ -3874,6 +3877,11 @@ bool LLIMMgr::startCall(const LLUUID& session_id, LLVoiceChannel::EDirection dir
     {
         voice_channel->setChannelInfo(voice_channel_info);
     }
+    else if (voice_channel->getState() < LLVoiceChannel::STATE_READY)
+    {
+        // restart if there wa an error or it was hang up
+        voice_channel->resetChannelInfo();
+    }
     voice_channel->setCallDirection(direction);
     voice_channel->activate();
     return true;
@@ -4079,9 +4087,12 @@ public:
                     // Send request for chat history, if enabled.
                     if (gSavedPerAccountSettings.getBOOL("FetchGroupChatHistory"))
                     {
-                        std::string url = gAgent.getRegion()->getCapability("ChatSessionRequest");
-                        LLCoros::instance().launch("chatterBoxHistoryCoro",
-                            boost::bind(&chatterBoxHistoryCoro, url, session_id, "", "", 0));
+                        std::string url = gAgent.getRegionCapability("ChatSessionRequest");
+                        if (!url.empty())
+                        {
+                            LLCoros::instance().launch("chatterBoxHistoryCoro",
+                                boost::bind(&chatterBoxHistoryCoro, url, session_id, "", "", 0));
+                        }
                     }
                 }
             }
