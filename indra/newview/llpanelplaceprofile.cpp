@@ -172,7 +172,7 @@ bool LLPanelPlaceProfile::postBuild()
 	mLastSelectedRegionID = LLUUID::null;
 	mNextCovenantUpdateTime = 0;
 
-	return TRUE;
+	return true;
 }
 
 // virtual

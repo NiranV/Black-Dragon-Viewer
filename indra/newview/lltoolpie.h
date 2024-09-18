@@ -50,7 +50,7 @@ public:
     virtual bool        handleHover(S32 x, S32 y, MASK mask) override;
     virtual bool        handleDoubleClick(S32 x, S32 y, MASK mask) override;
     //BD - UI Improvements
-    //bool                handleScrollWheelAny(S32 x, S32 y, S32 clicks_x, S32 clicks_y);
+    bool                handleScrollWheelAny(S32 x, S32 y, S32 clicks_x, S32 clicks_y, MASK mask);
     virtual bool        handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) override;
     virtual bool        handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask) override;
     virtual bool        handleToolTip(S32 x, S32 y, MASK mask) override;

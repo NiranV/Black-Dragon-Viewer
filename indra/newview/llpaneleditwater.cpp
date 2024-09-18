@@ -88,7 +88,7 @@ LLPanelSettingsWaterMainTab::LLPanelSettingsWaterMainTab() :
 }
 
 
-BOOL LLPanelSettingsWaterMainTab::postBuild()
+bool LLPanelSettingsWaterMainTab::postBuild()
 {
 	//BD - Settings
 	mClrFogColor = getChild<LLColorSwatchCtrl>(FIELD_WATER_FOG_COLOR);
@@ -120,7 +120,7 @@ BOOL LLPanelSettingsWaterMainTab::postBuild()
 
 	refresh();
 
-	return TRUE;
+	return true;
 }
 
 //==========================================================================
@@ -232,7 +232,7 @@ LLPanelSettingsWaterSecondaryTab::LLPanelSettingsWaterSecondaryTab() :
 }
 
 
-BOOL LLPanelSettingsWaterSecondaryTab::postBuild()
+bool LLPanelSettingsWaterSecondaryTab::postBuild()
 {
 	mTxtNormalMap = getChild<LLTextureCtrl>(FIELD_WATER_NORMAL_MAP);
 	mTxtNormalMap->setDefaultImageAssetID(LLSettingsWater::GetDefaultWaterNormalAssetId());
@@ -251,7 +251,7 @@ BOOL LLPanelSettingsWaterSecondaryTab::postBuild()
 
 	refresh();
 
-	return TRUE;
+	return true;
 }
 
 //==========================================================================

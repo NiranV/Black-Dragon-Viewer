@@ -1752,217 +1752,6 @@ void LLScrollListCtrl::drawItems()
 	}
 }
 
-//BD - UI Improvements
-bool LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
-{
-	bool handled = false;
-	// Pretend the mouse is over the scrollbar
-	//BD - UI Improvements
-	handled = mScrollbar->handleScrollWheel( 0, 0, clicks, mask );
-
-    // allow for partial line at bottom
-    S32 num_page_lines = getLinesPerPage();
-
-    LLRect item_rect;
-
-    LLGLSUIDefault gls_ui;
-
-    F32 alpha = getDrawContext().mAlpha;
-
-    {
-        LLLocalClipRect clip(mItemListRect);
-
-        S32 cur_y = y;
-
-        S32 max_columns = 0;
-
-        LLColor4 highlight_color = LLColor4::white; // ex: text inside cells
-        static LLUICachedControl<F32> type_ahead_timeout ("TypeAheadTimeout", 0);
-        highlight_color.mV[VALPHA] = clamp_rescale(mSearchTimer.getElapsedTimeF32(), type_ahead_timeout * 0.7f, type_ahead_timeout(), 0.4f, 0.f);
-
-        S32 first_line = mScrollLines;
-        S32 last_line = llmin((S32)mItemList.size() - 1, mScrollLines + getLinesPerPage());
-
-        if (first_line >= mItemList.size())
-        {
-            return;
-        }
-        item_list::iterator iter;
-        for (S32 line = first_line; line <= last_line; line++)
-        {
-            LLScrollListItem* item = mItemList[line];
-    
-            item_rect.setOriginAndSize(
-                x,
-                cur_y,
-                mItemListRect.getWidth(),
-                mLineHeight );
-            item->setRect(item_rect);
-
-            max_columns = llmax(max_columns, item->getNumColumns());
-
-            LLColor4 fg_color;
-            LLColor4 hover_color(LLColor4::transparent);
-            LLColor4 select_color(LLColor4::transparent);
-
-            if( mScrollLines <= line && line < mScrollLines + num_page_lines )
-            {
-                fg_color = (item->getEnabled() ? mFgUnselectedColor.get() : mFgDisabledColor.get());
-                //BD
-				if (item->getMarked() && mCanSelect)
-				{
-					if (item->getSelected())	// if it's highlighted, average the colors
-					{
-						hover_color = lerp(mBgSelectedColor.get(), mBgMarkedColor.get(), 0.5f);
-					}
-					else						// otherwise just select-highlight it
-					{
-						hover_color = mBgMarkedColor.get();
-					}
-				}
-                else if( item->getSelected() && mCanSelect)
-                {
-                    if(item->getHighlighted())  // if it's highlighted, average the colors
-                    {
-                        select_color = lerp(mBgSelectedColor.get(), mHighlightedColor.get(), 0.5f);
-                    }
-                    else                        // otherwise just select-highlight it
-                    {
-                        select_color = mBgSelectedColor.get();
-                    }
-
-                    fg_color = (item->getEnabled() ? mFgSelectedColor.get() : mFgDisabledColor.get());
-                }
-                if (mHighlightedItem == line && mCanSelect)
-                {
-                    if(item->getHighlighted())  // if it's highlighted, average the colors
-                    {
-                        hover_color = lerp(mHoveredColor.get(), mHighlightedColor.get(), 0.5f);
-                    }
-                    else                        // otherwise just hover-highlight it
-                    {
-                        hover_color = mHoveredColor.get();
-                    }
-                }
-                else if (item->getHighlighted())
-                {
-                    hover_color = mHighlightedColor.get();
-                }
-                else
-                {
-                    if (mDrawStripes && (line % 2 == 0) && (max_columns > 1))
-                    {
-                        hover_color = mBgStripeColor.get();
-                    }
-                }
-
-                if (!item->getEnabled())
-                {
-                    hover_color = mBgReadOnlyColor.get();
-                }
-
-                item->draw(item_rect, fg_color % alpha, hover_color% alpha, select_color% alpha, highlight_color % alpha, mColumnPadding);
-
-                cur_y -= mLineHeight;
-            }
-        }
-    }
-}
-
-// virtual
-bool LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
-{
-	LLScrollListItem *item = hitItem(x, y);
-	if (item)
-	{
-		// check to see if we have a UUID for this row
-		std::string id = item->getValue().asString();
-		LLUUID uuid(id);
-		if (! uuid.isNull() && mContextMenuType != MENU_NONE)
-		{
-			// set up the callbacks for all of the avatar/group menu items
-			// (N.B. callbacks don't take const refs as id is local scope)
-			bool is_group = (mContextMenuType == MENU_GROUP);
-			LLUICtrl::CommitCallbackRegistry::ScopedRegistrar registrar;
-			registrar.add("Url.ShowProfile", boost::bind(&LLScrollListCtrl::showProfile, id, is_group));
-			registrar.add("Url.SendIM", boost::bind(&LLScrollListCtrl::sendIM, id));
-			registrar.add("Url.AddFriend", boost::bind(&LLScrollListCtrl::addFriend, id));
-			registrar.add("Url.RemoveFriend", boost::bind(&LLScrollListCtrl::removeFriend, id));
-            registrar.add("Url.ReportAbuse", boost::bind(&LLScrollListCtrl::reportAbuse, id, is_group));
-			registrar.add("Url.Execute", boost::bind(&LLScrollListCtrl::showNameDetails, id, is_group));
-			registrar.add("Url.CopyLabel", boost::bind(&LLScrollListCtrl::copyNameToClipboard, id, is_group));
-			registrar.add("Url.CopyUrl", boost::bind(&LLScrollListCtrl::copySLURLToClipboard, id, is_group));
-//			//BD - Common Avatar Functions
-			registrar.add("Url.VoiceCall", boost::bind(&LLScrollListCtrl::callVoice, id));
-			registrar.add("Url.SendTeleport", boost::bind(&LLScrollListCtrl::sendTeleport, id));
-			registrar.add("Url.Share", boost::bind(&LLScrollListCtrl::share, id));
-			registrar.add("Url.Pay", boost::bind(&LLScrollListCtrl::pay, id));
-			registrar.add("Url.Mute", boost::bind(&LLScrollListCtrl::block, id));
-			registrar.add("Url.Map", boost::bind(&LLScrollListCtrl::map, id));
-
-			// create the context menu from the XUI file and display it
-			std::string menu_name = is_group ? "menu_url_group.xml" : "menu_url_agent.xml";
-			auto menu = mPopupMenuHandle.get();
-			if (menu)
-			{
-				menu->die();
-				mPopupMenuHandle.markDead();
-			}
-			llassert(LLMenuGL::sMenuContainer != NULL);
-			menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
-				menu_name, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
-			if (menu)
-			{
-				mPopupMenuHandle = menu->getHandle();
-				if (mIsFriendSignal)
-				{
-					bool isFriend = *(*mIsFriendSignal)(uuid);
-					LLView* addFriendButton = menu->getChild<LLView>("add_friend");
-					LLView* removeFriendButton = menu->getChild<LLView>("remove_friend");
-
-					if (addFriendButton && removeFriendButton)
-					{
-						addFriendButton->setEnabled(!isFriend);
-						removeFriendButton->setEnabled(isFriend);
-					}
-				}
-
-				menu->show(x, y);
-				LLMenuGL::showPopup(this, menu, x, y);
-				return true;
-			}
-		}
-		//BD - Right Click Context Menu
-		else
-		{
-			deselectAllItems(true);
-			selectItem(item, getColumnIndexFromOffset(x));
-			//BD - If we have a menu (from code) use that, if not attempt to create one if a name
-			//     is defined in the XML file.
-			auto menu = mPopupMenuHandle.get();
-			if (menu)
-			{
-				menu->show(x, y);
-				LLMenuGL::showPopup(this, menu, x, y);
-			}
-			else
-			{
-				if (!mContextMenuName.empty())
-				{
-					llassert(LLMenuGL::sMenuContainer != NULL);
-					menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
-						mContextMenuName, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
-
-					mPopupMenuHandle = menu->getHandle();
-				}
-			}
-			return true;
-		}
-		return LLUICtrl::handleRightMouseDown(x, y, mask);
-	}
-	return false;
-}
-
 void LLScrollListCtrl::draw()
 {
     LLLocalClipRect clip(getLocalRect());
@@ -2005,11 +1794,13 @@ void LLScrollListCtrl::setEnabled(bool enabled)
     mScrollbar->setTabStop(!enabled && mScrollbar->getPageSize() < mScrollbar->getDocSize());
 }
 
-bool LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+bool LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
     bool handled = false;
     // Pretend the mouse is over the scrollbar
-    handled = mScrollbar->handleScrollWheel( 0, 0, clicks );
+    //BD - UI Improvements
+    handled = mScrollbar->handleScrollWheel(0, 0, clicks, mask);
 
     if (mMouseWheelOpaque)
     {
@@ -2019,11 +1810,11 @@ bool LLScrollListCtrl::handleScrollWheel(S32 x, S32 y, S32 clicks)
     return handled;
 }
 
-bool LLScrollListCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks)
+bool LLScrollListCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    bool handled = false;
+    BOOL handled = true;
     // Pretend the mouse is over the scrollbar
-    handled = mScrollbar->handleScrollHWheel( 0, 0, clicks );
+    handled = mScrollbar->handleScrollHWheel(0, 0, clicks, mask);
 
     if (mMouseWheelOpaque)
     {
@@ -2032,138 +1823,20 @@ bool LLScrollListCtrl::handleScrollHWheel(S32 x, S32 y, S32 clicks)
 
     return handled;
 }
+
 
 // *NOTE: Requires a valid row_index and column_index
 LLRect LLScrollListCtrl::getCellRect(S32 row_index, S32 column_index)
 {
-	// copy a SLURL for the avatar or group to the clipboard
-	std::string sltype = is_group ? "group" : "agent";
-	std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
-	LLUrlAction::copyURLToClipboard(slurl);
+    LLRect cell_rect;
+    S32 rect_left = getColumnOffsetFromIndex(column_index) + mItemListRect.mLeft;
+    S32 rect_bottom = getRowOffsetFromIndex(row_index);
+    LLScrollListColumn* columnp = getColumn(column_index);
+    cell_rect.setOriginAndSize(rect_left, rect_bottom,
+        /*rect_left + */columnp->getWidth(), mLineHeight);
+    return cell_rect;
 }
 
-//BD - Common Avatar Functions
-void LLScrollListCtrl::sendTeleport(std::string id)
-{
-	// send teleport offer to the resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::sendTeleport(slurl);
-}
-
-void LLScrollListCtrl::map(std::string id)
-{
-	// track this resident down on the world map
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::showOnMap(slurl);
-}
-
-void LLScrollListCtrl::share(std::string id)
-{
-	// share something with this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::share(slurl);
-}
-
-void LLScrollListCtrl::pay(std::string id)
-{
-	// pay linden dollars to this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::pay(slurl);
-}
-
-void LLScrollListCtrl::block(std::string id)
-{
-	// block this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::blockAvatar(slurl);
-}
-
-void LLScrollListCtrl::callVoice(std::string id)
-{
-	// call this resident
-	std::string slurl = "secondlife:///app/agent/" + id + "/about";
-	LLUrlAction::callVoice(slurl);
-}
-
-bool LLScrollListCtrl::handleDoubleClick(S32 x, S32 y, MASK mask)
-{
-	//bool handled = false;
-	bool handled = handleClick(x, y, mask);
-
-	if (!handled)
-	{
-		// Offer the click to the children, even if we aren't enabled
-		// so the scroll bars will work.
-		if (NULL == LLView::childrenHandleDoubleClick(x, y, mask))
-		{
-			// Run the callback only if an item is being double-clicked.
-			if( mCanSelect && hitItem(x, y) && mOnDoubleClickCallback )
-			{
-				mOnDoubleClickCallback();
-			}
-		}
-	}
-
-	return true;
-}
-
-bool LLScrollListCtrl::handleClick(S32 x, S32 y, MASK mask)
-{
-	// which row was clicked on?
-	LLScrollListItem* hit_item = hitItem(x, y);
-	if (!hit_item) return false;
-
-	// get appropriate cell from that row
-	S32 column_index = getColumnIndexFromOffset(x);
-	LLScrollListCell* hit_cell = hit_item->getColumn(column_index);
-	if (!hit_cell) return false;
-
-	// if cell handled click directly (i.e. clicked on an embedded checkbox)
-	if (hit_cell->handleClick())
-	{
-		// if item not currently selected, select it
-		if (!hit_item->getSelected())
-		{
-			selectItemAt(x, y, mask);
-			gFocusMgr.setMouseCapture(this);
-			mNeedsScroll = true;
-		}
-		
-		// propagate state of cell to rest of selected column
-		{
-			// propagate value of this cell to other selected items
-			// and commit the respective widgets
-			LLSD item_value = hit_cell->getValue();
-			for (item_list::iterator iter = mItemList.begin(); iter != mItemList.end(); iter++)
-			{
-				LLScrollListItem* item = *iter;
-				if (item->getSelected())
-				{
-					LLScrollListCell* cellp = item->getColumn(column_index);
-					cellp->setValue(item_value);
-					cellp->onCommit();
-					if (mLastSelected == NULL)
-					{
-						break;
-					}
-				}
-			}
-			//FIXME: find a better way to signal cell changes
-			onCommit();
-		}
-		// eat click (e.g. do not trigger double click callback)
-		return true;
-	}
-	else
-	{
-		// treat this as a normal single item selection
-		selectItemAt(x, y, mask);
-		gFocusMgr.setMouseCapture(this);
-		mNeedsScroll = true;
-		// do not eat click (allow double click callback)
-		return false;
-	}
-}
 
 bool LLScrollListCtrl::handleToolTip(S32 x, S32 y, MASK mask)
 {
@@ -2362,13 +2035,13 @@ bool LLScrollListCtrl::handleMouseUp(S32 x, S32 y, MASK mask)
 // virtual
 bool LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
-    LLScrollListItem *item = hitItem(x, y);
+    LLScrollListItem* item = hitItem(x, y);
     if (item)
     {
         // check to see if we have a UUID for this row
         std::string id = item->getValue().asString();
         LLUUID uuid(id);
-        if (! uuid.isNull() && mContextMenuType != MENU_NONE)
+        if (!uuid.isNull() && mContextMenuType != MENU_NONE)
         {
             // set up the callbacks for all of the avatar/group menu items
             // (N.B. callbacks don't take const refs as id is local scope)
@@ -2382,6 +2055,13 @@ bool LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
             registrar.add("Url.Execute", boost::bind(&LLScrollListCtrl::showNameDetails, id, is_group));
             registrar.add("Url.CopyLabel", boost::bind(&LLScrollListCtrl::copyNameToClipboard, id, is_group));
             registrar.add("Url.CopyUrl", boost::bind(&LLScrollListCtrl::copySLURLToClipboard, id, is_group));
+            //			//BD - Common Avatar Functions
+            registrar.add("Url.VoiceCall", boost::bind(&LLScrollListCtrl::callVoice, id));
+            registrar.add("Url.SendTeleport", boost::bind(&LLScrollListCtrl::sendTeleport, id));
+            registrar.add("Url.Share", boost::bind(&LLScrollListCtrl::share, id));
+            registrar.add("Url.Pay", boost::bind(&LLScrollListCtrl::pay, id));
+            registrar.add("Url.Mute", boost::bind(&LLScrollListCtrl::block, id));
+            registrar.add("Url.Map", boost::bind(&LLScrollListCtrl::map, id));
 
             // create the context menu from the XUI file and display it
             std::string menu_name = is_group ? "menu_url_group.xml" : "menu_url_agent.xml";
@@ -2414,6 +2094,32 @@ bool LLScrollListCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
                 LLMenuGL::showPopup(this, menu, x, y);
                 return true;
             }
+        }
+        //BD - Right Click Context Menu
+        else
+        {
+            deselectAllItems(true);
+            selectItem(item, getColumnIndexFromOffset(x));
+            //BD - If we have a menu (from code) use that, if not attempt to create one if a name
+            //     is defined in the XML file.
+            auto menu = mPopupMenuHandle.get();
+            if (menu)
+            {
+                menu->show(x, y);
+                LLMenuGL::showPopup(this, menu, x, y);
+            }
+            else
+            {
+                if (!mContextMenuName.empty())
+                {
+                    llassert(LLMenuGL::sMenuContainer != NULL);
+                    menu = LLUICtrlFactory::getInstance()->createFromFile<LLContextMenu>(
+                        mContextMenuName, LLMenuGL::sMenuContainer, LLMenuHolderGL::child_registry_t::instance());
+
+                    mPopupMenuHandle = menu->getHandle();
+                }
+            }
+            return true;
         }
         return LLUICtrl::handleRightMouseDown(x, y, mask);
     }
@@ -2488,6 +2194,49 @@ void LLScrollListCtrl::copySLURLToClipboard(std::string id, bool is_group)
     std::string sltype = is_group ? "group" : "agent";
     std::string slurl = "secondlife:///app/" + sltype + "/" + id + "/about";
     LLUrlAction::copyURLToClipboard(slurl);
+}
+
+//BD - Common Avatar Functions
+void LLScrollListCtrl::sendTeleport(std::string id)
+{
+    // send teleport offer to the resident
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::sendTeleport(slurl);
+}
+
+void LLScrollListCtrl::map(std::string id)
+{
+    // track this resident down on the world map
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::showOnMap(slurl);
+}
+
+void LLScrollListCtrl::share(std::string id)
+{
+    // share something with this resident
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::share(slurl);
+}
+
+void LLScrollListCtrl::pay(std::string id)
+{
+    // pay linden dollars to this resident
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::pay(slurl);
+}
+
+void LLScrollListCtrl::block(std::string id)
+{
+    // block this resident
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::blockAvatar(slurl);
+}
+
+void LLScrollListCtrl::callVoice(std::string id)
+{
+    // call this resident
+    std::string slurl = "secondlife:///app/agent/" + id + "/about";
+    LLUrlAction::callVoice(slurl);
 }
 
 bool LLScrollListCtrl::handleDoubleClick(S32 x, S32 y, MASK mask)

@@ -109,11 +109,9 @@ public:
 	bool hasUnsavedChanges() override;
 	void commitUnsavedChanges() override;
 
-<<<<<<< HEAD
 	friend void request_avatar_properties_coro(std::string cap_url, LLUUID agent_id);
-=======
+
     void processProperties(void* data, EAvatarProcessorType type) override;
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 
 protected:
     /**
@@ -136,91 +134,6 @@ protected:
      */
     void fillAccountStatus(const LLAvatarData* avatar_data);
 
-<<<<<<< HEAD
-	/**
-	 * Sets permissions specific icon
-	 */
-	void fillRightsData();
-
-	/**
-	 * Fills user name, display name, age.
-	 */
-	void fillAgeData(const LLDate &born_on);
-
-	void onImageLoaded(bool success, LLViewerFetchedTexture *imagep);
-	static void onImageLoaded(bool success,
-		LLViewerFetchedTexture *src_vi,
-		LLImageRaw* src,
-		LLImageRaw* aux_src,
-		S32 discard_level,
-		bool final,
-		void* userdata);
-
-	/**
-	 * Displays avatar's online status if possible.
-	 *
-	 * Requirements from EXT-3880:
-	 * For friends:
-	 * - Online when online and privacy settings allow to show
-	 * - Offline when offline and privacy settings allow to show
-	 * - Else: nothing
-	 * For other avatars:
-	 *	- Online when online and was not set in Preferences/"Only Friends & Groups can see when I am online"
-	 *	- Else: Offline
-	 */
-	void updateOnlineStatus();
-	void processOnlineStatus(bool is_friend, bool show_online, bool online);
-
-private:
-	void setLoaded() override;
-	void onCommitMenu(const LLSD& userdata);
-	bool onEnableMenu(const LLSD& userdata);
-	bool onCheckMenu(const LLSD& userdata);
-	void onAvatarNameCacheSetName(const LLUUID& id, const LLAvatarName& av_name);
-
-	void setDescriptionText(const std::string &text);
-	void onSetDescriptionDirty();
-	void onShowInSearchCallback();
-	void onSaveDescriptionChanges();
-	void onDiscardDescriptionChanges();
-	void onShowAgentPermissionsDialog();
-	void onShowAgentProfileTexture();
-	void onShowTexturePicker();
-	void onCommitProfileImage(const LLUUID& id);
-
-private:
-	typedef std::map<std::string, LLUUID> group_map_t;
-	group_map_t				mGroups;
-	void					openGroupProfile();
-
-	LLGroupList*		mGroupList;
-    LLComboBox*			mShowInSearchCombo;
-    LLThumbnailCtrl*	mSecondLifePic;
-	LLPanel*			mSecondLifePicLayout;
-	LLTextEditor*		mDescriptionEdit;
-	LLMenuButton*		mAgentActionMenuButton;
-	LLButton*			mSaveDescriptionChanges;
-	LLButton*			mDiscardDescriptionChanges;
-	LLIconCtrl*			mCanSeeOnlineIcon;
-	LLIconCtrl*			mCantSeeOnlineIcon;
-	LLIconCtrl*			mCanSeeOnMapIcon;
-	LLIconCtrl*			mCantSeeOnMapIcon;
-	LLIconCtrl*			mCanEditObjectsIcon;
-	LLIconCtrl*			mCantEditObjectsIcon;
-
-	LLHandle<LLFloater>	mFloaterPermissionsHandle;
-	LLHandle<LLFloater>	mFloaterProfileTextureHandle;
-	LLHandle<LLFloater>	mFloaterTexturePickerHandle;
-
-	bool				mHasUnsavedDescriptionChanges;
-	bool				mVoiceStatus;
-	bool				mWaitingForImageUpload;
-	bool				mAllowPublish;
-	std::string			mDescriptionText;
-	LLUUID				mImageId;
-
-	boost::signals2::connection	mAvatarNameCacheConnection;
-=======
     /**
      * Sets permissions specific icon
      */
@@ -298,7 +211,6 @@ private:
     bool                mHideAge;
     std::string         mDescriptionText;
     boost::signals2::connection mAvatarNameCacheConnection;
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 };
 
 

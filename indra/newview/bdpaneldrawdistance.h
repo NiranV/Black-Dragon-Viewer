@@ -42,8 +42,8 @@ class BDPanelDrawDistance : public LLPanel
 	/*virtual*/ void onMouseEnter(S32 x, S32 y, MASK mask);
 	/*virtual*/ void onMouseLeave(S32 x, S32 y, MASK mask);
 	/*virtual*/ void onTopLost();
-	/*virtual*/ void onVisibilityChange ( BOOL new_visibility );
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ void onVisibilityChange ( bool new_visibility );
+	/*virtual*/ bool postBuild();
 	
  private:
 	void setControlFalse(const LLSD& user_data);

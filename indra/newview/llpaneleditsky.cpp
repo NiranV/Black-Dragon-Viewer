@@ -166,7 +166,7 @@ bool LLPanelSettingsSkyAtmosTab::postBuild()
 
 	refresh();
 
-	return TRUE;
+	return true;
 }
 
 void LLPanelSettingsSkyAtmosTab::refresh()
@@ -351,7 +351,7 @@ bool LLPanelSettingsSkyCloudTab::postBuild()
 
 	refresh();
 
-	return TRUE;
+	return true;
 }
 
 void LLPanelSettingsSkyCloudTab::refresh()
@@ -517,7 +517,7 @@ bool LLPanelSettingsSkySunMoonTab::postBuild()
 
 	refresh();
 
-	return TRUE;
+	return true;
 }
 
 void LLPanelSettingsSkySunMoonTab::refresh()
@@ -698,7 +698,7 @@ bool LLPanelSettingsSkyDensityTab::postBuild()
 	mIceLevel->setCommitCallback([this](LLUICtrl*, const LLSD&) { onIceLevelChanged(); });
 
 	refresh();
-	return TRUE;
+	return true;
 }
 
 void LLPanelSettingsSkyDensityTab::refresh()

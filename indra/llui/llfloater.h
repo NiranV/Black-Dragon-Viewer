@@ -264,7 +264,8 @@ public:
     void            addDependentFloater(LLHandle<LLFloater> dependent_handle, bool reposition = true, bool resize = false);
     LLFloater*      getDependee() { return (LLFloater*)mDependeeHandle.get(); }
     void            removeDependentFloater(LLFloater* dependent);
-    void            fitWithDependentsOnScreen(const LLRect& left, const LLRect& bottom, const LLRect& right, const LLRect& constraint, S32 min_overlap_pixels);
+    //BD
+    void            fitWithDependentsOnScreen(const LLRect& left, const LLRect& bottom, const LLRect& right, const LLRect& top, const LLRect& constraint, S32 min_overlap_pixels);
     bool            isMinimized() const             { return mMinimized; }
     /// isShown() differs from getVisible() in that isShown() also considers
     /// isMinimized(). isShown() is true only if visible and not minimized.
@@ -304,7 +305,8 @@ public:
     virtual bool    handleDoubleClick(S32 x, S32 y, MASK mask);
     virtual bool    handleMiddleMouseDown(S32 x, S32 y, MASK mask);
 
-    virtual bool    handleScrollWheel(S32 x, S32 y, S32 mask);
+    //BD - UI Improvements
+    virtual bool    handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
     virtual void    draw();
     virtual void    drawShadow(LLPanel* panel);
@@ -629,7 +631,7 @@ private:
 	S32				mMinimizePositionVOffset;
 	typedef std::vector<std::pair<LLHandle<LLFloater>, boost::signals2::connection> > hidden_floaters_t;
 	hidden_floaters_t mHiddenFloaters;
-	LLFloater *		mFrontChild;
+    LLHandle<LLFloater> mFrontChildHandle;
 };
 
 //

@@ -251,7 +251,7 @@ void LLViewerJoystick::updateEnabled(bool autoenable)
 	}
 	if (!mJoystickEnabled)
 	{
-		mOverrideCamera = FALSE;
+		mOverrideCamera = false;
 	}
 }
 
@@ -259,7 +259,7 @@ void LLViewerJoystick::setOverrideCamera(bool val)
 {
 	if (!mJoystickEnabled)
 	{
-		mOverrideCamera = FALSE;
+		mOverrideCamera = false;
 	}
 	else
 	{
@@ -338,56 +338,77 @@ LLViewerJoystick::~LLViewerJoystick()
 // -----------------------------------------------------------------------------
 void LLViewerJoystick::init(bool autoenable)
 {
-	gJoystick = LLViewerJoystick::getInstance();
-
 #if LIB_NDOF
-	static bool libinit = false;
-	mDriverState = JDS_INITIALIZING;
+    static bool libinit = false;
+    mDriverState = JDS_INITIALIZING;
 
     loadDeviceIdFromSettings();
 
-	if (libinit == false)
-	{
-		// Note: The HotPlug callbacks are not actually getting called on Windows
-		if (ndof_libinit(HotPlugAddCallback, 
-						 HotPlugRemovalCallback, 
-						 gViewerWindow->getWindow()->getDirectInput8()))
-		{
-			mDriverState = JDS_UNINITIALIZED;
-		}
-		else
-		{
-			// NB: ndof_libinit succeeds when there's no device
-			libinit = true;
-
-			// allocate memory once for an eventual device
-			mNdofDev = ndof_create();
-		}
-	}
-
-	if (libinit)
-	{
-		if (mNdofDev)
+    if (!libinit)
+    {
+        // Note: The HotPlug callbacks are not actually getting called on Windows
+        if (ndof_libinit(HotPlugAddCallback,
+            HotPlugRemovalCallback,
+            gViewerWindow->getWindow()->getDirectInput8()))
         {
+            mDriverState = JDS_UNINITIALIZED;
+        }
+        else
+        {
+            // NB: ndof_libinit succeeds when there's no device
+            libinit = true;
+
+            // allocate memory once for an eventual device
+            mNdofDev = ndof_create();
+        }
+    }
+
+    if (libinit)
+    {
+        if (mNdofDev)
+        {
+            U32 device_type = 0;
+            void* win_callback = nullptr;
+            std::function<bool(std::string&, LLSD&, void*)> osx_callback;
             // di8_devices_callback callback is immediate and happens in scope of getInputDevices()
 #if LL_WINDOWS && !LL_MESA_HEADLESS
             // space navigator is marked as DI8DEVCLASS_GAMECTRL in ndof lib
-            U32 device_type = DI8DEVCLASS_GAMECTRL;
-            void* callback = &di8_devices_callback;
-#else
-            // MAC doesn't support device search yet
-            // On MAC there is an ndof_idsearch and it is possible to specify product
-            // and manufacturer in NDOF_Device for ndof_init_first to pick specific one
-            U32 device_type = 0;
-            void* callback = NULL;
-#endif
-            if (!gViewerWindow->getWindow()->getInputDevices(device_type, callback, NULL))
+            device_type = DI8DEVCLASS_GAMECTRL;
+            win_callback = &di8_devices_callback;
+#elif LL_DARWIN
+            osx_callback = macos_devices_callback;
+
+            if (mLastDeviceUUID.isMap())
             {
-                LL_INFOS("Joystick") << "Failed to gather devices from window. Falling back to ndof's init" << LL_ENDL;
-                // Failed to gather devices from windows, init first suitable one
-                mLastDeviceUUID = LLSD();
-                void *preffered_device = NULL;
-                initDevice(preffered_device);
+                std::string manufacturer = mLastDeviceUUID["manufacturer"].asString();
+                std::string product = mLastDeviceUUID["product"].asString();
+
+                strncpy(mNdofDev->manufacturer, manufacturer.c_str(), sizeof(mNdofDev->manufacturer));
+                strncpy(mNdofDev->product, product.c_str(), sizeof(mNdofDev->product));
+
+                if (ndof_init_first(mNdofDev, nullptr))
+                {
+                    mDriverState = JDS_INITIALIZING;
+                    // Saved device no longer exist
+                    // No device found
+                    LL_WARNS() << "ndof_init_first FAILED" << LL_ENDL;
+                }
+                else
+                {
+                    mDriverState = JDS_INITIALIZED;
+                }
+            }
+#endif
+            if (mDriverState != JDS_INITIALIZED)
+            {
+                if (!gViewerWindow->getWindow()->getInputDevices(device_type, osx_callback, win_callback, NULL))
+                {
+                    LL_INFOS("Joystick") << "Failed to gather input devices. Falling back to ndof's init" << LL_ENDL;
+                    // Failed to gather devices, init first suitable one
+                    mLastDeviceUUID = LLSD();
+                    void* preffered_device = NULL;
+                    initDevice(preffered_device);
+                }
             }
 
             if (mDriverState == JDS_INITIALIZING)
@@ -395,83 +416,106 @@ void LLViewerJoystick::init(bool autoenable)
                 LL_INFOS("Joystick") << "Found no matching joystick devices." << LL_ENDL;
                 mDriverState = JDS_UNINITIALIZED;
             }
-		}
-		else
-		{
-			mDriverState = JDS_UNINITIALIZED;
-		}
-	}
+        }
+        else
+        {
+            mDriverState = JDS_UNINITIALIZED;
+        }
+    }
 
-	// Autoenable the joystick for recognized devices if nothing was connected previously
-	if (!autoenable)
-	{
-		autoenable = gSavedSettings.getString("JoystickInitialized").empty() ? true : false;
-	}
-	updateEnabled(autoenable);
-	
-	//BD - Tell us the name of the product beforehand so in future we can add more.
-	LL_INFOS() << "Product Name = " << mNdofDev->product << LL_ENDL;
+    // Autoenable the joystick for recognized devices if nothing was connected previously
+    if (!autoenable)
+    {
+        autoenable = gSavedSettings.getString("JoystickInitialized").empty();
+    }
+    updateEnabled(autoenable);
 
-	if (mDriverState == JDS_INITIALIZED)
-	{
-		// A Joystick device is plugged in
-		if (isLikeSpaceNavigator())
-		{
-			// It's a space navigator, we have defaults for it.
-			if (gSavedSettings.getString("JoystickInitialized") != "SpaceNavigator")
-			{
-				// Only set the defaults if we haven't already (in case they were overridden)
-				setSNDefaults();
-				gSavedSettings.setString("JoystickInitialized", "SpaceNavigator");
-			}
-		}
-		else
-		{
+    //BD - Tell us the name of the product beforehand so in future we can add more.
+    LL_INFOS() << "Product Name = " << mNdofDev->product << LL_ENDL;
+
+    if (mDriverState == JDS_INITIALIZED)
+    {
+        // A Joystick device is plugged in
+        if (isLikeSpaceNavigator())
+        {
+            // It's a space navigator, we have defaults for it.
+            if (gSavedSettings.getString("JoystickInitialized") != "SpaceNavigator")
+            {
+                // Only set the defaults if we haven't already (in case they were overridden)
+                setSNDefaults();
+                gSavedSettings.setString("JoystickInitialized", "SpaceNavigator");
+            }
+        }
+        else
+        {
 //			//BD - Xbox360 Controller Support
-			// It's not a Space Navigator, no problem, use Xbox360 defaults.
-			if (gSavedSettings.getString("JoystickInitialized") != "Xbox360Controller")
-			{
+            // It's not a Space Navigator, no problem, use Xbox360 defaults.
+            if (gSavedSettings.getString("JoystickInitialized") != "Xbox360Controller")
+            {
 //				//BD - Let's put our Xbox360 defaults here because it is most likely a controller
-				//     atleast similar to that of the Xbox360.
-				setXboxDefaults();
-				gSavedSettings.setString("JoystickInitialized", "Xbox360Controller");
-			}
-		}
-	}
-	else
-	{
-		// No device connected, don't change any settings
-	}
-	LL_INFOS("Joystick") << "ndof: mDriverState=" << mDriverState << "; mNdofDev=" 
-			<< mNdofDev << "; libinit=" << libinit << LL_ENDL;
+                //     atleast similar to that of the Xbox360.
+                setXboxDefaults();
+                gSavedSettings.setString("JoystickInitialized", "Xbox360Controller");
+            }
+        }
+    }
+    else
+    {
+        // No device connected, don't change any settings
+    }
+
+    LL_INFOS("Joystick") << "ndof: mDriverState=" << mDriverState << "; mNdofDev="
+        << mNdofDev << "; libinit=" << libinit << LL_ENDL;
 #endif
 }
 
-void LLViewerJoystick::initDevice(LLSD &guid)
+void LLViewerJoystick::initDevice(LLSD& guid)
 {
 #if LIB_NDOF
     mLastDeviceUUID = guid;
+    U32 device_type = 0;
+    void* win_callback = nullptr;
+    std::function<bool(std::string&, LLSD&, void*)> osx_callback;
+    mDriverState = JDS_INITIALIZING;
 
 #if LL_WINDOWS && !LL_MESA_HEADLESS
     // space navigator is marked as DI8DEVCLASS_GAMECTRL in ndof lib
-    U32 device_type = DI8DEVCLASS_GAMECTRL;
-    void* callback = &di8_devices_callback;
-#else
-    // MAC doesn't support device search yet
-    // On MAC there is an ndof_idsearch and it is possible to specify product
-    // and manufacturer in NDOF_Device for ndof_init_first to pick specific one
-    U32 device_type = 0;
-    void* callback = NULL;
+    device_type = DI8DEVCLASS_GAMECTRL;
+    win_callback = &di8_devices_callback;
+#elif LL_DARWIN
+    osx_callback = macos_devices_callback;
+    if (mLastDeviceUUID.isMap())
+    {
+        std::string manufacturer = mLastDeviceUUID["manufacturer"].asString();
+        std::string product = mLastDeviceUUID["product"].asString();
+
+        strncpy(mNdofDev->manufacturer, manufacturer.c_str(), sizeof(mNdofDev->manufacturer));
+        strncpy(mNdofDev->product, product.c_str(), sizeof(mNdofDev->product));
+
+        if (ndof_init_first(mNdofDev, nullptr))
+        {
+            mDriverState = JDS_INITIALIZING;
+            // Saved device no longer exist
+            // Np other device present
+            LL_WARNS() << "ndof_init_first FAILED" << LL_ENDL;
+        }
+        else
+        {
+            mDriverState = JDS_INITIALIZED;
+        }
+    }
 #endif
 
-    mDriverState = JDS_INITIALIZING; 
-    if (!gViewerWindow->getWindow()->getInputDevices(device_type, callback, NULL))
+    if (mDriverState != JDS_INITIALIZED)
     {
-        LL_INFOS("Joystick") << "Failed to gather devices from window. Falling back to ndof's init" << LL_ENDL;
-        // Failed to gather devices from windows, init first suitable one
-        void *preffered_device = NULL;
-        mLastDeviceUUID = LLSD();
-        initDevice(preffered_device);
+        if (!gViewerWindow->getWindow()->getInputDevices(device_type, osx_callback, win_callback, NULL))
+        {
+            LL_INFOS("Joystick") << "Failed to gather input devices. Falling back to ndof's init" << LL_ENDL;
+            // Failed to gather devices from window, init first suitable one
+            void* preffered_device = NULL;
+            mLastDeviceUUID = LLSD();
+            initDevice(preffered_device);
+        }
     }
 
     if (mDriverState == JDS_INITIALIZING)
@@ -482,32 +526,50 @@ void LLViewerJoystick::initDevice(LLSD &guid)
 #endif
 }
 
-void LLViewerJoystick::initDevice(void * preffered_device /*LPDIRECTINPUTDEVICE8*/, std::string &name, LLSD &guid)
+bool LLViewerJoystick::initDevice(void* preffered_device /*LPDIRECTINPUTDEVICE8*/, std::string& name, LLSD& guid)
 {
 #if LIB_NDOF
     mLastDeviceUUID = guid;
 
+#if LL_DARWIN
+    if (guid.isMap())
+    {
+        std::string manufacturer = mLastDeviceUUID["manufacturer"].asString();
+        std::string product = mLastDeviceUUID["product"].asString();
+
+        strncpy(mNdofDev->manufacturer, manufacturer.c_str(), sizeof(mNdofDev->manufacturer));
+        strncpy(mNdofDev->product, product.c_str(), sizeof(mNdofDev->product));
+    }
+    else
+    {
+        mNdofDev->product[0] = '\0';
+        mNdofDev->manufacturer[0] = '\0';
+    }
+#else
     strncpy(mNdofDev->product, name.c_str(), sizeof(mNdofDev->product));
     mNdofDev->manufacturer[0] = '\0';
+#endif
 
-    initDevice(preffered_device);
+    return initDevice(preffered_device);
+#else
+    return false;
 #endif
 }
 
-void LLViewerJoystick::initDevice(void * preffered_device /* LPDIRECTINPUTDEVICE8* */)
+bool LLViewerJoystick::initDevice(void* preffered_device /* LPDIRECTINPUTDEVICE8* */)
 {
 #if LIB_NDOF
     // Different joysticks will return different ranges of raw values.
-    // Since we want to handle every device in the same uniform way, 
-    // we initialize the mNdofDev struct and we set the range 
-    // of values we would like to receive. 
-    // 
-    // HACK: On Windows, libndofdev passes our range to DI with a 
+    // Since we want to handle every device in the same uniform way,
+    // we initialize the mNdofDev struct and we set the range
+    // of values we would like to receive.
+    //
+    // HACK: On Windows, libndofdev passes our range to DI with a
     // SetProperty call. This works but with one notable exception, the
     // SpaceNavigator, who doesn't seem to care about the SetProperty
-    // call. In theory, we should handle this case inside libndofdev. 
-    // However, the range we're setting here is arbitrary anyway, 
-    // so let's just use the SpaceNavigator range for our purposes. 
+    // call. In theory, we should handle this case inside libndofdev.
+    // However, the range we're setting here is arbitrary anyway,
+    // so let's just use the SpaceNavigator range for our purposes.
     mNdofDev->axes_min = (long)-MAX_JOYSTICK_INPUT_VALUE;
     mNdofDev->axes_max = (long)+MAX_JOYSTICK_INPUT_VALUE;
 
@@ -524,8 +586,10 @@ void LLViewerJoystick::initDevice(void * preffered_device /* LPDIRECTINPUTDEVICE
     else
     {
         mDriverState = JDS_INITIALIZED;
+        return true;
     }
 #endif
+    return false;
 }
 
 // -----------------------------------------------------------------------------

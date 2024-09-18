@@ -64,7 +64,7 @@ public:
 	//-------------------------------------------------------------------------
 
 	// motions must specify whether or not they loop
-	virtual BOOL getLoop() { return TRUE; }
+	virtual bool getLoop() { return true; }
 
 	// motions must report their total duration
 	virtual F32 getDuration() { return 0.0; }
@@ -91,12 +91,12 @@ public:
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
 	// it will be deactivated
-	virtual BOOL onActivate();
+	virtual bool onActivate();
 
 	// called per time step
 	// must return TRUE while it is active, and
 	// must return FALSE when the motion is completed.
-	virtual BOOL onUpdate(F32 time, U8* joint_mask);
+	virtual bool onUpdate(F32 time, U8* joint_mask);
 
 	// called when a motion is deactivated
 	virtual void onDeactivate();
@@ -153,7 +153,7 @@ public:
 	//-------------------------------------------------------------------------
 
 	// motions must specify whether or not they loop
-	virtual BOOL getLoop() { return TRUE; }
+	virtual bool getLoop() { return true; }
 
 	// motions must report their total duration
 	virtual F32 getDuration() { return 0.0; }
@@ -180,7 +180,7 @@ public:
 	// called when a motion is activated
 	// must return TRUE to indicate success, or else
 	// it will be deactivated
-	virtual BOOL onActivate();
+	virtual bool onActivate();
 
     void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
 
@@ -190,7 +190,7 @@ public:
 	// called per time step
 	// must return TRUE while it is active, and
 	// must return FALSE when the motion is completed.
-	virtual BOOL onUpdate(F32 time, U8* joint_mask);
+	virtual bool onUpdate(F32 time, U8* joint_mask);
 
 	// called when a motion is deactivated
 	virtual void onDeactivate();

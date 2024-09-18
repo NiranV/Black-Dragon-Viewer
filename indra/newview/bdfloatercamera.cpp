@@ -75,13 +75,13 @@ BDFloaterCamera::~BDFloaterCamera()
 {
 }
 
-BOOL BDFloaterCamera::postBuild()
+bool BDFloaterCamera::postBuild()
 {
 	mRecorderScroll = this->getChild<LLScrollListCtrl>("recorder_scroll", true);
 	mRecorderScroll->setCommitOnSelectionChange(TRUE);
 	mRecorderScroll->setCommitCallback(boost::bind(&BDFloaterCamera::onRecorderSelection, this));
 
-	return TRUE;
+	return true;
 }
 
 void BDFloaterCamera::draw()

@@ -113,7 +113,7 @@ LLFloaterWaterAdjust::~LLFloaterWaterAdjust()
 {}
 
 //-------------------------------------------------------------------------
-BOOL LLFloaterWaterAdjust::postBuild()
+bool LLFloaterWaterAdjust::postBuild()
 {
 	//BD - Settings
 	mClrFogColor = getChild<LLColorSwatchCtrl>(FIELD_WATER_FOG_COLOR);
@@ -170,7 +170,7 @@ BOOL LLFloaterWaterAdjust::postBuild()
 	mNameCombo->setCommitCallback([this](LLUICtrl *, const LLSD &) { onSelectPreset(); });
 
     refresh();
-    return TRUE;
+    return true;
 }
 
 void LLFloaterWaterAdjust::onOpen(const LLSD& key)

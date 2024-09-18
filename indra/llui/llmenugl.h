@@ -420,7 +420,7 @@ public:
     void initFromParams(const Params&);
 
     // textual artwork which menugl-imitators may want to match
-    static const std::string boolEAN_true_PREFIX;
+    static const std::string BOOLEAN_TRUE_PREFIX;
     static const std::string BRANCH_SUFFIX;
     static const std::string ARROW_UP;
     static const std::string ARROW_DOWN;

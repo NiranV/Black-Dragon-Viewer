@@ -42,7 +42,7 @@ class LLAvatarName;
 
 class LLPanelScriptLimitsRegionMemory;
 
-class LLFloaterScriptLimits : public LLFloater, LLRemoteParcelInfoObserver
+class LLFloaterScriptLimits : public LLFloater
 {
     friend class LLFloaterReg;
 public:
@@ -65,6 +65,9 @@ protected:
 };
 
 
+// Base class for all script limits information panels.
+class LLPanelScriptLimitsInfo : public LLPanel
+{
 public:
     LLPanelScriptLimitsInfo();
 
@@ -115,9 +118,9 @@ public:
 
 private:
     void onAvatarNameCache(const LLUUID& id,
-                         const LLAvatarName& av_name);
+        const LLAvatarName& av_name);
     void onNameCache(const LLUUID& id,
-                         const std::string& name);
+        const std::string& name);
 
     LLSD mContent;
     LLUUID mParcelId;
@@ -139,10 +142,10 @@ private:
 
 protected:
 
-// LLRemoteParcelInfoObserver interface:
-/*virtual*/ void processParcelInfo(const LLParcelData& parcel_data);
-/*virtual*/ void setParcelID(const LLUUID& parcel_id);
-/*virtual*/ void setErrorStatus(S32 status, const std::string& reason);
+    // LLRemoteParcelInfoObserver interface:
+    /*virtual*/ void processParcelInfo(const LLParcelData& parcel_data);
+    /*virtual*/ void setParcelID(const LLUUID& parcel_id);
+    /*virtual*/ void setErrorStatus(S32 status, const std::string& reason);
 
     static void onClickRefresh(void* userdata);
     static void onClickHighlight(void* userdata);

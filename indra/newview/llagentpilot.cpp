@@ -328,6 +328,78 @@ void LLAgentPilot::moveCamera()
     }
 }
 
+void LLAgentPilot::updateTarget()
+{
+    if (mPlaying)
+    {
+        if (mCurrentAction < mActions.size())
+        {
+            if (0 == mCurrentAction)
+            {
+                if (gAgent.getAutoPilot())
+                {
+                    // Wait until we get to the first location before starting.
+                    return;
+                }
+                else
+                {
+                    if (!mStarted)
+                    {
+                        LL_INFOS() << "At start, beginning playback" << LL_ENDL;
+                        mTimer.reset();
+                        mStarted = true;
+                    }
+                }
+            }
+            if (mTimer.getElapsedTimeF32() > mActions[mCurrentAction].mTime)
+            {
+                //gAgent.stopAutoPilot();
+                mCurrentAction++;
+
+                if (mCurrentAction < mActions.size())
+                {
+                    gAgent.startAutoPilotGlobal(mActions[mCurrentAction].mTarget);
+                    moveCamera();
+                }
+                else
+                {
+                    stopPlayback();
+                    mNumRuns--;
+                    if (mLoop)
+                    {
+                        if ((mNumRuns < 0) || (mNumRuns > 0))
+                        {
+                            LL_INFOS() << "Looping, restarting playback" << LL_ENDL;
+                            startPlayback();
+                        }
+                        else if (mQuitAfterRuns)
+                        {
+                            LL_INFOS() << "Done with all runs, quitting viewer!" << LL_ENDL;
+                            LLAppViewer::instance()->forceQuit();
+                        }
+                        else
+                        {
+                            LL_INFOS() << "Done with all runs, disabling pilot" << LL_ENDL;
+                            stopPlayback();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            stopPlayback();
+        }
+    }
+    else if (mRecording)
+    {
+        if (mTimer.getElapsedTimeF32() - mLastRecordTime > 1.f)
+        {
+            addAction(STRAIGHT);
+        }
+    }
+}
+
 //BD
 void LLAgentPilot::updatePlayback()
 {

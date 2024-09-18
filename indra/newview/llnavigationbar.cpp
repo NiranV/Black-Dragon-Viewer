@@ -342,8 +342,6 @@ bool LLNavigationBar::postBuild()
 
     mNavigationPanel = getChild<LLLayoutPanel>("navigation_layout_panel");
     mFavoritePanel = getChild<LLLayoutPanel>("favorites_layout_panel");
-    mNavigationPanel->getResizeBar()->setResizeListener(boost::bind(&LLNavigationBar::onNavbarResized, this));
-    mFavoritePanel->getResizeBar()->setResizeListener(boost::bind(&LLNavigationBar::onNavbarResized, this));
 
     return true;
 }

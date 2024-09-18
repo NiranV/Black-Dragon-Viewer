@@ -1046,10 +1046,10 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                                     ):
                             dylibs += path_optional(os.path.join(debpkgdir, libfile), libfile)
                     else:
-                    for libfile in (
-                                    "libfmod.dylib",
-                                ):
-                        dylibs += path_optional(os.path.join(relpkgdir, libfile), libfile)
+                        for libfile in (
+                                        "libfmod.dylib",
+                                    ):
+                            dylibs += path_optional(os.path.join(relpkgdir, libfile), libfile)
 
                 # our apps
                 executable_path = {}

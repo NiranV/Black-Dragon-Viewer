@@ -95,11 +95,6 @@ private:
     LLView* mOwner;
     F32  mContextConeOpacity;
     completion_t mUploadCompletionCallback;
-};
-
-///----------------------------------------------------------------------------
-/// Class LLFloaterSimpleSnapshot::Impl
-///----------------------------------------------------------------------------
 
 public:
     void updateResolution(void* data);

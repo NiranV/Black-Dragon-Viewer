@@ -43,7 +43,7 @@ class LLFloaterEnvironmentSettings : public LLFloater
 
 public:
 	LLFloaterEnvironmentSettings(const LLSD &key);
-	/*virtual*/	BOOL	postBuild();	
+	/*virtual*/	bool	postBuild();	
 	/*virtual*/ void	onOpen(const LLSD& key);
 
 private:

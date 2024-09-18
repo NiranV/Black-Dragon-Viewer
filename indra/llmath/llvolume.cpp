@@ -5930,13 +5930,438 @@ bool LLVolumeFace::createCap(LLVolume* volume, bool partial_build)
 {
     if (!(mTypeMask & HOLLOW_MASK) &&
         !(mTypeMask & OPEN_MASK) &&
-        ((volume->getParams().getPathParams().getBegin()==0.0f)&&
-        (volume->getParams().getPathParams().getEnd()==1.0f))&&
-        (volume->getParams().getProfileParams().getCurveType()==LL_PCODE_PROFILE_SQUARE &&
-         volume->getParams().getPathParams().getCurveType()==LL_PCODE_PATH_LINE)
-        ){
+        ((volume->getParams().getPathParams().getBegin() == 0.0f) &&
+            (volume->getParams().getPathParams().getEnd() == 1.0f)) &&
+        (volume->getParams().getProfileParams().getCurveType() == LL_PCODE_PROFILE_SQUARE &&
+            volume->getParams().getPathParams().getCurveType() == LL_PCODE_PATH_LINE)
+        ) {
         return createUnCutCubeCap(volume, partial_build);
     }
+
+    S32 num_vertices = 0, num_indices = 0;
+
+    const LLAlignedArray<LLVector4a, 64>& mesh = volume->getMesh();
+    const LLAlignedArray<LLVector4a, 64>& profile = volume->getProfile().mProfile;
+
+    // All types of caps have the same number of vertices and indices
+    num_vertices = profile.size();
+    num_indices = (profile.size() - 2) * 3;
+
+    if (!(mTypeMask & HOLLOW_MASK) && !(mTypeMask & OPEN_MASK))
+    {
+        resizeVertices(num_vertices + 1);
+
+        //if (!partial_build)
+        {
+            resizeIndices(num_indices + 3);
+        }
+    }
+    else
+    {
+        resizeVertices(num_vertices);
+        //if (!partial_build)
+        {
+            resizeIndices(num_indices);
+        }
+    }
+
+    LL_CHECK_MEMORY;
+
+    S32 max_s = volume->getProfile().getTotal();
+    S32 max_t = volume->getPath().mPath.size();
+
+    mCenter->clear();
+
+    S32 offset = 0;
+    if (mTypeMask & TOP_MASK)
+    {
+        offset = (max_t - 1) * max_s;
+    }
+    else
+    {
+        offset = mBeginS;
+    }
+
+    // Figure out the normal, assume all caps are flat faces.
+    // Cross product to get normals.
+
+    LLVector2 cuv;
+    LLVector2 min_uv, max_uv;
+    // VFExtents change
+    LLVector4a& min = mExtents[0];
+    LLVector4a& max = mExtents[1];
+
+    LLVector2* tc = (LLVector2*)mTexCoords;
+    LLVector4a* pos = (LLVector4a*)mPositions;
+    LLVector4a* norm = (LLVector4a*)mNormals;
+
+    // Copy the vertices into the array
+
+    const LLVector4a* src = mesh.mArray + offset;
+    const LLVector4a* end = src + num_vertices;
+
+    min = *src;
+    max = min;
+
+
+    const LLVector4a* p = profile.mArray;
+
+    if (mTypeMask & TOP_MASK)
+    {
+        min_uv.set((*p)[0] + 0.5f,
+            (*p)[1] + 0.5f);
+
+        max_uv = min_uv;
+
+        while (src < end)
+        {
+            tc->mV[0] = (*p)[0] + 0.5f;
+            tc->mV[1] = (*p)[1] + 0.5f;
+
+            llassert(src->isFinite3()); // MAINT-5660; don't know why this happens, does not affect Release builds
+            update_min_max(min, max, *src);
+            update_min_max(min_uv, max_uv, *tc);
+
+            *pos = *src;
+
+            llassert(pos->isFinite3());
+
+            ++p;
+            ++tc;
+            ++src;
+            ++pos;
+        }
+    }
+    else
+    {
+
+        min_uv.set((*p)[0] + 0.5f,
+            0.5f - (*p)[1]);
+        max_uv = min_uv;
+
+        while (src < end)
+        {
+            // Mirror for underside.
+            tc->mV[0] = (*p)[0] + 0.5f;
+            tc->mV[1] = 0.5f - (*p)[1];
+
+            llassert(src->isFinite3());
+            update_min_max(min, max, *src);
+            update_min_max(min_uv, max_uv, *tc);
+
+            *pos = *src;
+
+            llassert(pos->isFinite3());
+
+            ++p;
+            ++tc;
+            ++src;
+            ++pos;
+        }
+    }
+
+    LL_CHECK_MEMORY
+
+        mCenter->setAdd(min, max);
+    mCenter->mul(0.5f);
+
+    cuv = (min_uv + max_uv) * 0.5f;
+
+
+    VertexData vd;
+    vd.setPosition(*mCenter);
+    vd.mTexCoord = cuv;
+
+    if (!(mTypeMask & HOLLOW_MASK) && !(mTypeMask & OPEN_MASK))
+    {
+        *pos++ = *mCenter;
+        *tc++ = cuv;
+        num_vertices++;
+    }
+
+    LL_CHECK_MEMORY
+
+        //if (partial_build)
+        //{
+        //  return true;
+        //}
+
+        if (mTypeMask & HOLLOW_MASK)
+        {
+            if (mTypeMask & TOP_MASK)
+            {
+                // HOLLOW TOP
+                // Does it matter if it's open or closed? - djs
+
+                S32 pt1 = 0, pt2 = num_vertices - 1;
+                S32 i = 0;
+                while (pt2 - pt1 > 1)
+                {
+                    // Use the profile points instead of the mesh, since you want
+                    // the un-transformed profile distances.
+                    const LLVector4a& p1 = profile[pt1];
+                    const LLVector4a& p2 = profile[pt2];
+                    const LLVector4a& pa = profile[pt1 + 1];
+                    const LLVector4a& pb = profile[pt2 - 1];
+
+                    const F32* p1V = p1.getF32ptr();
+                    const F32* p2V = p2.getF32ptr();
+                    const F32* paV = pa.getF32ptr();
+                    const F32* pbV = pb.getF32ptr();
+
+                    //p1.mV[VZ] = 0.f;
+                    //p2.mV[VZ] = 0.f;
+                    //pa.mV[VZ] = 0.f;
+                    //pb.mV[VZ] = 0.f;
+
+                    // Use area of triangle to determine backfacing
+                    F32 area_1a2, area_1ba, area_21b, area_2ab;
+                    area_1a2 = (p1V[0] * paV[1] - paV[0] * p1V[1]) +
+                        (paV[0] * p2V[1] - p2V[0] * paV[1]) +
+                        (p2V[0] * p1V[1] - p1V[0] * p2V[1]);
+
+                    area_1ba = (p1V[0] * pbV[1] - pbV[0] * p1V[1]) +
+                        (pbV[0] * paV[1] - paV[0] * pbV[1]) +
+                        (paV[0] * p1V[1] - p1V[0] * paV[1]);
+
+                    area_21b = (p2V[0] * p1V[1] - p1V[0] * p2V[1]) +
+                        (p1V[0] * pbV[1] - pbV[0] * p1V[1]) +
+                        (pbV[0] * p2V[1] - p2V[0] * pbV[1]);
+
+                    area_2ab = (p2V[0] * paV[1] - paV[0] * p2V[1]) +
+                        (paV[0] * pbV[1] - pbV[0] * paV[1]) +
+                        (pbV[0] * p2V[1] - p2V[0] * pbV[1]);
+
+                    bool use_tri1a2 = true;
+                    bool tri_1a2 = true;
+                    bool tri_21b = true;
+
+                    if (area_1a2 < 0)
+                    {
+                        tri_1a2 = false;
+                    }
+                    if (area_2ab < 0)
+                    {
+                        // Can't use, because it contains point b
+                        tri_1a2 = false;
+                    }
+                    if (area_21b < 0)
+                    {
+                        tri_21b = false;
+                    }
+                    if (area_1ba < 0)
+                    {
+                        // Can't use, because it contains point b
+                        tri_21b = false;
+                    }
+
+                    if (!tri_1a2)
+                    {
+                        use_tri1a2 = false;
+                    }
+                    else if (!tri_21b)
+                    {
+                        use_tri1a2 = true;
+                    }
+                    else
+                    {
+                        LLVector4a d1;
+                        d1.setSub(p1, pa);
+
+                        LLVector4a d2;
+                        d2.setSub(p2, pb);
+
+                        if (d1.dot3(d1) < d2.dot3(d2))
+                        {
+                            use_tri1a2 = true;
+                        }
+                        else
+                        {
+                            use_tri1a2 = false;
+                        }
+                    }
+
+                    if (use_tri1a2)
+                    {
+                        mIndices[i++] = pt1;
+                        mIndices[i++] = pt1 + 1;
+                        mIndices[i++] = pt2;
+                        pt1++;
+                    }
+                    else
+                    {
+                        mIndices[i++] = pt1;
+                        mIndices[i++] = pt2 - 1;
+                        mIndices[i++] = pt2;
+                        pt2--;
+                    }
+                }
+            }
+            else
+            {
+                // HOLLOW BOTTOM
+                // Does it matter if it's open or closed? - djs
+
+                llassert(mTypeMask & BOTTOM_MASK);
+                S32 pt1 = 0, pt2 = num_vertices - 1;
+
+                S32 i = 0;
+                while (pt2 - pt1 > 1)
+                {
+                    // Use the profile points instead of the mesh, since you want
+                    // the un-transformed profile distances.
+                    const LLVector4a& p1 = profile[pt1];
+                    const LLVector4a& p2 = profile[pt2];
+                    const LLVector4a& pa = profile[pt1 + 1];
+                    const LLVector4a& pb = profile[pt2 - 1];
+
+                    const F32* p1V = p1.getF32ptr();
+                    const F32* p2V = p2.getF32ptr();
+                    const F32* paV = pa.getF32ptr();
+                    const F32* pbV = pb.getF32ptr();
+
+                    // Use area of triangle to determine backfacing
+                    F32 area_1a2, area_1ba, area_21b, area_2ab;
+                    area_1a2 = (p1V[0] * paV[1] - paV[0] * p1V[1]) +
+                        (paV[0] * p2V[1] - p2V[0] * paV[1]) +
+                        (p2V[0] * p1V[1] - p1V[0] * p2V[1]);
+
+                    area_1ba = (p1V[0] * pbV[1] - pbV[0] * p1V[1]) +
+                        (pbV[0] * paV[1] - paV[0] * pbV[1]) +
+                        (paV[0] * p1V[1] - p1V[0] * paV[1]);
+
+                    area_21b = (p2V[0] * p1V[1] - p1V[0] * p2V[1]) +
+                        (p1V[0] * pbV[1] - pbV[0] * p1V[1]) +
+                        (pbV[0] * p2V[1] - p2V[0] * pbV[1]);
+
+                    area_2ab = (p2V[0] * paV[1] - paV[0] * p2V[1]) +
+                        (paV[0] * pbV[1] - pbV[0] * paV[1]) +
+                        (pbV[0] * p2V[1] - p2V[0] * pbV[1]);
+
+                    bool use_tri1a2 = true;
+                    bool tri_1a2 = true;
+                    bool tri_21b = true;
+
+                    if (area_1a2 < 0)
+                    {
+                        tri_1a2 = false;
+                    }
+                    if (area_2ab < 0)
+                    {
+                        // Can't use, because it contains point b
+                        tri_1a2 = false;
+                    }
+                    if (area_21b < 0)
+                    {
+                        tri_21b = false;
+                    }
+                    if (area_1ba < 0)
+                    {
+                        // Can't use, because it contains point b
+                        tri_21b = false;
+                    }
+
+                    if (!tri_1a2)
+                    {
+                        use_tri1a2 = false;
+                    }
+                    else if (!tri_21b)
+                    {
+                        use_tri1a2 = true;
+                    }
+                    else
+                    {
+                        LLVector4a d1;
+                        d1.setSub(p1, pa);
+                        LLVector4a d2;
+                        d2.setSub(p2, pb);
+
+                        if (d1.dot3(d1) < d2.dot3(d2))
+                        {
+                            use_tri1a2 = true;
+                        }
+                        else
+                        {
+                            use_tri1a2 = false;
+                        }
+                    }
+
+                    // Flipped backfacing from top
+                    if (use_tri1a2)
+                    {
+                        mIndices[i++] = pt1;
+                        mIndices[i++] = pt2;
+                        mIndices[i++] = pt1 + 1;
+                        pt1++;
+                    }
+                    else
+                    {
+                        mIndices[i++] = pt1;
+                        mIndices[i++] = pt2;
+                        mIndices[i++] = pt2 - 1;
+                        pt2--;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Not hollow, generate the triangle fan.
+            U16 v1 = 2;
+            U16 v2 = 1;
+
+            if (mTypeMask & TOP_MASK)
+            {
+                v1 = 1;
+                v2 = 2;
+            }
+
+            for (S32 i = 0; i < (num_vertices - 2); i++)
+            {
+                mIndices[3 * i] = num_vertices - 1;
+                mIndices[3 * i + v1] = i;
+                mIndices[3 * i + v2] = i + 1;
+            }
+
+
+        }
+
+    LLVector4a d0, d1;
+    LL_CHECK_MEMORY
+
+
+        d0.setSub(mPositions[mIndices[1]], mPositions[mIndices[0]]);
+    d1.setSub(mPositions[mIndices[2]], mPositions[mIndices[0]]);
+
+    LLVector4a normal;
+    normal.setCross3(d0, d1);
+
+    if (normal.dot3(normal).getF32() > F_APPROXIMATELY_ZERO)
+    {
+        normal.normalize3fast();
+    }
+    else
+    { //degenerate, make up a value
+        if (normal.getF32ptr()[2] >= 0)
+            normal.set(0.f, 0.f, 1.f);
+        else
+            normal.set(0.f, 0.f, -1.f);
+    }
+
+    llassert(llfinite(normal.getF32ptr()[0]));
+    llassert(llfinite(normal.getF32ptr()[1]));
+    llassert(llfinite(normal.getF32ptr()[2]));
+
+    llassert(!llisnan(normal.getF32ptr()[0]));
+    llassert(!llisnan(normal.getF32ptr()[1]));
+    llassert(!llisnan(normal.getF32ptr()[2]));
+
+    for (S32 i = 0; i < num_vertices; i++)
+    {
+        norm[i].load4a(normal.getF32ptr());
+    }
+
+    return true;
 }
 
 void LLVolumeFace::createTangents()

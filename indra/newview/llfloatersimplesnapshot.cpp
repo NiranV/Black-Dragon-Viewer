@@ -227,8 +227,6 @@ void LLFloaterSimpleSnapshot::updateResolution(void* data)
 
         if (original_width != width || original_height != height)
         {
-            // hide old preview as the aspect ratio could be wrong
-            checkAutoSnapshot(previewp, false);
             previewp->updateSnapshot(true);
         }
     }

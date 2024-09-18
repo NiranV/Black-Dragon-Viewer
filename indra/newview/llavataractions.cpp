@@ -1565,6 +1565,12 @@ bool LLAvatarActions::isBlocked(const LLUUID& id)
     return LLMuteList::getInstance()->isMuted(id, av_name.getUserName());
 }
 
+// static
+bool LLAvatarActions::isVoiceMuted(const LLUUID& id)
+{
+    return LLMuteList::getInstance()->isMuted(id, LLMute::flagVoiceChat);
+}
+
 //BD - Right Click Menu
 // static
 bool LLAvatarActions::isMuted(const LLUUID& id, U32 flags)

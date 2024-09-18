@@ -144,7 +144,7 @@ LLFloaterSnapshot::~LLFloaterSnapshot()
 }
 
 // virtual
-BOOL LLFloaterSnapshot::postBuild()
+bool LLFloaterSnapshot::postBuild()
 {
 	mRefreshBtn = getChild<LLUICtrl>("new_snapshot_btn");
 	mRefreshBtn->setCommitCallback(boost::bind(&LLFloaterSnapshot::onClickNewSnapshot, this));
@@ -236,7 +236,7 @@ BOOL LLFloaterSnapshot::postBuild()
 	LLComboBox* combo = getChild<LLComboBox>("local_size_combo");
 	combo->selectNthItem(combo->getItemCount() - 1);
 
-	return TRUE;
+	return true;
 }
 
 // virtual
@@ -706,7 +706,7 @@ void LLFloaterSnapshot::onClickNewSnapshot()
 	{
 		setStatus(STATUS_READY);
 		// _LL_DEBUGS() << "updating snapshot" << LL_ENDL;
-		previewp->mForceUpdateSnapshot = TRUE;
+		previewp->mForceUpdateSnapshot = true;
 	}
 }
 
@@ -783,22 +783,22 @@ void LLFloaterSnapshot::checkAspectRatio(S32 index)
 		return ;
 	}
 
-	BOOL keep_aspect = FALSE, enable_cb = FALSE;
+	BOOL keep_aspect = FALSE, enable_cb = false;
 
 	if (0 == index) // current window size
 	{
-		enable_cb = FALSE;
-		keep_aspect = TRUE;
+		enable_cb = false;
+		keep_aspect = true;
 	}
 	else if (-1 == index) // custom
 	{
-		enable_cb = TRUE;
+		enable_cb = true;
 		keep_aspect = gSavedSettings.getBOOL("KeepAspectForSnapshot");
 	}
 	else // predefined resolution
 	{
-		enable_cb = FALSE;
-		keep_aspect = FALSE;
+		enable_cb = false;
+		keep_aspect = false;
 	}
 
 	mAspectRatioCheckOff = !enable_cb;
@@ -857,7 +857,7 @@ void LLFloaterSnapshot::setFinished(bool finished, bool ok, const std::string& m
 }
 
 // Apply a new resolution selected from the given combobox.
-void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, BOOL do_update)
+void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, bool do_update)
 {
 	S32 idx = getActivePanelIndex();
 	if (idx != 5)
@@ -1049,7 +1049,7 @@ void LLFloaterSnapshot::comboSetCustom(const std::string& comboname)
 }
 
 // Update supplied width and height according to the constrain proportions flag; limit them by max_val.
-BOOL LLFloaterSnapshot::checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL isWidthChanged, S32 max_value)
+bool LLFloaterSnapshot::checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, bool isWidthChanged, S32 max_value)
 {
 	S32 w = width ;
 	S32 h = height ;
@@ -1093,7 +1093,7 @@ BOOL LLFloaterSnapshot::checkImageSize(LLSnapshotLivePreview* previewp, S32& wid
 	return (w != width || h != height) ;
 }
 
-void LLFloaterSnapshot::updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL is_width_changed)
+void LLFloaterSnapshot::updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, bool is_width_changed)
 {
 	mWidthSpinnerCtrl->resetDirty();
 	mHeightSpinnerCtrl->resetDirty();
@@ -1222,17 +1222,17 @@ S32 LLFloaterSnapshot::notify(const LLSD& info)
 	return 0;
 }
 
-BOOL LLFloaterSnapshot::isWaitingState()
+bool LLFloaterSnapshot::isWaitingState()
 {
 	return (getStatus() == STATUS_WORKING);
 }
 
-BOOL LLFloaterSnapshot::updatePreviewList(bool initialized)
+bool LLFloaterSnapshot::updatePreviewList(bool initialized)
 {
 	if (!initialized)
-		return FALSE;
+		return false;
 
-	BOOL changed = FALSE;
+	bool changed = false;
 	// _LL_DEBUGS() << "npreviews: " << LLSnapshotLivePreview::sList.size() << LL_ENDL;
 	for (std::set<LLSnapshotLivePreview*>::iterator iter = LLSnapshotLivePreview::sList.begin();
 		iter != LLSnapshotLivePreview::sList.end(); ++iter)
@@ -1356,7 +1356,7 @@ void LLFloaterSnapshot::setAgentEmail(const std::string& email)
 	}
 }
 
-void LLFloaterSnapshot::enableControls(BOOL enable)
+void LLFloaterSnapshot::enableControls(bool enable)
 {
 	setCtrlsEnabled(enable);
 }
@@ -1675,7 +1675,7 @@ LLSnapshotFloaterView::~LLSnapshotFloaterView()
 }
 
 // virtual
-BOOL LLSnapshotFloaterView::handleKey(KEY key, MASK mask, BOOL called_from_parent)
+bool LLSnapshotFloaterView::handleKey(KEY key, MASK mask, bool called_from_parent)
 {
 	if (called_from_parent)
 	{
@@ -1687,7 +1687,7 @@ BOOL LLSnapshotFloaterView::handleKey(KEY key, MASK mask, BOOL called_from_paren
 		// bounce keystrokes back down
 		LLFloaterView::handleKey(key, mask, TRUE);
 	}
-	return TRUE;
+	return true;
 }
 
 

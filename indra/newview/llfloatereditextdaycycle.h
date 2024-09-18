@@ -110,8 +110,8 @@ private:
 
     // flyout response/click
     void                        onButtonApply(LLUICtrl *ctrl, const LLSD &data);
-    //virtual void                onClickCloseBtn(bool app_quitting = false) override;
-    //void                        onButtonImport();
+    virtual void                onClickCloseBtn(bool app_quitting = false) override;
+    void                        onButtonImport();
     void                        onButtonLoadFrame();
     void                        onAddFrame();
     void                        onRemoveFrame();

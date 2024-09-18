@@ -260,7 +260,8 @@ public:
 
     static void onPropertiesKey(LLLineEditor*, void*);
 
-    void onDescriptionKeyStroke(LLTextEditor* caller);
+    //BD
+    void onDescriptionKeyStroke(LLLineEditor* caller);
 
     static void onDescriptionCommit(LLUICtrl*, void*);
 

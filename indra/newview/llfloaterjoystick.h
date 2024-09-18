@@ -39,7 +39,7 @@ public:
 	LLFloaterJoystick(const LLSD& key);
 	~LLFloaterJoystick();
 
-	virtual BOOL postBuild();
+	virtual bool postBuild();
 	virtual void refresh();
 	virtual void apply();	// Apply the changed values.
 	virtual void cancel();	// Cancel the changed values.
@@ -49,6 +49,8 @@ public:
 	static  void setXboxDefaults();
 
 	void refreshAll();
+
+    static bool addDeviceCallback(std::string& name, LLSD& value, void* userdata);
     void addDevice(std::string &name, LLSD& value);
 
 protected:

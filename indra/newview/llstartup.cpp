@@ -384,7 +384,7 @@ bool idle_startup()
 
 	const std::string delims (" ");
 	std::string system;
-	int begIdx, endIdx;
+	size_t begIdx, endIdx;
 	std::string osString = LLOSInfo::instance().getOSStringSimple();
 
 	begIdx = osString.find_first_not_of (delims);
@@ -735,7 +735,7 @@ bool idle_startup()
 		// Previous initializeLoginInfo may have generated user credentials.  Re-check them.
 		if (gUserCredential.isNull())
 		{
-			show_connect_box = TRUE;
+			show_connect_box = true;
 		}
 		else if (gSavedSettings.getBOOL("AutoLogin"))  
 		{
@@ -757,7 +757,7 @@ bool idle_startup()
 		{
 			gRememberPassword = gSavedSettings.getBOOL("RememberPassword");
 			gRememberUser = gSavedSettings.getBOOL("RememberUser");
-			show_connect_box = TRUE;
+			show_connect_box = true;
 		}
 
 		//setup map of datetime strings to codes and slt & local time offset from utc
@@ -766,7 +766,7 @@ bool idle_startup()
 
 		// Go to the next startup state
 		LLStartUp::setStartupState( STATE_BROWSER_INIT );
-		return FALSE;
+		return false;
 	}
 
 	
@@ -778,7 +778,7 @@ bool idle_startup()
 		display_startup();
 		// LLViewerMedia::initBrowser();
 		LLStartUp::setStartupState( STATE_LOGIN_SHOW );
-		return FALSE;
+		return false;
 	}
 
 
@@ -869,7 +869,7 @@ bool idle_startup()
 #endif
         display_startup();
         timeout.reset();
-		return FALSE;
+		return false;
 	}
 
 	if (STATE_LOGIN_WAIT == LLStartUp::getStartupState())
@@ -885,7 +885,7 @@ bool idle_startup()
 		// display() function will be the one to run display_startup()
 		// Sleep so we don't spin the CPU
 		ms_sleep(1);
-		return FALSE;
+		return false;
 	}
 
 	if (STATE_LOGIN_CLEANUP == LLStartUp::getStartupState())
@@ -901,7 +901,7 @@ bool idle_startup()
 			// could then change the preferences to fix the issue.
 
 			LLStartUp::setStartupState(STATE_LOGIN_SHOW);
-			return FALSE;
+			return false;
 		}
 
 		// reset the values that could have come in from a slurl
@@ -1050,7 +1050,7 @@ bool idle_startup()
 
 		LLStartUp::setStartupState( STATE_LOGIN_AUTH_INIT );
 
-		return FALSE;
+		return false;
 	}
 
 	if(STATE_LOGIN_AUTH_INIT == LLStartUp::getStartupState())
@@ -1080,7 +1080,7 @@ bool idle_startup()
 		login->connect(gUserCredential);
 
 		LLStartUp::setStartupState( STATE_LOGIN_CURL_UNSTUCK );
-		return FALSE;
+		return false;
 	}
 
 	if(STATE_LOGIN_CURL_UNSTUCK == LLStartUp::getStartupState())
@@ -1093,7 +1093,7 @@ bool idle_startup()
 		// in curl, so take "may appear frozen" out of progress bar. JC
 
 		LLStartUp::setStartupState( STATE_LOGIN_PROCESS_RESPONSE );
-		return FALSE;
+		return false;
 	}
 
 	if(STATE_LOGIN_PROCESS_RESPONSE == LLStartUp::getStartupState()) 
@@ -1286,10 +1286,10 @@ bool idle_startup()
 				LLNotificationsUtil::add("ErrorMessage", args, LLSD(), login_alert_done);
 				transition_back_to_login_panel(emsg.str());
 				show_connect_box = true;
-				return FALSE;
+				return false;
 			}
 		}
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1409,7 +1409,7 @@ bool idle_startup()
 
 		LLStartUp::setStartupState( STATE_MULTIMEDIA_INIT );
 
-		return FALSE;
+		return false;
 	}
 
 
@@ -1422,7 +1422,7 @@ bool idle_startup()
 		LLStartUp::multimediaInit();
 		LLStartUp::setStartupState( STATE_FONT_INIT );
 		display_startup();
-		return FALSE;
+		return false;
 	}
 
 	// Loading fonts takes several seconds
@@ -1431,7 +1431,7 @@ bool idle_startup()
 		LLStartUp::fontInit();
 		LLStartUp::setStartupState( STATE_SEED_GRANTED_WAIT );
 		display_startup();
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1483,7 +1483,7 @@ bool idle_startup()
 			}
 		}
 		display_startup();
-		return FALSE;
+		return false;
 	}
 
 
@@ -1552,15 +1552,11 @@ bool idle_startup()
 		display_startup();
 		gXferManager->registerCallbacks(gMessageSystem);
 
-		set_startup_status(0.30f, 1.0f, LLTrans::getString("SeedGranted"), "Registering GLTF Callbacks");
-		display_startup();
-		LLGLTFMaterialList::registerCallbacks();
-
-		set_startup_status(0.31f, 1.0f, LLTrans::getString("SeedGranted"), "Initializing Name Cache");
+		set_startup_status(0.30f, 1.0f, LLTrans::getString("SeedGranted"), "Initializing Name Cache");
 		display_startup();
 		LLStartUp::initNameCache();
 
-		set_startup_status(0.32f, 0.2f, LLTrans::getString("SeedGranted"), "Updating Voice Settings");
+		set_startup_status(0.31f, 0.2f, LLTrans::getString("SeedGranted"), "Updating Voice Settings");
 		display_startup();
 		// update the voice settings *after* gCacheName initialization
 		// so that we can construct voice UI that relies on the name cache
@@ -1568,21 +1564,21 @@ bool idle_startup()
 		{
 			LLVoiceClient::getInstance()->updateSettings();
 		}
-		set_startup_status(0.32f, 0.4f, LLTrans::getString("SeedGranted"), "Setting Up IM Container");
+		set_startup_status(0.32f, 0.25f, LLTrans::getString("SeedGranted"), "Setting Up IM Container");
 		display_startup();
 
 		// create a container's instance for start a controlling conversation windows
 		// by the voice's events
 		LLFloaterIMContainer::getInstance();
 
-		set_startup_status(0.32f, 0.6f, LLTrans::getString("SeedGranted"), "Asking Media Autoplay");
+		set_startup_status(0.32f, 0.5f, LLTrans::getString("SeedGranted"), "Asking Media Autoplay");
 		display_startup();
 		if (gSavedSettings.getS32("ParcelMediaAutoPlayEnable") == 2)
 		{
 			LLViewerParcelAskPlay::getInstance()->loadSettings();
 		}
 
-		set_startup_status(0.32f, 0.8f, LLTrans::getString("SeedGranted"), "Adding Region Changed Callback");
+		set_startup_status(0.32f, 0.75f, LLTrans::getString("SeedGranted"), "Adding Region Changed Callback");
 		display_startup();
 		gAgent.addRegionChangedCallback(boost::bind(&LLPerfStats::StatsRecorder::clearStats));
 
@@ -1705,7 +1701,7 @@ bool idle_startup()
 		set_startup_status(0.40f, 1.f, LLTrans::getString("SeedGranted"), "");
 		display_startup();
 
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1722,7 +1718,7 @@ bool idle_startup()
 
 		set_startup_status(0.41, 0.75f, LLTrans::getString("WorldWait"), "Waiting");
 		pump_idle_startup_network();
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1764,7 +1760,7 @@ bool idle_startup()
 		timeout.reset();
 		set_startup_status(0.44f, 1.f, LLTrans::getString("AgentSend"), "");
 		display_startup();
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1816,7 +1812,7 @@ bool idle_startup()
 			}
 			reset_login();
 		}
-		return FALSE;
+		return false;
 	}
 
 	//---------------------------------------------------------------------
@@ -1875,7 +1871,7 @@ bool idle_startup()
 
 		LLStartUp::setStartupState(STATE_INVENTORY_SKEL);
 		display_startup();
-		return FALSE;
+		return false;
 	}
 
     if (STATE_INVENTORY_SKEL == LLStartUp::getStartupState())
@@ -1910,7 +1906,7 @@ bool idle_startup()
         display_startup();
         LLStartUp::setStartupState(STATE_INVENTORY_SEND2);
         display_startup();
-        return FALSE;
+        return false;
     }
 
     if (STATE_INVENTORY_SEND2 == LLStartUp::getStartupState())
@@ -2034,7 +2030,7 @@ bool idle_startup()
         LLStartUp::setStartupState(STATE_INVENTORY_CALLBACKS );
         display_startup();
 
-        return FALSE;
+        return false;
     }
 
     //---------------------------------------------------------------------
@@ -2045,7 +2041,7 @@ bool idle_startup()
         if (!LLInventoryModel::isSysFoldersReady())
         {
             display_startup();
-            return FALSE;
+            return false;
         }
         LLInventoryModelBackgroundFetch::instance().start();
         LLUUID cof_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT);
@@ -2100,7 +2096,7 @@ bool idle_startup()
 		LLStartUp::setStartupState( STATE_MISC );
 		display_startup();
 
-		return FALSE;
+		return false;
 	}
 
 
@@ -2206,8 +2202,8 @@ bool idle_startup()
 				if (item_id.notNull() && asset_id.notNull())
 				{
 					// Could schedule and delay these for later.
-					const BOOL no_inform_server = FALSE;
-					const BOOL no_deactivate_similar = FALSE;
+					const BOOL no_inform_server = false;
+					const BOOL no_deactivate_similar = false;
 					LLGestureMgr::instance().activateGestureWithAsset(item_id, asset_id,
 										 no_inform_server,
 										 no_deactivate_similar);
@@ -2220,7 +2216,7 @@ bool idle_startup()
 			LLGestureMgr::instance().setFetchIDs(item_ids);
 			LLGestureMgr::instance().startFetch();
 		}
-		gDisplaySwapBuffers = TRUE;
+		gDisplaySwapBuffers = true;
 		set_startup_status(0.73f, 1.f, LLTrans::getString("Misc"), "Loading Scene");
 		display_startup();
 
@@ -2264,7 +2260,7 @@ bool idle_startup()
 					// restore old camera pos
 					gAgentCamera.setFocusOnAvatar(FALSE, FALSE);
 					gAgentCamera.setCameraPosAndFocusGlobal(gSavedSettings.getVector3d("CameraPosOnLogout"), gSavedSettings.getVector3d("FocusPosOnLogout"), LLUUID::null);
-					BOOL limit_hit = FALSE;
+					bool limit_hit = false;
 					gAgentCamera.calcCameraPositionTargetGlobal(&limit_hit);
 					if (limit_hit)
 					{
@@ -2307,7 +2303,7 @@ bool idle_startup()
 
 		LLStartUp::setStartupState( STATE_PRECACHE );
 		timeout.reset();
-		return FALSE;
+		return false;
 	}
 
 	if (STATE_PRECACHE == LLStartUp::getStartupState())
@@ -2364,7 +2360,7 @@ bool idle_startup()
 			display_startup();
 		}
 		
-		return TRUE;
+		return true;
 	}
 
 	if (STATE_WEARABLES_WAIT == LLStartUp::getStartupState())
@@ -2419,7 +2415,7 @@ bool idle_startup()
 			{
 				// _LL_DEBUGS("Avatar") << "avatar fully loaded" << LL_ENDL;
 				LLStartUp::setStartupState( STATE_CLEANUP );
-				return TRUE;
+				return true;
 			}
 		}
 		else
@@ -2430,7 +2426,7 @@ bool idle_startup()
 				// We have our clothing, proceed.
 				// _LL_DEBUGS("Avatar") << "wearables loaded" << LL_ENDL;
 				LLStartUp::setStartupState( STATE_CLEANUP );
-				return TRUE;
+				return true;
 			}
 		}
 		//fall through this frame to STATE_CLEANUP
@@ -2541,10 +2537,10 @@ bool idle_startup()
 			wglSwapIntervalEXT(1);
 		}
 
-		return TRUE;
+		return true;
 	}
 
-	return TRUE;
+	return true;
 }
 
 //
@@ -2800,8 +2796,8 @@ void register_viewer_callbacks(LLMessageSystem* msg)
 	msg->setHandlerFunc("ParcelDwellReply",
 		LLViewerParcelMgr::processParcelDwellReply);
 
-	msg->setHandlerFunc("AvatarPropertiesReply",
-						&LLAvatarPropertiesProcessor::processAvatarPropertiesReply);
+    msg->setHandlerFunc("AvatarPropertiesReply",
+                        &LLAvatarPropertiesProcessor::processAvatarLegacyPropertiesReply);
 	msg->setHandlerFunc("AvatarInterestsReply",
 						&LLAvatarPropertiesProcessor::processAvatarInterestsReply);
 	msg->setHandlerFunc("AvatarGroupsReply",
@@ -3747,7 +3743,7 @@ bool process_login_success_response()
 	if (!look_at_str.empty())
 	{
 		size_t len = look_at_str.size();
-		LLMemoryStream mstr((U8*)look_at_str.c_str(), len);
+        LLMemoryStream mstr((U8*)look_at_str.c_str(), static_cast<S32>(len));
 		LLSD sd = LLSDSerialize::fromNotation(mstr, len);
 		gAgentStartLookAt = ll_vector3_from_sd(sd);
 	}
@@ -3785,7 +3781,7 @@ bool process_login_success_response()
 	if(!home_location.empty())
 	{
 		size_t len = home_location.size();
-		LLMemoryStream mstr((U8*)home_location.c_str(), len);
+        LLMemoryStream mstr((U8*)home_location.c_str(), static_cast<S32>(len));
 		LLSD sd = LLSDSerialize::fromNotation(mstr, len);
 		S32 region_x = sd["region_handle"][0].asInteger();
 		S32 region_y = sd["region_handle"][1].asInteger();

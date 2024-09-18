@@ -1542,32 +1542,6 @@ class LLAdvancedCheckDebugUnicode : public view_listener_t
 };
 
 
-
-//////////////////
-// DEBUG CAMERA //
-//////////////////
-
-
-class LLAdvancedToggleDebugCamera : public view_listener_t
-{
-    bool handleEvent(const LLSD& userdata)
-    {
-        LLView::sDebugCamera = !(LLView::sDebugCamera);
-        LLFloaterCamera::onDebugCameraToggled();
-        return true;
-    }
-};
-
-class LLAdvancedCheckDebugCamera : public view_listener_t
-{
-    bool handleEvent(const LLSD& userdata)
-    {
-        return LLView::sDebugCamera;
-    }
-};
-
-
-
 ///////////////////////
 // XUI NAME TOOLTIPS //
 ///////////////////////
@@ -5743,8 +5717,6 @@ void handle_buy()
     if (!valid) return;
 
     S32 price = sale_info.getSalePrice();
-
-	S32 price = sale_info.getSalePrice();
 	
 	//BD
 	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
@@ -6858,30 +6830,6 @@ class LLAvatarToggleSearch : public view_listener_t
         else
         {
             instance->closeFloater();
-        }
-        return true;
-    }
-};
-
-class LLAvatarTogglePicks : public view_listener_t
-{
-    bool handleEvent(const LLSD& userdata)
-    {
-        LLVOAvatar* avatar = NULL;
-        LLViewerObject *obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
-        if (obj)
-        {
-            instance->setMinimized(false);
-            instance->setFocus(true);
-            LLAvatarActions::showPicks(gAgent.getID());
-        }
-        else if (picks_tab_visible())
-        {
-            instance->closeFloater();
-        }
-        else
-        {
-            LLAvatarActions::showPicks(gAgent.getID());
         }
         return true;
     }
@@ -10221,16 +10169,6 @@ void initialize_menus()
 	//Communicate Nearby chat
 	view_listener_t::addMenu(new LLCommunicateNearbyChat(), "Communicate.NearbyChat");
 
-	// Communicate > Voice morphing > Subscribe...
-	commit.add("Communicate.VoiceMorphing.Subscribe", boost::bind(&handle_voice_morphing_subscribe));
-	// Communicate > Voice morphing > Premium perk...
-	commit.add("Communicate.VoiceMorphing.PremiumPerk", boost::bind(&handle_premium_voice_morphing_subscribe));
-	LLVivoxVoiceClient * voice_clientp = LLVivoxVoiceClient::getInstance();
-	enable.add("Communicate.VoiceMorphing.NoVoiceMorphing.Check"
-		, boost::bind(&LLVivoxVoiceClient::onCheckVoiceEffect, voice_clientp, "NoVoiceMorphing"));
-	commit.add("Communicate.VoiceMorphing.NoVoiceMorphing.Click"
-		, boost::bind(&LLVivoxVoiceClient::onClickVoiceEffect, voice_clientp, "NoVoiceMorphing"));
-
 	// World menu
 	view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");
 	view_listener_t::addMenu(new LLWorldCreateLandmark(), "World.CreateLandmark");
@@ -10381,8 +10319,6 @@ void initialize_menus()
     view_listener_t::addMenu(new LLAdvancedToggleDebugViews(), "Advanced.ToggleDebugViews");
     view_listener_t::addMenu(new LLAdvancedCheckDebugUnicode(), "Advanced.CheckDebugUnicode");
     view_listener_t::addMenu(new LLAdvancedToggleDebugUnicode(), "Advanced.ToggleDebugUnicode");
-    view_listener_t::addMenu(new LLAdvancedCheckDebugCamera(), "Advanced.CheckDebugCamera");
-    view_listener_t::addMenu(new LLAdvancedToggleDebugCamera(), "Advanced.ToggleDebugCamera");
     view_listener_t::addMenu(new LLAdvancedToggleXUINameTooltips(), "Advanced.ToggleXUINameTooltips");
     view_listener_t::addMenu(new LLAdvancedCheckXUINameTooltips(), "Advanced.CheckXUINameTooltips");
     view_listener_t::addMenu(new LLAdvancedToggleDebugMouseEvents(), "Advanced.ToggleDebugMouseEvents");

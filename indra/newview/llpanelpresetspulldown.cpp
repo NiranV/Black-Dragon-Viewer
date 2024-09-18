@@ -34,6 +34,7 @@
 #include "llbutton.h"
 #include "lltabcontainer.h"
 #include "llfloater.h"
+#include "llfloaterperformance.h"
 #include "llfloaterreg.h"
 #include "llpresetsmanager.h"
 #include "llsliderctrl.h"
@@ -185,7 +186,7 @@ void LLPanelPresetsPulldown::onRowClick(const LLSD& user_data)
     }
 }
 
-void LLPanelPresetsPulldown::onGraphicsButtonClick()
+void LLPanelPresetsPulldown::onGraphicsButtonClick(const LLSD& user_data)
 {
     // close the minicontrol, we're bringing up the big one
 	setVisible(false);

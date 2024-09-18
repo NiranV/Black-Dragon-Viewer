@@ -52,12 +52,9 @@ public:
     bool postBuild();
 
     /*virtual*/ void draw();
-    void drawStartTexture(F32 alpha);
-    void drawLogos(F32 alpha);
-
-	/*virtual*/ void draw();
 	// ## Zi: Fade teleport screens
 	//void drawStartTexture(F32 alpha);
+    //void drawLogos(F32 alpha);
 
 	/*virtual*/ bool handleHover(S32 x, S32 y, MASK mask);
 	/*virtual*/ bool handleKeyHere(KEY key, MASK mask);

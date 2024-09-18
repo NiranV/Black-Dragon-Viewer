@@ -1345,37 +1345,7 @@ void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 }
 
 //BD - Derender
-bool LLViewerObjectList::killObject(LLViewerObject *objectp, bool derendered)
-{
-    LL_PROFILE_ZONE_SCOPED;
-	// Don't ever kill gAgentAvatarp, just force it to the agent's region
-	// unless region is NULL which is assumed to mean you are logging out.
-	if ((objectp == gAgentAvatarp) && gAgent.getRegion())
-	{
-		objectp->setRegion(gAgent.getRegion());
-		return false;
-	}
-
-	// When we're killing objects, all we do is mark them as dead.
-	// We clean up the dead objects later.
-
-	if (objectp)
-	{
-//		//BD - Derender
-		if(derendered)
-		{
-			mDerenderList.insert(objectp->getID());
-		}
-		// We are going to cleanup a lot of smart pointers to this object, they might be last,
-		// and object being NULLed while inside it's own function won't be pretty
-		// so create a pointer to make sure object will stay alive untill markDead() finishes
-		LLPointer<LLViewerObject> sp(objectp);
-		sp->markDead(); // does the right thing if object already dead
-		return true;
-	}
-
-	return false;
-bool LLViewerObjectList::killObject(LLViewerObject *objectp)
+bool LLViewerObjectList::killObject(LLViewerObject* objectp, bool derendered)
 {
     LL_PROFILE_ZONE_SCOPED;
     // Don't ever kill gAgentAvatarp, just force it to the agent's region
@@ -1391,6 +1361,11 @@ bool LLViewerObjectList::killObject(LLViewerObject *objectp)
 
     if (objectp)
     {
+//		//BD - Derender
+        if (derendered)
+        {
+            mDerenderList.insert(objectp->getID());
+        }
         // We are going to cleanup a lot of smart pointers to this object, they might be last,
         // and object being NULLed while inside it's own function won't be pretty
         // so create a pointer to make sure object will stay alive untill markDead() finishes

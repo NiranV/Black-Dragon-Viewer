@@ -88,7 +88,9 @@ public:
                                 image_flash,
                                 image_pressed,
                                 image_pressed_selected,
-                                image_overlay;
+                                image_overlay,
+                                //BD - Selected Overlay Image
+                                image_overlay_selected;
 
         Optional<std::string>   image_overlay_alignment;
 

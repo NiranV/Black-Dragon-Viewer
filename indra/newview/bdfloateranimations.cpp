@@ -59,13 +59,13 @@ BDFloaterAnimations::~BDFloaterAnimations()
 {
 }
 
-BOOL BDFloaterAnimations::postBuild()
+bool BDFloaterAnimations::postBuild()
 {
 	//BD - Motions
 	mAvatarScroll = getChild<LLScrollListCtrl>("other_avatars_scroll");
 	mMotionScroll = getChild<LLScrollListCtrl>("motions_scroll");
 
-	return TRUE;
+	return true;
 }
 
 void BDFloaterAnimations::draw()
@@ -518,7 +518,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 			{
 				std::string outfilename = picker.getFirstFile().c_str();
 				S32 file_size;
-				BOOL success = FALSE;
+				BOOL success = false;
 				LLAPRFile infile;
 				LLKeyframeMotion* temp_motion = NULL;
 				LLAssetID mMotionID;

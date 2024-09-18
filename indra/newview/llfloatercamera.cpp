@@ -75,7 +75,7 @@ class LLPanelCameraZoom
 public:
 	LLPanelCameraZoom();
 
-	/* virtual */ BOOL	postBuild();
+	/* virtual */ bool	postBuild();
 	/* virtual */ void	draw();
 
 protected:
@@ -142,13 +142,13 @@ void set_view_visible(LLView* parent, const std::string& name, bool visible)
 	parent->getChildView(name)->setVisible(visible);
 }
 
-BOOL LLPanelCameraItem::postBuild()
+bool LLPanelCameraItem::postBuild()
 {
 	setMouseEnterCallback(boost::bind(set_view_visible, this, "hovered_icon", true));
 	setMouseLeaveCallback(boost::bind(set_view_visible, this, "hovered_icon", false));
 	setMouseDownCallback(boost::bind(&LLPanelCameraItem::onAnyMouseClick, this));
 	setRightMouseDownCallback(boost::bind(&LLPanelCameraItem::onAnyMouseClick, this));
-	return TRUE;
+	return true;
 }
 
 void LLPanelCameraItem::onAnyMouseClick()
@@ -189,7 +189,7 @@ LLPanelCameraZoom::LLPanelCameraZoom()
 	mCommitCallbackRegistrar.add("Camera.roll_right", boost::bind(&LLPanelCameraZoom::onRollRightHeldDown, this));
 }
 
-BOOL LLPanelCameraZoom::postBuild()
+bool LLPanelCameraZoom::postBuild()
 {
 	mPlusBtn	= getChild <LLButton> ("zoom_plus_btn");
 	mMinusBtn	= getChild <LLButton> ("zoom_minus_btn");
@@ -361,7 +361,7 @@ void LLFloaterCamera::onOpen(const LLSD& key)
 		updateState();
 	else
 		toPrevMode();
-	mClosed = FALSE;
+	mClosed = false;
 }
 
 void LLFloaterCamera::onClose(bool app_quitting)
@@ -380,7 +380,7 @@ void LLFloaterCamera::onClose(bool app_quitting)
 		mPrevMode = CAMERA_CTRL_MODE_PAN;
 
 	switchMode(CAMERA_CTRL_MODE_PAN);
-	mClosed = TRUE;
+	mClosed = true;
 
 	gAgent.setMovementLocked(FALSE);
 }
@@ -396,7 +396,7 @@ LLFloaterCamera::LLFloaterCamera(const LLSD& val)
 }
 
 // virtual
-BOOL LLFloaterCamera::postBuild()
+bool LLFloaterCamera::postBuild()
 {
 	updateTransparency(TT_ACTIVE); // force using active floater transparency (STORM-730)
 

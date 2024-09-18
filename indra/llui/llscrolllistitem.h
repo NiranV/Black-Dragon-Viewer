@@ -75,6 +75,8 @@ public:
 
         Multiple<LLScrollListCell::Params> columns;
 
+        Optional<std::string> tool_tip;
+
 		//BD - Cells ~ Thanks to Liru
 		Optional<Contents> contents;
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<toggleable_menu
+ layout="topleft"
+ name="Settings">
+    <menu_item_call
+     label="Save as XML"
+     layout="topleft"
+     name="xml">
+        <on_click function="Pose.Save" parameter="xml"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Export as ANIM"
+     layout="topleft"
+     name="anim">
+        <on_click function="Pose.Save" parameter="anim"/>
+        <on_enable function="Pose.OnEnable" parameter="anim"/>
+    </menu_item_call>
+</toggleable_menu>

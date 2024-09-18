@@ -59,11 +59,11 @@ public:
 								repeat_image;
 		Optional<S32>			min_width,
 								min_height,
-								//BD
-								repeats,
 								selected,
 								warns_index,
 								default_index;
+        //BD
+        Optional<size_t>		repeats;
 		Ignored					scale_image;
 
         Params();
@@ -89,10 +89,6 @@ public:
 
     std::string getImageName() const;
 
-    void            setColor(const LLColor4& color) { mColor = color; }
-    void            setImage(LLPointer<LLUIImage> image) { mImagep = image; }
-    const LLPointer<LLUIImage> getImage() { return mImagep; }
-
 	void			setColor(const LLColor4& color) { mColor = color; }
 	void			setImage(LLPointer<LLUIImage> image) { mImagep = image; }
 	const LLPointer<LLUIImage> getImage() { return mImagep; }
@@ -109,7 +105,7 @@ protected:
         mMaxHeight;
 
 	//BD
-	S32 mRepeats;
+    size_t mRepeats;
 	S32 mSelected;
 	S32 mWarnIndex;
 	S32 mDefaultIndex;

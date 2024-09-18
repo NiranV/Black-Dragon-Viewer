@@ -49,7 +49,7 @@ public:
 	LLFloaterSnapshot(const LLSD& key);
 	/*virtual*/ ~LLFloaterSnapshot();
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/ void draw();
 	/*virtual*/ void onClose(bool app_quitting);
@@ -106,16 +106,16 @@ public:
 	// Updating
 	void updateLayout();
 	void updateControls();
-	void enableControls(BOOL enable);
-	void updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL is_width_changed);
-	void updateResolution(LLUICtrl* ctrl, BOOL do_update = TRUE);
+	void enableControls(bool enable);
+	void updateSpinners(LLSnapshotLivePreview* previewp, S32& width, S32& height, bool is_width_changed);
+	void updateResolution(LLUICtrl* ctrl, bool do_update = TRUE);
 	void updateOutfitResolution();
 	void updateLivePreview();
 	void updateUploadCost();
 
 	void setAdvanced(bool advanced) { mAdvanced = advanced; }
 	static void setAgentEmail(const std::string& email);
-	BOOL checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, BOOL isWidthChanged, S32 max_value);
+	bool checkImageSize(LLSnapshotLivePreview* previewp, S32& width, S32& height, bool isWidthChanged, S32 max_value);
 
 	// Panels
 	void openPanel(const std::string& panel_name);
@@ -131,7 +131,7 @@ public:
 	void setNeedRefresh(bool need);
 
 	// Preview
-	static BOOL updatePreviewList(bool initialized);
+	static bool updatePreviewList(bool initialized);
 	void getBigPreview();
 	void attachPreview();
 	bool isPreviewVisible();
@@ -186,7 +186,7 @@ public:
 	bool mAdvanced;
 	bool mSnapshotFreezeWorld;
 	bool mSnapshotAutoscale;
-	BOOL isWaitingState();
+	bool isWaitingState();
 
 protected:
 
@@ -218,7 +218,7 @@ protected:
 public:
 	virtual ~LLSnapshotFloaterView();
 
-	/*virtual*/	BOOL handleKey(KEY key, MASK mask, BOOL called_from_parent);
+	/*virtual*/	bool handleKey(KEY key, MASK mask, bool called_from_parent);
 };
 
 extern LLSnapshotFloaterView* gSnapshotFloaterView;

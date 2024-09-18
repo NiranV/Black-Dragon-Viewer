@@ -251,12 +251,12 @@ bool LLPanelEmojiComplete::handleMouseUp(S32 x, S32 y, MASK mask)
     return true;
 }
 
-bool LLPanelEmojiComplete::handleScrollWheel(S32 x, S32 y, S32 clicks)
+bool LLPanelEmojiComplete::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
     if (mNoScroll)
         return false;
 
-    if (mScrollbar && mScrollbar->getVisible() && mScrollbar->handleScrollWheel(x, y, clicks))
+    if (mScrollbar && mScrollbar->getVisible() && mScrollbar->handleScrollWheel(x, y, clicks, mask))
     {
         mCurSelected = posToIndex(x, y);
         return true;

@@ -1294,7 +1294,7 @@ bool LLPrimitive::packTEMessage(LLMessageSystem *mesgsys) const
 	}
    	mesgsys->addBinaryDataFast(_PREHASH_TextureEntry, packed_buffer, (S32)(cur_ptr - packed_buffer));
 
-	return bool;
+	return true;
 }
 
 

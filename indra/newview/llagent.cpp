@@ -2529,48 +2529,51 @@ void LLAgent::endAnimationUpdateUI()
     //---------------------------------------------------------------------
     if (gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)
     {
-        // clean up UI
-        // first show anything hidden by UI toggle
-        gViewerWindow->setUIVisibility(true);
-
-        // then hide stuff we want hidden for mouselook
-        gToolBarView->setToolBarsVisible(false);
-        gMenuBarView->setVisible(false);
-        LLNavigationBar::getInstance()->setVisible(false);
-        gStatusBar->setVisibleForMouselook(false);
-
-        LLPanelTopInfoBar::getInstance()->setVisible(false);
-
-        LLChicletBar::getInstance()->setVisible(false);
-
-        LLPanelStandStopFlying::getInstance()->setVisible(false);
-
-        // clear out camera lag effect
-        gAgentCamera.clearCameraLag();
-
-        // JC - Added for always chat in third person option
-        gFocusMgr.setKeyboardFocus(NULL);
-
-        LLToolMgr::getInstance()->setCurrentToolset(gMouselookToolset);
-
-        mViewsPushed = true;
-
-        if (mMouselookModeInSignal)
+//		//BD - Hide UI In Mouselook
+        if (gSavedSettings.getBOOL("AllowUIHidingInML"))
         {
-            (*mMouselookModeInSignal)();
-        }
+            // clean up UI
+            // first show anything hidden by UI toggle
+            //BD
+            if (!gViewerWindow->getUIVisibility())
+            {
+                gViewerWindow->setUIVisibility(true);
+            }
 
-        // hide all floaters except the mini map
+            // then hide stuff we want hidden for mouselook
+            gToolBarView->setToolBarsVisible(false);
+            gMenuBarView->setVisible(false);
+            LLNavigationBar::getInstance()->setVisible(false);
+            gStatusBar->setVisibleForMouselook(false);
+
+            LLChicletBar::getInstance()->setVisible(false);
+
+            // clear out camera lag effect
+            gAgentCamera.clearCameraLag();
+
+            // JC - Added for always chat in third person option
+            gFocusMgr.setKeyboardFocus(NULL);
+
+            LLToolMgr::getInstance()->setCurrentToolset(gMouselookToolset);
+
+            mViewsPushed = true;
+
+            if (mMouselookModeInSignal)
+            {
+                (*mMouselookModeInSignal)();
+            }
+
+            // hide all floaters except the mini map
 
 #if 0 // Use this once all floaters are registered
-        std::set<std::string> exceptions;
-        exceptions.insert("mini_map");
-        LLFloaterReg::hideVisibleInstances(exceptions);
+            std::set<std::string> exceptions;
+            exceptions.insert("mini_map");
+            LLFloaterReg::hideVisibleInstances(exceptions);
 #else // Use this for now
-        LLFloaterView::skip_list_t skip_list;
-        skip_list.insert(LLFloaterReg::findInstance("mini_map"));
-        skip_list.insert(LLFloaterReg::findInstance("beacons"));
-        gFloaterView->pushVisibleAll(false, skip_list);
+            LLFloaterView::skip_list_t skip_list;
+            skip_list.insert(LLFloaterReg::findInstance("mini_map"));
+            skip_list.insert(LLFloaterReg::findInstance("beacons"));
+            gFloaterView->pushVisibleAll(false, skip_list);
 #endif
 		}
 

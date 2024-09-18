@@ -33,7 +33,6 @@
 #include "llfirstuse.h"
 #include "llfloaterscriptdebug.h"
 #include "llhints.h"
-#include "llfloaterimnearbychat.h"
 #include "llrecentpeople.h"
 
 #include "llviewercontrol.h"
@@ -383,7 +382,7 @@ void LLFloaterIMNearbyChatScreenChannel::arrangeToasts()
     updateRect();
 
     LLRect channel_rect;
-    mFloaterSnapRegion->localRectToOtherView(mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
+    gViewerWindow->mFloaterSnapRegion->localRectToOtherView(gViewerWindow->mFloaterSnapRegion->getLocalRect(), &channel_rect, gFloaterView);
     channel_rect.mLeft += 10;
     channel_rect.mRight = channel_rect.mLeft + 300;
 

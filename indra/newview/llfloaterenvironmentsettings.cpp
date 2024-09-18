@@ -50,7 +50,7 @@ LLFloaterEnvironmentSettings::LLFloaterEnvironmentSettings(const LLSD &key)
 }
 
 // virtual
-BOOL LLFloaterEnvironmentSettings::postBuild()
+bool LLFloaterEnvironmentSettings::postBuild()
 {
 	//BD
 	mRegionSettingsButton = getChild<LLButton>("estate_btn");
@@ -71,7 +71,7 @@ BOOL LLFloaterEnvironmentSettings::postBuild()
 
 	childSetCommitCallback("cancel_btn", boost::bind(&LLFloaterEnvironmentSettings::onBtnCancel, this), NULL);
 
-	return TRUE;
+	return true;
 }
 
 // virtual

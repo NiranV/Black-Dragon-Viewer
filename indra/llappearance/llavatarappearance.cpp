@@ -85,7 +85,7 @@ private:
 	typedef std::vector<LLAvatarBoneInfo*> bones_t;
 	bones_t mChildren;
 	//BD - Poser
-	BOOL mHasPosition;
+	bool mHasPosition;
 };
 
 //------------------------------------------------------------------------
@@ -1621,7 +1621,7 @@ bool LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
 		if (!node->getFastAttributeVector3(pivot_string, mPivot))
 		{
 			LL_WARNS() << "Bone without pivot" << LL_ENDL;
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1629,7 +1629,7 @@ bool LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
 	static LLStdStringHandle reposition_string = LLXmlTree::addAttributeString("reposition");
 	if (!node->getFastAttributeBOOL(reposition_string, mHasPosition))
 	{
-		mHasPosition = FALSE;
+		mHasPosition = false;
 	}
 
 	// parse children
@@ -1640,7 +1640,7 @@ bool LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
 		if (!child_info->parseXml(child))
 		{
 			delete child_info;
-			return FALSE;
+			return false;
 		}
 		mChildren.push_back(child_info);
 	}

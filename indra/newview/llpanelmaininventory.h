@@ -83,7 +83,7 @@ public:
                                        void* cargo_data,
                                        EAcceptance* accept,
                                        std::string& tooltip_msg);
-    /*virtual*/ void changed(U32);
+    /*virtual*/ void changed(U32) {};
     /*virtual*/ void draw();
     /*virtual*/ void    onVisibilityChange ( bool new_visibility );
 

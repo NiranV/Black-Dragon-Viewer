@@ -125,11 +125,11 @@ void LLVector2::setValue(const LLSD& sd)
 }
 
 //BD - Vector2
-BOOL LLVector2::parseVector2(const std::string& buf, LLVector2* value)
+bool LLVector2::parseVector2(const std::string& buf, LLVector2* value)
 {
 	if (buf.empty() || value == NULL)
 	{
-		return FALSE;
+		return false;
 	}
 
 	LLVector2 v;
@@ -142,8 +142,8 @@ BOOL LLVector2::parseVector2(const std::string& buf, LLVector2* value)
 	if (2 == count)
 	{
 		value->setVec(v);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }

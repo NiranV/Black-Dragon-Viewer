@@ -135,19 +135,12 @@ void LLFloaterObjectWeights::setErrorStatus(S32 status, const std::string& reaso
 {
     const std::string text = getString("nothing_selected");
 
-<<<<<<< HEAD
 	mSelectedDownloadWeight->setText(text);
 	mSelectedPhysicsWeight->setText(text);
 	mSelectedServerWeight->setText(text);
 	mSelectedDisplayWeight->setText(text);
 	//BD - Triangle Count
 	mSelectedTriangleCount->setText(text);
-=======
-    mSelectedDownloadWeight->setText(text);
-    mSelectedPhysicsWeight->setText(text);
-    mSelectedServerWeight->setText(text);
-    mSelectedDisplayWeight->setText(text);
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 
     toggleWeightsLoadingIndicators(false);
 }
@@ -245,7 +238,6 @@ void LLFloaterObjectWeights::generateTransactionID()
 
 void LLFloaterObjectWeights::toggleWeightsLoadingIndicators(bool visible)
 {
-<<<<<<< HEAD
 	childSetVisible("download_loading_indicator", visible);
 	childSetVisible("physics_loading_indicator", visible);
 	childSetVisible("server_loading_indicator", visible);
@@ -257,17 +249,6 @@ void LLFloaterObjectWeights::toggleWeightsLoadingIndicators(bool visible)
 	mSelectedDisplayWeight->setVisible(!visible);
 	//BD - Triangle Count
 	mSelectedTriangleCount->setVisible(!visible);
-=======
-    childSetVisible("download_loading_indicator", visible);
-    childSetVisible("physics_loading_indicator", visible);
-    childSetVisible("server_loading_indicator", visible);
-    childSetVisible("display_loading_indicator", visible);
-
-    mSelectedDownloadWeight->setVisible(!visible);
-    mSelectedPhysicsWeight->setVisible(!visible);
-    mSelectedServerWeight->setVisible(!visible);
-    mSelectedDisplayWeight->setVisible(!visible);
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 
 void LLFloaterObjectWeights::toggleLandImpactsLoadingIndicators(bool visible)
@@ -290,19 +271,12 @@ void LLFloaterObjectWeights::updateIfNothingSelected()
     mSelectedObjects->setText(text);
     mSelectedPrims->setText(text);
 
-<<<<<<< HEAD
 	mSelectedDownloadWeight->setText(text);
 	mSelectedPhysicsWeight->setText(text);
 	mSelectedServerWeight->setText(text);
 	mSelectedDisplayWeight->setText(text);
 	//BD - Triangle Count
 	mSelectedTriangleCount->setText(text);
-=======
-    mSelectedDownloadWeight->setText(text);
-    mSelectedPhysicsWeight->setText(text);
-    mSelectedServerWeight->setText(text);
-    mSelectedDisplayWeight->setText(text);
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 
     mSelectedOnLand->setText(text);
     mRezzedOnLand->setText(text);

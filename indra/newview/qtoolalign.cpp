@@ -55,7 +55,7 @@ QToolAlign::~QToolAlign()
 
 
 
-BOOL QToolAlign::handleMouseDown(S32 x, S32 y, MASK mask)
+bool QToolAlign::handleMouseDown(S32 x, S32 y, MASK mask)
 {
 	if (mHighlightedAxis != -1)
 	{
@@ -66,7 +66,7 @@ BOOL QToolAlign::handleMouseDown(S32 x, S32 y, MASK mask)
 		gViewerWindow->pickAsync(x, y, mask, pickCallback);
 	}
 		
-	return TRUE;
+	return true;
 }
 
 
@@ -128,7 +128,7 @@ void QToolAlign::handleDeselect()
 }
 
 
-BOOL QToolAlign::findSelectedManipulator(S32 x, S32 y)
+bool QToolAlign::findSelectedManipulator(S32 x, S32 y)
 {
 	mHighlightedAxis = -1;
 	mHighlightedDirection = 0;
@@ -188,27 +188,27 @@ BOOL QToolAlign::findSelectedManipulator(S32 x, S32 y)
 			{
 				mHighlightedAxis = axis;
 				mHighlightedDirection = direction;
-				return TRUE;
+				return true;
 			}
 
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 
-BOOL QToolAlign::handleHover(S32 x, S32 y, MASK mask)
+bool QToolAlign::handleHover(S32 x, S32 y, MASK mask)
 {
 	if(!AlignThread::sInstance)
 	{
 		if (mask & MASK_SHIFT)
 		{
-			mForce = FALSE;
+			mForce = false;
 		}
 		else
 		{
-			mForce = TRUE;
+			mForce = true;
 		}
 	}
 	
@@ -379,11 +379,11 @@ void QToolAlign::renderManipulators()
 		}
 }
 
-BOOL QToolAlign::canAffectSelection()
+bool QToolAlign::canAffectSelection()
 {
 	// An selection is scalable if you are allowed to both edit and move
 	// everything in it, and it does not have any sitting agents
-	BOOL can_scale = LLSelectMgr::getInstance()->getSelection()->getObjectCount() != 0;
+	bool can_scale = LLSelectMgr::getInstance()->getSelection()->getObjectCount() != 0;
 	if (can_scale)
 	{
 		struct f : public LLSelectedObjectFunctor
@@ -484,14 +484,14 @@ public:
 	~LOAlignCleanup()
 	{
 	}
-	BOOL tick()
+    bool tick()
 	{
 		AlignThread::sInstance->shutdown();
 		delete AlignThread::sInstance;
 		AlignThread::sInstance = NULL;
 		LLSelectMgr::getInstance()->sendMultipleUpdate(UPD_POSITION);
 		cmdline_printchat("The align tool is finished.");
-		return TRUE;
+		return true;
 	}
 };
 
@@ -594,7 +594,7 @@ void AlignThread::run()
 			new_bbox.addPointLocal(-1.0 * this_bbox.getExtentLocal() / 2.0);
 
 			// check to see if it overlaps the previously placed objects
-			BOOL overlap = FALSE;
+			BOOL overlap = false;
 
 			if((i % 50 == 0) && (j % 100 == 0))
 			{

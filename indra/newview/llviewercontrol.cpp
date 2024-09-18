@@ -867,13 +867,6 @@ bool handleKeyboardLayoutChanged(const LLSD& newvalue)
 	return true;
 }*/
 
-static bool handleTerrainScaleChanged(const LLSD& inputvalue)
-{
-	LLSD newvalue = 1.f / inputvalue.asReal();
-	LLDrawPoolTerrain::sDetailScale = newvalue.asReal();
-	return true;
-}
-
 /*static bool handleWaterResolutionChanged(const LLSD& newvalue)
 {
 	gPipeline.handleReflectionChanges();

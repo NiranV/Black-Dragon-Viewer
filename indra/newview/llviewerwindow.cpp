@@ -242,7 +242,7 @@ LLFrameTimer    gAwayTriggerTimer;
 
 bool            gShowOverlayTitle = false;
 
-LLViewerObject*  gDebugRaycastObject = NULL;
+LLViewerObject* gDebugRaycastObject = NULL;
 LLVOPartGroup* gDebugRaycastParticle = NULL;
 LLVector4a       gDebugRaycastIntersection;
 LLVector4a      gDebugRaycastParticleIntersection;
@@ -254,6 +254,7 @@ S32             gDebugRaycastGLTFNodeHit;
 S32             gDebugRaycastGLTFPrimitiveHit;
 LLVector4a       gDebugRaycastStart;
 LLVector4a       gDebugRaycastEnd;
+
 
 // HUD display lines in lower right
 bool                gDisplayWindInfo = false;
@@ -2991,7 +2992,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey handle nav keys for nav" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 
 
@@ -3005,7 +3006,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 			&& keyboard_focus->handleKey(key,mask,false))
 		{
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-			return TRUE;
+			return true;
 		}
 
 		if (gAgent.isInitialized()
@@ -3014,14 +3015,14 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 			&& gMenuBarView->handleAcceleratorKey(key, mask))
 		{
 			LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-			return TRUE;
+			return true;
 		}
 
 		//BD
 		/*if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
 		{
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-			return TRUE;
+			return true;
 		}*/
 	}
 
@@ -3046,13 +3047,13 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 			mRootView->focusNextRoot();
 		}
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 	// hidden edit menu for cut/copy/paste
 	if (gEditMenu && gEditMenu->handleAcceleratorKey(key, mask))
 	{
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 
 	LLFloater* focused_floaterp = gFloaterView->getFocusedFloater();
@@ -3097,7 +3098,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 
 			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned true" << LL_ENDL;
 			LLViewerEventRecorder::instance().logKeyEvent(key,mask); 
-			return TRUE;
+			return true;
 		} else {
 			LL_DEBUGS() << "LLviewerWindow::handleKey - in 'traverse up' - no loops seen... just called keyboard_focus->handleKey an it returned false" << LL_ENDL;
 		}
@@ -3107,7 +3108,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey toolbar handling?" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 
 	// Try for a new-format gesture
@@ -3115,7 +3116,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey new gesture feature" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 
 	// See if this is a gesture trigger.  If so, eat the key and
@@ -3124,7 +3125,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		LL_DEBUGS() << "LLviewerWindow::handleKey check gesture trigger" << LL_ENDL;
 		LLViewerEventRecorder::instance().logKeyEvent(key,mask);
-		return TRUE;
+		return true;
 	}
 
 	// If "Pressing letter keys starts local chat" option is selected, we are not in mouselook, 
@@ -3147,7 +3148,7 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 		{
 			// passing NULL here, character will be added later when it is handled by character handler.
 			nearby_chat->startChat(NULL);
-			return TRUE;
+			return true;
 		}
 	}
 
@@ -3158,13 +3159,13 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 		&& gMenuBarView->handleAcceleratorKey(key, mask))
 	{
 		LLViewerEventRecorder::instance().logKeyEvent(key, mask);
-		return TRUE;
+		return true;
 	}
 
 	//BD
 	/*if (gLoginMenuBarView && gLoginMenuBarView->handleAcceleratorKey(key, mask))
 	{
-		return TRUE;
+		return true;
 	}*/
 
 	// don't pass keys on to world when something in ui has focus
@@ -3194,7 +3195,7 @@ bool LLViewerWindow::handleUnicodeChar(llwchar uni_char, MASK mask)
 	// let menus handle navigation (jump) keys
 	if (gMenuBarView && gMenuBarView->handleUnicodeChar(uni_char, TRUE))
 	{
-		return TRUE;
+		return true;
 	}
 
 	// Traverses up the hierarchy
@@ -3203,10 +3204,10 @@ bool LLViewerWindow::handleUnicodeChar(llwchar uni_char, MASK mask)
 	{
 		if (keyboard_focus->handleUnicodeChar(uni_char, false))
 		{
-			return TRUE;
+			return true;
 		}
 
-        return TRUE;
+        return true;
 	}
 
 	return false;
@@ -3437,14 +3438,17 @@ void LLViewerWindow::updateUI()
 	if (gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_RAYCAST))
 	{
 		gDebugRaycastFaceHit = -1;
-		gDebugRaycastObject = cursorIntersect(-1, -1, 512.f, NULL, -1, false, false, TRUE, false,
-											  &gDebugRaycastFaceHit,
-											  &gDebugRaycastIntersection,
-											  &gDebugRaycastTexCoord,
-											  &gDebugRaycastNormal,
-											  &gDebugRaycastTangent,
-											  &gDebugRaycastStart,
-											  &gDebugRaycastEnd);
+        gDebugRaycastObject = cursorIntersect(-1, -1, 512.f, NULL, -1, false, false, true, false,
+                                                &gDebugRaycastFaceHit,
+                                                &gDebugRaycastGLTFNodeHit,
+                                                &gDebugRaycastGLTFPrimitiveHit,
+                                                &gDebugRaycastIntersection,
+                                                &gDebugRaycastTexCoord,
+                                                &gDebugRaycastNormal,
+                                                &gDebugRaycastTangent,
+                                                &gDebugRaycastStart,
+                                                &gDebugRaycastEnd);
+
 
 		gDebugRaycastParticle = gPipeline.lineSegmentIntersectParticle(gDebugRaycastStart, gDebugRaycastEnd, &gDebugRaycastParticleIntersection, NULL);
 	}
@@ -3704,7 +3708,7 @@ void LLViewerWindow::updateUI()
 						last_handle_msg = LLView::sMouseHandlerMessage;
 						LL_INFOS() << "Hover" << LLView::sMouseHandlerMessage << LL_ENDL;
 					}
-					handled = TRUE;
+					handled = true;
 				}
 				else if (LLView::sDebugMouseHandling)
 				{
@@ -3924,7 +3928,7 @@ void LLViewerWindow::updateMouseDelta()
 	}
 	else
 	{
-		mMouseInWindow = TRUE;
+		mMouseInWindow = true;
 	}
 
 	LLVector2 mouse_vel; 
@@ -4535,7 +4539,7 @@ LLViewerObject* LLViewerWindow::cursorIntersect(S32 mouse_x, S32 mouse_y, F32 de
         if (!found) // if not found in HUD, look in world:
         {
             found = gPipeline.lineSegmentIntersectInWorld(mw_start, mw_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe,
-                                                          face_hit, gltf_node_hit, gltf_primitive_hit, intersection, uv, normal, tangent);
+                                                        face_hit, gltf_node_hit, gltf_primitive_hit, intersection, uv, normal, tangent);
             //BD - Check whether we have flycam enabled and ignore the fact we are showing transparent
 			//     otherwise we end up with locking our depth of field focus.
 			if (found && (!pick_transparent || gJoystick->getOverrideCamera()))
@@ -4991,329 +4995,6 @@ bool LLViewerWindow::thumbnailSnapshot(LLImageRaw *raw, S32 preview_width, S32 p
 // Saves the image from the screen to a raw image
 // Since the required size might be bigger than the available screen, this method rerenders the scene in parts (called subimages) and copy
 // the results over to the final raw image.
-bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_height,
-    bool keep_window_aspect, bool is_texture, bool show_ui, bool show_hud, bool do_rebuild, bool no_post, LLSnapshotModel::ESnapshotLayerType type, S32 max_size)
-{
-    if (!raw)
-    {
-        return false;
-    }
-
-    //check if there is enough memory for the snapshot image
-    if(image_width * image_height > (1 << 22)) //if snapshot image is larger than 2K by 2K
-    {
-        if(!LLMemory::tryToAlloc(NULL, image_width * image_height * 3))
-        {
-            LL_WARNS() << "No enough memory to take the snapshot with size (w : h): " << image_width << " : " << image_height << LL_ENDL ;
-            return false ; //there is no enough memory for taking this snapshot.
-        }
-    }
-
-    // PRE SNAPSHOT
-    gSnapshotNoPost = no_post;
-    gDisplaySwapBuffers = false;
-
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // stencil buffer is deprecated | GL_STENCIL_BUFFER_BIT);
-    setCursor(UI_CURSOR_WAIT);
-
-    // Hide all the UI widgets first and draw a frame
-    bool prev_draw_ui = gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-
-    if ( prev_draw_ui != show_ui)
-    {
-        LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-    }
-
-    bool hide_hud = !show_hud && LLPipeline::sShowHUDAttachments;
-    if (hide_hud)
-    {
-        LLPipeline::sShowHUDAttachments = false;
-    }
-
-    // if not showing ui, use full window to render world view
-    updateWorldViewRect(!show_ui);
-
-    // Copy screen to a buffer
-    // crop sides or top and bottom, if taking a snapshot of different aspect ratio
-    // from window
-    LLRect window_rect = show_ui ? getWindowRectRaw() : getWorldViewRectRaw();
-
-    S32 snapshot_width  = window_rect.getWidth();
-    S32 snapshot_height = window_rect.getHeight();
-    // SNAPSHOT
-    S32 window_width  = snapshot_width;
-    S32 window_height = snapshot_height;
-
-    // Note: Scaling of the UI is currently *not* supported so we limit the output size if UI is requested
-    if (show_ui)
-    {
-        // If the user wants the UI, limit the output size to the available screen size
-        image_width  = llmin(image_width, window_width);
-        image_height = llmin(image_height, window_height);
-    }
-
-    S32 original_width = 0;
-    S32 original_height = 0;
-    bool reset_deferred = false;
-
-    LLRenderTarget scratch_space;
-
-    F32 scale_factor = 1.0f ;
-    if (!keep_window_aspect || (image_width > window_width) || (image_height > window_height))
-    {
-        if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) &&
-            (image_width > window_width || image_height > window_height) && LLPipeline::sRenderDeferred && !show_ui)
-        {
-            U32 color_fmt = type == LLSnapshotModel::SNAPSHOT_TYPE_DEPTH ? GL_DEPTH_COMPONENT : GL_RGBA;
-            if (scratch_space.allocate(image_width, image_height, color_fmt, true))
-            {
-                original_width = gPipeline.mRT->deferredScreen.getWidth();
-                original_height = gPipeline.mRT->deferredScreen.getHeight();
-
-                if (gPipeline.allocateScreenBuffer(image_width, image_height))
-                {
-                    window_width = image_width;
-                    window_height = image_height;
-                    snapshot_width = image_width;
-                    snapshot_height = image_height;
-                    reset_deferred = true;
-                    mWorldViewRectRaw.set(0, image_height, image_width, 0);
-                    LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
-                    LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
-                    scratch_space.bindTarget();
-                }
-                else
-                {
-                    scratch_space.release();
-                    gPipeline.allocateScreenBuffer(original_width, original_height);
-                }
-            }
-        }
-
-        if (!reset_deferred)
-        {
-            // if image cropping or need to enlarge the scene, compute a scale_factor
-            F32 ratio = llmin( (F32)window_width / image_width , (F32)window_height / image_height) ;
-            snapshot_width  = (S32)(ratio * image_width) ;
-            snapshot_height = (S32)(ratio * image_height) ;
-            scale_factor = llmax(1.0f, 1.0f / ratio) ;
-        }
-    }
-
-    if (show_ui && scale_factor > 1.f)
-    {
-        // Note: we should never get there...
-        LL_WARNS() << "over scaling UI not supported." << LL_ENDL;
-    }
-
-    S32 buffer_x_offset = llfloor(((window_width  - snapshot_width)  * scale_factor) / 2.f);
-    S32 buffer_y_offset = llfloor(((window_height - snapshot_height) * scale_factor) / 2.f);
-
-    S32 image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
-    S32 image_buffer_y = llfloor(snapshot_height * scale_factor) ;
-
-    if ((image_buffer_x > max_size) || (image_buffer_y > max_size)) // boundary check to avoid memory overflow
-    {
-        scale_factor *= llmin((F32)max_size / image_buffer_x, (F32)max_size / image_buffer_y) ;
-        image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
-        image_buffer_y = llfloor(snapshot_height * scale_factor) ;
-    }
-
-    LLImageDataLock lock(raw);
-
-    if ((image_buffer_x > 0) && (image_buffer_y > 0))
-    {
-        raw->resize(image_buffer_x, image_buffer_y, 3);
-    }
-    else
-    {
-        return false;
-    }
-
-    if (raw->isBufferInvalid())
-    {
-        return false;
-    }
-
-    bool high_res = scale_factor >= 2.f; // Font scaling is slow, only do so if rez is much higher
-    if (high_res && show_ui)
-    {
-        // Note: we should never get there...
-        LL_WARNS() << "High res UI snapshot not supported. " << LL_ENDL;
-        /*send_agent_pause();
-        //rescale fonts
-        initFonts(scale_factor);
-        LLHUDObject::reshapeAll();*/
-    }
-
-    S32 output_buffer_offset_y = 0;
-
-    F32 depth_conversion_factor_1 = (LLViewerCamera::getInstance()->getFar() + LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
-    F32 depth_conversion_factor_2 = (LLViewerCamera::getInstance()->getFar() - LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
-
-    // Subimages are in fact partial rendering of the final view. This happens when the final view is bigger than the screen.
-    // In most common cases, scale_factor is 1 and there's no more than 1 iteration on x and y
-    for (int subimage_y = 0; subimage_y < scale_factor; ++subimage_y)
-    {
-        S32 subimage_y_offset = llclamp(buffer_y_offset - (subimage_y * window_height), 0, window_height);;
-        // handle fractional columns
-        U32 read_height = llmax(0, (window_height - subimage_y_offset) -
-            llmax(0, (window_height * (subimage_y + 1)) - (buffer_y_offset + raw->getHeight())));
-
-        S32 output_buffer_offset_x = 0;
-        for (int subimage_x = 0; subimage_x < scale_factor; ++subimage_x)
-        {
-            gDisplaySwapBuffers = false;
-            gDepthDirty = true;
-
-            S32 subimage_x_offset = llclamp(buffer_x_offset - (subimage_x * window_width), 0, window_width);
-            // handle fractional rows
-            U32 read_width = llmax(0, (window_width - subimage_x_offset) -
-                                    llmax(0, (window_width * (subimage_x + 1)) - (buffer_x_offset + raw->getWidth())));
-
-            // Skip rendering and sampling altogether if either width or height is degenerated to 0 (common in cropping cases)
-            if (read_width && read_height)
-            {
-                const U32 subfield = subimage_x+(subimage_y*llceil(scale_factor));
-                display(do_rebuild, scale_factor, subfield, true);
-
-                if (!LLPipeline::sRenderDeferred)
-                {
-                    // Required for showing the GUI in snapshots and performing bloom composite overlay
-                    // Call even if show_ui is false
-                    render_ui(scale_factor, subfield);
-                    swap();
-                }
-
-                for (U32 out_y = 0; out_y < read_height ; out_y++)
-                {
-                    S32 output_buffer_offset = (
-                                                (out_y * (raw->getWidth())) // ...plus iterated y...
-                                                + (window_width * subimage_x) // ...plus subimage start in x...
-                                                + (raw->getWidth() * window_height * subimage_y) // ...plus subimage start in y...
-                                                - output_buffer_offset_x // ...minus buffer padding x...
-                                                - (output_buffer_offset_y * (raw->getWidth()))  // ...minus buffer padding y...
-                                                ) * raw->getComponents();
-
-                    // Ping the watchdog thread every 100 lines to keep us alive (arbitrary number, feel free to change)
-                    if (out_y % 100 == 0)
-                    {
-                        LLAppViewer::instance()->pingMainloopTimeout("LLViewerWindow::rawSnapshot");
-                    }
-                    // disable use of glReadPixels when doing nVidia nSight graphics debugging
-                    if (!LLRender::sNsightDebugSupport)
-                    {
-                        if (type == LLSnapshotModel::SNAPSHOT_TYPE_COLOR)
-                        {
-                            glReadPixels(
-                                     subimage_x_offset, out_y + subimage_y_offset,
-                                     read_width, 1,
-                                     GL_RGB, GL_UNSIGNED_BYTE,
-                                     raw->getData() + output_buffer_offset
-                                     );
-                        }
-                        else // LLSnapshotModel::SNAPSHOT_TYPE_DEPTH
-                        {
-                            LLPointer<LLImageRaw> depth_line_buffer = new LLImageRaw(read_width, 1, sizeof(GL_FLOAT)); // need to store floating point values
-                            glReadPixels(
-                                         subimage_x_offset, out_y + subimage_y_offset,
-                                         read_width, 1,
-                                         GL_DEPTH_COMPONENT, GL_FLOAT,
-                                         depth_line_buffer->getData()// current output pixel is beginning of buffer...
-                                         );
-
-                            for (S32 i = 0; i < (S32)read_width; i++)
-                            {
-                                F32 depth_float = *(F32*)(depth_line_buffer->getData() + (i * sizeof(F32)));
-
-                                F32 linear_depth_float = 1.f / (depth_conversion_factor_1 - (depth_float * depth_conversion_factor_2));
-                                U8 depth_byte = F32_to_U8(linear_depth_float, LLViewerCamera::getInstance()->getNear(), LLViewerCamera::getInstance()->getFar());
-                                // write converted scanline out to result image
-                                for (S32 j = 0; j < raw->getComponents(); j++)
-                                {
-                                    *(raw->getData() + output_buffer_offset + (i * raw->getComponents()) + j) = depth_byte;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            output_buffer_offset_x += subimage_x_offset;
-            stop_glerror();
-        }
-        output_buffer_offset_y += subimage_y_offset;
-    }
-
-    gDisplaySwapBuffers = false;
-    gSnapshotNoPost = false;
-    gDepthDirty = true;
-
-    // POST SNAPSHOT
-    if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
-    {
-        LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-    }
-
-    if (hide_hud)
-    {
-        LLPipeline::sShowHUDAttachments = true;
-    }
-
-    /*if (high_res)
-    {
-        initFonts(1.f);
-        LLHUDObject::reshapeAll();
-    }*/
-
-    // Pre-pad image to number of pixels such that the line length is a multiple of 4 bytes (for BMP encoding)
-    // Note: this formula depends on the number of components being 3.  Not obvious, but it's correct.
-    image_width += (image_width * 3) % 4;
-
-    bool ret = true ;
-    // Resize image
-    if(llabs(image_width - image_buffer_x) > 4 || llabs(image_height - image_buffer_y) > 4)
-    {
-        ret = raw->scale( image_width, image_height );
-    }
-    else if(image_width != image_buffer_x || image_height != image_buffer_y)
-    {
-        ret = raw->scale( image_width, image_height, false );
-    }
-
-    setCursor(UI_CURSOR_ARROW);
-
-    if (do_rebuild)
-    {
-        // If we had to do a rebuild, that means that the lists of drawables to be rendered
-        // was empty before we started.
-        // Need to reset these, otherwise we call state sort on it again when render gets called the next time
-        // and we stand a good chance of crashing on rebuild because the render drawable arrays have multiple copies of
-        // objects on them.
-        gPipeline.resetDrawOrders();
-    }
-
-    if (reset_deferred)
-    {
-        mWorldViewRectRaw = window_rect;
-        LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
-        LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
-        scratch_space.flush();
-        scratch_space.release();
-        gPipeline.allocateScreenBuffer(original_width, original_height);
-
-    }
-
-    if (high_res)
-    {
-        send_agent_resume();
-    }
-
-    return ret;
-}
-
-// Saves the image from the screen to a raw image
-// Since the required size might be bigger than the available screen, this method rerenders the scene in parts (called subimages) and copy
-// the results over to the final raw image.
 bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_height, 
     bool keep_window_aspect, bool is_texture, bool show_ui, bool show_hud, bool do_rebuild, bool no_post, LLSnapshotModel::ESnapshotLayerType type, S32 max_size)
 {
@@ -5542,7 +5223,7 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		for (int subimage_x = 0; subimage_x < scale_factor; ++subimage_x)
 		{
 			gDisplaySwapBuffers = false;
-			gDepthDirty = TRUE;
+			gDepthDirty = true;
 
 			S32 subimage_x_offset = llclamp(buffer_x_offset - (subimage_x * window_width), 0, window_width);
 			// handle fractional rows
@@ -5624,7 +5305,7 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 
 	gDisplaySwapBuffers = false;
 	gSnapshotNoPost = false;
-	gDepthDirty = TRUE;
+	gDepthDirty = true;
 
 	// POST SNAPSHOT
 	if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
@@ -5645,7 +5326,7 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 
 	if (hide_hud)
 	{
-		LLPipeline::sShowHUDAttachments = TRUE;
+		LLPipeline::sShowHUDAttachments = true;
 	}
 
 	/*if (high_res)
@@ -6092,20 +5773,12 @@ void LLViewerWindow::setup3DViewport(S32 x_offset, S32 y_offset)
 	}
 }*/
 
-void LLViewerWindow::setShowProgress(const bool show, bool logout)
+void LLViewerWindow::setShowProgress(const bool show)
 {
-	if (mProgressView)
-	{
-		if (logout)
-		{
-			mProgressView->setProgressVisible(show, logout);
-		}
-		else
-		{
-			// ## Zi: Fade teleport screens
-			mProgressView->fade(show);
-		}
-	}
+    if (mProgressView)
+    {
+        mProgressView->setVisible(show);
+    }
 }
 
 void LLViewerWindow::setStartupComplete()

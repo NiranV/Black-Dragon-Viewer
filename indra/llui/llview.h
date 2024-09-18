@@ -579,6 +579,10 @@ private:
     template <typename METHOD, typename XDATA>
     LLView* childrenHandleMouseEvent(const METHOD& method, S32 x, S32 y, XDATA extra, bool allow_mouse_block = true);
 
+    //BD - UI Improvements
+    template <typename METHOD>
+    LLView* childrenHandleScrollEvent(const METHOD& method, S32 x, S32 y, S32 clicks, MASK mask, bool allow_mouse_block = true);
+
     template <typename METHOD, typename CHARTYPE>
     LLView* childrenHandleCharEvent(const std::string& desc, const METHOD& method,
                                     CHARTYPE c, MASK mask);

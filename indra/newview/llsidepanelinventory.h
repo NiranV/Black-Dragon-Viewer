@@ -127,18 +127,12 @@ protected:
 
     void onInboxChanged(const LLUUID& inbox_id);
 
-<<<<<<< HEAD
 	//BD
 	void updateItemcountText();
 
 	//
 	// UI Elements
 	//
-=======
-    //
-    // UI Elements
-    //
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 private:
     LLPanel*                    mInventoryPanel; // Main inventory view
     LLHandle<LLInventoryPanel>  mInventoryPanelInbox;
@@ -152,27 +146,22 @@ protected:
 private:
     bool                        mInboxEnabled;
 
-<<<<<<< HEAD
-	LLInventoryCategoriesObserver* 	mCategoriesObserver;
-	LLInboxAddedObserver*			mInboxAddedObserver;
-
-	//BD
-	LLUICtrl*                   mCounterCtrl;
-
-	S32							mBalance;
-	S32							mItemCount;
-	S32							mSquareMetersCredit;
-	S32							mSquareMetersCommitted;
-
-	std::string 				mItemCountString;
-
-	LLTextBox					*mBoxBalance;
-
-	LLFrameTimer*				mBalanceTimer;
-=======
     LLInventoryCategoriesObserver*  mCategoriesObserver;
     LLInboxAddedObserver*           mInboxAddedObserver;
->>>>>>> Linden_Release/release/2024.06-atlasaurus
+
+    //BD
+    LLUICtrl* mCounterCtrl;
+
+    S32							mBalance;
+    S32							mItemCount;
+    S32							mSquareMetersCredit;
+    S32							mSquareMetersCommitted;
+
+    std::string 				mItemCountString;
+
+    LLTextBox* mBoxBalance;
+
+    LLFrameTimer* mBalanceTimer;
 };
 
 #endif //LL_LLSIDEPANELINVENTORY_H

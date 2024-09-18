@@ -6098,7 +6098,7 @@ void LLSelectMgr::updateSilhouettes()
 
     mHighlightedObjects->cleanupNodes();
 
-    if((cameraPos - mLastCameraPos).magVecSquared() > SILHOUETTE_UPDATE_THRESHOLD_SQUARED * currentCameraZoom * currentCameraZoom)
+    if ((cameraPos - mLastCameraPos).magVecSquared() > SILHOUETTE_UPDATE_THRESHOLD_SQUARED * currentCameraZoom * currentCameraZoom)
     {
         struct f : public LLSelectedObjectFunctor
         {
@@ -6133,12 +6133,12 @@ void LLSelectMgr::updateSilhouettes()
 
         // generate list of roots from current object selection
         for (std::set<LLPointer<LLViewerObject> >::iterator iter = mRectSelectedObjects.begin();
-             iter != mRectSelectedObjects.end(); iter++)
+            iter != mRectSelectedObjects.end(); iter++)
         {
-            LLViewerObject *objectp = *iter;
+            LLViewerObject* objectp = *iter;
             if (select_linked_set)
             {
-                LLViewerObject *rootp = (LLViewerObject*)objectp->getRoot();
+                LLViewerObject* rootp = (LLViewerObject*)objectp->getRoot();
                 roots.insert(rootp);
             }
             else
@@ -6152,7 +6152,7 @@ void LLSelectMgr::updateSilhouettes()
         std::vector<LLViewerObject*> remove_these_roots;
 
         for (LLObjectSelection::iterator iter = mHighlightedObjects->begin();
-             iter != mHighlightedObjects->end(); iter++)
+            iter != mHighlightedObjects->end(); iter++)
         {
             LLSelectNode* node = *iter;
             LLViewerObject* objectp = node->getObject();
@@ -6182,7 +6182,7 @@ void LLSelectMgr::updateSilhouettes()
 
         // remove all highlight nodes no longer in rectangle selection
         for (std::vector<LLSelectNode*>::iterator iter = remove_these_nodes.begin();
-             iter != remove_these_nodes.end(); ++iter)
+            iter != remove_these_nodes.end(); ++iter)
         {
             LLSelectNode* nodep = *iter;
             mHighlightedObjects->removeNode(nodep);
@@ -6190,7 +6190,7 @@ void LLSelectMgr::updateSilhouettes()
 
         // remove all root objects already being highlighted
         for (std::vector<LLViewerObject*>::iterator iter = remove_these_roots.begin();
-             iter != remove_these_roots.end(); ++iter)
+            iter != remove_these_roots.end(); ++iter)
         {
             LLViewerObject* objectp = *iter;
             roots.erase(objectp);
@@ -6198,7 +6198,7 @@ void LLSelectMgr::updateSilhouettes()
 
         // add all new objects in rectangle selection
         for (std::set<LLViewerObject*>::iterator iter = roots.begin();
-             iter != roots.end(); iter++)
+            iter != roots.end(); iter++)
         {
             LLViewerObject* objectp = *iter;
             if (!canSelectObject(objectp))
@@ -6217,7 +6217,7 @@ void LLSelectMgr::updateSilhouettes()
             {
                 LLViewerObject::const_child_list_t& child_list = objectp->getChildren();
                 for (LLViewerObject::child_list_t::const_iterator iter = child_list.begin();
-                     iter != child_list.end(); iter++)
+                    iter != child_list.end(); iter++)
                 {
                     LLViewerObject* child_objectp = *iter;
 
@@ -6243,7 +6243,7 @@ void LLSelectMgr::updateSilhouettes()
         for (S32 pass = 0; pass < 2; pass++)
         {
             for (LLObjectSelection::iterator iter = mHighlightedObjects->begin();
-                 iter != mHighlightedObjects->end(); iter++)
+                iter != mHighlightedObjects->end(); iter++)
             {
                 LLSelectNode* node = *iter;
                 LLViewerObject* objectp = node->getObject();
@@ -6299,7 +6299,7 @@ void LLSelectMgr::updateSilhouettes()
     }
 
     for (std::vector<LLViewerObject*>::iterator iter = changed_objects.begin();
-         iter != changed_objects.end(); ++iter)
+        iter != changed_objects.end(); ++iter)
     {
         // clear flags after traversing node list (as child objects need to refer to parent flags, etc)
         LLViewerObject* objectp = *iter;
@@ -6388,7 +6388,7 @@ void LLSelectMgr::renderSilhouettes(bool for_hud)
         gGL.loadUIIdentity();
         gGL.loadIdentity();
         gGL.loadMatrix(OGL_TO_CFR_ROTATION);        // Load Cory's favorite reference frame
-        gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
+        gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth * 0.5f), 0.f, 0.f);
         gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
     }
 
@@ -6431,301 +6431,177 @@ void LLSelectMgr::renderSilhouettes(bool for_hud)
         bool bRenderHidenSelection = node->isTransient() ? false : LLSelectMgr::sRenderHiddenSelections;
 
 
-void LLSelectMgr::updateSelectionSilhouette(LLObjectSelectionHandle object_handle, S32& num_sils_genned, std::vector<LLViewerObject*>& changed_objects)
-{
-	if (object_handle->getNumNodes())
-	{
-		//gGLSPipelineSelection.set();
+        LLVOVolume* vobj = objectp->mDrawable->getVOVolume();
+        if (vobj)
+        {
+            LLVertexBuffer::unbind();
+            gGL.pushMatrix();
+            gGL.multMatrix((F32*)vobj->getRelativeXform().mMatrix);
 
-		//mSilhouetteImagep->bindTexture();
-		//glAlphaFunc(GL_GREATER, sHighlightAlphaTest);
+            if (objectp->mDrawable->isState(LLDrawable::RIGGED))
+            {
+                vobj->updateRiggedVolume(true);
+            }
+        }
 
-		for (S32 pass = 0; pass < 2; pass++)
-		{
-			for (LLObjectSelection::iterator iter = object_handle->begin();
-				iter != object_handle->end(); iter++)
-			{
-				LLSelectNode* node = *iter;
-				LLViewerObject* objectp = node->getObject();
-				if (!objectp)
-					continue;
-				// do roots first, then children so that root flags are cleared ASAP
-				bool roots_only = (pass == 0);
-				bool is_root = (objectp->isRootEdit());
-				if (roots_only != is_root || objectp->mDrawable.isNull())
-				{
-					continue;
-				}
+        //BD - Selection Outlines
+        if (sRenderHighlightType == 0)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        else
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-				if (!node->mSilhouetteExists 
-					|| objectp->isChanged(LLXform::SILHOUETTE)
-					|| (objectp->getParent() && objectp->getParent()->isChanged(LLXform::SILHOUETTE)))
-				{
-					if (num_sils_genned++ < MAX_SILS_PER_FRAME)// && objectp->mDrawable->isVisible())
-					{
-						generateSilhouette(node, LLViewerCamera::getInstance()->getOrigin());
-						changed_objects.push_back(objectp);
-					}
-					else if (objectp->isAttachment())
-					{
-						//RN: hack for orthogonal projection of HUD attachments
-						LLViewerJointAttachment* attachment_pt = (LLViewerJointAttachment*)objectp->getRootEdit()->mDrawable->getParent();
-						if (attachment_pt && attachment_pt->getIsHUDAttachment())
-						{
-							LLVector3 camera_pos = LLVector3(-10000.f, 0.f, 0.f);
-							generateSilhouette(node, camera_pos);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-void LLSelectMgr::renderSilhouettes(bool for_hud)
-{
-	if (!mRenderSilhouettes || !mRenderHighlightSelections)
-	{
-		return;
-	}
-
-	gGL.getTexUnit(0)->bind(mSilhouetteImagep);
-	LLGLSPipelineSelection gls_select;
-	LLGLEnable blend(GL_BLEND);
-	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
-
-	if (isAgentAvatarValid() && for_hud)
-	{
-		LLBBox hud_bbox = gAgentAvatarp->getHUDBBox();
-
-		F32 cur_zoom = gAgentCamera.mHUDCurZoom;
-
-		// set up transform to encompass bounding box of HUD
-		gGL.matrixMode(LLRender::MM_PROJECTION);
-		gGL.pushMatrix();
-		gGL.loadIdentity();
-		F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
-		gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
-
-		gGL.matrixMode(LLRender::MM_MODELVIEW);
-		gGL.pushMatrix();
-		gGL.pushUIMatrix();
-		gGL.loadUIIdentity();
-		gGL.loadIdentity();
-		gGL.loadMatrix(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
-		gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
-		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
-	}
-
-	bool wireframe_selection = (gFloaterTools && gFloaterTools->getVisible()) || LLSelectMgr::sRenderHiddenSelections;
-	F32 fogCfx = (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal() - gAgentCamera.getCameraPositionGlobal()).magVec() / (LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec() * 4), 0.0, 1.0);
-
-	static LLColor4 sParentColor = LLColor4(sSilhouetteParentColor[VRED], sSilhouetteParentColor[VGREEN], sSilhouetteParentColor[VBLUE], LLSelectMgr::sHighlightAlpha);
-	static LLColor4 sChildColor = LLColor4(sSilhouetteChildColor[VRED], sSilhouetteChildColor[VGREEN], sSilhouetteChildColor[VBLUE], LLSelectMgr::sHighlightAlpha);
-
-	auto renderMeshSelection_f = [fogCfx, wireframe_selection](LLSelectNode* node, LLViewerObject* objectp, LLColor4 hlColor)
-	{
-		LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
-
-		if (shader)
-		{
-			gDebugProgram.bind();
-		}
-
-		gGL.matrixMode(LLRender::MM_MODELVIEW);
-		gGL.pushMatrix();
-
-		bool is_hud_object = objectp->isHUDAttachment();
-
-		if (!is_hud_object)
-		{
-			gGL.loadIdentity();
-			gGL.multMatrix(gGLModelView);
-		}
-
-		if (objectp->mDrawable->isActive())
-		{
-			gGL.multMatrix((F32*)objectp->getRenderMatrix().mMatrix);
-		}
-		else if (!is_hud_object)
-		{
-			LLVector3 trans = objectp->getRegion()->getOriginAgent();
-			gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
-		}
-
-		bool bRenderHidenSelection = node->isTransient() ? false : LLSelectMgr::sRenderHiddenSelections;
+        S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
+        for (S32 te = 0; te < num_tes; ++te)
+        {
+            if (node->isTESelected(te))
+            {
+                objectp->mDrawable->getFace(te)->renderOneWireframe(hlColor, fogCfx, wireframe_selection, bRenderHidenSelection, nullptr != shader);
+            }
+        }
 
 
-		LLVOVolume* vobj = objectp->mDrawable->getVOVolume();
-		if (vobj)
-		{
-			LLVertexBuffer::unbind();
-			gGL.pushMatrix();
-			gGL.multMatrix((F32*)vobj->getRelativeXform().mMatrix);
+        gGL.popMatrix();
+        gGL.popMatrix();
 
-			if (objectp->mDrawable->isState(LLDrawable::RIGGED))
-			{
-				vobj->updateRiggedVolume(true, false);
-			}
-		}
+        glLineWidth(1.f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		//BD - Selection Outlines
-		if (sRenderHighlightType == 0)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		else
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if (shader)
+        {
+            shader->bind();
+        }
+    };
 
-		S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
-		for (S32 te = 0; te < num_tes; ++te)
-		{
-			if (node->isTESelected(te))
-			{
-				objectp->mDrawable->getFace(te)->renderOneWireframe(hlColor, fogCfx, wireframe_selection, bRenderHidenSelection, nullptr != shader);
-			}
-		}
+    if (mSelectedObjects->getNumNodes())
+    {
+        LLUUID inspect_item_id = LLUUID::null;
+        LLFloaterInspect* inspect_instance = LLFloaterReg::getTypedInstance<LLFloaterInspect>("inspect");
+        if (inspect_instance && inspect_instance->getVisible())
+        {
+            inspect_item_id = inspect_instance->getSelectedUUID();
+        }
+        else
+        {
+            LLSidepanelTaskInfo* panel_task_info = LLSidepanelTaskInfo::getActivePanel();
+            if (panel_task_info)
+            {
+                inspect_item_id = panel_task_info->getSelectedUUID();
+            }
+        }
 
-		gGL.popMatrix();
-		gGL.popMatrix();
+        LLUUID focus_item_id = LLViewerMediaFocus::getInstance()->getFocusedObjectID();
+        for (S32 pass = 0; pass < 2; pass++)
+        {
+            for (LLObjectSelection::iterator iter = mSelectedObjects->begin();
+                iter != mSelectedObjects->end(); iter++)
+            {
+                LLSelectNode* node = *iter;
 
-		glLineWidth(1.f);
-		glPointSize(2.f);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		if (shader)
-		{
-			shader->bind();
-		}
-	};
-
-	if (mSelectedObjects->getNumNodes())
-	{
-		LLUUID inspect_item_id = LLUUID::null;
-		LLFloaterInspect* inspect_instance = LLFloaterReg::getTypedInstance<LLFloaterInspect>("inspect");
-		if (inspect_instance && inspect_instance->getVisible())
-		{
-			inspect_item_id = inspect_instance->getSelectedUUID();
-		}
-		else
-		{
-			LLSidepanelTaskInfo *panel_task_info = LLSidepanelTaskInfo::getActivePanel();
-			if (panel_task_info)
-			{
-				inspect_item_id = panel_task_info->getSelectedUUID();
-			}
-		}
-
-		LLUUID focus_item_id = LLViewerMediaFocus::getInstance()->getFocusedObjectID();
-		for (S32 pass = 0; pass < 2; pass++)
-		{
-			for (LLObjectSelection::iterator iter = mSelectedObjects->begin();
-				iter != mSelectedObjects->end(); iter++)
-			{
-				LLSelectNode* node = *iter;
-
-				if (getTEMode() && !node->hasSelectedTE())
-					continue;
+                if (getTEMode() && !node->hasSelectedTE())
+                    continue;
 
                 LLViewerObject* objectp = node->getObject();
                 if (!objectp)
                     continue;
 
-				if (objectp->mDrawable
-					&& objectp->mDrawable->getVOVolume()
+                if (objectp->mDrawable
+                    && objectp->mDrawable->getVOVolume()
                     && objectp->mDrawable->getVOVolume()->isMesh())
-				{
-					LLColor4 hlColor = objectp->isRootEdit() ? sParentColor : sChildColor;
-					if (objectp->getID() == inspect_item_id)
-					{
-						hlColor = sHighlightInspectColor;
-					}
-					else if (node->isTransient())
-					{
-						hlColor = sContextSilhouetteColor;
-					}
-					renderMeshSelection_f(node, objectp, hlColor);
-				}
-				else
-				{
-					if (objectp->isHUDAttachment() != for_hud)
-					{
-						continue;
-					}
-					if (objectp->getID() == focus_item_id)
-					{
-						node->renderOneSilhouette(gFocusMgr.getFocusColor());
-					}
-					else if (objectp->getID() == inspect_item_id)
-					{
-						node->renderOneSilhouette(sHighlightInspectColor);
-					}
-					else if (node->isTransient())
-					{
-						bool oldHidden = LLSelectMgr::sRenderHiddenSelections;
-						LLSelectMgr::sRenderHiddenSelections = false;
-						node->renderOneSilhouette(sContextSilhouetteColor);
-						LLSelectMgr::sRenderHiddenSelections = oldHidden;
-					}
-					else if (objectp->isRootEdit())
-					{
-						node->renderOneSilhouette(sSilhouetteParentColor);
-					}
-					else
-					{
-						node->renderOneSilhouette(sSilhouetteChildColor);
-					}
-				}
-			} //for all selected node's
-		} //for pass
-	}
+                {
+                    LLColor4 hlColor = objectp->isRootEdit() ? sParentColor : sChildColor;
+                    if (objectp->getID() == inspect_item_id)
+                    {
+                        hlColor = sHighlightInspectColor;
+                    }
+                    else if (node->isTransient())
+                    {
+                        hlColor = sContextSilhouetteColor;
+                    }
+                    renderMeshSelection_f(node, objectp, hlColor);
+                }
+                else
+                {
+                    if (objectp->isHUDAttachment() != for_hud)
+                    {
+                        continue;
+                    }
+                    if (objectp->getID() == focus_item_id)
+                    {
+                        node->renderOneSilhouette(gFocusMgr.getFocusColor());
+                    }
+                    else if (objectp->getID() == inspect_item_id)
+                    {
+                        node->renderOneSilhouette(sHighlightInspectColor);
+                    }
+                    else if (node->isTransient())
+                    {
+                        bool oldHidden = LLSelectMgr::sRenderHiddenSelections;
+                        LLSelectMgr::sRenderHiddenSelections = false;
+                        node->renderOneSilhouette(sContextSilhouetteColor);
+                        LLSelectMgr::sRenderHiddenSelections = oldHidden;
+                    }
+                    else if (objectp->isRootEdit())
+                    {
+                        node->renderOneSilhouette(sSilhouetteParentColor);
+                    }
+                    else
+                    {
+                        node->renderOneSilhouette(sSilhouetteChildColor);
+                    }
+                }
+            } //for all selected node's
+        } //for pass
+    }
 
-	if (mHighlightedObjects->getNumNodes())
-	{
-		// render silhouettes for highlighted objects
-		bool subtracting_from_selection = (gKeyboard->currentMask(TRUE) == MASK_CONTROL);
-		for (S32 pass = 0; pass < 2; pass++)
-		{
-			for (LLObjectSelection::iterator iter = mHighlightedObjects->begin();
-				iter != mHighlightedObjects->end(); iter++)
-			{
-				LLSelectNode* node = *iter;
-				LLViewerObject* objectp = node->getObject();
-				if (!objectp)
-					continue;
-				if (objectp->isHUDAttachment() != for_hud)
-				{
-					continue;
-				}
+    if (mHighlightedObjects->getNumNodes())
+    {
+        // render silhouettes for highlighted objects
+        bool subtracting_from_selection = (gKeyboard->currentMask(true) == MASK_CONTROL);
+        for (S32 pass = 0; pass < 2; pass++)
+        {
+            for (LLObjectSelection::iterator iter = mHighlightedObjects->begin();
+                iter != mHighlightedObjects->end(); iter++)
+            {
+                LLSelectNode* node = *iter;
+                LLViewerObject* objectp = node->getObject();
+                if (!objectp)
+                    continue;
+                if (objectp->isHUDAttachment() != for_hud)
+                {
+                    continue;
+                }
 
-				LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
-				if (objectp->mDrawable
-					&& objectp->mDrawable->getVOVolume()
-					&& objectp->mDrawable->getVOVolume()->isMesh())
-				{
-					renderMeshSelection_f(node, objectp, subtracting_from_selection ? LLColor4::red : highlight_color);
-				}
-				else if (subtracting_from_selection)
-				{
-					node->renderOneSilhouette(LLColor4::red);
-				}
-				else if (!objectp->isSelected())
-				{
-					node->renderOneSilhouette(highlight_color);
-				}
-			}
-		}
-	}
+                LLColor4 highlight_color = objectp->isRoot() ? sHighlightParentColor : sHighlightChildColor;
+                if (objectp->mDrawable
+                    && objectp->mDrawable->getVOVolume()
+                    && objectp->mDrawable->getVOVolume()->isMesh())
+                {
+                    renderMeshSelection_f(node, objectp, subtracting_from_selection ? LLColor4::red : highlight_color);
+                }
+                else if (subtracting_from_selection)
+                {
+                    node->renderOneSilhouette(LLColor4::red);
+                }
+                else if (!objectp->isSelected())
+                {
+                    node->renderOneSilhouette(highlight_color);
+                }
+            }
+        }
+    }
 
-	if (isAgentAvatarValid() && for_hud)
-	{
-		gGL.matrixMode(LLRender::MM_PROJECTION);
-		gGL.popMatrix();
+    if (isAgentAvatarValid() && for_hud)
+    {
+        gGL.matrixMode(LLRender::MM_PROJECTION);
+        gGL.popMatrix();
 
-		gGL.matrixMode(LLRender::MM_MODELVIEW);
-		gGL.popMatrix();
-		gGL.popUIMatrix();
-		stop_glerror();
-	}
+        gGL.matrixMode(LLRender::MM_MODELVIEW);
+        gGL.popMatrix();
+        gGL.popUIMatrix();
+        stop_glerror();
+    }
 
-	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+    gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 }
 
 void LLSelectMgr::generateSilhouette(LLSelectNode* nodep, const LLVector3& view_point)
@@ -7110,93 +6986,6 @@ bool LLSelectNode::allowOperationOnNode(PermissionBit op, U64 group_proxy_power)
     // check permissions to see if the agent can operate
     return (mPermissions->allowOperationBy(op, proxy_agent_id, group_id));
 }
-
-//-----------------------------------------------------------------------------
-// renderOneSilhouette()
-//-----------------------------------------------------------------------------
-void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
-{
-    LLViewerObject* objectp = getObject();
-    if (!objectp)
-    {
-        return;
-    }
-
-    LLDrawable* drawable = objectp->mDrawable;
-    if(!drawable)
-    {
-        return;
-    }
-
-    LLVOVolume* vobj = drawable->getVOVolume();
-    if (vobj && vobj->isMesh())
-    {
-        //This check (if(...)) with assert here just for ensure that this situation will not happens, and can be removed later. For example on the next release.
-        llassert(!"renderOneWireframe() was removed SL-10194");
-        return;
-    }
-
-    if (!mSilhouetteExists)
-    {
-        return;
-    }
-
-    bool is_hud_object = objectp->isHUDAttachment();
-
-    if (mSilhouetteVertices.size() == 0 || mSilhouetteNormals.size() != mSilhouetteVertices.size())
-    {
-        return;
-    }
-
-
-    LLGLSLShader* shader = LLGLSLShader::sCurBoundShaderPtr;
-
-    if (shader)
-    { //use UI program for selection highlights (texture color modulated by vertex color)
-        gUIProgram.bind();
-    }
-
-    gGL.matrixMode(LLRender::MM_MODELVIEW);
-    gGL.pushMatrix();
-    gGL.pushUIMatrix();
-    gGL.loadUIIdentity();
-
-    if (!is_hud_object)
-    {
-        gGL.loadIdentity();
-        gGL.multMatrix(gGLModelView);
-    }
-
-
-    if (drawable->isActive())
-    {
-        gGL.multMatrix((F32*) objectp->getRenderMatrix().mMatrix);
-    }
-
-    LLVolume *volume = objectp->getVolume();
-    if (volume)
-    {
-        F32 silhouette_thickness;
-        if (isAgentAvatarValid() && is_hud_object)
-        {
-            silhouette_thickness = LLSelectMgr::sHighlightThickness / gAgentCamera.mHUDCurZoom;
-        }
-        else
-        {
-            LLVector3 view_vector = LLViewerCamera::getInstance()->getOrigin() - objectp->getRenderPosition();
-            silhouette_thickness = view_vector.magVec() * LLSelectMgr::sHighlightThickness * (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV());
-        }
-        F32 animationTime = (F32)LLFrameTimer::getElapsedSeconds();
-
-        F32 u_coord = fmod(animationTime * LLSelectMgr::sHighlightUAnim, 1.f);
-        F32 v_coord = 1.f - fmod(animationTime * LLSelectMgr::sHighlightVAnim, 1.f);
-        F32 u_divisor = 1.f / ((F32)(mSilhouetteVertices.size() - 1));
-
-        if (LLSelectMgr::sRenderHiddenSelections) // && gFloaterTools && gFloaterTools->getVisible())
-        {
-            gGL.flush();
-            gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
-
 
 // helper function for pushing relevant vertices from drawable to GL
 void pushWireframe(LLDrawable* drawable)

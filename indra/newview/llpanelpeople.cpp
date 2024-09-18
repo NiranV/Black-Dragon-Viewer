@@ -884,7 +884,7 @@ void LLPanelPeople::updateButtons()
 	mBlockCount->setTextArg("[BLOCKED_COUNT]", llformat("%d", block_count));
 	mBlockCount->setTextArg("[LIMIT]", llformat("%d", gSavedSettings.getS32("MuteListLimit")));
 
-	U32 groups_count = gAgent.mGroups.size();
+	U32 groups_count = static_cast<U32>(gAgent.mGroups.size());
 	S32 max_groups = LLAgentBenefitsMgr::current().getGroupMembershipLimit();
 	mGroupCount->setTextArg("[COUNT]", llformat("%d", groups_count));
 	mGroupCount->setTextArg("[MAX_GROUPS]", llformat("%d", max_groups));
@@ -907,7 +907,7 @@ void LLPanelPeople::updateButtons()
 		//BD
 		bool is_friend = LLAvatarTracker::instance().getBuddyInfo(gAgent.getDevID()) != NULL;
 		//bool is_self = false;
-		U32 friends = ((gAgent.getID() != gAgent.getDevID()) && is_friend) 
+		size_t friends = ((gAgent.getID() != gAgent.getDevID()) && is_friend) 
 			|| gAgent.getID() == gAgent.getDevID() ? all_buddies.size() : all_buddies.size() - 1;
 		is_friend = true;
 

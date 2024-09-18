@@ -223,12 +223,12 @@ bool LLToolPie::handleScrollWheelAny(S32 x, S32 y, S32 clicks_x, S32 clicks_y, M
     // in LLViewerMediaFocus in case of media, so just reuse mHoverPick
     if (mHoverPick.mUVCoords.mV[VX] >= 0.f && mHoverPick.mUVCoords.mV[VY] >= 0.f)
     {
-        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(mHoverPick.mUVCoords, clicks_x, clicks_y);
+        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(mHoverPick.mUVCoords, clicks_x, clicks_y, mask);
     }
     else
     {
         // this won't provide correct coordinates in case of object selection
-        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks_x, clicks_y);
+        res = LLViewerMediaFocus::getInstance()->handleScrollWheel(x, y, clicks_x, clicks_y, mask);
     }
     return res;
 }
@@ -240,7 +240,7 @@ bool LLToolPie::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 
 bool LLToolPie::handleScrollHWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    return handleScrollWheelAny(x, y, clicks, 0);
+    return handleScrollWheelAny(x, y, clicks, 0, mask);
 }
 
 // True if you selected an object.

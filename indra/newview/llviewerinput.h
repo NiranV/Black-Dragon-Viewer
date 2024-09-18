@@ -111,35 +111,35 @@ public:
 	LLViewerInput();
     virtual ~LLViewerInput();
 
-	BOOL			handleKey(KEY key, MASK mask, BOOL repeated);
-	BOOL			handleKeyUp(KEY key, MASK mask);
+	bool			handleKey(KEY key, MASK mask, bool repeated);
+    bool			handleKeyUp(KEY key, MASK mask);
 
 	EKeyboardMode	getMode() const;
 
 	static bool		modeFromString(const std::string& string, S32 *mode);			// False on failure
 	//BD
-	static BOOL		mouseFromString(const std::string& string, EMouseClickType *mode, bool translate);// False on failure
+	static bool		mouseFromString(const std::string& string, EMouseClickType *mode, bool translate);// False on failure
 
 //	//BD - Custom Keyboard Layout
 	std::string		stringFromMouse(EMouseClickType click, bool translate);
 
 	// handleMouse() records state, scanMouse() goes through states, scanMouse(click) processes individual saved states after UI is done with them
-	BOOL            handleMouse(LLWindow *window_impl, LLCoordGL pos, MASK mask, EMouseClickType clicktype, BOOL down);
+    bool            handleMouse(LLWindow *window_impl, LLCoordGL pos, MASK mask, EMouseClickType clicktype, bool down);
 	void            scanMouse();
 
     bool            isMouseBindUsed(const EMouseClickType mouse, const MASK mask, const S32 mode) const;
     bool            isLMouseHandlingDefault(const S32 mode) const { return mLMouseDefaultHandling[mode]; }
 
 	//	//BD - Custom Keyboard Layout
-	BOOL			exportBindingsXML(const std::string& filename);
-	BOOL			unbindAllKeys(bool reset);
-	BOOL			unbindModeKeys(bool reset, S32 mode);
+    bool			exportBindingsXML(const std::string& filename);
+    bool			unbindAllKeys(bool reset);
+    bool			unbindModeKeys(bool reset, S32 mode);
 	S32				loadBindingsSettings(const std::string& filename);
 
-	bool            scanKey(KEY key, BOOL key_down, BOOL key_up, BOOL key_level);
+	bool            scanKey(KEY key, bool key_down, bool key_up, bool key_level);
 
-	BOOL			bindControl(const S32 mode, const KEY key, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
-	BOOL			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
+    bool			bindControl(const S32 mode, const KEY key, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
+    bool			bindMouse(const S32 mode, const EMouseClickType mouse, const MASK mask, const std::string& function_name);
 
     // inherited from LLKeyBindingToStringHandler
     virtual std::string getKeyBindingAsString(const std::string& mode, const std::string& control) const override;
@@ -149,9 +149,9 @@ private:
 		S32 binding_count,
 		KEY key,
 		MASK mask,
-		BOOL key_down,
-		BOOL key_up,
-		BOOL key_level,
+        bool key_down,
+        bool key_up,
+        bool key_level,
 		bool repeat) const;
 
 	enum EMouseState
@@ -183,7 +183,7 @@ private:
 	typedef std::map<U32, U32> key_remap_t;
 	key_remap_t		mRemapKeys[MODE_COUNT];
 	std::set<KEY>	mKeysSkippedByUI;
-	BOOL			mKeyHandledByUI[KEY_COUNT];		// key processed successfully by UI
+    bool			mKeyHandledByUI[KEY_COUNT];		// key processed successfully by UI
 
 	// This is indentical to what llkeyboard does (mKeyRepeated, mKeyLevel, mKeyDown e t c),
 	// just instead of remembering individually as bools,  we record state as enum

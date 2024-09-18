@@ -158,7 +158,8 @@ public:
     bool    serialize(LLDataPacker& dp) const;
     bool    deserialize(LLDataPacker& dp, const LLUUID& asset_id, bool allow_invalid_joints = true);
     bool    isLoaded() { return mJointMotionList != NULL; }
-    bool    dumpToFile(const std::string& name);
+//  //BD - Anim Exporter
+    bool    dumpToFile(const std::string& name, bool from_upload);
 
 
     // setters for modifying a keyframe animation

@@ -43,7 +43,7 @@ public:
 	
 	/*virtual*/ void draw();
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 
 	void refreshGraphicControls();
 	void setVisibleForMouselook(bool visible);
@@ -125,7 +125,7 @@ private:
 	//BD - Legacy stuff.
 	void onMouseLeave(S32 x, S32 y, MASK mask);
 	void onMouseEnter(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL 	handleMouseDown(S32 x, S32 y, MASK mask);
+	/*virtual*/ bool 	handleMouseDown(S32 x, S32 y, MASK mask);
 
 	LLUICtrl*					mShadowResX;
 	LLUICtrl*					mShadowResY;

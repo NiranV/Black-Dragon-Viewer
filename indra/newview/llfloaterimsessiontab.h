@@ -156,6 +156,10 @@ protected:
     bool mIsNearbyChat;
     bool mIsP2PChat;
 
+    bool mMessagePaneExpanded;
+    bool mIsParticipantListExpanded;
+    S32 mMinFloaterHeight;
+
 	bool mDev;
 
 

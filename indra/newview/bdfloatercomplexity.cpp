@@ -53,7 +53,7 @@ BDFloaterComplexity::~BDFloaterComplexity()
 {
 }
 
-BOOL BDFloaterComplexity::postBuild()
+bool BDFloaterComplexity::postBuild()
 {
 	//BD - Complexity
 	mAvatarScroll = this->getChild<LLScrollListCtrl>("arc_avs_scroll", true);
@@ -68,7 +68,7 @@ BOOL BDFloaterComplexity::postBuild()
 	mTotalVerticeCount = getChild<LLTextBox>("vert_count");
 	mTextureCost = getChild<LLTextBox>("memory_count");
 
-	return TRUE;
+	return true;
 }
 
 void BDFloaterComplexity::draw()
@@ -663,7 +663,7 @@ void BDFloaterComplexity::getRenderCostValues(LLVOVolume* volume, U32& flexible_
 	U32 media_faces = 0;
 
 	LLDrawable* drawablep = volume->mDrawable;
-	U32 num_faces = drawablep->getNumFaces();
+	S32 num_faces = drawablep->getNumFaces();
 
 	if (has_volume)
 	{
@@ -952,7 +952,7 @@ U32 BDFloaterComplexity::getRenderCost(LLVOVolume* volume, texture_cost& texture
 		}
 	}
 
-	for (S32 i = 0; i < num_faces; ++i)
+	for (U32 i = 0; i < num_faces; ++i)
 	{
 		const LLFace* face = drawablep->getFace(i);
 		if (!face) continue;

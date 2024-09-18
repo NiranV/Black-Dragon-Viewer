@@ -46,7 +46,6 @@
 static LLDefaultChildRegistry::Register<LLSliderCtrl> r("slider");
 
 LLSliderCtrl::LLSliderCtrl(const LLSliderCtrl::Params& p)
-<<<<<<< HEAD
 :	LLF32UICtrl(p),
 	mLabelBox( NULL ),
 	mEditor( NULL ),
@@ -61,20 +60,6 @@ LLSliderCtrl::LLSliderCtrl(const LLSliderCtrl::Params& p)
 	mEditorCommitSignal(NULL),
 	//BD - UI Improvements
 	mAllowPrecisionOverride(p.precision_override)
-=======
-:   LLF32UICtrl(p),
-    mLabelBox( NULL ),
-    mEditor( NULL ),
-    mTextBox( NULL ),
-    mFont(p.font),
-    mShowText(p.show_text),
-    mCanEditText(p.can_edit_text),
-    mPrecision(p.decimal_digits),
-    mTextEnabledColor(p.text_color()),
-    mTextDisabledColor(p.text_disabled_color()),
-    mLabelWidth(p.label_width),
-    mEditorCommitSignal(NULL)
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 {
     S32 top = getRect().getHeight();
     S32 bottom = 0;
@@ -227,7 +212,6 @@ void LLSliderCtrl::onEditorGainFocus( LLFocusableElement* caller, void *userdata
 }
 
 
-<<<<<<< HEAD
 void LLSliderCtrl::setValue(F32 v, bool from_event, bool overdrive)
 {
 	//BD - UI Improvements
@@ -239,13 +223,6 @@ void LLSliderCtrl::setValue(F32 v, bool from_event, bool overdrive)
 	}
 	mValue = v;
 	updateText();
-=======
-void LLSliderCtrl::setValue(F32 v, bool from_event)
-{
-    mSlider->setValue( v, from_event );
-    mValue = mSlider->getValueF32();
-    updateText();
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 
 bool LLSliderCtrl::setLabelArg( const std::string& key, const LLStringExplicit& text )

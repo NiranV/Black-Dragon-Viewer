@@ -2349,7 +2349,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		{
 			gDeferredAvatarAlphaProgram.addPermutation("FRONT_BLUR", "1");
 		}
-		success = gDeferredPostProgram.createShader(NULL, NULL);
+		success = gDeferredPostProgram.createShader();
 		llassert(success);
 	}
 
@@ -2364,7 +2364,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER));
 		gVolumetricLightProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
-		success = gVolumetricLightProgram.createShader(NULL, NULL);
+		success = gVolumetricLightProgram.createShader();
 		llassert(success);
 	}*/
 
@@ -2376,7 +2376,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredCoFProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gDeferredCoFProgram.mShaderFiles.push_back(make_pair("deferred/cofF.glsl", GL_FRAGMENT_SHADER));
 		gDeferredCoFProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
-		success = gDeferredCoFProgram.createShader(NULL, NULL);
+		success = gDeferredCoFProgram.createShader();
 		llassert(success);
 	}
 
@@ -2388,7 +2388,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredDoFCombineProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gDeferredDoFCombineProgram.mShaderFiles.push_back(make_pair("deferred/dofCombineF.glsl", GL_FRAGMENT_SHADER));
 		gDeferredDoFCombineProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
-		success = gDeferredDoFCombineProgram.createShader(NULL, NULL);
+		success = gDeferredDoFCombineProgram.createShader();
 		llassert(success);
 	}
 
@@ -2400,7 +2400,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredPostNoDoFProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gDeferredPostNoDoFProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoDoFF.glsl", GL_FRAGMENT_SHADER));
 		gDeferredPostNoDoFProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
-		success = gDeferredPostNoDoFProgram.createShader(NULL, NULL);
+		success = gDeferredPostNoDoFProgram.createShader();
 		llassert(success);
 	}
 
@@ -2418,7 +2418,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredWLSkyProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 		gDeferredWLSkyProgram.mShaderGroup = LLGLSLShader::SG_SKY;
 
-		success = gDeferredWLSkyProgram.createShader(NULL, NULL);
+		success = gDeferredWLSkyProgram.createShader();
 		llassert(success);
 	}
 

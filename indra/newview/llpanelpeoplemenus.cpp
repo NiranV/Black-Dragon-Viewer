@@ -499,11 +499,11 @@ bool PeopleContextMenu::checkImpostorMode(const LLSD& userdata)
 	switch (mode)
 	{
 	case 0:
-		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_RENDER_NORMALLY);
+		return (avatar->getOverallAppearance() == LLVOAvatar::AOA_NORMAL);
 	case 1:
-		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_DO_NOT_RENDER);
-	case 2:
-		return (avatar->getVisualMuteSettings() == LLVOAvatar::AV_ALWAYS_RENDER);
+		return (avatar->getOverallAppearance() == LLVOAvatar::AOA_JELLYDOLL);
+    case 2:
+        return (avatar->getOverallAppearance() == LLVOAvatar::AOA_INVISIBLE);
 	default:
 		return false;
 	}

@@ -55,7 +55,7 @@ public:
 	~LLPanelLogin();
 
 	//BD
-	virtual BOOL handleKeyHere(KEY key, MASK mask);
+	virtual bool handleKeyHere(KEY key, MASK mask);
 	virtual void draw();
 
 	static void show(const LLRect &rect,

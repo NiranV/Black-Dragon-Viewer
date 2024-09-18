@@ -452,20 +452,6 @@ void LLFloaterEditExtDayCycle::onClose(bool app_quitting)
     }
 }
 
-void LLFloaterEditExtDayCycle::onFocusReceived()
-{
-    if (isInVisibleChain())
-    {
-        updateEditEnvironment();
-		LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_EDIT, F32Seconds(gSavedSettings.getF32("RenderWindlightInterpolateTime")));
-    }
-}
-
-void LLFloaterEditExtDayCycle::onFocusLost()
-{
-}
-
-
 void LLFloaterEditExtDayCycle::onVisibilityChange(bool new_visibility)
 {
 }
@@ -781,7 +767,7 @@ void LLFloaterEditExtDayCycle::onSaveAsCommit(const LLSD& notification, const LL
 void LLFloaterEditExtDayCycle::onClickCloseBtn(bool app_quitting /*= false*/)
 {
     if (!app_quitting)
-        checkAndConfirmSettingsLoss([this](){ closeFloater(); clearDirtyFlag(); });
+        checkAndConfirmSettingsLoss([this]() { closeFloater(); clearDirtyFlag(); });
     else
         closeFloater();
 }
@@ -790,6 +776,7 @@ void LLFloaterEditExtDayCycle::onButtonImport()
 {
     checkAndConfirmSettingsLoss([this]() { doImportFromDisk(); });
 }
+
 
 void LLFloaterEditExtDayCycle::onButtonLoadFrame()
 {
@@ -2083,9 +2070,6 @@ void LLFloaterEditExtDayCycle::doCloseInventoryFloater(bool quitting)
     {
         floaterp->closeFloater(quitting);
     }
-
-    picker->openFloater();
-    picker->setFocus(true);
 }
 
 void LLFloaterEditExtDayCycle::onPickerCommitSetting(LLUUID item_id, S32 track)

@@ -2767,7 +2767,7 @@ bool LLInventoryModel::loadSkeleton(
 			// found to generate a set of categories we should add. We
 			// will go through each category loaded and if the version
 			// does not match, invalidate the version.
-			S32 count = categories.size();
+			S32 count = static_cast<S32>(categories.size());
             S32 i = 0;
 			cat_set_t::iterator not_cached = temp_cats.end();
 			//BD - Inventory Progress

@@ -64,7 +64,8 @@ public:
     bool handleKey(KEY key, MASK mask, bool called_from_parent) override;
     bool handleMouseDown(S32 x, S32 y, MASK mask) override;
     bool handleMouseUp(S32 x, S32 y, MASK mask) override;
-    bool handleScrollWheel(S32 x, S32 y, S32 clicks) override;
+    //BD - UI Improvements
+    bool handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) override;
     void onCommit() override;
     void reshape(S32 width, S32 height, bool called_from_parent) override;
 

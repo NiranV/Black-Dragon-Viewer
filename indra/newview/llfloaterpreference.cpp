@@ -137,7 +137,6 @@
 #include <iostream>
 #include <thread>
 
-#include <json/json.h>
 #include <utility>
 
 #include "llperfstats.h"
@@ -157,7 +156,7 @@ LLPanelVoiceDeviceSettings::LLPanelVoiceDeviceSettings()
 	mCtrlOutputDevices = NULL;
 	mInputDevice = gSavedSettings.getString("VoiceInputAudioDevice");
 	mOutputDevice = gSavedSettings.getString("VoiceOutputAudioDevice");
-	mDevicesUpdated = FALSE;
+	mDevicesUpdated = false;
 	mUseTuningMode = true;
 
 	// grab "live" mic volume level
@@ -169,7 +168,7 @@ LLPanelVoiceDeviceSettings::~LLPanelVoiceDeviceSettings()
 {
 }
 
-BOOL LLPanelVoiceDeviceSettings::postBuild()
+bool LLPanelVoiceDeviceSettings::postBuild()
 {
 	LLSliderCtrl* volume_slider = getChild<LLSliderCtrl>("mic_volume_slider");
 	// set mic volume tuning slider based on last mic volume setting
@@ -187,7 +186,7 @@ BOOL LLPanelVoiceDeviceSettings::postBuild()
 	mLocalizedDeviceNames["No Device"]					= getString("name_no_device");
 	mLocalizedDeviceNames["Default System Device"]		= getString("name_default_system_device");
 	
-	return TRUE;
+	return true;
 }
 
 // virtual
@@ -224,7 +223,7 @@ void LLPanelVoiceDeviceSettings::draw()
 			LLView* bar_view = getChild<LLView>(view_name);
 			if (bar_view)
 			{
-				gl_rect_2d(bar_view->getRect(), LLColor4::grey, TRUE);
+				gl_rect_2d(bar_view->getRect(), LLColor4::grey, true);
 
 				LLColor4 color;
 				if (power_bar_idx < discrete_power)
@@ -238,7 +237,7 @@ void LLPanelVoiceDeviceSettings::draw()
 
 				LLRect color_rect = bar_view->getRect();
 				color_rect.stretch(-1);
-				gl_rect_2d(color_rect, color, TRUE);
+				gl_rect_2d(color_rect, color, true);
 			}
 		}
 	}
@@ -347,7 +346,7 @@ void LLPanelVoiceDeviceSettings::refresh()
 			}
 
 			// Fix invalid input audio device preference.
-			if (!mCtrlInputDevices->setSelectedByValue(mInputDevice, TRUE))
+			if (!mCtrlInputDevices->setSelectedByValue(mInputDevice, true))
 			{
 				mCtrlInputDevices->setValue(DEFAULT_DEVICE);
 				gSavedSettings.setString("VoiceInputAudioDevice", DEFAULT_DEVICE);
@@ -368,7 +367,7 @@ void LLPanelVoiceDeviceSettings::refresh()
 			}
 
 			// Fix invalid output audio device preference.
-			if (!mCtrlOutputDevices->setSelectedByValue(mOutputDevice, TRUE))
+			if (!mCtrlOutputDevices->setSelectedByValue(mOutputDevice, true))
 			{
 				mCtrlOutputDevices->setValue(DEFAULT_DEVICE);
 				gSavedSettings.setString("VoiceOutputAudioDevice", DEFAULT_DEVICE);
@@ -383,7 +382,7 @@ void LLPanelVoiceDeviceSettings::initialize()
 	mInputDevice = gSavedSettings.getString("VoiceInputAudioDevice");
 	mOutputDevice = gSavedSettings.getString("VoiceOutputAudioDevice");
 	mMicVolume = gSavedSettings.getF32("AudioLevelMic");
-	mDevicesUpdated = FALSE;
+	mDevicesUpdated = false;
 
 	// ask for new device enumeration
 	LLVoiceClient::getInstance()->refreshDeviceLists();
@@ -463,12 +462,12 @@ public:
 	LLVoiceSetKeyDialog(const LLSD& key);
 	~LLVoiceSetKeyDialog();
 	
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	
 	void setParent(LLFloaterPreference* parent) { mParent = parent; }
 	
-	BOOL handleKeyHere(KEY key, MASK mask);
-	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
+    bool handleKeyHere(KEY key, MASK mask);
+    bool handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down);
 	static void onCancel(void* user_data);
 		
 private:
@@ -500,27 +499,27 @@ LLVoiceSetKeyDialog::LLVoiceSetKeyDialog(const LLSD& key)
 }
 
 //virtual
-BOOL LLVoiceSetKeyDialog::postBuild()
+bool LLVoiceSetKeyDialog::postBuild()
 {
 	childSetAction("Cancel", onCancel, this);
-	getChild<LLUICtrl>("Cancel")->setFocus(TRUE);
+	getChild<LLUICtrl>("Cancel")->setFocus(true);
 	
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	gFocusMgr.setKeystrokesOnly(true);
 	
-	return TRUE;
+	return true;
 }
 
 LLVoiceSetKeyDialog::~LLVoiceSetKeyDialog()
 {
 }
 
-BOOL LLVoiceSetKeyDialog::handleKeyHere(KEY key, MASK mask)
+bool LLVoiceSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 {
-	BOOL result = TRUE;
+    bool result = true;
 	
 	if (key == 'Q' && mask == MASK_CONTROL)
 	{
-		result = FALSE;
+		result = false;
 	}
 	else if (mParent)
 	{
@@ -530,16 +529,16 @@ BOOL LLVoiceSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 	return result;
 }
 
-BOOL LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
+bool LLVoiceSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down)
 {
-    BOOL result = FALSE;
+    bool result = false;
     if (down && getChild<LLTextBox>("FocusButton")->getHoverCursor()
         && (clicktype == CLICK_MIDDLE || clicktype == CLICK_BUTTON4 || clicktype == CLICK_BUTTON5 || clicktype == CLICK_DOUBLELEFT
 		|| clicktype == CLICK_LEFT || clicktype == CLICK_RIGHT)
         && mask == 0)
     {
         mParent->setMouse(clicktype);
-        result = TRUE;
+        result = true;
         closeFloater();
     }
     else
@@ -564,13 +563,13 @@ public:
 	LLSetKeyDialog(const LLSD& key);
 	~LLSetKeyDialog();
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 
 	void setParent(LLFloaterPreference* parent) { mParent = parent; }
 	void setMode(S32 mode);
 
-	BOOL handleKeyHere(KEY key, MASK mask);
-	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
+    bool handleKeyHere(KEY key, MASK mask);
+    bool handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down);
 	void onCancel();
 	void onBind();
 	void onActionCommit(LLUICtrl* ctrl, const LLSD& param);
@@ -602,14 +601,14 @@ LLSetKeyDialog::LLSetKeyDialog(const LLSD& key)
 }
 
 //virtual
-BOOL LLSetKeyDialog::postBuild()
+bool LLSetKeyDialog::postBuild()
 {
 	//BD - We block off keypresses like space and enter with this so it doesn't
 	//     accidentally press cancel or bind but is still handled by the floater.
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(true);
 
-	return TRUE;
+	return true;
 }
 
 LLSetKeyDialog::~LLSetKeyDialog()
@@ -623,8 +622,8 @@ void LLSetKeyDialog::onOpen(const LLSD& key)
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(true);
 }
 
 void LLSetKeyDialog::setMode(S32 mode)
@@ -635,7 +634,7 @@ void LLSetKeyDialog::setMode(S32 mode)
 	getChild<LLComboBox>(llformat("bind_action_%i", mMode))->setVisible(true);
 }
 
-BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
+bool LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 {
 	mKey = key;
 	//BD - Clear mouse bind.
@@ -657,10 +656,10 @@ BOOL LLSetKeyDialog::handleKeyHere(KEY key, MASK mask)
 	LL_INFOS() << "Pressed: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + "
 				<< mask << +"(" << gKeyboard->stringFromMask(mask) << LL_ENDL;
 
-	return TRUE;
+	return true;
 }
 
-BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
+bool LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down)
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 	LLButton* focus = getChild<LLButton>("FocusButton");
@@ -695,7 +694,7 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 	else
 	{
 		LLMouseHandler::handleAnyMouseClick(x, y, mask, clicktype, down);
-		return FALSE;
+		return false;
 	}
 
 	ctrl->setTextArg("[KEY]", mouse);
@@ -703,7 +702,7 @@ BOOL LLSetKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickTyp
 	LL_INFOS() << "Pressed: " << clicktype << " + "
 		<< mask << gKeyboard->stringFromMask(mask) << LL_ENDL;
 
-	return TRUE;
+	return true;
 }
 
 void LLSetKeyDialog::onActionCommit(LLUICtrl* ctrl, const LLSD& param)
@@ -712,8 +711,8 @@ void LLSetKeyDialog::onActionCommit(LLUICtrl* ctrl, const LLSD& param)
 
 	//BD - After selecting an action return the focus back to the focus catcher so
 	//     we can catch keypresses again.
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(FALSE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(false);
 }
 
 void LLSetKeyDialog::onMasks()
@@ -741,8 +740,8 @@ void LLSetKeyDialog::onMasks()
 
 	//BD - After clicking any mask return the focus back to the focus catcher so
 	//     we can catch keypresses again.
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(FALSE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(false);
 }
 
 void LLSetKeyDialog::onCancel()
@@ -760,8 +759,8 @@ void LLSetKeyDialog::onBind()
 	else
 	{
 		//BD - We failed to bind, return focus to the focus button to receive inputs.
-		getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-		gFocusMgr.setKeystrokesOnly(FALSE);
+		getChild<LLUICtrl>("FocusButton")->setFocus(true);
+		gFocusMgr.setKeystrokesOnly(false);
 	}
 }
 
@@ -773,7 +772,7 @@ public:
 	LLChangeKeyDialog(const LLSD& key);
 	~LLChangeKeyDialog();
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 
 	void setParent(LLFloaterPreference* parent) { mParent = parent; }
 	void setMode(S32 mode) { mMode = mode; }
@@ -781,8 +780,8 @@ public:
 	void setMask(MASK mask) { mMask = mask;	}
 	void setMouse(EMouseClickType mouse) { mMouse = mouse; }
 
-	BOOL handleKeyHere(KEY key, MASK mask);
-	BOOL handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down);
+    bool handleKeyHere(KEY key, MASK mask);
+    bool handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down);
 	void onCancel();
 	void onBind();
 	void onMasks();
@@ -810,14 +809,14 @@ LLChangeKeyDialog::LLChangeKeyDialog(const LLSD& key)
 }
 
 //virtual
-BOOL LLChangeKeyDialog::postBuild()
+bool LLChangeKeyDialog::postBuild()
 {
 	//BD - We block off keypresses like space and enter with this so it doesn't
 	//     accidentally press cancel or bind but is still handled by the floater.
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(true);
 
-	return TRUE;
+	return true;
 }
 
 LLChangeKeyDialog::~LLChangeKeyDialog()
@@ -842,11 +841,11 @@ void LLChangeKeyDialog::onOpen(const LLSD& key)
 	ctrl->setTextArg("[KEY]", gKeyboard->stringFromKey(mKey));
 	ctrl->setTextArg("[MASK]", gKeyboard->stringFromMask(mMask));
 
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(true);
 }
 
-BOOL LLChangeKeyDialog::handleKeyHere(KEY key, MASK mask)
+bool LLChangeKeyDialog::handleKeyHere(KEY key, MASK mask)
 {
 	mKey = key;
 
@@ -869,10 +868,10 @@ BOOL LLChangeKeyDialog::handleKeyHere(KEY key, MASK mask)
 	LL_INFOS() << "Pressed: " << key << +"(" + gKeyboard->stringFromKey(key) << ") + "
 		<< mask << +"(" << gKeyboard->stringFromMask(mask) << LL_ENDL;
 
-	return TRUE;
+	return true;
 }
 
-BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, BOOL down)
+bool LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down)
 {
 	LLUICtrl* ctrl = getChild<LLUICtrl>("key_display");
 	std::string mouse = "";
@@ -902,7 +901,7 @@ BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClick
 	else
 	{
 		LLMouseHandler::handleAnyMouseClick(x, y, mask, clicktype, down);
-		return FALSE;
+		return false;
 	}
 
 	ctrl->setTextArg("[KEY]", mouse);
@@ -910,7 +909,7 @@ BOOL LLChangeKeyDialog::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClick
 	LL_INFOS() << "Pressed: " << clicktype << " + "
 		<< mask << gKeyboard->stringFromMask(mask) << LL_ENDL;
 
-	return TRUE;
+	return true;
 }
 
 void LLChangeKeyDialog::onMasks()
@@ -938,8 +937,8 @@ void LLChangeKeyDialog::onMasks()
 
 	//BD - After clicking any mask return the focus back to the focus catcher so
 	//     we can catch keypresses again.
-	getChild<LLUICtrl>("FocusButton")->setFocus(TRUE);
-	gFocusMgr.setKeystrokesOnly(TRUE);
+	getChild<LLUICtrl>("FocusButton")->setFocus(true);
+	gFocusMgr.setKeystrokesOnly(true);
 }
 
 void LLChangeKeyDialog::onCancel()
@@ -991,7 +990,7 @@ bool callback_clear_cache(const LLSD& notification, const LLSD& response)
 	if ( option == 0 ) // YES
 	{
 		// flag client texture cache for clearing next time the client runs
-		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", TRUE);
+		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", true);
 		LLNotificationsUtil::add("CacheWillClear");
 	}
 
@@ -1011,7 +1010,7 @@ bool callback_clear_browser_cache(const LLSD& notification, const LLSD& response
 		LLNavigationBar::getInstance()->clearHistoryCache();
 		
 		// flag client texture cache for clearing next time the client runs
-		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", TRUE);
+		gSavedSettings.setBOOL("PurgeCacheOnNextStartup", true);
 		LLNotificationsUtil::add("CacheWillClear");
 
 		LLSearchHistory::getInstance()->clearHistory();
@@ -1357,7 +1356,7 @@ void LLFloaterPreference::saveAvatarPropertiesCoro(const std::string cap_url, bo
 	LL_DEBUGS("Preferences") << "Agent id: " << gAgentID << " Data: " << data << " Result: " << httpResults << LL_ENDL;
 }
 
-BOOL LLFloaterPreference::postBuild()
+bool LLFloaterPreference::postBuild()
 {
 	gSavedSettings.getControl("ChatFontSize")->getSignal()->connect(boost::bind(&LLFloaterIMSessionTab::processChatHistoryStyleUpdate, false));
 
@@ -1370,7 +1369,7 @@ BOOL LLFloaterPreference::postBuild()
 	gSavedPerAccountSettings.getControl("SoundUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeSoundFolder, this));
 	gSavedPerAccountSettings.getControl("AnimationUploadFolder")->getSignal()->connect(boost::bind(&LLFloaterPreference::onChangeAnimationFolder, this));
 
-	getChild<LLUICtrl>("cache_location")->setEnabled(FALSE); // make it read-only but selectable (STORM-227)
+	getChild<LLUICtrl>("cache_location")->setEnabled(false); // make it read-only but selectable (STORM-227)
 	std::string cache_location = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "");
 	setCacheLocation(cache_location);
 
@@ -1562,7 +1561,7 @@ BOOL LLFloaterPreference::postBuild()
 	mAvatarSettingsList->setRightMouseDownCallback(boost::bind(&LLFloaterPreference::onAvatarListRightClick, this, _1, _2, _3));
 	getChild<LLFilterEditor>("people_filter_input")->setCommitCallback(boost::bind(&LLFloaterPreference::onFilterEdit, this, _2));
 
-	return TRUE;
+	return true;
 }
 
 void LLFloaterPreference::updateDeleteTranscriptsButton()
@@ -1574,7 +1573,7 @@ void LLFloaterPreference::updateDeleteTranscriptsButton()
 
 void LLFloaterPreference::onDoNotDisturbResponseChanged()
 {
-	// set "DoNotDisturbResponseChanged" TRUE if user edited message differs from default, FALSE otherwise
+	// set "DoNotDisturbResponseChanged" true if user edited message differs from default, false otherwise
 	bool response_changed_flag =
 			LLTrans::getString("DoNotDisturbModeResponseDefault")
 					!= getChild<LLUICtrl>("do_not_disturb_response")->getValue().asString();
@@ -1722,7 +1721,7 @@ void LLFloaterPreference::onListClickAction()
 				dialog->setMask(mask);
 				dialog->setMouse(mouse);
 
-				LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), TRUE);
+				LLFloaterReg::showTypedInstance<LLChangeKeyDialog>("change_key", LLSD(), true);
 			}
 		}
 	}
@@ -1813,7 +1812,7 @@ void LLFloaterPreference::onClickSetAnyKey()
 	S32 mode = getChild<LLComboBox>("keybinding_mode")->getValue();
 
 	//BD - Don't show the dialog if we have no action selected.
-	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), TRUE);
+	LLSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLSetKeyDialog>("set_any_key", LLSD(), true);
 	if (dialog)
 	{
 		dialog->setParent(this);
@@ -2406,11 +2405,11 @@ void LLFloaterPreference::refreshCameraControls()
 		|| preset_name == "Rear View" || preset_name == "RLVa View"
 		|| preset_name == "Mouselook" || preset_name == "Top View")
 	{
-		getChild<LLButton>("DeleteCameraPreset")->setEnabled(FALSE);
+		getChild<LLButton>("DeleteCameraPreset")->setEnabled(false);
 	}
 	else
 	{
-		getChild<LLButton>("DeleteCameraPreset")->setEnabled(TRUE);
+		getChild<LLButton>("DeleteCameraPreset")->setEnabled(true);
 	}
 }
 
@@ -2592,7 +2591,7 @@ void LLFloaterPreference::reloadSkinList()
 		row["columns"][0]["font"]["style"] = current_skin == skin.first ? "BOLD" : "NORMAL";
 		skin_list->addElement(row);
 	}
-	skin_list->setSelectedByValue(current_skin, TRUE);
+	skin_list->setSelectedByValue(current_skin, true);
 	onSelectSkin(skin_list->getSelectedValue());
 }
 
@@ -2703,10 +2702,10 @@ void LLFloaterPreference::callbackApplySkin(const LLSD& notification, const LLSD
 	switch (option)
 	{
 		case 0:	// Yes
-			gSavedSettings.setBOOL("ResetUserColorsOnLogout", TRUE);
+			gSavedSettings.setBOOL("ResetUserColorsOnLogout", true);
 			break;
 		case 1:	// No
-			gSavedSettings.setBOOL("ResetUserColorsOnLogout", FALSE);
+			gSavedSettings.setBOOL("ResetUserColorsOnLogout", false);
 			break;
 		case 2:	// Cancel
 			gSavedSettings.setString("SkinCurrent", sSkin);
@@ -2874,7 +2873,7 @@ void LLFloaterPreference::apply()
 	setCacheLocation(cache_location);
 	
 	LLViewerMedia::getInstance()->setCookiesEnabled(getChild<LLUICtrl>("cookies_enabled")->getValue());
-	if (hasChild("web_proxy_enabled", TRUE) &&hasChild("web_proxy_editor", TRUE) && hasChild("web_proxy_port", TRUE))
+	if (hasChild("web_proxy_enabled", true) &&hasChild("web_proxy_editor", true) && hasChild("web_proxy_port", true))
 	{
 		bool proxy_enable = getChild<LLUICtrl>("web_proxy_enabled")->getValue();
 		std::string proxy_address = getChild<LLUICtrl>("web_proxy_editor")->getValue();
@@ -2958,7 +2957,7 @@ void LLFloaterPreference::cancel()
 void LLFloaterPreference::onOpen(const LLSD& key)
 {
 	// this variable and if that follows it are used to properly handle do not disturb mode response message
-	static bool initialized = FALSE;
+	static bool initialized = false;
 	// if user is logged in and we haven't initialized do not disturb mode response yet, do it
 	if (!initialized && LLStartUp::getStartupState() == STATE_STARTED)
 	{
@@ -2976,8 +2975,8 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 		// To keep track of whether do not disturb response is default or changed by user additional setting DoNotDisturbResponseChanged
 		// was added into per account settings.
 
-		// initialization should happen once,so setting variable to TRUE
-		initialized = TRUE;
+		// initialization should happen once,so setting variable to true
+		initialized = true;
 		// this connection is needed to properly set "DoNotDisturbResponseChanged" setting when user makes changes in
 		// do not disturb response message.
 		gSavedPerAccountSettings.getControl("DoNotDisturbModeResponse")->getSignal()->connect(boost::bind(&LLFloaterPreference::onDoNotDisturbResponseChanged, this));
@@ -3005,7 +3004,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 		if (!gAgent.isAdult() && !gAgent.isGodlikeWithoutAdminMenuFakery())
 		{
 			//BD - We're going to disable the adult radio button
-			maturity_radio->setIndexEnabled(2, FALSE);
+			maturity_radio->setIndexEnabled(2, false);
 		}
 	}
 
@@ -3120,7 +3119,7 @@ void LLFloaterPreference::setHardwareDefaults()
 
 void LLFloaterPreference::resetAutotuneSettings()
 {
-    gSavedSettings.setBOOL("AutoTuneFPS", FALSE);
+    gSavedSettings.setBOOL("AutoTuneFPS", false);
 
     const std::string autotune_settings[] = {
         "AutoTuneLock",
@@ -3194,7 +3193,7 @@ void LLFloaterPreference::onClose(bool app_quitting)
 		//     next time preferences is opened we don't suspend voice
 		if (gSavedSettings.getBOOL("ShowDeviceSettings"))
 		{
-			gSavedSettings.setBOOL("ShowDeviceSettings", FALSE);
+			gSavedSettings.setBOOL("ShowDeviceSettings", false);
 			inputOutput();
 		}
 	}
@@ -3237,12 +3236,12 @@ void LLFloaterPreference::onBtnOK()
 		}
 
 		LLUIColorTable::instance().saveUserSettings();
-		gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+		gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), true);
 
 		//Only save once logged in and loaded per account settings
 		if (mGotPersonalInfo)
 		{
-			gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), TRUE);
+			gSavedPerAccountSettings.saveToFile(gSavedSettings.getString("PerAccountSettingsFile"), true);
 		}
 
 		//BD
@@ -3464,7 +3463,7 @@ void LLFloaterPreference::refreshEnabledState()
 	LLCheckBoxCtrl* ctrl_pbr = getChild<LLCheckBoxCtrl>("UsePBRShaders");
 
     //PBR
-    ctrl_pbr->setEnabled(TRUE);
+    ctrl_pbr->setEnabled(true);
 
 	// Cannot have floater active until caps have been received
 	getChild<LLButton>("default_creation_permissions")->setEnabled(LLStartUp::getStartupState() < STATE_STARTED ? false : true);
@@ -3482,7 +3481,7 @@ void LLFloaterPreference::refresh()
 
 void LLFloaterPreference::onClickSetKey()
 {
-	LLVoiceSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLVoiceSetKeyDialog>("voice_set_key", LLSD(), TRUE);
+	LLVoiceSetKeyDialog* dialog = LLFloaterReg::showTypedInstance<LLVoiceSetKeyDialog>("voice_set_key", LLSD(), true);
 	if (dialog)
 	{
 		dialog->setParent(this);
@@ -3583,7 +3582,7 @@ void LLFloaterPreference::onClickEnablePopup()
 	{
 		LLNotificationTemplatePtr templatep = LLNotifications::instance().getTemplate(*(std::string*)((*itor)->getUserdata()));
 		std::string notification_name = templatep->mName;
-		LLUI::getInstance()->mSettingGroups["ignores"]->setBOOL(notification_name, TRUE);
+		LLUI::getInstance()->mSettingGroups["ignores"]->setBOOL(notification_name, true);
 	}
 	
 	buildPopupLists();
@@ -3741,28 +3740,28 @@ void LLFloaterPreference::setPersonalInfo(const std::string& visibility)
 	if (visibility == VISIBILITY_DEFAULT)
 	{
 		mOriginalHideOnlineStatus = false;
-		getChildView("online_visibility")->setEnabled(TRUE); 	 
+		getChildView("online_visibility")->setEnabled(true); 	 
 	}
 	else if (visibility == VISIBILITY_HIDDEN)
 	{
 		mOriginalHideOnlineStatus = true;
-		getChildView("online_visibility")->setEnabled(TRUE); 	 
+		getChildView("online_visibility")->setEnabled(true); 	 
 	}
 	else
 	{
 		mOriginalHideOnlineStatus = true;
 	}
 	
-	getChild<LLUICtrl>("online_searchresults")->setEnabled(TRUE);
-	getChildView("friends_online_notify_checkbox")->setEnabled(TRUE);
+	getChild<LLUICtrl>("online_searchresults")->setEnabled(true);
+	getChildView("friends_online_notify_checkbox")->setEnabled(true);
 	getChild<LLUICtrl>("online_visibility")->setValue(mOriginalHideOnlineStatus); 	 
 	getChild<LLUICtrl>("online_visibility")->setLabelArg("[DIR_VIS]", mDirectoryVisibility);
 
-	getChildView("favorites_on_login_check")->setEnabled(TRUE);
-	getChildView("log_path_button")->setEnabled(TRUE);
-	getChildView("chat_font_size")->setEnabled(TRUE);
-	getChildView("conversation_log_combo")->setEnabled(TRUE);
-	getChild<LLUICtrl>("voice_call_friends_only_check")->setEnabled(TRUE);
+	getChildView("favorites_on_login_check")->setEnabled(true);
+	getChildView("log_path_button")->setEnabled(true);
+	getChildView("chat_font_size")->setEnabled(true);
+	getChildView("conversation_log_combo")->setEnabled(true);
+	getChild<LLUICtrl>("voice_call_friends_only_check")->setEnabled(true);
 	getChild<LLUICtrl>("voice_call_friends_only_check")->setValue(gSavedPerAccountSettings.getBOOL("VoiceCallsFriendsOnly"));
 }
 
@@ -4029,12 +4028,12 @@ public:
 
 protected:
 
-	BOOL tick()
+	bool tick()
 	{
 		mCallback(mNewValue);
 		mEventTimer.stop();
 
-		return FALSE;
+		return false;
 	}
 
 private:
@@ -4053,53 +4052,53 @@ LLPanelPreference::LLPanelPreference()
 }
 
 //virtual
-BOOL LLPanelPreference::postBuild()
+bool LLPanelPreference::postBuild()
 {
 	////////////////////// PanelGeneral ///////////////////
-	if (hasChild("display_names_check", TRUE))
+	if (hasChild("display_names_check", true))
 	{
-		BOOL use_people_api = gSavedSettings.getBOOL("UsePeopleAPI");
+        bool use_people_api = gSavedSettings.getBOOL("UsePeopleAPI");
 		LLCheckBoxCtrl* ctrl_display_name = getChild<LLCheckBoxCtrl>("display_names_check");
 		ctrl_display_name->setEnabled(use_people_api);
 		if (!use_people_api)
 		{
-			ctrl_display_name->setValue(FALSE);
+			ctrl_display_name->setValue(false);
 		}
 	}
 
 	////////////////////// PanelVoice ///////////////////
-	if (hasChild("voice_unavailable", TRUE))
+	if (hasChild("voice_unavailable", true))
 	{
-		BOOL voice_disabled = gSavedSettings.getBOOL("CmdLineDisableVoice");
+        bool voice_disabled = gSavedSettings.getBOOL("CmdLineDisableVoice");
 		getChildView("voice_unavailable")->setVisible( voice_disabled);
 		getChildView("enable_voice_check")->setVisible( !voice_disabled);
 	}
 
 	//////////////////////PanelPrivacy ///////////////////
-	if (hasChild("media_enabled", TRUE))
+	if (hasChild("media_enabled", true))
 	{
 		bool media_enabled = gSavedSettings.getBOOL("AudioStreamingMedia");
 		
 		getChild<LLCheckBoxCtrl>("media_enabled")->set(media_enabled);
 		getChild<LLCheckBoxCtrl>("autoplay_enabled")->setEnabled(media_enabled);
 	}
-	if (hasChild("music_enabled", TRUE))
+	if (hasChild("music_enabled", true))
 	{
 		getChild<LLCheckBoxCtrl>("music_enabled")->set(gSavedSettings.getBOOL("AudioStreamingMusic"));
 	}
-	if (hasChild("voice_call_friends_only_check", TRUE))
+	if (hasChild("voice_call_friends_only_check", true))
 	{
 		getChild<LLCheckBoxCtrl>("voice_call_friends_only_check")->setCommitCallback(boost::bind(&showFriendsOnlyWarning, _1, _2));
 	}
-	if (hasChild("allow_multiple_viewer_check", TRUE))
+	if (hasChild("allow_multiple_viewer_check", true))
 	{
 		getChild<LLCheckBoxCtrl>("allow_multiple_viewer_check")->setCommitCallback(boost::bind(&showMultipleViewersWarning, _1, _2));
 	}
-	if (hasChild("favorites_on_login_check", TRUE))
+	if (hasChild("favorites_on_login_check", true))
 	{
 		getChild<LLCheckBoxCtrl>("favorites_on_login_check")->setCommitCallback(boost::bind(&handleFavoritesOnLoginChanged, _1, _2));
 	}
-	if (hasChild("mute_chb_label", TRUE))
+	if (hasChild("mute_chb_label", true))
 	{
 		getChild<LLTextBox>("mute_chb_label")->setShowCursorHand(false);
 		getChild<LLTextBox>("mute_chb_label")->setSoundFlags(LLView::MOUSE_UP);
@@ -4107,7 +4106,7 @@ BOOL LLPanelPreference::postBuild()
 	}
 
 	//////////////////////PanelSetup ///////////////////
-	if (hasChild("max_bandwidth", TRUE))
+	if (hasChild("max_bandwidth", true))
 	{
 		mBandWidthUpdater = new LLPanelPreference::Updater(boost::bind(&handleBandwidthChanged, _1), BANDWIDTH_UPDATER_TIMEOUT);
 		gSavedSettings.getControl("ThrottleBandwidthKBPS")->getSignal()->connect(boost::bind(&LLPanelPreference::Updater::update, mBandWidthUpdater, _2));
@@ -4261,7 +4260,7 @@ void LLPanelPreference::setControlFalse(const LLSD& user_data)
 	LLControlVariable* control = findControl(control_name);
 	
 	if (control)
-		control->set(LLSD(FALSE));
+		control->set(LLSD(false));
 }
 
 void LLPanelPreference::updateMediaAutoPlayCheckbox(LLUICtrl* ctrl)
@@ -4323,7 +4322,7 @@ private:
 static LLPanelInjector<LLPanelPreferenceGraphics> t_pref_graph("panel_preference_graphics");
 static LLPanelInjector<LLPanelPreferencePrivacy> t_pref_privacy("panel_preference_privacy");
 
-BOOL LLPanelPreferenceGraphics::postBuild()
+bool LLPanelPreferenceGraphics::postBuild()
 {
 	resetDirtyChilds();
 	setPresetText();
@@ -4659,10 +4658,10 @@ void LLFloaterPreference::onClickAdd(const LLSD& userdata)
 		visual_setting = S32(LLVOAvatar::AV_ALWAYS_RENDER);
 	}
 
-	LLView * button = findChild<LLButton>("plus_btn", TRUE);
+	LLView * button = findChild<LLButton>("plus_btn", true);
 	LLFloater* root_floater = gFloaterView->getParentFloater(this);
 	LLFloaterAvatarPicker * picker = LLFloaterAvatarPicker::show(boost::bind(&LLFloaterPreference::callbackAvatarPicked, this, _1, visual_setting),
-		FALSE, TRUE, FALSE, root_floater->getName(), button);
+		false, true, false, root_floater->getName(), button);
 
 	if (root_floater)
 	{
@@ -4724,15 +4723,15 @@ void LLFloaterPreference::setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 n
 	}
 }
 
-BOOL LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
+bool LLFloaterPreference::handleKeyHere(KEY key, MASK mask)
 {
-	BOOL handled = FALSE;
+    bool handled = false;
 
 	if (KEY_DELETE == key)
 	{
 		//BD - Allow mass changing.
 		setAvatarRenderSetting(getRenderSettingUUIDs(), (S32)LLVOAvatar::AV_RENDER_NORMALLY);
-		handled = TRUE;
+		handled = true;
 	}
 	return handled;
 }
@@ -4765,12 +4764,12 @@ LLFloaterPreferenceProxy::~LLFloaterPreferenceProxy()
 {
 }
 
-BOOL LLFloaterPreferenceProxy::postBuild()
+bool LLFloaterPreferenceProxy::postBuild()
 {
 	LLRadioGroup* socksAuth = getChild<LLRadioGroup>("socks5_auth_type");
 	if (!socksAuth)
 	{
-		return FALSE;
+		return false;
 	}
 	if (socksAuth->getSelectedValue().asString() == "None")
 	{
@@ -4785,7 +4784,7 @@ BOOL LLFloaterPreferenceProxy::postBuild()
 		getChild<LLLineEditor>("socks5_password")->setValue(socks_cred->getAuthenticator()["creds"].asString());
 	}
 
-	return TRUE;
+	return true;
 }
 
 void LLFloaterPreferenceProxy::onOpen(const LLSD& key)
@@ -4937,9 +4936,9 @@ void LLFloaterPreferenceProxy::onChangeSocksSettings()
 	// Check for invalid states for the other HTTP proxy radio
 	LLRadioGroup* otherHttpProxy = getChild<LLRadioGroup>("other_http_proxy_type");
 	if ((otherHttpProxy->getSelectedValue().asString() == "Socks" &&
-			getChild<LLCheckBoxCtrl>("socks_proxy_enabled")->get() == FALSE )||(
+			getChild<LLCheckBoxCtrl>("socks_proxy_enabled")->get() == false )||(
 					otherHttpProxy->getSelectedValue().asString() == "Web" &&
-					getChild<LLCheckBoxCtrl>("web_proxy_enabled")->get() == FALSE ) )
+					getChild<LLCheckBoxCtrl>("web_proxy_enabled")->get() == false ) )
 	{
 		otherHttpProxy->selectFirstItem();
 	}

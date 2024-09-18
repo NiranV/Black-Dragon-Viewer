@@ -2457,6 +2457,11 @@ void LLPanelMainInventory::disableAddIfNeeded()
     }
 }
 
+bool LLPanelMainInventory::hasSettingsInventory()
+{
+    return LLEnvironment::instance().isInventoryEnabled();
+}
+
 bool LLPanelMainInventory::hasMaterialsInventory()
 {
     std::string agent_url = gAgent.getRegionCapability("UpdateMaterialAgentInventory");

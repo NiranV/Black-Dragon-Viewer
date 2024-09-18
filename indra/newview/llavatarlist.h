@@ -79,14 +79,11 @@ public:
     void setSessionID(const LLUUID& session_id) { mSessionID = session_id; }
     const LLUUID& getSessionID() { return mSessionID; }
 
-    void toggleIcons();
     void setSpeakingIndicatorsVisible(bool visible);
     //BD
 	void setShowExtraInformation(bool visible);
     void showPermissions(bool visible);
     void sortByName();
-    void setShowIcons(std::string param_name);
-    bool getIconsVisible() const { return mShowIcons; }
     const std::string getIconParamName() const{return mIconParamName;}
     std::string getAvatarName(LLAvatarName av_name);
     virtual bool handleRightMouseDown(S32 x, S32 y, MASK mask);
@@ -120,7 +117,6 @@ protected:
 		uuid_vec_t& vadded,
 		uuid_vec_t& vremoved);
 	void updateLastInteractionTimes();
-	void rebuildNames();
 	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
 	void updateAvatarNames();
 	//BD

@@ -466,7 +466,7 @@ void idle_afk_check()
 {
 	// check idle timers
 	F32 current_idle = gAwayTriggerTimer.getElapsedTimeF32();
-	static const LLCachedControl<S32> afk_timeout_cc(gSavedSettings, "AFKTimeout");
+	static const LLCachedControl<S32> afk_timeout(gSavedSettings, "AFKTimeout");
 	if (afk_timeout && (current_idle > afk_timeout) && ! gAgent.getAFK())
 	{
 		LL_INFOS("IdleAway") << "Idle more than " << afk_timeout << " seconds: automatically changing to Away status" << LL_ENDL;
@@ -804,8 +804,8 @@ bool LLAppViewer::init()
 		LLAPRFile infile;
 		infile.open(path, LL_APR_RB);
 
-		U32 physical_file_size = infile.seek(APR_END, 0);
-		U32 file_size = physical_file_size / (1024 * 1024);
+		S32 physical_file_size = infile.seek(APR_END, 0);
+		S32 file_size = physical_file_size / (1024 * 1024);
 
 		infile.close();
 		if (day > max_days)
@@ -2697,11 +2697,11 @@ bool LLAppViewer::initConfiguration()
 
     // - load defaults
     bool set_defaults = true;
-    if(!loadSettingsFromDirectory("Default", set_defaults))
+    if (!loadSettingsFromDirectory("Default", set_defaults))
     {
         OSMessageBox(
             "Unable to load default settings file. The installation may be corrupted.",
-            LLStringUtil::null,OSMB_OK);
+            LLStringUtil::null, OSMB_OK);
         return false;
     }
 
@@ -2720,7 +2720,7 @@ bool LLAppViewer::initConfiguration()
         c->setValue(true, false);
     }
 
-    gSavedSettings.setBOOL("QAMode", true );
+    gSavedSettings.setBOOL("QAMode", true);
     gSavedSettings.setS32("WatchdogEnabled", 0);
 #endif
 
@@ -2749,11 +2749,11 @@ bool LLAppViewer::initConfiguration()
     // - read command line settings.
     LLControlGroupCLP clp;
     std::string cmd_line_config = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,
-                                                          "cmd_line.xml");
+        "cmd_line.xml");
 
     clp.configure(cmd_line_config, &gSavedSettings);
 
-    if(!initParseCommandLine(clp))
+    if (!initParseCommandLine(clp))
     {
         handleCommandLineError(clp);
         return false;
@@ -2763,13 +2763,13 @@ bool LLAppViewer::initConfiguration()
 
     // If the user has specified a alternate settings file name.
     // Load it now before loading the user_settings/settings.xml
-    if(clp.hasOption("settings"))
+    if (clp.hasOption("settings"))
     {
         std::string user_settings_filename =
             gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
-                                           clp.getOption("settings")[0]);
+                clp.getOption("settings")[0]);
         gSavedSettings.setString("ClientSettingsFile", user_settings_filename);
-        LL_INFOS("Settings")    << "Using command line specified settings filename: "
+        LL_INFOS("Settings") << "Using command line specified settings filename: "
             << user_settings_filename << LL_ENDL;
     }
 
@@ -2789,7 +2789,7 @@ bool LLAppViewer::initConfiguration()
     {
         std::string session_settings_filename = clp.getOption("sessionsettings")[0];
         gSavedSettings.setString("SessionSettingsFile", session_settings_filename);
-        LL_INFOS("Settings")    << "Using session settings filename: "
+        LL_INFOS("Settings") << "Using session settings filename: "
             << session_settings_filename << LL_ENDL;
     }
     loadSettingsFromDirectory("Session");
@@ -2805,7 +2805,7 @@ bool LLAppViewer::initConfiguration()
     loadSettingsFromDirectory("UserSession");
 
     // - apply command line settings
-    if (! clp.notify())
+    if (!clp.notify())
     {
         handleCommandLineError(clp);
         return false;
@@ -2814,7 +2814,7 @@ bool LLAppViewer::initConfiguration()
     // Register the core crash option as soon as we can
     // if we want gdb post-mortem on cores we need to be up and running
     // ASAP or we might miss init issue etc.
-    if(gSavedSettings.getBOOL("DisableCrashLogger"))
+    if (gSavedSettings.getBOOL("DisableCrashLogger"))
     {
         LL_WARNS() << "Crashes will be handled by system, stack trace logs and crash logger are both disabled" << LL_ENDL;
         disableCrashlogger();
@@ -2828,11 +2828,11 @@ bool LLAppViewer::initConfiguration()
         initConsole();
     }
 
-    if(clp.hasOption("help"))
+    if (clp.hasOption("help"))
     {
         std::ostringstream msg;
         msg << LLTrans::getString("MBCmdLineUsg") << "\n" << clp;
-        LL_INFOS()  << msg.str() << LL_ENDL;
+        LL_INFOS() << msg.str() << LL_ENDL;
 
         OSMessageBox(
             msg.str(),
@@ -2842,21 +2842,21 @@ bool LLAppViewer::initConfiguration()
         return false;
     }
 
-    if(clp.hasOption("set"))
+    if (clp.hasOption("set"))
     {
         const LLCommandLineParser::token_vector_t& set_values = clp.getOption("set");
-        if(0x1 & set_values.size())
+        if (0x1 & set_values.size())
         {
             LL_WARNS() << "Invalid '--set' parameter count." << LL_ENDL;
         }
         else
         {
             LLCommandLineParser::token_vector_t::const_iterator itr = set_values.begin();
-            for(; itr != set_values.end(); ++itr)
+            for (; itr != set_values.end(); ++itr)
             {
                 const std::string& name = *itr;
                 const std::string& value = *(++itr);
-                if (!tempSetControl(name,value))
+                if (!tempSetControl(name, value))
                 {
                     LL_WARNS() << "Failed --set " << name << ": setting name unknown." << LL_ENDL;
                 }
@@ -2865,13 +2865,13 @@ bool LLAppViewer::initConfiguration()
     }
 
 #if AL_VIEWER_EVENT_RECORDER
-    if  (clp.hasOption("logevents")) {
+    if (clp.hasOption("logevents")) {
         LLViewerEventRecorder::instance().setEventLoggingOn();
     }
 #endif
 
     std::string CmdLineChannel(gSavedSettings.getString("CmdLineChannel"));
-    if(! CmdLineChannel.empty())
+    if (!CmdLineChannel.empty())
     {
         LLVersionInfo::instance().resetChannel(CmdLineChannel);
     }
@@ -2886,7 +2886,7 @@ bool LLAppViewer::initConfiguration()
     }
 
     std::string test_name(gSavedSettings.getString("LogMetrics"));
-    if (! test_name.empty())
+    if (!test_name.empty())
     {
         LLTrace::BlockTimer::sMetricLog = true;
         // '--logmetrics' is specified with a named test metric argument so the data gathering is done only on that test
@@ -2928,13 +2928,13 @@ bool LLAppViewer::initConfiguration()
     }
 
     const LLControlVariable* skinfolder = gSavedSettings.getControl("SkinCurrent");
-    if(skinfolder && LLStringUtil::null != skinfolder->getValue().asString())
+    if (skinfolder && LLStringUtil::null != skinfolder->getValue().asString())
     {
         // Examining "Language" may not suffice -- see LLUI::getLanguage()
         // logic. Unfortunately LLUI::getLanguage() doesn't yet do us much
         // good because we haven't yet called LLUI::initClass().
         gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
-                                 gSavedSettings.getString("Language"));
+            gSavedSettings.getString("Language"));
     }
 
     if (gSavedSettings.getBOOL("SpellCheck"))
@@ -2988,39 +2988,39 @@ bool LLAppViewer::initConfiguration()
     std::string starting_location;
 
     std::string cmd_line_login_location(gSavedSettings.getString("CmdLineLoginLocation"));
-    if(! cmd_line_login_location.empty())
+    if (!cmd_line_login_location.empty())
     {
         starting_location = cmd_line_login_location;
     }
     else
     {
         std::string default_login_location(gSavedSettings.getString("DefaultLoginLocation"));
-        if (! default_login_location.empty())
+        if (!default_login_location.empty())
         {
             starting_location = default_login_location;
         }
     }
 
     LLSLURL start_slurl;
-    if (! starting_location.empty())
+    if (!starting_location.empty())
     {
         start_slurl = starting_location;
         LLStartUp::setStartSLURL(start_slurl);
-        if(start_slurl.getType() == LLSLURL::LOCATION)
+        if (start_slurl.getType() == LLSLURL::LOCATION)
         {
             LLGridManager::getInstance()->setGridChoice(start_slurl.getGrid());
         }
     }
 
     // NextLoginLocation is set as a side effect of LLStartUp::setStartSLURL()
-    std::string nextLoginLocation = gSavedSettings.getString( "NextLoginLocation" );
-    if ( !nextLoginLocation.empty() )
+    std::string nextLoginLocation = gSavedSettings.getString("NextLoginLocation");
+    if (!nextLoginLocation.empty())
     {
-        LL_DEBUGS("AppInit")<<"set start from NextLoginLocation: "<<nextLoginLocation<<LL_ENDL;
+        LL_DEBUGS("AppInit") << "set start from NextLoginLocation: " << nextLoginLocation << LL_ENDL;
         LLStartUp::setStartSLURL(LLSLURL(nextLoginLocation));
     }
-    else if (   (   clp.hasOption("login") || clp.hasOption("autologin"))
-             && gSavedSettings.getString("CmdLineLoginLocation").empty())
+    else if ((clp.hasOption("login") || clp.hasOption("autologin"))
+        && gSavedSettings.getString("CmdLineLoginLocation").empty())
     {
         // If automatic login from command line with --login switch
         // init StartSLURL location.
@@ -3032,62 +3032,10 @@ bool LLAppViewer::initConfiguration()
     {
         // the login location will be set by the login panel (see LLPanelLogin)
     }
-
-bool LLAppViewer::initWindow()
-{
-	LL_INFOS("AppInit") << "Initializing window..." << LL_ENDL;
-
-	// store setting in a global for easy access and modification
-	gHeadlessClient = gSavedSettings.getBOOL("HeadlessClient");
-
-	// always start windowed
-	bool ignorePixelDepth = gSavedSettings.getBOOL("IgnorePixelDepth");
-
-	LLViewerWindow::Params window_params;
-	window_params
-		.title(gWindowTitle)
-		.name(VIEWER_WINDOW_CLASSNAME)
-		.x(gSavedSettings.getS32("WindowX"))
-		.y(gSavedSettings.getS32("WindowY"))
-		//BD
-		.width(gSavedSettings.getS32("WindowWidth"))
-		.height(gSavedSettings.getS32("WindowHeight"))
-		.min_width(gSavedSettings.getS32("MinWindowWidth"))
-		.min_height(gSavedSettings.getS32("MinWindowHeight"))
-
-		.fullscreen(gSavedSettings.getBOOL("FullScreen"))
-		.ignore_pixel_depth(ignorePixelDepth)
-		.first_run(mIsFirstRun);
-
-	gViewerWindow = new LLViewerWindow(window_params);
-
-	LL_INFOS("AppInit") << "gViewerwindow created." << LL_ENDL;
-
-	// Need to load feature table before cheking to start watchdog.
-	bool use_watchdog = false;
-	int watchdog_enabled_setting = gSavedSettings.getS32("WatchdogEnabled");
-	if (watchdog_enabled_setting == -1)
-	{
-		use_watchdog = !LLFeatureManager::getInstance()->isFeatureAvailable("WatchdogDisabled");
-	}
-	else
-	{
-		// The user has explicitly set this setting; always use that value.
-		use_watchdog = bool(watchdog_enabled_setting);
-	}
-
-	LL_INFOS("AppInit") << "watchdog"
-						<< (use_watchdog ? " " : " NOT ")
-						<< "enabled"
-						<< " (setting = " << watchdog_enabled_setting << ")"
-						<< LL_ENDL;
-
-	if (use_watchdog)
-	{
-		LLWatchdog::getInstance()->init();
-	}
-
-	LLNotificationsUI::LLNotificationManager::getInstance();
+    //RN: if we received a URL, hand it off to the existing instance.
+    // don't call anotherInstanceRunning() when doing URL handoff, as
+    // it relies on checking a marker file which will not work when running
+    // out of different directories
 
     if (start_slurl.isValid() &&
         (gSavedSettings.getBOOL("SLURLPassToOtherInstance")))
@@ -3110,7 +3058,7 @@ bool LLAppViewer::initWindow()
 
     //LLVolumeMgr::initClass();
     LLVolumeMgr* volume_manager = new LLVolumeMgr();
-    volume_manager->useMutex(); // LLApp and LLMutex magic must be manually enabled
+    volume_manager->useMutex();	// LLApp and LLMutex magic must be manually enabled
     LLPrimitive::setVolumeManager(volume_manager);
 
     // Note: this is where we used to initialize gFeatureManagerp.
@@ -3126,7 +3074,7 @@ bool LLAppViewer::initWindow()
 #endif
     if (!gArgs.empty())
     {
-    gWindowTitle += std::string(" ") + gArgs;
+        gWindowTitle += std::string(" ") + gArgs;
     }
     LLStringUtil::truncate(gWindowTitle, 255);
 
@@ -3146,14 +3094,13 @@ bool LLAppViewer::initWindow()
 
     if (mSecondInstance)
     {
-        // This is the second instance of SL. Mute voice,
+        // This is the second instance of SL. Turn off voice support,
         // but make sure the setting is *not* persisted.
-        // Also see LLVivoxVoiceClient::voiceEnabled()
-        LLControlVariable* enable_voice = gSavedSettings.getControl("EnableVoiceChat");
-        if(enable_voice)
+        LLControlVariable* disable_voice = gSavedSettings.getControl("CmdLineDisableVoice");
+        if (disable_voice)
         {
-            const bool DO_NOT_PERSIST = false;
-            enable_voice->setValue(LLSD(false), DO_NOT_PERSIST);
+            const BOOL DO_NOT_PERSIST = FALSE;
+            disable_voice->setValue(LLSD(TRUE), DO_NOT_PERSIST);
         }
     }
 
@@ -3169,8 +3116,6 @@ bool LLAppViewer::initWindow()
         // we've initialized an LLControlGroup instance by that name.
         LLEventPumps::instance().obtain("LLControlGroup").post(LLSDMap("init", key));
     }
-
-    LLError::LLUserWarningMsg::setOutOfMemoryStrings(LLTrans::getString("MBOutOfMemoryTitle"), LLTrans::getString("MBOutOfMemoryErr"));
 
     return true; // Config was successful.
 }
@@ -3259,6 +3204,138 @@ bool LLAppViewer::meetsRequirementsForMaximizedStart()
     bool maximizedOk = (gSysMemory.getPhysicalMemoryKB() >= U32Gigabytes(1));
 
     return maximizedOk;
+}
+
+bool LLAppViewer::initWindow()
+{
+    LL_INFOS("AppInit") << "Initializing window..." << LL_ENDL;
+
+    // store setting in a global for easy access and modification
+    gHeadlessClient = gSavedSettings.getBOOL("HeadlessClient");
+
+    // always start windowed
+    BOOL ignorePixelDepth = gSavedSettings.getBOOL("IgnorePixelDepth");
+
+    LLViewerWindow::Params window_params;
+    window_params
+        .title(gWindowTitle)
+        .name(VIEWER_WINDOW_CLASSNAME)
+        .x(gSavedSettings.getS32("WindowX"))
+        .y(gSavedSettings.getS32("WindowY"))
+        //BD
+        .width(gSavedSettings.getS32("WindowWidth"))
+        .height(gSavedSettings.getS32("WindowHeight"))
+        .min_width(gSavedSettings.getS32("MinWindowWidth"))
+        .min_height(gSavedSettings.getS32("MinWindowHeight"))
+
+        .fullscreen(gSavedSettings.getBOOL("FullScreen"))
+        .ignore_pixel_depth(ignorePixelDepth)
+        .first_run(mIsFirstRun);
+
+    gViewerWindow = new LLViewerWindow(window_params);
+
+    LL_INFOS("AppInit") << "gViewerwindow created." << LL_ENDL;
+
+    // Need to load feature table before cheking to start watchdog.
+    bool use_watchdog = false;
+    int watchdog_enabled_setting = gSavedSettings.getS32("WatchdogEnabled");
+    if (watchdog_enabled_setting == -1)
+    {
+        use_watchdog = !LLFeatureManager::getInstance()->isFeatureAvailable("WatchdogDisabled");
+    }
+    else
+    {
+        // The user has explicitly set this setting; always use that value.
+        use_watchdog = bool(watchdog_enabled_setting);
+    }
+
+    LL_INFOS("AppInit") << "watchdog"
+        << (use_watchdog ? " " : " NOT ")
+        << "enabled"
+        << " (setting = " << watchdog_enabled_setting << ")"
+        << LL_ENDL;
+
+    if (use_watchdog)
+    {
+        LLWatchdog::getInstance()->init();
+    }
+
+    LLNotificationsUI::LLNotificationManager::getInstance();
+
+
+#ifdef LL_DARWIN
+    //Satisfy both MAINT-3135 (OSX 10.6 and earlier) MAINT-3288 (OSX 10.7 and later)
+    LLOSInfo& os_info = LLOSInfo::instance();
+    if (os_info.mMajorVer == 10 && os_info.mMinorVer < 7)
+    {
+        if (os_info.mMinorVer == 6 && os_info.mBuild < 8)
+            gViewerWindow->getWindow()->setOldResize(true);
+    }
+#endif
+
+    if (gSavedSettings.getBOOL("WindowMaximized"))
+    {
+        gViewerWindow->getWindow()->maximize();
+    }
+
+    //
+    // Initialize GL stuff
+    //
+
+    if (mForceGraphicsLevel && (LLFeatureManager::instance().isValidGraphicsLevel(*mForceGraphicsLevel)))
+    {
+        LLFeatureManager::getInstance()->setGraphicsLevel(*mForceGraphicsLevel, false);
+        gSavedSettings.setU32("RenderQualityPerformance", *mForceGraphicsLevel);
+    }
+
+    // Set this flag in case we crash while initializing GL
+    gSavedSettings.setBOOL("RenderInitError", TRUE);
+    gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+
+    gPipeline.init();
+    LL_INFOS("AppInit") << "gPipeline Initialized" << LL_ENDL;
+
+    stop_glerror();
+    gViewerWindow->initGLDefaults();
+
+    gSavedSettings.setBOOL("RenderInitError", FALSE);
+    gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+
+    //If we have a startup crash, it's usually near GL initialization, so simulate that.
+    if (gCrashOnStartup)
+    {
+        LLAppViewer::instance()->forceErrorLLError();
+    }
+
+    //
+    // Determine if the window should start maximized on initial run based
+    // on graphics capability
+    //
+    if (gSavedSettings.getBOOL("FirstLoginThisInstall") && meetsRequirementsForMaximizedStart())
+    {
+        LL_INFOS("AppInit") << "This client met the requirements for a maximized initial screen." << LL_ENDL;
+        gSavedSettings.setBOOL("WindowMaximized", TRUE);
+    }
+
+    if (gSavedSettings.getBOOL("WindowMaximized"))
+    {
+        gViewerWindow->getWindow()->maximize();
+    }
+
+    LLUI::getInstance()->mWindow = gViewerWindow->getWindow();
+
+    // Show watch cursor
+    gViewerWindow->setCursor(UI_CURSOR_WAIT);
+
+    // Finish view initialization
+    gViewerWindow->initBase();
+
+    // show viewer window
+    //gViewerWindow->getWindow()->show();
+
+    LL_INFOS("AppInit") << "Window initialization done." << LL_ENDL;
+
+    return true;
 }
 
 bool LLAppViewer::isUpdaterMissing()
@@ -3410,7 +3487,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
 	//BD
 	info["MAX_TEXTURE_MEMORY"] = gSavedSettings.getF32("MaxTextureMemoryAllowed");
-    info["TEXTURE_MEMORY"] = gGLManager.mVRAM;
+    info["TEXTURE_MEMORY"] = (LLSD)gGLManager.mVRAM;
 
 #if LL_DARWIN
     info["HIDPI"] = gHiDPISupport;
@@ -4922,7 +4999,7 @@ void LLAppViewer::idle()
     {
         LL_RECORD_BLOCK_TIME(FTM_OBJECTLIST_UPDATE);
 
-        if (!(logoutRequestSent() && hasSavedFinalSnapshot()))
+        if (!logoutRequestSent())
         {
             gObjectList.update(gAgent);
             LL::GLTFSceneManager::instance().update();
@@ -5118,14 +5195,6 @@ void LLAppViewer::idleShutdown()
         saved_teleport_history = true;
         LLTeleportHistory::getInstance()->dump();
         LLLocationHistory::getInstance()->save(); // *TODO: find a better place for doing this
-        return;
-    }
-
-    static bool saved_snapshot = false;
-    if (!saved_snapshot)
-    {
-        saved_snapshot = true;
-        saveFinalSnapshot();
         return;
     }
 

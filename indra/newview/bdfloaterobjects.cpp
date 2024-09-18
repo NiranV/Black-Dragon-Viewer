@@ -41,7 +41,7 @@ BDFloaterObjects::~BDFloaterObjects()
 {
 }
 
-BOOL BDFloaterObjects::postBuild()
+bool BDFloaterObjects::postBuild()
 {
 	mObjectsScroll = { { this->getChild<LLScrollListCtrl>("object_scroll", true),
 						this->getChild<LLScrollListCtrl>("light_object_scroll", true),
@@ -59,7 +59,7 @@ BOOL BDFloaterObjects::postBuild()
 	mObjectsScroll[2]->setCommitCallback(boost::bind(&BDFloaterObjects::onSelectEntry, this, 2));
 	mObjectsScroll[2]->setDoubleClickCallback(boost::bind(&BDFloaterObjects::onSelectObject, this, 2));
 
-	return TRUE;
+	return true;
 }
 
 void BDFloaterObjects::draw()

@@ -50,7 +50,7 @@ BDPanelDrawDistance::BDPanelDrawDistance()
 	buildFromFile( "panel_draw_distance.xml");
 }
 
-BOOL BDPanelDrawDistance::postBuild()
+bool BDPanelDrawDistance::postBuild()
 {
 	return LLPanel::postBuild();
 }
@@ -76,7 +76,7 @@ void BDPanelDrawDistance::onMouseLeave(S32 x, S32 y, MASK mask)
 }
 
 /*virtual*/ 
-void BDPanelDrawDistance::onVisibilityChange ( BOOL new_visibility )
+void BDPanelDrawDistance::onVisibilityChange ( bool new_visibility )
 {
 	if (new_visibility)	
 	{

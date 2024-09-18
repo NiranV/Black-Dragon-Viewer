@@ -107,8 +107,10 @@ template <> LLColor4U convert_from_llsd<LLColor4U>(const LLSD& sd, eControlType 
 template <> LLColor3 convert_from_llsd<LLColor3>(const LLSD& sd, eControlType type, std::string_view control_name);
 template <> LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, std::string_view control_name);
 
+//BD - Vector2
+template <> LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, std::string_view control_name);
 //BD - Vector4
-template <> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name);
+template <> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, std::string_view control_name);
 
 
 //this defines the current version of the settings file
@@ -1246,7 +1248,7 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
                            control_map["Value"],
                            control_map["Comment"].asString(),
                            persist,
-                           hidefromsettingseditor
+                           hidefromsettingseditor,
                            //BD - Lock Arrays features
 						   false,
 						   //BD - Trigger Warning System
@@ -1780,7 +1782,7 @@ LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, std::string_view
 
 //BD - Vector2
 template<>
-LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, const std::string& control_name)
+LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, std::string_view control_name)
 {
 	if (type == TYPE_VEC2)
 		return LLVector2(sd);
@@ -1793,7 +1795,7 @@ LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, const 
 
 //BD - Vector4
 template<>
-LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name)
+LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, std::string_view control_name)
 {
 	if (type == TYPE_VEC4)
 		return LLVector4(sd);
@@ -1830,7 +1832,6 @@ DECL_LLCC(LLSD, test_llsd);
 void test_cached_control()
 {
 #define TEST_LLCC(T, V) if((T)mySetting_##T != V) LL_ERRS() << "Fail "#T << LL_ENDL
-<<<<<<< HEAD
 	TEST_LLCC(U32, 666);
 	TEST_LLCC(S32, (S32)-666);
 	TEST_LLCC(F32, (F32)-666.666);
@@ -1843,25 +1844,13 @@ void test_cached_control()
 	TEST_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
 	TEST_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
 	TEST_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
+//	//BD - Vector2
+    TEST_LLCC(LLVector2, LLVector2(1.0, 2.0f));
 //	//BD - Vector4
 	TEST_LLCC(LLVector4, LLVector4(1.0, 2.0f, 3.0, 4.0f));
 //There's no LLSD comparsion for LLCC yet. TEST_LLCC(LLSD, test_llsd); 
 
 	if((std::string)test_BrowserHomePage != "http://www.secondlife.com") LL_ERRS() << "Fail BrowserHomePage" << LL_ENDL;
-=======
-    TEST_LLCC(U32, 666);
-    TEST_LLCC(S32, (S32)-666);
-    TEST_LLCC(F32, (F32)-666.666);
-    TEST_LLCC(bool, true);
-    if((std::string)mySetting_string != "Default String Value") LL_ERRS() << "Fail string" << LL_ENDL;
-    TEST_LLCC(LLVector3, LLVector3(1.0f, 2.0f, 3.0f));
-    TEST_LLCC(LLVector3d, LLVector3d(6.0f, 5.0f, 4.0f));
-    TEST_LLCC(LLRect, LLRect(0, 0, 100, 500));
-    TEST_LLCC(LLColor4, LLColor4(0.0f, 0.5f, 1.0f));
-    TEST_LLCC(LLColor3, LLColor3(1.0f, 0.f, 0.5f));
-    TEST_LLCC(LLColor4U, LLColor4U(255, 200, 100, 255));
-//There's no LLSD comparsion for LLCC yet. TEST_LLCC(LLSD, test_llsd);
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 #endif // TEST_CACHED_CONTROL
 

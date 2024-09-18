@@ -32,7 +32,7 @@ class BDFloaterCamera :
 private:
 	BDFloaterCamera(const LLSD& key);
 	/*virtual*/	~BDFloaterCamera();
-	/*virtual*/	BOOL postBuild();
+	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
 
 	void updateCamera();

@@ -288,9 +288,9 @@ BOOL BDFunctions::resetToDefault(LLUICtrl* ctrl)
 	if (control)
 	{
 		control->resetToDefault(true);
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 //BD - Revert to Default
@@ -521,8 +521,8 @@ void BDFunctions::addInventoryPresets(LLComboBox* combo, LLSettingsBase::ptr_t s
 	//BD - Copy into something we can sort
 	std::vector<LLViewerInventoryItem*> presets;
 
-	S32 count = items.size();
-	for (S32 i = 0; i < count; ++i)
+	size_t count = items.size();
+	for (auto i = 0; i < count; ++i)
 	{
 		presets.push_back(items.at(i));
 	}

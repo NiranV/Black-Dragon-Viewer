@@ -123,7 +123,6 @@ private:
 	void onSearchCommit();
 	void fillSearchComboBox();
 	void invokeSearch(std::string search_text);
-	void resizeLayoutPanel();
 	// callbacks
 	void onTeleportHistoryMenuItemClicked(const LLSD& userdata);
 	void onTeleportHistoryChanged();
@@ -134,10 +133,8 @@ private:
 	void onHomeButtonClicked();
 	void onLandmarksButtonClicked();
 	void onLocationSelection();
-	void onLocationPrearrange(const LLSD& data);
 	void onTeleportFinished(const LLVector3d& global_agent_pos);
 	void onTeleportFailed();
-	void onNavbarResized();
 	void onRegionNameResponse(
 			std::string typed_location,
 			std::string region_name,

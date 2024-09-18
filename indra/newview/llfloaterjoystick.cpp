@@ -146,7 +146,7 @@ void LLFloaterJoystick::draw()
 	LLFloater::draw();
 }
 
-BOOL LLFloaterJoystick::postBuild()
+bool LLFloaterJoystick::postBuild()
 {		
 	center();
 	F32 range = gSavedSettings.getBOOL("Cursor3D") ? 128.f : 2.f;
@@ -183,7 +183,7 @@ BOOL LLFloaterJoystick::postBuild()
 
 	refresh();
 	refreshListOfDevices();
-	return TRUE;
+	return true;
 }
 
 LLFloaterJoystick::~LLFloaterJoystick()
@@ -273,6 +273,13 @@ void LLFloaterJoystick::refresh()
 	initFromSettings();
 }
 
+bool LLFloaterJoystick::addDeviceCallback(std::string& name, LLSD& value, void* userdata)
+{
+    LLFloaterJoystick* floater = (LLFloaterJoystick*)userdata;
+    floater->mJoysticksCombo->add(name, value, ADD_BOTTOM, 1);
+    return false; // keep searching
+}
+
 void LLFloaterJoystick::addDevice(std::string &name, LLSD& value)
 {
     mJoysticksCombo->add(name, value, ADD_BOTTOM, 1);
@@ -287,19 +294,21 @@ void LLFloaterJoystick::refreshListOfDevices()
 
     mHasDeviceList = false;
     
+    void* win_calback = nullptr;
     // di8_devices_callback callback is immediate and happens in scope of getInputDevices()
 #if LL_WINDOWS && !LL_MESA_HEADLESS
     // space navigator is marked as DI8DEVCLASS_GAMECTRL in ndof lib
     U32 device_type = DI8DEVCLASS_GAMECTRL;
-    void* callback = &di8_list_devices_callback;
+    win_calback = di8_list_devices_callback;
+#elif LL_DARWIN
+    U32 device_type = 0;
 #else
     // MAC doesn't support device search yet
     // On MAC there is an ndof_idsearch and it is possible to specify product
     // and manufacturer in NDOF_Device for ndof_init_first to pick specific one
     U32 device_type = 0;
-    void* callback = NULL;
 #endif
-    if (gViewerWindow->getWindow()->getInputDevices(device_type, callback, this))
+    if (gViewerWindow->getWindow()->getInputDevices(device_type, addDeviceCallback, win_calback, this))
     {
         mHasDeviceList = true;
     }

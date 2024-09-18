@@ -935,7 +935,7 @@ bool LLFloaterFixedEnvironmentSky::postBuild()
 	panel->setOnDirtyFlagChanged([this](LLPanel *, bool value) { onPanelDirtyFlagChanged(value); });
 	mTab->addTabPanel(LLTabContainer::TabPanelParams().panel(panel).select_tab(false));
 
-	return TRUE;
+	return true;
 }
 
 void LLFloaterFixedEnvironmentSky::updateEditEnvironment(void)

@@ -67,7 +67,7 @@ static const S32 NUM_FRAMES_HISTORY = 200;
 
 std::vector<BlockTimerStatHandle*> ft_display_idx; // line of table entry for display purposes (for collapse)
 
-BOOL LLFastTimerView::sAnalyzePerformance = FALSE;
+bool LLFastTimerView::sAnalyzePerformance = false;
 
 S32 get_depth(const BlockTimerStatHandle* blockp)
 {
@@ -126,7 +126,7 @@ void LLFastTimerView::setPauseState(bool pause_state)
 	mPauseHistory = pause_state;
 }
 
-BOOL LLFastTimerView::postBuild()
+bool LLFastTimerView::postBuild()
 {
 	mPauseBtn = getChild<LLButton>("pause_btn");
 	mScrollBar = getChild<LLScrollbar>("scroll_vert");
@@ -139,10 +139,10 @@ BOOL LLFastTimerView::postBuild()
 	mMetricCombo = getChild<LLComboBox>("metric_combo");
 	
 	mPauseBtn->setCommitCallback(boost::bind(&LLFastTimerView::onPause, this));
-	return TRUE;
+	return true;
 }
 
-BOOL LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	if (mHoverTimer )
 	{
@@ -156,7 +156,7 @@ BOOL LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 			mHoverTimer->getParent()->getTreeNode().mCollapsed = true;
 		}
 		mNeedColorUpdate = true;
-		return TRUE;
+		return true;
 	}
 	else if (mBarRect.pointInRect(x, y))
 	{
@@ -164,7 +164,7 @@ BOOL LLFastTimerView::handleRightMouseDown(S32 x, S32 y, MASK mask)
 		bar_idx = llclamp(bar_idx, 0, MAX_VISIBLE_HISTORY);
 		mStatsIndex = mScrollIndex + bar_idx;
 		mNeedColorUpdate = true;
-		return TRUE;
+		return true;
 	}
 	return LLFloater::handleRightMouseDown(x, y, mask);
 }
@@ -181,7 +181,7 @@ BlockTimerStatHandle* LLFastTimerView::getLegendID(S32 y)
 	return NULL;
 }
 
-BOOL LLFastTimerView::handleDoubleClick(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleDoubleClick(S32 x, S32 y, MASK mask)
 {
 	for(LLTrace::block_timer_tree_df_iterator_t it = LLTrace::begin_block_timer_tree_df(FTM_FRAME);
 		it != LLTrace::end_block_timer_tree_df();
@@ -190,10 +190,10 @@ BOOL LLFastTimerView::handleDoubleClick(S32 x, S32 y, MASK mask)
 		(*it)->getTreeNode().mCollapsed = false;
 		mNeedColorUpdate = true;
 	}
-	return TRUE;
+	return true;
 }
 
-BOOL LLFastTimerView::handleMouseDown(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleMouseDown(S32 x, S32 y, MASK mask)
 {
 	if (x < mScrollBar->getRect().mLeft)
 	{
@@ -213,12 +213,12 @@ BOOL LLFastTimerView::handleMouseDown(S32 x, S32 y, MASK mask)
 	else if (mGraphRect.pointInRect(x, y))
 	{
 		gFocusMgr.setMouseCapture(this);
-		return TRUE;
+		return true;
 	}
 	return LLFloater::handleMouseDown(x, y, mask);
 }
 
-BOOL LLFastTimerView::handleMouseUp(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleMouseUp(S32 x, S32 y, MASK mask)
 {
 	if (hasMouseCapture())
 	{
@@ -227,14 +227,14 @@ BOOL LLFastTimerView::handleMouseUp(S32 x, S32 y, MASK mask)
 	return LLFloater::handleMouseUp(x, y, mask);;
 }
 
-BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 {
 	if (hasMouseCapture())
 	{
 		F32 lerp = llclamp(1.f - (F32) (x - mGraphRect.mLeft) / (F32) mGraphRect.getWidth(), 0.f, 1.f);
 		mScrollIndex = ll_round( lerp * (F32)(mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
 		mScrollIndex = llclamp(	mScrollIndex, 0, (S32)mRecording.getNumRecordedPeriods());
-		return TRUE;
+		return true;
 	}
 	mHoverTimer = NULL;
 	mHoverID = NULL;
@@ -249,7 +249,7 @@ BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 								MAX_VISIBLE_HISTORY);
 		if (mHoverBarIndex == 0)
 		{
-			return TRUE;
+			return true;
 		}
 		else if (mHoverBarIndex < 0)
 		{
@@ -260,9 +260,9 @@ BOOL LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
 
 		TimerBar* hover_bar = NULL;
 		F32Seconds mouse_time_offset = ((F32)(x - mBarRect.mLeft) / (F32)mBarRect.getWidth()) * mTotalTimeDisplay;
-		for (int bar_index = 0, end_index = LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount(); 
-			bar_index < end_index; 
-			++bar_index)
+        for (size_t bar_index = 0, end_index = LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount();
+            bar_index < end_index;
+            ++bar_index)
 		{
 			if (!row.mBars)
 			{
@@ -331,7 +331,7 @@ static std::string get_tooltip(BlockTimerStatHandle& timer, S32 history_index, P
 	return tooltip;
 }
 
-BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
+bool LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 {
 	if(mPauseHistory && mBarRect.pointInRect(x, y))
 	{
@@ -348,7 +348,7 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 				.sticky_rect(screen_rect)
 				.delay_time(0.f));
 
-			return TRUE;
+			return true;
 		}
 	}
 	else
@@ -361,7 +361,7 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 			{
 				LLToolTipMgr::instance().show(get_tooltip(*idp, 0, mRecording));
 
-				return TRUE;
+				return true;
 			}
 		}
 	}
@@ -369,7 +369,7 @@ BOOL LLFastTimerView::handleToolTip(S32 x, S32 y, MASK mask)
 	return LLFloater::handleToolTip(x, y, mask);
 }
 
-BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
+bool LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
 	if (x < mBarRect.mLeft)
 	{
@@ -383,7 +383,7 @@ BOOL LLFastTimerView::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 			0,
 			llmin((S32)mRecording.getNumRecordedPeriods(), (S32)mRecording.getNumRecordedPeriods() - MAX_VISIBLE_HISTORY));
 	}
-	return TRUE;
+	return true;
 }
 
 
@@ -726,7 +726,7 @@ void LLFastTimerView::exportCharts(const std::string& base, const std::string& t
 
 		gGL.color3fv(base_col.mV);
 		U32 count = 0;
-		U32 total_count = base_execution.size();
+		U32 total_count = static_cast<U32>(base_execution.size());
 
 		last_p.clear();
 
@@ -748,7 +748,7 @@ void LLFastTimerView::exportCharts(const std::string& base, const std::string& t
 			LLGLEnable blend(GL_BLEND);
 			gGL.color3fv(cur_col.mV);
 			count = 0;
-			total_count = cur_execution.size();
+			total_count = static_cast<U32>(cur_execution.size());
 
 			for (std::vector<LLSD::Real>::iterator iter = cur_execution.begin(); iter != cur_execution.end(); ++iter)
 			{
@@ -1040,7 +1040,7 @@ void LLFastTimerView::drawLineGraph()
 
 	//highlight visible range
 	{
-		S32 first_frame = mRecording.getNumRecordedPeriods() - mScrollIndex;
+        S32 first_frame = static_cast<S32>(mRecording.getNumRecordedPeriods()) - mScrollIndex;
 		S32 last_frame = first_frame - MAX_VISIBLE_HISTORY;
 
 		F32 frame_delta = ((F32) (mGraphRect.getWidth()))/(mRecording.getNumRecordedPeriods()-1);
@@ -1105,9 +1105,9 @@ void LLFastTimerView::drawLineGraph()
 		F32 time_scale_factor = (F32)mGraphRect.getHeight() / max_time.value();
 		F32 hz_scale_factor = (F32) mGraphRect.getHeight() / (1.f / max_time.value());
         
-		for (U32 j = mRecording.getNumRecordedPeriods();
-			j > 0;
-			j--)
+        for (U32 j = static_cast<U32>(mRecording.getNumRecordedPeriods());
+            j > 0;
+            j--)
 		{
 			LLTrace::Recording& recording = mRecording.getPrevRecording(j);
 			F32Seconds time = llmax(recording.getSum(*idp), F64Seconds(0.000001));
@@ -1678,7 +1678,7 @@ S32 LLFastTimerView::drawBar(LLRect bar_rect, TimerBarRow& row, S32 image_width,
 	bool children_visible = visible && !time_block->getTreeNode().mCollapsed;
 
 	bar_index++;
-	const U32 num_bars = LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount();
+	const S32 num_bars = static_cast<S32>(LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount());
 	if (bar_index < num_bars && row.mBars[bar_index].mFirstChild)
 	{
 		bool is_last = false;

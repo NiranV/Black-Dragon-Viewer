@@ -142,16 +142,16 @@ LLMotion::LLMotionInitStatus BDMLAimMotion::onInitialize(LLCharacter *character)
 //-----------------------------------------------------------------------------
 // BDMLAimMotion::onActivate()
 //-----------------------------------------------------------------------------
-BOOL BDMLAimMotion::onActivate()
+bool BDMLAimMotion::onActivate()
 {
-	return TRUE;
+	return true;
 }
 
 
 //-----------------------------------------------------------------------------
 // BDMLAimMotion::onUpdate()
 //-----------------------------------------------------------------------------
-BOOL BDMLAimMotion::onUpdate(F32 time, U8* joint_mask)
+bool BDMLAimMotion::onUpdate(F32 time, U8* joint_mask)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 	LLQuaternion	targetHeadRotWorld;
@@ -234,7 +234,7 @@ BOOL BDMLAimMotion::onUpdate(F32 time, U8* joint_mask)
 		mChestState->setRotation(head_rot_local);
 	}
 
-	return TRUE;
+	return true;
 }
 
 

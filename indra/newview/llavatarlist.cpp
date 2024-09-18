@@ -64,21 +64,6 @@ bool LLAvatarList::contains(const LLUUID& id)
     return std::find(ids.begin(), ids.end(), id) != ids.end();
 }
 
-void LLAvatarList::toggleIcons()
-{
-    // Save the new value for new items to use.
-    mShowIcons = !mShowIcons;
-    gSavedSettings.setBOOL(mIconParamName, mShowIcons);
-
-    // Show/hide icons for all existing items.
-    std::vector<LLPanel*> items;
-    getItems(items);
-    for( std::vector<LLPanel*>::const_iterator it = items.begin(); it != items.end(); it++)
-    {
-        static_cast<LLAvatarListItem*>(*it)->setAvatarIconVisible(mShowIcons);
-    }
-}
-
 void LLAvatarList::setSpeakingIndicatorsVisible(bool visible)
 {
     // Save the new value for new items to use.

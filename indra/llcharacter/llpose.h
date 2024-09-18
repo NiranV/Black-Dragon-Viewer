@@ -55,10 +55,10 @@ protected:
     joint_map_iterator          mListIter;
 public:
     // Iterate through jointStates
-    LLJointState* getFirstJointState();
-    LLJointState* getNextJointState();
-    LLJointState* findJointState(LLJoint *joint);
-    LLJointState* findJointState(const std::string &name);
+    LLPointer<LLJointState> getFirstJointState();
+    LLPointer<LLJointState> getNextJointState();
+    LLPointer<LLJointState> findJointState(LLJoint* joint);
+    LLPointer<LLJointState> findJointState(const std::string& name);
 public:
     // Constructor
     LLPose() : mWeight(0.f) {}

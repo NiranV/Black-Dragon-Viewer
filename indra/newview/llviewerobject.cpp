@@ -5986,12 +5986,6 @@ LLVOAvatar* LLViewerObject::asAvatar()
     return NULL;
 }
 
-// virtual 
-LLVOVolume* LLViewerObject::asVolume()
-{
-	return nullptr;
-}
-
 // If this object is directly or indirectly parented by an avatar,
 // return it.  Normally getAvatar() is the correct function to call;
 // it will give the avatar used for skinning.  The exception is with

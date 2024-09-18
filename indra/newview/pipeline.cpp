@@ -112,6 +112,7 @@
 #include "llscenemonitor.h"
 #include "llprogressview.h"
 #include "llcleanup.h"
+#include "gltfscenemanager.h"
 
 #include "llenvironment.h"
 #include "llsettingsvo.h"
@@ -201,15 +202,18 @@ F32 LLPipeline::RenderScreenSpaceReflectionDepthRejectBias;
 F32 LLPipeline::RenderScreenSpaceReflectionAdaptiveStepMultiplier;
 S32 LLPipeline::RenderScreenSpaceReflectionGlossySamples;
 S32 LLPipeline::RenderBufferVisualization;
+bool LLPipeline::RenderMirrors;
+S32 LLPipeline::RenderHeroProbeUpdateRate;
+S32 LLPipeline::RenderHeroProbeConservativeUpdateMultiplier;
 LLTrace::EventStatHandle<S64> LLPipeline::sStatBatchSize("renderbatchsize");
 
 //BD - Special Options
-BOOL LLPipeline::CameraFreeDoFFocus;
-BOOL LLPipeline::CameraDoFLocked;
-BOOL LLPipeline::RenderDeferredBlurLight;
-BOOL LLPipeline::RenderSnapshotAutoAdjustMultiplier;
-BOOL LLPipeline::RenderHighPrecisionNormals;
-BOOL LLPipeline::RenderShadowAutomaticDistance;
+bool LLPipeline::CameraFreeDoFFocus;
+bool LLPipeline::CameraDoFLocked;
+bool LLPipeline::RenderDeferredBlurLight;
+bool LLPipeline::RenderSnapshotAutoAdjustMultiplier;
+bool LLPipeline::RenderHighPrecisionNormals;
+bool LLPipeline::RenderShadowAutomaticDistance;
 U32 LLPipeline::RenderSSRResolution;
 F32 LLPipeline::RenderSSRBrightness;
 F32 LLPipeline::RenderSSAOBlurSize;
@@ -222,23 +226,24 @@ F32 LLPipeline::RenderShadowFarClip;
 F32 LLPipeline::RenderGlobalLightStrength;
 F32 LLPipeline::RenderGlowMinLuminance;
 LLVector4 LLPipeline::RenderShadowFarClipVec;
-BOOL LLPipeline::RenderImpostors;
+bool LLPipeline::RenderImpostors;
 
 //    //BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
 LLVector2 LLPipeline::RenderProjectorShadowResolution;
 
 //    //BD - Volumetric Lighting
-BOOL LLPipeline::RenderGodrays;
+bool LLPipeline::RenderGodrays;
 U32 LLPipeline::RenderGodraysResolution;
 F32 LLPipeline::RenderGodraysMultiplier;
 F32 LLPipeline::RenderGodraysFalloffMultiplier;
 
 //    //BD - Motion Blur
-/*BOOL LLPipeline::RenderMotionBlur;
+/*bool LLPipeline::RenderMotionBlur;
 U32 LLPipeline::RenderMotionBlurStrength;
 U32 LLPipeline::RenderMotionBlurQuality;*/
 
+const U32 LLPipeline::MAX_BAKE_WIDTH = 512;
 
 const F32 BACKLIGHT_DAY_MAGNITUDE_OBJECT = 0.1f;
 const F32 BACKLIGHT_NIGHT_MAGNITUDE_OBJECT = 0.08f;
@@ -247,11 +252,11 @@ const F32 DEFERRED_LIGHT_FALLOFF = 0.5f;
 const U32 DEFERRED_VB_MASK = LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_TEXCOORD0 | LLVertexBuffer::MAP_TEXCOORD1;
 
 extern S32 gBoxFrame;
-//extern BOOL gHideSelectedObjects;
-extern BOOL gDisplaySwapBuffers;
-extern BOOL gDebugGL;
-extern BOOL gCubeSnapshot;
-extern BOOL gSnapshotNoPost;
+//extern bool gHideSelectedObjects;
+extern bool gDisplaySwapBuffers;
+extern bool gDebugGL;
+extern bool gCubeSnapshot;
+extern bool gSnapshotNoPost;
 
 bool	gAvatarBacklight = false;
 
@@ -606,6 +611,9 @@ void LLPipeline::init()
     connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionAdaptiveStepMultiplier");
     connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionGlossySamples");
 	connectRefreshCachedSettingsSafe("RenderBufferVisualization");
+    connectRefreshCachedSettingsSafe("RenderMirrors");
+    connectRefreshCachedSettingsSafe("RenderHeroProbeUpdateRate");
+    connectRefreshCachedSettingsSafe("RenderHeroProbeConservativeUpdateMultiplier");
 	gSavedSettings.getControl("RenderAutoHideSurfaceAreaLimit")->getCommitSignal()->connect(boost::bind(&LLPipeline::refreshCachedSettings));
 
 	//BD - Screen Space Reflections
@@ -745,6 +753,7 @@ void LLPipeline::cleanup()
 	mCubeVB = NULL;
 
     mReflectionMapManager.cleanup();
+    mHeroProbeManager.cleanup();
 }
 
 //============================================================================
@@ -768,12 +777,12 @@ void LLPipeline::destroyGL()
 
 void LLPipeline::requestResizeScreenTexture()
 {
-    gResizeScreenTexture = TRUE;
+    gResizeScreenTexture = true;
 }
 
 void LLPipeline::requestResizeShadowTexture()
 {
-    gResizeShadowTexture = TRUE;
+    gResizeShadowTexture = true;
 }
 
 void LLPipeline::resizeShadowTexture()
@@ -781,7 +790,7 @@ void LLPipeline::resizeShadowTexture()
     releaseSunShadowTargets();
     releaseSpotShadowTargets();
     allocateShadowBuffer();
-    gResizeShadowTexture = FALSE;
+    gResizeShadowTexture = false;
 }
 
 void LLPipeline::resizeScreenTexture()
@@ -810,7 +819,7 @@ void LLPipeline::resizeScreenTexture()
             releaseSunShadowTargets();
             releaseSpotShadowTargets();
 		    allocateScreenBuffer(resX,resY);
-            gResizeScreenTexture = FALSE;
+            gResizeScreenTexture = false;
 		}
 	}
 }
@@ -884,15 +893,28 @@ LLPipeline::eFBOStatus LLPipeline::doAllocateScreenBuffer(U32 resX, U32 resY)
 bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DISPLAY;
-    if (mRT == &mMainRT && sReflectionProbesEnabled)
+    if (mRT == &mMainRT)
     { // hacky -- allocate auxillary buffer
-        gCubeSnapshot = TRUE;
-        mReflectionMapManager.initReflectionMaps();
+        if (sReflectionProbesEnabled)
+        {
+            gCubeSnapshot = true;
+            mReflectionMapManager.initReflectionMaps();
+        }
+
         mRT = &mAuxillaryRT;
         U32 res = mReflectionMapManager.mProbeResolution * 4;  //multiply by 4 because probes will be 16x super sampled
         allocateScreenBuffer(res, res, samples);
+
+        if (RenderMirrors)
+        {
+            mHeroProbeManager.initReflectionMaps();
+            res = mHeroProbeManager.mProbeResolution;  // We also scale the hero probe RT to the probe res since we don't super sample it.
+            mRT = &mHeroProbeRT;
+            allocateScreenBuffer(res, res, samples);
+        }
+
         mRT = &mMainRT;
-        gCubeSnapshot = FALSE;
+        gCubeSnapshot = false;
     }
 
 	// remember these dimensions
@@ -1126,7 +1148,7 @@ void LLPipeline::refreshCachedSettings()
 			&& LLFeatureManager::getInstance()->isFeatureAvailable("UseOcclusion") 
 			&& gSavedSettings.getBOOL("UseOcclusion")) ? 2 : 0;
 	
-    RenderDeferred = TRUE; // DEPRECATED -- gSavedSettings.getBOOL("RenderDeferred");
+    RenderDeferred = true; // DEPRECATED -- gSavedSettings.getBOOL("RenderDeferred");
 	RenderDeferredSunWash = gSavedSettings.getF32("RenderDeferredSunWash");
 	RenderFSAASamples = LLFeatureManager::getInstance()->isFeatureAvailable("RenderFSAASamples") ? gSavedSettings.getU32("RenderFSAASamples") : 0;
 	RenderResolutionDivisor = gSavedSettings.getU32("RenderResolutionDivisor");
@@ -1203,6 +1225,15 @@ void LLPipeline::refreshCachedSettings()
     RenderScreenSpaceReflectionAdaptiveStepMultiplier = gSavedSettings.getF32("RenderScreenSpaceReflectionAdaptiveStepMultiplier");
     RenderScreenSpaceReflectionGlossySamples = gSavedSettings.getS32("RenderScreenSpaceReflectionGlossySamples");
 	RenderBufferVisualization = gSavedSettings.getS32("RenderBufferVisualization");
+    if (gSavedSettings.getBOOL("RenderMirrors") != RenderMirrors)
+    {
+        RenderMirrors = gSavedSettings.getBOOL("RenderMirrors");
+        LLViewerShaderMgr::instance()->clearShaderCache();
+        LLViewerShaderMgr::instance()->setShaders();
+    }
+    RenderHeroProbeUpdateRate = gSavedSettings.getS32("RenderHeroProbeUpdateRate");
+    RenderHeroProbeConservativeUpdateMultiplier = gSavedSettings.getS32("RenderHeroProbeConservativeUpdateMultiplier");
+
     sReflectionProbesEnabled = LLFeatureManager::getInstance()->isFeatureAvailable("RenderReflectionsEnabled") && gSavedSettings.getBOOL("RenderReflectionsEnabled");
 	RenderSpotLight = nullptr;
 
@@ -1279,7 +1310,6 @@ void LLPipeline::releaseGLBuffers()
 	releaseLUTBuffers();
 
 	mWaterDis.release();
-    mBake.release();
 	
     mSceneMap.release();
 
@@ -1329,6 +1359,12 @@ void LLPipeline::releaseScreenBuffers()
     mRT->deferredLight.release();
 //	//BD - Motion Blur
 	//mRT->velocity.release();
+
+    mHeroProbeRT.uiScreen.release();
+    mHeroProbeRT.screen.release();
+    mHeroProbeRT.fxaaBuffer.release();
+    mHeroProbeRT.deferredScreen.release();
+    mHeroProbeRT.deferredLight.release();
 }
 
 void LLPipeline::releaseSunShadowTarget(U32 index)
@@ -1362,9 +1398,6 @@ void LLPipeline::createGLBuffers()
     LL_PROFILE_ZONE_SCOPED_CATEGORY_PIPELINE;
     stop_glerror();
 	assertInitialized();
-
-    // Use FBO for bake tex
-    mBake.allocate(512, 512, GL_RGBA, true); // SL-12781 Build > Upload > Model; 3D Preview
 
 	stop_glerror();
 
@@ -2446,7 +2479,8 @@ static LLTrace::BlockTimerStatHandle FTM_CULL("Object Culling");
 // static
 bool LLPipeline::isWaterClip()
 {
-	return (!sRenderTransparentWater || gCubeSnapshot) && !sRenderingHUDs;
+    // We always pretend that we're not clipping water when rendering mirrors.
+    return (gPipeline.mHeroProbeManager.isMirrorPass()) ? false : (!sRenderTransparentWater || gCubeSnapshot) && !sRenderingHUDs;
 }
 
 void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result)
@@ -2612,6 +2646,7 @@ void LLPipeline::doOcclusion(LLCamera& camera)
         mCubeVB->setBuffer();
 
         mReflectionMapManager.doOcclusion();
+        mHeroProbeManager.doOcclusion();
         gOcclusionCubeProgram.unbind();
 
         gGL.setColorMask(true, true);
@@ -2681,7 +2716,7 @@ void LLPipeline::updateGL()
 		{
 			LLGLUpdate* glu = LLGLUpdate::sGLQ.front();
 			glu->updateGL();
-			glu->mInQ = FALSE;
+			glu->mInQ = false;
 			LLGLUpdate::sGLQ.pop_front();
 		}
 	}
@@ -2998,7 +3033,7 @@ void LLPipeline::markGLRebuild(LLGLUpdate* glu)
 	if (glu && !glu->mInQ)
 	{
 		LLGLUpdate::sGLQ.push_back(glu);
-		glu->mInQ = TRUE;
+		glu->mInQ = true;
 	}
 }
 
@@ -3759,7 +3794,7 @@ void LLPipeline::postSort(LLCamera &camera)
         }
     }
 
-    // LLSpatialGroup::sNoDelete = FALSE;
+    // LLSpatialGroup::sNoDelete = false;
     LL_PUSH_CALLSTACKS();
 }
 
@@ -3834,10 +3869,8 @@ void LLPipeline::renderHighlights()
 		// Make sure the selection image gets downloaded and decoded
 		mFaceSelectImagep->addTextureStats((F32)MAX_IMAGE_AREA);
 
-		U32 count = mSelectedFaces.size();
-		for (U32 i = 0; i < count; i++)
+        for (auto facep : mSelectedFaces)
 		{
-			LLFace *facep = mSelectedFaces[i];
 			if (!facep || facep->getDrawable()->isDead())
 			{
 				LL_ERRS() << "Bad face on selection" << LL_ENDL;
@@ -3853,10 +3886,8 @@ void LLPipeline::renderHighlights()
 		// Paint 'em red!
 		color.setVec(1.f, 0.f, 0.f, 0.5f);
 
-		int count = mHighlightFaces.size();
-		for (S32 i = 0; i < count; i++)
+        for (auto facep : mHighlightFaces)
 		{
-			LLFace* facep = mHighlightFaces[i];
 			facep->renderSelected(LLViewerTexture::sNullImagep, color);
 		}
 	}
@@ -3882,10 +3913,8 @@ void LLPipeline::renderHighlights()
 
 		mFaceSelectImagep->addTextureStats((F32)MAX_IMAGE_AREA);
 
-		U32 count = mSelectedFaces.size();
-		for (U32 i = 0; i < count; i++)
+        for (auto facep : mSelectedFaces)
 		{
-			LLFace *facep = mSelectedFaces[i];
 			if (!facep || facep->getDrawable()->isDead())
 			{
 				LL_ERRS() << "Bad face on selection" << LL_ENDL;
@@ -3912,10 +3941,8 @@ void LLPipeline::renderHighlights()
 
 		mFaceSelectImagep->addTextureStats((F32)MAX_IMAGE_AREA);
 
-		U32 count = mSelectedFaces.size();
-		for (U32 i = 0; i < count; i++)
+        for (auto facep : mSelectedFaces)
 		{
-			LLFace *facep = mSelectedFaces[i];
 			if (!facep || facep->getDrawable()->isDead())
 			{
 				LL_ERRS() << "Bad face on selection" << LL_ENDL;
@@ -3993,6 +4020,7 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
         {
             //update reflection probe uniform
             mReflectionMapManager.updateUniforms();
+            mHeroProbeManager.updateUniforms();
         }
 
 		U32 cur_type = 0;
@@ -4953,7 +4981,7 @@ void LLPipeline::rebuildPools()
 
 	assertInitialized();
 
-	S32 max_count = mPools.size();
+    auto max_count = mPools.size();
 	pool_set_t::iterator iter1 = mPools.upper_bound(mLastRebuildPool);
 	while(max_count > 0 && mPools.size() > 0) // && num_rebuilds < MAX_REBUILDS)
 	{
@@ -6491,160 +6519,181 @@ LLVOPartGroup* LLPipeline::lineSegmentIntersectParticle(const LLVector4a& start,
 }
 
 LLViewerObject* LLPipeline::lineSegmentIntersectInWorld(const LLVector4a& start, const LLVector4a& end,
-														bool pick_transparent,
-														bool pick_rigged,
-                                                        bool pick_unselectable,
-                                                        bool pick_reflection_probe,
-														S32* face_hit,
-														LLVector4a* intersection,         // return the intersection point
-														LLVector2* tex_coord,            // return the texture coordinates of the intersection point
-														LLVector4a* normal,               // return the surface normal at the intersection point
-														LLVector4a* tangent             // return the surface tangent at the intersection point
-	)
+    bool pick_transparent,
+    bool pick_rigged,
+    bool pick_unselectable,
+    bool pick_reflection_probe,
+    S32* face_hit,
+    S32* gltf_node_hit,
+    S32* gltf_primitive_hit,
+    LLVector4a* intersection,         // return the intersection point
+    LLVector2* tex_coord,            // return the texture coordinates of the intersection point
+    LLVector4a* normal,               // return the surface normal at the intersection point
+    LLVector4a* tangent             // return the surface tangent at the intersection point
+)
 {
-	LLDrawable* drawable = NULL;
+    LLDrawable* drawable = NULL;
 
-	LLVector4a local_end = end;
+    LLVector4a local_end = end;
 
-	LLVector4a position;
+    LLVector4a position;
 
-	sPickAvatar = false; //! LLToolMgr::getInstance()->inBuildMode();
-	
-	for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin(); 
-			iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
-	{
-		LLViewerRegion* region = *iter;
+    sPickAvatar = false; //! LLToolMgr::getInstance()->inBuildMode();
 
-		for (U32 j = 0; j < LLViewerRegion::NUM_PARTITIONS; j++)
-		{
-			if ((j == LLViewerRegion::PARTITION_VOLUME) || 
-				(j == LLViewerRegion::PARTITION_BRIDGE) ||
+    for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
+        iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
+    {
+        LLViewerRegion* region = *iter;
+
+        for (U32 j = 0; j < LLViewerRegion::NUM_PARTITIONS; j++)
+        {
+            if ((j == LLViewerRegion::PARTITION_VOLUME) ||
+                (j == LLViewerRegion::PARTITION_BRIDGE) ||
                 (j == LLViewerRegion::PARTITION_AVATAR) || // for attachments
-				(j == LLViewerRegion::PARTITION_CONTROL_AV) ||
-				(j == LLViewerRegion::PARTITION_TERRAIN) ||
-				(j == LLViewerRegion::PARTITION_TREE) ||
-				(j == LLViewerRegion::PARTITION_GRASS))  // only check these partitions for now
-			{
-				LLSpatialPartition* part = region->getSpatialPartition(j);
-				if (part && hasRenderType(part->mDrawableType))
-				{
-					LLDrawable* hit = part->lineSegmentIntersect(start, local_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe, face_hit, &position, tex_coord, normal, tangent);
-					if (hit)
-					{
-						drawable = hit;
-						local_end = position;						
-					}
-				}
-			}
-		}
-	}
-	
-	if (!sPickAvatar)
-	{
-		//save hit info in case we need to restore
-		//due to attachment override
-		LLVector4a local_normal;
-		LLVector4a local_tangent;
-		LLVector2 local_texcoord;
-		S32 local_face_hit = -1;
+                (j == LLViewerRegion::PARTITION_CONTROL_AV) ||
+                (j == LLViewerRegion::PARTITION_TERRAIN) ||
+                (j == LLViewerRegion::PARTITION_TREE) ||
+                (j == LLViewerRegion::PARTITION_GRASS))  // only check these partitions for now
+            {
+                LLSpatialPartition* part = region->getSpatialPartition(j);
+                if (part && hasRenderType(part->mDrawableType))
+                {
+                    LLDrawable* hit = part->lineSegmentIntersect(start, local_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe, face_hit, &position, tex_coord, normal, tangent);
+                    if (hit)
+                    {
+                        drawable = hit;
+                        local_end = position;
+                    }
+                }
+            }
+        }
+    }
 
-		if (face_hit)
-		{ 
-			local_face_hit = *face_hit;
-		}
-		if (tex_coord)
-		{
-			local_texcoord = *tex_coord;
-		}
-		if (tangent)
-		{
-			local_tangent = *tangent;
-		}
-		else
-		{
-			local_tangent.clear();
-		}
-		if (normal)
-		{
-			local_normal = *normal;
-		}
-		else
-		{
-			local_normal.clear();
-		}
-				
-		const F32 ATTACHMENT_OVERRIDE_DIST = 0.1f;
+    if (!sPickAvatar)
+    {
+        //save hit info in case we need to restore
+        //due to attachment override
+        LLVector4a local_normal;
+        LLVector4a local_tangent;
+        LLVector2 local_texcoord;
+        S32 local_face_hit = -1;
 
-		//check against avatars
-		sPickAvatar = true;
-		for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin(); 
-				iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
-		{
-			LLViewerRegion* region = *iter;
+        if (face_hit)
+        {
+            local_face_hit = *face_hit;
+        }
+        if (tex_coord)
+        {
+            local_texcoord = *tex_coord;
+        }
+        if (tangent)
+        {
+            local_tangent = *tangent;
+        }
+        else
+        {
+            local_tangent.clear();
+        }
+        if (normal)
+        {
+            local_normal = *normal;
+        }
+        else
+        {
+            local_normal.clear();
+        }
 
-			LLSpatialPartition* part = region->getSpatialPartition(LLViewerRegion::PARTITION_AVATAR);
-			if (part && hasRenderType(part->mDrawableType))
-			{
-				LLDrawable* hit = part->lineSegmentIntersect(start, local_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe, face_hit, &position, tex_coord, normal, tangent);
-				if (hit)
-				{
-					LLVector4a delta;
-					delta.setSub(position, local_end);
+        const F32 ATTACHMENT_OVERRIDE_DIST = 0.1f;
 
-					if (!drawable || 
-						!drawable->getVObj()->isAttachment() ||
-						delta.getLength3().getF32() > ATTACHMENT_OVERRIDE_DIST)
-					{ //avatar overrides if previously hit drawable is not an attachment or 
-					  //attachment is far enough away from detected intersection
-						drawable = hit;
-						local_end = position;						
-					}
-					else
-					{ //prioritize attachments over avatars
-						position = local_end;
+        //check against avatars
+        sPickAvatar = true;
+        for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
+            iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
+        {
+            LLViewerRegion* region = *iter;
 
-						if (face_hit)
-						{
-							*face_hit = local_face_hit;
-						}
-						if (tex_coord)
-						{
-							*tex_coord = local_texcoord;
-						}
-						if (tangent)
-						{
-							*tangent = local_tangent;
-						}
-						if (normal)
-						{
-							*normal = local_normal;
-						}
-					}
-				}
-			}
-		}
-	}
+            LLSpatialPartition* part = region->getSpatialPartition(LLViewerRegion::PARTITION_AVATAR);
+            if (part && hasRenderType(part->mDrawableType))
+            {
+                LLDrawable* hit = part->lineSegmentIntersect(start, local_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe, face_hit, &position, tex_coord, normal, tangent);
+                if (hit)
+                {
+                    LLVector4a delta;
+                    delta.setSub(position, local_end);
 
-	//check all avatar nametags (silly, isn't it?)
-	for (std::vector< LLCharacter* >::iterator iter = LLCharacter::sInstances.begin();
-		iter != LLCharacter::sInstances.end();
-		++iter)
-	{
-		LLVOAvatar* av = (LLVOAvatar*) *iter;
-		if (av->mNameText.notNull()
-			&& av->mNameText->lineSegmentIntersect(start, local_end, position))
-		{
-			drawable = av->mDrawable;
-			local_end = position;
-		}
-	}
+                    if (!drawable ||
+                        !drawable->getVObj()->isAttachment() ||
+                        delta.getLength3().getF32() > ATTACHMENT_OVERRIDE_DIST)
+                    { //avatar overrides if previously hit drawable is not an attachment or
+                      //attachment is far enough away from detected intersection
+                        drawable = hit;
+                        local_end = position;
+                    }
+                    else
+                    { //prioritize attachments over avatars
+                        position = local_end;
 
-	if (intersection)
-	{
-		*intersection = position;
-	}
+                        if (face_hit)
+                        {
+                            *face_hit = local_face_hit;
+                        }
+                        if (tex_coord)
+                        {
+                            *tex_coord = local_texcoord;
+                        }
+                        if (tangent)
+                        {
+                            *tangent = local_tangent;
+                        }
+                        if (normal)
+                        {
+                            *normal = local_normal;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	return drawable ? drawable->getVObj().get() : NULL;
+    //check all avatar nametags (silly, isn't it?)
+    for (std::vector< LLCharacter* >::iterator iter = LLCharacter::sInstances.begin();
+        iter != LLCharacter::sInstances.end();
+        ++iter)
+    {
+        LLVOAvatar* av = (LLVOAvatar*)*iter;
+        if (av->mNameText.notNull()
+            && av->mNameText->lineSegmentIntersect(start, local_end, position))
+        {
+            drawable = av->mDrawable;
+            local_end = position;
+        }
+    }
+
+    S32 node_hit = -1;
+    S32 primitive_hit = -1;
+    LLDrawable* hit = LL::GLTFSceneManager::instance().lineSegmentIntersect(start, local_end, pick_transparent, pick_rigged, pick_unselectable, pick_reflection_probe, &node_hit, &primitive_hit, &position, tex_coord, normal, tangent);
+    if (hit)
+    {
+        drawable = hit;
+        local_end = position;
+    }
+
+    if (gltf_node_hit)
+    {
+        *gltf_node_hit = node_hit;
+    }
+
+    if (gltf_primitive_hit)
+    {
+        *gltf_primitive_hit = primitive_hit;
+    }
+
+    if (intersection)
+    {
+        *intersection = position;
+    }
+
+    return drawable ? drawable->getVObj().get() : NULL;
 }
 
 LLViewerObject* LLPipeline::lineSegmentIntersectInHUD(const LLVector4a& start, const LLVector4a& end,
@@ -7523,10 +7572,14 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 				}
 				else if (gAgentCamera.cameraMouselook())
 				{ // focus on point under mouselook crosshairs
-					LLVector4a result;
+                    LLVector4a result, normal, tangent, start, end, particle_end;
+                    LLVector2 uv;
 					result.clear();
 
-					gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, FALSE, TRUE, TRUE, NULL, &result);
+					//gViewerWindow->cursorIntersect(-1, -1, 512.f, NULL, -1, FALSE, FALSE, TRUE, TRUE, NULL, &result);
+
+                    gViewerWindow->cursorIntersect(-1, -1, 512.f, nullptr, -1, false, true, true, false, NULL, nullptr, nullptr,
+                                                    &result, &uv, &normal, &tangent, &start, &end);
 
 					focus_point.set(result.getF32ptr());
 
@@ -7910,7 +7963,7 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
         gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
 	}
 
-    channel = shader.enableTexture(LLShaderMgr::DEFERRED_NORMAL, deferred_target->getUsage());
+    channel = shader.enableTexture(LLShaderMgr::NORMAL_MAP, deferred_target->getUsage());
 	if (channel > -1)
 	{
         deferred_target->bindTexture(2, channel, LLTexUnit::TFO_POINT); // frag_data[2]
@@ -9139,7 +9192,7 @@ void LLPipeline::unbindDeferredShader(LLGLSLShader& shader)
 	LLRenderTarget* deferred_light_target = &mRT->deferredLight;
 
 	stop_glerror();
-	shader.disableTexture(LLShaderMgr::DEFERRED_NORMAL, deferred_target->getUsage());
+	shader.disableTexture(LLShaderMgr::NORMAL_MAP, deferred_target->getUsage());
 	shader.disableTexture(LLShaderMgr::DEFERRED_DIFFUSE, deferred_target->getUsage());
 	shader.disableTexture(LLShaderMgr::DEFERRED_SPECULAR, deferred_target->getUsage());
 	shader.disableTexture(LLShaderMgr::DEFERRED_EMISSIVE, deferred_target->getUsage());
@@ -9220,6 +9273,16 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
     {
         mReflectionMapManager.mIrradianceMaps->bind(channel);
         bound = true;
+    }
+
+    if (RenderMirrors)
+    {
+        channel = shader.enableTexture(LLShaderMgr::HERO_PROBE, LLTexUnit::TT_CUBE_MAP_ARRAY);
+        if (channel > -1 && mHeroProbeManager.mTexture.notNull())
+        {
+            mHeroProbeManager.mTexture->bind(channel);
+            bound = true;
+        }
     }
 
     if (bound)
@@ -11062,7 +11125,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar, bool preview_avatar, bool 
 
     if (!preview_avatar && !for_profile)
     {
-        avatar->mNeedsImpostorUpdate = FALSE;
+        avatar->mNeedsImpostorUpdate = false;
         avatar->cacheImpostorValues();
         avatar->mLastImpostorUpdateFrameTime = gFrameTimeSeconds;
     }
@@ -11448,3 +11511,12 @@ void LLPipeline::rebuildDrawInfo()
     }
 }
 
+void LLPipeline::rebuildTerrain()
+{
+    for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
+        iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
+    {
+        LLViewerRegion* region = *iter;
+        region->dirtyAllPatches();
+    }
+}

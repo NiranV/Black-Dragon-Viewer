@@ -5053,45 +5053,7 @@ bool attempt_standard_notification(LLMessageSystem* msgsystem)
                                         false,
                                         LLSnapshotModel::SNAPSHOT_TYPE_COLOR,
                                         LLSnapshotModel::SNAPSHOT_FORMAT_PNG);
-<<<<<<< HEAD
-		}*/
-		
-		if (notificationID == "RegionRestartMinutes" ||
-			notificationID == "RegionRestartSeconds")
-		{
-			S32 seconds;
-			if (notificationID == "RegionRestartMinutes")
-			{
-				seconds = 60 * static_cast<S32>(llsdBlock["MINUTES"].asInteger());
-			}
-			else
-			{
-				seconds = static_cast<S32>(llsdBlock["SECONDS"].asInteger());
-			}
-
-			LLFloaterRegionRestarting* floaterp = LLFloaterReg::findTypedInstance<LLFloaterRegionRestarting>("region_restarting");
-
-			if (floaterp)
-			{
-				LLFloaterRegionRestarting::updateTime(seconds);
-			}
-			else
-			{
-				LLSD params;
-				params["NAME"] = llsdBlock["NAME"];
-				params["SECONDS"] = (LLSD::Integer)seconds;
-				LLFloaterRegionRestarting* restarting_floater = dynamic_cast<LLFloaterRegionRestarting*>(LLFloaterReg::showInstance("region_restarting", params));
-				if(restarting_floater)
-				{
-					restarting_floater->center();
-				}
-			}
-
-			make_ui_sound("UISndRestart");
-		}
-        
-=======
-        }
+        }*/
 
         if (notificationID == "RegionRestartMinutes" ||
             notificationID == "RegionRestartSeconds")
@@ -5127,7 +5089,6 @@ bool attempt_standard_notification(LLMessageSystem* msgsystem)
             make_ui_sound("UISndRestart");
         }
 
->>>>>>> Linden_Release/release/2024.06-atlasaurus
         // Special Marketplace update notification
         if (notificationID == "SLM_UPDATE_FOLDER")
         {
@@ -5177,36 +5138,20 @@ bool attempt_standard_notification(LLMessageSystem* msgsystem)
 
 static void process_special_alert_messages(const std::string & message)
 {
-<<<<<<< HEAD
-	// Do special handling for alert messages.   This is a legacy hack, and any actual displayed
-	// text should be altered in the notifications.xml files.
-	if ( message == "You died and have been teleported to your home location")
-	{
-		add(LLStatViewer::KILLED, 1);
-	}
-	//BD
-	/*else if( message == "Home position set." )
-	{
-		// save the home location image to disk
-		std::string snap_filename = gDirUtilp->getLindenUserDir();
-		snap_filename += gDirUtilp->getDirDelimiter();
-		snap_filename += LLStartUp::getScreenHomeFilename();
-		gViewerWindow->saveSnapshot(snap_filename,
-=======
     // Do special handling for alert messages.   This is a legacy hack, and any actual displayed
     // text should be altered in the notifications.xml files.
     if ( message == "You died and have been teleported to your home location")
     {
         add(LLStatViewer::KILLED, 1);
     }
-    else if( message == "Home position set." )
+    //BD
+	/*else if( message == "Home position set." )
     {
         // save the home location image to disk
         std::string snap_filename = gDirUtilp->getLindenUserDir();
         snap_filename += gDirUtilp->getDirDelimiter();
         snap_filename += LLStartUp::getScreenHomeFilename();
         gViewerWindow->saveSnapshot(snap_filename,
->>>>>>> Linden_Release/release/2024.06-atlasaurus
                                     gViewerWindow->getWindowWidthRaw(),
                                     gViewerWindow->getWindowHeightRaw(),
                                     false,
@@ -5214,11 +5159,7 @@ static void process_special_alert_messages(const std::string & message)
                                     false,
                                     LLSnapshotModel::SNAPSHOT_TYPE_COLOR,
                                     LLSnapshotModel::SNAPSHOT_FORMAT_PNG);
-<<<<<<< HEAD
 	}*/
-=======
-    }
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 
 
@@ -6055,72 +5996,6 @@ void process_teleport_failed(LLMessageSystem *msg, void**)
 
 void process_teleport_local(LLMessageSystem *msg,void**)
 {
-<<<<<<< HEAD
-	LL_INFOS("Teleport","Messaging") << "Received TeleportLocal message" << LL_ENDL;
-	
-	LLUUID agent_id;
-	msg->getUUIDFast(_PREHASH_Info, _PREHASH_AgentID, agent_id);
-	if (agent_id != gAgent.getID())
-	{
-		LL_WARNS("Teleport", "Messaging") << "Got teleport notification for wrong agent " << agent_id << " expected " << gAgent.getID() << ", ignoring!" << LL_ENDL;
-		return;
-	}
-
-	U32 location_id;
-	LLVector3 pos, look_at;
-	U32 teleport_flags;
-	msg->getU32Fast(_PREHASH_Info, _PREHASH_LocationID, location_id);
-	msg->getVector3Fast(_PREHASH_Info, _PREHASH_Position, pos);
-	msg->getVector3Fast(_PREHASH_Info, _PREHASH_LookAt, look_at);
-	msg->getU32Fast(_PREHASH_Info, _PREHASH_TeleportFlags, teleport_flags);
-
-	LL_INFOS("Teleport") << "Message params are location_id " << location_id << " teleport_flags " << teleport_flags << LL_ENDL;
-	if( gAgent.getTeleportState() != LLAgent::TELEPORT_NONE )
-	{
-		if( gAgent.getTeleportState() == LLAgent::TELEPORT_LOCAL )
-		{
-			// To prevent TeleportStart messages re-activating the progress screen right
-			// after tp, keep the teleport state and let progress screen clear it after a short delay
-			// (progress screen is active but not visible)  *TODO: remove when SVC-5290 is fixed
-			gTeleportDisplayTimer.reset();
-			gTeleportDisplay = true;
-		}
-		else
-		{
-			LL_WARNS("Teleport") << "State is not TELEPORT_LOCAL: " << gAgent.getTeleportStateName()
-								 << ", setting state to TELEPORT_NONE" << LL_ENDL;
-			gAgent.setTeleportState( LLAgent::TELEPORT_NONE );
-		}
-	}
-
-	// Sim tells us whether the new position is off the ground
-	if (teleport_flags & TELEPORT_FLAGS_IS_FLYING)
-	{
-		gAgent.setFlying(true);
-	}
-	else
-	{
-		gAgent.setFlying(false);
-	}
-
-	gAgent.setPositionAgent(pos);
-	gAgentCamera.slamLookAt(look_at);
-
-	if (!(gAgent.getTeleportKeepsLookAt() && gJoystick->getOverrideCamera()))
-	{
-		gAgentCamera.resetView(true, true);
-	}
-
-	// send camera update to new region
-	gAgentCamera.updateCamera();
-
-	send_agent_update(true, true);
-
-	// Let the interested parties know we've teleported.
-	// Vadim *HACK: Agent position seems to get reset (to render position?)
-	//              on each frame, so we have to pass the new position manually.
-	LLViewerParcelMgr::getInstance()->onTeleportFinished(true, gAgent.getPosGlobalFromAgent(pos));
-=======
     LL_INFOS("Teleport","Messaging") << "Received TeleportLocal message" << LL_ENDL;
 
     LLUUID agent_id;
@@ -6185,7 +6060,6 @@ void process_teleport_local(LLMessageSystem *msg,void**)
     // Vadim *HACK: Agent position seems to get reset (to render position?)
     //              on each frame, so we have to pass the new position manually.
     LLViewerParcelMgr::getInstance()->onTeleportFinished(true, gAgent.getPosGlobalFromAgent(pos));
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 
 void send_simple_im(const LLUUID& to_id,
@@ -6259,50 +6133,6 @@ void send_group_notice(const LLUUID& group_id,
 
 void send_lures(const LLSD& notification, const LLSD& response)
 {
-<<<<<<< HEAD
-	std::string text = response["message"].asString();
-	LLSLURL slurl;
-	LLAgentUI::buildSLURL(slurl);
-	text.append("\r\n").append(slurl.getSLURLString());
-
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessageFast(_PREHASH_StartLure);
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	msg->nextBlockFast(_PREHASH_Info);
-	msg->addU8Fast(_PREHASH_LureType, (U8)0); // sim will fill this in.
-	msg->addStringFast(_PREHASH_Message, text);
-	for(LLSD::array_const_iterator it = notification["payload"]["ids"].beginArray();
-		it != notification["payload"]["ids"].endArray();
-		++it)
-	{
-		LLUUID target_id = it->asUUID();
-
-		msg->nextBlockFast(_PREHASH_TargetData);
-		msg->addUUIDFast(_PREHASH_TargetID, target_id);
-
-		// Record the offer.
-		{
-			LLAvatarName av_name;
-			LLAvatarNameCache::get(target_id, &av_name);  // for im log filenames
-			LLSD args;
-			args["TO_NAME"] = LLSLURL("agent", target_id, "displayname").getSLURLString();;
-
-	
-			LLSD payload;
-				
-			//*TODO please rewrite all keys to the same case, lower or upper
-			payload["from_id"] = target_id;
-			payload["SUPPRESS_TOAST"] = true;
-			LLNotificationsUtil::add("TeleportOfferSent", args, payload);
-
-			// Add the recepient to the recent people list.
-			LLRecentPeople::instance().add(target_id);
-		}
-	}
-	gAgent.sendReliableMessage();
-=======
     std::string text = response["message"].asString();
     LLSLURL slurl;
     LLAgentUI::buildSLURL(slurl);
@@ -6344,7 +6174,6 @@ void send_lures(const LLSD& notification, const LLSD& response)
         }
     }
     gAgent.sendReliableMessage();
->>>>>>> Linden_Release/release/2024.06-atlasaurus
 }
 
 bool handle_lure_callback(const LLSD& notification, const LLSD& response)

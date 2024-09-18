@@ -271,7 +271,7 @@ BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 	if (!mTargetAvatar || mTargetAvatar->isDead())
 	{
 		LL_WARNS("Posing") << "Couldn't find avatar, dead?" << LL_ENDL;
-		return FALSE;
+		return false;
 	}
 
 	std::string filename;
@@ -286,7 +286,7 @@ BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 	if (!infile.is_open())
 	{
 		LL_WARNS("Posing") << "Cannot find file in: " << filename << LL_ENDL;
-		return FALSE;
+		return false;
 	}
 
 	while (!infile.eof())
@@ -295,7 +295,7 @@ BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 		if (count == LLSDParser::PARSE_FAILURE)
 		{
 			LL_WARNS("Posing") << "Failed to parse file: " << filename << LL_ENDL;
-			return FALSE;
+			return false;
 		}
 
 		if (pose.has("version"))
@@ -458,7 +458,7 @@ BOOL BDAnimator::loadPose(const LLSD& name, S32 load_type)
 		}
 	}
 	infile.close();
-	return TRUE;
+	return true;
 }
 
 LLSD BDAnimator::returnPose(const LLSD& name)

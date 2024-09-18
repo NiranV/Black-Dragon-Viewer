@@ -89,7 +89,8 @@ LLButton* LLToastNotifyPanel::createButton(const LLSD& form_element, bool is_opt
 	LLButton::Params p;
 	//BD
 	//bool make_small_btn = form_element["index"].asInteger() == -1 || form_element["index"].asInteger() == -2;
-	const LLFontGL* font = sFont; // for block and ignore buttons in script dialog
+    const LLFontGL* font = LLFontGL::getFont(LLFontDescriptor(
+        mIsScriptDialog ? sFontScript : sFontDefault, "Medium", 0));
 	p.name = form_element["name"].asString();
 	p.label = form_element["text"].asString();
 	p.tool_tip = form_element["text"].asString();

@@ -34,12 +34,13 @@
 
 class LLPanelPresetsPulldown : public LLPanelPulldown
 {
- public:
+public:
     LLPanelPresetsPulldown();
     bool postBuild() override;
+    void onVisibilityChange(bool new_visibility);
     void populatePanel();
 
- private:
+private:
     void onGraphicsButtonClick(const LLSD& user_data);
     void onAutofpsButtonClick(const LLSD& user_data);
     void onRowClick(const LLSD& user_data);

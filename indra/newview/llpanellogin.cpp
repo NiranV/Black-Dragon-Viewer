@@ -74,8 +74,8 @@
 #include "llsdserialize.h"
 
 LLPanelLogin *LLPanelLogin::sInstance = NULL;
-BOOL LLPanelLogin::sCapslockDidNotification = FALSE;
-BOOL LLPanelLogin::sCredentialSet = FALSE;
+BOOL LLPanelLogin::sCapslockDidNotification = false;
+BOOL LLPanelLogin::sCredentialSet = false;
 
 // Helper functions
 
@@ -188,7 +188,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	setBackgroundVisible(FALSE);
 	setBackgroundOpaque(TRUE);
 
-	mPasswordModified = FALSE;
+	mPasswordModified = false;
 
 	sInstance = this;
 
@@ -432,7 +432,7 @@ void LLPanelLogin::draw()
 }
 
 // virtual
-BOOL LLPanelLogin::handleKeyHere(KEY key, MASK mask)
+bool LLPanelLogin::handleKeyHere(KEY key, MASK mask)
 {
 	return LLPanel::handleKeyHere(key, mask);
 }
@@ -529,7 +529,7 @@ void LLPanelLogin::setFields(LLPointer<LLCredential> credential)
 		LL_WARNS() << "Attempted fillFields with no login view shown" << LL_ENDL;
 		return;
 	}
-	sCredentialSet = TRUE;
+	sCredentialSet = true;
 	LL_INFOS("Credentials") << "Setting login fields to " << *credential << LL_ENDL;
 
 	LLSD identifier = credential.notNull() ? credential->getIdentifier() : LLSD();
@@ -860,7 +860,7 @@ void LLPanelLogin::onClickConnect()
 		}
 		else
 		{
-			sCredentialSet = FALSE;
+			sCredentialSet = false;
 			LLPointer<LLCredential> cred;
 			bool remember_1, remember_2;
 			getFields(cred, remember_1, remember_2);
@@ -1002,11 +1002,11 @@ void LLPanelLogin::onRememberPasswordCheck(void*)
 // static
 void LLPanelLogin::onPassKey()
 {
-	mPasswordModified = TRUE;
+	mPasswordModified = true;
 	if (gKeyboard->getKeyDown(KEY_CAPSLOCK) && sCapslockDidNotification == FALSE)
 	{
 		// *TODO: use another way to notify user about enabled caps lock, see EXT-6858
-		sCapslockDidNotification = TRUE;
+		sCapslockDidNotification = true;
 	}
 	updateLoginButtons();
 }
@@ -1057,7 +1057,7 @@ void LLPanelLogin::updateServer()
 		}
 		catch (const LLInvalidGridName& ex)
 		{
-			LL_WARNS("AppInit")<<"server '"<<ex.name()<<"' selection failed"<<LL_ENDL;
+			LL_WARNS("AppInit") << "server '" << ex.name() << "' selection failed" << LL_ENDL;
 			LLSD args;
 			args["GRID"] = ex.name();
 			LLNotificationsUtil::add("InvalidGrid", args);	

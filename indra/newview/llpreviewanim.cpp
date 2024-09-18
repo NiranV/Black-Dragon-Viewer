@@ -50,14 +50,11 @@ const S32 NUM_JOINT_SIGNATURE_STRIDES = LL_CHARACTER_MAX_ANIMATED_JOINTS / 4;
 LLPreviewAnim::LLPreviewAnim(const LLSD& key)
     : LLPreview( key )
 {
-<<<<<<< HEAD
 	mCommitCallbackRegistrar.add("PreviewAnim.Play", boost::bind(&LLPreviewAnim::play, this, _2));
 
 	//BD
 	mCommitCallbackRegistrar.add("PreviewAnim.Time", boost::bind(&LLPreviewAnim::time, this, _1, _2));
-=======
-    mCommitCallbackRegistrar.add("PreviewAnim.Play", boost::bind(&LLPreviewAnim::play, this, _2));
->>>>>>> Linden_Release/release/2024.06-atlasaurus
+
 }
 
 // virtual

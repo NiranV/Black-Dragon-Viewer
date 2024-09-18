@@ -62,7 +62,7 @@ public:
     virtual bool handleMouseUp(S32 x, S32 y, MASK mask);
     virtual bool handleHover(S32 x, S32 y, MASK mask);
     virtual bool handleToolTip(S32 x, S32 y, MASK mask);
-    virtual bool handleScrollWheel(S32 x, S32 y, S32 clicks);
+    virtual bool handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
     virtual void draw();
     virtual void onOpen(const LLSD& key);
     virtual void onClose(bool app_quitting);
@@ -90,7 +90,6 @@ private:
             mFirstChild(false),
             mLastChild(false)
         {}
-        ~TimerBarRow();
         F32Seconds          mTotalTime,
                             mSelfTime,
                             mChildrenStart,
@@ -112,6 +111,7 @@ private:
             mTop(0),
             mBars(NULL)
         {}
+        ~TimerBarRow();
         S32         mBottom,
                     mTop;
         TimerBar*   mBars;
@@ -147,12 +147,14 @@ private:
     LLFrameTimer                    mHighlightTimer;
     LLTrace::PeriodicRecording      mRecording;
 
+    LLScrollbar* mScrollBar;
+
     //BD
+    bool							mNeedColorUpdate;
     LLButton* mPauseBtn;
 	LLView* mLegendPanel;
 	LLView* mBarsPanel;
 	LLView* mLinesPanel;
-	LLScrollbar* mScrollBar;
 	LLComboBox* mMetricCombo;
 	LLComboBox* mScaleCombo;
 };

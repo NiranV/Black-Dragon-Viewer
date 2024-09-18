@@ -33,10 +33,10 @@ public:
 
 	virtual void	handleSelect();
 	virtual void	handleDeselect();
-	virtual BOOL	handleMouseDown(S32 x, S32 y, MASK mask);
-	virtual BOOL    handleHover(S32 x, S32 y, MASK mask);
+	virtual bool	handleMouseDown(S32 x, S32 y, MASK mask);
+	virtual bool    handleHover(S32 x, S32 y, MASK mask);
 	virtual void	render();
-	virtual BOOL	canAffectSelection();
+	virtual bool	canAffectSelection();
 
 	static void pickCallback(const LLPickInfo& pick_info);
 	static void aligndone();
@@ -45,13 +45,13 @@ public:
 	F32             mManipulatorSize;
 	S32             mHighlightedAxis;
 	F32             mHighlightedDirection;
-	BOOL            mForce;
+	bool            mForce;
 
 private:
 	void            align();
 	void            computeManipulatorSize();
 	void            renderManipulators();
-	BOOL            findSelectedManipulator(S32 x, S32 y);
+	bool            findSelectedManipulator(S32 x, S32 y);
 };
 
 #endif // Q_QTOOLALIGN_H

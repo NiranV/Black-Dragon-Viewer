@@ -2385,18 +2385,18 @@ void clear_glerror()
 // Static members
 boost::unordered_map<LLGLenum, LLGLboolean> LLGLState::sStateMap;
 
-GLboolean LLGLDepthTest::sDepthEnabled = GL_false; // OpenGL default
+GLboolean LLGLDepthTest::sDepthEnabled = GL_FALSE; // OpenGL default
 GLenum LLGLDepthTest::sDepthFunc = GL_LESS; // OpenGL default
-GLboolean LLGLDepthTest::sWriteEnabled = GL_true; // OpenGL default
+GLboolean LLGLDepthTest::sWriteEnabled = GL_TRUE; // OpenGL default
 
 //static
 void LLGLState::initClass()
 {
-    sStateMap[GL_DITHER] = GL_true;
-    // sStateMap[GL_TEXTURE_2D] = GL_true;
+    sStateMap[GL_DITHER] = GL_TRUE;
+    // sStateMap[GL_TEXTURE_2D] = GL_TRUE;
 
     //make sure multisample defaults to disabled
-    sStateMap[GL_MULTISAMPLE] = GL_false;
+    sStateMap[GL_MULTISAMPLE] = GL_FALSE;
     glDisable(GL_MULTISAMPLE);
 }
 
@@ -2491,19 +2491,19 @@ void LLGLState::setEnabled(S32 enabled)
     }
     if (enabled == CURRENT_STATE)
     {
-        enabled = sStateMap[mState] == GL_true ? ENABLED_STATE : DISABLED_STATE;
+        enabled = sStateMap[mState] == GL_TRUE ? ENABLED_STATE : DISABLED_STATE;
     }
-    else if (enabled == ENABLED_STATE && sStateMap[mState] != GL_true)
+    else if (enabled == ENABLED_STATE && sStateMap[mState] != GL_TRUE)
     {
         gGL.flush();
         glEnable(mState);
-        sStateMap[mState] = GL_true;
+        sStateMap[mState] = GL_TRUE;
     }
-    else if (enabled == DISABLED_STATE && sStateMap[mState] != GL_false)
+    else if (enabled == DISABLED_STATE && sStateMap[mState] != GL_FALSE)
     {
         gGL.flush();
         glDisable(mState);
-        sStateMap[mState] = GL_false;
+        sStateMap[mState] = GL_FALSE;
     }
     mIsEnabled = enabled;
 }
@@ -2534,12 +2534,12 @@ LLGLState::~LLGLState()
             if (mWasEnabled)
             {
                 glEnable(mState);
-                sStateMap[mState] = GL_true;
+                sStateMap[mState] = GL_TRUE;
             }
             else
             {
                 glDisable(mState);
-                sStateMap[mState] = GL_false;
+                sStateMap[mState] = GL_FALSE;
             }
         }
     }
@@ -2753,7 +2753,7 @@ LLGLDepthTest::LLGLDepthTest(GLboolean depth_enabled, GLboolean write_enabled, G
     { // always disable depth writes if depth testing is disabled
       // GL spec defines this as a requirement, but some implementations allow depth writes with testing disabled
       // The proper way to write to depth buffer with testing disabled is to enable testing and use a depth_func of GL_ALWAYS
-        write_enabled = GL_false;
+        write_enabled = GL_FALSE;
     }
 
     if (depth_enabled != sDepthEnabled)
@@ -2806,7 +2806,7 @@ void LLGLDepthTest::checkState()
     if (gDebugGL)
     {
         GLint func = 0;
-        GLboolean mask = GL_false;
+        GLboolean mask = GL_FALSE;
 
         glGetIntegerv(GL_DEPTH_FUNC, &func);
         glGetBooleanv(GL_DEPTH_WRITEMASK, &mask);
@@ -2928,7 +2928,7 @@ LLGLSPipelineSkyBox::~LLGLSPipelineSkyBox()
 
 LLGLSPipelineDepthTestSkyBox::LLGLSPipelineDepthTestSkyBox(bool depth_test, bool depth_write)
 : LLGLSPipelineSkyBox()
-, mDepth(depth_test ? GL_true : GL_false, depth_write ? GL_true : GL_false, GL_LEQUAL)
+, mDepth(depth_test ? GL_TRUE : GL_FALSE, depth_write ? GL_TRUE : GL_FALSE, GL_LEQUAL)
 {
 
 }

@@ -274,7 +274,7 @@ bool LLScrollContainer::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 	//     and scrolllist combinations which cannot automatically scale to the amount
 	//     of lines it has. (Would be a good TODO to add that)
 	if (!mScrollable)
-		return trie;
+		return true;
 
 	// When the vertical scrollbar is visible, scroll wheel
 	// only affects vertical scrolling.  It's confusing to have
@@ -541,7 +541,7 @@ void LLScrollContainer::draw()
 			{
 				S32 visible_width = 0;
 				S32 visible_height = 0;
-				vool show_v_scrollbar = false;
+				bool show_v_scrollbar = false;
 				bool show_h_scrollbar = false;
 				calcVisibleSize( &visible_width, &visible_height, &show_h_scrollbar, &show_v_scrollbar );
 

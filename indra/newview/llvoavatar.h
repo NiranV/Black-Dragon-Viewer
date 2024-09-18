@@ -632,6 +632,10 @@ private:
 
     mutable bool        mCachedInMuteList;
     mutable F64         mCachedMuteListUpdateTime;
+    //BD
+    mutable bool		mCachedInBuddyList;
+    mutable F64			mCachedBuddyListUpdateTime;
+
 
     VisualMuteSettings      mVisuallyMuteSetting;           // Always or never visually mute this AV
 

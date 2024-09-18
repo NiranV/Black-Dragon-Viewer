@@ -377,8 +377,6 @@ void LLSnapshotLivePreview::generateThumbnailImage(bool force_update)
 
     LLPointer<LLImageRaw> raw = new LLImageRaw;
 
-	LLPointer<LLImageRaw> raw = new LLImageRaw;
-
 	//BD
 	if (raw)
 	{

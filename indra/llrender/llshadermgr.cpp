@@ -878,11 +878,11 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
     if (error == GL_NO_ERROR)
     {
         //check for errors
-        GLint success = GL_true;
+        GLint success = GL_TRUE;
         glGetShaderiv(ret, GL_COMPILE_STATUS, &success);
 
         error = glGetError();
-        if (error != GL_NO_ERROR || success == GL_false)
+        if (error != GL_NO_ERROR || success == GL_FALSE)
         {
             //an error occured, print log
             LL_WARNS("ShaderLoading") << "GLSL Compilation Error:" << LL_ENDL;
@@ -936,12 +936,12 @@ bool LLShaderMgr::linkProgramObject(GLuint obj, bool suppress_errors)
         glLinkProgram(obj);
     }
 
-    GLint success = GL_true;
+    GLint success = GL_TRUE;
 
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_SHADER("glsl check link status");
         glGetProgramiv(obj, GL_LINK_STATUS, &success);
-        if (!suppress_errors && success == GL_false)
+        if (!suppress_errors && success == GL_FALSE)
         {
             //an error occured, print log
             LL_SHADER_LOADING_WARNS() << "GLSL Linker Error:" << LL_ENDL;
@@ -955,7 +955,7 @@ bool LLShaderMgr::linkProgramObject(GLuint obj, bool suppress_errors)
     if (log.find("software") != std::string::npos)
     {
         LL_SHADER_LOADING_WARNS() << "GLSL Linker: Running in Software:" << LL_ENDL;
-        success = GL_false;
+        success = GL_FALSE;
         suppress_errors = false;
     }
     return success;
@@ -965,9 +965,9 @@ bool LLShaderMgr::validateProgramObject(GLuint obj)
 {
     //check program validity against current GL
     glValidateProgram(obj);
-    GLint success = GL_true;
+    GLint success = GL_TRUE;
     glGetProgramiv(obj, GL_LINK_STATUS, &success);
-    if (success == GL_false)
+    if (success == GL_FALSE)
     {
         LL_SHADER_LOADING_WARNS() << "GLSL program not valid: " << LL_ENDL;
         dumpObjectLog(obj);
@@ -1074,7 +1074,7 @@ bool LLShaderMgr::loadCachedProgramBinary(LLGLSLShader* shader)
 {
     if (!mShaderCacheEnabled) return false;
 
-    glProgramParameteri(shader->mProgramObject, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, GL_true);
+    glProgramParameteri(shader->mProgramObject, GL_PROGRAM_BINARY_RETRIEVABLE_HINT, GL_TRUE);
 
     auto binary_iter = mShaderBinaryCache.find(shader->mShaderHash);
     if (binary_iter != mShaderBinaryCache.end())
@@ -1098,9 +1098,9 @@ bool LLShaderMgr::loadCachedProgramBinary(LLGLSLShader* shader)
                     glProgramBinary(shader->mProgramObject, shader_info.mBinaryFormat, in_data.data(), shader_info.mBinaryLength);
 
                     error = glGetError();
-                    GLint success = GL_true;
+                    GLint success = GL_TRUE;
                     glGetProgramiv(shader->mProgramObject, GL_LINK_STATUS, &success);
-                    if (error == GL_NO_ERROR && success == GL_true)
+                    if (error == GL_NO_ERROR && success == GL_TRUE)
                     {
                         binary_iter->second.mLastUsedTime = LLTimer::getTotalSeconds();
                         LL_INFOS() << "Loaded cached binary for shader: " << shader->mName << LL_ENDL;

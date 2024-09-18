@@ -317,7 +317,7 @@ public:
 
 private:
 
-    static bool CALLBACK MonitorEnum(HMONITOR hMon, HDC hdc, LPRECT lprcMonitor, LPARAM pData)
+    static BOOL CALLBACK MonitorEnum(HMONITOR hMon, HDC hdc, LPRECT lprcMonitor, LPARAM pData)
     {
         int monitor_width = lprcMonitor->right - lprcMonitor->left;
         int monitor_height = lprcMonitor->bottom - lprcMonitor->top;
@@ -329,7 +329,7 @@ private:
         LLMonitorInfo* pThis = reinterpret_cast<LLMonitorInfo*>(pData);
         pThis->mResList.push_back(res);
 
-        return true;
+        return TRUE;
     }
 
     std::vector<std::string> mResList;
@@ -1120,7 +1120,7 @@ bool LLWindowWin32::getRestoredSize(LLCoordScreen *size)
 		WINDOWPLACEMENT wp;
 		wp.length = sizeof(WINDOWPLACEMENT);
 		if (!GetWindowPlacement(mWindowHandle, &wp))
-			return faalse;
+			return false;
 		prctWindow = &wp.rcNormalPosition;
 	}
 
@@ -1485,16 +1485,16 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
         //attrib_list[cur_attrib++] = 8;
 
         attrib_list[cur_attrib++] = WGL_DRAW_TO_WINDOW_ARB;
-        attrib_list[cur_attrib++] = GL_true;
+        attrib_list[cur_attrib++] = GL_TRUE;
 
         attrib_list[cur_attrib++] = WGL_ACCELERATION_ARB;
         attrib_list[cur_attrib++] = WGL_FULL_ACCELERATION_ARB;
 
         attrib_list[cur_attrib++] = WGL_SUPPORT_OPENGL_ARB;
-        attrib_list[cur_attrib++] = GL_true;
+        attrib_list[cur_attrib++] = GL_TRUE;
 
         attrib_list[cur_attrib++] = WGL_DOUBLE_BUFFER_ARB;
-        attrib_list[cur_attrib++] = GL_true;
+        attrib_list[cur_attrib++] = GL_TRUE;
 
         attrib_list[cur_attrib++] = WGL_COLOR_BITS_ARB;
         attrib_list[cur_attrib++] = 24;
@@ -1507,7 +1507,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
         {
             end_attrib = cur_attrib;
             attrib_list[cur_attrib++] = WGL_SAMPLE_BUFFERS_ARB;
-            attrib_list[cur_attrib++] = GL_true;
+            attrib_list[cur_attrib++] = GL_TRUE;
 
             attrib_list[cur_attrib++] = WGL_SAMPLES_ARB;
             attrib_list[cur_attrib++] = mFSAASamples;
@@ -4803,7 +4803,7 @@ void LLWindowWin32::LLWindowWin32Thread::run()
         if (mWindowHandleThrd != 0)
         {
             MSG msg;
-            bool status;
+            BOOL status;
             if (mhDCThrd == 0)
             {
                 LL_PROFILE_ZONE_NAMED_CATEGORY_WIN32("w32t - PeekMessage");

@@ -61,12 +61,8 @@ private:
     void setFPSText();
 
     void onClickAdvanced();
-    void onClickDefaults();
-    void onChangeQuality(const LLSD& data);
     void onClickHideAvatars();
     void onClickExceptions();
-    void onClickShadows();
-    void onClickAdvancedLighting();
 
     void startAutotune();
     void stopAutotune();
@@ -74,8 +70,6 @@ private:
     void enableAutotuneWarning();
 
     void updateMaxRenderTime();
-
-    static void changeQualityLevel(const std::string& notif);
 
     LLPanel* mMainPanel;
     LLPanel* mNearbyPanel;

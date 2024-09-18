@@ -610,323 +610,234 @@ void LLTextBase::drawCursor()
 
 void LLTextBase::drawText()
 {
-	S32 text_len = getLength();
+    S32 text_len = getLength();
 
-	if (text_len <= 0 && mLabel.empty())
-	{
-		return;
-	}
-	else if (useLabel())
-	{
-		text_len = static_cast<S32>(mLabel.getWString().length());
-	}
-
-	S32 selection_left = -1;
-	S32 selection_right = -1;
-	// Draw selection even if we don't have keyboard focus for search/replace
-	if( hasSelection())
-	{
-		selection_left = llmin( mSelectionStart, mSelectionEnd );
-		selection_right = llmax( mSelectionStart, mSelectionEnd );
-	}
-
-	std::pair<S32, S32> line_range = getVisibleLines(mClipPartial);
-	S32 first_line = line_range.first;
-	S32 last_line = line_range.second;
-	if (first_line >= last_line)
-	{
-		return;
-	}
-	
-	S32 line_start = getLineStart(first_line);
-	// find first text segment that spans top of visible portion of text buffer
-	segment_set_t::iterator seg_iter = getSegIterContaining(line_start);
-	if (seg_iter == mSegments.end()) 
-	{
-		return;
-	}
-
-	// Perform spell check if needed
-	if ( (getSpellCheck()) && (getWText().length() > 2) )
-	{
-		// Calculate start and end indices for the spell checking range
-		S32 start = line_start;
-		S32 end   = getLineEnd(last_line);
-
-		if ( (mSpellCheckStart != start) || (mSpellCheckEnd != end) )
-		{
-			const LLWString& wstrText = getWText(); 
-			mMisspellRanges.clear();
-
-			segment_set_t::const_iterator seg_it = getSegIterContaining(start);
-			while (mSegments.end() != seg_it)
-			{
-				LLTextSegmentPtr text_segment = *seg_it;
-				if ( (text_segment.isNull()) || (text_segment->getStart() >= end) )
-				{
-					break;
-				}
-
-				if (!text_segment->canEdit())
-				{
-					++seg_it;
-					continue;
-				}
-
-				// Combine adjoining text segments into one
-				U32 seg_start = text_segment->getStart(), seg_end = llmin(text_segment->getEnd(), end);
-				while (mSegments.end() != ++seg_it)
-				{
-					text_segment = *seg_it;
-					if ( (text_segment.isNull()) || (!text_segment->canEdit()) || (text_segment->getStart() >= end) )
-					{
-						break;
-					}
-					seg_end = llmin(text_segment->getEnd(), end);
-				}
-
-				// Find the start of the first word
-				U32 word_start = seg_start, word_end = -1;
-				U32 text_length = static_cast<U32>(wstrText.length());
-				while ( (word_start < text_length) && (!LLStringOps::isAlpha(wstrText[word_start])) )
-				{
-					word_start++;
-				}
-
-				// Iterate over all words in the text block and check them one by one
-				while (word_start < seg_end)
-				{
-					// Find the end of the current word (special case handling for "'" when it's used as a contraction)
-					word_end = word_start + 1;
-					while ( (word_end < seg_end) && 
-							((LLWStringUtil::isPartOfWord(wstrText[word_end])) ||
-								((L'\'' == wstrText[word_end]) && 
-								(LLStringOps::isAlnum(wstrText[word_end - 1])) && (LLStringOps::isAlnum(wstrText[word_end + 1])))) )
-					{
-						word_end++;
-					}
-					if (word_end > seg_end)
-					{
-						break;
-					}
-
-					if (word_start < text_length && word_end <= text_length && word_end > word_start)
-					{
-						std::string word = wstring_to_utf8str(wstrText.substr(word_start, word_end - word_start));
-
-						// Don't process words shorter than 3 characters
-						if ( (word.length() >= 3) && (!LLSpellChecker::instance().checkSpelling(word)) )
-						{
-							mMisspellRanges.push_back(std::pair<U32, U32>(word_start, word_end));
-						}
-					}
-
-					// Find the start of the next word
-					word_start = word_end + 1;
-					while ( (word_start < seg_end) && (!LLWStringUtil::isPartOfWord(wstrText[word_start])) )
-					{
-						word_start++;
-					}
-				}
-			}
-
-			mSpellCheckStart = start;
-			mSpellCheckEnd = end;
-		}
-	}
-	else
-	{
-		mMisspellRanges.clear();
-	}
-
-	LLTextSegmentPtr cur_segment = *seg_iter;
-
-	std::list<std::pair<U32, U32> >::const_iterator misspell_it = std::lower_bound(mMisspellRanges.begin(), mMisspellRanges.end(), std::pair<U32, U32>(line_start, 0));
-	for (S32 cur_line = first_line; cur_line < last_line; cur_line++)
-	{
-		S32 next_line = cur_line + 1;
-		line_info& line = mLineInfoList[cur_line];
-
-		S32 next_start = -1;
-		S32 line_end = text_len;
-
-		if (next_line < getLineCount())
-		{
-			next_start = getLineStart(next_line);
-			line_end = next_start;
-		}
-
-    if( hasFocus()
-        && gFocusMgr.getAppHasFocus()
-        && !mReadOnly)
+    if (text_len <= 0 && mLabel.empty())
     {
-        const LLWString &wtext = getWText();
-        const llwchar* text = wtext.c_str();
+        return;
+    }
+    else if (useLabel())
+    {
+        text_len = static_cast<S32>(mLabel.getWString().length());
+    }
 
-        LLRect cursor_rect = getLocalRectFromDocIndex(mCursorPos);
-        cursor_rect.translate(-1, 0);
-        segment_set_t::iterator seg_it = getSegIterContaining(mCursorPos);
+    S32 selection_left = -1;
+    S32 selection_right = -1;
+    // Draw selection even if we don't have keyboard focus for search/replace
+    if (hasSelection())
+    {
+        selection_left = llmin(mSelectionStart, mSelectionEnd);
+        selection_right = llmax(mSelectionStart, mSelectionEnd);
+    }
 
-        // take style from last segment
-        LLTextSegmentPtr segmentp;
+    std::pair<S32, S32> line_range = getVisibleLines(mClipPartial);
+    S32 first_line = line_range.first;
+    S32 last_line = line_range.second;
+    if (first_line >= last_line)
+    {
+        return;
+    }
 
-        if (seg_it != mSegments.end())
+    S32 line_start = getLineStart(first_line);
+    // find first text segment that spans top of visible portion of text buffer
+    segment_set_t::iterator seg_iter = getSegIterContaining(line_start);
+    if (seg_iter == mSegments.end())
+    {
+        return;
+    }
+
+    // Perform spell check if needed
+    if ((getSpellCheck()) && (getWText().length() > 2))
+    {
+        // Calculate start and end indices for the spell checking range
+        S32 start = line_start;
+        S32 end = getLineEnd(last_line);
+
+        if ((mSpellCheckStart != start) || (mSpellCheckEnd != end))
         {
-            segmentp = *seg_it;
+            const LLWString& wstrText = getWText();
+            mMisspellRanges.clear();
+
+            segment_set_t::const_iterator seg_it = getSegIterContaining(start);
+            while (mSegments.end() != seg_it)
+            {
+                LLTextSegmentPtr text_segment = *seg_it;
+                if ((text_segment.isNull()) || (text_segment->getStart() >= end))
+                {
+                    break;
+                }
+
+                if (!text_segment->canEdit())
+                {
+                    ++seg_it;
+                    continue;
+                }
+
+                // Combine adjoining text segments into one
+                U32 seg_start = text_segment->getStart(), seg_end = llmin(text_segment->getEnd(), end);
+                while (mSegments.end() != ++seg_it)
+                {
+                    text_segment = *seg_it;
+                    if ((text_segment.isNull()) || (!text_segment->canEdit()) || (text_segment->getStart() >= end))
+                    {
+                        break;
+                    }
+                    seg_end = llmin(text_segment->getEnd(), end);
+                }
+
+                // Find the start of the first word
+                U32 word_start = seg_start, word_end = -1;
+                U32 text_length = static_cast<U32>(wstrText.length());
+                while ((word_start < text_length) && (!LLStringOps::isAlpha(wstrText[word_start])))
+                {
+                    word_start++;
+                }
+
+                // Iterate over all words in the text block and check them one by one
+                while (word_start < seg_end)
+                {
+                    // Find the end of the current word (special case handling for "'" when it's used as a contraction)
+                    word_end = word_start + 1;
+                    while ((word_end < seg_end) &&
+                        ((LLWStringUtil::isPartOfWord(wstrText[word_end])) ||
+                            ((L'\'' == wstrText[word_end]) &&
+                                (LLStringOps::isAlnum(wstrText[word_end - 1])) && (LLStringOps::isAlnum(wstrText[word_end + 1])))))
+                    {
+                        word_end++;
+                    }
+                    if (word_end > seg_end)
+                    {
+                        break;
+                    }
+
+                    if (word_start < text_length && word_end <= text_length && word_end > word_start)
+                    {
+                        std::string word = wstring_to_utf8str(wstrText.substr(word_start, word_end - word_start));
+
+                        // Don't process words shorter than 3 characters
+                        if ((word.length() >= 3) && (!LLSpellChecker::instance().checkSpelling(word)))
+                        {
+                            mMisspellRanges.push_back(std::pair<U32, U32>(word_start, word_end));
+                        }
+                    }
+
+                    // Find the start of the next word
+                    word_start = word_end + 1;
+                    while ((word_start < seg_end) && (!LLWStringUtil::isPartOfWord(wstrText[word_start])))
+                    {
+                        word_start++;
+                    }
+                }
+            }
+
+            mSpellCheckStart = start;
+            mSpellCheckEnd = end;
         }
-        else
+    }
+    else
+    {
+        mMisspellRanges.clear();
+    }
+
+    LLTextSegmentPtr cur_segment = *seg_iter;
+
+    std::list<std::pair<U32, U32> >::const_iterator misspell_it = std::lower_bound(mMisspellRanges.begin(), mMisspellRanges.end(), std::pair<U32, U32>(line_start, 0));
+    for (S32 cur_line = first_line; cur_line < last_line; cur_line++)
+    {
+        S32 next_line = cur_line + 1;
+        line_info& line = mLineInfoList[cur_line];
+
+        S32 next_start = -1;
+        S32 line_end = text_len;
+
+        if (next_line < getLineCount())
         {
-            return;
+            next_start = getLineStart(next_line);
+            line_end = next_start;
         }
 
-        // Draw the cursor
-        // (Flash the cursor every half second starting a fixed time after the last keystroke)
-        F32 elapsed = mCursorBlinkTimer.getElapsedTimeF32();
-        if( (elapsed < CURSOR_FLASH_DELAY ) || (S32(elapsed * 2) & 1) )
+        LLRectf text_rect(line.mRect.mLeft, line.mRect.mTop, line.mRect.mRight, line.mRect.mBottom);
+        text_rect.mRight = mDocumentView->getRect().getWidth(); // clamp right edge to document extents
+        text_rect.translate(mDocumentView->getRect().mLeft, mDocumentView->getRect().mBottom); // adjust by scroll position
+
+        // draw a single line of text
+        S32 seg_start = line_start;
+        while (seg_start < line_end)
         {
+            while (cur_segment->getEnd() <= seg_start)
+            {
+                seg_iter++;
+                if (seg_iter == mSegments.end())
+                {
+                    LL_WARNS() << "Ran off the segmentation end!" << LL_ENDL;
 
-            if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode() && !hasSelection())
-            {
-                S32 segment_width = 0;
-                S32 segment_height = 0;
-                segmentp->getDimensions(mCursorPos - segmentp->getStart(), 1, segment_width, segment_height);
-                S32 width = llmax(CURSOR_THICKNESS, segment_width);
-                cursor_rect.mRight = cursor_rect.mLeft + width;
-            }
-            else
-            {
-                cursor_rect.mRight = cursor_rect.mLeft + CURSOR_THICKNESS;
+                    return;
+                }
+                cur_segment = *seg_iter;
             }
 
-            gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+            S32 seg_end = llmin(line_end, cur_segment->getEnd());
+            S32 clipped_end = seg_end - cur_segment->getStart();
 
-            LLColor4 cursor_color = mCursorColor.get() % alpha;
-            gGL.color4fv( cursor_color.mV );
-
-            gl_rect_2d(cursor_rect);
-
-            if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode() && !hasSelection() && text[mCursorPos] != '\n')
+            if (mUseEllipses                                // using ellipses
+                && clipped_end == line_end                  // last segment on line
+                && next_line == last_line                   // this is the last visible line
+                && last_line < (S32)mLineInfoList.size())   // and there is more text to display
             {
-                LLColor4 text_color;
-                const LLFontGL* fontp;
-                text_color = segmentp->getColor();
-                fontp = segmentp->getStyle()->getFont();
-                fontp->render(text, mCursorPos, cursor_rect,
-                    LLColor4(1.f - text_color.mV[VRED], 1.f - text_color.mV[VGREEN], 1.f - text_color.mV[VBLUE], alpha),
-                    LLFontGL::LEFT, mTextVAlign,
-                    LLFontGL::NORMAL,
-                    LLFontGL::NO_SHADOW,
-                    1);
+                // more lines of text to go, but we can't fit them
+                // so shrink text rect to force ellipses
+                text_rect.mRight -= 2;
             }
 
-            // Make sure the IME is in the right place
-            LLRect screen_pos = calcScreenRect();
-            LLCoordGL ime_pos( screen_pos.mLeft + llfloor(cursor_rect.mLeft), screen_pos.mBottom + llfloor(cursor_rect.mTop) );
+            // Draw squiggly lines under any visible misspelled words
+            while ((mMisspellRanges.end() != misspell_it) && (misspell_it->first < (U32)seg_end) && (misspell_it->second > (U32)seg_start))
+            {
+                // Skip the current word if the user is still busy editing it
+                if ((!mSpellCheckTimer.hasExpired()) && (misspell_it->first <= (U32)mCursorPos) && (misspell_it->second >= (U32)mCursorPos))
+                {
+                    ++misspell_it;
+                    continue;
+                }
 
-            ime_pos.mX = (S32) (ime_pos.mX * LLUI::getScaleFactor().mV[VX]);
-            ime_pos.mY = (S32) (ime_pos.mY * LLUI::getScaleFactor().mV[VY]);
-            getWindow()->setLanguageTextInput( ime_pos );
+                U32 misspell_start = llmax<U32>(misspell_it->first, (U32)seg_start), misspell_end = llmin<U32>(misspell_it->second, (U32)seg_end);
+                S32 squiggle_start = 0, squiggle_end = 0, pony = 0;
+                cur_segment->getDimensions(seg_start - cur_segment->getStart(), misspell_start - seg_start, squiggle_start, pony);
+                cur_segment->getDimensions(misspell_start - cur_segment->getStart(), misspell_end - misspell_start, squiggle_end, pony);
+                squiggle_start += text_rect.mLeft;
+
+                pony = (squiggle_end + 3) / 6;
+                squiggle_start += squiggle_end / 2 - pony * 3;
+                squiggle_end = squiggle_start + pony * 6;
+
+                S32 squiggle_bottom = text_rect.mBottom + (S32)cur_segment->getStyle()->getFont()->getDescenderHeight();
+
+                gGL.color4ub(255, 0, 0, 200);
+                while (squiggle_start + 1 < squiggle_end)
+                {
+                    gl_line_2d(squiggle_start, squiggle_bottom, squiggle_start + 2, squiggle_bottom - 2);
+                    if (squiggle_start + 3 < squiggle_end)
+                    {
+                        gl_line_2d(squiggle_start + 2, squiggle_bottom - 3, squiggle_start + 4, squiggle_bottom - 1);
+                    }
+                    squiggle_start += 4;
+                }
+
+                if (misspell_it->second > (U32)seg_end)
+                {
+                    break;
+                }
+                ++misspell_it;
+            }
+
+            text_rect.mLeft = cur_segment->draw(seg_start - cur_segment->getStart(), clipped_end, selection_left, selection_right, text_rect);
+
+            seg_start = clipped_end + cur_segment->getStart();
         }
+
+        line_start = next_start;
     }
 }
 
-//BD - UI Improvements
-bool LLTextBase::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
-{
-	LLTextSegmentPtr cur_segment = getSegmentAtLocalPos(x, y);
-	//BD - UI Improvements
-	if (cur_segment && cur_segment->handleScrollWheel(x, y, clicks, mask))
-	{
-		return true;
-	}
-	return LLUICtrl::handleScrollWheel(x, y, clicks,mask);
-}
-
-void LLTextBase::draw()
-{
-	// reflow if needed, on demand
-	reflow();
-
-	// then update scroll position, as cursor may have moved
-	if (!mReadOnly)
-	{
-		updateScrollFromCursor();
-	}
-
-	LLRect text_rect;
-	if (mScroller)
-	{
-		mScroller->localRectToOtherView(mScroller->getContentWindowRect(), &text_rect, this);
-	}
-	else
-	{
-		LLRect visible_lines_rect;
-		std::pair<S32, S32> line_range = getVisibleLines(mClipPartial);
-		for (S32 i = line_range.first; i < line_range.second; i++)
-		{
-			if (visible_lines_rect.isEmpty())
-			{
-				visible_lines_rect = mLineInfoList[i].mRect;
-			}
-			else
-			{
-				visible_lines_rect.unionWith(mLineInfoList[i].mRect);
-			}
-		}
-		text_rect = visible_lines_rect;
-		text_rect.translate(mDocumentView->getRect().mLeft, mDocumentView->getRect().mBottom);
-	}
-
-	if (mBGVisible)
-	{
-		F32 alpha = getCurrentTransparency();
-		// clip background rect against extents, if we support scrolling
-		LLRect bg_rect = mVisibleTextRect;
-		if (mScroller)
-		{
-			bg_rect.intersectWith(text_rect);
-		}
-		LLColor4 bg_color = mReadOnly 
-							? mReadOnlyBgColor.get()
-							: hasFocus() 
-								? mFocusBgColor.get() 
-								: mWriteableBgColor.get();
-		gl_rect_2d(text_rect, bg_color % alpha, true);
-	}
-
-	// Draw highlighted if needed
-	if(getHighlighted())
-	{
-		LLColor4 bg_color = getHighlightColor();
-		LLRect bg_rect = mVisibleTextRect;
-		if( mScroller )
-			bg_rect.intersectWith( text_rect );
-
-		gl_rect_2d( text_rect, bg_color, true );
-	}
-	
-	bool should_clip = mClip || mScroller != NULL;
-	{ LLLocalClipRect clip(text_rect, should_clip);
- 
-		// draw document view
-		if (mScroller)
-		{
-			drawChild(mScroller);
-		}
-		else
-		{
-			drawChild(mDocumentView);
-		}
- 
-		drawSelectionBackground();
-		drawText();
-		drawCursor();
-	}
- 
-	mDocumentView->setVisibleDirect(false);
-	LLUICtrl::draw();
-	mDocumentView->setVisibleDirect(true);
-}
 
 ///////////////////////////////////////////////////////////////////
 // Returns change in number of characters in mWText
@@ -1363,16 +1274,16 @@ bool LLTextBase::handleHover(S32 x, S32 y, MASK mask)
     return LLUICtrl::handleHover(x, y, mask);
 }
 
-//virtual
-bool LLTextBase::handleScrollWheel(S32 x, S32 y, S32 clicks)
+//BD - UI Improvements
+bool LLTextBase::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
     LLTextSegmentPtr cur_segment = getSegmentAtLocalPos(x, y);
-    if (cur_segment && cur_segment->handleScrollWheel(x, y, clicks))
+    //BD - UI Improvements
+    if (cur_segment && cur_segment->handleScrollWheel(x, y, clicks, mask))
     {
         return true;
     }
-
-    return LLUICtrl::handleScrollWheel(x, y, clicks);
+    return LLUICtrl::handleScrollWheel(x, y, clicks, mask);
 }
 
 //virtual
@@ -1467,10 +1378,10 @@ void LLTextBase::draw()
         gl_rect_2d(text_rect, bg_color % alpha, true);
     }
 
-    // Draw highlighted if needed
-    if( ll::ui::SearchableControl::getHighlighted() )
+    //BD - Draw highlighted if needed
+    if( LLSearchableControl::getHighlighted() )
     {
-        LLColor4 bg_color = ll::ui::SearchableControl::getHighlightColor();
+        LLColor4 bg_color = LLSearchableControl::getHighlightColor();
         LLRect bg_rect = mVisibleTextRect;
         if( mScroller )
             bg_rect.intersectWith( text_rect );

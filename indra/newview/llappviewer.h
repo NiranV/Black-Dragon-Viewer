@@ -231,6 +231,9 @@ public:
 
     void updateNameLookupUrl(const LLViewerRegion* regionp);
 
+    // post given work to the "mainloop" work queue for handling on the main thread
+    void postToMainCoro(const LL::WorkQueue::Work& work);
+
 //	//BD - Custom Keyboard Layout
 	static void loadKeyboardlayout();
 

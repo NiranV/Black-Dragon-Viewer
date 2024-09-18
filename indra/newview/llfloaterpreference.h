@@ -70,7 +70,7 @@ public:
 	~LLPanelVoiceDeviceSettings();
 
 	/*virtual*/ void draw();
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	void apply();
 	void cancel();
 	void refresh();
@@ -92,7 +92,7 @@ protected:
 	std::string mOutputDevice;
 	class LLComboBox		*mCtrlInputDevices;
 	class LLComboBox		*mCtrlOutputDevices;
-	BOOL mDevicesUpdated;
+	bool mDevicesUpdated;
 	bool mUseTuningMode;
 	std::map<std::string, std::string> mLocalizedDeviceNames;
 };
@@ -106,7 +106,7 @@ public:
 	void apply();
 	void cancel();
 	/*virtual*/ void draw();
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
 	/*virtual*/ void changed();
@@ -266,7 +266,7 @@ public:
 	void refreshGraphicControls();
 
 //	//BD - Avatar Rendering Settings
-	/*virtual*/ BOOL handleKeyHere(KEY key, MASK mask);
+	/*virtual*/ bool handleKeyHere(KEY key, MASK mask);
 	void onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y);
 	void setAvatarRenderSetting(const uuid_vec_t& av_ids, S32 new_setting);
 	void onCustomAction(const LLSD& userdata);
@@ -459,7 +459,7 @@ class LLPanelPreference : public LLPanel
 {
 public:
 	LLPanelPreference();
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	
 	virtual ~LLPanelPreference();
 
@@ -501,7 +501,7 @@ private:
 class LLPanelPreferenceGraphics : public LLPanelPreference
 {
 public:
-	BOOL postBuild();
+    bool postBuild();
 	void draw();
 	void cancel();
 	void saveSettings();
@@ -524,13 +524,8 @@ private:
 class LLAvatarComplexityControls
 {
   public: 
-	static void updateMax(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val = false);
-	static void setText(U32 value, LLTextBox* text_box, bool short_val = false);
 	static void updateMaxRenderTime(LLSliderCtrl* slider, LLTextBox* value_label, bool short_val = false);
 	static void setRenderTimeText(F32 value, LLTextBox* text_box, bool short_val = false);
-	static void setIndirectControls();
-	static void setIndirectMaxNonImpostors();
-	static void setIndirectMaxArc();
 	LOG_CLASS(LLAvatarComplexityControls);
 };
 
@@ -545,7 +540,7 @@ public:
 	void cancel();
 	
 protected:
-	BOOL postBuild();
+	bool postBuild();
 	void onOpen(const LLSD& key);
 	void onClose(bool app_quitting);
 	void saveSettings();

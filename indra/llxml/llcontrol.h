@@ -548,9 +548,9 @@ template<> LLColor4 convert_from_llsd<LLColor4>(const LLSD& sd, eControlType typ
 template<> LLSD convert_from_llsd<LLSD>(const LLSD& sd, eControlType type, std::string_view control_name);
 
 //BD - Vector2
-template<> LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, const std::string& control_name);
+template<> LLVector2 convert_from_llsd<LLVector2>(const LLSD& sd, eControlType type, std::string_view control_name);
 //BD - Vector4
-template<> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, const std::string& control_name);
+template<> LLVector4 convert_from_llsd<LLVector4>(const LLSD& sd, eControlType type, std::string_view control_name);
 
 //#define TEST_CACHED_CONTROL 1
 #ifdef TEST_CACHED_CONTROL

@@ -30,7 +30,7 @@ class BDFloaterObjects :
 private:
 	BDFloaterObjects(const LLSD& key);
 	/*virtual*/	~BDFloaterObjects();
-	/*virtual*/	BOOL postBuild();
+	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);

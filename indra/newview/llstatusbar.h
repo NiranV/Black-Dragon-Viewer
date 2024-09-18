@@ -91,17 +91,16 @@ public:
 private:
 	
 	void onVolumeChanged(const LLSD& newvalue);
+    void onVoiceChanged(const LLSD& newvalue);
 
 	void onMouseEnterPresets();
 	void onMouseEnterVolume();
 	void onMouseEnterNearbyMedia();
-	void onClickScreen(S32 x, S32 y);
 //	//BD - Quick Draw Distance Slider
 	void onMouseEnterDrawDistance();
 
 //	//BD - Statusbar Framerate Count
 	void onToggleFPSType();
-	void onSetFPSType(S32 type);
 
 	static void onClickMediaToggle(void* data);
 

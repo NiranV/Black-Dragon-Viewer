@@ -200,7 +200,7 @@ class LLFavoriteLandmarkButton : public LLButton
 {
 public:
 
-	BOOL handleToolTip(S32 x, S32 y, MASK mask)
+	bool handleToolTip(S32 x, S32 y, MASK mask)
 	{
 		//BD
 		if (mLandmarkInfoGetter.getType() == LLAssetType::AT_LANDMARK)
@@ -220,10 +220,10 @@ public:
 				LLToolTipMgr::instance().show(params);
 			}
 		}
-		return TRUE;
+		return true;
 	}
 
-	/*virtual*/ BOOL	handleHover(S32 x, S32 y, MASK mask)
+	/*virtual*/ bool	handleHover(S32 x, S32 y, MASK mask)
 	{
 		LLFavoritesBarCtrl* fb = dynamic_cast<LLFavoritesBarCtrl*>(getParent());
 
@@ -272,7 +272,7 @@ private:
 class LLFavoriteLandmarkMenuItem : public LLMenuItemCallGL
 {
 public:
-	BOOL handleToolTip(S32 x, S32 y, MASK mask)
+    bool handleToolTip(S32 x, S32 y, MASK mask)
 	{
 		std::string region_name = mLandmarkInfoGetter.getName();
 		if (!region_name.empty())
@@ -282,34 +282,34 @@ public:
 			params.sticky_rect = calcScreenRect();
 			LLToolTipMgr::instance().show(params);
 		}
-		return TRUE;
+		return true;
 	}
 	
 	//BD
 	void setLandmarkID(const LLUUID& id){ mLandmarkInfoGetter.setLandmarkID(id); }
 
-	virtual BOOL handleMouseDown(S32 x, S32 y, MASK mask)
+	virtual bool handleMouseDown(S32 x, S32 y, MASK mask)
 	{
 		if (mMouseDownSignal)
 			(*mMouseDownSignal)(this, x, y, mask);
 		return LLMenuItemCallGL::handleMouseDown(x, y, mask);
 	}
 
-	virtual BOOL handleMouseUp(S32 x, S32 y, MASK mask)
+	virtual bool handleMouseUp(S32 x, S32 y, MASK mask)
 	{
 		if (mMouseUpSignal)
 			(*mMouseUpSignal)(this, x, y, mask);
 		return LLMenuItemCallGL::handleMouseUp(x, y, mask);
 	}
 
-	virtual BOOL handleHover(S32 x, S32 y, MASK mask)
+	virtual bool handleHover(S32 x, S32 y, MASK mask)
 	{
 		if (fb)
 		{
 			fb->handleHover(x, y, mask);
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	void initFavoritesBarPointer(LLFavoritesBarCtrl* fb) { this->fb = fb; }
@@ -334,14 +334,14 @@ private:
 class LLFavoriteLandmarkToggleableMenu : public LLToggleableMenu
 {
 public:
-	virtual BOOL handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
+	virtual bool handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 								   EDragAndDropType cargo_type,
 								   void* cargo_data,
 								   EAcceptance* accept,
 								   std::string& tooltip_msg)
 	{
 		*accept = ACCEPT_NO;
-		return TRUE;
+		return true;
 	}
 
 protected:
@@ -427,10 +427,9 @@ LLFavoritesBarCtrl::LLFavoritesBarCtrl(const LLFavoritesBarCtrl::Params& p)
 	mOverflowMenuHandle(),
 	mContextMenuHandle(),
 	mImageDragIndication(p.image_drag_indication),
-	mShowDragMarker(FALSE),
+	mShowDragMarker(false),
 	mLandingTab(NULL),
 	mLastTab(NULL),
-	mTabsHighlightEnabled(TRUE),
 	mUpdateDropDownItems(true),
 	mRestoreOverflowMenu(false),
 	mGetPrevItems(true),
@@ -471,7 +470,7 @@ LLFavoritesBarCtrl::~LLFavoritesBarCtrl()
 	if (mContextMenuHandle.get()) mContextMenuHandle.get()->die();
 }
 
-BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
+bool LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
 								   EDragAndDropType cargo_type,
 								   void* cargo_data,
 								   EAcceptance* accept,
@@ -480,7 +479,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 	*accept = ACCEPT_NO;
 
 	LLToolDragAndDrop::ESource source = LLToolDragAndDrop::getInstance()->getSource();
-	if (LLToolDragAndDrop::SOURCE_AGENT != source && LLToolDragAndDrop::SOURCE_LIBRARY != source) return FALSE;
+	if (LLToolDragAndDrop::SOURCE_AGENT != source && LLToolDragAndDrop::SOURCE_LIBRARY != source) return false;
 
 	switch (cargo_type)
 	{
@@ -722,7 +721,7 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 		break;
 	}
 
-	return TRUE;
+	return true;
 }
 
 void LLFavoritesBarCtrl::handleExistingFavoriteDragAndDrop(S32 x, S32 y)
@@ -931,14 +930,14 @@ void LLFavoritesBarCtrl::changed(U32 mask)
 }
 
 //virtual
-void LLFavoritesBarCtrl::reshape(S32 width, S32 height, BOOL called_from_parent)
+void LLFavoritesBarCtrl::reshape(S32 width, S32 height, bool called_from_parent)
 {
     S32 delta_width = width - getRect().getWidth();
     S32 delta_height = height - getRect().getHeight();
 
     bool force_update = delta_width || delta_height || sForceReshape;
-	LLUICtrl::reshape(width, height, called_from_parent);
-	updateButtons(force_update);
+    LLUICtrl::reshape(width, height, called_from_parent);
+    updateButtons(force_update);
 }
 
 void LLFavoritesBarCtrl::draw()
@@ -963,7 +962,7 @@ void LLFavoritesBarCtrl::draw()
 			mImageDragIndication->draw(rect.mRight, rect.getHeight(), w, h);
 		}
 		// Once drawn, mark this false so we won't draw it again (unless we hit the favorite bar again)
-		mShowDragMarker = FALSE;
+		mShowDragMarker = false;
 	}
 	if (mItemsChangedTimer.getStarted())
 	{
@@ -1230,7 +1229,7 @@ LLButton* LLFavoritesBarCtrl::createButton(const LLPointer<LLViewerInventoryItem
 }
 
 
-BOOL LLFavoritesBarCtrl::postBuild()
+bool LLFavoritesBarCtrl::postBuild()
 {
 	// make the popup menu available
 	LLMenuGL* menu = LLUICtrlFactory::getInstance()->createFromFile<LLMenuGL>("menu_favorites.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
@@ -1240,14 +1239,14 @@ BOOL LLFavoritesBarCtrl::postBuild()
 	}
 	mContextMenuHandle = menu->getHandle();
 
-	return TRUE;
+	return true;
 }
 
-BOOL LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &items)
+bool LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &items)
 {
 
 	if (mFavoriteFolderId.isNull())
-		return FALSE;
+		return false;
 	
 
 	LLInventoryModel::cat_array_t cats;
@@ -1294,7 +1293,7 @@ BOOL LLFavoritesBarCtrl::collectFavoriteItems(LLInventoryModel::item_array_t &it
 		LLFavoritesOrderStorage::instance().mSaveOnExit = true;
 	}
 
-	return TRUE;
+	return true;
 }
 
 void LLFavoritesBarCtrl::onMoreTextBoxClicked()
@@ -1305,25 +1304,27 @@ void LLFavoritesBarCtrl::onMoreTextBoxClicked()
 
 void LLFavoritesBarCtrl::showDropDownMenu()
 {
-	if (mOverflowMenuHandle.isDead())
-	{
-		createOverflowMenu();
-	}
+    if (mOverflowMenuHandle.isDead())
+    {
+        createOverflowMenu();
+    }
 
-	LLToggleableMenu* menu = (LLToggleableMenu*)mOverflowMenuHandle.get();
-	if (menu && menu->toggleVisibility())
-	{
-		if (mUpdateDropDownItems)
-		{
-			updateMenuItems(menu);
-		}
+    LLToggleableMenu* menu = (LLToggleableMenu*)mOverflowMenuHandle.get();
+    if (menu && menu->toggleVisibility())
+    {
+        if (mUpdateDropDownItems)
+        {
+            updateOverflowMenuItems();
+        }
+        else
+        {
+            menu->buildDrawLabels();
+        }
 
-		menu->buildDrawLabels();
-		menu->updateParent(LLMenuGL::sMenuContainer);
-		menu->setButtonRect(mMoreTextBox->getRect(), this);
-		positionAndShowMenu(menu);
-		mDropDownItemsCount = menu->getItemCount();
-	}
+        menu->updateParent(LLMenuGL::sMenuContainer);
+        menu->setButtonRect(mMoreTextBox->getRect(), this);
+        positionAndShowOverflowMenu();
+    }
 }
 
 void LLFavoritesBarCtrl::createOverflowMenu()
@@ -1340,38 +1341,41 @@ void LLFavoritesBarCtrl::createOverflowMenu()
 	mOverflowMenuHandle = menu->getHandle();
 }
 
-void LLFavoritesBarCtrl::updateMenuItems(LLToggleableMenu* menu)
+void LLFavoritesBarCtrl::updateOverflowMenuItems()
 {
-	menu->empty();
+    LLToggleableMenu* menu = (LLToggleableMenu*)mOverflowMenuHandle.get();
+    menu->empty();
 
-	U32 widest_item = 0;
+    U32 widest_item = 0;
 
-	for (S32 i = mFirstDropDownItem; i < mItems.size(); i++)
-	{
-		LLViewerInventoryItem* item = mItems.at(i);
-		const std::string& item_name = item->getName();
+    for (S32 i = mFirstDropDownItem; i < mItems.size(); i++)
+    {
+        LLViewerInventoryItem* item = mItems.at(i);
+        const std::string& item_name = item->getName();
 
-		LLFavoriteLandmarkMenuItem::Params item_params;
-		item_params.name(item_name);
-		item_params.label(item_name);
-		item_params.on_click.function(boost::bind(&LLFavoritesBarCtrl::onButtonClick, this, item->getUUID()));
+        LLFavoriteLandmarkMenuItem::Params item_params;
+        item_params.name(item_name);
+        item_params.label(item_name);
+        item_params.on_click.function(boost::bind(&LLFavoritesBarCtrl::onButtonClick, this, item->getUUID()));
 
-		LLFavoriteLandmarkMenuItem *menu_item = LLUICtrlFactory::create<LLFavoriteLandmarkMenuItem>(item_params);
-		menu_item->initFavoritesBarPointer(this);
-		menu_item->setRightMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonRightClick, this, item->getUUID(), _1, _2, _3, _4));
-		menu_item->LLUICtrl::setMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseDown, this, item->getUUID(), _1, _2, _3, _4));
-		menu_item->LLUICtrl::setMouseUpCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseUp, this, item->getUUID(), _1, _2, _3, _4));
-		menu_item->setLandmarkID(item->getUUID());
+        LLFavoriteLandmarkMenuItem* menu_item = LLUICtrlFactory::create<LLFavoriteLandmarkMenuItem>(item_params);
+        menu_item->initFavoritesBarPointer(this);
+        menu_item->setRightMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonRightClick, this, item->getUUID(), _1, _2, _3, _4));
+        menu_item->LLUICtrl::setMouseDownCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseDown, this, item->getUUID(), _1, _2, _3, _4));
+        menu_item->LLUICtrl::setMouseUpCallback(boost::bind(&LLFavoritesBarCtrl::onButtonMouseUp, this, item->getUUID(), _1, _2, _3, _4));
+        menu_item->setLandmarkID(item->getUUID());
 
-		fitLabelWidth(menu_item);
+        fitLabelWidth(menu_item);
 
-		widest_item = llmax(widest_item, menu_item->getNominalWidth());
+        widest_item = llmax(widest_item, menu_item->getNominalWidth());
 
-		menu->addChild(menu_item);
-	}
+        menu->addChild(menu_item);
+    }
 
-	addOpenLandmarksMenuItem(menu);
-	mUpdateDropDownItems = false;
+    menu->buildDrawLabels();
+    mDropDownItemsCount = menu->getItemCount();
+    addOpenLandmarksMenuItem(menu);
+    mUpdateDropDownItems = false;
 }
 
 void LLFavoritesBarCtrl::fitLabelWidth(LLMenuItemCallGL* menu_item)
@@ -1382,7 +1386,7 @@ void LLFavoritesBarCtrl::fitLabelWidth(LLMenuItemCallGL* menu_item)
 	// Check whether item name wider than menu
 	if (menu_item->getNominalWidth() > max_width)
 	{
-		S32 chars_total = item_name.length();
+        S32 chars_total = static_cast<S32>(item_name.length());
 		S32 chars_fitted = 1;
 		menu_item->setLabel(LLStringExplicit(""));
 		S32 label_space = max_width - menu_item->getFont()->getWidth("...") -
@@ -1426,39 +1430,40 @@ void LLFavoritesBarCtrl::addOpenLandmarksMenuItem(LLToggleableMenu* menu)
 	menu->addChild(menu_item);
 }
 
-void LLFavoritesBarCtrl::positionAndShowMenu(LLToggleableMenu* menu)
+void LLFavoritesBarCtrl::positionAndShowOverflowMenu()
 {
-	U32 max_width = llmin(DROP_DOWN_MENU_WIDTH, getRect().getWidth());
+    LLToggleableMenu* menu = (LLToggleableMenu*)mOverflowMenuHandle.get();
+    U32 max_width = llmin(DROP_DOWN_MENU_WIDTH, getRect().getWidth());
 
-	S32 menu_x = getRect().getWidth() - max_width;
-	S32 menu_y = getParent()->getRect().mBottom - DROP_DOWN_MENU_TOP_PAD;
+    S32 menu_x = getRect().getWidth() - max_width;
+    S32 menu_y = getParent()->getRect().mBottom - DROP_DOWN_MENU_TOP_PAD;
 
-	// the menu should be offset of the right edge of the window
-	// so it's no covered by buttons in the right-side toolbar.
-	LLToolBar* right_toolbar = gToolBarView->getChild<LLToolBar>("toolbar_right");
-	if (right_toolbar && right_toolbar->hasButtons())
-	{
-		S32 toolbar_top = 0;
+    // the menu should be offset of the right edge of the window
+    // so it's no covered by buttons in the right-side toolbar.
+    LLToolBar* right_toolbar = gToolBarView->getChild<LLToolBar>("toolbar_right");
+    if (right_toolbar && right_toolbar->hasButtons())
+    {
+        S32 toolbar_top = 0;
 
-		if (LLView* top_border_panel = right_toolbar->getChild<LLView>("button_panel"))
-		{
-			toolbar_top = top_border_panel->calcScreenRect().mTop;
-		}
+        if (LLView* top_border_panel = right_toolbar->getChild<LLView>("button_panel"))
+        {
+            toolbar_top = top_border_panel->calcScreenRect().mTop;
+        }
 
-		// Calculating the bottom (in screen coord) of the drop down menu
-		S32 menu_top = getParent()->getRect().mBottom - DROP_DOWN_MENU_TOP_PAD;
-		S32 menu_bottom = menu_top - menu->getRect().getHeight();
-		S32 menu_bottom_screen = 0;
+        // Calculating the bottom (in screen coord) of the drop down menu
+        S32 menu_top = getParent()->getRect().mBottom - DROP_DOWN_MENU_TOP_PAD;
+        S32 menu_bottom = menu_top - menu->getRect().getHeight();
+        S32 menu_bottom_screen = 0;
 
-		localPointToScreen(0, menu_bottom, &menu_top, &menu_bottom_screen);
+        localPointToScreen(0, menu_bottom, &menu_top, &menu_bottom_screen);
 
-		if (menu_bottom_screen < toolbar_top)
-		{
-			menu_x -= right_toolbar->getRect().getWidth();
-		}
-	}
+        if (menu_bottom_screen < toolbar_top)
+        {
+            menu_x -= right_toolbar->getRect().getWidth();
+        }
+    }
 
-	LLMenuGL::showPopup(this, menu, menu_x, menu_y, mMouseX, mMouseY);
+    LLMenuGL::showPopup(this, menu, menu_x, menu_y, mMouseX, mMouseY);
 }
 
 void LLFavoritesBarCtrl::onButtonClick(LLUUID item_id)
@@ -1493,7 +1498,7 @@ void LLFavoritesBarCtrl::onButtonRightClick( LLUUID item_id,LLView* fav_button,S
 	LLMenuGL::showPopup(fav_button, menu, x, y);
 }
 
-BOOL LLFavoritesBarCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
+bool LLFavoritesBarCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 {
 	BOOL handled = childrenHandleRightMouseDown( x, y, mask) != NULL;
 	if(!handled && !gMenuHolder->hasVisibleMenu())
@@ -1506,7 +1511,7 @@ BOOL LLFavoritesBarCtrl::handleRightMouseDown(S32 x, S32 y, MASK mask)
 }
 void copy_slurl_to_clipboard_cb(std::string& slurl)
 {
-	LLClipboard::instance().copyToClipboard(utf8str_to_wstring(slurl),0,slurl.size());
+    LLClipboard::instance().copyToClipboard(utf8str_to_wstring(slurl), 0, static_cast<S32>(slurl.size()));
 
 	LLSD args;
 	args["SLURL"] = slurl;
@@ -1644,17 +1649,17 @@ bool LLFavoritesBarCtrl::onRenameCommit(const LLSD& notification, const LLSD& re
     return false;
 }
 
-BOOL LLFavoritesBarCtrl::isClipboardPasteable() const
+bool LLFavoritesBarCtrl::isClipboardPasteable() const
 {
 	if (!LLClipboard::instance().hasContents())
 	{
-		return FALSE;
+		return false;
 	}
 
 	std::vector<LLUUID> objects;
 	LLClipboard::instance().pasteFromClipboard(objects);
-	S32 count = objects.size();
-	for(S32 i = 0; i < count; i++)
+	auto count = objects.size();
+	for(size_t i = 0; i < count; i++)
 	{
 		const LLUUID &item_id = objects.at(i);
 
@@ -1662,16 +1667,16 @@ BOOL LLFavoritesBarCtrl::isClipboardPasteable() const
 		const LLInventoryCategory *cat = gInventory.getCategory(item_id);
 		if (cat)
 		{
-			return FALSE;
+			return false;
 		}
 
 		const LLInventoryItem *item = gInventory.getItem(item_id);
 		if (item && LLAssetType::AT_LANDMARK != item->getType())
 		{
-			return FALSE;
+			return false;
 		}
 	}
-	return TRUE;
+	return true;
 }
 
 void LLFavoritesBarCtrl::pasteFromClipboard() const
@@ -1682,9 +1687,9 @@ void LLFavoritesBarCtrl::pasteFromClipboard() const
 		LLInventoryItem* item = NULL;
 		std::vector<LLUUID> objects;
 		LLClipboard::instance().pasteFromClipboard(objects);
-		S32 count = objects.size();
+		auto count = objects.size();
 		LLUUID parent_id(mFavoriteFolderId);
-		for(S32 i = 0; i < count; i++)
+		for(size_t i = 0; i < count; i++)
 		{
 			item = model->getItem(objects.at(i));
 			if (item)
@@ -1715,7 +1720,7 @@ void LLFavoritesBarCtrl::onButtonMouseDown(LLUUID id, LLUICtrl* ctrl, S32 x, S32
 	}
 
 	mDragItemId = id;
-	mStartDrag = TRUE;
+	mStartDrag = true;
 
 	S32 screenX, screenY;
 	localPointToScreen(x, y, &screenX, &screenY);
@@ -1725,7 +1730,7 @@ void LLFavoritesBarCtrl::onButtonMouseDown(LLUUID id, LLUICtrl* ctrl, S32 x, S32
 
 void LLFavoritesBarCtrl::onButtonMouseUp(LLUUID id, LLUICtrl* ctrl, S32 x, S32 y, MASK mask)
 {
-	mStartDrag = FALSE;
+	mStartDrag = false;
 	mDragItemId = LLUUID::null;
 }
 
@@ -1738,7 +1743,7 @@ void LLFavoritesBarCtrl::onEndDrag()
 	LLView::getWindow()->setCursor(UI_CURSOR_ARROW);
 }
 
-BOOL LLFavoritesBarCtrl::handleHover(S32 x, S32 y, MASK mask)
+bool LLFavoritesBarCtrl::handleHover(S32 x, S32 y, MASK mask)
 {
 	if (mDragItemId != LLUUID::null && mStartDrag)
 	{
@@ -1751,13 +1756,13 @@ BOOL LLFavoritesBarCtrl::handleHover(S32 x, S32 y, MASK mask)
 				DAD_LANDMARK, mDragItemId,
 				LLToolDragAndDrop::SOURCE_LIBRARY);
 
-			mStartDrag = FALSE;
+			mStartDrag = false;
 
 			return LLToolDragAndDrop::getInstance()->handleHover(x, y, mask);
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 LLUICtrl* LLFavoritesBarCtrl::findChildByLocalCoords(S32 x, S32 y)
@@ -1783,16 +1788,16 @@ LLUICtrl* LLFavoritesBarCtrl::findChildByLocalCoords(S32 x, S32 y)
 	return ctrl;
 }
 
-BOOL LLFavoritesBarCtrl::needToSaveItemsOrder(const LLInventoryModel::item_array_t& items)
+bool LLFavoritesBarCtrl::needToSaveItemsOrder(const LLInventoryModel::item_array_t& items)
 {
-	BOOL result = FALSE;
+	BOOL result = false;
 
 	// if there is an item without sort order field set, we need to save items order
 	for (LLInventoryModel::item_array_t::const_iterator i = items.begin(); i != items.end(); ++i)
 	{
 		if (LLFavoritesOrderStorage::instance().getSortIndex((*i)->getUUID()) < 0)
 		{
-			result = TRUE;
+			result = true;
 			break;
 		}
 	}
@@ -2284,7 +2289,7 @@ void LLFavoritesOrderStorage::rearrangeFavoriteLandmarks(const LLUUID& source_it
 	saveItemsOrder(items);
 }
 
-BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
+bool LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 {
 	pref_changed |= mRecreateFavoriteStorage;
 	mRecreateFavoriteStorage = false;
@@ -2292,13 +2297,13 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 	// Can get called before inventory is done initializing.
 	if (!gInventory.isInventoryUsable())
 	{
-		return FALSE;
+		return false;
 	}
 	
 	LLUUID favorite_folder= gInventory.findCategoryUUIDForType(LLFolderType::FT_FAVORITE);
 	if (favorite_folder.isNull())
 	{
-		return FALSE;
+		return false;
 	}
 
 	LLInventoryModel::item_array_t items;
@@ -2437,11 +2442,11 @@ BOOL LLFavoritesOrderStorage::saveFavoritesRecord(bool pref_changed)
 		mPrevFavorites = items;
 	}
 
-	return TRUE;
+	return true;
 
 }
 
-void LLFavoritesOrderStorage::showFavoritesOnLoginChanged(BOOL show)
+void LLFavoritesOrderStorage::showFavoritesOnLoginChanged(bool show)
 {
 	if (show)
 	{

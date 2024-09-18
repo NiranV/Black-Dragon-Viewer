@@ -33,7 +33,7 @@ class BDFloaterComplexity :
 private:
 	BDFloaterComplexity(const LLSD& key);
 	/*virtual*/	~BDFloaterComplexity();
-	/*virtual*/	BOOL postBuild();
+	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
 
 	//BD - Shameless copy from bdfloateranimations.cpp

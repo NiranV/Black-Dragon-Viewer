@@ -227,7 +227,8 @@ void LLFloaterBuyCurrencyUI::updateUI()
             }
         }
 
-        S32 balance = gStatusBar->getBalance();
+        LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+        S32 balance = sidepanel_inventory->getBalance();
         getChildView("balance_label")->setVisible(true);
         getChildView("balance_amount")->setVisible(true);
         getChild<LLUICtrl>("balance_amount")->setTextArg("[AMT]", llformat("%d", balance));

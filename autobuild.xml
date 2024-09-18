@@ -554,7 +554,7 @@
               <key>hash</key>
               <string>4cd82e2dec06ddff19e9b3dc0254f2593ec80452</string>
               <key>hash_algorithm</key>
-              <string>md5</string>
+              <string>sha1</string>
               <key>url</key>
               <string>https://github.com/secondlife/3p-expat/releases/download/v2.1.1.1f36d02/expat-2.1.1.1f36d02-linux64-1f36d02.tar.zst</string>
             </map>
@@ -568,7 +568,7 @@
               <key>hash</key>
               <string>47c01a89bc32c5740efe51be43e459ffd9b7cd34</string>
               <key>hash_algorithm</key>
-              <string>md5</string>
+              <string>sha1</string>
               <key>url</key>
               <string>https://github.com/secondlife/3p-expat/releases/download/v2.1.1.1f36d02/expat-2.1.1.1f36d02-windows64-1f36d02.tar.zst</string>
             </map>

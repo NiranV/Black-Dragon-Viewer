@@ -1888,25 +1888,6 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
             mColorSwatch->setFallbackImage(LLUI::getUIImage("locked_image.j2c") );
             mColorSwatch->setValid(false);
         }
-        LLRadioGroup* radio_mat_type = getChild<LLRadioGroup>("radio_material_type");
-        if (radio_mat_type)
-        {
-            radio_mat_type->setSelectedIndex(0);
-        }
-		LLTextureCtrl*	texture_ctrl = getChild<LLTextureCtrl>("texture control"); 
-		if (texture_ctrl)
-		{
-			texture_ctrl->setImageAssetID( LLUUID::null );
-			texture_ctrl->setEnabled( false );  // this is a LLUICtrl, but we don't want it to have keyboard focus so we add it as a child, not a ctrl.
-// 			texture_ctrl->setValid(false);
-		}
-		LLColorSwatchCtrl* mColorSwatch = getChild<LLColorSwatchCtrl>("colorswatch");
-		if (mColorSwatch)
-		{
-			mColorSwatch->setEnabled( false );			
-			mColorSwatch->setFallbackImage(LLUI::getUIImage("locked_image.j2c") );
-			mColorSwatch->setValid(false);
-		}
 		LLComboBox* combo_mat_type = getChild<LLComboBox>("combobox_material_type");
 		if (combo_mat_type)
 		{

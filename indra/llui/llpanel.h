@@ -248,8 +248,8 @@ private:
     LLUIColor       mBgAlphaColor;
     LLUIColor       mBgOpaqueImageOverlay;
     LLUIColor       mBgAlphaImageOverlay;
-    LLUIColor		mBgAlphaImageOverlay;
 //	//BD - Custom Background Shadow Image
+    LLPointer<LLUIImage> mBgShadowImage;
     LLPointer<LLUIImage> mBgOpaqueImage;    // "panel in front" look
     LLPointer<LLUIImage> mBgAlphaImage;     // "panel in back" look
     LLViewBorder*   mBorder;

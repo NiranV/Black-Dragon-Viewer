@@ -57,15 +57,15 @@ public:
 
 	PieMenu(const LLMenuGL::Params& p);
 
-	/*virtual*/ void setVisible(BOOL visible);
+	/*virtual*/ void setVisible(bool visible);
 
 	// Adding and removing "child" slices to the pie
 	/*virtual*/ bool addChild(LLView* child, S32 tab_group = 0);
 	/*virtual*/ void removeChild(LLView* child);
 
-	/*virtual*/ BOOL handleHover(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL handleMouseUp(S32 x, S32 y, MASK mask);
-	/*virtual*/ BOOL handleRightMouseUp(S32 x, S32 y, MASK mask);
+	/*virtual*/ bool handleHover(S32 x, S32 y, MASK mask);
+	/*virtual*/ bool handleMouseUp(S32 x, S32 y, MASK mask);
+	/*virtual*/ bool handleRightMouseUp(S32 x, S32 y, MASK mask);
 
 	void draw();
 
@@ -81,10 +81,10 @@ public:
 	slice_list_t* mSlices;
 
 	// Appends a sub pie menu to the current pie
-	BOOL appendContextSubMenu(PieMenu* menu);
+    bool appendContextSubMenu(PieMenu* menu);
 
 protected:
-	BOOL handleMouseButtonUp(S32 x, S32 y, MASK mask);
+    bool handleMouseButtonUp(S32 x, S32 y, MASK mask);
 	// Font used for the menu
 	const LLFontGL* mFont;
 	// Currently highlighted item, must be tested if it's a slice or submenu

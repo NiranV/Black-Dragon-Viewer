@@ -88,9 +88,6 @@ public:
 
     void            forceEditorCommit();            // for commit on external button
 
-    virtual bool    handleScrollWheel(S32 x,S32 y,S32 clicks);
-    virtual bool    handleKeyHere(KEY key, MASK mask);
-
 	//BD - UI Improvements
 	virtual bool	handleRightMouseDown(S32 x, S32 y, MASK mask);
 	virtual bool	handleScrollWheel(S32 x,S32 y,S32 clicks, MASK mask);

@@ -587,6 +587,13 @@ public:
     void            yaw(F32 angle);
     LLVector3       getReferenceUpVector();
 
+    //BD
+    void			setPitchMultiplier(F32 mult) { mPitchMultiplier = mult; }
+    void			setYawMultiplier(F32 mult) { mYawMultiplier = mult; }
+
+    F32 mPitchMultiplier;
+    F32 mYawMultiplier;
+
     //--------------------------------------------------------------------
     // Autopilot
     //--------------------------------------------------------------------

@@ -569,7 +569,7 @@ bool LLPanelOutfitEdit::postBuild()
 	getChild<LLButton>(SAVE_AS_BTN)->setCommitCallback(boost::bind(&LLPanelOutfitEdit::saveOutfit, this, true));
 
 	onOutfitChanging(gAgentWearables.isCOFChangeInProgress());
-	return TRUE;
+	return true;
 }
 
 // virtual
@@ -762,7 +762,7 @@ void LLPanelOutfitEdit::onSearchEdit(const std::string& string)
 	
 	// set new filter string
 	mInventoryItemsPanel->setFilterSubString(mSearchString);
-	mWearableItemsList->setFilterSubString(mSearchString);
+	mWearableItemsList->setFilterSubString(mSearchString, true);
 }
 
 void LLPanelOutfitEdit::onVisibilityChanged(const LLSD &in_visible_chain)
@@ -1226,7 +1226,6 @@ void LLPanelOutfitEdit::onAddMoreButtonClicked()
 void LLPanelOutfitEdit::showFilteredWearablesListView(LLWearableType::EType type)
 {
     showAddWearablesPanel(true);
-    showWearablesListView();
 
     //e_list_view_item_type implicitly contains LLWearableType::EType starting from LVIT_SHAPE
     applyListViewFilter(static_cast<EListViewItemType>(LVIT_SHAPE + type));

@@ -161,6 +161,11 @@ public:
 	 */
 	static bool isBlocked(const LLUUID& id);
 
+    /**
+     * @return true if the avatar voice is blocked
+     */
+    static bool isVoiceMuted(const LLUUID& id);
+
 	//BD - Right Click Menu
 	/**
 	 * @return true if the avatar voice or text is blocked

@@ -220,7 +220,7 @@ LLPCode toolData[]={
 	LL_PCODE_LEGACY_TREE,
 	LL_PCODE_LEGACY_GRASS};
 
-BOOL	LLFloaterTools::postBuild()
+bool	LLFloaterTools::postBuild()
 {	
 	// Hide until tool selected
 	setVisible(FALSE);
@@ -320,7 +320,7 @@ BOOL	LLFloaterTools::postBuild()
 
 	sShowObjectCost = gSavedSettings.getBOOL("ShowObjectRenderingCost");
 	
-	return TRUE;
+	return true;
 }
 
 // Create the popupview with a dummy center.  It will be moved into place
@@ -601,14 +601,14 @@ void LLFloaterTools::draw()
     BOOL has_selection = !LLSelectMgr::getInstance()->getSelection()->isEmpty();
     if(!has_selection && (mHasSelection != has_selection))
     {
-        mDirty = TRUE;
+        mDirty = true;
     }
     mHasSelection = has_selection;
 
     if (mDirty)
 	{
 		refresh();
-		mDirty = FALSE;
+		mDirty = false;
 	}
 
 	//	mCheckSelectIndividual->set(gSavedSettings.getBOOL("EditLinkedParts"));
@@ -617,7 +617,7 @@ void LLFloaterTools::draw()
 
 void LLFloaterTools::dirty()
 {
-	mDirty = TRUE; 
+	mDirty = true; 
 	LLFloaterOpenObject* instance = LLFloaterReg::findTypedInstance<LLFloaterOpenObject>("openobject");
 	if (instance) instance->dirty();
 }
@@ -626,12 +626,12 @@ void LLFloaterTools::dirty()
 // floater is closed.
 void LLFloaterTools::resetToolState()
 {
-	gCameraBtnZoom = TRUE;
-	gCameraBtnOrbit = FALSE;
-	gCameraBtnPan = FALSE;
+	gCameraBtnZoom = true;
+	gCameraBtnOrbit = false;
+	gCameraBtnPan = false;
 
-	gGrabBtnSpin = FALSE;
-	gGrabBtnVertical = FALSE;
+	gGrabBtnSpin = false;
+	gGrabBtnVertical = false;
 }
 
 void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
@@ -920,7 +920,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 
 
 // virtual
-BOOL LLFloaterTools::canClose()
+bool LLFloaterTools::canClose()
 {
 	// don't close when quitting, so camera will stay put
 	return !LLApp::isExiting();
@@ -1018,18 +1018,18 @@ void commit_radio_group_move(LLUICtrl* ctrl)
 	std::string selected = group->getValue().asString();
 	if (selected == "radio move")
 	{
-		gGrabBtnVertical = FALSE;
-		gGrabBtnSpin = FALSE;
+		gGrabBtnVertical = false;
+		gGrabBtnSpin = false;
 	}
 	else if (selected == "radio lift")
 	{
-		gGrabBtnVertical = TRUE;
-		gGrabBtnSpin = FALSE;
+		gGrabBtnVertical = true;
+		gGrabBtnSpin = false;
 	}
 	else if (selected == "radio spin")
 	{
-		gGrabBtnVertical = FALSE;
-		gGrabBtnSpin = TRUE;
+		gGrabBtnVertical = false;
+		gGrabBtnSpin = true;
 	}
 }
 
@@ -1039,21 +1039,21 @@ void commit_radio_group_focus(LLUICtrl* ctrl)
 	std::string selected = group->getValue().asString();
 	if (selected == "radio zoom")
 	{
-		gCameraBtnZoom = TRUE;
-		gCameraBtnOrbit = FALSE;
-		gCameraBtnPan = FALSE;
+		gCameraBtnZoom = true;
+		gCameraBtnOrbit = false;
+		gCameraBtnPan = false;
 	}
 	else if (selected == "radio orbit")
 	{
-		gCameraBtnZoom = FALSE;
-		gCameraBtnOrbit = TRUE;
-		gCameraBtnPan = FALSE;
+		gCameraBtnZoom = false;
+		gCameraBtnOrbit = true;
+		gCameraBtnPan = false;
 	}
 	else if (selected == "radio pan")
 	{
-		gCameraBtnZoom = FALSE;
-		gCameraBtnOrbit = FALSE;
-		gCameraBtnPan = TRUE;
+		gCameraBtnZoom = false;
+		gCameraBtnOrbit = false;
+		gCameraBtnPan = true;
 	}
 }
 

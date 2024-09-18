@@ -139,7 +139,7 @@ void BDStatus::setFlycam(bool toggle)
 }
 
 
-BOOL BDStatus::postBuild()
+bool BDStatus::postBuild()
 {
 	mSittingButton = getChild<LLButton>("sitting_btn");
 	mFlyingButton = getChild<LLButton>("flying_btn");
@@ -177,7 +177,7 @@ BOOL BDStatus::postBuild()
 	mCameraLockButton->setCommitCallback(boost::bind(&BDStatus::onCameraLockButtonClick, this));
 	mFlycamButton->setCommitCallback(boost::bind(&BDStatus::onFlycamButtonClick, this));
 
-	return TRUE;
+	return true;
 }
 
 void BDStatus::onSittingButtonClick()

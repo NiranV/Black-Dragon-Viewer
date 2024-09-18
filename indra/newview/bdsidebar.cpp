@@ -77,7 +77,7 @@ void LLSideBar::draw()
 	}
 }
 
-BOOL LLSideBar::postBuild()
+bool LLSideBar::postBuild()
 {
 	//BD - Legacy stuff.
 	mShadowResX = getChild<LLUICtrl>("RenderShadowResolution_X");
@@ -167,7 +167,7 @@ BOOL LLSideBar::postBuild()
 	gSavedPerAccountSettings.applyToAll(&func);
 
 	settings_combo->sortByName();*/
-	return TRUE;
+	return true;
 }
 
 //BD - Refresh the create-a-widget controls periodically.
@@ -233,7 +233,7 @@ void LLSideBar::onMouseLeave(S32 x, S32 y, MASK mask)
 	LLPanel::onMouseLeave(x, y, mask);
 } 
 
-BOOL LLSideBar::handleMouseDown(S32 x, S32 y, MASK mask)
+bool LLSideBar::handleMouseDown(S32 x, S32 y, MASK mask)
 {
 	return LLPanel::handleMouseDown(x, y, mask);
 }
@@ -435,7 +435,7 @@ bool LLSideBar::loadWidgetList()
 	if (!infile.is_open())
 	{
 		LL_WARNS("Sidebar") << "Cannot find file in: " << filename << LL_ENDL;
-		return FALSE;
+		return false;
 	}
 
 	if (!mFirstTime)
@@ -452,7 +452,7 @@ bool LLSideBar::loadWidgetList()
 		if (LLSDSerialize::fromXML(widget, infile) == LLSDParser::PARSE_FAILURE)
 		{
 			LL_WARNS("Sidebar") << "Failed to parse file" << filename << LL_ENDL;
-			return FALSE;
+			return false;
 		}
 
 		BDSidebarItem::SidebarType type = BDSidebarItem::SidebarType::CHECKBOX;
@@ -655,7 +655,7 @@ bool LLSideBar::loadWidgetList()
 	mWidgetsStack->translate(0, 5 + mOffset);
 
 	mFirstTime = false;
-	return TRUE;
+	return true;
 }
 
 void LLSideBar::saveWidgetList()

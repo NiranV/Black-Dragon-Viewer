@@ -29,7 +29,7 @@ class BDFloaterAnimations :
 private:
 	BDFloaterAnimations(const LLSD& key);
 	/*virtual*/	~BDFloaterAnimations();
-	/*virtual*/	BOOL postBuild();
+	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);

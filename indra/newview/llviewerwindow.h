@@ -314,11 +314,10 @@ public:
     bool            getCursorHidden() { return mCursorHidden; }
     void            moveCursorToCenter();                               // move to center of window
 
-    void            initTextures(S32 location_id);
     void            setShowProgress(const bool show);
     bool            getShowProgress() const;
     void            setProgressString(const std::string& string);
-    void            setProgressPercent(const F32 percent);
+    void			setProgressPercent(const F32 meta, const F32 sub = 1.f);
     void            setProgressMessage(const std::string& msg);
     void            setProgressCancelButtonVisible( bool b, const std::string& label = LLStringUtil::null );
     LLProgressView *getProgressView() const;

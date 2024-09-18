@@ -82,7 +82,7 @@ bool PieMenu::addChild(LLView* child, S32 tab_group)
 {
 	// Don't add invalid slices
 	if (!child)
-		return FALSE;
+		return false;
 
 	// Add a new slice to the menu
 	mSlices->push_back(child);
@@ -91,7 +91,7 @@ bool PieMenu::addChild(LLView* child, S32 tab_group)
 	LLUICtrl::addChild(child);
 	reshape(PIE_OUTER_SIZE * 2, PIE_OUTER_SIZE * 2, FALSE);
 
-	return TRUE;
+	return true;
 }
 
 void PieMenu::removeChild(LLView* child)
@@ -109,7 +109,7 @@ void PieMenu::removeChild(LLView* child)
 	reshape(PIE_OUTER_SIZE * 2, PIE_OUTER_SIZE * 2, FALSE);
 }
 
-BOOL PieMenu::handleHover(S32 x, S32 y, MASK mask)
+bool PieMenu::handleHover(S32 x, S32 y, MASK mask)
 {
 	// Initially, the current segment is marked as invalid
 	mCurrentSegment = -1;
@@ -163,7 +163,7 @@ BOOL PieMenu::handleHover(S32 x, S32 y, MASK mask)
 		mInsidePie = false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 void PieMenu::show(S32 x, S32 y, LLView* spawning_view)
@@ -254,7 +254,7 @@ void PieMenu::hide()
 	LLView::setVisible(FALSE);
 }
 
-void PieMenu::setVisible(BOOL visible)
+void PieMenu::setVisible(bool visible)
 {
 	// Hide the menu if needed
 	if (!visible)
@@ -521,11 +521,11 @@ void PieMenu::draw()
 	LLView::draw();
 }
 
-BOOL PieMenu::appendContextSubMenu(PieMenu* menu)
+bool PieMenu::appendContextSubMenu(PieMenu* menu)
 {
 	LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu()" << LL_ENDL;
 	if (!menu)
-		return FALSE;
+		return false;
 
 	LL_DEBUGS("Pie") << "PieMenu::appendContextSubMenu() appending " << menu->getLabel() << " to " << getLabel() << LL_ENDL;
 
@@ -534,23 +534,23 @@ BOOL PieMenu::appendContextSubMenu(PieMenu* menu)
 	// Tell the view that our menu has changed
 	LLUICtrl::addChild(menu);
 
-	return TRUE;
+	return true;
 }
 
-BOOL PieMenu::handleMouseUp(S32 x, S32 y, MASK mask)
+bool PieMenu::handleMouseUp(S32 x, S32 y, MASK mask)
 {
 	// Left and right mouse buttons both do the same thing currently
 	return handleMouseButtonUp(x, y, mask);
 }
 
-BOOL PieMenu::handleRightMouseUp(S32 x, S32 y, MASK mask)
+bool PieMenu::handleRightMouseUp(S32 x, S32 y, MASK mask)
 {
 	// Left and right mouse buttons both do the same thing currently
 	return handleMouseButtonUp(x, y, mask);
 }
 
 // left and right mouse buttons both do the same thing currently
-BOOL PieMenu::handleMouseButtonUp(S32 x, S32 y, MASK mask)
+bool PieMenu::handleMouseButtonUp(S32 x, S32 y, MASK mask)
 {
 	// If this was the first click and no slice is highlighted (no borderless click), start the popup timer
 	if (mFirstClick && !mSlice)

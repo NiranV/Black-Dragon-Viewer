@@ -134,11 +134,11 @@ LLVector4::LLVector4(const LLVector3d &vec)
 }
 
 // static 
-BOOL LLVector4::parseVector4(const std::string& buf, LLVector4* value)
+bool LLVector4::parseVector4(const std::string& buf, LLVector4* value)
 {
 	if (buf.empty() || value == NULL)
 	{
-		return FALSE;
+		return false;
 	}
 
 	LLVector4 v;
@@ -151,8 +151,8 @@ BOOL LLVector4::parseVector4(const std::string& buf, LLVector4* value)
 	if (4 == count)
 	{
 		value->setVec(v);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }

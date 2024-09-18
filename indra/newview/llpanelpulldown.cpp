@@ -79,7 +79,7 @@ bool LLPanelPulldown::handleDoubleClick(S32 x, S32 y, MASK mask)
 //BD - UI Improvements
 bool LLPanelPulldown::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 {
-    LLPanel::handleScrollWheel(x, y, clicks);
+    LLPanel::handleScrollWheel(x, y, clicks, mask);
     return true; //If we got here, then we are in Pulldown's rect, consume the event.
 }
 

@@ -2027,11 +2027,8 @@ bool LLPanelGroupRolesSubTab::postBuildSubTab(LLView* root)
     mRoleName->setKeystrokeCallback(onPropertiesKey, this);
 
 	mRoleDescription->setCommitOnFocusLost(true);
-	//BD
-	mRoleDescription->setKeystrokeCallback(boost::bind(&LLPanelGroupRolesSubTab::onDescriptionKeyStroke, this, _1), NULL);
-
-    mRoleDescription->setCommitOnFocusLost(true);
-    mRoleDescription->setKeystrokeCallback(boost::bind(&LLPanelGroupRolesSubTab::onDescriptionKeyStroke, this, _1));
+    //BD
+    mRoleDescription->setKeystrokeCallback(boost::bind(&LLPanelGroupRolesSubTab::onDescriptionKeyStroke, this, _1), NULL);
 
     setFooterEnabled(false);
 
@@ -2179,7 +2176,7 @@ void LLPanelGroupRolesSubTab::update(LLGroupChange gc)
 				if (matchesSearchFilter(rd.mRoleName, rd.mRoleTitle))
 				{
 					// If this is the everyone role, then EVERYONE is in it.
-					S32 members_in_role = (*rit).first.isNull() ? gdatap->mMembers.size() : (*rit).second->getTotalMembersInRole();
+                    S32 members_in_role = (*rit).first.isNull() ? static_cast<S32>(gdatap->mMembers.size()) : (*rit).second->getTotalMembersInRole();
 					LLSD row = createRoleItem((*rit).first,rd.mRoleName, rd.mRoleTitle, members_in_role);
 					item = mRolesList->addElement(row, ((*rit).first.isNull()) ? ADD_TOP : ADD_BOTTOM, this);
 					if (had_selection && ((*rit).first == last_selected))
@@ -2564,9 +2561,10 @@ void LLPanelGroupRolesSubTab::onPropertiesKey(LLLineEditor* ctrl, void* user_dat
 //BD
 void LLPanelGroupRolesSubTab::onDescriptionKeyStroke(LLLineEditor* caller)
 {
-    mHasRoleChange = true;
+    mHasRoleChange = TRUE;
     notifyObservers();
 }
+
 
 // static
 void LLPanelGroupRolesSubTab::onDescriptionCommit(LLUICtrl* ctrl, void* user_data)

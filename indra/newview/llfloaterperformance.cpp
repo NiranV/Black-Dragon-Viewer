@@ -123,10 +123,6 @@ bool LLFloaterPerformance::postBuild()
     mObjectList->setIconClickedCallback(boost::bind(&LLFloaterPerformance::detachItem, this, _1));
 
     mSettingsPanel->getChild<LLButton>("advanced_btn")->setCommitCallback(boost::bind(&LLFloaterPerformance::onClickAdvanced, this));
-    mSettingsPanel->getChild<LLButton>("defaults_btn")->setCommitCallback(boost::bind(&LLFloaterPerformance::onClickDefaults, this));
-    mSettingsPanel->getChild<LLRadioGroup>("graphics_quality")->setCommitCallback(boost::bind(&LLFloaterPerformance::onChangeQuality, this, _2));
-    mSettingsPanel->getChild<LLCheckBoxCtrl>("advanced_lighting_model")->setMouseDownCallback(boost::bind(&LLFloaterPerformance::onClickAdvancedLighting, this));
-    mSettingsPanel->getChild<LLComboBox>("ShadowDetail")->setMouseDownCallback(boost::bind(&LLFloaterPerformance::onClickShadows, this));
 
     mNearbyPanel->getChild<LLButton>("exceptions_btn")->setCommitCallback(boost::bind(&LLFloaterPerformance::onClickExceptions, this));
     mNearbyPanel->getChild<LLCheckBoxCtrl>("hide_avatars")->setCommitCallback(boost::bind(&LLFloaterPerformance::onClickHideAvatars, this));
@@ -145,7 +141,6 @@ bool LLFloaterPerformance::postBuild()
     LLStringExplicit fps_limit(llformat("%d", gViewerWindow->getWindow()->getRefreshRate()));
     mAutoadjustmentsPanel->getChild<LLTextBox>("vsync_desc_limit")->setTextArg("[FPS_LIMIT]", fps_limit);
     mAutoadjustmentsPanel->getChild<LLTextBox>("display_desc")->setTextArg("[FPS_LIMIT]", fps_limit);
-    mAutoadjustmentsPanel->getChild<LLButton>("defaults_btn")->setCommitCallback(boost::bind(&LLFloaterPerformance::onClickDefaults, this));
 
     mStartAutotuneBtn = mAutoadjustmentsPanel->getChild<LLButton>("start_autotune");
     mStopAutotuneBtn = mAutoadjustmentsPanel->getChild<LLButton>("stop_autotune");
@@ -539,24 +534,6 @@ void LLFloaterPerformance::onClickAdvanced()
     LLFloaterReg::showInstance("prefs_graphics_advanced");
 }
 
-void LLFloaterPerformance::onClickDefaults()
-{
-    LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
-    if (instance)
-    {
-        instance->setRecommendedSettings();
-    }
-}
-
-void LLFloaterPerformance::onChangeQuality(const LLSD& data)
-{
-    LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
-    if (instance)
-    {
-        instance->onChangeQuality(data);
-    }
-}
-
 void LLFloaterPerformance::onClickHideAvatars()
 {
     LLPipeline::toggleRenderTypeControl(LLPipeline::RENDER_TYPE_AVATAR);
@@ -661,25 +638,6 @@ void LLFloaterPerformance::onAvatarListRightClick(LLUICtrl* ctrl, S32 x, S32 y)
     }
 }
 
-const U32 RENDER_QUALITY_LEVEL = 3;
-void LLFloaterPerformance::changeQualityLevel(const std::string& notif)
-{
-    LLNotificationsUtil::add(notif, LLSD(), LLSD(),
-        [](const LLSD&notif, const LLSD&resp)
-    {
-        S32 opt = LLNotificationsUtil::getSelectedOption(notif, resp);
-        if (opt == 0)
-        {
-            LLFloaterPreference* instance = LLFloaterReg::getTypedInstance<LLFloaterPreference>("preferences");
-            if (instance)
-            {
-                gSavedSettings.setU32("RenderQualityPerformance", RENDER_QUALITY_LEVEL);
-                instance->onChangeQuality(LLSD((S32)RENDER_QUALITY_LEVEL));
-            }
-        }
-    });
-}
-
 bool is_ALM_available()
 {
     bool bumpshiny = LLCubeMap::sUseCubeMaps && LLFeatureManager::getInstance()->isFeatureAvailable("RenderObjectBump") && gSavedSettings.getBOOL("RenderObjectBump");
@@ -688,23 +646,6 @@ bool is_ALM_available()
     return LLFeatureManager::getInstance()->isFeatureAvailable("RenderDeferred") &&
         bumpshiny &&
         shaders;
-}
-
-void LLFloaterPerformance::onClickAdvancedLighting()
-{
-    if (!is_ALM_available())
-    {
-        changeQualityLevel("AdvancedLightingConfirm");
-    }
-}
-
-void LLFloaterPerformance::onClickShadows()
-{
-    if (!is_ALM_available() || !gSavedSettings.getBOOL("RenderDeferred"))
-    {
-        changeQualityLevel("ShadowsConfirm");
-    }
-
 }
 
 void LLFloaterPerformance::startAutotune()

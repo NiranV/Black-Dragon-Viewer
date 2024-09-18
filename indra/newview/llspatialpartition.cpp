@@ -3777,6 +3777,7 @@ public:
                 if (vobj->isAvatar())
                 {
                     //BD - Allow selecting other rigged mesh on other avatars.
+                    LLVOAvatar* avatar = (LLVOAvatar*)vobj;
 					if (mPickRigged || LLToolMgr::getInstance()->inEdit())
                     {
                         LLViewerObject* hit = avatar->lineSegmentIntersectRiggedAttachments(mStart, mEnd, -1, mPickTransparent, mPickRigged, mPickUnselectable, mFaceHit, &intersection, mTexCoord, mNormal, mTangent);

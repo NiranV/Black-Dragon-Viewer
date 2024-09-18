@@ -93,7 +93,7 @@ const S32 MENU_ITEM_PADDING = 4;
 const std::string SEPARATOR_NAME("separator");
 const std::string VERTICAL_SEPARATOR_LABEL( "|" );
 
-const std::string LLMenuGL::BOOLEAN_true_PREFIX( "\xE2\x9C\x94" ); // U+2714 HEAVY CHECK MARK
+const std::string LLMenuGL::BOOLEAN_TRUE_PREFIX( "\xE2\x9C\x94" ); // U+2714 HEAVY CHECK MARK
 const std::string LLMenuGL::BRANCH_SUFFIX( "\xe2\x96\xb8" ); // U+25B6 BLACK RIGHT-POINTING TRIANGLE
 const std::string LLMenuGL::ARROW_UP  ("^^^^^^^");
 const std::string LLMenuGL::ARROW_DOWN("vvvvvvv");
@@ -546,8 +546,8 @@ void LLMenuItemGL::draw( void )
 		std::string::size_type offset = upper_case_label.find(mJumpKey);
 		if (offset != std::string::npos)
 		{
-			S32 x_begin = LEFT_PLAIN_PIXELS + mFont->getWidth(mLabel, 0, offset);
-			S32 x_end = LEFT_PLAIN_PIXELS + mFont->getWidth(mLabel, 0, offset + 1);
+			S32 x_begin = LEFT_PLAIN_PIXELS + mFont->getWidth(mLabel, 0, static_cast<S32>(offset));
+            S32 x_end = LEFT_PLAIN_PIXELS + mFont->getWidth(mLabel, 0, static_cast<S32>(offset) + 1);
 			gl_line_2d(x_begin, (MENU_ITEM_PADDING / 2) + 1, x_end, (MENU_ITEM_PADDING / 2) + 1);
 		}
 	}
@@ -921,7 +921,7 @@ void LLMenuItemCheckGL::setValue(const LLSD& value)
     LLUICtrl::setValue(value);
     if(value.asBoolean())
     {
-        mDrawBoolLabel = LLMenuGL::BOOLEAN_true_PREFIX;
+        mDrawBoolLabel = LLMenuGL::BOOLEAN_TRUE_PREFIX;
     }
     else
     {
@@ -954,7 +954,7 @@ void LLMenuItemCheckGL::buildDrawLabel( void )
     }
     if(getValue().asBoolean())
     {
-        mDrawBoolLabel = LLMenuGL::BOOLEAN_true_PREFIX;
+        mDrawBoolLabel = LLMenuGL::BOOLEAN_TRUE_PREFIX;
     }
     else
     {
@@ -1650,8 +1650,8 @@ void LLMenuItemBranchDownGL::draw( void )
 		if (offset != std::string::npos)
 		{
 			S32 x_offset = ll_round((F32)getRect().getWidth() / 2.f - getFont()->getWidthF32(mLabel.getString(), 0, S32_MAX) / 2.f);
-			S32 x_begin = x_offset + getFont()->getWidth(mLabel, 0, offset);
-			S32 x_end = x_offset + getFont()->getWidth(mLabel, 0, offset + 1);
+			S32 x_begin = x_offset + getFont()->getWidth(mLabel, 0, static_cast<S32>(offset));
+			S32 x_end = x_offset + getFont()->getWidth(mLabel, 0, static_cast<S32>(offset) + 1);
 			gl_line_2d(x_begin, LABEL_BOTTOM_PAD_PIXELS, x_end, LABEL_BOTTOM_PAD_PIXELS);
 		}
 	}
@@ -3206,7 +3206,8 @@ bool LLMenuGL::handleHover( S32 x, S32 y, MASK mask )
     return true;
 }
 
-bool LLMenuGL::handleScrollWheel( S32 x, S32 y, S32 clicks )
+//BD - UI Improvements
+bool LLMenuGL::handleScrollWheel( S32 x, S32 y, S32 clicks, MASK mask )
 {
     if (!mScrollable)
         return blockMouseEvent(x, y);

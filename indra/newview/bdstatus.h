@@ -58,7 +58,7 @@ public:
 	static void setCameraLock(bool toggle);
 	static void setFlycam(bool toggle);
 
-	/*virtual*/ BOOL postBuild();
+	/*virtual*/ bool postBuild();
 	/*virtual*/ void draw();
 
 

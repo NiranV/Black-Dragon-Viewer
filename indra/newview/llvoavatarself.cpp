@@ -357,22 +357,6 @@ bool LLVOAvatarSelf::buildSkeletonSelf(const LLAvatarSkeletonInfo *info)
 
 bool LLVOAvatarSelf::buildMenus()
 {
-	// add special-purpose "screen" joint
-	mScreenp = new LLViewerJoint("mScreen", NULL);
-	// for now, put screen at origin, as it is only used during special
-	// HUD rendering mode
-	F32 aspect = LLViewerCamera::getInstance()->getAspect();
-	LLVector3 scale(1.f, aspect, 1.f);
-	mScreenp->setScale(scale);
-	// SL-315
-	mScreenp->setWorldPosition(LLVector3::zero);
-	// need to update screen agressively when sidebar opens/closes, for example
-	mScreenp->mUpdateXform = TRUE;
-	return TRUE;
-}
-
-bool LLVOAvatarSelf::buildMenus()
-{
 	//-------------------------------------------------------------------------
 	// build the attach and detach menus
 	//-------------------------------------------------------------------------
@@ -846,7 +830,7 @@ bool LLVOAvatarSelf::buildMenus()
 			}
 		}
 	}
-	return TRUE;
+	return true;
 }
 
 void LLVOAvatarSelf::cleanup()

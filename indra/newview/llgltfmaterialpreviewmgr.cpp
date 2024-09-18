@@ -522,7 +522,7 @@ bool LLGLTFPreviewTexture::render()
 
     gPipeline.copyScreenSpaceReflections(&screen, &gPipeline.mSceneMap);
     gPipeline.generateLuminance(&screen, &gPipeline.mLuminanceMap);
-    gPipeline.generateExposure(&gPipeline.mLuminanceMap, &gPipeline.mExposureMap, /*use_history = */ false);
+    gPipeline.generateExposure(&gPipeline.mLuminanceMap, &gPipeline.mExposureMap);
     gPipeline.gammaCorrect(&screen, &gPipeline.mPostMap);
     LLVertexBuffer::unbind();
     gPipeline.generateGlow(&gPipeline.mPostMap);

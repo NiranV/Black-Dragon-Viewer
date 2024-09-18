@@ -178,6 +178,7 @@ protected:
 extern LLMenuBarGL*     gMenuBarView;
 //extern LLView*            gMenuBarHolder;
 extern LLMenuGL*        gEditMenu;
+extern LLViewerMenuHolderGL* gMenuHolder;
 extern LLMenuGL*        gPopupMenuView;
 
 // Context menus in 3D scene
