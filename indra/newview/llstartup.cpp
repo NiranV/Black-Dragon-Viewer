@@ -28,7 +28,6 @@
 
 #include "llappviewer.h"
 #include "llstartup.h"
-#include "llcallstack.h"
 
 #if LL_WINDOWS
 #	include <process.h>		// _spawnl()
@@ -984,7 +983,7 @@ bool idle_startup()
 		// and startup time is close enough if we don't have a real value.
 		if (gSavedPerAccountSettings.getU32("LastLogoff") == 0)
 		{
-			gSavedPerAccountSettings.setU32("LastLogoff", time_corrected());
+			gSavedPerAccountSettings.setU32("LastLogoff", (U32)time_corrected());
 		}
 
 		//Default the path if one isn't set.
@@ -3758,7 +3757,7 @@ bool process_login_success_response()
 		if(server_utc_time)
 		{
 			time_t now = time(NULL);
-			gUTCOffset = (server_utc_time - now);
+			gUTCOffset = ((S32)server_utc_time - now);
 
 			// Print server timestamp
 			LLSD substitution;

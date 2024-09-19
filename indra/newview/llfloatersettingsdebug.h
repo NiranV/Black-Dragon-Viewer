@@ -37,8 +37,10 @@ class LLSpinCtrl;
 class LLColorSwatchCtrl;
 class LLButton;
 class LLScrollListCtrl;
+class LLSpinCtrl;
+class LLTextBox;
 
-class LLFloaterSettingsDebug
+class LLFloaterSettingsDebug final
 :   public LLFloater
 {
     friend class LLFloaterReg;
@@ -73,14 +75,14 @@ private:
 
 protected:
 	LLTextEditor* mComment;
-	LLUICtrl* mBool;
-	LLUICtrl* mText;
-	LLColorSwatchCtrl* mColor;
-	LLSpinCtrl* mValX;
-	LLSpinCtrl* mValY;
-	LLSpinCtrl* mValZ;
-	LLSpinCtrl* mValW;
-	LLButton* mDefaultBtn;
+	LLUICtrl* mBool = nullptr;
+	LLUICtrl* mText = nullptr;
+	LLColorSwatchCtrl* mColor = nullptr;
+	LLSpinCtrl* mValX = nullptr;
+	LLSpinCtrl* mValY = nullptr;
+	LLSpinCtrl* mValZ = nullptr;
+	LLSpinCtrl* mValW = nullptr;
+	LLButton* mDefaultBtn = nullptr;
     std::string mSearchFilter;
 };
 

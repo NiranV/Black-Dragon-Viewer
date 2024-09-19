@@ -1023,7 +1023,7 @@ void handleAutoTuneFPSChanged(const LLSD& newValue)
     LLPerfStats::tunables.userAutoTuneEnabled = newval;
     if(newval && LLPerfStats::renderAvatarMaxART_ns == 0) // If we've enabled autotune we override "unlimited" to max
     {
-        gSavedSettings.setF32("RenderAvatarMaxART",log10(LLPerfStats::ART_UNLIMITED_NANOS-1000));//triggers callback to update static var
+        gSavedSettings.setF32("RenderAvatarMaxART", (F32)log10(LLPerfStats::ART_UNLIMITED_NANOS-1000));//triggers callback to update static var
     }
 }
 
@@ -1105,6 +1105,8 @@ void handleLocalTerrainChanged(const LLSD& newValue)
         {
             gLocalTerrainMaterials.setMaterialOverride(i, mat_override);
         }
+        const bool paint_enabled = gSavedSettings.getBOOL("LocalTerrainPaintEnabled");
+        gLocalTerrainMaterials.setPaintType(paint_enabled ? TERRAIN_PAINT_TYPE_PBR_PAINTMAP : TERRAIN_PAINT_TYPE_HEIGHTMAP_WITH_NOISE);
     }
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -1420,6 +1422,7 @@ void settings_setup_listeners()
     setting_setup_signal_listener(gSavedSettings, "RenderReflectionProbeDetail", handleReflectionProbeDetailChanged);
     setting_setup_signal_listener(gSavedSettings, "RenderReflectionsEnabled", handleReflectionProbeDetailChanged);
     setting_setup_signal_listener(gSavedSettings, "RenderScreenSpaceReflections", handleReflectionProbeDetailChanged);
+    setting_setup_signal_listener(gSavedSettings, "RenderMirrors", handleReflectionProbeDetailChanged);
     setting_setup_signal_listener(gSavedSettings, "RenderHeroProbeResolution", handleHeroProbeResolutionChanged);
     setting_setup_signal_listener(gSavedSettings, "RenderShadowDetail", handleSetShaderChanged);
     setting_setup_signal_listener(gSavedSettings, "RenderDeferredSSAO", handleSetShaderChanged);
@@ -1528,6 +1531,7 @@ void settings_setup_listeners()
     setting_setup_signal_listener(gSavedSettings, "AutoTuneImpostorByDistEnabled", handleUserImpostorByDistEnabledChanged);
     setting_setup_signal_listener(gSavedSettings, "TuningFPSStrategy", handleFPSTuningStrategyChanged);
     {
+        setting_setup_signal_listener(gSavedSettings, "LocalTerrainPaintEnabled", handleLocalTerrainChanged);
         const char* transform_suffixes[] = {
             "ScaleU",
             "ScaleV",
@@ -1546,6 +1550,7 @@ void settings_setup_listeners()
             }
         }
     }
+    setting_setup_signal_listener(gSavedSettings, "TerrainPaintBitDepth", handleSetShaderChanged);
 
     setting_setup_signal_listener(gSavedPerAccountSettings, "AvatarHoverOffsetZ", handleAvatarHoverOffsetChanged);
 }

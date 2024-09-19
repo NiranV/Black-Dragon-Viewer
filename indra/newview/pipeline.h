@@ -350,40 +350,41 @@ public:
     LLRenderTarget* getSunShadowTarget(U32 i);
     LLRenderTarget* getSpotShadowTarget(U32 i);
 
-	void renderHighlight(const LLViewerObject* obj, F32 fade);
-	
-	void renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera& camera, LLCullResult& result, bool depth_clamp);
-	void renderHighlights();
-	void renderDebug();
-	void renderPhysicsDisplay();
+    void renderHighlight(const LLViewerObject* obj, F32 fade);
 
-	void rebuildPools(); // Rebuild pools
+    void renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera& camera, LLCullResult& result, bool depth_clamp);
+    void renderSelectedFaces(const LLColor4& color);
+    void renderHighlights();
+    void renderDebug();
+    void renderPhysicsDisplay();
 
-	void findReferences(LLDrawable *drawablep);	// Find the lists which have references to this object
-	bool verify();						// Verify that all data in the pipeline is "correct"
+    void rebuildPools(); // Rebuild pools
 
-	size_t  getLightCount() const { return mLights.size(); }
+    void findReferences(LLDrawable *drawablep); // Find the lists which have references to this object
+    bool verify();                      // Verify that all data in the pipeline is "correct"
 
-	void calcNearbyLights(LLCamera& camera);
-	void setupHWLights();
-	void setupAvatarLights(bool for_edit = false);
-	void enableLights(U32 mask);
-	void enableLightsDynamic();
-	void enableLightsAvatar();
-	void enableLightsPreview();
-	void enableLightsAvatarEdit(const LLColor4& color);
-	void enableLightsFullbright();
-	void disableLights();
+    S32  getLightCount() const { return static_cast<S32>(mLights.size()); }
 
-	void shiftObjects(const LLVector3 &offset);
+    void calcNearbyLights(LLCamera& camera);
+    void setupHWLights();
+    void setupAvatarLights(bool for_edit = false);
+    void enableLights(U32 mask);
+    void enableLightsDynamic();
+    void enableLightsAvatar();
+    void enableLightsPreview();
+    void enableLightsAvatarEdit(const LLColor4& color);
+    void enableLightsFullbright();
+    void disableLights();
 
-	void setLight(LLDrawable *drawablep, bool is_light);
-	
-	bool hasRenderBatches(const U32 type) const;
-	LLCullResult::drawinfo_iterator beginRenderMap(U32 type);
-	LLCullResult::drawinfo_iterator endRenderMap(U32 type);
-	LLCullResult::sg_iterator beginAlphaGroups();
-	LLCullResult::sg_iterator endAlphaGroups();
+    void shiftObjects(const LLVector3 &offset);
+
+    void setLight(LLDrawable *drawablep, bool is_light);
+
+    bool hasRenderBatches(const U32 type) const;
+    LLCullResult::drawinfo_iterator beginRenderMap(U32 type);
+    LLCullResult::drawinfo_iterator endRenderMap(U32 type);
+    LLCullResult::sg_iterator beginAlphaGroups();
+    LLCullResult::sg_iterator endAlphaGroups();
     LLCullResult::sg_iterator beginRiggedAlphaGroups();
     LLCullResult::sg_iterator endRiggedAlphaGroups();
 	
@@ -701,12 +702,9 @@ public:
         U32 					height = 0;
 
         //screen texture
-        LLRenderTarget			screen;
-        LLRenderTarget			uiScreen;
-        LLRenderTarget			deferredScreen;
-        LLRenderTarget			fxaaBuffer;
-        LLRenderTarget			edgeMap;
-        LLRenderTarget			deferredLight;
+        LLRenderTarget          screen;
+        LLRenderTarget          deferredScreen;
+        LLRenderTarget          deferredLight;
 
         //sun shadow map
         LLRenderTarget			shadow[4];
@@ -742,6 +740,15 @@ public:
 
 //	//BD - Motion Blur
 	//LLRenderTarget			mVelocityMap;
+	
+    // FXAA helper target
+    LLRenderTarget          mFXAAMap;
+
+    // render ui to buffer target
+    LLRenderTarget          mUIScreen;
+
+    // downres scratch space for GPU downscaling of textures
+    LLRenderTarget          mDownResMap;
 
     LLCullResult            mSky;
     LLCullResult            mReflectedObjects;

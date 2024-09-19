@@ -110,12 +110,6 @@ LLFloaterColorPicker::LLFloaterColorPicker (LLColorSwatchCtrl* swatch, bool show
 
     // create user interface for this picker
     createUI ();
-
-    if (!mCanApplyImmediately)
-    {
-        mApplyImmediateCheck->setEnabled(false);
-        mApplyImmediateCheck->set(false);
-    }
 }
 
 LLFloaterColorPicker::~LLFloaterColorPicker()
@@ -230,12 +224,18 @@ bool LLFloaterColorPicker::postBuild()
     mApplyImmediateCheck->set(gSavedSettings.getBOOL("ApplyColorImmediately"));
     mApplyImmediateCheck->setCommitCallback(onImmediateCheck, this);
 
-	childSetCommitCallback("rspin", onTextCommit, (void*)this );
-	childSetCommitCallback("gspin", onTextCommit, (void*)this );
-	childSetCommitCallback("bspin", onTextCommit, (void*)this );
-	childSetCommitCallback("hspin", onTextCommit, (void*)this );
-	childSetCommitCallback("sspin", onTextCommit, (void*)this );
-	childSetCommitCallback("lspin", onTextCommit, (void*)this );
+    if (!mCanApplyImmediately)
+    {
+        mApplyImmediateCheck->setEnabled(false);
+        mApplyImmediateCheck->set(false);
+    }
+
+    childSetCommitCallback("rspin", onTextCommit, (void*)this );
+    childSetCommitCallback("gspin", onTextCommit, (void*)this );
+    childSetCommitCallback("bspin", onTextCommit, (void*)this );
+    childSetCommitCallback("hspin", onTextCommit, (void*)this );
+    childSetCommitCallback("sspin", onTextCommit, (void*)this );
+    childSetCommitCallback("lspin", onTextCommit, (void*)this );
 //	//BD - Color Picker Transparency
 	childSetCommitCallback("tspin", onTextCommit, (void*)this );
 

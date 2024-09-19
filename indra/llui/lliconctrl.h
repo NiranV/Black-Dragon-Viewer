@@ -89,12 +89,13 @@ public:
 
     std::string getImageName() const;
 
-	void			setColor(const LLColor4& color) { mColor = color; }
-	void			setImage(LLPointer<LLUIImage> image) { mImagep = image; }
-	const LLPointer<LLUIImage> getImage() { return mImagep; }
+    void            setColor(const LLUIColor& color) { mColor = color; }
+    void            setImage(LLPointer<LLUIImage> image) { mImagep = image; }
+    const LLPointer<LLUIImage> getImage() { return mImagep; }
+	//BD
 	void			setRepeats(S32 repeats) { mRepeats = repeats; }
 	void			setSelected(S32 selected) { mSelected = selected; }
-	
+
 protected:
     S32 mPriority;
 

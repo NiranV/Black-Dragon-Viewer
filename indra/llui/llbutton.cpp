@@ -56,7 +56,7 @@ static LLDefaultChildRegistry::Register<LLButton> r("button");
 
 // Compiler optimization, generate extern template
 template class LLButton* LLView::getChild<class LLButton>(
-    const std::string& name, bool recurse) const;
+    std::string_view name, bool recurse) const;
 
 // globals
 S32 LLBUTTON_H_PAD  = 4;
@@ -192,7 +192,7 @@ LLButton::LLButton(const LLButton::Params& p)
         // Likewise, missing "p.button_flash_rate" is replaced by gSavedSettings.getF32("FlashPeriod").
         // Note: flashing should be allowed in settings.xml (boolean key "EnableButtonFlashing").
         S32 flash_count = p.button_flash_count.isProvided()? p.button_flash_count : 0;
-        F32 flash_rate = p.button_flash_rate.isProvided()? p.button_flash_rate : 0.0;
+        F32 flash_rate = p.button_flash_rate.isProvided()? p.button_flash_rate : 0.0f;
         mFlashingTimer = new LLFlashTimer ((LLFlashTimer::callback_t)NULL, flash_count, flash_rate);
     }
     else
@@ -821,9 +821,6 @@ void LLButton::draw()
 	if(getHighlighted())
 		label_color = LLUIColorTable::instance().getColor("SearchableButtonHighlightColor", LLColor4::red);
 
-	// Unselected label assignments
-	LLWString label = getCurrentLabel();
-
 	// overlay with keyboard focus border
 	if (hasFocus())
 	{
@@ -956,6 +953,9 @@ void LLButton::draw()
 		}
 	}
 
+    // Unselected label assignments
+	LLWString label = getCurrentLabel();
+
 	// Draw label
 	if( !label.empty() )
 	{
@@ -994,7 +994,7 @@ void LLButton::draw()
 			LLFontGL::NORMAL,
 			mDropShadowedText ? LLFontGL::DROP_SHADOW_SOFT : LLFontGL::NO_SHADOW,
 			S32_MAX, text_width,
-			NULL, mUseEllipses);
+			NULL, mUseEllipses, mUseFontColor);
 	}
 
 	LLUICtrl::draw();
@@ -1112,10 +1112,10 @@ void LLButton::autoResize()
     resize(getCurrentLabel());
 }
 
-void LLButton::resize(LLUIString label)
+void LLButton::resize(const LLUIString& label)
 {
 	// get label length 
-	S32 label_width = mGLFont->getWidth(label.getString());
+	S32 label_width = mGLFont->getWidth(label.getWString().c_str());
 	// get current btn length 
 	S32 btn_width =getRect().getWidth();
     // check if it need resize 
@@ -1159,12 +1159,12 @@ void LLButton::setImageSelected(LLPointer<LLUIImage> image)
     mImageSelected = image;
 }
 
-void LLButton::setImageColor(const LLColor4& c)
+void LLButton::setImageColor(const LLUIColor& c)
 {
     mImageColor = c;
 }
 
-void LLButton::setColor(const LLColor4& color)
+void LLButton::setColor(const LLUIColor& color)
 {
     setImageColor(color);
 }
@@ -1332,7 +1332,7 @@ void LLButton::setFloaterToggle(LLUICtrl* ctrl, const LLSD& sdname)
     // Set the button control value (toggle state) to the floater visibility control (Sets the value as well)
     button->setControlVariable(LLFloater::getControlGroup()->getControl(vis_control_name));
     // Set the clicked callback to toggle the floater
-    button->setClickedCallback(boost::bind(&LLFloaterReg::toggleInstance, sdname, LLSD()));
+    button->setClickedCallback([=](LLUICtrl* ctrl, const LLSD& param) -> void { LLFloaterReg::toggleInstance(sdname.asString(), LLSD()); });
 }
 
 // static

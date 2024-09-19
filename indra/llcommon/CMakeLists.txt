@@ -10,7 +10,6 @@ include(Boost)
 include(LLSharedLibs)
 include(Copy3rdPartyLibs)
 include(ZLIBNG)
-include(URIPARSER)
 include(Tracy)
 
 
@@ -19,8 +18,6 @@ set(llcommon_SOURCE_FILES
     commoncontrol.cpp
     indra_constants.cpp
     lazyeventapi.cpp
-    llallocator.cpp
-    llallocator_heap_profile.cpp
     llapp.cpp
     llapr.cpp
     llassettype.cpp
@@ -29,7 +26,6 @@ set(llcommon_SOURCE_FILES
     llbase64.cpp
     llbitpack.cpp
     llcallbacklist.cpp
-    llcallstack.cpp
     llcleanup.cpp
     llcommon.cpp
     llcommonutils.cpp
@@ -128,8 +124,6 @@ set(llcommon_HEADER_FILES
     lazyeventapi.h
     linden_common.h
     llalignedarray.h
-    llallocator.h
-    llallocator_heap_profile.h
     llapp.h
     llapr.h
     llassettype.h
@@ -139,7 +133,6 @@ set(llcommon_HEADER_FILES
     llbitpack.h
     llboost.h
     llcallbacklist.h
-    llcallstack.h
     llcleanup.h
     llcommon.h
     llcommonutils.h
@@ -268,6 +261,10 @@ if (DARWIN)
   list(APPEND llcommon_SOURCE_FILES llsys_objc.mm)
 endif (DARWIN)
 
+if (USE_TRACY)
+  list(APPEND llcommon_SOURCE_FILES llprofiler.cpp)
+endif ()
+
 list(APPEND llcommon_SOURCE_FILES ${llcommon_HEADER_FILES})
 
 add_library (llcommon ${llcommon_SOURCE_FILES})
@@ -278,7 +275,6 @@ target_link_libraries(
         ll::expat
         ll::zlib-ng
         ll::boost
-        ll::uriparser
         ll::oslibraries
         ll::tracy
     )

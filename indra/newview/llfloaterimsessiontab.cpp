@@ -896,16 +896,16 @@ bool LLFloaterIMSessionTab::onIMShowModesMenuItemEnable(const LLSD& userdata)
 
 void LLFloaterIMSessionTab::hideOrShowTitle()
 {
-	const LLFloater::Params& default_params = LLFloater::getDefaultParams();
-	S32 floater_header_size = default_params.header_height;
+    const LLFloater::Params& default_params = LLFloater::getDefaultParams();
+    S32 floater_header_size = default_params.header_height;
 
-	LLRect floater_rect = getLocalRect();
-	S32 top_border_of_contents = floater_rect.mTop - (isTornOff()? floater_header_size : 0);
-	LLRect handle_rect (0, floater_rect.mTop, floater_rect.mRight, top_border_of_contents);
-	LLRect contents_rect (0, top_border_of_contents, floater_rect.mRight, floater_rect.mBottom);
-	mDragHandle->setShape(handle_rect);
-	mDragHandle->setVisible(isTornOff());
-	mContentsView->setShape(contents_rect);
+    LLRect floater_rect = getLocalRect();
+    S32 top_border_of_contents = floater_rect.mTop - (isTornOff()? floater_header_size : 0);
+    LLRect handle_rect (0, floater_rect.mTop, floater_rect.mRight, top_border_of_contents);
+    LLRect contents_rect (0, top_border_of_contents, floater_rect.mRight, floater_rect.mBottom);
+    mDragHandle->setShape(handle_rect);
+    mDragHandle->setVisible(isTornOff());
+    mContentsView->setShape(contents_rect);
 }
 
 void LLFloaterIMSessionTab::updateSessionName(const std::string& name)

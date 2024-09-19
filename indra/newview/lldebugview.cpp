@@ -105,9 +105,6 @@ void LLDebugView::init()
     addChild(gSceneMonitorView);
     gSceneMonitorView->setRect(rect);
 
-    r.setLeftTopAndSize(25, rect.getHeight() - 50, (S32) (gViewerWindow->getWindowRectScaled().getWidth() * 0.75f),
-                                     (S32) (gViewerWindow->getWindowRectScaled().getHeight() * 0.75f));
-
     //BD
     r.set(150, rect.getHeight() - 50, 900, 100);
     LLTextureView::Params tvp;
@@ -117,14 +114,13 @@ void LLDebugView::init()
     tvp.visible(false);
     gTextureView = LLUICtrlFactory::create<LLTextureView>(tvp);
     addChild(gTextureView);
-    //gTextureView->reshape(r.getWidth(), r.getHeight(), true);
 }
 
 void LLDebugView::draw()
 {
     if (mFloaterSnapRegion == NULL)
     {
-        mFloaterSnapRegion = getRootView()->getChildView("floater_snap_region");
+        mFloaterSnapRegion = gViewerWindow->getFloaterSnapRegion();
     }
 
     LLRect debug_rect;

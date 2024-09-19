@@ -356,8 +356,7 @@ void LLProgressView::initLogos()
     S32 icon_width, icon_height;
 
     // We don't know final screen rect yet, so we can't precalculate position fully
-    LLTextBox *logos_label = getChild<LLTextBox>("logos_lbl");
-    S32 texture_start_x = logos_label->getFont()->getWidthF32(logos_label->getText()) + default_pad;
+    S32 texture_start_x = (S32)mLogosLabel->getFont()->getWidthF32(mLogosLabel->getWText().c_str()) + default_pad;
     S32 texture_start_y = -7;
 
     // Normally we would just preload these textures from textures.xml,

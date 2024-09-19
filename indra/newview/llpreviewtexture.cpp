@@ -411,8 +411,8 @@ void LLPreviewTexture::hideCtrlButtons()
 {
     getChildView("desc txt")->setVisible(false);
     getChildView("desc")->setVisible(false);
-    getChild<LLLayoutStack>("preview_stack")->collapsePanel(getChild<LLLayoutPanel>("buttons_panel"), true);
-    getChild<LLLayoutPanel>("buttons_panel")->setVisible(false);
+    getChild<LLLayoutStack>("preview_stack")->collapsePanel(mButtonsPanel, true);
+    mButtonsPanel->setVisible(false);
     getChild<LLComboBox>("combo_aspect_ratio")->setCurrentByIndex(0); //unconstrained
     reshape(getRect().getWidth(), getRect().getHeight());
 }
@@ -545,8 +545,8 @@ void LLPreviewTexture::updateDimensions()
 
 
     // Update the width/height display every time
-    getChild<LLUICtrl>("dimensions")->setTextArg("[WIDTH]",  llformat("%d", img_width));
-    getChild<LLUICtrl>("dimensions")->setTextArg("[HEIGHT]", llformat("%d", img_height));
+    mDimensionsText->setTextArg("[WIDTH]", llformat("%d", img_width));
+    mDimensionsText->setTextArg("[HEIGHT]", llformat("%d", img_height));
 
     mLastHeight = img_height;
     mLastWidth = img_width;
@@ -561,9 +561,9 @@ void LLPreviewTexture::updateDimensions()
 
         gFloaterView->adjustToFitScreen(this, false);
 
-        LLRect dim_rect(getChildView("dimensions")->getRect());
-        LLRect aspect_label_rect(getChildView("aspect_ratio")->getRect());
-        getChildView("aspect_ratio")->setVisible( dim_rect.mRight < aspect_label_rect.mLeft);
+        LLRect dim_rect(mDimensionsText->getRect());
+        LLRect aspect_label_rect(mAspectRatioText->getRect());
+        mAspectRatioText->setVisible( dim_rect.mRight < aspect_label_rect.mLeft);
     }
 }
 
@@ -664,7 +664,7 @@ void LLPreviewTexture::adjustAspectRatio()
     S32 num = mImage->getFullWidth() / divisor;
     S32 denom = mImage->getFullHeight() / divisor;
 
-    if (setAspectRatio(num, denom))
+    if (setAspectRatio((F32)num, (F32)denom))
     {
         // Select corresponding ratio entry in the combo list
         LLComboBox* combo = getChild<LLComboBox>("combo_aspect_ratio");
@@ -684,7 +684,7 @@ void LLPreviewTexture::adjustAspectRatio()
             }
             else
             {
-                combo->setCurrentByIndex(found - mRatiosList.begin());
+                combo->setCurrentByIndex((S32)(found - mRatiosList.begin()));
             }
         }
     }

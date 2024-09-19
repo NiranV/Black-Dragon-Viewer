@@ -805,10 +805,10 @@ void LLWorld::updateNetStats()
     add(LLStatViewer::PACKETS_OUT, packets_out);
     add(LLStatViewer::PACKETS_LOST, packets_lost);
 
-    F32 total_packets_in = LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_IN);
-    if (total_packets_in > 0)
+    F32 total_packets_in = (F32)LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_IN);
+    if (total_packets_in > 0.f)
     {
-        F32 total_packets_lost = LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_LOST);
+        F32 total_packets_lost = (F32)LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_LOST);
         sample(LLStatViewer::PACKETS_LOST_PERCENT, LLUnits::Ratio::fromValue((F32)total_packets_lost/(F32)total_packets_in));
     }
 
@@ -961,7 +961,6 @@ void LLWorld::updateWaterObjects()
             if (!getRegionFromHandle(region_handle))
             {   // No region at that area, so make water
                 LLVOWater* waterp = (LLVOWater *)gObjectList.createObjectViewer(LLViewerObject::LL_VO_WATER, gAgent.getRegion());
-                waterp->setUseTexture(false);
                 waterp->setPositionGlobal(LLVector3d(x + rwidth/2,
                                                      y + rwidth/2,
                                                      256.f + water_height));
@@ -1015,7 +1014,6 @@ void LLWorld::updateWaterObjects()
             mEdgeWaterObjects[dir] = (LLVOWater *)gObjectList.createObjectViewer(LLViewerObject::LL_VO_VOID_WATER,
                                                                                  gAgent.getRegion());
             waterp = mEdgeWaterObjects[dir];
-            waterp->setUseTexture(false);
             waterp->setIsEdgePatch(true);
             gPipeline.createObject(waterp);
         }
@@ -1266,7 +1264,7 @@ void send_agent_pause()
 
 void send_agent_resume()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK;
     // Note: used to check for LLWorld initialization before it became a singleton.
     // Rather than just remove this check I'm changing it to assure that the message
     // system has been initialized. -MG
@@ -1374,33 +1372,31 @@ void LLWorld::getAvatars(uuid_vec_t* avatar_ids, std::vector<LLVector3d>* positi
 	}
 }
 
-F32 LLWorld::getNearbyAvatarsAndMaxGPUTime(std::vector<LLCharacter*> &valid_nearby_avs)
+F32 LLWorld::getNearbyAvatarsAndMaxGPUTime(std::vector<LLVOAvatar*> &valid_nearby_avs)
 {
     static LLCachedControl<F32> render_far_clip(gSavedSettings, "RenderFarClip", 64);
+
     F32 nearby_max_complexity = 0;
     F32 radius = render_far_clip * render_far_clip;
-    std::vector<LLCharacter*>::iterator char_iter = LLCharacter::sInstances.begin();
-    while (char_iter != LLCharacter::sInstances.end())
-    {
-        LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(*char_iter);
-        if (avatar && !avatar->isDead() && !avatar->isControlAvatar())
-        {
-            if ((dist_vec_squared(avatar->getPositionGlobal(), gAgent.getPositionGlobal()) > radius) &&
-                (dist_vec_squared(avatar->getPositionGlobal(), gAgentCamera.getCameraPositionGlobal()) > radius))
-            {
-                char_iter++;
-                continue;
-            }
 
-            if (!avatar->isTooSlow())
+    for (LLCharacter* character : LLCharacter::sInstances)
+    {
+        LLVOAvatar* avatar = (LLVOAvatar*)character;
+        if (!avatar->isDead() && !avatar->isControlAvatar())
+        {
+            if ((dist_vec_squared(avatar->getPositionGlobal(), gAgent.getPositionGlobal()) <= radius) ||
+                (dist_vec_squared(avatar->getPositionGlobal(), gAgentCamera.getCameraPositionGlobal()) <= radius))
             {
-                gPipeline.profileAvatar(avatar);
+                if (!avatar->isTooSlow())
+                {
+                    gPipeline.profileAvatar(avatar);
+                }
+                nearby_max_complexity = llmax(nearby_max_complexity, avatar->getGPURenderTime());
+                valid_nearby_avs.push_back(avatar);
             }
-            nearby_max_complexity = llmax(nearby_max_complexity, avatar->getGPURenderTime());
-            valid_nearby_avs.push_back(*char_iter);
         }
-        char_iter++;
     }
+
     return nearby_max_complexity;
 }
 

@@ -28,9 +28,8 @@
 #define LL_LLPANELLOGIN_H
 
 #include "llpanel.h"
-#include "llpointer.h"			// LLPointer<>
-#include "llmediactrl.h"	// LLMediaCtrlObserver
-#include <boost/scoped_ptr.hpp>
+#include "llpointer.h"          // LLPointer<>
+#include "llmediactrl.h"    // LLMediaCtrlObserver
 
 #include "llcombobox.h"
 #include "llbutton.h"

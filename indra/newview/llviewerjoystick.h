@@ -107,9 +107,9 @@ public:
     LOG_CLASS(LLViewerJoystick);
 
     void init(bool autoenable);
-    void initDevice(LLSD& guid);
-    bool initDevice(void* preffered_device /*LPDIRECTINPUTDEVICE8*/);
-    bool initDevice(void* preffered_device /*LPDIRECTINPUTDEVICE8*/, std::string& name, LLSD& guid);
+    void initDevice(LLSD &guid);
+    bool initDevice(void * preffered_device /*LPDIRECTINPUTDEVICE8*/);
+    bool initDevice(void * preffered_device /*LPDIRECTINPUTDEVICE8*/, const std::string &name, const LLSD &guid);
 	void terminate();
 
 	void updateStatus();
@@ -117,6 +117,8 @@ public:
 	void moveObjects(bool reset = false);
 	void moveAvatar(bool reset = false);
 	void moveFlycam(bool reset = false);
+	F32 getJoystickAxis(U32 axis) const;
+    U32 getJoystickButton(U32 button) const;
 	bool isJoystickInitialized() const {return (mDriverState==JDS_INITIALIZED);}
 	bool isLikeSpaceNavigator() const;
 	void setNeedsReset(bool reset = true) { mResetFlag = reset; }
@@ -142,6 +144,7 @@ public:
 	LLSD getDeviceUUID(); //unconverted, OS dependent value wrapped into LLSD, for comparison/search
 	std::string getDeviceUUIDString(); // converted readable value for settings
 	std::string getDescription();
+	void saveDeviceIdToSettings();
 
 protected:
 	void updateEnabled(bool autoenable);

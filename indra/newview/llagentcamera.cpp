@@ -1964,165 +1964,166 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(bool *hit_limit)
             static LLCachedControl<F32> camera_offset_scale(gSavedSettings, "CameraOffsetScale");
             local_camera_offset = mCameraZoomFraction * getCameraOffsetInitial() * camera_offset_scale;
 
-			// are we sitting down?
-			//BD - Commented below to allow freely moving our camera when sitting on objects.
-			/*if (isAgentAvatarValid() && gAgentAvatarp->getParent())
-			{
-				LLQuaternion parent_rot = ((LLViewerObject*)gAgentAvatarp->getParent())->getRenderRotation();
-				// slam agent coordinate frame to proper parent local version
-				LLVector3 at_axis = gAgent.getFrameAgent().getAtAxis() * parent_rot;
-				at_axis.mV[VZ] = 0.f;
-				at_axis.normalize();
-				gAgent.resetAxes(at_axis * ~parent_rot);
-				
-				local_camera_offset = local_camera_offset * gAgent.getFrameAgent().getQuaternion() * parent_rot;
-			}
-			else*/
-			{
-				local_camera_offset = gAgent.getFrameAgent().rotateToAbsolute( local_camera_offset );
-			}
+            // are we sitting down?
+            //BD - Commented below to allow freely moving our camera when sitting on objects.
+            /*if (isAgentAvatarValid() && gAgentAvatarp->getParent())
+            {
+                LLQuaternion parent_rot = ((LLViewerObject*)gAgentAvatarp->getParent())->getRenderRotation();
+                // slam agent coordinate frame to proper parent local version
+                LLVector3 at_axis = gAgent.getFrameAgent().getAtAxis() * parent_rot;
+                at_axis.mV[VZ] = 0.f;
+                at_axis.normalize();
+                gAgent.resetAxes(at_axis * ~parent_rot);
 
-			if (!isDisableCameraConstraints() && !mCameraCollidePlane.isExactlyZero() &&
-				(!isAgentAvatarValid() || !gAgentAvatarp->isSitting()))
-			{
-				LLVector3 plane_normal;
-				plane_normal.setVec(mCameraCollidePlane.mV);
+                local_camera_offset = local_camera_offset * gAgent.getFrameAgent().getQuaternion() * parent_rot;
+            }
+            else*/
+            {
+                local_camera_offset = gAgent.getFrameAgent().rotateToAbsolute( local_camera_offset );
+            }
 
-				F32 offset_dot_norm = local_camera_offset * plane_normal;
-				if (llabs(offset_dot_norm) < 0.001f)
-				{
-					offset_dot_norm = 0.001f;
-				}
-				
-				camera_distance = local_camera_offset.normalize();
+            if (!isDisableCameraConstraints() && !mCameraCollidePlane.isExactlyZero() &&
+                (!isAgentAvatarValid() || !gAgentAvatarp->isSitting()))
+            {
+                LLVector3 plane_normal;
+                plane_normal.setVec(mCameraCollidePlane.mV);
 
-				F32 pos_dot_norm = gAgent.getPosAgentFromGlobal(frame_center_global + head_offset) * plane_normal;
-				
-				// if agent is outside the colliding half-plane
-				if (pos_dot_norm > mCameraCollidePlane.mV[VW])
-				{
-					// check to see if camera is on the opposite side (inside) the half-plane
-					if (offset_dot_norm + pos_dot_norm < mCameraCollidePlane.mV[VW])
-					{
-						// diminish offset by factor to push it back outside the half-plane
-						camera_distance *= (pos_dot_norm - mCameraCollidePlane.mV[VW] - CAMERA_COLLIDE_EPSILON) / -offset_dot_norm;
-					}
-				}
-				else
-				{
-					if (offset_dot_norm + pos_dot_norm > mCameraCollidePlane.mV[VW])
-					{
-						camera_distance *= (mCameraCollidePlane.mV[VW] - pos_dot_norm - CAMERA_COLLIDE_EPSILON) / offset_dot_norm;
-					}
-				}
-			}
-			else
-			{
-				camera_distance = local_camera_offset.normalize();
-			}
+                F32 offset_dot_norm = local_camera_offset * plane_normal;
+                if (llabs(offset_dot_norm) < 0.001f)
+                {
+                    offset_dot_norm = 0.001f;
+                }
 
-			mTargetCameraDistance = llmax(camera_distance, MIN_CAMERA_DISTANCE);
+                camera_distance = local_camera_offset.normalize();
 
-			if (mTargetCameraDistance != mCurrentCameraDistance)
-			{
-				F32 camera_lerp_amt = LLSmoothInterpolation::getInterpolant(CAMERA_ZOOM_HALF_LIFE);
+                F32 pos_dot_norm = gAgent.getPosAgentFromGlobal(frame_center_global + head_offset) * plane_normal;
 
-				mCurrentCameraDistance = lerp(mCurrentCameraDistance, mTargetCameraDistance, camera_lerp_amt);
-			}
+                // if agent is outside the colliding half-plane
+                if (pos_dot_norm > mCameraCollidePlane.mV[VW])
+                {
+                    // check to see if camera is on the opposite side (inside) the half-plane
+                    if (offset_dot_norm + pos_dot_norm < mCameraCollidePlane.mV[VW])
+                    {
+                        // diminish offset by factor to push it back outside the half-plane
+                        camera_distance *= (pos_dot_norm - mCameraCollidePlane.mV[VW] - CAMERA_COLLIDE_EPSILON) / -offset_dot_norm;
+                    }
+                }
+                else
+                {
+                    if (offset_dot_norm + pos_dot_norm > mCameraCollidePlane.mV[VW])
+                    {
+                        camera_distance *= (mCameraCollidePlane.mV[VW] - pos_dot_norm - CAMERA_COLLIDE_EPSILON) / offset_dot_norm;
+                    }
+                }
+            }
+            else
+            {
+                camera_distance = local_camera_offset.normalize();
+            }
 
-			// Make the camera distance current
-			local_camera_offset *= mCurrentCameraDistance;
+            mTargetCameraDistance = llmax(camera_distance, MIN_CAMERA_DISTANCE);
 
-			// set the global camera position
-			LLVector3d camera_offset;
-			
-			camera_offset.setVec( local_camera_offset );
-			camera_position_global = frame_center_global + head_offset + camera_offset;
+            if (mTargetCameraDistance != mCurrentCameraDistance)
+            {
+                F32 camera_lerp_amt = LLSmoothInterpolation::getInterpolant(CAMERA_ZOOM_HALF_LIFE);
 
-			if (isAgentAvatarValid())
-			{
-				LLVector3d camera_lag_d;
-				F32 lag_interp = LLSmoothInterpolation::getInterpolant(CAMERA_LAG_HALF_LIFE);
-				LLVector3 target_lag;
-				LLVector3 vel = gAgent.getVelocity();
+                mCurrentCameraDistance = lerp(mCurrentCameraDistance, mTargetCameraDistance, camera_lerp_amt);
+            }
 
-				// lag by appropriate amount for flying
-				F32 time_in_air = gAgentAvatarp->mTimeInAir.getElapsedTimeF32();
-				if(!mCameraAnimating && gAgentAvatarp->mInAir && time_in_air > GROUND_TO_AIR_CAMERA_TRANSITION_START_TIME)
-				{
-					LLVector3 frame_at_axis = gAgent.getFrameAgent().getAtAxis();
-					frame_at_axis -= projected_vec(frame_at_axis, gAgent.getReferenceUpVector());
-					frame_at_axis.normalize();
+            // Make the camera distance current
+            local_camera_offset *= mCurrentCameraDistance;
 
-					//transition smoothly in air mode, to avoid camera pop
-					F32 u = (time_in_air - GROUND_TO_AIR_CAMERA_TRANSITION_START_TIME) / GROUND_TO_AIR_CAMERA_TRANSITION_TIME;
-					u = llclamp(u, 0.f, 1.f);
+            // set the global camera position
+            LLVector3d camera_offset;
 
-					lag_interp *= u;
+            camera_offset.setVec( local_camera_offset );
+            camera_position_global = frame_center_global + head_offset + camera_offset;
 
-					if (gViewerWindow->getLeftMouseDown() && gViewerWindow->getLastPick().mObjectID == gAgentAvatarp->getID())
-					{
-						// disable camera lag when using mouse-directed steering
-						target_lag.clearVec();
-					}
-					else
-					{
-						target_lag = vel * gSavedSettings.getF32("DynamicCameraStrength") / 30.f;
-					}
+            if (isAgentAvatarValid())
+            {
+                LLVector3d camera_lag_d;
+                F32 lag_interp = LLSmoothInterpolation::getInterpolant(CAMERA_LAG_HALF_LIFE);
+                LLVector3 target_lag;
+                LLVector3 vel = gAgent.getVelocity();
 
-					mCameraLag = lerp(mCameraLag, target_lag, lag_interp);
+                // lag by appropriate amount for flying
+                F32 time_in_air = gAgentAvatarp->mTimeInAir.getElapsedTimeF32();
+                if(!mCameraAnimating && gAgentAvatarp->mInAir && time_in_air > GROUND_TO_AIR_CAMERA_TRANSITION_START_TIME)
+                {
+                    LLVector3 frame_at_axis = gAgent.getFrameAgent().getAtAxis();
+                    frame_at_axis -= projected_vec(frame_at_axis, gAgent.getReferenceUpVector());
+                    frame_at_axis.normalize();
 
-					F32 lag_dist = mCameraLag.magVec();
-					if (lag_dist > MAX_CAMERA_LAG)
-					{
-						mCameraLag = mCameraLag * MAX_CAMERA_LAG / lag_dist;
-					}
+                    //transition smoothly in air mode, to avoid camera pop
+                    F32 u = (time_in_air - GROUND_TO_AIR_CAMERA_TRANSITION_START_TIME) / GROUND_TO_AIR_CAMERA_TRANSITION_TIME;
+                    u = llclamp(u, 0.f, 1.f);
 
-					// clamp camera lag so that avatar is always in front
-					F32 dot = (mCameraLag - (frame_at_axis * (MIN_CAMERA_LAG * u))) * frame_at_axis;
-					if (dot < -(MIN_CAMERA_LAG * u))
-					{
-						mCameraLag -= (dot + (MIN_CAMERA_LAG * u)) * frame_at_axis;
-					}
-				}
-				else
-				{
-					mCameraLag = lerp(mCameraLag, LLVector3::zero, LLSmoothInterpolation::getInterpolant(0.15f));
-				}
+                    lag_interp *= u;
 
-				camera_lag_d.setVec(mCameraLag);
-				camera_position_global = camera_position_global - camera_lag_d;
-			}
-		}
-	}
-	else
-	{
-		LLVector3d focusPosGlobal = calcFocusPositionTargetGlobal();
-		// camera gets pushed out later wrt mCameraFOVZoomFactor...this is "raw" value
-		camera_position_global = focusPosGlobal + mCameraFocusOffset;
-	}
+                    if (gViewerWindow->getLeftMouseDown() && gViewerWindow->getLastPick().mObjectID == gAgentAvatarp->getID())
+                    {
+                        // disable camera lag when using mouse-directed steering
+                        target_lag.clearVec();
+                    }
+                    else
+                    {
+                        static LLCachedControl<F32> dynamic_camera_strength(gSavedSettings, "DynamicCameraStrength");
+                        target_lag = vel * dynamic_camera_strength / 30.f;
+                    }
 
-	if (!isDisableCameraConstraints() && !gAgent.isGodlike())
-	{
-		LLViewerRegion* regionp = LLWorld::getInstance()->getRegionFromPosGlobal(camera_position_global);
-		bool constrain = true;
-		if(regionp && regionp->canManageEstate())
-		{
-			constrain = false;
-		}
-		if(constrain)
-		{
-			F32 max_dist = (CAMERA_MODE_CUSTOMIZE_AVATAR == mCameraMode) ? APPEARANCE_MAX_ZOOM : mDrawDistance;
+                    mCameraLag = lerp(mCameraLag, target_lag, lag_interp);
 
-			LLVector3d camera_offset = camera_position_global - gAgent.getPositionGlobal();
-			F32 camera_distance = (F32)camera_offset.magVec();
+                    F32 lag_dist = mCameraLag.magVec();
+                    if (lag_dist > MAX_CAMERA_LAG)
+                    {
+                        mCameraLag = mCameraLag * MAX_CAMERA_LAG / lag_dist;
+                    }
 
-			if(camera_distance > max_dist)
-			{
-				camera_position_global = gAgent.getPositionGlobal() + (max_dist/camera_distance)*camera_offset;
-				isConstrained = true;
-			}
-		}
+                    // clamp camera lag so that avatar is always in front
+                    F32 dot = (mCameraLag - (frame_at_axis * (MIN_CAMERA_LAG * u))) * frame_at_axis;
+                    if (dot < -(MIN_CAMERA_LAG * u))
+                    {
+                        mCameraLag -= (dot + (MIN_CAMERA_LAG * u)) * frame_at_axis;
+                    }
+                }
+                else
+                {
+                    mCameraLag = lerp(mCameraLag, LLVector3::zero, LLSmoothInterpolation::getInterpolant(0.15f));
+                }
+
+                camera_lag_d.setVec(mCameraLag);
+                camera_position_global = camera_position_global - camera_lag_d;
+            }
+        }
+    }
+    else
+    {
+        LLVector3d focusPosGlobal = calcFocusPositionTargetGlobal();
+        // camera gets pushed out later wrt mCameraFOVZoomFactor...this is "raw" value
+        camera_position_global = focusPosGlobal + mCameraFocusOffset;
+    }
+
+    if (!isDisableCameraConstraints() && !gAgent.isGodlike())
+    {
+        LLViewerRegion* regionp = LLWorld::getInstance()->getRegionFromPosGlobal(camera_position_global);
+        bool constrain = true;
+        if(regionp && regionp->canManageEstate())
+        {
+            constrain = false;
+        }
+        if(constrain)
+        {
+            F32 max_dist = (CAMERA_MODE_CUSTOMIZE_AVATAR == mCameraMode) ? APPEARANCE_MAX_ZOOM : mDrawDistance;
+
+            LLVector3d camera_offset = camera_position_global - gAgent.getPositionGlobal();
+            F32 camera_distance = (F32)camera_offset.magVec();
+
+            if(camera_distance > max_dist)
+            {
+                camera_position_global = gAgent.getPositionGlobal() + (max_dist/camera_distance)*camera_offset;
+                isConstrained = true;
+            }
+        }
 
 // JC - Could constrain camera based on parcel stuff here.
 //          LLViewerRegion *regionp = LLWorld::getInstance()->getRegionFromPosGlobal(camera_position_global);
@@ -2247,14 +2248,14 @@ void LLAgentCamera::handleScrollWheel(S32 clicks)
             F32 camera_offset_initial_mag = getCameraOffsetInitial().magVec();
 
             F32 current_zoom_fraction = mTargetCameraDistance / (camera_offset_initial_mag * gSavedSettings.getF32("CameraOffsetScale"));
-            current_zoom_fraction *= 1.f - pow(ROOT_ROOT_TWO, clicks);
+            current_zoom_fraction *= 1.f - (F32)pow(ROOT_ROOT_TWO, clicks);
 
             cameraOrbitIn(current_zoom_fraction * camera_offset_initial_mag * gSavedSettings.getF32("CameraOffsetScale"));
         }
         else
         {
             F32 current_zoom_fraction = (F32)mCameraFocusOffsetTarget.magVec();
-            cameraOrbitIn(current_zoom_fraction * (1.f - pow(ROOT_ROOT_TWO, clicks)));
+            cameraOrbitIn(current_zoom_fraction * (1.f - (F32)pow(ROOT_ROOT_TWO, clicks)));
         }
     }
 }

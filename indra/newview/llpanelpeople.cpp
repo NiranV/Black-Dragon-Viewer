@@ -172,8 +172,6 @@ public:
             id_it = uuids.begin(),
             id_end = uuids.end();
 
-        LLAvatarItemDistanceComparator::id_to_pos_map_t pos_map;
-
         mAvatarsPositions.clear();
 
         for (;pos_it != pos_end && id_it != id_end; ++pos_it, ++id_it )
@@ -635,8 +633,8 @@ bool LLPanelPeople::postBuild()
 	mBlockedGearBtn = getChild<LLUICtrl>("blocked_gear_btn");
 	if(LLAgentBenefitsMgr::current().getGroupMembershipLimit() < max_premium)
 	{
-		getChild<LLTextBox>("groupcount")->setText(getString("GroupCountWithInfo"));
-		getChild<LLTextBox>("groupcount")->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
+		mGroupCount->setText(getString("GroupCountWithInfo"));
+		mGroupCount->setURLClickedCallback(boost::bind(&LLPanelPeople::onGroupLimitInfo, this));
 	}
 
 	mTabContainer = getChild<LLTabContainer>("tabs");
@@ -942,14 +940,14 @@ void LLPanelPeople::updateButtons()
 	}
 }
 
-std::string LLPanelPeople::getActiveTabName() const
+const std::string& LLPanelPeople::getActiveTabName() const
 {
     return mTabContainer->getCurrentPanel()->getName();
 }
 
 LLUUID LLPanelPeople::getCurrentItemID() const
 {
-    std::string cur_tab = getActiveTabName();
+    const std::string& cur_tab = getActiveTabName();
 
 	if (cur_tab == FRIENDS_TAB_NAME) // this tab has two lists
 	{
@@ -974,7 +972,7 @@ LLUUID LLPanelPeople::getCurrentItemID() const
 
 void LLPanelPeople::getCurrentItemIDs(uuid_vec_t& selected_uuids) const
 {
-	std::string cur_tab = getActiveTabName();
+    const std::string& cur_tab = getActiveTabName();
 
 	if (cur_tab == FRIENDS_TAB_NAME)
 	{
@@ -1061,7 +1059,7 @@ void LLPanelPeople::onFilterEdit(const std::string& search_string)
 	saved_filter = search_upper;
 
 	// Apply new filter to the current tab.
-	const std::string cur_tab = getActiveTabName();
+	const std::string& cur_tab = getActiveTabName();
 	if (cur_tab == NEARBY_TAB_NAME)
 	{
 		mNearbyList->setNameFilter(filter);
@@ -1167,12 +1165,9 @@ void LLPanelPeople::onAddFriendButtonClicked()
 bool LLPanelPeople::isItemsFreeOfFriends(const uuid_vec_t& uuids)
 {
     const LLAvatarTracker& av_tracker = LLAvatarTracker::instance();
-    for ( uuid_vec_t::const_iterator
-              id = uuids.begin(),
-              id_end = uuids.end();
-          id != id_end; ++id )
+    for (const LLUUID& uuid : uuids)
     {
-        if (av_tracker.isBuddy (*id))
+        if (av_tracker.isBuddy(uuid))
         {
             return false;
         }

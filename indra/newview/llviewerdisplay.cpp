@@ -213,7 +213,7 @@ void display_update_camera()
 // Write some stats to LL_INFOS()
 void display_stats()
 {
-    LL_PROFILE_ZONE_SCOPED
+    LL_PROFILE_ZONE_SCOPED;
     const F32 FPS_LOG_FREQUENCY = 10.f;
     if (gRecentFPSTime.getElapsedTimeF32() >= FPS_LOG_FREQUENCY)
     {
@@ -650,19 +650,19 @@ void display(bool rebuild, F32 zoom_factor, int subfield, bool for_snapshot)
 	{
 		LLAppViewer::instance()->pingMainloopTimeout("Display:DynamicTextures");
         LL_PROFILE_ZONE_NAMED_CATEGORY_DISPLAY("Update Dynamic Textures");
-		if (LLViewerDynamicTexture::updateAllInstances())
-		{
-			gGL.setColorMask(true, true);
-			glClear(GL_DEPTH_BUFFER_BIT);
-		}
-	}
+        if (LLViewerDynamicTexture::updateAllInstances())
+        {
+            gGL.setColorMask(true, true);
+            glClear(GL_DEPTH_BUFFER_BIT);
+        }
+    }
 
-	gViewerWindow->setup3DViewport();
+    gViewerWindow->setup3DViewport();
 
-	gPipeline.resetFrameStats();	// Reset per-frame statistics.
-	
-	if (!gDisconnected)
-	{
+    gPipeline.resetFrameStats();    // Reset per-frame statistics.
+
+    if (!gDisconnected && !LLApp::isExiting())
+    {
         // Render mirrors and associated hero probes before we render the rest of the scene.
         // This ensures the scene state in the hero probes are exactly the same as the rest of the scene before we render it.
         if (gPipeline.RenderMirrors && !gSnapshot)
@@ -1564,6 +1564,11 @@ void render_ui_3d()
         gObjectList.resetObjectBeacons();
         gSky.addSunMoonBeacons();
     }
+    else
+    {
+        // Make sure particle effects disappear
+        LLHUDObject::renderAllForTimer();
+    }
 
     stop_glerror();
 }
@@ -1613,18 +1618,18 @@ void render_ui_2d()
         gl_rect_2d(-half_width, half_height, half_width, -half_height, false);
         gGL.popMatrix();
         gUIProgram.unbind();
-		stop_glerror();
-	}
-	
+        stop_glerror();
+    }
 
-	if (LLPipeline::RenderUIBuffer)
-	{
-		if (LLView::sIsRectDirty)
-		{
+
+    if (LLPipeline::RenderUIBuffer)
+    {
+        if (LLView::sIsRectDirty)
+        {
             LLView::sIsRectDirty = false;
             LLRect t_rect;
 
-            gPipeline.mRT->uiScreen.bindTarget();
+            gPipeline.mUIScreen.bindTarget();
             gGL.setColorMask(true, true);
             {
                 static const S32 pad = 8;
@@ -1656,36 +1661,32 @@ void render_ui_2d()
                 gViewerWindow->draw();
             }
 
-            gPipeline.mRT->uiScreen.flush();
+            gPipeline.mUIScreen.flush();
             gGL.setColorMask(true, false);
 
             LLView::sDirtyRect = t_rect;
-		}
+        }
 
-		LLGLDisable cull(GL_CULL_FACE);
-		LLGLDisable blend(GL_BLEND);
-		S32 width = gViewerWindow->getWindowWidthScaled();
-		S32 height = gViewerWindow->getWindowHeightScaled();
-		gGL.getTexUnit(0)->bind(&gPipeline.mRT->uiScreen);
-		gGL.begin(LLRender::TRIANGLE_STRIP);
-		gGL.color4f(1,1,1,1);
-		gGL.texCoord2f(0, 0);			gGL.vertex2i(0, 0);
-		gGL.texCoord2f(width, 0);		gGL.vertex2i(width, 0);
-		gGL.texCoord2f(0, height);		gGL.vertex2i(0, height);
-		gGL.texCoord2f(width, height);	gGL.vertex2i(width, height);
-		gGL.end();
-	}
-	else
-	{
-		gViewerWindow->draw();
-	}
+        LLGLDisable cull(GL_CULL_FACE);
+        LLGLDisable blend(GL_BLEND);
+        S32 width = gViewerWindow->getWindowWidthScaled();
+        S32 height = gViewerWindow->getWindowHeightScaled();
+        gGL.getTexUnit(0)->bind(&gPipeline.mUIScreen);
+        gGL.begin(LLRender::TRIANGLE_STRIP);
+        gGL.color4f(1.f,1.f,1.f,1.f);
+        gGL.texCoord2f(0.f, 0.f);                 gGL.vertex2i(0, 0);
+        gGL.texCoord2f((F32)width, 0.f);          gGL.vertex2i(width, 0);
+        gGL.texCoord2f(0.f, (F32)height);         gGL.vertex2i(0, height);
+        gGL.texCoord2f((F32)width, (F32)height);  gGL.vertex2i(width, height);
+        gGL.end();
+    }
+    else
+    {
+        gViewerWindow->draw();
+    }
 
-	// reset current origin for font rendering, in case of tiling render
-	LLFontGL::sCurOrigin.set(0, 0);
+
+
+    // reset current origin for font rendering, in case of tiling render
+    LLFontGL::sCurOrigin.set(0, 0);
 }
-
-void display_cleanup()
-{
-    gDisconnectedImagep = NULL;
-}
-

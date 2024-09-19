@@ -654,6 +654,18 @@
       <key>Value</key>
       <integer>2</integer>
     </map>
+    <!--AvatarBakedTextureUploadTimeout is in use by QA-->
+    <key>AvatarBakedTextureUploadTimeout</key>
+    <map>
+        <key>Comment</key>
+        <string>Specifes the maximum time in seconds to wait before sending your baked textures for avatar appearance.  Set to 0 to disable and wait until all baked textures are at highest resolution.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>U32</string>
+        <key>Value</key>
+        <integer>60</integer>
+    </map>
     <key>AvatarPhysics</key>
     <map>
       <key>Comment</key>
@@ -1139,6 +1151,17 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>BulkUpload2KTextures</key>
+    <map>
+        <key>Comment</key>
+        <string>Bulk upload scales textures to 2K if true, to 1K if false</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
     </map>
     <key>EnableButtonFlashing</key>
     <map>
@@ -1906,6 +1929,28 @@
     <string>F32</string>
     <key>Value</key>
     <real>64.0</real>
+  </map>
+  <key>AvatarExtentRefreshPeriodBatch</key>
+  <map>
+    <key>Comment</key>
+    <string>how many frames do we spread over by default when refreshing extents (default is 4)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>4</integer>
+  </map>
+  <key>AvatarExtentRefreshMaxPerBatch</key>
+  <map>
+    <key>Comment</key>
+    <string>how many avatars do we want to handle in total per batch (default is 5)</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>S32</string>
+    <key>Value</key>
+    <integer>5</integer>
   </map>
   <key>DebugAvatarAppearanceMessage</key>
   <map>
@@ -7199,6 +7244,28 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>RenderCanUseGLTFPBROpaqueShaders</key>
+    <map>
+        <key>Comment</key>
+        <string>Hardware has support for GLTF scene shaders</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
+    <key>RenderCanUseTerrainBakeShaders</key>
+    <map>
+        <key>Comment</key>
+        <string>Hardware has support for Terrain Bake shaders</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
   <key>RenderClass1MemoryBandwidth</key>
   <map>
     <key>Comment</key>
@@ -7794,6 +7861,28 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderMinFreeMainMemoryThreshold</key>
+  <map>
+    <key>Comment</key>
+    <string>Minimum of available physical memory in MB before textures get scaled down</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>512</integer>
+  </map>
+  <key>RenderLowMemMinDiscardIncrement</key>
+  <map>
+    <key>Comment</key>
+    <string>Minimum increment of discard level if system memory gets low</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.1</real>
+  </map>
   <key>RenderMaxTextureIndex</key>
   <map>
     <key>Comment</key>
@@ -7816,6 +7905,17 @@
     <key>Value</key>
     <integer>2048</integer>
   </map>
+    <key>RenderDownScaleMethod</key>
+    <map>
+        <key>Comment</key>
+        <string>Method to use to downscale images.  0 - FBO, 1 - PBO</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>U32</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
     <key>RenderDebugTextureBind</key>
     <map>
       <key>Comment</key>
@@ -9405,7 +9505,7 @@
     <key>RenderTerrainPBREnabled</key>
     <map>
       <key>Comment</key>
-      <string>EXPERIMENTAL: Enable PBR Terrain features.</string>
+      <string>Enable PBR Terrain features.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -9462,7 +9562,7 @@
       <key>Comment</key>
       <string>EXPERIMENTAL: Enable PBR Terrain texture transforms.</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>Boolean</string>
       <key>Value</key>
@@ -11354,6 +11454,19 @@
       <key>Value</key>
       <real>8.0</real>
     </map>
+    <key>TextureBiasUnimportantFactor</key>
+    <map>
+      <key>Comment</key>
+      <string>When biasing textures to lower resolution due to lack of vram, the importance threshold below which is considered unimportant and getting an extra bias.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.25</real>
+      <key>Backup</key>
+      <integer>0</integer>
+    </map>
     <key>TextureDecodeDisabled</key>
     <map>
       <key>Comment</key>
@@ -12726,6 +12839,17 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>Use24HourClock</key>
+    <map>
+        <key>Comment</key>
+        <string>12 vs 24. At the moment only for region restart schedule floater</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>0</integer>
     </map>
     <key>EnvironmentPersistAcrossLogin</key>
     <map>
@@ -14302,6 +14426,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>DisableLookAtAnimation</key>
+    <map>
+        <key>Comment</key>
+        <string>Avatar follows cursor with avatars eyes, when disabled, avatar will look forward</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>0</integer>
+    </map>
      <key>WebProfileFloaterRect</key>
     <map>
       <key>Comment</key>
@@ -15037,6 +15172,39 @@
       <string>F32</string>
       <key>Value</key>
       <real>0.0</real>
+    </map>
+    <key>LocalTerrainPaintEnabled</key>
+    <map>
+      <key>Comment</key>
+      <string>Enables local paintmap if LocalTerrainAsset1, etc are set</string>
+      <key>Persist</key>
+      <integer>0</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>TerrainPaintBitDepth</key>
+    <map>
+      <key>Comment</key>
+      <string>Bit depth for future terrain paint map operations. Min: 1. Max: 8. Takes effect when the paint map is created or modified. Modifications to an existing paintmap of different bit depth will have lower precision.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>5</integer>
+    </map>
+    <key>TerrainPaintResolution</key>
+    <map>
+      <key>Comment</key>
+      <string>Resolution of the terrain paint map in pixels. Rounded to a power of two. Min: 16. Max: RenderMaxTextureResolution. Takes effect when the paint map is created.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>2048</integer>
     </map>
 	<key>PathfindingRetrieveNeighboringRegion</key>
     <map>
@@ -15888,6 +16056,17 @@
     <integer>1</integer>
     <key>Type</key>
     <string>U32</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>ColorSettingsHideDefault</key>
+  <map>
+    <key>Comment</key>
+    <string>Show non-default settings only in Color Settings list</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
     <key>Value</key>
     <integer>0</integer>
   </map>

@@ -159,14 +159,14 @@ void LLPanelSettingsWaterMainTab::onFogColorChanged()
 void LLPanelSettingsWaterMainTab::onFogDensityChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setWaterFogDensity(mFogDensity->getValue().asReal());
+	mWaterSettings->setWaterFogDensity((F32)mFogDensity->getValue().asReal());
 	setIsDirty();
 }
 
 void LLPanelSettingsWaterMainTab::onFogUnderWaterChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setFogMod(mUnderwaterMod->getValue().asReal());
+	mWaterSettings->setFogMod((F32)mUnderwaterMod->getValue().asReal());
 	setIsDirty();
 }
 
@@ -174,7 +174,7 @@ void LLPanelSettingsWaterMainTab::onFogUnderWaterChanged()
 void LLPanelSettingsWaterMainTab::onNormalScaleChanged()
 {
 	if (!mWaterSettings) return;
-	LLVector3 vect(mWaterNormX->getValue().asReal(), mWaterNormY->getValue().asReal(), mWaterNormZ->getValue().asReal());
+	LLVector3 vect((F32)mWaterNormX->getValue().asReal(), (F32)mWaterNormY->getValue().asReal(), (F32)mWaterNormZ->getValue().asReal());
 	mWaterSettings->setNormalScale(vect);
 	setIsDirty();
 }
@@ -182,14 +182,14 @@ void LLPanelSettingsWaterMainTab::onNormalScaleChanged()
 void LLPanelSettingsWaterMainTab::onFresnelScaleChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setFresnelScale(mFresnelScale->getValue().asReal());
+	mWaterSettings->setFresnelScale((F32)mFresnelScale->getValue().asReal());
 	setIsDirty();
 }
 
 void LLPanelSettingsWaterMainTab::onFresnelOffsetChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setFresnelOffset(mFresnelOffset->getValue().asReal());
+	mWaterSettings->setFresnelOffset((F32)mFresnelOffset->getValue().asReal());
 	setIsDirty();
 }
 
@@ -203,21 +203,21 @@ void LLPanelSettingsWaterMainTab::onScaleAboveChanged()
 void LLPanelSettingsWaterMainTab::onScaleBelowChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setScaleBelow(mScaleBelow->getValue().asReal());
+	mWaterSettings->setScaleBelow((F32)mScaleBelow->getValue().asReal());
 	setIsDirty();
 }
 
 void LLPanelSettingsWaterMainTab::onBlurMultipChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setBlurMultiplier(mBlurMult->getValue().asReal());
+	mWaterSettings->setBlurMultiplier((F32)mBlurMult->getValue().asReal());
 	setIsDirty();
 }
 
 void LLPanelSettingsWaterMainTab::onDefaultWaterHeight()
 {
 	if (!mWaterSettings) return;
-	F32 water_height = gAgent.getRegion()->getOriginalWaterHeight();
+	F32 water_height = (F32)gAgent.getRegion()->getOriginalWaterHeight();
 	gAgent.getRegion()->setWaterHeightLocal(water_height);
 	gSavedSettings.setF32("RenderWaterHeightFudge", water_height);
 }
@@ -285,9 +285,7 @@ void LLPanelSettingsWaterSecondaryTab::onNormalMapChanged()
 void LLPanelSettingsWaterSecondaryTab::onLargeWaveChanged()
 {
 	if (!mWaterSettings) return;
-	LLVector2 vect = LLVector2::zero;
-	vect.mV[VX] = mWave1X->getValue().asReal();
-	vect.mV[VY] = mWave1Y->getValue().asReal();
+	LLVector2 vect = LLVector2((F32)mWave1X->getValue().asReal(), (F32)mWave1Y->getValue().asReal());
 	vect *= -1.0; // Flip so that north and east are -
 	mWaterSettings->setWave1Dir(vect);
 	setIsDirty();
@@ -296,9 +294,7 @@ void LLPanelSettingsWaterSecondaryTab::onLargeWaveChanged()
 void LLPanelSettingsWaterSecondaryTab::onSmallWaveChanged()
 {
 	if (!mWaterSettings) return;
-	LLVector2 vect = LLVector2::zero;
-	vect.mV[VX] = mWave2X->getValue().asReal();
-	vect.mV[VY] = mWave2Y->getValue().asReal();
+	LLVector2 vect = LLVector2((F32)mWave2X->getValue().asReal(), (F32)mWave2Y->getValue().asReal());
 	vect *= -1.0; // Flip so that north and east are -
 	mWaterSettings->setWave2Dir(vect);
 	setIsDirty();

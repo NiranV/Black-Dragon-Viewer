@@ -149,25 +149,11 @@ public:
 	
 	void updateAvatarVisibility();
 
-	inline S32 getNumObjects() { return (S32) mObjects.size(); }
-	inline S32 getNumActiveObjects() { return (S32) mActiveObjects.size(); }
-
-	void addToMap(LLViewerObject *objectp);
-	void removeFromMap(LLViewerObject *objectp);
-
-	void clearDebugText();
-
-	////////////////////////////////////////////
-	//
-	// Only accessed by markDead in LLViewerObject
-	void cleanupReferences(LLViewerObject *objectp);
-
-	S32 findReferences(LLDrawable *drawablep) const; // Find references to drawable in all objects, and return value.
-
-	S32 getOrphanParentCount() const { return (S32) mOrphanParents.size(); }
-	S32 getOrphanCount() const { return mNumOrphans; }
-	void orphanize(LLViewerObject *childp, U32 parent_id, U32 ip, U32 port);
-	void findOrphans(LLViewerObject* objectp, U32 ip, U32 port);
+    S32 getOrphanParentCount() const { return (S32) mOrphanParents.size(); }
+    S32 getOrphanCount() const { return mNumOrphans; }
+    S32 getAvatarCount() const { return mNumAvatars; }
+    void orphanize(LLViewerObject *childp, U32 parent_id, U32 ip, U32 port);
+    void findOrphans(LLViewerObject* objectp, U32 ip, U32 port);
 
 public:
     // Class for keeping track of orphaned objects
@@ -215,6 +201,7 @@ protected:
     std::vector<U64>    mOrphanParents; // LocalID/ip,port of orphaned objects
     std::vector<OrphanInfo> mOrphanChildren;    // UUID's of orphaned objects
     S32 mNumOrphans;
+    S32 mNumAvatars;
 
 	vobj_list_t mObjects;
 	std::vector<LLPointer<LLViewerObject> > mActiveObjects;

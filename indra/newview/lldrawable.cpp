@@ -101,7 +101,7 @@ LLDrawable::LLDrawable(LLViewerObject *vobj, bool new_entry)
 
 void LLDrawable::init(bool new_entry)
 {
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
 	// mXform
 	mParent = NULL;
@@ -347,7 +347,7 @@ S32 LLDrawable::findReferences(LLDrawable *drawablep)
 
 LLFace* LLDrawable::addFace(LLFacePool *poolp, LLViewerTexture *texturep)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLFace *face;
     {
@@ -375,7 +375,7 @@ LLFace* LLDrawable::addFace(LLFacePool *poolp, LLViewerTexture *texturep)
 
 LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLFace *face;
 
@@ -398,7 +398,7 @@ LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep)
 
 LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep, LLViewerTexture *normalp)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLFace *face;
     face = new LLFace(this, mVObjp);
@@ -421,7 +421,7 @@ LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep,
 
 LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep, LLViewerTexture *normalp, LLViewerTexture *specularp)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLFace *face;
     face = new LLFace(this, mVObjp);
@@ -445,7 +445,7 @@ LLFace* LLDrawable::addFace(const LLTextureEntry *te, LLViewerTexture *texturep,
 
 void LLDrawable::setNumFaces(const S32 newFaces, LLFacePool *poolp, LLViewerTexture *texturep)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (newFaces == (S32)mFaces.size())
     {
@@ -470,7 +470,7 @@ void LLDrawable::setNumFaces(const S32 newFaces, LLFacePool *poolp, LLViewerText
 
 void LLDrawable::setNumFacesFast(const S32 newFaces, LLFacePool *poolp, LLViewerTexture *texturep)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (newFaces <= (S32)mFaces.size() && newFaces >= (S32)mFaces.size()/2)
     {
@@ -495,7 +495,7 @@ void LLDrawable::setNumFacesFast(const S32 newFaces, LLFacePool *poolp, LLViewer
 
 void LLDrawable::mergeFaces(LLDrawable* src)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     auto face_count = mFaces.size() + src->mFaces.size();
 
@@ -530,7 +530,7 @@ void LLDrawable::updateMaterial()
 
 void LLDrawable::makeActive()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
 #if !LL_RELEASE_FOR_DOWNLOAD
     if (mVObjp.notNull())
@@ -594,7 +594,7 @@ void LLDrawable::makeActive()
 
 void LLDrawable::makeStatic(bool warning_enabled)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (isState(ACTIVE) &&
         !isState(ACTIVE_CHILD) &&
@@ -642,7 +642,7 @@ void LLDrawable::makeStatic(bool warning_enabled)
 // Returns "distance" between target destination and resulting xfrom
 F32 LLDrawable::updateXform(bool undamped)
 {
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
 //	//BD - Motion Blur
 	/*if (mLastRenderMatrix)
@@ -802,7 +802,7 @@ void LLDrawable::moveUpdatePipeline(bool moved)
 
 void LLDrawable::movePartition()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLSpatialPartition* part = getSpatialPartition();
     if (part)
@@ -856,7 +856,7 @@ bool LLDrawable::updateMoveUndamped()
 
 void LLDrawable::updatePartition()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (!getVOVolume())
     {
@@ -875,7 +875,7 @@ void LLDrawable::updatePartition()
 
 bool LLDrawable::updateMoveDamped()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     F32 dist_squared = updateXform(false);
 
@@ -900,7 +900,7 @@ bool LLDrawable::updateMoveDamped()
 
 void LLDrawable::updateDistance(LLCamera& camera, bool force_update)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (LLViewerCamera::sCurCameraID != LLViewerCamera::CAMERA_WORLD)
     {
@@ -1000,7 +1000,7 @@ void LLDrawable::updateTexture()
 
 bool LLDrawable::updateGeometry()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     llassert(mVObjp.notNull());
     bool res = mVObjp && mVObjp->updateGeometry(this);
@@ -1078,7 +1078,7 @@ const LLVector3& LLDrawable::getBounds(LLVector3& min, LLVector3& max) const
 
 void LLDrawable::updateSpatialExtents()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (mVObjp)
     {
@@ -1214,7 +1214,7 @@ void LLDrawable::setGroup(LLViewerOctreeGroup *groupp)
 */
 LLSpatialPartition* LLDrawable::getSpatialPartition()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLSpatialPartition* retval = NULL;
 
@@ -1351,7 +1351,7 @@ void LLSpatialBridge::destroyTree()
 
 void LLSpatialBridge::updateSpatialExtents()
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     LLSpatialGroup* root = (LLSpatialGroup*) mOctree->getListener(0);
 
@@ -1524,7 +1524,7 @@ public:
 
 void LLSpatialBridge::setVisible(LLCamera& camera_in, std::vector<LLDrawable*>* results, bool for_select)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (!gPipeline.hasRenderType(mDrawableType))
     {
@@ -1623,7 +1623,7 @@ void LLSpatialBridge::setVisible(LLCamera& camera_in, std::vector<LLDrawable*>* 
 
 void LLSpatialBridge::updateDistance(LLCamera& camera_in, bool force_update)
 {
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWABLE;
 
     if (mDrawable == NULL)
     {
@@ -1656,18 +1656,10 @@ void LLSpatialBridge::updateDistance(LLCamera& camera_in, bool force_update)
 
         mDrawable->updateDistance(camera, force_update);
 
-        LLViewerObject::const_child_list_t& child_list = mDrawable->getVObj()->getChildren();
-        for (LLViewerObject::child_list_t::const_iterator iter = child_list.begin();
-             iter != child_list.end(); iter++)
+        for (LLViewerObject* child : mDrawable->getVObj()->getChildren())
         {
-            LLViewerObject* child = *iter;
             LLDrawable* drawable = child->mDrawable;
-            if (!drawable)
-            {
-                continue;
-            }
-
-            if (!drawable->isAvatar())
+            if (drawable && !drawable->isDead() && !drawable->isAvatar())
             {
                 drawable->updateDistance(camera, force_update);
             }

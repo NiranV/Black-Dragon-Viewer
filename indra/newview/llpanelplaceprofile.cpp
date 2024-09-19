@@ -343,284 +343,283 @@ void LLPanelPlaceProfile::displaySelectedParcelInfo(LLParcel* parcel,
                                                     const LLVector3d& pos_global,
                                                     bool is_current_parcel)
 {
-	if (!region || !parcel)
-		return;
+    if (!region || !parcel)
+        return;
 
-	if (mLastSelectedRegionID != region->getRegionID()
-		|| mNextCovenantUpdateTime < LLTimer::getElapsedSeconds())
-	{
-		// send EstateCovenantInfo message
-		// Note: LLPanelPlaceProfile doesn't change Covenant's content and any
-		// changes made by Estate floater should be requested by Estate floater
-		LLMessageSystem *msg = gMessageSystem;
-		msg->newMessage("EstateCovenantRequest");
-		msg->nextBlockFast(_PREHASH_AgentData);
-		msg->addUUIDFast(_PREHASH_AgentID,	gAgent.getID());
-		msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
-		msg->sendReliable(region->getHost());
-		mNextCovenantUpdateTime = LLTimer::getElapsedSeconds() + COVENANT_REFRESH_TIME_SEC;
-	}
+    if (mLastSelectedRegionID != region->getRegionID()
+        || mNextCovenantUpdateTime < LLTimer::getElapsedSeconds())
+    {
+        // send EstateCovenantInfo message
+        // Note: LLPanelPlaceProfile doesn't change Covenant's content and any
+        // changes made by Estate floater should be requested by Estate floater
+        LLMessageSystem *msg = gMessageSystem;
+        msg->newMessage("EstateCovenantRequest");
+        msg->nextBlockFast(_PREHASH_AgentData);
+        msg->addUUIDFast(_PREHASH_AgentID,  gAgent.getID());
+        msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
+        msg->sendReliable(region->getHost());
+        mNextCovenantUpdateTime = LLTimer::getElapsedSeconds() + COVENANT_REFRESH_TIME_SEC;
+    }
 
-	LLParcelData parcel_data;
+    LLParcelData parcel_data;
 
-	// HACK: Converting sim access flags to the format
-	// returned by remote parcel response.
-	U8 sim_access = region->getSimAccess();
-	switch(sim_access)
-	{
-	case SIM_ACCESS_MATURE:
-		parcel_data.flags = 0x1;
+    // HACK: Converting sim access flags to the format
+    // returned by remote parcel response.
+    U8 sim_access = region->getSimAccess();
+    switch(sim_access)
+    {
+    case SIM_ACCESS_MATURE:
+        parcel_data.flags = 0x1;
 
-		mParcelRatingIcon->setValue(icon_m);
-		mRegionRatingIcon->setValue(icon_m);
-		mEstateRatingIcon->setValue(icon_m);
-		break;
+        mParcelRatingIcon->setValue(icon_m);
+        mRegionRatingIcon->setValue(icon_m);
+        mEstateRatingIcon->setValue(icon_m);
+        break;
 
-	case SIM_ACCESS_ADULT:
-		parcel_data.flags = 0x2;
+    case SIM_ACCESS_ADULT:
+        parcel_data.flags = 0x2;
 
-		mParcelRatingIcon->setValue(icon_r);
-		mRegionRatingIcon->setValue(icon_r);
-		mEstateRatingIcon->setValue(icon_r);
-		break;
+        mParcelRatingIcon->setValue(icon_r);
+        mRegionRatingIcon->setValue(icon_r);
+        mEstateRatingIcon->setValue(icon_r);
+        break;
 
-	default:
-		parcel_data.flags = 0;
+    default:
+        parcel_data.flags = 0;
 
-		mParcelRatingIcon->setValue(icon_pg);
-		mRegionRatingIcon->setValue(icon_pg);
-		mEstateRatingIcon->setValue(icon_pg);
-	}
+        mParcelRatingIcon->setValue(icon_pg);
+        mRegionRatingIcon->setValue(icon_pg);
+        mEstateRatingIcon->setValue(icon_pg);
+    }
 
-	std::string rating = LLViewerRegion::accessToString(sim_access);
-	mParcelRatingText->setText(rating);
-	mRegionRatingText->setText(rating);
+    std::string rating = LLViewerRegion::accessToString(sim_access);
+    mParcelRatingText->setText(rating);
+    mRegionRatingText->setText(rating);
 
-	parcel_data.desc = parcel->getDesc();
-	parcel_data.name = parcel->getName();
-	parcel_data.sim_name = region->getName();
-	parcel_data.snapshot_id = parcel->getSnapshotID();
-	mPosRegion.setVec((F32)fmod(pos_global.mdV[VX], (F64)REGION_WIDTH_METERS),
-					  (F32)fmod(pos_global.mdV[VY], (F64)REGION_WIDTH_METERS),
-					  (F32)pos_global.mdV[VZ]);
-	parcel_data.global_x = pos_global.mdV[VX];
-	parcel_data.global_y = pos_global.mdV[VY];
-	parcel_data.global_z = pos_global.mdV[VZ];
-	parcel_data.owner_id = parcel->getOwnerID();
+    parcel_data.desc = parcel->getDesc();
+    parcel_data.name = parcel->getName();
+    parcel_data.sim_name = region->getName();
+    parcel_data.snapshot_id = parcel->getSnapshotID();
+    mPosRegion.setVec((F32)fmod(pos_global.mdV[VX], (F64)REGION_WIDTH_METERS),
+                      (F32)fmod(pos_global.mdV[VY], (F64)REGION_WIDTH_METERS),
+                      (F32)pos_global.mdV[VZ]);
+    parcel_data.global_x = (F32)pos_global.mdV[VX];
+    parcel_data.global_y = (F32)pos_global.mdV[VY];
+    parcel_data.global_z = (F32)pos_global.mdV[VZ];
+    parcel_data.owner_id = parcel->getOwnerID();
 
-	std::string on = getString("on");
-	std::string off = getString("off");
+    std::string on = getString("on");
+    std::string off = getString("off");
 
-	LLViewerParcelMgr* vpm = LLViewerParcelMgr::getInstance();
+    LLViewerParcelMgr* vpm = LLViewerParcelMgr::getInstance();
 
-	// Processing parcel characteristics
-	if (vpm->allowAgentVoice(region, parcel))
-	{
-		mVoiceIcon->setValue(icon_voice);
-		mVoiceText->setText(on);
-	}
-	else
-	{
-		mVoiceIcon->setValue(icon_voice_no);
-		mVoiceText->setText(off);
-	}
+    // Processing parcel characteristics
+    if (vpm->allowAgentVoice(region, parcel))
+    {
+        mVoiceIcon->setValue(icon_voice);
+        mVoiceText->setText(on);
+    }
+    else
+    {
+        mVoiceIcon->setValue(icon_voice_no);
+        mVoiceText->setText(off);
+    }
 
-	if (vpm->allowAgentFly(region, parcel))
-	{
-		mFlyIcon->setValue(icon_fly);
-		mFlyText->setText(on);
-	}
-	else
-	{
-		mFlyIcon->setValue(icon_fly_no);
-		mFlyText->setText(off);
-	}
+    if (vpm->allowAgentFly(region, parcel))
+    {
+        mFlyIcon->setValue(icon_fly);
+        mFlyText->setText(on);
+    }
+    else
+    {
+        mFlyIcon->setValue(icon_fly_no);
+        mFlyText->setText(off);
+    }
 
-	if (vpm->allowAgentPush(region, parcel))
-	{
-		mPushIcon->setValue(icon_push);
-		mPushText->setText(on);
-	}
-	else
-	{
-		mPushIcon->setValue(icon_push_no);
-		mPushText->setText(off);
-	}
+    if (vpm->allowAgentPush(region, parcel))
+    {
+        mPushIcon->setValue(icon_push);
+        mPushText->setText(on);
+    }
+    else
+    {
+        mPushIcon->setValue(icon_push_no);
+        mPushText->setText(off);
+    }
 
-	if (vpm->allowAgentBuild(parcel))
-	{
-		mBuildIcon->setValue(icon_build);
-		mBuildText->setText(on);
-	}
-	else
-	{
-		mBuildIcon->setValue(icon_build_no);
-		mBuildText->setText(off);
-	}
+    if (vpm->allowAgentBuild(parcel))
+    {
+        mBuildIcon->setValue(icon_build);
+        mBuildText->setText(on);
+    }
+    else
+    {
+        mBuildIcon->setValue(icon_build_no);
+        mBuildText->setText(off);
+    }
 
-	if (vpm->allowAgentScripts(region, parcel))
-	{
-		mScriptsIcon->setValue(icon_scripts);
-		mScriptsText->setText(on);
-	}
-	else
-	{
-		mScriptsIcon->setValue(icon_scripts_no);
-		mScriptsText->setText(off);
-	}
+    if (vpm->allowAgentScripts(region, parcel))
+    {
+        mScriptsIcon->setValue(icon_scripts);
+        mScriptsText->setText(on);
+    }
+    else
+    {
+        mScriptsIcon->setValue(icon_scripts_no);
+        mScriptsText->setText(off);
+    }
 
-	if (vpm->allowAgentDamage(region, parcel))
-	{
-		mDamageIcon->setValue(icon_damage);
-		mDamageText->setText(on);
-	}
-	else
-	{
-		mDamageIcon->setValue(icon_damage_no);
-		mDamageText->setText(off);
-	}
+    if (vpm->allowAgentDamage(region, parcel))
+    {
+        mDamageIcon->setValue(icon_damage);
+        mDamageText->setText(on);
+    }
+    else
+    {
+        mDamageIcon->setValue(icon_damage_no);
+        mDamageText->setText(off);
+    }
 
-	if (parcel->getSeeAVs())
-	{
-		mSeeAVsIcon->setValue(icon_see_avs_on);
-		mSeeAVsText->setText(on);
-	}
-	else
-	{
-		mSeeAVsIcon->setValue(icon_see_avs_off);
-		mSeeAVsText->setText(off);
-	}
+    if (parcel->getSeeAVs())
+    {
+        mSeeAVsIcon->setValue(icon_see_avs_on);
+        mSeeAVsText->setText(on);
+    }
+    else
+    {
+        mSeeAVsIcon->setValue(icon_see_avs_off);
+        mSeeAVsText->setText(off);
+    }
 
-	mRegionNameText->setText(region->getName());
-	mRegionTypeText->setText(region->getLocalizedSimProductName());
+    mRegionNameText->setText(region->getName());
+    mRegionTypeText->setText(region->getLocalizedSimProductName());
 
-	// Determine parcel owner
-	if (parcel->isPublic())
-	{
-		mParcelOwner->setText(getString("public"));
-		mRegionOwnerText->setText(getString("public"));
-	}
-	else
-	{
-		if (parcel->getIsGroupOwned())
-		{
-			mRegionOwnerText->setText(getString("group_owned_text"));
+    // Determine parcel owner
+    if (parcel->isPublic())
+    {
+        mParcelOwner->setText(getString("public"));
+        mRegionOwnerText->setText(getString("public"));
+    }
+    else
+    {
+        if (parcel->getIsGroupOwned())
+        {
+            mRegionOwnerText->setText(getString("group_owned_text"));
 
-			if(!parcel->getGroupID().isNull())
-			{
-				std::string owner =
-					LLSLURL("group", parcel->getGroupID(), "inspect").getSLURLString();
-				mParcelOwner->setText(owner);
-			}
-			else
-			{
-				std::string owner = getString("none_text");
-				mRegionGroupText->setText(owner);
-				mParcelOwner->setText(owner);
-			}
-		}
-		else
-		{
-			// Figure out the owner's name
-			std::string parcel_owner =
-				LLSLURL("agent", parcel->getOwnerID(), "inspect").getSLURLString();
-			mParcelOwner->setText(parcel_owner);
-			LLAvatarNameCache::get(region->getOwner(), boost::bind(&LLPanelPlaceInfo::onAvatarNameCache, _1, _2, mRegionOwnerText));
-			mRegionGroupText->setText( getString("none_text"));
-		}
+            if(!parcel->getGroupID().isNull())
+            {
+                std::string owner =
+                    LLSLURL("group", parcel->getGroupID(), "inspect").getSLURLString();
+                mParcelOwner->setText(owner);
+            }
+            else
+            {
+                std::string owner = getString("none_text");
+                mRegionGroupText->setText(owner);
+                mParcelOwner->setText(owner);
+            }
+        }
+        else
+        {
+            // Figure out the owner's name
+            std::string parcel_owner =
+                LLSLURL("agent", parcel->getOwnerID(), "inspect").getSLURLString();
+            mParcelOwner->setText(parcel_owner);
+            LLAvatarNameCache::get(region->getOwner(), boost::bind(&LLPanelPlaceInfo::onAvatarNameCache, _1, _2, mRegionOwnerText));
+            mRegionGroupText->setText( getString("none_text"));
+        }
 
-		if(LLParcel::OS_LEASE_PENDING == parcel->getOwnershipStatus())
-		{
-			mRegionOwnerText->setText(mRegionOwnerText->getText() + getString("sale_pending_text"));
-		}
+        if(LLParcel::OS_LEASE_PENDING == parcel->getOwnershipStatus())
+        {
+            mRegionOwnerText->setText(mRegionOwnerText->getText() + getString("sale_pending_text"));
+        }
 
-		if(!parcel->getGroupID().isNull())
-		{
-			// FIXME: Using parcel group as region group.
-			gCacheName->getGroup(parcel->getGroupID(),
-							boost::bind(&LLPanelPlaceInfo::onNameCache, mRegionGroupText, _2));
-		}
-	}
+        if(!parcel->getGroupID().isNull())
+        {
+            // FIXME: Using parcel group as region group.
+            gCacheName->getGroup(parcel->getGroupID(),
+                            boost::bind(&LLPanelPlaceInfo::onNameCache, mRegionGroupText, _2));
+        }
+    }
 
-	mEstateRatingText->setText(region->getSimAccessString());
+    mEstateRatingText->setText(region->getSimAccessString());
 
-	S32 area;
-	S32 claim_price;
-	S32 rent_price;
-	F32 dwell;
-	bool for_sale;
-	vpm->getDisplayInfo(&area, &claim_price, &rent_price, &for_sale, &dwell);
-	mForSalePanel->setVisible(for_sale);
-	if (for_sale)
-	{
-		const LLUUID& auth_buyer_id = parcel->getAuthorizedBuyerID();
-		if(auth_buyer_id.notNull())
-		{
-			LLAvatarNameCache::get(auth_buyer_id, boost::bind(&LLPanelPlaceInfo::onAvatarNameCache, _1, _2, mSaleToText));
-			
-			// Show sales info to a specific person or a group he belongs to.
-			if (auth_buyer_id != gAgent.getID() && !gAgent.isInGroup(auth_buyer_id))
-			{
-				for_sale = false;
-			}
-		}
-		else
-		{
-			mSaleToText->setText(getString("anyone"));
-		}
+    S32 area;
+    S32 claim_price;
+    S32 rent_price;
+    F32 dwell;
+    bool for_sale;
+    vpm->getDisplayInfo(&area, &claim_price, &rent_price, &for_sale, &dwell);
+    mForSalePanel->setVisible(for_sale);
+    if (for_sale)
+    {
+        const LLUUID& auth_buyer_id = parcel->getAuthorizedBuyerID();
+        if(auth_buyer_id.notNull())
+        {
+            LLAvatarNameCache::get(auth_buyer_id, boost::bind(&LLPanelPlaceInfo::onAvatarNameCache, _1, _2, mSaleToText));
 
-		mSalesPriceText->setText(llformat("%s%d ", getString("price_text").c_str(), parcel->getSalePrice()));
-		mAreaText->setText(llformat("%d %s", area, getString("area_text").c_str()));
-		mTrafficText->setText(llformat("%.0f", dwell));
+            // Show sales info to a specific person or a group he belongs to.
+            if (auth_buyer_id != gAgent.getID() && !gAgent.isInGroup(auth_buyer_id))
+            {
+                for_sale = false;
+            }
+        }
+        else
+        {
+            mSaleToText->setText(getString("anyone"));
+        }
 
-		// Can't have more than region max tasks, regardless of parcel
-		// object bonus factor.
-		S32 primitives = llmin(ll_round(parcel->getMaxPrimCapacity() * parcel->getParcelPrimBonus()),
-							   (S32)region->getMaxTasks());
+        mSalesPriceText->setText(llformat("%s%d ", getString("price_text").c_str(), parcel->getSalePrice()));
+        mAreaText->setText(llformat("%d %s", area, getString("area_text").c_str()));
+        mTrafficText->setText(llformat("%.0f", dwell));
 
-		mPrimitivesText->setText(llformat("%d %s, %d %s", primitives, getString("available").c_str(), parcel->getPrimCount(), getString("allocated").c_str()));
+        // Can't have more than region max tasks, regardless of parcel
+        // object bonus factor.
+        S32 primitives = llmin(ll_round(parcel->getMaxPrimCapacity() * parcel->getParcelPrimBonus()),
+                               (S32)region->getMaxTasks());
 
-		if (parcel->getAllowOtherScripts())
-		{
-			mParcelScriptsText->setText(getString("all_residents_text"));
-		}
-		else if (parcel->getAllowGroupScripts())
-		{
-			mParcelScriptsText->setText(getString("group_text"));
-		}
-		else
-		{
-			mParcelScriptsText->setText(off);
-		}
+        mPrimitivesText->setText(llformat("%d %s, %d %s", primitives, getString("available").c_str(), parcel->getPrimCount(), getString("allocated").c_str()));
 
-		mTerraformLimitsText->setText(parcel->getAllowTerraform() ? on : off);
+        if (parcel->getAllowOtherScripts())
+        {
+            mParcelScriptsText->setText(getString("all_residents_text"));
+        }
+        else if (parcel->getAllowGroupScripts())
+        {
+            mParcelScriptsText->setText(getString("group_text"));
+        }
+        else
+        {
+            mParcelScriptsText->setText(off);
+        }
 
-		if (region->getRegionFlag(REGION_FLAGS_ALLOW_PARCEL_CHANGES))
-		{
-			mSubdivideText->setText(getString("can_change"));
-		}
-		else
-		{
-			mSubdivideText->setText(getString("can_not_change"));
-		}
-		if (region->getRegionFlag(REGION_FLAGS_BLOCK_LAND_RESELL))
-		{
-			mResaleText->setText(getString("can_not_resell"));
-		}
-		else
-		{
-			mResaleText->setText(getString("can_resell"));
-		}
-	}
+        mTerraformLimitsText->setText(parcel->getAllowTerraform() ? on : off);
 
-	mSelectedParcelID = parcel->getLocalID();
-	mLastSelectedRegionID = region->getRegionID();
-	LLPanelPlaceInfo::processParcelInfo(parcel_data);
+        if (region->getRegionFlag(REGION_FLAGS_ALLOW_PARCEL_CHANGES))
+        {
+            mSubdivideText->setText(getString("can_change"));
+        }
+        else
+        {
+            mSubdivideText->setText(getString("can_not_change"));
+        }
+        if (region->getRegionFlag(REGION_FLAGS_BLOCK_LAND_RESELL))
+        {
+            mResaleText->setText(getString("can_not_resell"));
+        }
+        else
+        {
+            mResaleText->setText(getString("can_resell"));
+        }
+    }
 
-	mYouAreHerePanel->setVisible(is_current_parcel);
-	//BD
-	//getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
-	//mAccordionCtrl->arrange();
+    mSelectedParcelID = parcel->getLocalID();
+    mLastSelectedRegionID = region->getRegionID();
+    LLPanelPlaceInfo::processParcelInfo(parcel_data);
+
+    mYouAreHerePanel->setVisible(is_current_parcel);
+    //getChild<LLAccordionCtrlTab>("sales_tab")->setVisible(for_sale);
+    //mAccordionCtrl->arrange();
 }
 
 void LLPanelPlaceProfile::updateEstateName(const std::string& name)

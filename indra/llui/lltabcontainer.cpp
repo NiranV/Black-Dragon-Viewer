@@ -322,7 +322,7 @@ void LLTabContainer::reshape(S32 width, S32 height, bool called_from_parent)
 }
 
 //virtual
-LLView* LLTabContainer::getChildView(const std::string& name, bool recurse) const
+LLView* LLTabContainer::getChildView(std::string_view name, bool recurse) const
 {
     tuple_list_t::const_iterator itor;
     for (itor = mTabList.begin(); itor != mTabList.end(); ++itor)
@@ -350,7 +350,7 @@ LLView* LLTabContainer::getChildView(const std::string& name, bool recurse) cons
 }
 
 //virtual
-LLView* LLTabContainer::findChildView(const std::string& name, bool recurse) const
+LLView* LLTabContainer::findChildView(std::string_view name, bool recurse) const
 {
     tuple_list_t::const_iterator itor;
     for (itor = mTabList.begin(); itor != mTabList.end(); ++itor)
@@ -1441,7 +1441,7 @@ S32 LLTabContainer::getIndexForPanel(LLPanel* panel)
     return -1;
 }
 
-S32 LLTabContainer::getPanelIndexByTitle(const std::string& title)
+S32 LLTabContainer::getPanelIndexByTitle(std::string_view title)
 {
     for (S32 index = 0 ; index < (S32)mTabList.size(); index++)
     {
@@ -1453,7 +1453,7 @@ S32 LLTabContainer::getPanelIndexByTitle(const std::string& title)
     return -1;
 }
 
-LLPanel* LLTabContainer::getPanelByName(const std::string& name)
+LLPanel* LLTabContainer::getPanelByName(std::string_view name)
 {
     for (S32 index = 0 ; index < (S32)mTabList.size(); index++)
     {
@@ -1677,7 +1677,7 @@ bool LLTabContainer::setTab(S32 which)
     return is_visible;
 }
 
-bool LLTabContainer::selectTabByName(const std::string& name)
+bool LLTabContainer::selectTabByName(std::string_view name)
 {
     LLPanel* panel = getPanelByName(name);
     if (!panel)
@@ -2187,7 +2187,7 @@ void LLTabContainer::setTabVisibility( LLPanel const *aPanel, bool aVisible )
         LLTabTuple const *pTT = *itr;
         if( pTT->mVisible )
         {
-            this->selectTab( itr - mTabList.begin() );
+            this->selectTab((S32)(itr - mTabList.begin()));
             foundTab = true;
             break;
         }

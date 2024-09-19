@@ -44,7 +44,6 @@ include(ViewerManager)
 include(VisualLeakDetector)
 include(VulkanGltf)
 include(ZLIBNG)
-include(URIPARSER)
 include(LLPrimitive)
 
 if (NOT HAVOK_TPV)
@@ -215,6 +214,7 @@ set(viewer_SOURCE_FILES
     llfloaterbigpreview.cpp
     llfloaterbuildoptions.cpp
     llfloaterbulkpermission.cpp
+    llfloaterbulkupload.cpp
     llfloaterbump.cpp
     llfloaterbuy.cpp
     llfloaterbuycontents.cpp
@@ -246,6 +246,7 @@ set(viewer_SOURCE_FILES
     llfloaterfonttest.cpp
     llfloaterforgetuser.cpp
     llfloatergesture.cpp
+    llfloatergltfasseteditor.cpp
     llfloatergodtools.cpp
     llfloatergotoline.cpp
     llfloatergridstatus.cpp
@@ -301,6 +302,7 @@ set(viewer_SOURCE_FILES
     llfloaterregioninfo.cpp
     llfloaterreporter.cpp
     llfloaterregionrestarting.cpp
+    llfloaterregionrestartschedule.cpp
     llfloatersaveprefpreset.cpp
     llfloatersceneloadstats.cpp
     llfloaterscriptdebug.cpp
@@ -308,6 +310,7 @@ set(viewer_SOURCE_FILES
     llfloaterscriptlimits.cpp
     llfloatersearch.cpp
     llfloatersellland.cpp
+    llfloatersettingscolor.cpp
     llfloatersettingsdebug.cpp
     llfloatersidepanelcontainer.cpp
     llfloatersnapshot.cpp
@@ -338,6 +341,8 @@ set(viewer_SOURCE_FILES
     llgesturemgr.cpp
     llgiveinventory.cpp
     llglsandbox.cpp
+    llgltffolderitem.cpp
+    llgltffoldermodel.cpp
     llgltfmateriallist.cpp
     llgltfmaterialpreviewmgr.cpp
     llgroupactions.cpp
@@ -590,6 +595,7 @@ set(viewer_SOURCE_FILES
     llsyswellwindow.cpp
     llteleporthistory.cpp
     llteleporthistorystorage.cpp
+    llterrainpaintmap.cpp
     lltexturecache.cpp
     lltexturectrl.cpp
     lltexturefetch.cpp
@@ -887,6 +893,7 @@ set(viewer_HEADER_FILES
     llfloaterbigpreview.h
     llfloaterbuildoptions.h
     llfloaterbulkpermission.h
+    llfloaterbulkupload.h
     llfloaterbump.h
     llfloaterbuy.h
     llfloaterbuycontents.h
@@ -917,6 +924,7 @@ set(viewer_HEADER_FILES
     llfloaterfonttest.h
     llfloaterforgetuser.h
     llfloatergesture.h
+    llfloatergltfasseteditor.h
     llfloatergodtools.h
     llfloatergotoline.h
     llfloatergridstatus.h
@@ -975,13 +983,14 @@ set(viewer_HEADER_FILES
     llfloaterregioninfo.h
     llfloaterreporter.h
     llfloaterregionrestarting.h
-    llfloatersaveprefpreset.h
+    llfloaterregionrestartschedule.h
     llfloatersceneloadstats.h
     llfloaterscriptdebug.h
     llfloaterscriptedprefs.h
     llfloaterscriptlimits.h
     llfloatersearch.h
     llfloatersellland.h
+    llfloatersettingscolor.h
     llfloatersettingsdebug.h
     llfloatersidepanelcontainer.h
     llfloatersnapshot.h
@@ -1011,6 +1020,8 @@ set(viewer_HEADER_FILES
     llgesturelistener.h
     llgesturemgr.h
     llgiveinventory.h
+    llgltffolderitem.h
+    llgltffoldermodel.h
     llgltfmateriallist.h
     llgltfmaterialpreviewmgr.h
     llgroupactions.h
@@ -1258,6 +1269,7 @@ set(viewer_HEADER_FILES
     lltable.h
     llteleporthistory.h
     llteleporthistorystorage.h
+    llterrainpaintmap.h
     lltexturecache.h
     lltexturectrl.h
     lltexturefetch.h
@@ -1757,8 +1769,6 @@ if (WINDOWS)
       ${CMAKE_SOURCE_DIR}/../etc/message.xml
       ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
       ${SHARED_LIB_STAGING_DIR}/openjpeg.dll
-      ${SHARED_LIB_STAGING_DIR}/libhunspell.dll
-      ${SHARED_LIB_STAGING_DIR}/uriparser.dll
       ${SHARED_LIB_STAGING_DIR}/llwebrtc.dll
       #${SHARED_LIB_STAGING_DIR}/${LL_INTDIR}/SLVoice.exe
       #${SHARED_LIB_STAGING_DIR}/${LL_INTDIR}/libsndfile-1.dll
@@ -1777,15 +1787,11 @@ if (WINDOWS)
        list(APPEND COPY_INPUT_DEPENDENCIES
                ${SHARED_LIB_STAGING_DIR}/vivoxsdk_x64.dll
                ${SHARED_LIB_STAGING_DIR}/ortp_x64.dll
-               ${ARCH_PREBUILT_DIRS_RELEASE}/libcrypto-1_1-x64.dll
-               ${ARCH_PREBUILT_DIRS_RELEASE}/libssl-1_1-x64.dll
                )
     else (ADDRESS_SIZE EQUAL 64)
        list(APPEND COPY_INPUT_DEPENDENCIES
                ${SHARED_LIB_STAGING_DIR}/vivoxsdk.dll
                ${SHARED_LIB_STAGING_DIR}/ortp.dll
-               ${ARCH_PREBUILT_DIRS_RELEASE}/libcrypto-1_1.dll
-               ${ARCH_PREBUILT_DIRS_RELEASE}/libssl-1_1.dll
                )
     endif (ADDRESS_SIZE EQUAL 64)
 
@@ -1815,6 +1821,7 @@ if (WINDOWS)
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
         "--openal=${USE_OPENAL}"
+        "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
         --buildtype=$<CONFIG>
         "--channel=${VIEWER_CHANNEL}"
@@ -1875,6 +1882,7 @@ if (WINDOWS)
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
               "--openal=${USE_OPENAL}"
+              "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
               --buildtype=$<CONFIG>
               "--channel=${VIEWER_CHANNEL}"
@@ -2024,6 +2032,7 @@ if (LINUX)
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
         "--openal=${USE_OPENAL}"
+        "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
         --buildtype=${CMAKE_BUILD_TYPE}
         "--channel=${VIEWER_CHANNEL}"
@@ -2051,6 +2060,7 @@ if (LINUX)
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
       "--openal=${USE_OPENAL}"
+      "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
       --buildtype=${CMAKE_BUILD_TYPE}
       "--channel=${VIEWER_CHANNEL}"
@@ -2126,6 +2136,7 @@ if (DARWIN)
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
       "--openal=${USE_OPENAL}"
+      "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
       --buildtype=$<CONFIG>
       --bundleid=${MACOSX_BUNDLE_GUI_IDENTIFIER}
@@ -2160,6 +2171,7 @@ if (DARWIN)
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
               "--openal=${USE_OPENAL}"
+              "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
               --buildtype=$<CONFIG>
               "--channel=${VIEWER_CHANNEL}"
@@ -2213,15 +2225,15 @@ if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIE
             XCODE_ATTRIBUTE_DWARF_DSYM_FOLDER_PATH "${SYMBOLS_STAGING_DIR}/dSYMs")
     
       add_custom_command(OUTPUT "${VIEWER_APP_XCARCHIVE}"
-          COMMAND "zip"
-          ARGS
-            "-r"
-            "${VIEWER_APP_XCARCHIVE}"
+        COMMAND "zip"
+        ARGS
+          "-r"
+          "${VIEWER_APP_XCARCHIVE}"
             "${VIEWER_CHANNEL}"
           WORKING_DIRECTORY "${SYMBOLS_STAGING_DIR}/.."
           DEPENDS "${VIEWER_BINARY_NAME}" llwebrtc
           COMMENT "Generating ${VIEWER_APP_XCARCHIVE} for upload to BugSplat"
-          )
+        )
       add_custom_target(generate_symbols DEPENDS
         "${VIEWER_APP_XCARCHIVE}"
         )

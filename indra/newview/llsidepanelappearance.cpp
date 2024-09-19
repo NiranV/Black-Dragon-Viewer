@@ -39,6 +39,7 @@
 #include "llfloaterreg.h"
 #include "llfloaterworldmap.h"
 #include "llfolderviewmodel.h"
+#include "llloadingindicator.h"
 #include "lloutfitobserver.h"
 #include "llpaneleditwearable.h"
 #include "llpaneloutfitsinventory.h"

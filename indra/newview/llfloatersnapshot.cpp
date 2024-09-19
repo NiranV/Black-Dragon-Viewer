@@ -63,9 +63,12 @@
 ///----------------------------------------------------------------------------
 /// Local function declarations, constants, enums, and typedefs
 ///----------------------------------------------------------------------------
-LLSnapshotFloaterView* gSnapshotFloaterView = NULL;
+LLSnapshotFloaterView* gSnapshotFloaterView = nullptr;
 
-const S32 MAX_TEXTURE_SIZE = 1024 ; //max upload texture size 1024 * 1024
+constexpr F32 AUTO_SNAPSHOT_TIME_DELAY = 1.f;
+
+constexpr S32 MAX_POSTCARD_DATASIZE = 1572864; // 1.5 megabyte, similar to simulator limit
+constexpr S32 MAX_TEXTURE_SIZE = 2048 ; //max upload texture size 2048 * 2048
 
 const S32 OUTFIT_SNAPSHOT_WIDTH = 256;
 const S32 OUTFIT_SNAPSHOT_HEIGHT = 256;

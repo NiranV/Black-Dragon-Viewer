@@ -125,7 +125,7 @@ public:
 	virtual bool	handleKeyHere(KEY key, MASK mask);
 	virtual bool	handleUnicodeCharHere(llwchar uni_char);
 	//BD - UI Improvements
-	bool	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask) final override;
+	bool	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
 	void			onNextBtn();
 	void			onPrevBtn();

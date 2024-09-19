@@ -223,7 +223,7 @@ LLPCode toolData[]={
 bool	LLFloaterTools::postBuild()
 {	
 	// Hide until tool selected
-	setVisible(FALSE);
+	setVisible(false);
 
 	// Since we constantly show and hide this during drags, don't
 	// make sounds on visibility changes.
@@ -256,13 +256,13 @@ bool	LLFloaterTools::postBuild()
 	mLandPanel = getChild<LLPanel>("land_panel");
 	
 	mCheckSelectIndividual	= getChild<LLCheckBoxCtrl>("checkbox edit linked parts");	
-	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((BOOL)gSavedSettings.getBOOL("EditLinkedParts"));
+	getChild<LLUICtrl>("checkbox edit linked parts")->setValue((bool)gSavedSettings.getBOOL("EditLinkedParts"));
 	mCheckSnapToGrid		= getChild<LLCheckBoxCtrl>("checkbox snap to grid");
-	getChild<LLUICtrl>("checkbox snap to grid")->setValue((BOOL)gSavedSettings.getBOOL("SnapEnabled"));
+	getChild<LLUICtrl>("checkbox snap to grid")->setValue((bool)gSavedSettings.getBOOL("SnapEnabled"));
 	mCheckStretchUniform	= getChild<LLCheckBoxCtrl>("checkbox uniform");
-	getChild<LLUICtrl>("checkbox uniform")->setValue((BOOL)gSavedSettings.getBOOL("ScaleUniform"));
+	getChild<LLUICtrl>("checkbox uniform")->setValue((bool)gSavedSettings.getBOOL("ScaleUniform"));
 	mCheckStretchTexture	= getChild<LLCheckBoxCtrl>("checkbox stretch textures");
-	getChild<LLUICtrl>("checkbox stretch textures")->setValue((BOOL)gSavedSettings.getBOOL("ScaleStretchTextures"));
+	getChild<LLUICtrl>("checkbox stretch textures")->setValue((bool)gSavedSettings.getBOOL("ScaleStretchTextures"));
 	mComboGridMode			= getChild<LLComboBox>("combobox grid mode");
 	//BD
 	mCheckSelectionOutlines = getChild<LLCheckBoxCtrl>("checkbox show selection outlines");
@@ -283,13 +283,13 @@ bool	LLFloaterTools::postBuild()
 		}
 	}
 	mCheckCopySelection = getChild<LLCheckBoxCtrl>("checkbox copy selection");
-	getChild<LLUICtrl>("checkbox copy selection")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopySelection"));
+	getChild<LLUICtrl>("checkbox copy selection")->setValue((bool)gSavedSettings.getBOOL("CreateToolCopySelection"));
 	mCheckSticky = getChild<LLCheckBoxCtrl>("checkbox sticky");
-	getChild<LLUICtrl>("checkbox sticky")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolKeepSelected"));
+	getChild<LLUICtrl>("checkbox sticky")->setValue((bool)gSavedSettings.getBOOL("CreateToolKeepSelected"));
 	mCheckCopyCenters = getChild<LLCheckBoxCtrl>("checkbox copy centers");
-	getChild<LLUICtrl>("checkbox copy centers")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyCenters"));
+	getChild<LLUICtrl>("checkbox copy centers")->setValue((bool)gSavedSettings.getBOOL("CreateToolCopyCenters"));
 	mCheckCopyRotates = getChild<LLCheckBoxCtrl>("checkbox copy rotates");
-	getChild<LLUICtrl>("checkbox copy rotates")->setValue((BOOL)gSavedSettings.getBOOL("CreateToolCopyRotates"));
+	getChild<LLUICtrl>("checkbox copy rotates")->setValue((bool)gSavedSettings.getBOOL("CreateToolCopyRotates"));
 
 	mRadioGroupLand			= getChild<LLRadioGroup>("land_radio_group");
 	mBtnApplyToSelection	= getChild<LLButton>("button apply to selection");
@@ -300,6 +300,15 @@ bool	LLFloaterTools::postBuild()
 	getChild<LLUICtrl>("slider force")->setValue(log10(gSavedSettings.getF32("LandBrushForce")));
 
 	mCostTextBorder = getChild<LLViewBorder>("cost_text_border");
+
+	mTextBulldozer = getChild<LLTextBox>("Bulldozer:");
+    mTextDozerSize = getChild<LLTextBox>("Dozer Size:");
+    mTextDozerStrength = getChild<LLTextBox>("Strength:");
+    mSliderZoom = getChild<LLSlider>("slider zoom");
+
+    mTextSelectionCount = getChild<LLTextBox>("selection_count");
+    mTextSelectionEmpty = getChild<LLTextBox>("selection_empty");
+    mTextSelectionFaces = getChild<LLTextBox>("selection_faces");
 
 	mTab = getChild<LLTabContainer>("Object Info Tabs");
 	if(mTab)
@@ -477,31 +486,31 @@ void LLFloaterTools::refresh()
 	// Refresh object and prim count labels
 	LLLocale locale(LLLocale::USER_LOCALE);
 #if 0
-	if (!gMeshRepo.meshRezEnabled())
-	{		
-		std::string obj_count_string;
-		LLResMgr::getInstance()->getIntegerString(obj_count_string, LLSelectMgr::getInstance()->getSelection()->getRootObjectCount());
-		getChild<LLUICtrl>("selection_count")->setTextArg("[OBJ_COUNT]", obj_count_string);
-		std::string prim_count_string;
-		LLResMgr::getInstance()->getIntegerString(prim_count_string, LLSelectMgr::getInstance()->getSelection()->getObjectCount());
-		getChild<LLUICtrl>("selection_count")->setTextArg("[PRIM_COUNT]", prim_count_string);
+    if (!gMeshRepo.meshRezEnabled())
+    {
+        std::string obj_count_string;
+        LLResMgr::getInstance()->getIntegerString(obj_count_string, LLSelectMgr::getInstance()->getSelection()->getRootObjectCount());
+        mTextSelectionCount->setTextArg("[OBJ_COUNT]", obj_count_string);
+        std::string prim_count_string;
+        LLResMgr::getInstance()->getIntegerString(prim_count_string, LLSelectMgr::getInstance()->getSelection()->getObjectCount());
+        mTextSelectionCount->setTextArg("[PRIM_COUNT]", prim_count_string);
 
-		// calculate selection rendering cost
-		if (sShowObjectCost)
-		{
-			std::string prim_cost_string;
-			S32 render_cost = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectRenderCost();
-			LLResMgr::getInstance()->getIntegerString(prim_cost_string, render_cost);
-			getChild<LLUICtrl>("RenderingCost")->setTextArg("[COUNT]", prim_cost_string);
-		}
-		
-		// disable the object and prim counts if nothing selected
-		bool have_selection = ! LLSelectMgr::getInstance()->getSelection()->isEmpty();
-		getChildView("obj_count")->setEnabled(have_selection);
-		getChildView("prim_count")->setEnabled(have_selection);
-		getChildView("RenderingCost")->setEnabled(have_selection && sShowObjectCost);
-	}
-	else
+        // calculate selection rendering cost
+        if (sShowObjectCost)
+        {
+            std::string prim_cost_string;
+            S32 render_cost = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectRenderCost();
+            LLResMgr::getInstance()->getIntegerString(prim_cost_string, render_cost);
+            getChild<LLUICtrl>("RenderingCost")->setTextArg("[COUNT]", prim_cost_string);
+        }
+
+        // disable the object and prim counts if nothing selected
+        bool have_selection = ! LLSelectMgr::getInstance()->getSelection()->isEmpty();
+        getChildView("obj_count")->setEnabled(have_selection);
+        getChildView("prim_count")->setEnabled(have_selection);
+        getChildView("RenderingCost")->setEnabled(have_selection && sShowObjectCost);
+    }
+    else
 #endif
 	{
         LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
@@ -552,23 +561,19 @@ void LLFloaterTools::refresh()
                     }
                 }
             }
-
-            childSetTextArg("selection_faces", "[FACES_STRING]", faces_str);
+            mTextSelectionFaces->setTextArg("[FACES_STRING]", faces_str);
         }
 
         bool show_faces = (object_count == 1)
                           && LLToolFace::getInstance() == LLToolMgr::getInstance()->getCurrentTool();
-        getChildView("selection_faces")->setVisible(show_faces);
+        mTextSelectionFaces->setVisible(show_faces);
 
 		LLStringUtil::format_map_t selection_args;
 		selection_args["OBJ_COUNT"] = llformat("%.1d", link_count);
 		selection_args["LAND_IMPACT"] = llformat("%.1d", (S32)link_cost);
 
-		std::ostringstream selection_info;
-
-		selection_info << getString("status_selectcount", selection_args);
-
-		getChild<LLTextBox>("selection_count")->setText(selection_info.str());
+        mTextSelectionCount->setText(getString("status_selectcount", selection_args));
+    }
 
 		//BD - Selected Face / Link index.
 		bool is_link_select = mCheckSelectIndividual->getValue().asBoolean();
@@ -651,15 +656,15 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	}
 	
 	// Focus buttons
-	BOOL focus_visible = (	tool == LLToolCamera::getInstance() );
+	bool focus_visible = (	tool == LLToolCamera::getInstance() );
 
 	//BD
 	mFocusPanel->setVisible(focus_visible);
 	mBtnFocus	->setToggleState( focus_visible );
 
 	mRadioGroupFocus->setVisible( focus_visible );
-	getChildView("slider zoom")->setVisible( focus_visible);
-	getChildView("slider zoom")->setEnabled(gCameraBtnZoom);
+	mSliderZoom->setVisible( focus_visible);
+	mSliderZoom->setEnabled(gCameraBtnZoom);
 
 	if (!gCameraBtnOrbit &&
 		!gCameraBtnPan &&
@@ -684,10 +689,10 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	}
 
 	// multiply by correction factor because volume sliders go [0, 0.5]
-	getChild<LLUICtrl>("slider zoom")->setValue(gAgentCamera.getCameraZoomFraction() * 0.5f);
+	mSliderZoom->setValue(gAgentCamera.getCameraZoomFraction() * 0.5f);
 
 	// Move buttons
-	BOOL move_visible = (tool == LLToolGrab::getInstance());
+	bool move_visible = (tool == LLToolGrab::getInstance());
 
 	//BD
 	mGrabPanel->setVisible(move_visible);
@@ -715,7 +720,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	}
 
 	// Edit buttons
-	BOOL edit_visible = tool == LLToolCompTranslate::getInstance() ||
+	bool edit_visible = tool == LLToolCompTranslate::getInstance() ||
 						tool == LLToolCompRotate::getInstance() ||
 						tool == LLToolCompScale::getInstance() ||
 						tool == LLToolFace::getInstance() ||
@@ -809,7 +814,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	if (mCheckSelectionOutlines) mCheckSelectionOutlines->setVisible(edit_visible);
 
 	// Create buttons
-	BOOL create_visible = (tool == LLToolCompCreate::getInstance());
+	bool create_visible = (tool == LLToolCompCreate::getInstance());
 
 	//BD
 	mCreatePanel->setVisible(create_visible);
@@ -833,7 +838,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 		{
 			LLPCode pcode = LLToolPlacer::getObjectType();
 			LLPCode button_pcode = toolData[t];
-			BOOL state = (pcode == button_pcode);
+			bool state = (pcode == button_pcode);
 			mButtons[t]->setToggleState( state );
 			mButtons[t]->setVisible( create_visible );
 		}
@@ -848,7 +853,7 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	if (mCheckCopyRotates && mCheckCopySelection) mCheckCopyRotates->setEnabled( mCheckCopySelection->get() );
 
 	// Land buttons
-	BOOL land_visible = (tool == LLToolBrushLand::getInstance() || tool == LLToolSelectLand::getInstance() );
+	bool land_visible = (tool == LLToolBrushLand::getInstance() || tool == LLToolSelectLand::getInstance() );
 
 	//BD
 	mLandPanel->setVisible(land_visible);
@@ -891,28 +896,28 @@ void LLFloaterTools::updatePopup(LLCoordGL center, MASK mask)
 	}
 
 	if (mBtnApplyToSelection)
-	{
-		mBtnApplyToSelection->setVisible( land_visible );
-		mBtnApplyToSelection->setEnabled( land_visible && !LLViewerParcelMgr::getInstance()->selectionEmpty() && tool != LLToolSelectLand::getInstance());
-	}
-	if (mSliderDozerSize)
-	{
-		mSliderDozerSize	->setVisible( land_visible );
-		getChildView("Bulldozer:")->setVisible( land_visible);
-		getChildView("Dozer Size:")->setVisible( land_visible);
-	}
-	if (mSliderDozerForce)
-	{
-		mSliderDozerForce	->setVisible( land_visible );
-		getChildView("Strength:")->setVisible( land_visible);
-	}
+    {
+        mBtnApplyToSelection->setVisible( land_visible );
+        mBtnApplyToSelection->setEnabled( land_visible && !LLViewerParcelMgr::getInstance()->selectionEmpty() && tool != LLToolSelectLand::getInstance());
+    }
+    if (mSliderDozerSize)
+    {
+        mSliderDozerSize->setVisible( land_visible );
+        mTextBulldozer->setVisible( land_visible);
+        mTextDozerSize->setVisible( land_visible);
+    }
+    if (mSliderDozerForce)
+    {
+        mSliderDozerForce->setVisible( land_visible );
+        mTextDozerStrength->setVisible( land_visible);
+    }
 
 	bool have_selection = !LLSelectMgr::getInstance()->getSelection()->isEmpty();
 
-	getChildView("selection_count")->setVisible(!land_visible && have_selection);
-    getChildView("selection_faces")->setVisible(LLToolFace::getInstance() == LLToolMgr::getInstance()->getCurrentTool()
+	mTextSelectionCount->setVisible(!land_visible && have_selection);
+    mTextSelectionFaces->setVisible(LLToolFace::getInstance() == LLToolMgr::getInstance()->getCurrentTool()
                                                 && LLSelectMgr::getInstance()->getSelection()->getObjectCount() == 1);
-	getChildView("selection_empty")->setVisible(!land_visible && !have_selection);
+    mTextSelectionEmpty->setVisible(!land_visible && !have_selection);
 	
 	mTab->setVisible(!land_visible);
 	mPanelLandInfo->setVisible(land_visible);

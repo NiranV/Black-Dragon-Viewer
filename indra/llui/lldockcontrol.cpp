@@ -104,7 +104,10 @@ void LLDockControl::setDock(LLView* dockWidget)
 void LLDockControl::getAllowedRect(LLRect& rect)
 {
 	//BD
-	rect = mNonToolbarRegion->getRect();
+    if(!mNonToolbarRegion->isDead())
+    {
+	    rect = mNonToolbarRegion->getRect();
+    }
 }
 
 void LLDockControl::repositionDockable()

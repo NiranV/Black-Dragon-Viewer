@@ -58,23 +58,29 @@ public:
 
 bool    LLPanelLandInfo::postBuild()
 {
-    childSetAction("button buy land",boost::bind(onClickClaim));
-    childSetAction("button abandon land", boost::bind(onClickRelease));
-    childSetAction("button subdivide land", boost::bind(onClickDivide));
-    childSetAction("button join land", boost::bind(onClickJoin));
-    childSetAction("button about land", boost::bind(onClickAbout));
+    mButtonBuyLand = getChild<LLButton>("button buy land");
+    mButtonBuyLand->setCommitCallback(boost::bind(&LLPanelLandInfo::onClickClaim, this));
+
+    mButtonAbandonLand = getChild<LLButton>("button abandon land");
+    mButtonAbandonLand->setCommitCallback(boost::bind(&LLPanelLandInfo::onClickRelease, this));
+
+    mButtonSubdivLand = getChild<LLButton>("button subdivide land");
+    mButtonSubdivLand->setCommitCallback(boost::bind(&LLPanelLandInfo::onClickDivide, this));
+
+    mButtonJoinLand = getChild<LLButton>("button join land");
+    mButtonJoinLand->setCommitCallback(boost::bind(&LLPanelLandInfo::onClickJoin, this));
+
+    mButtonAboutLand = getChild<LLButton>("button about land");
+    mButtonAboutLand->setCommitCallback(boost::bind(&LLPanelLandInfo::onClickAbout, this));
 
 	mCheckShowOwners = getChild<LLCheckBoxCtrl>("checkbox show owners");
+    mCheckShowOwners->setValue(gSavedSettings.getBOOL("ShowParcelOwners"));
 
 	mLabelAreaPrice = getChild<LLTextBox>("label_area_price");
 	mLabelArea = getChild<LLTextBox>("label_area");
 
+    //BD
 	mLabelPrice = getChild<LLUICtrl>("textbox price");
-	mBtnBuyLand = getChild<LLButton>("button buy land");
-	mBtnAbandonLand = getChild<LLButton>("button abandon land");
-	mBtnSubdivideLand = getChild<LLButton>("button subdivide land");
-	mBtnJoinLand = getChild<LLButton>("button join land");
-	mBtnAboutLand = getChild<LLButton>("button about land");
 
     return true;
 }
@@ -122,139 +128,132 @@ void LLPanelLandInfo::refreshAll()
 // public
 void LLPanelLandInfo::refresh()
 {
-	LLParcel *parcel = LLViewerParcelMgr::getInstance()->getParcelSelection()->getParcel();
-	LLViewerRegion *regionp = LLViewerParcelMgr::getInstance()->getSelectionRegion();
+    LLParcel *parcel = LLViewerParcelMgr::getInstance()->getParcelSelection()->getParcel();
+    LLViewerRegion *regionp = LLViewerParcelMgr::getInstance()->getSelectionRegion();
 
-	if (!parcel || !regionp)
-	{
-		// nothing selected, disable panel
-		mLabelAreaPrice->setVisible(false);
-		mLabelArea->setVisible(false);
-		
-		mLabelPrice->setValue(LLStringUtil::null);
+    if (!parcel || !regionp)
+    {
+        // nothing selected, disable panel
+        mTextAreaPrice->setVisible(false);
+        mTextArea->setVisible(false);
 
-		mBtnBuyLand->setEnabled(false);
-		mBtnAbandonLand->setEnabled(false);
-		mBtnSubdivideLand->setEnabled(false);
-		mBtnJoinLand->setEnabled(false);
-		mBtnAboutLand->setEnabled(false);
-	}
-	else
-	{
-		// something selected, hooray!
-		const LLUUID& owner_id = parcel->getOwnerID();
-		const LLUUID& auth_buyer_id = parcel->getAuthorizedBuyerID();
+        mButtonBuyLand->setEnabled(false);
+        mButtonAbandonLand->setEnabled(false);
+        mButtonSubdivLand->setEnabled(false);
+        mButtonJoinLand->setEnabled(false);
+        mButtonAboutLand->setEnabled(false);
+    }
+    else
+    {
+        // something selected, hooray!
+        const LLUUID& owner_id = parcel->getOwnerID();
+        const LLUUID& auth_buyer_id = parcel->getAuthorizedBuyerID();
 
-		bool is_public = parcel->isPublic();
-		bool is_for_sale = parcel->getForSale()
-			&& ((parcel->getSalePrice() > 0) || (auth_buyer_id.notNull()));
-		bool can_buy = (is_for_sale
-						&& (owner_id != gAgent.getID())
-						&& ((gAgent.getID() == auth_buyer_id)
-							|| (auth_buyer_id.isNull())));
-			
-		if (is_public && !LLViewerParcelMgr::getInstance()->getParcelSelection()->getMultipleOwners())
-		{
-			mBtnBuyLand->setEnabled(true);
-		}
-		else
-		{
-			mBtnBuyLand->setEnabled(can_buy);
-		}
+        bool is_public = parcel->isPublic();
+        bool is_for_sale = parcel->getForSale()
+            && ((parcel->getSalePrice() > 0) || (auth_buyer_id.notNull()));
+        bool can_buy = (is_for_sale
+                        && (owner_id != gAgent.getID())
+                        && ((gAgent.getID() == auth_buyer_id)
+                            || (auth_buyer_id.isNull())));
 
-		bool owner_release = LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_RELEASE);
-		bool owner_divide =  LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_DIVIDE_JOIN);
+        if (is_public && !LLViewerParcelMgr::getInstance()->getParcelSelection()->getMultipleOwners())
+        {
+            mButtonBuyLand->setEnabled(true);
+        }
+        else
+        {
+            mButtonBuyLand->setEnabled(can_buy);
+        }
 
-		bool manager_releaseable = ( gAgent.canManageEstate()
-								  && (parcel->getOwnerID() == regionp->getOwner()) );
-		
-		bool manager_divideable = ( gAgent.canManageEstate()
-								&& ((parcel->getOwnerID() == regionp->getOwner()) || owner_divide) );
+        bool owner_release = LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_RELEASE);
+        bool owner_divide =  LLViewerParcelMgr::isParcelOwnedByAgent(parcel, GP_LAND_DIVIDE_JOIN);
 
-		mBtnAbandonLand->setEnabled(owner_release || manager_releaseable || gAgent.isGodlike());
+        bool manager_releaseable = ( gAgent.canManageEstate()
+                                  && (parcel->getOwnerID() == regionp->getOwner()) );
 
-		// only mainland sims are subdividable by owner
-		if (regionp->getRegionFlag(REGION_FLAGS_ALLOW_PARCEL_CHANGES))
-		{
-			mBtnSubdivideLand->setEnabled(owner_divide || manager_divideable || gAgent.isGodlike());
-		}
-		else
-		{
-			mBtnSubdivideLand->setEnabled(manager_divideable || gAgent.isGodlike());
-		}
-		
-		// To join land, must have something selected,
-		// not just a single unit of land,
-		// you must own part of it,
-		// and it must not be a whole parcel.
-		if (LLViewerParcelMgr::getInstance()->getSelectedArea() > PARCEL_UNIT_AREA
-			//&& LLViewerParcelMgr::getInstance()->getSelfCount() > 1
-			&& !LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
-		{
-			mBtnJoinLand->setEnabled(true);
-		}
-		else
-		{
-			mBtnJoinLand->setEnabled(false);
-			// _LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
-		}
+        bool manager_divideable = ( gAgent.canManageEstate()
+                                && ((parcel->getOwnerID() == regionp->getOwner()) || owner_divide) );
 
-		mBtnAboutLand->setEnabled(true);
+        mButtonAbandonLand->setEnabled(owner_release || manager_releaseable || gAgent.isGodlike());
 
-		// show pricing information
-		S32 area;
-		S32 claim_price;
-		S32 rent_price;
-		bool for_sale;
-		F32 dwell;
-		LLViewerParcelMgr::getInstance()->getDisplayInfo(&area,
-								   &claim_price,
-								   &rent_price,
-								   &for_sale,
-								   &dwell);
-		if(is_public || (is_for_sale && LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected()))
-		{
-			mLabelAreaPrice->setTextArg("[PRICE]", llformat("%d", claim_price));
-			mLabelAreaPrice->setTextArg("[AREA]", llformat("%d", area));
-			mLabelAreaPrice->setVisible(true);
-			mLabelArea->setVisible(false);
-		}
-		else
-		{
-			mLabelAreaPrice->setVisible(false);
-			mLabelArea->setTextArg("[AREA]", llformat("%d", area));
-			mLabelArea->setVisible(true);
-		}
-	}
+        // only mainland sims are subdividable by owner
+        if (regionp->getRegionFlag(REGION_FLAGS_ALLOW_PARCEL_CHANGES))
+        {
+            mButtonSubdivLand->setEnabled(owner_divide || manager_divideable || gAgent.isGodlike());
+        }
+        else
+        {
+            mButtonSubdivLand->setEnabled(manager_divideable || gAgent.isGodlike());
+        }
+
+        // To join land, must have something selected,
+        // not just a single unit of land,
+        // you must own part of it,
+        // and it must not be a whole parcel.
+        if (LLViewerParcelMgr::getInstance()->getSelectedArea() > PARCEL_UNIT_AREA
+            //&& LLViewerParcelMgr::getInstance()->getSelfCount() > 1
+            && !LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected())
+        {
+            mButtonJoinLand->setEnabled(true);
+        }
+        else
+        {
+            LL_DEBUGS() << "Invalid selection for joining land" << LL_ENDL;
+            mButtonJoinLand->setEnabled(false);
+        }
+
+        mButtonAboutLand->setEnabled(true);
+
+        // show pricing information
+        S32 area;
+        S32 claim_price;
+        S32 rent_price;
+        bool for_sale;
+        F32 dwell;
+        LLViewerParcelMgr::getInstance()->getDisplayInfo(&area,
+                                   &claim_price,
+                                   &rent_price,
+                                   &for_sale,
+                                   &dwell);
+        if(is_public || (is_for_sale && LLViewerParcelMgr::getInstance()->getParcelSelection()->getWholeParcelSelected()))
+        {
+            mTextAreaPrice->setTextArg("[PRICE]", llformat("%d",claim_price));
+            mTextAreaPrice->setTextArg("[AREA]", llformat("%d",area));
+            mTextAreaPrice->setVisible(true);
+            mTextArea->setVisible(false);
+        }
+        else
+        {
+            mTextAreaPrice->setVisible(false);
+            mTextArea->setTextArg("[AREA]", llformat("%d",area));
+            mTextArea->setVisible(true);
+        }
+    }
 }
 
 
-//static
 void LLPanelLandInfo::onClickClaim()
 {
     LLViewerParcelMgr::getInstance()->startBuyLand();
 }
 
 
-//static
 void LLPanelLandInfo::onClickRelease()
 {
     LLViewerParcelMgr::getInstance()->startReleaseLand();
 }
 
-// static
 void LLPanelLandInfo::onClickDivide()
 {
     LLViewerParcelMgr::getInstance()->startDivideLand();
 }
 
-// static
 void LLPanelLandInfo::onClickJoin()
 {
     LLViewerParcelMgr::getInstance()->startJoinLand();
 }
 
-//static
 void LLPanelLandInfo::onClickAbout()
 {
     // Promote the rectangle selection to a parcel selection

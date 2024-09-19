@@ -263,56 +263,56 @@ bool LLFastTimerView::handleHover(S32 x, S32 y, MASK mask)
         for (size_t bar_index = 0, end_index = LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount();
             bar_index < end_index;
             ++bar_index)
-		{
+        {
 			if (!row.mBars)
 			{
 				LL_WARNS() << "mTimerBarRows.mBars is null at index: " << bar_index << " bailing out" << LL_ENDL;
 				break;
 			}
+			
+            TimerBar& bar = row.mBars[bar_index];
+            if (bar.mSelfStart > mouse_time_offset)
+            {
+                break;
+            }
+            if (bar.mSelfEnd > mouse_time_offset)
+            {
+                hover_bar = &bar;
+                if (bar.mTimeBlock->getTreeNode().mCollapsed)
+                {
+                    // stop on first collapsed BlockTimerStatHandle, since we can't select any children
+                    break;
+                }
+            }
+        }
 
-			TimerBar& bar = row.mBars[bar_index];
-			if (bar.mSelfStart > mouse_time_offset)
-			{
-				break;
-			}
-			if (bar.mSelfEnd > mouse_time_offset)
-			{
-				hover_bar = &bar;
-				if (bar.mTimeBlock->getTreeNode().mCollapsed)
-				{
-					// stop on first collapsed BlockTimerStatHandle, since we can't select any children
-					break;
-				}
-			}
-		}
+        if (hover_bar)
+        {
+            mHoverID = hover_bar->mTimeBlock;
+            if (mHoverTimer != mHoverID)
+            {
+                // could be that existing tooltip is for a parent and is thus
+                // covering region for this new timer, go ahead and unblock
+                // so we can create a new tooltip
+                LLToolTipMgr::instance().unblockToolTips();
+                mHoverTimer = mHoverID;
+                mToolTipRect.set((S32)(mBarRect.mLeft + (hover_bar->mSelfStart / mTotalTimeDisplay) * mBarRect.getWidth()),
+                                row.mTop,
+                                (S32)(mBarRect.mLeft + (hover_bar->mSelfEnd / mTotalTimeDisplay) * mBarRect.getWidth()),
+                                row.mBottom);
+            }
+        }
+    }
+    else if (x < mScrollBar->getRect().mLeft)
+    {
+        BlockTimerStatHandle* timer_id = getLegendID(y);
+        if (timer_id)
+        {
+            mHoverID = timer_id;
+        }
+    }
 
-		if (hover_bar)
-		{
-			mHoverID = hover_bar->mTimeBlock;
-			if (mHoverTimer != mHoverID)
-			{
-				// could be that existing tooltip is for a parent and is thus
-				// covering region for this new timer, go ahead and unblock 
-				// so we can create a new tooltip
-				LLToolTipMgr::instance().unblockToolTips();
-				mHoverTimer = mHoverID;
-				mToolTipRect.set(mBarRect.mLeft + (hover_bar->mSelfStart / mTotalTimeDisplay) * mBarRect.getWidth(),
-								row.mTop,
-								mBarRect.mLeft + (hover_bar->mSelfEnd / mTotalTimeDisplay) * mBarRect.getWidth(),
-								row.mBottom);
-			}
-		}
-	}
-	else if (x < mScrollBar->getRect().mLeft)
-	{
-		BlockTimerStatHandle* timer_id = getLegendID(y);
-		if (timer_id)
-		{
-			mHoverID = timer_id;
-		}
-	}
-	
-	return LLFloater::handleHover(x, y, mask);
+    return LLFloater::handleHover(x, y, mask);
 }
 
 
@@ -488,341 +488,341 @@ void saveChart(const std::string& label, const char* suffix, LLImageRaw* scratch
 //static
 void LLFastTimerView::exportCharts(const std::string& base, const std::string& target)
 {
-	//allocate render target for drawing charts 
-	LLRenderTarget buffer;
-	buffer.allocate(1024,512, GL_RGB);
-	
-
-	LLSD cur;
-
-	LLSD base_data;
-
-	{ //read base log into memory
-		S32 i = 0;
-		llifstream is(base.c_str());
-		while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
-		{
-			base_data[i++] = cur;
-		}
-		is.close();
-	}
-
-	LLSD cur_data;
-	std::set<std::string> chart_names;
-
-	{ //read current log into memory
-		S32 i = 0;
-		llifstream is(target.c_str());
-		while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
-		{
-			cur_data[i++] = cur;
-
-			for (LLSD::map_iterator iter = cur.beginMap(); iter != cur.endMap(); ++iter)
-			{
-				std::string label = iter->first;
-				chart_names.insert(label);
-			}
-		}
-		is.close();
-	}
-
-	//allocate raw scratch space
-	LLPointer<LLImageRaw> scratch = new LLImageRaw(1024, 512, 3);
-
-	gGL.pushMatrix();
-	gGL.loadIdentity();
-	gGL.matrixMode(LLRender::MM_PROJECTION);
-	gGL.loadIdentity();
-	gGL.ortho(-0.05f, 1.05f, -0.05f, 1.05f, -1.0f, 1.0f);
-
-	//render charts
-	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-	
-	buffer.bindTarget();
-
-	for (std::set<std::string>::iterator iter = chart_names.begin(); iter != chart_names.end(); ++iter)
-	{
-		std::string label = *iter;
-	
-		LLSD::Real max_time = 0.0;
-		LLSD::Integer max_calls = 0;
-		LLSD::Real max_execution = 0.0;
-
-		std::vector<LLSD::Real> cur_execution;
-		std::vector<LLSD::Real> cur_times;
-		std::vector<LLSD::Integer> cur_calls;
-
-		std::vector<LLSD::Real> base_execution;
-		std::vector<LLSD::Real> base_times;
-		std::vector<LLSD::Integer> base_calls;
-
-		for (U32 i = 0; i < cur_data.size(); ++i)
-		{
-			LLSD::Real time = cur_data[i][label]["Time"].asReal();
-			LLSD::Integer calls = cur_data[i][label]["Calls"].asInteger();
-
-			LLSD::Real execution = 0.0;
-			if (calls > 0)
-			{
-				execution = time/calls;
-				cur_execution.push_back(execution);
-				cur_times.push_back(time);
-			}
-
-			cur_calls.push_back(calls);
-		}
-
-		for (U32 i = 0; i < base_data.size(); ++i)
-		{
-			LLSD::Real time = base_data[i][label]["Time"].asReal();
-			LLSD::Integer calls = base_data[i][label]["Calls"].asInteger();
-
-			LLSD::Real execution = 0.0;
-			if (calls > 0)
-			{
-				execution = time/calls;
-				base_execution.push_back(execution);
-				base_times.push_back(time);
-			}
-
-			base_calls.push_back(calls);
-		}
-
-		std::sort(base_calls.begin(), base_calls.end());
-		std::sort(base_times.begin(), base_times.end());
-		std::sort(base_execution.begin(), base_execution.end());
-
-		std::sort(cur_calls.begin(), cur_calls.end());
-		std::sort(cur_times.begin(), cur_times.end());
-		std::sort(cur_execution.begin(), cur_execution.end());
-
-		//remove outliers
-		const U32 OUTLIER_CUTOFF = 512;
-		if (base_times.size() > OUTLIER_CUTOFF)
-		{ 
-			ll_remove_outliers(base_times, 1.f);
-		}
-
-		if (base_execution.size() > OUTLIER_CUTOFF)
-		{ 
-			ll_remove_outliers(base_execution, 1.f);
-		}
-
-		if (cur_times.size() > OUTLIER_CUTOFF)
-		{ 
-			ll_remove_outliers(cur_times, 1.f);
-		}
-
-		if (cur_execution.size() > OUTLIER_CUTOFF)
-		{ 
-			ll_remove_outliers(cur_execution, 1.f);
-		}
+    //allocate render target for drawing charts
+    LLRenderTarget buffer;
+    buffer.allocate(1024,512, GL_RGB);
 
 
-		max_time = llmax(base_times.empty() ? 0.0 : *base_times.rbegin(), cur_times.empty() ? 0.0 : *cur_times.rbegin());
-		max_calls = llmax(base_calls.empty() ? 0 : *base_calls.rbegin(), cur_calls.empty() ? 0 : *cur_calls.rbegin());
-		max_execution = llmax(base_execution.empty() ? 0.0 : *base_execution.rbegin(), cur_execution.empty() ? 0.0 : *cur_execution.rbegin());
+    LLSD cur;
+
+    LLSD base_data;
+
+    { //read base log into memory
+        S32 i = 0;
+        llifstream is(base.c_str());
+        while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
+        {
+            base_data[i++] = cur;
+        }
+        is.close();
+    }
+
+    LLSD cur_data;
+    std::set<std::string> chart_names;
+
+    { //read current log into memory
+        S32 i = 0;
+        llifstream is(target.c_str());
+        while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
+        {
+            cur_data[i++] = cur;
+
+            for (LLSD::map_iterator iter = cur.beginMap(); iter != cur.endMap(); ++iter)
+            {
+                std::string label = iter->first;
+                chart_names.insert(label);
+            }
+        }
+        is.close();
+    }
+
+    //allocate raw scratch space
+    LLPointer<LLImageRaw> scratch = new LLImageRaw(1024, 512, 3);
+
+    gGL.pushMatrix();
+    gGL.loadIdentity();
+    gGL.matrixMode(LLRender::MM_PROJECTION);
+    gGL.loadIdentity();
+    gGL.ortho(-0.05f, 1.05f, -0.05f, 1.05f, -1.0f, 1.0f);
+
+    //render charts
+    gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+
+    buffer.bindTarget();
+
+    for (std::set<std::string>::iterator iter = chart_names.begin(); iter != chart_names.end(); ++iter)
+    {
+        std::string label = *iter;
+
+        LLSD::Real max_time = 0.0;
+        LLSD::Integer max_calls = 0;
+        LLSD::Real max_execution = 0.0;
+
+        std::vector<LLSD::Real> cur_execution;
+        std::vector<LLSD::Real> cur_times;
+        std::vector<LLSD::Integer> cur_calls;
+
+        std::vector<LLSD::Real> base_execution;
+        std::vector<LLSD::Real> base_times;
+        std::vector<LLSD::Integer> base_calls;
+
+        for (U32 i = 0; i < cur_data.size(); ++i)
+        {
+            LLSD::Real time = cur_data[i][label]["Time"].asReal();
+            LLSD::Integer calls = cur_data[i][label]["Calls"].asInteger();
+
+            LLSD::Real execution = 0.0;
+            if (calls > 0)
+            {
+                execution = time/calls;
+                cur_execution.push_back(execution);
+                cur_times.push_back(time);
+            }
+
+            cur_calls.push_back(calls);
+        }
+
+        for (U32 i = 0; i < base_data.size(); ++i)
+        {
+            LLSD::Real time = base_data[i][label]["Time"].asReal();
+            LLSD::Integer calls = base_data[i][label]["Calls"].asInteger();
+
+            LLSD::Real execution = 0.0;
+            if (calls > 0)
+            {
+                execution = time/calls;
+                base_execution.push_back(execution);
+                base_times.push_back(time);
+            }
+
+            base_calls.push_back(calls);
+        }
+
+        std::sort(base_calls.begin(), base_calls.end());
+        std::sort(base_times.begin(), base_times.end());
+        std::sort(base_execution.begin(), base_execution.end());
+
+        std::sort(cur_calls.begin(), cur_calls.end());
+        std::sort(cur_times.begin(), cur_times.end());
+        std::sort(cur_execution.begin(), cur_execution.end());
+
+        //remove outliers
+        const U32 OUTLIER_CUTOFF = 512;
+        if (base_times.size() > OUTLIER_CUTOFF)
+        {
+            ll_remove_outliers(base_times, 1.f);
+        }
+
+        if (base_execution.size() > OUTLIER_CUTOFF)
+        {
+            ll_remove_outliers(base_execution, 1.f);
+        }
+
+        if (cur_times.size() > OUTLIER_CUTOFF)
+        {
+            ll_remove_outliers(cur_times, 1.f);
+        }
+
+        if (cur_execution.size() > OUTLIER_CUTOFF)
+        {
+            ll_remove_outliers(cur_execution, 1.f);
+        }
 
 
-		LLVector3 last_p;
+        max_time = llmax(base_times.empty() ? 0.0 : *base_times.rbegin(), cur_times.empty() ? 0.0 : *cur_times.rbegin());
+        max_calls = llmax(base_calls.empty() ? 0 : *base_calls.rbegin(), cur_calls.empty() ? 0 : *cur_calls.rbegin());
+        max_execution = llmax(base_execution.empty() ? 0.0 : *base_execution.rbegin(), cur_execution.empty() ? 0.0 : *cur_execution.rbegin());
 
-		//====================================
-		// basic
-		//====================================
-		buffer.clear();
 
-		last_p.clear();
+        LLVector3 last_p;
 
-		LLGLDisable cull(GL_CULL_FACE);
+        //====================================
+        // basic
+        //====================================
+        buffer.clear();
 
-		LLVector3 base_col(0, 0.7f, 0.f);
-		LLVector3 cur_col(1.f, 0.f, 0.f);
+        last_p.clear();
 
-		gGL.setSceneBlendType(LLRender::BT_ADD);
+        LLGLDisable cull(GL_CULL_FACE);
 
-		gGL.color3fv(base_col.mV);
-		for (U32 i = 0; i < base_times.size(); ++i)
-		{
-			gGL.begin(LLRender::TRIANGLE_STRIP);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			last_p.set((F32)i/(F32) base_times.size(), base_times[i]/max_time, 0.f);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			gGL.end();
-		}
-		
-		gGL.flush();
+        LLVector3 base_col(0, 0.7f, 0.f);
+        LLVector3 cur_col(1.f, 0.f, 0.f);
 
-		
-		last_p.clear();
-		{
-			LLGLEnable blend(GL_BLEND);
-						
-			gGL.color3fv(cur_col.mV);
-			for (U32 i = 0; i < cur_times.size(); ++i)
-			{
-				gGL.begin(LLRender::TRIANGLE_STRIP);
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				last_p.set((F32) i / (F32) cur_times.size(), cur_times[i]/max_time, 0.f);
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				gGL.end();
-			}
-			
-			gGL.flush();
-		}
+        gGL.setSceneBlendType(LLRender::BT_ADD);
 
-		saveChart(label, "time", scratch);
-		
-		//======================================
-		// calls
-		//======================================
-		buffer.clear();
+        gGL.color3fv(base_col.mV);
+        for (U32 i = 0; i < base_times.size(); ++i)
+        {
+            gGL.begin(LLRender::TRIANGLE_STRIP);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            last_p.set((F32)i/(F32) base_times.size(), (F32)(base_times[i]/max_time), 0.f);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            gGL.end();
+        }
 
-		last_p.clear();
+        gGL.flush();
 
-		gGL.color3fv(base_col.mV);
-		for (U32 i = 0; i < base_calls.size(); ++i)
-		{
-			gGL.begin(LLRender::TRIANGLE_STRIP);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			last_p.set((F32) i / (F32) base_calls.size(), (F32)base_calls[i]/max_calls, 0.f);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			gGL.end();
-		}
-		
-		gGL.flush();
 
-		{
-			LLGLEnable blend(GL_BLEND);
-			gGL.color3fv(cur_col.mV);
-			last_p.clear();
+        last_p.clear();
+        {
+            LLGLEnable blend(GL_BLEND);
 
-			for (U32 i = 0; i < cur_calls.size(); ++i)
-			{
-				gGL.begin(LLRender::TRIANGLE_STRIP);
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				last_p.set((F32) i / (F32) cur_calls.size(), (F32) cur_calls[i]/max_calls, 0.f);
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				gGL.end();
-				
-			}
-			
-			gGL.flush();
-		}
+            gGL.color3fv(cur_col.mV);
+            for (U32 i = 0; i < cur_times.size(); ++i)
+            {
+                gGL.begin(LLRender::TRIANGLE_STRIP);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                last_p.set((F32) i / (F32) cur_times.size(), (F32)(cur_times[i]/max_time), 0.f);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                gGL.end();
+            }
 
-		saveChart(label, "calls", scratch);
+            gGL.flush();
+        }
 
-		//======================================
-		// execution
-		//======================================
-		buffer.clear();
+        saveChart(label, "time", scratch);
 
-		gGL.color3fv(base_col.mV);
-		U32 count = 0;
-		U32 total_count = static_cast<U32>(base_execution.size());
+        //======================================
+        // calls
+        //======================================
+        buffer.clear();
 
-		last_p.clear();
+        last_p.clear();
 
-		for (std::vector<LLSD::Real>::iterator iter = base_execution.begin(); iter != base_execution.end(); ++iter)
-		{
-			gGL.begin(LLRender::TRIANGLE_STRIP);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			last_p.set((F32)count/(F32)total_count, *iter/max_execution, 0.f);
-			gGL.vertex3fv(last_p.mV);
-			gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-			gGL.end();
-			count++;
-		}
+        gGL.color3fv(base_col.mV);
+        for (U32 i = 0; i < base_calls.size(); ++i)
+        {
+            gGL.begin(LLRender::TRIANGLE_STRIP);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            last_p.set((F32) i / (F32) base_calls.size(), (F32)base_calls[i]/max_calls, 0.f);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            gGL.end();
+        }
 
-		last_p.clear();
-				
-		{
-			LLGLEnable blend(GL_BLEND);
-			gGL.color3fv(cur_col.mV);
-			count = 0;
-			total_count = static_cast<U32>(cur_execution.size());
+        gGL.flush();
 
-			for (std::vector<LLSD::Real>::iterator iter = cur_execution.begin(); iter != cur_execution.end(); ++iter)
-			{
-				gGL.begin(LLRender::TRIANGLE_STRIP);
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				last_p.set((F32)count/(F32)total_count, *iter/max_execution, 0.f);			
-				gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
-				gGL.vertex3fv(last_p.mV);
-				gGL.end();
-				count++;
-			}
+        {
+            LLGLEnable blend(GL_BLEND);
+            gGL.color3fv(cur_col.mV);
+            last_p.clear();
 
-			gGL.flush();
-		}
+            for (U32 i = 0; i < cur_calls.size(); ++i)
+            {
+                gGL.begin(LLRender::TRIANGLE_STRIP);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                last_p.set((F32) i / (F32) cur_calls.size(), (F32) cur_calls[i]/max_calls, 0.f);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                gGL.end();
 
-		saveChart(label, "execution", scratch);
-	}
+            }
 
-	buffer.flush();
+            gGL.flush();
+        }
 
-	gGL.popMatrix();
-	gGL.matrixMode(LLRender::MM_MODELVIEW);
-	gGL.popMatrix();
+        saveChart(label, "calls", scratch);
+
+        //======================================
+        // execution
+        //======================================
+        buffer.clear();
+
+        gGL.color3fv(base_col.mV);
+        U32 count = 0;
+        U32 total_count = static_cast<U32>(base_execution.size());
+
+        last_p.clear();
+
+        for (std::vector<LLSD::Real>::iterator iter = base_execution.begin(); iter != base_execution.end(); ++iter)
+        {
+            gGL.begin(LLRender::TRIANGLE_STRIP);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            last_p.set((F32)count/(F32)total_count, (F32)(*iter/max_execution), 0.f);
+            gGL.vertex3fv(last_p.mV);
+            gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+            gGL.end();
+            count++;
+        }
+
+        last_p.clear();
+
+        {
+            LLGLEnable blend(GL_BLEND);
+            gGL.color3fv(cur_col.mV);
+            count = 0;
+            total_count = static_cast<U32>(cur_execution.size());
+
+            for (std::vector<LLSD::Real>::iterator iter = cur_execution.begin(); iter != cur_execution.end(); ++iter)
+            {
+                gGL.begin(LLRender::TRIANGLE_STRIP);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                last_p.set((F32)count/(F32)total_count, (F32)(*iter/max_execution), 0.f);
+                gGL.vertex3f(last_p.mV[0], 0.f, 0.f);
+                gGL.vertex3fv(last_p.mV);
+                gGL.end();
+                count++;
+            }
+
+            gGL.flush();
+        }
+
+        saveChart(label, "execution", scratch);
+    }
+
+    buffer.flush();
+
+    gGL.popMatrix();
+    gGL.matrixMode(LLRender::MM_MODELVIEW);
+    gGL.popMatrix();
 }
 
 //static
 LLSD LLFastTimerView::analyzePerformanceLogDefault(std::istream& is)
 {
-	LLSD ret;
+    LLSD ret;
 
-	LLSD cur;
+    LLSD cur;
 
-	LLSD::Real total_time = 0.0;
-	LLSD::Integer total_frames = 0;
+    LLSD::Real total_time = 0.0;
+    LLSD::Integer total_frames = 0;
 
-	typedef std::map<std::string,LLViewerStats::StatsAccumulator> stats_map_t;
-	stats_map_t time_stats;
-	stats_map_t sample_stats;
+    typedef std::map<std::string,LLViewerStats::StatsAccumulator> stats_map_t;
+    stats_map_t time_stats;
+    stats_map_t sample_stats;
 
-	while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
-	{
-		for (LLSD::map_iterator iter = cur.beginMap(); iter != cur.endMap(); ++iter)
-		{
-			std::string label = iter->first;
+    while (!is.eof() && LLSDParser::PARSE_FAILURE != LLSDSerialize::fromXML(cur, is))
+    {
+        for (LLSD::map_iterator iter = cur.beginMap(); iter != cur.endMap(); ++iter)
+        {
+            std::string label = iter->first;
 
-			F64 time = iter->second["Time"].asReal();
+            F64 time = iter->second["Time"].asReal();
 
-			// Skip the total figure
-			if(label.compare("Total") != 0)
-			{
-				total_time += time;
-			}			
+            // Skip the total figure
+            if(label.compare("Total") != 0)
+            {
+                total_time += time;
+            }
 
-			if (time > 0.0)
-			{
-				LLSD::Integer samples = iter->second["Calls"].asInteger();
+            if (time > 0.0)
+            {
+                LLSD::Integer samples = iter->second["Calls"].asInteger();
 
-				time_stats[label].push(time);
-				sample_stats[label].push(samples);
-			}
-		}
-		total_frames++;
-	}
+                time_stats[label].push((F32)time);
+                sample_stats[label].push((F32)samples);
+            }
+        }
+        total_frames++;
+    }
 
-	for(stats_map_t::iterator it = time_stats.begin(); it != time_stats.end(); ++it)
-	{
-		std::string label = it->first;
-		ret[label]["TotalTime"] = time_stats[label].getSum();
-		ret[label]["MeanTime"] = time_stats[label].getMean();
-		ret[label]["MaxTime"] = time_stats[label].getMaxValue();
-		ret[label]["MinTime"] = time_stats[label].getMinValue();
-		ret[label]["StdDevTime"] = time_stats[label].getStdDev();
-		
+    for(stats_map_t::iterator it = time_stats.begin(); it != time_stats.end(); ++it)
+    {
+        std::string label = it->first;
+        ret[label]["TotalTime"] = time_stats[label].getSum();
+        ret[label]["MeanTime"] = time_stats[label].getMean();
+        ret[label]["MaxTime"] = time_stats[label].getMaxValue();
+        ret[label]["MinTime"] = time_stats[label].getMinValue();
+        ret[label]["StdDevTime"] = time_stats[label].getStdDev();
+
         ret[label]["Samples"] = sample_stats[label].getSum();
 		ret[label]["MaxSamples"] = sample_stats[label].getMaxValue();
 		ret[label]["MinSamples"] = sample_stats[label].getMinValue();
@@ -1123,86 +1123,86 @@ void LLFastTimerView::drawLineGraph()
 			F32 y;
 			switch(mDisplayType)
 {
-			case DISPLAY_TIME:
-				y = mGraphRect.mBottom + time.value() * time_scale_factor;
-				break;
-			case DISPLAY_CALLS:
-				y = mGraphRect.mBottom + (F32)calls * call_scale_factor;
-				break;
-			case DISPLAY_HZ:
-				y = mGraphRect.mBottom + (1.f / time.value()) * hz_scale_factor;
-				break;
-			}
-			gGL.vertex2f(x,y);
-			gGL.vertex2f(x,mGraphRect.mBottom);
-		}
-		gGL.end();
+            case DISPLAY_TIME:
+                y = mGraphRect.mBottom + time.value() * time_scale_factor;
+                break;
+            case DISPLAY_CALLS:
+                y = mGraphRect.mBottom + (F32)calls * call_scale_factor;
+                break;
+            case DISPLAY_HZ:
+                y = mGraphRect.mBottom + (1.f / time.value()) * hz_scale_factor;
+                break;
+            }
+            gGL.vertex2f(x,y);
+            gGL.vertex2f(x,(GLfloat)mGraphRect.mBottom);
+        }
+        gGL.end();
 
-		if (mHoverID == idp)
-		{
-			gGL.flush();
-			glLineWidth(1);
-		}
+        if (mHoverID == idp)
+        {
+            gGL.flush();
+            glLineWidth(1);
+        }
 
-		if (idp->getTreeNode().mCollapsed)
-		{	
-			//skip hidden timers
-			it.skipDescendants();
-		}
-	}
-	
-	//interpolate towards new maximum
-	max_time = (F32Seconds)lerp(max_time.value(), cur_max.value(), LLSmoothInterpolation::getInterpolant(0.1f));
-	if (llabs((max_time - cur_max).value()) <= 1)
-	{
-		max_time = llmax(F32Microseconds(1.f), F32Microseconds(cur_max));
-	}
+        if (idp->getTreeNode().mCollapsed)
+        {
+            //skip hidden timers
+            it.skipDescendants();
+        }
+    }
 
-	max_calls = ll_round(lerp((F32)max_calls, (F32) cur_max_calls, LLSmoothInterpolation::getInterpolant(0.1f)));
-	if (llabs((S32)(max_calls - cur_max_calls)) <= 1)
-	{
-		max_calls = cur_max_calls;
-	}
+    //interpolate towards new maximum
+    max_time = (F32Seconds)lerp(max_time.value(), cur_max.value(), LLSmoothInterpolation::getInterpolant(0.1f));
+    if (llabs((max_time - cur_max).value()) <= 1)
+    {
+        max_time = llmax(F32Microseconds(1.f), F32Microseconds(cur_max));
+    }
 
-	// TODO: make sure alpha is correct in DisplayHz mode
-	F32 alpha_target = (max_time > cur_max)
-		? llmin(max_time / cur_max - 1.f,1.f) 
-		: llmin(cur_max/ max_time - 1.f,1.f);
-	alpha_interp = lerp(alpha_interp, alpha_target, LLSmoothInterpolation::getInterpolant(0.1f));
+    max_calls = ll_round(lerp((F32)max_calls, (F32) cur_max_calls, LLSmoothInterpolation::getInterpolant(0.1f)));
+    if (llabs((S32)(max_calls - cur_max_calls)) <= 1)
+    {
+        max_calls = cur_max_calls;
+    }
 
-	if (mHoverID != NULL)
-	{
-		S32 x = (mGraphRect.mRight + mGraphRect.mLeft)/2;
-		S32 y = mGraphRect.mBottom + 8;
+    // TODO: make sure alpha is correct in DisplayHz mode
+    F32 alpha_target = (max_time > cur_max)
+        ? llmin(max_time / cur_max - 1.f,1.f)
+        : llmin(cur_max/ max_time - 1.f,1.f);
+    alpha_interp = lerp(alpha_interp, alpha_target, LLSmoothInterpolation::getInterpolant(0.1f));
 
-		LLFontGL::getFontMonospace()->renderUTF8(
-			mHoverID->getName(), 
-			0, 
-			x, y, 
-			LLColor4::white,
-			LLFontGL::LEFT, LLFontGL::BOTTOM);
-	}
+    if (mHoverID != NULL)
+    {
+        S32 x = (mGraphRect.mRight + mGraphRect.mLeft)/2;
+        S32 y = mGraphRect.mBottom + 8;
 
-	//display y-axis range
-	std::string axis_label;
-	switch(mDisplayType)
-	{
-	case DISPLAY_TIME:
-		axis_label = llformat("%4.2f ms", F32Milliseconds(max_time).value());
-		break;
-	case DISPLAY_CALLS:
-		axis_label = llformat("%d calls", (int)max_calls);
-		break;
-	case DISPLAY_HZ:
-		axis_label = llformat("%4.2f Hz", max_time.value() ? 1.f / max_time.value() : 0.f);
-		break;
-	}
+        LLFontGL::getFontMonospace()->renderUTF8(
+            mHoverID->getName(),
+            0,
+            x, y,
+            LLColor4::white,
+            LLFontGL::LEFT, LLFontGL::BOTTOM);
+    }
 
-	LLFontGL* font = LLFontGL::getFontMonospace();
-	S32 x = mGraphRect.mRight - font->getWidth(axis_label)-5;
-	S32 y = mGraphRect.mTop - font->getLineHeight();;
+    //display y-axis range
+    std::string axis_label;
+    switch(mDisplayType)
+    {
+    case DISPLAY_TIME:
+        axis_label = llformat("%4.2f ms", F32Milliseconds(max_time).value());
+        break;
+    case DISPLAY_CALLS:
+        axis_label = llformat("%d calls", (int)max_calls);
+        break;
+    case DISPLAY_HZ:
+        axis_label = llformat("%4.2f Hz", max_time.value() ? 1.f / max_time.value() : 0.f);
+        break;
+    }
 
-	font->renderUTF8(axis_label, 0, x, y, LLColor4::white, LLFontGL::LEFT, LLFontGL::TOP);
+    LLFontGL* font = LLFontGL::getFontMonospace();
+    S32 x = mGraphRect.mRight - font->getWidth(axis_label)-5;
+    S32 y = mGraphRect.mTop - font->getLineHeight();;
+
+    font->renderUTF8(axis_label, 0, x, y, LLColor4::white, LLFontGL::LEFT, LLFontGL::TOP);
 }
 
 void LLFastTimerView::drawLegend()
@@ -1439,104 +1439,104 @@ void LLFastTimerView::drawBorders( S32 y, const S32 x_start, S32 bar_height, S32
 
 void LLFastTimerView::updateTotalTime()
 {
-	switch(mDisplayMode)
-	{
-	case 0:
-		mTotalTimeDisplay = mRecording.getPeriodMean(FTM_FRAME, RUNNING_AVERAGE_WIDTH)*2;
-		break;
-	case 1:
-		mTotalTimeDisplay = mRecording.getPeriodMax(FTM_FRAME);
-		break;
-	case 2:
-		// Calculate the max total ticks for the current history
-		mTotalTimeDisplay = mRecording.getPeriodMax(FTM_FRAME, 20);
-		break;
-	default:
-		mTotalTimeDisplay = F64Milliseconds(100);
-		break;
-	}
+    switch(mDisplayMode)
+    {
+    case 0:
+        mTotalTimeDisplay = mRecording.getPeriodMean(FTM_FRAME, RUNNING_AVERAGE_WIDTH)*2;
+        break;
+    case 1:
+        mTotalTimeDisplay = mRecording.getPeriodMax(FTM_FRAME);
+        break;
+    case 2:
+        // Calculate the max total ticks for the current history
+        mTotalTimeDisplay = mRecording.getPeriodMax(FTM_FRAME, 20);
+        break;
+    default:
+        mTotalTimeDisplay = F64Milliseconds(100);
+        break;
+    }
 
-	mTotalTimeDisplay = LLUnits::Milliseconds::fromValue(llceil(mTotalTimeDisplay.valueInUnits<LLUnits::Milliseconds>() / 20.f) * 20.f);
+    mTotalTimeDisplay = LLUnits::Milliseconds::fromValue(llceil((F32)mTotalTimeDisplay.valueInUnits<LLUnits::Milliseconds>() / 20.f) * 20.f);
 }
 
 void LLFastTimerView::drawBars()
 {
     LL_PROFILE_ZONE_SCOPED;
-	LLLocalClipRect clip(mBarRect);
+    LLLocalClipRect clip(mBarRect);
 
-	S32 bar_height = mBarRect.getHeight() / (MAX_VISIBLE_HISTORY + 2);
-	const S32 vpad = llmax(1, bar_height / 4); // spacing between bars
-	bar_height -= vpad;
+    S32 bar_height = mBarRect.getHeight() / (MAX_VISIBLE_HISTORY + 2);
+    const S32 vpad = llmax(1, bar_height / 4); // spacing between bars
+    bar_height -= vpad;
 
-	updateTotalTime();
-	if (mTotalTimeDisplay <= (F32Seconds)0.0) return;
+    updateTotalTime();
+    if (mTotalTimeDisplay <= (F32Seconds)0.0) return;
 
-	drawTicks();
-	const S32 bars_top = mBarRect.mTop - ((S32)LLFontGL::getFontMonospace()->getLineHeight() + 4);
-	drawBorders(bars_top, mBarRect.mLeft, bar_height, vpad);
+    drawTicks();
+    const S32 bars_top = mBarRect.mTop - ((S32)LLFontGL::getFontMonospace()->getLineHeight() + 4);
+    drawBorders(bars_top, mBarRect.mLeft, bar_height, vpad);
 
-	// Draw bars for each history entry
-	// Special: 0 = show running average
-	//LLPointer<LLUIImage> bar_image = LLUI::getUIImage("Rounded_Square");
+    // Draw bars for each history entry
+    // Special: 0 = show running average
+    //LLPointer<LLUIImage> bar_image = LLUI::getUIImage("Rounded_Square");
 
-	//const S32 image_width = bar_image->getTextureWidth();
-	//const S32 image_height = bar_image->getTextureHeight();
+    //const S32 image_width = bar_image->getTextureWidth();
+    //const S32 image_height = bar_image->getTextureHeight();
 
-	//gGL.getTexUnit(0)->bind(bar_image->getImage());
-	{	
-		const S32 histmax = (S32)mRecording.getNumRecordedPeriods();
+    gGL.getTexUnit(0)->bind(bar_image->getImage());
+    {
+        const S32 histmax = (S32)mRecording.getNumRecordedPeriods();
 
-		// update widths
-		if (!mPauseHistory)
-		{
-			U32 bar_index = 0;
-			if (!mAverageTimerRow.mBars)
-			{
-				mAverageTimerRow.mBars = new TimerBar[LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount()];
-			}
-			updateTimerBarWidths(&FTM_FRAME, mAverageTimerRow, -1, bar_index);
-			updateTimerBarOffsets(&FTM_FRAME, mAverageTimerRow);
+        // update widths
+        if (!mPauseHistory)
+        {
+            U32 bar_index = 0;
+            if (!mAverageTimerRow.mBars)
+            {
+                mAverageTimerRow.mBars = new TimerBar[LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount()];
+            }
+            updateTimerBarWidths(&FTM_FRAME, mAverageTimerRow, -1, bar_index);
+            updateTimerBarOffsets(&FTM_FRAME, mAverageTimerRow);
 
-			for (S32 history_index = 1; history_index <= histmax; history_index++)
-			{
-				llassert(history_index <= mTimerBarRows.size());
-				TimerBarRow& row = mTimerBarRows[history_index - 1];
-				bar_index = 0;
-				if (!row.mBars)
-				{
-					row.mBars = new TimerBar[LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount()];
-					updateTimerBarWidths(&FTM_FRAME, row, history_index, bar_index);
-					updateTimerBarOffsets(&FTM_FRAME, row);
-				}
-			}
-		}
+            for (S32 history_index = 1; history_index <= histmax; history_index++)
+            {
+                llassert(history_index <= mTimerBarRows.size());
+                TimerBarRow& row = mTimerBarRows[history_index - 1];
+                bar_index = 0;
+                if (!row.mBars)
+                {
+                    row.mBars = new TimerBar[LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount()];
+                    updateTimerBarWidths(&FTM_FRAME, row, history_index, bar_index);
+                    updateTimerBarOffsets(&FTM_FRAME, row);
+                }
+            }
+        }
 
-		// draw bars
-		LLRect frame_bar_rect;
-		frame_bar_rect.setLeftTopAndSize(mBarRect.mLeft, 
-										bars_top, 
-										ll_round((mAverageTimerRow.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth()), 
-										bar_height);
-		mAverageTimerRow.mTop = frame_bar_rect.mTop;
-		mAverageTimerRow.mBottom = frame_bar_rect.mBottom;
-		drawBar(frame_bar_rect, mAverageTimerRow, 1, 1);
-		frame_bar_rect.translate(0, -(bar_height + vpad + bar_height));
+        // draw bars
+        LLRect frame_bar_rect;
+        frame_bar_rect.setLeftTopAndSize(mBarRect.mLeft,
+                                        bars_top,
+                                        (S32)ll_round((mAverageTimerRow.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth()),
+                                        bar_height);
+        mAverageTimerRow.mTop = frame_bar_rect.mTop;
+        mAverageTimerRow.mBottom = frame_bar_rect.mBottom;
+        drawBar(frame_bar_rect, mAverageTimerRow, image_width, image_height);
+        frame_bar_rect.translate(0, -(bar_height + vpad + bar_height));
 
-		for(S32 bar_index = mScrollIndex; bar_index < llmin(histmax, mScrollIndex + MAX_VISIBLE_HISTORY); ++bar_index)
-		{
-			llassert(bar_index < mTimerBarRows.size());
-			TimerBarRow& row = mTimerBarRows[bar_index];
-			row.mTop = frame_bar_rect.mTop;
-			row.mBottom = frame_bar_rect.mBottom;
-			frame_bar_rect.mRight = frame_bar_rect.mLeft 
-									+ ll_round((row.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth());
- 			drawBar(frame_bar_rect, row, 1, 1);
+        for(S32 bar_index = mScrollIndex; bar_index < llmin(histmax, mScrollIndex + MAX_VISIBLE_HISTORY); ++bar_index)
+        {
+            llassert(bar_index < mTimerBarRows.size());
+            TimerBarRow& row = mTimerBarRows[bar_index];
+            row.mTop = frame_bar_rect.mTop;
+            row.mBottom = frame_bar_rect.mBottom;
+            frame_bar_rect.mRight = frame_bar_rect.mLeft
+                                    + (S32)ll_round((row.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth());
+            drawBar(frame_bar_rect, row, image_width, image_height);
 
-			frame_bar_rect.translate(0, -(bar_height + vpad));
-		}
+            frame_bar_rect.translate(0, -(bar_height + vpad));
+        }
 
-	}	
-	//gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
+    }
+    //gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 }
 
 F32Seconds LLFastTimerView::updateTimerBarWidths(LLTrace::BlockTimerStatHandle* time_block, TimerBarRow& row, S32 history_index, U32& bar_index)
@@ -1631,66 +1631,66 @@ S32 LLFastTimerView::updateTimerBarOffsets(LLTrace::BlockTimerStatHandle* time_b
 S32 LLFastTimerView::drawBar(LLRect bar_rect, TimerBarRow& row, S32 image_width, S32 image_height, bool hovered, bool visible, S32 bar_index)
 {
     LL_PROFILE_ZONE_SCOPED;
-	TimerBar& timer_bar = row.mBars[bar_index];
-	LLTrace::BlockTimerStatHandle* time_block = timer_bar.mTimeBlock;
+    TimerBar& timer_bar = row.mBars[bar_index];
+    LLTrace::BlockTimerStatHandle* time_block = timer_bar.mTimeBlock;
 	if (!time_block)
 		return 0;
-	hovered |= mHoverID == time_block;
+    hovered |= mHoverID == time_block;
 
-	// animate scale of bar when hovering over that particular timer
-	if (visible && (F32)bar_rect.getWidth() * (timer_bar.mEndFraction - timer_bar.mStartFraction) > 2.f)
-	{
-		LLRect render_rect(bar_rect);
-		S32 scale_offset = 0;
-		if (mHoverID == time_block)
-		{
-			scale_offset = llfloor(sinf(mHighlightTimer.getElapsedTimeF32() * 6.f) * 3.f);
-			render_rect.mTop += scale_offset;
-			render_rect.mBottom -= scale_offset;
-		}
+    // animate scale of bar when hovering over that particular timer
+    if (visible && (F32)bar_rect.getWidth() * (timer_bar.mEndFraction - timer_bar.mStartFraction) > 2.f)
+    {
+        LLRect render_rect(bar_rect);
+        S32 scale_offset = 0;
+        if (mHoverID == time_block)
+        {
+            scale_offset = llfloor(sinf(mHighlightTimer.getElapsedTimeF32() * 6.f) * 3.f);
+            render_rect.mTop += scale_offset;
+            render_rect.mBottom -= scale_offset;
+        }
 
-		llassert(time_block->getIndex() < sTimerColors.size());
-		LLColor4 color = sTimerColors[time_block->getIndex()];
-		if (!hovered) color = lerp(color, LLColor4::grey, 0.2f);
-		gGL.color4fv(color.mV);
-		gl_segmented_rect_2d_fragment_tex(render_rect,
-			image_width, image_height, 
-			16, 
-			timer_bar.mStartFraction, timer_bar.mEndFraction);
-	}
+        llassert(time_block->getIndex() < sTimerColors.size());
+        LLColor4 color = sTimerColors[time_block->getIndex()];
+        if (!hovered) color = lerp(color, LLColor4::grey, 0.2f);
+        gGL.color4fv(color.mV);
+        gl_segmented_rect_2d_fragment_tex(render_rect,
+            image_width, image_height,
+            16,
+            timer_bar.mStartFraction, timer_bar.mEndFraction);
+    }
 
-	LLRect children_rect;
-	children_rect.mLeft  = ll_round(timer_bar.mChildrenStart / mTotalTimeDisplay * (F32)mBarRect.getWidth()) + mBarRect.mLeft;
-	children_rect.mRight = ll_round(timer_bar.mChildrenEnd   / mTotalTimeDisplay * (F32)mBarRect.getWidth()) + mBarRect.mLeft;
+    LLRect children_rect;
+    children_rect.mLeft  = (S32)ll_round(timer_bar.mChildrenStart / mTotalTimeDisplay * (F32)mBarRect.getWidth()) + mBarRect.mLeft;
+    children_rect.mRight = (S32)ll_round(timer_bar.mChildrenEnd   / mTotalTimeDisplay * (F32)mBarRect.getWidth()) + mBarRect.mLeft;
 
-	if (bar_rect.getHeight() > MIN_BAR_HEIGHT)
-	{
-		// shrink as we go down a level
-		children_rect.mTop = bar_rect.mTop - 1;
-		children_rect.mBottom = bar_rect.mBottom + 1;
-	}
-	else
-	{
-		children_rect.mTop = bar_rect.mTop;
-		children_rect.mBottom = bar_rect.mBottom;
-	}
+    if (bar_rect.getHeight() > MIN_BAR_HEIGHT)
+    {
+        // shrink as we go down a level
+        children_rect.mTop = bar_rect.mTop - 1;
+        children_rect.mBottom = bar_rect.mBottom + 1;
+    }
+    else
+    {
+        children_rect.mTop = bar_rect.mTop;
+        children_rect.mBottom = bar_rect.mBottom;
+    }
 
-	bool children_visible = visible && !time_block->getTreeNode().mCollapsed;
+    bool children_visible = visible && !time_block->getTreeNode().mCollapsed;
 
-	bar_index++;
-	const S32 num_bars = static_cast<S32>(LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount());
-	if (bar_index < num_bars && row.mBars[bar_index].mFirstChild)
-	{
-		bool is_last = false;
-		do
-		{
-			is_last = row.mBars[bar_index].mLastChild;
-			bar_index = drawBar(children_rect, row, image_width, image_height, hovered, children_visible, bar_index);
-		}
-		while(!is_last && bar_index < num_bars);
-	}
+    bar_index++;
+    const auto num_bars = LLTrace::BlockTimerStatHandle::instance_tracker_t::instanceCount();
+    if (bar_index < num_bars && row.mBars[bar_index].mFirstChild)
+    {
+        bool is_last = false;
+        do
+        {
+            is_last = row.mBars[bar_index].mLastChild;
+            bar_index = drawBar(children_rect, row, image_width, image_height, hovered, children_visible, bar_index);
+        }
+        while(!is_last && bar_index < num_bars);
+    }
 
-	return bar_index;
+    return bar_index;
 }
 
 LLFastTimerView::TimerBarRow::~TimerBarRow()

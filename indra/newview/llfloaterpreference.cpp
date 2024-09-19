@@ -3342,12 +3342,12 @@ void LLFloaterPreference::onNotificationsChange(const std::string& OptionName)
 
 void LLFloaterPreference::onNameTagOpacityChange(const LLSD& newvalue)
 {
-	LLColorSwatchCtrl* color_swatch = findChild<LLColorSwatchCtrl>("background");
-	if (color_swatch)
-	{
-		LLColor4 new_color = color_swatch->get();
-		color_swatch->set( new_color.setAlpha(newvalue.asReal()) );
-	}
+    LLColorSwatchCtrl* color_swatch = findChild<LLColorSwatchCtrl>("background");
+    if (color_swatch)
+    {
+        LLColor4 new_color = color_swatch->get();
+        color_swatch->set(new_color.setAlpha((F32)newvalue.asReal()));
+    }
 }
 
 void LLFloaterPreference::onClickSetCache()

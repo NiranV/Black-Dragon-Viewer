@@ -54,21 +54,12 @@ if(WINDOWS)
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     set(release_files
         openjpeg.dll
-        libapr-1.dll
-        libaprutil-1.dll
-        nghttp2.dll
-        libhunspell.dll
-        uriparser.dll
         )
 
-    # OpenSSL
-    if(ADDRESS_SIZE EQUAL 64)
-        set(release_files ${release_files} libcrypto-1_1-x64.dll)
-        set(release_files ${release_files} libssl-1_1-x64.dll)
-    else(ADDRESS_SIZE EQUAL 64)
-        set(release_files ${release_files} libcrypto-1_1.dll)
-        set(release_files ${release_files} libssl-1_1.dll)
-    endif(ADDRESS_SIZE EQUAL 64)
+    if(LLCOMMON_LINK_SHARED)
+        set(release_files ${release_files} libapr-1.dll)
+        set(release_files ${release_files} libaprutil-1.dll)
+    endif()
 
     # Filenames are different for 32/64 bit BugSplat file and we don't
     # have any control over them so need to branch.
@@ -148,9 +139,14 @@ if(WINDOWS)
     # Check each of them.
     foreach(release_msvc_file
             msvcp${MSVC_VER}.dll
+            msvcp${MSVC_VER}_1.dll
+            msvcp${MSVC_VER}_2.dll
+            msvcp${MSVC_VER}_atomic_wait.dll
+            msvcp${MSVC_VER}_codecvt_ids.dll
             msvcr${MSVC_VER}.dll
             vcruntime${MSVC_VER}.dll
             vcruntime${MSVC_VER}_1.dll
+            vcruntime${MSVC_VER}_threads.dll
             )
         if(redist_path AND EXISTS "${redist_path}/${release_msvc_file}")
             MESSAGE(STATUS "Copying redist file from ${redist_path}/${release_msvc_file}")
@@ -170,10 +166,6 @@ if(WINDOWS)
             MESSAGE(STATUS "Redist lib ${release_msvc_file} not found")
         endif()
     endforeach()
-    MESSAGE(STATUS "Will copy redist files for MSVC ${MSVC_VER}:")
-    foreach(target ${third_party_targets})
-        MESSAGE(STATUS "${target}")
-    endforeach()
 
 elseif(DARWIN)
     set(vivox_lib_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
@@ -187,19 +179,17 @@ elseif(DARWIN)
        )
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     set(release_files
-        libapr-1.0.dylib
-        libapr-1.dylib
-        libaprutil-1.0.dylib
-        libaprutil-1.dylib
-        ${EXPAT_COPY}
-        libhunspell-1.3.0.dylib
         libndofdev.dylib
-        libnghttp2.dylib
-        libnghttp2.14.dylib
-        liburiparser.dylib
-        liburiparser.1.dylib
-        liburiparser.1.0.27.dylib
        )
+
+    if(LLCOMMON_LINK_SHARED)
+        set(release_files ${release_files}
+            libapr-1.0.dylib
+            libapr-1.dylib
+            libaprutil-1.0.dylib
+            libaprutil-1.dylib
+            )
+    endif()
 
     #if (USE_FMODSTUDIO)
     #  list(APPEND debug_files libfmodL.dylib)
@@ -209,6 +199,9 @@ elseif(DARWIN)
     if (TARGET ll::fmodstudio)
       set(debug_files ${debug_files} libfmodL.dylib)
       set(release_files ${release_files} libfmod.dylib)
+
+    if (TARGET ll::openal)
+      list(APPEND release_files libalut.dylib libopenal.dylib)
     endif ()
 
 elseif(LINUX)
@@ -237,17 +230,13 @@ elseif(LINUX)
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     # *FIX - figure out what to do with duplicate libalut.so here -brad
     set(release_files
-            ${EXPAT_COPY}
-            )
+       )
 
      if( USE_AUTOBUILD_3P )
          list( APPEND release_files
-                 libapr-1.so.0
-                 libaprutil-1.so.0
                  libatk-1.0.so
                  libfreetype.so.6.6.2
                  libfreetype.so.6
-                 libhunspell-1.3.so.0.0.0
                  libopenjpeg.so
                  libuuid.so.16
                  libuuid.so.16.0.22
@@ -256,6 +245,13 @@ elseif(LINUX)
                  libgmodule-2.0.so
                  libgobject-2.0.so
                  )
+
+        if(LLCOMMON_LINK_SHARED)
+            set(release_files ${release_files}
+                libapr-1.so.0
+                libaprutil-1.so.0
+                )
+        endif()
      endif()
 
     #if (USE_FMODSTUDIO)

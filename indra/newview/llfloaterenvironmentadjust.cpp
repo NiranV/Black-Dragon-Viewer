@@ -485,23 +485,26 @@ void LLFloaterEnvironmentAdjust::onBlueDensityChanged()
 
 void LLFloaterEnvironmentAdjust::onHazeHorizonChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setHazeHorizon(mHazeHorizon->getValue().asReal());
-	mLiveSky->update();
+    if (!mLiveSky)
+        return;
+    mLiveSky->setHazeHorizon((F32)mHazeHorizon->getValue().asReal());
+    mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onHazeDensityChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setHazeDensity(mHazeDensity->getValue().asReal());
-	mLiveSky->update();
+    if (!mLiveSky)
+        return;
+    mLiveSky->setHazeDensity((F32)mHazeDensity->getValue()->getValue().asReal());
+    mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onSceneGammaChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setGamma(mSceneGamma->getValue().asReal());
-	mLiveSky->update();
+    if (!mLiveSky)
+        return;
+    mLiveSky->setGamma((F32)mSceneGamma->getValue()->getValue().asReal());
+    mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onDensityMultipChanged()
@@ -515,39 +518,41 @@ void LLFloaterEnvironmentAdjust::onDensityMultipChanged()
 
 void LLFloaterEnvironmentAdjust::onDistanceMultipChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setDistanceMultiplier(mDistanceMult->getValue().asReal());
-	mLiveSky->update();
+    if (!mLiveSky)
+        return;
+    mLiveSky->setCloudShadow((F32)mDistanceMult->getValue()->getValue().asReal());
+    mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onMaxAltChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setMaxY(mMaxAltitude->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setMaxY((F32)mMaxAltitude->getValue().asReal());
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onMoistureLevelChanged()
 {
-	if (!mLiveSky) return;
-	F32 moisture_level = mMoisture->getValue().asReal();
-	mLiveSky->setSkyMoistureLevel(moisture_level);
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setSkyMoistureLevel((F32)mMoisture->getValue().asReal());
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onDropletRadiusChanged()
 {
-	if (!mLiveSky) return;
-	F32 droplet_radius = mDroplet->getValue().asReal();
-	mLiveSky->setSkyDropletRadius(droplet_radius);
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setSkyDropletRadius((F32)mDroplet->getValue().asReal());
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onIceLevelChanged()
 {
-	if (!mLiveSky) return;
-	F32 ice_level = mIceLevel->getValue().asReal();
-	mLiveSky->setSkyIceLevel(ice_level);
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setSkyIceLevel((F32)mIceLevel->getValue().asReal());
 	mLiveSky->update();
 }
 
@@ -555,7 +560,8 @@ void LLFloaterEnvironmentAdjust::onIceLevelChanged()
 //BD - Sun & Moon
 void LLFloaterEnvironmentAdjust::onSunMoonColorChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	LLColor3 color(mSunMoonColor->get());
 
 	color *= SLIDER_SCALE_SUN_AMBIENT;
@@ -566,8 +572,9 @@ void LLFloaterEnvironmentAdjust::onSunMoonColorChanged()
 
 void LLFloaterEnvironmentAdjust::onGlowChanged()
 {
-	if (!mLiveSky) return;
-	LLColor3 glow(mGlowSize->getValue().asReal(), 0.0f, mGlowFocus->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	LLColor3 glow((F32)mGlowSize->getValue().asReal(), 0.0f, (F32)mGlowFocus->getValue().asReal());
 
 	// takes 0 - 1.99 UI range -> 40 -> 0.2 range
 	glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R;
@@ -579,19 +586,21 @@ void LLFloaterEnvironmentAdjust::onGlowChanged()
 
 void LLFloaterEnvironmentAdjust::onStarBrightnessChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setStarBrightness(mStarBrightness->getValue().asReal());
-	mLiveSky->update();
+    if (!mLiveSky)
+        return;
+    mLiveSky->setStarBrightness((F32)mStarBrightness->getValue().asReal());
+    mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onSunRotationChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 
 	LLQuaternion rot;
 	LLQuaternion delta;
-	rot.setAngleAxis(mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
-	delta.setAngleAxis(mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot.setAngleAxis((F32)mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis((F32)mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
 	rot *= delta;
 
 	mLiveSky->setSunRotation(rot);
@@ -600,14 +609,16 @@ void LLFloaterEnvironmentAdjust::onSunRotationChanged()
 
 void LLFloaterEnvironmentAdjust::onSunScaleChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setSunScale((mSunScale->getValue().asReal()));
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setSunScale((F32)(mSunScale->getValue().asReal()));
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onSunImageChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	mLiveSky->setSunTextureId(mSunImage->getValue().asUUID());
 	mLiveSky->update();
 	mSunImageChanged = true;
@@ -615,12 +626,13 @@ void LLFloaterEnvironmentAdjust::onSunImageChanged()
 
 void LLFloaterEnvironmentAdjust::onMoonRotationChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 
 	LLQuaternion rot;
 	LLQuaternion delta;
-	rot.setAngleAxis(mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
-	delta.setAngleAxis(mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot.setAngleAxis((F32)mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis((F32)mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
 	rot *= delta;
 
 	mLiveSky->setMoonRotation(rot);
@@ -629,7 +641,8 @@ void LLFloaterEnvironmentAdjust::onMoonRotationChanged()
 
 void LLFloaterEnvironmentAdjust::onMoonImageChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	mLiveSky->setMoonTextureId(mMoonImage->getValue().asUUID());
 	mLiveSky->update();
 	mMoonImageChanged = true;
@@ -637,15 +650,17 @@ void LLFloaterEnvironmentAdjust::onMoonImageChanged()
 
 void LLFloaterEnvironmentAdjust::onMoonScaleChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	mLiveSky->setMoonScale((mMoonScale->getValue().asReal()));
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onMoonBrightnessChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setMoonBrightness((mMoonBrightness->getValue().asReal()));
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setMoonBrightness((F32)(mMoonBrightness->getValue().asReal()));
 	mLiveSky->update();
 }
 
@@ -654,68 +669,78 @@ void LLFloaterEnvironmentAdjust::onMoonBrightnessChanged()
 //BD - Clouds
 void LLFloaterEnvironmentAdjust::onCloudColorChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	mLiveSky->setCloudColor(LLColor3(mCloudColor->get()));
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onCloudCoverageChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setCloudShadow(mCloudCoverage->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setCloudShadow((F32)mCloudCoverage->getValue().asReal());
 	mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onCloudScaleChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setCloudScale(mCloudScale->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setCloudScale((F32)mCloudScale->getValue().asReal());
 }
 
 void LLFloaterEnvironmentAdjust::onCloudVarianceChanged()
 {
-	if (!mLiveSky) return;
-	mLiveSky->setCloudVariance(mCloudVariance->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	mLiveSky->setCloudVariance((F32)mCloudVariance->getValue().asReal());
 }
 
 void LLFloaterEnvironmentAdjust::onCloudScrollChanged()
 {
-	if (!mLiveSky) return;
-	LLVector2 scroll(mCloudScrollX->getValue().asReal(), mCloudScrollY->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	LLVector2 scroll((F32)mCloudScrollX->getValue().asReal(), (F32)mCloudScrollY->getValue().asReal());
 	mLiveSky->setCloudScrollRate(scroll);
 }
 
 void LLFloaterEnvironmentAdjust::onCloudMapChanged()
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	mLiveSky->setCloudNoiseTextureId(mCloudImage->getValue().asUUID());
 	mCloudImageChanged = true;
 }
 
 void LLFloaterEnvironmentAdjust::onCloudDensityChanged()
 {
-	if (!mLiveSky) return;
-	LLColor3 density(mCloudDensityX->getValue().asReal(), mCloudDensityY->getValue().asReal(), mCloudDensityD->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	LLColor3 density((F32)mCloudDensityX->getValue().asReal(), (F32)mCloudDensityY->getValue().asReal(), (F32)mCloudDensityD->getValue().asReal());
 	mLiveSky->setCloudPosDensity1(density);
 }
 
 void LLFloaterEnvironmentAdjust::onCloudDetailChanged()
 {
-	if (!mLiveSky) return;
-	LLColor3 detail(mCloudDetailX->getValue().asReal(),	mCloudDetailY->getValue().asReal(),	mCloudDetailD->getValue().asReal());
+	if (!mLiveSky) 
+		return;
+	LLColor3 detail((F32)mCloudDetailX->getValue().asReal(), (F32)mCloudDetailY->getValue().asReal(), (F32)mCloudDetailD->getValue().asReal());
 	mLiveSky->setCloudPosDensity2(detail);
 }
 
 void LLFloaterEnvironmentAdjust::onCloudScrollXLocked(bool lock)
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	LLEnvironment::instance().pauseCloudScrollX(lock);
 	refresh();
 }
 
 void LLFloaterEnvironmentAdjust::onCloudScrollYLocked(bool lock)
 {
-	if (!mLiveSky) return;
+	if (!mLiveSky) 
+		return;
 	LLEnvironment::instance().pauseCloudScrollY(lock);
 	refresh();
 }
@@ -804,7 +829,7 @@ void LLFloaterEnvironmentAdjust::onSaveAsCommit(const LLSD& notification, const 
 void LLFloaterEnvironmentAdjust::onReflectionProbeAmbianceChanged()
 {
     if (!mLiveSky) return;
-    F32 ambiance = getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->getValue().asReal();
+    F32 ambiance = (F32)getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->getValue().asReal();
     mLiveSky->setReflectionProbeAmbiance(ambiance);
 
     updateGammaLabel();

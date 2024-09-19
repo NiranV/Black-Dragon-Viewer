@@ -62,7 +62,6 @@
 #include "llfocusmgr.h"
 #include "llurlfloaterdispatchhandler.h"
 #include "llviewerjoystick.h"
-#include "llallocator.h"
 #include "llcalc.h"
 #include "llconversationlog.h"
 #if LL_WINDOWS
@@ -279,11 +278,6 @@ using namespace LL;
 #include "glib.h"
 #endif // (LL_LINUX) && LL_GTK
 
-#if LL_MSVC
-// disable boost::lexical_cast warning
-#pragma warning (disable:4702)
-#endif
-
 static LLAppViewerListener sAppViewerListener(LLAppViewer::instance);
 
 ////// Windows-specific includes to the bottom - nasty defines in these pollute the preprocessor
@@ -350,24 +344,23 @@ F32 gLogoutMaxTime = LOGOUT_REQUEST_TIME;
 S32 gPendingMetricsUploads = 0;
 
 
-bool                gDisconnected = false;
+bool gDisconnected = false;
 
-// used to restore texture state after a mode switch
-LLFrameTimer    gRestoreGLTimer;
-bool            gRestoreGL = false;
-bool            gUseWireframe = false;
+// Used to restore texture state after a mode switch
+LLFrameTimer gRestoreGLTimer;
+bool gRestoreGL = false;
+bool gUseWireframe = false;
 
-LLMemoryInfo gSysMemory;
 U64Bytes gMemoryAllocated(0); // updated in display_stats() in llviewerdisplay.cpp
 
 std::string gLastVersionChannel;
 
-LLVector3           gWindVec(3.0, 3.0, 0.0);
-LLVector3           gRelativeWindVec(0.0, 0.0, 0.0);
+LLVector3 gWindVec(3.0, 3.0, 0.0);
+LLVector3 gRelativeWindVec(0.0, 0.0, 0.0);
 
-U32     gPacketsIn = 0;
+U32 gPacketsIn = 0;
 
-bool                gPrintMessagesThisFrame = false;
+bool gPrintMessagesThisFrame = false;
 
 bool gRandomizeFramerate = false;
 bool gPeriodicSlowFrame = false;
@@ -662,6 +655,7 @@ LLAppViewer::LLAppViewer()
 	//mSavedFinalSnapshot(false),
     mSavePerAccountSettings(false),     // don't save settings on logout unless login succeeded.
     mQuitRequested(false),
+    mClosingFloaters(false),
     mLogoutRequestSent(false),
     mLastAgentControlFlags(0),
     mLastAgentForceUpdate(0),
@@ -769,7 +763,11 @@ bool LLAppViewer::init()
 
     // inits from settings.xml and from strings.xml
     if (!initConfiguration())
+    {
+        LL_WARNS("InitInfo") << "initConfiguration() failed." << LL_ENDL;
+        // quit immediately
         return false;
+    }
 
 	//BD - Set the current log path so we can see and open it in preferences.
 	gSavedSettings.setString("LogsLogPath", gDirUtilp->add(gDirUtilp->getOSUserAppDir(), "logs"));
@@ -830,7 +828,6 @@ bool LLAppViewer::init()
 	initMaxHeapSize() ;
 	LLCoros::instance().setStackSize(gSavedSettings.getS32("CoroutineStackSize"));
 
-
     // Although initLoggingAndGetLastDuration() is the right place to mess with
     // setFatalFunction(), we can't query gSavedSettings until after
     // initConfiguration().
@@ -843,8 +840,6 @@ bool LLAppViewer::init()
         LLError::setFatalFunction([rc](const std::string&){ _exit(rc); });
     }
 
-    mAlloc.setProfilingEnabled(gSavedSettings.getBOOL("MemProfiling"));
-
     // Initialize the non-LLCurl libcurl library.  Should be called
     // before consumers (LLTextureFetch).
     mAppCoreHttp.init();
@@ -853,14 +848,12 @@ bool LLAppViewer::init()
 
     LLMachineID::init();
 
+    if (gSavedSettings.getBOOL("QAModeMetrics"))
     {
-        if (gSavedSettings.getBOOL("QAModeMetrics"))
-        {
-            app_metrics_qa_mode = true;
-            app_metrics_interval = METRICS_INTERVAL_QA;
-        }
-        LLViewerAssetStatsFF::init();
+        app_metrics_qa_mode = true;
+        app_metrics_interval = METRICS_INTERVAL_QA;
     }
+    LLViewerAssetStatsFF::init();
 
     initThreads();
     LL_INFOS("InitInfo") << "Threads initialized." << LL_ENDL ;
@@ -873,10 +866,24 @@ bool LLAppViewer::init()
     settings_map["floater"] = &gSavedSettings; // *TODO: New settings file
     settings_map["account"] = &gSavedPerAccountSettings;
 
-    LLUI::initParamSingleton(settings_map,
+    LLUI::createInstance(settings_map,
         LLUIImageList::getInstance(),
         ui_audio_callback,
         deferred_ui_audio_callback);
+
+    if (gSavedSettings.getBOOL("SpellCheck"))
+    {
+        std::list<std::string> dict_list;
+        std::string dict_setting = gSavedSettings.getString("SpellCheckDictionary");
+        boost::split(dict_list, dict_setting, boost::is_any_of(std::string(",")));
+        if (!dict_list.empty())
+        {
+            LLSpellChecker::setUseSpellCheck(dict_list.front());
+            dict_list.pop_front();
+            LLSpellChecker::instance().setSecondaryDictionaries(dict_list);
+        }
+    }
+
     LL_INFOS("InitInfo") << "UI initialized." << LL_ENDL ;
 
     // NOW LLUI::getLanguage() should work. gDirUtilp must know the language
@@ -977,9 +984,11 @@ bool LLAppViewer::init()
     // do any necessary set-up for accepting incoming SLURLs from apps
     initSLURLHandler();
 
-    if(false == initHardwareTest())
+    if (!initHardwareTest())
     {
         // Early out from user choice.
+        LL_WARNS("InitInfo") << "initHardwareTest() failed." << LL_ENDL;
+        // quit immediately
         return false;
     }
     LL_INFOS("InitInfo") << "Hardware test initialization done." << LL_ENDL ;
@@ -994,11 +1003,11 @@ bool LLAppViewer::init()
 
     if (!initCache())
     {
+        std::string msg = LLTrans::getString("MBUnableToAccessFile");
+        OSMessageBox(msg.c_str(), LLStringUtil::null, OSMB_OK);
         LL_WARNS("InitInfo") << "Failed to init cache" << LL_ENDL;
-        std::ostringstream msg;
-        msg << LLTrans::getString("MBUnableToAccessFile");
-        OSMessageBox(msg.str(),LLStringUtil::null,OSMB_OK);
-        return 0;
+        // quit immediately
+        return false;
     }
     LL_INFOS("InitInfo") << "Cache initialization is done." << LL_ENDL ;
 
@@ -1027,10 +1036,13 @@ bool LLAppViewer::init()
     gGLManager.printGLInfoString();
 
     // If we don't have the right GL requirements, exit.
+    // ? AG: It seems we never set mHasRequirements to false
     if (!gGLManager.mHasRequirements)
     {
-        // already handled with a MBVideoDrvErr
-        return 0;
+        // Already handled with a MBVideoDrvErr
+        LL_WARNS("InitInfo") << "gGLManager.mHasRequirements is false." << LL_ENDL;
+        // quit immediately
+        return false;
     }
 
     // Without SSE2 support we will crash almost immediately, warn here.
@@ -1038,15 +1050,15 @@ bool LLAppViewer::init()
     {
         // can't use an alert here since we're exiting and
         // all hell breaks lose.
-        OSMessageBox(
-            LLNotifications::instance().getGlobalString("UnsupportedCPUSSE2"),
-            LLStringUtil::null,
-            OSMB_OK);
-        return 0;
+        std::string msg = LLNotifications::instance().getGlobalString("UnsupportedCPUSSE2");
+        OSMessageBox(msg.c_str(), LLStringUtil::null, OSMB_OK);
+        LL_WARNS("InitInfo") << "SSE2 is not supported" << LL_ENDL;
+        // quit immediately
+        return false;
     }
 
     // alert the user if they are using unsupported hardware
-    if(!gSavedSettings.getBOOL("AlertedUnsupportedHardware"))
+    if (!gSavedSettings.getBOOL("AlertedUnsupportedHardware"))
     {
         bool unsupported = false;
         LLSD args;
@@ -1062,19 +1074,21 @@ bool LLAppViewer::init()
         U64Bytes minRAM;
         minRAMString >> minRAM;
 
-        if(!LLFeatureManager::getInstance()->isGPUSupported() && LLFeatureManager::getInstance()->getGPUClass() != GPU_CLASS_UNKNOWN)
+        if (!LLFeatureManager::getInstance()->isGPUSupported() && LLFeatureManager::getInstance()->getGPUClass() != GPU_CLASS_UNKNOWN)
         {
             minSpecs += LLNotifications::instance().getGlobalString("UnsupportedGPU");
             minSpecs += "\n";
             unsupported = true;
         }
-        if(gSysCPU.getMHz() < minCPU)
+
+        if (gSysCPU.getMHz() < minCPU)
         {
             minSpecs += LLNotifications::instance().getGlobalString("UnsupportedCPU");
             minSpecs += "\n";
             unsupported = true;
         }
-        if(gSysMemory.getPhysicalMemoryKB() < minRAM)
+
+        if (gSysMemory.getPhysicalMemoryKB() < minRAM)
         {
             minSpecs += LLNotifications::instance().getGlobalString("UnsupportedRAM");
             minSpecs += "\n";
@@ -1086,15 +1100,14 @@ bool LLAppViewer::init()
             LLNotificationsUtil::add("UnknownGPU");
         }
 
-        if(unsupported)
+        if (unsupported)
         {
-            if(!gSavedSettings.controlExists("WarnUnsupportedHardware")
+            if (!gSavedSettings.controlExists("WarnUnsupportedHardware")
                 || gSavedSettings.getBOOL("WarnUnsupportedHardware"))
             {
                 args["MINSPECS"] = minSpecs;
                 LLNotificationsUtil::add("UnsupportedHardware", args );
             }
-
         }
     }
 
@@ -1181,19 +1194,17 @@ bool LLAppViewer::init()
     gSimLastTime = gRenderStartTime.getElapsedTimeF32();
     gSimFrames = (F32)gFrameCount;
 
-	try 
-	{
-		LL_INFOS("InitInfo") << "Initializing SecHandler" << LL_ENDL;
-		initializeSecHandler();
-	}
-	catch (LLProtectedDataException&)
-	{
-		LLNotificationsUtil::add("CorruptedProtectedDataStore");
-	}
+    try
+    {
+        initializeSecHandler();
+    }
+    catch (LLProtectedDataException&)
+    {
+        LLNotificationsUtil::add("CorruptedProtectedDataStore");
+    }
 
-	gGLActive = false;
-	
-	/*
+    gGLActive = false;
+    /*
 #if LL_RELEASE_FOR_DOWNLOAD
     if (!gSavedSettings.getBOOL("CmdLineSkipUpdater") && !gNonInteractive)
     {
@@ -1301,7 +1312,7 @@ bool LLAppViewer::init()
     //datetime formatting functions didn't support some parameters such as "weekday".
     //Names for days and months localized in xml are also useful for Polish locale(STORM-107).
     std::string language = gSavedSettings.getString("Language");
-    if(language == "ja" || language == "pl")
+    if (language == "ja" || language == "pl")
     {
         LLStringOps::setupWeekDaysNames(LLTrans::getString("dateTimeWeekdaysNames"));
         LLStringOps::setupWeekDaysShortNames(LLTrans::getString("dateTimeWeekdaysShortNames"));
@@ -1354,6 +1365,7 @@ bool LLAppViewer::init()
     //LLSimpleton creations
     LLEnvironment::createInstance();
     LLWorld::createInstance();
+    LLViewerStatsRecorder::createInstance();
     LLSelectMgr::createInstance();
     LLViewerCamera::createInstance();
     LL::GLTFSceneManager::createInstance();
@@ -1542,13 +1554,13 @@ bool LLAppViewer::doFrame()
             }
 
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df mainloop")
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df mainloop");
                 // canonical per-frame event
                 mainloop.post(newFrame);
             }
 
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df suspend")
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df suspend");
                 // give listeners a chance to run
                 llcoro::suspend();
                 // if one of our coroutines threw an uncaught exception, rethrow it now
@@ -1556,33 +1568,33 @@ bool LLAppViewer::doFrame()
             }
         }
 
-		if (!LLApp::isExiting())
-		{
-			LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df JoystickKeyboard" )
-			pingMainloopTimeout("Main:JoystickKeyboard");
+        if (!LLApp::isExiting())
+        {
+            LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df JoystickKeyboard");
+            pingMainloopTimeout("Main:JoystickKeyboard");
 
-			// Scan keyboard for movement keys.  Command keys and typing
-			// are handled by windows callbacks.  Don't do this until we're
-			// done initializing.  JC
-			if (gViewerWindow
-				&& (gHeadlessClient || gViewerWindow->getWindow()->getVisible())
-				&& gViewerWindow->getActive()
-				&& !gViewerWindow->getWindow()->getMinimized()
-				&& LLStartUp::getStartupState() == STATE_STARTED
-				&& (gHeadlessClient || !gViewerWindow->getShowProgress())
-				&& !gFocusMgr.focusLocked())
-			{
-				LLPerfStats::RecordSceneTime T(LLPerfStats::StatType_t::RENDER_IDLE);
-				//BD
-				gJoystick->scanJoystick();
-				gKeyboard->scanKeyboard();
+            // Scan keyboard for movement keys.  Command keys and typing
+            // are handled by windows callbacks.  Don't do this until we're
+            // done initializing.  JC
+            if (gViewerWindow
+                && (gHeadlessClient || gViewerWindow->getWindow()->getVisible())
+                && gViewerWindow->getActive()
+                && !gViewerWindow->getWindow()->getMinimized()
+                && LLStartUp::getStartupState() == STATE_STARTED
+                && (gHeadlessClient || !gViewerWindow->getShowProgress())
+                && !gFocusMgr.focusLocked())
+            {
+                LLPerfStats::RecordSceneTime T (LLPerfStats::StatType_t::RENDER_IDLE);
+                //BD
+                gJoystick->scanJoystick();
+                gKeyboard->scanKeyboard();
                 gViewerInput.scanMouse();
             }
 
             // Update state based on messages, user input, object idle.
             {
                 {
-                    LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df pauseMainloopTimeout" )
+                    LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df pauseMainloopTimeout");
                     pauseMainloopTimeout(); // *TODO: Remove. Messages shouldn't be stalling for 20+ seconds!
                 }
 
@@ -1593,7 +1605,7 @@ bool LLAppViewer::doFrame()
                 }
 
                 {
-                    LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df resumeMainloopTimeout" )
+                    LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df resumeMainloopTimeout");
                     resumeMainloopTimeout();
                 }
             }
@@ -1655,7 +1667,7 @@ bool LLAppViewer::doFrame()
         }
 
         {
-            LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df pauseMainloopTimeout" )
+            LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df pauseMainloopTimeout");
         pingMainloopTimeout("Main:Sleep");
 
         pauseMainloopTimeout();
@@ -1664,14 +1676,14 @@ bool LLAppViewer::doFrame()
         // Sleep and run background threads
         {
             //LL_RECORD_BLOCK_TIME(SLEEP2);
-            LL_PROFILE_ZONE_WARN( "Sleep2" )
+            LL_PROFILE_ZONE_WARN("Sleep2");
 
             // yield some time to the os based on command line option
             static LLCachedControl<S32> yield_time(gSavedSettings, "YieldTime", -1);
             if(yield_time >= 0)
             {
                 LL_PROFILE_ZONE_NAMED_CATEGORY_APP("Yield");
-                LL_PROFILE_ZONE_NUM( yield_time )
+                LL_PROFILE_ZONE_NUM(yield_time);
                 ms_sleep(yield_time);
             }
 
@@ -1739,24 +1751,24 @@ bool LLAppViewer::doFrame()
             }
 
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df gMeshRepo" )
-            gMeshRepo.update() ;
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df gMeshRepo");
+                gMeshRepo.update() ;
             }
 
             if(!total_work_pending) //pause texture fetching threads if nothing to process.
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df getTextureCache" )
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df getTextureCache");
                 LLAppViewer::getTextureCache()->pause();
                 LLAppViewer::getTextureFetch()->pause();
             }
             if(!total_io_pending) //pause file threads if nothing to process.
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df LLVFSThread" )
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df LLVFSThread");
                 LLLFSThread::sLocal->pause();
             }
 
             {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df resumeMainloopTimeout" )
+                LL_PROFILE_ZONE_NAMED_CATEGORY_APP("df resumeMainloopTimeout");
                 resumeMainloopTimeout();
             }
             pingMainloopTimeout("Main:End");
@@ -1785,7 +1797,7 @@ bool LLAppViewer::doFrame()
         LL_INFOS() << "Exiting main_loop" << LL_ENDL;
     }
     }LLPerfStats::StatsRecorder::endFrame();
-    LL_PROFILER_FRAME_END
+    LL_PROFILER_FRAME_END;
 
     return ! LLApp::isRunning();
 }
@@ -2080,7 +2092,7 @@ bool LLAppViewer::cleanup()
     LL_INFOS() << "Saving Data" << LL_ENDL;
 
     // Store the time of our current logoff
-    gSavedPerAccountSettings.setU32("LastLogoff", time_corrected());
+    gSavedPerAccountSettings.setU32("LastLogoff", (U32)time_corrected());
 
     if (LLEnvironment::instanceExists())
     {
@@ -2292,9 +2304,11 @@ bool LLAppViewer::cleanup()
     LL::GLTFSceneManager::deleteSingleton();
     LLEnvironment::deleteSingleton();
     LLSelectMgr::deleteSingleton();
+    LLViewerStatsRecorder::deleteSingleton();
     LLViewerEventRecorder::deleteSingleton();
     LLWorld::deleteSingleton();
     LLVoiceClient::deleteSingleton();
+    LLUI::deleteSingleton();
 
     // It's not at first obvious where, in this long sequence, a generic cleanup
     // call OUGHT to go. So let's say this: as we migrate cleanup from
@@ -2353,10 +2367,10 @@ bool LLAppViewer::initThreads()
         cores = llmin(cores, (S32) max_cores);
     }
 
-    // The only configurable thread count right now is ImageDecode
-    // The viewer typically starts around 8 threads not including image decode,
-    // so try to leave at least one core free
-    S32 image_decode_count = llclamp(cores - 9, 1, 8);
+    // always use at least 2 threads for image decoding to prevent
+    // a single texture blocking all other textures from decoding
+    S32 image_decode_count = llclamp(cores - 6, 2, 16);
+
     threadCounts["ImageDecode"] = image_decode_count;
     gSavedSettings.setLLSD("ThreadPoolSizes", threadCounts);
 
@@ -2394,7 +2408,9 @@ void errorCallback(LLError::ELevel level, const std::string &error_string)
     if (level == LLError::LEVEL_ERROR)
     {
 #ifndef LL_RELEASE_FOR_DOWNLOAD
-        OSMessageBox(error_string, LLTrans::getString("MBFatalError"), OSMB_OK);
+        std::string message = error_string +
+            "\n\n\nThis is a developer-only notification!\nThis notification won't be present in Release for download build";
+        OSMessageBox(message, LLTrans::getString("MBFatalError"), OSMB_OK);
 #endif
 
         gDebugInfo["FatalMessage"] = error_string;
@@ -2530,7 +2546,7 @@ bool LLAppViewer::loadSettingsFromDirectory(const std::string& location_key,
             std::string full_settings_path;
 
             if (file.file_name_setting.isProvided()
-                && gSavedSettings.controlExists(file.file_name_setting))
+                && gSavedSettings.controlExists(file.file_name_setting()))
             {
                 // try to find filename stored in file_name_setting control
                 full_settings_path = gSavedSettings.getString(file.file_name_setting());
@@ -2650,7 +2666,7 @@ bool tempSetControl(const std::string& name, const std::string& value)
 
 bool LLAppViewer::initConfiguration()
 {
-    //Load settings files list
+    // Load settings files list
     std::string settings_file_list = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "settings_files.xml");
     LLXMLNodePtr root;
     bool success = LLXMLNode::parseFile(settings_file_list, root, NULL);
@@ -2714,8 +2730,7 @@ bool LLAppViewer::initConfiguration()
 #ifndef LL_RELEASE_FOR_DOWNLOAD
     // provide developer build only overrides for these control variables that are not
     // persisted to settings.xml
-    LLControlVariable* c = gSavedSettings.getControl("AllowMultipleViewers");
-    if (c)
+    if (LLControlVariable* c = gSavedSettings.getControl("AllowMultipleViewers"))
     {
         c->setValue(true, false);
     }
@@ -2865,7 +2880,8 @@ bool LLAppViewer::initConfiguration()
     }
 
 #if AL_VIEWER_EVENT_RECORDER
-    if (clp.hasOption("logevents")) {
+    if (clp.hasOption("logevents")) 
+    {
         LLViewerEventRecorder::instance().setEventLoggingOn();
     }
 #endif
@@ -2937,19 +2953,6 @@ bool LLAppViewer::initConfiguration()
             gSavedSettings.getString("Language"));
     }
 
-    if (gSavedSettings.getBOOL("SpellCheck"))
-    {
-        std::list<std::string> dict_list;
-        std::string dict_setting = gSavedSettings.getString("SpellCheckDictionary");
-        boost::split(dict_list, dict_setting, boost::is_any_of(std::string(",")));
-        if (!dict_list.empty())
-        {
-            LLSpellChecker::setUseSpellCheck(dict_list.front());
-            dict_list.pop_front();
-            LLSpellChecker::instance().setSecondaryDictionaries(dict_list);
-        }
-    }
-
     if (gNonInteractive)
     {
         tempSetControl("AllowMultipleViewers", "true");
@@ -2961,7 +2964,6 @@ bool LLAppViewer::initConfiguration()
         LLError::setEnabledLogTypesMask(0);
         llassert_always(!gSavedSettings.getBOOL("SLURLPassToOtherInstance"));
     }
-
 
     // Handle slurl use. NOTE: Don't let SL-55321 reappear.
     // This initial-SLURL logic, up through the call to
@@ -3013,14 +3015,14 @@ bool LLAppViewer::initConfiguration()
     }
 
     // NextLoginLocation is set as a side effect of LLStartUp::setStartSLURL()
-    std::string nextLoginLocation = gSavedSettings.getString("NextLoginLocation");
+    std::string nextLoginLocation = gSavedSettings.getString( "NextLoginLocation" );
     if (!nextLoginLocation.empty())
     {
         LL_DEBUGS("AppInit") << "set start from NextLoginLocation: " << nextLoginLocation << LL_ENDL;
         LLStartUp::setStartSLURL(LLSLURL(nextLoginLocation));
     }
     else if ((clp.hasOption("login") || clp.hasOption("autologin"))
-        && gSavedSettings.getString("CmdLineLoginLocation").empty())
+             && gSavedSettings.getString("CmdLineLoginLocation").empty())
     {
         // If automatic login from command line with --login switch
         // init StartSLURL location.
@@ -3096,8 +3098,9 @@ bool LLAppViewer::initConfiguration()
     {
         // This is the second instance of SL. Turn off voice support,
         // but make sure the setting is *not* persisted.
-        LLControlVariable* disable_voice = gSavedSettings.getControl("CmdLineDisableVoice");
-        if (disable_voice)
+        // Also see LLVivoxVoiceClient::voiceEnabled()
+        LLControlVariable* enable_voice = gSavedSettings.getControl("EnableVoiceChat");
+        if (enable_voice)
         {
             const BOOL DO_NOT_PERSIST = FALSE;
             disable_voice->setValue(LLSD(TRUE), DO_NOT_PERSIST);
@@ -3206,6 +3209,13 @@ bool LLAppViewer::meetsRequirementsForMaximizedStart()
     return maximizedOk;
 }
 
+// virtual
+void LLAppViewer::sendOutOfDiskSpaceNotification()
+{
+    LL_WARNS() << "Out of disk space notification requested" << LL_ENDL;
+    LLNotificationsUtil::add("OutOfDiskSpace");
+}
+
 bool LLAppViewer::initWindow()
 {
     LL_INFOS("AppInit") << "Initializing window..." << LL_ENDL;
@@ -3301,7 +3311,7 @@ bool LLAppViewer::initWindow()
     gSavedSettings.setBOOL("RenderInitError", FALSE);
     gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
 
-    //If we have a startup crash, it's usually near GL initialization, so simulate that.
+    // If we have a startup crash, it's usually near GL initialization, so simulate that.
     if (gCrashOnStartup)
     {
         LLAppViewer::instance()->forceErrorLLError();
@@ -3561,7 +3571,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["LIBVLC_VERSION"] = "Undefined";
 #endif
 
-    S32 packets_in = LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_IN);
+    S32 packets_in = (S32)LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_IN);
     if (packets_in > 0)
     {
         info["PACKETS_LOST"] = LLViewerStats::instance().getRecording().getSum(LLStatViewer::PACKETS_LOST);
@@ -4110,7 +4120,6 @@ void LLAppViewer::forceQuit()
     LLApp::setQuitting();
 }
 
-//TODO: remove
 void LLAppViewer::fastQuit(S32 error_code)
 {
     // finish pending transfers
@@ -4133,11 +4142,11 @@ void LLAppViewer::requestQuit()
 
     LLViewerRegion* region = gAgent.getRegion();
 
-    if( (LLStartUp::getStartupState() < STATE_STARTED) || !region )
+    if ((LLStartUp::getStartupState() < STATE_STARTED) || !region)
     {
         // If we have a region, make some attempt to send a logout request first.
         // This prevents the halfway-logged-in avatar from hanging around inworld for a couple minutes.
-        if(region)
+        if (region)
         {
             sendLogoutRequest();
         }
@@ -4168,6 +4177,7 @@ void LLAppViewer::requestQuit()
     {
         // application is quitting
         gFloaterView->closeAllChildren(true);
+        mClosingFloaters = true;
     }
 
     // Send preferences once, when exiting
@@ -4231,6 +4241,7 @@ void LLAppViewer::abortQuit()
 {
     LL_INFOS() << "abortQuit()" << LL_ENDL;
     mQuitRequested = false;
+    mClosingFloaters = false;
 }
 
 void LLAppViewer::migrateCacheDirectory()
@@ -4753,6 +4764,10 @@ void LLAppViewer::idle()
 
     LLGLTFMaterialList::flushUpdates();
 
+    static LLCachedControl<U32> downscale_method(gSavedSettings, "RenderDownScaleMethod");
+    gGLManager.mDownScaleMethod = downscale_method;
+    LLImageGL::updateClass();
+
     // Service the WorkQueue we use for replies from worker threads.
     // Use function statics for the timeslice setting so we only have to fetch
     // and convert MainWorkTime once.
@@ -5181,10 +5196,19 @@ void LLAppViewer::idleShutdown()
     }
 
     // Wait for all floaters to get resolved
-    if (gFloaterView
-        && !gFloaterView->allChildrenClosed())
+    if (gFloaterView)
     {
-        return;
+        if (!mClosingFloaters)
+        {
+            // application is quitting
+            gFloaterView->closeAllChildren(true);
+            mClosingFloaters = true;
+            return;
+        }
+        if (!gFloaterView->allChildrenClosed())
+        {
+            return;
+        }
     }
 
     // ProductEngine: Try moving this code to where we shut down sTextureCache in cleanup()
@@ -5227,7 +5251,7 @@ void LLAppViewer::idleShutdown()
     }
 
     // All floaters are closed.  Tell server we want to quit.
-    if( !logoutRequestSent() )
+    if (!logoutRequestSent())
     {
         sendLogoutRequest();
 
@@ -5239,8 +5263,8 @@ void LLAppViewer::idleShutdown()
     }
 
     // Make sure that we quit if we haven't received a reply from the server.
-    if( logoutRequestSent()
-        && gLogoutTimer.getElapsedTimeF32() > gLogoutMaxTime )
+    if (logoutRequestSent()
+        && gLogoutTimer.getElapsedTimeF32() > gLogoutMaxTime)
     {
         forceQuit();
         return;
@@ -5335,6 +5359,23 @@ void LLAppViewer::updateNameLookupUrl(const LLViewerRegion * regionp)
 void LLAppViewer::postToMainCoro(const LL::WorkQueue::Work& work)
 {
     gMainloopWork.post(work);
+}
+
+void LLAppViewer::outOfMemorySoftQuit()
+{
+    if (!mQuitRequested)
+    {
+        // Todo:
+        // Find a way to free at least some memory to make it safer
+        // Pause decoding and mesh repositorie
+        getTextureCache()->pause();
+        getTextureFetch()->pause();
+        LLLFSThread::sLocal->pause();
+        gLogoutTimer.reset();
+        mQuitRequested = true;
+
+        LLError::LLUserWarningMsg::showOutOfMemory();
+    }
 }
 
 void LLAppViewer::idleNameCache()

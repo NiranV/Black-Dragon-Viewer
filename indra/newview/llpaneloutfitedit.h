@@ -59,6 +59,7 @@ class LLMenuGL;
 class LLFindNonLinksByMask;
 class LLFindWearablesOfType;
 class LLWearableItemTypeNameComparator;
+class LLLoadingIndicator;
 
 class LLPanelOutfitEdit : public LLPanel
 {
@@ -185,55 +186,64 @@ public:
 									  std::string& tooltip_msg);
 
 private:
-	void onAddMoreButtonClicked();
-	void showFilteredWearablesListView(LLWearableType::EType type);
-	void onOutfitChanging(bool started);
-	void getSelectedItemsUUID(uuid_vec_t& uuid_list);
-	void getCurrentItemUUID(LLUUID& selected_id);
-	void onCOFChanged();
-	void saveOutfit(bool as_new = false);
+    void onAddMoreButtonClicked();
+    void showFilteredWearablesListView(LLWearableType::EType type);
+    void onOutfitChanging(bool started);
+    void getSelectedItemsUUID(uuid_vec_t& uuid_list);
+    void getCurrentItemUUID(LLUUID& selected_id);
+    void onCOFChanged();
+    void saveOutfit(bool as_new = false);
 
-	/**
-	 * Method preserves selection while switching between folder/list view modes
-	*/
-	void saveListSelection();
+    /**
+     * Method preserves selection while switching between folder/list view modes
+    */
+    void saveListSelection();
 
-	typedef std::pair<LLWearableType::EType, size_t> selection_info_t;
+    void updateWearablesPanelVerbButtons();
 
-	LLWearableType::EType getCOFWearablesSelectionType() const;
-	selection_info_t getAddMorePanelSelectionType() const;
-	LLWearableType::EType getWearableTypeByItemUUID(const LLUUID& item_uuid) const;
+    typedef std::pair<LLWearableType::EType, size_t> selection_info_t;
 
-	LLTextBox*			mCurrentOutfitName;
-	LLTextBox*			mStatus;
-	LLInventoryPanel*	mInventoryItemsPanel;
-	LLFilterEditor*		mSearchFilter;
-	LLSaveFolderState*	mSavedFolderState;
-	std::string			mSearchString;
-	LLButton*			mFolderViewBtn;
-	LLButton*			mPlusBtn;
-	LLButton*			mFilterBtn;
-	LLPanel*			mAddWearablesPanel;
-	
-	LLComboBox*			mFolderViewFilterCmbBox;
-	LLComboBox*			mListViewFilterCmbBox;
+    LLWearableType::EType getCOFWearablesSelectionType() const;
+    selection_info_t getAddMorePanelSelectionType() const;
+    LLWearableType::EType getWearableTypeByItemUUID(const LLUUID& item_uuid) const;
 
-	LLFilteredWearableListManager* 	mWearableListManager;
-	LLWearableItemsList* 			mWearableItemsList;
-	LLPanel*						mWearablesListViewPanel;
-	LLWearableItemTypeNameComparator* mWearableListViewItemsComparator;
+    LLTextBox*          mCurrentOutfitName;
+    LLTextBox*          mStatus;
+    LLInventoryPanel*   mInventoryItemsPanel;
+    LLFilterEditor*     mSearchFilter;
+    LLSaveFolderState*  mSavedFolderState;
+    std::string         mSearchString;
+    LLButton*           mFolderViewBtn;
+    LLButton*           mListViewBtn;
+    LLButton*           mPlusBtn;
+    LLButton*           mShowAddWearablesBtn = nullptr;
+    LLButton*           mFilterBtn = nullptr;
+    LLPanel*            mAddWearablesPanel;
+    LLPanel*            mOutfitNameStatusPanel = nullptr;
+    LLLoadingIndicator* mLoadingIndicator = nullptr;
+    LLView*             mFilterPanel = nullptr;
+    LLUICtrl*           mNoAddWearablesButtonBar = nullptr;
+    LLUICtrl*           mAddWearablesButtonBar = nullptr;
 
-	LLCOFDragAndDropObserver* mCOFDragAndDropObserver;
+    LLComboBox*         mFolderViewFilterCmbBox;
+    LLComboBox*         mListViewFilterCmbBox;
 
-	std::vector<LLLookItemType> mFolderViewItemTypes;
-	std::vector<LLFilterItem*> mListViewItemTypes;
+    LLFilteredWearableListManager*  mWearableListManager;
+    LLWearableItemsList*            mWearableItemsList;
+    LLPanel*                        mWearablesListViewPanel;
+    LLWearableItemTypeNameComparator* mWearableListViewItemsComparator;
 
-	LLCOFWearables*		mCOFWearables;
-	LLToggleableMenu*	mGearMenu;
-	LLToggleableMenu*	mAddWearablesGearMenu;
-	bool				mInitialized;
-	LLMenuButton*		mWearablesGearMenuBtn;
-	LLMenuButton*		mGearMenuBtn;
+    LLCOFDragAndDropObserver* mCOFDragAndDropObserver;
+
+    std::vector<LLLookItemType> mFolderViewItemTypes;
+    std::vector<LLFilterItem*> mListViewItemTypes;
+
+    LLCOFWearables*     mCOFWearables;
+    LLToggleableMenu*   mGearMenu;
+    LLToggleableMenu*   mAddWearablesGearMenu;
+    bool                mInitialized;
+    LLMenuButton*       mWearablesGearMenuBtn;
+    LLMenuButton*       mGearMenuBtn;
 
 };
 

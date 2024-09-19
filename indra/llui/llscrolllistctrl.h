@@ -468,27 +468,25 @@ protected:
     void            updateLineHeight();
 
 private:
-	void			selectPrevItem(bool extend_selection);
-	void			selectNextItem(bool extend_selection);
-	void			drawItems();
-	
-	void            updateLineHeightInsert(LLScrollListItem* item);
-	void			reportInvalidInput();
-	bool			isRepeatedChars(const LLWString& string) const;
-	void			selectItem(LLScrollListItem* itemp, S32 cell, bool single_select = true);
-	void			deselectItem(LLScrollListItem* itemp);
-	void			commitIfChanged();
-	bool			setSort(S32 column, bool ascending);
-	S32				getLinesPerPage();
+    void            drawItems();
 
-	static void		showProfile(std::string id, bool is_group);
-	static void		sendIM(std::string id);
-	static void		addFriend(std::string id);
-	static void		removeFriend(std::string id);
-    static void		reportAbuse(std::string id, bool is_group);
-	static void		showNameDetails(std::string id, bool is_group);
-	static void		copyNameToClipboard(std::string id, bool is_group);
-	static void		copySLURLToClipboard(std::string id, bool is_group);
+    void            updateLineHeightInsert(LLScrollListItem* item);
+    void            reportInvalidInput();
+    bool            isRepeatedChars(const LLWString& string) const;
+    void            selectItem(LLScrollListItem* itemp, S32 cell, bool single_select = true);
+    void            deselectItem(LLScrollListItem* itemp);
+    void            commitIfChanged();
+    bool            setSort(S32 column, bool ascending);
+    S32             getLinesPerPage();
+
+    static void     showProfile(std::string id, bool is_group);
+    static void     sendIM(std::string id);
+    static void     addFriend(std::string id);
+    static void     removeFriend(std::string id);
+    static void     reportAbuse(std::string id, bool is_group);
+    static void     showNameDetails(std::string id, bool is_group);
+    static void     copyNameToClipboard(std::string id, bool is_group);
+    static void     copySLURLToClipboard(std::string id, bool is_group);
 //	//BD - Common Avatar Functions
 	static void		sendTeleport(std::string id);
 	static void		map(std::string id);
@@ -497,95 +495,95 @@ private:
 	static void		block(std::string id);
 	static void		callVoice(std::string id);
 
-	S32				mLineHeight;	// the max height of a single line
-	S32				mScrollLines;	// how many lines we've scrolled down
-	S32				mPageLines;		// max number of lines is it possible to see on the screen given mRect and mLineHeight
-	S32				mHeadingHeight;	// the height of the column header buttons, if visible
-	U32				mMaxSelectable; 
-	LLScrollbar*	mScrollbar;
-	bool 			mAllowMultipleSelection;
-	bool			mAllowKeyboardMovement;
-	bool			mCommitOnKeyboardMovement;
-	bool			mCommitOnSelectionChange;
-	bool			mSelectionChanged;
-	ESelectionType	mSelectionType;
-	bool			mNeedsScroll;
-	bool			mMouseWheelOpaque;
-	bool			mCanSelect;
-    bool			mCanSort;		// Whether user is allowed to sort
-	bool			mDisplayColumnHeaders;
-	bool			mColumnsDirty;
-	bool			mColumnWidthsDirty;
+    S32             mLineHeight;    // the max height of a single line
+    S32             mScrollLines;   // how many lines we've scrolled down
+    S32             mPageLines;     // max number of lines is it possible to see on the screen given mRect and mLineHeight
+    S32             mHeadingHeight; // the height of the column header buttons, if visible
+    U32             mMaxSelectable;
+    LLScrollbar*    mScrollbar;
+    bool            mAllowMultipleSelection;
+    bool            mAllowKeyboardMovement;
+    bool            mCommitOnKeyboardMovement;
+    bool            mCommitOnSelectionChange;
+    bool            mSelectionChanged;
+    ESelectionType  mSelectionType;
+    bool            mNeedsScroll;
+    bool            mMouseWheelOpaque;
+    bool            mCanSelect;
+    bool            mCanSort;       // Whether user is allowed to sort
+    bool            mDisplayColumnHeaders;
+    bool            mColumnsDirty;
+    bool            mColumnWidthsDirty;
 
-	bool			mAlternateSort;
+    bool            mAlternateSort;
 
-	mutable item_list	mItemList;
+    mutable item_list   mItemList;
 
-	LLScrollListItem *mLastSelected;
+    LLScrollListItem *mLastSelected;
 
-	S32				mMaxItemCount; 
+    S32             mMaxItemCount;
 
-	LLRect			mItemListRect;
-	S32             mColumnPadding;
-	S32             mRowPadding;
+    LLRect          mItemListRect;
+    S32             mColumnPadding;
+    S32             mRowPadding;
 
-	bool			mBackgroundVisible;
-	bool			mDrawStripes;
+    bool            mBackgroundVisible;
+    bool            mDrawStripes;
 
-	LLUIColor		mBgWriteableColor;
-	LLUIColor		mBgReadOnlyColor;
-	LLUIColor		mBgSelectedColor;
-	LLUIColor		mBgStripeColor;
-	LLUIColor		mFgSelectedColor;
-	LLUIColor		mFgUnselectedColor;
-	LLUIColor		mFgDisabledColor;
-	LLUIColor		mHoveredColor;
-	LLUIColor		mHighlightedColor;
+    LLUIColor       mBgWriteableColor;
+    LLUIColor       mBgReadOnlyColor;
+    LLUIColor       mBgSelectedColor;
+    LLUIColor       mBgStripeColor;
+    LLUIColor       mFgSelectedColor;
+    LLUIColor       mFgUnselectedColor;
+    LLUIColor       mFgDisabledColor;
+    LLUIColor       mHoveredColor;
+    LLUIColor       mHighlightedColor;
 
 	//BD
 	LLUIColor		mBgMarkedColor;
 
-	S32				mBorderThickness;
-	callback_t		mOnDoubleClickCallback;
-	callback_t 		mOnMaximumSelectCallback;
-	callback_t 		mOnSortChangedCallback;
+    S32             mBorderThickness;
+    callback_t      mOnDoubleClickCallback;
+    callback_t      mOnMaximumSelectCallback;
+    callback_t      mOnSortChangedCallback;
 
-	S32				mHighlightedItem;
-	class LLViewBorder*	mBorder;
-	LLHandle<LLContextMenu>	mPopupMenuHandle;
-	
-	LLView			*mCommentTextView;
+    S32             mHighlightedItem;
+    class LLViewBorder* mBorder;
+    LLHandle<LLContextMenu> mPopupMenuHandle;
 
-	LLWString		mSearchString;
-	LLFrameTimer	mSearchTimer;
-	
-	S32				mSearchColumn;
-	S32				mNumDynamicWidthColumns;
-	S32				mTotalStaticColumnWidth;
-	S32				mTotalColumnPadding;
+    LLTextBox*      mCommentText = nullptr;
 
-	mutable bool	mSorted;
-	
-	typedef std::map<std::string, LLScrollListColumn*> column_map_t;
-	column_map_t mColumns;
+    LLWString       mSearchString;
+    LLFrameTimer    mSearchTimer;
 
-	bool			mDirty;
-	S32				mOriginalSelection;
+    S32             mSearchColumn;
+    S32             mNumDynamicWidthColumns;
+    S32             mTotalStaticColumnWidth;
+    S32             mTotalColumnPadding;
 
-	ContextMenuType mContextMenuType;
+    mutable bool    mSorted;
+
+    typedef std::map<std::string, LLScrollListColumn*> column_map_t;
+    column_map_t mColumns;
+
+    bool            mDirty;
+    S32             mOriginalSelection;
+
+    ContextMenuType mContextMenuType;
 
 	//BD - Right Click Context Menu
 	std::string		mContextMenuName;
 
-	typedef std::vector<LLScrollListColumn*> ordered_columns_t;
-	ordered_columns_t	mColumnsIndexed;
+    typedef std::vector<LLScrollListColumn*> ordered_columns_t;
+    ordered_columns_t   mColumnsIndexed;
 
-	typedef std::pair<S32, bool> sort_column_t;
-	std::vector<sort_column_t>	mSortColumns;
+    typedef std::pair<S32, bool> sort_column_t;
+    std::vector<sort_column_t>  mSortColumns;
 
-	sort_signal_t*	mSortCallback;
+    sort_signal_t*  mSortCallback;
 
-	is_friend_signal_t*	mIsFriendSignal;
+    is_friend_signal_t* mIsFriendSignal;
 }; // end class LLScrollListCtrl
 
 #endif  // LL_SCROLLLISTCTRL_H

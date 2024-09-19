@@ -46,30 +46,29 @@ public:
     void refresh() override;
     static void refreshAll();
 
-    LLCheckBoxCtrl  *mCheckShowOwners;
-
-	LLTextBox* mLabelAreaPrice;
-	LLTextBox* mLabelArea;
-
-	LLUICtrl* mLabelPrice;
-	LLButton* mBtnBuyLand;
-	LLButton* mBtnAbandonLand;
-	LLButton* mBtnSubdivideLand;
-	LLButton* mBtnJoinLand;
-	LLButton* mBtnAboutLand;
-
 protected:
-    static void onClickClaim();
-    static void onClickRelease();
-    static void onClickDivide();
-    static void onClickJoin();
-    static void onClickAbout();
+    void onClickClaim();
+    void onClickRelease();
+    void onClickDivide();
+    void onClickJoin();
+    void onClickAbout();
 
 protected:
     bool postBuild() override;
 
     static LLPanelLandSelectObserver* sObserver;
     static LLPanelLandInfo* sInstance;
+private:
+    LLCheckBoxCtrl  *mCheckShowOwners = nullptr;
+    LLButton* mButtonBuyLand = nullptr;
+    LLButton* mButtonAbandonLand = nullptr;
+    LLButton* mButtonSubdivLand = nullptr;
+    LLButton* mButtonJoinLand = nullptr;
+    LLButton* mButtonAboutLand = nullptr;
+    LLTextBox* mTextArea = nullptr;
+    LLTextBox* mTextAreaPrice = nullptr;
+    //BD
+    LLUICtrl* mLabelPrice = nullptr;
 };
 
 #endif

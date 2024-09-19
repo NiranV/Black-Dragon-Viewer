@@ -96,7 +96,7 @@ private:
 	bool					isItemsFreeOfFriends(const uuid_vec_t& uuids);
 
 	void					updateButtons();
-	std::string				getActiveTabName() const;
+	const std::string&      getActiveTabName() const;
 	LLUUID					getCurrentItemID() const;
 	void					getCurrentItemIDs(uuid_vec_t& selected_uuids) const;
 	void					setSortOrder(LLAvatarList* list, ESortOrder order, bool save = true);
@@ -151,12 +151,12 @@ private:
 	LLAvatarList*			mRecentList;
 	LLGroupList*			mGroupList;
 
-	LLTextBox*				mGroupCount;
-	LLUICtrl*				mGroupMinusBtn;
-	LLUICtrl*				mFriendGearBtn;
-	LLUICtrl*				mNearbyGearBtn;
-	LLUICtrl*				mRecentGearBtn;
-	LLUICtrl*				mBlockedGearBtn;
+	LLTextBox*				mGroupCount = nullptr;
+	LLUICtrl*				mGroupMinusBtn = nullptr;
+	LLUICtrl*				mFriendGearBtn = nullptr;
+	LLUICtrl*				mNearbyGearBtn = nullptr;
+	LLUICtrl*				mRecentGearBtn = nullptr;
+	LLUICtrl*				mBlockedGearBtn = nullptr;
 
 	LLNetMap*				mMiniMap;
 
@@ -170,11 +170,11 @@ private:
     LLHandle< LLFloater >	mPicker;
 
 	//BD
-	LLBlockList*			mBlockedList;
-	LLTextBox*				mFriendCount;
-	LLTextBox*				mBlockCount;
+	LLBlockList*			mBlockedList = nullptr;
+	LLTextBox*				mFriendCount = nullptr;
+	LLTextBox*				mBlockCount = nullptr;
 
-	LLTextBox*				mLabelNoFriends;
+	LLTextBox*				mLabelNoFriends = nullptr;
 
 	LLMenuItemBranchGL*		mMenuFilters;
 	LLMenuItemBranchGL*		mMenuEdit;

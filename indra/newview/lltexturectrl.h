@@ -440,6 +440,7 @@ protected:
     LLButton*           mPipetteBtn;
     LLButton*           mSelectBtn;
     LLButton*           mCancelBtn;
+    LLView*             mPreviewWidget = nullptr;
 
 	//BD
 	LLTabContainer*		mTabModes;

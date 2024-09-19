@@ -434,6 +434,8 @@ LLPanelOutfitEdit::~LLPanelOutfitEdit()
 
     delete mCOFDragAndDropObserver;
 
+    delete mWearableListViewItemsComparator;
+
     while (!mListViewItemTypes.empty()) {
         delete mListViewItemTypes.back();
         mListViewItemTypes.pop_back();
@@ -646,19 +648,19 @@ void LLPanelOutfitEdit::showAddWearablesPanel(bool show_add_wearables)
 
 void LLPanelOutfitEdit::showWearablesFilter()
 {
-	bool filter_visible = mFilterBtn->getValue();
+    bool filter_visible = mFilterBtn->getValue();
 
-	getChildView("filter_panel")->setVisible( filter_visible);
+    mFilterPanel->setVisible(filter_visible);
 
-	if(!filter_visible)
-	{
-		mSearchFilter->clear();
-		onSearchEdit(LLStringUtil::null);
-	}
-	else
-	{
-		mSearchFilter->setFocus(TRUE);
-	}
+    if(!filter_visible)
+    {
+        mSearchFilter->clear();
+        onSearchEdit(LLStringUtil::null);
+    }
+    else
+    {
+        mSearchFilter->setFocus(true);
+    }
 }
 
 void LLPanelOutfitEdit::showWearablesFolderListView()
@@ -1242,19 +1244,17 @@ static void update_status_widget_rect(LLView * widget, S32 right_border)
 
 void LLPanelOutfitEdit::onOutfitChanging(bool started)
 {
-    static LLLoadingIndicator* indicator = getChild<LLLoadingIndicator>("edit_outfit_loading_indicator");
-    static LLView* status_panel = getChild<LLView>("outfit_name_and_status");
-    static S32 indicator_delta = status_panel->getRect().getWidth() - indicator->getRect().mLeft;
+    S32 indicator_delta = mOutfitNameStatusPanel->getRect().getWidth() - mLoadingIndicator->getRect().mLeft;
 
     S32 delta = started ? indicator_delta : 0;
-    S32 right_border = status_panel->getRect().getWidth() - delta;
+    S32 right_border = mOutfitNameStatusPanel->getRect().getWidth() - delta;
 
     if (mCurrentOutfitName)
         update_status_widget_rect(mCurrentOutfitName, right_border);
     if (mStatus)
         update_status_widget_rect(mStatus, right_border);
 
-    indicator->setVisible(started);
+    mLoadingIndicator->setVisible(started);
 }
 
 void LLPanelOutfitEdit::getCurrentItemUUID(LLUUID& selected_id)

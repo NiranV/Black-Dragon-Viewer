@@ -44,7 +44,7 @@
 LLViewerChat::font_change_signal_t LLViewerChat::sChatFontChangedSignal;
 
 //static
-void LLViewerChat::getChatColor(const LLChat& chat, LLColor4& r_color)
+void LLViewerChat::getChatColor(const LLChat& chat, LLUIColor& r_color, F32& r_color_alpha)
 {
 	if(chat.mMuted)
 	{
