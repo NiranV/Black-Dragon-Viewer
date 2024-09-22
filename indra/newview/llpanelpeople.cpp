@@ -1620,7 +1620,7 @@ bool LLPanelPeople::notifyChildren(const LLSD& info)
 
 std::string LLPanelPeople::getAvatarInformation(const LLUUID& avatar)
 {
-	F32 distance = dist_vec(gAgent.getPositionGlobal(), DISTANCE_COMPARATOR.mAvatarsPositions[avatar]);
+	F64 distance = dist_vec(gAgent.getPositionGlobal(), DISTANCE_COMPARATOR.mAvatarsPositions[avatar]);
 	std::string output = llformat("%i m", llround(distance));
 	return output;
 }

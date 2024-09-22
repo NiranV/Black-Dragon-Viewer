@@ -173,7 +173,7 @@ bool QToolAlign::findSelectedManipulator(S32 x, S32 y)
 		for (F32 direction = -1.0; direction <= 1.0; direction += 2.0)
 		{
 			LLVector3 axis_vector = LLVector3(0,0,0);
-			axis_vector.mV[axis] = direction * bbox_scale.mV[axis] / 2.0;
+			axis_vector.mV[axis] = direction * bbox_scale.mV[axis] / 2.0f;
 			
 			LLVector4 manipulator_center = 	LLVector4(axis_vector);
 
@@ -336,15 +336,15 @@ void QToolAlign::renderManipulators()
 	LLVector3 bbox_scale = mBBox.getMaxLocal() - mBBox.getMinLocal();
 	
 	for (S32 axis = VX; axis <= VZ; axis++)
-		for (F32 direction = -1.0; direction <= 1.0; direction += 2.0)
+		for (F32 direction = -1.0f; direction <= 1.0f; direction += 2.0f)
 		{
 			F32 size = mManipulatorSize;
 			LLColor4 color = manipulator_color[axis];
 
 			if ((axis == mHighlightedAxis) && (direction == mHighlightedDirection))
 			{
-				size *= 2.0;
-				color *= 1.5;
+				size *= 2.0f;
+				color *= 1.5f;
 			}
 
 			S32 arrows = 1;
@@ -356,18 +356,18 @@ void QToolAlign::renderManipulators()
 			for (S32 i = 0; i < arrows; i++)
 			{
 				LLVector3 axis_vector = LLVector3(0,0,0);
-				axis_vector.mV[axis] = direction * (bbox_scale.mV[axis] / 2.0 + i * (size/3.0));
+				axis_vector.mV[axis] = direction * (bbox_scale.mV[axis] / 2.0f + (F32)i * (size/3.0f));
 			
 				LLVector3 manipulator_center = 	bbox_center + axis_vector;
 
 				LLQuaternion manipulator_rotation;
-				manipulator_rotation.shortestArc(LLVector3(0,0,1), -1.0 * axis_vector);
+				manipulator_rotation.shortestArc(LLVector3(0,0,1), -1.0f * axis_vector);
 				
 				LLBBox manipulator_bbox = LLBBox(manipulator_center, manipulator_rotation,
 												 LLVector3(), LLVector3());
 
-				manipulator_bbox.addPointLocal(LLVector3(-1, -1, -0.75) * size * 0.5);
-				manipulator_bbox.addPointLocal(LLVector3(1, 1, 0.75) * size * 0.5);
+				manipulator_bbox.addPointLocal(LLVector3(-1.f, -1.f, -0.75f) * size * 0.5f);
+				manipulator_bbox.addPointLocal(LLVector3(1.f, 1.f, 0.75f) * size * 0.5f);
 			
 				gGL.color4fv(color.mV);
 				// sadly, gCone doesn't use gGL like gBox does (presumably because its author smokes crack) so we

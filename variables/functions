@@ -1,0 +1,163 @@
+function toupper {
+    echo "$*" | tr '[a-z]' '[A-Z]'
+}
+
+# Check if switch $1 == $2
+function _test_sw {
+    [[ "x$1" == "x$2" ]]
+}
+
+# Check if switch $1 matches regexp $2
+function _test_re {
+    # it's important not to quote $2 here!
+    [[ "x$1" =~ x$2 ]]
+}
+
+# Used by replace_cxxstd, remove_cxxstd
+CXXSTD_REGEXP="[-/]std(=|:)c\+\+[0-9][0-9]"
+
+# Search $3... for a switch matching $2 using $1 (_test_* above)
+# If found, echo index (0 for $3, 1 for $4...) and return 0.
+# Otherwise return 1.
+function _find {
+    local tester="$1"
+    local sought="$2"
+    local i
+    shift 2
+    for (( i=1 ; i <= $# ; i=i+1 ))
+    do
+        eval "local sw=\${$i}"
+        if $tester "$sw" "$sought"
+        then
+            echo $(( i - 1 ))
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Search $3... using $1 (_test_* above) for $2 and remove it
+function _remove {
+    local tester="$1"
+    local todel="$2"
+    shift 2
+    local out=("$@")
+    local idx
+    idx=$(_find $tester "$todel" "$@") && unset out\[$idx\]
+    echo "${out[@]}"
+}
+
+# Search $4... using $1 (_test_* above) for $2 and replace it with $3
+function _replace {
+    local tester="$1"
+    local todel="$2"
+    local toins="$3"
+    shift 3
+    local out=("$@")
+    local idx
+    idx=$(_find $tester "$todel" "$@") && out[$idx]="$toins"
+    echo "${out[@]}"
+}
+
+# Usage:
+# switches="$(remove_switch -DPIC $LL_BUILD)"
+# It's important NOT to quote whichever compiler-arguments string you pass to
+# remove_switch (LL_BUILD in the example above), just as it's important not to
+# quote it when passing it to the compiler itself: bash must parse into
+# separate tokens.
+function remove_switch {
+    _remove _test_sw "$@"
+}
+
+# Usage:
+# switches="$(remove_match regexp $LL_BUILD)"
+# This is a special case of remove_switch that removes a regular expression.
+function remove_match {
+    _remove _test_re "$@"
+}
+
+# Usage:
+# switches="$(remove_cxxstd $LL_BUILD)"
+# This is a special case of remove_match that removes -std=c++NN
+# (or /std=c++NN, as for Microsoft)
+function remove_cxxstd {
+    remove_match "$CXXSTD_REGEXP" "$@"
+}
+
+# Usage:
+# switches="$(replace_switch -DPIC -DPOC $LL_BUILD)"
+# It's important NOT to quote whichever compiler-arguments string you pass to
+# replace_switch (LL_BUILD in the example above), just as it's important not to
+# quote it when passing it to the compiler itself: bash must parse into
+# separate tokens.
+function replace_switch {
+    _replace _test_sw "$@"
+}
+
+# Usage:
+# switches="$(replace_match regexp $LL_BUILD)"
+# This is a special case of replace_switch that replaces a regular expression.
+function replace_match {
+    _replace _test_re "$@"
+}
+
+# Usage:
+# switches="$(replace_cxxver -std=c++20 $LL_BUILD)"
+# This is a special case of replace_match that replaces -std=c++NN
+# (or /std=c++NN, as for Microsoft)
+function replace_cxxstd {
+    replace_match "$CXXSTD_REGEXP" "$@"
+}
+
+# Usage:
+# cmake ... $(cmake_cxx_standard $LL_BUILD) ...
+# If the passed set of switches contains -std=c++NN (or /std=c++NN), echo
+# -DCMAKE_CXX_STANDARD=NN to cause CMake to set the relevant switch itself.
+# Otherwise echo nothing.
+function cmake_cxx_standard {
+    local idx
+    if idx=$(_find _test_re "$CXXSTD_REGEXP" "$@")
+    then
+        # Mac bash 3 doesn't support negative indexing from right end
+        eval "local sw=\${$((idx+1))}"
+        local veridx=$(( ${#sw} - 2 ))
+        echo "-DCMAKE_CXX_STANDARD=${sw:$veridx}"
+    fi
+}
+
+# To fix this (serious!) problem:
+# clang: warning: overriding '-mmacosx-version-min=10.13' option
+# with '-target x86_64-apple-macos11.7' [-Woverriding-t-option]
+# Usage:
+# switches="$(set_target $LL_BUILD)"
+# If the argument list contains '-mmacosx-version-min=VVVV', find or add
+# '-target x86_64-apple-macosVVVV'.
+function set_target {
+    local opts=("$@")
+    local idx
+    if idx=$(_find _test_re "-mmacosx-version-min=.*" "${opts[@]}")
+    then
+        local versw="${opts[$idx]}"
+        local minver="${versw#*=}"
+        local target="x86_64-apple-macos$minver"
+        if idx=$(_find _test_sw "-target" "${opts[@]}")
+        then
+            # we already have a -target switch; replace its value
+            (( idx+=1 ))
+            opts[$idx]="$target"
+        else
+            # we don't already have a -target switch: add it
+            opts+=(-target "$target")
+        fi
+        local TARGET="-DCMAKE_OSX_DEPLOYMENT_TARGET="
+        if idx=$(_find _test_re "$TARGET.*" "${opts[@]}")
+        then
+            # we already have a -D switch as above; replace it
+            opts[$idx]="$TARGET$minver"
+        else
+            # we don't already have a -D switch as above: add it
+            opts+=("$TARGET$minver")
+        fi
+    fi
+    echo "${opts[*]}"
+}

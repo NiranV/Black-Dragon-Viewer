@@ -69,7 +69,9 @@ public:
 	void setTip();
 	void setText(const std::string& string);
 	void setMessage(const std::string& string);
-	
+
+    void setShowProgress(bool show, bool logout = false);
+
 	// turns on (under certain circumstances) the into video after login
 	//void revealIntroPanel();
 

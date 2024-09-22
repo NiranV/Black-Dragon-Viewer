@@ -124,6 +124,9 @@ void LLViewerTextureList::doPreloadImages()
     LLTexUnit::sWhiteTexture = LLViewerFetchedTexture::sWhiteImagep->getTexName();
     LLUIImageList* image_list = LLUIImageList::getInstance();
 
+    //BD - Set the default particle texture.
+    LLViewerFetchedTexture::sPixieSmallImagep = LLViewerTextureManager::getFetchedTextureFromFile("pixiesmall.j2c", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI);
+
     // Set the default flat normal map
     // BLANK_OBJECT_NORMAL has a version on dataserver, but it has compression artifacts
     LLViewerFetchedTexture::sFlatNormalImagep =

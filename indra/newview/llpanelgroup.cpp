@@ -210,28 +210,17 @@ void LLPanelGroup::reposButton(LLButton* button)
 
 void LLPanelGroup::reposButtons()
 {
-	LLButton* button_refresh = findChild<LLButton>("btn_refresh");
 	//BD
-	//LLButton* button_cancel = findChild<LLButton>("btn_cancel");
-
-	//BD
-	//if(button_refresh && button_cancel && button_refresh->getVisible() && button_cancel->getVisible())
-	if (button_refresh && button_refresh->getVisible())
+	if (mButtonRefresh && mButtonRefresh->getVisible())
 	{
-		LLRect btn_refresh_rect = button_refresh->getRect();
-		//BD
-		//LLRect btn_cancel_rect = button_cancel->getRect();
-		//btn_refresh_rect.setLeftTopAndSize( btn_cancel_rect.mLeft + btn_cancel_rect.getWidth() + 2, 
-		//	btn_refresh_rect.getHeight() + 2, btn_refresh_rect.getWidth(), btn_refresh_rect.getHeight());
-		button_refresh->setRect(btn_refresh_rect);
+		LLRect btn_refresh_rect = mButtonRefresh->getRect();
+        mButtonRefresh->setRect(btn_refresh_rect);
 	}
 
-	reposButton("btn_apply");
-	reposButton("btn_refresh");
-	//BD
-	//reposButton("btn_cancel");
-	reposButton("btn_chat");
-	reposButton("btn_call");
+    reposButton(mButtonApply);
+    reposButton(mButtonRefresh);
+    reposButton(mButtonChat);
+    reposButton(mButtonCall);
 }
 
 void LLPanelGroup::reshape(S32 width, S32 height, bool called_from_parent )

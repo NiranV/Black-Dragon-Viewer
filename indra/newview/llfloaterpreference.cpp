@@ -2265,11 +2265,11 @@ void LLFloaterPreference::onCameraArray(LLUICtrl* ctrl, const LLSD& param)
 	LLVector3 vec3 = gAgentCamera.mCameraOffsetInitial[name];
 
 	if (param.asString() == "X")
-		vec3[VX] = ctrl->getValue().asReal();
+		vec3[VX] = (F32)ctrl->getValue().asReal();
 	else if (param.asString() == "Y")
-		vec3[VY] = ctrl->getValue().asReal();
+		vec3[VY] = (F32)ctrl->getValue().asReal();
 	else
-		vec3[VZ] = ctrl->getValue().asReal();
+		vec3[VZ] = (F32)ctrl->getValue().asReal();
 
 	gAgentCamera.onCameraArray(vec3, name);
 	onAddCameraPreset(false, name);
@@ -3970,7 +3970,7 @@ void LLFloaterPreference::setCacheLocation(const LLStringExplicit& location)
 
 void LLFloaterPreference::selectPanel(const LLSD& name)
 {
-	LLPanel * panel = mTabContainer->getPanelByName(name);
+	LLPanel * panel = mTabContainer->getPanelByName(name.asString());
 	if (NULL != panel)
 	{
 		mTabContainer->selectTabPanel(panel);

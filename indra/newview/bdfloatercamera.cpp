@@ -142,15 +142,15 @@ void BDFloaterCamera::onExport()
 		{
 			LLAgentPilot::Action action;
 
-			action.mCameraOrigin = LLVector3(item->getColumn(1)->getValue().asReal(),
-				item->getColumn(2)->getValue().asReal(),
-				item->getColumn(3)->getValue().asReal());
+			action.mCameraOrigin = LLVector3((F32)item->getColumn(1)->getValue().asReal(),
+                (F32)item->getColumn(2)->getValue().asReal(),
+				(F32)item->getColumn(3)->getValue().asReal());
 
 			LLQuaternion quat;
 			LLVector3 rot;
-			rot.mV[VX] = item->getColumn(4)->getValue().asReal();
-			rot.mV[VY] = item->getColumn(5)->getValue().asReal();
-			rot.mV[VZ] = item->getColumn(6)->getValue().asReal();
+			rot.mV[VX] = (F32)item->getColumn(4)->getValue().asReal();
+			rot.mV[VY] = (F32)item->getColumn(5)->getValue().asReal();
+			rot.mV[VZ] = (F32)item->getColumn(6)->getValue().asReal();
 			quat.setEulerAngles(rot.mV[VX], rot.mV[VY], rot.mV[VZ]);
 			LLMatrix3 mat = quat.getMatrix3();
 
@@ -158,13 +158,13 @@ void BDFloaterCamera::onExport()
 			action.mCameraYAxis = mat.getLeftRow();
 			action.mCameraZAxis = mat.getUpRow();
 
-			action.mTarget = LLVector3d(item->getColumn(7)->getValue().asReal(),
-				item->getColumn(8)->getValue().asReal(),
-				item->getColumn(9)->getValue().asReal());
+			action.mTarget = LLVector3d((F32)item->getColumn(7)->getValue().asReal(),
+                (F32)item->getColumn(8)->getValue().asReal(),
+                (F32)item->getColumn(9)->getValue().asReal());
 
-			action.mCameraView = item->getColumn(10)->getValue().asReal();
+			action.mCameraView = (F32)item->getColumn(10)->getValue().asReal();
 			action.mType = LLAgentPilot::EActionType::STRAIGHT;
-			action.mTime = item->getColumn(12)->getValue().asReal();
+			action.mTime = (F32)item->getColumn(12)->getValue().asReal();
 
 			actions.push_back(action);
 		}
@@ -342,7 +342,7 @@ void BDFloaterCamera::onCameraPos(LLUICtrl* ctrl, const LLSD& param)
 	LLScrollListCell* column_1 = item->getColumn(1);
 	LLScrollListCell* column_2 = item->getColumn(2);
 	LLScrollListCell* column_3 = item->getColumn(3);
-	F32 val = ctrl->getValue().asReal();
+	F32 val = (F32)ctrl->getValue().asReal();
 	if (param.asString() == "X")
 	{
 		mOrigin.mV[VX] = val;
@@ -367,7 +367,7 @@ void BDFloaterCamera::onCameraRot(LLUICtrl* ctrl, const LLSD& param)
 		return;
 
 	LLViewerCamera *cam = LLViewerCamera::getInstance();
-	F32 val = ctrl->getValue().asReal();
+	F32 val = (F32)ctrl->getValue().asReal();
 	S32 axis = param.asInteger();
 	LLScrollListCell* cell[3] = { item->getColumn(4), item->getColumn(5), item->getColumn(6) };
 	LLQuaternion rot_quat = cam->getQuaternion();
@@ -418,10 +418,10 @@ void BDFloaterCamera::onCameraAngle(LLUICtrl* ctrl, const LLSD& param)
 		return;
 
 	LLScrollListCell* column_10 = item->getColumn(10);
-	column_10->setValue(ctrl->getValue().asReal());
+	column_10->setValue((F32)ctrl->getValue().asReal());
 	LLViewerCamera *cam = LLViewerCamera::getInstance();
-	cam->setView(ctrl->getValue().asReal());
-	mCurrentAction.mCameraView = ctrl->getValue().asReal();
+	cam->setView((F32)ctrl->getValue().asReal());
+	mCurrentAction.mCameraView = (F32)ctrl->getValue().asReal();
 	//onExport();
 }
 
@@ -530,14 +530,14 @@ void BDFloaterCamera::onRecorderSelection()
 		getChild<LLUICtrl>("Rotation_Z")->setValue(item->getColumn(6)->getValue());
 
 		LLQuaternion quat;
-		quat.setEulerAngles(item->getColumn(4)->getValue().asReal(), item->getColumn(5)->getValue().asReal(), item->getColumn(6)->getValue().asReal());
+		quat.setEulerAngles((F32)item->getColumn(4)->getValue().asReal(), (F32)item->getColumn(5)->getValue().asReal(), (F32)item->getColumn(6)->getValue().asReal());
 		LLMatrix3 rot_mat(quat);
 		mXAxis = LLVector3(rot_mat.mMatrix[0]);
 		mYAxis = LLVector3(rot_mat.mMatrix[1]);
 		mZAxis = LLVector3(rot_mat.mMatrix[2]);
-		mPrevValue[0] = item->getColumn(4)->getValue().asReal();
-		mPrevValue[1] = item->getColumn(5)->getValue().asReal();
-		mPrevValue[2] = item->getColumn(6)->getValue().asReal();
+		mPrevValue[0] = (F32)item->getColumn(4)->getValue().asReal();
+		mPrevValue[1] = (F32)item->getColumn(5)->getValue().asReal();
+		mPrevValue[2] = (F32)item->getColumn(6)->getValue().asReal();
 
 		getChild<LLUICtrl>("Target_X")->setValue(item->getColumn(7)->getValue());
 		getChild<LLUICtrl>("Target_Y")->setValue(item->getColumn(8)->getValue());

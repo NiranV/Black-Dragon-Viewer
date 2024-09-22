@@ -2110,7 +2110,7 @@ void LLViewerMediaImpl::updateVolume()
 				F64 attenuation = 1.0 + (sMediaRollOffRate * adjusted_distance);
 				attenuation = 1.0 / (attenuation * attenuation);
 				// the attenuation multiplier should never be more than one since that would increase volume
-				volume = volume * llmin(1.0, attenuation);
+				volume = volume * (F32)llmin(1.0, attenuation);
 			}
 		}
 

@@ -76,9 +76,6 @@ bool    LLPanelLandInfo::postBuild()
 	mCheckShowOwners = getChild<LLCheckBoxCtrl>("checkbox show owners");
     mCheckShowOwners->setValue(gSavedSettings.getBOOL("ShowParcelOwners"));
 
-	mLabelAreaPrice = getChild<LLTextBox>("label_area_price");
-	mLabelArea = getChild<LLTextBox>("label_area");
-
     //BD
 	mLabelPrice = getChild<LLUICtrl>("textbox price");
 

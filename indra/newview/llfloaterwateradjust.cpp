@@ -306,51 +306,51 @@ void LLFloaterWaterAdjust::onFogColorChanged()
 void LLFloaterWaterAdjust::onFogDensityChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setWaterFogDensity(mFogDensity->getValue().asReal());
+	mLiveWater->setWaterFogDensity((F32)mFogDensity->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onFogUnderWaterChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setFogMod(mUnderwaterMod->getValue().asReal());
+	mLiveWater->setFogMod((F32)mUnderwaterMod->getValue().asReal());
 }
 
 
 void LLFloaterWaterAdjust::onNormalScaleChanged()
 {
 	if (!mLiveWater) return;
-	LLVector3 vect(mWaterNormX->getValue().asReal(), mWaterNormY->getValue().asReal(), mWaterNormZ->getValue().asReal());
+	LLVector3 vect((F32)mWaterNormX->getValue().asReal(), (F32)mWaterNormY->getValue().asReal(), (F32)mWaterNormZ->getValue().asReal());
 	mLiveWater->setNormalScale(vect);
 }
 
 void LLFloaterWaterAdjust::onFresnelScaleChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setFresnelScale(mFresnelScale->getValue().asReal());
+	mLiveWater->setFresnelScale((F32)mFresnelScale->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onFresnelOffsetChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setFresnelOffset(mFresnelOffset->getValue().asReal());
+	mLiveWater->setFresnelOffset((F32)mFresnelOffset->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onScaleAboveChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setScaleAbove(mScaleAbove->getValue().asReal());
+	mLiveWater->setScaleAbove((F32)mScaleAbove->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onScaleBelowChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setScaleBelow(mScaleBelow->getValue().asReal());
+	mLiveWater->setScaleBelow((F32)mScaleBelow->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onBlurMultipChanged()
 {
 	if (!mLiveWater) return;
-	mLiveWater->setBlurMultiplier(mBlurMult->getValue().asReal());
+	mLiveWater->setBlurMultiplier((F32)mBlurMult->getValue().asReal());
 }
 
 void LLFloaterWaterAdjust::onDefaultWaterHeight()
@@ -375,8 +375,8 @@ void LLFloaterWaterAdjust::onLargeWaveChanged()
 {
 	if (!mLiveWater) return;
 	LLVector2 vect = LLVector2::zero;
-	vect.mV[VX] = mWave1X->getValue().asReal();
-	vect.mV[VY] = mWave1Y->getValue().asReal();
+	vect.mV[VX] = (F32)mWave1X->getValue().asReal();
+	vect.mV[VY] = (F32)mWave1Y->getValue().asReal();
 	vect *= -1.0; // Flip so that north and east are -
 	mLiveWater->setWave1Dir(vect);
 }
@@ -385,8 +385,8 @@ void LLFloaterWaterAdjust::onSmallWaveChanged()
 {
 	if (!mLiveWater) return;
 	LLVector2 vect = LLVector2::zero;
-	vect.mV[VX] = mWave2X->getValue().asReal();
-	vect.mV[VY] = mWave2Y->getValue().asReal();
+	vect.mV[VX] = (F32)mWave2X->getValue().asReal();
+	vect.mV[VY] = (F32)mWave2Y->getValue().asReal();
 	vect *= -1.0; // Flip so that north and east are -
 	mLiveWater->setWave2Dir(vect);
 }

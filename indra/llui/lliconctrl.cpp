@@ -171,11 +171,11 @@ void LLIconCtrl::draw()
 			//S32 repeat_width = local_rect.getWidth() / mRepeats;
 			S32 last_left = 0;
 
-			F32 new_alpha = alpha * 0.6;
+			F32 new_alpha = alpha * 0.6f;
 			S32 i = 0;
 			while (i < mRepeats)
 			{
-				S32 consistent_width = llfloor(available_width / mRepeats);
+				S32 consistent_width = llfloor(available_width / (F32)mRepeats);
 				if (leftover_width > 0)
 				{
 					++consistent_width;

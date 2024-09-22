@@ -588,17 +588,17 @@ void LLTextBase::drawCursor()
                 const LLColor4& text_color = segmentp->getColor();
 				fontp = segmentp->getStyle()->getFont();
 				fontp->render(text, mCursorPos, cursor_rect, 
-					//BD
-					LLColor4(text_color.mV[VRED],text_color.mV[VGREEN],text_color.mV[VBLUE], alpha),
-					LLFontGL::LEFT, mTextVAlign
-					LLFontGL::NORMAL,
-					LLFontGL::NO_SHADOW,
-					1);
+					            //BD
+					            LLColor4(text_color.mV[VRED],text_color.mV[VGREEN],text_color.mV[VBLUE], alpha),
+					            LLFontGL::LEFT, mTextVAlign,
+					            LLFontGL::NORMAL,
+					            LLFontGL::NO_SHADOW,
+					            1);
 			}
 
 			// Make sure the IME is in the right place
 			LLRect screen_pos = calcScreenRect();
-			LLCoordGL ime_pos( screen_pos.mLeft + llfloor(cursor_rect.mLeft), screen_pos.mBottom + llfloor(cursor_rect.mTop) );
+			LLCoordGL ime_pos( screen_pos.mLeft + cursor_rect.mLeft, screen_pos.mBottom + cursor_rect.mTop);
 
 			ime_pos.mX = (S32) (ime_pos.mX * LLUI::getScaleFactor().mV[VX]);
 			ime_pos.mY = (S32) (ime_pos.mY * LLUI::getScaleFactor().mV[VY]);

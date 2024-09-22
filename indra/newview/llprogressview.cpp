@@ -295,7 +295,7 @@ void LLProgressView::setPercent(const F32 meta, const F32 sub)
 	//BD
 	if (meta >= 0.0f)
 	{
-		S32 percent_label = std::min(100.f, meta);
+		S32 percent_label = (S32)std::min(100.f, meta);
 		mPercentText->setValue(percent_label);
 		mMetaProgressBar->setValue(meta);
 	}
@@ -531,7 +531,7 @@ bool LLProgressView::handleUpdate(const LLSD& event_data)
 	
 	if(percent.isDefined())
 	{
-		setPercent(percent.asReal());
+		setPercent((F32)percent.asReal());
 	}
 	return false;
 }

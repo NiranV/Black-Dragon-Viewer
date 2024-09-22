@@ -238,8 +238,8 @@ void BDFloaterComplexity::calcARC()
 								U32 attachment_volume_cost = 0;
 								U32 attachment_texture_cost = 0;
 								U32 attachment_base_cost = 0;
-								U64 attachment_total_triangles = 0.f;
-								U64 attachment_total_vertices = 0.f;
+								U64 attachment_total_triangles = 0;
+								U64 attachment_total_vertices = 0;
 								S32Bytes attachment_memory_usage;
 
 								U32 flexible_cost = 0;
@@ -469,7 +469,7 @@ void BDFloaterComplexity::calcARC()
 	rateAvatarGroup("animesh", red);
 
 	final_red /= 11.f;
-	getChild<LLUICtrl>("final_rating")->setColor(LLColor3(final_red, 1.0f - final_red, 0.0f));
+	getChild<LLUICtrl>("final_rating")->setColor(LLColor4(final_red, 1.0f - final_red, 0.0f, 1.0f));
 	std::string str;
 	//BD - 90%+ is perfect
 	if (final_red <= 0.1f)
@@ -496,7 +496,7 @@ void BDFloaterComplexity::calcARC()
 
 void BDFloaterComplexity::rateAvatarGroup(std::string type, F32 rating)
 {
-	getChild<LLUICtrl>(type + "_rating")->setColor(LLColor3(rating, 1.0f - rating, 0.0f));
+	getChild<LLUICtrl>(type + "_rating")->setColor(LLColor4(rating, 1.0f - rating, 0.0f, 1.0f));
 	LLUICtrl* ctrl = getChild<LLUICtrl>(type + "_short");
 	ctrl->setValue(getString("short"));
 	
@@ -733,50 +733,50 @@ void BDFloaterComplexity::getRenderCostValues(LLVOVolume* volume, U32& flexible_
 
 	if (animtex)
 	{
-		animated_cost += (shame * ARC_ANIM_TEX_COST);
+		animated_cost += (U32)((F32)shame * (F32)ARC_ANIM_TEX_COST);
 	}
 
 	if (glow)
 	{
-		glow_cost += (shame * ARC_GLOW_MULT);
+		glow_cost += (U32)((F32)shame * (F32)ARC_GLOW_MULT);
 	}
 
 	if (bump)
 	{
-		bump_cost += (shame * ARC_BUMP_MULT);
+		bump_cost += (U32)((F32)shame * (F32)ARC_BUMP_MULT);
 	}
 
 	if (shiny)
 	{
-		shiny_cost += (shame * ARC_SHINY_MULT);
+		shiny_cost += (U32)((F32)shame * (F32)ARC_SHINY_MULT);
 	}
 
 	if (weighted_mesh)
 	{
-		rigged_cost += (shame * ARC_WEIGHTED_MESH);
+		rigged_cost += (U32)((F32)shame * (F32)ARC_WEIGHTED_MESH);
 
 		if (alpha)
 		{
-			alpha_cost += (shame * ARC_ALPHA_COST);
+			alpha_cost += (U32)((F32)shame * (F32)ARC_ALPHA_COST);
 		}
 	}
 	else
 	{
 		if (alpha)
 		{
-			alpha_cost += (shame * ARC_RIGGED_ALPHA_COST);
+			alpha_cost += (U32)((F32)shame * (F32)ARC_RIGGED_ALPHA_COST);
 		}
 	}
 
 	if (volume->isAnimatedObject())
 	{
-		animesh_cost += (shame * ARC_ANIMATED_MESH_COST);
+		animesh_cost += (U32)((F32)shame * (F32)ARC_ANIMATED_MESH_COST);
 	}
 
 	// multiply shame by multipliers
 	if (volume->isFlexible())
 	{
-		flexible_cost += (shame * ARC_FLEXI_MULT);
+		flexible_cost += (U32)((F32)shame * (F32)ARC_FLEXI_MULT);
 	}
 
 	// add additional costs
@@ -787,7 +787,7 @@ void BDFloaterComplexity::getRenderCostValues(LLVOVolume* volume, U32& flexible_
 		U32 num_particles = (U32)(part_sys_data->mBurstPartCount * llceil(part_data->mMaxAge / part_sys_data->mBurstRate));
 		//BD
 		F32 part_size = (llmax(part_data->mStartScale[0], part_data->mEndScale[0]) + llmax(part_data->mStartScale[1], part_data->mEndScale[1])) / 2.f;
-		particle_cost += num_particles * part_size * ARC_PARTICLE_COST;
+		particle_cost += (U32)(num_particles * (F32)part_size * ARC_PARTICLE_COST);
 	}
 
 	if (volume->getIsLight())
@@ -838,7 +838,7 @@ U32 BDFloaterComplexity::getRenderCost(LLVOVolume* volume, texture_cost& texture
 	//     lost performance does not fully recover when leaving the area in question, textures overall have a lingering
 	//     performance impact that slowly drives down the Viewer's performance, we should punish them much harder.
 	//     Textures are not free after all and not everyone can have 2+GB texture memory for SL.
-	static const U32 ARC_TEXTURE_COST = 1.25; //5
+	static const F32 ARC_TEXTURE_COST = 1.25f; //5
 	//BD - Lights are an itchy thing. They don't have any impact if used carefully. They do however have an
 	//     increasingly bigger impact above a certain threshold at which they will significantly drop your average
 	//     FPS. We should punish them slightly but not too hard otherwise Avatars with a few lights get overpunished.
@@ -1015,7 +1015,7 @@ U32 BDFloaterComplexity::getRenderCost(LLVOVolume* volume, texture_cost& texture
 	}
 
 	//BD - shame currently has the "base" cost of 1 point per 5 triangles, min 2.
-	shame = num_triangles / 10; //5
+	shame = (F32)num_triangles / 10.f; //5
 	shame = shame < 2.f ? 2.f : shame;
 
 	volume->setRenderComplexityBase((S32)shame);

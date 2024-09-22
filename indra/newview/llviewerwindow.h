@@ -313,7 +313,7 @@ public:
     bool            getCursorHidden() { return mCursorHidden; }
     void            moveCursorToCenter();                               // move to center of window
 
-    void            setShowProgress(const bool show);
+    void            setShowProgress(const bool show, bool logout);
     bool            getShowProgress() const;
     void            setProgressString(const std::string& string);
     void			setProgressPercent(const F32 meta, const F32 sub = 1.f);
@@ -477,7 +477,7 @@ private:
 
     void            switchToolByMask(MASK mask);
     void            destroyWindow();
-    void            stopGL(bool save_state = true);
+    void            stopGL();
     void            restoreGL(const std::string& progress_message = LLStringUtil::null);
     void            initFonts(F32 zoom_factor = 1.f);
     void            schedulePick(LLPickInfo& pick_info);
@@ -499,11 +499,6 @@ private:
     LLRect          mWorldViewRectRaw;          // area of screen for 3D world
     LLRect          mWorldViewRectScaled;       // area of screen for 3D world scaled by UI size
     LLRootView*     mRootView;                  // a view of size mWindowRectRaw, containing all child views
-    LLView*         mFloaterSnapRegion = nullptr;
-    LLView*         mNavBarContainer = nullptr;
-    LLPanel*        mStatusBarContainer = nullptr;
-    LLPanel*        mChicletContainer = nullptr;
-    LLPanel*        mTopInfoContainer = nullptr;
     LLVector2       mDisplayScale;
 
     LLCoordGL       mCurrentMousePoint;         // last mouse position in GL coords
@@ -561,16 +556,15 @@ private:
     static LLTrace::SampleStatHandle<>  sMouseVelocityStat;
 
 public:
-	LLChicletBar* mChicletBar;
 
-	LLPanel* mStatusBarContainer;
-	LLPanel* mNavBarContainer;
-	LLPanel* mMachinimaSidebar;
-	LLPanel* mChicletContainer;
-	LLPanel* mStateManagementContainer;
-
-	LLView* mFloaterSnapRegion;
-
+    //BD
+	LLChicletBar* mChicletBar = nullptr;
+	LLPanel* mStatusBarContainer = nullptr;
+	LLPanel* mNavBarContainer = nullptr;
+	LLPanel* mMachinimaSidebar = nullptr;
+	LLPanel* mChicletContainer = nullptr;
+	LLPanel* mStateManagementContainer = nullptr;
+	LLView* mFloaterSnapRegion = nullptr;
 	LLPanel* mMainView;
 };
 

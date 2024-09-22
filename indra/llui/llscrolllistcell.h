@@ -68,10 +68,10 @@ public:
         Optional<std::string>       tool_tip;
 
         Optional<const LLFontGL*>   font;
-        Optional<LLColor4>          font_color;
+        Optional<LLUIColor>         font_color;
         Optional<LLFontGL::HAlign>  font_halign;
 
-        Optional<LLColor4>          color;
+        Optional<LLUIColor>         color;
 
         //BD
 		Optional<S32>				max_sliders;
@@ -109,7 +109,7 @@ public:
     LLScrollListCell(const LLScrollListCell::Params&);
     virtual ~LLScrollListCell() {};
 
-    virtual void            draw(const LLColor4& color, const LLColor4& highlight_color) const {};      // truncate to given width, if possible
+    virtual void            draw(const LLUIColor& color, const LLUIColor& highlight_color) const {};      // truncate to given width, if possible
     virtual S32             getWidth() const {return mWidth;}
     virtual S32             getContentWidth() const { return 0; }
     virtual S32             getHeight() const { return 0; }
@@ -124,7 +124,7 @@ public:
     virtual void            highlightText(S32 offset, S32 num_chars) {}
     virtual bool            isText() const { return false; }
     virtual bool            needsToolTip() const { return ! mToolTip.empty(); }
-    virtual void            setColor(const LLColor4&) {}
+    virtual void            setColor(const LLUIColor&) {}
     virtual void            onCommit() {};
 
     virtual bool            handleClick() { return false; }
@@ -152,7 +152,7 @@ public:
     LLScrollListText(const LLScrollListCell::Params&);
     /*virtual*/ ~LLScrollListText();
 
-    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ void    draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
     /*virtual*/ S32     getContentWidth() const;
     /*virtual*/ S32     getHeight() const;
     /*virtual*/ void    setValue(const LLSD& value);
@@ -162,7 +162,7 @@ public:
     /*virtual*/ bool    getVisible() const;
     /*virtual*/ void    highlightText(S32 offset, S32 num_chars);
 
-    /*virtual*/ void    setColor(const LLColor4&);
+    /*virtual*/ void    setColor(const LLUIColor&);
     /*virtual*/ bool    isText() const;
     /*virtual*/ const std::string & getToolTip() const;
     /*virtual*/ bool    needsToolTip() const;
@@ -180,8 +180,8 @@ protected:
     LLUIString      mAltText;
     S32             mTextWidth;
     const LLFontGL* mFont;
-    LLColor4        mColor;
-    LLColor4        mHighlightColor;
+    LLUIColor        mColor;
+    LLUIColor        mHighlightColor;
     U8              mUseColor;
     LLFontGL::HAlign mFontAlignment;
     bool            mVisible;
@@ -201,16 +201,16 @@ class LLScrollListIcon : public LLScrollListCell
 public:
     LLScrollListIcon(const LLScrollListCell::Params& p);
     /*virtual*/ ~LLScrollListIcon();
-    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ void    draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
     /*virtual*/ S32     getWidth() const;
     /*virtual*/ S32     getHeight() const;
     /*virtual*/ const LLSD      getValue() const;
-    /*virtual*/ void    setColor(const LLColor4&);
+    /*virtual*/ void    setColor(const LLUIColor&);
     /*virtual*/ void    setValue(const LLSD& value);
 
 private:
     LLPointer<LLUIImage>    mIcon;
-    LLColor4                mColor;
+    LLUIColor                mColor;
     LLFontGL::HAlign        mAlignment;
 };
 
@@ -220,15 +220,15 @@ class LLScrollListBar : public LLScrollListCell
 public:
     LLScrollListBar(const LLScrollListCell::Params& p);
     /*virtual*/ ~LLScrollListBar();
-    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ void    draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
     /*virtual*/ S32     getWidth() const;
     /*virtual*/ S32     getHeight() const;
     /*virtual*/ const LLSD      getValue() const;
-    /*virtual*/ void    setColor(const LLColor4&);
+    /*virtual*/ void    setColor(const LLUIColor&);
     /*virtual*/ void    setValue(const LLSD& value);
 
 private:
-    LLColor4                    mColor;
+    LLUIColor                    mColor;
     F32                         mRatio;
     S32                         mBottom;
     S32                         mRightPad;
@@ -242,7 +242,7 @@ class LLScrollListCheck : public LLScrollListCell
 public:
     LLScrollListCheck( const LLScrollListCell::Params&);
     /*virtual*/ ~LLScrollListCheck();
-    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ void    draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
     /*virtual*/ S32     getHeight() const           { return 0; }
     /*virtual*/ const LLSD  getValue() const;
     /*virtual*/ void    setValue(const LLSD& value);
@@ -277,7 +277,7 @@ class LLScrollListIconText : public LLScrollListText
 public:
     LLScrollListIconText(const LLScrollListCell::Params& p);
     /*virtual*/ ~LLScrollListIconText();
-    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color) const;
+    /*virtual*/ void    draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
     /*virtual*/ const LLSD      getValue() const;
     /*virtual*/ void    setValue(const LLSD& value);
 
@@ -300,7 +300,7 @@ class LLScrollListMultiSlider : public LLScrollListCell
 public:
 	LLScrollListMultiSlider(const LLScrollListCell::Params& p);
 	/*virtual*/ ~LLScrollListMultiSlider();
-	/*virtual*/ void	draw(const LLColor4& color, const LLColor4& highlight_color) const;
+	/*virtual*/ void	draw(const LLUIColor& color, const LLUIColor& highlight_color) const;
 	/*virtual*/ const LLSD		getValue() const;
 	/*virtual*/ void	setValue(const LLSD& value);
 

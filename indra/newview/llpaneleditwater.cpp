@@ -196,7 +196,7 @@ void LLPanelSettingsWaterMainTab::onFresnelOffsetChanged()
 void LLPanelSettingsWaterMainTab::onScaleAboveChanged()
 {
 	if (!mWaterSettings) return;
-	mWaterSettings->setScaleAbove(mScaleAbove->getValue().asReal());
+	mWaterSettings->setScaleAbove((F32)mScaleAbove->getValue().asReal());
 	setIsDirty();
 }
 

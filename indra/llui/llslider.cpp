@@ -191,7 +191,7 @@ bool LLSlider::handleHover(S32 x, S32 y, MASK mask)
 {
 	if( hasMouseCapture() )
 	{
-		LLVector2 delta = LLVector2(x - (S32)mInitPos.mV[VX], y - (S32)mInitPos.mV[VY]);
+		LLVector2 delta = LLVector2((F32)x - mInitPos.mV[VX], (F32)y - mInitPos.mV[VY]);
 		if (mask == MASK_CONTROL)
 		{
 			delta *= 0.1;
@@ -277,7 +277,7 @@ bool LLSlider::handleMouseDown(S32 x, S32 y, MASK mask)
 	// Find the offset of the actual mouse location from the center of the thumb.
 	if (mThumbRect.pointInRect(x, y))
 	{
-		mInitPos = LLVector2(x, y);
+		mInitPos = LLVector2((F32)x, (F32)y);
 	}
 
 	// No handler needed for focus lost since this class has no state that depends on it.

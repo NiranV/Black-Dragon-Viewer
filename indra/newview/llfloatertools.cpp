@@ -573,7 +573,6 @@ void LLFloaterTools::refresh()
 		selection_args["LAND_IMPACT"] = llformat("%.1d", (S32)link_cost);
 
         mTextSelectionCount->setText(getString("status_selectcount", selection_args));
-    }
 
 		//BD - Selected Face / Link index.
 		bool is_link_select = mCheckSelectIndividual->getValue().asBoolean();
@@ -582,7 +581,6 @@ void LLFloaterTools::refresh()
 		mNextElement->setEnabled(have_selection && (is_link_select || is_face_select));
 		mPrevElement->setEnabled(have_selection && (is_link_select || is_face_select));
 	}
-
 
 	// Refresh child tabs
 	mPanelPermissions->refresh();

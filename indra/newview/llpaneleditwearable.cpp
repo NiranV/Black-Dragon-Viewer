@@ -822,7 +822,7 @@ bool LLPanelEditWearable::postBuild()
                         mAccordionTabs.emplace(accordion_tab, tab);
 
                         // initialize callback to ensure camera view changes appropriately.
-                        tab->setDropDownStateChangedCallback(boost::bind(&LLPanelEditWearable::onTabExpandedCollapsed,this,_2,index));*/
+                        tab->setDropDownStateChangedCallback(boost::bind(&LLPanelEditWearable::onTabExpandedCollapsed,this,_2,index));
 
                         const std::string& scrolling_panel = subpart_entry->mParamList;
                         if (!scrolling_panel.empty())
@@ -832,7 +832,7 @@ bool LLPanelEditWearable::postBuild()
                             {
                                 mParamPanels.emplace(scrolling_panel, panel_list);
                             }
-                        }
+                        }*/
                 }
 
                 // initialize texture and color picker controls
@@ -1232,20 +1232,20 @@ void LLPanelEditWearable::showWearable(LLViewerWearable* wearable, bool show, bo
                         }
 
                         const std::string scrolling_panel = subpart_entry->mParamList;
-			//BD
+			            //BD
                         //const std::string accordion_tab = subpart_entry->mAccordionTab;
         
                         LLScrollingPanelList *panel_list = getChild<LLScrollingPanelList>(scrolling_panel);
-			//BD
+			            //BD
                         //LLAccordionCtrlTab *tab = getChild<LLAccordionCtrlTab>(accordion_tab);
 			
                         if (!panel_list)
                         {
-                            LL_WARNS() << "could not get llaccordionctrltab from UI with name: " << accordion_tab << LL_ENDL;
+                            //LL_WARNS() << "could not get llaccordionctrltab from UI with name: " << accordion_tab << LL_ENDL;
                             continue;
                         }
         
-			//BD
+			            //BD
                         /*if (!tab)
                         {
                             LL_WARNS() << "could not get scrolling panel list: " << scrolling_panel << LL_ENDL;
@@ -1277,7 +1277,7 @@ void LLPanelEditWearable::showWearable(LLViewerWearable* wearable, bool show, bo
                                 jointp = gAgentAvatarp->getJoint("mHead");
                         }
 
-			//BD
+			            //BD
                         buildParamList(panel_list, sorted_params, /*tab,*/ jointp);
         
                         updateScrollingPanelUI();

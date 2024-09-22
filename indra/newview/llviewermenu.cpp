@@ -653,40 +653,10 @@ void init_menus()
 	// tooltips are on top of EVERYTHING, including menus
 	gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
 
-<<<<<<< HEAD
 	//gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
 	//gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
 	//gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
 	//gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land");
-=======
-    gDetachAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach", true);
-    gDetachHUDAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach HUD", true);
-
-    // Don't display the Memory console menu if the feature is turned off
-    LLMenuItemCheckGL *memoryMenu = gMenuBarView->getChild<LLMenuItemCheckGL>("Memory", true);
-    if (memoryMenu)
-    {
-        memoryMenu->setVisible(false);
-    }
-
-    gMenuBarView->createJumpKeys();
-
-    // Let land based option enable when parcel changes
-    gMenuParcelObserver = new LLMenuParcelObserver();
-
-    gSLMMenuUpdater = new LLSLMMenuUpdater();
-
-    gLoginMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_login.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-    gLoginMenuBarView->arrangeAndClear();
-    LLRect menuBarRect = gLoginMenuBarView->getRect();
-    menuBarRect.setLeftTopAndSize(0, menu_bar_holder->getRect().getHeight(), menuBarRect.getWidth(), menuBarRect.getHeight());
-    gLoginMenuBarView->setRect(menuBarRect);
-    gLoginMenuBarView->setBackgroundColor( color );
-    menu_bar_holder->addChild(gLoginMenuBarView);
-
-    // tooltips are on top of EVERYTHING, including menus
-    gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
->>>>>>> Linden_Release/release/2024.08-DeltaFPS
 }
 
 ///////////////////
@@ -3396,8 +3366,8 @@ void handle_object_edit_gltf_material()
     {
         update_camera();
 
-        LLViewerJoystick::getInstance()->moveObjects(true);
-        LLViewerJoystick::getInstance()->setNeedsReset(true);
+        gJoystick->moveObjects(true);
+        gJoystick->setNeedsReset(true);
     }
 
     LLMaterialEditor::loadLive();

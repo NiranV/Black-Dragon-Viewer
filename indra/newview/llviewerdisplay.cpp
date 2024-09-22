@@ -267,7 +267,7 @@ static void update_tp_display(bool minimized)
 	// is minimized *during* a TP. HB
 	if (minimized)
 	{
-		gViewerWindow->setShowProgress(false);
+		gViewerWindow->setShowProgress(false, false);
 	}
 
 	const std::string& message = gAgent.getTeleportMessage();
@@ -279,7 +279,7 @@ static void update_tp_display(bool minimized)
 			const std::string& msg = LLAgent::sTeleportProgressMessages["pending"];
 			if (!minimized)
 			{
-				gViewerWindow->setShowProgress(true);
+				gViewerWindow->setShowProgress(true, false);
 				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f), llmin(teleport_percent, 0.0f));
 				gViewerWindow->setProgressString(msg);
 			}
@@ -298,7 +298,7 @@ static void update_tp_display(bool minimized)
 			gAgent.setTeleportMessage(msg);
 			if (!minimized)
 			{
-				gViewerWindow->setShowProgress(true);
+				gViewerWindow->setShowProgress(true, false);
 				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f), llmin(teleport_percent, 0.0f));
 				gViewerWindow->setProgressString(msg);
 				gViewerWindow->setProgressMessage(gAgent.mMOTD);
@@ -379,7 +379,7 @@ static void update_tp_display(bool minimized)
 
 		case LLAgent::TELEPORT_NONE:
 			// No teleport in progress
-			gViewerWindow->setShowProgress(false);
+			gViewerWindow->setShowProgress(false, false);
 			gTeleportDisplay = false;
 	}
 }
@@ -574,7 +574,7 @@ void display(bool rebuild, F32 zoom_factor, int subfield, bool for_snapshot)
 		F32 percent_done = gRestoreGLTimer.getElapsedTimeF32() * 100.f / RESTORE_GL_TIME;
 		if( percent_done > 100.f )
 		{
-			gViewerWindow->setShowProgress(false);
+			gViewerWindow->setShowProgress(false, false);
 			gRestoreGL = false;
 		}
 		else

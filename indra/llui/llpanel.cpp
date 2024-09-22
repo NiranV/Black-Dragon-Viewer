@@ -495,7 +495,7 @@ void LLPanel::initFromParams(const LLPanel::Params& p)
 	setBackgroundVisible(p.background_visible);
 	setBackgroundOpaque(p.background_opaque);
 	setBackgroundColor(p.bg_opaque_color);
-	setTransparentColor(p.bg_alpha_color;
+	setTransparentColor(p.bg_alpha_color);
 //	//BD - Custom Background Shadow Image
 	mBgShadowImage = p.bg_shadow_image();
 	mBgOpaqueImage = p.bg_opaque_image();

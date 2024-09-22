@@ -609,25 +609,25 @@ bool toggle_show_object_render_cost(const LLSD& newvalue)
 
 static bool handleAvatarRotateThresholdFast(const LLSD& newvalue)
 {
-	gDragonLibrary.mAvatarRotateThresholdFast = newvalue.asReal();
+	gDragonLibrary.mAvatarRotateThresholdFast = (F32)newvalue.asReal();
 	return true;
 }
 
 static bool handleAvatarRotateThresholdSlow(const LLSD& newvalue)
 {
-	gDragonLibrary.mAvatarRotateThresholdSlow = newvalue.asReal();
+	gDragonLibrary.mAvatarRotateThresholdSlow = (F32)newvalue.asReal();
 	return true;
 }
 
 static bool handleAvatarRotateThresholdMouselook(const LLSD& newvalue)
 {
-	gDragonLibrary.mAvatarRotateThresholdMouselook = newvalue.asReal();
+	gDragonLibrary.mAvatarRotateThresholdMouselook = (F32)newvalue.asReal();
 	return true;
 }
 
 static bool handleMovementRotationSpeed(const LLSD& newvalue)
 {
-	gDragonLibrary.mMovementRotationSpeed = newvalue.asReal();
+	gDragonLibrary.mMovementRotationSpeed = (F32)newvalue.asReal();
 	return true;
 }
 
@@ -656,11 +656,8 @@ bool toggle_freeze_world(const LLSD& newvalue)
 	if (val)
 	{
 		// freeze all avatars
-		LLCharacter* avatarp;
-		for (std::vector<LLCharacter*>::iterator iter = LLCharacter::sInstances.begin();
-			iter != LLCharacter::sInstances.end(); ++iter)
+		for (auto avatarp : LLCharacter::sInstances)
 		{
-			avatarp = *iter;
 			mAvatarPauseHandles.push_back(avatarp->requestPause());
 		}
 	}
@@ -765,7 +762,7 @@ static bool handleFollowJoint(const LLSD& newvalue)
 static bool handleCameraSmoothing(const LLSD& newvalue)
 {
 	if (gAgentCamera.isInitialized())
-		gAgentCamera.mCameraPositionSmoothing = newvalue.asReal();
+		gAgentCamera.mCameraPositionSmoothing = (F32)newvalue.asReal();
 	return true;
 }
 
@@ -793,7 +790,7 @@ static bool handleHeadConstrainsChanged(const LLSD& newvalue)
 static bool handleWaterHeightChanged(const LLSD& newvalue)
 {
 	if (gAgentCamera.isInitialized())
-		gAgent.getRegion()->setWaterHeightLocal(newvalue.asReal());
+		gAgent.getRegion()->setWaterHeightLocal((F32)newvalue.asReal());
 	return true;
 }
 
@@ -816,14 +813,14 @@ static bool handleCinematicCamera(const LLSD& newvalue)
 static bool handleCameraMaxRoll(const LLSD& newvalue)
 {
 	if (gAgentCamera.isInitialized())
-		gAgentCamera.mCameraMaxRoll = newvalue.asReal();
+		gAgentCamera.mCameraMaxRoll = (F32)newvalue.asReal();
 	return true;
 }
 
 static bool handleCameraMaxRollSitting(const LLSD& newvalue)
 {
 	if (gAgentCamera.isInitialized())
-		gAgentCamera.mCameraMaxRollSitting = newvalue.asReal();
+		gAgentCamera.mCameraMaxRollSitting = (F32)newvalue.asReal();
 	return true;
 }
 
@@ -984,13 +981,13 @@ static bool handleMachinimaSidebar(const LLSD& newvalue)
 //BD - Rotation Speed Customisation
 static bool handleAvatarPitchMultiplier(const LLSD& newvalue)
 {
-	gAgent.setPitchMultiplier(newvalue.asReal());
+	gAgent.setPitchMultiplier((F32)newvalue.asReal());
 	return true;
 }
 
 static bool handleAvatarYawMultiplier(const LLSD& newvalue)
 {
-	gAgent.setYawMultiplier(newvalue.asReal());
+	gAgent.setYawMultiplier((F32)newvalue.asReal());
 	return true;
 }
 

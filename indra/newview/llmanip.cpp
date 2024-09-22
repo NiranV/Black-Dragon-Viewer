@@ -454,10 +454,10 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 
 		//BD
 		imagep->draw(
-			(window_center_x - 115) * display_scale.mV[VX],
-			(window_center_y + vertical_offset - PAD) * display_scale.mV[VY],
-			235 * display_scale.mV[VX],
-			(PAD * 2 + 10) * display_scale.mV[VY],
+			(S32)((window_center_x - 115) * display_scale.mV[VX]),
+			(S32)((window_center_y + vertical_offset - PAD) * display_scale.mV[VY]),
+			(S32)(235 * display_scale.mV[VX]),
+			(S32)((PAD * 2 + 10) * display_scale.mV[VY]),
 			LLColor4(1.f, 1.f, 1.f, 1.0f) );
 
         LLFontGL* font = LLFontGL::getFontSansSerif();

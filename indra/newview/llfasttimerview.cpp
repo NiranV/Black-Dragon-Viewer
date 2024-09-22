@@ -1482,7 +1482,7 @@ void LLFastTimerView::drawBars()
     //const S32 image_width = bar_image->getTextureWidth();
     //const S32 image_height = bar_image->getTextureHeight();
 
-    gGL.getTexUnit(0)->bind(bar_image->getImage());
+    //gGL.getTexUnit(0)->bind(bar_image->getImage());
     {
         const S32 histmax = (S32)mRecording.getNumRecordedPeriods();
 
@@ -1519,7 +1519,7 @@ void LLFastTimerView::drawBars()
                                         bar_height);
         mAverageTimerRow.mTop = frame_bar_rect.mTop;
         mAverageTimerRow.mBottom = frame_bar_rect.mBottom;
-        drawBar(frame_bar_rect, mAverageTimerRow, image_width, image_height);
+        drawBar(frame_bar_rect, mAverageTimerRow, 1, 1);
         frame_bar_rect.translate(0, -(bar_height + vpad + bar_height));
 
         for(S32 bar_index = mScrollIndex; bar_index < llmin(histmax, mScrollIndex + MAX_VISIBLE_HISTORY); ++bar_index)
@@ -1530,7 +1530,7 @@ void LLFastTimerView::drawBars()
             row.mBottom = frame_bar_rect.mBottom;
             frame_bar_rect.mRight = frame_bar_rect.mLeft
                                     + (S32)ll_round((row.mBars[0].mTotalTime / mTotalTimeDisplay) * mBarRect.getWidth());
-            drawBar(frame_bar_rect, row, image_width, image_height);
+            drawBar(frame_bar_rect, row, 1, 1);
 
             frame_bar_rect.translate(0, -(bar_height + vpad));
         }

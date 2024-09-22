@@ -10983,7 +10983,7 @@ void LLVOAvatar::idleUpdateDebugInfo()
 		info_line = llformat("%d Complexity", mVisualComplexity);
 
 		F32 mult = llclamp((F32)mVisualComplexity / (F32)max_render_cost, 0.5f, 1.f);
-		info_color.set((0.5 * mult), 1.0, (0.25 * mult), (1.0 - (0.5 - mult)));
+		info_color.set((0.5f * mult), 1.0f, (0.25f * mult), (1.0f - (0.5f - mult)));
 		info_style = (LLFontGL::NORMAL);
 
 		mText->addLine(info_line, info_color, info_style);

@@ -120,7 +120,7 @@ const S32 PBRTYPE_NORMAL = 4;       // PBR Normal
 LLGLTFMaterial::TextureInfo LLPanelFace::getPBRTextureInfo()
 {
     // Radiogroup [ "Complete material", "Base color", "Metallic/roughness", "Emissive", "Normal" ]
-    S32 radio_group_index = mRadioPbrType->getSelectedIndex();
+    S32 radio_group_index = mRadioPbrType->getCurrentIndex();
     switch (radio_group_index)
     {
     case PBRTYPE_BASE_COLOR:
@@ -428,10 +428,10 @@ bool LLPanelFace::postBuild()
     getChildSetCommitCallback(mComboMatMedia, "combobox matmedia", [&](LLUICtrl*, const LLSD&) { onCommitMaterialsMedia(); });
     mComboMatMedia->selectNthItem(MATMEDIA_MATERIAL);
 
-    getChildSetCommitCallback(mRadioMaterialType, "combobox_material_type", [&](LLComboBox*, const LLSD&) { onCommitMaterialType(); });
+    getChildSetCommitCallback(mRadioMaterialType, "combobox_material_type", [&](LLUICtrl*, const LLSD&) { onCommitMaterialType(); });
     mRadioMaterialType->selectNthItem(MATTYPE_DIFFUSE);
 
-    getChildSetCommitCallback(mRadioPbrType, "combobox_pbr_type", [&](LLComboBox*, const LLSD&) { onCommitPbrType(); });
+    getChildSetCommitCallback(mRadioPbrType, "combobox_pbr_type", [&](LLUICtrl*, const LLSD&) { onCommitPbrType(); });
     mRadioPbrType->selectNthItem(PBRTYPE_RENDER_MATERIAL_ID);
 
     mLabelGlow = getChild<LLTextBox>("glow label");
@@ -615,7 +615,7 @@ struct LLPanelFaceSetTEFunctor : public LLSelectedTEFunctor
 
         // Effectively the same as MATMEDIA_PBR sans using different radio,
         // separate for the sake of clarity
-        switch (mPanel->mRadioMaterialType->getSelectedIndex())
+        switch (mPanel->mRadioMaterialType->getCurrentIndex())
         {
         case MATTYPE_DIFFUSE:
             ctrlTexScaleS = mPanel->mTexScaleU;
@@ -960,7 +960,7 @@ void LLPanelFace::alignTextureLayer()
     bool identical_face = false;
     LLSelectedTE::getFace(last_face, identical_face);
 
-    LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(mRadioMaterialType->getSelectedIndex()));
+    LLPanelFaceSetAlignedConcreteTEFunctor setfunc(this, last_face, static_cast<LLRender::eTexIndex>(mRadioMaterialType->getCurrentIndex()));
     LLSelectMgr::getInstance()->getSelection()->applyToTEs(&setfunc);
 }
 
@@ -1075,19 +1075,19 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
         }
         mComboMatMedia->setEnabled(editable);
 
-        if (mRadioMaterialType->getSelectedIndex() < MATTYPE_DIFFUSE)
+        if (mRadioMaterialType->getCurrentIndex() < MATTYPE_DIFFUSE)
         {
             mRadioMaterialType->selectNthItem(MATTYPE_DIFFUSE);
         }
         mRadioMaterialType->setEnabled(editable);
 
-        if (mRadioPbrType->getSelectedIndex() < PBRTYPE_RENDER_MATERIAL_ID)
+        if (mRadioPbrType->getCurrentIndex() < PBRTYPE_RENDER_MATERIAL_ID)
         {
             mRadioPbrType->selectNthItem(PBRTYPE_RENDER_MATERIAL_ID);
         }
         mRadioPbrType->setEnabled(editable);
         const bool pbr_selected = mComboMatMedia->getCurrentIndex() == MATMEDIA_PBR;
-        const bool texture_info_selected = pbr_selected && mRadioPbrType->getSelectedIndex() != PBRTYPE_RENDER_MATERIAL_ID;
+        const bool texture_info_selected = pbr_selected && mRadioPbrType->getCurrentIndex() != PBRTYPE_RENDER_MATERIAL_ID;
 
         mCheckSyncSettings->setEnabled(editable);
         mCheckSyncSettings->setValue(gSavedSettings.getBOOL("SyncMaterialSettings"));
@@ -1584,12 +1584,12 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
                 U32 material_type = MATTYPE_DIFFUSE;
                 if (material_selection == MATMEDIA_MATERIAL)
                 {
-                    material_type = mRadioMaterialType->getSelectedIndex();
+                    material_type = mRadioMaterialType->getCurrentIndex();
                 }
                 else if (material_selection == MATMEDIA_PBR)
                 {
                     enabled = editable && has_pbr_material;
-                    material_type = mRadioPbrType->getSelectedIndex();
+                    material_type = mRadioPbrType->getCurrentIndex();
                 }
 
                 switch (material_type)
@@ -1775,7 +1775,7 @@ void LLPanelFace::updateUI(bool force_set_values /*false*/)
 
         if (mRadioMaterialType)
         {
-            mRadioMaterialType->setSelectedIndex(0);
+            mRadioMaterialType->selectNthItem(0);
         }
         mLabelColorTransp->setEnabled(false);
         mTexRepeat->setEnabled(false);
@@ -1957,7 +1957,7 @@ void LLPanelFace::updateVisibilityGLTF(LLViewerObject* objectp /*= nullptr */)
 
     mRadioPbrType->setVisible(show_pbr);
 
-    const U32 pbr_type = mRadioPbrType->getSelectedIndex();
+    const U32 pbr_type = mRadioPbrType->getCurrentIndex();
     const bool show_pbr_render_material_id = show_pbr && (pbr_type == PBRTYPE_RENDER_MATERIAL_ID);
 
     mPBRTextureCtrl->setVisible(show_pbr_render_material_id);
@@ -2808,7 +2808,7 @@ void LLPanelFace::updateVisibility(LLViewerObject* objectp /* = nullptr */)
         return;
     }
     U32 materials_media = mComboMatMedia->getCurrentIndex();
-    U32 material_type = mRadioMaterialType->getSelectedIndex();
+    U32 material_type = mRadioMaterialType->getCurrentIndex();
     bool show_media = (materials_media == MATMEDIA_MEDIA) && mComboMatMedia->getEnabled();
     bool show_material = materials_media == MATMEDIA_MATERIAL;
     bool show_texture = (show_media || (show_material && (material_type == MATTYPE_DIFFUSE) && mComboMatMedia->getEnabled()));
@@ -2951,7 +2951,7 @@ void LLPanelFace::updateShinyControls(bool is_setting_texture, bool mess_with_sh
     }
 
     U32 materials_media = mComboMatMedia->getCurrentIndex();
-    U32 material_type = mRadioMaterialType->getSelectedIndex();
+    U32 material_type = mRadioMaterialType->getCurrentIndex();
     bool show_material = (materials_media == MATMEDIA_MATERIAL);
     bool show_shininess = show_material && (material_type == MATTYPE_SPECULAR) && mComboMatMedia->getEnabled();
     U32 shiny_value = mComboShininess->getCurrentIndex();
@@ -3001,7 +3001,7 @@ void LLPanelFace::updateAlphaControls()
     bool show_alphactrls = (alpha_value == ALPHAMODE_MASK); // Alpha masking
 
     U32 mat_media = mComboMatMedia->getCurrentIndex();
-    U32 mat_type = mRadioMaterialType->getSelectedIndex();
+    U32 mat_type = mRadioMaterialType->getCurrentIndex();
 
     show_alphactrls = show_alphactrls && (mat_media == MATMEDIA_MATERIAL);
     show_alphactrls = show_alphactrls && (mat_type == MATTYPE_DIFFUSE);
@@ -3606,7 +3606,7 @@ void LLPanelFace::onCommitRepeatsPerMeter()
     }
     else
     {
-        U32 material_type = mRadioMaterialType->getSelectedIndex();
+        U32 material_type = mRadioMaterialType->getCurrentIndex();
         switch (material_type)
         {
         case MATTYPE_DIFFUSE:
@@ -4803,7 +4803,7 @@ void LLPanelFace::onTextureSelectionChanged(LLInventoryItem* itemp)
     LL_DEBUGS("Materials") << "item asset " << itemp->getAssetUUID() << LL_ENDL;
 
     LLTextureCtrl* texture_ctrl;
-    U32 mattype = mRadioMaterialType->getSelectedIndex();
+    U32 mattype = mRadioMaterialType->getCurrentIndex();
     switch (mattype)
     {
         case MATTYPE_SPECULAR:

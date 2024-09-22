@@ -1030,7 +1030,7 @@ void LLFloaterIMSessionTab::forceReshape()
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
 	//BD
-	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6.f, false);
+	mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + 6, false);
 }
 
 // static

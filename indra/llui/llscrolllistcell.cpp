@@ -146,7 +146,7 @@ void LLScrollListIcon::setValue(const LLSD& value)
 }
 
 
-void LLScrollListIcon::setColor(const LLColor4& color)
+void LLScrollListIcon::setColor(const LLUIColor& color)
 {
     mColor = color;
 }
@@ -162,7 +162,7 @@ S32 LLScrollListIcon::getWidth() const
 }
 
 
-void LLScrollListIcon::draw(const LLColor4& color, const LLColor4& highlight_color)  const
+void LLScrollListIcon::draw(const LLUIColor& color, const LLUIColor& highlight_color)  const
 {
     if (mIcon)
     {
@@ -231,7 +231,7 @@ void LLScrollListBar::setValue(const LLSD& value)
     }
 }
 
-void LLScrollListBar::setColor(const LLColor4& color)
+void LLScrollListBar::setColor(const LLUIColor& color)
 {
     mColor = color;
 }
@@ -242,7 +242,7 @@ S32 LLScrollListBar::getWidth() const
 }
 
 
-void LLScrollListBar::draw(const LLColor4& color, const LLColor4& highlight_color)   const
+void LLScrollListBar::draw(const LLUIColor& color, const LLUIColor& highlight_color)   const
 {
     S32 bar_width = getWidth() - mLeftPad - mRightPad;
     S32 left = (S32)(bar_width - bar_width * mRatio);
@@ -338,7 +338,7 @@ S32 LLScrollListText::getContentWidth() const
 }
 
 
-void LLScrollListText::setColor(const LLColor4& color)
+void LLScrollListText::setColor(const LLUIColor& color)
 {
     mColor = color;
     mUseColor = true;
@@ -381,9 +381,9 @@ const LLSD LLScrollListText::getAltValue() const
 }
 
 
-void LLScrollListText::draw(const LLColor4& color, const LLColor4& highlight_color) const
+void LLScrollListText::draw(const LLUIColor& color, const LLUIColor& highlight_color) const
 {
-    LLColor4 display_color;
+    LLUIColor display_color;
     if (mUseColor)
     {
         display_color = mColor;
@@ -481,7 +481,7 @@ LLScrollListCheck::~LLScrollListCheck()
     mCheckBox = NULL;
 }
 
-void LLScrollListCheck::draw(const LLColor4& color, const LLColor4& highlight_color) const
+void LLScrollListCheck::draw(const LLUIColor& color, const LLUIColor& highlight_color) const
 {
     mCheckBox->draw();
 }
@@ -598,9 +598,9 @@ void LLScrollListIconText::setWidth(S32 width)
 }
 
 
-void LLScrollListIconText::draw(const LLColor4& color, const LLColor4& highlight_color)  const
+void LLScrollListIconText::draw(const LLUIColor& color, const LLUIColor& highlight_color)  const
 {
-    LLColor4 display_color;
+    LLUIColor display_color;
     if (mUseColor)
     {
         display_color = mColor;
@@ -739,7 +739,7 @@ void LLScrollListMultiSlider::setWidth(S32 width)
 }
 
 
-void LLScrollListMultiSlider::draw(const LLColor4& color, const LLColor4& highlight_color)	 const
+void LLScrollListMultiSlider::draw(const LLUIColor& color, const LLUIColor& highlight_color)	 const
 {
 	mMultiSlider->draw();
 }

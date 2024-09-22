@@ -304,8 +304,8 @@ private:
     LLTextBox* mLabelTexGen { nullptr };
     LLComboBox* mComboTexGen { nullptr };
 
-    LLRadioGroup* mRadioMaterialType { nullptr };
-    LLRadioGroup* mRadioPbrType { nullptr };
+    LLComboBox* mRadioMaterialType { nullptr };
+    LLComboBox* mRadioPbrType { nullptr };
 
     LLCheckBoxCtrl* mCheckFullbright { nullptr };
 

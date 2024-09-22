@@ -796,7 +796,7 @@ bool LLAppViewer::init()
 		//BD - Construct a date from our extracted numbers.
 		date.fromYMDHMS(year, month, day);
 		//BD - Subtract the file age from our current date.
-		day = (date_now.secondsSinceEpoch() - date.secondsSinceEpoch()) / (60 * 60 * 24);
+		day = ((S32)date_now.secondsSinceEpoch() - (S32)date.secondsSinceEpoch()) / (60 * 60 * 24);
 
 		std::string path = gDirUtilp->add(dir, file);
 		LLAPRFile infile;
@@ -1907,8 +1907,6 @@ bool LLAppViewer::cleanup()
         gKeyboard->resetKeys();
     }
 
-    display_cleanup();
-
 	//BD
 	//release_start_screen(); // just in case
 
@@ -2476,7 +2474,7 @@ void LLAppViewer::initLoggingAndGetLastDuration()
 	int log_stat_result = LLFile::stat(log_file, &log_file_stat);
 	if ( 0 == start_stat_result && 0 == log_stat_result )
 	{
-		int elapsed_seconds = log_file_stat.st_ctime - start_marker_stat.st_ctime;
+        int elapsed_seconds = (int)(log_file_stat.st_ctime - start_marker_stat.st_ctime);
 		// only report a last run time if the last viewer was the same version
 		// because this stat will be counted against this version
 		if ( markerIsSameVersion(start_marker_file_name) )
@@ -3102,8 +3100,8 @@ bool LLAppViewer::initConfiguration()
         LLControlVariable* enable_voice = gSavedSettings.getControl("EnableVoiceChat");
         if (enable_voice)
         {
-            const BOOL DO_NOT_PERSIST = FALSE;
-            disable_voice->setValue(LLSD(TRUE), DO_NOT_PERSIST);
+            const BOOL DO_NOT_PERSIST = false;
+            enable_voice->setValue(LLSD(false), DO_NOT_PERSIST);
         }
     }
 
@@ -5232,7 +5230,7 @@ void LLAppViewer::idleShutdown()
         static S32 total_uploads = 0;
         // Sometimes total upload count can change during logout.
         total_uploads = llmax(total_uploads, pending_uploads);
-        gViewerWindow->setShowProgress(true);
+        gViewerWindow->setShowProgress(true, true);
         S32 finished_uploads = total_uploads - pending_uploads;
         F32 percent = 100.f * finished_uploads / total_uploads;
         gViewerWindow->setProgressPercent(percent);
@@ -5244,7 +5242,7 @@ void LLAppViewer::idleShutdown()
         && gLogoutTimer.getElapsedTimeF32() < SHUTDOWN_UPLOAD_SAVE_TIME
         && !logoutRequestSent())
     {
-        gViewerWindow->setShowProgress(true);
+        gViewerWindow->setShowProgress(true, true);
         gViewerWindow->setProgressPercent(100.f);
         gViewerWindow->setProgressString(LLTrans::getString("LoggingOut"));
         return;
@@ -5256,7 +5254,7 @@ void LLAppViewer::idleShutdown()
         sendLogoutRequest();
 
         // Wait for a LogoutReply message
-        gViewerWindow->setShowProgress(true);
+        gViewerWindow->setShowProgress(true, true);
         gViewerWindow->setProgressPercent(100.f);
         gViewerWindow->setProgressString(LLTrans::getString("LoggingOut"));
         return;

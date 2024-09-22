@@ -334,10 +334,17 @@ void update_texture_fetch()
 
 void set_flags_and_update_appearance()
 {
-	LLAppearanceMgr::instance().setAttachmentInvLinkEnable(true);
-	LLAppearanceMgr::instance().updateAppearanceFromCOF(true, true, no_op);
+    // this may be called from a coroutine but has many side effects
+    // in non-thread-safe classes, post to main loop
+    auto work = []()
+    {
+	    LLAppearanceMgr::instance().setAttachmentInvLinkEnable(true);
+	    LLAppearanceMgr::instance().updateAppearanceFromCOF(true, true, no_op);
 
-    LLInventoryModelBackgroundFetch::instance().start();
+        LLInventoryModelBackgroundFetch::instance().start();
+    };
+
+    LLAppViewer::instance()->postToMainCoro(work);
 }
 
 // Returns false to skip other idle processing. Should only return
@@ -396,20 +403,19 @@ bool idle_startup()
 	//note: Removing this line will cause incorrect button size in the login screen. -- bao.
 	gTextureList.updateImages(0.01f) ;
 
-	//BD - Disable VSync during login.
-	//     VSync on login is evil, it slowls the Viewer login, inventory creation and precaching
-	//     as well as the wearable wait to a crawl. Without VSync we get 10-100x the speed.
-	//     VSync has caused several people to "hang" on inventory creation, resulting in a timeout
-	//     shortly after and it also doesn't play nice with 'display_startup()' as it is dependent
-	//     on VSync and can get stuck.
-	if (gSavedSettings.getBOOL("RenderVSyncEnable"))
-	{
-		LL_INFOS("Window") << "Temporarily disabling vertical sync" << LL_ENDL;
-		wglSwapIntervalEXT(0);
-	}
-
 	if ( STATE_FIRST == LLStartUp::getStartupState() )
 	{
+        //BD - Disable VSync during login.
+        //     VSync on login is evil, it slowls the Viewer login, inventory creation and precaching
+        //     as well as the wearable wait to a crawl. Without VSync we get 10-100x the speed.
+        //     VSync has caused several people to "hang" on inventory creation, resulting in a timeout
+        //     shortly after and it also doesn't play nice with 'display_startup()' as it is dependent
+        //     on VSync and can get stuck.
+        if (gSavedSettings.getBOOL("RenderVSyncEnable"))
+        {
+            LL_INFOS("Window") << "Temporarily disabling vertical sync" << LL_ENDL;
+            wglSwapIntervalEXT(0);
+        }
 
 		static bool first_call = true;
 		if (first_call)
@@ -817,7 +823,7 @@ bool idle_startup()
 				gUserCredential = gLoginHandler.initializeLoginInfo();                 
 			}     
 			// Make sure the process dialog doesn't hide things
-			gViewerWindow->setShowProgress(FALSE);
+			gViewerWindow->setShowProgress(false, false);
 			// Show the login dialog
 			login_show();
 			// connect dialog is already shown, so fill in the names
@@ -1044,8 +1050,8 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
 		// Display the startup progress bar.
-		gViewerWindow->setShowProgress(TRUE);
-		gViewerWindow->setProgressCancelButtonVisible(TRUE, LLTrans::getString("Quit"));
+		gViewerWindow->setShowProgress(true, false);
+		gViewerWindow->setProgressCancelButtonVisible(true, LLTrans::getString("Quit"));
 
 		LLStartUp::setStartupState( STATE_LOGIN_AUTH_INIT );
 
@@ -2043,7 +2049,8 @@ bool idle_startup()
             return false;
         }
         LLInventoryModelBackgroundFetch::instance().start();
-        LLUUID cof_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT);
+        LLAppearanceMgr::instance().initCOFID();
+        LLUUID cof_id = LLAppearanceMgr::instance().getCOF();
         LLViewerInventoryCategory* cof = gInventory.getCategory(cof_id);
         if (cof
             && cof->getVersion() == LLViewerInventoryCategory::VERSION_UNKNOWN)
@@ -2307,31 +2314,31 @@ bool idle_startup()
 
 	if (STATE_PRECACHE == LLStartUp::getStartupState())
 	{
-		display_startup();
-		F32 timeout_frac = timeout.getElapsedTimeF32()/PRECACHING_DELAY;
-		
-		// We now have an inventory skeleton, so if this is a user's first
-		// login, we can start setting up their clothing and avatar 
-		// appearance.  This helps to avoid the generic "Ruth" avatar in
-		// the orientation island tutorial experience. JC
-		if (gAgent.isFirstLogin()
-			&& !sInitialOutfit.empty()    // registration set up an outfit
-			&& !sInitialOutfitGender.empty() // and a gender
-			&& isAgentAvatarValid()	  // can't wear clothes without object
-			&& !gAgent.isOutfitChosen()) // nothing already loading
-		{
-			// Start loading the wearables, textures, gestures
-			LLStartUp::loadInitialOutfit( sInitialOutfit, sInitialOutfitGender );
-		}
-		// If not first login, we need to fetch COF contents and
-		// compute appearance from that.
-		if (isAgentAvatarValid() && !gAgent.isFirstLogin() && !gAgent.isOutfitChosen())
-		{
-			gAgentWearables.notifyLoadingStarted();
-			gAgent.setOutfitChosen(TRUE);
-			gAgentWearables.sendDummyAgentWearablesUpdate();
+        display_startup();
+        F32 timeout_frac = timeout.getElapsedTimeF32() / PRECACHING_DELAY;
+
+        // We now have an inventory skeleton, so if this is a user's first
+        // login, we can start setting up their clothing and avatar
+        // appearance.  This helps to avoid the generic "Ruth" avatar in
+        // the orientation island tutorial experience. JC
+        if (gAgent.isFirstLogin()
+            && !sInitialOutfit.empty()    // registration set up an outfit
+            && !sInitialOutfitGender.empty() // and a gender
+            && isAgentAvatarValid()   // can't wear clothes without object
+            && !gAgent.isOutfitChosen()) // nothing already loading
+        {
+            // Start loading the wearables, textures, gestures
+            LLStartUp::loadInitialOutfit(sInitialOutfit, sInitialOutfitGender);
+        }
+        // If not first login, we need to fetch COF contents and
+        // compute appearance from that.
+        if (isAgentAvatarValid() && !gAgent.isFirstLogin() && !gAgent.isOutfitChosen())
+        {
+            gAgentWearables.notifyLoadingStarted();
+            gAgent.setOutfitChosen(true);
+            gAgentWearables.sendDummyAgentWearablesUpdate();
             callAfterCOFFetch(set_flags_and_update_appearance);
-		}
+        }
 
 		display_startup();
 
@@ -2367,7 +2374,7 @@ bool idle_startup()
 		static LLFrameTimer wearables_timer;
 
 		const F32 wearables_time = wearables_timer.getElapsedTimeF32();
-		static LLCachedControl<F32> max_wearables_time(gSavedSettings, "ClothingLoadingDelay");
+        const F32 MAX_WEARABLES_TIME = 10.f;
 
 		if (!gAgent.isOutfitChosen() && isAgentAvatarValid())
 		{
@@ -2390,44 +2397,43 @@ bool idle_startup()
 			LLStartUp::setStartupState( STATE_CLEANUP );
 		}
 
-		F32 timeout_frac = wearables_time / max_wearables_time;
+		F32 timeout_frac = wearables_time / MAX_WEARABLES_TIME;
 		set_startup_status(0.86f + llclamp(0.08f * timeout_frac, 0.0f, 0.08f), llclamp(timeout_frac, 0.0f, 1.0f), LLTrans::getString("WearablesWait"), "Attempting To Fully Load Outfit");
 		display_startup();
 
-		if (gAgent.isOutfitChosen() && (wearables_time > max_wearables_time))
-		{
-			display_startup();
-			if (gInventory.isInventoryUsable())
-			{
-				LLNotificationsUtil::add("ClothingLoading");
-			}			
-			record(LLStatViewer::LOADING_WEARABLES_LONG_DELAY, wearables_time);
-			LLStartUp::setStartupState( STATE_CLEANUP );
-		}
-		else if (gAgent.isFirstLogin()
-				&& isAgentAvatarValid()
-				&& gAgentAvatarp->isFullyLoaded())
-		{
-			// wait for avatar to be completely loaded
-			if (isAgentAvatarValid()
-				&& gAgentAvatarp->isFullyLoaded())
-			{
-				// _LL_DEBUGS("Avatar") << "avatar fully loaded" << LL_ENDL;
-				LLStartUp::setStartupState( STATE_CLEANUP );
-				return true;
-			}
-		}
-		else
-		{
-			// OK to just get the wearables
-			if ( gAgentWearables.areWearablesLoaded() )
-			{
-				// We have our clothing, proceed.
-				// _LL_DEBUGS("Avatar") << "wearables loaded" << LL_ENDL;
-				LLStartUp::setStartupState( STATE_CLEANUP );
-				return true;
-			}
-		}
+        if (gAgent.isOutfitChosen() && (wearables_time > MAX_WEARABLES_TIME))
+        {
+            if (gInventory.isInventoryUsable())
+            {
+                LLNotificationsUtil::add("ClothingLoading");
+            }
+            record(LLStatViewer::LOADING_WEARABLES_LONG_DELAY, wearables_time);
+            LLStartUp::setStartupState(STATE_CLEANUP);
+        }
+        else if (gAgent.isFirstLogin()
+            && isAgentAvatarValid()
+            && gAgentAvatarp->isFullyLoaded())
+        {
+            // wait for avatar to be completely loaded
+            if (isAgentAvatarValid()
+                && gAgentAvatarp->isFullyLoaded())
+            {
+                LL_DEBUGS("Avatar") << "avatar fully loaded" << LL_ENDL;
+                LLStartUp::setStartupState(STATE_CLEANUP);
+                return true;
+            }
+        }
+        else
+        {
+            // OK to just get the wearables
+            if (gAgentWearables.areWearablesLoaded())
+            {
+                // We have our clothing, proceed.
+                LL_DEBUGS("Avatar") << "wearables loaded" << LL_ENDL;
+                LLStartUp::setStartupState(STATE_CLEANUP);
+                return true;
+            }
+        }
 		//fall through this frame to STATE_CLEANUP
 	}
 
@@ -3757,7 +3763,7 @@ bool process_login_success_response()
 		if(server_utc_time)
 		{
 			time_t now = time(NULL);
-			gUTCOffset = ((S32)server_utc_time - now);
+			gUTCOffset = ((S32)server_utc_time - (S32)now);
 
 			// Print server timestamp
 			LLSD substitution;

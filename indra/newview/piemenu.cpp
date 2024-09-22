@@ -115,7 +115,7 @@ bool PieMenu::handleHover(S32 x, S32 y, MASK mask)
 	mCurrentSegment = -1;
 
 	// Move mouse coordinates to be relative to the pie center
-	LLVector2 mouseVector(x - PIE_OUTER_SIZE, y - PIE_OUTER_SIZE);
+	LLVector2 mouseVector((F32)(x - PIE_OUTER_SIZE), (F32)(y - PIE_OUTER_SIZE));
 
 	// Get the distance from the center point
 	F32 distance = mouseVector.length();
@@ -308,7 +308,7 @@ void PieMenu::draw()
 		//BD - Use the currently highlighted pie slice if we are close to its center.
 		if (cur_segment_angle > 0.25f && cur_segment_angle < 0.75f && mSnapSegment >= 0)
 		{
-			cur_angle = (F_PI / 4.0 * (F32)mCurrentSegment);
+			cur_angle = (F_PI / 4.0f * (F32)mCurrentSegment);
 			diff = mOldAngle - cur_angle;
 		}
 
@@ -319,7 +319,7 @@ void PieMenu::draw()
 			mOldAngle += F_TWO_PI;
 
 		new_angle = lerp(mOldAngle, cur_angle, 0.5f);
-		gl_washer_segment_2d(PIE_OUTER_SIZE - 2, PIE_INNER_SIZE + 2, new_angle - pie_half + 0.02, new_angle + pie_half - 0.02, 8, selectedColor, borderColor);
+		gl_washer_segment_2d(PIE_OUTER_SIZE - 2, PIE_INNER_SIZE + 2, new_angle - pie_half + 0.02f, new_angle + pie_half - 0.02f, 8, selectedColor, borderColor);
 		mOldAngle = new_angle;
 		//BD - Why? hover() only works while we actually hover the pie menu's bounding box
 		//     so as soon as we move outside the bounding box we are no longer checking if
@@ -336,10 +336,10 @@ void PieMenu::draw()
 		F32 outside_factor = getOutsideFactor();
 		LLColor4 color = LLColor4(1, 1, 1, outside_factor);
 
-		mCenterImage->draw( -(mCenterImage->getWidth() / 2) * outside_factor,
-							-(mCenterImage->getHeight() / 2) * outside_factor,
-							mCenterImage->getWidth() * outside_factor,
-							mCenterImage->getHeight() * outside_factor,
+		mCenterImage->draw( -(S32)((mCenterImage->getWidth() / 2) * outside_factor),
+							-(S32)((mCenterImage->getHeight() / 2) * outside_factor),
+                            (S32)(mCenterImage->getWidth() * outside_factor),
+							(S32)(mCenterImage->getHeight() * outside_factor),
 							color);
 		mBackImage->draw(	-(mBackImage->getWidth() / 2),
 							-(mBackImage->getHeight() / 2),
@@ -653,7 +653,7 @@ F32 PieMenu::getScaleFactor()
 	// Set the fade if this was the first click on the menu
 	if (mFirstClick)
 	{
-		factor = 0.0;
+		factor = 0.0f;
 	}
 	// Otherwise check if the fade timer is still running
 	else if (mPopupTimer.getStarted())
@@ -663,13 +663,13 @@ F32 PieMenu::getScaleFactor()
 		F32 popuptime = gSavedSettings.getF32("PieMenuPopupTime");
 		if (elapsedTime > popuptime)
 		{
-			factor = 1.0;
+			factor = 1.0f;
 			mPopupTimer.stop();
 		}
 		// Otherwise calculate the alpha factor to make the menu fade over time
 		else
 		{
-			factor = 0.0 - (0.0 - 1.0)*elapsedTime / popuptime;
+			factor = 0.0f - (0.0f - 1.0f)*elapsedTime / popuptime;
 		}
 	}
 
@@ -685,7 +685,7 @@ F32 PieMenu::getOutsideFactor()
 	{
 		// If the timer ran past the popup time, stop the timer and set the size to 1.0
 		F32 elapsedTime = mInsideCenterTimer.getElapsedTimeF32();
-		F32 popuptime = 0.25;
+		F32 popuptime = 0.25f;
 
 		if (elapsedTime > popuptime)
 		{

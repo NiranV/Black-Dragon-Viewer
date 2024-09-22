@@ -175,8 +175,7 @@ elseif(DARWIN)
         libvivoxsdk.dylib
        )
     set(debug_src_dir "${ARCH_PREBUILT_DIRS_DEBUG}")
-    set(debug_files
-       )
+    set(debug_files)
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     set(release_files
         libndofdev.dylib
@@ -199,6 +198,7 @@ elseif(DARWIN)
     if (TARGET ll::fmodstudio)
       set(debug_files ${debug_files} libfmodL.dylib)
       set(release_files ${release_files} libfmod.dylib)
+    endif ()
 
     if (TARGET ll::openal)
       list(APPEND release_files libalut.dylib libopenal.dylib)

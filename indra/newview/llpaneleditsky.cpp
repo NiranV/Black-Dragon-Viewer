@@ -426,7 +426,7 @@ void LLPanelSettingsSkyCloudTab::onCloudVarianceChanged()
 void LLPanelSettingsSkyCloudTab::onCloudScrollChanged()
 {
 	if (!mSkySettings) return;
-	LLVector2 scroll(mCloudScrollX->getValue().asReal(), mCloudScrollY->getValue().asReal());
+	LLVector2 scroll((F32)mCloudScrollX->getValue().asReal(), (F32)mCloudScrollY->getValue().asReal());
 	mSkySettings->setCloudScrollRate(scroll);
 	setIsDirty();
 }
@@ -574,7 +574,7 @@ void LLPanelSettingsSkySunMoonTab::onSunMoonColorChanged()
 void LLPanelSettingsSkySunMoonTab::onGlowChanged()
 {
 	if (!mSkySettings) return;
-	LLColor3 glow((F32)mGlowSize->getValue().asReal(), 0.0f, mGlowFocus->getValue().asReal());
+	LLColor3 glow((F32)mGlowSize->getValue().asReal(), 0.0f, (F32)mGlowFocus->getValue().asReal());
 
 	// takes 0 - 1.99 UI range -> 40 -> 0.2 range
 	glow.mV[0] = (2.0f - glow.mV[0]) * SLIDER_SCALE_GLOW_R;
@@ -599,8 +599,8 @@ void LLPanelSettingsSkySunMoonTab::onSunRotationChanged()
 
 	LLQuaternion rot;
 	LLQuaternion delta;
-	rot.setAngleAxis(mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
-	delta.setAngleAxis(mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot.setAngleAxis((F32)mSunPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis((F32)mSunPositionY->getValue().asReal() * F_PI, 0, 0, 1);
 	rot *= delta;
 
 	mSkySettings->setSunRotation(rot);
@@ -630,8 +630,8 @@ void LLPanelSettingsSkySunMoonTab::onMoonRotationChanged()
 
 	LLQuaternion rot;
 	LLQuaternion delta;
-	rot.setAngleAxis(mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
-	delta.setAngleAxis(mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
+	rot.setAngleAxis((F32)mMoonPositionX->getValue().asReal() * F_PI, 0, 1, 0);
+	delta.setAngleAxis((F32)mMoonPositionY->getValue().asReal() * F_PI, 0, 0, 1);
 	rot *= delta;
 
 	mSkySettings->setMoonRotation(rot);
@@ -887,7 +887,7 @@ void LLPanelSettingsSkyDensityTab::onAbsorptionMaxAltitudeChanged()
 void LLPanelSettingsSkyDensityTab::onMoistureLevelChanged()
 {
 	if (!mSkySettings) return;
-	F32 moisture_level = mMoisture->getValue().asReal();
+	F32 moisture_level = (F32)mMoisture->getValue().asReal();
 	mSkySettings->setSkyMoistureLevel(moisture_level);
 	mSkySettings->update();
 	setIsDirty();
@@ -896,7 +896,7 @@ void LLPanelSettingsSkyDensityTab::onMoistureLevelChanged()
 void LLPanelSettingsSkyDensityTab::onDropletRadiusChanged()
 {
 	if (!mSkySettings) return;
-	F32 droplet_radius = mDroplet->getValue().asReal();
+	F32 droplet_radius = (F32)mDroplet->getValue().asReal();
 	mSkySettings->setSkyDropletRadius(droplet_radius);
 	mSkySettings->update();
 	setIsDirty();
@@ -905,7 +905,7 @@ void LLPanelSettingsSkyDensityTab::onDropletRadiusChanged()
 void LLPanelSettingsSkyDensityTab::onIceLevelChanged()
 {
 	if (!mSkySettings) return;
-	F32 ice_level = mIceLevel->getValue().asReal();
+	F32 ice_level = (F32)mIceLevel->getValue().asReal();
 	mSkySettings->setSkyIceLevel(ice_level);
 	mSkySettings->update();
 	setIsDirty();

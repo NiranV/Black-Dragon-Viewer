@@ -494,7 +494,7 @@ void LLTabContainer::draw()
 
 			S32 tab_count = getTabCount();
 			S32 available_width = getRect().getWidth() - LLPANEL_BORDER_WIDTH;
-			S32 consistent_width = llfloor(available_width / tab_count);
+			S32 consistent_width = (S32)(llfloor((F32)available_width / (F32)tab_count));
 			S32 leftover_width = available_width % tab_count;
 			//BD - We pre-emptively go through all tabs and check their button widths.
 			//     We do this to see whether one or more buttons need special attention due to their
@@ -518,7 +518,7 @@ void LLTabContainer::draw()
 								break;
 
 							available_width -= button_width;
-							consistent_width = llfloor(available_width / tab_count);
+							consistent_width = (S32)(llfloor((F32)available_width / (F32)tab_count));
 							leftover_width = available_width % tab_count;
 						}
 					}

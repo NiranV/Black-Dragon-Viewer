@@ -523,11 +523,12 @@ void LLWorldMapView::draw()
 				//BD
 				font->renderUTF8(
 					mesg, 0,
-					llfloor(left + 3), llfloor(bottom + 5),
+					left + 3.f,
+                    bottom + 5.f,
 					LLColor4::white,
 					LLFontGL::LEFT, LLFontGL::BASELINE, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW,
 					S32_MAX, //max_chars
-					mMapScale, //max_pixels
+					(S32)mMapScale, //max_pixels
 					NULL,
 					true); //use ellipses
 			}

@@ -1105,6 +1105,11 @@ U32 LLControlGroup::saveToFile(const std::string& filename, bool nondefault_only
 
 U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_values, bool save_values)
 {
+    if (!mIncludedFiles.insert(filename).second)
+    {
+        return 0; //Already included this file.
+    }
+
     LLSD settings;
     llifstream infile;
     infile.open(filename.c_str());
@@ -1130,6 +1135,26 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
         std::string const & name = itr->first;
         LLSD const & control_map = itr->second;
 
+        if (name == "Include")
+        {
+            if (control_map.isArray())
+            {
+#if LL_WINDOWS
+                size_t pos = filename.find_last_of('\\');
+#else
+                size_t pos = filename.find_last_of('/');
+#endif            
+                if (pos != std::string::npos)
+                {
+                    const std::string dir = filename.substr(0, ++pos);
+                    for (LLSD::array_const_iterator array_itr = control_map.beginArray(), array_end = control_map.endArray();
+                        array_itr != array_end; ++array_itr)
+                        validitems += loadFromFile(dir + (*array_itr).asString(), set_default_values);
+                }
+            }
+            continue;
+        }
+
         if(control_map.has("Persist"))
         {
             persist = control_map["Persist"].asInteger()?
@@ -1152,20 +1177,20 @@ U32 LLControlGroup::loadFromFile(const std::string& filename, bool set_default_v
 		F32 max_val = FLT_MAX;
 		if (control_map.has("MaxValue"))
 		{
-			max_val = control_map["MaxValue"].asReal();
+			max_val = (F32)control_map["MaxValue"].asReal();
 		}
 
 		F32 min_val = -FLT_MAX;
 		if (control_map.has("MinValue"))
 		{
-			min_val = control_map["MinValue"].asReal();
+			min_val = (F32)control_map["MinValue"].asReal();
 		}
 
 		//BD - Presets
 		S32 preset_type = 0;
 		if (control_map.has("PresetType"))
 		{
-			preset_type = control_map["PresetType"].asInteger();
+			preset_type = (S32)control_map["PresetType"].asInteger();
 		}
 
         // If the control exists just set the value from the input file.

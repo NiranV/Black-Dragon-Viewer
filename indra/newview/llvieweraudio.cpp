@@ -433,15 +433,19 @@ void audio_update_volume(bool force_update)
 
 		gAudiop->setMasterGain ( master_volume );
 
-		static const LLCachedControl<F32> doppler_volume(gSavedSettings, "AudioLevelDoppler");
-		gAudiop->setDopplerFactor(doppler_volume);
+        const F32 AUDIO_LEVEL_DOPPLER = 1.f;
+        gAudiop->setDopplerFactor(AUDIO_LEVEL_DOPPLER);
 
-		static const LLCachedControl<F32> rolloff_volume(gSavedSettings, "AudioLevelRolloff");
-		static const LLCachedControl<F32> underwater_rolloff_volume(gSavedSettings, "AudioLevelUnderwaterRolloff");
-		if(!LLViewerCamera::getInstance()->cameraUnderWater())
-			gAudiop->setRolloffFactor(rolloff_volume);
-		else
-			gAudiop->setRolloffFactor(underwater_rolloff_volume);
+        if (!LLViewerCamera::getInstance()->cameraUnderWater())
+        {
+            const F32 AUDIO_LEVEL_ROLLOFF = 1.f;
+            gAudiop->setRolloffFactor(AUDIO_LEVEL_ROLLOFF);
+        }
+        else
+        {
+            const F32 AUDIO_LEVEL_UNDERWATER_ROLLOFF = 5.f;
+            gAudiop->setRolloffFactor(AUDIO_LEVEL_UNDERWATER_ROLLOFF);
+        }
 
 		gAudiop->setMuted(mute_audio || progress_view_visible);
 		

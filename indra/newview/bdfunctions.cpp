@@ -78,7 +78,7 @@ void BDFunctions::onCommitX(LLUICtrl* ctrl, const LLSD& param)
 	LLControlVariable* control = gSavedSettings.getControl(param.asString());
 	eControlType type = control->type();
 	LLVector4 vec4 = LLVector4(control->getValue());
-	F32 value = ctrl->getValue().asReal();
+	F32 value = (F32)ctrl->getValue().asReal();
 	//BD - Option is in link mode.
 	if (control->isLocked())
 	{
@@ -132,7 +132,7 @@ void BDFunctions::onCommitY(LLUICtrl* ctrl, const LLSD& param)
 	LLControlVariable* control = gSavedSettings.getControl(param.asString());
 	eControlType type = control->type();
 	LLVector4 vec4 = LLVector4(control->getValue());
-	F32 value = ctrl->getValue().asReal();
+	F32 value = (F32)ctrl->getValue().asReal();
 	//BD - Option is in link mode.
 	if (control->isLocked())
 	{
@@ -186,7 +186,7 @@ void BDFunctions::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 	LLControlVariable* control = gSavedSettings.getControl(param.asString());
 	eControlType type = control->type();
 	LLVector4 vec4 = LLVector4(control->getValue());
-	F32 value = ctrl->getValue().asReal();
+	F32 value = (F32)ctrl->getValue().asReal();
 	//BD - Option is in link mode.
 	if (control->isLocked())
 	{
@@ -235,7 +235,7 @@ void BDFunctions::onCommitW(LLUICtrl* ctrl, const LLSD& param)
 {
 	LLControlVariable* control = gSavedSettings.getControl(param.asString());
 	LLVector4 vec4 = LLVector4(control->getValue());
-	F32 value = ctrl->getValue().asReal();
+	F32 value = (F32)ctrl->getValue().asReal();
 	//BD - Option is in link mode.
 	if (control->isLocked())
 	{
@@ -303,12 +303,12 @@ void BDFunctions::invertValue(LLUICtrl* ctrl)
 	//     trigger whatever is necessary to apply the change or use the new value.
 	if (control)
 	{
-		val = control->getValue().asReal();
+		val = (F32)control->getValue().asReal();
 		control->setValue(-val);
 	}
 	else
 	{
-		val = ctrl->getValue().asReal();
+		val = (F32)ctrl->getValue().asReal();
 		ctrl->setValue(-val);
 	}
 }
@@ -422,7 +422,7 @@ void BDFunctions::openPreferences( const LLSD& param)
 		LLTabContainer* prefs_tabs = preferences->getChild<LLTabContainer>("pref core");
 		if (prefs_tabs)
 		{
-			prefs_tabs->selectTabByName(param);
+			prefs_tabs->selectTabByName(param.asString());
 		}
 	}
 }

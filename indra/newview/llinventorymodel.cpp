@@ -2661,8 +2661,8 @@ bool LLInventoryModel::loadSkeleton(
 	F32 perc = 0.0f;
 	S32 perc_c = 0;
 	F32 meta = owner_id == gAgent.getID() ? 0.55f : 0.51f;
-	LLUIString temp_text = owner_id == gAgent.getID() ? "Importing Inventory Categories [COUNT] / [MAX]" 
-		: "Importing Library Categories [COUNT] / [MAX]";
+	LLUIString temp_text = owner_id == gAgent.getID() ? (std::string)"Importing Inventory Categories [COUNT] / [MAX]"
+		: (std::string)"Importing Library Categories [COUNT] / [MAX]";
 	temp_text.setArg("[MAX]", llformat("%d", (S32)options.size()));
 
 	for(LLSD::array_const_iterator it = options.beginArray(),
@@ -3515,7 +3515,7 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 	S32 perc_c = 0;
 	S64 read = 0;
 	S64 file_size = file.tellg();
-	LLUIString temp_text = "Reading Inventory Cache File ([COUNT])";
+	LLUIString temp_text = (std::string)"Reading Inventory Cache File ([COUNT])";
 	LLUIString meta_text = LLTrans::getString("InventorySend");
 	display_startup();
 
@@ -3528,7 +3528,7 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 	{
 		//BD - Inventory Progress
 		read += file.gcount();
-		perc = (F64)read / (F64)file_size;
+		perc = (F32)(read / file_size);
 		temp_text.setArg("[COUNT]", llformat("%d", perc_c));
 		set_startup_status(-0.01f ,perc, meta_text, temp_text);
 

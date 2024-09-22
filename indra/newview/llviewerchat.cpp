@@ -101,7 +101,7 @@ void LLViewerChat::getChatColor(const LLChat& chat, LLUIColor& r_color, F32& r_c
 				}
 				break;
 			default:
-				r_color.setToWhite();
+                r_color.set(LLColor4::white);
 		}
 		
 		if (!chat.mPosAgent.isExactlyZero())
@@ -112,7 +112,7 @@ void LLViewerChat::getChatColor(const LLChat& chat, LLUIColor& r_color, F32& r_c
 			if (distance_squared > dist_near_chat * dist_near_chat)
 			{
 				// diminish far-off chat
-				r_color.mV[VALPHA] = 0.8f;
+                r_color.set(LLColor4(r_color.get().mV[VRED], r_color.get().mV[VGREEN], r_color.get().mV[VBLUE], 0.8f));
 			}
 		}
 	}

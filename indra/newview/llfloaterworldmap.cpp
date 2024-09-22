@@ -529,7 +529,7 @@ bool LLFloaterWorldMap::handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask)
 		S32 map_y = y - mMapView->getRect().mBottom;
 		if (mMapView->pointInView(map_x, map_y))
 		{
-			F32 old_slider_zoom = mZoomSlider->getValue().asReal();
+			F32 old_slider_zoom = (F32)mZoomSlider->getValue().asReal();
 			F32 max_slider_zoom = mZoomSlider->getMaxValue();
 			F32 min_slider_zoom = mZoomSlider->getMinValue();
 			F32 slider_zoom = llclamp(old_slider_zoom + ((F32)clicks * -0.3333f), min_slider_zoom, max_slider_zoom);

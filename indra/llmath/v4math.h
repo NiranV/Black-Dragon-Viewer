@@ -65,7 +65,7 @@ class LLVector4
 		explicit LLVector4(const LLVector3d &vec);				// Initializes LLVector3 to (vec[0]. vec[1], vec[2], 0)
 
 
-		LLSD LLVector4::getValue() const
+		LLSD getValue() const
 		{
 			LLSD ret;
 			ret[0] = mV[0];

@@ -397,7 +397,7 @@ void LLFloaterSnapshot::onClose(bool app_quitting)
 void LLFloaterSnapshot::updateLayout()
 {
 	LLUICtrl* thumbnail_placeholder = getChild<LLUICtrl>("thumbnail_placeholder");
-	F32 aspect_ratio = mWidthSpinnerCtrl->getValue().asReal() / mHeightSpinnerCtrl->getValue().asReal();
+	F32 aspect_ratio = (F32)mWidthSpinnerCtrl->getValue().asReal() / (F32)mHeightSpinnerCtrl->getValue().asReal();
 	//BD - Automatically calculate the size of our snapshot window to enlarge
 	//     the snapshot preview to its maximum size, this is especially helpfull
 	//     for pretty much every aspect ratio other than 1:1.
@@ -412,14 +412,14 @@ void LLFloaterSnapshot::updateLayout()
 		panel_width = 700.f;
 	}
 
-	S32 floater_width = 224.f;
+	S32 floater_width = 224;
 	if (mAdvanced)
 	{
-		floater_width = floater_width + panel_width;
+		floater_width = (S32)floater_width + (S32)panel_width;
 	}
 
 	thumbnail_placeholder->setVisible(mAdvanced);
-	thumbnail_placeholder->reshape(panel_width, thumbnail_placeholder->getRect().getHeight());
+	thumbnail_placeholder->reshape((S32)panel_width, thumbnail_placeholder->getRect().getHeight());
 	getChild<LLUICtrl>("file_size_label")->setVisible(mAdvanced);
 	if (!isMinimized())
     if (hasChild("360_label", TRUE))
@@ -558,7 +558,7 @@ void LLFloaterSnapshot::updateControls()
 			mWidthSpinnerCtrl->setValue(w);
 			if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
 			{
-				mWidthSpinnerCtrl->setIncrement(w >> 1);
+				mWidthSpinnerCtrl->setIncrement((F32)(w >> 1));
 			}
 		}
 		if (mHeightSpinnerCtrl->getValue().asInteger() == 0)
@@ -568,7 +568,7 @@ void LLFloaterSnapshot::updateControls()
 			mHeightSpinnerCtrl->setValue(h);
 			if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
 			{
-				mHeightSpinnerCtrl->setIncrement(h >> 1);
+				mHeightSpinnerCtrl->setIncrement((F32)(h >> 1));
 			}
 		}
 
@@ -587,24 +587,24 @@ void LLFloaterSnapshot::updateControls()
 				S32 width = gViewerWindow->getWindowWidthRaw();
 				S32 height = gViewerWindow->getWindowHeightRaw();
 
-				mWidthSpinnerCtrl->setMaxValue(width);
+				mWidthSpinnerCtrl->setMaxValue((F32)width);
 
-				mHeightSpinnerCtrl->setMaxValue(height);
+				mHeightSpinnerCtrl->setMaxValue((F32)height);
 
 				if (mWidthSpinnerCtrl->getValue().asInteger() > width)
 				{
-					mWidthSpinnerCtrl->forceSetValue(width);
+					mWidthSpinnerCtrl->forceSetValue((F32)width);
 				}
 				if (mHeightSpinnerCtrl->getValue().asInteger() > height)
 				{
-					mHeightSpinnerCtrl->forceSetValue(height);
+					mHeightSpinnerCtrl->forceSetValue((F32)height);
 				}
 			}
 			else
 			{
 				//BD
-				mWidthSpinnerCtrl->setMaxValue(unlock ? 11520 : 3840);
-				mHeightSpinnerCtrl->setMaxValue(unlock ? 11520 : 3840);
+				mWidthSpinnerCtrl->setMaxValue(unlock ? 11520.0f : 3840.0f);
+				mHeightSpinnerCtrl->setMaxValue(unlock ? 11520.0f : 3840.0f);
 			}
 		}
 
@@ -612,7 +612,7 @@ void LLFloaterSnapshot::updateControls()
 		const bool show_quality_ctrls = (shot_format == LLSnapshotModel::SNAPSHOT_FORMAT_JPEG);
 		mImageQualitySliderCtrl->setVisible(show_quality_ctrls);
 		getActivePanel()->getChild<LLUICtrl>("image_quality_level")->setVisible(show_quality_ctrls);
-		mImageQualitySliderCtrl->setValue(gSavedSettings.getS32("SnapshotQuality"));
+		mImageQualitySliderCtrl->setValue((F32)gSavedSettings.getS32("SnapshotQuality"));
 		updateImageQualityLevel();
 	}
 		
@@ -941,7 +941,7 @@ void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, bool do_update)
 			//BD - Autoscale Rendering
 			if (gPipeline.RenderSnapshotAutoAdjustMultiplier)
 			{
-				F32 window_height = gViewerWindow->getWindowHeightRaw();
+				F32 window_height = (F32)gViewerWindow->getWindowHeightRaw();
 				F32 multiplier = (F32)height / window_height;
 				gSavedSettings.setF32("RenderSnapshotMultiplier", multiplier);
 			}
@@ -958,8 +958,8 @@ void LLFloaterSnapshot::updateResolution(LLUICtrl* ctrl, bool do_update)
 				mHeightSpinnerCtrl->setValue(height);
 				if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
 				{
-					mWidthSpinnerCtrl->setIncrement(width >> 1);
-					mHeightSpinnerCtrl->setIncrement(height >> 1);
+					mWidthSpinnerCtrl->setIncrement((F32)(width >> 1));
+					mHeightSpinnerCtrl->setIncrement((F32)(height >> 1));
 				}
 			}
 
@@ -1106,8 +1106,8 @@ void LLFloaterSnapshot::updateSpinners(LLSnapshotLivePreview* previewp, S32& wid
 		mHeightSpinnerCtrl->forceSetValue(height);
 		if (getActiveSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE)
 		{
-			mWidthSpinnerCtrl->setIncrement(width >> 1);
-			mHeightSpinnerCtrl->setIncrement(height >> 1);
+			mWidthSpinnerCtrl->setIncrement((F32)(width >> 1));
+			mHeightSpinnerCtrl->setIncrement((F32)(height >> 1));
 		}
 	}
 }
@@ -1402,10 +1402,10 @@ void LLFloaterSnapshot::onCustomResolutionCommit()
 	if (panel->getName() == "panel_snapshot_inventory")
 	{
 		width = power_of_two(width, MAX_TEXTURE_SIZE);
-		mWidthSpinnerCtrl->setIncrement(width >> 1);
+		mWidthSpinnerCtrl->setIncrement((F32)(width >> 1));
 		mWidthSpinnerCtrl->forceSetValue(width);
 		height = power_of_two(height, MAX_TEXTURE_SIZE);
-		mHeightSpinnerCtrl->setIncrement(height >> 1);
+		mHeightSpinnerCtrl->setIncrement((F32)(height >> 1));
 		mHeightSpinnerCtrl->forceSetValue(height);
 	}
 	applyCustomResolution(width, height);
@@ -1531,7 +1531,7 @@ void LLFloaterSnapshot::onQualitySliderCommit(LLUICtrl* ctrl)
 {
 	//updateImageQualityLevel();
 
-	S32 quality_val = llfloor(ctrl->getValue().asReal());
+	S32 quality_val = llfloor((F32)ctrl->getValue().asReal());
 	onImageQualityChange(quality_val);
 }
 

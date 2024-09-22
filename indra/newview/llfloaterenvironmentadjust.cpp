@@ -495,7 +495,7 @@ void LLFloaterEnvironmentAdjust::onHazeDensityChanged()
 {
     if (!mLiveSky)
         return;
-    mLiveSky->setHazeDensity((F32)mHazeDensity->getValue()->getValue().asReal());
+    mLiveSky->setHazeDensity((F32)mHazeDensity->getValue().asReal());
     mLiveSky->update();
 }
 
@@ -503,14 +503,14 @@ void LLFloaterEnvironmentAdjust::onSceneGammaChanged()
 {
     if (!mLiveSky)
         return;
-    mLiveSky->setGamma((F32)mSceneGamma->getValue()->getValue().asReal());
+    mLiveSky->setGamma((F32)mSceneGamma->getValue().asReal());
     mLiveSky->update();
 }
 
 void LLFloaterEnvironmentAdjust::onDensityMultipChanged()
 {
 	if (!mLiveSky) return;
-	F32 density_mult = mDensityMult->getValue().asReal();
+	F32 density_mult = (F32)mDensityMult->getValue().asReal();
 	density_mult *= SLIDER_SCALE_DENSITY_MULTIPLIER;
 	mLiveSky->setDensityMultiplier(density_mult);
 	mLiveSky->update();
@@ -520,7 +520,7 @@ void LLFloaterEnvironmentAdjust::onDistanceMultipChanged()
 {
     if (!mLiveSky)
         return;
-    mLiveSky->setCloudShadow((F32)mDistanceMult->getValue()->getValue().asReal());
+    mLiveSky->setCloudShadow((F32)mDistanceMult->getValue().asReal());
     mLiveSky->update();
 }
 
@@ -652,7 +652,7 @@ void LLFloaterEnvironmentAdjust::onMoonScaleChanged()
 {
 	if (!mLiveSky) 
 		return;
-	mLiveSky->setMoonScale((mMoonScale->getValue().asReal()));
+	mLiveSky->setMoonScale((F32)(mMoonScale->getValue().asReal()));
 	mLiveSky->update();
 }
 

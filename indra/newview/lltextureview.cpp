@@ -270,7 +270,7 @@ void LLTextureBar::draw()
 	{
 		// Downloaded bytes
 		//BD - Clamp.
-		right = bar_left + (llclamp(data_progress, 0.0f, 1.0f) * bar_width);
+		right = bar_left + (S32)(llclamp(data_progress, 0.0f, 1.0f) * bar_width);
 		if (right > bar_left)
 		{
 			gGL.color4f(0.f, 0.5f, 0.f, 0.75f);
@@ -523,12 +523,12 @@ void LLGLTexMemBar::draw()
 	S32 max_vram = gGLManager.mVRAM;
 	S32 used_vram = 0;
 	S32 free_vram = 0;
+    S32 bar_right = left + bar_width;
 
 	F32 discard_bias = LLViewerTexture::sDesiredDiscardBias;
-	F32 cache_usage = LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
-	F32 cache_max_usage = LLAppViewer::getTextureCache()->getMaxUsage().valueInUnits<LLUnits::Megabytes>();
+	F32 cache_usage = (F32)LLAppViewer::getTextureCache()->getUsage().valueInUnits<LLUnits::Megabytes>();
+	F32 cache_max_usage = (F32)LLAppViewer::getTextureCache()->getMaxUsage().valueInUnits<LLUnits::Megabytes>();
 	F32 data_progress = 0.f;
-	F32 bar_right = left + bar_width;
 
 	U32 total_http_requests = LLAppViewer::getTextureFetch()->getTotalNumHTTPRequests();
 	U32 total_active_cached_objects = LLWorld::getInstance()->getNumOfActiveCachedObjects();
@@ -833,9 +833,6 @@ void LLGLTexMemBar::draw()
 	top = v_offset + line_height * 2;
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);
-
-	text = llformat("Packets/Bad: %10d/%5d",
-					LLAppViewer::getTextureFetch()->mPacketCount, LLAppViewer::getTextureFetch()->mBadPacketCount);
 
 	LLFontGL::getFontMonospace()->renderUTF8(text, 0, 185, top,
 		text_color, LLFontGL::LEFT, LLFontGL::TOP);

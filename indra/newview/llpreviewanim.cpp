@@ -150,7 +150,7 @@ void LLPreviewAnim::time(LLUICtrl* ctrl, const LLSD& param)
 	LLMotion* motion = gAgentAvatarp->findMotion(itemID);
 	if (motion)
 	{
-		motion->activate(ctrl->getValue().asReal());
+		motion->activate((F32)ctrl->getValue().asReal());
 	}
 }
 

@@ -282,10 +282,10 @@ void LLStatusBar::refresh()
 	{
 		mFPSUpdateTimer.reset();
 		LLTrace::Recording& recording = LLTrace::get_frame_recording().getLastRecording();
-		F32 max = recording.getMax(LLStatViewer::FPS_SAMPLE);
-		F32 min = recording.getMin(LLStatViewer::FPS_SAMPLE);
-		F32 mean = recording.getMean(LLStatViewer::FPS_SAMPLE);
-		F32 last = recording.getPerSec(LLStatViewer::FPS);
+		F32 max = (F32)recording.getMax(LLStatViewer::FPS_SAMPLE);
+		F32 min = (F32)recording.getMin(LLStatViewer::FPS_SAMPLE);
+		F32 mean = (F32)recording.getMean(LLStatViewer::FPS_SAMPLE);
+		F32 last = (F32)recording.getPerSec(LLStatViewer::FPS);
 
 		if (mFPSHistory.mV[VY] < max || mFPSHistory.mV[VY] < last)
 		{

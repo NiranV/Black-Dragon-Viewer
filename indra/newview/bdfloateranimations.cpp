@@ -275,7 +275,7 @@ void BDFloaterAnimations::onMotionCommand(LLUICtrl* ctrl, const LLSD& param)
 				}
 				else if (param.asString() == "Set")
 				{
-					avatar->getMotionController().setTimeFactor(getChild<LLUICtrl>("anim_factor")->getValue().asReal());
+					avatar->getMotionController().setTimeFactor((F32)getChild<LLUICtrl>("anim_factor")->getValue().asReal());
 					onMotionRefresh();
 				}
 				else if (param.asString() == "Restart")

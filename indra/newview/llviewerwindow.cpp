@@ -1263,8 +1263,8 @@ bool LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK m
 	{
 		S32 x = pos.mX;
 		S32 y = pos.mY;
-		x = llround((F32)x / mDisplayScale.mV[VX]);
-		y = llround((F32)y / mDisplayScale.mV[VY]);
+		x = (S32)llround((F32)x / mDisplayScale.mV[VX]);
+		y = (S32)llround((F32)y / mDisplayScale.mV[VY]);
 
 		//BD - Redirect right clicks to LLToolCamera and check if it wants to
 		//	   handle the right click before the actual main Window does.
@@ -1903,10 +1903,8 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	mToolStored( NULL ),
 	mHideCursorPermanent( false ),
 	mCursorHidden(false),
-	mIgnoreActivate( false ),
 	mResDirty(false),
 	mStatesDirty(false),
-	mCurrResolutionIndex(0),
 	mProgressView(NULL),
 	mChicletBar(NULL),
 	mStatusBarContainer(NULL),
@@ -2219,7 +2217,7 @@ void LLViewerWindow::initBase()
 
     // Add the progress bar view (startup view), which overrides everything
     mProgressView = getRootView()->findChild<LLProgressView>("progress_view");
-    setShowProgress(false);
+    setShowProgress(false, false);
     setProgressCancelButtonVisible(false);
 
     gMenuHolder = getRootView()->getChild<LLViewerMenuHolderGL>("Menu Holder");
@@ -2485,7 +2483,7 @@ void LLViewerWindow::shutdownGL()
     LLSelectMgr::getInstance()->cleanup();
 
     LL_INFOS() << "Stopping GL during shutdown" << LL_ENDL;
-    stopGL(false);
+    stopGL();
     stop_glerror();
 
     gGL.shutdown();
@@ -3405,16 +3403,16 @@ void LLViewerWindow::updateUI()
 
 	if (gLoggedInTime.getStarted())
 	{
-		static const LLCachedControl<F32> dest_hint_timeout(gSavedSettings, "DestinationGuideHintTimeout");
-		if (gLoggedInTime.getElapsedTimeF32() > dest_hint_timeout)
-		{
-			LLFirstUse::notUsingDestinationGuide();
-		}
-		static const LLCachedControl<F32> sidepanel_hint_timeout(gSavedSettings, "SidePanelHintTimeout");
-		if (gLoggedInTime.getElapsedTimeF32() > sidepanel_hint_timeout)
-		{
-			LLFirstUse::notUsingSidePanel();
-		}
+        const F32 DESTINATION_GUIDE_HINT_TIMEOUT = 1200.f;
+        const F32 SIDE_PANEL_HINT_TIMEOUT = 300.f;
+        if (gLoggedInTime.getElapsedTimeF32() > DESTINATION_GUIDE_HINT_TIMEOUT)
+        {
+            LLFirstUse::notUsingDestinationGuide();
+        }
+        if (gLoggedInTime.getElapsedTimeF32() > SIDE_PANEL_HINT_TIMEOUT)
+        {
+            LLFirstUse::notUsingSidePanel();
+        }
 	}
 
 	LLConsole::updateClass();
@@ -3943,7 +3941,7 @@ void LLViewerWindow::updateMouseDelta()
 
 		//BD - Do not round our mouse delta, it will result in ignoring all 1-2 pixel movements entirely.
 		//mCurrentMouseDelta.set(ll_round(fdx), ll_round(fdy));
-		mCurrentMouseDelta.set(fdx, fdy);
+		mCurrentMouseDelta.set((S32)fdx, (S32)fdy);
 		mouse_vel.setVec(fdx,fdy);
 	}
 	else
@@ -5773,12 +5771,21 @@ void LLViewerWindow::setup3DViewport(S32 x_offset, S32 y_offset)
 	}
 }*/
 
-void LLViewerWindow::setShowProgress(const bool show)
+void LLViewerWindow::setShowProgress(const bool show, bool logout)
 {
     if (mProgressView)
     {
-        mProgressView->setVisible(show);
+        if (logout)
+        {
+            mProgressView->setProgressVisible(show, logout);
+        }
+        else
+        {
+            // ## Zi: Fade teleport screens
+            mProgressView->fade(show);
+        }
     }
+
 }
 
 void LLViewerWindow::setStartupComplete()
@@ -5948,7 +5955,7 @@ void LLViewerWindow::restoreGL(const std::string& progress_message)
         {
             gRestoreGLTimer.reset();
             gRestoreGL = true;
-            setShowProgress(true);
+            setShowProgress(true, false);
             setProgressString(progress_message);
         }
         LL_INFOS() << "...Restoring GL done" << LL_ENDL;

@@ -1973,7 +1973,7 @@ bool LLPanelGroupRolesSubTab::postBuildSubTab(LLView* root)
 
     mRoleName = parent->getChild<LLLineEditor>("role_name");
     mRoleTitle = parent->getChild<LLLineEditor>("role_title");
-    mRoleDescription = parent->getChild<LLTextEditor>("role_description");
+    mRoleDescription = parent->getChild<LLLineEditor>("role_description");
 
     mMemberVisibleCheck = parent->getChild<LLCheckBoxCtrl>("role_visible_in_list");
 

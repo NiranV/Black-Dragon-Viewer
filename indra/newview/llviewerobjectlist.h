@@ -149,6 +149,21 @@ public:
 	
 	void updateAvatarVisibility();
 
+    inline S32 getNumObjects() { return (S32)mObjects.size(); }
+    inline S32 getNumActiveObjects() { return (S32)mActiveObjects.size(); }
+
+    void addToMap(LLViewerObject* objectp);
+    void removeFromMap(LLViewerObject* objectp);
+
+    void clearDebugText();
+
+    ////////////////////////////////////////////
+    //
+    // Only accessed by markDead in LLViewerObject
+    void cleanupReferences(LLViewerObject* objectp);
+
+    S32 findReferences(LLDrawable* drawablep) const; // Find references to drawable in all objects, and return value.
+
     S32 getOrphanParentCount() const { return (S32) mOrphanParents.size(); }
     S32 getOrphanCount() const { return mNumOrphans; }
     S32 getAvatarCount() const { return mNumAvatars; }
@@ -202,6 +217,8 @@ protected:
     std::vector<OrphanInfo> mOrphanChildren;    // UUID's of orphaned objects
     S32 mNumOrphans;
     S32 mNumAvatars;
+
+    typedef std::vector<LLPointer<LLViewerObject> > vobj_list_t;
 
 	vobj_list_t mObjects;
 	std::vector<LLPointer<LLViewerObject> > mActiveObjects;

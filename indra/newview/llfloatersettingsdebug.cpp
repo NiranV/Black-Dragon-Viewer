@@ -138,23 +138,23 @@ void LLFloaterSettingsDebug::onCommitSettings()
 		controlp->set(vector.getValue());
 		break;
 	case TYPE_VEC3D:
-		vectord.mdV[VX] = mValX->getValue().asReal();
-		vectord.mdV[VY] = mValY->getValue().asReal();
-		vectord.mdV[VZ] = mValZ->getValue().asReal();
+		vectord.mdV[VX] = (F32)mValX->getValue().asReal();
+		vectord.mdV[VY] = (F32)mValY->getValue().asReal();
+		vectord.mdV[VZ] = (F32)mValZ->getValue().asReal();
 		controlp->set(vectord.getValue());
 		break;
 	  case TYPE_QUAT:
-		quat.mQ[VX] = mValX->getValue().asReal();
-		quat.mQ[VY] = mValY->getValue().asReal();
-		quat.mQ[VZ] = mValZ->getValue().asReal();
-		quat.mQ[VS] = mValW->getValue().asReal();
+		quat.mQ[VX] = (F32)mValX->getValue().asReal();
+		quat.mQ[VY] = (F32)mValY->getValue().asReal();
+		quat.mQ[VZ] = (F32)mValZ->getValue().asReal();
+		quat.mQ[VS] = (F32)mValW->getValue().asReal();
 		controlp->set(quat.getValue());
 		break;
 	  case TYPE_RECT:
-		rect.mLeft = mValX->getValue().asInteger();
-		rect.mRight = mValY->getValue().asInteger();
-		rect.mBottom = mValZ->getValue().asInteger();
-		rect.mTop = mValW->getValue().asInteger();
+		rect.mLeft = (S32)mValX->getValue().asInteger();
+		rect.mRight = (S32)mValY->getValue().asInteger();
+		rect.mBottom = (S32)mValZ->getValue().asInteger();
+		rect.mTop = (S32)mValW->getValue().asInteger();
 		controlp->set(rect.getValue());
 		break;
 	case TYPE_COL4:

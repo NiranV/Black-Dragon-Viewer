@@ -137,7 +137,7 @@ void LLLoginInstance::reconnect()
     std::vector<std::string> uris;
     LLGridManager::getInstance()->getLoginURIs(uris);
     mLoginModule->connect(uris.front(), mRequestData);
-    gViewerWindow->setShowProgress(true);
+    gViewerWindow->setShowProgress(true, false);
 }
 
 void LLLoginInstance::disconnect()
@@ -341,7 +341,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         data["message"] = message_response;
         data["reply_pump"] = TOS_REPLY_PUMP;
         if (gViewerWindow)
-            gViewerWindow->setShowProgress(false);
+            gViewerWindow->setShowProgress(false, false);
         LLFloaterReg::showInstance("message_tos", data);
         LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
             .listen(TOS_LISTENER_NAME,
@@ -365,7 +365,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         }
 
         if (gViewerWindow)
-            gViewerWindow->setShowProgress(false);
+            gViewerWindow->setShowProgress(false, false);
 
         LLFloaterReg::showInstance("message_critical", data);
         LLEventPumps::instance().obtain(TOS_REPLY_PUMP)
@@ -404,7 +404,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         }
 
         if (gViewerWindow)
-            gViewerWindow->setShowProgress(false);
+            gViewerWindow->setShowProgress(false, false);
 
         LLSD args;
         args["VERSION"] = login_version;
@@ -443,7 +443,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
 
         if (gViewerWindow)
         {
-            gViewerWindow->setShowProgress(false);
+            gViewerWindow->setShowProgress(false, false);
         }
 
         showMFAChallange(LLTrans::getString(response["message_id"].asString()));
@@ -463,7 +463,7 @@ void LLLoginInstance::handleLoginFailure(const LLSD& event)
         LL_WARNS("LLLogin") << "Login failed for an unknown reason: " << LLSDOStreamer<LLSDNotationFormatter>(response) << LL_ENDL;
 
         if (gViewerWindow)
-            gViewerWindow->setShowProgress(false);
+            gViewerWindow->setShowProgress(false, false);
 
         LLNotificationsUtil::add("LoginFailedUnknown", LLSD::emptyMap(), LLSD::emptyMap(), boost::bind(&LLLoginInstance::handleLoginDisallowed, this, _1, _2));
     }

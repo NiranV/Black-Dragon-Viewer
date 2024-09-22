@@ -99,10 +99,10 @@ LLVOAvatar *LLControlAvatar::getAttachedAvatar()
 
 void LLControlAvatar::getNewConstraintFixups(LLVector3& new_pos_fixup, F32& new_scale_fixup) const
 {
-    static const LLCachedControl<F32> anim_max_legal_offset(gSavedSettings, "AnimatedObjectsMaxLegalOffset", MAX_LEGAL_OFFSET);
+    static LLCachedControl<F32> anim_max_legal_offset(gSavedSettings, "AnimatedObjectsMaxLegalOffset", MAX_LEGAL_OFFSET);
     F32 max_legal_offset = llmax(anim_max_legal_offset(), 0.f);
 
-    static const LLCachedControl<F32> anim_max_legal_size(gSavedSettings, "AnimatedObjectsMaxLegalSize", MAX_LEGAL_SIZE);
+    static LLCachedControl<F32> anim_max_legal_size(gSavedSettings, "AnimatedObjectsMaxLegalSize", MAX_LEGAL_SIZE);
     F32 max_legal_size = llmax(anim_max_legal_size(), 1.f);
 
     new_pos_fixup = LLVector3();
@@ -173,8 +173,6 @@ void LLControlAvatar::matchVolumeTransform()
         mPositionConstraintFixup = new_pos_fixup;
         mScaleConstraintFixup = new_scale_fixup;
 
-        static const LLCachedControl<F32> global_scale(gSavedSettings, "AnimatedObjectsGlobalScale");
-
         if (mRootVolp->isAttachment())
         {
             LLVOAvatar *attached_av = getAttachedAvatar();
@@ -195,7 +193,7 @@ void LLControlAvatar::matchVolumeTransform()
                 mRoot->setWorldRotation(obj_rot * joint_rot);
                 setRotation(mRoot->getRotation());
 
-				setGlobalScale(global_scale * mScaleConstraintFixup);
+                setGlobalScale(mScaleConstraintFixup);
             }
             else
             {
@@ -245,7 +243,7 @@ void LLControlAvatar::matchVolumeTransform()
             }
             mRoot->setPosition(vol_pos + mPositionConstraintFixup);
 
-             setGlobalScale(global_scale * mScaleConstraintFixup);
+            setGlobalScale(mScaleConstraintFixup);
         }
     }
 }

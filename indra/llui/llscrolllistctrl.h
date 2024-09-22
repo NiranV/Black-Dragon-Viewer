@@ -424,6 +424,8 @@ public:
 
 	void			setAlternateSort() { mAlternateSort = true; }
 
+    void            selectPrevItem(bool extend_selection = false);
+    void            selectNextItem(bool extend_selection = false);
 	S32		selectMultiple( uuid_vec_t ids );
 	// conceptually const, but mutates mItemList
 	void			updateSort() const;

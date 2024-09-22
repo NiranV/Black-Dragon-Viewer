@@ -170,7 +170,6 @@ protected:
     LLConversationViewParticipant* createConversationViewParticipant(LLConversationItem* item);
 
     LLUUID mSessionID;
-    LLView* mContentsView;
     LLLayoutStack* mBodyStack;
     LLLayoutStack* mParticipantListAndHistoryStack;
     LLLayoutPanel* mParticipantListPanel;   // add the widgets to that see mConversationsListPanel

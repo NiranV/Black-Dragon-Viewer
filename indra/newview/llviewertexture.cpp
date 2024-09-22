@@ -75,7 +75,7 @@ LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sSmokeImagep = nullptr
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sFlatNormalImagep = nullptr;
 LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sDefaultIrradiancePBRp;
 //BD - Optimizations
-LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sPixieSmallImagep = NULL;
+LLPointer<LLViewerFetchedTexture> LLViewerFetchedTexture::sPixieSmallImagep = nullptr;
 LLViewerMediaTexture::media_map_t LLViewerMediaTexture::sMediaMap;
 LLTexturePipelineTester* LLViewerTextureManager::sTesterp = nullptr;
 F32 LLViewerFetchedTexture::sMaxVirtualSize = 8192.f*8192.f;
@@ -476,7 +476,6 @@ void LLViewerTextureManager::cleanup()
 
 //	//BD - Exodus Post Process
 	LLViewerFetchedTexture::sExodusColorGradeTexp = NULL;
-	LLViewerFetchedTexture::sPixieSmallImagep = NULL;
 
 	LLViewerMediaTexture::cleanUpClass();	
 }
@@ -526,7 +525,7 @@ void LLViewerTexture::updateClass()
 
 	if (sDesiredDiscardBias > 1.f)
 	{
-		sDesiredDiscardBias -= gFrameIntervalSeconds * 0.01;
+		sDesiredDiscardBias -= gFrameIntervalSeconds * 0.01f;
 	}
 
 	LLViewerTexture::sFreezeImageUpdates = false; // sDesiredDiscardBias > (desired_discard_bias_max - 1.0f);

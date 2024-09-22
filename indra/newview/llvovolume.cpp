@@ -6571,7 +6571,7 @@ U32 LLVolumeGeometryManager::genDrawInfo(LLSpatialGroup* group, U32 mask, LLFace
 			//     invisiprims were. We don't want that. Treat completely invisible faces
 			//     as invisible, not as normal alpha or opaque.
 			if ((blinn_phong_alpha <= 0.f
-				|| tex->getPrimaryFormat() == GL_ALPHA)
+				|| (tex && tex->getPrimaryFormat() == GL_ALPHA))
 				&& !facep->getViewerObject()->mHudText.empty())
 			{
 				registerFace(group, facep, LLRenderPass::PASS_ALPHA_INVISIBLE);
