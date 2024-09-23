@@ -157,7 +157,7 @@ public:
 	void renderFinalize();
 	void copyScreenSpaceReflections(LLRenderTarget* src, LLRenderTarget* dst);
 	void generateLuminance(LLRenderTarget* src, LLRenderTarget* dst);
-	void generateExposure(LLRenderTarget* src, LLRenderTarget* dst);
+    void generateExposure(LLRenderTarget* src, LLRenderTarget* dst, bool use_history = true);
 	void gammaCorrect(LLRenderTarget* src, LLRenderTarget* dst);
 	void generateGlow(LLRenderTarget* src);
 	void applyFXAA(LLRenderTarget* src, LLRenderTarget* dst);
@@ -283,7 +283,7 @@ public:
 
 	void stateSort(LLCamera& camera, LLCullResult& result);
 	void stateSort(LLSpatialGroup* group, LLCamera& camera);
-	void stateSort(LLSpatialBridge* bridge, LLCamera& camera, BOOL fov_changed = FALSE);
+    void stateSort(LLSpatialBridge* bridge, LLCamera& camera, bool fov_changed = false);
 	void stateSort(LLDrawable* drawablep, LLCamera& camera);
 	void postSort(LLCamera& camera);
     
@@ -714,6 +714,7 @@ public:
     RenderTargetPack mMainRT;
 
     // auxillary 512x512 render target pack
+    // used by reflection probes and dynamic texture bakes
     RenderTargetPack mAuxillaryRT;
 
     // Auxillary render target pack scaled to the hero probe's per-face size.

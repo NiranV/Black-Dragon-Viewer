@@ -133,7 +133,7 @@ class LLEyeMotion :
 {
 public:
     // Constructor
-    LLEyeMotion(const LLUUID &id);
+    LLEyeMotion(const LLUUID& id);
 
     // Destructor
     virtual ~LLEyeMotion();
@@ -145,7 +145,7 @@ public:
 
     // static constructor
     // all subclasses must implement such a function and register it
-    static LLMotion *create( const LLUUID &id) { return new LLEyeMotion(id); }
+    static LLMotion* create(const LLUUID& id) { return new LLEyeMotion(id); }
 
 public:
     //-------------------------------------------------------------------------
@@ -175,53 +175,53 @@ public:
     // run-time (post constructor) initialization,
     // called after parameters have been set
     // must return true to indicate success and be available for activation
-    virtual LLMotionInitStatus onInitialize(LLCharacter *character);
+    virtual LLMotionInitStatus onInitialize(LLCharacter* character);
 
     // called when a motion is activated
-    // must return true to indicate success, or else
+    // must return TRUE to indicate success, or else
     // it will be deactivated
     virtual bool onActivate();
 
-	void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
+    void adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state);
 
-	//BD
-	void setEyeConstrains(U32 degrees) { mEyeConstrains = degrees; }
+    //BD
+    void setEyeConstrains(U32 degrees) { mEyeConstrains = degrees; }
 
     // called per time step
-    // must return true while it is active, and
-    // must return false when the motion is completed.
+    // must return TRUE while it is active, and
+    // must return FALSE when the motion is completed.
     virtual bool onUpdate(F32 time, U8* joint_mask);
 
     // called when a motion is deactivated
     virtual void onDeactivate();
 
 public:
-	//-------------------------------------------------------------------------
-	// joint states to be animated
-	//-------------------------------------------------------------------------
-	LLCharacter* mCharacter;
+    //-------------------------------------------------------------------------
+    // joint states to be animated
+    //-------------------------------------------------------------------------
+    LLCharacter* mCharacter;
 
-	LLJoint* mHeadJoint;
-	LLPointer<LLJointState> mLeftEyeState;
-	LLPointer<LLJointState> mRightEyeState;
-	LLPointer<LLJointState> mAltLeftEyeState;
-	LLPointer<LLJointState> mAltRightEyeState;
+    LLJoint* mHeadJoint;
+    LLPointer<LLJointState> mLeftEyeState;
+    LLPointer<LLJointState> mRightEyeState;
+    LLPointer<LLJointState> mAltLeftEyeState;
+    LLPointer<LLJointState> mAltRightEyeState;
 
-	LLFrameTimer		mEyeJitterTimer;
-	F32					mEyeJitterTime;
-	F32					mEyeJitterYaw;
-	F32					mEyeJitterPitch;
-	F32					mEyeLookAwayTime;
-	F32					mEyeLookAwayYaw;
-	F32					mEyeLookAwayPitch;
+    LLFrameTimer		mEyeJitterTimer;
+    F32					mEyeJitterTime;
+    F32					mEyeJitterYaw;
+    F32					mEyeJitterPitch;
+    F32					mEyeLookAwayTime;
+    F32					mEyeLookAwayYaw;
+    F32					mEyeLookAwayPitch;
 
-	// eye blinking
-	LLFrameTimer		mEyeBlinkTimer;
-	F32					mEyeBlinkTime;
-	bool				mEyesClosed;
+    // eye blinking
+    LLFrameTimer		mEyeBlinkTimer;
+    F32					mEyeBlinkTime;
+    BOOL				mEyesClosed;
 
-	//BD
-	U32					mEyeConstrains;
+    //BD
+    U32					mEyeConstrains;
 };
 
 #endif // LL_LLHEADROTMOTION_H

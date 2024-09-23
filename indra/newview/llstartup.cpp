@@ -561,7 +561,7 @@ bool idle_startup()
 				   LLVersionInfo::instance().getMajor(),
 				   LLVersionInfo::instance().getMinor(),
 				   LLVersionInfo::instance().getPatch(),
-				   FALSE,
+                   false,
 				   std::string(),
 				   responder,
 				   failure_is_fatal,
@@ -632,7 +632,7 @@ bool idle_startup()
 			F32 xfer_throttle_bps = gSavedSettings.getF32("XferThrottle");
 			if (xfer_throttle_bps > 1.f)
 			{
-				gXferManager->setUseAckThrottling(TRUE);
+                gXferManager->setUseAckThrottling(true);
 				gXferManager->setAckThrottleBPS(xfer_throttle_bps);
 			}
 			gAssetStorage = new LLViewerAssetStorage(msg, gXferManager);
@@ -646,13 +646,13 @@ bool idle_startup()
 			if (inBandwidth != 0.f)
 			{
 				LL_DEBUGS("AppInit") << "Setting packetring incoming bandwidth to " << inBandwidth << LL_ENDL;
-				msg->mPacketRing.setUseInThrottle(TRUE);
+                msg->mPacketRing.setUseInThrottle(true);
 				msg->mPacketRing.setInBandwidth(inBandwidth);
 			}
 			if (outBandwidth != 0.f)
 			{
 				LL_DEBUGS("AppInit") << "Setting packetring outgoing bandwidth to " << outBandwidth << LL_ENDL;
-				msg->mPacketRing.setUseOutThrottle(TRUE);
+                msg->mPacketRing.setUseOutThrottle(true);
 				msg->mPacketRing.setOutBandwidth(outBandwidth);
 			}
 		}
@@ -664,7 +664,7 @@ bool idle_startup()
 		// or audio cues in connection UI.
 		//-------------------------------------------------
 
-		if (FALSE == gSavedSettings.getBOOL("NoAudio"))
+        if (false == gSavedSettings.getBOOL("NoAudio"))
 		{
 			delete gAudiop;
 			gAudiop = nullptr;
@@ -697,22 +697,11 @@ bool idle_startup()
 				void* window_handle = NULL;
 #endif
 				if (gAudiop->init(window_handle, LLAppViewer::instance()->getSecondLifeTitle()))
-				{
-					if (FALSE == gSavedSettings.getBOOL("UseMediaPluginsForStreamingAudio"))
-					{
-						LL_INFOS("AppInit") << "Using default impl to render streaming audio" << LL_ENDL;
-						gAudiop->setStreamingAudioImpl(gAudiop->createDefaultStreamingAudioImpl());
-					}
-
-					// if the audio engine hasn't set up its own preferred handler for streaming audio
-					// then set up the generic streaming audio implementation which uses media plugins
-					if (NULL == gAudiop->getStreamingAudioImpl())
 					{
 						LL_INFOS("AppInit") << "Using media plugins to render streaming audio" << LL_ENDL;
 						gAudiop->setStreamingAudioImpl(new LLStreamingAudio_MediaPlugins());
-					}
 
-					gAudiop->setMuted(TRUE);
+                    gAudiop->setMuted(true);
 				}
 				else
 				{
@@ -853,7 +842,7 @@ bool idle_startup()
 			LLStartUp::setStartupState( STATE_LOGIN_CLEANUP );
 		}
 
-		gViewerWindow->setNormalControlsVisible( FALSE );	
+        gViewerWindow->setNormalControlsVisible( false );
 		show_debug_menus();
 
 		// Hide the splash screen
@@ -1220,7 +1209,7 @@ bool idle_startup()
                                 general_cert_done);
 
                             reset_login();
-                            gSavedSettings.setBOOL("AutoLogin", FALSE);
+                            gSavedSettings.setBOOL("AutoLogin", false);
                             show_connect_box = true;
                         }
 						if(certificate)
@@ -1247,7 +1236,7 @@ bool idle_startup()
 														 general_cert_done);
 								
 								reset_login();
-								gSavedSettings.setBOOL("AutoLogin", FALSE);
+                                gSavedSettings.setBOOL("AutoLogin", false);
 								show_connect_box = true;
 								
 							}
@@ -1319,7 +1308,7 @@ bool idle_startup()
 		display_startup();
 		// Since we connected, save off the settings so the user doesn't have to
 		// type the name/password again if we crash.
-		gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+        gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), true);
 		LLUIColorTable::instance().saveUserSettings();
 
 		set_startup_status(0.09f, 1.0f, LLTrans::getString("WorldInit"), "Prefetch Images");
@@ -1548,7 +1537,7 @@ bool idle_startup()
 		display_startup();
 
 		#ifndef	LL_RELEASE_FOR_DOWNLOAD
-			gMessageSystem->setTimeDecodes( TRUE );				// Time the decode of each msg
+            gMessageSystem->setTimeDecodes( true );             // Time the decode of each msg
 			gMessageSystem->setTimeDecodesSpamThreshold( 0.05f );  // Spam if a single msg takes over 50ms to decode
 		#endif
 		display_startup();
@@ -1686,7 +1675,7 @@ bool idle_startup()
 
 		gUseCircuitCallbackCalled = false;
 
-		msg->enableCircuit(gFirstSim, TRUE);
+        msg->enableCircuit(gFirstSim, true);
 		// now, use the circuit info to tell simulator about us!
 		LL_INFOS("AppInit") << "viewer: UserLoginLocationReply() Enabling " << gFirstSim << " with code " << msg->mOurCircuitCode << LL_ENDL;
 		msg->newMessageFast(_PREHASH_UseCircuitCode);
@@ -1697,7 +1686,7 @@ bool idle_startup()
 		msg->sendReliable(
 			gFirstSim,
 			gSavedSettings.getS32("UseCircuitCodeMaxRetries"),
-			FALSE,
+            false,
 			(F32Seconds)gSavedSettings.getF32("UseCircuitCodeTimeout"),
 			use_circuit_callback,
 			NULL);
@@ -1995,7 +1984,7 @@ bool idle_startup()
 		// visible.  JC
 		if (show_hud || gSavedSettings.getBOOL("ShowTutorial"))
 		{
-			LLFloaterReg::showInstance("hud", LLSD(), FALSE);
+            LLFloaterReg::showInstance("hud", LLSD(), false);
 		}
 		set_startup_status(0.62f, 1.f, LLTrans::getString("InventorySend"), "Loading Event Notifier");
 		display_startup();
@@ -2142,12 +2131,12 @@ bool idle_startup()
 
 			if (gSavedSettings.getBOOL("ShowHelpOnFirstLogin"))
 			{
-				gSavedSettings.setBOOL("HelpFloaterOpen", TRUE);
+                gSavedSettings.setBOOL("HelpFloaterOpen", true);
 			}
 
 			// Set the show start location to true, now that the user has logged
 			// on with this install.
-			gSavedSettings.setBOOL("ShowStartLocation", TRUE);
+            gSavedSettings.setBOOL("ShowStartLocation", true);
 		}
 
 		set_startup_status(0.69f, 1.f, LLTrans::getString("Misc"), "Loading Environment Settings");
@@ -2208,8 +2197,8 @@ bool idle_startup()
 				if (item_id.notNull() && asset_id.notNull())
 				{
 					// Could schedule and delay these for later.
-					const BOOL no_inform_server = false;
-					const BOOL no_deactivate_similar = false;
+                    const bool no_inform_server = false;
+                    const bool no_deactivate_similar = false;
 					LLGestureMgr::instance().activateGestureWithAsset(item_id, asset_id,
 										 no_inform_server,
 										 no_deactivate_similar);
@@ -2264,13 +2253,13 @@ bool idle_startup()
 					&& gSavedSettings.getBOOL("RestoreCameraPosOnLogin"))
 				{
 					// restore old camera pos
-					gAgentCamera.setFocusOnAvatar(FALSE, FALSE);
+                    gAgentCamera.setFocusOnAvatar(false, false);
 					gAgentCamera.setCameraPosAndFocusGlobal(gSavedSettings.getVector3d("CameraPosOnLogout"), gSavedSettings.getVector3d("FocusPosOnLogout"), LLUUID::null);
 					bool limit_hit = false;
 					gAgentCamera.calcCameraPositionTargetGlobal(&limit_hit);
 					if (limit_hit)
 					{
-						gAgentCamera.setFocusOnAvatar(TRUE, FALSE);
+                        gAgentCamera.setFocusOnAvatar(true, false);
 					}
 					gAgentCamera.stopCameraAnimation();
 				}

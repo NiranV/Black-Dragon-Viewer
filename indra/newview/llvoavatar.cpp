@@ -9630,11 +9630,11 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
         // we must prevent rolling this one backwards backwards or processing
         // stale versions.
 
-        //S32 aisCOFVersion(LLAppearanceMgr::instance().getCOFVersion());
+        S32 aisCOFVersion(LLAppearanceMgr::instance().getCOFVersion());
 
-        /*// _LL_DEBUGS("Avatar") << "handling self appearance message #" << thisAppearanceVersion <<
+        LL_DEBUGS("Avatar") << "handling self appearance message #" << thisAppearanceVersion <<
             " (highest seen #" << mLastUpdateReceivedCOFVersion <<
-            ") (AISCOF=#" << aisCOFVersion << ")" << LL_ENDL;*/
+            ") (AISCOF=#" << aisCOFVersion << ")" << LL_ENDL;
 
         if (mLastUpdateReceivedCOFVersion >= thisAppearanceVersion)
         {
@@ -9645,7 +9645,7 @@ void LLVOAvatar::processAvatarAppearance( LLMessageSystem* mesgsys )
         }
         if (isEditingAppearance())
         {
-            // _LL_DEBUGS("Avatar") << "Editing appearance.  Dropping appearance update." << LL_ENDL;
+            LL_DEBUGS("Avatar") << "Editing appearance.  Dropping appearance update." << LL_ENDL;
             return;
         }
 
@@ -11336,7 +11336,7 @@ void LLVOAvatar::setOverallAppearanceNormal()
 
     LLVector3 pelvis_pos = getJoint("mPelvis")->getPosition();
 	//BD - Poser
-	if(!getPosing())
+	if(!getPosing() && (isControlAvatar() || mLastProcessedAppearance))
 		resetSkeleton(false);
     getJoint("mPelvis")->setPosition(pelvis_pos);
 

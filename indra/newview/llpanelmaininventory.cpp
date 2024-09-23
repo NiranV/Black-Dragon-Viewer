@@ -995,7 +995,7 @@ void LLPanelMainInventory::draw()
 	llassert(mFreshCountCtrl != NULL);
 	if (item_count > 0)
 	{
-		mInboxBtnLayout->setVisible(TRUE);
+		mInboxBtnLayout->setVisible(true);
 		std::string item_count_str = llformat("%d", item_count);
 
 		LLStringUtil::format_map_t args;

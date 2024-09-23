@@ -2439,6 +2439,26 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		llassert(success);
 	}
 
+    if (success)
+    {
+        gEnvironmentMapProgram.mName = "Environment Map Program";
+        gEnvironmentMapProgram.mShaderFiles.clear();
+        gEnvironmentMapProgram.mFeatures.calculatesAtmospherics = true;
+        gEnvironmentMapProgram.mFeatures.hasAtmospherics = true;
+        gEnvironmentMapProgram.mFeatures.hasGamma = true;
+        gEnvironmentMapProgram.mFeatures.hasSrgb = true;
+
+        gEnvironmentMapProgram.clearPermutations();
+        gEnvironmentMapProgram.addPermutation("HAS_HDRI", "1");
+        gEnvironmentMapProgram.mShaderFiles.push_back(make_pair("deferred/skyV.glsl", GL_VERTEX_SHADER));
+        gEnvironmentMapProgram.mShaderFiles.push_back(make_pair("deferred/skyF.glsl", GL_FRAGMENT_SHADER));
+        gEnvironmentMapProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
+        gEnvironmentMapProgram.mShaderGroup = LLGLSLShader::SG_SKY;
+
+        success = gEnvironmentMapProgram.createShader();
+        llassert(success);
+    }
+
 	if (success)
 	{
 		gDeferredWLSkyProgram.mName = "Deferred Windlight Sky Shader";

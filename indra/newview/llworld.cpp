@@ -1318,18 +1318,16 @@ void LLWorld::getAvatars(uuid_vec_t* avatar_ids, std::vector<LLVector3d>* positi
 	{
 		positions->clear();
 	}
-
 	// get the list of avatars from the character list first, so distances are correct
 	// when agent is above 1020m and other avatars are nearby
-	for (auto instance : LLCharacter::sInstances)
+    for (LLCharacter* character : LLCharacter::sInstances)
 	{
-		LLVOAvatar* pVOAvatar = static_cast<LLVOAvatar*>(instance);
-
+        LLVOAvatar* avatar = (LLVOAvatar*)character;
 		//BD
-		if (!pVOAvatar->isDead() && !pVOAvatar->mIsDummy && !pVOAvatar->isOrphaned() && !pVOAvatar->isSelf())
+		if (!avatar->isDead() && !avatar->mIsDummy && !avatar->isOrphaned() && !avatar->isSelf())
 		{
-			LLVector3d pos_global = pVOAvatar->getPositionGlobal();
-			LLUUID uuid = pVOAvatar->getID();
+            LLVector3d pos_global = avatar->getPositionGlobal();
+            LLUUID uuid = avatar->getID();
 
 			if (!uuid.isNull()
 				&& dist_vec_squared(pos_global, relative_to) <= radius_squared)
@@ -1345,11 +1343,10 @@ void LLWorld::getAvatars(uuid_vec_t* avatar_ids, std::vector<LLVector3d>* positi
 			}
 		}
 	}
+
 	// region avatars added for situations where radius is greater than RenderFarClip
-	for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
-		iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
+    for (const LLViewerRegion* regionp : LLWorld::getInstance()->getRegionList())
 	{
-		LLViewerRegion* regionp = *iter;
 		const LLVector3d& origin_global = regionp->getOriginGlobal();
 		auto count = regionp->mMapAvatars.size();
         for (size_t i = 0; i < count; i++)

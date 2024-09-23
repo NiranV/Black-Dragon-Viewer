@@ -3032,6 +3032,7 @@ bool LLAppViewer::initConfiguration()
     {
         // the login location will be set by the login panel (see LLPanelLogin)
     }
+
     //RN: if we received a URL, hand it off to the existing instance.
     // don't call anotherInstanceRunning() when doing URL handoff, as
     // it relies on checking a marker file which will not work when running
@@ -3094,13 +3095,13 @@ bool LLAppViewer::initConfiguration()
 
     if (mSecondInstance)
     {
-        // This is the second instance of SL. Turn off voice support,
+        // This is the second instance of SL. Mute voice,
         // but make sure the setting is *not* persisted.
         // Also see LLVivoxVoiceClient::voiceEnabled()
         LLControlVariable* enable_voice = gSavedSettings.getControl("EnableVoiceChat");
         if (enable_voice)
         {
-            const BOOL DO_NOT_PERSIST = false;
+            const bool DO_NOT_PERSIST = false;
             enable_voice->setValue(LLSD(false), DO_NOT_PERSIST);
         }
     }
@@ -3117,6 +3118,8 @@ bool LLAppViewer::initConfiguration()
         // we've initialized an LLControlGroup instance by that name.
         LLEventPumps::instance().obtain("LLControlGroup").post(LLSDMap("init", key));
     }
+
+    LLError::LLUserWarningMsg::setOutOfMemoryStrings(LLTrans::getString("MBOutOfMemoryTitle"), LLTrans::getString("MBOutOfMemoryErr"));
 
     return true; // Config was successful.
 }
@@ -3222,7 +3225,7 @@ bool LLAppViewer::initWindow()
     gHeadlessClient = gSavedSettings.getBOOL("HeadlessClient");
 
     // always start windowed
-    BOOL ignorePixelDepth = gSavedSettings.getBOOL("IgnorePixelDepth");
+    bool ignorePixelDepth = gSavedSettings.getBOOL("IgnorePixelDepth");
 
     LLViewerWindow::Params window_params;
     window_params
@@ -3233,8 +3236,8 @@ bool LLAppViewer::initWindow()
         //BD
         .width(gSavedSettings.getS32("WindowWidth"))
         .height(gSavedSettings.getS32("WindowHeight"))
-        .min_width(gSavedSettings.getS32("MinWindowWidth"))
-        .min_height(gSavedSettings.getS32("MinWindowHeight"))
+        .min_width((S32)gSavedSettings.getU32("MinWindowWidth"))
+        .min_height((S32)gSavedSettings.getU32("MinWindowHeight"))
 
         .fullscreen(gSavedSettings.getBOOL("FullScreen"))
         .ignore_pixel_depth(ignorePixelDepth)
@@ -3297,8 +3300,8 @@ bool LLAppViewer::initWindow()
     }
 
     // Set this flag in case we crash while initializing GL
-    gSavedSettings.setBOOL("RenderInitError", TRUE);
-    gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+    gSavedSettings.setBOOL("RenderInitError", true);
+    gSavedSettings.saveToFile( gSavedSettings.getString("ClientSettingsFile"), true );
 
     gPipeline.init();
     LL_INFOS("AppInit") << "gPipeline Initialized" << LL_ENDL;
@@ -3306,8 +3309,8 @@ bool LLAppViewer::initWindow()
     stop_glerror();
     gViewerWindow->initGLDefaults();
 
-    gSavedSettings.setBOOL("RenderInitError", FALSE);
-    gSavedSettings.saveToFile(gSavedSettings.getString("ClientSettingsFile"), TRUE);
+    gSavedSettings.setBOOL("RenderInitError", false);
+    gSavedSettings.saveToFile( gSavedSettings.getString("ClientSettingsFile"), true );
 
     // If we have a startup crash, it's usually near GL initialization, so simulate that.
     if (gCrashOnStartup)
@@ -3322,7 +3325,7 @@ bool LLAppViewer::initWindow()
     if (gSavedSettings.getBOOL("FirstLoginThisInstall") && meetsRequirementsForMaximizedStart())
     {
         LL_INFOS("AppInit") << "This client met the requirements for a maximized initial screen." << LL_ENDL;
-        gSavedSettings.setBOOL("WindowMaximized", TRUE);
+        gSavedSettings.setBOOL("WindowMaximized", true);
     }
 
     if (gSavedSettings.getBOOL("WindowMaximized"))
