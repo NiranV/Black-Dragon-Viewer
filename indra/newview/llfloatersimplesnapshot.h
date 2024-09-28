@@ -47,6 +47,8 @@ public:
     bool postBuild();
     void onOpen(const LLSD& key);
     void draw();
+    //BD
+    /*virtual*/ S32 notify(const LLSD& info);
 
     static void update();
 
@@ -55,6 +57,7 @@ public:
     void saveTexture();
 
     const LLRect& getThumbnailPlaceholderRect() { return mThumbnailPlaceholder->getRect(); }
+    LLSnapshotLivePreview* getPreviewView();
 
     void setInventoryId(const LLUUID &inventory_id) { mInventoryId = inventory_id; }
     LLUUID getInventoryId() { return mInventoryId; }
@@ -91,6 +94,9 @@ private:
 
     LLUUID mInventoryId;
     LLUUID mTaskId;
+
+    //BD
+    LLHandle<LLView> mPreviewHandle;
 
     LLView* mOwner;
     F32  mContextConeOpacity;

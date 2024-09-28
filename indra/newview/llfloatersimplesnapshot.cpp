@@ -39,10 +39,6 @@
 #include "llviewercontrol.h"
 #include "llviewertexturelist.h"
 
-
-
-LLSimpleSnapshotFloaterView* gSimpleSnapshotFloaterView = NULL;
-
 const S32 LLFloaterSimpleSnapshot::THUMBNAIL_SNAPSHOT_DIM_MAX = 256;
 const S32 LLFloaterSimpleSnapshot::THUMBNAIL_SNAPSHOT_DIM_MIN = 64;
 
@@ -179,6 +175,13 @@ LLSnapshotModel::ESnapshotLayerType LLFloaterSimpleSnapshot::getLayerType()
     return LLSnapshotModel::SNAPSHOT_TYPE_COLOR;
 }
 
+//BD
+LLSnapshotLivePreview* LLFloaterSimpleSnapshot::getPreviewView()
+{
+    LLSnapshotLivePreview* previewp = (LLSnapshotLivePreview*)mPreviewHandle.get();
+    return previewp;
+}
+
 void LLFloaterSimpleSnapshot::updateControls()
 {
     LLSnapshotLivePreview* previewp = getPreviewView();
@@ -230,6 +233,26 @@ void LLFloaterSimpleSnapshot::updateResolution(void* data)
             previewp->updateSnapshot(true);
         }
     }
+}
+
+S32 LLFloaterSimpleSnapshot::notify(const LLSD& info)
+{
+    if (info.has("snapshot-updating"))
+    {
+        // Disable the send/post/save buttons until snapshot is ready.
+        updateControls();
+        return 1;
+    }
+
+    if (info.has("snapshot-updated"))
+    {
+        // Enable the send/post/save buttons.
+        updateControls();
+        // We've just done refresh.
+        return 1;
+    }
+
+    return 0;
 }
 
 void LLFloaterSimpleSnapshot::setStatus(EStatus status, bool ok, const std::string& msg)
@@ -336,7 +359,6 @@ void LLFloaterSimpleSnapshot::draw()
                 previewp->getThumbnailImage(), color % alpha);
         }
     }
-    updateLayout();
 }
 
 void LLFloaterSimpleSnapshot::onOpen(const LLSD& key)
@@ -360,7 +382,7 @@ void LLFloaterSimpleSnapshot::onOpen(const LLSD& key)
 
 void LLFloaterSimpleSnapshot::onCancel()
 {
-    closeFloater();
+    this->closeFloater();
 }
 
 void LLFloaterSimpleSnapshot::onSend()
@@ -371,7 +393,7 @@ void LLFloaterSimpleSnapshot::onSend()
     if (previewp->createUploadFile(temp_file, THUMBNAIL_SNAPSHOT_DIM_MAX, THUMBNAIL_SNAPSHOT_DIM_MIN))
     {
         uploadImageUploadFile(temp_file, mInventoryId, mTaskId, mUploadCompletionCallback);
-        closeFloater();
+        this->closeFloater();
     }
     else
     {
@@ -467,7 +489,7 @@ void LLFloaterSimpleSnapshot::uploadImageUploadFile(const std::string &temp_file
 void LLFloaterSimpleSnapshot::update()
 {
     // initializes snapshots when needed
-    LLFloaterReg::const_instance_list_t& inst_list = LLFloaterReg::getFloaterList("simple_snapshot");
+    /*LLFloaterReg::const_instance_list_t& inst_list = LLFloaterReg::getFloaterList("simple_snapshot");
     for (LLFloaterReg::const_instance_list_t::const_iterator iter = inst_list.begin();
         iter != inst_list.end(); ++iter)
     {
@@ -476,7 +498,7 @@ void LLFloaterSimpleSnapshot::update()
         {
             floater->updateLivePreview();
         }
-    }
+    }*/
 }
 
 

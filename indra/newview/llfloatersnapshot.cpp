@@ -542,6 +542,9 @@ void LLFloaterSnapshot::setResolution(const std::string& comboname)
 // virtual
 void LLFloaterSnapshot::updateControls()
 {
+    if (!getVisible())
+        return;
+
 	LLSnapshotModel::ESnapshotType shot_type = getActiveSnapshotType();
 	LLSnapshotModel::ESnapshotFormat shot_format = (LLSnapshotModel::ESnapshotFormat)gSavedSettings.getS32("SnapshotFormat");
 	LLSnapshotModel::ESnapshotLayerType layer_type = getLayerType();
@@ -1259,6 +1262,7 @@ void LLFloaterSnapshot::updateLivePreview()
 void LLFloaterSnapshot::update()
 {
 	LLFloaterSnapshot* inst = findInstance();
+    //BD - Do not update our snapshot window if its not opened/visible.
 	if (inst != NULL)
 	{
 		inst->updateLivePreview();
