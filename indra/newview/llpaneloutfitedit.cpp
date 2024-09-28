@@ -477,9 +477,10 @@ bool LLPanelOutfitEdit::postBuild()
 	mStatus = getChild<LLTextBox>("status");
 
 	mFolderViewBtn = getChild<LLButton>("folder_view_btn");
+    mFilterPanel = getChild<LLView>("filter_panel");
+    mFilterBtn = getChild<LLButton>("filter_button");
+    mFilterBtn->setCommitCallback(boost::bind(&LLPanelOutfitEdit::showWearablesFilter, this));
 
-	mFilterBtn = getChild<LLButton>("filter_button");
-	mFilterBtn->setCommitCallback(boost::bind(&LLPanelOutfitEdit::showWearablesFilter, this));
 	childSetCommitCallback("folder_view_btn", boost::bind(&LLPanelOutfitEdit::showWearablesFolderListView, this), NULL);
 	childSetCommitCallback("folder_view_btn", boost::bind(&LLPanelOutfitEdit::saveListSelection, this), NULL);
 	childSetCommitCallback("shop_btn_1", boost::bind(&LLPanelOutfitEdit::onShopButtonClicked, this), NULL);
@@ -569,6 +570,9 @@ bool LLPanelOutfitEdit::postBuild()
 
 	getChild<LLButton>(SAVE_BTN)->setCommitCallback(boost::bind(&LLPanelOutfitEdit::saveOutfit, this, false));
 	getChild<LLButton>(SAVE_AS_BTN)->setCommitCallback(boost::bind(&LLPanelOutfitEdit::saveOutfit, this, true));
+
+    mLoadingIndicator = getChild<LLLoadingIndicator>("edit_outfit_loading_indicator");
+    mOutfitNameStatusPanel = getChild<LLPanel>("outfit_name_and_status");
 
 	onOutfitChanging(gAgentWearables.isCOFChangeInProgress());
 	return true;
