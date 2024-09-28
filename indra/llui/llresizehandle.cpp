@@ -57,10 +57,11 @@ LLResizeHandle::LLResizeHandle(const LLResizeHandle::Params& p)
     mMinHeight( p.min_height ),
     mCorner( p.corner )
 {
-    if( RIGHT_BOTTOM == mCorner)
+    //BD
+    /*if (RIGHT_BOTTOM == mCorner)
     {
         mImage = LLUI::getUIImage("Resize_Corner");
-    }
+    }*/
     switch( p.corner )
     {
         case LEFT_TOP:      setFollows( FOLLOWS_LEFT | FOLLOWS_TOP );       break;
@@ -359,10 +360,11 @@ bool LLResizeHandle::handleHover(S32 x, S32 y, MASK mask)
 // assumes GL state is set for 2D
 void LLResizeHandle::draw()
 {
-    if( mImage.notNull() && getVisible() && (RIGHT_BOTTOM == mCorner) )
+    //BD
+    /*if (mImage.notNull() && getVisible() && (RIGHT_BOTTOM == mCorner))
     {
         mImage->draw(0, 0);
-    }
+    }*/
 }
 
 
