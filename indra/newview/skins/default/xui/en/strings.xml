@@ -4405,8 +4405,8 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">5.1.3</string>
-	<string name="VIEWER_VERSION_IDENTIFIER">Birthday Dragon</string>
+	<string name="VIEWER_VERSION_LOCAL">5.2.0</string>
+	<string name="VIEWER_VERSION_IDENTIFIER">Mirroring Dragon</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
 	<string name="15"></string>
