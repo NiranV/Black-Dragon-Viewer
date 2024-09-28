@@ -219,8 +219,6 @@ bool LLFloaterIMContainer::postBuild()
 	//BD
 	mConversationsListPanel = mConversationsPane->getChild<LLPanel>("conversations_list_panel");
 
-    mConversationsListPanel = getChild<LLPanel>("conversations_list_panel");
-
     // Open IM session with selected participant on double click event
     mConversationsListPanel->setDoubleClickCallback(boost::bind(&LLFloaterIMContainer::doToSelected, this, LLSD("im")));
 
