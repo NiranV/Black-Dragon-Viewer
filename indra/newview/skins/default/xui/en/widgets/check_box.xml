@@ -14,6 +14,7 @@
                           width="13"
                           height="13" 
                           commit_on_return="false"
+                          pad_left="-12"
                           label=""
                           is_toggle="true"
                           font="SansSerif"
