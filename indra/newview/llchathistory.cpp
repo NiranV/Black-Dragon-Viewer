@@ -1121,6 +1121,8 @@ private:
         }
         setToolTip( av_name.getUserName() );
         // name might have changed, update width
+        //BD - Apply our chat separators.
+        checkAvatarTags();
         updateMinUserNameWidth();
     }
 
