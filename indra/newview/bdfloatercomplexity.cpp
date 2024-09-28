@@ -107,8 +107,8 @@ void BDFloaterComplexity::onAvatarsRefresh()
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		create_new = true;
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
-		if (avatar && !avatar->isControlAvatar())
+		LLVOAvatar* avatar = (LLVOAvatar*)character;
+		if (!avatar->isDead() && !avatar->isControlAvatar())
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
