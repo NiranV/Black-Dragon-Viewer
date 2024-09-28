@@ -76,8 +76,8 @@ bool    LLPanelLandInfo::postBuild()
 	mCheckShowOwners = getChild<LLCheckBoxCtrl>("checkbox show owners");
     mCheckShowOwners->setValue(gSavedSettings.getBOOL("ShowParcelOwners"));
 
-    //BD
-	mLabelPrice = getChild<LLUICtrl>("textbox price");
+    mTextArea = getChild<LLTextBox>("label_area");
+    mTextAreaPrice = getChild<LLTextBox>("label_area_price");
 
     return true;
 }
@@ -125,6 +125,11 @@ void LLPanelLandInfo::refreshAll()
 // public
 void LLPanelLandInfo::refresh()
 {
+    //BD - The heck? Why is it even calling this refresh when the Land Info window isn't even open.
+    //     Need to fix this.
+    if (!this->isInVisibleChain())
+        return;
+
     LLParcel *parcel = LLViewerParcelMgr::getInstance()->getParcelSelection()->getParcel();
     LLViewerRegion *regionp = LLViewerParcelMgr::getInstance()->getSelectionRegion();
 

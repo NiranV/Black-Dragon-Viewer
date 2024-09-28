@@ -67,8 +67,6 @@ private:
     LLButton* mButtonAboutLand = nullptr;
     LLTextBox* mTextArea = nullptr;
     LLTextBox* mTextAreaPrice = nullptr;
-    //BD
-    LLUICtrl* mLabelPrice = nullptr;
 };
 
 #endif
