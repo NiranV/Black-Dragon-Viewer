@@ -126,6 +126,7 @@ protected:
     F32                 mZoomFactor;
     S16                 mZoomSubregion;
 
+    //BD - Does not connect and thus breaks all CameraAngle related options.
     boost::signals2::connection mCameraAngleChangedSignal;
 
 public:

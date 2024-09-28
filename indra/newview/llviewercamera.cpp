@@ -94,13 +94,16 @@ LLViewerCamera::LLViewerCamera() : LLCamera()
     mZoomSubregion = 1;
     mAverageSpeed = 0.f;
     mAverageAngularSpeed = 0.f;
+    gSavedSettings.getControl("CameraAngle")->getCommitSignal()->connect(boost::bind(&LLViewerCamera::updateCameraAngle, this, _2));
 
-    mCameraAngleChangedSignal = gSavedSettings.getControl("CameraAngle")->getCommitSignal()->connect(boost::bind(&LLViewerCamera::updateCameraAngle, this, _2));
+    //BD - Does not connect and thus breaks all CameraAngle related options.
+    //mCameraAngleChangedSignal = gSavedSettings.getControl("CameraAngle")->getCommitSignal()->connect(boost::bind(&LLViewerCamera::updateCameraAngle, this, _2));
 }
 
 LLViewerCamera::~LLViewerCamera()
 {
-    mCameraAngleChangedSignal.disconnect();
+    //BD - Does not connect and thus breaks all CameraAngle related options.
+    //mCameraAngleChangedSignal.disconnect();
 }
 
 void LLViewerCamera::updateCameraLocation(const LLVector3 &center, const LLVector3 &up_direction, const LLVector3 &point_of_interest)
