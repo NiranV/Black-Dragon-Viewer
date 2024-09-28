@@ -1228,8 +1228,8 @@ bool LLViewerWindow::handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK
 {
 	S32 x = pos.mX;
 	S32 y = pos.mY;
-	x = ll_round((F32)x / mDisplayScale.mV[VX]);
-	y = ll_round((F32)y / mDisplayScale.mV[VY]);
+	//x = ll_round((F32)x / mDisplayScale.mV[VX]);
+	//y = ll_round((F32)y / mDisplayScale.mV[VY]);
 
 	//BD - Redirect mouselook right-clicks to ToolPie this will effectively eat
 	//     the right-click and not show the right click menu. Everything else should
@@ -1263,8 +1263,8 @@ bool LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK m
 	{
 		S32 x = pos.mX;
 		S32 y = pos.mY;
-		x = (S32)llround((F32)x / mDisplayScale.mV[VX]);
-		y = (S32)llround((F32)y / mDisplayScale.mV[VY]);
+		//x = (S32)llround((F32)x / mDisplayScale.mV[VX]);
+		//y = (S32)llround((F32)y / mDisplayScale.mV[VY]);
 
 		//BD - Redirect right clicks to LLToolCamera and check if it wants to
 		//	   handle the right click before the actual main Window does.
