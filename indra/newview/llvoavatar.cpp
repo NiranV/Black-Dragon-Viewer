@@ -4946,7 +4946,9 @@ void LLVOAvatar::debugBodySize() const
 void LLVOAvatar::postPelvisSetRecalc()
 {
     mRoot->updateWorldMatrixChildren();
-    computeBodySize();
+    //BD - Poser
+    if(!getPosing())
+        computeBodySize();
     dirtyMesh(2);
 }
 //------------------------------------------------------------------------
@@ -6049,7 +6051,7 @@ bool LLVOAvatar::processSingleAnimationStateChange( const LLUUID& anim_id, bool 
     //BD - Poser
 	//     Don't refresh our root position while we pose otherwise moving any joint that moves
 	//     mFootLeft will trigger mRoot repositioning.
-	if (!(isSelf() && gAgent.getPosing()))
+	if (!getPosing())
 	{
         computeBodySize();
 	}
@@ -7146,7 +7148,7 @@ void LLVOAvatar::updateVisualParams()
         //BD - Poser
 		//     Don't refresh our root position while we pose otherwise moving any joint that moves
 		//     mFootLeft will trigger mRoot repositioning.
-		if (!(isSelf() && (gAgent.getPosing() || gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)))
+		if (!((getPosing() || gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)))
 		{
 			computeBodySize();
 		}
