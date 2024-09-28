@@ -109,8 +109,8 @@ void BDFloaterAnimations::onMotionRefresh()
 	for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
 		create_new = true;
-		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
-		if (avatar)
+		LLControlAvatar* avatar = (LLControlAvatar*)character;
+		if (avatar && !avatar->isDead())
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
@@ -156,9 +156,9 @@ void BDFloaterAnimations::onMotionRefresh()
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		create_new = true;
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
+		LLVOAvatar* avatar = (LLVOAvatar*)character;
 		//BD - Don't even bother with control avatars, we already added them.
-		if (avatar && !avatar->mIsControlAvatar)
+		if (!avatar->isDead() && !avatar->mIsControlAvatar)
 		{
 			LLUUID uuid = avatar->getID();
 			for (LLScrollListItem* item : mAvatarScroll->getAllData())
