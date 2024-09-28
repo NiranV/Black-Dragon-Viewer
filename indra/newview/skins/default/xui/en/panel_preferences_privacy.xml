@@ -104,5 +104,16 @@ width="508"/>
  name="QuietSnapshotsToDisk"
  top_pad="0"
  width="350" />
+ <check_box
+ control_name="DisableLookAtAnimation"
+ height="16"
+ initial_value="true"
+ label="Disable LookAt Animations"
+ tool_tip="This option toggles whether you want to play the LookAt animation, turning LookAt animations off will stop your avatar's eyes from following your mouse. Unlike hiding your LookAt entirely this does NOT hide where you are camming."
+ layout="topleft"
+ left_delta="0"
+ name="DisableLookAtAnimation"
+ top_pad="0"
+ width="350" />
  
 </panel>
