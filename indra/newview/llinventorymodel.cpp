@@ -2668,7 +2668,7 @@ bool LLInventoryModel::loadSkeleton(
 	for(LLSD::array_const_iterator it = options.beginArray(),
 		end = options.endArray(); it != end; ++it)
 	{
-		LL_INFOS(LOG_INV) << "Iterating cat: " << (*it) << LL_ENDL;
+		LL_DEBUGS(LOG_INV) << "Iterating cat: " << (*it) << LL_ENDL;
 		LLSD name = (*it)["name"];
 		LLSD folder_id = (*it)["folder_id"];
 		LLSD parent_id = (*it)["parent_id"];
