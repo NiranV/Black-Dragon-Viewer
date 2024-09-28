@@ -300,8 +300,6 @@ static void update_tp_display(bool minimized)
 			{
 				gViewerWindow->setShowProgress(true, false);
 				gViewerWindow->setProgressPercent(llmin(teleport_percent, 0.0f), llmin(teleport_percent, 0.0f));
-				gViewerWindow->setProgressString(msg);
-				gViewerWindow->setProgressMessage(gAgent.mMOTD);
 			}
 			break;
 		}
