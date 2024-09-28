@@ -13647,17 +13647,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>MinWindowHeight</key>
-    <map>
-      <key>Comment</key>
-      <string>SL viewer minimum window height in pixels</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>600</integer>
-    </map>
     <key>WindowHeight</key>
     <map>
       <key>Comment</key>
@@ -13679,17 +13668,6 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
-    </map>
-    <key>MinWindowWidth</key>
-    <map>
-      <key>Comment</key>
-      <string>SL viewer minimum window width in pixels</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>800</integer>
     </map>
     <key>WindowWidth</key>
     <map>
@@ -16125,17 +16103,17 @@
   <key>Value</key>
   <integer>0</integer>
 </map>
-  <key>GLTFEnabled</key>
-  <map>
-    <key>Comment</key>
-    <string>Enable GLTF support.  Set to true by simulator if the simulator you are connected to supports GLTF Asset upload.  WARNING: Manually setting this to true will enable buttons that can drain your L$ balance by implicitly uploading textures without asking.</string>
-    <key>Persist</key>
-    <integer>0</integer>
-    <key>Type</key>
-    <string>Boolean</string>
-    <key>Value</key>
-    <integer>0</integer>
-  </map>
+<key>GLTFEnabled</key>
+<map>
+  <key>Comment</key>
+  <string>Enable GLTF support.  Set to true by simulator if the simulator you are connected to supports GLTF Asset upload.  WARNING: Manually setting this to true will enable buttons that can drain your L$ balance by implicitly uploading textures without asking.</string>
+  <key>Persist</key>
+  <integer>0</integer>
+  <key>Type</key>
+  <string>Boolean</string>
+  <key>Value</key>
+  <integer>0</integer>
+</map>
   <!-- Black Dragon Debugs -->
 <key>Include</key>
 <array>

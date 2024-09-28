@@ -3,6 +3,28 @@
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
   <!-- Black Dragon Debugs -->
+  <key>MinWindowHeight</key>
+  <map>
+    <key>Comment</key>
+    <string>SL viewer minimum window height in pixels</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>600</integer>
+  </map>
+  <key>MinWindowWidth</key>
+  <map>
+    <key>Comment</key>
+    <string>SL viewer minimum window width in pixels</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>800</integer>
+  </map>
   <key>BDFirstPersonAim</key>
   <map>
     <key>Comment</key>
