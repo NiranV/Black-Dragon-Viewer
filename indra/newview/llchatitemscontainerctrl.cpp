@@ -45,7 +45,7 @@
 
 static constexpr S32 msg_left_offset = 10;
 static constexpr S32 msg_right_offset = 10;
-static constexpr S32 msg_height_pad = 5;
+static constexpr S32 msg_height_pad = 7;
 
 //*******************************************************************************************************************
 // LLObjectHandler
@@ -110,15 +110,13 @@ void    LLFloaterIMNearbyChatToastPanel::reshape        (S32 width, S32 height, 
     LLRect msg_text_rect = msg_text->getRect();
     LLRect avatar_rect = icon->getRect();
 
-    //BD
-	avatar_rect.setLeftTopAndSize(3,height-3,avatar_rect.getWidth(),avatar_rect.getHeight());
+    //BD - Center the text and icon.
+	avatar_rect.setLeftTopAndSize(4,height-4,avatar_rect.getWidth(),avatar_rect.getHeight());
 	icon->setRect(avatar_rect);
-
-
     msg_text_rect.setLeftTopAndSize( avatar_rect.mRight + msg_left_offset,
-        height - msg_height_pad,
+        height - msg_height_pad-1,
         width - avatar_rect.mRight  - msg_left_offset - msg_right_offset,
-        height - 2*msg_height_pad);
+        height - 2*msg_height_pad+1);
     msg_text->reshape( msg_text_rect.getWidth(), msg_text_rect.getHeight(), 1);
     msg_text->setRect(msg_text_rect);
 }

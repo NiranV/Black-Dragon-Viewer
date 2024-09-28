@@ -10,10 +10,10 @@
         height="20"
         image_name="Generic_Person"
         layout="topleft"
-        left="5"
+        left="7"
         mouse_opaque="true"
         name="avatar_icon"
-        top="4"
+        top="5"
         width="20" />
 	<text_chat
       top="3"
