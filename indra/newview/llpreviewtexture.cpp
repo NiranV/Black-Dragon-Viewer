@@ -129,6 +129,10 @@ void LLPreviewTexture::populateRatioList()
 // virtual
 bool LLPreviewTexture::postBuild()
 {
+    mButtonsPanel = getChild<LLLayoutPanel>("buttons_panel");
+    mDimensionsText = getChild<LLUICtrl>("dimensions");
+    mAspectRatioText = getChild<LLUICtrl>("aspect_ratio");
+
 	if (mCopyToInv) 
 	{
 		getChild<LLButton>("Keep")->setLabel(getString("Copy"));
