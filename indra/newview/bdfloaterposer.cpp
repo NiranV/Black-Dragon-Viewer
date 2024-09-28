@@ -2163,8 +2163,8 @@ void BDFloaterPoser::onAvatarsRefresh()
 	for (LLCharacter* character : LLCharacter::sInstances)
 	{
 		create_new = true;
-		LLVOAvatar* avatar = dynamic_cast<LLVOAvatar*>(character);
-		if (avatar && !avatar->isControlAvatar()
+        LLVOAvatar* avatar = (LLVOAvatar*)character;
+		if (!avatar->isDead() && !avatar->isControlAvatar()
 			&& (gDragonLibrary.checkKonamiCode() || avatar->isSelf()))
 		{
 			LLUUID uuid = avatar->getID();
@@ -2213,10 +2213,10 @@ void BDFloaterPoser::onAvatarsRefresh()
 
 	//BD - Animesh Support
 	//     Search through all control avatars.
-	for (auto character : LLControlAvatar::sInstances)
+	for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
 		create_new = true;
-		LLControlAvatar* avatar = dynamic_cast<LLControlAvatar*>(character);
+		LLControlAvatar* avatar = (LLControlAvatar*)character;
 		if (avatar && !avatar->isDead() && (avatar->getRegion() == gAgent.getRegion()))
 		{
 			LLUUID uuid = avatar->getID();
