@@ -10714,4 +10714,69 @@ void initialize_menus()
     view_listener_t::addMenu(new LLEditableSelected(), "EditableSelected");
     view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
     view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
+
+//	//BD - Re/DeAlpha
+	view_listener_t::addMenu(new BDObjectSetAlpha(), "Object.SetAlphaMode");
+
+//	//BD - Re/DeBright
+	view_listener_t::addMenu(new BDObjectSetFullbright(), "Object.SetFullbright");
+
+//	//BD - Derender
+	commit.add("Advanced.ClearDerender", boost::bind(&handle_derender_clear));
+	view_listener_t::addMenu(new LLObjectDerender(), "Object.Derender");
+
+//	//BD - Refresh Textures
+	view_listener_t::addMenu(new LLObjectRefreshTextures(), "Object.RefreshTextures");
+
+//	//BD - Save/Load Camera Position
+	commit.add("World.SaveCamera", boost::bind(&LLAgentCamera::saveCamera, &gAgentCamera));
+	commit.add("World.LoadCamera", boost::bind(&LLAgentCamera::loadSavedCamera, &gAgentCamera));
+
+//	//BD - Additional features
+	view_listener_t::addMenu(new LLWorldTeleportBack(), "World.TeleportBack");
+	view_listener_t::addMenu(new LLWorldTeleportForward(), "World.TeleportForward");
+	commit.add("Advanced.RefreshAttachments", boost::bind(&handle_refresh_attachments));
+
+//	//BD - SSFUI
+	commit.add("Object.GetUUID", boost::bind(&handle_copy_uuid));
+	view_listener_t::addMenu(new LLAvatarCopyUUID(), "Avatar.GetUUID");
+	view_listener_t::addMenu(new LLAvatarCopySLURL(), "Avatar.GetSLURL");
+
+//	//BD - Right Click Menu
+	view_listener_t::addMenu(new LLAvatarChatHistory(), "Avatar.Calllog");
+	view_listener_t::addMenu(new LLAvatarMuteText(), "Avatar.MuteText");
+	view_listener_t::addMenu(new LLAvatarMuteVoice(), "Avatar.MuteVoice");
+	view_listener_t::addMenu(new LLAvatarShare(), "Avatar.Share");
+	view_listener_t::addMenu(new LLAvatarRemoveFriend(), "Avatar.RemoveFriend");
+	view_listener_t::addMenu(new LLAvatarEnableRemoveFriend(), "Avatar.EnableRemoveFriend");
+	enable.add("Self.EnableSit", boost::bind(&enable_sitdown_self));
+	enable.add("Self.EnableStand", boost::bind(&enable_standup_self));
+
+//	//BD - Permissions
+	view_listener_t::addMenu(new LLAvatarGrantPermissions(), "Avatar.GrantPermissions");
+	view_listener_t::addMenu(new LLAvatarCheckPermissions(), "Avatar.CheckPermissions");
+
+//	//BD - God/Dev check
+	view_listener_t::addMenu(new BDCheckGodStatus(), "Dragon.EnableCheckGod");
+
+//	//BD - Tools - Scripts
+	commit.add("Tools.RecompileMono", boost::bind(&script_recompile, true));
+	commit.add("Tools.RecompileLSL", boost::bind(&script_recompile, false));
+	commit.add("Tools.ResetScripts", boost::bind(&script_reset));
+	commit.add("Tools.SetRunning", boost::bind(&script_set_running, true));
+	commit.add("Tools.SetStopped", boost::bind(&script_set_running, false));
+
+//	//BD - Functions
+	commit.add("Dragon.CameraLock", boost::bind(&handle_camera_lock));
+	commit.add("Dragon.Default", boost::bind(&BDFunctions::resetToDefault, _1));
+	commit.add("Dragon.FactoryReset", boost::bind(&BDFunctions::askFactoryReset, _2));
+	commit.add("Dragon.Invert", boost::bind(&BDFunctions::invertValue, _1));
+	commit.add("Dragon.ArrayX", boost::bind(&BDFunctions::onCommitX, _1, _2));
+	commit.add("Dragon.ArrayY", boost::bind(&BDFunctions::onCommitY, _1, _2));
+	commit.add("Dragon.ArrayZ", boost::bind(&BDFunctions::onCommitZ, _1, _2));
+	commit.add("Dragon.ArrayW", boost::bind(&BDFunctions::onCommitW, _1, _2));
+	commit.add("Dragon.LockArray", boost::bind(&BDFunctions::onControlLock, _1, _2));
+	commit.add("Dragon.TriggerWarn", boost::bind(&BDFunctions::triggerWarning, _1, _2));
+	commit.add("Dragon.OpenPreferences", boost::bind(&BDFunctions::openPreferences, _2));
+
 }
