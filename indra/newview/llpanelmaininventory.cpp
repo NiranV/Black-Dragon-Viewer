@@ -255,6 +255,12 @@ bool LLPanelMainInventory::postBuild()
 
     }
 
+    //BD
+    mFreshCountCtrl = getChild<LLTextBox>("inbox_fresh_new_count");
+    mInboxButton = getChild<LLButton>("inbox_btn");
+    mInboxBtnLayout = getChild<LLUICtrl>("inbox_btn_panel");
+    mInboxPanel = getChild<LLPanelMarketplaceInbox>("marketplace_inbox");
+
     mFilterEditor = getChild<LLFilterEditor>("inventory search editor");
     if (mFilterEditor)
     {
