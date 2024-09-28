@@ -2005,9 +2005,9 @@ LLViewerWindow::LLViewerWindow(const Params& p)
         gSavedSettings.setBOOL("ResetUIScaleOnFirstRun", false);
     }
 
-    // Get the real window rect the window was created with (since there are various OS-dependent reasons why
-    // the size of a window or fullscreen context may have been adjusted slightly...)
-    F32 ui_scale_factor = llclamp(gSavedSettings.getF32("UIScaleFactor") * mWindow->getSystemUISize(), MIN_UI_SCALE, MAX_UI_SCALE);
+    //BD - Do NOT change our UI size dependent on what the OS does, we regularly end up with the UI
+    //     scaled beyond usable when people have huge OS UI scales.
+    F32 ui_scale_factor = llclamp(gSavedSettings.getF32("UIScaleFactor"), MIN_UI_SCALE, MAX_UI_SCALE);
 
     mDisplayScale.setVec(llmax(1.f / mWindow->getPixelAspectRatio(), 1.f), llmax(mWindow->getPixelAspectRatio(), 1.f));
     mDisplayScale *= ui_scale_factor;
@@ -6039,7 +6039,7 @@ F32 LLViewerWindow::getWorldViewAspectRatio() const
 
 void LLViewerWindow::calcDisplayScale()
 {
-    F32 ui_scale_factor = llclamp(gSavedSettings.getF32("UIScaleFactor") * mWindow->getSystemUISize(), MIN_UI_SCALE, MAX_UI_SCALE);
+    F32 ui_scale_factor = llclamp(gSavedSettings.getF32("UIScaleFactor") /* * mWindow->getSystemUISize()*/, MIN_UI_SCALE, MAX_UI_SCALE);
     LLVector2 display_scale;
     display_scale.setVec(llmax(1.f / mWindow->getPixelAspectRatio(), 1.f), llmax(mWindow->getPixelAspectRatio(), 1.f));
     display_scale *= ui_scale_factor;
