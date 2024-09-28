@@ -1139,10 +1139,12 @@ void LLTabContainer::addTabPanel(const TabPanelParams& panel)
 		
 		if (mIsVertical)
 		{
-		  p.name("vtab_"+std::string(child->getName()));
-		  p.image_unselected(mMiddleTabParams.tab_left_image_unselected);
-		  p.image_selected(mMiddleTabParams.tab_left_image_selected);
-		  p.follows.flags = p.follows.flags() | FOLLOWS_TOP;
+            p.name("vtab_"+std::string(child->getName()));
+            p.image_unselected(mMiddleTabParams.tab_left_image_unselected);
+            p.image_selected(mMiddleTabParams.tab_left_image_selected);
+            p.follows.flags = p.follows.flags() | FOLLOWS_TOP;
+            //BD - Do not ignore left pad on vertical tabs.
+            p.pad_left(mLabelPadLeft);
 		}
 		else
 		{ 
