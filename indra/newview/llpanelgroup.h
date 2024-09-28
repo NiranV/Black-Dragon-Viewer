@@ -115,7 +115,7 @@ protected:
 
     std::vector<LLPanelGroupTab* > mTabs;
 
-    LLAccordionCtrl* mGroupsAccordion = nullptr;
+    //LLAccordionCtrl* mGroupsAccordion = nullptr;
 
     LLUICtrl*       mGroupNameCtrl = nullptr;
     LLButton*       mButtonJoin = nullptr;

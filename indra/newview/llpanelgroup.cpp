@@ -135,18 +135,16 @@ void LLPanelGroup::onOpen(const LLSD& key)
     if (str_action == "show_notices")
     {
         setGroupID(group_id);
-
-        LLAccordionCtrl *tab_ctrl = getChild<LLAccordionCtrl>("groups_accordion");
-        tab_ctrl->collapseAllTabs();
-        getChild<LLAccordionCtrlTab>("group_notices_tab")->setDisplayChildren(true);
-        tab_ctrl->arrange();
+        //BD
+        LLTabContainer *tab_ctrl = getChild<LLTabContainer>("group_tab_container");
+        tab_ctrl->selectTabByName("group_notices_tab_panel");
     }
 
 }
 
 bool LLPanelGroup::postBuild()
 {
-    mGroupsAccordion = getChild<LLAccordionCtrl>("groups_accordion");
+    //mGroupsAccordion = getChild<LLAccordionCtrl>("groups_accordion");
 
     mDefaultNeedsApplyMesg = getString("default_needs_apply_text");
     mWantApplyMesg = getString("want_apply_text");
@@ -380,9 +378,9 @@ void LLPanelGroup::setGroupID(const LLUUID& group_id)
 
     getChild<LLUICtrl>("prepend_founded_by")->setVisible(!is_null_group_id);
 
-    mGroupsAccordion->reset();
+    /*mGroupsAccordion->reset();
 
-    /*LLAccordionCtrlTab* tab_general = getChild<LLAccordionCtrlTab>("group_general_tab");
+    LLAccordionCtrlTab* tab_general = getChild<LLAccordionCtrlTab>("group_general_tab");
     LLAccordionCtrlTab* tab_roles = getChild<LLAccordionCtrlTab>("group_roles_tab");
     LLAccordionCtrlTab* tab_notices = getChild<LLAccordionCtrlTab>("group_notices_tab");
     LLAccordionCtrlTab* tab_land = getChild<LLAccordionCtrlTab>("group_land_tab");

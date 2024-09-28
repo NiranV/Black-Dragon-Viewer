@@ -107,7 +107,7 @@
      halign="center"
      layout="topleft"
      left="4"
-     name="roles_tab_container"
+     name="group_tab_container"
      tab_min_width="55"
      tab_position="top"
      tab_height="21"
