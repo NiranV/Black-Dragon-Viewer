@@ -86,7 +86,7 @@ void LLAccordionCtrl::draw()
 	mAutoScrolling = false;
 
     //BD
-	LLRect local_rect(0, getRect().getHeight() - 4, getRect().getWidth(), 0);
+	LLRect local_rect(0, getRect().getHeight() - 2, getRect().getWidth(), 0);
 	
 	LLLocalClipRect clip(local_rect);
 	
