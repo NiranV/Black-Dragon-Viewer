@@ -396,9 +396,10 @@ void LLPanelVolume::getState( )
 
     bool mirrors_enabled = LLPipeline::RenderMirrors;
 
-    getChildView("Probe Update Type")->setVisible(mirrors_enabled);
-    getChildView("Probe Update Label")->setVisible(mirrors_enabled);
-    getChildView("Probe Dynamic")->setVisible(!mirrors_enabled);
+    //BD - Do not change visibility.
+    //getChildView("Probe Update Type")->setVisible(mirrors_enabled);
+    //getChildView("Probe Update Label")->setVisible(mirrors_enabled);
+    //getChildView("Probe Dynamic")->setVisible(!mirrors_enabled);
 
     getChildView("Probe Dynamic")->setEnabled(probe_enabled);
     getChildView("Probe Update Type")->setEnabled(probe_enabled);

@@ -3065,6 +3065,42 @@ the light into a projected light )
                     image_pressed_selected="ToolbarDropDown_Press"
                     image_disabled="ToolbarDropDown_Off" />
             </combo_box>
+            <combo_box
+                height="21"
+                layout="topleft"
+                follows="top|left"
+                name="Probe Update Type"
+                tool_tip="Determines how the probe updates."
+                top_delta="0"
+                left="150"
+                width="135">
+                <combo_box.item
+                    label="Static"
+                    name="Static"
+                    value="Static" />
+                    <combo_box.item
+                    label="Dynamic"
+                    name="Dynamic"
+                    value="Dynamic"/>
+                    <combo_box.item
+                    label="Mirror (Environment)"
+                    name="Mirror"
+                    value="Mirror"/>
+                    <combo_box.item
+                    label="Mirror (Everything)"
+                    name="Dynamic Mirror"
+                    value="Dynamic Mirror"/>
+                <combo_box.combo_button
+                    image_unselected="ToolbarDropDown_Off"
+                    image_selected="ToolbarDropDown_Press"
+                    image_disabled="ToolbarDropDown_Off" />
+                <combo_box.drop_down_button
+                    image_unselected="ToolbarDropDown_Off"
+                    image_selected="ToolbarDropDown_Press"
+                    image_pressed="ToolbarDropDown_Press"
+                    image_pressed_selected="ToolbarDropDown_Press"
+                    image_disabled="ToolbarDropDown_Off" />
+            </combo_box>
             <spinner
                 decimal_digits="3"
                 follows="left|top"
