@@ -38,7 +38,9 @@ BDAnimator gDragonAnimator;
 
 
 BDAnimator::BDAnimator() :
-			mPlaying(false)
+			mPlaying(false),
+            mTargetAvatar(NULL),
+            mPoseCreatorMotion(NULL)
 {
 }
 

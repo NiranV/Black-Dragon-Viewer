@@ -214,7 +214,7 @@ private:
     LLSaveFolderState*  mSavedFolderState;
     std::string         mSearchString;
     LLButton*           mFolderViewBtn;
-    LLButton*           mListViewBtn;
+    //LLButton*           mListViewBtn; //BD
     LLButton*           mPlusBtn;
     LLButton*           mShowAddWearablesBtn = nullptr;
     LLButton*           mFilterBtn = nullptr;

@@ -55,9 +55,11 @@ const F32 MIN_HEAD_LOOKAT_DISTANCE = 0.1f;	// minimum distance from head before 
 //-----------------------------------------------------------------------------
 BDMLAimMotion::BDMLAimMotion(const LLUUID &id) : 
 	LLMotion(id),
-	mCharacter(NULL),
-	mTorsoJoint(NULL),
-	mChestJoint(NULL)
+	mCharacter(nullptr),
+	mTorsoJoint(nullptr),
+	mChestJoint(nullptr),
+    mPelvisJoint(nullptr),
+    mRootJoint(nullptr)
 {
 	mName = "ml_aim";
 
