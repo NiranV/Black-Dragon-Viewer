@@ -697,9 +697,9 @@ bool idle_startup()
 				void* window_handle = NULL;
 #endif
 				if (gAudiop->init(window_handle, LLAppViewer::instance()->getSecondLifeTitle()))
-					{
-						LL_INFOS("AppInit") << "Using media plugins to render streaming audio" << LL_ENDL;
-						gAudiop->setStreamingAudioImpl(new LLStreamingAudio_MediaPlugins());
+				{
+					LL_INFOS("AppInit") << "Using media plugins to render streaming audio" << LL_ENDL;
+					gAudiop->setStreamingAudioImpl(new LLStreamingAudio_MediaPlugins());
 
                     gAudiop->setMuted(true);
 				}
@@ -3969,3 +3969,9 @@ void transition_back_to_login_panel(const std::string& emsg)
 	gSavedSettings.setBOOL("AutoLogin", FALSE);
 }
 
+//BD
+//static
+void LLStartUp::setStartupStatus(const F32 meta, const F32 sub, const std::string& string, const std::string& msg)
+{
+    set_startup_status(meta, sub, string, msg);
+}

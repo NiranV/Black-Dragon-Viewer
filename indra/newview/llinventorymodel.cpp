@@ -151,14 +151,6 @@ struct InventoryCallbackInfo
     LLUUID mInvID;
 };
 
-void set_startup_status(const F32 meta, const F32 sub, const std::string& string, const std::string& msg)
-{
-	gViewerWindow->setProgressPercent(meta * 100, sub * 100);
-	gViewerWindow->setProgressString(string);
-
-	gViewerWindow->setProgressMessage(msg);
-}
-
 ///----------------------------------------------------------------------------
 /// Class LLDispatchClassifiedClickThrough
 ///----------------------------------------------------------------------------
@@ -2706,7 +2698,7 @@ bool LLInventoryModel::loadSkeleton(
 			//BD - Inventory Progress
 			perc = (F32)perc_c / (F32)options.size();
 			temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-			set_startup_status(meta, perc, meta_text, temp_text);
+			LLStartUp::setStartupStatus(meta, perc, meta_text, temp_text);
 			display_startup();
 		}
 		++perc_c;
@@ -2784,7 +2776,7 @@ bool LLInventoryModel::loadSkeleton(
 					//BD - Inventory Progress
 					perc = (F32)i / (F32)count;
 					temp_text.setArg("[COUNT]", llformat("%d", i));
-					set_startup_status(meta + 0.01f, perc, meta_text, temp_text);
+                    LLStartUp::setStartupStatus(meta + 0.01f, perc, meta_text, temp_text);
 				}
 
 				cat_set_t::iterator cit = temp_cats.find(cat);
@@ -2843,7 +2835,7 @@ bool LLInventoryModel::loadSkeleton(
 					//BD - Inventory Progress
 					perc = (F32)perc_c / (F32)temp_cats.size();
 					temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-					set_startup_status(meta + 0.01f, perc, meta_text, temp_text);
+                    LLStartUp::setStartupStatus(meta + 0.01f, perc, meta_text, temp_text);
 				}
 
 				if(cached_ids.find((*it)->getUUID()) == not_cached_id)
@@ -2886,7 +2878,7 @@ bool LLInventoryModel::loadSkeleton(
 					//BD - Inventory Progress
 					perc = (F32)perc_c / (F32)items.size();
 					temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-					set_startup_status(meta + 0.02f, perc, meta_text, temp_text);
+                    LLStartUp::setStartupStatus(meta + 0.02f, perc, meta_text, temp_text);
 					display_startup();
 				}
 
@@ -2936,7 +2928,7 @@ bool LLInventoryModel::loadSkeleton(
 						//BD - Inventory Progress
 						perc = (F32)perc_c / (F32)possible_broken_links.size();
 						temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-						set_startup_status(meta + 0.02f, perc, meta_text, temp_text);
+                        LLStartUp::setStartupStatus(meta + 0.02f, perc, meta_text, temp_text);
 						display_startup();
 					}
 
@@ -2985,7 +2977,7 @@ bool LLInventoryModel::loadSkeleton(
 					//BD - Inventory Progress
 					perc = (F32)perc_c / (F32)temp_cats.size();
 					temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-					set_startup_status(meta + (perc * 0.02f), perc, meta_text, temp_text);
+                    LLStartUp::setStartupStatus(meta + (perc * 0.02f), perc, meta_text, temp_text);
 					display_startup();
 				}
 
@@ -3014,7 +3006,7 @@ bool LLInventoryModel::loadSkeleton(
 				temp_text = "Invalidating Failed Categories [COUNT] / [MAX]";
 				perc = (F32)perc_c / (F32)invalid_categories.size();
 				temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-				set_startup_status(meta + 0.03f, perc, meta_text, temp_text);
+                LLStartUp::setStartupStatus(meta + 0.03f, perc, meta_text, temp_text);
 				display_startup();
 			}
 
@@ -3045,7 +3037,7 @@ bool LLInventoryModel::loadSkeleton(
 				//BD - Inventory Progress
 				perc = (F32)perc_c / (F32)temp_cats.size();
 				temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-				set_startup_status(meta + 0.03f, perc, meta_text, temp_text);
+                LLStartUp::setStartupStatus(meta + 0.03f, perc, meta_text, temp_text);
 				display_startup();
 			}
 
@@ -3069,7 +3061,7 @@ bool LLInventoryModel::loadSkeleton(
 		if(remove_inventory_file)
 		{
 			//BD - Inventory Progress
-			set_startup_status(meta + 0.03f, perc, meta_text, "Cleaning Up Unpacked Cache");
+            LLStartUp::setStartupStatus(meta + 0.03f, perc, meta_text, "Cleaning Up Unpacked Cache");
 			display_startup();
 
 			// clean up the gunzipped file.
@@ -3078,7 +3070,7 @@ bool LLInventoryModel::loadSkeleton(
 		if(is_cache_obsolete && !LLAppViewer::instance()->isSecondInstance())
 		{
 			//BD - Inventory Progress
-			set_startup_status(meta + 0.03f, perc, meta_text, "Cleaning Up Obsolete Cache");
+            LLStartUp::setStartupStatus(meta + 0.03f, perc, meta_text, "Cleaning Up Obsolete Cache");
 			display_startup();
 
 			// If out of date, remove the gzipped file too.
@@ -3087,7 +3079,7 @@ bool LLInventoryModel::loadSkeleton(
 		}
 
 		//BD - Inventory Progress
-		set_startup_status(meta + 0.03f, perc, meta_text, "Cleaning Up");
+        LLStartUp::setStartupStatus(meta + 0.03f, perc, meta_text, "Cleaning Up");
 		display_startup();
 
 		categories.clear(); // will unref and delete entries
@@ -3530,7 +3522,7 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 		read += file.gcount();
 		perc = (F32)(read / file_size);
 		temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-		set_startup_status(-0.01f ,perc, meta_text, temp_text);
+        LLStartUp::setStartupStatus(-0.01f ,perc, meta_text, temp_text);
 
 		LLSD s_item;
 		std::istringstream iss(line);

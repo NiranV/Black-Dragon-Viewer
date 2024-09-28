@@ -107,7 +107,6 @@ const std::string PANEL_NAMES[LLFloaterTools::PANEL_COUNT] =
 
 
 // Local prototypes
-void commit_grid_mode(LLUICtrl *ctrl);
 void commit_select_component(void *data);
 void click_show_more(void*);
 void click_popup_info(void*);
@@ -420,7 +419,6 @@ LLFloaterTools::LLFloaterTools(const LLSD& key)
 	mCommitCallbackRegistrar.add("BuildTool.commitRadioMove",	boost::bind(&commit_radio_group_move,_1));
 	mCommitCallbackRegistrar.add("BuildTool.commitRadioEdit",	boost::bind(&commit_radio_group_edit,_1));
 
-	mCommitCallbackRegistrar.add("BuildTool.gridMode",			boost::bind(&commit_grid_mode,_1));
 	mCommitCallbackRegistrar.add("BuildTool.selectComponent",	boost::bind(&commit_select_component, this));
 	mCommitCallbackRegistrar.add("BuildTool.gridOptions",		boost::bind(&LLFloaterTools::onClickGridOptions,this));
 	mCommitCallbackRegistrar.add("BuildTool.applyToSelection",	boost::bind(&click_apply_to_selection, this));
@@ -1168,13 +1166,6 @@ void LLFloaterTools::setObjectType( LLPCode pcode )
 	LLToolPlacer::setObjectType( pcode );
 	gSavedSettings.setBOOL("CreateToolCopySelection", FALSE);
 	gFocusMgr.setMouseCapture(NULL);
-}
-
-void commit_grid_mode(LLUICtrl *ctrl)
-{
-	LLComboBox* combo = (LLComboBox*)ctrl;
-
-	LLSelectMgr::getInstance()->setGridMode((EGridMode)combo->getCurrentIndex());
 }
 
 // static
