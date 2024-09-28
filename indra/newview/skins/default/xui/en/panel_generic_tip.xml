@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
- height="40"
+ height="28"
  layout="topleft"
  left="0"
  name="panel_generic_tip"
@@ -15,7 +15,7 @@
      max_length="350"
      name="message"
      text_color="white"
-     top="10"
+     top="4"
      use_ellipses="true"
      value=""
      width="285"
