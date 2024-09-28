@@ -15,10 +15,10 @@
     />
     <web_browser
      name="profile_html"
-     top="10"
+     top="2"
      bottom="-18"
-     left="10"
-     right="-10"
+     left="2"
+     right="-2"
      follows="all"
      layout="topleft"
      start_url=""

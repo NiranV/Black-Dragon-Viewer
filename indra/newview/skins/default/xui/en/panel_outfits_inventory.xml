@@ -73,7 +73,7 @@
        follows="bottom|left|right"
        height="27"
        layout="topleft"
-       left="40"
+       left="41"
        bottom="-4"
        visible="true"
        name="bottom_panel"
@@ -114,6 +114,6 @@
 						  image_unselected="Toolbar_Middle_Off"
                          left_pad="1"
                          top="0"
-                         width="83" />
+                         width="81" />
    </panel>
 </panel>

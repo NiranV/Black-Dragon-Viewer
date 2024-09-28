@@ -1333,7 +1333,7 @@ width="345">
                   max_val="10"
                   min_val="-10"
                   name="SSAOEffect"
-                  top_pad="1"
+                  top_pad="15"
                   width="310" />
                   <slider
                   control_name="RenderSSAOScale"

@@ -229,7 +229,7 @@ width="654">
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"
 				name="symmetrize_pose"
-				width="75"
+				width="151"
 				top_pad="18"
 				left="2">
 				<button.commit_callback

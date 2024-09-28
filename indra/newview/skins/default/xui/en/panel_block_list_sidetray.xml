@@ -31,9 +31,9 @@
        follows="left|top|right"
        image_name="Toolbar_Middle_Off"
        height="25"
-       width="287"
+       width="288"
        layout="topleft"
-       left="2"
+       left="1"
        top="0"/>
         <filter_editor
          follows="left|top|right"
@@ -42,13 +42,13 @@
          background_image_focused="TextField_Active"
          height="22"
          layout="topleft"
-         left="4"
+         left="3"
          label="Filter"
          max_length_chars="300"
          name="blocked_filter_input"
          text_pad_left="10"
          top="1"
-         width="283" />
+         width="284" />
         <menu_button
          follows="right"
          height="25"

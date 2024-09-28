@@ -59,9 +59,9 @@
  image_unselected="Toolbar_Middle_Off"
          label="Save"
          top_pad="5"
-         left="3"
+         left="1"
          height="23"
-         width="207"
+         width="209"
          enabled="false"
          follows="bottom|left"
          layout="topleft"/>
@@ -74,7 +74,7 @@
          top_delta="0"
          left_pad="1"
          height="23"
-         width="207"
+         width="208"
          enabled="false"
          follows="bottom|left|right"
          layout="topleft"/>

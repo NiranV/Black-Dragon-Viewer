@@ -150,7 +150,7 @@
     mouse_opaque="false"
     layout="topleft"
     left="0"
-    max_displayed_count="99"
+    max_displayed_count="999"
     name="notification_well"
     top_pad="-1"
     width="190">
@@ -159,6 +159,7 @@
      follows="top|right"
      layout="topleft"
      halign="left"
+     pad_left="4"
      height="22"
      image_pressed="Sys_BG_Pressed"
      image_pressed_selected="Sys_BG_Pressed"

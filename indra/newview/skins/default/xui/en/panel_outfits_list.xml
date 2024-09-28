@@ -31,7 +31,7 @@
 	 follows="bottom|left|right"
 	 height="25"
 	 layout="topleft"
-	 left="3"
+	 left="2"
 	 top_pad="0"
 	 visible="true"
 	 name="bottom_panel"
@@ -56,7 +56,7 @@
        layout="topleft"
        left_pad="1"
        name="dummy_icon"
-       width="243"/>
+       width="244"/>
       <button
        follows="bottom|right"
        height="25"
