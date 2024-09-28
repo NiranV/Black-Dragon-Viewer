@@ -719,7 +719,7 @@ bool LLPanelProfileSecondLife::postBuild()
     mShowInSearchCombo      = getChild<LLComboBox>("show_in_search");
     mHideAgeCombo           = getChild<LLComboBox>("hide_age");
     mSecondLifePic          = getChild<LLProfileImageCtrl>("2nd_life_pic");
-    mSecondLifePicLayout    = getChild<LLPanel>("image_panel");
+    //mSecondLifePicLayout    = getChild<LLPanel>("image_panel"); //BD
     mDescriptionEdit        = getChild<LLTextEditor>("sl_description_edit");
     mAgentActionMenuButton  = getChild<LLMenuButton>("agent_actions_menu");
     mSaveDescriptionChanges = getChild<LLButton>("save_description_changes");
@@ -863,8 +863,8 @@ void LLPanelProfileSecondLife::resetData()
 	// Set default image and 1:1 dimensions for it
 	mSecondLifePic->setValue("Generic_Person_Large");
 
-	LLRect imageRect = mSecondLifePicLayout->getRect();
-	mSecondLifePicLayout->reshape(imageRect.getHeight(), imageRect.getHeight());
+	LLRect imageRect = mSecondLifePic->getRect();
+    mSecondLifePic->reshape(imageRect.getHeight(), imageRect.getHeight());
 
 	setDescriptionText(LLStringUtil::null);
 	mGroups.clear();
@@ -1194,15 +1194,15 @@ void LLPanelProfileSecondLife::fillAgeData(const LLAvatarData* avatar_data)
 
 void LLPanelProfileSecondLife::onImageLoaded(bool success, LLViewerFetchedTexture *imagep)
 {
-	LLRect imageRect = mSecondLifePicLayout->getRect();
+	LLRect imageRect = mSecondLifePic->getRect();
 	if (!success || imagep->getFullWidth() == imagep->getFullHeight())
 	{
-		mSecondLifePicLayout->reshape(imageRect.getWidth(), imageRect.getWidth());
+        mSecondLifePic->reshape(imageRect.getWidth(), imageRect.getWidth());
 	}
 	else
 	{
 		// assume 3:4, for sake of firestorm
-		mSecondLifePicLayout->reshape(imageRect.getWidth(), imageRect.getWidth() * 3 / 4);
+        mSecondLifePic->reshape(imageRect.getWidth(), imageRect.getWidth() * 3 / 4);
 	}
 }
 
@@ -1236,7 +1236,7 @@ void LLPanelProfileSecondLife::setAvatarId(const LLUUID& avatar_id)
 			LLAvatarTracker::instance().removeParticularFriendObserver(getAvatarId(), this);
 		}
 
-		LLPanelProfileTab::setAvatarId(avatar_id);
+        LLPanelProfilePropertiesProcessorTab::setAvatarId(avatar_id);
 
 		if (LLAvatarActions::isFriend(getAvatarId()))
 		{
@@ -1481,7 +1481,7 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
 	}
 	else if (item_name == "upload_photo")
 	{
-		(new LLProfileImagePicker(PROFILE_IMAGE_SL, new LLHandle<LLPanel>(getHandle())))->getFile();
+        (new LLProfileImagePicker(PROFILE_IMAGE_SL, new LLHandle<LLPanel>(LLPanel::getHandle())))->getFile();
 
 		LLFloater* floaterp = mFloaterTexturePickerHandle.get();
 		if (floaterp)
