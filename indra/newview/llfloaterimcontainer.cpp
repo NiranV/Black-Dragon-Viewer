@@ -1377,109 +1377,72 @@ void LLFloaterIMContainer::doToParticipants(const std::string& command, uuid_vec
 void LLFloaterIMContainer::doToSelectedConversation(const std::string& command, uuid_vec_t& selectedIDS)
 {
     //Find the conversation floater associated with the selected id
-    const LLConversationItem * conversationItem = getCurSelectedViewModelItem();
-    LLFloaterIMSession *conversationFloater = LLFloaterIMSession::findInstance(conversationItem->getUUID());
+    const LLConversationItem* conversationItem = getCurSelectedViewModelItem();
+    LLFloaterIMSession* conversationFloater = LLFloaterIMSession::findInstance(conversationItem->getUUID());
 
-    if(conversationFloater)
+    if (conversationFloater)
     {
         //Close the selected conversation
-        if("close_conversation" == command)
+        if ("close_conversation" == command)
         {
-            LLAvatarActions::offerTeleport(selectedIDS);
+            LLFloater::onClickClose(conversationFloater);
         }
-        else if ("request_teleport" == command)
+        else if ("close_selected_conversations" == command)
         {
-            LLAvatarActions::teleportRequest(selectedIDS.front());
+            getSelectedUUIDs(selectedIDS, false);
+            closeSelectedConversations(selectedIDS);
         }
-        else if ("voice_call" == command)
+        else if ("open_voice_conversation" == command)
         {
-            LLAvatarActions::startCall(selectedIDS.front());
+            gIMMgr->startCall(conversationItem->getUUID());
+        }
+        else if ("disconnect_from_voice" == command)
+        {
+            gIMMgr->endCall(conversationItem->getUUID());
         }
         else if ("chat_history" == command)
         {
-            LLAvatarActions::viewChatHistory(selectedIDS.front());
-        }
-        else if ("add_friend" == command)
-        {
-            LLAvatarActions::requestFriendshipDialog(selectedIDS);
-        }
-        else if ("remove_friend" == command)
-        {
-            LLAvatarActions::removeFriendDialog(selectedIDS.front());
-        }
-        else if ("invite_to_group" == command)
-        {
-            LLAvatarActions::inviteToGroup(selectedIDS.front());
-        }
-        else if ("zoom_in" == command)
-        {
-            handle_zoom_to_object(selectedIDS.front());
-        }
-        else if ("map" == command)
-        {
-            LLAvatarActions::showOnMap(selectedIDS.front());
-        }
-        else if ("share" == command)
-        {
-            LLAvatarActions::share(selectedIDS.front());
-        }
-        else if ("pay" == command)
-        {
-            LLAvatarActions::pay(selectedIDS.front());
-        }
-        else if ("report_abuse" == command)
-        {
-            LLAvatarName av_name;
-            if (LLAvatarNameCache::get(selectedIDS.front(), &av_name))
+            if (selectedIDS.size() > 0)
             {
-                LLFloaterReporter::showFromAvatar(selectedIDS.front(), av_name.getCompleteName());
-            }
-            else
-            {
-                LLFloaterReporter::showFromAvatar(selectedIDS.front(), "not avaliable");
+                if (conversationItem->getType() == LLConversationItem::CONV_SESSION_GROUP)
+                {
+                    LLFloaterReg::showInstance("preview_conversation", conversationItem->getUUID(), true);
+                }
+                else if (conversationItem->getType() == LLConversationItem::CONV_SESSION_AD_HOC)
+                {
+                    LLConversation* conv = LLConversationLog::instance().findConversation(LLIMModel::getInstance()->findIMSession(conversationItem->getUUID()));
+                    if (conv)
+                    {
+                        LLFloaterReg::showInstance("preview_conversation", conv->getSessionID(), true);
+                    }
+                }
+                else
+                {
+                    LLAvatarActions::viewChatHistory(selectedIDS.front());
+                }
             }
         }
-        else if ("block_unblock" == command)
+        else
         {
-            LLAvatarActions::toggleMute(selectedIDS.front(), LLMute::flagVoiceChat);
-        }
-        else if ("mute_unmute" == command)
-        {
-            LLAvatarActions::toggleMute(selectedIDS.front(), LLMute::flagTextChat);
-        }
-        else if ("selected" == command || "mute_all" == command || "unmute_all" == command)
-        {
-            moderateVoice(command, selectedIDS.front());
-        }
-        else if ("toggle_allow_text_chat" == command)
-        {
-            toggleAllowTextChat(selectedIDS.front());
-        }
-        else if ("ban_member" == command)
-        {
-            banSelectedMember(selectedIDS.front());
+            if (conversationItem->getType() == LLConversationItem::CONV_SESSION_1_ON_1)
+            {
+                doToParticipants(command, selectedIDS);
+            }
         }
     }
-    else if (selectedIDS.size() > 1)
+    //if there is no LLFloaterIMSession* instance for selected conversation it might be Nearby chat
+    else
     {
-        if ("im" == command)
+        if (conversationItem->getType() == LLConversationItem::CONV_SESSION_NEARBY)
         {
-            LLAvatarActions::startConference(selectedIDS);
-        }
-        else if ("offer_teleport" == command)
-        {
-            LLAvatarActions::offerTeleport(selectedIDS);
-        }
-        else if ("voice_call" == command)
-        {
-            LLAvatarActions::startAdhocCall(selectedIDS);
-        }
-        else if ("remove_friend" == command)
-        {
-            LLAvatarActions::removeFriendsDialog(selectedIDS);
+            if ("chat_history" == command)
+            {
+                LLFloaterReg::showInstance("preview_conversation", LLSD(LLUUID::null), true);
+            }
         }
     }
 }
+
 
 void LLFloaterIMContainer::doToSelected(const LLSD& userdata)
 {
