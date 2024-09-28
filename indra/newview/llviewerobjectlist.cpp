@@ -331,7 +331,7 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
     objectp = findObject(fullid);
 
 //	//BD - Derender
-	if( mDerenderList.end() != mDerenderList.find(fullid))
+	if(!mDerenderList.empty() && mDerenderList.end() != mDerenderList.find(fullid))
 	{
 		return NULL;
 	}
@@ -2009,7 +2009,7 @@ LLViewerObject *LLViewerObjectList::createObjectFromCache(const LLPCode pcode, L
 	}
 
 //	//BD - Derender
-	if( mDerenderList.end() != mDerenderList.find(uuid))
+	if( !mDerenderList.empty() && mDerenderList.end() != mDerenderList.find(uuid))
 	{
 		return NULL;
 	}
@@ -2041,7 +2041,7 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
     }
 
 //	//BD - Derender
-	if( mDerenderList.end() != mDerenderList.find(uuid))
+	if(!mDerenderList.empty() && mDerenderList.end() != mDerenderList.find(uuid))
 	{
 		return NULL;
 	}
