@@ -112,6 +112,7 @@
 //BD
 #include "lldefs.h"
 #include "lldiriterator.h"
+#include "llinventoryfunctions.h"
 #include "llviewerinput.h"
 #include "llprogressbar.h"
 #include "lllogininstance.h"        // to check if logged in yet
@@ -140,6 +141,8 @@
 #include <utility>
 
 #include "llperfstats.h"
+
+#include <dxgi1_4.h>
 
 const F32 BANDWIDTH_UPDATER_TIMEOUT = 0.5f;
 char const* const VISIBILITY_DEFAULT = "default";
@@ -2175,86 +2178,38 @@ void LLFloaterPreference::refreshWarnings()
 //BD - Memory Allocation
 void LLFloaterPreference::refreshMemoryControls()
 {
-	/*U32Megabytes max_bound_mem = LLViewerTexture::sMaxBoundTextureMemory;
-	U32Megabytes max_total_mem = LLViewerTexture::sMaxDesiredTextureMem;
-	S32 max_vram = gGLManager.mVRAM;
-	S32 used_vram = 0;
-	S32 avail_vram;
-	S32 max_mem;
-	F32 percent;
+    S32 max_vram = gGLManager.mVRAM;
+    S32 free_vram = 0;
+    //BD - We still cannot get AMD memory usage. Dang.
+    //     Fallback to assuming that simply everything we have is free and whatever
+    //     we use ourselves is all that is used.
+    if (gGLManager.mIsNVIDIA)
+    {
+        //BD - Get Total Available GPU VRAM on NVIDIA.
+        glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &max_vram);
+        //BD - Get Free VRAM on NVIDIA.
+        glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &free_vram);
+        max_vram /= 1024;
+        free_vram /= 1024;
 
-	S32Megabytes total_mem = LLViewerTexture::sTotalTextureMemory;
-	S32Megabytes bound_mem = LLViewerTexture::sBoundTextureMemory;
-	U32 fbo = LLRenderTarget::sBytesAllocated / (1024 * 1024);
+        S32 used_vram = max_vram - free_vram;
+        F32 percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
 
-	S32 total_viewer_usage = total_mem.value() + bound_mem.value() + fbo;
-	if (gGLManager.mIsAMD)
-	{
-		//glGetIntegerv(WGL_GPU_RAM_AMD, &avail_vram);
-		//glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, &avail_vram);
-		//BD - This is LL's official method of doing this, it should work.
-		S32 meminfo[4];
-		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
+        mProgressBar->setValue(percent);
+        mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
+    }
+    else
+    {
+        F64 texture_bytes_alloc = (LLImageGL::getTextureBytesAllocated() / 1024.0 / 1024.0) * 1.3333f;
+        F64 vertex_bytes_alloc = LLVertexBuffer::getBytesAllocated() / 1024.0 / 1024;
+        F64 render_bytes_alloc = LLRenderTarget::sBytesAllocated / 1024.0 / 1024;
 
-		avail_vram = meminfo[0] / 1024;
-	}
-	else
-	{
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &avail_vram);
-	}
-	used_vram = max_vram - (avail_vram / 1024);
+        // get an estimate of how much video memory we're using
+        // NOTE: our metrics miss about half the vram we use, so this biases high but turns out to typically be within 5% of the real number
+        S32 used =  (S32)ll_round(texture_bytes_alloc + vertex_bytes_alloc + render_bytes_alloc);
 
-	//BD - Limit our slider max further on how much is actually still available.
-	max_mem = max_vram - max_bound_mem.value() + max_total_mem.value();
-
-	//BD - Cap out at the highest possible stable value we tested.
-	max_mem = llclamp(max_mem, 128, 3984);
-
-	//BD - Don't update max values when the widget is selected, we make entering values impossible otherwise.
-	if (!mSystemMemory->hasFocus() && !mSceneMemory->hasFocus())
-	{
-		mSystemMemory->setMaxValue(max_mem);
-		mSceneMemory->setMaxValue(max_mem);
-		if (gSavedSettings.getBOOL("AutomaticMemoryManagement"))
-		{
-			mSystemMemory->setValue(max_total_mem);
-			mSceneMemory->setValue(max_bound_mem);
-		}
-	}
-
-	percent = llclamp(((F32)total_viewer_usage / (F32)max_vram) * 100.f, 0.f, 100.f);
-	mProgressBar->setValue(percent);
-	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", total_viewer_usage));
-	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));*/
-
-	S32 max_vram = 0;
-	S32 used_vram = 0;
-	S32 free_vram = 0;
-	F32 percent = 0.0f;
-
-	if (gGLManager.mIsNVIDIA)
-	{
-		//BD - We cannot trust LL with gGLManager.mVRAM on NVIDIA cards.
-		//     For NVIDIA they don't even seem to set mVRAM, no idea where they get it from.
-		//     Nor does it report the correct value at all. We opt to take it directly from
-		//     the GPU instead.
-		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &max_vram);
-		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &free_vram);
-		max_vram /=  1024;
-		free_vram /= 1024;
-	}
-	else if (gGLManager.mIsAMD)
-	{
-		S32 meminfo[4];
-		glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, meminfo);
-		S32Megabytes free = (S32Megabytes)meminfo[0];
-		free_vram = max_vram - free.value();
-	}
-	used_vram = max_vram - free_vram;
-	percent = llclamp(((F32)used_vram / (F32)max_vram) * 100.f, 0.f, 100.f);
-
-	mProgressBar->setValue(percent);
-	mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used_vram));
+        mGPUMemoryLabel->setTextArg("[USED_MEM]", llformat("%5d", used));
+    }
 	mGPUMemoryLabel->setTextArg("[MAX_MEM]", llformat("%5d", max_vram));
 }
 
@@ -3819,19 +3774,6 @@ bool LLFloaterPreference::loadFromFilename(const std::string& filename, std::map
     }
 
     return true;
-}
-
-std::string get_category_path(LLUUID cat_id)
-{
-	LLViewerInventoryCategory* cat = gInventory.getCategory(cat_id);
-	if (cat->getParentUUID().notNull())
-	{
-		return get_category_path(cat->getParentUUID()) + " > " + cat->getName();
-	}
-	else
-	{
-		return cat->getName();
-	}
 }
 
 std::string get_category_path(LLFolderType::EType cat_type)
