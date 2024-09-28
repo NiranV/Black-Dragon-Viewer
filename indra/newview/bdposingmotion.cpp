@@ -31,8 +31,8 @@
 //-----------------------------------------------------------------------------
 BDPosingMotion::BDPosingMotion(const LLUUID &id) :
 LLMotion(id),
-	mCharacter(NULL),
-	mTargetJoint(NULL)
+	mCharacter(nullptr),
+	mTargetJoint(nullptr)
 {
 	mName = "custom_pose";
 	//BD - Use slight spherical linear interpolation by default.
@@ -220,8 +220,9 @@ void BDPosingMotion::onDeactivate()
 //-----------------------------------------------------------------------------
 void BDPosingMotion::addJointToState(LLJoint *joint)
 {
-	//BD - It is safe to assume that whatever is passed here must be at least some kind of valid
-	//     joint, all code calling this function has null checks in place.
+    if (!joint)
+        return;
+
 	S32 i = joint->getJointNum();
 
 	//BD - Don't add collision volumes and attachment bones.
