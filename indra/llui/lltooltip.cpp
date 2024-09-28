@@ -285,20 +285,6 @@ void LLToolTip::initFromParams(const LLToolTip::Params& p)
     const S32 REALLY_LARGE_HEIGHT = 10000;
     mTextBox->reshape(mMaxWidth, REALLY_LARGE_HEIGHT);
 
-    if (p.styled_message.isProvided())
-    {
-        for (LLInitParam::ParamIterator<LLToolTip::StyledText>::const_iterator text_it = p.styled_message.begin();
-            text_it != p.styled_message.end();
-            ++text_it)
-        {
-            mTextBox->appendText(text_it->text(), false, text_it->style);
-        }
-    }
-    else
-    {
-        mTextBox->setText(p.message());
-    }
-
 	if (p.styled_message.isProvided())
 	{
 		for (LLInitParam::ParamIterator<LLToolTip::StyledText>::const_iterator text_it = p.styled_message.begin();
