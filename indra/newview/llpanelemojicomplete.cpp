@@ -60,7 +60,7 @@ LLPanelEmojiComplete::LLPanelEmojiComplete(const LLPanelEmojiComplete::Params& p
     , mMaxVisible(p.max_visible)
     , mPadding(p.padding)
     , mSelectedImage(p.selected_image)
-    , mIconFont(LLFontGL::getFontEmojiHuge())
+    , mIconFont(LLFontGL::getFontEmojiLarge())
     , mTextFont(LLFontGL::getFontSansSerifBig())
     , mScrollbar(nullptr)
 {
