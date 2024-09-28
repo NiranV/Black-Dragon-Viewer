@@ -24,6 +24,7 @@
         halign="center"
         pad_bottom="1"
         height="23"
+        pad_left="4"
         scale_image="true"
         handle_right_mouse="true"
         use_draw_context_alpha="true"
