@@ -2276,7 +2276,7 @@ width="510">
    width="219">
       <combo_box.item
        label="Low"
-       value="-6"
+       value="6"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; 
 |&lt;b&gt;GPU:&lt;/b&gt; Medium
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;red&gt;High&lt;/red&gt;
