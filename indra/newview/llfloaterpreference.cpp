@@ -1617,10 +1617,11 @@ void LLFloaterPreference::onExportControls()
 		MASK old_mask = MASK_NONE;
 		KEY old_key = NULL;
 		EMouseClickType old_mouse = CLICK_NONE;
-		gViewerInput.mouseFromString(row->getColumn(3)->getValue().asString(), &old_mouse, false);
-		gKeyboard->keyFromString(row->getColumn(2)->getValue().asString(), &old_key);
-		gKeyboard->maskFromString(row->getColumn(4)->getValue().asString(), &old_mask);
-		gViewerInput.bindControl(mode, old_key, old_mouse, old_mask, row->getColumn(1)->getValue().asString());
+        const std::string mask = row->getColumn(4)->getValue().asString();
+		gViewerInput.mouseFromString(row->getColumn(3)->getValue(), &old_mouse, false);
+		gKeyboard->keyFromString(row->getColumn(2)->getValue(), &old_key);
+		gKeyboard->maskFromString(mask, &old_mask);
+		gViewerInput.bindControl(mode, old_key, old_mouse, old_mask, row->getColumn(1)->getValue());
 		it++;
 	}
 	std::string filename = gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS, "controls.xml");

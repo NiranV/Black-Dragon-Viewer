@@ -537,42 +537,50 @@ std::string LLKeyboard::stringFromAccelerator(MASK accel_mask, EMouseClickType c
 bool LLKeyboard::maskFromString(const std::string& str, MASK *mask)
 {
     std::string instring(str);
-    if (instring == "NONE")
+    if (instring == "NONE"
+        || instring == "")
     {
         *mask = MASK_NONE;
         return true;
     }
-    else if (instring == "SHIFT")
+    else if (instring == "SHIFT"
+        || instring == "Shift")
     {
         *mask = MASK_SHIFT;
         return true;
     }
-    else if (instring == "CTL")
+    else if (instring == "CTL"
+        || instring == "Ctrl")
     {
         *mask = MASK_CONTROL;
         return true;
     }
-    else if (instring == "ALT")
+    else if (instring == "ALT"
+        || instring == "Alt")
     {
         *mask = MASK_ALT;
         return true;
     }
-    else if (instring == "CTL_SHIFT")
+    else if (instring == "CTL_SHIFT"
+        || instring == "Ctrl Shift")
     {
         *mask = MASK_CONTROL | MASK_SHIFT;
         return true;
     }
-    else if (instring == "ALT_SHIFT")
+    else if (instring == "ALT_SHIFT"
+        || instring == "Alt Shift")
     {
         *mask = MASK_ALT | MASK_SHIFT;
         return true;
     }
-    else if (instring == "CTL_ALT")
+    else if (instring == "CTL_ALT"
+        || instring == "Ctrl Alt")
     {
         *mask = MASK_CONTROL | MASK_ALT;
         return true;
     }
-    else if (instring == "CTL_ALT_SHIFT")
+    else if (instring == "CTL_ALT_SHIFT"
+        || instring == "Ctrl Alt Shift")
     {
         *mask = MASK_CONTROL | MASK_ALT | MASK_SHIFT;
         return true;
