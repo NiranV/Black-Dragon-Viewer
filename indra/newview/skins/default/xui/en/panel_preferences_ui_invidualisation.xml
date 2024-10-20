@@ -158,20 +158,11 @@ width="510">
 	    initial_value="true"
 	    label="Use Action Wheel"
 	    layout="topleft"
-		tool_tip="This option toggles whether you want to use the right click action wheel (aka Pie Menu) or not.
-||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
-|This feature is known to cause random crashes on right click use at your own risk."
+		tool_tip="This option toggles whether you want to use the right click action wheel (aka Pie Menu) or not."
 	    left="10"
 	    name="UsePieMenu"
 	    top_delta="1"
-	    width="256" >
-      <check_box.check_button
-         image_overlay="Caution_Widget"
-         image_overlay_alignment="left"/>
-      <check_box.commit_callback
-         function="Dragon.TriggerWarn"
-         parameter="UsePieMenu"/>
-       </check_box>
+	    width="256" />
 		
 		<slider
 	    control_name="PieMenuPopupTime"
