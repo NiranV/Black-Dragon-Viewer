@@ -485,6 +485,64 @@
     </menu_item_call>
     </menu>
 				</menu_bar>
+            <panel
+     follows="top|left"
+     halign="center"
+     height="23"
+     layout="topleft"
+     left="0"
+     width="282"
+     name="nav_buttons"
+     visible="false"
+     top="18">
+            <button
+      follows="top|left"
+      height="23"
+      image_selected="Single_Folder_Back"
+      image_pressed="Single_Folder_Back"
+      image_unselected="Single_Folder_Back"
+      scale_image="false"
+      layout="topleft"
+      left="10"
+      top="0"
+      name="back_btn"
+      tool_tip="Back"
+      width="20" />
+     <button
+      follows="top|left"
+      height="23"
+      image_selected="Single_Folder_Forward"
+      image_pressed="Single_Folder_Forward"
+      image_unselected="Single_Folder_Forward"
+      scale_image="false"
+      layout="topleft"
+      left_pad="1"
+      name="forward_btn"
+      tool_tip="Forward"
+      width="20" />
+     <button
+      follows="top|left"
+      height="23"
+      image_selected="Single_Folder_Up"
+      image_pressed="Single_Folder_Up"
+      image_unselected="Single_Folder_Up"
+      scale_image="false"
+      layout="topleft"
+      left_pad="1"
+      name="up_btn"
+      tool_tip="Go up one level"
+      width="20" />
+      </panel>
+   <panel
+     follows="all"
+     halign="center"
+     height="345"
+     layout="topleft"
+     left="0"
+     width="282"
+     name="default_inventory_panel"
+     visible="true"
+     top="18">
   <tab_container
      background_visible="false"
      follows="all"
@@ -497,7 +555,7 @@
      tab_position="top"
      tab_min_width="98"
      top_pad="0"
-     width="282">
+     width="283">
     <inventory_panel
      bg_opaque_image="Panel_Background"
 					folder_view.use_ellipses="true"
@@ -545,6 +603,83 @@
       bevel_style="none"
 		name="Worn Items"/>
   </tab_container>
+   </panel>
+  <panel
+     follows="all"
+     halign="center"
+     height="350"
+     layout="topleft"
+     left_delta="7"
+     name="combination_view_inventory"
+     top_delta="-5"
+     visible="false">
+     <layout_stack
+      follows="all"
+      layout="topleft"
+      height="329"
+      width="278"
+      name="combination_view_stack"
+      animate="false"
+      drag_handle_thickness="6"
+      drag_handle_first_indent="18"
+      drag_handle_second_indent="18"
+      drag_handle_shift="5"
+      show_drag_handle="true"
+      top="20"
+      left="3"
+      orientation="vertical">
+       <layout_panel
+        border="false"
+        bevel_style="in"
+        user_resize="true"
+        auto_resize="true"
+        height="248"
+        min_width="150"
+        name="comb_gallery_layout">
+        <panel
+         class="inventory_gallery"
+         filename="panel_inventory_gallery.xml"
+         left="2"
+         top="3"
+         height="242"
+         width="274"
+         name="comb_gallery_view_inv"
+         background_visible="false"
+         follows="all"
+         layout="topleft">
+        </panel>
+       </layout_panel>
+       <layout_panel
+        border="false"
+        bevel_style="in"
+        user_resize="true"
+        auto_resize="true"
+        height="127"
+        min_height="100"
+        name="comb_inventory_layout">
+        <single_folder_inventory_panel
+         name="comb_single_folder_inv"
+         follows="all"
+         left="16"
+         top="3"
+         width="280"
+         height="124"
+         layout="topleft"
+         show_item_link_overlays="true"
+         background_visible="false"
+         border="false"
+         bevel_style="none"
+         scroll.reserve_scroll_corner="false">
+         <item
+          single_folder_mode="true"
+          folder_indentation="-8"/>
+         <folder
+          single_folder_mode="true"
+          folder_indentation="-8"/>
+        </single_folder_inventory_panel>
+       </layout_panel>
+     </layout_stack>
+    </panel>
   <layout_stack
    animate="false"
    border_size="0"

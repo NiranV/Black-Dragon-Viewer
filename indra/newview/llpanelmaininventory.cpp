@@ -275,7 +275,8 @@ bool LLPanelMainInventory::postBuild()
     mForwardBtn = getChild<LLButton>("forward_btn");
     mUpBtn = getChild<LLButton>("up_btn");
     mViewModeBtn = getChild<LLButton>("view_mode_btn");
-    mNavigationBtnsPanel = getChild<LLLayoutPanel>("nav_buttons");
+    //BD
+    mNavigationBtnsPanel = getChild<LLPanel>("nav_buttons");
 
     mDefaultViewPanel = getChild<LLPanel>("default_inventory_panel");
     mCombinationViewPanel = getChild<LLPanel>("combination_view_inventory");

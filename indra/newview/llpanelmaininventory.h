@@ -220,7 +220,8 @@ private:
     LLButton* mForwardBtn;
     LLButton* mUpBtn;
     LLButton* mViewModeBtn;
-    LLLayoutPanel* mNavigationBtnsPanel;
+    //BD
+    LLPanel* mNavigationBtnsPanel;
 
     LLPanel* mDefaultViewPanel;
     LLPanel* mCombinationViewPanel;

@@ -7,7 +7,7 @@
    border="false"
    bevel_style="none"
    follows="left|top"
-   height="149"
+   height="129"
    width="130"
    name="gallery_item_panel"
    layout="topleft"
@@ -21,10 +21,10 @@
    interactable="false"
    height="128"
    width="128"
-   top="0"
-   left="1"/>
+   top_pad="-8"
+   left="5"/>
   <icon
-   left="5"
+   left="10"
    top_pad="-21"
    layout="topleft"
    name="item_type"
@@ -34,7 +34,7 @@
    visible="true"
    image_name="Inv_Eye"/>
   <icon
-    left="5"
+    left="10"
     top_pad="-8"
     layout="topleft"
     name="link_overlay"
@@ -50,10 +50,10 @@
    border="false"
    bevel_style="none"
    follows="left|top"
-   left="0"
-   top="129"
-   height="25"
-   width="130"
+   left="5"
+   top="119"
+   height="21"
+   width="125"
    name="text_bg_panel">
     <text
       read_only="true"
@@ -67,7 +67,7 @@
       text_readonly_color="White"
       word_wrap="true"
       top="2"
-      width="127"
+      width="128"
       use_ellipses="true">
       Item name, folder name.
     </text>
