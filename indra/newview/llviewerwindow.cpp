@@ -5025,22 +5025,6 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
-	//BD - Fix for snapshot floaters appearing in the snapshot.
-	bool big_preview_open = false;
-	bool snapshot_open = false;
-
-	if (LLFloaterReg::getInstance("snapshot")->getVisible())
-	{
-		LLFloaterReg::findInstance("snapshot")->setVisible(false);
-		snapshot_open = true;
-	}
-
-	if (LLFloaterReg::getInstance("big_preview")->getVisible())
-	{
-		LLFloaterReg::findInstance("big_preview")->setVisible(false);
-		big_preview_open = true;
-	}
-
     bool hide_hud = !show_hud && LLPipeline::sShowHUDAttachments;
 	if (hide_hud)
 	{
@@ -5049,8 +5033,6 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 
 	//BD - Always use full window to render world view.
 	updateWorldViewRect(true);
-
-	bool depth = (type == LLSnapshotModel::SNAPSHOT_TYPE_DEPTH);
 
 	// Copy screen to a buffer
 	// crop sides or top and bottom, if taking a snapshot of different aspect ratio
@@ -5078,88 +5060,46 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 	LLRenderTarget scratch_space;
 
 	F32 scale_factor = 1.0f ;
-	if (!keep_window_aspect || (image_width > window_width) || (image_height > window_height))
-	{	
-		if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) &&
-			(image_width > window_width || image_height > window_height) && LLPipeline::sRenderDeferred && !show_ui)
-		{
-			//BD - Always update our view rect and aspect ratio to match our desired snapshot resolution.
-			//     Should the snapshot fail our main camera and render loop will automatically return us
-			//     to the proper values again anyway.
-			if (depth)
-			{
-				mWorldViewRectRaw.set(0, image_height, image_width, 0);
-				LLViewerCamera::getInstance()->setViewHeightInPixels(mWorldViewRectRaw.getHeight());
-				LLViewerCamera::getInstance()->setAspect(getWorldViewAspectRatio());
-			}
+    if (!keep_window_aspect || (image_width > window_width) || (image_height > window_height))
+    {
+        if ((image_width <= gGLManager.mGLMaxTextureSize && image_height <= gGLManager.mGLMaxTextureSize) &&
+            (image_width > window_width || image_height > window_height) && LLPipeline::sRenderDeferred && !show_ui)
+        {
+            U32 color_fmt = type == LLSnapshotModel::SNAPSHOT_TYPE_DEPTH ? 0 : GL_RGBA;
+            if (scratch_space.allocate(image_width, image_height, color_fmt, true))
+            {
+                original_width = gPipeline.mRT->deferredScreen.getWidth();
+                original_height = gPipeline.mRT->deferredScreen.getHeight();
 
-			//BD - Don't attempt to allocate scratch space when we take depth shots as it fails to allocate
-			//     the color buffer in llrendertarget.cpp. This leads to depth essentially not getting
-			//     a view rect and aspect ratio update, resulting in the final image being "zoomed in".
-			//     Hence why we pulled the view rect update out of this section and made it always apply.
-			if (type == LLSnapshotModel::SNAPSHOT_TYPE_COLOR)
-			{
-				if (scratch_space.allocate(image_width, image_height, GL_RGBA, true))
-				{
-					original_width = gPipeline.mRT->deferredScreen.getWidth();
-					original_height = gPipeline.mRT->deferredScreen.getHeight();
+                if (gPipeline.allocateScreenBuffer(image_width, image_height))
+                {
+                    window_width = image_width;
+                    window_height = image_height;
+                    snapshot_width = image_width;
+                    snapshot_height = image_height;
+                    reset_deferred = true;
+                    mWorldViewRectRaw.set(0, image_height, image_width, 0);
+                    LLViewerCamera::getInstance()->setViewHeightInPixels(mWorldViewRectRaw.getHeight());
+                    LLViewerCamera::getInstance()->setAspect(getWorldViewAspectRatio());
+                    scratch_space.bindTarget();
+                }
+                else
+                {
+                    scratch_space.release();
+                    gPipeline.allocateScreenBuffer(original_width, original_height);
+                }
+            }
+        }
 
-					if (gPipeline.allocateScreenBuffer(image_width, image_height))
-					{
-						window_width = image_width;
-						window_height = image_height;
-						snapshot_width = image_width;
-						snapshot_height = image_height;
-						reset_deferred = true;
-					mWorldViewRectRaw.set(0, image_height, image_width, 0);
-					LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
-					LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
-						scratch_space.bindTarget();
-					}
-					else
-					{
-						scratch_space.release();
-						gPipeline.allocateScreenBuffer(original_width, original_height);
-					}
-				}
-				else
-				{
-					LL_WARNS() << "Failed to allocate scratch space. " << LL_ENDL;
-				}
-			}
-		}
-
-		if (!depth)
-		{
-			if (reset_deferred)
-			{
-				//BD - Always update our view rect and aspect ratio to match our desired snapshot resolution.
-				//     Should the snapshot fail our main camera and render loop will automatically return us
-				//     to the proper values again anyway.
-				mWorldViewRectRaw.set(0, image_height, image_width, 0);
-				LLViewerCamera::getInstance()->setViewHeightInPixels(mWorldViewRectRaw.getHeight());
-				LLViewerCamera::getInstance()->setAspect(getWorldViewAspectRatio());
-			}
-		}
-	}
-
-	if (!depth)
-	{
-		if (gSavedSettings.getBOOL("SnapshotLocalCrop"))
-		{
-			//BD - As mentioned above, this is part of the issue that makes depth shots zoomed in.
-			//     Due to the above scratch space allocation failing and thus reset_deferred never
-			//     getting set to true, we end up in here.
-			//     This causes differences between how the final depth shot looks compared to the
-			//     same color snapshot. Make it an option to both depth and color shots can either
-			//     allow cropping or not.
-			// if image cropping or need to enlarge the scene, compute a scale_factor
-			F32 ratio = llmin((F32)window_width / image_width, (F32)window_height / image_height);
-			snapshot_width = (S32)(ratio * image_width);
-			snapshot_height = (S32)(ratio * image_height);
-			scale_factor = llmax(1.0f, 1.0f / ratio);
-		}
-	}
+        if (!reset_deferred)
+        {
+            // if image cropping or need to enlarge the scene, compute a scale_factor
+            F32 ratio = llmin((F32)window_width / image_width, (F32)window_height / image_height);
+            snapshot_width = (S32)(ratio * image_width);
+            snapshot_height = (S32)(ratio * image_height);
+            scale_factor = llmax(1.0f, 1.0f / ratio);
+        }
+    }
 	
 	if (show_ui && scale_factor > 1.f)
 	{
@@ -5311,17 +5251,6 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
 	}
 
-	//BD - Fix for snapshot floaters appearing in the snapshot.
-	if (snapshot_open)
-	{
-		LLFloaterReg::findInstance("snapshot")->setVisible(true);
-	}
-
-	if (big_preview_open)
-	{
-		LLFloaterReg::findInstance("big_preview")->setVisible(true);
-	}
-
 	if (hide_hud)
 	{
 		LLPipeline::sShowHUDAttachments = true;
@@ -5360,12 +5289,6 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
 		// objects on them.
 		gPipeline.resetDrawOrders();
 	}
-
-	//BD - We are being incredibly paranoid here, this is absolutely not required to do but we do it
-	//     anyway just to be safer than safe.
-	mWorldViewRectRaw = window_rect;
-	LLViewerCamera::getInstance()->setViewHeightInPixels( mWorldViewRectRaw.getHeight() );
-	LLViewerCamera::getInstance()->setAspect( getWorldViewAspectRatio() );
 
 	if (reset_deferred)
 	{
