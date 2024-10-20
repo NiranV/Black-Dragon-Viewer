@@ -4847,6 +4847,11 @@ void LLAppViewer::idle()
         {
             gAgent.moveYaw(-1.f);
         }*/
+
+        //BD - Toggle Crouching
+        if (gAgent.isCrouching())
+        {
+            gAgent.moveUp(-1, false);
         }
 
         {
