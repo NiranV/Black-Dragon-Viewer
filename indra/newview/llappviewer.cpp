@@ -4842,9 +4842,11 @@ void LLAppViewer::idle()
         // Update simulator agent state
         //
 
-        if (gSavedSettings.getBOOL("RotateRight"))
+        //BD
+        /*if (gSavedSettings.getBOOL("RotateRight"))
         {
             gAgent.moveYaw(-1.f);
+        }*/
         }
 
         {

@@ -102,10 +102,10 @@ void BDFloaterAnimations::onMotionRefresh()
 
 	bool create_new = true;
 	//BD - Animesh Support
-	//     Search through Animesh first so that the rest of this function will automatically
-	//     skip all animesh entries and simply just check non-Animesh entries.
-	//     We do this because the LLCharacter::sInstances now also contains all Animesh instances
-	//     as well because they are handled as such internally, which is both good and bad.
+    //     Search through Animesh first so that the rest of this function will automatically
+    //     skip all animesh entries and simply just check non-Animesh entries.
+    //     We do this because the LLCharacter::sInstances now also contains all Animesh instances
+    //     as well because they are handled as such internally, which is both good and bad.
 	for (LLCharacter* character : LLControlAvatar::sInstances)
 	{
 		create_new = true;
