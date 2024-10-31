@@ -148,8 +148,129 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="221"
+     height="1066"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Brett as Patreon patron.
+Added: Laveno 74 as Patreon patron.
+Added: Leeloo Graves as Patreon patron.
+Added: Milu as Patreon patron.
+Added: Nosir as Patreon patron.
+Added: The Base of Bad Ideas as Patreon patron.
+Added: Tript as Patreon patron.
+Added: Missing HDRI Preview menu option.
+Added: Missing Scene Load menu option.
+Added: Missing Reflection Probes render type menu option.
+Added: Missing "Nodes" render type menu option.
+Added: Missing emoji buttons and quick selection.
+Added: Missing "Group Notices" quick button to the People - Groups list.
+Added: Missing Reflection Probe and Mirror options to Tools floater.
+Added: Missing DisableLookAtAnimtion option to Preferences - Privacy.
+Added: Missing Mirror Options to Preferences - Display.
+Changed: Centered the chat toast text layout to have the same pad between top and bottom.
+Changed: Disable UI scaling based on OS preferences.
+Changed: Check if our derender list is empty first. Could potentially be cheaper for the majority of time than attempting to check through the list when its empty.
+Changed: Demoted inventory category iteration info to debug info, this should speed up and spam less.
+Changed: Simplify and solidify the Preferences - Memory display. Should be a lot more accurate too now.
+Changed: Fallback to the basic known Viewer texture memory as display for AMD.
+Changed: Revert to Linden Texture Console and reimplement the texture memory usage bar, improve its accuracy and information it displays.
+Changed: Disabled Camera Constraints by default.
+Changed: Max notification count from 99+ to 999+.
+Changed: Renamed "Visited" landmarks tab back to "Teleport History" to clarify what it is.
+Changed: Toast message height being too big resulting in a lot of empty space above notifications and messages.
+Changed: Make TextureLoadFullRes a temporary setting to prevent people from accidentally enabling and forgetting it and blowing themselves up on subsequent runs.
+Changed: Layout changes to Outfit gallery items for better spacing.
+Changed: Version to 5.2.0 - Mirroring Dragon.
+Fixed Viewer base compile. WebRTC is still not compiling.
+Fixed: Compile.
+Fixed: Startup crashes, world is still completely black.
+Fixed: Compile and some more merge errors.
+Fixed: Big white missing texture in the corner of resizable windows.
+Fixed: CTRL + Delete/Backspace no longer deletes the entire word.
+Fixed: Tooltips being displayed twice.
+Fixed: Tab Containers ignoring pad_left resulting in tab labels being too close to the start of the button.
+Fixed: Posing the position of head related bones in the Poser causes the avatar hover to be recalculated.
+Fixed: Poser avatar list not populating.
+Fixed: Avatar list in Animation Control window not populating.
+Fixed: Avatar list in Complexity window not populating.
+Fixed: Crashes on attempting to load a saved pose.
+Fixed: Special chat headers (moderator and dev) not working anymore.
+Fixed: Crash on attempting to edit an Outfit.
+Fixed: Right-click being offset on UI sizes other than 1.0.
+Fixed: Viewer miscalulating its texture memory usage, leading to assumtions that there is more free memory than there actually is.
+Fixed: A lot of custom menu functions not working anymore such as Derender.
+Fixed: Crashes on opening any texture preview.
+Fixed: Crashes on attempting to take an inventory item preview snapshot.
+Fixed: Message of the day being displayed instead of the loading screen status reports.
+Fixed: Camera angle sliders throughout the entire UI not working.
+Fixed: Some system notification toasts having a lot of empty space above their message.
+Fixed: Left-handed IM tabs not working at all.
+Fixed: Several Right-Click options on IM tabs executing seemingly random actions.
+Fixed: Profiles not loading.
+Fixed: Crashes on opening the Inventory.
+Fixed: Crashes on opening Land Management window.
+Fixed: Accordion widget layout inconsistencies.
+Fixed: Another case of MOTD appearing when it shouldn't.
+Fixed: Very old linking warnings.
+Fixed: Misc compile warnings to make VS content.
+Fixed: Several warnings in logs about MinWindowHeight and MinWindowWidth being the wrong integer type.
+Fixed: Blackscreen after login.
+Fixed: Several many layout inconsistencies, wrong layouts, wrong button placement, clipping and other UI horrors everywhere.
+Fixed: All button labels positioned too far left almost clipping out of the button.
+Fixed: Warning badge on checkboxes positioned wrong and laying right on top of the checkbox itself.
+Fixed: CTRL + Del/Backspace not deleting entire words in text editors.
+Fixed: Keybindings being stripped of their modifier keys when any changes are made.
+Fixed: Depth snapshots corrupting when taking them at resolutions bigger than your current window.
+Fixed: "Low" Mirror Update Rate setting setting a wrong value.
+Fixed: "Open folder in new window" doesn't open a new Inventory window with that specific folder as root but rather an entirely new Inventory window.
+Fixed: Crouch toggle no longer working.
+Fixed: Inbox button showing main inventory item count, it now shows folders in the inbox folder.
+Fixed: Inbox not being affected by inventory filter.
+Removed: Crash warning from Right-Click Action Wheel. Should be stable now that the crash has been fixed after 10 years.
+Misc: Updated message and message_template.
+Misc: Bringing settings.xml on par with LL's file, cleaning up and changing settings to match LL's new defaults.
+Misc: Cleanup and better logging.
+Merged Linden Release
+Merged Linden Release 7.1.9.
+Merged DeltaFPS.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.1.3
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="221"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
