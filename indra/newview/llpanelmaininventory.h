@@ -169,7 +169,10 @@ protected:
     void setFilterSubString(const std::string& string);
 
     //BD
-	const U32 getFreshItemCount();
+    const U32 getFreshItemCount();
+    const U32 getInboxItemCount() { return mInboxItemCount; }
+    void setFreshItemCount(U32 count) { mFreshItemCount = count; }
+    void setInboxItemCount(U32 count) { mInboxItemCount = count; }
 	const U32 getTotalItemCount();
 
     // menu callbacks
@@ -231,6 +234,9 @@ private:
 	LLButton*					mInboxButton;
 	LLInventoryPanel*			mInventoryInboxPanel;
 	LLUICtrl*					mInboxBtnLayout;
+
+    U32     mFreshItemCount;
+    U32     mInboxItemCount;
 
     bool mSingleFolderMode;
     EViewModeType mViewMode;

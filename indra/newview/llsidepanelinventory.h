@@ -115,6 +115,15 @@ public:
 
     static void cleanup();
 
+    //BD
+    const U32 getFreshItemCount() { return mFreshItemCount; }
+    const U32 getInboxItemCount() { return mInboxItemCount; }
+    void setFreshItemCount(U32 count) { mFreshItemCount = count; }
+    void setInboxItemCount(U32 count) { mInboxItemCount = count; }
+
+    U32     mFreshItemCount;
+    U32     mInboxItemCount;
+
 protected:
     // Tracks highlighted (selected) item in inventory panel.
     LLInventoryItem *getSelectedItem();

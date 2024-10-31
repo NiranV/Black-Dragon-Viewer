@@ -259,7 +259,6 @@ bool LLPanelMainInventory::postBuild()
     mFreshCountCtrl = getChild<LLTextBox>("inbox_fresh_new_count");
     mInboxButton = getChild<LLButton>("inbox_btn");
     mInboxBtnLayout = getChild<LLUICtrl>("inbox_btn_panel");
-    mInboxPanel = getChild<LLPanelMarketplaceInbox>("marketplace_inbox");
 
     mFilterEditor = getChild<LLFilterEditor>("inventory search editor");
     if (mFilterEditor)
@@ -1003,14 +1002,22 @@ void LLPanelMainInventory::draw()
 	if (item_count > 0)
 	{
 		mInboxBtnLayout->setVisible(true);
-		std::string item_count_str = llformat("%d", item_count);
+        std::string item_count_str = "---";
 
+        U32 inbox_count;
+        U32 fresh_item_count = getFreshItemCount();
+
+        const LLUUID inbox_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX);
+        LLFolderViewFolder* inbox = getPanel()->getFolderByID(inbox_id);
+        if (inbox)
+        {
+            inbox_count = static_cast<U32>(inbox->getChildCount());
+            item_count_str = llformat("%d", inbox_count);
+        }
+        
 		LLStringUtil::format_map_t args;
 		args["[NUM]"] = item_count_str;
 		mInboxButton->setLabel(getString("InboxLabelWithArg", args));
-
-		// set green text to fresh item count
-		U32 fresh_item_count = getFreshItemCount();
 
 		if (fresh_item_count > 0)
 		{
