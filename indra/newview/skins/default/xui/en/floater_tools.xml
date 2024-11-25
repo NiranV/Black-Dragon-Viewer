@@ -795,7 +795,7 @@
                 label="Select Land"
                 layout="topleft"
                 left="0"
-                value="0"
+                value="radio select land"
                 name="radio select land"
                 top="-106"
                 width="134">
@@ -812,7 +812,7 @@
                 label="Flatten"
                 layout="topleft"
                 left_delta="0"
-                value="1"
+                value="0"
                 name="radio flatten"
                 top_delta="16"
                 width="114">
@@ -829,7 +829,7 @@
                 label="Raise"
                 layout="topleft"
                 left_delta="0"
-                value="2"
+                value="1"
                 name="radio raise"
                 top_delta="16"
                 width="114">
@@ -846,7 +846,7 @@
                 label="Lower"
                 layout="topleft"
                 left_delta="0"
-                value="3"
+                value="2"
                 name="radio lower"
                 top_delta="16"
                 width="114">
@@ -863,7 +863,7 @@
                 label="Smooth"
                 layout="topleft"
                 left_delta="0"
-                value="4"
+                value="3"
                 name="radio smooth"
                 top_delta="16"
                 width="114">
@@ -880,7 +880,7 @@
                 label="Roughen"
                 layout="topleft"
                 left_delta="0"
-                value="5"
+                value="4"
                 name="radio noise"
                 top_delta="16"
                 width="114">
@@ -897,7 +897,7 @@
                 label="Revert"
                 layout="topleft"
                 left_delta="0"
-                value="6"
+                value="5"
                 name="radio revert"
                 top_delta="16"
                 width="114">
