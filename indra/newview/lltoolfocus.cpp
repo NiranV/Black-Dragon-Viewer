@@ -400,8 +400,8 @@ bool LLToolCamera::handleRightMouseUp(S32 x, S32 y, MASK mask)
 	//	   RightMouseDown and RightMouseUp to prevent pie menus from
 	//	   staying in their initial state until clicking somewhere
 	LLCoordGL pos;
-	pos.mX = x * (S32)gViewerWindow->getDisplayScale().mV[VX];
-	pos.mY = y * (S32)gViewerWindow->getDisplayScale().mV[VY];
+	pos.mX = x /* (S32)gViewerWindow->getDisplayScale().mV[VX]*/;
+	pos.mY = y /* (S32)gViewerWindow->getDisplayScale().mV[VY]*/;
 	//gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, CLICK_RIGHT, true);
 	//return gViewerWindow->handleAnyMouseClick(gViewerWindow->getWindow(), pos, mask, CLICK_RIGHT, false);
 	gViewerInput.handleMouse(gViewerWindow->getWindow(), pos, mask, CLICK_RIGHT, true);
