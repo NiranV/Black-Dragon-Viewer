@@ -103,27 +103,28 @@
 		</combo_box>
 		<spinner label="Preis: L$" name="Edit Cost" tool_tip="Objektkosten."/>
 		<panel name="pathfinding_attrs_panel">
-		<text name="pathfinding_attributes_label">
-			Pathfinding-Attribute:
-		</text>
-		<text name="B:">
-			B:
-		</text>
-		<text name="O:">
-			O:
-		</text>
-		<text name="G:">
-			G:
-		</text>
-		<text name="E:">
-			E:
-		</text>
-		<text name="N:">
-			N:
-		</text>
-		<text name="F:">
-			F:
-		</text>
+			<text name="pathfinding_attributes_label">
+				Pathfinding-Attribute:
+			</text>
+			<text name="B:">
+				B:
+			</text>
+			<text name="O:">
+				O:
+			</text>
+			<text name="G:">
+				G:
+			</text>
+			<text name="E:">
+				E:
+			</text>
+			<text name="N:">
+				N:
+			</text>
+			<text name="F:">
+				F:
+			</text>
+		</panel>
 	</panel>
 	<panel name="button_panel">
 		<button label="Öffnen" name="open_btn" tool_tip="Öffnen, um die Objektinhalte zu sehen."/>
