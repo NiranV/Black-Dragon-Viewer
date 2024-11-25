@@ -2155,103 +2155,61 @@ void BDFloaterPoser::onAvatarsRefresh()
 	{
 		if (item)
 		{
-			item->setFlagged(TRUE);
+	        item->setFlagged(true);
 		}
 	}
 
-	bool create_new = true;
-	for (LLCharacter* character : LLCharacter::sInstances)
-	{
-		create_new = true;
-        LLVOAvatar* avatar = (LLVOAvatar*)character;
-		if (!avatar->isDead() && !avatar->isControlAvatar()
-			&& (gDragonLibrary.checkKonamiCode() || avatar->isSelf()))
-		{
-			LLUUID uuid = avatar->getID();
-			for (LLScrollListItem* item : mAvatarScroll->getAllData())
-			{
-				if (avatar == item->getUserdata())
-				{
-					item->setFlagged(FALSE);
-					//BD - When we refresh it might happen that we don't have a name for someone
-					//     yet, when this happens the list entry won't be purged and rebuild as
-					//     it will be updated with this part, so we have to update the name in
-					//     case it was still being resolved last time we refreshed and created the
-					//     initial list entry. This prevents the name from missing forever.
-					if (item->getColumn(1)->getValue().asString().empty())
-					{
-						LLAvatarName av_name;
-						LLAvatarNameCache::get(uuid, &av_name);
-						item->getColumn(1)->setValue(av_name.getDisplayName());
-					}
+    bool create_new = true;
+    for (LLCharacter* character : LLCharacter::sInstances)
+    {
+        create_new = true;
+        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+        {
+            if (!avatar->isControlAvatar() && (gDragonLibrary.checkKonamiCode() || avatar->isSelf())
+                || avatar->isControlAvatar())
+            {
+                for (LLScrollListItem* item : mAvatarScroll->getAllData())
+                {
+                    if (item)
+                    {
+                        if (avatar == (LLVOAvatar*)item->getUserdata())
+                        {
+                            //BD - Avatar is still valid unflag it from removal.
+                            item->setFlagged(false);
+                            create_new = false;
+                        }
+                    }
+                }
 
-					create_new = false;
-					break;
-				}
-			}
+                if (create_new)
+                {
+                    LLUUID uuid = avatar->getID();
+                    LLAvatarName av_name;
+                    LLAvatarNameCache::get(uuid, &av_name);
 
-			if (create_new)
-			{
-				LLAvatarName av_name;
-				LLAvatarNameCache::get(uuid, &av_name);
-
-				LLSD row;
-				row["columns"][0]["column"] = "icon";
-				row["columns"][0]["type"] = "icon";
-				row["columns"][0]["value"] = getString("icon_category");
-				row["columns"][1]["column"] = "name";
-				row["columns"][1]["value"] = av_name.getDisplayName();
-				row["columns"][2]["column"] = "uuid";
-				row["columns"][2]["value"] = avatar->getID();
-				row["columns"][3]["column"] = "control_avatar";
-				row["columns"][3]["value"] = false;
-				LLScrollListItem* item = mAvatarScroll->addElement(row);
-				item->setUserdata(avatar);
-			}
-		}
-	}
-
-	//BD - Animesh Support
-	//     Search through all control avatars.
-	for (LLCharacter* character : LLControlAvatar::sInstances)
-	{
-		create_new = true;
-		LLControlAvatar* avatar = (LLControlAvatar*)character;
-		if (avatar && !avatar->isDead() && (avatar->getRegion() == gAgent.getRegion()))
-		{
-			LLUUID uuid = avatar->getID();
-			for (LLScrollListItem* item : mAvatarScroll->getAllData())
-			{
-				if (item)
-				{
-					if (avatar == item->getUserdata())
-					{
-						//BD - Avatar is still valid unflag it from removal.
-						item->setFlagged(FALSE);
-						create_new = false;
-						break;
-					}
-				}
-			}
-
-			if (create_new)
-			{
-				//BD - Avatar was not listed yet, create a new entry.
-				LLSD row;
-				row["columns"][0]["column"] = "icon";
-				row["columns"][0]["type"] = "icon";
-				row["columns"][0]["value"] = getString("icon_object");
-				row["columns"][1]["column"] = "name";
-				row["columns"][1]["value"] = avatar->getFullname();
-				row["columns"][2]["column"] = "uuid";
-				row["columns"][2]["value"] = avatar->getID();
-				row["columns"][3]["column"] = "control_avatar";
-				row["columns"][3]["value"] = true;
-				LLScrollListItem* item = mAvatarScroll->addElement(row);
-				item->setUserdata(avatar);
-			}
-		}
-	}
+                    LLSD row;
+                    row["columns"][0]["column"] = "icon";
+                    row["columns"][0]["type"] = "icon";
+                    if (!avatar->isControlAvatar())
+                        row["columns"][0]["value"] = getString("icon_category");
+                    else
+                        row["columns"][0]["value"] = getString("icon_object");
+                    row["columns"][1]["column"] = "name";
+                    if (!avatar->isControlAvatar())
+                        row["columns"][1]["value"] = av_name.getDisplayName();
+                    else
+                        row["columns"][1]["value"] = avatar->getFullname();
+                    row["columns"][2]["column"] = "uuid";
+                    row["columns"][2]["value"] = avatar->getID();
+                    row["columns"][3]["column"] = "control_avatar";
+                    row["columns"][3]["value"] = !avatar->isControlAvatar();
+                    LLScrollListItem* item = mAvatarScroll->addElement(row);
+                    item->setUserdata(avatar);
+                    item->setFlagged(false);
+                }
+            }
+        }
+    }
 
 	//BD - Now safely delete all items so we can start adding the missing ones.
 	mAvatarScroll->deleteFlaggedItems();
