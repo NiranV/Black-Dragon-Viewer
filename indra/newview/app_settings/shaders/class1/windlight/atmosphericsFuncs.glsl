@@ -53,7 +53,12 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     vec3 rel_pos = inPositionEye;
 
     //(TERRAIN) limit altitude
-    if (abs(rel_pos.y) > max_y) rel_pos *= (max_y / rel_pos.y);
+    if (abs(rel_pos.y) > max_y)
+        rel_pos *= (0.01 / rel_pos.y);
+
+    float dens_mult = 0.0;
+    if(max_y > 1) 
+        dens_mult = density_multiplier;
 
     vec3  rel_pos_norm = normalize(rel_pos);
     float rel_pos_len  = length(rel_pos);
@@ -62,7 +67,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
 
     // sunlight attenuation effect (hue and brightness) due to atmosphere
     // this is used later for sunlight modulation at various altitudes
-    vec3 light_atten = (blue_density + vec3(haze_density * 0.25)) * (density_multiplier * max_y);
+    vec3 light_atten = (blue_density + vec3(haze_density * 0.25)) * (dens_mult * max_y);
     // I had thought blue_density and haze_density should have equal weighting,
     // but attenuation due to haze_density tends to seem too strong
 
@@ -75,7 +80,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     sunlight *= exp(-light_atten * above_horizon_factor);  // for sun [horizon..overhead] this maps to an exp curve [0..1]
 
     // main atmospheric scattering line integral
-    float density_dist = rel_pos_len * density_multiplier;
+    float density_dist = rel_pos_len * dens_mult;
 
     // Transparency (-> combined_haze)
     // ATI Bugfix -- can't store combined_haze*density_dist*distance_multiplier in a variable because the ati
@@ -105,6 +110,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     haze_glow += .25;
 
     haze_glow *= sun_moon_glow_factor;
+
 
     vec3 amb_color = ambient_color;
 
