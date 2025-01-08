@@ -148,8 +148,97 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="1066"
+     height="52"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Fixed: Selecting different bake sections in the texture selection window.
+Fixed: Setting Max Altitude to 0 and Density Multiplier to anything but 0 results in a white line across the screen.
+Fixed: More German UI crashes in Viewer on startup.
+Changed: Version to 5.2.2.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.2.1
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="91"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Fixed: Poser not listing yourself and animeshes immediately (sometimes not at all)
+Fixed: Land tools radio button options shifted resulting in buttons selecting the wrong tool.
+Fixed: Right-click at UI Sizes 2.0 and up or lower than 1.0 breaking or becoming offset.
+Fixed: Mouselook Aiming Animation interfering with several other mouselook relevant animations.
+Fixed: Opening the Inventory crashes the Viewer in the german UI.
+Fixed: German UI crashes the Viewer on startup.
+Changed: Version to 5.2.1.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.2.0
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="1066"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
