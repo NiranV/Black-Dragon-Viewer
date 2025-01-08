@@ -1257,9 +1257,10 @@ void LLFloaterTexturePicker::onApplyImmediateCheck(LLUICtrl* ctrl, void *user_da
 void LLFloaterTexturePicker::onBakeTextureSelect(LLUICtrl* ctrl, void *user_data)
 {
     LLFloaterTexturePicker* self = (LLFloaterTexturePicker*)user_data;
-    LLComboBox* combo_box = (LLComboBox*)ctrl;
+    //BD
+    LLScrollListCtrl* scroll_list = (LLScrollListCtrl*)ctrl;
 
-    S8 type = combo_box->getValue().asInteger();
+    S8 type = scroll_list->getValue().asInteger();
 
     LLUUID imageID = self->mDefaultImageAssetID;
     if (type == 0)

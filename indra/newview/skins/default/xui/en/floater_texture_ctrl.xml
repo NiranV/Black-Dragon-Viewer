@@ -329,67 +329,67 @@ width="220">
         relative_width="1.0"/>
         <scroll_list.row
         name="BAKED_HEAD"
-        value="5a9f4a74-30f2-821c-b88d-70499d3e7183">
+        value="0">
         <column
         name="Name" value="BAKED_HEAD"/>
         </scroll_list.row>
         <scroll_list.row
         name="BAKED_UPPER"
-        value="ae2de45c-d252-50b8-5c6e-19f39ce79317">
+        value="1">
         <column
         name="Name">BAKED_UPPER</column>
         </scroll_list.row>
         <row
         name="BAKED_LOWER"
-        value="24daea5f-0539-cfcf-047f-fbc40b2786ba">
+        value="2">
         <column
         name="Name">BAKED_LOWER</column>
         </row>
         <row
         name="BAKED_EYES"
-        value="52cc6bb6-2ee5-e632-d3ad-50197b1dcb8a">
+        value="3">
         <column
         name="Name">BAKED_EYES</column>
         </row>
         <row
         name="BAKED_SKIRT"
-        value="43529ce8-7faa-ad92-165a-bc4078371687">
+        value="4">
         <column
         name="Name">BAKED_SKIRT</column>
         </row>
         <row
         name="BAKED_HAIR"
-        value="09aac1fb-6bce-0bee-7d44-caac6dbb6c63">
+        value="5">
         <column
         name="Name">BAKED_HAIR</column>
         </row>
         <row
         name="BAKED_LEFTARM"
-        value="ff62763f-d60a-9855-890b-0c96f8f8cd98">
+        value="6">
         <column
         name="Name">BAKED_LEFTARM</column>
         </row>
         <row
         name="BAKED_LEFTLEG"
-        value="8e915e25-31d1-cc95-ae08-d58a47488251">
+        value="7">
         <column
         name="Name">BAKED_LEFTLEG</column>
         </row>
         <row
         name="BAKED_AUX1"
-        value="9742065b-19b5-297c-858a-29711d539043">
+        value="8">
         <column
         name="Name">BAKED_AUX1</column>
         </row>
         <row
         name="BAKED_AUX2"
-        value="03642e83-2bd1-4eb9-34b4-4c47ed586d2d">
+        value="9">
         <column
         name="Name">BAKED_AUX2</column>
         </row>
         <row
         name="BAKED_AUX3"
-        value="edd51b77-fc10-ce7a-4b3d-011dfc349e4f">
+        value="10">
         <column
         name="Name">BAKED_AUX3</column>
         </row>
