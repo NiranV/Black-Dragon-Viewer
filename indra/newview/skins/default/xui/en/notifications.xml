@@ -6645,6 +6645,13 @@ Your trash is overflowing. This may cause problems logging in.
 Your inventory is experiencing issues. Please, contact support.
   <tag>fail</tag>
   </notification>
+  <notification
+   icon="alertmodal.tga"
+   name="InventoryLimitReachedAIS"
+   type="alertmodal">
+Your inventory is experiencing issues. Please, contact support.
+  <tag>fail</tag>
+  </notification>
 
   <notification
    icon="alertmodal.tga"
