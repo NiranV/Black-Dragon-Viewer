@@ -254,92 +254,90 @@ void LLHUDNameTag::render()
     if (sDisplayText)
     {
         LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
-        //LLGLDisable gls_stencil(GL_STENCIL_TEST);
-        renderText(false);
+        renderText();
     }
 }
 
-void LLHUDNameTag::renderText(bool for_select)
+void LLHUDNameTag::renderText()
 {
-	if (!mVisible || mHidden)
-		return;
+    if (!mVisible || mHidden)
+    {
+        return;
+    }
 
-	// don't pick text that isn't bound to a viewerobject
-	if (for_select && (!mSourceObject || mSourceObject->mDrawable.isNull()))
-		return;
-	
-	if (for_select)
-	{
-		gGL.getTexUnit(0)->disable();
-	}
-	else
-	{
-		gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
-	}
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_UI;
 
-	LLGLState gls_blend(GL_BLEND, for_select ? false : true);
-	
-	// *TODO: make this a per-text setting
-	LLVoiceClient* voice_client = LLVoiceClient::getInstance();
+    gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
+
+    LLColor4 shadow_color(0.f, 0.f, 0.f, 1.f);
+    F32 alpha_factor = 1.f;
+    LLColor4 text_color = mColor;
+    if (mDoFade)
+    {
+        if (mLastDistance > mFadeDistance)
+        {
+            alpha_factor = llmax(0.f, 1.f - (mLastDistance - mFadeDistance)/mFadeRange);
+            text_color.mV[3] = text_color.mV[3]*alpha_factor;
+        }
+    }
+    if (text_color.mV[3] < 0.01f)
+    {
+        return;
+    }
+    shadow_color.mV[3] = text_color.mV[3];
+
+    mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
+
+    // *TODO: make this a per-text setting
+    //BD
+    LLVoiceClient* voice_client = LLVoiceClient::getInstance();
 	LLUUID id = mSourceObject->getID();
 	bool voice_enabled = voice_client->getVoiceEnabled(id);
 	bool is_speaking = voice_client->getIsSpeaking(id);
-	static const LLColor4 nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
-	static const LLCachedControl<F32> chat_bubble_opacity_cc(gSavedSettings, "ChatBubbleOpacity");
-	static LLCachedControl<bool> performance_ranking(gSavedSettings, "EnablePerformanceRanking");
-	F32 alpha_factor = 1.f;
-	if (mDoFade)
-	{
-		if (mLastDistance > mFadeDistance)
-		{
-			alpha_factor = llmax(0.f, 1.f - (mLastDistance - mFadeDistance)/mFadeRange);
-		}
-	}
-	LLColor4 bg_color(nametag_bg_color.mV[0], nametag_bg_color.mV[1], nametag_bg_color.mV[2], chat_bubble_opacity_cc * alpha_factor);
-	LLColor4 shadow_color(0.f, 0.f, 0.f, mColor.mV[3]);
-	LLColor4 text_color(mColor.mV[0], mColor.mV[1], mColor.mV[2], mColor.mV[3] * alpha_factor);
-	LLColor4 label_color(1.f, 1.f, 1.f, alpha_factor);
 
-	if (text_color.mV[3] < 0.01f)
-		return;
+    static LLCachedControl<F32> bubble_opacity(gSavedSettings, "ChatBubbleOpacity");
+    static LLUIColor nametag_bg_color = LLUIColorTable::instance().getColor("NameTagBackground");
+    LLColor4 bg_color = nametag_bg_color;
+    bg_color.setAlpha(bubble_opacity * alpha_factor);
 
-	// scale screen size of borders down
-	//RN: for now, text on hud objects is never occluded
-	LLCoordGL screen_pos;
-	LLVector2 screen_offset = updateScreenPos(mPositionOffset);
-	LLVector3 x_pixel_vec;
-	LLVector3 y_pixel_vec;
-	LLViewerCamera::getInstance()->projectPosAgentToScreen(mPositionAgent, screen_pos, false);
-	LLViewerCamera::getInstance()->getPixelVectors(mPositionAgent, y_pixel_vec, x_pixel_vec);
-	LLVector3 width_vec = mWidth * x_pixel_vec;
-	LLVector3 height_vec = mHeight * y_pixel_vec;
-	LLVector3 render_position = mPositionAgent  
-			+ (x_pixel_vec * screen_offset.mV[VX])
-			+ (y_pixel_vec * screen_offset.mV[VY]);
-	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
-	LLRect screen_rect;
+    // scale screen size of borders down
+    //RN: for now, text on hud objects is never occluded
 
-	mRadius = (width_vec + height_vec).magVec() * 0.5f;
-	mOffsetY = lltrunc(mHeight * ((mVertAlignment == ALIGN_VERT_CENTER) ? 0.5f : 1.f));
-	if(performance_ranking)
-		mWidth += 24;
+    LLVector3 x_pixel_vec;
+    LLVector3 y_pixel_vec;
 
-	screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
-	screen_rect.mRight += voice_enabled ? 20 : 0;
-	mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
+    LLViewerCamera::getInstance()->getPixelVectors(mPositionAgent, y_pixel_vec, x_pixel_vec);
 
-	if (mLabelSegments.size())
-	{
-		LLRect label_top_rect = screen_rect;
-		const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
-		label_top_rect.mBottom = label_top_rect.mTop - label_height;
-		LLColor4 label_top_color = text_color;
-		label_top_color.mV[VALPHA] = chat_bubble_opacity_cc * alpha_factor;
+    LLVector3 width_vec = mWidth * x_pixel_vec;
+    LLVector3 height_vec = mHeight * y_pixel_vec;
 
-		mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
-	}
-	
-	if (voice_enabled)
+    mRadius = (width_vec + height_vec).magVec() * 0.5f;
+
+    LLCoordGL screen_pos;
+    LLViewerCamera::getInstance()->projectPosAgentToScreen(mPositionAgent, screen_pos, false);
+
+    LLVector2 screen_offset = updateScreenPos(mPositionOffset);
+
+    LLVector3 render_position = mPositionAgent
+            + (x_pixel_vec * screen_offset.mV[VX])
+            + (y_pixel_vec * screen_offset.mV[VY]);
+
+    LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
+    LLRect screen_rect;
+    screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
+    mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
+    if (mLabelSegments.size())
+    {
+        LLRect label_top_rect = screen_rect;
+        const S32 label_height = ll_round((mFontp->getLineHeight() * (F32)mLabelSegments.size() + (VERTICAL_PADDING / 3.f)));
+        label_top_rect.mBottom = label_top_rect.mTop - label_height;
+        LLColor4 label_top_color = text_color;
+        label_top_color.mV[VALPHA] = gSavedSettings.getF32("ChatBubbleOpacity") * alpha_factor;
+
+        mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
+    }
+
+    if (voice_enabled)
 	{
 		LLRect voice_ptt_rect = screen_rect;
 		voice_ptt_rect.setLeftTopAndSize(screen_rect.mRight - 24, screen_rect.mBottom + 22, 18, 18);
@@ -360,7 +358,7 @@ void LLHUDNameTag::renderText(bool for_select)
 	}
 
 //	//BD - Performance Indicator
-	if (performance_ranking)
+	/*if (performance_ranking)
 	{
 		LLVOAvatar* avatar = mSourceObject->asAvatar();
 		if (avatar)
@@ -379,90 +377,80 @@ void LLHUDNameTag::renderText(bool for_select)
 			else
 				mPerfExcellent->draw3D(render_position, x_pixel_vec, y_pixel_vec, perf_rect, text_color);
 		}
-	}
+	}*/
 
-	F32 y_offset = (F32)mOffsetY - 1;
-		
-	// Render label
-	{
-		for(std::vector<LLHUDTextSegment>::iterator segment_iter = mLabelSegments.begin();
-			segment_iter != mLabelSegments.end(); ++segment_iter )
-		{
-			// Label segments use default font
-			const LLFontGL* fontp = (segment_iter->mStyle == LLFontGL::BOLD) ? mBoldFontp : mFontp;
-			y_offset += fontp->getLineHeight();
+    F32 y_offset = (F32)mOffsetY;
 
-			F32 x_offset;
-			if (mTextAlignment == ALIGN_TEXT_CENTER)
-			{
-				x_offset = -0.5f*segment_iter->getWidth(fontp);
-			}
-			else // ALIGN_LEFT
-			{
-				x_offset = -0.5f * mWidth + (HORIZONTAL_PADDING / 2.f);
-			}
+    // Render label
+    {
+        for(std::vector<LLHUDTextSegment>::iterator segment_iter = mLabelSegments.begin();
+            segment_iter != mLabelSegments.end(); ++segment_iter )
+        {
+            // Label segments use default font
+            const LLFontGL* fontp = (segment_iter->mStyle == LLFontGL::BOLD) ? mBoldFontp : mFontp;
+            y_offset -= fontp->getLineHeight();
 
-			hud_render_text(segment_iter->getText(), render_position, *fontp, segment_iter->mStyle, LLFontGL::NO_SHADOW, x_offset, y_offset, label_color, false);
-		}
-	}
+            F32 x_offset;
+            if (mTextAlignment == ALIGN_TEXT_CENTER)
+            {
+                x_offset = -0.5f*segment_iter->getWidth(fontp);
+            }
+            else // ALIGN_LEFT
+            {
+                x_offset = -0.5f * mWidth + (HORIZONTAL_PADDING / 2.f);
+            }
 
-	// Render text
-	{
-		// -1 mMaxLines means unlimited lines.
-		S32 start_segment;
-		S32 max_lines = getMaxLines();
+            LLColor4 label_color(0.f, 0.f, 0.f, alpha_factor);
+            hud_render_text(segment_iter->getText(), render_position, *fontp, segment_iter->mStyle, LLFontGL::NO_SHADOW, x_offset, y_offset, label_color, false);
+        }
+    }
 
-		if (max_lines < 0) 
-		{
-			start_segment = 0;
-		}
-		else 
-		{
-			start_segment = llmax((S32)0, (S32)mTextSegments.size() - max_lines);
-		}
+    // Render text
+    {
+        // -1 mMaxLines means unlimited lines.
+        S32 start_segment;
+        S32 max_lines = getMaxLines();
 
-		for (std::vector<LLHUDTextSegment>::iterator segment_iter = mTextSegments.begin() + start_segment;
-			 segment_iter != mTextSegments.end(); ++segment_iter )
-		{
-			const LLFontGL* fontp = segment_iter->mFont;
-			y_offset -= (fontp->getLineHeight() + LINE_PADDING);
+        if (max_lines < 0)
+        {
+            start_segment = 0;
+        }
+        else
+        {
+            start_segment = llmax((S32)0, (S32)mTextSegments.size() - max_lines);
+        }
 
-			U8 style = segment_iter->mStyle;
-			LLFontGL::ShadowType shadow = LLFontGL::DROP_SHADOW;
-	
-			F32 x_offset;
-			if (mTextAlignment== ALIGN_TEXT_CENTER)
-			{
-				x_offset = (-0.5f*segment_iter->getWidth(fontp));
-				if(performance_ranking)
-					x_offset += 11;
-			}
-			else // ALIGN_LEFT
-			{
-				x_offset = (-0.5f * mWidth + (HORIZONTAL_PADDING / 2.f)) + 1;
-				if (performance_ranking)
-					x_offset += 22;
-			}
-			text_color = segment_iter->mColor;
-			text_color.mV[VALPHA] *= alpha_factor;
+        for (std::vector<LLHUDTextSegment>::iterator segment_iter = mTextSegments.begin() + start_segment;
+             segment_iter != mTextSegments.end(); ++segment_iter )
+        {
+            const LLFontGL* fontp = segment_iter->mFont;
+            y_offset -= fontp->getLineHeight();
+            y_offset -= LINE_PADDING;
 
-			hud_render_text(segment_iter->getText(), render_position, *fontp, style, shadow, x_offset, y_offset, text_color, false);
-		}
-	}
+            U8 style = segment_iter->mStyle;
+            LLFontGL::ShadowType shadow = LLFontGL::DROP_SHADOW;
 
-	if (gDragonLibrary.checkDeveloper(mSourceObject->getID()))
-	{
-		LLRect developer_rect = screen_rect;
-		developer_rect.setCenterAndSize(voice_enabled ? 12 : 2, screen_rect.mTop + 3, 18,18);
-		mDeveloperImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, developer_rect, text_color);
-	}
+            F32 x_offset;
+            if (mTextAlignment== ALIGN_TEXT_CENTER)
+            {
+                x_offset = -0.5f*segment_iter->getWidth(fontp);
+            }
+            else // ALIGN_LEFT
+            {
+                x_offset = -0.5f * mWidth + (HORIZONTAL_PADDING / 2.f);
 
-	/// Reset the default color to white.  The renderer expects this to be the default. 
-	gGL.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-	if (for_select)
-	{
-		gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
-	}
+                // *HACK
+                x_offset += 1;
+            }
+
+            text_color = segment_iter->mColor;
+            text_color.mV[VALPHA] *= alpha_factor;
+
+            hud_render_text(segment_iter->getText(), render_position, *fontp, style, shadow, x_offset, y_offset, text_color, false);
+        }
+    }
+    /// Reset the default color to white.  The renderer expects this to be the default.
+    gGL.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void LLHUDNameTag::setString(const std::string &text_utf8)

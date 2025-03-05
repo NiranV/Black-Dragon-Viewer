@@ -436,6 +436,9 @@ void LLLineEditor::setText(const LLStringExplicit &new_text, bool use_size_limit
     {
         mText.assign(utf8str_symbol_truncate(truncated_utf8, mMaxLengthChars));
     }
+    mFontBufferPreSelection.reset();
+    mFontBufferSelection.reset();
+    mFontBufferPostSelection.reset();
 
     if (all_selected)
     {
@@ -616,6 +619,10 @@ void LLLineEditor::replaceWithSuggestion(U32 index)
             // Insert the suggestion in its place
             mText.insert(it->first, suggestion);
             setCursor(it->first + (S32)suggestion.length());
+
+            mFontBufferPreSelection.reset();
+            mFontBufferSelection.reset();
+            mFontBufferPostSelection.reset();
 
             break;
         }
@@ -969,6 +976,10 @@ void LLLineEditor::removeChar()
         mText.erase(getCursor() - 1, 1);
 
         setCursor(getCursor() - 1);
+
+        mFontBufferPreSelection.reset();
+        mFontBufferSelection.reset();
+        mFontBufferPostSelection.reset();
     }
     else
     {
@@ -1020,6 +1031,10 @@ void LLLineEditor::addChar(const llwchar uni_char)
             return;
 
         mText.erase(getCursor(), 1);
+
+        mFontBufferPreSelection.reset();
+        mFontBufferSelection.reset();
+        mFontBufferPostSelection.reset();
     }
 
     S32 cur_bytes = static_cast<S32>(mText.getString().size());
@@ -1050,6 +1065,10 @@ void LLLineEditor::addChar(const llwchar uni_char)
 
         mText.insert(getCursor(), w_buf);
         setCursor(getCursor() + 1);
+
+        mFontBufferPreSelection.reset();
+        mFontBufferSelection.reset();
+        mFontBufferPostSelection.reset();
     }
     else
     {
@@ -1214,6 +1233,10 @@ void LLLineEditor::deleteSelection()
         mText.erase(left_pos, selection_length);
         deselect();
         setCursor(left_pos);
+
+        mFontBufferPreSelection.reset();
+        mFontBufferSelection.reset();
+        mFontBufferPostSelection.reset();
     }
 }
 
@@ -1373,6 +1396,10 @@ void LLLineEditor::pasteHelper(bool is_primary)
             mText.insert(getCursor(), clean_string);
             setCursor( getCursor() + (S32)clean_string.length() );
             deselect();
+
+            mFontBufferPreSelection.reset();
+            mFontBufferSelection.reset();
+            mFontBufferPostSelection.reset();
 
             // Validate new string and rollback the if needed.
             bool need_to_rollback = mPrevalidator && !mPrevalidator.validate(mText.getWString());
@@ -1545,6 +1572,10 @@ bool LLLineEditor::handleSpecialKey(KEY key, MASK mask)
             {
                 mText.assign(*(--mCurrentHistoryLine));
                 setCursorToEnd();
+
+                mFontBufferPreSelection.reset();
+                mFontBufferSelection.reset();
+                mFontBufferPostSelection.reset();
             }
             else
             {
@@ -1562,6 +1593,10 @@ bool LLLineEditor::handleSpecialKey(KEY key, MASK mask)
             {
                 mText.assign( *(++mCurrentHistoryLine) );
                 setCursorToEnd();
+
+                mFontBufferPreSelection.reset();
+                mFontBufferSelection.reset();
+                mFontBufferPostSelection.reset();
             }
             else
             {
@@ -1815,190 +1850,194 @@ void LLLineEditor::drawBackground()
 //virtual
 void LLLineEditor::draw()
 {
-	F32 alpha = getDrawContext().mAlpha;
-	S32 text_len = mText.length();
-	static LLUICachedControl<S32> lineeditor_cursor_thickness ("UILineEditorCursorThickness", 0);
-	static LLUICachedControl<F32> preedit_marker_brightness ("UIPreeditMarkerBrightness", 0);
-	static LLUICachedControl<S32> preedit_marker_gap ("UIPreeditMarkerGap", 0);
-	static LLUICachedControl<S32> preedit_marker_position ("UIPreeditMarkerPosition", 0);
-	static LLUICachedControl<S32> preedit_marker_thickness ("UIPreeditMarkerThickness", 0);
-	static LLUICachedControl<F32> preedit_standout_brightness ("UIPreeditStandoutBrightness", 0);
-	static LLUICachedControl<S32> preedit_standout_gap ("UIPreeditStandoutGap", 0);
-	static LLUICachedControl<S32> preedit_standout_position ("UIPreeditStandoutPosition", 0);
-	static LLUICachedControl<S32> preedit_standout_thickness ("UIPreeditStandoutThickness", 0);
+    F32 alpha = getDrawContext().mAlpha;
+    S32 text_len = mText.length();
+    static LLUICachedControl<S32> lineeditor_cursor_thickness ("UILineEditorCursorThickness", 0);
+    static LLUICachedControl<F32> preedit_marker_brightness ("UIPreeditMarkerBrightness", 0);
+    static LLUICachedControl<S32> preedit_marker_gap ("UIPreeditMarkerGap", 0);
+    static LLUICachedControl<S32> preedit_marker_position ("UIPreeditMarkerPosition", 0);
+    static LLUICachedControl<S32> preedit_marker_thickness ("UIPreeditMarkerThickness", 0);
+    static LLUICachedControl<F32> preedit_standout_brightness ("UIPreeditStandoutBrightness", 0);
+    static LLUICachedControl<S32> preedit_standout_gap ("UIPreeditStandoutGap", 0);
+    static LLUICachedControl<S32> preedit_standout_position ("UIPreeditStandoutPosition", 0);
+    static LLUICachedControl<S32> preedit_standout_thickness ("UIPreeditStandoutThickness", 0);
 
-	std::string saved_text;
-	if (mDrawAsterixes)
-	{
-		saved_text = mText.getString();
-		std::string text;
-		for (S32 i = 0; i < mText.length(); i++)
-		{
-			text += PASSWORD_ASTERISK;
-		}
-		mText = text;
-	}
+    std::string saved_text;
+    if (mDrawAsterixes)
+    {
+        saved_text = mText.getString();
+        std::string text;
+        for (S32 i = 0; i < mText.length(); i++)
+        {
+            text += PASSWORD_ASTERISK;
+        }
+        mText = text;
+    }
 
-	// draw rectangle for the background
-	LLRect background( 0, getRect().getHeight(), getRect().getWidth(), 0 );
-	background.stretch( -mBorderThickness );
+    // draw rectangle for the background
+    LLRect background( 0, getRect().getHeight(), getRect().getWidth(), 0 );
+    background.stretch( -mBorderThickness );
 
-	S32 lineeditor_v_pad = (background.getHeight() - mGLFont->getLineHeight()) / 2;
-	if (mSpellCheck)
-	{
-		lineeditor_v_pad += 1;
-	}
+    S32 lineeditor_v_pad = (background.getHeight() - mGLFont->getLineHeight()) / 2;
+    if (mSpellCheck)
+    {
+        lineeditor_v_pad += 1;
+    }
 
-	drawBackground();
-	
-	// draw text
+    drawBackground();
 
-	// With viewer-2 art files, input region is 2 pixels up
-	S32 cursor_bottom = background.mBottom + 2;
-	S32 cursor_top = background.mTop - 1;
+    // draw text
 
-	LLColor4 text_color;
-	if (!mReadOnly)
-	{
-		if (!getTentative())
-		{
-			text_color = mFgColor.get();
-		}
-		else
-		{
-			text_color = mTentativeFgColor.get();
-		}
-	}
-	else
-	{
-		text_color = mReadOnlyFgColor.get();
-	}
-	text_color.setAlpha(alpha);
-	LLColor4 label_color = mTentativeFgColor.get();
-	label_color.setAlpha(alpha);
-	
-	if (hasPreeditString())
-	{
-		// Draw preedit markers.  This needs to be before drawing letters.
-		for (U32 i = 0; i < mPreeditStandouts.size(); i++)
-		{
-			const S32 preedit_left = mPreeditPositions[i];
-			const S32 preedit_right = mPreeditPositions[i + 1];
-			if (preedit_right > mScrollHPos)
-			{
-				S32 preedit_pixels_left = findPixelNearestPos(llmax(preedit_left, mScrollHPos) - getCursor());
-				S32 preedit_pixels_right = llmin(findPixelNearestPos(preedit_right - getCursor()), background.mRight);
-				if (preedit_pixels_left >= background.mRight)
-				{
-					break;
-				}
-				if (mPreeditStandouts[i])
-				{
-					gl_rect_2d(preedit_pixels_left + preedit_standout_gap,
-						background.mBottom + preedit_standout_position,
-						preedit_pixels_right - preedit_standout_gap - 1,
-						background.mBottom + preedit_standout_position - preedit_standout_thickness,
-						(text_color * preedit_standout_brightness 
-						 + mPreeditBgColor * (1 - preedit_standout_brightness)).setAlpha(alpha/*1.0f*/));
-				}
-				else
-				{
-					gl_rect_2d(preedit_pixels_left + preedit_marker_gap,
-						background.mBottom + preedit_marker_position,
-						preedit_pixels_right - preedit_marker_gap - 1,
-						background.mBottom + preedit_marker_position - preedit_marker_thickness,
-						(text_color * preedit_marker_brightness
-						 + mPreeditBgColor * (1 - preedit_marker_brightness)).setAlpha(alpha/*1.0f*/));
-				}
-			}
-		}
-	}
+    // With viewer-2 art files, input region is 2 pixels up
+    S32 cursor_bottom = background.mBottom + 2;
+    S32 cursor_top = background.mTop - 1;
 
-	S32 rendered_text = 0;
-	F32 rendered_pixels_right = (F32)mTextLeftEdge;
-	F32 text_bottom = (F32)background.mBottom + (F32)lineeditor_v_pad;
+    LLColor4 text_color;
+    if (!mReadOnly)
+    {
+        if (!getTentative())
+        {
+            text_color = mFgColor.get();
+        }
+        else
+        {
+            text_color = mTentativeFgColor.get();
+        }
+    }
+    else
+    {
+        text_color = mReadOnlyFgColor.get();
+    }
+    text_color.setAlpha(alpha);
+    LLColor4 label_color = mTentativeFgColor.get();
+    label_color.setAlpha(alpha);
 
-	if( (gFocusMgr.getKeyboardFocus() == this) && hasSelection() )
-	{
-		S32 select_left;
-		S32 select_right;
-		if (mSelectionStart < mSelectionEnd)
-		{
-			select_left = mSelectionStart;
-			select_right = mSelectionEnd;
-		}
-		else
-		{
-			select_left = mSelectionEnd;
-			select_right = mSelectionStart;
-		}
-		
-		if( select_left > mScrollHPos )
-		{
-			// unselected, left side
-			rendered_text = mGLFont->render( 
-				mText, mScrollHPos,
-				rendered_pixels_right, text_bottom,
-				text_color,
-				LLFontGL::LEFT, LLFontGL::BOTTOM,
-				0,
-				LLFontGL::NO_SHADOW,
-				select_left - mScrollHPos,
-				mTextRightEdge - ll_round(rendered_pixels_right),
-				&rendered_pixels_right);
-		}
-		
-		if( (rendered_pixels_right < (F32)mTextRightEdge) && (rendered_text < text_len) )
-		{
-			LLColor4 color = mHighlightColor;
-			color.setAlpha(alpha);
-			// selected middle
-			S32 width = mGLFont->getWidth(mText.getWString().c_str(), mScrollHPos + rendered_text, select_right - mScrollHPos - rendered_text);
-			width = llmin(width, mTextRightEdge - ll_round(rendered_pixels_right));
-			gl_rect_2d(ll_round(rendered_pixels_right), cursor_top, ll_round(rendered_pixels_right)+width, cursor_bottom, color);
+    if (hasPreeditString())
+    {
+        // Draw preedit markers.  This needs to be before drawing letters.
+        for (U32 i = 0; i < mPreeditStandouts.size(); i++)
+        {
+            const S32 preedit_left = mPreeditPositions[i];
+            const S32 preedit_right = mPreeditPositions[i + 1];
+            if (preedit_right > mScrollHPos)
+            {
+                S32 preedit_pixels_left = findPixelNearestPos(llmax(preedit_left, mScrollHPos) - getCursor());
+                S32 preedit_pixels_right = llmin(findPixelNearestPos(preedit_right - getCursor()), background.mRight);
+                if (preedit_pixels_left >= background.mRight)
+                {
+                    break;
+                }
+                if (mPreeditStandouts[i])
+                {
+                    gl_rect_2d(preedit_pixels_left + preedit_standout_gap,
+                        background.mBottom + preedit_standout_position,
+                        preedit_pixels_right - preedit_standout_gap - 1,
+                        background.mBottom + preedit_standout_position - preedit_standout_thickness,
+                        (text_color * preedit_standout_brightness
+                         + mPreeditBgColor * (1 - preedit_standout_brightness)).setAlpha(alpha/*1.0f*/));
+                }
+                else
+                {
+                    gl_rect_2d(preedit_pixels_left + preedit_marker_gap,
+                        background.mBottom + preedit_marker_position,
+                        preedit_pixels_right - preedit_marker_gap - 1,
+                        background.mBottom + preedit_marker_position - preedit_marker_thickness,
+                        (text_color * preedit_marker_brightness
+                         + mPreeditBgColor * (1 - preedit_marker_brightness)).setAlpha(alpha/*1.0f*/));
+                }
+            }
+        }
+    }
 
-			//BD
+    S32 rendered_text = 0;
+    F32 rendered_pixels_right = (F32)mTextLeftEdge;
+    F32 text_bottom = (F32)background.mBottom + (F32)lineeditor_v_pad;
+
+    if( (gFocusMgr.getKeyboardFocus() == this) && hasSelection() )
+    {
+        S32 select_left;
+        S32 select_right;
+        if (mSelectionStart < mSelectionEnd)
+        {
+            select_left = mSelectionStart;
+            select_right = mSelectionEnd;
+        }
+        else
+        {
+            select_left = mSelectionEnd;
+            select_right = mSelectionStart;
+        }
+
+        if( select_left > mScrollHPos )
+        {
+            // unselected, left side
+            rendered_text = mFontBufferPreSelection.render(
+                mGLFont,
+                mText, mScrollHPos,
+                rendered_pixels_right, text_bottom,
+                text_color,
+                LLFontGL::LEFT, LLFontGL::BOTTOM,
+                0,
+                LLFontGL::NO_SHADOW,
+                select_left - mScrollHPos,
+                mTextRightEdge - ll_round(rendered_pixels_right),
+                &rendered_pixels_right);
+        }
+
+        if( (rendered_pixels_right < (F32)mTextRightEdge) && (rendered_text < text_len) )
+        {
+            LLColor4 color = mHighlightColor;
+            color.setAlpha(alpha);
+            // selected middle
+            S32 width = mGLFont->getWidth(mText.getWString().c_str(), mScrollHPos + rendered_text, select_right - mScrollHPos - rendered_text);
+            width = llmin(width, mTextRightEdge - ll_round(rendered_pixels_right));
+            gl_rect_2d(ll_round(rendered_pixels_right), cursor_top, ll_round(rendered_pixels_right)+width, cursor_bottom, color);
+
+            //BD
 			LLColor4 tmp_color(text_color.mV[0],text_color.mV[1],text_color.mV[2], alpha );
-			rendered_text += mGLFont->render( 
-				mText, mScrollHPos + rendered_text,
-				rendered_pixels_right, text_bottom,
-				tmp_color,
-				LLFontGL::LEFT, LLFontGL::BOTTOM,
-				0,
-				LLFontGL::NO_SHADOW,
-				select_right - mScrollHPos - rendered_text,
-				mTextRightEdge - ll_round(rendered_pixels_right),
-				&rendered_pixels_right);
-		}
+            rendered_text += mFontBufferSelection.render(
+                mGLFont,
+                mText, mScrollHPos + rendered_text,
+                rendered_pixels_right, text_bottom,
+                tmp_color,
+                LLFontGL::LEFT, LLFontGL::BOTTOM,
+                0,
+                LLFontGL::NO_SHADOW,
+                select_right - mScrollHPos - rendered_text,
+                mTextRightEdge - ll_round(rendered_pixels_right),
+                &rendered_pixels_right);
+        }
 
-		if( (rendered_pixels_right < (F32)mTextRightEdge) && (rendered_text < text_len) )
-		{
-			// unselected, right side
-			rendered_text += mGLFont->render( 
-				mText, mScrollHPos + rendered_text,
-				rendered_pixels_right, text_bottom,
-				text_color,
-				LLFontGL::LEFT, LLFontGL::BOTTOM,
-				0,
-				LLFontGL::NO_SHADOW,
-				S32_MAX,
-				mTextRightEdge - ll_round(rendered_pixels_right),
-				&rendered_pixels_right);
-		}
-	}
-	else
-	{
-		rendered_text = mGLFont->render( 
-			mText, mScrollHPos, 
-			rendered_pixels_right, text_bottom,
-			text_color,
-			LLFontGL::LEFT, LLFontGL::BOTTOM,
-			0,
-			LLFontGL::NO_SHADOW,
-			S32_MAX,
-			mTextRightEdge - ll_round(rendered_pixels_right),
-			&rendered_pixels_right);
-	}
+        if( (rendered_pixels_right < (F32)mTextRightEdge) && (rendered_text < text_len) )
+        {
+            // unselected, right side
+            rendered_text += mFontBufferPostSelection.render(
+                mGLFont,
+                mText, mScrollHPos + rendered_text,
+                rendered_pixels_right, text_bottom,
+                text_color,
+                LLFontGL::LEFT, LLFontGL::BOTTOM,
+                0,
+                LLFontGL::NO_SHADOW,
+                S32_MAX,
+                mTextRightEdge - ll_round(rendered_pixels_right),
+                &rendered_pixels_right);
+        }
+    }
+    else
+    {
+        rendered_text = mFontBufferPreSelection.render(
+            mGLFont,
+            mText, mScrollHPos,
+            rendered_pixels_right, text_bottom,
+            text_color,
+            LLFontGL::LEFT, LLFontGL::BOTTOM,
+            0,
+            LLFontGL::NO_SHADOW,
+            S32_MAX,
+            mTextRightEdge - ll_round(rendered_pixels_right),
+            &rendered_pixels_right);
+    }
 #if 1 // for when we're ready for image art.
     mBorder->setVisible(false); // no more programmatic art.
 #endif
@@ -2148,7 +2187,8 @@ void LLLineEditor::draw()
         //to give indication that it is not text you typed in
         if (0 == mText.length() && (mReadOnly || mShowLabelFocused))
         {
-            mGLFont->render(mLabel.getWString(), 0,
+            mFontBufferLabel.render(mGLFont,
+                            mLabel.getWString(), 0,
                             (F32)mTextLeftEdge, (F32)text_bottom,
                             label_color,
                             LLFontGL::LEFT,
@@ -2173,7 +2213,8 @@ void LLLineEditor::draw()
         // draw label if no text provided
         if (0 == mText.length())
         {
-            mGLFont->render(mLabel.getWString(), 0,
+            mFontBufferLabel.render(mGLFont,
+                            mLabel.getWString(), 0,
                             (F32)mTextLeftEdge, (F32)text_bottom,
                             label_color,
                             LLFontGL::LEFT,
@@ -2444,12 +2485,16 @@ void LLLineEditor::setKeystrokeCallback(callback_t callback, void* user_data)
 bool LLLineEditor::setTextArg( const std::string& key, const LLStringExplicit& text )
 {
     mText.setArg(key, text);
+    mFontBufferPreSelection.reset();
+    mFontBufferSelection.reset();
+    mFontBufferPostSelection.reset();
     return true;
 }
 
 bool LLLineEditor::setLabelArg( const std::string& key, const LLStringExplicit& text )
 {
     mLabel.setArg(key, text);
+    mFontBufferLabel.reset();
     return true;
 }
 
@@ -2548,6 +2593,9 @@ void LLLineEditor::updatePreedit(const LLWString &preedit_string,
         mPreeditOverwrittenWString.clear();
     }
     mText.insert(insert_preedit_at, mPreeditWString);
+    mFontBufferPreSelection.reset();
+    mFontBufferSelection.reset();
+    mFontBufferPostSelection.reset();
 
     mPreeditStandouts = preedit_standouts;
 

@@ -43,6 +43,8 @@
 #include "llfloater.h"
 #include "llfloaterreg.h"
 #include "llfocusmgr.h"
+#include "llfontgl.h"
+#include "llfontvertexbuffer.h"
 #include "llwindow.h"
 #include "llnotificationsutil.h"
 #include "llrender.h"
@@ -122,57 +124,56 @@ LLButton::Params::Params()
 
 
 LLButton::LLButton(const LLButton::Params& p)
-:	LLUICtrl(p),
-	LLBadgeOwner(getHandle()),
-	mMouseDownFrame(0),
-	mMouseHeldDownCount(0),
-	mBorderEnabled( false ),
-	mFlashing( false ),
-	mCurGlowStrength(0.f),
-	mNeedsHighlight(false),
-	mUnselectedLabel(p.label()),
-	mSelectedLabel(p.label_selected()),
-	mGLFont(p.font),
-	mHeldDownDelay(p.held_down_delay.seconds),			// seconds until held-down callback is called
-	mHeldDownFrameDelay(p.held_down_delay.frames),
-	mImageUnselected(p.image_unselected),
-	mImageSelected(p.image_selected),
-	mImageDisabled(p.image_disabled),
-	mImageDisabledSelected(p.image_disabled_selected),
-	mImageFlash(p.image_flash),
-	mImagePressed(p.image_pressed),
-	mImagePressedSelected(p.image_pressed_selected),
-	mImageHoverSelected(p.image_hover_selected),
-	mImageHoverUnselected(p.image_hover_unselected),
-	mUnselectedLabelColor(p.label_color()),
-	mSelectedLabelColor(p.label_color_selected()),
-	mDisabledLabelColor(p.label_color_disabled()),
-	mDisabledSelectedLabelColor(p.label_color_disabled_selected()),
-	mImageColor(p.image_color()),
-	mFlashBgColor(p.flash_color()),
-	mDisabledImageColor(p.image_color_disabled()),
-	mImageOverlay(p.image_overlay()),
-	//BD - Selected Overlay Image
+    : LLUICtrl(p),
+    LLBadgeOwner(getHandle()),
+    mMouseDownFrame(0),
+    mMouseHeldDownCount(0),
+    mFlashing( false ),
+    mCurGlowStrength(0.f),
+    mNeedsHighlight(false),
+    mUnselectedLabel(p.label()),
+    mSelectedLabel(p.label_selected()),
+    mGLFont(p.font),
+    mHeldDownDelay(p.held_down_delay.seconds),          // seconds until held-down callback is called
+    mHeldDownFrameDelay(p.held_down_delay.frames),
+    mImageUnselected(p.image_unselected),
+    mImageSelected(p.image_selected),
+    mImageDisabled(p.image_disabled),
+    mImageDisabledSelected(p.image_disabled_selected),
+    mImageFlash(p.image_flash),
+    mImagePressed(p.image_pressed),
+    mImagePressedSelected(p.image_pressed_selected),
+    mImageHoverSelected(p.image_hover_selected),
+    mImageHoverUnselected(p.image_hover_unselected),
+    mUnselectedLabelColor(p.label_color()),
+    mSelectedLabelColor(p.label_color_selected()),
+    mDisabledLabelColor(p.label_color_disabled()),
+    mDisabledSelectedLabelColor(p.label_color_disabled_selected()),
+    mImageColor(p.image_color()),
+    mFlashBgColor(p.flash_color()),
+    mDisabledImageColor(p.image_color_disabled()),
+    mImageOverlay(p.image_overlay()),
+    //BD - Selected Overlay Image
 	mImageOverlaySelected(p.image_overlay_selected()),
-
-	mImageOverlayColor(p.image_overlay_color()),
-	mImageOverlayDisabledColor(p.image_overlay_disabled_color()),
-	mImageOverlaySelectedColor(p.image_overlay_selected_color()),
-	mImageOverlayAlignment(LLFontGL::hAlignFromName(p.image_overlay_alignment)),
-	mImageOverlayTopPad(p.image_top_pad),
-	mImageOverlayBottomPad(p.image_bottom_pad),
-	mImgOverlayLabelSpace(p.imgoverlay_label_space),
-	mIsToggle(p.is_toggle),
-	mScaleImage(p.scale_image),
-	mDropShadowedText(p.label_shadow),
-	mAutoResize(p.auto_resize),
-	mUseEllipses( p.use_ellipses ),
-	mHAlign(p.font_halign),
-	mLeftHPad(p.pad_left),
-	mRightHPad(p.pad_right),
-	mBottomVPad(p.pad_bottom),
-	mHoverGlowStrength(p.hover_glow_amount),
-	mCommitOnReturn(p.commit_on_return),
+    mImageOverlayColor(p.image_overlay_color()),
+    mImageOverlayDisabledColor(p.image_overlay_disabled_color()),
+    mImageOverlaySelectedColor(p.image_overlay_selected_color()),
+    mImageOverlayAlignment(LLFontGL::hAlignFromName(p.image_overlay_alignment)),
+    mImageOverlayTopPad(p.image_top_pad),
+    mImageOverlayBottomPad(p.image_bottom_pad),
+    mImgOverlayLabelSpace(p.imgoverlay_label_space),
+    mIsToggle(p.is_toggle),
+    mScaleImage(p.scale_image),
+    mDropShadowedText(p.label_shadow),
+    mAutoResize(p.auto_resize),
+    mUseEllipses( p.use_ellipses ),
+    mUseFontColor( p.use_font_color),
+    mHAlign(p.font_halign),
+    mLeftHPad(p.pad_left),
+    mRightHPad(p.pad_right),
+    mBottomVPad(p.pad_bottom),
+    mHoverGlowStrength(p.hover_glow_amount),
+    mCommitOnReturn(p.commit_on_return),
     mCommitOnCaptureLost(p.commit_on_capture_lost),
     mFadeWhenDisabled(false),
     mForcePressedState(false),
@@ -333,6 +334,30 @@ void LLButton::onCommit()
     LLUICtrl::onCommit();
 }
 
+void LLButton::setUnselectedLabelColor(const LLUIColor& c)
+{
+    mUnselectedLabelColor = c;
+    mFontBuffer.reset();
+}
+
+void LLButton::setSelectedLabelColor(const LLUIColor& c)
+{
+    mSelectedLabelColor = c;
+    mFontBuffer.reset();
+}
+
+void LLButton::setUseEllipses(bool use_ellipses)
+{
+    mUseEllipses = use_ellipses;
+    mFontBuffer.reset();
+}
+
+void LLButton::setUseFontColor(bool use_font_color)
+{
+    mUseFontColor = use_font_color;
+    mFontBuffer.reset();
+}
+
 boost::signals2::connection LLButton::setClickedCallback(const CommitCallbackParam& cb)
 {
     return setClickedCallback(initCommitCallback(cb));
@@ -398,6 +423,18 @@ bool LLButton::postBuild()
     addBadgeToParentHolder();
 
     return LLUICtrl::postBuild();
+}
+
+void LLButton::onVisibilityChange(bool new_visibility)
+{
+    mFontBuffer.reset();
+    return LLUICtrl::onVisibilityChange(new_visibility);
+}
+
+void LLButton::dirtyRect()
+{
+    LLUICtrl::dirtyRect();
+    mFontBuffer.reset();
 }
 
 bool LLButton::handleUnicodeCharHere(llwchar uni_char)
@@ -606,19 +643,25 @@ void LLButton::onMouseLeave(S32 x, S32 y, MASK mask)
 {
     LLUICtrl::onMouseLeave(x, y, mask);
 
-    mNeedsHighlight = false;
+    setHighlight(false);
 }
 
 void LLButton::setHighlight(bool b)
 {
-    mNeedsHighlight = b;
+    if (mNeedsHighlight != b)
+    {
+        mNeedsHighlight = b;
+        mFontBuffer.reset();
+    }
 }
 
 bool LLButton::handleHover(S32 x, S32 y, MASK mask)
 {
     if (isInEnabledChain()
         && (!gFocusMgr.getMouseCapture() || gFocusMgr.getMouseCapture() == this))
-        mNeedsHighlight = true;
+    {
+        setHighlight(true);
+    }
 
     if (!childrenHandleHover(x, y, mask))
     {
@@ -782,140 +825,137 @@ void LLButton::draw()
                 // will fade from highlight color
                 glow_color = flash_color;
             }
-		}
-	}
+        }
+    }
 
-	if (mNeedsHighlight && !imagep)
-	{
-		use_glow_effect = true;
-	}
+    if (mNeedsHighlight && !imagep)
+    {
+        use_glow_effect = true;
+    }
 
-	// Figure out appropriate color for the text
-	LLColor4 label_color;
+    // Figure out appropriate color for the text
+    LLColor4 label_color;
 
-	// label changes when button state changes, not when pressed
-	if ( enabled )
-	{
-		if ( getToggleState() )
-		{
-			label_color = mSelectedLabelColor.get();
-		}
-		else
-		{
-			label_color = mUnselectedLabelColor.get();
-		}
-	}
-	else
-	{
-		if ( getToggleState() )
-		{
-			label_color = mDisabledSelectedLabelColor.get();
-		}
-		else
-		{
-			label_color = mDisabledLabelColor.get();
-		}
-	}
+    // label changes when button state changes, not when pressed
+    if ( enabled )
+    {
+        if ( getToggleState() )
+        {
+            label_color = mSelectedLabelColor.get();
+        }
+        else
+        {
+            label_color = mUnselectedLabelColor.get();
+        }
+    }
+    else
+    {
+        if ( getToggleState() )
+        {
+            label_color = mDisabledSelectedLabelColor.get();
+        }
+        else
+        {
+            label_color = mDisabledLabelColor.get();
+        }
+    }
 
-	// Highlight if needed
+    // Highlight if needed
 	if(getHighlighted())
 		label_color = LLUIColorTable::instance().getColor("SearchableButtonHighlightColor", LLColor4::red);
 
-	// overlay with keyboard focus border
-	if (hasFocus())
-	{
-		F32 lerp_amt = gFocusMgr.getFocusFlashAmt();
-		drawBorder(imagep, gFocusMgr.getFocusColor() % alpha, ll_round(lerp(1.f, 3.f, lerp_amt)));
-	}
-	
-	if (use_glow_effect)
-	{
-		mCurGlowStrength = lerp(mCurGlowStrength,
-					mFlashing ? (mFlashingTimer->isCurrentlyHighlighted() || !mFlashingTimer->isFlashingInProgress() || mNeedsHighlight? 1.f : 0.f) : mHoverGlowStrength,
-					LLSmoothInterpolation::getInterpolant(0.05f));
-	}
-	else
-	{
-		mCurGlowStrength = lerp(mCurGlowStrength, 0.f, LLSmoothInterpolation::getInterpolant(0.05f));
-	}
+    // overlay with keyboard focus border
+    if (hasFocus())
+    {
+        F32 lerp_amt = gFocusMgr.getFocusFlashAmt();
+        drawBorder(imagep, gFocusMgr.getFocusColor() % alpha, ll_round(lerp(1.f, 3.f, lerp_amt)));
+    }
 
-	// Draw button image, if available.
-	// Otherwise draw basic rectangular button.
-	if (imagep != NULL)
-	{
-		// apply automatic 50% alpha fade to disabled image
-		LLColor4 disabled_color = mFadeWhenDisabled ? mDisabledImageColor.get() % 0.5f : mDisabledImageColor.get();
-		if ( mScaleImage)
-		{
-			imagep->draw(getLocalRect(), (enabled ? mImageColor.get() : disabled_color) % alpha  );
-			if (mCurGlowStrength > 0.01f)
-			{
-				gGL.setSceneBlendType(glow_type);
-				image_glow->drawSolid(0, 0, getRect().getWidth(), getRect().getHeight(), glow_color % (mCurGlowStrength * alpha));
-				gGL.setSceneBlendType(LLRender::BT_ALPHA);
-			}
-		}
-		else
-		{
-			S32 y = getLocalRect().getHeight() - imagep->getHeight();
-			imagep->draw(0, y, (enabled ? mImageColor.get() : disabled_color) % alpha);
-			if (mCurGlowStrength > 0.01f)
-			{
-				gGL.setSceneBlendType(glow_type);
-				image_glow->drawSolid(0, y, glow_color % (mCurGlowStrength * alpha));
-				gGL.setSceneBlendType(LLRender::BT_ALPHA);
-			}
-		}
-	}
-	else
-	{
-		// no image
-		LL_DEBUGS() << "No image for button " << getName() << LL_ENDL;
-		// draw it in pink so we can find it
-		gl_rect_2d(0, getRect().getHeight(), getRect().getWidth(), 0, LLColor4::pink1 % alpha, false);
-	}
+    if (use_glow_effect)
+    {
+        mCurGlowStrength = lerp(mCurGlowStrength,
+                    mFlashing ? (mFlashingTimer->isCurrentlyHighlighted() || !mFlashingTimer->isFlashingInProgress() || mNeedsHighlight? 1.f : 0.f) : mHoverGlowStrength,
+                    LLSmoothInterpolation::getInterpolant(0.05f));
+    }
+    else
+    {
+        mCurGlowStrength = lerp(mCurGlowStrength, 0.f, LLSmoothInterpolation::getInterpolant(0.05f));
+    }
 
-	// let overlay image and text play well together
-	S32 text_left = mLeftHPad;
-	S32 text_right = getRect().getWidth() - mRightHPad;
-	S32 text_width = getRect().getWidth() - mLeftHPad - mRightHPad;
+    // Draw button image, if available.
+    // Otherwise draw basic rectangular button.
+    if (imagep != NULL)
+    {
+        // apply automatic 50% alpha fade to disabled image
+        LLColor4 disabled_color = mFadeWhenDisabled ? mDisabledImageColor.get() % 0.5f : mDisabledImageColor.get();
+        if ( mScaleImage)
+        {
+            imagep->draw(getLocalRect(), (enabled ? mImageColor.get() : disabled_color) % alpha  );
+            if (mCurGlowStrength > 0.01f)
+            {
+                gGL.setSceneBlendType(glow_type);
+                image_glow->drawSolid(0, 0, getRect().getWidth(), getRect().getHeight(), glow_color % (mCurGlowStrength * alpha));
+                gGL.setSceneBlendType(LLRender::BT_ALPHA);
+            }
+        }
+        else
+        {
+            S32 y = getLocalRect().getHeight() - imagep->getHeight();
+            imagep->draw(0, y, (enabled ? mImageColor.get() : disabled_color) % alpha);
+            if (mCurGlowStrength > 0.01f)
+            {
+                gGL.setSceneBlendType(glow_type);
+                image_glow->drawSolid(0, y, glow_color % (mCurGlowStrength * alpha));
+                gGL.setSceneBlendType(LLRender::BT_ALPHA);
+            }
+        }
+    }
+    else
+    {
+        // no image
+        LL_DEBUGS() << "No image for button " << getName() << LL_ENDL;
+        // draw it in pink so we can find it
+        gl_rect_2d(0, getRect().getHeight(), getRect().getWidth(), 0, LLColor4::pink1 % alpha, false);
+    }
 
-	// draw overlay image
-	if (mImageOverlay.notNull() || mImageOverlaySelected.notNull())
-	{
-		// get max width and height (discard level 0)
-		S32 overlay_width;
-		S32 overlay_height;
+    // let overlay image and text play well together
+    S32 text_left = mLeftHPad;
+    S32 text_right = getRect().getWidth() - mRightHPad;
+    S32 text_width = getRect().getWidth() - mLeftHPad - mRightHPad;
 
-		getOverlayImageSize(overlay_width, overlay_height);
+    // draw overlay image
+    if (mImageOverlay.notNull())
+    {
+        // get max width and height (discard level 0)
+        S32 overlay_width;
+        S32 overlay_height;
 
-		S32 center_x = getLocalRect().getCenterX();
-		S32 center_y = getLocalRect().getCenterY();
+        getOverlayImageSize(overlay_width, overlay_height);
 
-		//FUGLY HACK FOR "DEPRESSED" BUTTONS
-		if (pressed && mDisplayPressedState)
-		{
-			center_y--;
-			center_x++;
-		}
+        S32 center_x = getLocalRect().getCenterX();
+        S32 center_y = getLocalRect().getCenterY();
 
-		//BD - Selected Overlay Image
-		bool toggle_state = getToggleState();
+        //FUGLY HACK FOR "DEPRESSED" BUTTONS
+        if (pressed && mDisplayPressedState)
+        {
+            center_y--;
+            center_x++;
+        }
 
-		center_y += (mImageOverlayBottomPad - mImageOverlayTopPad);
-		// fade out overlay images on disabled buttons
-		LLColor4 overlay_color = mImageOverlayColor.get();
-		if (!enabled)
-		{
-			overlay_color = mImageOverlayDisabledColor.get();
-		}
-		else if (toggle_state)
-		{
-			overlay_color = mImageOverlaySelectedColor.get();
-		}
-		overlay_color.mV[VALPHA] *= alpha;
+        center_y += (mImageOverlayBottomPad - mImageOverlayTopPad);
+        // fade out overlay images on disabled buttons
+        LLColor4 overlay_color = mImageOverlayColor.get();
+        if (!enabled)
+        {
+            overlay_color = mImageOverlayDisabledColor.get();
+        }
+        else if (getToggleState())
+        {
+            overlay_color = mImageOverlaySelectedColor.get();
+        }
+        overlay_color.mV[VALPHA] *= alpha;
 
-		//BD - Selected Overlay Image
+        //BD - Selected Overlay Image
 		LLPointer<LLUIImage> image = (toggle_state && mImageOverlaySelected.notNull()) ? mImageOverlaySelected : mImageOverlay;
 		switch (mImageOverlayAlignment)
 		{
@@ -951,53 +991,51 @@ void LLButton::draw()
 			// draw nothing
 			break;
 		}
-	}
+    }
 
-    // Unselected label assignments
-	LLWString label = getCurrentLabel();
+    // Draw label
+    if( !getCurrentLabel().empty() )    // Unselected label assignments
+    {
+        LLWString label = getCurrentLabel();
+        LLWStringUtil::trim(label);
 
-	// Draw label
-	if( !label.empty() )
-	{
-		LLWStringUtil::trim(label);
+        S32 x;
+        switch( mHAlign )
+        {
+        case LLFontGL::RIGHT:
+            x = text_right;
+            break;
+        case LLFontGL::HCENTER:
+            x = text_left + (text_width / 2);
+            break;
+        case LLFontGL::LEFT:
+        default:
+            x = text_left;
+            break;
+        }
 
-		S32 x;
-		switch( mHAlign )
-		{
-		case LLFontGL::RIGHT:
-			x = text_right;
-			break;
-		case LLFontGL::HCENTER:
-			x = text_left + (text_width / 2);
-			break;
-		case LLFontGL::LEFT:
-		default:
-			x = text_left;
-			break;
-		}
+        if (pressed && mDisplayPressedState)
+        {
+            x++;
+        }
 
-		if (pressed && mDisplayPressedState)
-		{
-			x++;
-		}
+        // *NOTE: mantipov: before mUseEllipses is implemented in EXT-279 U32_MAX has been passed as
+        // max_chars.
+        // LLFontGL::render expects S32 max_chars variable but process in a separate way -1 value.
+        // Due to U32_MAX is equal to S32 -1 value I have rest this value for non-ellipses mode.
+        // Not sure if it is really needed. Probably S32_MAX should be always passed as max_chars.
+        mLastDrawCharsCount = mFontBuffer.render(mGLFont, label, 0,
+            (F32)x,
+            (F32)(getRect().getHeight() / 2 + mBottomVPad),
+            label_color % alpha,
+            mHAlign, LLFontGL::VCENTER,
+            LLFontGL::NORMAL,
+            mDropShadowedText ? LLFontGL::DROP_SHADOW_SOFT : LLFontGL::NO_SHADOW,
+            S32_MAX, text_width,
+            NULL, mUseEllipses, mUseFontColor);
+    }
 
-		// *NOTE: mantipov: before mUseEllipses is implemented in EXT-279 U32_MAX has been passed as
-		// max_chars.
-		// LLFontGL::render expects S32 max_chars variable but process in a separate way -1 value.
-		// Due to U32_MAX is equal to S32 -1 value I have rest this value for non-ellipses mode.
-		// Not sure if it is really needed. Probably S32_MAX should be always passed as max_chars.
-		mLastDrawCharsCount = mGLFont->render(label, 0,
-			(F32)x,
-			(F32)(getRect().getHeight() / 2 + mBottomVPad),
-			label_color % alpha,
-			mHAlign, LLFontGL::VCENTER,
-			LLFontGL::NORMAL,
-			mDropShadowedText ? LLFontGL::DROP_SHADOW_SOFT : LLFontGL::NO_SHADOW,
-			S32_MAX, text_width,
-			NULL, mUseEllipses, mUseFontColor);
-	}
-
-	LLUICtrl::draw();
+    LLUICtrl::draw();
 }
 
 void LLButton::drawBorder(LLUIImage* imagep, const LLColor4& color, S32 size)
@@ -1028,6 +1066,7 @@ void LLButton::setToggleState(bool b)
         setFlashing(false); // stop flash state whenever the selected/unselected state if reset
         // Unselected label assignments
         autoResize();
+        mFontBuffer.reset();
     }
 }
 
@@ -1057,11 +1096,13 @@ bool LLButton::toggleState()
 void LLButton::setLabel( const std::string& label )
 {
     mUnselectedLabel = mSelectedLabel = label;
+    mFontBuffer.reset();
 }
 
 void LLButton::setLabel( const LLUIString& label )
 {
     mUnselectedLabel = mSelectedLabel = label;
+    mFontBuffer.reset();
 }
 
 void LLButton::setLabel( const LLStringExplicit& label )
@@ -1075,17 +1116,32 @@ bool LLButton::setLabelArg( const std::string& key, const LLStringExplicit& text
 {
     mUnselectedLabel.setArg(key, text);
     mSelectedLabel.setArg(key, text);
+    mFontBuffer.reset();
     return true;
 }
 
 void LLButton::setLabelUnselected( const LLStringExplicit& label )
 {
     mUnselectedLabel = label;
+    mFontBuffer.reset();
 }
 
 void LLButton::setLabelSelected( const LLStringExplicit& label )
 {
     mSelectedLabel = label;
+    mFontBuffer.reset();
+}
+
+void LLButton::setDisabledLabelColor(const LLUIColor& c)
+{
+    mDisabledLabelColor = c;
+    mFontBuffer.reset();
+}
+
+void LLButton::setFont(const LLFontGL* font)
+{
+    mGLFont = (font ? font : LLFontGL::getFontSansSerif());
+    mFontBuffer.reset();
 }
 
 bool LLButton::labelIsTruncated() const
@@ -1096,6 +1152,12 @@ bool LLButton::labelIsTruncated() const
 const LLUIString& LLButton::getCurrentLabel() const
 {
     return getToggleState() ? mSelectedLabel : mUnselectedLabel;
+}
+
+void LLButton::setDropShadowedText(bool b)
+{
+    mDropShadowedText = b;
+    mFontBuffer.reset();
 }
 
 void LLButton::setImageUnselected(LLPointer<LLUIImage> image)
@@ -1181,6 +1243,7 @@ void LLButton::setImageDisabledSelected(LLPointer<LLUIImage> image)
     mImageDisabledSelected = image;
     mDisabledImageColor = mImageColor;
     mFadeWhenDisabled = true;
+    mFontBuffer.reset();
 }
 
 void LLButton::setImagePressed(LLPointer<LLUIImage> image)

@@ -2491,6 +2491,17 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>UseGroupMemberPagination</key>
+    <map>
+      <key>Comment</key>
+      <string>Enable pagination of group memeber list 50 members at a time.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>DisplayTimecode</key>
     <map>
       <key>Comment</key>
@@ -7376,7 +7387,7 @@
   <key>RenderBufferVisualization</key>
   <map>
     <key>Comment</key>
-    <string>Outputs a selected buffer to the screen.  -1 = final render buffer.  0 = Albedo, 1 = Specular/ORM, 2 = Normal, 3 = Emissive, 4 = Eye luminance</string>
+    <string>Outputs a selected buffer to the screen.  -1 = final render buffer.  0 = Albedo, 1 = Specular/ORM, 2 = Normal, 3 = Emissive, 4 = Eye luminance, 5 = FXAA Luminance/SMAA Edge Tex, 6 = SMAA Blend Weights</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -7762,16 +7773,16 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderPostProcessingHDR</key>
+  <key>RenderEnableEmissiveBuffer</key>
   <map>
     <key>Comment</key>
-    <string>Enable HDR for post processing buffer</string>
+    <string>Enable emissive buffer in gbuffer.  Should only be disabled in GL3 mode.</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
-    <integer>0</integer>
+    <integer>1</integer>
   </map>
   <key>RenderHDRIExposure</key>
   <map>
@@ -7820,7 +7831,7 @@
   <key>RenderMaxOpenGLVersion</key>
   <map>
     <key>Comment</key>
-    <string>Maximum OpenGL version to attempt use (minimum 3.2 maximum 4.6).  Requires restart.</string>
+    <string>Maximum OpenGL version to attempt use (minimum 3.1 maximum 4.6).  Requires restart.</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -7853,7 +7864,18 @@
   <key>RenderLowMemMinDiscardIncrement</key>
   <map>
     <key>Comment</key>
-    <string>Minimum increment of discard level if system memory gets low</string>
+    <string>Minimum increment of discard bias if available texture memory gets low</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.1</real>
+  </map>
+  <key>RenderHighMemMinDiscardDecrement</key>
+  <map>
+    <key>Comment</key>
+    <string>Minimum decrement of discard bias if excess texture memory is available</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -7892,7 +7914,7 @@
         <key>Type</key>
         <string>U32</string>
         <key>Value</key>
-        <integer>1</integer>
+        <integer>0</integer>
     </map>
     <key>RenderDebugTextureBind</key>
     <map>
@@ -8517,7 +8539,18 @@
     <key>RenderFSAASamples</key>
     <map>
       <key>Comment</key>
-      <string>Number of samples to use for FSAA (0 = no AA).</string>
+      <string>Quality of antialiasing: 0 = Low, 1 = Medium, 2 = High, 3 = Ultra</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>RenderFSAAType</key>
+    <map>
+      <key>Comment</key>
+      <string>Type of Antialiasing to use: 0 = None, 1 = FXAA, 2 = SMAA</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -9184,7 +9217,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>1</real>
+    <real>1.0</real>
   </map>
   
   <key>RenderReflectionProbeDrawDistance</key>
@@ -9286,7 +9319,7 @@
     <key>Type</key>
     <string>Boolean</string>
     <key>Value</key>
-    <integer>1</integer>
+    <integer>0</integer>
   </map>
   <key>RenderSkyAutoAdjustAmbientScale</key>
   <map>
@@ -9357,14 +9390,25 @@
   <key>RenderSkySunlightScale</key>
   <map>
     <key>Comment</key>
-    <string>Sunlight scale fudge factor for matching with pre-PBR viewer</string>
+    <string>Sunlight scale fudge factor for matching with pre-PBR viewer when HDR is disabled</string>
     <key>Persist</key>
-    <integer>1</integer>
+    <integer>0</integer>
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
     <real>1.0</real>
   </map>
+    <key>RenderHDRSkySunlightScale</key>
+    <map>
+        <key>Comment</key>
+        <string>Sunlight scale fudge factor for matching with pre-PBR viewer when HDR is enabled</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>1.0</real>
+    </map>
   <key>RenderSkyAmbientScale</key>
   <map>
     <key>Comment</key>
@@ -9374,7 +9418,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.7</real>
+    <real>1.0</real>
   </map>
   
   <key>RenderReflectionProbeMaxLocalLightAmbiance</key>
@@ -9387,6 +9431,17 @@
     <string>F32</string>
     <key>Value</key>
     <real>4.0</real>
+  </map>
+  <key>RenderUseExposureSkySettings</key>
+  <map>
+    <key>Comment</key>
+    <string>Use exposure sky settings instead of deriving from HDR scale.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
   <key>RenderDynamicExposureCoefficient</key>
   <map>
@@ -9710,6 +9765,17 @@
     <key>PresetType</key>
       <integer>1</integer>
   </map>
+  <key>CollectFontVertexBuffers</key>
+  <map>
+    <key>Comment</key>
+    <string>When enabled some UI elements with cache buffers generated by fonts and reuse them. When disabled general cahce will be used with a significant overhead for hash, but it regenerates vertices each frame so it's always up to date.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <real>1</real>
+  </map>
   <key>ShowMyComplexityChanges</key>
   <map>
     <key>Comment</key>
@@ -9995,6 +10061,39 @@
       <string>String</string>
       <key>Value</key>
       <string>00000000-0000-0000-0000-000000000000</string>
+    </map>
+    <key>RenderCASSharpness</key>
+    <map>
+        <key>Comment</key>
+        <string>Level of sharpening to apply via Contrast Adaptive Sharpening (0.0(off) - 1.0)</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>0.4</real>
+    </map>
+    <key>RenderTonemapMix</key>
+    <map>
+        <key>Comment</key>
+        <string>Mix between linear and tonemapped colors (0.0(Linear) - 1.0(Tonemapped)</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>0.7</real>
+    </map>
+    <key>RenderTonemapType</key>
+    <map>
+        <key>Comment</key>
+        <string>What tonemapper to use: 0 = Khronos Neutral, 1 = ACES</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>U32</string>
+        <key>Value</key>
+        <integer>1</integer>
     </map>
     <key>ReplaySession</key>
     <map>
@@ -11421,29 +11520,16 @@
       <key>Value</key>
       <real>20.0</real>
     </map>
-    <key>TextureBiasDistanceScale</key>
+    <key>TextureCameraBoost</key>
     <map>
       <key>Comment</key>
-      <string>When biasing textures to lower resolution due to lack of vram, weight to put on distance factor.</string>
+      <string>Amount to boost resolution of textures that are important to the camera.</string>
       <key>Persist</key>
-      <integer>1</integer>
+      <integer>0</integer>
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
       <real>8.0</real>
-    </map>
-    <key>TextureBiasUnimportantFactor</key>
-    <map>
-      <key>Comment</key>
-      <string>When biasing textures to lower resolution due to lack of vram, the importance threshold below which is considered unimportant and getting an extra bias.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>F32</string>
-      <key>Value</key>
-      <real>0.25</real>
-      <key>Backup</key>
-      <integer>0</integer>
     </map>
     <key>TextureDecodeDisabled</key>
     <map>
@@ -11477,6 +11563,28 @@
       <string>U32</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>TextureDiscardBackgroundedTime</key>
+    <map>
+        <key>Comment</key>
+        <string>Specify how long to wait before discarding texture data after viewer is backgrounded.  (zero or negative to disable)</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>60.0</real>
+    </map>
+    <key>TextureDiscardMinimizedTime</key>
+    <map>
+        <key>Comment</key>
+        <string>Specify how long to wait before discarding texture data after viewer is minimized.  (zero or negative to disable)</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>1.0</real>
     </map>
     <key>TextureFetchConcurrency</key>
     <map>
@@ -13293,17 +13401,6 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>VoiceEffectExpiryWarningTime</key>
-    <map>
-      <key>Comment</key>
-      <string>How much notice to give of Voice Morph subscriptions expiry, in seconds.</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>259200</integer>
-    </map>
     <key>VoiceMorphingEnabled</key>
     <map>
       <key>Comment</key>
@@ -13523,6 +13620,17 @@
       <string>U32</string>
       <key>Value</key>
       <integer>4</integer>
+    </map>
+    <key>VoiceVisualizerEnabled</key>
+    <map>
+      <key>Comment</key>
+      <string>Display voice dot indicator above an avatar</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
     </map>
     <key>WarningsAsChat</key>
     <map>
@@ -16103,24 +16211,46 @@
   <key>Value</key>
   <integer>0</integer>
 </map>
-<key>GLTFEnabled</key>
-<map>
-  <key>Comment</key>
-  <string>Enable GLTF support.  Set to true by simulator if the simulator you are connected to supports GLTF Asset upload.  WARNING: Manually setting this to true will enable buttons that can drain your L$ balance by implicitly uploading textures without asking.</string>
-  <key>Persist</key>
-  <integer>0</integer>
-  <key>Type</key>
-  <string>Boolean</string>
-  <key>Value</key>
-  <integer>0</integer>
-</map>
-  <!-- Black Dragon Debugs -->
-<key>Include</key>
-<array>
-  <!-- Black Dragon Debugs -->
-  <string>settings_blackdragon.xml</string>
-  <!-- RLVa Debugs -->
-  <!--<string>settings_rlva.xml</string>-->
-</array>
+  <key>GLTFEnabled</key>
+  <map>
+    <key>Comment</key>
+    <string>Enable GLTF support.  Set to true by simulator if the simulator you are connected to supports GLTF Asset upload.  WARNING: Manually setting this to true will enable buttons that can drain your L$ balance by implicitly uploading textures without asking.</string>
+    <key>Persist</key>
+    <integer>0</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
+  <key>RenderHDREnabled</key>
+  <map>
+    <key>Comment</key>
+    <string>Enable HDR rendering.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+    <key>RenderDisableVintageMode</key>
+    <map>
+        <key>Comment</key>
+        <string>Enables additional rendering pipeline features on newer machines such as HDR and emissive textures on PBR content.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
+    <!-- Black Dragon Debugs -->
+    <key>Include</key>
+    <array>
+      <!-- Black Dragon Debugs -->
+      <string>settings_blackdragon.xml</string>
+      <!-- RLVa Debugs -->
+      <!--<string>settings_rlva.xml</string>-->
+    </array>
 </map>
 </llsd>

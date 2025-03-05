@@ -2017,6 +2017,11 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     }
 
     LLFontManager::initClass();
+
+    // fonts use an GL_UNSIGNED_BYTE image format,
+    // so they need convertion, init buffers if needed
+    LLImageGL::allocateConversionBuffer();
+
     // Init font system, load default fonts and generate basic glyphs
     // currently it takes aprox. 0.5 sec and we would load these fonts anyway
     // before login screen.
@@ -3951,90 +3956,100 @@ void LLViewerWindow::updateMouseDelta()
 
 void LLViewerWindow::updateKeyboardFocus()
 {
-	if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
-	{
-		gFocusMgr.setKeyboardFocus(NULL);
-	}
+    if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+    {
+        gFocusMgr.setKeyboardFocus(NULL);
+    }
 
-	// clean up current focus
-	LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(gFocusMgr.getKeyboardFocus());
-	if (cur_focus)
-	{
-		if (!cur_focus->isInVisibleChain() || !cur_focus->isInEnabledChain())
-		{
+    // clean up current focus
+    LLUICtrl* cur_focus = dynamic_cast<LLUICtrl*>(gFocusMgr.getKeyboardFocus());
+    if (cur_focus)
+    {
+        bool is_in_visible_chain = cur_focus->isInVisibleChain();
+        bool is_in_enabled_chain = cur_focus->isInEnabledChain();
+        if (!is_in_visible_chain || !is_in_enabled_chain)
+        {
             // don't release focus, just reassign so that if being given
             // to a sibling won't call onFocusLost on all the ancestors
-			// gFocusMgr.releaseFocusIfNeeded(cur_focus);
+            // gFocusMgr.releaseFocusIfNeeded(cur_focus);
 
-			LLUICtrl* parent = cur_focus->getParentUICtrl();
-			const LLUICtrl* focus_root = cur_focus->findRootMostFocusRoot();
-			bool new_focus_found = false;
-			while(parent)
-			{
-				if (parent->isCtrl() 
-					&& (parent->hasTabStop() || parent == focus_root) 
-					&& !parent->getIsChrome() 
-					&& parent->isInVisibleChain() 
-					&& parent->isInEnabledChain())
-				{
-					if (!parent->focusFirstItem())
-					{
-						parent->setFocus(TRUE);
-					}
-					new_focus_found = true;
-					break;
-				}
-				parent = parent->getParentUICtrl();
-			}
+            LLUICtrl* parent = cur_focus->getParentUICtrl();
+            const LLUICtrl* focus_root = cur_focus->findRootMostFocusRoot();
+            bool new_focus_found = false;
+            while(parent)
+            {
+                if (!is_in_visible_chain)
+                {
+                    is_in_visible_chain = parent->isInVisibleChain();
+                }
+                if (!is_in_enabled_chain)
+                {
+                    is_in_enabled_chain = parent->isInEnabledChain();
+                }
+                if (parent->isCtrl()
+                    && (parent->hasTabStop() || parent == focus_root)
+                    && !parent->getIsChrome()
+                    && is_in_visible_chain
+                    && is_in_enabled_chain)
+                {
+                    if (!parent->focusFirstItem())
+                    {
+                        parent->setFocus(true);
+                    }
+                    new_focus_found = true;
+                    break;
+                }
+                parent = parent->getParentUICtrl();
+            }
 
-			// if we didn't find a better place to put focus, just release it
-			// hasFocus() will return true if and only if we didn't touch focus since we
-			// are only moving focus higher in the hierarchy
-			if (!new_focus_found)
-			{
-				cur_focus->setFocus(false);
-			}
-		}
-		else if (cur_focus->isFocusRoot())
-		{
-			// focus roots keep trying to delegate focus to their first valid descendant
-			// this assumes that focus roots are not valid focus holders on their own
-			cur_focus->focusFirstItem();
-		}
-	}
+            // if we didn't find a better place to put focus, just release it
+            // hasFocus() will return true if and only if we didn't touch focus since we
+            // are only moving focus higher in the hierarchy
+            if (!new_focus_found)
+            {
+                cur_focus->setFocus(false);
+            }
+        }
+        else if (cur_focus->isFocusRoot())
+        {
+            // focus roots keep trying to delegate focus to their first valid descendant
+            // this assumes that focus roots are not valid focus holders on their own
+            cur_focus->focusFirstItem();
+        }
+    }
 
-	// last ditch force of edit menu to selection manager
-	if (LLEditMenuHandler::gEditMenuHandler == NULL && LLSelectMgr::getInstance()->getSelection()->getObjectCount())
-	{
-		LLEditMenuHandler::gEditMenuHandler = LLSelectMgr::getInstance();
-	}
+    // last ditch force of edit menu to selection manager
+    if (LLEditMenuHandler::gEditMenuHandler == NULL && LLSelectMgr::getInstance()->getSelection()->getObjectCount())
+    {
+        LLEditMenuHandler::gEditMenuHandler = LLSelectMgr::getInstance();
+    }
 
-	if (gFloaterView->getCycleMode())
-	{
-		// sync all floaters with their focus state
-		gFloaterView->highlightFocusedFloater();
-		gSnapshotFloaterView->highlightFocusedFloater();
-		MASK	mask = gKeyboard->currentMask(TRUE);
-		if ((mask & MASK_CONTROL) == 0)
-		{
-			// control key no longer held down, finish cycle mode
-			gFloaterView->setCycleMode(false);
+    if (gFloaterView->getCycleMode())
+    {
+        // sync all floaters with their focus state
+        gFloaterView->highlightFocusedFloater();
+        gSnapshotFloaterView->highlightFocusedFloater();
+        MASK    mask = gKeyboard->currentMask(true);
+        if ((mask & MASK_CONTROL) == 0)
+        {
+            // control key no longer held down, finish cycle mode
+            gFloaterView->setCycleMode(false);
 
-			gFloaterView->syncFloaterTabOrder();
-		}
-		else
-		{
-			// user holding down CTRL, don't update tab order of floaters
-		}
-	}
-	else
-	{
-		// update focused floater
-		gFloaterView->highlightFocusedFloater();
-		gSnapshotFloaterView->highlightFocusedFloater();
-		// make sure floater visible order is in sync with tab order
-		gFloaterView->syncFloaterTabOrder();
-	}
+            gFloaterView->syncFloaterTabOrder();
+        }
+        else
+        {
+            // user holding down CTRL, don't update tab order of floaters
+        }
+    }
+    else
+    {
+        // update focused floater
+        gFloaterView->highlightFocusedFloater();
+        gSnapshotFloaterView->highlightFocusedFloater();
+        // make sure floater visible order is in sync with tab order
+        gFloaterView->syncFloaterTabOrder();
+    }
 }
 
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_WORLD_VIEW("Update World View");
@@ -5431,8 +5446,8 @@ bool LLViewerWindow::cubeSnapshot(const LLVector3& origin, LLCubeMapArray* cubea
     LLViewerCamera* camera = LLViewerCamera::getInstance();
 
     LLViewerCamera saved_camera = LLViewerCamera::instance();
-    glh::matrix4f saved_proj = get_current_projection();
-    glh::matrix4f saved_mod = get_current_modelview();
+    glm::mat4 saved_proj = get_current_projection();
+    glm::mat4 saved_mod = get_current_modelview();
 
     // camera constants for the square, cube map capture image
     camera->setAspect(1.0); // must set aspect ratio first to avoid undesirable clamping of vertical FoV
@@ -5448,6 +5463,8 @@ bool LLViewerWindow::cubeSnapshot(const LLVector3& origin, LLCubeMapArray* cubea
         previousClipPlane = camera->getUserClipPlane();
         camera->setUserClipPlane(clipPlane);
     }
+
+    gPipeline.pushRenderTypeMask();
 
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // stencil buffer is deprecated | GL_STENCIL_BUFFER_BIT);
 
@@ -5537,16 +5554,7 @@ bool LLViewerWindow::cubeSnapshot(const LLVector3& origin, LLCubeMapArray* cubea
         }
     }
 
-    if (!dynamic_render)
-    {
-        for (int i = 0; i < dynamic_render_type_count; ++i)
-        {
-            if (prev_dynamic_render_type[i])
-            {
-                gPipeline.toggleRenderType(dynamic_render_types[i]);
-            }
-        }
-    }
+    gPipeline.popRenderTypeMask();
 
     if (hide_hud)
     {

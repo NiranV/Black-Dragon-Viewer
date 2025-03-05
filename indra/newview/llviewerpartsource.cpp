@@ -111,12 +111,12 @@ void LLViewerPartSource::setStart()
 LLViewerPartSourceScript::LLViewerPartSourceScript(LLViewerObject *source_objp) :
     LLViewerPartSource(LL_PART_SOURCE_SCRIPT)
 {
-	llassert(source_objp);
-	mSourceObjectp = source_objp;
-	mPosAgent = mSourceObjectp->getPositionAgent();
-	mImagep = LLViewerFetchedTexture::sPixieSmallImagep;
-	
-	mImagep->setAddressMode(LLTexUnit::TAM_CLAMP);
+    llassert(source_objp);
+    mSourceObjectp = source_objp;
+    mPosAgent = mSourceObjectp->getPositionAgent();
+    mImagep = LLViewerFetchedTexture::sDefaultParticleImagep;
+
+    mImagep->setAddressMode(LLTexUnit::TAM_CLAMP);
 }
 
 
@@ -617,52 +617,52 @@ void LLViewerPartSourceSpiral::updatePart(LLViewerPart &part, const F32 dt)
 
 void LLViewerPartSourceSpiral::update(const F32 dt)
 {
-	if (!mImagep)
-	{
-		mImagep = LLViewerFetchedTexture::sPixieSmallImagep;
-	}
+    if (!mImagep)
+    {
+        mImagep = LLViewerFetchedTexture::sDefaultParticleImagep;
+    }
 
-	const F32 RATE = 0.025f;
+    const F32 RATE = 0.025f;
 
-	mLastUpdateTime += dt;
+    mLastUpdateTime += dt;
 
-	F32 dt_update = mLastUpdateTime - mLastPartTime;
-	F32 max_time = llmax(1.f, 10.f*RATE);
-	dt_update = llmin(max_time, dt_update);
+    F32 dt_update = mLastUpdateTime - mLastPartTime;
+    F32 max_time = llmax(1.f, 10.f*RATE);
+    dt_update = llmin(max_time, dt_update);
 
-	if (dt_update > RATE)
-	{
-		mLastPartTime = mLastUpdateTime;
-		if (!LLViewerPartSim::getInstance()->shouldAddPart())
-		{
-			// Particle simulation says we have too many particles, skip all this
-			return;
-		}
+    if (dt_update > RATE)
+    {
+        mLastPartTime = mLastUpdateTime;
+        if (!LLViewerPartSim::getInstance()->shouldAddPart())
+        {
+            // Particle simulation says we have too many particles, skip all this
+            return;
+        }
 
-		if (!mSourceObjectp.isNull() && !mSourceObjectp->mDrawable.isNull())
-		{
-			mPosAgent = mSourceObjectp->getRenderPosition();
-		}
-		LLViewerPart* part = new LLViewerPart();
-		part->init(this, mImagep, updatePart);
-		part->mStartColor = mColor;
-		part->mEndColor = mColor;
-		part->mEndColor.mV[3] = 0.f;
-		part->mPosAgent = mPosAgent;
-		part->mMaxAge = 1.f;
-		part->mFlags = LLViewerPart::LL_PART_INTERP_COLOR_MASK;
-		part->mLastUpdateTime = 0.f;
-		part->mScale.mV[0] = 0.25f;
-		part->mScale.mV[1] = 0.25f;
-		part->mParameter = ll_frand(F_TWO_PI);
-		part->mBlendFuncDest = LLRender::BF_ONE_MINUS_SOURCE_ALPHA;
-		part->mBlendFuncSource = LLRender::BF_SOURCE_ALPHA;
-		part->mStartGlow = 0.f;
-		part->mEndGlow = 0.f;
-		part->mGlow = LLColor4U(0, 0, 0, 0);
+        if (!mSourceObjectp.isNull() && !mSourceObjectp->mDrawable.isNull())
+        {
+            mPosAgent = mSourceObjectp->getRenderPosition();
+        }
+        LLViewerPart* part = new LLViewerPart();
+        part->init(this, mImagep, updatePart);
+        part->mStartColor = mColor;
+        part->mEndColor = mColor;
+        part->mEndColor.mV[3] = 0.f;
+        part->mPosAgent = mPosAgent;
+        part->mMaxAge = 1.f;
+        part->mFlags = LLViewerPart::LL_PART_INTERP_COLOR_MASK;
+        part->mLastUpdateTime = 0.f;
+        part->mScale.mV[0] = 0.25f;
+        part->mScale.mV[1] = 0.25f;
+        part->mParameter = ll_frand(F_TWO_PI);
+        part->mBlendFuncDest = LLRender::BF_ONE_MINUS_SOURCE_ALPHA;
+        part->mBlendFuncSource = LLRender::BF_SOURCE_ALPHA;
+        part->mStartGlow = 0.f;
+        part->mEndGlow = 0.f;
+        part->mGlow = LLColor4U(0, 0, 0, 0);
 
-		LLViewerPartSim::getInstance()->addPart(part);
-	}
+        LLViewerPartSim::getInstance()->addPart(part);
+    }
 }
 
 void LLViewerPartSourceSpiral::setSourceObject(LLViewerObject *objp)
@@ -891,63 +891,63 @@ void LLViewerPartSourceChat::updatePart(LLViewerPart &part, const F32 dt)
 
 void LLViewerPartSourceChat::update(const F32 dt)
 {
-	if (!mImagep)
-	{
-		mImagep = LLViewerFetchedTexture::sPixieSmallImagep;
-	}
+    if (!mImagep)
+    {
+        mImagep = LLViewerFetchedTexture::sDefaultParticleImagep;
+    }
 
 
-	const F32 RATE = 0.025f;
+    const F32 RATE = 0.025f;
 
-	mLastUpdateTime += dt;
+    mLastUpdateTime += dt;
 
-	if (mLastUpdateTime > 2.f)
-	{
-		// Kill particle source because it has outlived its max age...
-		setDead();
-		return;
-	}
+    if (mLastUpdateTime > 2.f)
+    {
+        // Kill particle source because it has outlived its max age...
+        setDead();
+        return;
+    }
 
-	F32 dt_update = mLastUpdateTime - mLastPartTime;
+    F32 dt_update = mLastUpdateTime - mLastPartTime;
 
-	// Clamp us to generating at most one second's worth of particles on a frame.
-	F32 max_time = llmax(1.f, 10.f*RATE);
-	dt_update = llmin(max_time, dt_update);
+    // Clamp us to generating at most one second's worth of particles on a frame.
+    F32 max_time = llmax(1.f, 10.f*RATE);
+    dt_update = llmin(max_time, dt_update);
 
-	if (dt_update > RATE)
-	{
-		mLastPartTime = mLastUpdateTime;
-		if (!LLViewerPartSim::getInstance()->shouldAddPart())
-		{
-			// Particle simulation says we have too many particles, skip all this
-			return;
-		}
+    if (dt_update > RATE)
+    {
+        mLastPartTime = mLastUpdateTime;
+        if (!LLViewerPartSim::getInstance()->shouldAddPart())
+        {
+            // Particle simulation says we have too many particles, skip all this
+            return;
+        }
 
-		if (!mSourceObjectp.isNull() && !mSourceObjectp->mDrawable.isNull())
-		{
-			mPosAgent = mSourceObjectp->getRenderPosition();
-		}
-		LLViewerPart* part = new LLViewerPart();
-		part->init(this, mImagep, updatePart);
-		part->mStartColor = mColor;
-		part->mEndColor = mColor;
-		part->mEndColor.mV[3] = 0.f;
-		part->mPosAgent = mPosAgent;
-		part->mMaxAge = 1.f;
-		part->mFlags = LLViewerPart::LL_PART_INTERP_COLOR_MASK;
-		part->mLastUpdateTime = 0.f;
-		part->mScale.mV[0] = 0.25f;
-		part->mScale.mV[1] = 0.25f;
-		part->mParameter = ll_frand(F_TWO_PI);
-		part->mBlendFuncDest = LLRender::BF_ONE_MINUS_SOURCE_ALPHA;
-		part->mBlendFuncSource = LLRender::BF_SOURCE_ALPHA;
-		part->mStartGlow = 0.f;
-		part->mEndGlow = 0.f;
-		part->mGlow = LLColor4U(0, 0, 0, 0);
+        if (!mSourceObjectp.isNull() && !mSourceObjectp->mDrawable.isNull())
+        {
+            mPosAgent = mSourceObjectp->getRenderPosition();
+        }
+        LLViewerPart* part = new LLViewerPart();
+        part->init(this, mImagep, updatePart);
+        part->mStartColor = mColor;
+        part->mEndColor = mColor;
+        part->mEndColor.mV[3] = 0.f;
+        part->mPosAgent = mPosAgent;
+        part->mMaxAge = 1.f;
+        part->mFlags = LLViewerPart::LL_PART_INTERP_COLOR_MASK;
+        part->mLastUpdateTime = 0.f;
+        part->mScale.mV[0] = 0.25f;
+        part->mScale.mV[1] = 0.25f;
+        part->mParameter = ll_frand(F_TWO_PI);
+        part->mBlendFuncDest = LLRender::BF_ONE_MINUS_SOURCE_ALPHA;
+        part->mBlendFuncSource = LLRender::BF_SOURCE_ALPHA;
+        part->mStartGlow = 0.f;
+        part->mEndGlow = 0.f;
+        part->mGlow = LLColor4U(0, 0, 0, 0);
 
 
-		LLViewerPartSim::getInstance()->addPart(part);
-	}
+        LLViewerPartSim::getInstance()->addPart(part);
+    }
 }
 
 void LLViewerPartSourceChat::setSourceObject(LLViewerObject *objp)

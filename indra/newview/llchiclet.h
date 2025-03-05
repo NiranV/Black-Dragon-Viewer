@@ -823,6 +823,8 @@ protected:
     S32 mMinWidth;
     bool mShowControls;
     static const S32 s_scroll_ratio;
+
+    boost::signals2::connection mVoiceChannelChanged;
 };
 
 template<class T>

@@ -1541,11 +1541,12 @@ void LLFloaterSnapshot::onQualitySliderCommit(LLUICtrl* ctrl)
 
 void LLFloaterSnapshot::sendProfile()
 {
-	std::string caption = getChild<LLUICtrl>("caption")->getValue().asString();
-	bool add_location = getChild<LLUICtrl>("add_location_cb")->getValue().asBoolean();
-
-	LLWebProfile::uploadImage(getImageData(), caption, add_location);
-	postSave();
+    // don't update preview for hidden floater
+    if (mFloater && mFloater->isInVisibleChain() && ImplBase::updatePreviewList(true))
+    {
+        LL_DEBUGS() << "changed" << LL_ENDL;
+        updateControls(mFloater);
+    }
 }
 
 void LLFloaterSnapshot::onFormatComboCommit(LLUICtrl* ctrl)

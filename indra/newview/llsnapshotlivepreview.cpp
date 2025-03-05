@@ -533,10 +533,10 @@ bool LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 				previewp->getHeight(),
 				previewp->mKeepAspectRatio,//gSavedSettings.getBOOL("KeepAspectForSnapshot"),
                 previewp->getSnapshotType() == LLSnapshotModel::SNAPSHOT_TEXTURE,
-                previewp->mAllowRenderUI && gSavedSettings.getBOOL("RenderUIInSnapshot"),
-                gSavedSettings.getBOOL("RenderHUDInSnapshot"),
+                previewp->mAllowRenderUI && render_ui,
+                render_hud,
                 false,
-                gSavedSettings.getBOOL("RenderSnapshotNoPost"),
+                render_no_post,
                 previewp->mSnapshotBufferType,
                 previewp->getMaxImageSize()))
         {
@@ -633,7 +633,9 @@ LLPointer<LLImageRaw> LLSnapshotLivePreview::getEncodedImage()
         else
         {
             // Update mFormattedImage if necessary
-            getFormattedImage();
+            lock.unlock();
+            getFormattedImage(); // will apply filters to mPreviewImage with a lock
+            lock.lock();
             if (getSnapshotFormat() == LLSnapshotModel::SNAPSHOT_FORMAT_BMP)
             {
                 // BMP hack : copy instead of decode otherwise decode will crash.

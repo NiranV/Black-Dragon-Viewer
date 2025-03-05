@@ -158,58 +158,62 @@ public:
 	void copyScreenSpaceReflections(LLRenderTarget* src, LLRenderTarget* dst);
 	void generateLuminance(LLRenderTarget* src, LLRenderTarget* dst);
     void generateExposure(LLRenderTarget* src, LLRenderTarget* dst, bool use_history = true);
-	void gammaCorrect(LLRenderTarget* src, LLRenderTarget* dst);
-	void generateGlow(LLRenderTarget* src);
-	void applyFXAA(LLRenderTarget* src, LLRenderTarget* dst);
-	void renderDoF(LLRenderTarget* src, LLRenderTarget* dst);
-	void copyRenderTarget(LLRenderTarget* src, LLRenderTarget* dst);
-	void combineGlow(LLRenderTarget* src, LLRenderTarget* dst);
-	void visualizeBuffers(LLRenderTarget* src, LLRenderTarget* dst, U32 bufferIndex);
+    void tonemap(LLRenderTarget* src, LLRenderTarget* dst);
+    void gammaCorrect(LLRenderTarget* src, LLRenderTarget* dst);
+    void generateGlow(LLRenderTarget* src);
+    void applyCAS(LLRenderTarget* src, LLRenderTarget* dst);
+    void applyFXAA(LLRenderTarget* src, LLRenderTarget* dst);
+    void generateSMAABuffers(LLRenderTarget* src);
+    void applySMAA(LLRenderTarget* src, LLRenderTarget* dst);
+    void renderDoF(LLRenderTarget* src, LLRenderTarget* dst);
+    void copyRenderTarget(LLRenderTarget* src, LLRenderTarget* dst);
+    void combineGlow(LLRenderTarget* src, LLRenderTarget* dst);
+    void visualizeBuffers(LLRenderTarget* src, LLRenderTarget* dst, U32 bufferIndex);
 
 	//BD - Volumetric Lighting
 	//void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
 
-	void init();
-	void cleanup();
-	bool isInit() { return mInitialized; };
+    void init();
+    void cleanup();
+    bool isInit() { return mInitialized; };
 
-	/// @brief Get a draw pool from pool type (POOL_SIMPLE, POOL_MEDIA) and texture.
-	/// @return Draw pool, or NULL if not found.
-	LLDrawPool *findPool(const U32 pool_type, LLViewerTexture *tex0 = NULL);
+    /// @brief Get a draw pool from pool type (POOL_SIMPLE, POOL_MEDIA) and texture.
+    /// @return Draw pool, or NULL if not found.
+    LLDrawPool *findPool(const U32 pool_type, LLViewerTexture *tex0 = NULL);
 
-	/// @brief Get a draw pool for faces of the appropriate type and texture.  Create if necessary.
-	/// @return Always returns a draw pool.
-	LLDrawPool *getPool(const U32 pool_type, LLViewerTexture *tex0 = NULL);
+    /// @brief Get a draw pool for faces of the appropriate type and texture.  Create if necessary.
+    /// @return Always returns a draw pool.
+    LLDrawPool *getPool(const U32 pool_type, LLViewerTexture *tex0 = NULL);
 
-	/// @brief Figures out draw pool type from texture entry. Creates pool if necessary.
-	static LLDrawPool* getPoolFromTE(const LLTextureEntry* te, LLViewerTexture* te_image);
-	static U32 getPoolTypeFromTE(const LLTextureEntry* te, LLViewerTexture* imagep);
+    /// @brief Figures out draw pool type from texture entry. Creates pool if necessary.
+    static LLDrawPool* getPoolFromTE(const LLTextureEntry* te, LLViewerTexture* te_image);
+    static U32 getPoolTypeFromTE(const LLTextureEntry* te, LLViewerTexture* imagep);
 
-	void		 addPool(LLDrawPool *poolp);	// Only to be used by LLDrawPool classes for splitting pools!
-	void		 removePool( LLDrawPool* poolp );
+    void         addPool(LLDrawPool *poolp);    // Only to be used by LLDrawPool classes for splitting pools!
+    void         removePool( LLDrawPool* poolp );
 
-	void		 allocDrawable(LLViewerObject *obj);
+    void         allocDrawable(LLViewerObject *obj);
 
-	void		 unlinkDrawable(LLDrawable*);
+    void         unlinkDrawable(LLDrawable*);
 
-	static void removeMutedAVsLights(LLVOAvatar*);
+    static void removeMutedAVsLights(LLVOAvatar*);
 
-	// Object related methods
-	void        markVisible(LLDrawable *drawablep, LLCamera& camera);
-	void		markOccluder(LLSpatialGroup* group);
+    // Object related methods
+    void        markVisible(LLDrawable *drawablep, LLCamera& camera);
+    void        markOccluder(LLSpatialGroup* group);
 
-	void		doOcclusion(LLCamera& camera);
-	void		markNotCulled(LLSpatialGroup* group, LLCamera &camera);
-	void        markMoved(LLDrawable *drawablep, bool damped_motion = false);
-	void        markShift(LLDrawable *drawablep);
-	void        markTextured(LLDrawable *drawablep);
-	void		markGLRebuild(LLGLUpdate* glu);
-	void		markRebuild(LLSpatialGroup* group);
-	void        markRebuild(LLDrawable *drawablep, LLDrawable::EDrawableFlags flag = LLDrawable::REBUILD_ALL);
-	void		markPartitionMove(LLDrawable* drawablep);
-	void		markMeshDirty(LLSpatialGroup* group);
+    void        doOcclusion(LLCamera& camera);
+    void        markNotCulled(LLSpatialGroup* group, LLCamera &camera);
+    void        markMoved(LLDrawable *drawablep, bool damped_motion = false);
+    void        markShift(LLDrawable *drawablep);
+    void        markTextured(LLDrawable *drawablep);
+    void        markGLRebuild(LLGLUpdate* glu);
+    void        markRebuild(LLSpatialGroup* group);
+    void        markRebuild(LLDrawable *drawablep, LLDrawable::EDrawableFlags flag = LLDrawable::REBUILD_ALL);
+    void        markPartitionMove(LLDrawable* drawablep);
+    void        markMeshDirty(LLSpatialGroup* group);
 
-	//get the object between start and end that's closest to start.
+    //get the object between start and end that's closest to start.
     LLViewerObject* lineSegmentIntersectInWorld(const LLVector4a& start, const LLVector4a& end,
                                                 bool pick_transparent,
                                                 bool pick_rigged,
@@ -352,7 +356,7 @@ public:
 
     void renderHighlight(const LLViewerObject* obj, F32 fade);
 
-    void renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera& camera, LLCullResult& result, bool depth_clamp);
+    void renderShadow(const glm::mat4& view, const glm::mat4& proj, LLCamera& camera, LLCullResult& result, bool depth_clamp);
     void renderSelectedFaces(const LLColor4& color);
     void renderHighlights();
     void renderDebug();
@@ -744,12 +748,16 @@ public:
 	
     // FXAA helper target
     LLRenderTarget          mFXAAMap;
+    LLRenderTarget          mSMAABlendBuffer;
 
     // render ui to buffer target
     LLRenderTarget          mUIScreen;
 
     // downres scratch space for GPU downscaling of textures
     LLRenderTarget          mDownResMap;
+
+    // 2k bom scratch target
+    LLRenderTarget          mBakeMap;
 
     LLCullResult            mSky;
     LLCullResult            mReflectedObjects;
@@ -774,10 +782,10 @@ public:
 	LLCamera				mShadowCamera[8];
 	LLVector3				mShadowExtents[4][2];
     // TODO : separate Sun Shadow and Spot Shadow matrices
-	glh::matrix4f			mSunShadowMatrix[6];
-	glh::matrix4f			mShadowModelview[6];
-	glh::matrix4f			mShadowProjection[6];
-    glh::matrix4f           mReflectionModelView;
+    glm::mat4               mSunShadowMatrix[6];
+    glm::mat4               mShadowModelview[6];
+    glm::mat4               mShadowProjection[6];
+    glm::mat4               mReflectionModelView;
 
 	LLPointer<LLDrawable>	mShadowSpotLight[2];
 	F32						mSpotLightFade[2];
@@ -790,7 +798,7 @@ public:
 	//water distortion texture (refraction)
 	LLRenderTarget				mWaterDis;
 
-    static const U32 MAX_BAKE_WIDTH;
+    static const U32 MAX_PREVIEW_WIDTH;
 
 	//texture for making the glow
 	LLRenderTarget				mGlow[3];
@@ -800,10 +808,15 @@ public:
 	U32					mTrueNoiseMap;
 	U32					mLightFunc;
 
-	LLColor4			mSunDiffuse;
-    LLColor4			mMoonDiffuse;
-	LLVector4			mSunDir;
-    LLVector4			mMoonDir;
+    //smaa
+    U32                 mSMAAAreaMap = 0;
+    U32                 mSMAASearchMap = 0;
+    U32                 mSMAASampleMap = 0;
+
+    LLColor4            mSunDiffuse;
+    LLColor4            mMoonDiffuse;
+    LLVector4           mSunDir;
+    LLVector4           mMoonDir;
     bool                mNeedsShadowTargetClear;
 
 	LLVector4			mTransformedSunDir;
@@ -993,29 +1006,30 @@ protected:
 	static bool				sRenderParticleBeacons;
 	static bool				sRenderSoundBeacons;
 public:
-	static bool				sRenderBeacons;
-	static bool				sRenderHighlight;
+    static bool             sRenderBeacons;
+    static bool             sRenderHighlight;
 
-	// Determines which set of UVs to use in highlight display
-	//
-	static LLRender::eTexIndex sRenderHighlightTextureChannel;
+    // Determines which set of UVs to use in highlight display
+    //
+    static LLRender::eTexIndex sRenderHighlightTextureChannel;
 
-	//debug use
-	static U32              sCurRenderPoolType ;
+    //debug use
+    static U32              sCurRenderPoolType ;
 
 	//BD
 	LLVector3 PrevDoFFocusPoint;
 
-	//cached settings
-	static bool RenderDeferred;
-	static F32 RenderDeferredSunWash;
-	static U32 RenderFSAASamples;
-	static U32 RenderResolutionDivisor;
+    //cached settings
+    static bool WindLightUseAtmosShaders;
+    static bool RenderDeferred;
+    static F32 RenderDeferredSunWash;
+    static U32 RenderFSAAType;
+    static U32 RenderResolutionDivisor;
 // [SL:KB] - Patch: Settings-RenderResolutionMultiplier | Checked: Catznip-5.4
 	static F32 RenderResolutionMultiplier;
 // [/SL:KB]
-	static bool RenderUIBuffer;
-	static S32 RenderShadowDetail;
+    static bool RenderUIBuffer;
+    static S32 RenderShadowDetail;
     static S32 RenderShadowSplits;
 	static bool RenderDeferredSSAO;
 	static bool RenderDelayCreation;

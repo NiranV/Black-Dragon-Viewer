@@ -80,6 +80,7 @@ LLFloaterIMSessionTab::LLFloaterIMSessionTab(const LLSD& session_id)
 {
     setAutoFocus(false);
     mSession = LLIMModel::getInstance()->findIMSession(mSessionID);
+    LLIMMgr::instance().addSessionObserver(this);
 
     mCommitCallbackRegistrar.add("IMSession.Menu.Action",
             boost::bind(&LLFloaterIMSessionTab::onIMSessionMenuItemClicked,  this, _2));
@@ -102,6 +103,7 @@ LLFloaterIMSessionTab::LLFloaterIMSessionTab(const LLSD& session_id)
 LLFloaterIMSessionTab::~LLFloaterIMSessionTab()
 {
     delete mRefreshTimer;
+    LLIMMgr::instance().removeSessionObserver(this);
 
     LLFloaterIMContainer* im_container = LLFloaterIMContainer::findInstance();
     if (im_container)
@@ -304,68 +306,62 @@ bool LLFloaterIMSessionTab::postBuild()
 
 	mGearBtn = getChild<LLButton>("gear_btn");
     mAddBtn = getChild<LLButton>("add_btn");
-	mVoiceButton = getChild<LLButton>("voice_call_btn");
-    
-	mParticipantListPanel = getChild<LLLayoutPanel>("speakers_list_panel");
-	mRightPartPanel = getChild<LLLayoutPanel>("right_part_holder");
+    mVoiceButton = getChild<LLButton>("voice_call_btn");
+    mVoiceButton->setClickedCallback([this](LLUICtrl*, const LLSD&) { onCallButtonClicked(); });
 
-	mToolbarPanel = getChild<LLLayoutPanel>("toolbar_panel");
-	mContentPanel = getChild<LLLayoutPanel>("body_panel");
-	mInputButtonPanel = getChild<LLLayoutPanel>("input_button_layout_panel");
-	mInputButtonPanel->setVisible(false);
-	// Add a scroller for the folder (participant) view
-	LLRect scroller_view_rect = mParticipantListPanel->getRect();
-	scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
-	LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
-	scroller_params.rect(scroller_view_rect);
-	mScroller = LLUICtrlFactory::create<LLFolderViewScrollContainer>(scroller_params);
-	mScroller->setFollowsAll();
+    mParticipantListPanel = getChild<LLLayoutPanel>("speakers_list_panel");
+    mRightPartPanel = getChild<LLLayoutPanel>("right_part_holder");
 
-	// Insert that scroller into the panel widgets hierarchy
-	mParticipantListPanel->addChild(mScroller);	
-	
-	mChatHistory = getChild<LLChatHistory>("chat_history");
+    mToolbarPanel = getChild<LLLayoutPanel>("toolbar_panel");
+    mContentPanel = getChild<LLLayoutPanel>("body_panel");
+    mInputButtonPanel = getChild<LLLayoutPanel>("input_button_layout_panel");
+    mInputButtonPanel->setVisible(false);
+    // Add a scroller for the folder (participant) view
+    LLRect scroller_view_rect = mParticipantListPanel->getRect();
+    scroller_view_rect.translate(-scroller_view_rect.mLeft, -scroller_view_rect.mBottom);
+    LLScrollContainer::Params scroller_params(LLUICtrlFactory::getDefaultParams<LLFolderViewScrollContainer>());
+    scroller_params.rect(scroller_view_rect);
+    mScroller = LLUICtrlFactory::create<LLFolderViewScrollContainer>(scroller_params);
+    mScroller->setFollowsAll();
 
-	mInputEditor = getChild<LLChatEntry>("chat_editor");
+    // Insert that scroller into the panel widgets hierarchy
+    mParticipantListPanel->addChild(mScroller);
 
-	mChatHistoryPanel = getChild<LLLayoutPanel>("chat_history_btn_panel");
-	mNearbyHistoryPanel = getChild<LLLayoutPanel>("nearby_history_btn_panel");
+    mChatHistory = getChild<LLChatHistory>("chat_history");
 
-	mAddBtnPanel = getChild<LLLayoutPanel>("add_btn_panel");
-	mCloseBtnPanel = getChild<LLLayoutPanel>("close_btn_panel");
+    mInputEditor = getChild<LLChatEntry>("chat_editor");
 
-	mContentsView = getChild<LLView>("contents_view");
+    mChatLayoutPanel = getChild<LLLayoutPanel>("chat_layout_panel");
+    mInputPanels = getChild<LLLayoutStack>("input_panels");
 
-	mChatLayoutPanel = getChild<LLLayoutPanel>("chat_layout_panel");
-	mInputPanels = getChild<LLLayoutStack>("input_panels");
-	
-	mInputEditor->setTextExpandedCallback(boost::bind(&LLFloaterIMSessionTab::reshapeChatLayoutPanel, this));
-	mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
-	mInputEditor->setCommitOnFocusLost( false );
-	mInputEditor->setPassDelete(TRUE);
+    mInputEditor->setTextExpandedCallback(boost::bind(&LLFloaterIMSessionTab::reshapeChatLayoutPanel, this));
+    mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
+    mInputEditor->setCommitOnFocusLost( false );
+    mInputEditor->setPassDelete(true);
+    mInputEditor->setFont(LLViewerChat::getChatFont());
 //	//BD - Optional Single Line Mode
 	mInputEditor->enableSingleLineMode((bool)gSavedSettings.getBOOL("ForceChatSingleLineMode"));
 
-	mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
-	mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
+    mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
+    mInputEditorPad = mChatLayoutPanelHeight - mInputEditor->getRect().getHeight();
 
-	setOpenPositioning(LLFloaterEnums::POSITIONING_RELATIVE);
+    setOpenPositioning(LLFloaterEnums::POSITIONING_RELATIVE);
 
-	mSaveRect = isNearbyChat()
-					&&  !gSavedPerAccountSettings.getBOOL("NearbyChatIsNotTornOff");
-	initRectControl();
+    mSaveRect = isNearbyChat()
+                    &&  !gSavedPerAccountSettings.getBOOL("NearbyChatIsNotTornOff");
+    initRectControl();
 
-	if (isChatMultiTab())
-	{
-		result = LLFloater::postBuild();
-	}
-	else
-	{
-		result = LLDockableFloater::postBuild();
-	}
+    if (isChatMultiTab())
+    {
+        result = LLFloater::postBuild();
+    }
+    else
+    {
+        result = LLDockableFloater::postBuild();
+    }
 
-	// Create the root using an ad-hoc base item
-	LLConversationItem* base_item = new LLConversationItem(mSessionID, mConversationViewModel);
+    // Create the root using an ad-hoc base item
+    LLConversationItem* base_item = new LLConversationItem(mSessionID, mConversationViewModel);
     LLFolderView::Params p(LLUICtrlFactory::getDefaultParams<LLFolderView>());
     p.rect = LLRect(0, 0, getRect().getWidth(), 0);
     p.parent_panel = mParticipantListPanel;
@@ -457,16 +453,39 @@ void LLFloaterIMSessionTab::draw()
 
 void LLFloaterIMSessionTab::enableDisableCallBtn()
 {
-    if (LLVoiceClient::instanceExists() && mVoiceButton)
+    if (!mVoiceButton)
+        return;
+
+    bool enable = false;
+
+    if (mSessionID.notNull()
+        && mSession
+        && mSession->mSessionInitialized
+        && mSession->mCallBackEnabled)
     {
-        mVoiceButton->setEnabled(
-            mSessionID.notNull()
-            && mSession
-            && mSession->mSessionInitialized
-            && LLVoiceClient::getInstance()->voiceEnabled()
-            && LLVoiceClient::getInstance()->isVoiceWorking()
-            && mSession->mCallBackEnabled);
+        if (mVoiceButtonHangUpMode)
+        {
+            // We allow to hang up from any state
+            enable = true;
+        }
+        else
+        {
+            // We allow to start call from this state only
+            if (LLVoiceClient::instanceExists() &&
+                mSession->mVoiceChannel  &&
+                !mSession->mVoiceChannel->callStarted()
+                )
+            {
+                LLVoiceClient* client = LLVoiceClient::getInstance();
+                if (client->voiceEnabled() && client->isVoiceWorking())
+                {
+                    enable = true;
+                }
+            }
+        }
     }
+
+    mVoiceButton->setEnabled(enable);
 }
 
 // virtual
@@ -494,6 +513,22 @@ void LLFloaterIMSessionTab::onFocusLost()
 		setVisible(false);
     }
 	LLTransientDockableFloater::onFocusLost();
+}
+
+void LLFloaterIMSessionTab::onCallButtonClicked()
+{
+    if (mVoiceButtonHangUpMode)
+    {
+        // We allow to hang up from any state
+        gIMMgr->endCall(mSessionID);
+    }
+    else
+    {
+        if (mSession->mVoiceChannel && !mSession->mVoiceChannel->callStarted())
+        {
+            gIMMgr->startCall(mSessionID);
+        }
+    }
 }
 
 void LLFloaterIMSessionTab::onInputEditorClicked()
@@ -1079,6 +1114,7 @@ void LLFloaterIMSessionTab::updateCallBtnState(bool callIsActive)
 {
     mVoiceButton->setImageOverlay(callIsActive? getString("call_btn_stop") : getString("call_btn_start"));
     mVoiceButton->setToolTip(callIsActive? getString("end_call_button_tooltip") : getString("start_call_button_tooltip"));
+    mVoiceButtonHangUpMode = callIsActive;
 
     enableDisableCallBtn();
 }
@@ -1331,6 +1367,14 @@ void LLFloaterIMSessionTab::saveCollapsedState()
 LLView* LLFloaterIMSessionTab::getChatHistory()
 {
     return mChatHistory;
+}
+
+void LLFloaterIMSessionTab::sessionRemoved(const LLUUID& session_id)
+{
+    if (session_id == mSessionID)
+    {
+        mSession = nullptr;
+    }
 }
 
 bool LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )

@@ -118,134 +118,134 @@ protected:
     void imageLoaded();
 
 public:
-	// LLView interface
-	virtual void	onFocusLost();
+    // LLView interface
+    virtual void    onFocusLost();
 
-	virtual bool	handleToolTip(S32 x, S32 y, MASK mask);
-	virtual bool	handleKeyHere(KEY key, MASK mask);
-	virtual bool	handleUnicodeCharHere(llwchar uni_char);
+    virtual bool    handleToolTip(S32 x, S32 y, MASK mask);
+    virtual bool    handleKeyHere(KEY key, MASK mask);
+    virtual bool    handleUnicodeCharHere(llwchar uni_char);
 	//BD - UI Improvements
 	bool	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
-	void			onNextBtn();
-	void			onPrevBtn();
+    // LLUICtrl interface
+    virtual void    clear();                    // select nothing
+    virtual void    onCommit();
+    virtual bool    acceptsTextInput() const        { return mAllowTextEntry; }
+    virtual bool    isDirty() const;            // Returns true if the user has modified this control.
+    virtual void    resetDirty();               // Clear dirty state
 
-	// LLUICtrl interface
-	virtual void	clear();					// select nothing
-	virtual void	onCommit();
-	virtual bool	acceptsTextInput() const		{ return mAllowTextEntry; }
-	virtual bool	isDirty() const;			// Returns true if the user has modified this control.
-	virtual void	resetDirty();				// Clear dirty state
+    virtual void    setFocus(bool b);
 
-	virtual void	setFocus(bool b);
+    // Selects item by underlying LLSD value, using LLSD::asString() matching.
+    // For simple items, this is just the name of the label.
+    virtual void    setValue(const LLSD& value );
 
-	// Selects item by underlying LLSD value, using LLSD::asString() matching.  
-	// For simple items, this is just the name of the label.
-	virtual void	setValue(const LLSD& value );
+    // Gets underlying LLSD value for currently selected items.  For simple
+    // items, this is just the label.
+    virtual LLSD    getValue() const;
 
-	// Gets underlying LLSD value for currently selected items.  For simple
-	// items, this is just the label.
-	virtual LLSD	getValue() const;
+    void            setTextEntry(const LLStringExplicit& text);
+    void            setKeystrokeOnEsc(bool enable);
 
-	void			setTextEntry(const LLStringExplicit& text);
-	void			setKeystrokeOnEsc(bool enable);
+    LLScrollListItem*   add(const std::string& name, EAddPosition pos = ADD_BOTTOM, bool enabled = true);   // add item "name" to menu
+    LLScrollListItem*   add(const std::string& name, const LLUUID& id, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
+    LLScrollListItem*   add(const std::string& name, void* userdata, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
+    LLScrollListItem*   add(const std::string& name, LLSD value, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
+    LLScrollListItem*   addSeparator(EAddPosition pos = ADD_BOTTOM);
+    bool            remove( S32 index );    // remove item by index, return true if found and removed
+    void            removeall() { clearRows(); }
+    bool            itemExists(const std::string& name);
 
-	LLScrollListItem*	add(const std::string& name, EAddPosition pos = ADD_BOTTOM, bool enabled = true);	// add item "name" to menu
-	LLScrollListItem*	add(const std::string& name, const LLUUID& id, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
-	LLScrollListItem*	add(const std::string& name, void* userdata, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
-	LLScrollListItem*	add(const std::string& name, LLSD value, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
-	LLScrollListItem*	addSeparator(EAddPosition pos = ADD_BOTTOM, std::string label = "");
-	bool			remove( S32 index );	// remove item by index, return true if found and removed
-	void			removeall() { clearRows(); }
-	bool			itemExists(const std::string& name);
+    void            sortByName(bool ascending = true); // Sort the entries in the combobox by name
 
-	void			sortByName(bool ascending = true); // Sort the entries in the combobox by name
+    // Select current item by name using selectItemByLabel.  Returns false if not found.
+    bool            setSimple(const LLStringExplicit& name);
+    // Get name of current item. Returns an empty string if not found.
+    const std::string   getSimple() const;
+    // Get contents of column x of selected row
+    virtual const std::string getSelectedItemLabel(S32 column = 0) const;
 
-	// Select current item by name using selectItemByLabel.  Returns false if not found.
-	bool			setSimple(const LLStringExplicit& name);
-	// Get name of current item. Returns an empty string if not found.
-	const std::string	getSimple() const;
-	// Get contents of column x of selected row
-	virtual const std::string getSelectedItemLabel(S32 column = 0) const;
+    // Sets the label, which doesn't have to exist in the label.
+    // This is probably a UI abuse.
+    void            setLabel(const LLStringExplicit& name);
 
-	// Sets the label, which doesn't have to exist in the label.
-	// This is probably a UI abuse.
-	void			setLabel(const LLStringExplicit& name);
+    // Updates the combobox label to match the selected list item.
+    void            updateLabel();
 
-	// Updates the combobox label to match the selected list item.
-	void			updateLabel();
+    bool            remove(const std::string& name);    // remove item "name", return true if found and removed
 
-	bool			remove(const std::string& name);	// remove item "name", return true if found and removed
-	
-	bool			setCurrentByIndex( S32 index );
-	S32				getCurrentIndex() const;
+    bool            setCurrentByIndex(S32 index);
+    S32             getCurrentIndex() const;
 
-	void			setEnabledByValue(const LLSD& value, bool enabled);
+    bool            selectNextItem();
+    bool            selectPrevItem();
 
-	void			createLineEditor(const Params&);
+    void            setEnabledByValue(const LLSD& value, bool enabled);
 
-	//========================================================================
-	LLCtrlSelectionInterface* getSelectionInterface()	{ return (LLCtrlSelectionInterface*)this; };
-	LLCtrlListInterface* getListInterface()				{ return (LLCtrlListInterface*)this; };
+    void            createLineEditor(const Params&);
 
-	// LLCtrlListInterface functions
-	// See llscrolllistctrl.h
-	virtual S32		getItemCount() const;
-	// Overwrites the default column (See LLScrollListCtrl for format)
-	virtual void 	addColumn(const LLSD& column, EAddPosition pos = ADD_BOTTOM);
-	virtual void 	clearColumns();
-	virtual void	setColumnLabel(const std::string& column, const std::string& label);
-	virtual LLScrollListItem* addElement(const LLSD& value, EAddPosition pos = ADD_BOTTOM, void* userdata = NULL);
-	virtual LLScrollListItem* addSimpleElement(const std::string& value, EAddPosition pos = ADD_BOTTOM, const LLSD& id = LLSD());
-	virtual void 	clearRows();
-	virtual void 	sortByColumn(const std::string& name, bool ascending);
+    //========================================================================
+    LLCtrlSelectionInterface* getSelectionInterface()   { return (LLCtrlSelectionInterface*)this; };
+    LLCtrlListInterface* getListInterface()             { return (LLCtrlListInterface*)this; };
 
-	// LLCtrlSelectionInterface functions
-	virtual bool	getCanSelect() const				{ return true; }
-	virtual bool	selectFirstItem()					{ return setCurrentByIndex(0); }
-	virtual bool	selectNthItem( S32 index )			{ return setCurrentByIndex(index); }
-	virtual bool	selectItemRange( S32 first, S32 last );
-	virtual S32		getFirstSelectedIndex() const		{ return getCurrentIndex(); }
-	virtual bool	setCurrentByID( const LLUUID& id );
-	virtual LLUUID	getCurrentID() const;				// LLUUID::null if no items in menu
-	virtual bool	setSelectedByValue(const LLSD& value, bool selected);
-	virtual LLSD	getSelectedValue();
-	virtual bool	isSelected(const LLSD& value) const;
-	virtual bool	operateOnSelection(EOperation op);
-	virtual bool	operateOnAll(EOperation op);
+    // LLCtrlListInterface functions
+    // See llscrolllistctrl.h
+    virtual S32     getItemCount() const;
+    // Overwrites the default column (See LLScrollListCtrl for format)
+    virtual void    addColumn(const LLSD& column, EAddPosition pos = ADD_BOTTOM);
+    virtual void    clearColumns();
+    virtual void    setColumnLabel(const std::string& column, const std::string& label);
+    virtual LLScrollListItem* addElement(const LLSD& value, EAddPosition pos = ADD_BOTTOM, void* userdata = NULL);
+    virtual LLScrollListItem* addSimpleElement(const std::string& value, EAddPosition pos = ADD_BOTTOM, const LLSD& id = LLSD());
+    virtual void    clearRows();
+    virtual void    sortByColumn(const std::string& name, bool ascending);
+
+    // LLCtrlSelectionInterface functions
+    virtual bool    getCanSelect() const                { return true; }
+    virtual bool    selectFirstItem()                   { return setCurrentByIndex(0); }
+    virtual bool    selectNthItem( S32 index )          { return setCurrentByIndex(index); }
+    virtual bool    selectItemRange( S32 first, S32 last );
+    virtual S32     getFirstSelectedIndex() const       { return getCurrentIndex(); }
+    virtual bool    setCurrentByID( const LLUUID& id );
+    virtual LLUUID  getCurrentID() const;               // LLUUID::null if no items in menu
+    virtual bool    setSelectedByValue(const LLSD& value, bool selected);
+    virtual LLSD    getSelectedValue();
+    virtual bool    isSelected(const LLSD& value) const;
+    virtual bool    operateOnSelection(EOperation op);
+    virtual bool    operateOnAll(EOperation op);
 
 	//BD - UI Improvements
 	LLScrollListItem*	getItemByLabel(std::string label);
 	LLScrollListItem*	getItem(const LLSD& sd);
 
-	//========================================================================
-	
-	void			setLeftTextPadding(S32 pad);
-	
-	void*			getCurrentUserdata();
+    //========================================================================
 
-	void			setPrearrangeCallback( commit_callback_t cb ) { mPrearrangeCallback = cb; }
-	void			setTextEntryCallback( commit_callback_t cb ) { mTextEntryCallback = cb; }
-	void			setTextChangedCallback( commit_callback_t cb ) { mTextChangedCallback = cb; }
+    void            setLeftTextPadding(S32 pad);
 
-	/**
-	* Connects callback to signal called when Return key is pressed.
-	*/
-	boost::signals2::connection setReturnCallback( const commit_signal_t::slot_type& cb ) { return mOnReturnSignal.connect(cb); }
+    void*           getCurrentUserdata();
 
-	void			setButtonVisible(bool visible);
+    void            setPrearrangeCallback( commit_callback_t cb ) { mPrearrangeCallback = cb; }
+    void            setTextEntryCallback( commit_callback_t cb ) { mTextEntryCallback = cb; }
+    void            setTextChangedCallback( commit_callback_t cb ) { mTextChangedCallback = cb; }
 
-	void			onButtonMouseDown();
-	void			onListMouseUp();
-	void			onItemSelected(const LLSD& data);
-	void			onTextCommit(const LLSD& data);
+    /**
+    * Connects callback to signal called when Return key is pressed.
+    */
+    boost::signals2::connection setReturnCallback( const commit_signal_t::slot_type& cb ) { return mOnReturnSignal.connect(cb); }
 
-	void			updateSelection();
-	virtual void	showList();
-	virtual void	hideList();
-	
-	virtual void	onTextEntry(LLLineEditor* line_editor);
-	
+    void            setButtonVisible(bool visible);
+
+    void            onButtonMouseDown();
+    void            onListMouseUp();
+    void            onItemSelected(const LLSD& data);
+    void            onTextCommit(const LLSD& data);
+
+    void            updateSelection();
+    virtual void    showList();
+    virtual void    hideList();
+
+    virtual void    onTextEntry(LLLineEditor* line_editor);
+
 protected:
 	LLButton*			mButton;
 	LLLineEditor*		mTextEntry;

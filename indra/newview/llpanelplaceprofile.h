@@ -31,6 +31,7 @@
 
 class LLAccordionCtrl;
 class LLIconCtrl;
+class LLTextBase;
 class LLTextEditor;
 //BD
 class LLTabContainer;
@@ -62,6 +63,7 @@ public:
     void updateEstateName(const std::string& name);
     void updateEstateOwnerName(const std::string& name);
     void updateCovenantText(const std::string &text);
+    void updateCovenant(const LLTextBase* source);
 
 private:
     void onForSaleBannerClick();

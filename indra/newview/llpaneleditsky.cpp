@@ -193,8 +193,8 @@ void LLPanelSettingsSkyAtmosTab::refresh()
 	mDistanceMult->setValue(mSkySettings->getDistanceMultiplier());
 	mMaxAltitude->setValue(mSkySettings->getMaxY());
 
-	static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
-	F32 rp_ambiance = mSkySettings->getReflectionProbeAmbiance(should_auto_adjust);
+    static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", false);
+    F32 rp_ambiance     = mSkySettings->getReflectionProbeAmbiance(should_auto_adjust);
 
 	getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->setValue(rp_ambiance);
 

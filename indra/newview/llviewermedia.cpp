@@ -687,14 +687,14 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 
     std::vector<LLViewerMediaImpl*> proximity_order;
 
-	static LLCachedControl<bool> inworld_media_enabled(gSavedSettings, "AudioStreamingMedia", true);
-	static LLCachedControl<bool> inworld_audio_enabled(gSavedSettings, "AudioStreamingMusic", true);
-	static LLCachedControl<U32> max_instances(gSavedSettings, "PluginInstancesTotal");
-	static LLCachedControl<U32> max_normal(gSavedSettings, "PluginInstancesNormal");
-	static LLCachedControl<U32> max_low(gSavedSettings, "PluginInstancesLow");
-	static LLCachedControl<F32> max_cpu(gSavedSettings, "PluginInstancesCPULimit");
-	// Setting max_cpu to 0.0 disables CPU usage checking.
-	bool check_cpu_usage = (max_cpu != 0.0f);
+    static LLCachedControl<bool> inworld_media_enabled(gSavedSettings, "AudioStreamingMedia", true);
+    static LLCachedControl<bool> inworld_audio_enabled(gSavedSettings, "AudioStreamingMusic", true);
+    static LLCachedControl<U32> max_instances(gSavedSettings, "PluginInstancesTotal", 8);
+    static LLCachedControl<U32> max_normal(gSavedSettings, "PluginInstancesNormal", 2);
+    static LLCachedControl<U32> max_low(gSavedSettings, "PluginInstancesLow", 4);
+    static LLCachedControl<F32> max_cpu(gSavedSettings, "PluginInstancesCPULimit", 0.9);
+    // Setting max_cpu to 0.0 disables CPU usage checking.
+    bool check_cpu_usage = (max_cpu != 0.0f);
 
     LLViewerMediaImpl* lowest_interest_loadable = NULL;
 
@@ -830,65 +830,66 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
             }
             else
             {
-                if(gAudiop && LLViewerMedia::hasParcelAudio() && restore_parcel_audio && gSavedSettings.getBOOL("MediaTentativeAutoPlay"))
+                static LLCachedControl<bool> auto_play(gSavedSettings, "MediaTentativeAutoPlay", true);
+                if(gAudiop && LLViewerMedia::hasParcelAudio() && restore_parcel_audio && auto_play())
                 {
                     LLViewerAudio::getInstance()->startInternetStreamWithAutoFade(LLViewerMedia::getParcelAudioURL());
                     restore_parcel_audio = false;
                 }
             }
 
-			pimpl->setPriority(new_priority);
+            pimpl->setPriority(new_priority);
 
-			if(pimpl->getUsedInUI())
-			{
-				// Any impls used in the UI should not be in the proximity list.
-				pimpl->mProximity = -1;
-			}
-			else
-			{
-				proximity_order.push_back(pimpl);
-			}
+            if(pimpl->getUsedInUI())
+            {
+                // Any impls used in the UI should not be in the proximity list.
+                pimpl->mProximity = -1;
+            }
+            else
+            {
+                proximity_order.push_back(pimpl);
+            }
 
-			total_cpu += pimpl->getCPUUsage();
+            total_cpu += pimpl->getCPUUsage();
 
-			if (!pimpl->getUsedInUI() && pimpl->hasMedia())
-			{
-				mAnyMediaShowing = true;
-			}
+            if (!pimpl->getUsedInUI() && pimpl->hasMedia())
+            {
+                mAnyMediaShowing = true;
+            }
 
-			if (!pimpl->getUsedInUI() && pimpl->hasMedia() && (pimpl->isMediaPlaying() || !pimpl->isMediaTimeBased()))
-			{
-				// consider visible non-timebased media as playing
-				mAnyMediaPlaying = true;
-			}
+            if (!pimpl->getUsedInUI() && pimpl->hasMedia() && (pimpl->isMediaPlaying() || !pimpl->isMediaTimeBased()))
+            {
+                // consider visible non-timebased media as playing
+                mAnyMediaPlaying = true;
+            }
 
-		}
-	}
+        }
+    }
 
-	// Re-calculate this every time.
-	sLowestLoadableImplInterest	= 0.0f;
+    // Re-calculate this every time.
+    sLowestLoadableImplInterest = 0.0f;
 
-	// Only do this calculation if we've hit the impl count limit -- up until that point we always need to load media data.
-	if(lowest_interest_loadable && (impl_count_total >= (int)max_instances))
-	{
-		// Get the interest value of this impl's object for use by isInterestingEnough
-		LLVOVolume *object = lowest_interest_loadable->getSomeObject();
-		if(object)
-		{
-			// NOTE: Don't use getMediaInterest() here.  We want the pixel area, not the total media interest,
-			// 		so that we match up with the calculation done in LLMediaDataClient.
-			sLowestLoadableImplInterest = object->getPixelArea();
-		}
-	}
+    // Only do this calculation if we've hit the impl count limit -- up until that point we always need to load media data.
+    if(lowest_interest_loadable && (impl_count_total >= (int)max_instances))
+    {
+        // Get the interest value of this impl's object for use by isInterestingEnough
+        LLVOVolume *object = lowest_interest_loadable->getSomeObject();
+        if(object)
+        {
+            // NOTE: Don't use getMediaInterest() here.  We want the pixel area, not the total media interest,
+            //      so that we match up with the calculation done in LLMediaDataClient.
+            sLowestLoadableImplInterest = object->getPixelArea();
+        }
+    }
 
-	static LLCachedControl<bool> mediaPerformanceManager(gSavedSettings, "MediaPerformanceManagerDebug");
-	if(mediaPerformanceManager)
-	{
-		// Give impls the same ordering as the priority list
-		// they're already in the right order for this.
-	}
-	else
-	{
+    static LLCachedControl<bool> perf_debug(gSavedSettings, "MediaPerformanceManagerDebug", false);
+    if(perf_debug())
+    {
+        // Give impls the same ordering as the priority list
+        // they're already in the right order for this.
+    }
+    else
+    {
         LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media sort2"); // LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT2);
         // Use a distance-based sort for proximity values.
         std::stable_sort(proximity_order.begin(), proximity_order.end(), proximity_comparitor);

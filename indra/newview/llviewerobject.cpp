@@ -6021,128 +6021,131 @@ bool LLViewerObject::isParticleSource() const
 
 void LLViewerObject::setParticleSource(const LLPartSysData& particle_parameters, const LLUUID& owner_id)
 {
-	if (mPartSourcep)
-	{
-		deleteParticleSource();
-	}
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_VIEWER;
+    if (mPartSourcep)
+    {
+        deleteParticleSource();
+    }
 
-	LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::createPSS(this, particle_parameters);
-	mPartSourcep = pss;
-	
-	if (mPartSourcep)
-	{
-		mPartSourcep->setOwnerUUID(owner_id);
+    LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::createPSS(this, particle_parameters);
+    mPartSourcep = pss;
 
-		if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
-		{
-			LLViewerTexture* image;
-			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
-			{
-				image = LLViewerFetchedTexture::sPixieSmallImagep;
-			}
-			else
-			{
-				image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
-			}
-			mPartSourcep->setImage(image);
-		}
-	}
-	LLViewerPartSim::getInstance()->addPartSource(pss);
+    if (mPartSourcep)
+    {
+        mPartSourcep->setOwnerUUID(owner_id);
+
+        if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
+        {
+            LLViewerTexture* image;
+            if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
+            {
+                image = LLViewerFetchedTexture::sDefaultParticleImagep;
+            }
+            else
+            {
+                image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
+            }
+            mPartSourcep->setImage(image);
+        }
+    }
+    LLViewerPartSim::getInstance()->addPartSource(pss);
 }
 
 void LLViewerObject::unpackParticleSource(const S32 block_num, const LLUUID& owner_id)
 {
-	if (!mPartSourcep.isNull() && mPartSourcep->isDead())
-	{
-		mPartSourcep = NULL;
-	}
-	if (mPartSourcep)
-	{
-		// If we've got one already, just update the existing source (or remove it)
-		if (!LLViewerPartSourceScript::unpackPSS(this, mPartSourcep, block_num))
-		{
-			mPartSourcep->setDead();
-			mPartSourcep = NULL;
-		}
-	}
-	else
-	{
-		LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::unpackPSS(this, NULL, block_num);
-		//If the owner is muted, don't create the system
-		if(LLMuteList::getInstance()->isMuted(owner_id, LLMute::flagParticles)) return;
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_VIEWER;
+    if (!mPartSourcep.isNull() && mPartSourcep->isDead())
+    {
+        mPartSourcep = NULL;
+    }
+    if (mPartSourcep)
+    {
+        // If we've got one already, just update the existing source (or remove it)
+        if (!LLViewerPartSourceScript::unpackPSS(this, mPartSourcep, block_num))
+        {
+            mPartSourcep->setDead();
+            mPartSourcep = NULL;
+        }
+    }
+    else
+    {
+        LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::unpackPSS(this, NULL, block_num);
+        //If the owner is muted, don't create the system
+        if(LLMuteList::getInstance()->isMuted(owner_id, LLMute::flagParticles)) return;
 
-		// We need to be able to deal with a particle source that hasn't changed, but still got an update!
-		if (pss)
-		{
-// 			LL_INFOS() << "Making particle system with owner " << owner_id << LL_ENDL;
-			pss->setOwnerUUID(owner_id);
-			mPartSourcep = pss;
-			LLViewerPartSim::getInstance()->addPartSource(pss);
-		}
-	}
-	if (mPartSourcep)
-	{
-		if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
-		{
-			LLViewerTexture* image;
-			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
-			{
-				image = LLViewerFetchedTexture::sPixieSmallImagep;
-			}
-			else
-			{
-				image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
-			}
-			mPartSourcep->setImage(image);
-		}
-	}
+        // We need to be able to deal with a particle source that hasn't changed, but still got an update!
+        if (pss)
+        {
+//          LL_INFOS() << "Making particle system with owner " << owner_id << LL_ENDL;
+            pss->setOwnerUUID(owner_id);
+            mPartSourcep = pss;
+            LLViewerPartSim::getInstance()->addPartSource(pss);
+        }
+    }
+    if (mPartSourcep)
+    {
+        if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
+        {
+            LLViewerTexture* image;
+            if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
+            {
+                image = LLViewerFetchedTexture::sDefaultParticleImagep;
+            }
+            else
+            {
+                image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
+            }
+            mPartSourcep->setImage(image);
+        }
+    }
 }
 
 void LLViewerObject::unpackParticleSource(LLDataPacker &dp, const LLUUID& owner_id, bool legacy)
 {
-	if (!mPartSourcep.isNull() && mPartSourcep->isDead())
-	{
-		mPartSourcep = NULL;
-	}
-	if (mPartSourcep)
-	{
-		// If we've got one already, just update the existing source (or remove it)
-		if (!LLViewerPartSourceScript::unpackPSS(this, mPartSourcep, dp, legacy))
-		{
-			mPartSourcep->setDead();
-			mPartSourcep = NULL;
-		}
-	}
-	else
-	{
-		LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::unpackPSS(this, NULL, dp, legacy);
-		//If the owner is muted, don't create the system
-		if(LLMuteList::getInstance()->isMuted(owner_id, LLMute::flagParticles)) return;
-		// We need to be able to deal with a particle source that hasn't changed, but still got an update!
-		if (pss)
-		{
-// 			LL_INFOS() << "Making particle system with owner " << owner_id << LL_ENDL;
-			pss->setOwnerUUID(owner_id);
-			mPartSourcep = pss;
-			LLViewerPartSim::getInstance()->addPartSource(pss);
-		}
-	}
-	if (mPartSourcep)
-	{
-		if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
-		{
-			LLViewerTexture* image;
-			if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
-			{
-				image = LLViewerFetchedTexture::sPixieSmallImagep;
-			}
-			else
-			{
-				image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
-			}
-			mPartSourcep->setImage(image);
-		}
-	}
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_VIEWER;
+    if (!mPartSourcep.isNull() && mPartSourcep->isDead())
+    {
+        mPartSourcep = NULL;
+    }
+    if (mPartSourcep)
+    {
+        // If we've got one already, just update the existing source (or remove it)
+        if (!LLViewerPartSourceScript::unpackPSS(this, mPartSourcep, dp, legacy))
+        {
+            mPartSourcep->setDead();
+            mPartSourcep = NULL;
+        }
+    }
+    else
+    {
+        LLPointer<LLViewerPartSourceScript> pss = LLViewerPartSourceScript::unpackPSS(this, NULL, dp, legacy);
+        //If the owner is muted, don't create the system
+        if(LLMuteList::getInstance()->isMuted(owner_id, LLMute::flagParticles)) return;
+        // We need to be able to deal with a particle source that hasn't changed, but still got an update!
+        if (pss)
+        {
+//          LL_INFOS() << "Making particle system with owner " << owner_id << LL_ENDL;
+            pss->setOwnerUUID(owner_id);
+            mPartSourcep = pss;
+            LLViewerPartSim::getInstance()->addPartSource(pss);
+        }
+    }
+    if (mPartSourcep)
+    {
+        if (mPartSourcep->getImage()->getID() != mPartSourcep->mPartSysData.mPartImageID)
+        {
+            LLViewerTexture* image;
+            if (mPartSourcep->mPartSysData.mPartImageID == LLUUID::null)
+            {
+                image = LLViewerFetchedTexture::sDefaultParticleImagep;
+            }
+            else
+            {
+                image = LLViewerTextureManager::getFetchedTexture(mPartSourcep->mPartSysData.mPartImageID);
+            }
+            mPartSourcep->setImage(image);
+        }
+    }
 }
 
 void LLViewerObject::deleteParticleSource()
@@ -7278,6 +7281,7 @@ const std::string& LLViewerObject::getAttachmentItemName() const
 //virtual
 LLVOAvatar* LLViewerObject::getAvatar() const
 {
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
     if (getControlAvatar())
     {
         return getControlAvatar();

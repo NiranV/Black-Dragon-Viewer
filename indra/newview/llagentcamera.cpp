@@ -2339,10 +2339,6 @@ void LLAgentCamera::changeCameraToMouselook(bool animate)
 		mCameraMode = CAMERA_MODE_MOUSELOOK;
 		const U32 old_flags = gAgent.getControlFlags();
 		gAgent.setControlFlags(AGENT_CONTROL_MOUSELOOK);
-		if (old_flags != gAgent.getControlFlags())
-		{
-			gAgent.setFlagsDirty();
-		}
 
 		if (animate)
 		{

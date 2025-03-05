@@ -338,7 +338,7 @@ void LLFloaterEnvironmentAdjust::refresh()
 	mDroplet->setValue(mLiveSky->getSkyDropletRadius());
 	mIceLevel->setValue(mLiveSky->getSkyIceLevel());
 
-	static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
+	static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", false);
 	getChild<LLUICtrl>(FIELD_REFLECTION_PROBE_AMBIANCE)->setValue(mLiveSky->getReflectionProbeAmbiance(should_auto_adjust));
 
 	//BD - Sun & Moon
@@ -840,7 +840,7 @@ void LLFloaterEnvironmentAdjust::updateGammaLabel()
 {
     if (!mLiveSky) return;
 
-    static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", true);
+    static LLCachedControl<bool> should_auto_adjust(gSavedSettings, "RenderSkyAutoAdjustLegacy", false);
     F32 ambiance = mLiveSky->getReflectionProbeAmbiance(should_auto_adjust);
     if (ambiance != 0.f)
     {

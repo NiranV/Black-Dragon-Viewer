@@ -657,8 +657,6 @@ LLAppViewer::LLAppViewer()
     mQuitRequested(false),
     mClosingFloaters(false),
     mLogoutRequestSent(false),
-    mLastAgentControlFlags(0),
-    mLastAgentForceUpdate(0),
     mMainloopTimeout(NULL),
     mAgentRegionLastAlive(false),
     mRandomizeFramerate(LLCachedControl<bool>(gSavedSettings,"Randomize Framerate", false)),
@@ -1110,53 +1108,6 @@ bool LLAppViewer::init()
             }
         }
     }
-
-#if LL_WINDOWS && ADDRESS_SIZE == 64
-    if (gGLManager.mIsIntel)
-    {
-        // Check intel driver's version
-        // Ex: "3.1.0 - Build 8.15.10.2559";
-        std::string version = ll_safe_string((const char *)glGetString(GL_VERSION));
-
-        const boost::regex is_intel_string("[0-9].[0-9].[0-9] - Build [0-9]{1,2}.[0-9]{2}.[0-9]{2}.[0-9]{4}");
-
-        if (boost::regex_search(version, is_intel_string))
-        {
-            // Valid string, extract driver version
-            std::size_t found = version.find("Build ");
-            std::string driver = version.substr(found + 6);
-            S32 v1, v2, v3, v4;
-            S32 count = sscanf(driver.c_str(), "%d.%d.%d.%d", &v1, &v2, &v3, &v4);
-            if (count > 0 && v1 <= 10)
-            {
-                LL_INFOS("AppInit") << "Detected obsolete intel driver: " << driver << LL_ENDL;
-
-                if (!gViewerWindow->getInitAlert().empty() // graphic initialization crashed on last run
-                    || LLVersionInfo::getInstance()->getChannelAndVersion() != gLastRunVersion // viewer was updated
-                    || mNumSessions % 20 == 0 //periodically remind user to update driver
-                    )
-                {
-                    LLUIString details = LLNotifications::instance().getGlobalString("UnsupportedIntelDriver");
-                    std::string gpu_name = ll_safe_string((const char *)glGetString(GL_RENDERER));
-                    LL_INFOS("AppInit") << "Notifying user about obsolete intel driver for " << gpu_name << LL_ENDL;
-                    details.setArg("[VERSION]", driver);
-                    details.setArg("[GPUNAME]", gpu_name);
-                    S32 button = OSMessageBox(details.getString(),
-                        LLStringUtil::null,
-                        OSMB_YESNO);
-                    if (OSBTN_YES == button && gViewerWindow)
-                    {
-                        std::string url = LLWeb::escapeURL(LLTrans::getString("IntelDriverPage"));
-                        if (gViewerWindow->getWindow())
-                        {
-                            gViewerWindow->getWindow()->spawnWebBrowser(url, false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-#endif
 
     // Obsolete? mExpectedGLVersion is always zero
 #if LL_WINDOWS
@@ -2358,7 +2309,12 @@ bool LLAppViewer::initThreads()
 
     // get the number of concurrent threads that can run
     S32 cores = std::thread::hardware_concurrency();
-
+#if LL_DARWIN
+    if (!gGLManager.mIsApple)
+    {
+        cores /= 2;
+    }
+#endif
     U32 max_cores = gSavedSettings.getU32("EmulateCoreCount");
     if (max_cores != 0)
     {
@@ -3427,10 +3383,10 @@ LLSD LLAppViewer::getViewerInfo() const
 		LLVector3d pos = gAgent.getPositionGlobal();
 		info["POSITION"] = ll_sd_from_vector3d(pos);
 		info["POSITION_LOCAL"] = ll_sd_from_vector3(gAgent.getPosAgentFromGlobal(pos));
-		info["REGION"] = gAgent.getRegion()->getName();
+		info["REGION"] = region->getName();
 
 		boost::regex regex("\\.(secondlife|lindenlab)\\..*");
-		info["HOSTNAME"] = boost::regex_replace(gAgent.getRegion()->getSimHostName(), regex, "");
+		info["HOSTNAME"] = boost::regex_replace(region->getSimHostName(), regex, "");
 		info["SERVER_VERSION"] = gLastVersionChannel;
 		LLSLURL slurl;
 		LLAgentUI::buildSLURL(slurl);
@@ -4861,30 +4817,13 @@ void LLAppViewer::idle()
             gAgent.autoPilot(&yaw);
         }
 
-        static LLFrameTimer agent_update_timer;
+        send_agent_update(false);
 
-        // When appropriate, update agent location to the simulator.
-        F32 agent_update_time = agent_update_timer.getElapsedTimeF32();
-        F32 agent_force_update_time = mLastAgentForceUpdate + agent_update_time;
-        bool timed_out = agent_update_time > (1.0f / (F32)AGENT_UPDATES_PER_SECOND);
-        bool force_send =
-            // if there is something to send
-            (gAgent.controlFlagsDirty() && timed_out)
-            // if something changed
-            || (mLastAgentControlFlags != gAgent.getControlFlags())
-            // keep alive
-            || (agent_force_update_time > (1.0f / (F32) AGENT_FORCE_UPDATES_PER_SECOND));
-        // timing out doesn't warranty that an update will be sent,
-        // just that it will be checked.
-        if (force_send || timed_out)
-        {
-            LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK;
-            // Send avatar and camera info
-            mLastAgentControlFlags = gAgent.getControlFlags();
-            mLastAgentForceUpdate = force_send ? 0 : agent_force_update_time;
-            send_agent_update(force_send);
-            agent_update_timer.reset();
-        }
+        // After calling send_agent_update() in the mainloop we always clear
+        // the agent's ephemeral ControlFlags (whether an AgentUpdate was
+        // actually sent or not) because these will be recomputed based on
+        // real-time key/controller input and resubmitted next frame.
+        gAgent.resetControlFlags();
     }
 
     //////////////////////////////////////
@@ -5316,10 +5255,7 @@ void LLAppViewer::sendLogoutRequest()
         gLogoutMaxTime = LOGOUT_REQUEST_TIME;
         mLogoutRequestSent = true;
 
-        if(LLVoiceClient::instanceExists())
-        {
-            LLVoiceClient::getInstance()->setVoiceEnabled(false);
-        }
+        LLVoiceClient::setVoiceEnabled(false);
     }
 }
 
@@ -5492,11 +5428,6 @@ void LLAppViewer::idleNetwork()
             CheckMessagesMaxTime = CHECK_MESSAGES_DEFAULT_MAX_TIME;
         }
 #endif
-
-
-
-        // we want to clear the control after sending out all necessary agent updates
-        gAgent.resetControlFlags();
 
         // Decode enqueued messages...
         S32 remaining_possible_decodes = MESSAGE_MAX_PER_FRAME - total_decoded;
