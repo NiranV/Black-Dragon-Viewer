@@ -216,7 +216,6 @@ LLFloaterEditExtDayCycle::~LLFloaterEditExtDayCycle()
 bool LLFloaterEditExtDayCycle::postBuild()
 {
     mNameEditor = getChild<LLLineEditor>(TXT_DAY_NAME, true);
-    mCancelButton = getChild<LLButton>(BTN_CANCEL, true);
     mAddFrameButton = getChild<LLButton>(BTN_ADDFRAME, true);
     mDeleteFrameButton = getChild<LLButton>(BTN_DELFRAME, true);
     mTimeSlider = getChild<LLMultiSliderCtrl>(SLDR_TIME);
@@ -232,7 +231,6 @@ bool LLFloaterEditExtDayCycle::postBuild()
     mFlyoutControl->setAction([this](LLUICtrl *ctrl, const LLSD&) { onButtonApply(ctrl); });
 
     mNameEditor->setKeystrokeCallback([this](LLLineEditor*, void*) { onNameKeystroke(); }, NULL);
-    mCancelButton->setCommitCallback([this](LLUICtrl*, const LLSD&) { onClickCloseBtn(); });
     mTimeSlider->setCommitCallback([this](LLUICtrl*, const LLSD&) { onTimeSliderCallback(); });
     mAddFrameButton->setCommitCallback([this](LLUICtrl*, const LLSD&) { onAddFrame(); });
     mDeleteFrameButton->setCommitCallback([this](LLUICtrl*, const LLSD&) { onRemoveFrame(); });

@@ -132,7 +132,7 @@ public:
 
 	//attempt to allocate screen buffers at resX, resY
 	//returns true if allocation successful, false otherwise
-	bool allocateScreenBuffer(U32 resX, U32 resY, U32 samples);
+    bool allocateScreenBufferInternal(U32 resX, U32 resY);
 	bool allocateShadowBuffer();
 
     // rebuild all LLVOVolume render batches

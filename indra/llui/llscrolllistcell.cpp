@@ -730,8 +730,6 @@ LLScrollListMultiSlider::LLScrollListMultiSlider(const LLScrollListCell::Params&
 	{
 		setWidth(rect.getWidth()); //check_box->getWidth();
 	}
-
-	mMultiSlider->setColor(p.color);
 }
 
 LLScrollListMultiSlider::~LLScrollListMultiSlider()

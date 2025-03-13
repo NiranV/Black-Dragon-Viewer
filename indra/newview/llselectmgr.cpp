@@ -7118,12 +7118,6 @@ void pushWireframe(LLDrawable* drawable)
 
 void LLSelectNode::renderOneWireframe(const LLColor4& color)
 {
-	//BD - Need to because crash on ATI 3800 (and similar cards) MAINT-5018 
-	if (gGLManager.mIsAMD)
-	{
-		LLGLDisable multisample(LLPipeline::RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
-	}
-
 	//BD - Different Selection Methods for different people.
 	if (LLSelectMgr::sRenderHighlightType == 0)
 	{

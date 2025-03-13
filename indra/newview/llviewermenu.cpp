@@ -8294,10 +8294,11 @@ class LLToggleShaderControl : public view_listener_t
     }
 };
 
-/*void menu_toggle_attached_lights()
+void menu_toggle_attached_lights()
 {
-	LLPipeline::sRenderAttachedLights = gSavedSettings.getBOOL("RenderAttachedLights");
-}*/
+	LLPipeline::sRenderOtherAttachedLights = gSavedSettings.getBOOL("RenderOtherAttachedLights");
+    LLPipeline::sRenderOwnAttachedLights = gSavedSettings.getBOOL("RenderOwnAttachedLights");
+}
 
 void menu_toggle_attached_particles()
 {

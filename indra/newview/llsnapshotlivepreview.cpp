@@ -511,6 +511,13 @@ bool LLSnapshotLivePreview::onIdle( void* snapshot_preview )
 		return false;
 	}
 
+    static LLCachedControl<bool> auto_snapshot(gSavedSettings, "AutoSnapshot", false);
+    static LLCachedControl<bool> freeze_time(gSavedSettings, "FreezeTime", false);
+    static LLCachedControl<bool> use_freeze_frame(gSavedSettings, "UseFreezeFrame", false);
+    static LLCachedControl<bool> render_ui(gSavedSettings, "RenderUIInSnapshot", false);
+    static LLCachedControl<bool> render_hud(gSavedSettings, "RenderHUDInSnapshot", false);
+    static LLCachedControl<bool> render_no_post(gSavedSettings, "RenderSnapshotNoPost", false);
+
 	// time to produce a snapshot
 	if(!previewp->getSnapshotUpToDate())
 	{

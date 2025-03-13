@@ -127,6 +127,10 @@ public:
 	//BD - UI Improvements
 	bool	handleScrollWheel(S32 x, S32 y, S32 clicks, MASK mask);
 
+    //BD
+    void            onNextBtn();
+    void            onPrevBtn();
+
     // LLUICtrl interface
     virtual void    clear();                    // select nothing
     virtual void    onCommit();
@@ -151,7 +155,9 @@ public:
     LLScrollListItem*   add(const std::string& name, const LLUUID& id, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
     LLScrollListItem*   add(const std::string& name, void* userdata, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
     LLScrollListItem*   add(const std::string& name, LLSD value, EAddPosition pos = ADD_BOTTOM, bool enabled = true);
-    LLScrollListItem*   addSeparator(EAddPosition pos = ADD_BOTTOM);
+    //BD
+    LLScrollListItem* addSeparator(EAddPosition pos = ADD_BOTTOM, std::string label = "");
+
     bool            remove( S32 index );    // remove item by index, return true if found and removed
     void            removeall() { clearRows(); }
     bool            itemExists(const std::string& name);

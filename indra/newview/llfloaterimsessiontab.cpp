@@ -331,6 +331,14 @@ bool LLFloaterIMSessionTab::postBuild()
 
     mInputEditor = getChild<LLChatEntry>("chat_editor");
 
+    mChatHistoryPanel = getChild<LLLayoutPanel>("chat_history_btn_panel");
+    mNearbyHistoryPanel = getChild<LLLayoutPanel>("nearby_history_btn_panel");
+
+    mAddBtnPanel = getChild<LLLayoutPanel>("add_btn_panel");
+    mCloseBtnPanel = getChild<LLLayoutPanel>("close_btn_panel");
+
+    mContentsView = getChild<LLView>("contents_view");
+
     mChatLayoutPanel = getChild<LLLayoutPanel>("chat_layout_panel");
     mInputPanels = getChild<LLLayoutStack>("input_panels");
 

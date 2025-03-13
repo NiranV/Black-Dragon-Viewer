@@ -116,6 +116,9 @@ LLComboBox::LLComboBox(const LLComboBox::Params& p)
     button_params.mouse_down_callback.function(
         boost::bind(&LLComboBox::onButtonMouseDown, this));
     button_params.follows.flags(FOLLOWS_LEFT|FOLLOWS_BOTTOM|FOLLOWS_RIGHT);
+    //BD
+    button_params.font_halign(LLFontGL::HCENTER);
+
     button_params.rect(p.rect);
 
     if (mAllowTextEntry)

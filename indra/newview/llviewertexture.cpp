@@ -1997,9 +1997,10 @@ bool LLViewerFetchedTexture::updateFetch()
 		}
 		
 		// bypass texturefetch directly by pulling from LLTextureCache
-		S32 fetch_request_discard = -1;
-        fetch_request_discard = LLAppViewer::getTextureFetch()->createRequest(mFTType, mUrl, getID(), getTargetHost(), decode_priority,
-                                                                              w, h, c, desired_discard, needsAux(), mCanUseHTTP);
+        S32 fetch_request_response = -1;
+        S32 worker_discard = -1;
+        fetch_request_response = LLAppViewer::getTextureFetch()->createRequest(mFTType, mUrl, getID(), getTargetHost(), decode_priority,
+            w, h, c, desired_discard, needsAux(), mCanUseHTTP);
 
         if (fetch_request_response >= 0) // positive values and 0 are discard values
         {

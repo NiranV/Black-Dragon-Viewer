@@ -1542,10 +1542,10 @@ void LLFloaterSnapshot::onQualitySliderCommit(LLUICtrl* ctrl)
 void LLFloaterSnapshot::sendProfile()
 {
     // don't update preview for hidden floater
-    if (mFloater && mFloater->isInVisibleChain() && ImplBase::updatePreviewList(true))
+    if (isInVisibleChain() && updatePreviewList(true))
     {
         LL_DEBUGS() << "changed" << LL_ENDL;
-        updateControls(mFloater);
+        updateControls();
     }
 }
 

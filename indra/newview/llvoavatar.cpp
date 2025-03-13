@@ -1695,36 +1695,77 @@ void LLVOAvatar::renderCollisionVolumes()
 // defined in llspatialpartition.cpp -- draw a box outline in the current GL context from given center and half-size
 void drawBoxOutline(const LLVector4a& pos, const LLVector4a& size);
 
-void LLVOAvatar::renderBones(const std::string &selected_joint)
+void LLVOAvatar::renderBones(const std::string& selected_joint)
 {
     LLGLEnable blend(GL_BLEND);
 
     avatar_joint_list_t::iterator iter = mSkeleton.begin();
     avatar_joint_list_t::iterator end = mSkeleton.end();
 
+    // For selected joints
+    static LLVector3 SELECTED_COLOR_OCCLUDED(1.0f, 1.0f, 0.0f);
+    static LLVector3 SELECTED_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
+    // For bones with position overrides defined
+    static LLVector3 OVERRIDE_COLOR_OCCLUDED(1.0f, 0.0f, 0.0f);
+    static LLVector3 OVERRIDE_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
+    // For bones which are rigged to by at least one attachment
+    static LLVector3 RIGGED_COLOR_OCCLUDED(0.0f, 1.0f, 1.0f);
+    static LLVector3 RIGGED_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
+    // For bones not otherwise colored
     static LLVector3 OTHER_COLOR_OCCLUDED(0.0f, 1.0f, 0.0f);
     static LLVector3 OTHER_COLOR_VISIBLE(0.5f, 0.5f, 0.5f);
 
-	//BD - Simplify joint rendering.
-	for (; iter != end; ++iter)
-	{
-		LLJoint* jointp = *iter;
-		if (!jointp)
-		{
-			continue;
-		}
+    static F32 SPHERE_SCALEF = 0.001f;
+
+    for (; iter != end; ++iter)
+    {
+        LLJoint* jointp = *iter;
+        if (!jointp)
+        {
+            continue;
+        }
 
         jointp->updateWorldMatrix();
 
-        LLVector3 begin_pos(0,0,0);
+        LLVector3 occ_color, visible_color;
+
+        LLVector3 pos;
+        LLUUID mesh_id;
+        F32 sphere_scale = SPHERE_SCALEF;
+
+        // We are in render, so it is preferable to implement selection
+        // in a different way, but since this is for debug/preview, this
+        // is low priority
+        if (jointp->getName() == selected_joint)
+        {
+            sphere_scale *= 16;
+            occ_color = SELECTED_COLOR_OCCLUDED;
+            visible_color = SELECTED_COLOR_VISIBLE;
+        }
+        else if (jointp->hasAttachmentPosOverride(pos, mesh_id))
+        {
+            occ_color = OVERRIDE_COLOR_OCCLUDED;
+            visible_color = OVERRIDE_COLOR_VISIBLE;
+        }
+        else
+        {
+            if (jointIsRiggedTo(jointp))
+            {
+                occ_color = RIGGED_COLOR_OCCLUDED;
+                visible_color = RIGGED_COLOR_VISIBLE;
+            }
+            else
+            {
+                occ_color = OTHER_COLOR_OCCLUDED;
+                visible_color = OTHER_COLOR_VISIBLE;
+            }
+        }
+        LLVector3 begin_pos(0, 0, 0);
         LLVector3 end_pos(jointp->getEnd());
-        
-		gGL.pushMatrix();
-		gGL.multMatrix( &jointp->getXform()->getWorldMatrix().mMatrix[0][0] );
 
 
         gGL.pushMatrix();
-        gGL.multMatrix( &jointp->getXform()->getWorldMatrix().mMatrix[0][0] );
+        gGL.multMatrix(&jointp->getXform()->getWorldMatrix().mMatrix[0][0]);
 
         render_sphere_and_line(begin_pos, end_pos, sphere_scale, occ_color, visible_color);
 

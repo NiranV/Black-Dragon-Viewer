@@ -72,7 +72,7 @@ public:
         Optional<LLUIColor>         font_color;
         Optional<LLFontGL::HAlign>  font_halign;
 
-        Optional<LLUIColor>         color;
+        Optional<LLColor4>          color;
 
         //BD
 		Optional<S32>				max_sliders;

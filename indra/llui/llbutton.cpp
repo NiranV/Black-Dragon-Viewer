@@ -942,6 +942,9 @@ void LLButton::draw()
             center_x++;
         }
 
+        //BD - Selected Overlay Image
+        bool toggle_state = getToggleState();
+
         center_y += (mImageOverlayBottomPad - mImageOverlayTopPad);
         // fade out overlay images on disabled buttons
         LLColor4 overlay_color = mImageOverlayColor.get();
