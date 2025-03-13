@@ -56,6 +56,7 @@
 #include "llgroupmgr.h"
 #include "llhudmanager.h"
 #include "lljoystickbutton.h"
+#include "lllandmarkactions.h"
 #include "llmorphview.h"
 #include "llmoveview.h"
 #include "llnavigationbar.h" // to show/hide navigation bar when changing mouse look state
@@ -4454,23 +4455,31 @@ void LLAgent::teleportViaLandmark(const LLUUID& landmark_asset_id)
 
 void LLAgent::doTeleportViaLandmark(const LLUUID& landmark_asset_id)
 {
-	LLViewerRegion *regionp = getRegion();
-	//BD - Don't show TP screen if its a Home TP to the same SIM we are on.
-	if(regionp && teleportCore((regionp->getHandle() == mHomeRegionHandle) && mIsHomeTP))
-	{
-		LL_INFOS("Teleport") << "Sending TeleportLandmarkRequest. Current region handle " << regionp->getHandle()
-							 << " region id " << regionp->getRegionID()
-							 << " requested landmark id " << landmark_asset_id
-							 << LL_ENDL;
+    bool is_local(false);
+    LLViewerRegion* regionp  = getRegion();
 
-		LLMessageSystem* msg = gMessageSystem;
-		msg->newMessageFast(_PREHASH_TeleportLandmarkRequest);
-		msg->nextBlockFast(_PREHASH_Info);
-		msg->addUUIDFast(_PREHASH_AgentID, getID());
-		msg->addUUIDFast(_PREHASH_SessionID, getSessionID());
-		msg->addUUIDFast(_PREHASH_LandmarkID, landmark_asset_id);
-		sendReliableMessage();
-	}
+    if (LLLandmark* landmark = gLandmarkList.getAsset(landmark_asset_id, NULL))
+    {
+        LLVector3d pos_global;
+        landmark->getGlobalPos(pos_global);
+        is_local = (regionp->getHandle() == to_region_handle_global((F32)pos_global.mdV[VX], (F32)pos_global.mdV[VY]));
+    }
+
+    if(regionp && teleportCore(is_local))
+    {
+        LL_INFOS("Teleport") << "Sending TeleportLandmarkRequest. Current region handle " << regionp->getHandle()
+                             << " region id " << regionp->getRegionID()
+                             << " requested landmark id " << landmark_asset_id
+                             << LL_ENDL;
+
+        LLMessageSystem* msg = gMessageSystem;
+        msg->newMessageFast(_PREHASH_TeleportLandmarkRequest);
+        msg->nextBlockFast(_PREHASH_Info);
+        msg->addUUIDFast(_PREHASH_AgentID, getID());
+        msg->addUUIDFast(_PREHASH_SessionID, getSessionID());
+        msg->addUUIDFast(_PREHASH_LandmarkID, landmark_asset_id);
+        sendReliableMessage();
+    }
 }
 
 void LLAgent::teleportViaLure(const LLUUID& lure_id, bool godlike)
@@ -5017,10 +5026,19 @@ void LLAgent::parseTeleportMessages(const std::string& xml_filename)
     LLXMLNodePtr root;
     bool success = LLUICtrlFactory::getLayeredXMLNode(xml_filename, root);
 
-    if (!success || !root || !root->hasName( "teleport_messages" ))
+    if (!success)
     {
+        LLError::LLUserWarningMsg::showMissingFiles();
         LL_ERRS() << "Problem reading teleport string XML file: "
-               << xml_filename << LL_ENDL;
+            << xml_filename << LL_ENDL;
+        return;
+    }
+
+    if (!root || !root->hasName("teleport_messages"))
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Invalid teleport string XML file: "
+            << xml_filename << LL_ENDL;
         return;
     }
 

@@ -89,6 +89,7 @@ S32 LLViewerTexture::sRawCount = 0;
 S32 LLViewerTexture::sAuxCount = 0;
 LLFrameTimer LLViewerTexture::sEvaluationTimer;
 F32 LLViewerTexture::sDesiredDiscardBias = 0.f;
+U32 LLViewerTexture::sBiasTexturesUpdated = 0;
 
 S32 LLViewerTexture::sMaxSculptRez = 128; //max sculpt image size
 constexpr S32 MAX_CACHED_RAW_IMAGE_AREA = 64 * 64;
@@ -111,12 +112,6 @@ F32 LLViewerTexture::sFreeVRAMMegabytes = MIN_VRAM_BUDGET;
 LLViewerTexture::EDebugTexels LLViewerTexture::sDebugTexelsMode = LLViewerTexture::DEBUG_TEXELS_OFF;
 
 const F64 log_2 = log(2.0);
-
-#if ADDRESS_SIZE == 32
-const U32 DESIRED_NORMAL_TEXTURE_SIZE = (U32)LLViewerFetchedTexture::MAX_IMAGE_SIZE_DEFAULT / 2;
-#else
-const U32 DESIRED_NORMAL_TEXTURE_SIZE = (U32)LLViewerFetchedTexture::MAX_IMAGE_SIZE_DEFAULT;
-#endif
 
 //----------------------------------------------------------------------------------------------
 //namespace: LLViewerTextureAccess
@@ -526,13 +521,103 @@ void LLViewerTexture::updateClass()
     F32 target = llmax(llmin(budget - 512.f, budget * 0.8f), MIN_VRAM_BUDGET);
     sFreeVRAMMegabytes = target - used;
 
-	F32 over_pct = llmax((used - target) / target, 0.f);
-	sDesiredDiscardBias = llmax(sDesiredDiscardBias, 1.f + over_pct);
+    F32 over_pct = (used - target) / target;
 
-	if (sDesiredDiscardBias > 1.f)
-	{
-		sDesiredDiscardBias -= gFrameIntervalSeconds * 0.01f;
-	}
+    bool is_sys_low = isSystemMemoryLow();
+    bool is_low = is_sys_low || over_pct > 0.f;
+    F32 discard_bias = sDesiredDiscardBias;
+
+    static bool was_low = false;
+    static bool was_sys_low = false;
+
+    if (is_low && !was_low)
+    {
+        // slam to 1.5 bias the moment we hit low memory (discards off screen textures immediately)
+        sDesiredDiscardBias = llmax(sDesiredDiscardBias, 1.5f);
+
+        if (is_sys_low || over_pct > 2.f)
+        { // if we're low on system memory, emergency purge off screen textures to avoid a death spiral
+            LL_WARNS() << "Low system memory detected, emergency downrezzing off screen textures" << LL_ENDL;
+            for (auto& image : gTextureList)
+            {
+                gTextureList.updateImageDecodePriority(image, false /*will modify gTextureList otherwise!*/);
+            }
+        }
+    }
+
+    was_low = is_low;
+    was_sys_low = is_sys_low;
+
+    if (is_low)
+    {
+        // ramp up discard bias over time to free memory
+        if (sEvaluationTimer.getElapsedTimeF32() > MEMORY_CHECK_WAIT_TIME)
+        {
+            static LLCachedControl<F32> low_mem_min_discard_increment(gSavedSettings, "RenderLowMemMinDiscardIncrement", .1f);
+
+            F32 increment = low_mem_min_discard_increment + llmax(over_pct, 0.f);
+            sDesiredDiscardBias += increment * gFrameIntervalSeconds;
+        }
+    }
+    else
+    {
+        // don't execute above until the slam to 1.5 has a chance to take effect
+        sEvaluationTimer.reset();
+
+        // lower discard bias over time when at least 10% of budget is free
+        const F32 FREE_PERCENTAGE_TRESHOLD = -0.1f;
+        if (sDesiredDiscardBias > 1.f && over_pct < FREE_PERCENTAGE_TRESHOLD)
+        {
+            static LLCachedControl<F32> high_mem_discard_decrement(gSavedSettings, "RenderHighMemMinDiscardDecrement", .1f);
+
+            F32 decrement = high_mem_discard_decrement - llmin(over_pct - FREE_PERCENTAGE_TRESHOLD, 0.f);
+            sDesiredDiscardBias -= decrement * gFrameIntervalSeconds;
+        }
+    }
+
+    // set to max discard bias if the window has been backgrounded for a while
+    static F32 last_desired_discard_bias = 1.f;
+    static bool was_backgrounded = false;
+    static LLFrameTimer backgrounded_timer;
+    static LLCachedControl<F32> minimized_discard_time(gSavedSettings, "TextureDiscardMinimizedTime", 1.f);
+    static LLCachedControl<F32> backgrounded_discard_time(gSavedSettings, "TextureDiscardBackgroundedTime", 60.f);
+
+    bool in_background = (gViewerWindow && !gViewerWindow->getWindow()->getVisible()) || !gFocusMgr.getAppHasFocus();
+    bool is_minimized  = gViewerWindow && gViewerWindow->getWindow()->getMinimized() && in_background;
+    if (in_background)
+    {
+        F32 discard_time = is_minimized ? minimized_discard_time : backgrounded_discard_time;
+        if (discard_time > 0.f && backgrounded_timer.getElapsedTimeF32() > discard_time)
+        {
+            if (!was_backgrounded)
+            {
+                LL_INFOS() << "Viewer was " << (is_minimized ? "minimized" : "backgrounded") << " for " << discard_time
+                           << "s, freeing up video memory." << LL_ENDL;
+
+                last_desired_discard_bias = sDesiredDiscardBias;
+                was_backgrounded = true;
+            }
+            sDesiredDiscardBias = 5.f;
+        }
+    }
+    else
+    {
+        backgrounded_timer.reset();
+        if (was_backgrounded)
+        { // if the viewer was backgrounded
+            LL_INFOS() << "Viewer is no longer backgrounded or minimized, resuming normal texture usage." << LL_ENDL;
+            was_backgrounded = false;
+            sDesiredDiscardBias = last_desired_discard_bias;
+        }
+    }
+
+    sDesiredDiscardBias = llclamp(sDesiredDiscardBias, 1.f, 4.f);
+    if (discard_bias != sDesiredDiscardBias)
+    {
+        // bias changed, reset texture update counter to
+        // let updates happen at an increased rate.
+        sBiasTexturesUpdated = 0;
+    }
 
 	LLViewerTexture::sFreezeImageUpdates = false; // sDesiredDiscardBias > (desired_discard_bias_max - 1.0f);
 }
@@ -1594,6 +1679,16 @@ void LLViewerFetchedTexture::processTextureStats()
 
         static LLCachedControl<bool> textures_fullres(gSavedSettings,"TextureLoadFullRes", false);
 
+        U32 max_tex_res = MAX_IMAGE_SIZE_DEFAULT;
+        if (mBoostLevel < LLGLTexture::BOOST_HIGH)
+        {
+            // restrict texture resolution to download based on RenderMaxTextureResolution
+            static LLCachedControl<U32> max_texture_resolution(gSavedSettings, "RenderMaxTextureResolution", 2048);
+            // sanity clamp debug setting to avoid settings hack shenanigans
+            max_tex_res = (U32)llclamp((U32)max_texture_resolution, 512, MAX_IMAGE_SIZE_DEFAULT);
+            mMaxVirtualSize = llmin(mMaxVirtualSize, (F32)(max_tex_res * max_tex_res));
+        }
+
         if (textures_fullres)
         {
             mDesiredDiscardLevel = 0;
@@ -1615,10 +1710,9 @@ void LLViewerFetchedTexture::processTextureStats()
         }
         else
         {
-            U32 desired_size = MAX_IMAGE_SIZE_DEFAULT; // MAX_IMAGE_SIZE_DEFAULT = 2048 and max size ever is 4096
             if(!mKnownDrawWidth || !mKnownDrawHeight || (S32)mFullWidth <= mKnownDrawWidth || (S32)mFullHeight <= mKnownDrawHeight)
             {
-                if (mFullWidth > desired_size || mFullHeight > desired_size)
+                if (mFullWidth > max_tex_res || mFullHeight > max_tex_res)
                 {
                     mDesiredDiscardLevel = 1;
                 }
@@ -2822,8 +2916,6 @@ LLViewerLODTexture::LLViewerLODTexture(const std::string& url, FTType f_type, co
 void LLViewerLODTexture::init(bool firstinit)
 {
     mTexelsPerImage = 64*64;
-    mDiscardVirtualSize = 0.f;
-    mCalculatedDiscardLevel = -1.f;
 }
 
 //virtual
@@ -2848,12 +2940,14 @@ void LLViewerLODTexture::processTextureStats()
 
     static LLCachedControl<bool> textures_fullres(gSavedSettings,"TextureLoadFullRes", false);
 
-    { // restrict texture resolution to download based on RenderMaxTextureResolution
+    F32 max_tex_res = MAX_IMAGE_SIZE_DEFAULT;
+    if (mBoostLevel < LLGLTexture::BOOST_HIGH)
+    {
+        // restrict texture resolution to download based on RenderMaxTextureResolution
         static LLCachedControl<U32> max_texture_resolution(gSavedSettings, "RenderMaxTextureResolution", 2048);
         // sanity clamp debug setting to avoid settings hack shenanigans
-        F32 tex_res = (F32)llclamp((S32)max_texture_resolution, 512, 2048);
-        tex_res *= tex_res;
-        mMaxVirtualSize = llmin(mMaxVirtualSize, tex_res);
+        max_tex_res = (F32)llclamp((S32)max_texture_resolution, 512, MAX_IMAGE_SIZE_DEFAULT);
+        mMaxVirtualSize = llmin(mMaxVirtualSize, max_tex_res * max_tex_res);
     }
 
     if (textures_fullres)
@@ -2902,19 +2996,12 @@ void LLViewerLODTexture::processTextureStats()
         {
             // Calculate the required scale factor of the image using pixels per texel
             discard_level = (F32)(log(mTexelsPerImage / mMaxVirtualSize) / log_4);
-            mDiscardVirtualSize = mMaxVirtualSize;
-            mCalculatedDiscardLevel = discard_level;
         }
 
         discard_level = floorf(discard_level);
 
         F32 min_discard = 0.f;
-        U32 desired_size = MAX_IMAGE_SIZE_DEFAULT; // MAX_IMAGE_SIZE_DEFAULT = 2048 and max size ever is 4096
-        if (mBoostLevel <= LLGLTexture::BOOST_SCULPTED)
-        {
-            desired_size = DESIRED_NORMAL_TEXTURE_SIZE;
-        }
-        if (mFullWidth > desired_size || mFullHeight > desired_size)
+        if (mFullWidth > max_tex_res || mFullHeight > max_tex_res)
             min_discard = 1.f;
 
         discard_level = llclamp(discard_level, min_discard, (F32)MAX_DISCARD_LEVEL);
@@ -3452,18 +3539,7 @@ void LLViewerMediaTexture::setPlaying(bool playing)
         for(std::list< LLFace* >::iterator iter = mMediaFaceList.begin(); iter!= mMediaFaceList.end(); ++iter)
         {
             LLFace* facep = *iter;
-            const LLTextureEntry* te = facep->getTextureEntry();
-            if (te->getGLTFMaterial())
-            {
-                // PBR material, switch emissive and basecolor
-                switchTexture(LLRender::EMISSIVE_MAP, *iter);
-                switchTexture(LLRender::BASECOLOR_MAP, *iter);
-            }
-            else
-            {
-                // blinn-phong material, switch diffuse map only
-                switchTexture(LLRender::DIFFUSE_MAP, *iter);
-            }
+            switchTexture(LLRender::DIFFUSE_MAP, facep);
         }
     }
     else //stop playing this media

@@ -348,7 +348,10 @@ public:
     // should be called just before rendering pre-water alpha objects
     void doWaterHaze();
 
-	void postDeferredGammaCorrect(LLRenderTarget* screen_target);
+    // Generate the water exclusion surface mask.
+    void doWaterExclusionMask();
+
+    void postDeferredGammaCorrect(LLRenderTarget* screen_target);
 
 	void generateSunShadow(LLCamera& camera);
     LLRenderTarget* getSunShadowTarget(U32 i);
@@ -493,26 +496,27 @@ private:
 	void unhideDrawable( LLDrawable *pDrawable );
     void skipRenderingShadows();
 public:
-	enum {GPU_CLASS_MAX = 3 };
+    enum {GPU_CLASS_MAX = 3 };
 
-	enum LLRenderTypeMask
-	{
-		// Following are pool types (some are also object types)
-		RENDER_TYPE_SKY							= LLDrawPool::POOL_SKY,
-		RENDER_TYPE_WL_SKY						= LLDrawPool::POOL_WL_SKY,
-		RENDER_TYPE_TERRAIN						= LLDrawPool::POOL_TERRAIN,
-		RENDER_TYPE_SIMPLE						= LLDrawPool::POOL_SIMPLE,
-		RENDER_TYPE_GRASS						= LLDrawPool::POOL_GRASS,
-		RENDER_TYPE_ALPHA_MASK					= LLDrawPool::POOL_ALPHA_MASK,
-		RENDER_TYPE_FULLBRIGHT_ALPHA_MASK		= LLDrawPool::POOL_FULLBRIGHT_ALPHA_MASK,
-		RENDER_TYPE_FULLBRIGHT					= LLDrawPool::POOL_FULLBRIGHT,
-		RENDER_TYPE_BUMP						= LLDrawPool::POOL_BUMP,
-		RENDER_TYPE_MATERIALS					= LLDrawPool::POOL_MATERIALS,
-		RENDER_TYPE_AVATAR						= LLDrawPool::POOL_AVATAR,
-		RENDER_TYPE_CONTROL_AV					= LLDrawPool::POOL_CONTROL_AV, // Animesh
-		RENDER_TYPE_TREE						= LLDrawPool::POOL_TREE,
-		RENDER_TYPE_VOIDWATER					= LLDrawPool::POOL_VOIDWATER,
-		RENDER_TYPE_WATER						= LLDrawPool::POOL_WATER,
+    enum LLRenderTypeMask
+    {
+        // Following are pool types (some are also object types)
+        RENDER_TYPE_SKY                         = LLDrawPool::POOL_SKY,
+        RENDER_TYPE_WL_SKY                      = LLDrawPool::POOL_WL_SKY,
+        RENDER_TYPE_TERRAIN                     = LLDrawPool::POOL_TERRAIN,
+        RENDER_TYPE_SIMPLE                      = LLDrawPool::POOL_SIMPLE,
+        RENDER_TYPE_GRASS                       = LLDrawPool::POOL_GRASS,
+        RENDER_TYPE_ALPHA_MASK                  = LLDrawPool::POOL_ALPHA_MASK,
+        RENDER_TYPE_FULLBRIGHT_ALPHA_MASK       = LLDrawPool::POOL_FULLBRIGHT_ALPHA_MASK,
+        RENDER_TYPE_FULLBRIGHT                  = LLDrawPool::POOL_FULLBRIGHT,
+        RENDER_TYPE_BUMP                        = LLDrawPool::POOL_BUMP,
+        RENDER_TYPE_MATERIALS                   = LLDrawPool::POOL_MATERIALS,
+        RENDER_TYPE_AVATAR                      = LLDrawPool::POOL_AVATAR,
+        RENDER_TYPE_CONTROL_AV                  = LLDrawPool::POOL_CONTROL_AV, // Animesh
+        RENDER_TYPE_TREE                        = LLDrawPool::POOL_TREE,
+        RENDER_TYPE_WATEREXCLUSION              = LLDrawPool::POOL_WATEREXCLUSION,
+        RENDER_TYPE_VOIDWATER                   = LLDrawPool::POOL_VOIDWATER,
+        RENDER_TYPE_WATER                       = LLDrawPool::POOL_WATER,
         RENDER_TYPE_GLTF_PBR                    = LLDrawPool::POOL_GLTF_PBR,
         RENDER_TYPE_GLTF_PBR_ALPHA_MASK         = LLDrawPool::POOL_GLTF_PBR_ALPHA_MASK,
  		RENDER_TYPE_ALPHA						= LLDrawPool::POOL_ALPHA,
@@ -730,6 +734,7 @@ public:
     LLRenderTarget          mSpotShadow[2];
 
     LLRenderTarget          mPbrBrdfLut;
+    LLRenderTarget          mWaterExclusionMask;
 
     // copy of the color/depth buffer just before gamma correction
     // for use by SSR
@@ -972,6 +977,7 @@ protected:
 	LLDrawPool*					mWLSkyPool = nullptr;
 	LLDrawPool*					mPBROpaquePool = nullptr;
     LLDrawPool*                 mPBRAlphaMaskPool = nullptr;
+    LLDrawPool*                 mWaterExclusionPool      = nullptr;
 
 	// Note: no need to keep an quick-lookup to avatar pools, since there's only one per avatar
 	

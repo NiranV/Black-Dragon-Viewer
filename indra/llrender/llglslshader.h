@@ -59,7 +59,7 @@ public:
     bool attachNothing = false;
     bool hasHeroProbes = false;
     bool isPBRTerrain = false;
-    
+    bool hasTonemap = false;
 //	//BD - Motion Blur
 	//bool hasMotionBlur;
 };

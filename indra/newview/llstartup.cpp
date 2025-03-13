@@ -1064,6 +1064,7 @@ bool idle_startup()
 		login->setSerialNumber(LLAppViewer::instance()->getSerialNumber());
 		login->setLastExecEvent(gLastExecEvent);
 		login->setLastExecDuration(gLastExecDuration);
+		login->setLastAgentSessionId(gLastAgentSessionId);
 
 		//BD
 		set_startup_status(0.03f, 1.0f, LLTrans::getString("LoginAuthInit"), "");
@@ -1440,7 +1441,7 @@ bool idle_startup()
 		}
         else if (regionp->capabilitiesError())
         {
-            LL_WARNS("AppInit") << "Failed to get capabilities. Backing up to login screen!" << LL_ENDL;
+            LL_WARNS("AppInit") << "Failed to get capabilities. Logging out and backing up to login screen!" << LL_ENDL;
             if (gRememberPassword)
             {
                 LLNotificationsUtil::add("LoginPacketNeverReceived", LLSD(), LLSD(), login_alert_status);
@@ -1449,6 +1450,15 @@ bool idle_startup()
             {
                 LLNotificationsUtil::add("LoginPacketNeverReceivedNoTP", LLSD(), LLSD(), login_alert_status);
             }
+
+            // Session was created, don't just hang up on server, send a logout request
+            LLMessageSystem* msg = gMessageSystem;
+            msg->newMessageFast(_PREHASH_LogoutRequest);
+            msg->nextBlockFast(_PREHASH_AgentData);
+            msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+            msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+            gAgent.sendReliableMessage();
+
             reset_login();
         }
 		else
@@ -1456,7 +1466,7 @@ bool idle_startup()
 			U32 num_retries = regionp->getNumSeedCapRetries();
             if (num_retries > MAX_SEED_CAP_ATTEMPTS_BEFORE_ABORT)
             {
-                LL_WARNS("AppInit") << "Failed to get capabilities. Backing up to login screen!" << LL_ENDL;
+                LL_WARNS("AppInit") << "Failed to get capabilities. Logging out and backing up to login screen!" << LL_ENDL;
                 if (gRememberPassword)
                 {
                     LLNotificationsUtil::add("LoginPacketNeverReceived", LLSD(), LLSD(), login_alert_status);
@@ -1465,6 +1475,15 @@ bool idle_startup()
                 {
                     LLNotificationsUtil::add("LoginPacketNeverReceivedNoTP", LLSD(), LLSD(), login_alert_status);
                 }
+
+                // Session was created, don't just hang up on server, send a logout request
+                LLMessageSystem* msg = gMessageSystem;
+                msg->newMessageFast(_PREHASH_LogoutRequest);
+                msg->nextBlockFast(_PREHASH_AgentData);
+                msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+                msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+                gAgent.sendReliableMessage();
+
                 reset_login();
             }
 			else if (num_retries > 0)
@@ -1804,6 +1823,15 @@ bool idle_startup()
 			{
 				LLNotificationsUtil::add("LoginPacketNeverReceivedNoTP", LLSD(), LLSD(), login_alert_status);
 			}
+
+			// Session was created, don't just hang up on server, send a logout request
+            LLMessageSystem* msg = gMessageSystem;
+            msg->newMessageFast(_PREHASH_LogoutRequest);
+            msg->nextBlockFast(_PREHASH_AgentData);
+            msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+            msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+            gAgent.sendReliableMessage();
+			
 			reset_login();
 		}
 		return false;
@@ -3589,154 +3617,155 @@ bool init_benefits(LLSD& response)
 
 bool process_login_success_response()
 {
-	LLSD response = LLLoginInstance::getInstance()->getResponse();
+    LLSD response = LLLoginInstance::getInstance()->getResponse();
 
-	mBenefitsSuccessfullyInit = init_benefits(response);
+    mBenefitsSuccessfullyInit = init_benefits(response);
 
-	std::string text(response["udp_blacklist"]);
-	if(!text.empty())
-	{
-		apply_udp_blacklist(text);
-	}
+    std::string text(response["udp_blacklist"]);
+    if(!text.empty())
+    {
+        apply_udp_blacklist(text);
+    }
 
-	// unpack login data needed by the application
-	text = response["agent_id"].asString();
-	if(!text.empty()) gAgentID.set(text);
-	gDebugInfo["AgentID"] = text;
-	
-	LLPerfStats::StatsRecorder::setEnabled(gSavedSettings.getBOOL("PerfStatsCaptureEnabled"));
-	LLPerfStats::StatsRecorder::setFocusAv(gAgentID);
+    // unpack login data needed by the application
+    text = response["agent_id"].asString();
+    if(!text.empty()) gAgentID.set(text);
+    gDebugInfo["AgentID"] = text;
 
-	// Agent id needed for parcel info request in LLUrlEntryParcel
-	// to resolve parcel name.
-	LLUrlEntryParcel::setAgentID(gAgentID);
+    LLPerfStats::StatsRecorder::setEnabled(gSavedSettings.getBOOL("PerfStatsCaptureEnabled"));
+    LLPerfStats::StatsRecorder::setFocusAv(gAgentID);
 
-	text = response["session_id"].asString();
-	if(!text.empty()) gAgentSessionID.set(text);
-	gDebugInfo["SessionID"] = text;
+    // Agent id needed for parcel info request in LLUrlEntryParcel
+    // to resolve parcel name.
+    LLUrlEntryParcel::setAgentID(gAgentID);
 
-	// Session id needed for parcel info request in LLUrlEntryParcel
-	// to resolve parcel name.
-	LLUrlEntryParcel::setSessionID(gAgentSessionID);
-	
-	text = response["secure_session_id"].asString();
-	if(!text.empty()) gAgent.mSecureSessionID.set(text);
+    text = response["session_id"].asString();
+    if(!text.empty()) gAgentSessionID.set(text);
+    gDebugInfo["SessionID"] = text;
+    LLAppViewer::instance()->recordSessionToMarker();
 
-	// if the response contains a display name, use that,
-	// otherwise if the response contains a first and/or last name,
-	// use those.  Otherwise use the credential identifier
+    // Session id needed for parcel info request in LLUrlEntryParcel
+    // to resolve parcel name.
+    LLUrlEntryParcel::setSessionID(gAgentSessionID);
 
-	gDisplayName = "";
-	if (response.has("display_name"))
-	{
-		gDisplayName.assign(response["display_name"].asString());
-		if(!gDisplayName.empty())
-		{
-			// Remove quotes from string.  Login.cgi sends these to force
-			// names that look like numbers into strings.
-			LLStringUtil::replaceChar(gDisplayName, '"', ' ');
-			LLStringUtil::trim(gDisplayName);
-		}
-	}
-	std::string first_name;
-	if(response.has("first_name"))
-	{
-		first_name = response["first_name"].asString();
-		LLStringUtil::replaceChar(first_name, '"', ' ');
-		LLStringUtil::trim(first_name);
-		gAgentUsername = first_name;
-	}
+    text = response["secure_session_id"].asString();
+    if(!text.empty()) gAgent.mSecureSessionID.set(text);
 
-	if(response.has("last_name") && !gAgentUsername.empty())
-	{
-		std::string last_name = response["last_name"].asString();
-		if (last_name != "Resident")
-		{
-		    LLStringUtil::replaceChar(last_name, '"', ' ');
-		    LLStringUtil::trim(last_name);
-		    gAgentUsername = gAgentUsername + " " + last_name;
-		}
-	}
+    // if the response contains a display name, use that,
+    // otherwise if the response contains a first and/or last name,
+    // use those.  Otherwise use the credential identifier
 
-	if(gDisplayName.empty())
-	{
-		if(response.has("first_name"))
-		{
-			gDisplayName.assign(response["first_name"].asString());
-			LLStringUtil::replaceChar(gDisplayName, '"', ' ');
-			LLStringUtil::trim(gDisplayName);
-		}
-		if(response.has("last_name"))
-		{
-			text.assign(response["last_name"].asString());
-			LLStringUtil::replaceChar(text, '"', ' ');
-			LLStringUtil::trim(text);
-			if(!gDisplayName.empty())
-			{
-				gDisplayName += " ";
-			}
-			gDisplayName += text;
-		}
-	}
+    gDisplayName = "";
+    if (response.has("display_name"))
+    {
+        gDisplayName.assign(response["display_name"].asString());
+        if(!gDisplayName.empty())
+        {
+            // Remove quotes from string.  Login.cgi sends these to force
+            // names that look like numbers into strings.
+            LLStringUtil::replaceChar(gDisplayName, '"', ' ');
+            LLStringUtil::trim(gDisplayName);
+        }
+    }
+    std::string first_name;
+    if(response.has("first_name"))
+    {
+        first_name = response["first_name"].asString();
+        LLStringUtil::replaceChar(first_name, '"', ' ');
+        LLStringUtil::trim(first_name);
+        gAgentUsername = first_name;
+    }
 
-	if(gDisplayName.empty())
-	{
-		gDisplayName.assign(gUserCredential->asString());
-	}
+    if(response.has("last_name") && !gAgentUsername.empty())
+    {
+        std::string last_name = response["last_name"].asString();
+        if (last_name != "Resident")
+        {
+            LLStringUtil::replaceChar(last_name, '"', ' ');
+            LLStringUtil::trim(last_name);
+            gAgentUsername = gAgentUsername + " " + last_name;
+        }
+    }
 
-	// this is their actual ability to access content
-	text = response["agent_access_max"].asString();
-	if (!text.empty())
-	{
-		// agent_access can be 'A', 'M', and 'PG'.
-		gAgent.setMaturity(text[0]);
-	}
-	
-	// this is the value of their preference setting for that content
-	// which will always be <= agent_access_max
-	text = response["agent_region_access"].asString();
-	if (!text.empty())
-	{
-		U32 preferredMaturity = (U32)LLAgent::convertTextToMaturity(text[0]);
+    if(gDisplayName.empty())
+    {
+        if(response.has("first_name"))
+        {
+            gDisplayName.assign(response["first_name"].asString());
+            LLStringUtil::replaceChar(gDisplayName, '"', ' ');
+            LLStringUtil::trim(gDisplayName);
+        }
+        if(response.has("last_name"))
+        {
+            text.assign(response["last_name"].asString());
+            LLStringUtil::replaceChar(text, '"', ' ');
+            LLStringUtil::trim(text);
+            if(!gDisplayName.empty())
+            {
+                gDisplayName += " ";
+            }
+            gDisplayName += text;
+        }
+    }
 
-		gSavedSettings.setU32("PreferredMaturity", preferredMaturity);
-	}
+    if(gDisplayName.empty())
+    {
+        gDisplayName.assign(gUserCredential->asString());
+    }
 
-	text = response["start_location"].asString();
-	if(!text.empty()) 
-	{
-		gAgentStartLocation.assign(text);
-	}
+    // this is their actual ability to access content
+    text = response["agent_access_max"].asString();
+    if (!text.empty())
+    {
+        // agent_access can be 'A', 'M', and 'PG'.
+        gAgent.setMaturity(text[0]);
+    }
 
-	text = response["circuit_code"].asString();
-	if(!text.empty())
-	{
-		gMessageSystem->mOurCircuitCode = strtoul(text.c_str(), NULL, 10);
-	}
-	std::string sim_ip_str = response["sim_ip"];
-	std::string sim_port_str = response["sim_port"];
-	if(!sim_ip_str.empty() && !sim_port_str.empty())
-	{
-		U32 sim_port = strtoul(sim_port_str.c_str(), NULL, 10);
-		gFirstSim.set(sim_ip_str, sim_port);
-		if (gFirstSim.isOk())
-		{
-			gMessageSystem->enableCircuit(gFirstSim, TRUE);
-		}
-	}
-	std::string region_x_str = response["region_x"];
-	std::string region_y_str = response["region_y"];
-	if(!region_x_str.empty() && !region_y_str.empty())
-	{
-		U32 region_x = strtoul(region_x_str.c_str(), NULL, 10);
-		U32 region_y = strtoul(region_y_str.c_str(), NULL, 10);
-		gFirstSimHandle = to_region_handle(region_x, region_y);
-	}
-	
-	const std::string look_at_str = response["look_at"];
-	if (!look_at_str.empty())
-	{
-		size_t len = look_at_str.size();
+    // this is the value of their preference setting for that content
+    // which will always be <= agent_access_max
+    text = response["agent_region_access"].asString();
+    if (!text.empty())
+    {
+        U32 preferredMaturity = (U32)LLAgent::convertTextToMaturity(text[0]);
+
+        gSavedSettings.setU32("PreferredMaturity", preferredMaturity);
+    }
+
+    text = response["start_location"].asString();
+    if(!text.empty())
+    {
+        gAgentStartLocation.assign(text);
+    }
+
+    text = response["circuit_code"].asString();
+    if(!text.empty())
+    {
+        gMessageSystem->mOurCircuitCode = strtoul(text.c_str(), NULL, 10);
+    }
+    std::string sim_ip_str = response["sim_ip"];
+    std::string sim_port_str = response["sim_port"];
+    if(!sim_ip_str.empty() && !sim_port_str.empty())
+    {
+        U32 sim_port = strtoul(sim_port_str.c_str(), NULL, 10);
+        gFirstSim.set(sim_ip_str, sim_port);
+        if (gFirstSim.isOk())
+        {
+            gMessageSystem->enableCircuit(gFirstSim, true);
+        }
+    }
+    std::string region_x_str = response["region_x"];
+    std::string region_y_str = response["region_y"];
+    if(!region_x_str.empty() && !region_y_str.empty())
+    {
+        U32 region_x = strtoul(region_x_str.c_str(), NULL, 10);
+        U32 region_y = strtoul(region_y_str.c_str(), NULL, 10);
+        gFirstSimHandle = to_region_handle(region_x, region_y);
+    }
+
+    const std::string look_at_str = response["look_at"];
+    if (!look_at_str.empty())
+    {
+        size_t len = look_at_str.size();
         LLMemoryStream mstr((U8*)look_at_str.c_str(), static_cast<S32>(len));
 		LLSD sd = LLSDSerialize::fromNotation(mstr, len);
 		gAgentStartLookAt = ll_vector3_from_sd(sd);

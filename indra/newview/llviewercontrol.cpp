@@ -275,6 +275,8 @@ static bool handleDisableVintageMode(const LLSD& newvalue)
 
 static bool handleEnableHDR(const LLSD& newvalue)
 {
+    gPipeline.mReflectionMapManager.reset();
+    gPipeline.mHeroProbeManager.reset();
     return handleReleaseGLBufferChanged(newvalue) && handleSetShaderChanged(newvalue);
 }
 
@@ -463,11 +465,11 @@ static bool handleReflectionProbeDetailChanged(const LLSD& newvalue)
     if (gPipeline.isInit())
     {
         LLPipeline::refreshCachedSettings();
+        gPipeline.mReflectionMapManager.reset();
+        gPipeline.mHeroProbeManager.reset();
         gPipeline.releaseGLBuffers();
         gPipeline.createGLBuffers();
         LLViewerShaderMgr::instance()->setShaders();
-        gPipeline.mReflectionMapManager.reset();
-        gPipeline.mHeroProbeManager.reset();
     }
     return true;
 }
@@ -1145,9 +1147,9 @@ LLPointer<LLControlVariable> setting_get_control(LLControlGroup& group, const st
     LLPointer<LLControlVariable> cntrl_ptr = group.getControl(setting);
     if (cntrl_ptr.isNull())
     {
+        LLError::LLUserWarningMsg::showMissingFiles();
         LL_ERRS() << "Unable to set up setting listener for " << setting
-            << ". Please reinstall viewer from  https ://secondlife.com/support/downloads/ and contact https://support.secondlife.com if issue persists after reinstall."
-            << LL_ENDL;
+            << "." << LL_ENDL;
     }
     return cntrl_ptr;
 }

@@ -70,6 +70,8 @@ protected:
     void getState(LLViewerObject *object);
     void onFilterEdit();
 
+    bool mDirtyFilter { false };
+
 public:
     //BD
 	LLButton* mBtnNewScript;
