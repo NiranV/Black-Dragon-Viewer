@@ -100,7 +100,7 @@ width="510">
        follows="top|left|right"
        visibility_control="PrefsViewerVisible"
        layout="topleft"
-       height="1187"
+       height="1222"
        auto_resize="false"
        visible="false"
        name="basic_layout_panel"
@@ -1386,7 +1386,7 @@ width="510">
        follows="top|left|right"
        height="20"
        background_visible="true"
-       invisibility_control="RenderFSAASamples"
+       invisibility_control="RenderFSAAType"
        bg_alpha_color="0.5 0.2 0.2 0.3"
        layout="topleft"
        left="0"
@@ -1426,9 +1426,9 @@ width="510">
    left="155"
    height="18"
    label="Antialiasing"
-   control_name="RenderFSAASamples"
+   control_name="RenderFSAAType"
    enabled_control="RenderDeferred"
-   name="RenderFSAASamples"
+   name="RenderFSAAType"
    use_ticker="true"
    tool_tip=""
    top_delta="-2"
@@ -1449,6 +1449,15 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option enables (F)ast (A)pproximate (A)nti(a)liasing. A cheap antialiasing reliably getting rid of jagged edges with near zero performance cost."
+       value="1"
+       name="item2"/>
+       <combo_box.item
+       label="SMAA"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing. Less cheap antialiasing than FXAA but more advanced, keeps the image sharper at the cost of more jagged edges."
        value="2"
        name="item2"/>
       <combo_box.drop_down_button
@@ -3076,6 +3085,79 @@ width="510">
        image_pressed_selected="Transparent"
        image_disabled="Transparent" />
     </combo_box>
+
+    <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="Reflectiontext"
+ top_pad="4"
+ width="140">
+ Max. Avatar Render Time (µs):
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   control_name="RenderAvatarMaxART"
+   name="RenderAvatarMaxART"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Low"
+       value="2.5"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum time to render any singular avatar is allowed to take before it is automatically derendered.
+||RenderAvatarMaxART: &lt;blue&gt;1.5&lt;/blue&gt;"
+       name="item1"/>
+      <combo_box.item
+       label="Default"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum time to render any singular avatar is allowed to take before it is automatically derendered.
+||RenderAvatarMaxART: &lt;blue&gt;3.061&lt;/blue&gt;"
+       value="3.0"
+       name="item2"/>
+      <combo_box.item
+       label="High"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum time to render any singular avatar is allowed to take before it is automatically derendered.
+||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;5.0&lt;/blue&gt;"
+       value="4.0"
+       name="item3"/>
+      <combo_box.item
+       label="Unlimited"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the maximum time to render any singular avatar is allowed to take before it is automatically derendered.
+||RenderAutoHideSurfaceAreaLimit: &lt;blue&gt;0&lt;/blue&gt;"
+       value="4.7"
+       name="item4"/>
+       <combo_box.combo_icon
+       default_index="2"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
  
  <panel
        follows="top|left|right"
@@ -3189,6 +3271,18 @@ width="510">
  function="Dragon.TriggerWarn"
  parameter="RenderEnableFullbright"/>
  </check_box>
+
+<check_box
+   control_name="RenderDisableVintageMode"
+   height="16"
+   initial_value="true"
+   label="Enable Advanced PBR Rendering"
+   tool_tip="Enables additional rendering pipeline features on newer machines such as HDR and emissive textures on PBR content. This can help older machines struggling with PBR."
+   layout="topleft"
+   left="10"
+   name="RenderDisableVintageMode"
+   top_pad="0"
+   width="115"/>
       </layout_panel>
       
       <layout_panel
@@ -3233,7 +3327,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1064"
+	  height="1130"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -5521,6 +5615,104 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
+
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+Tone Mapping
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+  <text
+ type="string"
+ length="1"
+ follows="left|top"
+ height="12"
+ layout="topleft"
+ enabled_control="RenderDeferred"
+ text_readonly_color="LabelDisabledColor"
+ left="10"
+ name="AVPhys"
+ top_pad="10"
+ width="140">
+ Tone Mapping Style:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   name="RenderTonemapType"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Khronos Neutral"
+       value="0"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls which Tonemapper should be used, either the Khronos Neutral Tonemapper or the more colorful ACES Tonemapper.
+||RenderTonemapType: &lt;blue&gt;1&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="ACES"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls which Tonemapper should be used, either the Khronos Neutral Tonemapper or the more colorful ACES Tonemapper.
+||RenderTonemapType: &lt;blue&gt;1&lt;/blue&gt;"
+       value="512"
+       name="item2"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+
+    <slider
+      control_name="RenderTonemapMix"
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0.7"
+      label="Tonemap Mix Amount:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="RenderTonemapMix"
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls the amount to mix in the Tonemapper. 0 = Linear, 1 = Fully Tonemapped"
+      top_pad="7" />
   
   <!--<text
  type="string"

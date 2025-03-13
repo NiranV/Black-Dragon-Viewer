@@ -175,4 +175,3 @@ void main()
     //debugExposure(diff.rgb);
     frag_color = max(diff, vec4(0));
 }
-
