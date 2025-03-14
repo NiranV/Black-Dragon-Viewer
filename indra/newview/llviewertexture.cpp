@@ -622,6 +622,27 @@ void LLViewerTexture::updateClass()
 	LLViewerTexture::sFreezeImageUpdates = false; // sDesiredDiscardBias > (desired_discard_bias_max - 1.0f);
 }
 
+//static
+bool LLViewerTexture::isSystemMemoryLow()
+{
+    static LLFrameTimer timer;
+    static U32Megabytes physical_res = U32Megabytes(U32_MAX);
+
+    static LLCachedControl<U32> min_free_main_memory(gSavedSettings, "RenderMinFreeMainMemoryThreshold", 512);
+    const U32Megabytes MIN_FREE_MAIN_MEMORY(min_free_main_memory);
+
+    if (timer.getElapsedTimeF32() < MEMORY_CHECK_WAIT_TIME) //call this once per second.
+    {
+        return physical_res < MIN_FREE_MAIN_MEMORY;
+    }
+
+    timer.reset();
+
+    LLMemory::updateMemoryInfo();
+    physical_res = LLMemory::getAvailableMemKB();
+    return physical_res < MIN_FREE_MAIN_MEMORY;
+}
+
 //end of static functions
 //-------------------------------------------------------------------------------------------
 const U32 LLViewerTexture::sCurrentFileVersion = 1;

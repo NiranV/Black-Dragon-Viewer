@@ -77,7 +77,6 @@ static LLDefaultChildRegistry::Register<LLSnapshotFloaterView> r("snapshot_float
 
 S32 power_of_two(S32 sz, S32 upper)
 {
-<<<<<<< HEAD
 	S32 res = upper;
 	while (upper >= sz)
 	{
@@ -85,19 +84,6 @@ S32 power_of_two(S32 sz, S32 upper)
 		upper >>= 1;
 	}
 	return res;
-=======
-    LLSideTrayPanelContainer* panel_container = floater->getChild<LLSideTrayPanelContainer>("panel_container");
-    LLPanelSnapshot* active_panel = dynamic_cast<LLPanelSnapshot*>(panel_container->getCurrentPanel());
-    if (!active_panel)
-    {
-        LL_WARNS() << "No snapshot active panel, current panel index: " << panel_container->getCurrentPanelIndex() << LL_ENDL;
-    }
-    if (!ok_if_not_found)
-    {
-        llassert_always(active_panel != NULL);
-    }
-    return active_panel;
->>>>>>> Linden_Release/main
 }
 
 // Default constructor
@@ -837,17 +823,14 @@ void LLFloaterSnapshot::setWorking(bool working)
 	getChild<LLUICtrl>("working_indicator")->setVisible(working);
 
     // All controls should be disabled while posting.
-    mFloater->setCtrlsEnabled(!working);
-    if (LLPanelSnapshot* active_panel = getActivePanel(mFloater))
+    setCtrlsEnabled(!working);
+
+    if (working)
     {
-        active_panel->enableControls(!working);
-        if (working)
-        {
-            const std::string panel_name = active_panel->getName();
-            const std::string prefix = panel_name.substr(getSnapshotPanelPrefix().size());
-            std::string progress_text = mFloater->getString(prefix + "_" + "progress_str");
-            working_lbl->setValue(progress_text);
-        }
+        const std::string panel_name = getActivePanel(false)->getName();
+        const std::string prefix = panel_name.substr(getSnapshotPanelPrefix().size());
+        std::string progress_text = getString(prefix + "_" + "progress_str");
+        working_lbl->setValue(progress_text);
     }
 }
 
