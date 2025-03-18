@@ -1849,19 +1849,31 @@ F32 LLSettingsSky::getMieAnisotropy() const
 
 LLSD LLSettingsSky::getRayleighConfig() const
 {
-    LLSD copy = *(mRayleighConfigs.beginArray());
+    LLSD copy;
+    if (mRayleighConfigs.size() > 0)
+    {
+        LLSD copy = *(mRayleighConfigs.beginArray());
+    }
     return copy;
 }
 
 LLSD LLSettingsSky::getMieConfig() const
 {
-    LLSD copy = *(mMieConfigs.beginArray());
+    LLSD copy;
+    if (mMieConfigs.size() > 0)
+    {
+        LLSD copy = *(mMieConfigs.beginArray());
+    }
     return copy;
 }
 
 LLSD LLSettingsSky::getAbsorptionConfig() const
 {
-    LLSD copy = *(mAbsorptionConfigs.beginArray());
+    LLSD copy;
+    if (mAbsorptionConfigs.size() > 0)
+    {
+        LLSD copy = *(mAbsorptionConfigs.beginArray());
+    }
     return copy;
 }
 
