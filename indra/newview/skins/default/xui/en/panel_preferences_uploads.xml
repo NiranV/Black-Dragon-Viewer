@@ -135,4 +135,27 @@
    label=""
    top_pad="4"
    width="488" />
+
+   <text
+   type="string"
+   length="1"
+   follows="left|top"
+   height="12"
+   layout="topleft"
+   left="10"
+   name="title_models"
+   top_pad="5"
+   width="100">
+    Models:
+  </text>
+  <line_editor
+   follows="left|top"
+   font="SansSerif"
+   height="23"
+   layout="topleft"
+   left="10"
+   name="upload_pbr"
+   label=""
+   top_pad="4"
+   width="488" />
 </panel>
