@@ -295,7 +295,7 @@ void LLPanelVoiceDeviceSettings::cancel()
 void LLPanelVoiceDeviceSettings::refresh()
 {
 	//grab current volume
-	LLSlider* volume_slider = getChild<LLSlider>("mic_volume_slider");
+	LLSliderCtrl* volume_slider = getChild<LLSliderCtrl>("mic_volume_slider");
 	// set mic volume tuning slider based on last mic volume setting
 	F32 current_volume = (F32)volume_slider->getValue().asReal();
 	LLVoiceClient::getInstance()->tuningSetMicVolume(current_volume);
@@ -313,7 +313,7 @@ void LLPanelVoiceDeviceSettings::refresh()
 		mCtrlOutputDevices->setEnabled(device_settings_available);
 	}
 
-	getChild<LLSlider>("mic_volume_slider")->setEnabled(device_settings_available);
+	getChild<LLSliderCtrl>("mic_volume_slider")->setEnabled(device_settings_available);
 
 	if (!device_settings_available)
 	{
