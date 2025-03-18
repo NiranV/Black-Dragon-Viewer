@@ -233,7 +233,16 @@ void BDStatus::onWorldFrozenButtonClick()
 void BDStatus::onPosingButtonClick()
 {
 	gAgentAvatarp->stopMotion(ANIM_BD_POSING_MOTION);
-	gAgent.clearPosing();
+    //BD - Find ourselves in the character list and clear posing for the Poser.
+    for (LLCharacter* character : LLCharacter::sInstances)
+    {
+        LLVOAvatar* av = (LLVOAvatar*)character;
+        if (av->isSelf())
+        {
+            av->clearPosing();
+            break;
+        }
+    }
 	setPosing(false);
 
 	setFocus(FALSE);

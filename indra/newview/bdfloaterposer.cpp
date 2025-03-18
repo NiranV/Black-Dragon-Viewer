@@ -188,6 +188,23 @@ bool BDFloaterPoser::postBuild()
 
 void BDFloaterPoser::draw()
 {
+    //BD - If the posing status changes from the outside (such as via the status button)
+    //     then refresh the UI to reflect that.
+    LLScrollListItem* item = mAvatarScroll->getFirstSelected();
+    if (item)
+    {
+        LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+        if (avatar)
+        {
+            if ((mStartPosingBtn->getValue() && !avatar->mIsPosing))
+            {
+                mStartPosingBtn->setValue(false);
+                onJointRefresh();
+                onPoseControlsRefresh();
+            }
+        }
+    }
+
 	LLFloater::draw();
 }
 
