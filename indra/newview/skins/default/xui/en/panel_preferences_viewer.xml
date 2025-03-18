@@ -256,7 +256,7 @@ width="510">
                         <radio_item
                         height="16"
                         label="Lines"
-                        value="1"
+                        value="0"
                         tool_tip="This option changes the selection outlines to use lines to draw around selections."
                         layout="topleft"
                         name="0"
@@ -274,7 +274,7 @@ width="510">
                         height="16"
                         label="Dots"
                         halign="right"
-                        value="0"
+                        value="1"
                         tool_tip="This option changes the selection outline to only show dots on vertices."
                         layout="topleft"
                         name="2"
