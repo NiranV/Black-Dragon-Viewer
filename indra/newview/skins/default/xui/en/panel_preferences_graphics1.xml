@@ -1491,7 +1491,6 @@ width="510">
  type="string"
  length="1"
  follows="left|top"
- enabled_control="RenderDeferred"
  text_readonly_color="LabelDisabledColor"
  height="12"
  layout="topleft"
@@ -1507,7 +1506,6 @@ width="510">
    height="18"
    label="Antialiasing"
    control_name="RenderFSAAType"
-   enabled_control="RenderDeferred"
    name="RenderFSAAType"
    use_ticker="true"
    tool_tip=""
@@ -1594,7 +1592,6 @@ width="510">
  type="string"
  length="1"
  follows="left|top"
- enabled_control="RenderDeferred"
  text_readonly_color="LabelDisabledColor"
  height="12"
  layout="topleft"
@@ -2244,7 +2241,6 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="RefResolution"
@@ -3416,7 +3412,6 @@ width="510">
 	  width="515">
    <!--<check_box
    control_name="RenderWaterLightReflections"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Render Accurate Light Reflections"
@@ -3437,7 +3432,6 @@ width="510">
  </check_box>
 	  <check_box
    control_name="RenderSpotLightReflections"
-   enabled_control="RenderDeferred"
    height="16"
    label="Render Projector Image Reflections"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
@@ -3452,7 +3446,6 @@ width="510">
    width="115" />
 	  <check_box
    control_name="RenderSpotLightImages"
-   enabled_control="RenderDeferred"
    height="16"
    label="Render Spotlight Light Refraction"
    tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
@@ -3468,7 +3461,6 @@ width="510">
  
  <!--<check_box
      control_name="RenderDeferredBlurLight"
-     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Light Softening"
@@ -3516,7 +3508,6 @@ width="510">
       </button>
  <slider
       control_name="RenderGlobalLightStrength"
-      enabled_control="RenderDeferred"
       decimal_digits="2"
       follows="left|top"
       height="14"
@@ -3579,7 +3570,6 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -3592,7 +3582,6 @@ width="510">
    left="155"
    height="18"
    control_name="RenderShadowDetail"
-   enabled_control="RenderDeferred"
    name="RenderShadowDetail"
    use_ticker="true"
    tool_tip=""
@@ -3664,7 +3653,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -3676,6 +3665,7 @@ width="510">
    follows="top|left"
    left="155"
    height="18"
+   enabled_control="RenderShadowDetail"
    name="RenderShadowResolution_X"
    use_ticker="true"
    tool_tip=""
@@ -3775,7 +3765,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -3886,7 +3876,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -3997,7 +3987,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -4149,7 +4139,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -4260,7 +4250,7 @@ width="510">
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderShadowDetail"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -4406,6 +4396,7 @@ width="510">
       </slider>
  <slider
       visibility_control="RenderShadowAutomaticDistance"
+      enabled_control="RenderShadowDetail"
       control_name="RenderShadowFarClip"
       decimal_digits="0"
       follows="left|top"
@@ -4443,7 +4434,7 @@ width="510">
                                  function="Pref.Default"/>
       </button>
  <slider
-      enabled_control="RenderDeferred"
+      enabled_control="RenderShadowDetail"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -4467,7 +4458,7 @@ width="510">
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
-      enabled_control="RenderDeferred"
+      enabled_control="RenderShadowDetail"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -4491,7 +4482,7 @@ width="510">
       parameter="RenderShadowDistance"/>
       </slider>
  <slider
-      enabled_control="RenderDeferred"
+      enabled_control="RenderShadowDetail"
       decimal_digits="0"
       follows="left|top"
       height="14"
@@ -4558,7 +4549,6 @@ width="510">
   top_pad="0"/>
  <check_box
      control_name="RenderScreenSpaceReflections"
-     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Screen Space Reflections (SSR)"
@@ -4572,19 +4562,6 @@ width="510">
      name="RenderScreenSpaceReflections"
      top_pad="7"
      width="115" />
- <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
       <slider
       control_name="RenderScreenSpaceReflectionIterations"
       decimal_digits="0"
@@ -4601,7 +4578,7 @@ width="510">
       max_val="128"
       min_val="10"
       name="RenderScreenSpaceReflectionIterations"
-      top_pad="10"/>
+      top_pad="7"/>
 		<button
  follows="left|top"
  control_name="RenderScreenSpaceReflectionIterations"
@@ -5241,7 +5218,6 @@ width="510">
   top_pad="0"/>
  <check_box
    control_name="RenderDeferredSSAO"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Screen Space Ambient Occlusion (SSAO)"
@@ -5413,7 +5389,6 @@ width="510">
   top_pad="0"/>
  <check_box
      control_name="RenderDepthOfField"
-     enabled_control="RenderDeferred"
      height="16"
      initial_value="true"
      label="Depth of Field (DoF)"
@@ -5442,7 +5417,6 @@ width="510">
    </text>
  <!--<check_box
    control_name="RenderDepthOfFieldAlphas"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="true"
    label="Enable Alphas in Depth of Field calculations"
@@ -5726,7 +5700,7 @@ Tone Mapping
  follows="left|top"
  height="12"
  layout="topleft"
- enabled_control="RenderDeferred"
+ enabled_control="RenderDisableVintageMode"
  text_readonly_color="LabelDisabledColor"
  left="10"
  name="AVPhys"
@@ -6036,7 +6010,6 @@ Tone Mapping
    
    <!--<check_box
    control_name="ExodusRenderToneMapping"
-   enabled_control="RenderDeferred"
    height="16"
    initial_value="false"
    label="Tone Mapping"
@@ -6619,7 +6592,6 @@ Tone Mapping
    <!--<slider
       can_edit_text="true"
       control_name="RenderChromaStrength"
-      enabled_control="RenderDeferred"
       decimal_digits="1"
       follows="left|top"
       height="14"
