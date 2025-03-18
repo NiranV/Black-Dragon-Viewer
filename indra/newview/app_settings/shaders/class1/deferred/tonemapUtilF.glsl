@@ -113,6 +113,41 @@ vec3 PBRNeutralToneMapping( vec3 color )
   return mix(color, newPeak * vec3(1, 1, 1), g);
 }
 
+
+vec3 PBRReinhardToneMapping(vec3 color)
+{
+	float white = 2.;
+	float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+	float toneMappedLuma = luma * (1. + luma / (white*white)) / (1. + luma);
+	color *= toneMappedLuma / luma;
+	return color;
+}
+
+vec3 Uncharted2ToneMapping(vec3 color)
+{
+	float A = 0.15;
+	float B = 0.50;
+	float C = 0.10;
+	float D = 0.20;
+	float E = 0.02;
+	float F = 0.30;
+	float W = 11.2;
+	float exposure = 2.;
+	color *= exposure;
+	color = ((color * (A * color + C * B) + D * E) / (color * (A * color + B) + D * F)) - E / F;
+	float white = ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F;
+	color /= white;
+	return color;
+}
+
+vec3 FilmicToneMapping(vec3 color)
+{
+	vec3 X = max(vec3(0.0), color - 0.004);
+    vec3 result = (X * (6.2 * X + 0.5)) / (X * (6.2 * X + 1.7) + 0.06);
+    return pow(result, vec3(2.2));
+}
+
+
 uniform float exposure;
 uniform float tonemap_mix;
 uniform int tonemap_type;
@@ -133,6 +168,15 @@ vec3 toneMap(vec3 color)
         break;
     case 1:
         color = toneMapACES_Hill(color);
+        break;
+    case 2:
+        color = PBRReinhardToneMapping(color);;
+        break;
+    case 3:
+        color = Uncharted2ToneMapping(color);;
+        break;
+    case 4:
+        color = FilmicToneMapping(color);;
         break;
     }
 
@@ -155,7 +199,16 @@ vec3 toneMapNoExposure(vec3 color)
         color = PBRNeutralToneMapping(color);
         break;
     case 1:
-        color = toneMapACES_Hill(color);
+        color = PBRReinhardToneMapping(color);;
+        break;
+    case 2:
+        color = PBRReinhardToneMapping(color);;
+        break;
+    case 3:
+        color = Uncharted2ToneMapping(color);;
+        break;
+    case 4:
+        color = FilmicToneMapping(color);;
         break;
     }
 
