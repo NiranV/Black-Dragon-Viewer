@@ -10034,8 +10034,11 @@ void initialize_menus()
 		LLZoomer(F32 val, bool mult=true) : mVal(val), mMult(mult) {}
 		bool handleEvent(const LLSD& userdata)
 		{
+            LL_INFOS("Camera_Debug") << "1" << LL_ENDL;
 			F32 new_fov_rad = mMult ? LLViewerCamera::getInstance()->getDefaultFOV() * mVal : mVal;
+            LL_INFOS("Camera_Debug") << "2" << LL_ENDL;
 			LLViewerCamera::getInstance()->setDefaultFOV(new_fov_rad);
+            LL_INFOS("Camera_Debug") << "3" << LL_ENDL;
 			gSavedSettings.setF32("CameraAngle", LLViewerCamera::getInstance()->getView()); // setView may have clamped it.
 			return true;
 		}

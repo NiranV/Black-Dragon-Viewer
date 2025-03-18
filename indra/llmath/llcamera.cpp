@@ -400,7 +400,6 @@ void LLCamera::calculateFrustumPlanes()
     bottom = -top;
     left = top * mAspect;
     right = -left;
-
     calculateFrustumPlanes(left, right, top, bottom);
 }
 

@@ -768,14 +768,10 @@ extern bool gCubeSnapshot;
 /* virtual */ void LLViewerCamera::setView(F32 vertical_fov_rads)
 {
     llassert(!gCubeSnapshot);
-
     F32 old_fov = LLViewerCamera::getInstance()->getView();
-
     // cap the FoV
     vertical_fov_rads = llclamp(vertical_fov_rads, getMinView(), getMaxView());
-
     if (vertical_fov_rads == old_fov) return;
-
     // send the new value to the simulator
     LLMessageSystem* msg = gMessageSystem;
     msg->newMessageFast(_PREHASH_AgentFOV);
@@ -783,13 +779,10 @@ extern bool gCubeSnapshot;
     msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
     msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
     msg->addU32Fast(_PREHASH_CircuitCode, gMessageSystem->mOurCircuitCode);
-
     msg->nextBlockFast(_PREHASH_FOVBlock);
     msg->addU32Fast(_PREHASH_GenCounter, 0);
     msg->addF32Fast(_PREHASH_VerticalAngle, vertical_fov_rads);
-
     gAgent.sendReliableMessage();
-
     // sync the camera with the new value
     LLCamera::setView(vertical_fov_rads); // call base implementation
 }
@@ -801,10 +794,15 @@ void LLViewerCamera::setViewNoBroadcast(F32 vertical_fov_rads)
 
 void LLViewerCamera::setDefaultFOV(F32 vertical_fov_rads)
 {
+    LL_INFOS("Camera_Debug") << "1-1" << LL_ENDL;
     vertical_fov_rads = llclamp(vertical_fov_rads, getMinView(), getMaxView());
+    LL_INFOS("Camera_Debug") << "1-2" << LL_ENDL;
     setView(vertical_fov_rads);
+    LL_INFOS("Camera_Debug") << "1-3" << LL_ENDL;
     mCameraFOVDefault = vertical_fov_rads;
+    LL_INFOS("Camera_Debug") << "1-4" << LL_ENDL;
     mCosHalfCameraFOV = cosf(mCameraFOVDefault * 0.5f);
+    LL_INFOS("Camera_Debug") << "1-5" << LL_ENDL;
 }
 
 bool LLViewerCamera::isDefaultFOVChanged()
