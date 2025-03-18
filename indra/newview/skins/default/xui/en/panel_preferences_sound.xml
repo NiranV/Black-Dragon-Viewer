@@ -501,7 +501,6 @@ width="510">
    height="16"
    tool_tip="This option toggles whether you want to be able to hear sounds coming from gestures or not."
    label="Play sounds from gestures"
-<<<<<<< HEAD
    top_pad="0"
    left_delta="0"/>
    <check_box
@@ -601,22 +600,6 @@ width="510">
    left_delta="0"/>
    <check_box
    label_text.halign="left"
-=======
-   top_pad="5"
-   left="20"/>
-  <check_box
-   control_name="VoiceVisualizerEnabled"
-   height="15"
-   tool_tip="Check to show voice dot indicator above avatars"
-   label="Show voice dot above avatars"
-   layout="topleft"
-   name="voice_dot_visualizer"
-   left="260"
-   top_pad="-15"
-   width="200"/>
-  <button
-   control_name="ShowDeviceSettings"
->>>>>>> Linden_Release/project/lua
    follows="left|top"
    height="16"
    control_name ="VoiceMorphingEnabled"
