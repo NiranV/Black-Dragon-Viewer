@@ -100,7 +100,7 @@ width="510">
        follows="top|left|right"
        visibility_control="PrefsViewerVisible"
        layout="topleft"
-       height="1247"
+       height="1262"
        auto_resize="false"
        visible="false"
        name="basic_layout_panel"
@@ -1536,6 +1536,78 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing. Less cheap antialiasing than FXAA but more advanced, keeps the image sharper at the cost of more jagged edges."
+       value="2"
+       name="item2"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
+    <text
+ type="string"
+ length="1"
+ follows="left|top"
+ text_readonly_color="LabelDisabledColor"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="AVPhys"
+ top_pad="6"
+ width="120">
+ Antialiasing Quality:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   label="Quality"
+   control_name="RenderFSAASamples"
+   name="RenderFSAAType"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Low"
+       value="0"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+||Sets the quality of (S)ubpixel (M)orphological (A)nti(a)liasing. Higher is better and looks smoother but is also slightly costlier.
+||RenderFSAASamples: &lt;blue&gt;0&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="Medium"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||Sets the quality of (S)ubpixel (M)orphological (A)nti(a)liasing. Higher is better and looks smoother but is also slightly costlier.
+||RenderFSAASamples: &lt;blue&gt;1&lt;/blue&gt;"
+       value="1"
+       name="item2"/>
+       <combo_box.item
+       label="High"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||Sets the quality of (S)ubpixel (M)orphological (A)nti(a)liasing. Higher is better and looks smoother but is also slightly costlier.
+||RenderFSAASamples: &lt;blue&gt;2&lt;/blue&gt;"
+       value="2"
+       name="item2"/>
+       <combo_box.item
+       label="Ultra"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||Sets the quality of (S)ubpixel (M)orphological (A)nti(a)liasing. Higher is better and looks smoother but is also slightly costlier.
+||RenderFSAASamples: &lt;blue&gt;3&lt;/blue&gt;"
        value="2"
        name="item2"/>
       <combo_box.drop_down_button
