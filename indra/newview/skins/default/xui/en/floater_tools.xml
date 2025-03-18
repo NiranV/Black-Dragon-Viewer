@@ -512,7 +512,7 @@
         <button
             left_pad="1"
             label=""
-            image_overlay="Conv_toolbar_expand"
+            image_overlay="OptionsMenu_Off"
             layout="topleft"
             follows="top|left"
             name="Options..."
