@@ -20,7 +20,7 @@ width="510">
  height="407">
   <panel
   follows="top|left|right"
-  height="635"
+  height="657"
   label="Sounds"
   layout="topleft"
   left="0"
@@ -276,43 +276,67 @@ width="510">
    tab_stop="false"
    width="16" />
    <text
-   layout="topleft"
-   height="15"
-   left="260"
-   top_pad="-18"
-   width="100"
-   name="noise_suppression_label">
-     Noise Suppression
-  </text>
-  <combo_box
+ type="string"
+ length="1"
+ follows="left|top"
+ text_readonly_color="LabelDisabledColor"
+ height="12"
+ layout="topleft"
+ left="10"
+ name="AVPhys"
+ top_pad="6"
+ width="120">
+ Noise Supression:
+ </text>
+ <combo_box
+   follows="top|left"
+   left="155"
+   height="18"
+   label="Quality"
    control_name="VoiceNoiseSuppressionLevel"
-   layout="topleft"
-   height="23"
-   left_pad="10"
-   top_pad="-20"
-   name="noise_suppression_combo"
-   width="80">
-    <item
-     label="Off"
-     name="noise_suppression_none"
-     value="0"/>
-    <item
-     label="Low"
-     name="noise_suppression_low"
-     value="1"/>
-    <item
-     label="Moderate"
-     name="noise_suppression_moderate"
-     value="2"/>
-    <item
-     label="High"
-     name="noise_suppression_high"
-     value="3"/>
-    <item
-     label="Max"
-     name="noise_suppression_max"
-     value="4"/>
-  </combo_box>
+   name="VoiceNoiseSuppressionLevel"
+   use_ticker="true"
+   tool_tip=""
+   top_delta="-2"
+   width="219">
+      <combo_box.item
+       label="Off"
+       value="0"
+       tool_tip="Sets the strength of voice noise supression, higher attempts to filter out more background noise.
+||VoiceNoiseSuppressionLevel: &lt;blue&gt;0&lt;/blue&gt;"
+       name="item0"/>
+      <combo_box.item
+       label="Low"
+       tool_tip="Sets the strength of voice noise supression, higher attempts to filter out more background noise.
+||VoiceNoiseSuppressionLevel: &lt;blue&gt;1&lt;/blue&gt;"
+       value="1"
+       name="item2"/>
+       <combo_box.item
+       label="Moderate"
+       tool_tip="Sets the strength of voice noise supression, higher attempts to filter out more background noise.
+||VoiceNoiseSuppressionLevel: &lt;blue&gt;2&lt;/blue&gt;"
+       value="2"
+       name="item2"/>
+       <combo_box.item
+       label="High"
+       tool_tip="Sets the strength of voice noise supression, higher attempts to filter out more background noise.
+||VoiceNoiseSuppressionLevel: &lt;blue&gt;3&lt;/blue&gt;"
+       value="3"
+       name="item3"/>
+       <combo_box.item
+       label="Max"
+       tool_tip="Sets the strength of voice noise supression, higher attempts to filter out more background noise.
+||VoiceNoiseSuppressionLevel: &lt;blue&gt;4&lt;/blue&gt;"
+       value="4"
+       name="item4"/>
+      <combo_box.drop_down_button
+       pad_right="4"
+       image_unselected="Transparent"
+       image_selected="Transparent"
+       image_pressed="Transparent" 
+       image_pressed_selected="Transparent"
+       image_disabled="Transparent" />
+    </combo_box>
    <check_box
    control_name="AudioStreamingMusic"
    height="16"
