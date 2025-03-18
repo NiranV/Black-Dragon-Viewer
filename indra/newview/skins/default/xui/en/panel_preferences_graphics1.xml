@@ -6001,7 +6001,7 @@ Tone Mapping
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="333"
+	  height="343"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -6576,6 +6576,39 @@ Tone Mapping
    <button
  follows="left|top"
  control_name="RenderPostPosterizationSamples"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      can_edit_text="true"
+      control_name="RenderCASSharpness"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="0.4"
+		tool_tip="This option controls the level of sharpening to apply via Contrast Adaptive Sharpening."
+      label="CAS Sharpness:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0"
+      name="RenderCASSharpness"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderCASSharpness"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
