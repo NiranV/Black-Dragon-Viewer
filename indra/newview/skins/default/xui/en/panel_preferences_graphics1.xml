@@ -5712,6 +5712,8 @@ Tone Mapping
    follows="top|left"
    left="155"
    height="18"
+   control_name="RenderTonemapType"
+   enabled_control="RenderDisableVintageMode"
    name="RenderTonemapType"
    use_ticker="true"
    tool_tip=""
@@ -5724,8 +5726,9 @@ Tone Mapping
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
-||This option controls which Tonemapper should be used, either the Khronos Neutral Tonemapper or the more colorful ACES Tonemapper.
-||RenderTonemapType: &lt;blue&gt;1&lt;/blue&gt;"
+||This option controls which Tonemapper should be used.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work.
+||RenderTonemapType: &lt;blue&gt;0&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="ACES"
@@ -5733,9 +5736,43 @@ Tone Mapping
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
-||This option controls which Tonemapper should be used, either the Khronos Neutral Tonemapper or the more colorful ACES Tonemapper.
+||This option controls which Tonemapper should be used.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work.
 ||RenderTonemapType: &lt;blue&gt;1&lt;/blue&gt;"
-       value="512"
+       value="1"
+       name="item2"/>
+       <combo_box.item
+       label="Reinhard"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls which Tonemapper should be used.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work.
+||RenderTonemapType: &lt;blue&gt;2&lt;/blue&gt;"
+       value="2"
+       name="item2"/>
+       <combo_box.item
+       label="Uncharted 2"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls which Tonemapper should be used.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work.
+||RenderTonemapType: &lt;blue&gt;3&lt;/blue&gt;"
+       value="3"
+       name="item2"/>
+       <combo_box.item
+       label="Filmic"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
+||This option controls which Tonemapper should be used.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work.
+||RenderTonemapType: &lt;blue&gt;4&lt;/blue&gt;"
+       value="4"
        name="item2"/>
       <combo_box.drop_down_button
        pad_right="4"
@@ -5748,6 +5785,7 @@ Tone Mapping
 
     <slider
       control_name="RenderTonemapMix"
+      enabled_control="RenderDisableVintageMode"
       can_edit_text="true"
       decimal_digits="2"
       follows="left|top"
@@ -5764,9 +5802,26 @@ Tone Mapping
       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; None
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;red&gt;Low &lt;/red&gt;
-||This option controls the amount to mix in the Tonemapper. 0 = Linear, 1 = Fully Tonemapped"
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low &lt;/green&gt;
+||This option controls the amount to mix in the Tonemapper. 0 = Linear, 1 = Fully Tonemapped
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work."
       top_pad="7" />
+      <button
+ follows="left|top"
+ control_name="RenderTonemapMix"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
   
   <!--<text
  type="string"
