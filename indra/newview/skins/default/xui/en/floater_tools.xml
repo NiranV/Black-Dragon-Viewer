@@ -189,7 +189,7 @@
         mouse_opaque="false"
         name="focus_panel"
         top="0"
-        width="290">
+        width="300">
         <radio_group
             layout="topleft"
             left="8"
@@ -781,7 +781,7 @@
         mouse_opaque="false"
         name="land_panel"
         top="0"
-        width="290">
+        width="310">
         <radio_group
             height="110"
             layout="topleft"
