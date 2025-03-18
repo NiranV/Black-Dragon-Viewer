@@ -148,8 +148,72 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="143"
+     height="325"
      top="10"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Option to toggle Voice visualizer to Preferences - General.
+Added: Missing default PBR upload option to Preferences - Uploads.
+Added: Missing Voice Noise Suppression option to Preferences - Sound &amp; Media.
+Added: Post Processing options back to Machinima Sidebar.
+Added: CAS Sharpening option to Machinima Sidebar.
+Added: Contact Adaptive Sharpening option to Preferences - Display.
+Added: Several new Tonemappers: Reinhard, Uncharted 2 and Filmic.
+Added: Default button to Tonemap Mix slider.
+Added: Antialiasing Quality option to Preferences - Display.
+Changed: Extra options button Tools floater to use the gear options icon like all other windows to clarify what it does.
+Changed: Clarify UI Size tooltips that they require a restart or toggling Borderless, remove the extra part that confuses since its no longer true.
+Changed: Some options in Preferences to require the appropiate predecessor option such as shadow resolution/distance requiring shadows.
+Changed: Made it clear that Tonemapping options require Advanced PBR Rendering to be enabled and a supporting windlight.
+Changed: Version to 5.3.1.
+Fixed: Poser not reflecting when the Poser was toggled off via the Status button.
+Fixed: Edit Sky crashing when opened while region windlight is enabled due to missing PBR settings that cannot be validated and fixed.
+Fixed: A bunch of UI creation warnings due to a differing widget type for the microphone slider. Should also fix the mic volume slider.
+Fixed: Several log warnings in preferences for missing PBR shaders option.
+Fixed: Voice visualizer is behind the nametag.
+Fixed: Selection outline options being inverted and using the wrong outline method for different types of objects.
+Fixed: Zoom and Brush size slider in Tools floater not clickable on the very end.
+Fixed: Preferences - Sound &amp; Media tab missing due to an invalid XUI file.
+Fixed: Some settings in Machinima Sidebar requiring Deferred Rendering.
+Fixed: Plenty of options in Preferences still requiring Deferred which is no longer available.
+Misc: Logging in camera zoom functions in hope to find out whats causing a crash for some people.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.3.0
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="143"
+     top_pad="3"
      left="7"
      max_length="9999"
      name="changelog_text"
