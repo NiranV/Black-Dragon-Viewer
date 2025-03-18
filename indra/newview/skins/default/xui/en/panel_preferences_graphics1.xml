@@ -187,7 +187,7 @@ width="510">
        tool_tip="This option changes the UI size to tiny.
 ||UIScaleFactor: &lt;blue&gt;0.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        name="item0"/>
       <combo_box.item
@@ -196,7 +196,7 @@ width="510">
        tool_tip="This option changes the UI size to small.
 ||UIScaleFactor: &lt;blue&gt;0.8&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        name="item0"/>
       <combo_box.item
@@ -204,7 +204,7 @@ width="510">
        tool_tip="This option changes the UI size to default.
 ||UIScaleFactor: &lt;blue&gt;1.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset."
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply."
        value="1"
        name="item2"/>
       <combo_box.item
@@ -212,7 +212,7 @@ width="510">
        tool_tip="This option changes the UI size to big.
 ||UIScaleFactor: &lt;blue&gt;1.25&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="1.25"
        name="item3"/>
@@ -221,7 +221,7 @@ width="510">
        tool_tip="This option changes the UI size to large.
 ||UIScaleFactor: &lt;blue&gt;1.5&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="1.5"
        name="item3"/>
@@ -230,7 +230,7 @@ width="510">
        tool_tip="This option changes the UI size to huge.
 ||UIScaleFactor: &lt;blue&gt;2.0&lt;/blue&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
-|Changing this option requires you to restart the Viewer or toggle Borderless Mode otherwise all onscreen actions to inworld will have an offset.
+|Changing this option requires you to restart the Viewer or toggle Borderless Mode to apply.
 ||This option will break layouts, spacing, text labels and any sort of consistency in the UI. It is not recommended using this unless absolutely necessary."
        value="2"
        name="item4"/>
