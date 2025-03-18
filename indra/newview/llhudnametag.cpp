@@ -292,7 +292,8 @@ void LLHUDNameTag::renderText()
     //BD
     LLVoiceClient* voice_client = LLVoiceClient::getInstance();
 	LLUUID id = mSourceObject->getID();
-	bool voice_enabled = voice_client->getVoiceEnabled(id);
+    static LLCachedControl<F32> voice_visualizer(gSavedSettings, "VoiceVisualizerEnabled");
+	bool voice_enabled = voice_client->getVoiceEnabled(id) && voice_visualizer;
 	bool is_speaking = voice_client->getIsSpeaking(id);
 
     static LLCachedControl<F32> bubble_opacity(gSavedSettings, "ChatBubbleOpacity");
@@ -325,6 +326,7 @@ void LLHUDNameTag::renderText()
     LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
     LLRect screen_rect;
     screen_rect.setCenterAndSize(0, static_cast<S32>(lltrunc(-mHeight / 2 + mOffsetY)), static_cast<S32>(lltrunc(mWidth)), static_cast<S32>(lltrunc(mHeight)));
+    screen_rect.mLeft -= voice_enabled ? 26 : 0;
     mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, screen_rect, bg_color);
     if (mLabelSegments.size())
     {
@@ -340,7 +342,7 @@ void LLHUDNameTag::renderText()
     if (voice_enabled)
 	{
 		LLRect voice_ptt_rect = screen_rect;
-		voice_ptt_rect.setLeftTopAndSize(screen_rect.mRight - 24, screen_rect.mBottom + 22, 18, 18);
+		voice_ptt_rect.setLeftTopAndSize(screen_rect.mLeft + 6, screen_rect.mTop - 4, 18, 18);
 		if (is_speaking)
 		{
 			F32 voice_power = voice_client->getCurrentPower(id);

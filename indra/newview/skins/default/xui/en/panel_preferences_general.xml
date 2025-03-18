@@ -24,7 +24,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="530"
+  height="540"
   name="general_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -444,7 +444,7 @@ width="510">
    name="name_tags_textbox"
    top_delta="4"
    width="300">
-    Avatar Name Options:
+    Avatar Name Tag Options:
    </text>
    
    <radio_group
@@ -643,6 +643,17 @@ width="510">
    layout="topleft"
    left_delta="0"
    name="show_my_name_checkbox1"
+   width="180" />
+   <check_box
+   follows="left|top"
+   control_name="VoiceVisualizerEnabled"
+   height="16"
+   top_pad="0"
+   label="Show Voice Visualizer"
+   tool_tip="This option shows the Voice Visualizer next to nametag names, this option can be used to toggle Voice Visualizers off without toggling off Voice itself.."
+   layout="topleft"
+   left_delta="0"
+   name="show_voice_checkbox"
    width="180" />
    <panel
    follows="left|top|right"
