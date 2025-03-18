@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1057"
+            height="1157"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -1657,7 +1657,7 @@ width="345">
                   name="RenderScreenSpaceReflectionDitanceBias"
                   top_pad="2" 
                   width="310"/>
-                  <!--<panel
+                  <panel
                   follows="left|top|right"
                   height="20"
                   bg_visible="true"
@@ -1680,7 +1680,7 @@ width="345">
                   width="250">
                   Post Processing:
                   </text>
-                  <slider
+                  <!--<slider
                   control_name="RenderMotionBlurStrength"
                   enabled_control="RenderDeferred"
                   decimal_digits="0"
@@ -1698,7 +1698,7 @@ width="345">
                   min_val="10"
                   name="MotionBlurQuality"
                   top_pad="15"
-                  width="310" />
+                  width="310" />-->
                   <slider
                   control_name="RenderPostGreyscaleStrength"
                   enabled_control="RenderDeferred"
@@ -1716,7 +1716,7 @@ width="345">
                   max_val="1"
                   min_val="0"
                   name="GreyscaleStrength"
-                  top_pad="7"
+                  top_pad="15"
                   width="310" />
                   <slider
                   control_name="RenderPostSepiaStrength"
@@ -1756,7 +1756,7 @@ width="345">
                   name="PosterizationSamples"
                   top_pad="1"
                   width="310" />
-                  <slider
+                  <!--<slider
                   control_name="RenderChromaStrength"
                   enabled_control="RenderDeferred"
                   decimal_digits="1"
