@@ -33,11 +33,6 @@ uniform float gamma;
 uniform vec2 screen_res;
 in vec2 vary_fragcoord;
 
-uniform float greyscale_str;
-uniform float sepia_str;
-uniform float num_colors;
-uniform float chroma_str;
-
 vec3 linear_to_srgb(vec3 cl);
 
 vec3 legacyGamma(vec3 color)
@@ -57,24 +52,6 @@ void main()
 #ifdef LEGACY_GAMMA
     diff.rgb = legacyGamma(diff.rgb);
 #endif
-
-    if(num_colors > 2)
-	{
-		diff.rgb = pow(diff.rgb, vec3(0.6));
-		diff.rgb = diff.rgb * num_colors;
-		diff.rgb = floor(diff.rgb);
-		diff.rgb = diff.rgb / num_colors;
-		diff.rgb = pow(diff.rgb, vec3(1.0/0.6));
-	}
-
-    vec3 col_gr = vec3((0.299 * diff.r) + (0.587 * diff.g) + (0.114 * diff.b));
-	diff.rgb = mix(diff.rgb, col_gr, greyscale_str);
-
-    vec3 col_sep;
-	col_sep.r = (diff.r*0.3588) + (diff.g*0.7044) + (diff.b*0.1368);
-	col_sep.g = (diff.r*0.299) + (diff.g*0.5870) + (diff.b*0.114);
-	col_sep.b = (diff.r*0.2392) + (diff.g*0.4696) + (diff.b*0.0912);
-	diff.rgb = mix(diff.rgb, col_sep, sepia_str);
 
     frag_color = max(diff, vec4(0));
 }
