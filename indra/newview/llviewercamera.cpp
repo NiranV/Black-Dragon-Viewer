@@ -765,13 +765,28 @@ bool LLViewerCamera::areVertsVisible(LLViewerObject* volumep, bool all_verts)
 extern bool gCubeSnapshot;
 
 // changes local camera and broadcasts change
-/* virtual */ void LLViewerCamera::setView(F32 vertical_fov_rads)
+/* virtual */ void LLViewerCamera::setView(F32 vertical_fov_rads, bool debug)
 {
-    llassert(!gCubeSnapshot);
+    if (debug) LL_INFOS("Camera_Debug") << "2-1" << LL_ENDL;
+    //llassert(!gCubeSnapshot);
+    //BD - llassert inexplicably crashes for some people when changing field of view.
+    //     No idea why, i cannot reproduce the issue and not everyone seems to have it
+    //     either, on top of that for some people it happens immediately and for some
+    //     it only starts happening after a while. It is unknown if mirrors or reflection
+    //     probes actually have any effect on this. But seeing that this is the only
+    //     instance of llassert(!gCubeSnapshot) that crashes i believe it doesn't belong
+    //     here anyway...the Viewer should not crash anyway but rather simply not execute
+    //     this code. No idea why LL always insists on going the nuclear option and making
+    //     the Viewer explode rather than simply not executing code that shouldn't be executing.
+    if (gCubeSnapshot) return;
+    if (debug) LL_INFOS("Camera_Debug") << "2-2" << LL_ENDL;
     F32 old_fov = LLViewerCamera::getInstance()->getView();
+    if (debug) LL_INFOS("Camera_Debug") << "2-3" << LL_ENDL;
     // cap the FoV
     vertical_fov_rads = llclamp(vertical_fov_rads, getMinView(), getMaxView());
+    if (debug) LL_INFOS("Camera_Debug") << "2-4" << LL_ENDL;
     if (vertical_fov_rads == old_fov) return;
+    if (debug) LL_INFOS("Camera_Debug") << "2-5" << LL_ENDL;
     // send the new value to the simulator
     LLMessageSystem* msg = gMessageSystem;
     msg->newMessageFast(_PREHASH_AgentFOV);
@@ -784,7 +799,9 @@ extern bool gCubeSnapshot;
     msg->addF32Fast(_PREHASH_VerticalAngle, vertical_fov_rads);
     gAgent.sendReliableMessage();
     // sync the camera with the new value
-    LLCamera::setView(vertical_fov_rads); // call base implementation
+    if (debug) LL_INFOS("Camera_Debug") << "2-6" << LL_ENDL;
+    LLCamera::setView(vertical_fov_rads, debug); // call base implementation
+    if (debug) LL_INFOS("Camera_Debug") << "2-7" << LL_ENDL;
 }
 
 void LLViewerCamera::setViewNoBroadcast(F32 vertical_fov_rads)
@@ -792,12 +809,12 @@ void LLViewerCamera::setViewNoBroadcast(F32 vertical_fov_rads)
     LLCamera::setView(vertical_fov_rads);
 }
 
-void LLViewerCamera::setDefaultFOV(F32 vertical_fov_rads)
+void LLViewerCamera::setDefaultFOV(F32 vertical_fov_rads, bool debug)
 {
     LL_INFOS("Camera_Debug") << "1-1" << LL_ENDL;
     vertical_fov_rads = llclamp(vertical_fov_rads, getMinView(), getMaxView());
     LL_INFOS("Camera_Debug") << "1-2" << LL_ENDL;
-    setView(vertical_fov_rads);
+    setView(vertical_fov_rads, debug);
     LL_INFOS("Camera_Debug") << "1-3" << LL_ENDL;
     mCameraFOVDefault = vertical_fov_rads;
     LL_INFOS("Camera_Debug") << "1-4" << LL_ENDL;
@@ -817,6 +834,6 @@ bool LLViewerCamera::isDefaultFOVChanged()
 
 void LLViewerCamera::updateCameraAngle(const LLSD& value)
 {
-    setDefaultFOV((F32)value.asReal());
+    setDefaultFOV((F32)value.asReal(), true);
 }
 

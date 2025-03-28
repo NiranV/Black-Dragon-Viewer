@@ -1632,7 +1632,7 @@ bool idle_startup()
 		LLViewerCamera::getInstance()->setViewHeightInPixels(gViewerWindow->getWorldViewHeightRaw());
 		LLViewerCamera::getInstance()->setAspect(gViewerWindow->getWorldViewAspectRatio());
 		// Initialize FOV
-		LLViewerCamera::getInstance()->setDefaultFOV(gSavedSettings.getF32("CameraAngle")); 
+		LLViewerCamera::getInstance()->setDefaultFOV(gSavedSettings.getF32("CameraAngle"), true); 
 
 		set_startup_status(0.35f, 1.0f, LLTrans::getString("SeedGranted"), "Moving Agent");
 		display_startup();

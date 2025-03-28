@@ -10037,7 +10037,7 @@ void initialize_menus()
             LL_INFOS("Camera_Debug") << "1" << LL_ENDL;
 			F32 new_fov_rad = mMult ? LLViewerCamera::getInstance()->getDefaultFOV() * mVal : mVal;
             LL_INFOS("Camera_Debug") << "2" << LL_ENDL;
-			LLViewerCamera::getInstance()->setDefaultFOV(new_fov_rad);
+			LLViewerCamera::getInstance()->setDefaultFOV(new_fov_rad, true);
             LL_INFOS("Camera_Debug") << "3" << LL_ENDL;
 			gSavedSettings.setF32("CameraAngle", LLViewerCamera::getInstance()->getView()); // setView may have clamped it.
 			return true;

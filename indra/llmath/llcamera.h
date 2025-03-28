@@ -153,7 +153,7 @@ public:
     LLPlane getUserClipPlane();
     void setUserClipPlane(LLPlane& plane);
     void disableUserClipPlane();
-    virtual void setView(F32 vertical_fov_rads);
+    virtual void setView(F32 vertical_fov_rads, bool debug = false);
     void setViewHeightInPixels(S32 height);
     void setAspect(F32 new_aspect);
     void setNear(F32 new_near);
