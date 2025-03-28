@@ -255,6 +255,12 @@ void LLDrawPoolWater::renderPostDeferred(S32 pass)
     shader->uniform1f(LLShaderMgr::WATER_FRESNEL_OFFSET, pwater->getFresnelOffset());
     shader->uniform1f(LLShaderMgr::WATER_BLUR_MULTIPLIER, fmaxf(0, pwater->getBlurMultiplier()) * 2);
 
+    //BD - Post Process
+    shader->uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, gPipeline.RenderChromaStrength);
+    shader->uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, gPipeline.RenderGreyscaleStrength);
+    shader->uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, gPipeline.RenderSepiaStrength);
+    shader->uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, (GLfloat)gPipeline.RenderNumColors);
+
     static LLStaticHashedString s_exposure("exposure");
     static LLStaticHashedString tonemap_mix("tonemap_mix");
     static LLStaticHashedString tonemap_type("tonemap_type");
