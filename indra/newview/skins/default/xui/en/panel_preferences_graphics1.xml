@@ -1610,6 +1610,8 @@ width="510">
 ||RenderFSAASamples: &lt;blue&gt;3&lt;/blue&gt;"
        value="2"
        name="item2"/>
+       <combo_box.combo_icon
+       default_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -1868,6 +1870,8 @@ width="510">
 ||RenderMaxPartCount: &lt;blue&gt;8196&lt;/blue&gt;"
        value="8196"
        name="item4"/>
+       <combo_box.combo_icon
+       default_index="6"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -2225,6 +2229,8 @@ width="510">
 ||RenderReflectionProbeLevel: &lt;blue&gt;0&lt;/blue&gt;"
        value="3"
        name="item4"/>
+       <combo_box.combo_icon
+       default_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -2299,6 +2305,8 @@ width="510">
 ||RenderReflectionProbeDetail: &lt;blue&gt;0&lt;/blue&gt;"
        value="2"
        name="item4"/>
+       <combo_box.combo_icon
+       default_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -3297,7 +3305,8 @@ width="510">
        value="4.7"
        name="item4"/>
        <combo_box.combo_icon
-       default_index="2"/>
+       default_index="2"
+       warns_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -3475,7 +3484,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1130"
+	  height="1145"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -3820,6 +3829,8 @@ width="510">
 |&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="4"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -3920,6 +3931,8 @@ width="510">
 |&lt;blue&gt;6144x = 128MB VRAM usage&lt;/blue&gt;"
        value="6144"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="4"/>
       <combo_box.item
        label="Ultra+ (8192x)"
        tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;red&gt;High &lt;/red&gt;
@@ -4042,6 +4055,8 @@ width="510">
 |&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -4153,6 +4168,8 @@ width="510">
 |&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -4305,6 +4322,8 @@ width="510">
 |&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="4"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -4416,6 +4435,8 @@ width="510">
 |&lt;blue&gt;8192x = 256MB VRAM usage&lt;/blue&gt;"
        value="8192"
        name="item4"/>
+       <combo_box.combo_icon
+       warns_index="4"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -5875,12 +5896,53 @@ Tone Mapping
 |&lt;b&gt;GPU:&lt;/b&gt; None
 |&lt;b&gt;Performance:&lt;/b&gt; None
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low &lt;/green&gt;
-||This option controls the amount to mix in the Tonemapper. 0 = Linear, 1 = Fully Tonemapped
+||This option controls the amount to mix in the Tonemapper. 
+|0 = Linear 
+|1 = Fully Tonemapped
 ||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work."
       top_pad="7" />
       <button
  follows="left|top"
  control_name="RenderTonemapMix"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+      <slider
+      control_name="RenderExposure"
+      enabled_control="RenderDisableVintageMode"
+      can_edit_text="true"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1.0"
+      label="Exposure:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="5"
+      min_val="0"
+      name="RenderExposure"
+      tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; None
+|&lt;b&gt;Performance:&lt;/b&gt; None
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low &lt;/green&gt;
+||This option controls the exposure amount fed into the Tonemapper. Higher values makes everything brighter.
+||Note that for this option to work you MUST have a PBR Windlight preset currently active and 'Advanced PBR Rendering' in the 'Basic Settings' section MUST be enabled for this to work."
+      top_pad="1" />
+      <button
+ follows="left|top"
+ control_name="RenderExposure"
  height="15"
  is_toggle="false"
  label="⌊default⌉"
