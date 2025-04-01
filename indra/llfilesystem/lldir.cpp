@@ -1061,7 +1061,7 @@ void LLDir::setPerAccountChatLogsDir(const std::string &username)
 
 void LLDir::setSkinFolder(const std::string &skin_folder, const std::string& language)
 {
-    LL_DEBUGS("LLDir") << "Setting skin '" << skin_folder << "', language '" << language << "'"
+    LL_INFOS("LLDir") << "Setting skin '" << skin_folder << "', language '" << language << "'"
                        << LL_ENDL;
     mSkinName = skin_folder;
     mLanguage = language;
