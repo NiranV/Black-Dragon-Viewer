@@ -10,7 +10,7 @@
                                 Vieweroptionen:
                             </text>
                         </layout_panel>
-                        <layout_panel name="viewer_layout_panel">
+                        <layout_panel name="basic_layout_panel">
                         <text name="Font DPI:">
                             Schriftgröße:
                         </text>
@@ -40,13 +40,6 @@
                         <text name="MemoryUsage">
                             Speicher: [USED_MEM] MB/[MAX_MEM] MB
                         </text>
-                        </layout_panel>
-                        <layout_panel name="title_layout_panel">
-                            <text name="lod_label">
-                                Qualitätsoptionen:
-                            </text>
-                        </layout_panel>
-                        <layout_panel name="lod_layout_panel">
                             <checkbox label="Nutze dynamischen Detailgrad" tool_tip="Dynamisches LOD (Level of Detail/ Detailstufen) sorgt dafür das auf Distanz Objekte nahezu unbemerkt mit weniger Details dargestellt werden , das kann ein wenig Geschwindigkeit geben" name="DynamicLOD"/>
                             <checkbox label="Erlaube Avatar Physik Simulationen" tool_tip="Simuliert die natürlichen Physikalischen bewegungen des Körpers" name="AvatarPhysics"/>
                             <check_box label="Wasser Mip-Maps" name="MipMaps"/>
@@ -173,13 +166,6 @@
                             <radio_item label="Avatare" name="0"/>
                             <radio_item label="Alle" name="0"/>
                             </radio_group>
-                        </layout_panel>
-                        <layout_panel name="title_layout_panel">
-                            <text name="performance_label">
-                                Renderoptionen:
-                            </text>
-                        </layout_panel>
-                        <layout_panel name="performance_layout_panel">
                             <checkbox label="Angehängte Partikel anzeigen" tool_tip="Schaltet angehängte Partikel von Objekten aus" name="attached_particles"/>
                             <checkbox label="Nutze Objekt-Objekt Verdeckung" tool_tip="Verdeckung sorgt dafür das Objekte hinter Objekten versteckt werden (nicht gerendert) um so Performance zu sparen , sollte bei aktiven Deferred Renderer ausgeschaltet werden!" name="UseOcclusion"/>
                             <check_box label="Nutze hintere Clippingebene" name="RenderUseFarClip"/>
@@ -219,30 +205,7 @@
                             <button label="⌊standard⌉" name="default"/>
                             <button label="⌊standard⌉" name="default"/>
                             <button label="⌊standard⌉" name="default"/>
-                        </layout_panel>
-                        <layout_panel name="title_layout_panel">
-                            <text name="vertex_label">
-                                Windlightoptionen:
-                            </text>
-                        </layout_panel>
-                        <layout_panel name="vertex_layout_panel">
-                            <slider label="Wiederholungen:" name="Iterations"/>
-                            <slider label="Stärke:" name="Strength"/>
-                            <slider label="Helligkeit:" name="MinLuminance"/>
-                            <slider label="Wärmeeffekt:" name="Warmth"/>
-                            <slider label="Leuchtdicke:" name="Width"/>
-                            <slider label="Max. Leuchtalpha:" name="MaxAlpha"/>
-                            <slider label="Luminanz Rot:" name="RenderGlowLumWeights_X"/>
-                            <slider label="Luminanz Grün:" name="RenderGlowLumWeights_Y"/>
-                            <slider label="Luminanz Blau:" name="RenderGlowLumWeights_Z"/>
-                            <slider label="Wärmegewicht Rot:" name="RenderGlowWarmthWeights_X"/>
-                            <slider label="Wärmegewicht Grün:" name="RenderGlowWarmthWeights_Y"/>
-                            <slider label="Wärmegewicht Blau:" name="RenderGlowWarmthWeights_Z"/>
-                        </layout_panel>
-                        <layout_panel name="deferred_layout">
-                            <checkbox label="Deferred Shading (Deferred Rendering)" tool_tip="Der Deferred Renderer sorgt für noch realistischere Umgebungsbeläuchtung , zudem können Schatten angezeigt werden und Projektionslichter werden möglich" name="Deferred"/>
-                        </layout_panel>
-                        <layout_panel name="deferred_layout_panel">
+                            
                             <checkbox label="Globale Lichter anzeigen" name="RenderDeferredLights"/>
                             <checkbox label="Getragene Lichter anderer anzeigen" name="RenderOtherAttachedLights"/>
                             <checkbox label="Getragene Lichter von dir anzeigen" name="RenderOwnAttachedLights"/>
@@ -252,6 +215,19 @@
                             <checkbox label="Reflektionen von Projektorlicht anzeigen" name="RenderSpotLightImages"/>
                             <text name="Antialiasing:">
                                 Kantenglättung:
+                            </text>
+                            
+                            <radio_group name="RenderFSAASamples">
+                            <radio_item label="Aus" name="0"/>
+                            </radio_group>
+                            <text name="BumpStrength">
+                                Normalmap Stärke:
+                            </text>
+                            
+                            </layout_panel>
+                        <layout_panel name="advanced_layout_panel">
+                            <text name="ShadowAmount">
+                                Schatten:
                             </text>
                             <text name="separator_label">
                                 Schatten
@@ -264,15 +240,6 @@
                             </text>
                             <text name="separator_label">
                                 Bildschirmreflektionen
-                            </text>
-                            <radio_group name="RenderFSAASamples">
-                            <radio_item label="Aus" name="0"/>
-                            </radio_group>
-                            <text name="BumpStrength">
-                                Normalmap Stärke:
-                            </text>
-                            <text name="ShadowAmount">
-                                Schatten:
                             </text>
                             <radio_group name="RenderShadowDetail">
                             <radio_item label="Keine" name="0"/>
@@ -300,20 +267,10 @@
                             <checkbox label="Bildschirmreflektionen anzeigen" tool_tip="" name="RenderScreenSpaceReflections"/>
                             <slider label="Reflektonsauflösung:" name="RenderSSRResolution"/>
                             <slider label="Reflektionshelligkeit:" name="RenderSSRBrightness"/>
-                        </layout_panel>
-                        <layout_panel name="ao_layout">
-                            <checkbox label="Umgebungsverdeckung (SSAO)" tool_tip="Umgebungsverdeckung oder auch SSAO genannt sorgt für mehr Realität indem Schatten weichgezeichnet werden und eine Subtile Beleuchtung entstehen kann (dunkle Rillen)" name="UseSSAO"/>
-                        </layout_panel>
-                        <layout_panel name="ao_layout_panel">
                             <slider label="SSAO Stärke:" name="SSAOEffect"/>
                             <slider label="SSAO Größe:" name="SSAOScale"/>
                             <slider label="SSAO Max. Größe:" name="SSAOMaxScale"/>
                             <slider label="SSAO Faktor:" name="SSAOFactor"/>
-                        </layout_panel>
-                        <layout_panel name="dof_layout">
-                            <checkbox label="Tiefenunschärfe (Depth of Field)" tool_tip="Simuliert Tiefenschärfe Effekte wie bei einer Kamera" name="UseDoF"/>
-                        </layout_panel>
-                        <layout_panel name="dof_layout_panel">
                             <slider label="Sichtfeld (°):" name="CameraFOV"/>
                             <slider label="Blendenzahl:" name="CameraFNum"/>
                             <slider label="Brennweite (mm):" name="CameraFocal"/>
@@ -321,34 +278,10 @@
                             <slider label="Zerstreuungskreis:" name="CameraCoF"/>
                             <slider label="Fokusübergangszeit (s):" name="CameraFocusTrans"/>
                             <slider label="Auflösung:" name="CameraDoFRes"/>
-                        </layout_panel>
-                        <layout_panel name="motionblur_layout">
-                            <checkbox label="Bewegungsunschärfe (Motion Blur)" name="MotionBlur"/>
-                        </layout_panel>
-                        <layout_panel name="motionblur_layout_panel">
-                            
-                        </layout_panel>
-                        <layout_panel name="godrays_layout">
-                            <checkbox label="Volumetrische Beleuchtung (Volumetric Lighting)" name="RenderGodrays"/>
-                        </layout_panel>
-                        <layout_panel name="godrays_layout_panel">
                             <checkbox label="Richtungsabhängige Volumetrische Beleuchtung" name="RenderGodraysDirectional"/>
                             <slider label="Licht Auflösung:" name="GodraysResolution"/>
                             <slider label="Licht Helligkeit:" name="GodraysMultiplier"/>
                             <slider label="Licht Helligkeitsabfall:" name="GodraysFalloffMultiplier"/>
-                        </layout_panel>
-                        <layout_panel name="post_layout">
-                            <text name="post_label">
-                                Nachbearbeitungseffekte:
-                            </text>
-                        </layout_panel>
-                        <layout_panel name="post_layout_panel">
-                            
-                        </layout_panel>
-                        <layout_panel name="tonemapping_layout">
-                            <checkbox label="Dynamikkompression (Tone Mapping)" tool_tip="Schaltet Tone Mapping (Dynamikkompression) zusätzlich zur Gamma Korrektur hinzu , benötigt wird Gamma Korrektur" name="ToneMapping"/>
-                        </layout_panel>
-                        <layout_panel name="tonemapping_layout_panel">
                             <text name="tone_style_label">
                                 Tone Mapping Typ:
                             </text>
@@ -378,16 +311,23 @@
                             <slider label="Gamma Rot:" name="ExodusRenderGamma_X"/>
                             <slider label="Gamma Grün:" name="ExodusRenderGamma_Y"/>
                             <slider label="Gamma Blau:" name="ExodusRenderGamma_Z"/>
-                        </layout_panel>
-                        <layout_panel name="vignette_layout">
-                            <text name="vignette_label">
-                                Vignettierung:
-                            </text>
-                        </layout_panel>
-                        <layout_panel name="vignette_layout_panel">
                             <slider label="Menge:" name="ExodusRenderVignette_X"/>
                             <slider label="Stärke:" name="ExodusRenderVignette_Y"/>
                             <slider label="Multiplikator:" name="ExodusRenderVignette_Z"/>
+                            </layout_panel>
+                        <layout_panel name="post_layout">
+                        <slider label="Wiederholungen:" name="Iterations"/>
+                            <slider label="Stärke:" name="Strength"/>
+                            <slider label="Helligkeit:" name="MinLuminance"/>
+                            <slider label="Wärmeeffekt:" name="Warmth"/>
+                            <slider label="Leuchtdicke:" name="Width"/>
+                            <slider label="Max. Leuchtalpha:" name="MaxAlpha"/>
+                            <slider label="Luminanz Rot:" name="RenderGlowLumWeights_X"/>
+                            <slider label="Luminanz Grün:" name="RenderGlowLumWeights_Y"/>
+                            <slider label="Luminanz Blau:" name="RenderGlowLumWeights_Z"/>
+                            <slider label="Wärmegewicht Rot:" name="RenderGlowWarmthWeights_X"/>
+                            <slider label="Wärmegewicht Grün:" name="RenderGlowWarmthWeights_Y"/>
+                            <slider label="Wärmegewicht Blau:" name="RenderGlowWarmthWeights_Z"/>
                         </layout_panel>
                     </layout_stack>
                 </panel>

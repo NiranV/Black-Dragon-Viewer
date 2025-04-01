@@ -1495,7 +1495,7 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="AVPhys"
+ name="AA"
  top_delta="4"
  width="120">
  Antialiasing:
@@ -1554,7 +1554,7 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="AVPhys"
+ name="AAQuality"
  top_pad="6"
  width="120">
  Antialiasing Quality:
@@ -1670,7 +1670,7 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="AVPhys"
+ name="MaxLightCount"
  top_pad="10"
  width="120">
  Max. Light Count:
@@ -1785,7 +1785,7 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="AVPhys"
+ name="ParticleAmount"
  top_pad="10"
  width="120">
  Particle Amount:
@@ -2246,7 +2246,7 @@ width="510">
  height="12"
  layout="topleft"
  left="10"
- name="ReflectionAmount"
+ name="ReflectionDetail"
  top_pad="7"
  width="140">
  Reflection Probe Detail:
