@@ -887,7 +887,19 @@ bool LLAppViewer::init()
     // NOW LLUI::getLanguage() should work. gDirUtilp must know the language
     // for this session ASAP so all the file-loading commands that follow,
     // that use findSkinnedFilenames(), will include the localized files.
-    gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), LLUI::getLanguage());
+    //BD - Automatic Aprils Fools.
+    std::string date;
+    LLDateUtil::stringFromDate(date, LLDate::now());
+    LLSD sd = date.substr(0, date.find_first_of("."));
+    if (sd.asInteger() == 4)
+    {
+        gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), "april");
+        LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+    }
+    else
+    {
+        gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), LLUI::getLanguage());
+    }
 
     // Setup LLTrans after LLUI::initClass has been called.
     initStrings();
@@ -2928,8 +2940,22 @@ bool LLAppViewer::initConfiguration()
         // Examining "Language" may not suffice -- see LLUI::getLanguage()
         // logic. Unfortunately LLUI::getLanguage() doesn't yet do us much
         // good because we haven't yet called LLUI::initClass().
-        gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
-            gSavedSettings.getString("Language"));
+
+        //BD - Automatic April's Fools skin.
+        std::string date;
+        LLDateUtil::stringFromDate(date, LLDate::now());
+        LLSD sd = date.substr(0, date.find_first_of("."));
+        if (sd.asInteger() == 4)
+        {
+            gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
+                "april");
+            LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+        }
+        else
+        {
+            gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
+                gSavedSettings.getString("Language"));
+        }
     }
 
     if (gNonInteractive)

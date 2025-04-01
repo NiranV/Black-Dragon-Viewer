@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panel label="Bakery" name="Display panel">
+    <layout_stack name="display_multi_stack">
+        <layout_panel name="display_multi_layout">
+            <scroll_container name="gfx_scroll">
+                <panel name="gfx_scroll_panel">
+                    <layout_stack name="gfx_stack">
+                        <layout_panel name="title_layout_panel">
+                            <text name="general_label">
+                                Dough Options:
+                            </text>
+                        </layout_panel>
+                        <layout_panel name="basic_layout_panel">
+                            <checkbox label="Vertical Synchronous Baking" name="RenderVSyncEnable"/>
+                            <slider name="DPI" label="Sprinkles Size:"/>
+                            <text name="InterfaceSize">
+                                Glazing Size:
+                            </text>
+                            <checkbox label="Glazeless Donut" name="FullscreenWindow"/>
+                            <text name="separator_label">
+                                Dough:
+                            </text>
+                            <check_box label="Compress Dough Density" name="CompressTextures"/>
+                            <text name="MaxTextureMemoryAllowed">
+                                Max. Baking Trays:
+                            </text>
+                            <text name="GPUString">
+                                Oven: [GPU_STRING]
+                            </text>
+                            <text name="MemoryUsage">
+                                Used Trays: [USED_MEM] MB/[MAX_MEM] MB
+                            </text>
+                            <text name="lod_label">
+                                Dough Quality:
+                            </text>
+                            <slider label="Baking Rows" name="FarClip"/>
+                            <checkbox label="Dynamically use more or less dough" name="DynamicLOD"/>
+                            <checkbox label="Allow Dough Physics" name="AvatarPhysics"/>
+                            <check_box label="Flour Softening" name="MipMaps"/>
+                            <text name="ObjectLOD">
+                                Dough Roundness:
+                            </text>
+                            <text name="GlowResolution">
+                                Kneading:
+                            </text>
+                            <text name="TerrainTexQuality">
+                                Dough Texture Quality:
+                            </text>
+                            <text name="FlexiLOD">
+                                Dough Fluffiness:
+                            </text>
+                            <text name="TreeLOD">
+                                Glazing Quality:
+                            </text>
+                            <text name="AvatarLOD">
+                                Filling Quality:
+                            </text>
+                            <text name="TerrainLOD">
+                                Dough Quality:
+                            </text>
+                            <text name="SkyLOD">
+                                Bakery Quality:
+                            </text>
+                            <text name="Reflectiontext">
+                                Glazing Reflection Quality:
+                            </text>
+                            <text name="ReflectionAmount">
+                                Glazing Reflectiveness:
+                            </text>
+                            <text name="ReflectionDetail">
+                                Glazing Detail:
+                            </text>
+                            <text name="AVPhys">
+                                Physics Quality:
+                            </text>
+                            <text name="ParticleAmount">
+                                Sprinkles Amount:
+                            </text>
+                            <checkbox label="Use Glazing Reflections" name="RenderReflectionsEnabled"/>
+                            <checkbox label="Bake Attached Sprinkles" name="attached_particles"/>
+                            <!--<checkbox label="Nutze Objekt-Objekt Verdeckung" tool_tip="Verdeckung sorgt dafür das Objekte hinter Objekten versteckt werden (nicht gerendert) um so Performance zu sparen , sollte bei aktiven Deferred Renderer ausgeschaltet werden!" name="UseOcclusion"/>
+                            <check_box label="Nutze hintere Clippingebene" name="RenderUseFarClip"/>
+                            <check_box label="Nutze Plugin Read-Thread" name="PluginUseReadThread"/>
+                            <check_box label="Nutze Stream-Rendering" name="vbostream"/>
+                            <text name="separator_label">
+                                Avatare
+                            </text>
+                            <text name="separator_label">
+                                Jelly Dolls
+                            </text>
+                            <text name="separator_label">
+                                Umschaltbares
+                            </text>
+                            <text name="separator_label">
+                                Debugoptionen
+                            </text>
+                            <check_box label="Erlaube Anisotropischer Filter" name="ani"/>
+                            <check_box label="Erlaube Fullbright" name="EnableFullbright"/>
+                            
+                            <slider label="Zurückhaltezeit:" name="BackgroundYieldTime"/>
+                            <slider label="Max. Bilder pro Sekunde:" name="FramePerSecondLimit"/>
+                            
+                            <check_box label="Ungeladene Avatare anzeigen" name="UnloadedAvatars"/>
+                            <slider label="Max. sichtbare Avatare:" name="RenderAvatarMaxVisible"/>
+                            <check_box label="Freunde Immer anzeigen" name="AlwaysRenderFriends"/>
+                            <slider label="Avatare > ARC verstecken:" name="RenderAvatarMaxComplexity"/>
+                            <slider label="Avatare > m² verstecken:" name="RenderAutoMuteSurfaceAreaLimit"/>
+                            <slider label="Flächen > m² verstecken:" name="RenderAutoHideSurfaceAreaLimit"/>
+                            <slider name="MaxParticles" label="Partikelanzahl:"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>
+                            <button label="⌊standard⌉" name="default"/>-->
+                        </layout_panel>
+                    </layout_stack>
+                </panel>
+            </scroll_container>
+        </layout_panel>
+    </layout_stack>
+</panel>
