@@ -170,54 +170,6 @@ width="510">
       name="media_popup_enabled"
       width="400"           
       top_pad="0"/>
-      <check_box
-      enabled="true"
-      follows="left|top"
-      layout="topleft"
-      height="16"
-      initial_value="false"
-      control_name="AutoLoadWebProfiles"
-      label="Auto load all Webprofiles without asking"
-	tool_tip="This option allows opening all webprofiles without asking the user first.
-||&lt;red&gt;It is currently unknown what this option does or if it has any impact.&lt;/red&gt;"
-      left_delta="0"
-      mouse_opaque="true"
-      name="AutoLoadWebProfiles"
-      width="400"
-      top_pad="0"/>
-	  <slider
-   control_name="MediaBrowserWindowLimit"
-   can_edit_text="true"
-   decimal_digits="0"
-   follows="left|top"
-   height="15"
-   increment="1"
-   initial_value="8"
-   label="Max Browser Limit:"
-   label_width="150"
-   layout="topleft"
-   left="10"
-   max_val="100"
-   min_val="0"
-   tool_tip="This option sets maximum amount of opened internal browsers instances. Setting this to 0 disables the limit."
-   top_pad="5"
-   name="MediaBrowserWindowLimit"/>
-  <button
- follows="left|top"
- control_name="MediaBrowserWindowLimit"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
       
       <panel
  follows="left|top|right"
@@ -414,4 +366,3 @@ width="510">
                                  function="Pref.Default"/>
       </button>
 </panel>
-

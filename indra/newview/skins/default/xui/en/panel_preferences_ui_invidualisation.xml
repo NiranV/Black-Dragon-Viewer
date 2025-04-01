@@ -23,7 +23,7 @@ width="510">
      <panel
      layout="topleft"
      follows="left|top|right"
-     height="942"
+     height="902"
      name="ui_panel"
      top="0"
      left="0"
@@ -337,72 +337,6 @@ width="510">
 		<button
  follows="left|top"
  control_name="ToolTipVisibleTimeNear"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-		<slider
-	    control_name="InspectorFadeTime"
-	    follows="left|top"
-		can_edit_text="true"
-		decimal_digits="1"
-	    height="15"
-	    increment="1"
-	    initial_value="6"
-	    label="Inspector Fade Time"
-	    layout="topleft"
-	    left="10"
-	    label_width="150"
-	    max_val="60"
-	    min_val="1"
-	    name="InspectorFadeTime"
-	    tool_tip="This option controls the amount of time it takes in s (seconds) for any inspector (mouse-over mini profiles of objects, land and avatars) to fade away when they are no longer used."
-	    top_pad="1" />
-		<button
- follows="left|top"
- control_name="InspectorFadeTime"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-       <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-		<slider
-	    control_name="InspectorShowTime"
-	    follows="left|top"
-		can_edit_text="true"
-		decimal_digits="1"
-	    height="15"
-	    increment="1"
-	    initial_value="6"
-	    label="Inspector Show Time"
-	    layout="topleft"
-	    left="10"
-	    label_width="150"
-	    max_val="60"
-	    min_val="1"
-	    name="InspectorShowTime"
-	    tool_tip="This option controls the time it takes in s (seconds) before inspectors (mouse-over mini profiles of objects, land and avatars) will automatically start fading away even if the mouse has not been moved away."
-	    top_pad="1"/>
-		<button
- follows="left|top"
- control_name="InspectorShowTime"
  height="15"
  is_toggle="false"
  label="⌊default⌉"

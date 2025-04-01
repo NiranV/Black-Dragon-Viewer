@@ -1052,8 +1052,8 @@ void LLPanelLogin::updateServer()
 			bool system_grid = LLGridManager::getInstance()->isSystemGrid();
 
 			//BD
-			sInstance->getChildView("create_new_account_text")->setVisible( system_grid);
-			sInstance->getChildView("forgot_password_text")->setVisible(system_grid);
+			//sInstance->getChildView("create_new_account_text")->setVisible( system_grid);
+			//sInstance->getChildView("forgot_password_text")->setVisible(system_grid);
 		}
 		catch (LLInvalidGridName& ex)
 		{

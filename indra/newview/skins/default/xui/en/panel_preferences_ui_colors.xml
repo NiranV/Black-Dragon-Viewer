@@ -22,7 +22,7 @@ width="510">
       <panel
       layout="topleft"
       follows="left|top|right"
-      height="964"
+      height="944"
       name="ui_colors_panel"
       top="0"
       left="0"
@@ -332,39 +332,6 @@ Object selection highlights
 	 top_delta="2"
 	 width="95">
 	 Others
-	 </text>
-	 <color_swatch
-	 can_apply_immediately="true"
-	 color="0 0 0 1"
-	 control_name="BackgroundChatColor"
-	 follows="left|top"
-	 height="40"
-	 layout="topleft"
-	 left_delta="-49"
-	 top_pad="7"
-	 name="background"
-	 tool_tip="Choose color for bubble chat"
-	 width="44">
-	 <color_swatch.init_callback
-	 function="Pref.getUIColor"
-	 parameter="NameTagBackground" />
-	 <color_swatch.commit_callback
-	 function="Pref.applyUIColor"
-	 parameter="NameTagBackground" />
-	 </color_swatch>
-	 <text
-	 type="string"
-	 length="1"
-	 follows="left|top"
-	 word_wrap="true"
-	 height="14"
-	 layout="topleft"
-	 left_pad="5"
-	 mouse_opaque="false"
-	 name="text_box10"
-	 top_delta="2"
-	 width="195">
-	 Bubblechat / Name Tags
 	 </text>
 	 <color_swatch
 	 can_apply_immediately="true"
@@ -1162,4 +1129,3 @@ Object selection highlights
       </panel>
    </scroll_container>
 </panel>
-

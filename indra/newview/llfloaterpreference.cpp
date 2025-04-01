@@ -1400,25 +1400,6 @@ bool LLFloaterPreference::postBuild()
 	mRenderGlowWarmthWeights = { { getChild<LLUICtrl>("RenderGlowWarmthWeights_X"),
 							getChild<LLUICtrl>("RenderGlowWarmthWeights_Y"),
 							getChild<LLUICtrl>("RenderGlowWarmthWeights_Z") } };
-	mExodusRenderToneAdvOptA = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptA_X"),
-							getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Y"),
-							getChild<LLUICtrl>("ExodusRenderToneAdvOptA_Z") } };
-	mExodusRenderToneAdvOptB = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptB_X"),
-							getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Y"),
-							getChild<LLUICtrl>("ExodusRenderToneAdvOptB_Z") } };
-	mExodusRenderGamma = { { getChild<LLUICtrl>("ExodusRenderGamma_X"),
-							getChild<LLUICtrl>("ExodusRenderGamma_Y"),
-							getChild<LLUICtrl>("ExodusRenderGamma_Z") } };
-	mExodusRenderExposure = { { getChild<LLUICtrl>("ExodusRenderExposure_X"),
-							getChild<LLUICtrl>("ExodusRenderExposure_Y"),
-							getChild<LLUICtrl>("ExodusRenderExposure_Z") } };
-	mExodusRenderOffset = { { getChild<LLUICtrl>("ExodusRenderOffset_X"),
-							getChild<LLUICtrl>("ExodusRenderOffset_Y"),
-							getChild<LLUICtrl>("ExodusRenderOffset_Z") } };
-	mExodusRenderVignette = { { getChild<LLUICtrl>("ExodusRenderVignette_X"),
-							getChild<LLUICtrl>("ExodusRenderVignette_Y"),
-							getChild<LLUICtrl>("ExodusRenderVignette_Z") } };
-
 	mRenderShadowDistance = { { getChild<LLUICtrl>("RenderShadowDistance_X"),
 								getChild<LLUICtrl>("RenderShadowDistance_Y"),
 								getChild<LLUICtrl>("RenderShadowDistance_Z"),
@@ -1430,27 +1411,14 @@ bool LLFloaterPreference::postBuild()
 
 	mRenderProjectorShadowResolution = { { getChild<LLUICtrl>("RenderProjectorShadowResolution_X"),
 										getChild<LLUICtrl>("RenderProjectorShadowResolution_Y") } };
-	mExodusRenderToneAdvOptC = { { getChild<LLUICtrl>("ExodusRenderToneAdvOptC_X"),
-										getChild<LLUICtrl>("ExodusRenderToneAdvOptC_Y") } };
 
-	mExodusRenderToneMappingTech = getChild<LLUICtrl>("ExodusRenderToneMappingTech");
-	mExodusRenderToneExposure = getChild<LLUICtrl>("ExodusRenderToneExposure");
-	mExodusRenderColorGradeTech = getChild<LLUICtrl>("ExodusRenderColorGradeTech");
-
-	mRenderSpotLightReflections = getChild<LLUICtrl>("RenderSpotLightReflections");
-	mRenderSpotLightImages = getChild<LLUICtrl>("RenderSpotLightImages");
+	//mRenderSpotLightReflections = getChild<LLUICtrl>("RenderSpotLightReflections");
+	//mRenderSpotLightImages = getChild<LLUICtrl>("RenderSpotLightImages");
 	mRenderShadowAutomaticDistance = getChild<LLUICtrl>("RenderShadowAutomaticDistance");
 
 	mRenderShadowBlurSize = getChild<LLUICtrl>("RenderShadowBlurSize");
-	mRenderSSRResolution = getChild<LLUICtrl>("RenderSSRResolution");
-	mRenderSSRBrightness = getChild<LLUICtrl>("RenderSSRBrightness");
-
-	mRenderShadowBlurSize = getChild<LLUICtrl>("RenderShadowBlurSize");
-	mRenderSSRResolution = getChild<LLUICtrl>("RenderSSRResolution");
-	mRenderSSRBrightness = getChild<LLUICtrl>("RenderSSRBrightness");
-	mRenderSSRRoughness = getChild<LLUICtrl>("RenderSSRRoughness");
 	mRenderDepthOfFieldHighQuality = getChild<LLUICtrl>("RenderDepthOfFieldHighQuality");
-	mRenderDepthOfFieldAlphas = getChild<LLUICtrl>("RenderDepthOfFieldAlphas");
+	//mRenderDepthOfFieldAlphas = getChild<LLUICtrl>("RenderDepthOfFieldAlphas");
 	mRenderDepthOfFieldFront = getChild<LLUICtrl>("RenderDepthOfFieldFront");
 	mRenderDepthOfFieldInEditMode = getChild<LLUICtrl>("RenderDepthOfFieldInEditMode");
 	mCameraFOV = getChild<LLUICtrl>("CameraFOV");
@@ -1459,18 +1427,18 @@ bool LLFloaterPreference::postBuild()
 	mCameraCoF = getChild<LLUICtrl>("CameraCoF");
 	mCameraFocusTrans = getChild<LLUICtrl>("CameraFocusTrans");
 	mCameraDoFRes = getChild<LLUICtrl>("CameraDoFRes");
-	mRenderSSAOBlurSize = getChild<LLUICtrl>("RenderSSAOBlurSize");
+	//mRenderSSAOBlurSize = getChild<LLUICtrl>("RenderSSAOBlurSize");
 	mSSAOEffect = getChild<LLUICtrl>("SSAOEffect");
 	mSSAOScale = getChild<LLUICtrl>("SSAOScale");
 	mSSAOMaxScale = getChild<LLUICtrl>("SSAOMaxScale");
 	mSSAOFactor = getChild<LLUICtrl>("SSAOFactor");
-	mRenderRiggedMotionBlurQuality = getChild<LLUICtrl>("RenderRiggedMotionBlurQuality");
-	mMotionBlurQuality = getChild<LLUICtrl>("RenderMotionBlurStrength");
-	mRenderGodrays = getChild<LLUICtrl>("RenderGodrays");
-	mRenderGodraysDirectional = getChild<LLUICtrl>("RenderGodraysDirectional");
-	mRenderGodraysResolution = getChild<LLUICtrl>("GodraysResolution");
-	mRenderGodraysMultiplier = getChild<LLUICtrl>("GodraysMultiplier");
-	mRenderGodraysFalloffMultiplier = getChild<LLUICtrl>("GodraysFalloffMultiplier");
+	//mRenderRiggedMotionBlurQuality = getChild<LLUICtrl>("RenderRiggedMotionBlurQuality");
+	//mMotionBlurQuality = getChild<LLUICtrl>("RenderMotionBlurStrength");
+	//mRenderGodrays = getChild<LLUICtrl>("RenderGodrays");
+	//mRenderGodraysDirectional = getChild<LLUICtrl>("RenderGodraysDirectional");
+	//mRenderGodraysResolution = getChild<LLUICtrl>("GodraysResolution");
+	//mRenderGodraysMultiplier = getChild<LLUICtrl>("GodraysMultiplier");
+	//mRenderGodraysFalloffMultiplier = getChild<LLUICtrl>("GodraysFalloffMultiplier");
 
 	mDisplayTabs = { { getChild<LLPanel>("basic_layout_panel"),
 					getChild<LLPanel>("advanced_layout_panel"),
@@ -1490,18 +1458,16 @@ bool LLFloaterPreference::postBuild()
 	mWarning6 = getChild<LLPanel>("warning_derender_m2");
 	mWarning7 = getChild<LLPanel>("warning_derender_ar");
 	mWarning8 = getChild<LLPanel>("warning_derender_surface");
-	mWarning9 = getChild<LLPanel>("warning_reflection_quality");
+	//mWarning9 = getChild<LLPanel>("warning_reflection_quality");
 	mWarning10 = getChild<LLPanel>("warning_sky_quality");
 	mWarning11 = getChild<LLPanel>("warning_shadow_resolution");
 	mWarning12 = getChild<LLPanel>("warning_projector_resolution");
-	mWarning13 = getChild<LLPanel>("warning_blur_quality");
-	mWarning14 = getChild<LLPanel>("warning_light_resolution");
-	mWarning15 = getChild<LLPanel>("warning_ssr_resolution");
+	//mWarning13 = getChild<LLPanel>("warning_blur_quality");
+	//mWarning14 = getChild<LLPanel>("warning_light_resolution");
+	//mWarning15 = getChild<LLPanel>("warning_ssr_resolution");
 	mWarning16 = getChild<LLPanel>("warning_fxaa");
 
 //	//BD - Memory Allocation
-	mSystemMemory = getChild<LLSliderCtrl>("SystemMemory");
-	mSceneMemory = getChild<LLSliderCtrl>("SceneMemory");
 	mProgressBar = getChild<LLProgressBar>("progress_bar");
 	mGPUMemoryLabel = getChild<LLTextBox>("MemoryUsage");
 	getChild<LLTextBox>("GPUString")->setTextArg("[GPU_STRING]", llformat("%s", (const char*)(glGetString(GL_RENDERER))));
@@ -1931,14 +1897,12 @@ void LLFloaterPreference::refreshEverything()
 			}
 		}
 
-		bool deferred_enabled = gPipeline.RenderDeferred;
 		//BD - Deferred Rendering
 		//=======================
 		LLRect deferred_rect = mDisplayTabs[1]->calcScreenRect();
 		if (scroll_rect.overlaps(deferred_rect))
 		{
-			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0 && deferred_enabled);
-			mDisplayTabs[1]->setBackgroundVisible(!deferred_enabled);
+			bool shadows_enabled = (gPipeline.RenderShadowDetail > 0);
 			mRenderShadowResolution[0]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[1]->setEnabled(shadows_enabled);
 			mRenderShadowResolution[2]->setEnabled(shadows_enabled);
@@ -1952,27 +1916,24 @@ void LLFloaterPreference::refreshEverything()
 			mRenderShadowDistance[2]->setEnabled(!auto_shadow_distance && shadows_enabled);
 			mRenderShadowDistance[3]->setEnabled(!auto_shadow_distance && shadows_enabled);
 
-			bool projectors_enabled = (gPipeline.RenderShadowDetail > 1 && deferred_enabled);
+			bool projectors_enabled = (gPipeline.RenderShadowDetail > 1);
 			mRenderProjectorShadowResolution[0]->setEnabled(projectors_enabled);
 			mRenderProjectorShadowResolution[1]->setEnabled(projectors_enabled);
 
-			bool soften_enabled = (gPipeline.RenderDeferredBlurLight && deferred_enabled);
+			bool soften_enabled = (gPipeline.RenderDeferredBlurLight);
 			mRenderShadowBlurSize->setEnabled(soften_enabled);
 
-			bool ssr_enabled = (gSavedSettings.getBOOL("RenderScreenSpaceReflections") && deferred_enabled);
-			mRenderSSRResolution->setEnabled(ssr_enabled);
-			mRenderSSRBrightness->setEnabled(ssr_enabled);
-			mRenderSSRRoughness->setEnabled(ssr_enabled);
+			bool ssr_enabled = (gSavedSettings.getBOOL("RenderScreenSpaceReflections"));
 
-			mWarning11->setBackgroundVisible(deferred_enabled);
-			mWarning12->setBackgroundVisible(deferred_enabled);
-			mWarning15->setBackgroundVisible(deferred_enabled);
-			mWarning16->setBackgroundVisible(deferred_enabled);
+			mWarning11->setBackgroundVisible(true);
+			mWarning12->setBackgroundVisible(true);
+			//mWarning15->setBackgroundVisible(deferred_enabled);
+			mWarning16->setBackgroundVisible(true);
 
 			//BD - Depth of Field
 			//===================
-			bool dof_enabled = (gPipeline.RenderDepthOfField && deferred_enabled);
-			mRenderDepthOfFieldAlphas->setEnabled(dof_enabled);
+			bool dof_enabled = (gPipeline.RenderDepthOfField);
+			//mRenderDepthOfFieldAlphas->setEnabled(dof_enabled);
 			mRenderDepthOfFieldFront->setEnabled(dof_enabled);
 			mRenderDepthOfFieldInEditMode->setEnabled(dof_enabled);
 			mRenderDepthOfFieldHighQuality->setEnabled(dof_enabled);
@@ -1985,8 +1946,8 @@ void LLFloaterPreference::refreshEverything()
 
 			//BD - Screen Space Ambient Occlusion (SSAO)
 			//==========================================
-			bool ssao_enabled = (gPipeline.RenderDeferredSSAO && deferred_enabled);
-			mRenderSSAOBlurSize->setEnabled(ssao_enabled);
+			bool ssao_enabled = (gPipeline.RenderDeferredSSAO);
+			//mRenderSSAOBlurSize->setEnabled(ssao_enabled);
 			mSSAOEffect->setEnabled(ssao_enabled);
 			mSSAOScale->setEnabled(ssao_enabled);
 			mSSAOMaxScale->setEnabled(ssao_enabled);
@@ -2001,13 +1962,13 @@ void LLFloaterPreference::refreshEverything()
 
 			//BD - Volumetric Lighting
 			//========================
-			bool volumetric_enabled = (gPipeline.RenderGodrays && shadows_enabled);
-			mRenderGodrays->setEnabled(shadows_enabled);
-			mRenderGodraysDirectional->setEnabled(volumetric_enabled);
-			mRenderGodraysResolution->setEnabled(volumetric_enabled);
-			mRenderGodraysMultiplier->setEnabled(volumetric_enabled);
-			mRenderGodraysFalloffMultiplier->setEnabled(volumetric_enabled);
-			mWarning14->setBackgroundVisible(volumetric_enabled);
+			//bool volumetric_enabled = (gPipeline.RenderGodrays && shadows_enabled);
+			//mRenderGodrays->setEnabled(shadows_enabled);
+			//mRenderGodraysDirectional->setEnabled(volumetric_enabled);
+			//mRenderGodraysResolution->setEnabled(volumetric_enabled);
+			//mRenderGodraysMultiplier->setEnabled(volumetric_enabled);
+			//mRenderGodraysFalloffMultiplier->setEnabled(volumetric_enabled);
+			//mWarning14->setBackgroundVisible(volumetric_enabled);
 		}
 
 		//BD - Tone Mapping
@@ -2098,35 +2059,6 @@ void LLFloaterPreference::refreshGraphicControls()
 	mRenderProjectorShadowResolution[0]->setValue(vec2.mV[VX]);
 	mRenderProjectorShadowResolution[1]->setValue(vec2.mV[VY]);
 
-	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptA");
-	mExodusRenderToneAdvOptA[0]->setValue(vec3.mV[VX]);
-	mExodusRenderToneAdvOptA[1]->setValue(vec3.mV[VY]);
-	mExodusRenderToneAdvOptA[2]->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptB");
-	mExodusRenderToneAdvOptB[0]->setValue(vec3.mV[VX]);
-	mExodusRenderToneAdvOptB[1]->setValue(vec3.mV[VY]);
-	mExodusRenderToneAdvOptB[2]->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("ExodusRenderToneAdvOptC");
-	mExodusRenderToneAdvOptC[0]->setValue(vec3.mV[VX]);
-	mExodusRenderToneAdvOptC[1]->setValue(vec3.mV[VY]);
-
-	vec3 = gSavedSettings.getVector3("ExodusRenderGamma");
-	mExodusRenderGamma[0]->setValue(vec3.mV[VX]);
-	mExodusRenderGamma[1]->setValue(vec3.mV[VY]);
-	mExodusRenderGamma[2]->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("ExodusRenderExposure");
-	mExodusRenderExposure[0]->setValue(vec3.mV[VX]);
-	mExodusRenderExposure[1]->setValue(vec3.mV[VY]);
-	mExodusRenderExposure[2]->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("ExodusRenderOffset");
-	mExodusRenderOffset[0]->setValue(vec3.mV[VX]);
-	mExodusRenderOffset[1]->setValue(vec3.mV[VY]);
-	mExodusRenderOffset[2]->setValue(vec3.mV[VZ]);
-	vec3 = gSavedSettings.getVector3("ExodusRenderVignette");
-	mExodusRenderVignette[0]->setValue(vec3.mV[VX]);
-	mExodusRenderVignette[1]->setValue(vec3.mV[VY]);
-	mExodusRenderVignette[2]->setValue(vec3.mV[VZ]);
-
 	//BD - Anything that triggers this should also refresh the sidebar.
 	if (LLStartUp::getStartupState() == STATE_STARTED)
 	{
@@ -2155,7 +2087,7 @@ void LLFloaterPreference::refreshWarnings()
 	mWarning8->setVisible(gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit") > 256.f);
 
 	//BD - Windlight Options
-	mWarning9->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
+	//mWarning9->setVisible(gSavedSettings.getS32("RenderReflectionRes") > 768);
 	mWarning10->setVisible(gSavedSettings.getU32("WLSkyDetail") > 128);
 
 	//BD - Deferred Rendering Options
@@ -2170,10 +2102,10 @@ void LLFloaterPreference::refreshWarnings()
 	//mWarning13->setVisible(gSavedSettings.getU32("RenderMotionBlurStrength") < 80);
 
 	//BD - Volumetric Lighting Options
-	mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 48);
+	//mWarning14->setVisible(gSavedSettings.getU32("RenderGodraysResolution") > 48);
 
 	//BD - Screen Space Reflections
-	mWarning15->setVisible(gSavedSettings.getU32("RenderSSRResolution") > 13);
+	//mWarning15->setVisible(gSavedSettings.getU32("RenderSSRResolution") > 13);
 }
 
 //BD - Memory Allocation

@@ -23,7 +23,7 @@ width="510">
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="1108"
+  height="1088"
   name="chat_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -1426,40 +1426,6 @@ width="510">
    <button
    follows="left|top"
    control_name="ToastGap"
-   height="15"
-   is_toggle="false"
-   label="⌊default⌉"
-   image_selected="PushButton_Default_Off"
-   image_unselected="PushButton_Default_Off"
-   layout="topleft"
-   left="370"
-   top_delta="0"
-   name="default"
-   width="60">
-   <button.commit_callback
-   function="Pref.Default"/>
-   </button>
-   <slider
-   control_name="ChannelBottomPanelMargin"
-   decimal_digits="0"
-   can_edit_text="true"
-   follows="left|top"
-   height="15"
-   increment="1"
-   initial_value="35"
-   label="Toast Margin:"
-   label_width="150"
-   tool_tip="This option sets the amount of space in pixels between system and instant message toasts and the bottom of the screen.
-||&lt;red&gt;It is currently unknown if this option is still functional.&lt;/red&gt;"
-   layout="topleft"
-   left="10"
-   max_val="100"
-   min_val="0"
-   name="ChannelBottomPanelMargin"
-   top_pad="1" />
-   <button
-   follows="left|top"
-   control_name="ChannelBottomPanelMargin"
    height="15"
    is_toggle="false"
    label="⌊default⌉"

@@ -355,18 +355,18 @@ private:
 	LLPanel* mWarning6;
 	LLPanel* mWarning7;
 	LLPanel* mWarning8;
-	LLPanel* mWarning9;
+	//LLPanel* mWarning9;
 	LLPanel* mWarning10;
 	LLPanel* mWarning11;
 	LLPanel* mWarning12;
-	LLPanel* mWarning13;
-	LLPanel* mWarning14;
-	LLPanel* mWarning15;
+	//LLPanel* mWarning13;
+	//LLPanel* mWarning14;
+	//LLPanel* mWarning15;
 	LLPanel* mWarning16;
 
 //	//BD - Memory Allocation
-	LLSliderCtrl*	mSystemMemory;
-	LLSliderCtrl*	mSceneMemory;
+	//LLSliderCtrl*	mSystemMemory;
+	//LLSliderCtrl*	mSceneMemory;
 	LLProgressBar*	mProgressBar;
 	LLTextBox*		mGPUMemoryLabel;
 
@@ -385,15 +385,15 @@ private:
 //	//BD - Bone Camera
 	LLComboBox*			mJointComboBox;
 
-	LLUICtrl*	mRenderSpotLightReflections;
-	LLUICtrl*	mRenderSpotLightImages;
+	//LLUICtrl*	mRenderSpotLightReflections;
+	//LLUICtrl*	mRenderSpotLightImages;
 	LLUICtrl*	mRenderShadowAutomaticDistance;
 	LLUICtrl*	mRenderShadowBlurSize;
-	LLUICtrl*	mRenderSSRResolution;
-	LLUICtrl*	mRenderSSRBrightness;
-	LLUICtrl*	mRenderSSRRoughness;
+	//LLUICtrl*	mRenderSSRResolution;
+	//LLUICtrl*	mRenderSSRBrightness;
+	//LLUICtrl*	mRenderSSRRoughness;
 	LLUICtrl*	mRenderDepthOfFieldHighQuality;
-	LLUICtrl*	mRenderDepthOfFieldAlphas;
+	//LLUICtrl*	mRenderDepthOfFieldAlphas;
 	LLUICtrl*	mRenderDepthOfFieldFront;
 	LLUICtrl*	mRenderDepthOfFieldInEditMode;
 	LLUICtrl*	mCameraFOV;
@@ -402,21 +402,18 @@ private:
 	LLUICtrl*	mCameraCoF;
 	LLUICtrl*	mCameraFocusTrans;
 	LLUICtrl*	mCameraDoFRes;
-	LLUICtrl*	mRenderSSAOBlurSize;
+	//LLUICtrl*	mRenderSSAOBlurSize;
 	LLUICtrl*	mSSAOEffect;
 	LLUICtrl*	mSSAOScale;
 	LLUICtrl*	mSSAOMaxScale;
 	LLUICtrl*	mSSAOFactor;
-	LLUICtrl*	mRenderRiggedMotionBlurQuality;
-	LLUICtrl*	mMotionBlurQuality;
-	LLUICtrl*	mRenderGodrays;
-	LLUICtrl*	mRenderGodraysDirectional;
-	LLUICtrl*	mRenderGodraysResolution;
-	LLUICtrl*	mRenderGodraysMultiplier;
-	LLUICtrl*	mRenderGodraysFalloffMultiplier;
-	LLUICtrl*	mExodusRenderToneExposure;
-	LLUICtrl*	mExodusRenderColorGradeTech;
-	LLUICtrl*	mExodusRenderToneMappingTech;
+	//LLUICtrl*	mRenderRiggedMotionBlurQuality;
+	//LLUICtrl*	mMotionBlurQuality;
+	//LLUICtrl*	mRenderGodrays;
+	//LLUICtrl*	mRenderGodraysDirectional;
+	//LLUICtrl*	mRenderGodraysResolution;
+	//LLUICtrl*	mRenderGodraysMultiplier;
+	//LLUICtrl*	mRenderGodraysFalloffMultiplier;
 
 	//BD - Preferences Tabs
 	// 0 - Basic
@@ -426,18 +423,11 @@ private:
 
 	std::array<LLUICtrl*, 3> mRenderGlowLumWeights;
 	std::array<LLUICtrl*, 3> mRenderGlowWarmthWeights;
-	std::array<LLUICtrl*, 3> mExodusRenderToneAdvOptA;
-	std::array<LLUICtrl*, 3> mExodusRenderToneAdvOptB;
-	std::array<LLUICtrl*, 3> mExodusRenderGamma;
-	std::array<LLUICtrl*, 3> mExodusRenderExposure;
-	std::array<LLUICtrl*, 3> mExodusRenderOffset;
-	std::array<LLUICtrl*, 3> mExodusRenderVignette;
 
 	std::array<LLUICtrl*, 4> mRenderShadowDistance;
 	std::array<LLUICtrl*, 4> mRenderShadowResolution;
 
 	std::array<LLUICtrl*, 2> mRenderProjectorShadowResolution;
-	std::array<LLUICtrl*, 2> mExodusRenderToneAdvOptC;
 
 //	//BD - Multithreading Experiments
 	//     Updating and filling the render settings list tanks performance hard,

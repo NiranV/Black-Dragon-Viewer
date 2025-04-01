@@ -93,10 +93,6 @@ bool LLSideBar::postBuild()
 	mProjectorResX = getChild<LLUICtrl>("RenderProjectorShadowResolution_X");
 	mProjectorResY = getChild<LLUICtrl>("RenderProjectorShadowResolution_Y");
 
-	mVignetteX = getChild<LLUICtrl>("ExodusRenderVignette_X");
-	mVignetteY = getChild<LLUICtrl>("ExodusRenderVignette_Y");
-	mVignetteZ = getChild<LLUICtrl>("ExodusRenderVignette_Z");
-
 	mCameraAngle = getChild<LLSliderCtrl>("CameraAngle");
 
 	/*mTestStack = getChild<LLLayoutStack>("test_stack");
@@ -213,14 +209,12 @@ void LLSideBar::refreshGraphicControls()
 	mProjectorResX->setValue(vec2.mV[VX]);
 	mProjectorResY->setValue(vec2.mV[VY]);
 
-	LLVector3 vec3 = gSavedSettings.getVector3("ExodusRenderVignette");
-	mVignetteX->setValue(vec3.mV[VX]);
-	mVignetteY->setValue(vec3.mV[VY]);
-	mVignetteZ->setValue(vec3.mV[VZ]);
-
 	LLViewerCamera* viewer_camera = LLViewerCamera::getInstance();
-	mCameraAngle->setMaxValue(viewer_camera->getMaxView());
-	mCameraAngle->setMinValue(viewer_camera->getMinView());
+    if (viewer_camera)
+    {
+        mCameraAngle->setMaxValue(viewer_camera->getMaxView());
+        mCameraAngle->setMinValue(viewer_camera->getMinView());
+    }
 }
 
 void LLSideBar::onMouseEnter(S32 x, S32 y, MASK mask)
