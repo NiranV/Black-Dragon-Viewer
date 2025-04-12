@@ -47,6 +47,7 @@
 #include "llinitparam.h"
 #include "lltrace.h"
 #include "llsnapshotmodel.h"
+#include "llviewercamera.h"
 
 #include <boost/function.hpp>
 #include <boost/signals2.hpp>
@@ -70,6 +71,7 @@ class LLVOPartGroup;
 class LLPopupView;
 class LLCubeMap;
 class LLCubeMapArray;
+class LLViewerCamera;
 
 #define PICK_HALF_WIDTH 5
 #define PICK_DIAMETER (2 * PICK_HALF_WIDTH + 1)
@@ -555,6 +557,8 @@ private:
     LLPointer<LLViewerObject>   mDragHoveredObject;
 
     static LLTrace::SampleStatHandle<>  sMouseVelocityStat;
+
+    LLViewerCamera mOriginalCamera;
 
 public:
 

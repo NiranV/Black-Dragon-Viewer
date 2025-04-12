@@ -5454,7 +5454,34 @@ bool LLViewerWindow::cubeSnapshot(const LLVector3& origin, LLCubeMapArray* cubea
     LLPipeline::sUseOcclusion = 0;
     LLViewerCamera* camera = LLViewerCamera::getInstance();
 
-    LLViewerCamera saved_camera = LLViewerCamera::instance();
+    //BD - Oof.
+    //     So LL implemented a mConnectionSignal for LLViewerCamera on creation,
+    //     this was in an attempt to sever the connection whenever a camera gets
+    //     deleted, which happens a couple times (including here). This however
+    //     was erronously deleting the original signal connection for "CameraAngle"
+    //     to function. From what i understand this happens due to the code below:
+    //     LLViewerCamera saved_camera = = LLViewerCamera::instance();
+    //     This code unlike LLViewerCamera::getInstance() passes the reference to
+    //     the original camera directly into saved_camera which is a local definition
+    //     that is destroyed at the end of this function. This seems to trick
+    //     LLViewerCamera into thinking the camera instance was destroyed, calling
+    //     the ~LLViewerCamera destruction and thus destroying the signal connection.
+    //     The connection destroyed is the original connection required for all
+    //     "CameraAngle" debug changes to trigger a main camera update, thus making
+    //     all options and the debug itself useless. I do not know why this is happening
+    //     and i assume this is not happening with the original Viewer for some reason
+    //     which might be completely specific to how their entire rest of the Viewer
+    //     functions, meaning one of my changes or optimizations might be causing
+    //     this somewhere but from what i can tell i've only ever used the
+    //     LLViewerCamera::getInstance() function which seems entirely fine. Debugging
+    //     the destruction always lead here in 100% of the cases, this is the only
+    //     function in the entire Viewer that repeatedly calls the original camera's
+    //     destruction. Every other instance of camera destruction is a camera that
+    //     was created from scratch for a specific purpose (such as the PBR material
+    //     preview). To fix this particular issue i'm passing the reference to a semi
+    //     global definition to keep it around and prevent it from being destroyed
+    //     keeping the signal connection alive.
+    mOriginalCamera = LLViewerCamera::instance();
     glm::mat4 saved_proj = get_current_projection();
     glm::mat4 saved_mod = get_current_modelview();
 
@@ -5579,7 +5606,7 @@ bool LLViewerWindow::cubeSnapshot(const LLVector3& origin, LLCubeMapArray* cubea
     }
 
     // restore original view/camera/avatar settings settings
-    *camera = saved_camera;
+    *camera = mOriginalCamera;
     set_current_modelview(saved_mod);
     set_current_projection(saved_proj);
     setup3DViewport();
