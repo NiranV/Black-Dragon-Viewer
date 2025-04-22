@@ -893,11 +893,18 @@ bool LLAppViewer::init()
     LLSD sd = date.substr(0, date.find_first_of("."));
     if (sd.asInteger() == 4)
     {
-        gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), "april");
-        LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+        //BD - Limit the aprils fools joke to the first week of April.
+        sd = date.substr(date.find_first_of("."));
+        sd = sd.asString().substr(0, date.find_first_of("."));
+        if (sd.asInteger() >= 1 && sd.asInteger() <= 7)
+        {
+            gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), "april");
+            LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+        }
     }
     else
     {
+        LL_INFOS("AppInit") << "No Aprils fools." << LL_ENDL;
         gDirUtilp->setSkinFolder(gDirUtilp->getSkinFolder(), LLUI::getLanguage());
     }
 
@@ -2947,12 +2954,18 @@ bool LLAppViewer::initConfiguration()
         LLSD sd = date.substr(0, date.find_first_of("."));
         if (sd.asInteger() == 4)
         {
-            gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
-                "april");
-            LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+            //BD - Limit the aprils fools joke to the first week of April.
+            sd = date.substr(date.find_first_of("."));
+            sd = sd.asString().substr(0, date.find_first_of("."));
+            if (sd.asInteger() >= 1 && sd.asInteger() <= 7)
+            {
+                gDirUtilp->setSkinFolder(skinfolder->getValue().asString(), "april");
+                LL_INFOS("AppInit") << "Activating Aprils Fools!" << LL_ENDL;
+            }
         }
         else
         {
+            LL_INFOS("AppInit") << "No Aprils Fools." << LL_ENDL;
             gDirUtilp->setSkinFolder(skinfolder->getValue().asString(),
                 gSavedSettings.getString("Language"));
         }
