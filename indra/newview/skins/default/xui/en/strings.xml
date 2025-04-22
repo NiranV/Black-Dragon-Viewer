@@ -4408,7 +4408,7 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">5.3.3</string>
+	<string name="VIEWER_VERSION_LOCAL">5.3.4</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Glazing Dragon</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
