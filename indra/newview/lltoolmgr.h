@@ -125,6 +125,8 @@ extern LLToolset *gCameraToolset;
 //extern LLToolset *gLandToolset;
 extern LLToolset* gMouselookToolset;
 extern LLToolset* gFaceEditToolset;
+//BD - Beq's Visual Posing
+extern LLToolset* gPoserToolset;
 
 extern LLTool*      gToolNull;
 

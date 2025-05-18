@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<llsd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="llsd.xsd">
+  <map>
+    <key>FSManipRotateJointUseNaturalDirection</key>
+    <map>
+      <key>Comment</key>
+      <string>use the natural bone direction instead of world rotation</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+  </map>
+</llsd>

@@ -90,10 +90,13 @@ set(viewer_SOURCE_FILES
     bdstatus.cpp
     bdheadrotmotion.cpp
     bdposingmotion.cpp
+    bdmaniptranslatejoint.cpp
     piemenu.cpp
     pieseparator.cpp
     pieslice.cpp
     qtoolalign.cpp
+# Firestorm
+    fsmaniprotatejoint.cpp
 # Alchemy
     alunzip.cpp
 # LL
@@ -765,10 +768,13 @@ set(viewer_HEADER_FILES
     bdstatus.h
     bdheadrotmotion.h
     bdposingmotion.h
+    bdmaniptranslatejoint.h
     piemenu.h
     pieseparator.h
     pieslice.h
     qtoolalign.h
+# Firestorm
+    fsmaniprotatejoint.h
 # Alchemy
     alunzip.h
 # LL

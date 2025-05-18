@@ -583,6 +583,9 @@ public:
     static void destroyGL();
     static void restoreGL();
     S32         mSpecialRenderMode; // special lighting
+    //BD - Beq's Visual Posing
+    void        renderOnlySelectedBones(const std::vector<std::string>& selected_joints);
+    void        renderBoxAroundJointAttachments(LLJoint* joint);
 
 private:
     friend class LLPipeline;

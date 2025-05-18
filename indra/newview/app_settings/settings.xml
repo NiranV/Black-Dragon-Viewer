@@ -16249,6 +16249,7 @@
     <array>
       <!-- Black Dragon Debugs -->
       <string>settings_blackdragon.xml</string>
+      <string>settings_firestorm.xml</string>
       <!-- RLVa Debugs -->
       <!--<string>settings_rlva.xml</string>-->
     </array>

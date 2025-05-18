@@ -4145,6 +4145,17 @@ void LLViewerWindow::renderSelections( bool for_gl_pick, bool pick_parcel_walls,
         LLSelectMgr::getInstance()->updateSilhouettes();
     }
 
+    //BD - Beq's Visual Posing
+    //     Render the poser manipulator guides
+    //     if we have something selected those toosl should override
+    if ((!for_hud) && (selection->isEmpty()))
+    {
+        if(LLToolMgr::getInstance()->getCurrentTool() == FSToolCompPose::getInstance())
+            FSToolCompPose::getInstance()->render();
+        else if(LLToolMgr::getInstance()->getCurrentTool() == BDToolCompPoseTranslate::getInstance())
+            BDToolCompPoseTranslate::getInstance()->render();
+    }
+
     // Draw fence around land selections
     if (for_gl_pick)
     {

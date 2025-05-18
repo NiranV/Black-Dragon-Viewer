@@ -29,6 +29,13 @@
 
 #include "lltool.h"
 
+//BD - Beq's Visual Posing
+#include "fsmaniprotatejoint.h"   // For FSManipRotateJoint
+#include "bdfloaterposer.h"
+
+//BD - Visual Translation Tool
+#include "bdmaniptranslatejoint.h"
+
 class LLManip;
 class LLToolSelectRect;
 class LLToolPlacer;
@@ -241,6 +248,82 @@ protected:
     LLToolGun*          mGun;
     LLToolGrabBase*     mGrab;
     LLTool*             mNull;
+};
+
+//BD - Beq's Visual Posing
+// Subclass of LLToolComposite
+class FSToolCompPose : public LLToolComposite
+{
+public:
+    // Typical pattern: pass a name like "Pose"
+    FSToolCompPose();
+    virtual ~FSToolCompPose();
+
+    // For some viewer patterns, we create a static singleton:
+    static FSToolCompPose* getInstance();
+
+    // Overriding base events:
+    virtual bool handleHover(S32 x, S32 y, MASK mask) override;
+    virtual bool handleMouseDown(S32 x, S32 y, MASK mask) override;
+    virtual bool handleMouseUp(S32 x, S32 y, MASK mask) override;
+    virtual bool handleDoubleClick(S32 x, S32 y, MASK mask) override;
+    virtual void render() override;
+    void setAvatar(LLVOAvatar* avatar) { mManip->setAvatar(avatar); };
+    void setJoint(LLJoint* joint) { mManip->setJoint(joint); };
+
+    // Optional override if you have SHIFT/CTRL combos
+    virtual LLTool* getOverrideTool(MASK mask) override;
+
+    // The pick callback invoked on async pick
+    static void pickCallback(const LLPickInfo& pick_info);
+    void setPoserFloater(BDFloaterPoser* poser) { mPoser = poser; };
+    BDFloaterPoser* getPoserFloater() { return mPoser; };
+protected:
+    // Tools within this composite
+    FSManipRotateJoint* mManip = nullptr;
+    LLToolSelectRect* mSelectRect = nullptr;
+    BDFloaterPoser* mPoser = nullptr;
+
+    // Track mouse state similarly to LLToolCompRotate
+    bool                mMouseDown = false;
+};
+
+
+// Subclass of LLToolComposite
+class BDToolCompPoseTranslate : public LLToolComposite
+{
+public:
+    // Typical pattern: pass a name like "Pose"
+    BDToolCompPoseTranslate();
+    virtual ~BDToolCompPoseTranslate();
+
+    // For some viewer patterns, we create a static singleton:
+    static BDToolCompPoseTranslate* getInstance();
+
+    // Overriding base events:
+    virtual bool handleHover(S32 x, S32 y, MASK mask) override;
+    virtual bool handleMouseDown(S32 x, S32 y, MASK mask) override;
+    virtual bool handleMouseUp(S32 x, S32 y, MASK mask) override;
+    virtual bool handleDoubleClick(S32 x, S32 y, MASK mask) override;
+    virtual void render() override;
+    void setAvatar(LLVOAvatar* avatar) { mManip->setAvatar(avatar); };
+    void setJoint(LLJoint* joint) { mManip->setJoint(joint); };
+
+    // Optional override if you have SHIFT/CTRL combos
+    virtual LLTool* getOverrideTool(MASK mask) override;
+
+    // The pick callback invoked on async pick
+    static void pickCallback(const LLPickInfo& pick_info);
+    void setPoserFloater(BDFloaterPoser* poser) { mPoser = poser; };
+    BDFloaterPoser* getPoserFloater() { return mPoser; };
+protected:
+    // Tools within this composite
+    BDManipTranslateJoint* mManip = nullptr;
+    LLToolSelectRect* mSelectRect = nullptr;
+    BDFloaterPoser* mPoser = nullptr;
+
+    // Track mouse state similarly to LLToolCompRotate
+    bool                mMouseDown = false;
 };
 
 

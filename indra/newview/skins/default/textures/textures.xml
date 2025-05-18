@@ -866,7 +866,18 @@ with the same filename but different name
   
 
   <!-- Back Dragon textures-->
-  
+
+  <texture name="Poser_Copy" file_name="icons/Poser_Copy.png" preload="true" />
+  <texture name="Poser_Paste" file_name="icons/Poser_Paste.png" preload="true" />
+  <texture name="Poser_Recapture" file_name="icons/Poser_Recapture.png" preload="true" />
+  <texture name="Poser_Reset" file_name="icons/Poser_Reset.png" preload="true" />
+  <texture name="Poser_TPose" file_name="icons/Poser_TPose.png" preload="true" />
+  <texture name="Poser_Mirror" file_name="icons/Poser_Mirror.png" preload="true" />
+  <texture name="Poser_Symmetrize" file_name="icons/Poser_Symmetrize.png" preload="true" />
+  <texture name="Poser_Easy" file_name="icons/Poser_Easy.png" preload="true" />
+  <texture name="Poser_To" file_name="icons/Poser_To.png" preload="true" />
+  <texture name="Poser_From" file_name="icons/Poser_From.png" preload="true" />
+
   <texture name="PieMenu_Background" file_name="widgets/PieMenu_Background.png" preload="true" />
   <texture name="PieMenu_Back" file_name="widgets/PieMenu_Back.png" preload="true" />
   <texture name="PieMenu_Center" file_name="widgets/PieMenu_Center.png" preload="true" />

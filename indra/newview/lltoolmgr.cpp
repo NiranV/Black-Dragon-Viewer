@@ -67,6 +67,8 @@ LLToolset*      gCameraToolset      = NULL;
 //LLToolset*        gLandToolset        = NULL;
 LLToolset*      gMouselookToolset   = NULL;
 LLToolset*      gFaceEditToolset    = NULL;
+//BD - Beq's Visual Posing
+LLToolset*      gPoserToolset       = nullptr;
 
 /////////////////////////////////////////////////////
 // LLToolMgr
@@ -98,6 +100,9 @@ LLToolMgr::LLToolMgr()
     gFaceEditToolset    = new LLToolset();
     gMouselookToolset->setShowFloaterTools(false);
     gFaceEditToolset->setShowFloaterTools(false);
+    //BD - Beq's Visual Posing
+    gPoserToolset       = new LLToolset();
+    gPoserToolset->setShowFloaterTools(false);
 }
 
 void LLToolMgr::initTools()
@@ -118,6 +123,8 @@ void LLToolMgr::initTools()
     gMouselookToolset->addTool( LLToolCompGun::getInstance() );
     gBasicToolset->addTool( LLToolCompInspect::getInstance() );
     gFaceEditToolset->addTool( LLToolCamera::getInstance() );
+    //BD - Beq's Visual Posing
+    gPoserToolset->addTool(FSToolCompPose::getInstance());
 
     // On startup, use "select" tool
     setCurrentToolset(gBasicToolset);

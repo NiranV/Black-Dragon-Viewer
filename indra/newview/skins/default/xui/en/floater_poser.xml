@@ -118,7 +118,7 @@ width="654">
 			width="163">
 				<icon
 				follows="top|left"
-				height="300"
+				height="423"
 				color="1 1 1 1"
 				image_name="Panel_Background"
 				layout="topleft"
@@ -126,11 +126,11 @@ width="654">
 				mouse_opaque="false"
 				visible="true"
 				width="155"
-				top="20"
+				top="0"
 				left="0"/>
 				<panel
 				follows="left|top|bottom"
-				height="319"
+				height="419"
 				background_visible="false"
 				layout="topleft"
 				visible="true"
@@ -139,10 +139,25 @@ width="654">
 				name="live_panel"
 				top="0"
 				width="153">
+					<button
+					height="21"
+					follows="top|left"
+					layout="topleft"
+					label="Refresh Avatars"
+					image_hover_unselected="Toolbar_Middle_Over"
+					image_selected="Toolbar_Middle_Selected"
+					image_unselected="Toolbar_Middle_Off"
+					name="refresh"
+					width="151"
+					top="1"
+					left="2">
+					<button.commit_callback
+					function="Poser.RefreshAvatars"/>
+					</button>
 					<scroll_list
 					column_padding="0"
 					draw_heading="true"
-					height="279"
+					height="379"
 					can_sort="false"
 					follows="left|top|right"
 					layout="topleft"
@@ -151,7 +166,7 @@ width="654">
 					width="153"
 					multi_select="false"
 					name="avatar_scroll"
-					top="20">
+					top_pad="0">
 					<scroll_list.columns
 					label=""
 					name="icon"
@@ -168,20 +183,27 @@ width="654">
 					<button
 					height="21"
 					follows="top|left"
+					is_toggle="true"
 					layout="topleft"
-					label="Refresh Avatars"
+					label="Start Posing"
+					enabled="false"
+					label_selected="Stop Posing"
 					image_hover_unselected="Toolbar_Middle_Over"
 					image_selected="Toolbar_Middle_Selected"
 					image_unselected="Toolbar_Middle_Off"
-					name="refresh"
+					button_flash_enable="true"
+					flash_color="0.7 0.7 1 1"
+					button_flash_count="64"
+					button_flash_rate="0.5"
+					name="activate"
 					width="151"
-					top_pad="-1"
+					top_pad="0"
 					left="2">
 					<button.commit_callback
-					function="Poser.RefreshAvatars"/>
+					function="Pose.Start"/>
 					</button>
 				</panel>
-				<icon
+				<!--<icon
 				follows="top|left"
 				height="100"
 				color="1 1 1 1"
@@ -267,7 +289,7 @@ width="654">
 				left_pad="1">
 				<button.commit_callback
 				function="Joint.Recapture"/>
-				</button>
+				</button>-->
 			</panel>
 		</layout_panel>
 		<layout_panel
@@ -370,7 +392,7 @@ width="654">
 										follows="all"
 										can_sort="false"
 										layout="topleft"
-										left="2"
+										left="0"
 										width="479"
 										multi_select="true"
 										name="joints_scroll"
@@ -386,27 +408,27 @@ width="654">
 										<scroll_list.columns
 										label="Rot X"
 										name="x"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Rot Y"
 										name="y"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Rot Z"
 										name="z"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Pos X"
 										name="pos_x"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Pos Y"
 										name="pos_y"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Pos Z"
 										name="pos_z"
-										relative_width="0.10"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Size X"
 										name="scale_x"
@@ -418,6 +440,18 @@ width="654">
 										<scroll_list.columns
 										label="Size Z"
 										name="scale_z"
+										relative_width="0.0"  />
+										<scroll_list.columns
+										label="Rotation"
+										name="vis_rot"
+										relative_width="0.30"  />
+										<scroll_list.columns
+										label="Position"
+										name="vis_pos"
+										relative_width="0.30"  />
+										<scroll_list.columns
+										label="Scale"
+										name="vis_scale"
 										relative_width="0.0"  />
 										</scroll_list>
 									</panel>
@@ -467,31 +501,43 @@ width="654">
 									<scroll_list.columns
 									label="Pos X"
 									name="pos_x"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Pos Y"
 									name="pos_y"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Pos Z"
 									name="pos_z"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size X"
 									name="scale_x"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size Y"
 									name="scale_y"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size Z"
 									name="scale_z"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="#"
 									name="number"
 									relative_width="0.00"  />
+									<scroll_list.columns
+									label="Rotation"
+									name="vis_rot"
+									relative_width="0.00"  />
+									<scroll_list.columns
+									label="Position"
+									name="vis_pos"
+									relative_width="0.30"  />
+									<scroll_list.columns
+									label="Scale"
+									name="vis_scale"
+									relative_width="0.30"  />
 									</scroll_list>
 								</panel>
 								<panel
@@ -539,31 +585,43 @@ width="654">
 									<scroll_list.columns
 									label="Pos X"
 									name="pos_x"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Pos Y"
 									name="pos_y"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Pos Z"
 									name="pos_z"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size X"
 									name="scale_x"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size Y"
 									name="scale_y"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="Size Z"
 									name="scale_z"
-									relative_width="0.10"  />
+									relative_width="0.0"  />
 									<scroll_list.columns
 									label="#"
 									name="number"
 									relative_width="0.00"  />
+									<scroll_list.columns
+									label="Rotation"
+									name="vis_rot"
+									relative_width="0.0"  />
+									<scroll_list.columns
+									label="Position"
+									name="vis_pos"
+									relative_width="0.30"  />
+									<scroll_list.columns
+									label="Scale"
+									name="vis_scale"
+									relative_width="0.30"  />
 									</scroll_list>
 								</panel>
 							</tab_container>
@@ -587,42 +645,23 @@ width="654">
 						name="title"
 						top="0"
 						width="481">
-							<button
-							height="21"
-							follows="top|left"
-							is_toggle="true"
-							layout="topleft"
-							label="Start Posing"
-							label_selected="Stop Posing"
-							image_hover_unselected="Toolbar_Middle_Over"
-							image_selected="Toolbar_Middle_Selected"
-							image_unselected="Toolbar_Middle_Off"
-							button_flash_enable="true"
-							flash_color="0.7 0.7 1 1"
-							button_flash_count="64"
-							button_flash_rate="0.5"
-							name="activate"
-							width="106"
-							top_pad="0"
-							left="4">
-							<button.commit_callback
-							function="Pose.Start"/>
-							</button>
+							
 							<line_editor
 							commit_on_focus_lost="false"
 							follows="left|top"
 							height="20"
+							h_pad="5"
 							label="Enter Pose Name"
-							left_pad="1"
+							left="4"
 							enabled="false"
-							top_delta="0"
+							top="0"
 							name="pose_name"
-							width="157"/>
+							width="139"/>
 							<button
 							height="21"
 							follows="top|left"
 							layout="topleft"
-							label="Save Pose"
+							label="Save"
 							enabled="false"
 							image_overlay="Icon_Dock_Foreground"
 							image_overlay_alignment="left"
@@ -630,13 +669,157 @@ width="654">
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							tool_tip="Save the current pose."
+							halign="left"
 							name="save_poses"
-							width="105"
+							width="55"
 							top_delta="0"
 							left_pad="1">
 								<button.commit_callback
 								function="Pose.Save"/>
 							</button>
+							<button
+							height="21"
+							follows="top|left"
+							control_name="ShowVisualPosingTools"
+							layout="topleft"
+							enabled="true"
+							is_toggle="true"
+							label="Toggle Widgets"
+							image_overlay="Poser_Easy"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="This option toggles whether the poser should display the visual rotation widgets similar to selected objects to greatly simplify rotating bones."
+							halign="left"
+							name="toggle_widgets"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.ToggleWidgets"/>
+							</button>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Symmetrize Pose"
+							enabled="false"
+							image_overlay="Poser_Symmetrize"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Symmetrize the current pose. Warning this will apply them alphabetically, meaning left will be symmetrized to right."
+							halign="left"
+							name="symmetrize"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.SymmetrizePose"/>
+							</button>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Mirror Pose"
+							enabled="false"
+							image_overlay="Poser_Mirror"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Mirror the current pose. Flip all bones to the opposite and correct them to face the proper mirrored direction."
+							halign="left"
+							name="mirror"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.FlipPose"/>
+							</button>
+							
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Recapture Bone(s)"
+							enabled="false"
+							image_overlay="Poser_Recapture"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Recapture all transforms of all currently selected, disabled bones. They MUST be disabled for this to work."
+							halign="left"
+							name="recapture"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.Recapture"/>
+							</button>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Copy Transforms"
+							enabled="false"
+							image_overlay="Poser_Copy"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Copy the desired transforms of the currently selected bone."
+							halign="left"
+							name="copy"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.CopyTransforms"/>
+							</button>
+							<menu_button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Paste Transforms"
+							enabled="false"
+							image_overlay="Poser_Paste"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Paste the desired previously copied transforms to the selected bone."
+							menu_filename="menu_poser_paste_btn.xml"
+                			menu_position="topright"
+							halign="left"
+							name="paste"
+							width="24"
+							top_delta="0"
+							left_pad="1"/>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Reset Transforms"
+							enabled="false"
+							image_overlay="Poser_TPose"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Reset all transforms of all bones to (0 0 0)."
+							halign="left"
+							name="reset"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.ResetJointFull"/>
+							</button>
+							
 							<button
 							follows="left|top"
 							height="21"
@@ -705,7 +888,8 @@ width="654">
 						height="14"
 						increment="0.001"
 						initial_value="0"
-						label="Rotation X:"
+						label="Roll:"
+						text_color="0.9 0.3 0.45 1"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -725,7 +909,8 @@ width="654">
 						height="14"
 						increment="0.001"
 						initial_value="0"
-						label="Rotation Y:"
+						label="Pitch:"
+						text_color="0.4 0.8 0.2 1"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -746,7 +931,8 @@ width="654">
 						height="14"
 						increment="0.001"
 						initial_value="0"
-						label="Rotation Z:"
+						label="Yaw:"
+						text_color="0.4 0.5 0.9 1"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -769,20 +955,63 @@ width="654">
 						name="title"
 						top_pad="6"
 						width="480">
+						<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Symmetrize To"
+							enabled="false"
+							image_overlay="Poser_To"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Apply the currents bone transforms to it's mirror bone as well if available."
+							halign="left"
+							name="sym_to"
+							width="24"
+							top="0"
+							left="0">
+								<button.commit_callback
+								function="Joint.SymmetrizeTo"/>
+							</button>
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Symmetrize From"
+							enabled="false"
+							image_overlay="Poser_From"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Apply the transforms from this bone's mirror bone (if available) to the currently selected bone."
+							halign="left"
+							name="sym_from"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Joint.SymmetrizeFrom"/>
+							</button>
+							
 							<button
 							height="21"
 							follows="top|left"
 							layout="topleft"
 							enabled="true"
-							label="Reset Selected Rotation(s)"
+							label="Reset Rotation(s)"
+							image_overlay="Poser_Reset"
+							image_overlay_alignment="left"
 							label_selected="Disable Selected Bone(s)"
 							image_hover_unselected="Toolbar_Middle_Over"
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							name="reset_bone_rot"
-							width="159"
+							width="133"
 							top="0"
-							left_delta="0">
+							left_pad="1">
 							<button.commit_callback
 							function="Joint.ResetJointRotation"/>
 							</button>
@@ -791,12 +1020,14 @@ width="654">
 							follows="top|left"
 							layout="topleft"
 							enabled="true"
-							label="Revert Selected Rotation(s)"
+							label="Revert Rotation(s)"
+							image_overlay="Poser_Reset"
+							image_overlay_alignment="left"
 							image_hover_unselected="Toolbar_Middle_Over"
 							image_selected="Toolbar_Middle_Selected"
 							image_unselected="Toolbar_Middle_Off"
 							name="revert_pose"
-							width="158"
+							width="134"
 							top_delta="0"
 							left_pad="1">
 							<button.commit_callback
@@ -889,6 +1120,8 @@ width="654">
 							follows="top|left"
 							layout="topleft"
 							enabled="true"
+							image_overlay="Poser_Reset"
+							image_overlay_alignment="left"
 							label="Reset Selected Position(s)"
 							label_selected="Disable Selected Bone(s)"
 							image_hover_unselected="Toolbar_Middle_Over"
@@ -897,7 +1130,7 @@ width="654">
 							name="reset_bone_pos"
 							width="318"
 							top="0"
-							left_delta="2">
+							left_delta="0">
 							<button.commit_callback
 							function="Joint.ResetJointPosition"/>
 							</button>
@@ -989,6 +1222,8 @@ width="654">
 							layout="topleft"
 							enabled="true"
 							label="Reset Selected Scale(s)"
+							image_overlay="Poser_Reset"
+							image_overlay_alignment="left"
 							label_selected="Disable Selected Bone(s)"
 							image_hover_unselected="Toolbar_Middle_Over"
 							image_selected="Toolbar_Middle_Selected"
@@ -996,7 +1231,7 @@ width="654">
 							name="reset_bone_scale"
 							width="318"
 							top="0"
-							left_delta="2">
+							left_delta="0">
 							<button.commit_callback
 							function="Joint.ResetJointScale"/>
 							</button>

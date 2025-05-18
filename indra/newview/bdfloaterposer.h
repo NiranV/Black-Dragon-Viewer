@@ -25,6 +25,7 @@
 #include "llkeyframemotion.h"
 #include "lltoggleablemenu.h"
 #include "llmenubutton.h"
+#include "lltoolmgr.h"
 
 #include "llviewerobject.h"
 
@@ -47,13 +48,27 @@ typedef enum E_Columns
 	COL_POS_Z = 7,
 	COL_SCALE_X = 8,
 	COL_SCALE_Y = 9,
-	COL_SCALE_Z = 10
+	COL_SCALE_Z = 10,
+    COL_VISUAL_ROT = 11,
+    COL_VISUAL_POS = 12,
+    COL_VISUAL_SCALE
 } E_Columns;
 
 class BDFloaterPoser :
 	public LLFloater
 {
 	friend class LLFloaterReg;
+
+    //BD - Beq's Visual Posing
+public:
+    void selectJointByName(const std::string& jointName);
+    //void updatePosedBones();
+
+    //BD - Joints
+    void onJointRecapture();
+    void onJointControlsRefresh();
+    LLVector3 getJointRot(const std::string& jointName);
+
 private:
 	BDFloaterPoser(const LLSD& key);
 	/*virtual*/	~BDFloaterPoser();
@@ -78,14 +93,13 @@ private:
 	void onJointSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointPosSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointScaleSet(LLUICtrl* ctrl, const LLSD& param);
+    void onJointsRecapture();
 	void onJointChangeState();
-	void onJointControlsRefresh();
 	void onJointRotPosScaleReset();
 	void onJointRotationReset();
 	void onJointPositionReset();
 	void onJointScaleReset();
 	void onJointRotationRevert();
-	void onJointRecapture();
 	void onCollectDefaults();
 	void onJointContextMenuAction(const LLSD& param);
 	bool onJointContextMenuEnable(const LLSD& param);
@@ -99,6 +113,8 @@ private:
 
 	//BD - Misc
 	void onUpdateLayout();
+    void onModifierTabSwitch();
+    void toggleWidgets();
 
 	//BD - Mirror Bone
 	void toggleMirrorMode(LLUICtrl* ctrl) { mMirrorMode = ctrl->getValue().asBoolean(); }
@@ -128,6 +144,10 @@ private:
 	std::array<LLSliderCtrl*, 3>				mPositionSliders;
 	std::array<LLSliderCtrl*, 3>				mScaleSliders;
 	std::array<LLScrollListCtrl*, 3>			mJointScrolls;
+
+    //BD - Beq's Visual Posing
+    LLToolset* mLastToolset{ nullptr };
+    LLTool* mJointRotTool{ nullptr };
 
 	//BD - I really didn't want to do this this way but we have to.
 	//     It's the easiest way doing this.

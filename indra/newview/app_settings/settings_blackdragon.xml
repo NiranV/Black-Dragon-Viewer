@@ -1530,6 +1530,18 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+
+  <key>ShowVisualPosingTools</key>
+  <map>
+    <key>Comment</key>
+    <string>Show search bar in navigationbar</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
     
   <!-- Remappable Keys -->
   <key>JoystickButtonFlycam</key>

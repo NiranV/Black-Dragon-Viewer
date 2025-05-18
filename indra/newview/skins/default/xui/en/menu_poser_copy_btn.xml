@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<toggleable_menu
+ layout="topleft"
+ name="Actions">
+    <menu_item_call
+     label="Copy Transforms"
+     layout="topleft"
+     name="copy_all">
+        <on_click function="Joints.Menu" parameter="copy_transforms"/>
+    </menu_item_call>
+    <menu_item_separator
+     layout="topleft" />
+    <menu_item_call
+     label="Paste Rotation"
+     layout="topleft"
+     name="positions">
+        <on_click function="Joints.Menu" parameter="paste_rot"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Paste Position"
+     layout="topleft"
+     name="positions">
+        <on_click function="Joints.Menu" parameter="paste_pos"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Paste Scale"
+     layout="topleft"
+     name="scale">
+        <on_click function="Joints.Menu" parameter="paste_scale"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_separator
+     layout="topleft" />
+    <menu_item_call
+     label="Paste Rotations &amp; Positions"
+     layout="topleft"
+     name="rot_pos">
+        <on_click function="Joints.Menu" parameter="paste_rot_pos"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Paste Rotations &amp; Scales"
+     layout="topleft"
+     name="rot_scale">
+        <on_click function="Joints.Menu" parameter="paste_rot_scale"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_call
+     label="Paste Position &amp; Scales"
+     layout="topleft"
+     name="pos_scale">
+        <on_click function="Joints.Menu" parameter="paste_pos_scale"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+    <menu_item_separator
+     layout="topleft" />
+    <menu_item_call
+     label="Paste All Transforms"
+     layout="topleft"
+     name="all_transforms">
+        <on_click function="Joints.Menu" parameter="paste_all"/>
+        <on_enable function="Joints.OnEnable" parameter="clipboard"/>
+    </menu_item_call>
+</toggleable_menu>
