@@ -148,6 +148,58 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="169"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Changed: Poser Version to 16.
+Changed: Version to 5.4.0.
+Added: Visual rotation widgets for Posing. Thanks to Beq Janus.
+Added: Visual position widgets for Posing.
+Added: Option to toggle visual posing tools.
+Added: Several buttons to surface right-click menu options into the main Poser UI.
+Added: Several icons for all the new buttons.
+Fixed: Rotating and positioning on Collision Volumes and Attachment Bones.
+Fixed: Visual rotation tools flipping at certain angles.
+Fixed: Voice Visualizer in nametag not showing up.
+Changed: Reworked and reorganized Poser UI with a slightly more logical structure and easier access to functions.
+Changed: Consolidated rotation, position and scale X Y and Z floats into a single vector for display.
+Misc: Updated Credits page, moved some around to the top section, removed some that are no longer correct and added Beq Janus.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.3.4
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="52"
      top_pad="3"
      left="7"
