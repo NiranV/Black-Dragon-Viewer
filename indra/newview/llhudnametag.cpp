@@ -292,7 +292,7 @@ void LLHUDNameTag::renderText()
     //BD
     LLVoiceClient* voice_client = LLVoiceClient::getInstance();
 	LLUUID id = mSourceObject->getID();
-    static LLCachedControl<F32> voice_visualizer(gSavedSettings, "VoiceVisualizerEnabled");
+    static LLCachedControl<bool> voice_visualizer(gSavedSettings, "VoiceVisualizerEnabled");
 	bool voice_enabled = voice_client->getVoiceEnabled(id) && voice_visualizer;
 	bool is_speaking = voice_client->getIsSpeaking(id);
 
