@@ -155,6 +155,7 @@
 #include "llteleporthistory.h"
 #include "llfloaterbuildoptions.h"
 #include "llurlaction.h"
+#include "llprimitive.h"
 #include "bdfunctions.h"
 #include "bdstatus.h"
 //BD - Pie Menu
@@ -2943,11 +2944,25 @@ class LLObjectRefreshTextures : public view_listener_t
 
 				for (S32 i = 0; i != objectp->getNumTEs(); ++i)
 				{
-					LLViewerTexture* texture = objectp->getTEImage(i);
+                    LLViewerFetchedTexture* texture = LLViewerTextureManager::getFetchedTexture(objectp->getTE(i)->getID());
 					if (texture)
 					{
-						texture->destroyGLTexture();
+                        texture->destroyTexture();
+                        texture->destroyRawImage();
+                        texture->destroySavedRawImage();
 					}
+                    if (objectp->isSculpted() && !objectp->isMesh())
+                    {
+                        LLSculptParams* sculpt_params = (LLSculptParams*)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+                        LLUUID sculpt_id = sculpt_params->getSculptTexture();
+                        LLViewerFetchedTexture* fetched_texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
+                        if (fetched_texture)
+                        {
+                            fetched_texture->destroyTexture();
+                            fetched_texture->destroyRawImage();
+                            fetched_texture->destroySavedRawImage();
+                        }
+                    }
 				}
 			}
 		}
