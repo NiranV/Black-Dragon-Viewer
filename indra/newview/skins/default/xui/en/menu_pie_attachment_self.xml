@@ -153,7 +153,13 @@ name="Attachment Pie">
             <pie_slice.on_enable
             function="Edit.EnableHoverHeight" />
         </pie_slice>
-        <pie_separator name="seperator"/>
+        <pie_slice
+      enabled="false"
+      label="Refresh;Textures"
+      name="RefreshTextures">
+         <pie_slice.on_click
+         function="Object.RefreshTextures" />
+      </pie_slice>
     </pie_menu>
     <pie_slice
     label="Sit Here"
