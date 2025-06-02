@@ -38,15 +38,19 @@ width="654">
 	</string>
 	<string
 	name="icon_category" translate="false">
-	Inv_Shape
+	Poser_Category
 	</string>
 	<string
 	name="icon_bone" translate="false">
-	Transparent
+	Poser_Bone
+	</string>
+	<string
+	name="icon_avatar" translate="false">
+	Poser_Avatar
 	</string>
 	<string
 	name="icon_object" translate="false">
-	Inv_Object
+	Poser_Animated
 	</string>
 	<string
 	name="title_mPelvis" translate="false">
@@ -170,15 +174,19 @@ width="654">
 					<scroll_list.columns
 					label=""
 					name="icon"
-					relative_width="0.14"  />
+					relative_width="0.13"  />
 					<scroll_list.columns
 					label="Name"
 					name="name"
-					relative_width="0.86"  />
+					relative_width="0.77"  />
 					<scroll_list.columns
 					label="UUID"
 					name="uuid"
 					relative_width="0.0"  />
+					<scroll_list.columns
+					label="☑"
+					name="is_poseable"
+					relative_width="0.10"  />
 					</scroll_list>
 					<button
 					height="21"
@@ -187,6 +195,9 @@ width="654">
 					layout="topleft"
 					label="Start Posing"
 					enabled="false"
+					image_overlay="Play_Off"
+					image_overlay_selected="Pause_Off"
+					image_overlay_alignment="left"
 					label_selected="Stop Posing"
 					image_hover_unselected="Toolbar_Middle_Over"
 					image_selected="Toolbar_Middle_Selected"
@@ -201,6 +212,29 @@ width="654">
 					left="2">
 					<button.commit_callback
 					function="Pose.Start"/>
+					</button>
+					<button
+					height="21"
+					follows="top|left"
+					is_toggle="false"
+					layout="topleft"
+					label="Request Posing"
+					image_overlay="Play_Off"
+					image_overlay_selected="Pause_Off"
+					image_overlay_alignment="left"
+					image_hover_unselected="Toolbar_Middle_Over"
+					image_selected="Toolbar_Middle_Selected"
+					image_unselected="Toolbar_Middle_Off"
+					button_flash_enable="true"
+					flash_color="0.7 0.7 1 1"
+					button_flash_count="64"
+					button_flash_rate="0.5"
+					name="request_pose"
+					width="151"
+					top_delta="0"
+					left_delta="0">
+					<button.commit_callback
+					function="Poser.RequestPermission"/>
 					</button>
 				</panel>
 				<!--<icon
@@ -432,15 +466,15 @@ width="654">
 										<scroll_list.columns
 										label="Size X"
 										name="scale_x"
-										relative_width="0.0"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Size Y"
 										name="scale_y"
-										relative_width="0.0"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Size Z"
 										name="scale_z"
-										relative_width="0.0"  />
+										relative_width="0.00"  />
 										<scroll_list.columns
 										label="Rotation"
 										name="vis_rot"
@@ -452,7 +486,7 @@ width="654">
 										<scroll_list.columns
 										label="Scale"
 										name="vis_scale"
-										relative_width="0.0"  />
+										relative_width="0.00"  />
 										</scroll_list>
 									</panel>
 								</panel>
@@ -889,7 +923,7 @@ width="654">
 						increment="0.001"
 						initial_value="0"
 						label="Roll:"
-						text_color="0.9 0.3 0.45 1"
+						text_color="1 0.5 0.5 1"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -910,7 +944,7 @@ width="654">
 						increment="0.001"
 						initial_value="0"
 						label="Pitch:"
-						text_color="0.4 0.8 0.2 1"
+						text_color="0.5 1 0.5 0.9"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -932,7 +966,7 @@ width="654">
 						increment="0.001"
 						initial_value="0"
 						label="Yaw:"
-						text_color="0.4 0.5 0.9 1"
+						text_color="0.5 0.5 1 1"
 						label_width="70"
 						layout="topleft"
 						left="10"
@@ -1244,8 +1278,10 @@ width="654">
 				layout="topleft"
 				is_toggle="true"
 				enabled="false"
-				label="Activate Selected Bone(s)"
-				label_selected="Disable Selected Bone(s)"
+				image_overlay="Poser_Toggle"
+				image_overlay_alignment="left"
+				label="Activate Bone(s)"
+				label_selected="Disable Bone(s)"
 				image_hover_unselected="Toolbar_Middle_Over"
 				image_selected="Toolbar_Middle_Selected"
 				image_unselected="Toolbar_Middle_Off"

@@ -97,8 +97,11 @@ LLContextMenu* PeopleContextMenu::createMenu()
 		registrar.add("Avatar.Freeze",			boost::bind(&LLAvatarActions::freezeAvatar,					id));
 		registrar.add("Avatar.Eject",			boost::bind(&PeopleContextMenu::eject,						this));
 
+        registrar.add("Avatar.RequestPosing",   boost::bind(&PeopleContextMenu::requestPosing,              this));
+        registrar.add("Avatar.DenyPosing",      boost::bind(&PeopleContextMenu::denyPosing,                 this));
+
 		//BD - Report Abuse
-		registrar.add("Avatar.AbuseReport", boost::bind(&LLAvatarActions::report,							id));
+		registrar.add("Avatar.AbuseReport",     boost::bind(&LLAvatarActions::report,						id));
 
 //		//BD - SSFUI
 		registrar.add("Avatar.GetUUID",			boost::bind(&LLAvatarActions::copyUUIDToClipboard,			id));
@@ -390,6 +393,16 @@ void PeopleContextMenu::offerTeleport()
     LLAvatarActions::offerTeleport(mUUIDs);
 }
 
+void PeopleContextMenu::requestPosing()
+{
+    LLAvatarActions::posingRequest(mUUIDs.front());
+}
+
+void PeopleContextMenu::denyPosing()
+{
+    LLAvatarActions::posingDeny(mUUIDs.front());
+}
+
 void PeopleContextMenu::eject()
 {
     if((gAgent.getID() == mUUIDs.front()) || (mUUIDs.size() != 1))
@@ -595,7 +608,7 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
     menuentry_vec_t items;
     menuentry_vec_t disabled_items;
 	
-		if (flags & ITEM_IN_MULTI_SELECTION)
+	if (flags & ITEM_IN_MULTI_SELECTION)
 	{
 		items.push_back(std::string("add_friends"));
 		items.push_back(std::string("remove_friends"));
@@ -636,6 +649,8 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 		items.push_back(std::string("report"));
 		items.push_back(std::string("freeze"));
 		items.push_back(std::string("eject"));
+        items.push_back(std::string("request_posing"));
+        items.push_back(std::string("deny_posing"));
 //		//BD - SSFUI
 		items.push_back(std::string("copy_avatar_separator"));
 		items.push_back(std::string("CopyUUID"));

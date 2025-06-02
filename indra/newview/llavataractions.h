@@ -125,6 +125,12 @@ public:
     static void teleport_request_callback(const LLSD& notification, const LLSD& response);
 
     /**
+     * Request teleport from other avatar
+     */
+    static void posingRequest(const LLUUID& id);
+    static void posingDeny(const LLUUID& id);
+
+    /**
      * Share items with the avatar.
      */
     static void share(const LLUUID& id);

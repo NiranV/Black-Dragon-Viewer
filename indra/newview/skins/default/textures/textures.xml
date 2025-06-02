@@ -877,6 +877,11 @@ with the same filename but different name
   <texture name="Poser_Easy" file_name="icons/Poser_Easy.png" preload="true" />
   <texture name="Poser_To" file_name="icons/Poser_To.png" preload="true" />
   <texture name="Poser_From" file_name="icons/Poser_From.png" preload="true" />
+  <texture name="Poser_Toggle" file_name="icons/Poser_Toggle.png" preload="true" />
+  <texture name="Poser_Bone" file_name="icons/Poser_Bone.png" preload="true" />
+  <texture name="Poser_Category" file_name="icons/Poser_Category.png" preload="true" />
+  <texture name="Poser_Avatar" file_name="icons/Poser_Avatar.png" preload="true" />
+  <texture name="Poser_Animated" file_name="icons/Poser_Animated.png" preload="true" />
 
   <texture name="PieMenu_Background" file_name="widgets/PieMenu_Background.png" preload="true" />
   <texture name="PieMenu_Back" file_name="widgets/PieMenu_Back.png" preload="true" />

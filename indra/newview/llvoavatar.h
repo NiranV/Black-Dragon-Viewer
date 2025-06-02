@@ -1296,13 +1296,16 @@ public:
 	//BD - Custom Posing
 	//--------------------------------------------------------------------
 public:
-	void			setPosing()				{ mIsPosing = true; }
-	void			clearPosing()			{ mIsPosing = false; }
-	bool			getPosing()				{ return mIsPosing; }
-	void			clearAnimList()			{ mAnimatorActions.clear(); }
+	void			setPosing()				    { mIsPosing = true; }
+	void			clearPosing()			    { mIsPosing = false; }
+	bool			getPosing()				    { return mIsPosing; }
+	void			clearAnimList()			    { mAnimatorActions.clear(); }
+    void            setIsPoseable(bool allow)   { mIsPoseable = allow; }
 
 	bool			mIsPosing;
+    bool            mIsPoseable;
 	S32				getCurrentActionIndex() { return mCurrentAction; }
+    bool            getIsPoseable()         { return mIsPoseable; }
 
 	std::vector<Action>				mAnimatorActions;
 	LLFrameTimer					mAnimPlayTimer;

@@ -61,6 +61,9 @@ class BDFloaterPoser :
 
     //BD - Beq's Visual Posing
 public:
+    BDFloaterPoser(const LLSD& key);
+    /*virtual*/	~BDFloaterPoser();
+
     void selectJointByName(const std::string& jointName);
     //void updatePosedBones();
 
@@ -70,12 +73,12 @@ public:
     LLVector3 getJointRot(const std::string& jointName);
 
 private:
-	BDFloaterPoser(const LLSD& key);
-	/*virtual*/	~BDFloaterPoser();
 	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
 	/*virtual*/ void onOpen(const LLSD& key);
 	/*virtual*/	void onClose(bool app_quitting);
+
+    void onFocusReceived() override;
 
 	//BD - Posing
 	bool onClickPoseSave(const LLSD& param);
@@ -114,6 +117,8 @@ private:
 	//BD - Misc
 	void onUpdateLayout();
     void onModifierTabSwitch();
+    void onColumnRefresh(LLScrollListItem* item);
+    void onRequestPermission();
     void toggleWidgets();
 
 	//BD - Mirror Bone

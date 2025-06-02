@@ -57,6 +57,9 @@
 #include "llvoavatarself.h"
 #include "llworld.h"
 
+//BD - Poser
+#include "bdfloaterposer.h"
+
 #include "boost/lexical_cast.hpp"
 
 extern void on_new_message(const LLSD& msg);
@@ -544,6 +547,66 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
             }
             else
             {
+                if (message == ";PoserRequest")
+                {
+                    LLSD args;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+                    LLSD payload;
+                    payload["from_id"] = from_id;
+
+                    LLNotification::Params params;
+                    params.name = "RequestPosing";
+                    params.functor.name = "RequestPosing";
+
+                    params.substitutions = args;
+                    LLNotificationsUtil::add("RequestPosing", args, payload);
+
+                    LL_INFOS("Posing") << "Posing requested from: " << from_id << LL_ENDL;
+                }
+                else if(message == ";PoserAccept")
+                {
+                    LLSD args;
+                    LLSD payload;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+
+                    //BD - Now set the permission to allow posing this individual here.
+                    for (LLCharacter* character : LLCharacter::sInstances)
+                    {
+                        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                        {
+                            if (avatar->getID() == from_id)
+                            {
+                                avatar->setIsPoseable(true);
+                            }
+                        }
+                    }
+
+                    LLNotificationsUtil::add("AcceptedPosing", args, payload);
+                    LL_INFOS("Posing") << "Posing enabled for: " << from_id << LL_ENDL;
+                }
+                else if (message == ";PoserDeny")
+                {
+                    LLSD args;
+                    LLSD payload;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+
+                    //BD - Now set the permission to allow posing this individual here.
+                    for (LLCharacter* character : LLCharacter::sInstances)
+                    {
+                        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                        {
+                            if (avatar->getID() == from_id)
+                            {
+                                avatar->setIsPoseable(false);
+                            }
+                        }
+                    }
+
+                    LLNotificationsUtil::add("WithdrawPosing", args, payload);
+                    LL_INFOS("Posing") << "Posing disabled for: " << from_id << LL_ENDL;
+                }
+                else
+            {
                 // standard message, not from system
                 std::string saved;
                 if (offline == IM_OFFLINE)
@@ -599,6 +662,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     EXT-5099
                     */
                 }
+            }
             }
             break;
 

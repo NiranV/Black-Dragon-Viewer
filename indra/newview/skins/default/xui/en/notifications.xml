@@ -12953,4 +12953,45 @@ Do you want to save your changes to [NAME]'s profile?
        name="okbutton"
        yestext="OK"/>
   </notification>
+
+  <notification
+   icon="notify.tga"
+   name="RequestPosing"
+   log_to_im="true"
+   fade_toast="false"
+   type="offer">
+[NAME_SLURL] is requesting to pose your avatar.
+
+You will not be able to see this.
+Permissions will remain until they lose track of you, you leave their draw distance or become otherwise an invalid target.
+You can also withdraw your permission from the Nearby menu. You can also simply type &lt;b&gt;;PoserDeny&lt;/b&gt; as IM to them.
+
+Allow them to pose you?
+    <tag>confirm</tag>
+    <form name="form">
+      <button
+       index="0"
+       name="Yes"
+       text="Yes"/>
+      <button
+       index="1"
+       name="No"
+       text="No"/>
+    </form>
+  </notification>
+
+  <notification
+	icon="notify.tga"
+	name="AcceptedPosing"
+   persist="true"
+	type="notify">
+   [NAME_SLURL] has given you permission to pose them.
+  </notification>
+  <notification
+	icon="notify.tga"
+	name="WithdrawPosing"
+   persist="true"
+	type="notify">
+   [NAME_SLURL] has withdrawn your permission to pose them.
+  </notification>
 </notifications>

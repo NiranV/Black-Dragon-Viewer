@@ -38,6 +38,18 @@ name="Nearby People Context Menu">
 	parameter="can_offer_teleport"/>
 	</menu_item_call>
 	<menu_item_call
+	label="Request Posing Permissions"
+	name="request_posing">
+	<menu_item_call.on_click
+	function="Avatar.RequestPosing"/>
+	</menu_item_call>
+	<menu_item_call
+	label="Withdraw Posing Permissions"
+	name="deny_posing">
+	<menu_item_call.on_click
+	function="Avatar.DenyPosing"/>
+	</menu_item_call>
+	<menu_item_call
 	label="Voice Call"
 	layout="topleft"
 	name="voice_call">

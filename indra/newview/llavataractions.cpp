@@ -1631,3 +1631,94 @@ void LLAvatarActions::empower(const uuid_vec_t& ids, S32 power)
 		}
 	}
 }
+
+//BD - Poser
+// static
+void LLAvatarActions::posingRequest(const LLUUID& id)
+{
+    LLSD notification;
+    notification["uuid"] = id;
+    LLAvatarName av_name;
+    if (!LLAvatarNameCache::get(id, &av_name))
+    {
+        // unlikely ... they just picked this name from somewhere...
+        LLAvatarNameCache::get(id, boost::bind(&LLAvatarActions::posingRequest, id));
+        return; // reinvoke this when the name resolves
+    }
+    notification["NAME"] = av_name.getCompleteName();
+
+    LLMessageSystem* msg = gMessageSystem;
+
+    msg->newMessageFast(_PREHASH_ImprovedInstantMessage);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    msg->nextBlockFast(_PREHASH_MessageBlock);
+    msg->addBOOLFast(_PREHASH_FromGroup, false);
+    msg->addUUIDFast(_PREHASH_ToAgentID, id);
+    msg->addU8Fast(_PREHASH_Offline, IM_ONLINE);
+    msg->addU8Fast(_PREHASH_Dialog, IM_NOTHING_SPECIAL);
+    msg->addUUIDFast(_PREHASH_ID, id);
+    msg->addU32Fast(_PREHASH_Timestamp, NO_TIMESTAMP); // no timestamp necessary
+
+    std::string name;
+    LLAgentUI::buildFullname(name);
+
+    msg->addStringFast(_PREHASH_FromAgentName, name);
+    msg->addStringFast(_PREHASH_Message, ";PoserRequest");
+    msg->addU32Fast(_PREHASH_ParentEstateID, 0);
+    msg->addUUIDFast(_PREHASH_RegionID, LLUUID::null);
+    msg->addVector3Fast(_PREHASH_Position, gAgent.getPositionAgent());
+
+    gMessageSystem->addBinaryDataFast(
+        _PREHASH_BinaryBucket,
+        EMPTY_BINARY_BUCKET,
+        EMPTY_BINARY_BUCKET_SIZE);
+
+    gAgent.sendReliableMessage();
+}
+
+//static
+void LLAvatarActions::posingDeny(const LLUUID& id)
+{
+    LLSD notification;
+    notification["uuid"] = id;
+    LLAvatarName av_name;
+    if (!LLAvatarNameCache::get(id, &av_name))
+    {
+        // unlikely ... they just picked this name from somewhere...
+        LLAvatarNameCache::get(id, boost::bind(&LLAvatarActions::posingRequest, id));
+        return; // reinvoke this when the name resolves
+    }
+    notification["NAME"] = av_name.getCompleteName();
+
+    LLMessageSystem* msg = gMessageSystem;
+
+    msg->newMessageFast(_PREHASH_ImprovedInstantMessage);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    msg->nextBlockFast(_PREHASH_MessageBlock);
+    msg->addBOOLFast(_PREHASH_FromGroup, false);
+    msg->addUUIDFast(_PREHASH_ToAgentID, id);
+    msg->addU8Fast(_PREHASH_Offline, IM_ONLINE);
+    msg->addU8Fast(_PREHASH_Dialog, IM_NOTHING_SPECIAL);
+    msg->addUUIDFast(_PREHASH_ID, id);
+    msg->addU32Fast(_PREHASH_Timestamp, NO_TIMESTAMP); // no timestamp necessary
+
+    std::string name;
+    LLAgentUI::buildFullname(name);
+
+    msg->addStringFast(_PREHASH_FromAgentName, name);
+    msg->addStringFast(_PREHASH_Message, ";PoserDeny");
+    msg->addU32Fast(_PREHASH_ParentEstateID, 0);
+    msg->addUUIDFast(_PREHASH_RegionID, LLUUID::null);
+    msg->addVector3Fast(_PREHASH_Position, gAgent.getPositionAgent());
+
+    gMessageSystem->addBinaryDataFast(
+        _PREHASH_BinaryBucket,
+        EMPTY_BINARY_BUCKET,
+        EMPTY_BINARY_BUCKET_SIZE);
+
+    gAgent.sendReliableMessage();
+}

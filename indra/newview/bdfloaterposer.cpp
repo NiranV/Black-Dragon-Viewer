@@ -21,6 +21,7 @@
 #include "llagent.h"
 #include "llavatarname.h"
 #include "llavatarnamecache.h"
+#include "llavataractions.h"
 #include "llclipboard.h"
 #include "lldatapacker.h"
 #include "lldiriterator.h"
@@ -122,6 +123,9 @@ BDFloaterPoser::BDFloaterPoser(const LLSD& key)
 
 	//BD - Refresh the avatar list.
 	mCommitCallbackRegistrar.add("Poser.RefreshAvatars", boost::bind(&BDFloaterPoser::onAvatarsRefresh, this));
+
+    //BD - Refresh the avatar list.
+    mCommitCallbackRegistrar.add("Poser.RequestPermission", boost::bind(&BDFloaterPoser::onRequestPermission, this));
 }
 
 BDFloaterPoser::~BDFloaterPoser()
@@ -135,17 +139,13 @@ bool BDFloaterPoser::postBuild()
 						this->getChild<LLScrollListCtrl>("cv_scroll", true),
 						this->getChild<LLScrollListCtrl>("attach_scroll", true) } };
 
-	mJointScrolls[JOINTS]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[JOINTS]->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
-	mJointScrolls[JOINTS]->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onJointChangeState, this));
 
-	//BD - Collision Volumes
-	mJointScrolls[COLLISION_VOLUMES]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[COLLISION_VOLUMES]->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
-
-	//BD - Attachment Bones
-	mJointScrolls[ATTACHMENT_BONES]->setCommitOnSelectionChange(TRUE);
-	mJointScrolls[ATTACHMENT_BONES]->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
+    for (S32 it = 0; it < 3; ++it)
+    {
+        mJointScrolls[it]->setCommitOnSelectionChange(TRUE);
+        mJointScrolls[it]->setCommitCallback(boost::bind(&BDFloaterPoser::onJointControlsRefresh, this));
+    }
+    mJointScrolls[JOINTS]->setDoubleClickCallback(boost::bind(&BDFloaterPoser::onJointChangeState, this));
 
 	mPoseScroll = this->getChild<LLScrollListCtrl>("poses_scroll", true);
 	mPoseScroll->setCommitOnSelectionChange(TRUE);
@@ -253,9 +253,9 @@ void BDFloaterPoser::onOpen(const LLSD& key)
 void BDFloaterPoser::onClose(bool app_quitting)
 {
 	//BD - Doesn't matter because we destroy the window and rebuild it every time we open it anyway.
-	mJointScrolls[JOINTS]->clearRows();
-	mJointScrolls[COLLISION_VOLUMES]->clearRows();
-	mJointScrolls[ATTACHMENT_BONES]->clearRows();
+    for (S32 it = 0; it < 3; ++it)
+	    mJointScrolls[it]->clearRows();
+
 	mAvatarScroll->clearRows();
 
     //BD - Beq's Visual Posing
@@ -265,6 +265,15 @@ void BDFloaterPoser::onClose(bool app_quitting)
     }
     FSToolCompPose::getInstance()->setAvatar(nullptr);
     BDToolCompPoseTranslate::getInstance()->setAvatar(nullptr);
+}
+
+void BDFloaterPoser::onFocusReceived()
+{
+    //BD - Check all Avatars and if we still have their permission.
+    onAvatarsRefresh();
+
+    //BD - Refresh all our controls after to disable the Posing button and show the request button.
+    onJointControlsRefresh();
 }
 
 ////////////////////////////////
@@ -361,7 +370,10 @@ bool BDFloaterPoser::onPoseSave()
 			{
 				std::string bone_name = joint->getName();
 				record[bone_name] = joint->getName();
-				joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+                if (joint->getJointNum() >= 134)
+                    joint->getRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
+                else
+                    joint->getTargetRotation().getEulerAngles(&vec3.mV[VX], &vec3.mV[VZ], &vec3.mV[VY]);
 				record[bone_name]["rotation"] = vec3.getValue();
 
 				//BD - All bones support positions now.
@@ -457,7 +469,7 @@ void BDFloaterPoser::onPoseStart()
 	if (!avatar || avatar->isDead()) return;
 
 	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
-	if (!motion || motion->isStopped())
+	if ((!motion || motion->isStopped()) && avatar->getIsPoseable())
 	{
 		avatar->setPosing();
 		if (avatar->isSelf())
@@ -596,12 +608,12 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_ROT_Y]["value"] = ll_round(rot.mV[VY], 0.001f);
 			row["columns"][COL_ROT_Z]["column"] = "z";
 			row["columns"][COL_ROT_Z]["value"] = ll_round(rot.mV[VZ], 0.001f);
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3,(LLSD)ll_round(rot.mV[VZ], 0.001f));
-            human_readable_vec3.insert(2,(LLSD)ll_round(rot.mV[VY], 0.001f));
-            human_readable_vec3.insert(1,(LLSD)ll_round(rot.mV[VX], 0.001f));
+            rot.mV[VX] = ll_round(rot.mV[VZ], 0.001f);
+            rot.mV[VY] = ll_round(rot.mV[VY], 0.001f);
+            rot.mV[VZ] = ll_round(rot.mV[VX], 0.001f);
             row["columns"][COL_VISUAL_ROT]["column"] = "vis_rot";
-            row["columns"][COL_VISUAL_ROT]["value"] = human_readable_vec3;
+            row["columns"][COL_VISUAL_ROT]["type"] = "vector";
+            row["columns"][COL_VISUAL_ROT]["value"] = rot.getValue();
 
 			//BD - All bones support positions now.
 			pos = joint->getTargetPosition();
@@ -611,12 +623,12 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_POS_Y]["value"] = ll_round(pos.mV[VY], 0.001f);
 			row["columns"][COL_POS_Z]["column"] = "pos_z";
 			row["columns"][COL_POS_Z]["value"] = ll_round(pos.mV[VZ], 0.001f);
-            human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round(pos.mV[VZ], 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round(pos.mV[VY], 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round(pos.mV[VX], 0.001f));
+            pos.mV[VX] = ll_round(pos.mV[VZ], 0.001f);
+            pos.mV[VY] = ll_round(pos.mV[VY], 0.001f);
+            pos.mV[VZ] = ll_round(pos.mV[VX], 0.001f);
             row["columns"][COL_VISUAL_POS]["column"] = "vis_pos";
-            row["columns"][COL_VISUAL_POS]["value"] = human_readable_vec3;
+            row["columns"][COL_VISUAL_POS]["type"] = "vector";
+            row["columns"][COL_VISUAL_POS]["value"] = pos.getValue();
 
 			//BD - Bone Scales
 			scale = joint->getScale();
@@ -626,12 +638,12 @@ void BDFloaterPoser::onJointRefresh()
 			row["columns"][COL_SCALE_Y]["value"] = ll_round(scale.mV[VY], 0.001f);
 			row["columns"][COL_SCALE_Z]["column"] = "scale_z";
 			row["columns"][COL_SCALE_Z]["value"] = ll_round(scale.mV[VZ], 0.001f);
-            human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round(scale.mV[VZ], 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round(scale.mV[VY], 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round(scale.mV[VX], 0.001f));
+            scale.mV[VX] = ll_round(scale.mV[VZ], 0.001f);
+            scale.mV[VY] = ll_round(scale.mV[VY], 0.001f);
+            scale.mV[VZ] = ll_round(scale.mV[VX], 0.001f);
             row["columns"][COL_VISUAL_SCALE]["column"] = "vis_scale";
-            row["columns"][COL_VISUAL_SCALE]["value"] = human_readable_vec3;
+            row["columns"][COL_VISUAL_SCALE]["type"] = "vector";
+            row["columns"][COL_VISUAL_SCALE]["value"] = scale.getValue();
 		}
 
 		LLScrollListItem* item = mJointScrolls[JOINTS]->addElement(row);
@@ -792,6 +804,7 @@ void BDFloaterPoser::onJointControlsRefresh()
 	bool is_pelvis = false;
 	bool is_posing = (avatar->isFullyLoaded() && avatar->getPosing());
     bool is_visual_posing = (is_posing && gSavedSettings.getBOOL("ShowVisualPosingTools"));
+    bool is_poseable = (avatar->isSelf() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
 	S32 index = mJointTabs->getCurrentPanelIndex();
     S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
@@ -863,36 +876,25 @@ void BDFloaterPoser::onJointControlsRefresh()
 
 	getChild<LLButton>("toggle_bone")->setEnabled(item && is_posing && index == JOINTS);
 	mStartPosingBtn->setValue(is_posing);
+    mStartPosingBtn->setEnabled(avatar->isSelf() ? avatar->isFullyLoaded() : true);
+    mStartPosingBtn->setVisible(is_poseable);
+    getChild<LLUICtrl>("request_pose")->setVisible(!is_poseable);
 	getChild<LLUICtrl>("pose_name")->setEnabled(is_posing);
 	getChild<LLUICtrl>("save_poses")->setEnabled(is_posing);
 	getChild<LLUICtrl>("joints_tabs")->setEnabled(is_posing);
-    getChild<LLUICtrl>("sym_to")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("sym_from")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("symmetrize")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("mirror")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("recapture")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("copy")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("paste")->setEnabled(item && is_posing && index == JOINTS);
-    getChild<LLUICtrl>("reset")->setEnabled(item && is_posing && index == JOINTS);
+    getChild<LLUICtrl>("sym_to")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("sym_from")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("symmetrize")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("mirror")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("recapture")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("copy")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("paste")->setEnabled(item && is_posing);
+    getChild<LLUICtrl>("reset")->setEnabled(item && is_posing);
 
 	//BD - Enable position tabs whenever positions are available, scales are always enabled
 	//     unless we are editing attachment bones, rotations on the other hand are only
 	//     enabled when editing joints.
 	mModifierTabs->setEnabled(item && is_posing);
-	mModifierTabs->enableTabButton(0, (item && is_posing /* && index == JOINTS*/));
-	mModifierTabs->enableTabButton(1, (item && is_posing));
-	mModifierTabs->enableTabButton(2, (item && is_posing /* && index != ATTACHMENT_BONES*/));
-	//BD - Swap out of "Position" tab when it's not available.
-	if (curr_idx == 1 && !mModifierTabs->getTabButtonEnabled(1))
-	{
-		mModifierTabs->selectTab(0);
-	}
-	//BD - Swap out of "Scale" and "Rotation" tabs when they are not available.
-	if (curr_idx == 2 && !mModifierTabs->getTabButtonEnabled(2)
-		|| curr_idx == 0 && !mModifierTabs->getTabButtonEnabled(0))
-	{
-		mModifierTabs->selectTab(1);
-	}
 
 	F32 max_val = is_pelvis ? 20.f : 1.0f;
 	mPositionSliders[VX]->setMaxValue(max_val);
@@ -912,7 +914,6 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	//     else snaps back instantly.
     S32 index = mJointTabs->getCurrentPanelIndex();
     LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
-	//LLScrollListItem* item = mJointScrolls[JOINTS]->getFirstSelected();
 	if (!item)
 		return;
 
@@ -937,20 +938,16 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 	vec3.mV[axis] = new_value;
 	rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
 	rot_quat = LLQuaternion(rot_mat)*rot_quat;
+
 	joint->setTargetRotation(rot_quat);
-
-    std::string human_readable_vec3 = "<,,,>";
-    human_readable_vec3.insert(3, (LLSD)ll_round((F32)cell[VZ]->getValue().asReal(), 0.001f));
-    human_readable_vec3.insert(2, (LLSD)ll_round((F32)cell[VY]->getValue().asReal(), 0.001f));
-    human_readable_vec3.insert(1, (LLSD)ll_round((F32)cell[VX]->getValue().asReal(), 0.001f));
-    item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-
     //BD - Collision Volumes and Attachment Points need this to work.
     //     Any bone past 133 is assumed to be not a normal joint anymore.
     if (joint->getJointNum() >= 134)
     {
         joint->setRotation(rot_quat);
     }
+
+    onColumnRefresh(item);
 
 	if (!mEasyRotations)
 	{
@@ -1015,11 +1012,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 				while (i < 3)
 				{
 					cell2[i]->setValue(ll_round(item->getColumn(i + 2)->getValue(), 0.001f));
-                    human_readable_vec3 = "<,,,>";
-                    human_readable_vec3.insert(3, (LLSD)ll_round((F32)cell2[VZ]->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(2, (LLSD)ll_round((F32)cell2[VY]->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(1, (LLSD)ll_round((F32)cell2[VX]->getValue().asReal(), 0.001f));
-                    item2->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
+                    onColumnRefresh(item2);
 					++i;
 				}
 			}
@@ -1048,19 +1041,14 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 			vec3.mV[dir] = val;
 			cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
 			joint->setTargetPosition(vec3);
-
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round(vec3.mV[VZ], 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round(vec3.mV[VY], 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round(vec3.mV[VX], 0.001f));
-            item->getColumn(COL_VISUAL_POS)->setValue(human_readable_vec3);
-
             //BD - Collision Volumes and Attachment Points need this to work.
             //     Any bone past 133 is assumed to be not a normal joint anymore.
             if (joint->getJointNum() >= 134)
             {
                 joint->setPosition(vec3);
             }
+
+            onColumnRefresh(item);
 		}
 	}
 }
@@ -1081,16 +1069,12 @@ void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 							   F32(cell[VY]->getValue().asReal()),
 							   F32(cell[VZ]->getValue().asReal()) };
 
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round(vec3.mV[VZ], 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round(vec3.mV[VY], 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round(vec3.mV[VX], 0.001f));
-            item->getColumn(COL_VISUAL_SCALE)->setValue(human_readable_vec3);
-
 			S32 dir = param.asInteger();
 			vec3.mV[dir] = val;
 			cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
 			joint->setScale(vec3);
+
+            onColumnRefresh(item);
 		}
 	}
 }
@@ -1146,66 +1130,64 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 		motion->setInterpolationType(2);
 	}
 
-	for (S32 it = 0; it < 3; ++it)
+    S32 index = mJointTabs->getCurrentPanelIndex();
+
+	for (auto item : mJointScrolls[index]->getAllData())
 	{
-		for (auto item : mJointScrolls[it]->getAllData())
+		if (item)
 		{
-			if (item)
+			LLJoint* joint = (LLJoint*)item->getUserdata();
+			if (joint)
 			{
-				LLJoint* joint = (LLJoint*)item->getUserdata();
-				if (joint)
-				{
-					//BD - Resetting rotations first if there are any.
-					if (it == JOINTS)
-					{
-						LLQuaternion quat;
-						LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-						LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-						LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+				//BD - Resetting rotations first.
+				LLQuaternion quat;
+				LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+				LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+				LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-						col_rot_x->setValue(0.000f);
-						col_rot_y->setValue(0.000f);
-						col_rot_z->setValue(0.000f);
+				col_rot_x->setValue(0.000f);
+				col_rot_y->setValue(0.000f);
+				col_rot_z->setValue(0.000f);
 
-						quat.setEulerAngles(0, 0, 0);
-						joint->setTargetRotation(quat);
-                        //BD - Collision Volumes and Attachment Points need this to work.
-                        //     Any bone past 133 is assumed to be not a normal joint anymore.
-                        if (joint->getJointNum() >= 134)
-                        {
-                            joint->setRotation(quat);
-                        }
-					}
+				quat.setEulerAngles(0, 0, 0);
+				joint->setTargetRotation(quat);
+                //BD - Collision Volumes and Attachment Points need this to work.
+                //     Any bone past 133 is assumed to be not a normal joint anymore.
+                if (joint->getJointNum() >= 134)
+                {
+                    joint->setRotation(quat);
+                }
 
-					//BD - Resetting positions next.
-					//     All bones support positions now.
-					LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-					LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-					LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
-					LLVector3 pos = mDefaultPositions[joint->getName()];
+				//BD - Resetting positions next.
+				//     All bones support positions now.
+				LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+				LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+				LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+				LLVector3 pos = mDefaultPositions[joint->getName()];
 
-					col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-					col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-					col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-					joint->setTargetPosition(pos);
-                    //BD - Collision Volumes and Attachment Points need this to work.
-                    //     Any bone past 133 is assumed to be not a normal joint anymore.
-                    if (joint->getJointNum() >= 134)
-                    {
-                        joint->setPosition(pos);
-                    }
+				col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+				col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+				col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+				joint->setTargetPosition(pos);
+                //BD - Collision Volumes and Attachment Points need this to work.
+                //     Any bone past 133 is assumed to be not a normal joint anymore.
+                if (joint->getJointNum() >= 134)
+                {
+                    joint->setPosition(pos);
+                }
 
-					//BD - Resetting scales last.
-					LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
-					LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
-					LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
-					LLVector3 scale = mDefaultScales[joint->getName()];
+				//BD - Resetting scales last.
+				LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
+				LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
+				LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
+				LLVector3 scale = mDefaultScales[joint->getName()];
 
-					col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
-					col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
-					col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
-					joint->setScale(scale);
-				}
+				col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
+				col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
+				col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
+				joint->setScale(scale);
+
+                onColumnRefresh(item);
 			}
 		}
 	}
@@ -1233,24 +1215,26 @@ void BDFloaterPoser::onJointRotationReset()
 		motion->setInterpolationType(2);
 	}
 
-	for (auto new_item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		if (new_item)
-		{
-			LLJoint* joint = (LLJoint*)new_item->getUserdata();
-			if (joint)
-			{
-				LLQuaternion quat;
-				LLScrollListCell* col_x = new_item->getColumn(COL_ROT_X);
-				LLScrollListCell* col_y = new_item->getColumn(COL_ROT_Y);
-				LLScrollListCell* col_z = new_item->getColumn(COL_ROT_Z);
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-				col_x->setValue(0.000f);
-				col_y->setValue(0.000f);
-				col_z->setValue(0.000f);
+    for (auto new_item : mJointScrolls[index]->getAllSelected())
+    {
+        if (new_item)
+        {
+            LLJoint* joint = (LLJoint*)new_item->getUserdata();
+            if (joint)
+            {
+                LLQuaternion quat;
+                LLScrollListCell* col_x = new_item->getColumn(COL_ROT_X);
+                LLScrollListCell* col_y = new_item->getColumn(COL_ROT_Y);
+                LLScrollListCell* col_z = new_item->getColumn(COL_ROT_Z);
 
-				quat.setEulerAngles(0, 0, 0);
-				joint->setTargetRotation(quat);
+                col_x->setValue(0.000f);
+                col_y->setValue(0.000f);
+                col_z->setValue(0.000f);
+
+                quat.setEulerAngles(0, 0, 0);
+                joint->setTargetRotation(quat);
                 //BD - Collision Volumes and Attachment Points need this to work.
                 //     Any bone past 133 is assumed to be not a normal joint anymore.
                 if (joint->getJointNum() >= 134)
@@ -1258,56 +1242,60 @@ void BDFloaterPoser::onJointRotationReset()
                     joint->setRotation(quat);
                 }
 
-				//BD - If we are in Mirror mode, try to find the opposite bone of our currently
-				//     selected one, for now this simply means we take the name and replace "Left"
-				//     with "Right" and vise versa since all bones are conveniently that way.
-				//     TODO: Do this when creating the joint list so we don't try to find the joint
-				//     over and over again.
-				if (mMirrorMode)
-				{
-					LLJoint* mirror_joint = nullptr;
-					std::string mirror_joint_name = joint->getName();
-					S32 idx = static_cast<S32>(joint->getName().find("Left"));
-					if (idx != -1)
-						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+                //BD - If we are in Mirror mode, try to find the opposite bone of our currently
+                //     selected one, for now this simply means we take the name and replace "Left"
+                //     with "Right" and vise versa since all bones are conveniently that way.
+                //     TODO: Do this when creating the joint list so we don't try to find the joint
+                //     over and over again.
+                if (mMirrorMode)
+                {
+                    LLJoint* mirror_joint = nullptr;
+                    std::string mirror_joint_name = joint->getName();
+                    S32 idx = static_cast<S32>(joint->getName().find("Left"));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
 
-					idx = static_cast<S32>(joint->getName().find("Right"));
-					if (idx != -1)
-						mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+                    idx = static_cast<S32>(joint->getName().find("Right"));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
 
-					if (mirror_joint_name != joint->getName())
-					{
-						mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
-					}
+                    if (mirror_joint_name != joint->getName())
+                    {
+                        mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+                    }
 
-					if (mirror_joint)
-					{
-						//BD - We also need to find the opposite joint's list entry and change its values to reflect
-						//     the new ones, doing this here is still better than causing a complete refresh.
-						LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
-						if (item2)
-						{
-							col_x = item2->getColumn(COL_ROT_X);
-							col_y = item2->getColumn(COL_ROT_Y);
-							col_z = item2->getColumn(COL_ROT_Z);
+                    if (mirror_joint)
+                    {
+                        //BD - We also need to find the opposite joint's list entry and change its values to reflect
+                        //     the new ones, doing this here is still better than causing a complete refresh.
+                        LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+                        if (item2)
+                        {
+                            col_x = item2->getColumn(COL_ROT_X);
+                            col_y = item2->getColumn(COL_ROT_Y);
+                            col_z = item2->getColumn(COL_ROT_Z);
 
-							col_x->setValue(0.000f);
-							col_y->setValue(0.000f);
-							col_z->setValue(0.000f);
+                            col_x->setValue(0.000f);
+                            col_y->setValue(0.000f);
+                            col_z->setValue(0.000f);
 
-							mirror_joint->setTargetRotation(quat);
+                            mirror_joint->setTargetRotation(quat);
                             //BD - Collision Volumes and Attachment Points need this to work.
                             //     Any bone past 133 is assumed to be not a normal joint anymore.
                             if (joint->getJointNum() >= 134)
                             {
                                 mirror_joint->setRotation(quat);
                             }
-						}
-					}
-				}
-			}
-		}
-	}
+
+                            onColumnRefresh(item2);
+                        }
+                    }
+                }
+
+                onColumnRefresh(item);
+            }
+        }
+    }
 
 	onJointControlsRefresh();
 }
@@ -1334,33 +1322,33 @@ void BDFloaterPoser::onJointPositionReset()
 		motion->setInterpolationType(2);
 	}
 
-	//BD - We use this bool to prevent going through attachment override reset every single time.
-	//bool has_reset = false;
-	for (auto item : mJointScrolls[index]->getAllSelected())
-	{
-		if (item)
-		{
-			LLJoint* joint = (LLJoint*)item->getUserdata();
-			if (joint)
-			{
-				LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-				LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-				LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
-				LLVector3 pos = mDefaultPositions[joint->getName()];
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        if (item)
+        {
+            LLJoint* joint = (LLJoint*)item->getUserdata();
+            if (joint)
+            {
+                LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+                LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+                LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+                LLVector3 pos = mDefaultPositions[joint->getName()];
 
-				col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-				col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-				col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-				joint->setTargetPosition(pos);
+                col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+                col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+                col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+                joint->setTargetPosition(pos);
                 //BD - Collision Volumes and Attachment Points need this to work.
                 //     Any bone past 133 is assumed to be not a normal joint anymore.
                 if (joint->getJointNum() >= 134)
                 {
                     joint->setPosition(pos);
                 }
-			}
-		}
-	}
+
+                onColumnRefresh(item);
+            }
+        }
+    }
 
 	onJointControlsRefresh();
 }
@@ -1395,6 +1383,8 @@ void BDFloaterPoser::onJointScaleReset()
 				col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
 				col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
 				joint->setScale(scale);
+
+                onColumnRefresh(item);
 			}
 		}
 	}
@@ -1421,7 +1411,9 @@ void BDFloaterPoser::onJointRotationRevert()
 		motion->setInterpolationType(2);
 	}
 
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
+    S32 index = mJointTabs->getCurrentPanelIndex();
+
+	for (auto item : mJointScrolls[index]->getAllSelected())
 	{
 		if (item)
 		{
@@ -1511,85 +1503,119 @@ void BDFloaterPoser::onFlipPose()
 	if (!(avatar->getRegion() == gAgent.getRegion())) return;
 
 	LLJoint* joint = nullptr;
-	bool flipped[134] = { false };
+	bool flipped[512] = { false };
 
-	for (S32 i = 0; (joint = avatar->getCharacterJoint(i)); ++i)
-	{
-		//BD - Skip if we already flipped this bone.
-		if (flipped[i]) continue;
+    for (S32 it = 0; it < 3; ++it)
+    {
+        for (auto item : mJointScrolls[it]->getAllData())
+        {
+            LLJoint* joint = (LLJoint*)item->getUserdata();
+            if (joint)
+            {
+                S32 i = joint->getJointNum();
+                //BD - Skip if we already flipped this bone.
+                if (flipped[i]) continue;
 
-		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
-		if (!joint)	continue;
+                //BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+                if (!joint)	continue;
 
-		LLVector3 rot, mirror_rot;
-		LLQuaternion rot_quat, mirror_rot_quat;
-		std::string joint_name = joint->getName();
-		std::string mirror_joint_name = joint->getName();
-		//BD - Attempt to find the "right" version of this bone first, we assume we always
-		//     end up with the "left" version of a bone first.
-		S32 idx = static_cast<S32>(joint->getName().find("Left"));
-		if (idx != -1)
-			mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
-		//BD - Attempt to find the "right" version of this bone first, this is necessary
-		//     because there are a couple bones starting with the "right" bone.
-		idx = static_cast<S32>(joint->getName().find("Right"));
-		if (idx != -1)
-			mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+                LLVector3 rot, mirror_rot;
+                LLQuaternion rot_quat, mirror_rot_quat;
+                std::string joint_name = joint->getName();
+                std::string mirror_joint_name = joint->getName();
 
-		LLJoint* mirror_joint = nullptr;
-		if (mirror_joint_name != joint->getName())
-			mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+                //BD - Attempt to find the "right" version of this bone first, we assume we always
+                //     end up with the "left" version of a bone first.
+                S32 idx = static_cast<S32>(joint->getName().find("Left"));
+                if (idx != -1)
+                    mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+                else
+                {
+                    //BD - We failed, try again, Attachment Bones use both "L " as well as "Left"
+                    idx = static_cast<S32>(joint->getName().find("L "));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "R ");
+                }
+                //BD - Attempt to find the "right" version of this bone first, this is necessary
+                //     because there are a couple bones starting with the "right" bone.
+                idx = static_cast<S32>(joint->getName().find("Right"));
+                if (idx != -1)
+                    mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+                else
+                {
+                    //BD - We failed, try again, Attachment Bones use both "L " as well as "Left"
+                    idx = static_cast<S32>(joint->getName().find("R "));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "L ");
+                }
 
-		//BD - Collect the joint and mirror joint entries and their cells, we need them later.
-		LLScrollListItem* item1 = mJointScrolls[JOINTS]->getItemByLabel(joint_name, FALSE, COL_NAME);
-		LLScrollListItem* item2 = nullptr;
+                LLJoint* mirror_joint = nullptr;
+                if (mirror_joint_name != joint->getName())
+                    mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
 
-		//BD - Get the rotation of our current bone and that of the mirror bone (if available).
-		//     Flip our current bone's rotation and apply it to the mirror bone (if available).
-		//     Flip the mirror bone's rotation (if available) and apply it to our current bone.
-		//     If the mirror bone does not exist, flip the current bone rotation and use that.
-		rot_quat = joint->getTargetRotation();
-		LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
-		inv_rot_quat.getEulerAngles(&rot[VX], &rot[VY], &rot[VZ]);
+                //BD - Collect the joint and mirror joint entries and their cells, we need them later.
+                LLScrollListItem* item1 = mJointScrolls[it]->getItemByLabel(joint_name, FALSE, COL_NAME);
+                LLScrollListItem* item2 = nullptr;
 
-		if (mirror_joint)
-		{
-			mirror_rot_quat = mirror_joint->getTargetRotation();
-			LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
-			inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
-			mirror_joint->setTargetRotation(inv_rot_quat);
-			joint->setTargetRotation(inv_mirror_rot_quat);
+                //BD - Get the rotation of our current bone and that of the mirror bone (if available).
+                //     Flip our current bone's rotation and apply it to the mirror bone (if available).
+                //     Flip the mirror bone's rotation (if available) and apply it to our current bone.
+                //     If the mirror bone does not exist, flip the current bone rotation and use that.
+                rot_quat = joint->getTargetRotation();
+                LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
+                inv_rot_quat.getEulerAngles(&rot[VX], &rot[VY], &rot[VZ]);
 
-			item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+                if (mirror_joint)
+                {
+                    mirror_rot_quat = mirror_joint->getTargetRotation();
+                    LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
+                    inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+                    mirror_joint->setTargetRotation(inv_rot_quat);
+                    joint->setTargetRotation(inv_mirror_rot_quat);
+                    //BD - Collision Volumes and Attachment Points need this to work.
+                    //     Any bone past 133 is assumed to be not a normal joint anymore.
+                    if (joint->getJointNum() >= 134)
+                    {
+                        mirror_joint->setRotation(inv_rot_quat);
+                        joint->setRotation(inv_mirror_rot_quat);
+                    }
 
-			//BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
-			flipped[mirror_joint->getJointNum()] = true;
-		}
-		else
-		{
-			joint->setTargetRotation(inv_rot_quat);
-		}
+                    item2 = mJointScrolls[it]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
 
-		S32 axis = 0;
-		while (axis <= 2)
-		{
-			//BD - Now flip the list entry values.
-			if (item1)
-			{
-				if (mirror_joint)
-					item1->getColumn(axis + 2)->setValue(ll_round(mirror_rot[axis], 0.001f));
-				else
-					item1->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
-			}
+                    //BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
+                    flipped[mirror_joint->getJointNum()] = true;
+                }
+                else
+                {
+                    joint->setTargetRotation(inv_rot_quat);
+                    if (joint->getJointNum() >= 134)
+                    {
+                        joint->setRotation(inv_rot_quat);
+                    }
+                }
 
-			//BD - Now flip the mirror joint list entry values.
-			if (item2)
-				item2->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
+                S32 axis = 0;
+                while (axis <= 2)
+                {
+                    //BD - Now flip the list entry values.
+                    if (item1)
+                    {
+                        if (mirror_joint)
+                            item1->getColumn(axis + 2)->setValue(ll_round(mirror_rot[axis], 0.001f));
+                        else
+                            item1->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
+                    }
 
-			++axis;
-		}
-		flipped[i] = true;
-	}
+                    //BD - Now flip the mirror joint list entry values.
+                    if (item2)
+                        item2->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
+
+                    ++axis;
+                }
+                flipped[i] = true;
+            }
+        }
+    }
 }
 
 //BD - Copy and mirror one side's joints to the other (symmetrize the pose).
@@ -1601,100 +1627,104 @@ void BDFloaterPoser::onPoseSymmetrize(const LLSD& param)
 	if (!(avatar->getRegion() == gAgent.getRegion())) return;
 
 	LLJoint* joint = nullptr;
-	bool flipped[134] = { false };
+	bool flipped[512] = { false };
 	bool flipLeft = false;
 	if (param.asInteger() == 0)
 	{
 		flipLeft = true;
 	}
 
-	for (S32 i = 0; (joint = avatar->getCharacterJoint(i)); ++i)
-	{
-		//BD - Skip if we already flipped this bone.
-		if (flipped[i]) continue;
+    for (S32 it = 0; it < 3; ++it)
+    {
+        for (auto item : mJointScrolls[it]->getAllData())
+        {
+            LLJoint* joint = (LLJoint*)item->getUserdata();
+            if (joint)
+            {
+                S32 i = joint->getJointNum();
+                //BD - Skip if we already flipped this bone.
+                if (flipped[i]) continue;
 
-		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
-		if (!joint)	continue;
+                //BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+                if (!joint)	continue;
 
-		LLVector3 rot, mirror_rot;
-		LLQuaternion rot_quat, mirror_rot_quat;
-		std::string joint_name = joint->getName();
-		std::string mirror_joint_name = joint->getName();
-		if (!flipLeft)
-		{
-			//BD - Attempt to find the "right" version of this bone first, we assume we always
-			//     end up with the "left" version of a bone first.
-			S32 idx = static_cast<S32>(joint->getName().find("Left"));
-			if (idx != -1)
-				mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
-			else
-				continue;
-		}
-		else
-		{
-			//BD - Attempt to find the "right" version of this bone first, this is necessary
-			//     because there are a couple bones starting with the "right" bone.
-			S32 idx = static_cast<S32>(joint->getName().find("Right"));
-			if (idx != -1)
-				mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
-			else
-				continue;
-		}
+                LLVector3 rot, mirror_rot;
+                LLQuaternion rot_quat, mirror_rot_quat;
+                std::string joint_name = joint->getName();
+                std::string mirror_joint_name = joint->getName();
+                if (!flipLeft)
+                {
+                    //BD - Attempt to find the "right" version of this bone first, we assume we always
+                    //     end up with the "left" version of a bone first.
+                    S32 idx = static_cast<S32>(joint->getName().find("Left"));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+                    else
+                    {
+                        //BD - We failed, try again, Attachment Bones use both "L " as well as "Left"
+                        idx = static_cast<S32>(joint->getName().find("L "));
+                        if (idx != -1)
+                            mirror_joint_name.replace(idx, mirror_joint_name.length(), "R ");
+                    }
+                }
+                else
+                {
+                    //BD - Attempt to find the "right" version of this bone first, this is necessary
+                    //     because there are a couple bones starting with the "right" bone.
+                    S32 idx = static_cast<S32>(joint->getName().find("Right"));
+                    if (idx != -1)
+                        mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+                    else
+                    {
+                        //BD - We failed, try again, Attachment Bones use both "L " as well as "Left"
+                        idx = static_cast<S32>(joint->getName().find("R "));
+                        if (idx != -1)
+                            mirror_joint_name.replace(idx, mirror_joint_name.length(), "L ");
+                    }
+                }
 
-		LLJoint* mirror_joint = nullptr;
-		if (mirror_joint_name != joint->getName())
-			mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+                LLJoint* mirror_joint = nullptr;
+                if (mirror_joint_name != joint->getName())
+                    mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
 
-		//BD - Collect the joint and mirror joint entries and their cells, we need them later.
-		//LLScrollListItem* item1 = mJointScrolls[JOINTS]->getItemByLabel(joint_name, FALSE, COL_NAME);
-		LLScrollListItem* item2 = nullptr;
+                //BD - Collect the joint and mirror joint entries and their cells, we need them later.
+                LLScrollListItem* item2 = nullptr;
 
-		//BD - Get the rotation of our current bone and that of the mirror bone (if available).
-		//     Flip our current bone's rotation and apply it to the mirror bone (if available).
-		//     Flip the mirror bone's rotation (if available) and apply it to our current bone.
-		//     If the mirror bone does not exist, flip the current bone rotation and use that.
-		rot_quat = joint->getTargetRotation();
-		LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
-		inv_rot_quat.getEulerAngles(&rot[VX], &rot[VY], &rot[VZ]);
+                //BD - Get the rotation of our current bone and that of the mirror bone (if available).
+                //     Flip our current bone's rotation and apply it to the mirror bone (if available).
+                //     Flip the mirror bone's rotation (if available) and apply it to our current bone.
+                //     If the mirror bone does not exist, flip the current bone rotation and use that.
+                rot_quat = joint->getTargetRotation();
+                LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
+                inv_rot_quat.getEulerAngles(&rot[VX], &rot[VY], &rot[VZ]);
 
-		if (mirror_joint)
-		{
-			//mirror_rot_quat = mirror_joint->getTargetRotation();
-			//LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
-			//inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
-			mirror_joint->setTargetRotation(inv_rot_quat);
-			//joint->setTargetRotation(inv_mirror_rot_quat);
+                if (mirror_joint)
+                {
+                    mirror_joint->setTargetRotation(inv_rot_quat);
+                    if (joint->getJointNum() >= 134)
+                    {
+                        mirror_joint->setRotation(inv_rot_quat);
+                    }
 
-			item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+                    item2 = mJointScrolls[it]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
 
-			//BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
-			flipped[mirror_joint->getJointNum()] = true;
-		}
-		/*else
-		{
-			joint->setTargetRotation(inv_rot_quat);
-		}*/
+                    //BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
+                    flipped[mirror_joint->getJointNum()] = true;
+                }
 
-		S32 axis = 0;
-		while (axis <= 2)
-		{
-			//BD - Now flip the list entry values.
-			/*if (item1)
-			{
-				if (mirror_joint)
-					item1->getColumn(axis + 2)->setValue(ll_round(mirror_rot[axis], 0.001f));
-				else
-					item1->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
-			}*/
+                S32 axis = 0;
+                while (axis <= 2)
+                {
+                    //BD - Now flip the mirror joint list entry values.
+                    if (item2)
+                        item2->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
 
-			//BD - Now flip the mirror joint list entry values.
-			if (item2)
-				item2->getColumn(axis + 2)->setValue(ll_round(rot[axis], 0.001f));
-
-			++axis;
-		}
-		flipped[i] = true;
-	}
+                    ++axis;
+                }
+                flipped[i] = true;
+            }
+        }
+    }
 }
 
 //BD - Recapture the current joint's values.
@@ -1717,64 +1747,62 @@ void BDFloaterPoser::onJointsRecapture()
 		LLPose* pose = motion->getPose();
 		if (pose)
 		{
-			for (auto item : mJointScrolls[JOINTS]->getAllData())
-			{
-				if (item)
-				{
-					LLJoint* joint = (LLJoint*)item->getUserdata();
-					if (joint)
-					{
-						// BD - Check for the joint state (whether a bone is enabled or not)
-						//      If not proceed.
-						LLPointer<LLJointState> joint_state = pose->findJointState(joint);
-						if (!joint_state)
-						{
-							//BD - First gather the current rotation and position.
-							rot = joint->getRotation();
-							pos = joint->getPosition();
+            for (S32 it = 0; it < 3; ++it)
+            {
+                for (auto item : mJointScrolls[it]->getAllData())
+                {
+                    if (item)
+                    {
+                        LLJoint* joint = (LLJoint*)item->getUserdata();
+                        if (joint)
+                        {
+                            // BD - Check for the joint state (whether a bone is enabled or not)
+                            //      If not proceed.
+                            LLPointer<LLJointState> joint_state = pose->findJointState(joint);
+                            if (!joint_state)
+                            {
+                                //BD - First gather the current rotation and position.
+                                rot = joint->getRotation();
+                                pos = joint->getPosition();
 
-							//BD - Now, re-add the joint state and enable changing the pose.
-							motion->addJointToState(joint);
-							((LLScrollListText*)item->getColumn(COL_NAME))->setFontStyle(LLFontGL::BOLD);
+                                //BD - Now, re-add the joint state and enable changing the pose.
+                                motion->addJointToState(joint);
+                                ((LLScrollListText*)item->getColumn(COL_NAME))->setFontStyle(LLFontGL::BOLD);
 
-							//BD - Apply the newly collected rotation and position to the pose.
-							joint->setTargetRotation(rot);
-							joint->setTargetPosition(pos);
+                                //BD - Apply the newly collected rotation and position to the pose.
+                                joint->setTargetRotation(rot);
+                                joint->setTargetPosition(pos);
+                                if (joint->getJointNum() >= 134)
+                                {
+                                    joint->setRotation(rot);
+                                    joint->setPosition(pos);
+                                }
 
-							//BD - Get all columns and fill in the new values.
-							LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-							LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-							LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+                                //BD - Get all columns and fill in the new values.
+                                LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+                                LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+                                LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-							LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-							LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-							LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+                                LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+                                LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+                                LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
 
-							LLVector3 euler_rot;
-							rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
-							col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-							col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-							col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+                                LLVector3 euler_rot;
+                                rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
+                                col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
+                                col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
+                                col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
 
-                            std::string human_readable_vec3 = "<,,,>";
-                            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-                            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-                            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-                            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
+                                col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+                                col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+                                col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
 
-							col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-							col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-							col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
-
-                            human_readable_vec3 = "<,,,>";
-                            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_pos_z->getValue().asReal(), 0.001f));
-                            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_pos_y->getValue().asReal(), 0.001f));
-                            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_pos_x->getValue().asReal(), 0.001f));
-                            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-						}
-					}
-				}
-			}
+                                onColumnRefresh(item);
+                            }
+                        }
+                    }
+                }
+            }
 		}
 	}
 }
@@ -1796,7 +1824,9 @@ void BDFloaterPoser::onJointRecapture()
     BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
     if (motion)
     {
-        for(auto item : mJointScrolls[JOINTS]->getAllSelected())
+        S32 index = mJointTabs->getCurrentPanelIndex();
+
+        for (auto item : mJointScrolls[index]->getAllSelected())
         {
             LLJoint* joint = (LLJoint*)item->getUserdata();
             if (joint)
@@ -1808,6 +1838,11 @@ void BDFloaterPoser::onJointRecapture()
                 //BD - Apply the newly collected rotation and position to the pose.
                 joint->setTargetRotation(rot);
                 joint->setTargetPosition(pos);
+                if (joint->getJointNum() >= 134)
+                {
+                    joint->setRotation(rot);
+                    joint->setPosition(pos);
+                }
 
                 //BD - Get all columns and fill in the new values.
                 LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
@@ -1824,21 +1859,11 @@ void BDFloaterPoser::onJointRecapture()
                 col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
                 col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
 
-                std::string human_readable_vec3 = "<,,,>";
-                human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-                human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-                human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-                item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-
                 col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
                 col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
                 col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
 
-                human_readable_vec3 = "<,,,>";
-                human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_pos_z->getValue().asReal(), 0.001f));
-                human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_pos_y->getValue().asReal(), 0.001f));
-                human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_pos_x->getValue().asReal(), 0.001f));
-                item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
+                onColumnRefresh(item);
             }
         }
     }
@@ -1847,211 +1872,222 @@ void BDFloaterPoser::onJointRecapture()
 //BD - Poser Utility Functions
 void BDFloaterPoser::onJointPasteRotation()
 {
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-			LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-			LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-			LLVector3 euler_rot;
-			LLQuaternion rot = (LLQuaternion)mClipboard["rot"];
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+            LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+            LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-			joint->setTargetRotation(rot);
+            LLVector3 euler_rot;
+            LLQuaternion rot = (LLQuaternion)mClipboard["rot"];
 
-			rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
-			col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-			col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-			col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+            joint->setTargetRotation(rot);
+            if (joint->getJointNum() >= 134)
+            {
+                joint->setRotation(rot);
+            }
 
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-		}
-	}
+            rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
+            col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
+            col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
+            col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+
+            onColumnRefresh(item);
+        }
+    }
 }
 
 void BDFloaterPoser::onJointPastePosition()
 {
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
-			LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
-			LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-			LLVector3 pos = (LLVector3)mClipboard["pos"];
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            LLScrollListCell* col_pos_x = item->getColumn(COL_POS_X);
+            LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
+            LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
 
-			joint->setTargetPosition(pos);
+            LLVector3 pos = (LLVector3)mClipboard["pos"];
 
-			col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-			col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-			col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+            joint->setTargetPosition(pos);
+            if (joint->getJointNum() >= 134)
+            {
+                joint->setPosition(pos);
+            }
 
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_pos_z->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_pos_y->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_pos_x->getValue().asReal(), 0.001f));
-            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-		}
-	}
+            col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
+            col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
+            col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+
+            onColumnRefresh(item);
+        }
+    }
 }
 
 void BDFloaterPoser::onJointPasteScale()
 {
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
-			LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
-			LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
-			LLVector3 scale = (LLVector3)mClipboard["scale"];
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-			joint->setScale(scale);
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            LLScrollListCell* col_scale_x = item->getColumn(COL_SCALE_X);
+            LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
+            LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
+            LLVector3 scale = (LLVector3)mClipboard["scale"];
 
-			col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
-			col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
-			col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
+            joint->setScale(scale);
 
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_scale_z->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_scale_y->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_scale_x->getValue().asReal(), 0.001f));
-            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-		}
-	}
+            col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
+            col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
+            col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
+
+            onColumnRefresh(item);
+        }
+    }
 }
 
 void BDFloaterPoser::onJointMirror()
 {
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			LLVector3 euler_rot;
-			LLQuaternion rot_quat = joint->getTargetRotation();
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-			//BD - Simply mirror the current bone's rotation like we'd do if we pressed the mirror
-			//     button without a mirror bone available.
-			LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
-			inv_rot_quat.getEulerAngles(&euler_rot[VX], &euler_rot[VY], &euler_rot[VZ]);
-			joint->setTargetRotation(inv_rot_quat);
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            LLVector3 euler_rot;
+            LLQuaternion rot_quat = joint->getTargetRotation();
 
-			LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-			LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-			LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+            //BD - Simply mirror the current bone's rotation like we'd do if we pressed the mirror
+            //     button without a mirror bone available.
+            LLQuaternion inv_rot_quat = LLQuaternion(-rot_quat.mQ[VX], rot_quat.mQ[VY], -rot_quat.mQ[VZ], rot_quat.mQ[VW]);
+            inv_rot_quat.getEulerAngles(&euler_rot[VX], &euler_rot[VY], &euler_rot[VZ]);
+            joint->setTargetRotation(inv_rot_quat);
+            if (joint->getJointNum() >= 134)
+            {
+                joint->setRotation(inv_rot_quat);
+            }
 
-			col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-			col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-			col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+            LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+            LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+            LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-            std::string human_readable_vec3 = "<,,,>";
-            human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-            human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-            item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-		}
-	}
+            col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
+            col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
+            col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+
+            onColumnRefresh(item);
+        }
+    }
 }
 
 void BDFloaterPoser::onJointSymmetrize(bool from)
 {
-	for (auto item : mJointScrolls[JOINTS]->getAllSelected())
-	{
-		LLJoint* joint = (LLJoint*)item->getUserdata();
-		if (joint)
-		{
-			std::string joint_name = joint->getName();
-			std::string mirror_joint_name = joint->getName();
-			//BD - Attempt to find the "right" version of this bone, if we can't find it try
-			//     the left version.
-			S32 idx = static_cast<S32>(joint->getName().find("Left"));
-			if (idx != -1)
-				mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
-			idx = static_cast<S32>(joint->getName().find("Right"));
-			if (idx != -1)
-				mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
+    S32 index = mJointTabs->getCurrentPanelIndex();
 
-			LLJoint* mirror_joint = nullptr;
-			if (mirror_joint_name != joint->getName())
-				mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
+    for (auto item : mJointScrolls[index]->getAllSelected())
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            std::string joint_name = joint->getName();
+            std::string mirror_joint_name = joint->getName();
+            //BD - Attempt to find the "right" version of this bone, if we can't find it try
+            //     the left version.
+            S32 idx = static_cast<S32>(joint->getName().find("Left"));
+            if (idx != -1)
+                mirror_joint_name.replace(idx, mirror_joint_name.length(), "Right");
+            idx = static_cast<S32>(joint->getName().find("Right"));
+            if (idx != -1)
+                mirror_joint_name.replace(idx, mirror_joint_name.length(), "Left");
 
-			//BD - Get the rotation of the mirror bone (if available).
-			//     Flip the mirror bone's rotation (if available) and apply it to our current bone.
-			//     ELSE
-			//     Flip the our bone's rotation and apply it to the mirror bone (if available).
-			if (mirror_joint)
-			{
-				LLVector3 mirror_rot;
-				LLQuaternion mirror_rot_quat;
-				LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
-				if (from)
-				{
-					mirror_rot_quat = mirror_joint->getTargetRotation();
-					LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
-					inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
-					joint->setTargetRotation(inv_mirror_rot_quat);
+            LLJoint* mirror_joint = nullptr;
+            if (mirror_joint_name != joint->getName())
+                mirror_joint = gDragonAnimator.mTargetAvatar->mRoot->findJoint(mirror_joint_name);
 
-					LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
-					LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
-					LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
+            //BD - Get the rotation of the mirror bone (if available).
+            //     Flip the mirror bone's rotation (if available) and apply it to our current bone.
+            //     ELSE
+            //     Flip the our bone's rotation and apply it to the mirror bone (if available).
+            if (mirror_joint)
+            {
+                LLVector3 mirror_rot;
+                LLQuaternion mirror_rot_quat;
+                LLScrollListItem* item2 = mJointScrolls[index]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
+                if (from)
+                {
+                    mirror_rot_quat = mirror_joint->getTargetRotation();
+                    LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
+                    inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+                    joint->setTargetRotation(inv_mirror_rot_quat);
+                    if (joint->getJointNum() >= 134)
+                    {
+                        joint->setRotation(inv_mirror_rot_quat);
+                    }
 
-					col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
-					col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
-					col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+                    LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
+                    LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
+                    LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-                    std::string human_readable_vec3 = "<,,,>";
-                    human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-                    item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-				}
-				else
-				{
-					mirror_rot_quat = joint->getTargetRotation();
-					LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
-					inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
-					mirror_joint->setTargetRotation(inv_mirror_rot_quat);
+                    col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
+                    col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
+                    col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
 
-					LLScrollListCell* col_rot_x = item2->getColumn(COL_ROT_X);
-					LLScrollListCell* col_rot_y = item2->getColumn(COL_ROT_Y);
-					LLScrollListCell* col_rot_z = item2->getColumn(COL_ROT_Z);
+                    onColumnRefresh(item);
+                }
+                else
+                {
+                    mirror_rot_quat = joint->getTargetRotation();
+                    LLQuaternion inv_mirror_rot_quat = LLQuaternion(-mirror_rot_quat.mQ[VX], mirror_rot_quat.mQ[VY], -mirror_rot_quat.mQ[VZ], mirror_rot_quat.mQ[VW]);
+                    inv_mirror_rot_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+                    mirror_joint->setTargetRotation(inv_mirror_rot_quat);
+                    if (joint->getJointNum() >= 134)
+                    {
+                        joint->setRotation(inv_mirror_rot_quat);
+                    }
 
-					col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
-					col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
-					col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+                    LLScrollListCell* col_rot_x = item2->getColumn(COL_ROT_X);
+                    LLScrollListCell* col_rot_y = item2->getColumn(COL_ROT_Y);
+                    LLScrollListCell* col_rot_z = item2->getColumn(COL_ROT_Z);
 
-                    std::string human_readable_vec3 = "<,,,>";
-                    human_readable_vec3.insert(3, (LLSD)ll_round((F32)col_rot_z->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(2, (LLSD)ll_round((F32)col_rot_y->getValue().asReal(), 0.001f));
-                    human_readable_vec3.insert(1, (LLSD)ll_round((F32)col_rot_x->getValue().asReal(), 0.001f));
-                    item->getColumn(COL_VISUAL_ROT)->setValue(human_readable_vec3);
-				}
-			}
-		}
-	}
+                    col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
+                    col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
+                    col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+
+                    onColumnRefresh(item2);
+                }
+            }
+        }
+    }
 }
 
 void BDFloaterPoser::onJointCopyTransforms()
 {
-	LLScrollListItem* item = mJointScrolls[JOINTS]->getFirstSelected();
-	LLJoint* joint = (LLJoint*)item->getUserdata();
-	if (joint)
-	{
-		mClipboard["rot"] = joint->getTargetRotation().getValue();
-		mClipboard["pos"] = joint->getTargetPosition().getValue();
-		mClipboard["scale"] = joint->getScale().getValue();
-		LL_INFOS("Posing") << "Copied all transforms " << LL_ENDL;
-	}
+    S32 index = mJointTabs->getCurrentPanelIndex();
+
+    LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
+    if (item)
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            mClipboard["rot"] = joint->getTargetRotation().getValue();
+            mClipboard["pos"] = joint->getTargetPosition().getValue();
+            mClipboard["scale"] = joint->getScale().getValue();
+            LL_INFOS("Posing") << "Copied all transforms " << LL_ENDL;
+        }
+    }
 }
 
 bool BDFloaterPoser::onJointContextMenuEnable(const LLSD& param)
@@ -2213,14 +2249,9 @@ void BDFloaterPoser::onCollectDefaults()
 		rot = joint->getTargetRotation();
 		mDefaultRotations.insert(std::pair<std::string, LLQuaternion>(name, rot));
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
 		scale = joint->getScale();
 		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
 
-		//BD - All bones support positions now.
-		//     We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
 		pos = joint->getPosition();
 		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
 	}
@@ -2232,12 +2263,14 @@ void BDFloaterPoser::onCollectDefaults()
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
-		pos = joint->getPosition();
-		scale = joint->getScale();
-		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+        rot = joint->getRotation();
+        mDefaultRotations.insert(std::pair<std::string, LLQuaternion>(name, rot));
+
+        scale = joint->getScale();
+        mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+
+        pos = joint->getPosition();
+        mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
 	}
 
 	//BD - Attachment Bones
@@ -2247,13 +2280,19 @@ void BDFloaterPoser::onCollectDefaults()
 		//BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
 		if (!joint)	continue;
 
-		//BD - We always get the values but we don't write them out as they are not relevant for the
-		//     user yet but we need them to establish default values we revert to later on.
-		pos = joint->getPosition();
-		scale = joint->getScale();
+        rot = joint->getRotation();
+        mDefaultRotations.insert(std::pair<std::string, LLQuaternion>(name, rot));
 
-		mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
-		mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+        //BD - We always get the values but we don't write them out as they are not relevant for the
+        //     user yet but we need them to establish default values we revert to later on.
+        scale = joint->getScale();
+        mDefaultScales.insert(std::pair<std::string, LLVector3>(name, scale));
+
+        //BD - All bones support positions now.
+        //     We always get the values but we don't write them out as they are not relevant for the
+        //     user yet but we need them to establish default values we revert to later on.
+        pos = joint->getPosition();
+        mDefaultPositions.insert(std::pair<std::string, LLVector3>(name, pos));
 	}
 }
 
@@ -2440,11 +2479,8 @@ void BDFloaterPoser::onAvatarsSelect()
 	if (item)
 	{
 		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
-        if (avatar && avatar->isSelf())
+        if (avatar)
         {
-            if(avatar->isSelf())
-                mStartPosingBtn->setEnabled(gAgentAvatarp->isFullyLoaded());
-
             //BD - Flash the Start button but only if the avatar isn't already posing.
             if(!avatar->mIsPosing)
                 mStartPosingBtn->setFlashing(true, true);
@@ -2469,9 +2505,10 @@ void BDFloaterPoser::onAvatarsRefresh()
         create_new = true;
         if (LLVOAvatar* avatar = (LLVOAvatar*)character)
         {
-            if (!avatar->isControlAvatar() && (gDragonLibrary.checkKonamiCode() || avatar->isSelf())
-                || avatar->isControlAvatar())
+            /*if (!avatar->isControlAvatar() && (gDragonLibrary.checkKonamiCode() || avatar->isSelf())
+                || avatar->isControlAvatar())*/
             {
+                bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
                 for (LLScrollListItem* item : mAvatarScroll->getAllData())
                 {
                     if (item)
@@ -2480,6 +2517,30 @@ void BDFloaterPoser::onAvatarsRefresh()
                         {
                             //BD - Avatar is still valid unflag it from removal.
                             item->setFlagged(false);
+
+                            //BD - Check if our permission to pose has changed.
+                            item->getColumn(3)->setValue(is_poseable ? "☑" : "☐");
+
+                            //BD - Avatar is being posed but is no longer allowed to be posed.
+                            if (avatar->mIsPosing && !is_poseable)
+                            {
+                                //BD - If we have the avatar currently selected simply toggle as if we clicked stop.
+                                if (item->getSelected())
+                                {
+                                    onPoseStart();
+                                }
+                                else
+                                {
+                                    //BD - Else stop posing manually.
+                                    avatar->setIsPoseable(false);
+                                    avatar->clearPosing();
+                                    avatar->stopMotion(ANIM_BD_POSING_MOTION);
+
+                                    //BD - Refresh all controls.
+                                    onPoseControlsRefresh();
+                                }
+                            }
+
                             create_new = false;
                         }
                     }
@@ -2495,7 +2556,7 @@ void BDFloaterPoser::onAvatarsRefresh()
                     row["columns"][0]["column"] = "icon";
                     row["columns"][0]["type"] = "icon";
                     if (!avatar->isControlAvatar())
-                        row["columns"][0]["value"] = getString("icon_category");
+                        row["columns"][0]["value"] = getString("icon_avatar");
                     else
                         row["columns"][0]["value"] = getString("icon_object");
                     row["columns"][1]["column"] = "name";
@@ -2507,6 +2568,8 @@ void BDFloaterPoser::onAvatarsRefresh()
                     row["columns"][2]["value"] = avatar->getID();
                     row["columns"][3]["column"] = "control_avatar";
                     row["columns"][3]["value"] = !avatar->isControlAvatar();
+                    row["columns"][4]["column"] = "is_poseable";
+                    row["columns"][4]["value"] = is_poseable ? "☑" : "☐";
                     LLScrollListItem* item = mAvatarScroll->addElement(row);
                     item->setUserdata(avatar);
                     item->setFlagged(false);
@@ -2525,7 +2588,9 @@ void BDFloaterPoser::onAvatarsRefresh()
 //BD - Beq's Visual Posing
 void BDFloaterPoser::selectJointByName(const std::string& jointName)
 {
-    std::vector<LLScrollListItem*> items = mJointScrolls[JOINTS]->getAllData();
+    S32 index = mJointTabs->getCurrentPanelIndex();
+
+    std::vector<LLScrollListItem*> items = mJointScrolls[index]->getAllData();
     for (auto item : items)
     {
         LLJoint* joint = (LLJoint*)item->getUserdata();
@@ -2533,8 +2598,8 @@ void BDFloaterPoser::selectJointByName(const std::string& jointName)
         {
             if (joint->getName() == jointName)
             {
-                mJointScrolls[JOINTS]->selectNthItem(mJointScrolls[JOINTS]->getItemIndex(item));
-                mJointScrolls[JOINTS]->scrollToShowSelected();
+                mJointScrolls[index]->selectNthItem(mJointScrolls[index]->getItemIndex(item));
+                mJointScrolls[index]->scrollToShowSelected();
                 return; // Exit the loop once we've found and selected the joint
             }
         }
@@ -2544,13 +2609,14 @@ void BDFloaterPoser::selectJointByName(const std::string& jointName)
 
 LLVector3 BDFloaterPoser::getJointRot(const std::string& jointName)
 {
+    S32 index = mJointTabs->getCurrentPanelIndex();
     LLVector3 vec3;
     //BD - Rotations are only supported by joints so far, everything
     //     else snaps back instantly.
-    LLScrollListItem* item = mJointScrolls[JOINTS]->getFirstSelected();
+    LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
     if (!item)
     {
-        LLJoint * joint = (LLJoint*)item->getUserdata();
+        LLJoint* joint = (LLJoint*)item->getUserdata();
         if (!joint)
         {
             vec3[VX] = (F32)item->getColumn(COL_ROT_X)->getValue().asReal();
@@ -2649,4 +2715,46 @@ void BDFloaterPoser::onModifierTabSwitch()
             }
         }
     }
+}
+
+void BDFloaterPoser::onColumnRefresh(LLScrollListItem* item)
+{
+    if (item)
+    {
+        LLJoint* joint = (LLJoint*)item->getUserdata();
+        if (joint)
+        {
+            //BD - Bone Rotations
+            LLVector3 vec3 = LLVector3((F32)item->getColumn(COL_ROT_X)->getValue().asReal(),
+                                        (F32)item->getColumn(COL_ROT_Y)->getValue().asReal(),
+                                        (F32)item->getColumn(COL_ROT_Z)->getValue().asReal());
+
+            item->getColumn(COL_VISUAL_ROT)->setValue(vec3.getValue());
+
+            //BD - All bones support positions now.
+            vec3 = LLVector3((F32)item->getColumn(COL_POS_X)->getValue().asReal(),
+                            (F32)item->getColumn(COL_POS_Y)->getValue().asReal(),
+                            (F32)item->getColumn(COL_POS_Z)->getValue().asReal());
+
+            item->getColumn(COL_VISUAL_POS)->setValue(vec3.getValue());
+
+            //BD - Bone Scales
+            vec3 = LLVector3((F32)item->getColumn(COL_SCALE_X)->getValue().asReal(),
+                                        (F32)item->getColumn(COL_SCALE_Y)->getValue().asReal(),
+                                        (F32)item->getColumn(COL_SCALE_Z)->getValue().asReal());
+
+            item->getColumn(COL_VISUAL_SCALE)->setValue(vec3.getValue());
+        }
+    }
+}
+
+void BDFloaterPoser::onRequestPermission()
+{
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
+    LLAvatarActions::posingRequest(avatar->getID());
 }
