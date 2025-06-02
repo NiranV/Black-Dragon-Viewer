@@ -320,4 +320,55 @@ private:
 	F32					mMaxValue;
 };
 
+/*
+ * BD - Cell displaying a colored vector label.
+ */
+class LLScrollListVector : public LLScrollListCell
+{
+public:
+    LLScrollListVector(const LLScrollListCell::Params&);
+    /*virtual*/ ~LLScrollListVector();
+
+    /*virtual*/ void    draw(const LLColor4& color, const LLColor4& highlight_color);
+    /*virtual*/ S32     getContentWidth() const;
+    /*virtual*/ S32     getHeight() const;
+    /*virtual*/ void    setValue(const LLSD& value);
+    /*virtual*/ void    setAltValue(const LLSD& value);
+    /*virtual*/ const LLSD getValue() const;
+    /*virtual*/ const LLSD getAltValue() const;
+    /*virtual*/ bool    getVisible() const;
+    /*virtual*/ void    highlightText(S32 offset, S32 num_chars);
+
+    /*virtual*/ void    setColor(const LLUIColor&);
+    /*virtual*/ bool    isText() const;
+    /*virtual*/ const std::string& getToolTip() const;
+    /*virtual*/ bool    needsToolTip() const;
+
+    S32             getTextWidth() const { return mTextWidth; }
+    void            setTextWidth(S32 value);
+    virtual void    setWidth(S32 width);
+
+    void            setText(const LLVector4& vec);
+    void            setFontStyle(const U8 font_style);
+    void            setAlignment(LLFontGL::HAlign align);
+
+protected:
+
+    LLVector4       mVector;
+    LLUIString      mText;
+    LLUIString      mAltText;
+    S32             mTextWidth;
+    const LLFontGL* mFont;
+    LLFontVertexBuffer mFontBuffer;
+    LLColor4        mColor;
+    LLColor4        mHighlightColor;
+    U8              mUseColor;
+    LLFontGL::HAlign mFontAlignment;
+    bool            mVisible;
+    S32             mHighlightCount;
+    S32             mHighlightOffset;
+
+    LLPointer<LLUIImage> mRoundedRectImage;
+};
+
 #endif

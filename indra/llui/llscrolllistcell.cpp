@@ -65,6 +65,10 @@ LLScrollListCell* LLScrollListCell::create(const LLScrollListCell::Params& cell_
     {
         cell = new LLScrollListBar(cell_p);
     }
+    else if (cell_p.type() == "vector")
+    {
+        cell = new LLScrollListVector(cell_p);
+    }
     else    // default is "text"
     {
         cell = new LLScrollListText(cell_p);
@@ -768,3 +772,204 @@ void LLScrollListMultiSlider::draw(const LLUIColor& color, const LLUIColor& high
 }
 
 
+
+LLScrollListVector::LLScrollListVector(const LLScrollListCell::Params& p)
+    : LLScrollListCell(p),
+    mText(p.label.isProvided() ? p.label() : p.value().asString()),
+    mVector(p.value()),
+    mAltText(p.alt_value().asString()),
+    mFont(p.font),
+    mColor(p.color),
+    mUseColor(p.color.isProvided()),
+    mFontAlignment(p.font_halign),
+    mVisible(p.visible),
+    mHighlightCount(0),
+    mHighlightOffset(0)
+{
+
+    mTextWidth = getWidth();
+
+    // initialize rounded rect image
+    if (!mRoundedRectImage)
+    {
+        mRoundedRectImage = LLUI::getUIImage("Rounded_Square");
+    }
+}
+
+//virtual
+void LLScrollListVector::highlightText(S32 offset, S32 num_chars)
+{
+    mHighlightOffset = offset;
+    mHighlightCount = llmax(0, num_chars);
+}
+
+//virtual
+bool LLScrollListVector::isText() const
+{
+    return true;
+}
+
+// virtual
+const std::string& LLScrollListVector::getToolTip() const
+{
+    // If base class has a tooltip, return that
+    if (!LLScrollListCell::getToolTip().empty())
+        return LLScrollListCell::getToolTip();
+
+    // ...otherwise, return the value itself as the tooltip
+    return mText.getString();
+}
+
+// virtual
+bool LLScrollListVector::needsToolTip() const
+{
+    // If base class has a tooltip, return that
+    if (LLScrollListCell::needsToolTip())
+        return LLScrollListCell::needsToolTip();
+
+    // ...otherwise, show tooltips for truncated text
+    return mFont->getWidth(mText.getWString().c_str()) > getWidth();
+}
+
+void LLScrollListVector::setTextWidth(S32 value)
+{
+    mTextWidth = value;
+    mFontBuffer.reset();
+}
+
+void LLScrollListVector::setWidth(S32 width)
+{
+    LLScrollListCell::setWidth(width);
+    mTextWidth = width;
+    mFontBuffer.reset();
+}
+
+//virtual
+bool LLScrollListVector::getVisible() const
+{
+    return mVisible;
+}
+
+//virtual
+S32 LLScrollListVector::getHeight() const
+{
+    return mFont->getLineHeight();
+}
+
+
+LLScrollListVector::~LLScrollListVector()
+{
+}
+
+S32 LLScrollListVector::getContentWidth() const
+{
+    return mFont->getWidth(mText.getWString().c_str());
+}
+
+
+void LLScrollListVector::setColor(const LLUIColor& color)
+{
+    mColor = color;
+    mUseColor = true;
+}
+
+void LLScrollListVector::setText(const LLVector4& vec)
+{
+    mVector = vec;
+    mFontBuffer.reset();
+}
+
+void LLScrollListVector::setFontStyle(const U8 font_style)
+{
+    LLFontDescriptor new_desc(mFont->getFontDesc());
+    new_desc.setStyle(font_style);
+    mFont = LLFontGL::getFont(new_desc);
+    mFontBuffer.reset();
+}
+
+void LLScrollListVector::setAlignment(LLFontGL::HAlign align)
+{
+    mFontAlignment = align;
+    mFontBuffer.reset();
+}
+
+//virtual
+void LLScrollListVector::setValue(const LLSD& text)
+{
+    setText(LLVector4((F32)text[0].asReal(), (F32)text[1].asReal(), (F32)text[2].asReal(), (F32)text[3].asReal()));
+}
+
+//virtual
+void LLScrollListVector::setAltValue(const LLSD& text)
+{
+    mAltText = text.asString();
+}
+
+//virtual
+const LLSD LLScrollListVector::getValue() const
+{
+    return mVector.getValue();
+}
+
+//virtual
+const LLSD LLScrollListVector::getAltValue() const
+{
+    return LLSD(mAltText.getString());
+}
+
+
+void LLScrollListVector::draw(const LLColor4& color, const LLColor4& highlight_color)
+{
+    if (mHighlightCount > 0)
+    {
+        // Highlight text
+        S32 left = 0;
+        switch (mFontAlignment)
+        {
+        case LLFontGL::LEFT:
+            left = mFont->getWidth(mText.getWString().c_str(), 1, mHighlightOffset);
+            break;
+        case LLFontGL::RIGHT:
+            left = getWidth() - mFont->getWidth(mText.getWString().c_str(), mHighlightOffset, S32_MAX);
+            break;
+        case LLFontGL::HCENTER:
+            left = (getWidth() - mFont->getWidth(mText.getWString().c_str())) / 2;
+            break;
+        }
+        LLRect highlight_rect(left - 2,
+            mFont->getLineHeight() + 1,
+            left + mFont->getWidth(mText.getWString().c_str(), mHighlightOffset, mHighlightCount) + 1,
+            1);
+        mRoundedRectImage->draw(highlight_rect, highlight_color);
+    }
+
+    // Try to draw the entire string
+    F32 right_x;
+    U32 string_chars = mText.length();
+    F32 start_x = 0.f;
+    switch (mFontAlignment)
+    {
+    case LLFontGL::LEFT:
+        start_x = 0.f;
+        break;
+    case LLFontGL::RIGHT:
+        start_x = (F32)getWidth();
+        break;
+    case LLFontGL::HCENTER:
+        start_x = (F32)getWidth() * 0.5f;
+        break;
+    }
+
+    mText = (LLSD)mVector.mV[0];
+    mFontBuffer.render(mFont, mText.getWString(), 0, start_x, 0.f,
+        LLColor4(1.f, 0.5f, 0.5f, 1.f), mFontAlignment, LLFontGL::BOTTOM, 0, LLFontGL::NO_SHADOW,
+        string_chars, getTextWidth(), &right_x, true);
+    mText = (LLSD)mVector.mV[1];
+    mFontBuffer.render(mFont,mText.getWString(), 0, 40.f, 0.f,
+        LLColor4(0.5f, 1.f, 0.5f, 1.f),mFontAlignment, LLFontGL::BOTTOM, 0, LLFontGL::NO_SHADOW,
+        string_chars, getTextWidth(), &right_x, true);
+    mText = (LLSD)mVector.mV[2];
+    mFontBuffer.render(mFont, mText.getWString(), 0, 80.f, 0.f,
+        LLColor4(0.5f, 0.5f, 1.f, 1.f), mFontAlignment, LLFontGL::BOTTOM, 0, LLFontGL::NO_SHADOW,
+        string_chars, getTextWidth(), &right_x, true);
+}
