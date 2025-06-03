@@ -117,7 +117,6 @@ private:
 	//BD - Misc
 	void onUpdateLayout();
     void onModifierTabSwitch();
-    void onColumnRefresh(LLScrollListItem* item);
     void onRequestPermission();
     void toggleWidgets();
 

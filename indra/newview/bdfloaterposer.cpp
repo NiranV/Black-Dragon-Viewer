@@ -216,10 +216,10 @@ void BDFloaterPoser::draw()
 {
     //BD - If the posing status changes from the outside (such as via the status button)
     //     then refresh the UI to reflect that.
-    LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-    if (item)
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (av_item)
     {
-        LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+        LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
         if (avatar)
         {
             if ((mStartPosingBtn->getValue() && !avatar->mIsPosing))
@@ -462,14 +462,15 @@ void BDFloaterPoser::onPoseLoadSelective(const LLSD& param)
 
 void BDFloaterPoser::onPoseStart()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
+    bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
 	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
-	if ((!motion || motion->isStopped()) && avatar->getIsPoseable())
+	if ((!motion || motion->isStopped()) && is_poseable)
 	{
 		avatar->setPosing();
 		if (avatar->isSelf())
@@ -541,10 +542,10 @@ void BDFloaterPoser::onPoseMenuAction(const LLSD& param)
 ////////////////////////////////
 void BDFloaterPoser::onJointRefresh()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	if (!(avatar->getRegion() == gAgent.getRegion())) return;
@@ -947,7 +948,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
         joint->setRotation(rot_quat);
     }
 
-    onColumnRefresh(item);
+    item->getColumn(COL_VISUAL_ROT)->setValue(vec3.getValue());
 
 	if (!mEasyRotations)
 	{
@@ -1007,14 +1008,9 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 			LLScrollListItem* item2 = mJointScrolls[JOINTS]->getItemByLabel(mirror_joint_name, FALSE, COL_NAME);
 			if (item2)
 			{
-				LLScrollListCell* cell2[3] = { item2->getColumn(COL_ROT_X), item2->getColumn(COL_ROT_Y), item2->getColumn(COL_ROT_Z) };
-				S32 i = 0;
-				while (i < 3)
-				{
-					cell2[i]->setValue(ll_round(item->getColumn(i + 2)->getValue(), 0.001f));
-                    onColumnRefresh(item2);
-					++i;
-				}
+                LLVector3 mirror_rot;
+                inv_quat.getEulerAngles(&mirror_rot[VX], &mirror_rot[VY], &mirror_rot[VZ]);
+                item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
 			}
 		}
 	}
@@ -1048,7 +1044,7 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
                 joint->setPosition(vec3);
             }
 
-            onColumnRefresh(item);
+            item->getColumn(COL_VISUAL_POS)->setValue(vec3.getValue());
 		}
 	}
 }
@@ -1074,7 +1070,7 @@ void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 			cell[dir]->setValue(ll_round(vec3.mV[dir], 0.001f));
 			joint->setScale(vec3);
 
-            onColumnRefresh(item);
+            item->getColumn(COL_VISUAL_SCALE)->setValue(vec3.getValue());
 		}
 	}
 }
@@ -1187,7 +1183,9 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 				col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
 				joint->setScale(scale);
 
-                onColumnRefresh(item);
+                item->getColumn(COL_VISUAL_ROT)->setValue(LLVector3::zero.getValue());
+                item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
+                item->getColumn(COL_VISUAL_SCALE)->setValue(scale.getValue());
 			}
 		}
 	}
@@ -1198,11 +1196,11 @@ void BDFloaterPoser::onJointRotPosScaleReset()
 //BD - Used to reset rotations only.
 void BDFloaterPoser::onJointRotationReset()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
 	//BD - We do support resetting bone rotations for everyone however.
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
@@ -1287,12 +1285,11 @@ void BDFloaterPoser::onJointRotationReset()
                                 mirror_joint->setRotation(quat);
                             }
 
-                            onColumnRefresh(item2);
+                            item2->getColumn(COL_VISUAL_ROT)->setValue(LLVector3::zero.getValue());
                         }
                     }
                 }
-
-                onColumnRefresh(item);
+                new_item->getColumn(COL_VISUAL_ROT)->setValue(LLVector3::zero.getValue());
             }
         }
     }
@@ -1305,11 +1302,11 @@ void BDFloaterPoser::onJointRotationReset()
 //     rotations does.
 void BDFloaterPoser::onJointPositionReset()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
 	//BD - We don't support resetting bones positions for anyone else yet.
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
 
 	S32 index = mJointTabs->getCurrentPanelIndex();
@@ -1333,10 +1330,13 @@ void BDFloaterPoser::onJointPositionReset()
                 LLScrollListCell* col_pos_y = item->getColumn(COL_POS_Y);
                 LLScrollListCell* col_pos_z = item->getColumn(COL_POS_Z);
                 LLVector3 pos = mDefaultPositions[joint->getName()];
+                pos.mV[VX] = ll_round(pos.mV[VX], 0.001f);
+                pos.mV[VY] = ll_round(pos.mV[VY], 0.001f);
+                pos.mV[VZ] = ll_round(pos.mV[VZ], 0.001f);
 
-                col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-                col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-                col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+                col_pos_x->setValue(pos.mV[VX]);
+                col_pos_y->setValue(pos.mV[VY]);
+                col_pos_z->setValue(pos.mV[VZ]);
                 joint->setTargetPosition(pos);
                 //BD - Collision Volumes and Attachment Points need this to work.
                 //     Any bone past 133 is assumed to be not a normal joint anymore.
@@ -1345,7 +1345,7 @@ void BDFloaterPoser::onJointPositionReset()
                     joint->setPosition(pos);
                 }
 
-                onColumnRefresh(item);
+                item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
             }
         }
     }
@@ -1356,11 +1356,11 @@ void BDFloaterPoser::onJointPositionReset()
 //BD - Used to reset scales only.
 void BDFloaterPoser::onJointScaleReset()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
 	//BD - We don't support resetting bones scales for anyone else yet.
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead() || !avatar->isSelf()) return;
 
 	S32 index = mJointTabs->getCurrentPanelIndex();
@@ -1378,13 +1378,16 @@ void BDFloaterPoser::onJointScaleReset()
 				LLScrollListCell* col_scale_y = item->getColumn(COL_SCALE_Y);
 				LLScrollListCell* col_scale_z = item->getColumn(COL_SCALE_Z);
 				LLVector3 scale = mDefaultScales[joint->getName()];
+                scale.mV[VX] = ll_round(scale.mV[VX], 0.001f);
+                scale.mV[VY] = ll_round(scale.mV[VY], 0.001f);
+                scale.mV[VZ] = ll_round(scale.mV[VZ], 0.001f);
 
-				col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
-				col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
-				col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
+				col_scale_x->setValue(scale.mV[VX]);
+				col_scale_y->setValue(scale.mV[VY]);
+				col_scale_z->setValue(scale.mV[VZ]);
 				joint->setScale(scale);
 
-                onColumnRefresh(item);
+                item->getColumn(COL_VISUAL_SCALE)->setValue(scale.getValue());
 			}
 		}
 	}
@@ -1394,11 +1397,11 @@ void BDFloaterPoser::onJointScaleReset()
 //BD - Used to revert rotations only.
 void BDFloaterPoser::onJointRotationRevert()
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
 	//BD - We do support reverting bone rotations for everyone however.
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	//BD - While editing rotations, make sure we use a bit of spherical linear interpolation 
@@ -1789,15 +1792,25 @@ void BDFloaterPoser::onJointsRecapture()
 
                                 LLVector3 euler_rot;
                                 rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
-                                col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-                                col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-                                col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
 
-                                col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-                                col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-                                col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+                                euler_rot.mV[VX] = ll_round(euler_rot.mV[VX], 0.001f);
+                                euler_rot.mV[VY] = ll_round(euler_rot.mV[VY], 0.001f);
+                                euler_rot.mV[VZ] = ll_round(euler_rot.mV[VZ], 0.001f);
 
-                                onColumnRefresh(item);
+                                pos.mV[VX] = ll_round(pos.mV[VX], 0.001f);
+                                pos.mV[VY] = ll_round(pos.mV[VY], 0.001f);
+                                pos.mV[VZ] = ll_round(pos.mV[VZ], 0.001f);
+
+                                col_rot_x->setValue(euler_rot.mV[VX]);
+                                col_rot_y->setValue(euler_rot.mV[VY]);
+                                col_rot_z->setValue(euler_rot.mV[VZ]);
+
+                                col_pos_x->setValue(pos.mV[VX]);
+                                col_pos_y->setValue(pos.mV[VY]);
+                                col_pos_z->setValue(pos.mV[VZ]);
+
+                                item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
+                                item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
                             }
                         }
                     }
@@ -1855,15 +1868,25 @@ void BDFloaterPoser::onJointRecapture()
 
                 LLVector3 euler_rot;
                 rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
-                col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-                col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-                col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
 
-                col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-                col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-                col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+                euler_rot.mV[VX] = ll_round(euler_rot.mV[VX], 0.001f);
+                euler_rot.mV[VY] = ll_round(euler_rot.mV[VY], 0.001f);
+                euler_rot.mV[VZ] = ll_round(euler_rot.mV[VZ], 0.001f);
 
-                onColumnRefresh(item);
+                pos.mV[VX] = ll_round(pos.mV[VX], 0.001f);
+                pos.mV[VY] = ll_round(pos.mV[VY], 0.001f);
+                pos.mV[VZ] = ll_round(pos.mV[VZ], 0.001f);
+
+                col_rot_x->setValue(euler_rot.mV[VX]);
+                col_rot_y->setValue(euler_rot.mV[VY]);
+                col_rot_z->setValue(euler_rot.mV[VZ]);
+
+                col_pos_x->setValue(pos.mV[VX]);
+                col_pos_y->setValue(pos.mV[VY]);
+                col_pos_z->setValue(pos.mV[VZ]);
+
+                item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
+                item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
             }
         }
     }
@@ -1893,11 +1916,15 @@ void BDFloaterPoser::onJointPasteRotation()
             }
 
             rot.getEulerAngles(&euler_rot.mV[VX], &euler_rot.mV[VY], &euler_rot.mV[VZ]);
-            col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-            col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-            col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+            euler_rot.mV[VX] = ll_round(euler_rot.mV[VX], 0.001f);
+            euler_rot.mV[VY] = ll_round(euler_rot.mV[VY], 0.001f);
+            euler_rot.mV[VZ] = ll_round(euler_rot.mV[VZ], 0.001f);
 
-            onColumnRefresh(item);
+            col_rot_x->setValue(euler_rot.mV[VX]);
+            col_rot_y->setValue(euler_rot.mV[VY]);
+            col_rot_z->setValue(euler_rot.mV[VZ]);
+
+            item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
         }
     }
 }
@@ -1923,11 +1950,15 @@ void BDFloaterPoser::onJointPastePosition()
                 joint->setPosition(pos);
             }
 
-            col_pos_x->setValue(ll_round(pos.mV[VX], 0.001f));
-            col_pos_y->setValue(ll_round(pos.mV[VY], 0.001f));
-            col_pos_z->setValue(ll_round(pos.mV[VZ], 0.001f));
+            pos.mV[VX] = ll_round(pos.mV[VX], 0.001f);
+            pos.mV[VY] = ll_round(pos.mV[VY], 0.001f);
+            pos.mV[VZ] = ll_round(pos.mV[VZ], 0.001f);
 
-            onColumnRefresh(item);
+            col_pos_x->setValue(pos.mV[VX]);
+            col_pos_y->setValue(pos.mV[VY]);
+            col_pos_z->setValue(pos.mV[VZ]);
+
+            item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
         }
     }
 }
@@ -1948,11 +1979,15 @@ void BDFloaterPoser::onJointPasteScale()
 
             joint->setScale(scale);
 
-            col_scale_x->setValue(ll_round(scale.mV[VX], 0.001f));
-            col_scale_y->setValue(ll_round(scale.mV[VY], 0.001f));
-            col_scale_z->setValue(ll_round(scale.mV[VZ], 0.001f));
+            scale.mV[VX] = ll_round(scale.mV[VX], 0.001f);
+            scale.mV[VY] = ll_round(scale.mV[VY], 0.001f);
+            scale.mV[VZ] = ll_round(scale.mV[VZ], 0.001f);
 
-            onColumnRefresh(item);
+            col_scale_x->setValue(scale.mV[VX]);
+            col_scale_y->setValue(scale.mV[VY]);
+            col_scale_z->setValue(scale.mV[VZ]);
+
+            item->getColumn(COL_VISUAL_SCALE)->setValue(scale.getValue());
         }
     }
 }
@@ -1983,11 +2018,15 @@ void BDFloaterPoser::onJointMirror()
             LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
             LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-            col_rot_x->setValue(ll_round(euler_rot.mV[VX], 0.001f));
-            col_rot_y->setValue(ll_round(euler_rot.mV[VY], 0.001f));
-            col_rot_z->setValue(ll_round(euler_rot.mV[VZ], 0.001f));
+            euler_rot.mV[VX] = ll_round(euler_rot.mV[VX], 0.001f);
+            euler_rot.mV[VY] = ll_round(euler_rot.mV[VY], 0.001f);
+            euler_rot.mV[VZ] = ll_round(euler_rot.mV[VZ], 0.001f);
 
-            onColumnRefresh(item);
+            col_rot_x->setValue(euler_rot.mV[VX]);
+            col_rot_y->setValue(euler_rot.mV[VY]);
+            col_rot_z->setValue(euler_rot.mV[VZ]);
+
+            item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
         }
     }
 }
@@ -2040,11 +2079,15 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
                     LLScrollListCell* col_rot_y = item->getColumn(COL_ROT_Y);
                     LLScrollListCell* col_rot_z = item->getColumn(COL_ROT_Z);
 
-                    col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
-                    col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
-                    col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+                    mirror_rot.mV[VX] = ll_round(mirror_rot.mV[VX], 0.001f);
+                    mirror_rot.mV[VY] = ll_round(mirror_rot.mV[VY], 0.001f);
+                    mirror_rot.mV[VZ] = ll_round(mirror_rot.mV[VZ], 0.001f);
 
-                    onColumnRefresh(item);
+                    col_rot_x->setValue(mirror_rot.mV[VX]);
+                    col_rot_y->setValue(mirror_rot.mV[VY]);
+                    col_rot_z->setValue(mirror_rot.mV[VZ]);
+
+                    item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
                 }
                 else
                 {
@@ -2061,11 +2104,15 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
                     LLScrollListCell* col_rot_y = item2->getColumn(COL_ROT_Y);
                     LLScrollListCell* col_rot_z = item2->getColumn(COL_ROT_Z);
 
-                    col_rot_x->setValue(ll_round(mirror_rot.mV[VX], 0.001f));
-                    col_rot_y->setValue(ll_round(mirror_rot.mV[VY], 0.001f));
-                    col_rot_z->setValue(ll_round(mirror_rot.mV[VZ], 0.001f));
+                    mirror_rot.mV[VX] = ll_round(mirror_rot.mV[VX], 0.001f);
+                    mirror_rot.mV[VY] = ll_round(mirror_rot.mV[VY], 0.001f);
+                    mirror_rot.mV[VZ] = ll_round(mirror_rot.mV[VZ], 0.001f);
 
-                    onColumnRefresh(item2);
+                    col_rot_x->setValue(mirror_rot.mV[VX]);
+                    col_rot_y->setValue(mirror_rot.mV[VY]);
+                    col_rot_z->setValue(mirror_rot.mV[VZ]);
+
+                    item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
                 }
             }
         }
@@ -2099,13 +2146,13 @@ bool BDFloaterPoser::onJointContextMenuEnable(const LLSD& param)
 	}
 	if (action == "enable_bone")
 	{
-		LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-		if (!item) return false;
+		LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+		if (!av_item) return false;
 
-		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+		LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 		if (!avatar || avatar->isDead()) return false;
 
-		item = mJointScrolls[JOINTS]->getFirstSelected();
+		LLScrollListItem* item = mJointScrolls[JOINTS]->getFirstSelected();
 		if (item)
 		{
 			LLJoint* joint = (LLJoint*)item->getUserdata();
@@ -2126,10 +2173,10 @@ bool BDFloaterPoser::onJointContextMenuEnable(const LLSD& param)
 
 void BDFloaterPoser::onJointContextMenuAction(const LLSD& param)
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	std::string action = param.asString();
@@ -2302,10 +2349,10 @@ void BDFloaterPoser::onCollectDefaults()
 
 void BDFloaterPoser::loadPoseRotations(std::string name, LLVector3 *rotations)
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	std::string filename;
@@ -2348,10 +2395,10 @@ void BDFloaterPoser::loadPoseRotations(std::string name, LLVector3 *rotations)
 
 void BDFloaterPoser::loadPosePositions(std::string name, LLVector3 *positions)
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	std::string filename;
@@ -2396,10 +2443,10 @@ void BDFloaterPoser::loadPosePositions(std::string name, LLVector3 *positions)
 
 void BDFloaterPoser::loadPoseScales(std::string name, LLVector3 *scales)
 {
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (!item) return;
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (!av_item) return;
 
-	LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
 	std::string filename;
@@ -2475,10 +2522,10 @@ void BDFloaterPoser::onAvatarsSelect()
 	onPoseControlsRefresh();
 
 	//BD - Disable the Start Posing button if we haven't loaded yet.
-	LLScrollListItem* item = mAvatarScroll->getFirstSelected();
-	if (item)
+	LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+	if (av_item)
 	{
-		LLVOAvatar* avatar = (LLVOAvatar*)item->getUserdata();
+		LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
         if (avatar)
         {
             //BD - Flash the Start button but only if the avatar isn't already posing.
@@ -2491,11 +2538,11 @@ void BDFloaterPoser::onAvatarsSelect()
 void BDFloaterPoser::onAvatarsRefresh()
 {
 	//BD - Flag all items first, we're going to unflag them when they are valid.
-	for (LLScrollListItem* item : mAvatarScroll->getAllData())
+	for (LLScrollListItem* av_item : mAvatarScroll->getAllData())
 	{
-		if (item)
+		if (av_item)
 		{
-	        item->setFlagged(true);
+            av_item->setFlagged(true);
 		}
 	}
 
@@ -2509,23 +2556,23 @@ void BDFloaterPoser::onAvatarsRefresh()
                 || avatar->isControlAvatar())*/
             {
                 bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
-                for (LLScrollListItem* item : mAvatarScroll->getAllData())
+                for (LLScrollListItem* av_item : mAvatarScroll->getAllData())
                 {
-                    if (item)
+                    if (av_item)
                     {
-                        if (avatar == (LLVOAvatar*)item->getUserdata())
+                        if (avatar == (LLVOAvatar*)av_item->getUserdata())
                         {
                             //BD - Avatar is still valid unflag it from removal.
-                            item->setFlagged(false);
+                            av_item->setFlagged(false);
 
                             //BD - Check if our permission to pose has changed.
-                            item->getColumn(3)->setValue(is_poseable ? "☑" : "☐");
+                            av_item->getColumn(3)->setValue(is_poseable ? "☑" : "☐");
 
                             //BD - Avatar is being posed but is no longer allowed to be posed.
                             if (avatar->mIsPosing && !is_poseable)
                             {
                                 //BD - If we have the avatar currently selected simply toggle as if we clicked stop.
-                                if (item->getSelected())
+                                if (av_item->getSelected())
                                 {
                                     onPoseStart();
                                 }
@@ -2570,9 +2617,9 @@ void BDFloaterPoser::onAvatarsRefresh()
                     row["columns"][3]["value"] = !avatar->isControlAvatar();
                     row["columns"][4]["column"] = "is_poseable";
                     row["columns"][4]["value"] = is_poseable ? "☑" : "☐";
-                    LLScrollListItem* item = mAvatarScroll->addElement(row);
-                    item->setUserdata(avatar);
-                    item->setFlagged(false);
+                    LLScrollListItem* new_item = mAvatarScroll->addElement(row);
+                    new_item->setUserdata(avatar);
+                    new_item->setFlagged(false);
                 }
             }
         }
@@ -2713,37 +2760,6 @@ void BDFloaterPoser::onModifierTabSwitch()
                     BDToolCompPoseTranslate::getInstance()->setJoint(joint);
                 }
             }
-        }
-    }
-}
-
-void BDFloaterPoser::onColumnRefresh(LLScrollListItem* item)
-{
-    if (item)
-    {
-        LLJoint* joint = (LLJoint*)item->getUserdata();
-        if (joint)
-        {
-            //BD - Bone Rotations
-            LLVector3 vec3 = LLVector3((F32)item->getColumn(COL_ROT_X)->getValue().asReal(),
-                                        (F32)item->getColumn(COL_ROT_Y)->getValue().asReal(),
-                                        (F32)item->getColumn(COL_ROT_Z)->getValue().asReal());
-
-            item->getColumn(COL_VISUAL_ROT)->setValue(vec3.getValue());
-
-            //BD - All bones support positions now.
-            vec3 = LLVector3((F32)item->getColumn(COL_POS_X)->getValue().asReal(),
-                            (F32)item->getColumn(COL_POS_Y)->getValue().asReal(),
-                            (F32)item->getColumn(COL_POS_Z)->getValue().asReal());
-
-            item->getColumn(COL_VISUAL_POS)->setValue(vec3.getValue());
-
-            //BD - Bone Scales
-            vec3 = LLVector3((F32)item->getColumn(COL_SCALE_X)->getValue().asReal(),
-                                        (F32)item->getColumn(COL_SCALE_Y)->getValue().asReal(),
-                                        (F32)item->getColumn(COL_SCALE_Z)->getValue().asReal());
-
-            item->getColumn(COL_VISUAL_SCALE)->setValue(vec3.getValue());
         }
     }
 }
