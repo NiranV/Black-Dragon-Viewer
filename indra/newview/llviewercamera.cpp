@@ -73,7 +73,6 @@ LLViewerCamera::LLViewerCamera() : LLCamera()
     mAverageSpeed = 0.f;
     mAverageAngularSpeed = 0.f;
 
-
     //BD - Does not connect and thus breaks all CameraAngle related options.
     mCameraAngleChangedSignal = gSavedSettings.getControl("CameraAngle")->getCommitSignal()->connect(boost::bind(&LLViewerCamera::updateCameraAngle, this, _2));
 }
