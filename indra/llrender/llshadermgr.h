@@ -189,6 +189,10 @@ public:
         DEFERRED_SSR_GLOSSY_SAMPLES,        //  "glossySampleCount"
         DEFERRED_SSR_NOISE_SINE,            //  "noiseSine"
         DEFERRED_SSR_ADAPTIVE_STEP_MULT,    //  "adaptiveStepMultiplier"
+        DEFERRED_SSR_SPLIT_START,           //  "splitParamsStart"
+        DEFERRED_SSR_SPLIT_END,             //  "splitParamsEnd"
+        DEFERRED_SSR_MAX_Z,                 //  "maxZDepth"
+        DEFERRED_SSR_MAX_ROUGHNESS,         //  "maxRoughness"
 
         MODELVIEW_DELTA_MATRIX,             //  "modelview_delta"
         INVERSE_MODELVIEW_DELTA_MATRIX,     //  "inv_modelview_delta"

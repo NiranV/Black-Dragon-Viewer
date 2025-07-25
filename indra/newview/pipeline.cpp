@@ -209,11 +209,11 @@ F32 LLPipeline::CameraMaxCoF;
 F32 LLPipeline::CameraDoFResScale;
 F32 LLPipeline::RenderAutoHideSurfaceAreaLimit;
 bool LLPipeline::RenderScreenSpaceReflections;
-S32 LLPipeline::RenderScreenSpaceReflectionIterations;
-F32 LLPipeline::RenderScreenSpaceReflectionRayStep;
-F32 LLPipeline::RenderScreenSpaceReflectionDistanceBias;
-F32 LLPipeline::RenderScreenSpaceReflectionDepthRejectBias;
-F32 LLPipeline::RenderScreenSpaceReflectionAdaptiveStepMultiplier;
+LLVector3 LLPipeline::RenderScreenSpaceReflectionIterations;
+LLVector3 LLPipeline::RenderScreenSpaceReflectionRayStep;
+LLVector3 LLPipeline::RenderScreenSpaceReflectionDistanceBias;
+LLVector3 LLPipeline::RenderScreenSpaceReflectionDepthRejectBias;
+LLVector3 LLPipeline::RenderScreenSpaceReflectionAdaptiveStepMultiplier;
 S32 LLPipeline::RenderScreenSpaceReflectionGlossySamples;
 S32 LLPipeline::RenderBufferVisualization;
 bool LLPipeline::RenderMirrors;
@@ -322,6 +322,14 @@ static LLStaticHashedString sDistFactor("dist_factor");
 static LLStaticHashedString sKern("kern");
 static LLStaticHashedString sKernScale("kern_scale");
 static LLStaticHashedString sSmaaRTMetrics("SMAA_RT_METRICS");
+
+static LLStaticHashedString sTraceIterations("iterationCount");
+static LLStaticHashedString sTraceRayStep("trayStep");
+static LLStaticHashedString sTraceDistanceBias("distanceBias");
+static LLStaticHashedString sTraceDepthRejectBias("depthRejectBias");
+static LLStaticHashedString sTraceStepMultiplier("adaptiveStepMultiplier");
+static LLStaticHashedString sTraceSplitParamsStart("splitParamsStart");
+static LLStaticHashedString sTraceSplitParamsEnd("splitParamsEnd");
 
 //----------------------------------------
 
@@ -637,12 +645,6 @@ void LLPipeline::init()
     connectRefreshCachedSettingsSafe("CameraDoFResScale");
     connectRefreshCachedSettingsSafe("RenderAutoHideSurfaceAreaLimit");
     connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionIterations");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionRayStep");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionDistanceBias");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionDepthRejectBias");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionAdaptiveStepMultiplier");
-    connectRefreshCachedSettingsSafe("RenderScreenSpaceReflectionGlossySamples");
     connectRefreshCachedSettingsSafe("RenderBufferVisualization");
     connectRefreshCachedSettingsSafe("RenderMirrors");
     connectRefreshCachedSettingsSafe("RenderHeroProbeUpdateRate");
@@ -657,11 +659,6 @@ void LLPipeline::init()
             LLFontVertexBuffer::enableBufferCollection(control->getValue().asBoolean());
         });
     }
-
-	//BD - Screen Space Reflections
-	connectRefreshCachedSettingsSafe("RenderScreenSpaceReflections");
-	connectRefreshCachedSettingsSafe("RenderSSRResolution");
-	connectRefreshCachedSettingsSafe("RenderSSRBrightness");
 
 //	//BD - Exodus Post Process
 	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
@@ -1038,7 +1035,7 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
 
         if(RenderScreenSpaceReflections)
         {
-            mSceneMap.allocate(resX, resY, screenFormat, true);
+            mSceneMap.allocate(resX, resY, screenFormat, true, LLTexUnit::TT_TEXTURE, LLTexUnit::TMG_AUTO);
         }
         else
         {
@@ -1278,11 +1275,6 @@ void LLPipeline::refreshCachedSettings()
     CameraDoFResScale = gSavedSettings.getF32("CameraDoFResScale");
     RenderAutoHideSurfaceAreaLimit = gSavedSettings.getF32("RenderAutoHideSurfaceAreaLimit");
     RenderScreenSpaceReflections = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
-    RenderScreenSpaceReflectionIterations = gSavedSettings.getS32("RenderScreenSpaceReflectionIterations");
-    RenderScreenSpaceReflectionRayStep = gSavedSettings.getF32("RenderScreenSpaceReflectionRayStep");
-    RenderScreenSpaceReflectionDistanceBias = gSavedSettings.getF32("RenderScreenSpaceReflectionDistanceBias");
-    RenderScreenSpaceReflectionDepthRejectBias = gSavedSettings.getF32("RenderScreenSpaceReflectionDepthRejectBias");
-    RenderScreenSpaceReflectionAdaptiveStepMultiplier = gSavedSettings.getF32("RenderScreenSpaceReflectionAdaptiveStepMultiplier");
     RenderScreenSpaceReflectionGlossySamples = gSavedSettings.getS32("RenderScreenSpaceReflectionGlossySamples");
     RenderBufferVisualization = gSavedSettings.getS32("RenderBufferVisualization");
     RenderMirrors = gSavedSettings.getBOOL("RenderMirrors");
@@ -1321,9 +1313,9 @@ void LLPipeline::refreshCachedSettings()
 	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 
 //	//BD - Screen Space Reflections
-	RenderScreenSpaceReflections = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
-	RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
-	RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
+	//RenderScreenSpaceReflections = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
+	//RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
+	//RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
 
 //	//BD - Post Processing
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
@@ -9902,34 +9894,49 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
         setEnvMat(shader);
     }
 
-    // reflection probe shaders generally sample the scene map as well for SSR
-    channel = shader.enableTexture(LLShaderMgr::SCENE_MAP);
-    if (channel > -1)
+    if (RenderScreenSpaceReflections)
     {
-        gGL.getTexUnit(channel)->bind(&mSceneMap);
+        // reflection probe shaders generally sample the scene map as well for SSR
+        channel = shader.enableTexture(LLShaderMgr::SCENE_MAP);
+        if (channel > -1)
+        {
+            gGL.getTexUnit(channel)->bind(&mSceneMap);
+        }
+
+        static LLCachedControl<LLVector3> traceIterations(gSavedSettings, "RenderScreenSpaceReflectionIterations");
+        static LLCachedControl<LLVector3> traceSteps(gSavedSettings, "RenderScreenSpaceReflectionRayStep");
+        static LLCachedControl<LLVector3> traceDistanceBias(gSavedSettings, "RenderScreenSpaceReflectionDistanceBias");
+        static LLCachedControl<LLVector3> traceRejectBias(gSavedSettings, "RenderScreenSpaceReflectionDepthRejectBias");
+        static LLCachedControl<LLVector3> traceStepMultiplier(gSavedSettings, "RenderScreenSpaceReflectionAdaptiveStepMultiplier");
+        static LLCachedControl<LLVector3> traceSplitStart(gSavedSettings, "RenderScreenSpaceReflectionSplitStart");
+        static LLCachedControl<LLVector3> traceSplitEnd(gSavedSettings, "RenderScreenSpaceReflectionSplitEnd");
+        static LLCachedControl<F32> traceMaxDepth(gSavedSettings, "RenderScreenSpaceReflectionMaxDepth");
+        static LLCachedControl<F32> traceMaxRoughness(gSavedSettings, "RenderScreenSpaceReflectionMaxRoughness");
+
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_ITR_COUNT, 1, traceIterations().mV);
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_DIST_BIAS, 1, traceDistanceBias().mV);
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_RAY_STEP, 1, traceSteps().mV);
+        shader.uniform1f(LLShaderMgr::DEFERRED_SSR_GLOSSY_SAMPLES, (GLfloat)RenderScreenSpaceReflectionGlossySamples);
+        shader.uniform3fv(sTraceDepthRejectBias, 1, traceRejectBias().mV);
+        mPoissonOffset++;
+
+        if (mPoissonOffset > 128 - RenderScreenSpaceReflectionGlossySamples)
+            mPoissonOffset = 0;
+
+        shader.uniform1f(LLShaderMgr::DEFERRED_SSR_NOISE_SINE, (GLfloat)mPoissonOffset);
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_ADAPTIVE_STEP_MULT, 1, traceStepMultiplier().mV);
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_SPLIT_START, 1, traceSplitStart().mV);
+        shader.uniform3fv(LLShaderMgr::DEFERRED_SSR_SPLIT_END, 1, traceSplitEnd().mV);
+
+        shader.uniform1f(LLShaderMgr::DEFERRED_SSR_MAX_Z, traceMaxDepth());
+        shader.uniform1f(LLShaderMgr::DEFERRED_SSR_MAX_ROUGHNESS, traceMaxRoughness());
+
+        channel = shader.enableTexture(LLShaderMgr::SCENE_DEPTH);
+        if (channel > -1)
+        {
+            gGL.getTexUnit(channel)->bind(&mSceneMap, true);
+        }
     }
-
-
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_ITR_COUNT, (GLfloat)RenderScreenSpaceReflectionIterations);
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_DIST_BIAS, RenderScreenSpaceReflectionDistanceBias);
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_RAY_STEP, RenderScreenSpaceReflectionRayStep);
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_GLOSSY_SAMPLES, (GLfloat)RenderScreenSpaceReflectionGlossySamples);
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_REJECT_BIAS, RenderScreenSpaceReflectionDepthRejectBias);
-    mPoissonOffset++;
-
-    if (mPoissonOffset > 128 - RenderScreenSpaceReflectionGlossySamples)
-        mPoissonOffset = 0;
-
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_NOISE_SINE, (GLfloat)mPoissonOffset);
-    shader.uniform1f(LLShaderMgr::DEFERRED_SSR_ADAPTIVE_STEP_MULT, RenderScreenSpaceReflectionAdaptiveStepMultiplier);
-
-    channel = shader.enableTexture(LLShaderMgr::SCENE_DEPTH);
-    if (channel > -1)
-    {
-        gGL.getTexUnit(channel)->bind(&mSceneMap, true);
-    }
-
-
 }
 
 void LLPipeline::unbindReflectionProbes(LLGLSLShader& shader)

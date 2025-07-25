@@ -3484,7 +3484,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1145"
+	  height="1065"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -4655,7 +4655,7 @@ width="510">
      name="RenderScreenSpaceReflections"
      top_pad="7"
      width="115" />
-      <slider
+      <!--<slider
       control_name="RenderScreenSpaceReflectionIterations"
       decimal_digits="0"
       can_edit_text="true"
@@ -4687,7 +4687,7 @@ width="510">
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
-      </button>
+      </button>-->
 		<slider
       control_name="RenderScreenSpaceReflectionGlossySamples"
       decimal_digits="0"
@@ -4695,7 +4695,7 @@ width="510">
       follows="left|top"
       height="14"
       increment="1"
-      initial_value="1"
+      initial_value="2"
 		tool_tip="Unknown."
       label="Glossy Samples:"
       label_width="150"
@@ -4704,7 +4704,7 @@ width="510">
       max_val="10"
       min_val="1"
       name="RenderScreenSpaceReflectionGlossySamples"
-      top_pad="2" />
+      top_pad="7" />
       <button
  follows="left|top"
  control_name="RenderScreenSpaceReflectionGlossySamples"
@@ -4721,7 +4721,7 @@ width="510">
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-      <slider
+      <!--<slider
       control_name="RenderScreenSpaceReflectionRayStep"
       decimal_digits="2"
       can_edit_text="true"
@@ -4852,7 +4852,7 @@ width="510">
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
-      </button>
+      </button>-->
       <text
  type="string"
  length="1"

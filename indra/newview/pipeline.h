@@ -1100,11 +1100,11 @@ public:
 	static F32 CameraDoFResScale;
 	static F32 RenderAutoHideSurfaceAreaLimit;
 	static bool RenderScreenSpaceReflections;
-    static S32 RenderScreenSpaceReflectionIterations;
-	static F32 RenderScreenSpaceReflectionRayStep;
-	static F32 RenderScreenSpaceReflectionDistanceBias;
-	static F32 RenderScreenSpaceReflectionDepthRejectBias;
-	static F32 RenderScreenSpaceReflectionAdaptiveStepMultiplier;
+    static LLVector3 RenderScreenSpaceReflectionIterations;
+	static LLVector3 RenderScreenSpaceReflectionRayStep;
+	static LLVector3 RenderScreenSpaceReflectionDistanceBias;
+	static LLVector3 RenderScreenSpaceReflectionDepthRejectBias;
+	static LLVector3 RenderScreenSpaceReflectionAdaptiveStepMultiplier;
 	static S32 RenderScreenSpaceReflectionGlossySamples;
 	static S32 RenderBufferVisualization;
     static bool RenderMirrors;

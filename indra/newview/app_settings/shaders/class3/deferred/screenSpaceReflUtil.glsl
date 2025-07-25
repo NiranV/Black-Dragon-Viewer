@@ -1,5 +1,9 @@
 /**
  * @file class3/deferred/screenSpaceReflUtil.glsl
+ * @brief Utility functions for implementing Screen Space Reflections (SSR).
+ *
+ * This file contains the core logic for ray marching in screen space to find reflections,
+ * including adaptive step sizes, binary search refinement, and handling of glossy reflections.
  *
  * $LicenseInfo:firstyear=2007&license=viewerlgpl$
  * Second Life Viewer Source Code
@@ -23,372 +27,713 @@
  * $/LicenseInfo$
  */
 
+// --- Uniforms ---
+// These are variables passed from the CPU to the shader.
+
+/** @brief Sampler for the current frame's scene color. This is what reflections will be sampled from. */
 uniform sampler2D sceneMap;
+/** @brief Sampler for the current frame's scene depth. Used to find intersections during ray marching. */
 uniform sampler2D sceneDepth;
 
+/** @brief Resolution of the screen in pixels (width, height). */
 uniform vec2 screen_res;
+/** @brief The current view's projection matrix. Transforms view space coordinates to clip space. */
 uniform mat4 projection_matrix;
-//uniform float zNear;
-//uniform float zFar;
+/** @brief The inverse of the projection matrix. Transforms clip space coordinates back to view space. */
 uniform mat4 inv_proj;
-uniform mat4 modelview_delta;  // should be transform from last camera space to current camera space
+/** @brief Transformation matrix from the last frame's camera space to the current frame's camera space. Used for temporal reprojection.*/
+uniform mat4 modelview_delta;
+/** @brief Inverse of the modelview_delta matrix. Transforms current camera space back to last frame's camera space. */
 uniform mat4 inv_modelview_delta;
 
+// --- Forward declaration for a function defined elsewhere or later in the file ---
+/**
+ * @brief Reconstructs view space position from screen coordinates and depth.
+ * @param pos_screen Screen space texture coordinates (0-1 range).
+ * @param depth Depth value sampled from the depth buffer (typically non-linear).
+ * @return vec4 The reconstructed position in view space. The .xyz components are position, .w is typically 1.0.
+ */
 vec4 getPositionWithDepth(vec2 pos_screen, float depth);
 
+/**
+ * @brief Generates a pseudo-random float value based on a 2D input vector.
+ * @param uv A 2D vector used as a seed for the random number generation.
+ * @return float A pseudo-random value in the range [0, 1).
+ */
 float random (vec2 uv)
 {
-    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123); //simple random function
+    // A common simple hash function to generate pseudo-random numbers in GLSL.
+    return fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 // Based off of https://github.com/RoundedGlint585/ScreenSpaceReflection/
 // A few tweaks here and there to suit our needs.
 
+/**
+ * @brief Projects a 3D position (typically in view space) to 2D screen space coordinates.
+ * @param pos The 3D position to project (assumed to be in view space).
+ * @return vec2 The 2D screen space coordinates, in the range [0, 1] for x and y.
+ */
 vec2 generateProjectedPosition(vec3 pos)
 {
+    // Project the 3D position to clip space.
     vec4 samplePosition = projection_matrix * vec4(pos, 1.f);
+    // Perform perspective divide and map to [0, 1] texture coordinate range.
     samplePosition.xy = (samplePosition.xy / samplePosition.w) * 0.5 + 0.5;
     return samplePosition.xy;
 }
 
+// These booleans control various optimizations and features of the SSR algorithm.
+/** @brief If true, a binary search step is performed to refine the hit point after an initial overshoot. */
 bool isBinarySearchEnabled = true;
+/** @brief If true, the ray marching step size is adapted based on the distance to the nearest surface. */
 bool isAdaptiveStepEnabled = true;
+/** @brief If true, the base ray marching step size increases exponentially with each step. */
 bool isExponentialStepEnabled = true;
+/** @brief If true, debug colors are used to visualize aspects of the ray marching process (e.g., delta values). */
 bool debugDraw = false;
 
-uniform float iterationCount;
-uniform float rayStep;
-uniform float distanceBias;
-uniform float depthRejectBias;
+// Near Pass Uniforms
+uniform vec3 iterationCount;
+uniform vec3 rayStep;
+uniform vec3 distanceBias;
+uniform vec3 depthRejectBias;
+uniform vec3 adaptiveStepMultiplier;
+uniform vec3 splitParamsStart;
+uniform vec3 splitParamsEnd;
+
+float blurStepY = 0.01;
+float blurStepX = 0.01;
+float blurIterationX = 2;
+float blurIterationY = 4;
+
+/** @brief Number of samples to take for glossy reflections. Higher values give smoother but more expensive reflections. Debug setting: RenderScreenSpaceReflectionGlossySamples */
 uniform float glossySampleCount;
-uniform float adaptiveStepMultiplier;
+/** @brief A time-varying sine value, used to introduce temporal variation with the poisson sphere sampling. */
 uniform float noiseSine;
 
-float epsilon = 0.1;
+/** @brief A small constant value used for floating-point comparisons, typically to avoid issues with precision. Used in self-intersection checks. */
+float epsilon = 0.000001;
 
+/**
+ * @brief Samples the scene depth texture and converts it to linear view space Z depth.
+ * @param tc Texture coordinates (screen space, 0-1 range) at which to sample the depth.
+ * @return float The linear depth value.
+ */
 float getLinearDepth(vec2 tc)
 {
+    // Sample the raw depth value from the depth texture.
     float depth = texture(sceneDepth, tc).r;
-
+    // Reconstruct the view space position using the sampled depth.
     vec4 pos = getPositionWithDepth(tc, depth);
-
-    return -pos.z;
+    // Return the Z component of the view space position, which is the linear depth.
+    return -pos.z; // Negated as view space Z is typically negative.
 }
 
-bool traceScreenRay(vec3 position, vec3 reflection, out vec4 hitColor, out float hitDepth, float depth, sampler2D textureFrame)
+/**
+ * @brief Calculates a fade factor based on the proximity of a screen position to the screen edges.
+ * The fade increases as the position gets closer to any edge.
+ * @param screenPos The screen position in normalized device coordinates (0-1 range).
+ * @return float The edge fade factor, ranging from 1.0 (no fade, away from edges) to 0.0 (full fade, at an edge).
+ */
+float calculateEdgeFade(vec2 screenPos) {
+    // Defines how close to the edge the fade effect starts.
+    // 0.9 means fading begins when the point is 10% away from the screen edge.
+    const float edgeFadeStart = 0.9;
+
+    // Convert screen position from [0,1] to [-1,1] range and take absolute value.
+    // This gives distance from the center: 0 at center, 1 at edges.
+    vec2 distFromCenter = abs(screenPos * 2.0 - 1.0);
+
+    // Calculate a smooth fade for each axis using smoothstep.
+    // smoothstep(edgeFadeStart, 1.0, x) will be:
+    // - 0 if x < edgeFadeStart
+    // - 1 if x > 1.0
+    // - A smooth transition between 0 and 1 if edgeFadeStart <= x <= 1.0
+    vec2 fade = smoothstep(edgeFadeStart, 1.0, distFromCenter);
+
+    // Use the maximum fade value between X and Y axes.
+    // We want to fade if the point is close to ANY edge.
+    // If fade.x is high (close to X-edge) or fade.y is high (close to Y-edge),
+    // max(fade.x, fade.y) will be high.
+    // 1.0 - max(...) inverts this, so it's 1.0 (no fade) in the center and 0.0 (full fade) at edges.
+    return 1.0 - max(fade.x, fade.y);
+}
+
+/**
+ * @brief Calculates the approximate number of mipmap levels for a texture of a given resolution.
+ * This can be used to determine a suitable blur radius or LOD for texture sampling.
+ * @param resolution The 2D resolution of the texture (width, height).
+ * @return float The estimated number of mipmap levels.
+ */
+float calculateMipmapLevels(vec2 resolution) {
+    // Find the larger dimension of the texture.
+    float maxDimension = max(resolution.x, resolution.y);
+    // The number of mip levels is related to log2 of the largest dimension.
+    // Adding 1.0 accounts for the base level (mip 0).
+    return floor(log2(maxDimension)) + 1.0;
+}
+
+/**
+ * @brief Processes a confirmed ray intersection, calculating hit color, depth, and edge fade.
+ * This function encapsulates the logic for sampling the source texture and applying debug visualization.
+ * @param screenPos Current screen position (texture coordinates) of the hit.
+ * @param hitScreenDepth Depth value from the scene's depth buffer at the hit point (linear view space Z).
+ * @param signedDelta Signed difference between the ray's current depth and the scene's depth. Used for debug coloring.
+ * @param texSource The texture (e.g., scene color) to sample for the reflection color.
+ * @param reflRoughness Roughness of the reflecting surface, used to adjust mip level for blurring.
+ * @param outHitColor Output: The calculated color of the reflection.
+ * @param outHitDepthValue Output: The depth of the reflection hit.
+ * @param outEdgeFactor Output: The edge fade factor calculated at the hit position.
+ */
+void processRayIntersection(
+    vec2 screenPos,
+    float hitScreenDepth,
+    float signedDelta,
+    sampler2D texSource,
+    float reflRoughness,
+    out vec4 outHitColor,
+    out float outHitDepthValue,
+    out float outEdgeFactor
+)
 {
-    // transform position and reflection into same coordinate frame as the sceneMap and sceneDepth
-    reflection += position;
-    position = (inv_modelview_delta * vec4(position, 1)).xyz;
-    reflection = (inv_modelview_delta * vec4(reflection, 1)).xyz;
-    reflection -= position;
+    vec4 color = vec4(1.0); // Default color multiplier.
+    if(debugDraw) {
+        // If debug drawing is enabled, colorize based on the sign of delta.
+        // Helps visualize if the ray hit in front of or behind the surface.
+        color = vec4(0.5 + sign(signedDelta) / 2.0, 0.3, 0.5 - sign(signedDelta) / 2.0, 0.0);
+    }
 
-    depth = -position.z;
+    // Calculate mip level for texture sampling based on screen resolution and roughness.
+    // Higher roughness leads to sampling from higher (blurrier) mip levels.
+    float mipLevel = calculateMipmapLevels(screen_res) * reflRoughness;
 
-    vec3 step = rayStep * reflection;
-    vec3 marchingPosition = position + step;
-    float delta;
-    float depthFromScreen;
-    vec2 screenPosition;
-    bool hit = false;
-    hitColor = vec4(0);
+    // Sample the source texture at the hit position using the calculated mip level.
+    outHitColor = textureLod(texSource, screenPos, mipLevel) * color;
+    outHitColor.a = 1.0; // Ensure full opacity for the hit.
+    outHitDepthValue = hitScreenDepth; // Store the depth of the hit.
+    outEdgeFactor = calculateEdgeFade(screenPos); // Calculate edge fade at the hit position.
+}
 
-    int i = 0;
-    if (depth > depthRejectBias)
+/**
+ * @brief Checks if the ray's projected screen position is outside the [0,1] screen bounds.
+ * If off-screen, it calculates and updates the edge fade factor.
+ * @param screenPos The ray's current projected screen position (texture coordinates).
+ * @param currentEdgeFade Input/Output: The current edge fade value, which will be updated if the ray is off-screen.
+ * @return bool True if the ray is off-screen, false otherwise.
+ */
+bool checkAndUpdateOffScreen(vec2 screenPos, inout float currentEdgeFade)
+{
+    if (screenPos.x > 1.0 || screenPos.x < 0.0 ||
+        screenPos.y > 1.0 || screenPos.y < 0.0)
     {
-        for (; i < iterationCount && !hit; i++)
-        {
+        // If off-screen, clamp the position to the edges and calculate edge fade.
+        vec2 clampedPos = clamp(screenPos, 0.0, 1.0);
+        currentEdgeFade = calculateEdgeFade(clampedPos);
+        return true; // Is off-screen
+    }
+    return false; // Is on-screen
+}
+
+/**
+ * @brief Checks if the ray is intersecting too close to the surface it originated from (self-intersection).
+ * This helps prevent artifacts where a reflection ray immediately hits its own surface.
+ * @param reflectingSurfaceDepth The view space Z depth of the surface from which the ray originates.
+ * @param currentRayMarchDepth The view space Z depth of the scene surface at the ray's current projected position.
+ * @param depthEpsilon A small tolerance value for the depth comparison.
+ * @return bool True if a self-intersection is detected, false otherwise.
+ */
+bool checkSelfIntersection(float reflectingSurfaceDepth, float currentRayMarchDepth, float depthEpsilon)
+{
+    // Check if the ray's current depth is within epsilon distance of the original surface's depth.
+    return reflectingSurfaceDepth < currentRayMarchDepth + depthEpsilon &&
+           reflectingSurfaceDepth > currentRayMarchDepth - depthEpsilon;
+}
+
+/**
+ * @brief Advances the ray marching position based on adaptive and/or exponential stepping logic.
+ * @param deltaFromSurface Current difference between the ray's depth and the scene depth at the projected point.
+ *                         Negative means ray is in front of surface, positive means behind.
+ * @param currentMarchingPos Input/Output: The current 3D position of the ray in view space. Will be updated.
+ * @param currentBaseStepVec Input/Output: The base step vector. Its direction is the ray direction. Its magnitude
+ *                           can be scaled by exponential stepping and provides a reference for adaptive steps.
+ * @param minStepLenScalar The minimum step length ('rayStep' uniform), a scalar.
+ * @param useAdaptiveStepping Boolean flag to enable adaptive stepping.
+ * @param useExponentialStepping Boolean flag to enable exponential step scaling.
+ * @param expStepMultiplier Multiplier for exponential step scaling ('adaptiveStepMultiplier' uniform).
+ */
+void advanceRayMarch(
+    float deltaFromSurface,
+    inout vec3 currentMarchingPos,
+    inout vec3 currentBaseStepVec,
+    float minStepLenScalar,
+    bool useAdaptiveStepping,
+    bool useExponentialStepping,
+    float expStepMultiplier
+)
+{
+    vec3 actualMarchingVector;
+
+    // Calculate a minimum step size based on the current position's depth
+    // This prevents steps that are smaller than the depth buffer's precision
+    float currentDepth = abs(currentMarchingPos.z);
+    float depthBasedMinStep = max(minStepLenScalar, currentDepth * 0.001); // 0.1% of current depth
+
+    if (useAdaptiveStepping) {
+        if (deltaFromSurface < 0.0f) { // Ray is in front of the surface
+            vec3 stepDir = normalize(currentBaseStepVec);
+            if (abs(stepDir.z) > 0.0001f) { // Avoid division by zero if ray is mostly horizontal
+                // Project the Z-difference onto the ray's direction to estimate distance to intersection.
+                float distToPotentialIntersection = abs(deltaFromSurface) / abs(stepDir.z);
+                // Determine adaptive step length with enhanced minimum:
+                float adaptiveLength = clamp(distToPotentialIntersection * 0.75f,
+                                             depthBasedMinStep,
+                                             length(currentBaseStepVec));
+                actualMarchingVector = stepDir * adaptiveLength;
+            } else { // Ray is mostly horizontal, use a conservative step.
+                float stepLength = max(length(currentBaseStepVec) * 0.5f, depthBasedMinStep);
+                actualMarchingVector = stepDir * stepLength;
+            }
+        } else { // deltaFromSurface >= 0.0f (Ray is at or behind the surface)
+            float directionSign = sign(deltaFromSurface);
+            // Ensure retreat step is also not too small
+            vec3 baseStepForRetreat = currentBaseStepVec * max(0.5f, 1.0f - minStepLenScalar * max(directionSign, 0.0f));
+            actualMarchingVector = baseStepForRetreat * (-directionSign);
+
+            // Ensure minimum retreat distance
+            if (length(actualMarchingVector) < depthBasedMinStep) {
+                actualMarchingVector = normalize(actualMarchingVector) * depthBasedMinStep;
+            }
+        }
+    } else { // Not adaptive stepping, use the current base step vector.
+        actualMarchingVector = currentBaseStepVec;
+        // But still enforce minimum step size
+        if (length(actualMarchingVector) < depthBasedMinStep) {
+            actualMarchingVector = normalize(actualMarchingVector) * depthBasedMinStep;
+        }
+    }
+
+    currentMarchingPos += actualMarchingVector; // Advance the ray position.
+
+    if (useExponentialStepping) {
+        // If exponential stepping is enabled, increase the magnitude of the base step vector for subsequent iterations.
+        currentBaseStepVec *= expStepMultiplier;
+    }
+}
+
+uniform float maxZDepth;
+uniform float maxRoughness;
+
+/**
+ * @brief Checks if a hit point is within the specified distance range from the reflector.
+ * @param reflectorDepth The depth of the reflecting surface.
+ * @param hitDepth The depth of the hit point.
+ * @param rangeStart The start of the valid range (minimum distance from reflector).
+ * @param rangeEnd The end of the valid range (maximum distance from reflector).
+ * @return bool True if the hit is within the valid range, false otherwise.
+ */
+bool isWithinReflectionRange(float reflectorDepth, float hitDepth, float rangeStart, float rangeEnd)
+{
+    float distanceFromReflector = abs(hitDepth - reflectorDepth);
+    return distanceFromReflector >= rangeStart && distanceFromReflector <= rangeEnd;
+}
+
+/**
+ * @brief Traces a single reflection ray through the scene using screen-space ray marching.
+ * It attempts to find an intersection with the scene geometry represented by a depth buffer.
+ * Features include adaptive step size, exponential step increase, binary search refinement,
+ * and edge fading.
+ *
+ * @param initialPosition The starting position of the ray in current view space.
+ * @param initialReflection The initial reflection vector (direction) in current view space.
+ * @param hitColor Output: If an intersection is found, this will be the color sampled from the 'source' texture at the hit point. Otherwise, it's (0,0,0,0).
+ * @param hitDepth Output: If an intersection is found, this will be the linear view space Z depth of the hit point.
+ * @param source The sampler2D (e.g., current frame's color buffer) to fetch reflection color from upon a hit.
+ * @param edgeFade Output: A factor (0-1) indicating how close the ray path or hit point is to the screen edges. 1 means no fade.
+ * @param roughness Surface roughness (0-1), used to adjust mip level for texture sampling to simulate blurriness.
+ * @return bool True if the ray hits a surface, false otherwise.
+ */
+bool traceScreenRay(
+    vec3 initialPosition,
+    vec3 initialReflection,
+    out vec4 hitColor,
+    out float hitDepth,
+    sampler2D source,
+    out float edgeFade,
+    float roughness,
+    int passIterationCount,
+    float passRayStep,
+    float passDistanceBias,
+    float passDepthRejectBias,
+    float passAdaptiveStepMultiplier,
+    float passDepthScaleExponent,
+    vec2 distanceParams
+)
+{
+    // Transform initialPosition and the target of initialReflection vector from current camera space to previous camera space.
+    vec3 reflectionTargetPoint = initialPosition + initialReflection;
+    vec3 currentPosition_transformed = (inv_modelview_delta * vec4(initialPosition, 1.0)).xyz;
+
+    vec2 initialScreenPos = generateProjectedPosition(currentPosition_transformed);
+    if (initialScreenPos.x < 0.0 || initialScreenPos.x > 1.0 ||
+        initialScreenPos.y < 0.0 || initialScreenPos.y > 1.0) {
+        hitColor = vec4(0.0);
+        edgeFade = 0.0;
+        hitDepth = 0.0;
+        return false;
+    }
+
+    vec3 reflectionTarget_transformed = (inv_modelview_delta * vec4(reflectionTargetPoint, 1.0)).xyz;
+    vec3 reflectionVector_transformed = reflectionTarget_transformed - currentPosition_transformed;
+
+    // Depth of the reflecting surface in the transformed view space.
+    float reflectingSurfaceViewDepth = -currentPosition_transformed.z;
+
+    if (reflectingSurfaceViewDepth > maxZDepth) {
+        // Do a sanity check: if the reflecting surface is too far away, skip ray tracing.
+        hitColor = vec4(0.0);
+        edgeFade = 0.0;
+        hitDepth = 0.0;
+        return false;
+    }
+
+    // Extract range parameters
+    float rangeStart = distanceParams.x;
+    float rangeEnd = distanceParams.y;
+
+    // Initialize ray marching variables - NO SCALING
+    vec3 normalizedReflection = normalize(reflectionVector_transformed);
+
+    if (normalizedReflection.z >= 0.5) {
+        hitColor = vec4(0.0);
+        edgeFade = 0.0;
+        hitDepth = 0.0;
+        return false;
+    }
+
+    float depthScale = pow(reflectingSurfaceViewDepth, passDepthScaleExponent);
+    vec3 baseStepVector = passRayStep * max(1.0, depthScale) * normalizedReflection;
+    vec3 marchingPosition = currentPosition_transformed + baseStepVector; // First step from origin.
+
+    float delta; // Difference between ray's Z depth and scene's Z depth at the projected screen position.
+    float prevDelta = 0.0;
+    vec3 prevPosition = marchingPosition;
+    bool crossedSurface = false;
+
+    vec2 screenPosition; // Ray's current projected 2D screen position.
+    bool hit = false;    // Flag to indicate if an intersection was found.
+    hitColor = vec4(0.0); // Initialize output hit color.
+    edgeFade = 1.0;       // Initialize output edge fade.
+    float depthFromScreen = 0.0; // Linear depth sampled from the sceneDepth texture.
+    float furthestValidDepth = 0.0; // The furthest valid depth encountered during ray marching.
+    int i = 0; // Iteration counter.
+    // Only trace if the reflecting surface itself isn't too shallow (depthRejectBias).
+    if (reflectingSurfaceViewDepth > passDepthRejectBias) {
+        // --- Main Ray Marching Loop ---
+        for (; i < int(passIterationCount) && !hit; i++) {
+            // Project current 3D marching position to 2D screen space.
             screenPosition = generateProjectedPosition(marchingPosition);
-            if (screenPosition.x > 1 || screenPosition.x < 0 ||
-                screenPosition.y > 1 || screenPosition.y < 0)
-            {
+            if (checkAndUpdateOffScreen(screenPosition, edgeFade)) {
                 hit = false;
                 break;
             }
             depthFromScreen = getLinearDepth(screenPosition);
+            if (depthFromScreen >= maxZDepth) {
+                hit = false;
+                break;
+            }
+            float rayTravelDistance = abs(abs(marchingPosition.z) - reflectingSurfaceViewDepth);
+            if (rayTravelDistance > rangeEnd) {
+                hit = false;
+                break;
+            }
             delta = abs(marchingPosition.z) - depthFromScreen;
-
-            if (depth < depthFromScreen + epsilon && depth > depthFromScreen - epsilon)
-            {
+            if (checkSelfIntersection(reflectingSurfaceViewDepth, depthFromScreen, epsilon)) {
+                edgeFade = calculateEdgeFade(screenPosition);
+                hit = false;
                 break;
             }
-
-            if (abs(delta) < distanceBias)
-            {
-                vec4 color = vec4(1);
-                if(debugDraw)
-                    color = vec4( 0.5+ sign(delta)/2,0.3,0.5- sign(delta)/2, 0);
-                hitColor = texture(sceneMap, screenPosition) * color;
-                hitDepth = depthFromScreen;
-                hit = true;
-                break;
-            }
-            if (isBinarySearchEnabled && delta > 0)
-            {
-                break;
-            }
-            if (isAdaptiveStepEnabled)
-            {
-                float directionSign = sign(abs(marchingPosition.z) - depthFromScreen);
-                //this is sort of adapting step, should prevent lining reflection by doing sort of iterative converging
-                //some implementation doing it by binary search, but I found this idea more cheaty and way easier to implement
-                step = step * (1.0 - rayStep * max(directionSign, 0.0));
-                marchingPosition += step * (-directionSign);
-            }
-            else
-            {
-                marchingPosition += step;
-            }
-
-            if (isExponentialStepEnabled)
-            {
-                step *= adaptiveStepMultiplier;
-            }
-        }
-        if(isBinarySearchEnabled)
-        {
-            for(; i < iterationCount && !hit; i++)
-            {
-                step *= 0.5;
-                marchingPosition = marchingPosition - step * sign(delta);
-
-                screenPosition = generateProjectedPosition(marchingPosition);
-                if (screenPosition.x > 1 || screenPosition.x < 0 ||
-                    screenPosition.y > 1 || screenPosition.y < 0)
-                {
-                    hit = false;
-                    break;
-                }
-                depthFromScreen = getLinearDepth(screenPosition);
-                delta = abs(marchingPosition.z) - depthFromScreen;
-
-                if (depth < depthFromScreen + epsilon && depth > depthFromScreen - epsilon)
-                {
-                    break;
-                }
-
-                if (abs(delta) < distanceBias && depthFromScreen != (depth - distanceBias))
-                {
-                    vec4 color = vec4(1);
-                    if(debugDraw)
-                        color = vec4( 0.5+ sign(delta)/2,0.3,0.5- sign(delta)/2, 0);
-                    hitColor = texture(sceneMap, screenPosition) * color;
-                    hitDepth = depthFromScreen;
+            if (abs(delta) < passDistanceBias) {
+                if (isWithinReflectionRange(reflectingSurfaceViewDepth, depthFromScreen, rangeStart, rangeEnd)) {
+                    processRayIntersection(screenPosition, depthFromScreen, delta, source, roughness,
+                                        hitColor, hitDepth, edgeFade);
+                    if (hitDepth > furthestValidDepth) {
+                        furthestValidDepth = hitDepth;
+                    }
                     hit = true;
                     break;
                 }
             }
+            // --- Detect sign change for binary search ---
+            if (i > 0 && sign(prevDelta) != sign(delta)) {
+                crossedSurface = true;
+                break;
+            }
+            prevDelta = delta;
+            prevPosition = marchingPosition;
+            advanceRayMarch(delta, marchingPosition, baseStepVector,
+                            passRayStep, isAdaptiveStepEnabled, isExponentialStepEnabled, passAdaptiveStepMultiplier);
+
         }
-    }
 
-    return hit;
-}
-
-uniform vec3 POISSON3D_SAMPLES[128] = vec3[128](
-    vec3(0.5433144, 0.1122154, 0.2501391),
-    vec3(0.6575254, 0.721409, 0.16286),
-    vec3(0.02888453, 0.05170321, 0.7573566),
-    vec3(0.06635678, 0.8286457, 0.07157445),
-    vec3(0.8957489, 0.4005505, 0.7916042),
-    vec3(0.3423355, 0.5053263, 0.9193521),
-    vec3(0.9694794, 0.9461077, 0.5406441),
-    vec3(0.9975473, 0.02789414, 0.7320132),
-    vec3(0.07781899, 0.3862341, 0.918594),
-    vec3(0.4439073, 0.9686955, 0.4055861),
-    vec3(0.9657035, 0.6624081, 0.7082613),
-    vec3(0.7712346, 0.07273269, 0.3292839),
-    vec3(0.2489169, 0.2550394, 0.1950516),
-    vec3(0.7249326, 0.9328285, 0.3352458),
-    vec3(0.6028461, 0.4424961, 0.5393377),
-    vec3(0.2879795, 0.7427881, 0.6619173),
-    vec3(0.3193627, 0.0486145, 0.08109283),
-    vec3(0.1233155, 0.602641, 0.4378719),
-    vec3(0.9800708, 0.211729, 0.6771586),
-    vec3(0.4894537, 0.3319927, 0.8087631),
-    vec3(0.4802743, 0.6358885, 0.814935),
-    vec3(0.2692913, 0.9911493, 0.9934899),
-    vec3(0.5648789, 0.8553897, 0.7784553),
-    vec3(0.8497344, 0.7870212, 0.02065313),
-    vec3(0.7503014, 0.2826185, 0.05412734),
-    vec3(0.8045461, 0.6167251, 0.9532926),
-    vec3(0.04225039, 0.2141281, 0.8678675),
-    vec3(0.07116079, 0.9971236, 0.3396397),
-    vec3(0.464099, 0.480959, 0.2775862),
-    vec3(0.6346927, 0.31871, 0.6588384),
-    vec3(0.449012, 0.8189669, 0.2736875),
-    vec3(0.452929, 0.2119148, 0.672004),
-    vec3(0.01506042, 0.7102436, 0.9800494),
-    vec3(0.1970513, 0.4713539, 0.4644522),
-    vec3(0.13715, 0.7253224, 0.5056525),
-    vec3(0.9006432, 0.5335414, 0.02206874),
-    vec3(0.9960898, 0.7961011, 0.01468861),
-    vec3(0.3386469, 0.6337739, 0.9310676),
-    vec3(0.1745718, 0.9114985, 0.1728188),
-    vec3(0.6342545, 0.5721557, 0.4553517),
-    vec3(0.1347412, 0.1137158, 0.7793725),
-    vec3(0.3574478, 0.3448052, 0.08741581),
-    vec3(0.7283059, 0.4753885, 0.2240275),
-    vec3(0.8293507, 0.9971212, 0.2747005),
-    vec3(0.6501846, 0.000688076, 0.7795712),
-    vec3(0.01149416, 0.4930083, 0.792608),
-    vec3(0.666189, 0.1875442, 0.7256873),
-    vec3(0.8538797, 0.2107637, 0.1547532),
-    vec3(0.5826825, 0.9750752, 0.9105834),
-    vec3(0.8914346, 0.08266425, 0.5484225),
-    vec3(0.4374518, 0.02987111, 0.7810078),
-    vec3(0.2287418, 0.1443802, 0.1176908),
-    vec3(0.2671157, 0.8929081, 0.8989366),
-    vec3(0.5425819, 0.5524959, 0.6963879),
-    vec3(0.3515188, 0.8304397, 0.0502702),
-    vec3(0.3354864, 0.2130747, 0.141169),
-    vec3(0.9729427, 0.3509927, 0.6098799),
-    vec3(0.7585629, 0.7115368, 0.9099342),
-    vec3(0.0140543, 0.6072157, 0.9436461),
-    vec3(0.9190664, 0.8497264, 0.1643751),
-    vec3(0.1538157, 0.3219983, 0.2984214),
-    vec3(0.8854713, 0.2968667, 0.8511457),
-    vec3(0.1910622, 0.03047311, 0.3571215),
-    vec3(0.2456353, 0.5568692, 0.3530164),
-    vec3(0.6927255, 0.8073994, 0.5808484),
-    vec3(0.8089353, 0.8969175, 0.3427134),
-    vec3(0.194477, 0.7985603, 0.8712182),
-    vec3(0.7256182, 0.5653068, 0.3985921),
-    vec3(0.9889427, 0.4584851, 0.8363391),
-    vec3(0.5718582, 0.2127113, 0.2950557),
-    vec3(0.5480209, 0.0193435, 0.2992659),
-    vec3(0.6598953, 0.09478426, 0.92187),
-    vec3(0.1385615, 0.2193868, 0.205245),
-    vec3(0.7623423, 0.1790726, 0.1508465),
-    vec3(0.7569032, 0.3773386, 0.4393887),
-    vec3(0.5842971, 0.6538072, 0.5224424),
-    vec3(0.9954313, 0.5763943, 0.9169143),
-    vec3(0.001311183, 0.340363, 0.1488652),
-    vec3(0.8167927, 0.4947158, 0.4454727),
-    vec3(0.3978434, 0.7106082, 0.002727509),
-    vec3(0.5459411, 0.7473233, 0.7062873),
-    vec3(0.4151598, 0.5614617, 0.4748358),
-    vec3(0.4440694, 0.1195122, 0.9624678),
-    vec3(0.1081301, 0.4813806, 0.07047641),
-    vec3(0.2402785, 0.3633997, 0.3898734),
-    vec3(0.2317942, 0.6488295, 0.4221864),
-    vec3(0.01145542, 0.9304277, 0.4105759),
-    vec3(0.3563728, 0.9228861, 0.3282344),
-    vec3(0.855314, 0.6949819, 0.3175117),
-    vec3(0.730832, 0.01478493, 0.5728671),
-    vec3(0.9304829, 0.02653277, 0.712552),
-    vec3(0.4132186, 0.4127623, 0.6084146),
-    vec3(0.7517329, 0.9978395, 0.1330464),
-    vec3(0.5210338, 0.4318751, 0.9721575),
-    vec3(0.02953994, 0.1375937, 0.9458942),
-    vec3(0.1835506, 0.9896691, 0.7919457),
-    vec3(0.3857062, 0.2682322, 0.1264563),
-    vec3(0.6319699, 0.8735335, 0.04390657),
-    vec3(0.5630485, 0.3339024, 0.993995),
-    vec3(0.90701, 0.1512893, 0.8970422),
-    vec3(0.3027443, 0.1144253, 0.1488708),
-    vec3(0.9149003, 0.7382028, 0.7914025),
-    vec3(0.07979286, 0.6892691, 0.2866171),
-    vec3(0.7743186, 0.8046008, 0.4399814),
-    vec3(0.3128662, 0.4362317, 0.6030678),
-    vec3(0.1133721, 0.01605821, 0.391872),
-    vec3(0.5185481, 0.9210006, 0.7889017),
-    vec3(0.8217013, 0.325305, 0.1668191),
-    vec3(0.8358996, 0.1449739, 0.3668382),
-    vec3(0.1778213, 0.5599256, 0.1327691),
-    vec3(0.06690693, 0.5508637, 0.07212365),
-    vec3(0.9750564, 0.284066, 0.5727578),
-    vec3(0.4350255, 0.8949825, 0.03574753),
-    vec3(0.8931149, 0.9177974, 0.8123496),
-    vec3(0.9055127, 0.989903, 0.813235),
-    vec3(0.2897243, 0.3123978, 0.5083504),
-    vec3(0.1519223, 0.3958645, 0.2640327),
-    vec3(0.6840154, 0.6463035, 0.2346607),
-    vec3(0.986473, 0.8714055, 0.3960275),
-    vec3(0.6819352, 0.4169535, 0.8379834),
-    vec3(0.9147297, 0.6144146, 0.7313942),
-    vec3(0.6554981, 0.5014008, 0.9748477),
-    vec3(0.9805915, 0.1318207, 0.2371372),
-    vec3(0.5980836, 0.06796348, 0.9941338),
-    vec3(0.6836596, 0.9917196, 0.2319056),
-    vec3(0.5276511, 0.2745509, 0.5422578),
-    vec3(0.829482, 0.03758276, 0.1240466),
-    vec3(0.2698198, 0.0002266169, 0.3449324)
-);
-
-vec3 getPoissonSample(int i) {
-    return POISSON3D_SAMPLES[i] * 2 - 1;
-}
-
-float tapScreenSpaceReflection(int totalSamples, vec2 tc, vec3 viewPos, vec3 n, inout vec4 collectedColor, sampler2D source, float glossiness)
-{
-#ifdef TRANSPARENT_SURFACE
-collectedColor = vec4(1, 0, 1, 1);
-    return 0;
-#endif
-    collectedColor = vec4(0);
-    int hits = 0;
-
-    float depth = -viewPos.z;
-
-    vec3 rayDirection = normalize(reflect(viewPos, normalize(n)));
-
-    vec2 uv2 = tc * screen_res;
-    float c = (uv2.x + uv2.y) * 0.125;
-    float jitter = mod( c, 1.0);
-
-    vec2 screenpos = 1 - abs(tc * 2 - 1);
-    float vignette = clamp((abs(screenpos.x) * abs(screenpos.y)) * 16,0, 1);
-    vignette *= clamp((dot(normalize(viewPos), n) * 0.5 + 0.5) * 5.5 - 0.8, 0, 1);
-
-    float zFar = 128.0;
-    vignette *= clamp(1.0+(viewPos.z/zFar), 0.0, 1.0);
-
-    vignette *= clamp(glossiness * 3 - 1.7, 0, 1);
-
-    vec4 hitpoint;
-
-    glossiness = 1 - glossiness;
-
-    totalSamples = int(max(glossySampleCount, glossySampleCount * glossiness * vignette));
-
-    totalSamples = max(totalSamples, 1);
-    if (glossiness < 0.35)
-    {
-        if (vignette > 0)
-        {
-            for (int i = 0; i < totalSamples; i++)
-            {
-                vec3 firstBasis = normalize(cross(getPoissonSample(i), rayDirection));
-                vec3 secondBasis = normalize(cross(rayDirection, firstBasis));
-                vec2 coeffs = vec2(random(tc + vec2(0, i)) + random(tc + vec2(i, 0)));
-                vec3 reflectionDirectionRandomized = rayDirection + ((firstBasis * coeffs.x + secondBasis * coeffs.y) * glossiness);
-
-                //float hitDepth;
-
-                bool hit = traceScreenRay(viewPos, normalize(reflectionDirectionRandomized), hitpoint, depth, depth, source);
-
-                hitpoint.a = 0;
-
-                if (hit)
-                {
-                    ++hits;
-                    collectedColor += hitpoint;
-                    collectedColor.a += 1;
+        // --- Binary Search Refinement Loop ---
+        // Perform binary search if enabled, the main loop overshot (delta > 0), and no hit was found yet.
+        if (isBinarySearchEnabled && crossedSurface && !hit) {
+            vec3 a = prevPosition;
+            vec3 b = marchingPosition;
+            float prevDeltaBinary = prevDelta;
+            for (int j = 0; j < 5; ++j) { // 5 steps is usually enough
+                vec3 mid = mix(a, b, 0.5);
+                vec2 midScreen = generateProjectedPosition(mid);
+                float midEdgeFade = edgeFade;
+                if (checkAndUpdateOffScreen(midScreen, midEdgeFade)) {
+                    b = mid;
+                    continue;
+                }
+                float midDepth = getLinearDepth(midScreen);
+                float midDelta = abs(mid.z) - midDepth;
+                if (checkSelfIntersection(reflectingSurfaceViewDepth, midDepth, epsilon)) {
+                    a = mid;
+                    prevDeltaBinary = midDelta;
+                    continue;
+                }
+                if (!isWithinReflectionRange(reflectingSurfaceViewDepth, midDepth, rangeStart, rangeEnd)) {
+                    b = mid;
+                    continue;
+                }
+                if (abs(midDelta) < passDistanceBias) {
+                    processRayIntersection(midScreen, midDepth, midDelta, source, roughness, hitColor, hitDepth, midEdgeFade);
+                    if (hitDepth > furthestValidDepth) {
+                        furthestValidDepth = hitDepth;
+                    }
+                    edgeFade = midEdgeFade;
+                    hit = true;
+                    break;
+                }
+                if (sign(midDelta) == sign(prevDeltaBinary)) {
+                    a = mid;
+                    prevDeltaBinary = midDelta;
+                } else {
+                    b = mid;
                 }
             }
+        } // End of binary search refinement loop
+    }
 
-            if (hits > 0)
-            {
-                collectedColor /= hits;
-            }
-            else
-            {
-                collectedColor = vec4(0);
-            }
+    // Do a bit of distance fading if we have a hit.  Use it to fade out far off objects that just don't look right.
+    if (hit) {
+        float zFadeStart = maxZDepth * 0.8;
+        float zFade = 1.0 - smoothstep(zFadeStart, maxZDepth, furthestValidDepth);
+
+        // Combine both fades (multiply for stronger effect)
+        edgeFade *= zFade;
+
+    }
+
+    return hit; // Return whether a valid intersection was found.
+}
+
+/**
+ * @brief Handles the actual tracing logic for screen space reflections, including multi-sample glossy reflections.
+ *
+ * @param viewPos The view space position of the current pixel/surface.
+ * @param rayDirection The perfect reflection direction (already calculated).
+ * @param tc The texture coordinates of the current pixel being processed (screen space, 0-1).
+ * @param tracedColor Output: The accumulated reflection color. Alpha component is used for final fade/intensity.
+ * @param source The sampler2D (e.g., sceneMap) from which to sample reflection colors.
+ * @param roughness The roughness of the surface (0.0 for smooth, 1.0 for rough).
+ * @param iterations The number of ray marching iterations to perform.
+ * @param passRayStep The step size for ray marching.
+ * @param passDistanceBias The distance bias for intersection detection.
+ * @param passDepthRejectBias The depth rejection bias.
+ * @param passAdaptiveStepMultiplier The multiplier for adaptive stepping.
+ * @return bool True if at least one ray hit was successful, false otherwise.
+ */
+bool tracePass(vec3 viewPos, vec3 rayDirection, vec2 tc, inout vec4 tracedColor, sampler2D source,
+               float roughness, int iterations, float passRayStep, float passDistanceBias,
+               float passDepthRejectBias, float passAdaptiveStepMultiplier, float passDepthScaleExponent, vec2 distanceParams)
+{
+    tracedColor = vec4(0.0); // Initialize accumulated color.
+    int hits = 0;            // Counter for successful ray hits.
+    float cumulativeFade = 0.0; // Accumulator for edge fade factors from successful rays.
+    float averageHitDepth = 0.0;  // Accumulator for hit depths.
+
+    // Adjust the number of samples based on roughness.
+    // Smoother surfaces get more samples.
+    int totalSamples = int(max(float(glossySampleCount), float(glossySampleCount) * (1.0 - roughness)));
+    totalSamples = max(totalSamples, 1); // Ensure at least one sample.
+    vec2 blurOffset = vec2(0);
+    int pixelSeed = int(mod(dot(tc * screen_res, vec2(37.0, 17.0)), 128.0));
+    for (int i = 0; i < totalSamples; i++) {
+        float temporalJitter = noiseSine; // Arbitrary multiplier for decorrelation
+
+        float u1 = random(tc + vec2(i, 0.123) + temporalJitter);
+        float u2 = random(tc + vec2(0.456, i) + temporalJitter);
+        float jitter = random(tc + vec2(i * 0.777, 0.888) + temporalJitter); // Additional random jitter
+
+        float alpha = max(roughness * roughness, 0.0001); // Already using alpha^2, clamp to avoid div by zero
+        float theta = atan(alpha * sqrt(u1) / sqrt(1.0 - u1));
+        // Slightly jitter phi with a random offset, scaled by roughness for more effect on rough surfaces
+        float phi = 2.0 * 3.14159265 * (u2 + jitter * 0.15 * roughness);
+
+        // Build tangent space
+        vec3 up = abs(rayDirection.y) < 0.999 ? vec3(0,1,0) : vec3(1,0,0);
+        vec3 tangent = normalize(cross(up, rayDirection));
+        vec3 bitangent = cross(rayDirection, tangent);
+
+        // GGX half-vector in tangent space
+        vec3 h = normalize(
+            sin(theta) * cos(phi) * tangent +
+            sin(theta) * sin(phi) * bitangent +
+            cos(theta) * rayDirection
+        );
+
+        // Reflect view vector about GGX half-vector to get the final sample direction
+        vec3 reflectionDirectionRandomized = normalize(reflect(-rayDirection, h));
+
+        float hitDepthVal;    // Stores depth of the hit for this ray.
+        vec4 hitpointColor; // Stores color of the hit for this ray.
+        float rayEdgeFadeVal; // Stores edge fade for this ray.
+
+        bool hit = traceScreenRay(viewPos, reflectionDirectionRandomized, hitpointColor,
+                                hitDepthVal, source, rayEdgeFadeVal, roughness * 2.0,
+                                iterations, passRayStep, passDistanceBias, passDepthRejectBias, passAdaptiveStepMultiplier, passDepthScaleExponent, distanceParams);
+
+        if (hit) {
+            ++hits;
+            tracedColor.rgb += hitpointColor.rgb; // Accumulate color.
+            tracedColor.a += 1.0;                 // Using alpha to count hits for averaging, or for intensity.
+            cumulativeFade += rayEdgeFadeVal;        // Accumulate edge fade.
+            averageHitDepth += hitDepthVal;          // Accumulate hit depth.
         }
     }
-    float hitAlpha = hits;
-    hitAlpha /= totalSamples;
-    collectedColor.a = hitAlpha * vignette;
-    return hits;
+
+    if (hits > 0) {
+        // Average the accumulated values if any rays hit.
+        tracedColor /= float(hits); // Average color. Note: alpha also gets divided.
+        cumulativeFade /= float(hits);   // Average edge fade.
+        averageHitDepth /= float(hits);  // Average hit depth.
+        // Store the average edge fade in the alpha channel for the caller to use.
+        tracedColor.a = cumulativeFade;
+    } else {
+        // No hits, result is black and no fade.
+        tracedColor = vec4(0.0);
+    }
+
+    return hits > 0; // Return true if at least one ray hit was successful.
+}
+
+/**
+ * @brief Main function to compute screen space reflections for a given screen pixel.
+ * It traces multiple rays for glossy reflections, accumulates results, and applies various fading effects.
+ *
+ * @param totalSamples The desired number of samples for glossy reflections (can be adjusted internally).
+ * @param tc The texture coordinates of the current pixel being processed (screen space, 0-1).
+ * @param viewPos The view space position of the current pixel/surface.
+ * @param n The view space normal of the current pixel/surface.
+ * @param collectedColor Output: The accumulated reflection color. Alpha component is used for final fade/intensity.
+ * @param source The sampler2D (e.g., sceneMap) from which to sample reflection colors.
+ * @param glossiness The glossiness of the surface (0.0 for rough, 1.0 for perfectly smooth/mirror).  Gets converted to roughness internally.
+ * @return float The number of rays that successfully hit a surface.
+ */
+float tapScreenSpaceReflection(
+    int totalSamples,
+    vec2 tc,
+    vec3 viewPos,
+    vec3 n,
+    inout vec4 collectedColor,
+    sampler2D source,
+    float glossiness)
+{
+#ifdef TRANSPARENT_SURFACE
+    collectedColor = vec4(1, 0, 1, 1);
+    return 0;
+#endif
+
+    float roughness = 1.0 - glossiness;
+
+    if (roughness < maxRoughness) {
+
+        float viewDotNormal = dot(normalize(-viewPos), normalize(n));
+        if (viewDotNormal <= 0.0) {
+            collectedColor = vec4(0.0);
+            return 0.0;
+        }
+
+        float remappedRoughness = clamp((roughness - (maxRoughness * 0.6)) / (maxRoughness - (maxRoughness * 0.6)), 0.0, 1.0);
+        float roughnessIntensityFade = 1.0 - remappedRoughness;
+
+        float roughnessFade = roughnessIntensityFade;
+        float currentPixelViewDepth = -viewPos.z;
+
+        vec2 distFromCenter = abs(tc * 2.0 - 1.0);
+        float baseEdgeFade = 1.0 - smoothstep(0.85, 1.0, max(distFromCenter.x, distFromCenter.y));
+
+        if (baseEdgeFade > 0.001) {
+            vec3 rayDirection = normalize(reflect(normalize(viewPos), normalize(n)));
+
+            float angleFactor = viewDotNormal;
+            float angleFactorSq = angleFactor * angleFactor;
+
+            float combinedFade = roughnessFade;// distanceFactor;
+            combinedFade *= min(1, (1 -angleFactorSq) * 2);
+
+            vec4 nearColor = vec4(0.0);
+            vec4 midColor = vec4(0.0);
+            vec4 farColor = vec4(0.0);
+            bool hasNearHits = false;
+            bool hasMidHits = false;
+            bool hasFarHits = false;
+
+            float stepRoughnesMultiplier = mix(0.0, 8.5, roughness);
+
+            // Near pass
+            vec2 distanceParams = vec2(splitParamsStart.x, splitParamsEnd.x);
+            hasNearHits = tracePass(viewPos, rayDirection, tc, nearColor, source, roughness,
+                                    int(iterationCount.x), rayStep.x, distanceBias.x,
+                                    depthRejectBias.x, adaptiveStepMultiplier.x, mix(1, 20, roughness * roughness), distanceParams);
+
+            // Mid pass
+            distanceParams = vec2(splitParamsStart.y, splitParamsEnd.y);
+            hasMidHits = tracePass(viewPos, rayDirection, tc, midColor, source, roughness,
+                                   int(iterationCount.y), rayStep.y, distanceBias.y,
+                                   depthRejectBias.y, adaptiveStepMultiplier.y, mix(0.8, 12.0, roughness * roughness), distanceParams);
+
+            // Far pass
+            distanceParams = vec2(splitParamsStart.z, splitParamsEnd.z);
+            hasFarHits = tracePass(viewPos, rayDirection, tc, farColor, source, roughness,
+                                   int(iterationCount.z), rayStep.z, distanceBias.z,
+                                   depthRejectBias.z, adaptiveStepMultiplier.z, max(0.5, stepRoughnesMultiplier), distanceParams);
+
+            // Combine results from all three passes
+            collectedColor = vec4(0.0);
+            float totalWeight = 0.0;
+
+            // Use a priority system: prefer near hits, then mid, then far
+            if (hasNearHits) {
+                collectedColor = nearColor;
+                totalWeight = 1.0;
+            } else if (hasMidHits) {
+                collectedColor = midColor;
+                totalWeight = 1.0;
+            } else if (hasFarHits) {
+                collectedColor = farColor;
+                totalWeight = 1.0;
+            }
+
+            if (totalWeight > 0.0) {
+                float finalEdgeFade = collectedColor.a * combinedFade * baseEdgeFade;
+                collectedColor.a = finalEdgeFade;
+                return 1.0;
+            } else {
+                collectedColor = vec4(0.0);
+                return 0.0;
+            }
+        } else {
+            collectedColor = vec4(0.0);
+            return 0.0;
+        }
+    }
+
+    return 0;
 }

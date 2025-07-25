@@ -7615,9 +7615,13 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>S32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <integer>25</integer>
+    <array>
+      <real>30</real>
+      <real>16</real>
+      <real>16</real>
+    </array>
   </map>
   <key>RenderScreenSpaceReflectionRayStep</key>
   <map>
@@ -7626,9 +7630,13 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>0.1</real>
+    <array>
+      <real>0.035</real>
+      <real>0.75</real>
+      <real>1</real>
+    </array>
   </map>
   <key>RenderScreenSpaceReflectionDistanceBias</key>
   <map>
@@ -7637,9 +7645,13 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>0.015</real>
+    <array>
+      <real>0.01</real>
+      <real>0.4</real>
+      <real>10</real>
+    </array>
   </map>
   <key>RenderScreenSpaceReflectionDepthRejectBias</key>
   <map>
@@ -7648,9 +7660,13 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>0.001</real>
+    <array>
+      <real>0.001</real>
+      <real>0.001</real>
+      <real>0.001</real>
+    </array>
   </map>
   <key>RenderScreenSpaceReflectionAdaptiveStepMultiplier</key>
   <map>
@@ -7659,9 +7675,43 @@
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
-    <string>F32</string>
+    <string>Vector3</string>
     <key>Value</key>
-    <real>1.6</real>
+    <array>
+      <real>1.197</real>
+      <real>1.5</real>
+      <real>2</real>
+    </array>
+  </map>
+  <key>RenderScreenSpaceReflectionSplitStart</key>
+  <map>
+    <key>Comment</key>
+    <string>Starting splits for each SSR pass.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>0</real>
+      <real>5</real>
+      <real>50</real>
+    </array>
+  </map>
+  <key>RenderScreenSpaceReflectionSplitEnd</key>
+  <map>
+    <key>Comment</key>
+    <string>Ending splits for each SSR pass.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Vector3</string>
+    <key>Value</key>
+    <array>
+      <real>25</real>
+      <real>150</real>
+      <real>1000</real>
+    </array>
   </map>
   <key>RenderScreenSpaceReflectionGlossySamples</key>
   <map>
@@ -7672,7 +7722,29 @@
     <key>Type</key>
     <string>S32</string>
     <key>Value</key>
-    <integer>4</integer>
+    <integer>2</integer>
+  </map>
+  <key>RenderScreenSpaceReflectionMaxDepth</key>
+  <map>
+    <key>Comment</key>
+    <string>Maximum depth from the camera to attempt a trace.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>256</real>
+  </map>
+  <key>RenderScreenSpaceReflectionMaxRoughness</key>
+  <map>
+    <key>Comment</key>
+    <string>Maximum permitted roughness for screen space reflections.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>F32</string>
+    <key>Value</key>
+    <real>0.45</real>
   </map>
   <key>RenderBumpmapMinDistanceSquared</key>
     <map>

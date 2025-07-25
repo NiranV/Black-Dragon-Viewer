@@ -25,9 +25,8 @@
 
 #define FLT_MAX 3.402823466e+38
 
-#if defined(SSR)
 float tapScreenSpaceReflection(int totalSamples, vec2 tc, vec3 viewPos, vec3 n, inout vec4 collectedColor, sampler2D source, float glossiness);
-#endif
+
 
 uniform samplerCubeArray   reflectionProbes;
 uniform samplerCubeArray   irradianceProbes;
@@ -750,7 +749,7 @@ void doProbeSample(inout vec3 ambenv, inout vec3 glossenv,
     glossenv = sampleProbes(pos, normalize(refnormpersp), lod);
 
 #if defined(SSR)
-    if (cube_snapshot != 1 && glossiness >= 0.9)
+    if (cube_snapshot != 1)
     {
         vec4 ssr = vec4(0);
         if (transparent)
@@ -864,7 +863,6 @@ void sampleReflectionProbesLegacy(inout vec3 ambenv, inout vec3 glossenv, inout 
         legacyenv = sampleProbes(pos, normalize(refnormpersp), 0.0);
     }
 
-#if defined(SSR)
     if (cube_snapshot != 1)
     {
         vec4 ssr = vec4(0);
@@ -882,7 +880,6 @@ void sampleReflectionProbesLegacy(inout vec3 ambenv, inout vec3 glossenv, inout 
         glossenv = mix(glossenv, ssr.rgb, ssr.a);
         legacyenv = mix(legacyenv, ssr.rgb, ssr.a);
     }
-#endif
 
     tapHeroProbe(glossenv, pos, norm, glossiness);
     tapHeroProbe(legacyenv, pos, norm, 1.0);
