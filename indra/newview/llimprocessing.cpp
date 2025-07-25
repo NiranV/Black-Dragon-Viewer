@@ -476,6 +476,10 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
     LLSD payload;
     LLNotification::Params params;
 
+    //BD - Poser
+    S32 header_end = (S32)message.find_first_of("\n");
+    std::string header = message.substr(0, header_end);
+
     switch (dialog)
     {
         case IM_CONSOLE_AND_CHAT_HISTORY:
@@ -547,7 +551,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
             }
             else
             {
-                if (message == ";PoserRequest")
+                if (header == ";PoserRequest")
                 {
                     LLSD args;
                     args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
@@ -563,7 +567,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
 
                     LL_INFOS("Posing") << "Posing requested from: " << from_id << LL_ENDL;
                 }
-                else if(message == ";PoserAccept")
+                else if(header == ";PoserAccept")
                 {
                     LLSD args;
                     LLSD payload;
@@ -584,7 +588,7 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     LLNotificationsUtil::add("AcceptedPosing", args, payload);
                     LL_INFOS("Posing") << "Posing enabled for: " << from_id << LL_ENDL;
                 }
-                else if (message == ";PoserDeny")
+                else if (header == ";PoserDeny")
                 {
                     LLSD args;
                     LLSD payload;
@@ -605,64 +609,113 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     LLNotificationsUtil::add("WithdrawPosing", args, payload);
                     LL_INFOS("Posing") << "Posing disabled for: " << from_id << LL_ENDL;
                 }
-                else
-            {
-                // standard message, not from system
-                std::string saved;
-                if (offline == IM_OFFLINE)
+                else if (header == ";PoserSyncRequest")
                 {
-                    LLStringUtil::format_map_t args;
-                    args["[LONG_TIMESTAMP]"] = formatted_time(timestamp);
-                    saved = LLTrans::getString("Saved_message", args);
+                    LLSD args;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+                    LLSD payload;
+                    payload["from_id"] = from_id;
+
+                    LLNotification::Params params;
+                    params.name = "RequestPoseSyncing";
+                    params.functor.name = "RequestPoseSyncing";
+
+                    params.substitutions = args;
+                    LLNotificationsUtil::add("RequestPoseSyncing", args, payload);
+
+                    LL_INFOS("Posing") << "Pose synchronization requested from: " << from_id << LL_ENDL;
                 }
-                buffer = saved + message;
-
-                LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
-
-                bool mute_im = is_muted;
-                if (accept_im_from_only_friend && !is_friend && !is_linden)
+                else if (header == ";PoserSyncAccept")
                 {
-                    if (!gIMMgr->isNonFriendSessionNotified(session_id))
-                    {
-                        std::string message = LLTrans::getString("IM_unblock_only_groups_friends");
-                        gIMMgr->addMessage(session_id, from_id, name, message, IM_OFFLINE == offline);
-                        gIMMgr->addNotifiedNonFriendSessionID(session_id);
-                    }
+                    LLSD args;
+                    LLSD payload;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
 
-                    mute_im = true;
-                }
-                if (!mute_im)
-                {
-                    bool region_message = false;
-                    if (region_id.isNull())
+                    //BD - Now set the permission to allow posing this individual here.
+                    for (LLCharacter* character : LLCharacter::sInstances)
                     {
-                        LLViewerRegion* regionp = LLWorld::instance().getRegionFromID(from_id);
-                        if (regionp)
+                        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
                         {
-                            region_message = true;
+                            if (avatar->getID() == from_id)
+                            {
+                                avatar->setIsInSync(true);
+                                avatar->setNeedsFullSync(true);
+                            }
                         }
                     }
-                    gIMMgr->addMessage(
-                        session_id,
-                        from_id,
-                        name,
-                        buffer,
-                        IM_OFFLINE == offline,
-                        LLStringUtil::null,
-                        dialog,
-                        parent_estate_id,
-                        region_id,
-                        position,
-                        region_message,
-                        timestamp);
+
+                    LLNotificationsUtil::add("PoserSynchronized", args, payload);
+                    LL_INFOS("Posing") << "Poser is now synchronizing with: " << from_id << LL_ENDL;
+                }
+                else if (header == ";PoserSync")
+                {
+                    LLSD args;
+                    LLSD payload;
+                    args["NAME_SLURL"] = LLSLURL("agent", from_id, "about").getSLURLString();
+
+                    BDFloaterPoser::unpackSyncPackage(message, from_id);
+
+                    //LLNotificationsUtil::add("PoserSynchronized", args, payload);
+                    LL_INFOS("Posing") << "Receiving sync package from: " << from_id << LL_ENDL;
                 }
                 else
                 {
-                    /*
-                    EXT-5099
-                    */
+                    // standard message, not from system
+                    std::string saved;
+                    if (offline == IM_OFFLINE)
+                    {
+                        LLStringUtil::format_map_t args;
+                        args["[LONG_TIMESTAMP]"] = formatted_time(timestamp);
+                        saved = LLTrans::getString("Saved_message", args);
+                    }
+                    buffer = saved + message;
+
+                    LL_DEBUGS("Messaging") << "session_id( " << session_id << " ), from_id( " << from_id << " )" << LL_ENDL;
+
+                    bool mute_im = is_muted;
+                    if (accept_im_from_only_friend && !is_friend && !is_linden)
+                    {
+                        if (!gIMMgr->isNonFriendSessionNotified(session_id))
+                        {
+                            std::string message = LLTrans::getString("IM_unblock_only_groups_friends");
+                            gIMMgr->addMessage(session_id, from_id, name, message, IM_OFFLINE == offline);
+                            gIMMgr->addNotifiedNonFriendSessionID(session_id);
+                        }
+
+                        mute_im = true;
+                    }
+                    if (!mute_im)
+                    {
+                        bool region_message = false;
+                        if (region_id.isNull())
+                        {
+                            LLViewerRegion* regionp = LLWorld::instance().getRegionFromID(from_id);
+                            if (regionp)
+                            {
+                                region_message = true;
+                            }
+                        }
+                        gIMMgr->addMessage(
+                            session_id,
+                            from_id,
+                            name,
+                            buffer,
+                            IM_OFFLINE == offline,
+                            LLStringUtil::null,
+                            dialog,
+                            parent_estate_id,
+                            region_id,
+                            position,
+                            region_message,
+                            timestamp);
+                    }
+                    else
+                    {
+                        /*
+                        EXT-5099
+                        */
+                    }
                 }
-            }
             }
             break;
 

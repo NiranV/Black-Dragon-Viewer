@@ -72,6 +72,8 @@ public:
     void onJointControlsRefresh();
     LLVector3 getJointRot(const std::string& jointName);
 
+    static void unpackSyncPackage(std::string message, const LLUUID& id);
+
 private:
 	/*virtual*/	bool postBuild();
 	/*virtual*/ void draw();
@@ -114,6 +116,14 @@ private:
 	void onJointSymmetrize(bool from = true);
 	void onJointCopyTransforms();
 
+    //BD - Poser Sync
+    void onRequestSyncing();
+    void onSyncPose();
+    void onSyncPose(const LLUUID& id);
+    void onSyncBones();
+    void sendSyncPackage(std::string message, const LLUUID& id);
+    
+
 	//BD - Misc
 	void onUpdateLayout();
     void onModifierTabSwitch();
@@ -148,6 +158,12 @@ private:
 	std::array<LLSliderCtrl*, 3>				mPositionSliders;
 	std::array<LLSliderCtrl*, 3>				mScaleSliders;
 	std::array<LLScrollListCtrl*, 3>			mJointScrolls;
+
+    //BD - Poser Sync
+    //LLSD                                        mSyncList;
+    LLFrameTimer                                mSyncTimer;
+    std::map<LLUUID, S32>                       mSyncList;
+    std::list<LLSD>                             mSyncLists;
 
     //BD - Beq's Visual Posing
     LLToolset* mLastToolset{ nullptr };

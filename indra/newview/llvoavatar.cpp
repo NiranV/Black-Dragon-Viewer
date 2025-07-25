@@ -708,6 +708,8 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     //BD - Custom Posing
     mIsPosing(false),
     mIsPoseable(false),
+    mIsInSync(false),
+    mNeedFullSync(false),
 	mExpiryTime(0.0f),
 	mCurrentAction(0),
 	//BD - Toggle Crouching

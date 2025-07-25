@@ -65,6 +65,7 @@ LLScrollListCell* LLScrollListCell::create(const LLScrollListCell::Params& cell_
     {
         cell = new LLScrollListBar(cell_p);
     }
+    //BD
     else if (cell_p.type() == "vector")
     {
         cell = new LLScrollListVector(cell_p);

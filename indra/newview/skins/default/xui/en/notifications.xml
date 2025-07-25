@@ -12981,6 +12981,32 @@ Allow them to pose you?
   </notification>
 
   <notification
+  icon="notify.tga"
+  name="RequestPoseSyncing"
+  log_to_im="true"
+  fade_toast="false"
+  type="offer">
+[NAME_SLURL] is requesting to synchronize their pose to you.
+
+With this you will periodically get updates and you will be able to see their current pose.
+Permissions will remain until they lose track of you, you leave their draw distance or become otherwise an invalid target.
+You can also withdraw your permission from the Nearby menu. You can also simply type &lt;b&gt;;PoserDeny&lt;/b&gt; as IM to them.
+
+Allow them to pose you?
+   <tag>confirm</tag>
+   <form name="form">
+     <button
+      index="0"
+      name="Yes"
+      text="Yes"/>
+     <button
+      index="1"
+      name="No"
+      text="No"/>
+   </form>
+ </notification>
+
+  <notification
 	icon="notify.tga"
 	name="AcceptedPosing"
    persist="true"
@@ -12993,5 +13019,12 @@ Allow them to pose you?
    persist="true"
 	type="notify">
    [NAME_SLURL] has withdrawn your permission to pose them.
+  </notification>
+  <notification
+	icon="notify.tga"
+	name="PoserSynchronized"
+   persist="true"
+	type="notify">
+   [NAME_SLURL] has accepted your synchronization attempt, you will now synchronize your pose to them in periodic intervals.
   </notification>
 </notifications>

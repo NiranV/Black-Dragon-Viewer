@@ -1301,11 +1301,17 @@ public:
 	bool			getPosing()				    { return mIsPosing; }
 	void			clearAnimList()			    { mAnimatorActions.clear(); }
     void            setIsPoseable(bool allow)   { mIsPoseable = allow; }
+    void            setIsInSync(bool sync)      { mIsInSync = sync; }
+    void            setNeedsFullSync(bool need) { mNeedFullSync = need; }
 
 	bool			mIsPosing;
     bool            mIsPoseable;
+    bool            mIsInSync;
+    bool            mNeedFullSync;
 	S32				getCurrentActionIndex() { return mCurrentAction; }
     bool            getIsPoseable()         { return mIsPoseable; }
+    bool            getIsInSync()           { return mIsInSync; }
+    bool            getNeedsFullSync()      { return mNeedFullSync; }
 
 	std::vector<Action>				mAnimatorActions;
 	LLFrameTimer					mAnimPlayTimer;

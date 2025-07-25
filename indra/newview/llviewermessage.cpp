@@ -6875,16 +6875,6 @@ bool posing_request_callback(const LLSD& notification, const LLSD& response)
         // Yes
     case 0:
     {
-        //const LLUUID calling_card_folder_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_CALLINGCARD);
-        //std::string message = "";
-        /*send_improved_im(from_id,
-            av_name.getCompleteName(),
-            "",
-            IM_ONLINE,
-            IM_POSE_ALLOW,
-            gAgent.getID());*/
-
-
         LLMessageSystem* msg = gMessageSystem;
 
         msg->newMessageFast(_PREHASH_ImprovedInstantMessage);
@@ -6928,6 +6918,83 @@ bool posing_request_callback(const LLSD& notification, const LLSD& response)
 }
 
 static LLNotificationFunctorRegistration posing_request_callback_reg("RequestPosing", posing_request_callback);
+
+//BD - Poser Sync
+bool pose_sync_request_callback(const LLSD& notification, const LLSD& response)
+{
+    LLUUID from_id = notification["payload"]["from_id"].asUUID();
+    if (from_id.isNull())
+    {
+        LL_WARNS() << "from_id is NULL" << LL_ENDL;
+        return false;
+    }
+
+    LLAvatarName av_name;
+    LLAvatarNameCache::get(from_id, &av_name);
+
+    if (LLMuteList::getInstance()->isMuted(from_id) && !LLMuteList::isLinden(av_name.getUserName()))
+    {
+        return false;
+    }
+
+    S32 option = 0;
+    if (response.isInteger())
+    {
+        option = response.asInteger();
+    }
+    else
+    {
+        option = LLNotificationsUtil::getSelectedOption(notification, response);
+    }
+
+    switch (option)
+    {
+        // Yes
+    case 0:
+    {
+        LLMessageSystem* msg = gMessageSystem;
+
+        msg->newMessageFast(_PREHASH_ImprovedInstantMessage);
+        msg->nextBlockFast(_PREHASH_AgentData);
+        msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+        msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+
+        msg->nextBlockFast(_PREHASH_MessageBlock);
+        msg->addBOOLFast(_PREHASH_FromGroup, false);
+        msg->addUUIDFast(_PREHASH_ToAgentID, from_id);
+        msg->addU8Fast(_PREHASH_Offline, IM_ONLINE);
+        msg->addU8Fast(_PREHASH_Dialog, IM_NOTHING_SPECIAL);
+        msg->addUUIDFast(_PREHASH_ID, LLUUID::null);
+        msg->addU32Fast(_PREHASH_Timestamp, NO_TIMESTAMP); // no timestamp necessary
+
+        std::string name;
+        LLAgentUI::buildFullname(name);
+
+        msg->addStringFast(_PREHASH_FromAgentName, name);
+        msg->addStringFast(_PREHASH_Message, ";PoserSyncAccept");
+        msg->addU32Fast(_PREHASH_ParentEstateID, 0);
+        msg->addUUIDFast(_PREHASH_RegionID, LLUUID::null);
+        msg->addVector3Fast(_PREHASH_Position, gAgent.getPositionAgent());
+
+        gMessageSystem->addBinaryDataFast(
+            _PREHASH_BinaryBucket,
+            EMPTY_BINARY_BUCKET,
+            EMPTY_BINARY_BUCKET_SIZE);
+
+        gAgent.sendReliableMessage();
+    }
+    break;
+
+    // No
+    case 1:
+    default:
+        break;
+    }
+
+    return false;
+}
+
+static LLNotificationFunctorRegistration pose_sync_request_callback_reg("RequestPoseSyncing", pose_sync_request_callback);
 
 // ------------------------------------------------------------
 // Message system exception callbacks

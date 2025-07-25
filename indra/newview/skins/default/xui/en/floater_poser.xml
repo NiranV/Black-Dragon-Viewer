@@ -690,7 +690,7 @@ width="654">
 							enabled="false"
 							top="0"
 							name="pose_name"
-							width="139"/>
+							width="114"/>
 							<button
 							height="21"
 							follows="top|left"
@@ -852,6 +852,27 @@ width="654">
 							left_pad="1">
 								<button.commit_callback
 								function="Joint.ResetJointFull"/>
+							</button>
+
+							<button
+							height="21"
+							follows="top|left"
+							layout="topleft"
+							label="Sync Pose"
+							enabled="true"
+							image_overlay="Sync_Progress_4"
+							image_overlay_alignment="left"
+							image_hover_unselected="Toolbar_Middle_Over"
+							image_selected="Toolbar_Middle_Selected"
+							image_unselected="Toolbar_Middle_Off"
+							tool_tip="Request from the selected person to synchronize your pose, otherwise force a full resync of your pose. Can be used to make sure the pose matches up at the very end, in case something went off somewhere."
+							halign="left"
+							name="sync"
+							width="24"
+							top_delta="0"
+							left_pad="1">
+								<button.commit_callback
+								function="Poser.RequestSyncing"/>
 							</button>
 							
 							<button
