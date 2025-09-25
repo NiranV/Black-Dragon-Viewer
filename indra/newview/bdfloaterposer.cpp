@@ -240,10 +240,19 @@ void BDFloaterPoser::draw()
                 //BD - Synchronize any changes to all "subscribed" avatars.
                 if (mSyncTimer.getElapsedTimeF32() > 10.f)
                 {
-                    if (avatar->getNeedsFullSync())
+                    if (avatar->getNeedsOurSync()
+                        || avatar->getNeedsTheirSync())
                     {
-                        onSyncPose(avatar->getID());
-                        avatar->setNeedsFullSync(false);
+                        if (avatar->getNeedsTheirSync())
+                        {
+                            onSyncTheirPose(avatar->getID());
+                            avatar->setNeedsTheirSync(false);
+                        }
+                        else
+                        {
+                            onSyncOurPose(avatar->getID());
+                            avatar->setNeedsOurSync(false);
+                        }
                     }
                     else
                     {
@@ -273,10 +282,19 @@ void BDFloaterPoser::draw()
                 {
                     if (avatar->getIsInSync())
                     {
-                        if (avatar->getNeedsFullSync())
+                        if (avatar->getNeedsOurSync()
+                            || avatar->getNeedsTheirSync())
                         {
-                            onSyncPose(avatar->getID());
-                            avatar->setNeedsFullSync(false);
+                            if (avatar->getNeedsTheirSync())
+                            {
+                                onSyncTheirPose(avatar->getID());
+                                avatar->setNeedsTheirSync(false);
+                            }
+                            else
+                            {
+                                onSyncOurPose(avatar->getID());
+                                avatar->setNeedsOurSync(false);
+                            }
                         }
                         else
                         {
@@ -449,7 +467,7 @@ bool BDFloaterPoser::onPoseSave()
 				{
 					//BD - Save the enabled state per preset so we can switch bones on and off
 					//     on demand inbetween poses additionally to globally.
-					BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+					BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 					if (motion)
 					{
 						LLPose* pose = motion->getPose();
@@ -923,7 +941,7 @@ void BDFloaterPoser::onJointControlsRefresh()
 			mScaleSliders[VY]->setValue(item->getColumn(COL_SCALE_Y)->getValue());
 			mScaleSliders[VZ]->setValue(item->getColumn(COL_SCALE_Z)->getValue());
 
-			BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+			BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 			if (motion)
 			{
 				//BD - If we don't use our default spherical interpolation, set it once.
@@ -1045,7 +1063,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
         {
             if (c_avatar && c_avatar->getIsInSync())
             {
-                const LLUUID& id = c_avatar->getID();
+                const LLUUID& id = avatar->getID();
                 mSyncList[id] = joint->getJointNum();
                 bool found = false;
                 for (const auto& item : mSyncLists)
@@ -1057,7 +1075,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
                 if (!found)
                 {
                     LLSD sync_info;
-                    sync_info[0] = id;
+                    sync_info[0] = c_avatar->getID();
                     sync_info[1] = joint->getJointNum();
                     mSyncLists.push_back(sync_info);
                 }
@@ -1140,7 +1158,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
                 {
                     if (c_avatar && c_avatar->getIsInSync())
                     {
-                        const LLUUID& id = c_avatar->getID();
+                        const LLUUID& id = avatar->getID();
                         mSyncList[id] = mirror_joint->getJointNum();
 
                         bool found = false;
@@ -1153,7 +1171,7 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
                         if (!found)
                         {
                             LLSD sync_info;
-                            sync_info[0] = id;
+                            sync_info[0] = c_avatar->getID();
                             sync_info[1] = joint->getJointNum();
                             mSyncLists.push_back(sync_info);
                         }
@@ -1170,6 +1188,12 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 
 void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
 	S32 index = mJointTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
 
@@ -1201,12 +1225,26 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
+
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -1219,6 +1257,12 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 
 void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
 	S32 index = mJointTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
 
@@ -1243,12 +1287,26 @@ void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
+
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -1261,7 +1319,13 @@ void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 
 void BDFloaterPoser::onJointChangeState()
 {
-	BDPosingMotion* motion = (BDPosingMotion*)gAgentAvatarp->findMotion(ANIM_BD_POSING_MOTION);
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
+	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if (motion)
 	{
 		for (auto item : mJointScrolls[JOINTS]->getAllSelected())
@@ -1434,10 +1498,10 @@ void BDFloaterPoser::onJointRotationReset()
                     {
                         if (c_avatar && c_avatar->getIsInSync())
                         {
-                            const LLUUID& id = c_avatar->getID();
+                            const LLUUID& id = avatar->getID();
                             mSyncList[id] = joint->getJointNum();
                             LLSD sync_info;
-                            sync_info[0] = id;
+                            sync_info[0] = c_avatar->getID();
                             sync_info[1] = joint->getJointNum();
                             mSyncLists.push_back(sync_info);
                             //BD - Reset the sync timer so it doesn't sync while we're dragging
@@ -1517,10 +1581,10 @@ void BDFloaterPoser::onJointRotationReset()
                                 {
                                     if (c_avatar && c_avatar->getIsInSync())
                                     {
-                                        const LLUUID& id = c_avatar->getID();
+                                        const LLUUID& id = avatar->getID();
                                         mSyncList[id] = mirror_joint->getJointNum();
                                         LLSD sync_info;
-                                        sync_info[0] = id;
+                                        sync_info[0] = c_avatar->getID();
                                         sync_info[1] = mirror_joint->getJointNum();
                                         mSyncLists.push_back(sync_info);
                                         //BD - Reset the sync timer so it doesn't sync while we're dragging
@@ -1597,8 +1661,21 @@ void BDFloaterPoser::onJointPositionReset()
                     {
                         if (c_avatar && c_avatar->getIsInSync())
                         {
-                            const LLUUID& id = c_avatar->getID();
-                            mSyncList[id] = joint->getJointNum();
+                            const LLUUID& id = avatar->getID();
+                            bool found = false;
+                            for (const auto& item : mSyncLists)
+                            {
+                                if (item[1].asInteger() == joint->getJointNum())
+                                    found = true;
+                            }
+
+                            if (!found)
+                            {
+                                LLSD sync_info;
+                                sync_info[0] = c_avatar->getID();
+                                sync_info[1] = joint->getJointNum();
+                                mSyncLists.push_back(sync_info);
+                            }
                             //BD - Reset the sync timer so it doesn't sync while we're dragging
                             //     need a better way to handle this.
                             mSyncTimer.reset();
@@ -1655,8 +1732,21 @@ void BDFloaterPoser::onJointScaleReset()
                     {
                         if (c_avatar && c_avatar->getIsInSync())
                         {
-                            const LLUUID& id = c_avatar->getID();
-                            mSyncList[id] = joint->getJointNum();
+                            const LLUUID& id = avatar->getID();
+                            bool found = false;
+                            for (const auto& item : mSyncLists)
+                            {
+                                if (item[1].asInteger() == joint->getJointNum())
+                                    found = true;
+                            }
+
+                            if (!found)
+                            {
+                                LLSD sync_info;
+                                sync_info[0] = c_avatar->getID();
+                                sync_info[1] = joint->getJointNum();
+                                mSyncLists.push_back(sync_info);
+                            }
                             //BD - Reset the sync timer so it doesn't sync while we're dragging
                             //     need a better way to handle this.
                             mSyncTimer.reset();
@@ -1721,12 +1811,25 @@ void BDFloaterPoser::onJointRotationRevert()
                 //BD - Sync our bone changes.
                 for (LLCharacter* character : LLCharacter::sInstances)
                 {
-                    if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                     {
-                        if (avatar && avatar->getIsInSync())
+                        if (c_avatar && c_avatar->getIsInSync())
                         {
                             const LLUUID& id = avatar->getID();
-                            mSyncList[id] = joint->getJointNum();
+                            bool found = false;
+                            for (const auto& item : mSyncLists)
+                            {
+                                if (item[1].asInteger() == joint->getJointNum())
+                                    found = true;
+                            }
+
+                            if (!found)
+                            {
+                                LLSD sync_info;
+                                sync_info[0] = c_avatar->getID();
+                                sync_info[1] = joint->getJointNum();
+                                mSyncLists.push_back(sync_info);
+                            }
                             //BD - Reset the sync timer so it doesn't sync while we're dragging
                             //     need a better way to handle this.
                             mSyncTimer.reset();
@@ -1802,8 +1905,21 @@ void BDFloaterPoser::onJointRotationRevert()
                                 {
                                     if (c_avatar && c_avatar->getIsInSync())
                                     {
-                                        const LLUUID& id = c_avatar->getID();
-                                        mSyncList[id] = mirror_joint->getJointNum();
+                                        const LLUUID& id = avatar->getID();
+                                        bool found = false;
+                                        for (const auto& item : mSyncLists)
+                                        {
+                                            if (item[1].asInteger() == joint->getJointNum())
+                                                found = true;
+                                        }
+
+                                        if (!found)
+                                        {
+                                            LLSD sync_info;
+                                            sync_info[0] = c_avatar->getID();
+                                            sync_info[1] = joint->getJointNum();
+                                            mSyncLists.push_back(sync_info);
+                                        }
                                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                                         //     need a better way to handle this.
                                         mSyncTimer.reset();
@@ -2113,12 +2229,25 @@ void BDFloaterPoser::onJointsRecapture()
                                 //BD - Sync our bone changes.
                                 for (LLCharacter* character : LLCharacter::sInstances)
                                 {
-                                    if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                                     {
-                                        if (avatar && avatar->getIsInSync())
+                                        if (c_avatar && c_avatar->getIsInSync())
                                         {
                                             const LLUUID& id = avatar->getID();
-                                            mSyncList[id] = joint->getJointNum();
+                                            bool found = false;
+                                            for (const auto& item : mSyncLists)
+                                            {
+                                                if (item[1].asInteger() == joint->getJointNum())
+                                                    found = true;
+                                            }
+
+                                            if (!found)
+                                            {
+                                                LLSD sync_info;
+                                                sync_info[0] = c_avatar->getID();
+                                                sync_info[1] = joint->getJointNum();
+                                                mSyncLists.push_back(sync_info);
+                                            }
                                             //BD - Reset the sync timer so it doesn't sync while we're dragging
                                             //     need a better way to handle this.
                                             mSyncTimer.reset();
@@ -2205,12 +2334,25 @@ void BDFloaterPoser::onJointRecapture()
                 //BD - Sync our bone changes.
                 for (LLCharacter* character : LLCharacter::sInstances)
                 {
-                    if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                     {
-                        if (avatar && avatar->getIsInSync())
+                        if (c_avatar && c_avatar->getIsInSync())
                         {
                             const LLUUID& id = avatar->getID();
-                            mSyncList[id] = joint->getJointNum();
+                            bool found = false;
+                            for (const auto& item : mSyncLists)
+                            {
+                                if (item[1].asInteger() == joint->getJointNum())
+                                    found = true;
+                            }
+
+                            if (!found)
+                            {
+                                LLSD sync_info;
+                                sync_info[0] = c_avatar->getID();
+                                sync_info[1] = joint->getJointNum();
+                                mSyncLists.push_back(sync_info);
+                            }
                             //BD - Reset the sync timer so it doesn't sync while we're dragging
                             //     need a better way to handle this.
                             mSyncTimer.reset();
@@ -2256,6 +2398,12 @@ void BDFloaterPoser::onJointRecapture()
 //BD - Poser Utility Functions
 void BDFloaterPoser::onJointPasteRotation()
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
     S32 index = mJointTabs->getCurrentPanelIndex();
 
     for (auto item : mJointScrolls[index]->getAllSelected())
@@ -2290,12 +2438,25 @@ void BDFloaterPoser::onJointPasteRotation()
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -2308,6 +2469,12 @@ void BDFloaterPoser::onJointPasteRotation()
 
 void BDFloaterPoser::onJointPastePosition()
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
     S32 index = mJointTabs->getCurrentPanelIndex();
 
     for (auto item : mJointScrolls[index]->getAllSelected())
@@ -2340,12 +2507,25 @@ void BDFloaterPoser::onJointPastePosition()
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -2358,6 +2538,12 @@ void BDFloaterPoser::onJointPastePosition()
 
 void BDFloaterPoser::onJointPasteScale()
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
     S32 index = mJointTabs->getCurrentPanelIndex();
 
     for (auto item : mJointScrolls[index]->getAllSelected())
@@ -2385,12 +2571,25 @@ void BDFloaterPoser::onJointPasteScale()
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -2403,6 +2602,12 @@ void BDFloaterPoser::onJointPasteScale()
 
 void BDFloaterPoser::onJointMirror()
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
     S32 index = mJointTabs->getCurrentPanelIndex();
 
     for (auto item : mJointScrolls[index]->getAllSelected())
@@ -2440,12 +2645,25 @@ void BDFloaterPoser::onJointMirror()
             //BD - Sync our bone changes.
             for (LLCharacter* character : LLCharacter::sInstances)
             {
-                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                 {
-                    if (avatar && avatar->getIsInSync())
+                    if (c_avatar && c_avatar->getIsInSync())
                     {
                         const LLUUID& id = avatar->getID();
-                        mSyncList[id] = joint->getJointNum();
+                        bool found = false;
+                        for (const auto& item : mSyncLists)
+                        {
+                            if (item[1].asInteger() == joint->getJointNum())
+                                found = true;
+                        }
+
+                        if (!found)
+                        {
+                            LLSD sync_info;
+                            sync_info[0] = c_avatar->getID();
+                            sync_info[1] = joint->getJointNum();
+                            mSyncLists.push_back(sync_info);
+                        }
                         //BD - Reset the sync timer so it doesn't sync while we're dragging
                         //     need a better way to handle this.
                         mSyncTimer.reset();
@@ -2458,6 +2676,12 @@ void BDFloaterPoser::onJointMirror()
 
 void BDFloaterPoser::onJointSymmetrize(bool from)
 {
+    LLScrollListItem* av_item = mAvatarScroll->getFirstSelected();
+    if (!av_item) return;
+
+    LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
+    if (!avatar || avatar->isDead()) return;
+
     S32 index = mJointTabs->getCurrentPanelIndex();
 
     for (auto item : mJointScrolls[index]->getAllSelected())
@@ -2534,12 +2758,25 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
                     //BD - Sync our bone changes.
                     for (LLCharacter* character : LLCharacter::sInstances)
                     {
-                        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                         {
-                            if (avatar && avatar->getIsInSync())
+                            if (c_avatar && c_avatar->getIsInSync())
                             {
                                 const LLUUID& id = avatar->getID();
-                                mSyncList[id] = joint->getJointNum();
+                                bool found = false;
+                                for (const auto& item : mSyncLists)
+                                {
+                                    if (item[1].asInteger() == joint->getJointNum())
+                                        found = true;
+                                }
+
+                                if (!found)
+                                {
+                                    LLSD sync_info;
+                                    sync_info[0] = c_avatar->getID();
+                                    sync_info[1] = joint->getJointNum();
+                                    mSyncLists.push_back(sync_info);
+                                }
                                 //BD - Reset the sync timer so it doesn't sync while we're dragging
                                 //     need a better way to handle this.
                                 mSyncTimer.reset();
@@ -2575,12 +2812,25 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
                     //BD - Sync our bone changes.
                     for (LLCharacter* character : LLCharacter::sInstances)
                     {
-                        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
                         {
-                            if (avatar && avatar->getIsInSync())
+                            if (c_avatar && c_avatar->getIsInSync())
                             {
                                 const LLUUID& id = avatar->getID();
-                                mSyncList[id] = mirror_joint->getJointNum();
+                                bool found = false;
+                                for (const auto& item : mSyncLists)
+                                {
+                                    if (item[1].asInteger() == joint->getJointNum())
+                                        found = true;
+                                }
+
+                                if (!found)
+                                {
+                                    LLSD sync_info;
+                                    sync_info[0] = c_avatar->getID();
+                                    sync_info[1] = joint->getJointNum();
+                                    mSyncLists.push_back(sync_info);
+                                }
                                 //BD - Reset the sync timer so it doesn't sync while we're dragging
                                 //     need a better way to handle this.
                                 mSyncTimer.reset();
@@ -3260,7 +3510,14 @@ void BDFloaterPoser::onRequestSyncing()
     //     the button on cooldown, otherwise request sync permission.
     if (avatar->getIsInSync())
     {
-        avatar->setNeedsFullSync(true);
+        //BD - If they are posing, sync their pose to them.
+        if (avatar->mIsPosing)
+            avatar->setNeedsTheirSync(true);
+
+        //BD - If we are posing, sync our pose to them.
+        if (gAgentAvatarp->mIsPosing)
+            avatar->setNeedsOurSync(true);
+
         getChild<LLUICtrl>("sync")->setEnabled(false);
         mSyncTimer.reset();
     }
@@ -3272,21 +3529,100 @@ void BDFloaterPoser::onRequestSyncing()
 
 void BDFloaterPoser::onSyncPose()
 {
-    //BD - Sync our entire pose to everyone.
+    //BD - Check every person and whether we are syncing to them.
     for (LLCharacter* character : LLCharacter::sInstances)
     {
         if (LLVOAvatar* avatar = (LLVOAvatar*)character)
         {
             if (avatar && avatar->getIsInSync())
             {
-                avatar->setNeedsFullSync(true);
+                //BD - If they are posing, sync their pose to them.
+                if (avatar->mIsPosing)
+                    avatar->setNeedsTheirSync(true);
+
+                //BD - If we are posing, sync our pose to them.
+                if (gAgentAvatarp->mIsPosing)
+                    avatar->setNeedsOurSync(true);
+
                 mSyncTimer.reset();
             }
         }
     }
 }
 
-void BDFloaterPoser::onSyncPose(const LLUUID& id)
+void BDFloaterPoser::onSyncTheirPose(const LLUUID& id)
+{
+    for (LLCharacter* character : LLCharacter::sInstances)
+    {
+        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+        {
+            if (avatar && avatar->getID() == id)
+            {
+                S32 max_it = llceil((F32)avatar->getSkeletonJointCount() / 15.f);
+                for (S32 i = 0; i < max_it; i++)
+                {
+                    std::string message = ";PoserSync";
+                    for (S32 it = 0; it < 15; it++)
+                    {
+                        //BD - Getting collision volumes and attachment points.
+                        S32 bone_idx = (i * 15) + it;
+                        LLJoint* joint;
+                        joint = avatar->getCharacterJoint(bone_idx);
+                        {
+                            //BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+                            if (!joint)	continue;
+
+                            LLVector3 rot;
+                            LLVector3 pos;
+                            LLVector3 scale;
+
+                            message.append("\n");
+                            message.append((LLSD)1);
+                            message.append(";");
+                            message.append("\n");
+                            //BD - Add bone index
+                            message.append((LLSD)bone_idx);
+                            message.append(";");
+
+                            //BD - Add rotation
+                            joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
+                            message.append((LLSD)ll_round(rot.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(rot.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(rot.mV[VZ], 0.001f));
+                            message.append(";");
+
+                            //BD - Add position
+                            pos = joint->getTargetPosition();
+                            message.append(pos.getValue());
+                            message.append((LLSD)ll_round(pos.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(pos.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(pos.mV[VZ], 0.001f));
+                            message.append(";");
+
+                            //BD - Add position
+                            scale = joint->getScale();
+                            message.append((LLSD)ll_round(scale.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(scale.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(scale.mV[VZ], 0.001f));
+                            message.append(scale.getValue());
+                            message.append(";");
+                        }
+                    }
+                    sendSyncPackage(message, id);
+                }
+            }
+        }
+    }
+
+}
+
+void BDFloaterPoser::onSyncOurPose(const LLUUID& id)
 {
     S32 max_it = llceil((F32)gAgentAvatarp->getSkeletonJointCount() / 15.f);
     for (S32 i = 0; i < max_it; i++)
@@ -3306,6 +3642,9 @@ void BDFloaterPoser::onSyncPose(const LLUUID& id)
                 LLVector3 pos;
                 LLVector3 scale;
 
+                message.append("\n");
+                message.append((LLSD)0);
+                message.append(";");
                 message.append("\n");
                 //BD - Add bone index
                 message.append((LLSD)bone_idx);
@@ -3350,63 +3689,80 @@ void BDFloaterPoser::onSyncBones()
     for (const auto& item : mSyncLists)
     {
         LL_INFOS("Posing") << "Syncing " << item[0] << " our bone: " << item[1] << LL_ENDL;
-    }
 
-    std::map<LLUUID, S32>::iterator itor = mSyncList.begin();
-    while (itor != mSyncList.end())
-    {
-        LLUUID id = (*itor).first;
-        S32 bone_to_sync = (*itor).second;
+        LLUUID sync_to_id = item[0].asUUID();
 
-        LLJoint* joint;
-        joint = gAgentAvatarp->getCharacterJoint(bone_to_sync);
+        std::map<LLUUID, S32>::iterator itor = mSyncList.begin();
+        while (itor != mSyncList.end())
         {
-            //BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
-            if (!joint)	continue;
+            LLUUID id = (*itor).first;
+            bool is_self = (id == gAgentAvatarp->getID());
 
-            LLVector3 rot;
-            LLVector3 pos;
-            LLVector3 scale;
+            S32 bone_to_sync = (*itor).second;
 
-            std::string message = ";PoserSync";
-            message.append("\n");
-            //BD - Add bone index
-            message.append((LLSD)bone_to_sync);
-            message.append(";");
+            LLJoint* joint;
 
-            //BD - Add rotation
-            joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
-            message.append((LLSD)ll_round(rot.mV[VX], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(rot.mV[VY], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(rot.mV[VZ], 0.001f));
-            message.append(";");
+            for (LLCharacter* character : LLCharacter::sInstances)
+            {
+                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+                {
+                    if (avatar && avatar->getID() == id)
+                    {
+                        joint = avatar->getCharacterJoint(bone_to_sync);
+                        {
+                            //BD - Nothing? Invalid? Skip, when we hit the end we'll break out anyway.
+                            if (!joint)	continue;
 
-            //BD - Add position
-            pos = joint->getTargetPosition();
-            message.append(pos.getValue());
-            message.append((LLSD)ll_round(pos.mV[VX], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(pos.mV[VY], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(pos.mV[VZ], 0.001f));
-            message.append(";");
+                            LLVector3 rot;
+                            LLVector3 pos;
+                            LLVector3 scale;
 
-            //BD - Add position
-            scale = joint->getScale();
-            message.append((LLSD)ll_round(scale.mV[VX], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(scale.mV[VY], 0.001f));
-            message.append(",");
-            message.append((LLSD)ll_round(scale.mV[VZ], 0.001f));
-            message.append(scale.getValue());
-            message.append(";");
+                            std::string message = ";PoserSync";
+                            message.append("\n");
+                            message.append(is_self ? (LLSD)0 : (LLSD)1);
+                            message.append(";");
+                            message.append("\n");
+                            //BD - Add bone index
+                            message.append((LLSD)bone_to_sync);
+                            message.append(";");
 
-            sendSyncPackage(message, id);
+                            //BD - Add rotation
+                            joint->getTargetRotation().getEulerAngles(&rot.mV[VX], &rot.mV[VY], &rot.mV[VZ]);
+                            message.append((LLSD)ll_round(rot.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(rot.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(rot.mV[VZ], 0.001f));
+                            message.append(";");
+
+                            //BD - Add position
+                            pos = joint->getTargetPosition();
+                            message.append(pos.getValue());
+                            message.append((LLSD)ll_round(pos.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(pos.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(pos.mV[VZ], 0.001f));
+                            message.append(";");
+
+                            //BD - Add position
+                            scale = joint->getScale();
+                            message.append((LLSD)ll_round(scale.mV[VX], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(scale.mV[VY], 0.001f));
+                            message.append(",");
+                            message.append((LLSD)ll_round(scale.mV[VZ], 0.001f));
+                            message.append(scale.getValue());
+                            message.append(";");
+
+                            sendSyncPackage(message, sync_to_id);
+                        }
+
+                        mSyncList.erase(itor++);
+                    }
+                }
+            }
         }
-
-        mSyncList.erase(itor++);
     }
 }
 
@@ -3448,109 +3804,135 @@ void BDFloaterPoser::sendSyncPackage(std::string message, const LLUUID& id)
 // static
 void BDFloaterPoser::unpackSyncPackage(std::string message, const LLUUID& id)
 {
-    //BD - Get the right avatar before we do anything.
-    for (LLCharacter* character : LLCharacter::sInstances)
+    bool is_self = false;
+    S32 bones;
+    LLVector3 rot;
+    LLVector3 pos;
+    LLVector3 scale;
+
+    //BD - First we cull the header.
+    size_t sub_idx = message.find_first_of("\n");
+    message.erase(0, sub_idx+1);
+
+
+    S32 bone_idx = 0;
+    //BD - Iterate through every line, culling the line out of the remaining
+    //     text until nothing is left.
+    while (!message.empty())
     {
-        if (LLVOAvatar* avatar = (LLVOAvatar*)character)
+        LL_INFOS("Posing") << message << LL_ENDL;
+        //BD - Get is self
+        size_t self_token_length = message.find_first_of(";");
+        std::string self_token = message.substr(0, self_token_length);
+        is_self = (bool)stoi(self_token);
+        message.erase(0, self_token_length + 1);
+
+        LL_INFOS("Posing") << message << LL_ENDL;
+        //BD - Get bone number
+        size_t token_length = message.find_first_of(";");
+        std::string token = message.substr(0, token_length);
+        bones = (S32)stoi(token);
+        message.erase(0, token_length + 1);
+
+        LL_INFOS("Posing") << message << LL_ENDL;
+        size_t vector_length = message.find_first_of(";");
+        std::string vector_token = message.substr(0, vector_length);
+        message.erase(0, vector_length + 1);
+        LL_INFOS("Posing") << message << LL_ENDL;
+        LLVector3 vec3;
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[0] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[1] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        vec3.mV[2] = stof(vector_token);
+        rot = vec3;
+
+        //BD - Get the position
+        vector_length = message.find_first_of(";");
+        vector_token = message.substr(0, vector_length);
+        message.erase(0, vector_length + 1);
+        LL_INFOS("Posing") << message << LL_ENDL;
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[0] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[1] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        vec3.mV[2] = stof(vector_token);
+        pos = vec3;
+
+        //BD - Get the scale
+        vector_length = message.find_first_of(";");
+        vector_token = message.substr(0, vector_length);
+        message.erase(0, vector_length + 1);
+        LL_INFOS("Posing") << message << LL_ENDL;
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[0] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        token_length = vector_token.find_first_of(",");
+        vec3.mV[1] = stof(vector_token.substr(0, token_length));
+        vector_token.erase(0, token_length + 1);
+        vec3.mV[2] = stof(vector_token);
+        scale = vec3;
+
+        LLQuaternion rot_quat;
+        rot_quat.setEulerAngles(rot.mV[VX], rot.mV[VY], rot.mV[VZ]);
+
+        if (is_self)
         {
-            if (avatar->getID() == id)
+            //BD - Make sure the person is being posed.
+            if (!gAgentAvatarp->getPosing())
             {
-                //BD - Make sure the person is being posed.
-                if (!avatar->getPosing())
+                gAgentAvatarp->setPosing();
+                gAgentAvatarp->startDefaultMotions();
+                gAgentAvatarp->startMotion(ANIM_BD_POSING_MOTION);
+            }
+
+            LLJoint* joint = gAgentAvatarp->getCharacterJoint(bones);
+            if (joint)
+            {
+                joint->setTargetRotation(rot_quat);
+                joint->setTargetPosition(pos);
+                joint->setScale(scale);
+            }
+        }
+        else
+        {
+            for (LLCharacter* character : LLCharacter::sInstances)
+            {
+                if (LLVOAvatar* avatar = (LLVOAvatar*)character)
                 {
-                    avatar->setPosing();
-                    avatar->startDefaultMotions();
-                    avatar->startMotion(ANIM_BD_POSING_MOTION);
-                }
-
-                std::map<S32, S32> bones;
-                std::map<S32, LLVector3> rot;
-                std::map<S32, LLVector3> pos;
-                std::map<S32, LLVector3> scale;
-
-                //BD - First we cull the header.
-                size_t sub_idx = message.find_first_of("\n");
-                message.erase(0, sub_idx+1);
-
-                S32 bone_idx = 0;
-                //BD - Iterate through every line, culling the line out of the remaining
-                //     text until nothing is left.
-                while (!message.empty())
-                {
-                    size_t token_length = message.find_first_of(";");
-                    //BD - Get bone number
-                    std::string token = message.substr(0, token_length);
-                    bones[bone_idx] = stoi(token);
-                    message.erase(0, token_length + 1);
-                    size_t vector_length = message.find_first_of(";");
-                    std::string vector_token = message.substr(0, vector_length);
-                    message.erase(0, vector_length + 1);
-                    LL_INFOS("Posing") << message << LL_ENDL;
-                    LLVector3 vec3;
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[0] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[1] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    vec3.mV[2] = stof(vector_token);
-                    rot[bone_idx] = vec3;
-
-                    vector_length = message.find_first_of(";");
-                    vector_token = message.substr(0, vector_length);
-                    message.erase(0, vector_length + 1);
-                    LL_INFOS("Posing") << message << LL_ENDL;
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[0] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[1] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    vec3.mV[2] = stof(vector_token);
-                    pos[bone_idx] = vec3;
-
-                    vector_length = message.find_first_of(";");
-                    vector_token = message.substr(0, vector_length);
-                    message.erase(0, vector_length + 1);
-                    LL_INFOS("Posing") << message << LL_ENDL;
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[0] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    token_length = vector_token.find_first_of(",");
-                    vec3.mV[1] = stof(vector_token.substr(0, token_length));
-                    vector_token.erase(0, token_length + 1);
-                    vec3.mV[2] = stof(vector_token);
-                    scale[bone_idx] = vec3;
-
-                    bone_idx++;
-                }
-
-                for (S32 i = 0; i < bone_idx; i++)
-                {
-                    S32 bone_to_sync = bones[i];
-                    LLVector3 vec_rot = rot[i];
-                    LLVector3 vec_pos = pos[i];
-                    LLVector3 vec_scale = scale[i];
-
-                    LLQuaternion rot_quat;
-                    rot_quat.setEulerAngles(vec_rot.mV[VX], vec_rot.mV[VY], vec_rot.mV[VZ]);
-
-                    LLJoint* joint = avatar->getCharacterJoint(bone_to_sync);
-                    if (joint)
+                    if (avatar->getID() == id)
                     {
-                        joint->setTargetRotation(rot_quat);
-                        joint->setTargetPosition(vec_pos);
-                        joint->setScale(vec_scale);
+                        //BD - Make sure the person is being posed.
+                        if (!avatar->getPosing())
+                        {
+                            avatar->setPosing();
+                            avatar->startDefaultMotions();
+                            avatar->startMotion(ANIM_BD_POSING_MOTION);
+                        }
+
+                        LLJoint* joint = avatar->getCharacterJoint(bones);
+                        if (joint)
+                        {
+                            joint->setTargetRotation(rot_quat);
+                            joint->setTargetPosition(pos);
+                            joint->setScale(scale);
+                        }
                     }
                 }
             }
         }
     }
+            
 }
 
 //Poser Sync Breakdown:
 // (Header)
 //;PoserSync (10 bytes)
+//;a7fe20fa-1e95-4f87-aa8f-86496c78c1e5 (36 bytes)
 // (Body)
 // # = Bone Number (1 - 3 bytes, assuming 3 bytes at all times)
 // X.XXX = X vector (5 bytes)
@@ -3562,8 +3944,9 @@ void BDFloaterPoser::unpackSyncPackage(std::string message, const LLUUID& id)
 //<X.XXX,Y.YYY,Z.ZZZ>
 // (Singular Full Sync) (64 bytes)
 //#,<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>\n
-// (Pose Sync) (15 bones per message) (960 bytes) + (10 bytes)
+// (Pose Sync) (15 bones per message) (960 bytes) + (46 bytes)
 //;PoserSync (10 bytes)
+//;a7fe20fa-1e95-4f87-aa8f-86496c78c1e5 (36 bytes)
 //#;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>
 //#;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>
 //#;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>;<X.XXX,Y.YYY,Z.ZZZ>

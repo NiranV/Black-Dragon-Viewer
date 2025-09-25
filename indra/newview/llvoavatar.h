@@ -1302,16 +1302,19 @@ public:
 	void			clearAnimList()			    { mAnimatorActions.clear(); }
     void            setIsPoseable(bool allow)   { mIsPoseable = allow; }
     void            setIsInSync(bool sync)      { mIsInSync = sync; }
-    void            setNeedsFullSync(bool need) { mNeedFullSync = need; }
+    void            setNeedsOurSync(bool need)  { mNeedOurSync = need; }
+    void            setNeedsTheirSync(bool need) { mNeedTheirSync = need; }
 
 	bool			mIsPosing;
     bool            mIsPoseable;
     bool            mIsInSync;
-    bool            mNeedFullSync;
+    bool            mNeedOurSync;
+    bool            mNeedTheirSync;
 	S32				getCurrentActionIndex() { return mCurrentAction; }
     bool            getIsPoseable()         { return mIsPoseable; }
     bool            getIsInSync()           { return mIsInSync; }
-    bool            getNeedsFullSync()      { return mNeedFullSync; }
+    bool            getNeedsOurSync()      { return mNeedOurSync; }
+    bool            getNeedsTheirSync()     { return mNeedTheirSync; }
 
 	std::vector<Action>				mAnimatorActions;
 	LLFrameTimer					mAnimPlayTimer;

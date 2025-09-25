@@ -119,7 +119,8 @@ private:
     //BD - Poser Sync
     void onRequestSyncing();
     void onSyncPose();
-    void onSyncPose(const LLUUID& id);
+    void onSyncOurPose(const LLUUID& id);
+    void onSyncTheirPose(const LLUUID& id);
     void onSyncBones();
     void sendSyncPackage(std::string message, const LLUUID& id);
     

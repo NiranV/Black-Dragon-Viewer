@@ -639,7 +639,13 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                             if (avatar->getID() == from_id)
                             {
                                 avatar->setIsInSync(true);
-                                avatar->setNeedsFullSync(true);
+                                //BD - If they are posing, sync their pose to them.
+                                if (avatar->mIsPosing)
+                                    avatar->setNeedsTheirSync(true);
+
+                                //BD - If we are posing, sync our pose to them.
+                                if (gAgentAvatarp->mIsPosing)
+                                    avatar->setNeedsOurSync(true);
                             }
                         }
                     }
