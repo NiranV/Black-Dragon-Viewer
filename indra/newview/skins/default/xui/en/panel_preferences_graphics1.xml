@@ -3484,7 +3484,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1065"
+	  height="1216"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -5530,7 +5530,7 @@ width="510">
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option toggles the foreground blur when using Depth of Field allowing you to blur only the background if desired."
    name="RenderDepthOfFieldFront"
-   top_pad="10"
+   top_pad="0"
    width="115"/>
  <check_box
    control_name="RenderDepthOfFieldInEditMode"
@@ -5541,6 +5541,17 @@ width="510">
    left="10"
    tool_tip="This option toggles whether Depth of Field should be rendered while the Build window is open."
    name="RenderDepthOfFieldInEditMode"
+   top_pad="0"
+   width="115"/>
+   <check_box
+   control_name="RenderDepthOfFieldChroma"
+   height="16"
+   initial_value="true"
+   label="Limit Chromatic Aberration to Depth of Field"
+   layout="topleft"
+   left="10"
+   tool_tip="This option toggle if the Viewer should use Chromatic Aberration only in Depth of Field when blurring the scene or globally regardless of Depth of Field."
+   name="RenderDepthOfFieldChroma"
    top_pad="0"
    width="115"/>
  <check_box
@@ -5772,6 +5783,185 @@ width="510">
  name="separator_label"
  top_pad="7"
  width="450">
+ Volumetric Lighting
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+   <check_box
+   control_name="RenderVolumetricLighting"
+   height="16"
+   initial_value="false"
+   label="Volumetric Lighting"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles experimental volumetric lighting. This effect will create godrays if certain atmospheric criteria are met."
+   layout="topleft"
+   left="10"
+   name="RenderGodrays"
+   top_pad="7"
+   width="115" />
+   <check_box
+   control_name="RenderVolumetricLightingDirectional"
+   height="16"
+   initial_value="true"
+   enabled="false"
+   label="Directional Volumetric Lighting"
+   layout="topleft"
+   left_delta="0"
+   tool_tip="This option controls whether Volumtric Lighting should fade out when looking away from the sun."
+   name="RenderGodraysDirectional"
+   top_pad="0"
+   width="115"/>
+   <panel
+       follows="top|left|right"
+       height="16"
+       background_visible="true"
+       bg_alpha_color="0.5 0.2 0.2 0.3"
+       layout="topleft"
+       left="0"
+       name="warning_light_resolution"
+       visible="false"
+       top_pad="9"
+       width="508">
+    <icon
+  follows="top|right"
+  height="16"
+  image_name="Popup_Caution"
+  color="1 1 1 1"
+  layout="topleft"
+  name="warning_light_resolution2"
+  mouse_opaque="false"
+  tool_tip="WARNING: A high volumetric light resolution may have medium performance impact depending on the scene and shadow resolution."
+  width="16"
+  left="472"
+  top="0"/>
+   </panel>
+   <slider
+      can_edit_text="true"
+      control_name="RenderVolumetricLightingResolution"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="1"
+      initial_value="32"
+		tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
+||This option controls the amount of iterations Volumetric Lighting goes through, higher looks better but is slower. Performance impact also depends on shadow resolution."
+      label="Light Resolution:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="128"
+      min_val="16"
+      name="GodraysResolution"
+      top_delta="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderVolumetricLightingResolution"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderVolumetricLightingMultiplier"
+      decimal_digits="2"
+      follows="left|top"
+      height="14"
+      increment="0.01"
+      initial_value="1"
+		tool_tip="This option controls the brightness of each Volumetric Lighting iteration."
+      label="Light Brightness:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="30"
+      min_val="0.01"
+      name="GodraysMultiplier"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderVolumetricLightingMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+   <slider
+      can_edit_text="true"
+      control_name="RenderVolumetricLightingFalloffMultiplier"
+      decimal_digits="3"
+      follows="left|top"
+      height="14"
+      increment="0.001"
+      initial_value="0"
+		tool_tip="This option controls the strength and distance at which Volumetric Lighting should be faded out around your camera."
+      label="Light Brightness Falloff:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="1"
+      min_val="0.001"
+      name="GodraysFalloffMultiplier"
+      top_pad="1"/>
+   <button
+ follows="left|top"
+ control_name="RenderVolumetricLightingFalloffMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
 Tone Mapping
  </text>
  <icon
@@ -5955,196 +6145,6 @@ Tone Mapping
                                  function="Pref.Default"/>
       </button>
   
-  <!--<text
- type="string"
- length="1"
- follows="right|top"
- height="12"
- layout="topleft"
- left="25"
- halign="center"
- name="separator_label"
- top_pad="7"
- width="450">
- Volumetric Lighting
- </text>
- <icon
-  follows="top|right"
-  height="1"
-  image_name="Prefs_Separator"
-  color="1 1 1 1"
-  layout="topleft"
-  name="separator"
-  mouse_opaque="false"
-  width="450"
-  left="25"
-  top_pad="0"/>
-   <check_box
-   control_name="RenderGodrays"
-   height="16"
-   initial_value="false"
-   label="Volumetric Lighting"
-   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
-|&lt;b&gt;GPU:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; Medium - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option toggles experimental volumetric lighting. This effect will create godrays if certain atmospheric criteria are met."
-   layout="topleft"
-   left="10"
-   name="RenderGodrays"
-   top_pad="7"
-   width="115" />
-   <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
-   <check_box
-   control_name="RenderGodraysDirectional"
-   height="16"
-   initial_value="true"
-   label="Directional Volumetric Lighting"
-   layout="topleft"
-   left_delta="0"
-   tool_tip="This option controls whether Volumtric Lighting should fade out when looking away from the sun."
-   name="RenderGodraysDirectional"
-   top_pad="10"
-   width="115"/>
-   <panel
-       follows="top|left|right"
-       height="16"
-       background_visible="true"
-       bg_alpha_color="0.5 0.2 0.2 0.3"
-       layout="topleft"
-       left="0"
-       name="warning_light_resolution"
-       visible="false"
-       top_pad="9"
-       width="508">
-    <icon
-  follows="top|right"
-  height="16"
-  image_name="Popup_Caution"
-  color="1 1 1 1"
-  layout="topleft"
-  name="warning_light_resolution2"
-  mouse_opaque="false"
-  tool_tip="WARNING: A high volumetric light resolution may have medium performance impact depending on the scene and shadow resolution."
-  width="16"
-  left="472"
-  top="0"/>
-   </panel>
-   <slider
-      can_edit_text="true"
-      control_name="RenderGodraysResolution"
-      decimal_digits="0"
-      follows="left|top"
-      height="14"
-      increment="1"
-      initial_value="32"
-		tool_tip="&lt;b&gt;CPU:&lt;/b&gt; Low
-|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - &lt;red&gt;High&lt;/red&gt;
-|&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
-||This option controls the amount of iterations Volumetric Lighting goes through, higher looks better but is slower. Performance impact also depends on shadow resolution."
-      label="Light Resolution:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="128"
-      min_val="16"
-      name="GodraysResolution"
-      top_delta="1"/>
-   <button
- follows="left|top"
- control_name="RenderGodraysResolution"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   <slider
-      can_edit_text="true"
-      control_name="RenderGodraysMultiplier"
-      decimal_digits="2"
-      follows="left|top"
-      height="14"
-      increment="0.01"
-      initial_value="1"
-		tool_tip="This option controls the brightness of each Volumetric Lighting iteration."
-      label="Light Brightness:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="30"
-      min_val="0.01"
-      name="GodraysMultiplier"
-      top_pad="1"/>
-   <button
- follows="left|top"
- control_name="RenderGodraysMultiplier"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>
-   <slider
-      can_edit_text="true"
-      control_name="RenderGodraysFalloffMultiplier"
-      decimal_digits="1"
-      follows="left|top"
-      height="14"
-      increment="0.1"
-      initial_value="0"
-		tool_tip="This option controls the strength and distance at which Volumetric Lighting should be faded out around your camera."
-      label="Light Brightness Falloff:"
-      label_width="150"
-      layout="topleft"
-      left="10"
-      max_val="500"
-      min_val="0.1"
-      name="GodraysFalloffMultiplier"
-      top_pad="1"/>
-   <button
- follows="left|top"
- control_name="RenderGodraysFalloffMultiplier"
- height="15"
- is_toggle="false"
- label="⌊default⌉"
- image_selected="PushButton_Default_Off"
- image_unselected="PushButton_Default_Off"
- layout="topleft"
- left="370"
- top_delta="0"
- name="default"
- width="60">
-         <button.commit_callback
-                                 function="Pref.Default"/>
-      </button>-->
    </layout_panel>
       <layout_panel
 	  follows="top|left|right"
@@ -6188,7 +6188,7 @@ Tone Mapping
 	  follows="top|left|right"
       visibility_control="PrefsPostVisible"
 	  layout="topleft"
-	  height="343"
+	  height="363"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -6809,20 +6809,20 @@ Tone Mapping
          <button.commit_callback
                                  function="Pref.Default"/>
       </button>
-   <!--<slider
+   <slider
       can_edit_text="true"
       control_name="RenderChromaStrength"
-      decimal_digits="1"
+      decimal_digits="2"
       follows="left|top"
       height="14"
-      increment="0.1"
+      increment="0.01"
       initial_value="0"
-		tool_tip="This option controls the offset of the edge color fringing."
+		tool_tip="This option controls the offset strength for color edge fringing."
       label="Chromatic Aberration:"
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="50"
+      max_val="1"
       min_val="0"
       name="ChromaStrength"
       top_pad="1"/>
@@ -6841,7 +6841,7 @@ Tone Mapping
  width="60">
          <button.commit_callback
                                  function="Pref.Default"/>
-      </button>-->
+      </button>
 
       </layout_panel>
       </layout_stack>

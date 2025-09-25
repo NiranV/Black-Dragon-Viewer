@@ -240,3 +240,54 @@ float sampleSpotShadow(vec3 pos, vec3 norm, int index, vec2 pos_screen)
 #endif
 }
 
+float nonpcfShadow(sampler2DShadow shadowMap, vec4 stc, vec2 pos_screen, float shad_res, float bias)
+{
+#if defined(SUN_SHADOW)
+    float recip_shadow_res = 1.0 / shad_res;
+    stc.xyz /= stc.w;
+    stc.z += bias;
+
+    stc.x = floor(stc.x*shad_res + fract(pos_screen.y)) * recip_shadow_res;
+
+    float cs = texture(shadowMap, stc.xyz);
+    float shadow = cs * 4.0;
+    return shadow;
+#else
+    return 0.0;
+#endif
+}
+
+float nonpcfShadowAtPos(vec4 pos_world, vec2 pos_screen)
+{
+#if defined(SUN_SHADOW)
+    //BD - We don't want this otherwise volumetric lighting will fade out over distance where
+    //     shadow maps end, this makes Volumetic Lighting reliant on shadow distance.
+    //if (pos_world.z < shadow_clip.w) 
+    {	
+        vec4 near_split = shadow_clip*-0.75;
+        vec4 far_split = shadow_clip*-1.25;
+
+        if (pos_world.z < near_split.z) 
+        {
+            pos_world = shadow_matrix[3]*pos_world;
+            return nonpcfShadow(shadowMap3, pos_world, pos_screen, shadow_res.x, shadow_bias); //w
+        }
+        else if (pos_world.z < near_split.y) 
+        {
+            pos_world = shadow_matrix[2]*pos_world;
+            return nonpcfShadow(shadowMap2, pos_world, pos_screen, shadow_res.x, shadow_bias); //z
+        }
+        else if (pos_world.z < near_split.x) 
+        {
+            pos_world = shadow_matrix[1]*pos_world;
+            return nonpcfShadow(shadowMap1, pos_world, pos_screen, shadow_res.x, shadow_bias); //y
+        }
+        else if (pos_world.z > far_split.x) 
+        {
+            pos_world = shadow_matrix[0]*pos_world;
+            return nonpcfShadow(shadowMap0, pos_world, pos_screen, shadow_res.x, shadow_bias); //x
+        }
+    }
+#endif
+    return 1.0;
+}

@@ -171,7 +171,7 @@ public:
     void visualizeBuffers(LLRenderTarget* src, LLRenderTarget* dst, U32 bufferIndex);
 
 	//BD - Volumetric Lighting
-	//void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
+	void renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst);
 
     void init();
     void cleanup();
@@ -1111,7 +1111,7 @@ public:
     static S32 RenderHeroProbeUpdateRate;
     static S32 RenderHeroProbeConservativeUpdateMultiplier;
 
-	//  //BD - Special Options
+//  //BD - Special Options
 	static bool CameraFreeDoFFocus;
 	static bool CameraDoFLocked;
 	static bool RenderDeferredBlurLight;
@@ -1131,15 +1131,15 @@ public:
 	static LLVector4 RenderShadowFarClipVec;
 	static bool RenderImpostors;
 
-	//    //BD - Shadow Map Allocation
+//    //BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;
 	static LLVector4 RenderShadowResolution;
 
-	//    //BD - Volumetric Lighting
-	static bool RenderGodrays;
-	static U32 RenderGodraysResolution;
-	static F32 RenderGodraysMultiplier;
-	static F32 RenderGodraysFalloffMultiplier;
+//    //BD - Volumetric Lighting
+	static bool RenderVolumetricLighting;
+	static U32 RenderVolumetricLightingResolution;
+	static F32 RenderVolumetricLightingMultiplier;
+	static F32 RenderVolumetricLightingFalloffMultiplier;
 
 //  //BD - Motion Blur
 	/*static bool RenderMotionBlur;

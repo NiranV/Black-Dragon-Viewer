@@ -242,17 +242,17 @@ F32 LLPipeline::RenderGlowMinLuminance;
 LLVector4 LLPipeline::RenderShadowFarClipVec;
 bool LLPipeline::RenderImpostors;
 
-//    //BD - Shadow Map Allocation
+//BD - Shadow Map Allocation
 LLVector4 LLPipeline::RenderShadowResolution;
 LLVector2 LLPipeline::RenderProjectorShadowResolution;
 
-//    //BD - Volumetric Lighting
-bool LLPipeline::RenderGodrays;
-U32 LLPipeline::RenderGodraysResolution;
-F32 LLPipeline::RenderGodraysMultiplier;
-F32 LLPipeline::RenderGodraysFalloffMultiplier;
+//BD - Volumetric Lighting
+bool LLPipeline::RenderVolumetricLighting;
+U32 LLPipeline::RenderVolumetricLightingResolution;
+F32 LLPipeline::RenderVolumetricLightingMultiplier;
+F32 LLPipeline::RenderVolumetricLightingFalloffMultiplier;
 
-//    //BD - Motion Blur
+//BD - Motion Blur
 /*bool LLPipeline::RenderMotionBlur;
 U32 LLPipeline::RenderMotionBlurStrength;
 U32 LLPipeline::RenderMotionBlurQuality;*/
@@ -660,27 +660,13 @@ void LLPipeline::init()
         });
     }
 
-//	//BD - Exodus Post Process
-	connectRefreshCachedSettingsSafe("ExodusRenderGamma");
-	connectRefreshCachedSettingsSafe("ExodusRenderOffset");
-	connectRefreshCachedSettingsSafe("ExodusRenderExposure");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneExposure");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneMapping");
-	connectRefreshCachedSettingsSafe("ExodusRenderVignette");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneMappingTech");
-	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTexture");
-	connectRefreshCachedSettingsSafe("ExodusRenderColorGradeTech");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptA");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptB");
-	connectRefreshCachedSettingsSafe("ExodusRenderToneAdvOptC");
-
 //	//BD - Volumetric Lighting
-	connectRefreshCachedSettingsSafe("RenderGodrays");
-	connectRefreshCachedSettingsSafe("RenderGodraysResolution");
-	connectRefreshCachedSettingsSafe("RenderGodraysMultiplier");
-	connectRefreshCachedSettingsSafe("RenderGodraysFalloffMultiplier");
+	connectRefreshCachedSettingsSafe("RenderVolumetricLighting");
+	connectRefreshCachedSettingsSafe("RenderVolumetricLightingResolution");
+	connectRefreshCachedSettingsSafe("RenderVolumetricLightingMultiplier");
+	connectRefreshCachedSettingsSafe("RenderVolumetricLightingFalloffMultiplier");
 
-//    //BD - Special Options
+//  //BD - Special Options
 	connectRefreshCachedSettingsSafe("CameraFreeDoFFocus");
 	connectRefreshCachedSettingsSafe("CameraDoFLocked");
 	connectRefreshCachedSettingsSafe("RenderDeferredBlurLight");
@@ -696,13 +682,13 @@ void LLPipeline::init()
 	connectRefreshCachedSettingsSafe("RenderGlowMinLuminance");
 	connectRefreshCachedSettingsSafe("RenderImpostors");
 
-//    //BD - Post Processing
+//  //BD - Post Processing
 	connectRefreshCachedSettingsSafe("RenderLensFlare");
 	connectRefreshCachedSettingsSafe("RenderPostGreyscaleStrength");
 	connectRefreshCachedSettingsSafe("RenderPostSepiaStrength");
 	connectRefreshCachedSettingsSafe("RenderPostPosterizationSamples");
 
-//    //BD - Shadow Map Allocation
+//  //BD - Shadow Map Allocation
 	//connectRefreshCachedSettingsSafe("RenderShadowResolution");
 	//connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
 
@@ -1303,10 +1289,10 @@ void LLPipeline::refreshCachedSettings()
 	RenderImpostors = gSavedSettings.getBOOL("RenderImpostors");
 
 //	//BD - Volumetric Lighting
-	RenderGodrays = gSavedSettings.getBOOL("RenderGodrays");
-	RenderGodraysResolution = gSavedSettings.getU32("RenderGodraysResolution");
-	RenderGodraysMultiplier = gSavedSettings.getF32("RenderGodraysMultiplier");
-	RenderGodraysFalloffMultiplier = gSavedSettings.getF32("RenderGodraysFalloffMultiplier");
+	RenderVolumetricLighting = gSavedSettings.getBOOL("RenderVolumetricLighting");
+	RenderVolumetricLightingResolution = gSavedSettings.getU32("RenderVolumetricLightingResolution");
+	RenderVolumetricLightingMultiplier = gSavedSettings.getF32("RenderVolumetricLightingMultiplier");
+	RenderVolumetricLightingFalloffMultiplier = gSavedSettings.getF32("RenderVolumetricLightingFalloffMultiplier");
 
 //	//BD - Shadow Map Allocation
 	RenderProjectorShadowResolution = gSavedSettings.getVector2("RenderProjectorShadowResolution");
@@ -1326,7 +1312,7 @@ void LLPipeline::refreshCachedSettings()
 //	//BD - Exodus Post Process
 	//exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
 
-	//	//BD - Motion Blur
+//	//BD - Motion Blur
 	/*RenderMotionBlur = gSavedSettings.getBOOL("RenderMotionBlur");
 	RenderMotionBlurStrength = gSavedSettings.getU32("RenderMotionBlurStrength");
 	RenderMotionBlurQuality = gSavedSettings.getU32("RenderRiggedMotionBlurQuality");*/
@@ -7550,12 +7536,6 @@ void LLPipeline::tonemap(LLRenderTarget* src, LLRenderTarget* dst)
 
         shader.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, (GLfloat)src->getWidth(), (GLfloat)src->getHeight());
 
-		//BD - Post Process
-		shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
-		shader.uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderGreyscaleStrength);
-		shader.uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderSepiaStrength);
-		shader.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, (GLfloat)RenderNumColors);
-
         static LLCachedControl<F32> exposure(gSavedSettings, "RenderExposure", 1.f);
 
         F32 e = llclamp(exposure(), 0.5f, 4.f);
@@ -8091,6 +8071,11 @@ void LLPipeline::combineGlow(LLRenderTarget* src, LLRenderTarget* dst)
         gGlowCombineProgram.bindTexture(LLShaderMgr::DEFERRED_DIFFUSE, src);
         gGlowCombineProgram.bindTexture(LLShaderMgr::DEFERRED_EMISSIVE, &mGlow[1]);
 
+        //BD - Post Process
+        gGlowCombineProgram.uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderGreyscaleStrength);
+        gGlowCombineProgram.uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderSepiaStrength);
+        gGlowCombineProgram.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, (GLfloat)RenderNumColors);
+
         mScreenTriangleVB->setBuffer();
         mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
     }
@@ -8275,6 +8260,8 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 
 				gDeferredPostProgram.uniform1f(LLShaderMgr::DOF_MAX_COF, CameraMaxCoF);
 
+                gDeferredPostProgram.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
+
                 mScreenTriangleVB->setBuffer();
                 mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
 
@@ -8315,35 +8302,34 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
 }
 
 //BD - Volumetric Lighting
-/*void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
+void LLPipeline::renderVolumetric(LLRenderTarget* src, LLRenderTarget* dst)
 {
 //	//BD - Volumetric Lighting
-	if (RenderShadowDetail
-		&& RenderGodrays)
+	if (RenderVolumetricLighting)
 	{
 		dst->bindTarget();
-		//mRT->screen.bindTarget();
+        glViewport(0, 0, dst->getWidth(), dst->getHeight());
 
-		gVolumetricLightProgram.bind();
-		gVolumetricLightProgram.bindTexture(LLShaderMgr::DEFERRED_DIFFUSE, src, LLTexUnit::TFO_POINT);
-		gVolumetricLightProgram.bindTexture(LLShaderMgr::DEFERRED_LIGHT, &mRT->deferredLight, LLTexUnit::TFO_POINT);
+        gGL.setColorMask(true, false);
 
-		gVolumetricLightProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, dst->getWidth(), dst->getHeight());
-		//gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_MAX_COF, CameraMaxCoF);
-		//gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_RES_SCALE, CameraDoFResScale);
-		gVolumetricLightProgram.uniform1f(LLShaderMgr::DOF_RES_SCALE, RenderDepthOfField ? CameraDoFResScale : 1.0f);
+        bindDeferredShader(gVolumetricLightProgram);
+		gVolumetricLightProgram.bindTexture(LLShaderMgr::DEFERRED_DIFFUSE, dst, LLTexUnit::TFO_POINT);
+
+		gVolumetricLightProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, (GLfloat)src->getWidth(), (GLfloat)src->getHeight());
+        gVolumetricLightProgram.uniform1i(LLShaderMgr::GODRAY_RES, RenderVolumetricLightingResolution);
+        gVolumetricLightProgram.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderVolumetricLightingMultiplier);
+        gVolumetricLightProgram.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderVolumetricLightingFalloffMultiplier);
 
 		mScreenTriangleVB->setBuffer();
 		mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
 
 		gVolumetricLightProgram.unbind();
-		//mRT->deferredLight.flush();
+        unbindDeferredShader(gVolumetricLightProgram);
 		dst->flush();
 
-		//src->flush();
-		//gGL.setColorMask(true, true);
+        gGL.setColorMask(true, true);
 	}
-}*/
+}
 
 void LLPipeline::renderFinalize()
 {
@@ -8391,6 +8377,9 @@ void LLPipeline::renderFinalize()
     applySMAA(&mPostMap, &mRT->screen);
 
     generateGlow(&mRT->screen);
+
+    //BD - Volumetric Lighting
+    renderVolumetric(&mRT->screen, &mRT->screen);
 
     combineGlow(&mRT->screen, &mPostMap);
 
@@ -8450,6 +8439,7 @@ void LLPipeline::renderFinalize()
     // Whatever is last in the above post processing chain should _always_ be rendered directly here.  If not, expect problems.
     gDeferredPostNoDoFNoiseProgram.bindTexture(LLShaderMgr::DEFERRED_DIFFUSE, finalBuffer);
     gDeferredPostNoDoFNoiseProgram.bindTexture(LLShaderMgr::DEFERRED_DEPTH, &mRT->deferredScreen, true);
+    gDeferredPostNoDoFNoiseProgram.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
 
     gDeferredPostNoDoFNoiseProgram.uniform2f(LLShaderMgr::DEFERRED_SCREEN_RES, (GLfloat)finalBuffer->getWidth(), (GLfloat)finalBuffer->getHeight());
 
@@ -8794,17 +8784,13 @@ void LLPipeline::bindDeferredShader(LLGLSLShader& shader, LLRenderTarget* light_
 
 //	//BD - Special Options
 	shader.uniform1f(LLShaderMgr::DEFERRED_LIGHT_STRENGTH, RenderGlobalLightStrength);
-	shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
-	shader.uniform1f(LLShaderMgr::SECONDS60, (F32)fmod(LLTimer::getElapsedSeconds(), 60.0));
+	shader.uniform1f(LLShaderMgr::SECONDS60, (GLfloat)fmod(LLTimer::getElapsedSeconds(), 60.0));
 
-//	//BD - Screen Space Reflections
-	shader.uniform1i(LLShaderMgr::SSR_RES, RenderSSRResolution);
-	shader.uniform1f(LLShaderMgr::SSR_BRIGHTNESS, RenderSSRBrightness);
-
-//	//BD - Volumetric Lighting
-	shader.uniform1i(LLShaderMgr::GODRAY_RES, RenderGodraysResolution);
-	shader.uniform1f(LLShaderMgr::GODRAY_MULTIPLIER, RenderGodraysMultiplier);
-	shader.uniform1f(LLShaderMgr::FALLOFF_MULTIPLIER, RenderGodraysFalloffMultiplier);
+    //BD - Post Process
+    shader.uniform1f(LLShaderMgr::DEFERRED_CHROMA_STRENGTH, RenderChromaStrength);
+    shader.uniform1f(LLShaderMgr::DEFERRED_GREYSCALE_STRENGTH, RenderGreyscaleStrength);
+    shader.uniform1f(LLShaderMgr::DEFERRED_SEPIA_STRENGTH, RenderSepiaStrength);
+    shader.uniform1f(LLShaderMgr::DEFERRED_NUM_COLORS, (GLfloat)RenderNumColors);
 }
 
 

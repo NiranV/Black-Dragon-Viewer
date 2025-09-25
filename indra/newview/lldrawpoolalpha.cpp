@@ -211,7 +211,7 @@ void LLDrawPoolAlpha::renderPostDeferred(S32 pass)
     if (!LLPipeline::sImpostorRender 
 		//BD - Volumetric Lighting
 		&& (gPipeline.RenderDepthOfField
-		|| gPipeline.RenderGodrays)
+		|| gPipeline.RenderVolumetricLighting)
 		&& !gCubeSnapshot 
 		&& !LLPipeline::sRenderingHUDs 
 		&& getType() == LLDrawPool::POOL_ALPHA_POST_WATER)
@@ -221,9 +221,9 @@ void LLDrawPoolAlpha::renderPostDeferred(S32 pass)
 
         simple_shader->bind();
 		//BD - TODO: Optimize
-		if ((gPipeline.RenderDepthOfField || gPipeline.RenderGodrays)
+		if ((gPipeline.RenderDepthOfField || gPipeline.RenderVolumetricLighting)
 			&& gSavedSettings.getBOOL("RenderDepthOfFieldAlphas"))
-			simple_shader->setMinimumAlpha(0.33f);
+			simple_shader->setMinimumAlpha(0.7f);
 		else
 			simple_shader->setMinimumAlpha(1.f);
 

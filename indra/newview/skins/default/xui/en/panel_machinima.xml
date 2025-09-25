@@ -34,7 +34,7 @@ width="345">
             border="false"
             background_visible="false"
             follows="left|top|right"
-            height="1085"
+            height="1155"
             layout="topleft"
             left="0"
             name="scroll_panel"
@@ -1771,13 +1771,13 @@ width="345">
                   name="RenderCASSharpness"
                   top_pad="1"
                   width="310" />
-                  <!--<slider
+                  <slider
                   control_name="RenderChromaStrength"
                   enabled_control="RenderDeferred"
-                  decimal_digits="1"
+                  decimal_digits="2"
                   follows="left|top"
                   height="15"
-                  increment="0.1"
+                  increment="0.01"
                   initial_value="1"
                   can_edit_text="true"
                   label="Chromatic Strength:"
@@ -1785,7 +1785,7 @@ width="345">
                   tool_tip="Set the strength of Chromatic Aberration around the center of the screen"
                   layout="topleft"
                   left="10"
-                  max_val="50"
+                  max_val="1"
                   min_val="0"
                   name="ChromaStrength"
                   top_pad="1"
@@ -1831,10 +1831,10 @@ width="345">
                   <slider
                   control_name="RenderGodraysFalloffMultiplier"
                   enabled_control="RenderDeferred"
-                  decimal_digits="1"
+                  decimal_digits="3"
                   follows="left|top"
                   height="15"
-                  increment="0.1"
+                  increment="0.001"
                   initial_value="0"
                   can_edit_text="true"
                   label="Light Falloff:"
@@ -1842,13 +1842,13 @@ width="345">
                   tool_tip="Set the strength of the brightness falloff over distance"
                   layout="topleft"
                   left="10"
-                  max_val="500"
-                  min_val="0.1"
+                  max_val="1"
+                  min_val="0.0"
                   name="GodrayFalloffMultiplier"
                   top_pad="1"
                   width="310" />
                   
-                  <slider
+                  <!--<slider
                   enabled_control="RenderDeferred"
                   decimal_digits="1"
                   follows="left|top"

@@ -33,6 +33,8 @@ uniform sampler2D depthMap;
 uniform vec2 screen_res;
 in vec2 vary_fragcoord;
 
+uniform float chroma_str;
+
 //=================================
 // borrowed noise from:
 //  <https://www.shadertoy.com/view/4dS3Wd>
@@ -75,7 +77,19 @@ float noise(vec2 x) {
 
 void main()
 {
+#if HAS_DOF_CHROMA
     vec4 diff = texture(diffuseRect, vary_fragcoord.xy);
+#else
+    vec3 col_offset = vec3(0.0015, 0.0001, 0.0005);
+	col_offset *= vec3(chroma_str);
+
+    vec4 diff;
+    diff.r = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.x)).r;
+    diff.g  = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.y)).g;
+    diff.b = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.z)).b;
+    diff.a = texture(diffuseRect, vary_fragcoord.xy).a;
+#endif
+
 
 #ifdef HAS_NOISE
     vec2 tc = vary_fragcoord.xy*screen_res*4.0;

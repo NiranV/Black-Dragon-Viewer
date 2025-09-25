@@ -152,11 +152,6 @@ uniform float exposure;
 uniform float tonemap_mix;
 uniform int tonemap_type;
 
-uniform float greyscale_str;
-uniform float sepia_str;
-uniform float num_colors;
-uniform float chroma_str;
-
 vec3 toneMap(vec3 color)
 {
 #ifndef NO_POST
@@ -189,24 +184,6 @@ vec3 toneMap(vec3 color)
     color = mix(clamped_color, color, tonemap_mix);
 #endif
 
-    if(num_colors > 2)
-	{
-		color = pow(color, vec3(0.6));
-		color = color * num_colors;
-		color = floor(color);
-		color = color / num_colors;
-		color = pow(color, vec3(1.0/0.6));
-	}
-
-    vec3 col_gr = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
-	color = mix(color, col_gr, greyscale_str);
-
-    vec3 col_sep;
-	col_sep.r = (color.r*0.3588) + (color.g*0.7044) + (color.b*0.1368);
-	col_sep.g = (color.r*0.299) + (color.g*0.5870) + (color.b*0.114);
-	col_sep.b = (color.r*0.2392) + (color.g*0.4696) + (color.b*0.0912);
-	color = mix(color, col_sep, sepia_str);
-
     return color;
 }
 
@@ -238,24 +215,6 @@ vec3 toneMapNoExposure(vec3 color)
     // mix tonemapped and linear here to provide adjustment
     color = mix(clamped_color, color, tonemap_mix);
 #endif
-
-    if(num_colors > 2)
-	{
-		color = pow(color, vec3(0.6));
-		color = color * num_colors;
-		color = floor(color);
-		color = color / num_colors;
-		color = pow(color, vec3(1.0/0.6));
-	}
-
-    vec3 col_gr = vec3((0.299 * color.r) + (0.587 * color.g) + (0.114 * color.b));
-	color = mix(color, col_gr, greyscale_str);
-
-    vec3 col_sep;
-	col_sep.r = (color.r*0.3588) + (color.g*0.7044) + (color.b*0.1368);
-	col_sep.g = (color.r*0.299) + (color.g*0.5870) + (color.b*0.114);
-	col_sep.b = (color.r*0.2392) + (color.g*0.4696) + (color.b*0.0912);
-	color = mix(color, col_sep, sepia_str);
 
     return color;
 }

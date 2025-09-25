@@ -2693,28 +2693,47 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 			gDeferredPostProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredF.glsl", GL_FRAGMENT_SHADER));
 		}
 		gDeferredPostProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
+        if (gSavedSettings.getBOOL("RenderDepthOfFieldChroma"))
+        {
+            gDeferredPostProgram.addPermutation("HAS_DOF_CHROMA", "1");
+        }
 		if (gSavedSettings.getBOOL("RenderDepthOfFieldFront"))
 		{
-			gDeferredAvatarAlphaProgram.addPermutation("FRONT_BLUR", "1");
+            gDeferredPostProgram.addPermutation("FRONT_BLUR", "1");
 		}
 		success = gDeferredPostProgram.createShader();
 		llassert(success);
 	}
 
 //	//BD - Volumetric Lighting
-	/*if (success)
+	if (success)
 	{
 		gVolumetricLightProgram.mName = "Volumetric Light Shader";
-		gVolumetricLightProgram.mShaderFiles.clear();
 		gVolumetricLightProgram.mFeatures.isDeferred = true;
-		gVolumetricLightProgram.mFeatures.hasAtmospherics = true;
+        gVolumetricLightProgram.mFeatures.calculatesAtmospherics = true;
+        gVolumetricLightProgram.mFeatures.hasAtmospherics = true;
 		gVolumetricLightProgram.mFeatures.hasShadows = true;
+        gVolumetricLightProgram.mShaderFiles.clear();
+
+        gVolumetricLightProgram.clearPermutations();
+        add_common_permutations(&gVolumetricLightProgram);
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gVolumetricLightProgram.mShaderFiles.push_back(make_pair("deferred/volumetricLightF.glsl", GL_FRAGMENT_SHADER));
 		gVolumetricLightProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
+
+        if (gSavedSettings.getBOOL("RenderVolumetricLightingDirectional"))
+        {
+            gDeferredSoftenProgram.addPermutation("GODRAYS_FADE", "1");
+        }
+
+        if (!gSavedSettings.getBOOL("RenderDepthOfField"))
+        {
+            gDeferredSoftenProgram.addPermutation("HAS_NO_DOF", "1");
+        }
+
 		success = gVolumetricLightProgram.createShader();
 		llassert(success);
-	}*/
+	}
 
 	if (success)
 	{
@@ -2747,6 +2766,10 @@ bool LLViewerShaderMgr::loadShadersDeferred()
 		gDeferredPostNoDoFProgram.mShaderFiles.clear();
 		gDeferredPostNoDoFProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
 		gDeferredPostNoDoFProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoDoFF.glsl", GL_FRAGMENT_SHADER));
+        if (gSavedSettings.getBOOL("RenderDepthOfFieldChroma"))
+        {
+            gDeferredPostNoDoFProgram.addPermutation("HAS_DOF_CHROMA", "1");
+        }
 		gDeferredPostNoDoFProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 		success = gDeferredPostNoDoFProgram.createShader();
 		llassert(success);
@@ -2759,8 +2782,10 @@ bool LLViewerShaderMgr::loadShadersDeferred()
         gDeferredPostNoDoFNoiseProgram.mShaderFiles.clear();
         gDeferredPostNoDoFNoiseProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoTCV.glsl", GL_VERTEX_SHADER));
         gDeferredPostNoDoFNoiseProgram.mShaderFiles.push_back(make_pair("deferred/postDeferredNoDoFF.glsl", GL_FRAGMENT_SHADER));
-
-        gDeferredPostNoDoFNoiseProgram.clearPermutations();
+        if (gSavedSettings.getBOOL("RenderDepthOfFieldChroma"))
+        {
+            gDeferredPostNoDoFNoiseProgram.addPermutation("HAS_DOF_CHROMA", "1");
+        }
         gDeferredPostNoDoFNoiseProgram.addPermutation("HAS_NOISE", "1");
 
         gDeferredPostNoDoFNoiseProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];

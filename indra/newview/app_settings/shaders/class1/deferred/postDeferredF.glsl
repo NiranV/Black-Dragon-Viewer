@@ -34,11 +34,25 @@ uniform vec2 screen_res;
 uniform float max_cof;
 uniform float res_scale;
 
+uniform float chroma_str;
+
 in vec2 vary_fragcoord;
 
 void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc)
 {
-    vec4 s = texture(diffuseRect, tc);
+#if HAS_DOF_CHROMA
+	vec3 col_offset = vec3(0.0015, 0.0001, 0.0005);
+	float mult = min_sc * chroma_str;
+	col_offset *= vec3(mult);
+
+    vec4 s;
+    s.r = texture(diffuseRect, tc + vec2(col_offset.x)).r;
+    s.g = texture(diffuseRect, tc + vec2(col_offset.y)).g;
+    s.b = texture(diffuseRect, tc + vec2(col_offset.z)).b;
+    s.a = texture(diffuseRect, tc).a;
+#else
+	vec4 s = texture(diffuseRect, tc);
+#endif
 
     float sc = abs(s.a*2.0-1.0)*max_cof;
 

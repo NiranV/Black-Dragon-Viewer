@@ -30,9 +30,35 @@ out vec4 frag_color;
 uniform sampler2D diffuseRect;
 uniform sampler2D emissiveRect;
 
+uniform float greyscale_str;
+uniform float sepia_str;
+uniform float num_colors;
+
 in vec2 tc;
 
 void main()
 {
-    frag_color = texture(diffuseRect, tc) + texture(emissiveRect, tc);
+    vec4 diff = texture(diffuseRect, tc);
+    vec4 emis = texture(emissiveRect, tc);
+
+    diff = diff + emis;
+    if(num_colors > 2)
+	{
+		diff.rgb = pow(diff.rgb, vec3(0.6));
+		diff.rgb = diff.rgb * num_colors;
+		diff.rgb = floor(diff.rgb);
+		diff.rgb = diff.rgb / num_colors;
+		diff.rgb = pow(diff.rgb, vec3(1.0/0.6));
+	}
+
+    vec3 col_gr = vec3((0.299 * diff.r) + (0.587 * diff.g) + (0.114 * diff.b));
+	diff.rgb = mix(diff.rgb, col_gr, greyscale_str);
+
+    vec3 col_sep;
+	col_sep.r = (diff.r*0.3588) + (diff.g*0.7044) + (diff.b*0.1368);
+	col_sep.g = (diff.r*0.299) + (diff.g*0.5870) + (diff.b*0.114);
+	col_sep.b = (diff.r*0.2392) + (diff.g*0.4696) + (diff.b*0.0912);
+	diff.rgb = mix(diff.rgb, col_sep, sepia_str);
+
+    frag_color = diff;
 }
