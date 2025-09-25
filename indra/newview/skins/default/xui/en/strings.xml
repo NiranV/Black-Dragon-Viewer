@@ -62,13 +62,11 @@ LOD factor: [LOD_FACTOR]
 Deferred Rendering: [GPU_SHADERS]
 Max Texture memory: [MAX_TEXTURE_MEMORY]MB
 Disk cache: [DISK_CACHE_INFO]
-Render quality: [RENDER_QUALITY]
 	</string>
 	<string name="AboutOSXHiDPI">
 HiDPI display mode: [HIDPI]
 	</string>
 	<string name="AboutLibs">
-RestrainedLove API: [RLV_VERSION]
 J2C Decoder Version: [J2C_VERSION]
 Audio Driver Version: [AUDIO_DRIVER_VERSION]
 [LIBCEF_VERSION]
