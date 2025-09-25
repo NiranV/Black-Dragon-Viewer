@@ -5506,20 +5506,7 @@ width="510">
      name="UseDoF"
      top_pad="7"
      width="115" />
- <text
-   invisibility_control="RenderDeferred"
-   name="post_label"
-   follows="left|top"
-   layout="topleft"
-   halign="right"
-   top_delta="3"
-   text_color="1.0 0.4 0.225 1.0"
-   left="-270" 
-   height="12"
-   width="220">
-   Requires Deferred Rendering
-   </text>
- <!--<check_box
+ <check_box
    control_name="RenderDepthOfFieldAlphas"
    height="16"
    initial_value="true"
@@ -5529,7 +5516,7 @@ width="510">
    tool_tip="This option toggle if the Viewer should include alphas and particles into the depth map. This will affect whether alpha transparent surfaces block godrays and if said surface is considered a solid surface when blurring."
    name="RenderDepthOfFieldAlphas"
    top_pad="10"
-   width="115"/>-->
+   width="115"/>
  <check_box
    control_name="RenderDepthOfFieldFront"
    height="16"
