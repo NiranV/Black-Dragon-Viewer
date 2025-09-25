@@ -963,8 +963,12 @@ bool LLAppViewer::init()
 
     /////////////////////////////////////////////////
 
+    LL_INFOS("InitInfo") << "Initializing ToolMgr." << LL_ENDL;
+
 	//BD - This needs to happen after Joystick initialization as it depends on it.
 	mToolMgr = LLToolMgr::getInstance(); // Initialize tool manager if not already instantiated
+
+    LL_INFOS("InitInfo") << "Registering all floaters." << LL_ENDL;
 
     LLViewerFloaterReg::registerFloaters();
 
@@ -973,9 +977,15 @@ bool LLAppViewer::init()
     // Load settings files
     //
     //
+    LL_INFOS("InitInfo") << "Parsing Role Actions." << LL_ENDL;
+
     LLGroupMgr::parseRoleActions("role_actions.xml");
 
+    LL_INFOS("InitInfo") << "Parsing Teleport strings." << LL_ENDL;
+
     LLAgent::parseTeleportMessages("teleport_strings.xml");
+
+    LL_INFOS("InitInfo") << "Parsing Mime Types." << LL_ENDL;
 
     // load MIME type -> media impl mappings
     std::string mime_types_name;
@@ -988,19 +998,26 @@ bool LLAppViewer::init()
 #endif
     LLMIMETypes::parseMIMETypes( mime_types_name );
 
+    LL_INFOS("InitInfo") << "Copy settings to globals." << LL_ENDL;
+
     // Copy settings to globals. *TODO: Remove or move to appropriage class initializers
     settings_to_globals();
+    LL_INFOS("InitInfo") << "Setting up settings listeners." << LL_ENDL;
     // Setup settings listeners
     settings_setup_listeners();
+    LL_INFOS("InitInfo") << "Modifying settings..." << LL_ENDL;
     // Modify settings based on system configuration and compile options
     settings_modify();
 
     // Find partition serial number (Windows) or hardware serial (Mac)
     mSerialNumber = generateSerialNumber();
 
+    LL_INFOS("InitInfo") << "Initializing SLURL Handler." << LL_ENDL;
+
     // do any necessary set-up for accepting incoming SLURLs from apps
     initSLURLHandler();
 
+    LL_INFOS("InitInfo") << "Initializing Hardware Test." << LL_ENDL;
     if (!initHardwareTest())
     {
         // Early out from user choice.
