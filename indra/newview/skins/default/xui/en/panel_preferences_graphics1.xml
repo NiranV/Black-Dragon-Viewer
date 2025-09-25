@@ -843,7 +843,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 ||This option controls how much detail objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;0.25&lt;/blue&gt;"
+||RenderVolumeLODFactor: &lt;blue&gt;0.8&lt;/blue&gt;"
        name="item0"/>
       <combo_box.item
        label="Low"
@@ -852,7 +852,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;0.5&lt;/blue&gt;"
+||RenderVolumeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
        value="1"
        name="item2"/>
       <combo_box.item
@@ -862,7 +862,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 |&lt;b&gt;Graphics:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt; - Medium
 ||This option controls how much details objects should have and which Level-of-Detail they use.
-||RenderVolumeLODFactor: &lt;blue&gt;1.0&lt;/blue&gt;"
+||RenderVolumeLODFactor: &lt;blue&gt;1.5&lt;/blue&gt;"
        value="1.5"
        name="item3"/>
       <combo_box.item
@@ -4642,6 +4642,7 @@ width="510">
   top_pad="0"/>
  <check_box
      control_name="RenderScreenSpaceReflections"
+     enabled_control="RenderHDREnabled"
      height="16"
      initial_value="true"
      label="Screen Space Reflections (SSR)"
@@ -4690,6 +4691,7 @@ width="510">
       </button>-->
 		<slider
       control_name="RenderScreenSpaceReflectionGlossySamples"
+      enabled_control="RenderHDREnabled"
       decimal_digits="0"
       can_edit_text="true"
       follows="left|top"
@@ -4879,6 +4881,7 @@ width="510">
   top_pad="0"/>
  <check_box
      control_name="RenderSkyAutoAdjustLegacy"
+     enabled_control="RenderHDREnabled"
      height="16"
      initial_value="true"
      label="Auto Adjust Legacy Skies"
@@ -4894,6 +4897,7 @@ width="510">
      width="115" />
 		<slider
       control_name="RenderSkyAutoAdjustAmbientScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -4927,6 +4931,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAutoAdjustBlueDensityScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -4960,6 +4965,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAutoAdjustBlueHorizonScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -4993,6 +4999,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAutoAdjustHDRScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -5026,6 +5033,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAutoAdjustProbeAmbiance"
+      enabled_control="RenderHDREnabled"
       decimal_digits="3"
       can_edit_text="true"
       follows="left|top"
@@ -5059,6 +5067,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAutoAdjustSunColorScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -5092,6 +5101,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkySunlightScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
@@ -5125,6 +5135,7 @@ width="510">
       </button>
       <slider
       control_name="RenderSkyAmbientScale"
+      enabled_control="RenderHDREnabled"
       decimal_digits="2"
       can_edit_text="true"
       follows="left|top"
