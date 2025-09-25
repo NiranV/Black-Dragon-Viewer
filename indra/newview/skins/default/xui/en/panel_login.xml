@@ -148,6 +148,112 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="260"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ability to synchronize a target's user pose to them.
+Added: More logging to catch potential crashes people might experience on startup.
+Added: Volumetric Lighting back. Better than ever with better alpha handling and sorted behind Depth of Field.
+Added: Chromatic Aberration post effect back. Available as global and Depth of Field only version.
+Added: Chromatic Aberration and Volumetric Lighting options back to the Machinima Sidebar.
+Changed: Poser Version to 17.1.
+Changed: Switched SHIFT and CTRL modifiers for shouting and whispering.
+Changed: Made some preferences that require HDR enabled disable if its off.
+Changed: Shortened group info Join button labels to fit.
+Changed: Group Info layout slightly internally for better scaling.
+Changed: Sepia, Greyscale and Posterization no longer require Tone Mapping or HDR enabled.
+Changed: Version to 5.4.4 - Volumetric Dragon.
+Fixed: Profile - First Life not applying any changes made to it.
+Fixed: Wrong tooltips for LOD options.
+Fixed: Login screen video defaulting to terrorist speak in embed mode due to a lack of language cookies.
+Fixed: Login screen video sometimes randomly be hover-able popping up its controls.
+Removed: Cleaned up some unnecessary Deferred Rendering requirement warnings.
+Removed: Unused/Broken About Black Dragon info entries.
+Removed: Advanced Complexity Information as it is no longer needed.
+Misc: Cleaned up some unnecessary shader uniforms from pipeline.cpp.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.4.3
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="104"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Changed: Poser Version to 17.
+Changed: Version to 5.4.3.
+Added: Ability to request syncing your pose to others.
+Fixed: Several features not properly working when posing others.
+Fixed: Several issues with displaying the new vectors in the Poser UI.
+Fixed: Mirror bones not properly working sometimes.
+Misc: Merged Geenz's SSR Renovations.
+Misc: Added several more null checks in the Poser where they were missing.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.4.2
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="52"
      top_pad="3"
      left="7"
