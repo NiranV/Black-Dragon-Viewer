@@ -1977,6 +1977,10 @@ bool LLPanelProfileFirstLife::postBuild()
 	mSaveChanges = getChild<LLButton>("fl_save_changes");
 	mDiscardChanges = getChild<LLButton>("fl_discard_changes");
 
+    mSaveChanges->setCommitCallback([this](LLUICtrl*, void*) { onSaveDescriptionChanges(); }, nullptr);
+    mDiscardChanges->setCommitCallback([this](LLUICtrl*, void*) { onDiscardDescriptionChanges(); }, nullptr);
+    mDescriptionEdit->setKeystrokeCallback([this](LLTextEditor* caller) { onSetDescriptionDirty(); });
+
     return true;
 }
 
