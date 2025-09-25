@@ -408,13 +408,19 @@ bool LLFloaterIMNearbyChat::handleKeyHere( KEY key, MASK mask )
 {
     bool handled = false;
 
-    if( KEY_RETURN == key && mask == MASK_CONTROL)
+    //BD - SHIFT to shout and CTRL to whisper makes a lot more sense.
+    //     For literal eons SHIFT has been used to sprint or CAPITALIZE
+    //     words, which stands for shouting/yelling, so it should reflect
+    //     this. SHIFT may have been a logical choice for whispering when
+    //     the default was SHIFT to "walk" in games but these times predate
+    //     Second Life largely.
+    if( KEY_RETURN == key && mask == MASK_SHIFT)
     {
         // shout
         sendChat(CHAT_TYPE_SHOUT);
         handled = true;
     }
-    else if (KEY_RETURN == key && mask == MASK_SHIFT)
+    else if (KEY_RETURN == key && mask == MASK_CONTROL)
     {
         // whisper
         sendChat(CHAT_TYPE_WHISPER);
