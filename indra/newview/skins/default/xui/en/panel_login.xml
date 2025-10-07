@@ -3642,12 +3642,12 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
   follows="right|bottom"
   height="150"
   layout="topleft"
-  left="-165"
+  left="-205"
   mouse_opaque="true"
   name="root_stack"
   orientation="horizontal"
   top="105"
-  width="165">
+  width="205">
    <layout_panel
    auto_resize="false"
    follows="all"
@@ -3736,6 +3736,36 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     <button.commit_callback
     function="Advanced.WebContentTest"
     parameter="https://www.patreon.com/niranvsl"/>
+    </button>
+   </layout_panel>
+   <layout_panel
+   auto_resize="false"
+   follows="all"
+   height="40"
+   layout="topleft"
+   mouse_opaque="true"
+   name="info_panel"
+   top_pad="0"
+   width="40">
+    <button
+    follows="right|top"
+    height="36"
+    image_unselected="KoFi_Icon"
+    image_selected="KoFi_Icon"
+    label=""
+    font="SansSerif"
+    font.style="BOLD"
+    label_color="1 1 1 0.7"
+    tool_tip="Support me on Ko-Fi!"
+    layout="topleft"
+    left="0"
+    halign="center"
+    name="kofi_btn"
+    top="0"
+    width="36">
+    <button.commit_callback
+    function="Advanced.WebContentTest"
+    parameter="https://ko-fi.com/niranv"/>
     </button>
    </layout_panel>
    <layout_panel
