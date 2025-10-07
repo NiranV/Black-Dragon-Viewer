@@ -5287,7 +5287,8 @@ void LLVOAvatar::postPelvisSetRecalc()
 {
     mRoot->updateWorldMatrixChildren();
     //BD - Poser
-    if(!getPosing())
+    static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+    if (!(getPosing() || (gAgentCamera.cameraMouselook() && exp_scaling)))
         computeBodySize();
     dirtyMesh(2);
 }
@@ -6388,7 +6389,8 @@ bool LLVOAvatar::processSingleAnimationStateChange( const LLUUID& anim_id, bool 
     //BD - Poser
 	//     Don't refresh our root position while we pose otherwise moving any joint that moves
 	//     mFootLeft will trigger mRoot repositioning.
-	if (!getPosing())
+    static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+    if (!(getPosing() || (gAgentCamera.cameraMouselook() && exp_scaling)))
 	{
         computeBodySize();
 	}
@@ -7485,7 +7487,8 @@ void LLVOAvatar::updateVisualParams()
         //BD - Poser
 		//     Don't refresh our root position while we pose otherwise moving any joint that moves
 		//     mFootLeft will trigger mRoot repositioning.
-		if (!((getPosing() || gAgentCamera.getCameraMode() == CAMERA_MODE_MOUSELOOK)))
+        static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+        if (!(getPosing() || (gAgentCamera.cameraMouselook() && exp_scaling)))
 		{
 			computeBodySize();
 		}
@@ -11682,6 +11685,8 @@ void LLVOAvatar::setOverallAppearanceNormal()
 
     LLVector3 pelvis_pos = getJoint("mPelvis")->getPosition();
 	//BD - Poser
+    static LLCachedControl<bool> exp_scaling(gSavedSettings, "MouselookExperimentalHeadScaling");
+    if (!(getPosing() || (gAgentCamera.cameraMouselook() && exp_scaling)))
 	if(!getPosing() && (isControlAvatar() || mLastProcessedAppearance))
 		resetSkeleton(false);
     getJoint("mPelvis")->setPosition(pelvis_pos);
