@@ -148,6 +148,121 @@ width="996">
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="988"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Ko-Fi support button/link to login page.
+Added: Adam Johnson as Patreon patron.
+Added: Akir Mirra as Patreon patron.
+Added: Alex Nelidov as Patreon patron.
+Added: Alicea Clark as Patreon patron.
+Added: Anni Flemming as Patreon patron.
+Added: Aser as Patreon patron.
+Added: BIG MONEY THOUGHTS as Patreon patron.
+Added: Blue as Patreon patron.
+Added: Boannan Alrn as Patreon patron.
+Added: Byrnsy Snoodle as Patreon patron.
+Added: Carly as Patreon patron.
+Added: Celeste Portugues as Patreon patron.
+Added: Chango as Patreon patron.
+Added: CherryRaven as Patreon patron.
+Added: Danielle Light as Patreon patron.
+Added: Destini Cartwright as Patreon patron.
+Added: Dom as Patreon patron.
+Added: Elise Mersereau as Patreon patron.
+Added: Eric Albright as Patreon patron.
+Added: Estiven Guerrero as Patreon patron.
+Added: Folseh + OMDeskai Workshop as Patreon patron.
+Added: Frankey Swain as Patreon patron.
+Added: Funsyse SL as Patreon patron.
+Added: G2HA Tv as Patreon patron.
+Added: Gi Halo as Patreon patron.
+Added: Greenheart as Patreon patron.
+Added: Happy Binder as Patreon patron.
+Added: Hereforthemusic as Patreon patron.
+Added: Honey Brasi as Patreon patron.
+Added: Ibie.n as Patreon patron.
+Added: Inzone as Patreon patron.
+Added: Jam as Patreon patron.
+Added: Jason Green as Patreon patron.
+Added: Javani Reece as Patreon patron.
+Added: JJ Goodman as Patreon patron.
+Added: Jordi Dali as Patreon patron.
+Added: Jyleel Draughn as Patreon patron.
+Added: Kanika Nigam as Patreon patron.
+Added: Kapree Arliss as Patreon patron.
+Added: Kendal Andel as Patreon patron.
+Added: Kristin Ari'elle as Patreon patron.
+Added: KyuCipher as Patreon patron.
+Added: Lauren Weston as Patreon patron.
+Added: LEIJINDARY Sims as Patreon patron.
+Added: Letto as Patreon patron.
+Added: Lily as Patreon patron.
+Added: LNRGRL. as Patreon patron.
+Added: Lychee as Patreon patron.
+Added: Madison Riley as Patreon patron.
+Added: Maraill Miller as Patreon patron.
+Added: Nami Christenson as Patreon patron.
+Added: Phaedra Sexton as Patreon patron.
+Added: Rei as Patreon patron.
+Added: Reigardless as Patreon patron.
+Added: Riley Amore as Patreon patron.
+Added: Robert Frank as Patreon patron.
+Added: Roman as Patreon patron.
+Added: Roo Bella Leyers as Patreon patron.
+Added: Roxy Richez as Patreon patron.
+Added: Senai Monet as Patreon patron.
+Added: Snow White as Patreon patron.
+Added: Sosaa Brinxx as Patreon patron.
+Added: Trix Silvercloud as Patreon patron.
+Added: Ursidxe as Patreon patron.
+Added: Vanillakid as Patreon patron.
+Added: Vee as Patreon patron.
+Added: Xtiina as Patreon patron.
+Added: Zack Basim as Patreon patron.
+Added: Zyra Thorn as Patreon patron.
+Added: ♡★bxby★♡ as Patreon patron.
+Changed: Puck Softpaw's Patreon amount.
+Changed: Red Blaze's Patreon amount.
+Changed: Version to 5.4.5.
+Fixed: Pose loading, Experimental Head Scaling and several other Animator dependent features not working anymore.
+Fixed: Avatar height being recalculated when in Mouselook while Experimental Head Scaling is enabled resulting in feet clipping into the floor.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.4.4
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="260"
      top_pad="3"
      left="7"

@@ -4406,7 +4406,7 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">5.4.4</string>
+	<string name="VIEWER_VERSION_LOCAL">5.4.5</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Volumetric Dragon</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
