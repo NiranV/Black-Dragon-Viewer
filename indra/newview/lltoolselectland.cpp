@@ -207,8 +207,11 @@ void LLToolSelectLand::render()
 
 void LLToolSelectLand::handleSelect()
 {
-	//BD
-	//gFloaterTools->setStatusText("selectland");
+    //BD
+    /*if (gFloaterTools)
+    {
+        gFloaterTools->setStatusText("selectland");
+    }*/
 }
 
 

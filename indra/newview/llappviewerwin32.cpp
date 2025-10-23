@@ -155,10 +155,10 @@ namespace
 
             sBugSplatSender->setAttribute(WCSTR(L"OS"), WCSTR(LLOSInfo::instance().getOSStringSimple())); // In case we ever stop using email for this
             sBugSplatSender->setAttribute(WCSTR(L"AppState"), WCSTR(LLStartUp::getStartupStateString()));
-            sBugSplatSender->setAttribute(WCSTR(L"GL Vendor"), WCSTR(gGLManager.mGLVendor));
-            sBugSplatSender->setAttribute(WCSTR(L"GL Version"), WCSTR(gGLManager.mGLVersionString));
-            sBugSplatSender->setAttribute(WCSTR(L"GPU Version"), WCSTR(gGLManager.mDriverVersionVendorString));
-            sBugSplatSender->setAttribute(WCSTR(L"GL Renderer"), WCSTR(gGLManager.mGLRenderer));
+            sBugSplatSender->setAttribute(WCSTR(L"GLVendor"), WCSTR(gGLManager.mGLVendor));
+            sBugSplatSender->setAttribute(WCSTR(L"GLVersion"), WCSTR(gGLManager.mGLVersionString));
+            sBugSplatSender->setAttribute(WCSTR(L"GPUVersion"), WCSTR(gGLManager.mDriverVersionVendorString));
+            sBugSplatSender->setAttribute(WCSTR(L"GLRenderer"), WCSTR(gGLManager.mGLRenderer));
             sBugSplatSender->setAttribute(WCSTR(L"VRAM"), WCSTR(STRINGIZE(gGLManager.mVRAM)));
             sBugSplatSender->setAttribute(WCSTR(L"RAM"), WCSTR(STRINGIZE(gSysMemory.getPhysicalMemoryKB().value())));
 
@@ -253,8 +253,8 @@ void ll_nvapi_init(NvDRSSessionHandle hSession)
 
     NvAPI_UnicodeString profile_name;
     std::string app_name = LLTrans::getString("APP_NAME");
-    llutf16string w_app_name = utf8str_to_utf16str(app_name);
-    wsprintf(profile_name, L"%s", w_app_name.c_str());
+    std::wstring w_app_name = ll_convert<std::wstring>(app_name);
+    wsprintf(reinterpret_cast<wchar_t*>(profile_name), L"%s", w_app_name.c_str());
     NvDRSProfileHandle hProfile = 0;
     // (3) Check if we already have an application profile for the viewer
     status = NvAPI_DRS_FindProfileByName(hSession, profile_name, &hProfile);
@@ -271,7 +271,7 @@ void ll_nvapi_init(NvDRSSessionHandle hSession)
         NVDRS_PROFILE profileInfo;
         profileInfo.version = NVDRS_PROFILE_VER;
         profileInfo.isPredefined = 0;
-        wsprintf(profileInfo.profileName, L"%s", w_app_name.c_str());
+        wsprintf(reinterpret_cast<wchar_t*>(profileInfo.profileName), L"%s", w_app_name.c_str());
 
         status = NvAPI_DRS_CreateProfile(hSession, &profileInfo, &hProfile);
         if (status != NVAPI_OK)
@@ -286,9 +286,9 @@ void ll_nvapi_init(NvDRSSessionHandle hSession)
     NVDRS_APPLICATION profile_application;
     profile_application.version = NVDRS_APPLICATION_VER;
 
-    llutf16string w_exe_name = utf8str_to_utf16str(exe_name);
+    std::wstring w_exe_name = ll_convert<std::wstring>(exe_name);
     NvAPI_UnicodeString profile_app_name;
-    wsprintf(profile_app_name, L"%s", w_exe_name.c_str());
+    wsprintf(reinterpret_cast<wchar_t*>(profile_app_name), L"%s", w_exe_name.c_str());
 
     status = NvAPI_DRS_GetApplicationInfo(hSession, hProfile, profile_app_name, &profile_application);
     if (status != NVAPI_OK && status != NVAPI_EXECUTABLE_NOT_FOUND)
@@ -304,10 +304,10 @@ void ll_nvapi_init(NvDRSSessionHandle hSession)
         NVDRS_APPLICATION application;
         application.version = NVDRS_APPLICATION_VER;
         application.isPredefined = 0;
-        wsprintf(application.appName, L"%s", w_exe_name.c_str());
-        wsprintf(application.userFriendlyName, L"%s", w_exe_name.c_str());
-        wsprintf(application.launcher, L"%s", w_exe_name.c_str());
-        wsprintf(application.fileInFolder, L"%s", "");
+        wsprintf(reinterpret_cast<wchar_t*>(application.appName), L"%s", w_exe_name.c_str());
+        wsprintf(reinterpret_cast<wchar_t*>(application.userFriendlyName), L"%s", w_exe_name.c_str());
+        wsprintf(reinterpret_cast<wchar_t*>(application.launcher), L"%s", w_exe_name.c_str());
+        wsprintf(reinterpret_cast<wchar_t*>(application.fileInFolder), L"%s", "");
 
         status = NvAPI_DRS_CreateApplication(hSession, hProfile, &application);
         if (status != NVAPI_OK)
@@ -448,6 +448,7 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
 
     // *FIX: global
     gIconResource = MAKEINTRESOURCE(IDI_LL_ICON);
+    gIconSmallResource = MAKEINTRESOURCE(IDI_LL_ICON_SMALL);
 
     LLAppViewerWin32* viewer_app_ptr = new LLAppViewerWin32(ll_convert_wide_to_string(pCmdLine).c_str());
 
@@ -580,7 +581,7 @@ void LLAppViewerWin32::disableWinErrorReporting()
 {
     std::string executable_name = gDirUtilp->getExecutableFilename();
 
-    if( S_OK == WerAddExcludedApplication( utf8str_to_utf16str(executable_name).c_str(), FALSE ) )
+    if( S_OK == WerAddExcludedApplication(ll_convert<std::wstring>(executable_name).c_str(), FALSE ) )
     {
         LL_INFOS() << "WerAddExcludedApplication() succeeded for " << executable_name << LL_ENDL;
     }
@@ -804,14 +805,39 @@ bool LLAppViewerWin32::cleanup()
     return result;
 }
 
-void LLAppViewerWin32::reportCrashToBugsplat(void* pExcepInfo)
+bool LLAppViewerWin32::reportCrashToBugsplat(void* pExcepInfo)
 {
 #if defined(LL_BUGSPLAT)
     if (sBugSplatSender)
     {
         sBugSplatSender->createReport((EXCEPTION_POINTERS*)pExcepInfo);
+        return true;
     }
 #endif // LL_BUGSPLAT
+    return false;
+}
+
+bool LLAppViewerWin32::initWindow()
+{
+    // This is a workaround/hotfix for a change in Windows 11 24H2 (and possibly later)
+    // Where the window width and height need to correctly reflect an available FullScreen size
+    if (gSavedSettings.getBOOL("FullScreen"))
+    {
+        DEVMODE dev_mode;
+        ::ZeroMemory(&dev_mode, sizeof(DEVMODE));
+        dev_mode.dmSize = sizeof(DEVMODE);
+        if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dev_mode))
+        {
+            gSavedSettings.setU32("WindowWidth", dev_mode.dmPelsWidth);
+            gSavedSettings.setU32("WindowHeight", dev_mode.dmPelsHeight);
+        }
+        else
+        {
+            LL_WARNS("AppInit") << "Unable to set WindowWidth and WindowHeight for FullScreen mode" << LL_ENDL;
+        }
+    }
+
+    return LLAppViewer::initWindow();
 }
 
 void LLAppViewerWin32::initLoggingAndGetLastDuration()
@@ -840,68 +866,10 @@ void write_debug_dx(const std::string& str)
 
 bool LLAppViewerWin32::initHardwareTest()
 {
-    //
-    // Do driver verification and initialization based on DirectX
-    // hardware polling and driver versions
-    //
-    if (true == gSavedSettings.getBOOL("ProbeHardwareOnStartup") && false == gSavedSettings.getBOOL("NoHardwareProbe"))
-    {
-        // per DEV-11631 - disable hardware probing for everything
-        // but vram.
-        bool vram_only = true;
-
-        LLSplashScreen::update(LLTrans::getString("StartupDetectingHardware"));
-
-        LL_DEBUGS("AppInit") << "Attempting to poll DirectX for hardware info" << LL_ENDL;
-        gDXHardware.setWriteDebugFunc(write_debug_dx);
-        bool probe_ok = gDXHardware.getInfo(vram_only);
-
-        if (!probe_ok
-            && gWarningSettings.getBOOL("AboutDirectX9"))
-        {
-            LL_WARNS("AppInit") << "DirectX probe failed, alerting user." << LL_ENDL;
-
-            // Warn them that runnin without DirectX 9 will
-            // not allow us to tell them about driver issues
-            std::ostringstream msg;
-            msg << LLTrans::getString ("MBNoDirectX");
-            S32 button = OSMessageBox(
-                msg.str(),
-                LLTrans::getString("MBWarning"),
-                OSMB_YESNO);
-            if (OSBTN_NO== button)
-            {
-                LL_INFOS("AppInit") << "User quitting after failed DirectX 9 detection" << LL_ENDL;
-                LLWeb::loadURLExternal("http://secondlife.com/support/", false);
-                return false;
-            }
-            gWarningSettings.setBOOL("AboutDirectX9", false);
-        }
-        LL_DEBUGS("AppInit") << "Done polling DirectX for hardware info" << LL_ENDL;
-
-        // Only probe once after installation
-        gSavedSettings.setBOOL("ProbeHardwareOnStartup", false);
-
-        // Disable so debugger can work
-        std::string splash_msg;
-        LLStringUtil::format_map_t args;
-        args["[APP_NAME]"] = LLAppViewer::instance()->getSecondLifeTitle();
-        splash_msg = LLTrans::getString("StartupLoading", args);
-
-        LLSplashScreen::update(splash_msg);
-    }
-
     if (!restoreErrorTrap())
     {
-        LL_WARNS("AppInit") << " Someone took over my exception handler (post hardware probe)!" << LL_ENDL;
+        LL_WARNS("AppInit") << " Someone took over my exception handler!" << LL_ENDL;
     }
-
-    if (gGLManager.mVRAM == 0)
-    {
-        gGLManager.mVRAM = gDXHardware.getVRAM();
-    }
-
-    LL_INFOS("AppInit") << "Detected VRAM: " << gGLManager.mVRAM << LL_ENDL;
 
     return true;
 }

@@ -69,9 +69,16 @@ void GLTFSceneManager::load()
                 {
                     return;
                 }
-                if (filenames.size() > 0)
+                try
                 {
-                    GLTFSceneManager::instance().load(filenames[0]);
+                    if (filenames.size() > 0)
+                    {
+                        GLTFSceneManager::instance().load(filenames[0]);
+                    }
+                }
+                catch (std::bad_alloc&)
+                {
+                    LLNotificationsUtil::add("CannotOpenFileTooBig");
                 }
             },
             LLFilePicker::FFLOAD_GLTF,
@@ -213,6 +220,7 @@ void GLTFSceneManager::uploadSelection()
                         LLFloaterPerms::getGroupPerms("Uploads"),
                         LLFloaterPerms::getEveryonePerms("Uploads"),
                         expected_upload_cost,
+                        LLUUID::null,
                         false,
                         finish,
                         failure));
@@ -276,6 +284,7 @@ void GLTFSceneManager::uploadSelection()
                 LLFloaterPerms::getGroupPerms("Uploads"),
                 LLFloaterPerms::getEveryonePerms("Uploads"),
                 expected_upload_cost,
+                LLUUID::null,
                 false,
                 finish,
                 failure));
@@ -310,7 +319,7 @@ void GLTFSceneManager::load(const std::string& filename)
 {
     std::shared_ptr<Asset> asset = std::make_shared<Asset>();
 
-    if (asset->load(filename))
+    if (asset->load(filename, true))
     {
         gDebugProgram.bind(); // bind a shader to satisfy LLVertexBuffer assertions
         asset->updateTransforms();
@@ -552,6 +561,7 @@ void GLTFSceneManager::update()
                 LLFloaterPerms::getGroupPerms("Uploads"),
                 LLFloaterPerms::getEveryonePerms("Uploads"),
                 expected_upload_cost,
+                LLUUID::null,
                 false,
                 finish,
                 failure));
@@ -633,6 +643,12 @@ void GLTFSceneManager::render(Asset& asset, U8 variant)
     if (!can_use_shaders)
     {
         // user should already have been notified of unsupported hardware
+        return;
+    }
+
+    if (gGLTFPBRMetallicRoughnessProgram.mGLTFVariants.size() <= variant)
+    {
+        llassert(false); // mGLTFVariants should have been initialized
         return;
     }
 

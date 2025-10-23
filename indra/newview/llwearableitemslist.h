@@ -32,6 +32,7 @@
 #include "llsingleton.h"
 
 // newview
+#include "llinventoryfunctions.h"
 #include "llinventoryitemslist.h"
 #include "llinventorylistitem.h"
 #include "lllistcontextmenu.h"
@@ -94,6 +95,7 @@ public:
      * Updates item name and (worn) suffix.
      */
     /*virtual*/ void updateItem(const std::string& name,
+                                bool favorite,
                                 EItemState item_state = IS_DEFAULT);
 
     void onAddWearable();
@@ -147,6 +149,7 @@ public:
 
     /** Set item title. Joint name is added to the title in parenthesis */
     /*virtual*/ void updateItem(const std::string& name,
+                                bool favorite,
                                 EItemState item_state = IS_DEFAULT);
 
 protected:
@@ -505,6 +508,14 @@ protected:
     ESortOrder      mSortOrder;
 
     LLWearableType::EType mMenuWearableType;
+};
+
+class LLFindOutfitItems : public LLInventoryCollectFunctor
+{
+public:
+    LLFindOutfitItems() {}
+    virtual ~LLFindOutfitItems() {}
+    virtual bool operator()(LLInventoryCategory* cat, LLInventoryItem* item);
 };
 
 #endif //LL_LLWEARABLEITEMSLIST_H

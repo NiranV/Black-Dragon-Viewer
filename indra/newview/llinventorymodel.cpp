@@ -82,7 +82,7 @@
 
 // Increment this if the inventory contents change in a non-backwards-compatible way.
 // For viewer 2, the addition of link items makes a pre-viewer-2 cache incorrect.
-const S32 LLInventoryModel::sCurrentInvCacheVersion = 3;
+const S32 LLInventoryModel::sCurrentInvCacheVersion = 5;
 bool LLInventoryModel::sFirstTimeInViewer2 = true;
 
 S32 LLInventoryModel::sPendingSystemFolders = 0;
@@ -1011,7 +1011,8 @@ void LLInventoryModel::createNewCategory(const LLUUID& parent_id,
         return;
     }
 
-    if (preferred_type != LLFolderType::FT_NONE)
+    if (preferred_type != LLFolderType::FT_NONE
+        && preferred_type != LLFolderType::FT_OUTFIT)
     {
         // Ultimately this should only be done for non-singleton
         // types. Requires back-end changes to guarantee that others
@@ -1286,6 +1287,10 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
     {
         for (auto& cat : *cat_array)
         {
+            if (add.exceedsLimit())
+            {
+                break;
+            }
             if(add(cat,NULL))
             {
                 cats.push_back(cat);
@@ -1301,6 +1306,10 @@ void LLInventoryModel::collectDescendentsIf(const LLUUID& id,
     {
         for (auto& item : *item_array)
         {
+            if (add.exceedsLimit())
+            {
+                break;
+            }
             if(add(NULL, item))
             {
                 items.push_back(item);
@@ -2855,9 +2864,10 @@ bool LLInventoryModel::loadSkeleton(
 					cached_ids.insert(tcat->getUUID());
 
                     // At the moment download does not provide a thumbnail
-                    // uuid, use the one from cache
+                    // uuid or favorite, use values from cache
                     tcat->setThumbnailUUID(cat->getThumbnailUUID());
-				}
+                    tcat->setFavorite(cat->getIsFavorite());
+                }
 			}
 
 			//BD - Inventory Progress
@@ -3527,22 +3537,22 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 {
     LL_PROFILE_ZONE_NAMED("inventory load from file");
 
-	if(filename.empty())
-	{
-		LL_ERRS(LOG_INV) << "filename is Null!" << LL_ENDL;
-		return false;
-	}
-	LL_INFOS(LOG_INV) << "loading inventory from: (" << filename << ")" << LL_ENDL;
+    if(filename.empty())
+    {
+        LL_ERRS(LOG_INV) << "filename is Null!" << LL_ENDL;
+        return false;
+    }
+    LL_INFOS(LOG_INV) << "loading inventory from: (" << filename << ")" << LL_ENDL;
 
-	llifstream file(filename.c_str());
+    llifstream file(filename.c_str(), std::ifstream::in | std::ifstream::binary);
 
-	if (!file.is_open())
-	{
-		LL_INFOS(LOG_INV) << "unable to load inventory from: " << filename << LL_ENDL;
-		return false;
-	}
-	
-	//BD - Inventory Progress
+    if (!file.is_open())
+    {
+        LL_INFOS(LOG_INV) << "unable to load inventory from: " << filename << LL_ENDL;
+        return false;
+    }
+
+    //BD - Inventory Progress
 	file.seekg(0, std::ios::end);
 	F32 perc = 0.0f;
 	S32 perc_c = 0;
@@ -3552,91 +3562,99 @@ bool LLInventoryModel::loadFromFile(const std::string& filename,
 	LLUIString meta_text = LLTrans::getString("InventorySend");
 	display_startup();
 
-	is_cache_obsolete = true; // Obsolete until proven current
+    is_cache_obsolete = true; // Obsolete until proven current
+    U32 value_nbo = 0;
+    file.read((char*)&value_nbo, sizeof(U32));
+    if (file.fail())
+    {
+        LL_WARNS(LOG_INV) << "Failed to read cache version. Unable to load inventory from: " << filename << LL_ENDL;
+    }
+    else
+    {
+        S32 version = (S32)ntohl(value_nbo);
+        if (version == sCurrentInvCacheVersion)
+        {
+            // Cache is up to date
+            is_cache_obsolete = false;
+        }
+        else
+        {
+            LL_WARNS(LOG_INV) << "Inventory cache is out of date" << LL_ENDL;
+        }
+    }
 
-	//U64 lines_count = 0U;
-	std::string line;
-	LLPointer<LLSDParser> parser = new LLSDNotationParser();
-	while (std::getline(file, line)) 
-	{
-		//BD - Inventory Progress
-		read += file.gcount();
-		perc = (F32)(read / file_size);
-		temp_text.setArg("[COUNT]", llformat("%d", perc_c));
-        LLStartUp::setStartupStatus(-0.01f ,perc, meta_text, temp_text);
+    LLSD inventory;
+    if (!is_cache_obsolete)
+    {
+        LLPointer<LLSDParser> parser = new LLSDBinaryParser();
 
-		LLSD s_item;
-		std::istringstream iss(line);
-		if (parser->parse(iss, s_item, line.length()) == LLSDParser::PARSE_FAILURE)
-		{
-			LL_WARNS(LOG_INV)<< "Parsing inventory cache failed" << LL_ENDL;
-			break;
-		}
+        if (parser->parse(file, inventory, LLSDSerialize::SIZE_UNLIMITED) == LLSDParser::PARSE_FAILURE)
+        {
+            is_cache_obsolete = true;
+            LL_WARNS(LOG_INV) << "Parsing inventory cache failed" << LL_ENDL;
+        }
+    }
 
-		display_startup();
+    if (!is_cache_obsolete)
+    {
+        const LLSD& llsd_cats = inventory["categories"];
+        if (llsd_cats.isArray())
+        {
+            LLSD::array_const_iterator iter = llsd_cats.beginArray();
+            LLSD::array_const_iterator end = llsd_cats.endArray();
+            for (; iter != end; ++iter)
+            {
+                LLPointer<LLViewerInventoryCategory> inv_cat = new LLViewerInventoryCategory(LLUUID::null);
+                if (inv_cat->importLLSDMap(*iter))
+                {
+                    categories.push_back(inv_cat);
+                }
+            }
+        }
 
-		if (s_item.has("inv_cache_version"))
-		{
-			S32 version = s_item["inv_cache_version"].asInteger();
-			display_startup();
-			if (version == sCurrentInvCacheVersion)
-			{
-				// Cache is up to date
-				is_cache_obsolete = false;
-				continue;
-			}
-			else
-			{
-				LL_WARNS(LOG_INV)<< "Inventory cache is out of date" << LL_ENDL;
-				break;
-			}
-		}
-		else if (s_item.has("cat_id"))
-		{
-			if (is_cache_obsolete)
-				break;
+        const LLSD& llsd_items = inventory["items"];
+        if (llsd_items.isArray())
+        {
+            LLSD::array_const_iterator iter = llsd_items.beginArray();
+            LLSD::array_const_iterator end = llsd_items.endArray();
+            for (; iter != end; ++iter)
+            {
+                //BD - Inventory Progress
+                perc = (F32)(perc_c / llsd_items.size());
+                temp_text.setArg("[COUNT]", llformat("%d", perc_c));
+                LLStartUp::setStartupStatus(-0.01f ,perc, meta_text, temp_text);
 
-			LLPointer<LLViewerInventoryCategory> inv_cat = new LLViewerInventoryCategory(LLUUID::null);
-			if(inv_cat->importLLSD(s_item))
-			{
-				categories.push_back(inv_cat);
-			}
-		}
-		else if (s_item.has("item_id"))
-		{
-			if (is_cache_obsolete)
-				break;
+                LLPointer<LLViewerInventoryItem> inv_item = new LLViewerInventoryItem;
+                if (inv_item->fromLLSD(*iter))
+                {
+                    if (inv_item->getUUID().isNull())
+                    {
+                        LL_DEBUGS(LOG_INV) << "Ignoring inventory with null item id: "
+                            << inv_item->getName() << LL_ENDL;
+                    }
+                    else
+                    {
+                        if (inv_item->getType() == LLAssetType::AT_UNKNOWN)
+                        {
+                            cats_to_update.insert(inv_item->getParentUUID());
+                        }
+                        else
+                        {
+                            items.push_back(inv_item);
+                        }
+                    }
+                }
+                ++perc_c;
 
-			LLPointer<LLViewerInventoryItem> inv_item = new LLViewerInventoryItem;
-			if( inv_item->fromLLSD(s_item) )
-			{
-				if(inv_item->getUUID().isNull())
-				{
-					LL_DEBUGS(LOG_INV) << "Ignoring inventory with null item id: "
-						<< inv_item->getName() << LL_ENDL;
-				}
-				else
-				{
-					if (inv_item->getType() == LLAssetType::AT_UNKNOWN)
-					{
-						cats_to_update.insert(inv_item->getParentUUID());
-					}
-					else
-					{
-						items.push_back(inv_item);
-					}
-				}
-			}	
-		}
-		++perc_c;
-
-//      TODO(brad) - figure out how to reenable this without breaking everything else
-//      static constexpr U64 BATCH_SIZE = 512U;
-//      if ((++lines_count % BATCH_SIZE) == 0)
-//      {
-//          // SL-19968 - make sure message system code gets a chance to run every so often
-//          pump_idle_startup_network();
-//      }
+                //      TODO(brad) - figure out how to reenable this without breaking everything else
+                //      static constexpr U64 BATCH_SIZE = 512U;
+                //      if ((++lines_count % BATCH_SIZE) == 0)
+                //      {
+                //          // SL-19968 - make sure message system code gets a chance to run every so often
+                //          pump_idle_startup_network();
+                //      }
+            }
+        }
     }
 
     file.close();
@@ -3659,56 +3677,56 @@ bool LLInventoryModel::saveToFile(const std::string& filename,
 
     try
     {
-        llofstream fileXML(filename.c_str());
-        if (!fileXML.is_open())
+        llofstream fileSD(filename.c_str(), std::ios_base::out | std::ios_base::binary);
+        if (!fileSD.is_open())
         {
             LL_WARNS(LOG_INV) << "Failed to open file. Unable to save inventory to: " << filename << LL_ENDL;
             return false;
         }
-
-        LLSD cache_ver;
-        cache_ver["inv_cache_version"] = sCurrentInvCacheVersion;
-
-        if (fileXML.fail())
+        U32 value_nbo = htonl(sCurrentInvCacheVersion);
+        fileSD.write((const char*)(&value_nbo), sizeof(U32));
+        if (fileSD.fail())
         {
-            LL_WARNS(LOG_INV) << "Failed to write cache version to file. Unable to save inventory to: " << filename << LL_ENDL;
+            LL_WARNS(LOG_INV) << "Failed to write cache. Unable to save inventory to: " << filename << LL_ENDL;
             return false;
         }
 
-        fileXML << LLSDOStreamer<LLSDNotationFormatter>(cache_ver) << std::endl;
+        LLSD inventory;
+        inventory["categories"] = LLSD::emptyArray();
+        LLSD& cat_array = inventory["categories"];
 
         S32 cat_count = 0;
         for (auto& cat : categories)
         {
             if (cat->getVersion() != LLViewerInventoryCategory::VERSION_UNKNOWN)
             {
-                fileXML << LLSDOStreamer<LLSDNotationFormatter>(cat->exportLLSD()) << std::endl;
+                LLSD sd;
+                cat->exportLLSD(sd);
+                cat_array.append(sd);
                 cat_count++;
-            }
-
-            if (fileXML.fail())
-            {
-                LL_WARNS(LOG_INV) << "Failed to write a folder to file. Unable to save inventory to: " << filename << LL_ENDL;
-                return false;
             }
         }
 
+        inventory["items"] = LLSD::emptyArray();
+        LLSD& item_array = inventory["items"];
         auto it_count = items.size();
         for (auto& item : items)
         {
-            fileXML << LLSDOStreamer<LLSDNotationFormatter>(item->asLLSD()) << std::endl;
-
-            if (fileXML.fail())
-            {
-                LL_WARNS(LOG_INV) << "Failed to write an item to file. Unable to save inventory to: " << filename << LL_ENDL;
-                return false;
-            }
+            LLSD sd;
+            item->asLLSD(sd);
+            item_array.append(sd);
         }
-        fileXML.flush();
+        fileSD << LLSDOStreamer<LLSDBinaryFormatter>(inventory) << std::endl;
+        if (fileSD.fail())
+        {
+            LL_WARNS(LOG_INV) << "Failed to write cache. Unable to save inventory to: " << filename << LL_ENDL;
+            return false;
+        }
+        fileSD.flush();
 
-        fileXML.close();
+        fileSD.close();
 
-        LL_INFOS(LOG_INV) << "Inventory saved: " << cat_count << " categories, " << it_count << " items." << LL_ENDL;
+        LL_INFOS(LOG_INV) << "Inventory saved: " << (S32)cat_count << " categories, " << (S32)it_count << " items." << LL_ENDL;
     }
     catch (...)
     {

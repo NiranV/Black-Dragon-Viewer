@@ -355,41 +355,42 @@ void init_audio()
 
 // load up our initial set of sounds we'll want so they're in memory and ready to be played
 
-	bool mute_audio = gSavedSettings.getBOOL("MuteAudio");
+    bool mute_audio = gSavedSettings.getBOOL("MuteAudio");
 
-	if (!mute_audio && false == gSavedSettings.getBOOL("NoPreload"))
-	{
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndAlert")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndBadKeystroke")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndChatFromObject")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndClick")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndClickRelease")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndHealthReductionF")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndHealthReductionM")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndIncomingChat")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndIncomingIM")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInvApplyToObject")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInvalidOp")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInventoryCopyToInv")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndMoneyChangeDown")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndMoneyChangeUp")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectCopyToInv")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectCreate")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectDelete")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectRezIn")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectRezOut")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndSnapshot")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartAutopilot")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartFollowpilot")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartIM")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStopAutopilot")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTeleportOut")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTextureApplyToObject")));
-		//gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTextureCopyToInv")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTyping")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowClose")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowOpen")));
-		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndRestart")));
+    if (!mute_audio && false == gSavedSettings.getBOOL("NoPreload"))
+    {
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndAlert")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndBadKeystroke")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndChatFromObject")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndClick")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndClickRelease")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndHealthReductionF")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndHealthReductionM")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndIncomingChat")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndIncomingIM")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInvApplyToObject")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInvalidOp")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndInventoryCopyToInv")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndMoneyChangeDown")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndMoneyChangeUp")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectCopyToInv")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectCreate")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectDelete")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectRezIn")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndObjectRezOut")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndSnapshot")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartAutopilot")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartFollowpilot")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStartIM")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndStopAutopilot")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTeleportOut")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTextureApplyToObject")));
+        //gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTextureCopyToInv")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndTyping")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowClose")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndWindowOpen")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndRestart")));
+        gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndChatMention")));
 //		//BD - Pie Menu
 		/*gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuAppear")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuHide")));
@@ -401,9 +402,9 @@ void init_audio()
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight5")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight6")));
 		gAudiop->preloadSound(LLUUID(gSavedSettings.getString("UISndPieMenuSliceHighlight7")));*/
-	}
+    }
 
-	audio_update_volume(true);
+    audio_update_volume(true);
 }
 
 void audio_update_volume(bool force_update)

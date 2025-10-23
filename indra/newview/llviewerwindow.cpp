@@ -66,6 +66,7 @@
 #include "llchatentry.h"
 #include "indra_constants.h"
 #include "llassetstorage.h"
+#include "lldate.h"
 #include "llerrorcontrol.h"
 #include "llfontgl.h"
 #include "llmousehandler.h"
@@ -79,14 +80,12 @@
 #include "message.h"
 #include "object_flags.h"
 #include "lltimer.h"
-#include "llviewermenu.h"
 #include "lltooltip.h"
 #include "llmediaentry.h"
 #include "llurldispatcher.h"
 #include "raytrace.h"
 
 // newview includes
-#include "llagent.h"
 #include "llbox.h"
 #include "llchicletbar.h"
 #include "llconsole.h"
@@ -118,7 +117,6 @@
 #include "llfontfreetype.h"
 #include "llgesturemgr.h"
 #include "llglheaders.h"
-#include "lltooltip.h"
 #include "llhudmanager.h"
 #include "llhudobject.h"
 #include "llhudview.h"
@@ -165,17 +163,13 @@
 #include "lltoolselectland.h"
 #include "lltrans.h"
 #include "lluictrlfactory.h"
-#include "llurldispatcher.h"        // SLURL from other app instance
 #include "llversioninfo.h"
 #include "llvieweraudio.h"
-#include "llviewercamera.h"
 #include "llviewergesture.h"
 #include "llviewertexturelist.h"
 #include "llviewerinventory.h"
-#include "llviewerinput.h"
 #include "llviewermedia.h"
 #include "llviewermediafocus.h"
-#include "llviewermenu.h"
 #include "llviewermessage.h"
 #include "llviewerobjectlist.h"
 #include "llviewerparcelmgr.h"
@@ -209,7 +203,6 @@
 
 #include "llwindowlistener.h"
 #include "llviewerwindowlistener.h"
-
 #include "llcleanup.h"
 
 //BD
@@ -273,9 +266,6 @@ static const F32 MAX_UI_SCALE = 7.0f;
 static const F32 MIN_DISPLAY_SCALE = 0.75f;
 
 static const char KEY_MOUSELOOK = 'M';
-
-static LLCachedControl<std::string> sSnapshotBaseName(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseName", "Snapshot"));
-static LLCachedControl<std::string> sSnapshotDir(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseDir", ""));
 
 LLTrace::SampleStatHandle<> LLViewerWindow::sMouseVelocityStat("Mouse Velocity");
 
@@ -451,192 +441,192 @@ private:
     void clearText() { mLineList.clear(); }
 
 public:
-	LLDebugText(LLViewerWindow* window) : mWindow(window) {}
+    LLDebugText(LLViewerWindow* window) : mWindow(window) {}
 
-	void update()
-	{
-		if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
-		{
-			clearText();
-			return;
-		}
+    void update()
+    {
+        if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+        {
+            clearText();
+            return;
+        }
 
-		static LLCachedControl<bool> log_texture_traffic(gSavedSettings,"LogTextureNetworkTraffic", false) ;
+        static LLCachedControl<bool> log_texture_traffic(gSavedSettings,"LogTextureNetworkTraffic", false) ;
 
-		std::string wind_vel_text;
-		std::string wind_vector_text;
-		std::string rwind_vel_text;
-		std::string rwind_vector_text;
-		std::string audio_text;
+        std::string wind_vel_text;
+        std::string wind_vector_text;
+        std::string rwind_vel_text;
+        std::string rwind_vector_text;
+        std::string audio_text;
 
-		static const std::string beacon_particle = LLTrans::getString("BeaconParticle");
-		static const std::string beacon_physical = LLTrans::getString("BeaconPhysical");
-		static const std::string beacon_scripted = LLTrans::getString("BeaconScripted");
-		static const std::string beacon_scripted_touch = LLTrans::getString("BeaconScriptedTouch");
-		static const std::string beacon_sound = LLTrans::getString("BeaconSound");
-		static const std::string beacon_media = LLTrans::getString("BeaconMedia");
-		static const std::string beacon_sun = LLTrans::getString("BeaconSun");
-		static const std::string beacon_moon = LLTrans::getString("BeaconMoon");
-		static const std::string particle_hiding = LLTrans::getString("ParticleHiding");
+        static const std::string beacon_particle = LLTrans::getString("BeaconParticle");
+        static const std::string beacon_physical = LLTrans::getString("BeaconPhysical");
+        static const std::string beacon_scripted = LLTrans::getString("BeaconScripted");
+        static const std::string beacon_scripted_touch = LLTrans::getString("BeaconScriptedTouch");
+        static const std::string beacon_sound = LLTrans::getString("BeaconSound");
+        static const std::string beacon_media = LLTrans::getString("BeaconMedia");
+        static const std::string beacon_sun = LLTrans::getString("BeaconSun");
+        static const std::string beacon_moon = LLTrans::getString("BeaconMoon");
+        static const std::string particle_hiding = LLTrans::getString("ParticleHiding");
 
-		// Draw the statistics in a light gray
-		// and in a thin font
-		mTextColor = LLColor4( 0.86f, 0.86f, 0.86f, 1.f );
+        // Draw the statistics in a light gray
+        // and in a thin font
+        mTextColor = LLColor4( 0.86f, 0.86f, 0.86f, 1.f );
 
-		// Draw stuff growing up from right lower corner of screen
-		S32 x_right = mWindow->getWorldViewWidthScaled();
-		S32 xpos = x_right - 400;
-		xpos = llmax(xpos, 0);
-		S32 ypos = 64;
-		const S32 y_inc = 20;
+        // Draw stuff growing up from right lower corner of screen
+        S32 x_right = mWindow->getWorldViewWidthScaled();
+        S32 xpos = x_right - 400;
+        xpos = llmax(xpos, 0);
+        S32 ypos = 64;
+        const S32 y_inc = 20;
 
-		// Camera matrix text is hard to see again a white background
-		// Add a dark background underneath the matrices for readability (contrast)
-		mBackRectCamera1.mLeft   = xpos;
-		mBackRectCamera1.mRight  = x_right;
-		mBackRectCamera1.mTop    = -1;
-		mBackRectCamera1.mBottom = -1;
-		mBackRectCamera2 = mBackRectCamera1;
+        // Camera matrix text is hard to see again a white background
+        // Add a dark background underneath the matrices for readability (contrast)
+        mBackRectCamera1.mLeft   = xpos;
+        mBackRectCamera1.mRight  = x_right;
+        mBackRectCamera1.mTop    = -1;
+        mBackRectCamera1.mBottom = -1;
+        mBackRectCamera2 = mBackRectCamera1;
 
-		mBackColor = LLUIColorTable::instance().getColor( "MenuDefaultBgColor" );
+        mBackColor = LLUIColorTable::instance().getColor( "MenuDefaultBgColor" );
 
-		clearText();
-		
-		static LLCachedControl<bool> debugShowTime(gSavedSettings, "DebugShowTime");
-		if (debugShowTime)
-		{
-			F32 time = gFrameTimeSeconds;
-			S32 hours = (S32)(time / (60*60));
-			S32 mins = (S32)((time - hours*(60*60)) / 60);
-			S32 secs = (S32)((time - hours*(60*60) - mins*60));
-			addText(xpos, ypos, llformat("Time: %d:%02d:%02d", hours,mins,secs)); ypos += y_inc;
-		}
-		
-		static LLCachedControl<bool> debugShowMemory(gSavedSettings, "DebugShowMemory");
-		if (debugShowMemory)
-		{
-			addText(xpos, ypos,
-					STRINGIZE("Memory: " << (LLMemory::getCurrentRSS() / 1024) << " (KB)"));
-			ypos += y_inc;
-		}
+        clearText();
 
-		if (gDisplayCameraPos)
-		{
-			std::string camera_view_text;
-			std::string camera_center_text;
-			std::string agent_view_text;
-			std::string agent_left_text;
-			std::string agent_center_text;
-			std::string agent_root_center_text;
+        static LLCachedControl<bool> debug_show_time(gSavedSettings, "DebugShowTime", false);
+        if (debug_show_time())
+        {
+            F32 time = gFrameTimeSeconds;
+            S32 hours = (S32)(time / (60*60));
+            S32 mins = (S32)((time - hours*(60*60)) / 60);
+            S32 secs = (S32)((time - hours*(60*60) - mins*60));
+            addText(xpos, ypos, llformat("Time: %d:%02d:%02d", hours,mins,secs)); ypos += y_inc;
+        }
 
-			LLVector3d tvector; // Temporary vector to hold data for printing.
+        static LLCachedControl<bool> debug_show_memory(gSavedSettings, "DebugShowMemory", false);
+        if (debug_show_memory())
+        {
+            addText(xpos, ypos,
+                    STRINGIZE("Memory: " << (LLMemory::getCurrentRSS() / 1024) << " (KB)"));
+            ypos += y_inc;
+        }
 
-			// Update camera center, camera view, wind info every other frame
-			tvector = gAgent.getPositionGlobal();
-			agent_center_text = llformat("AgentCenter  %f %f %f",
-										 (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+        if (gDisplayCameraPos)
+        {
+            std::string camera_view_text;
+            std::string camera_center_text;
+            std::string agent_view_text;
+            std::string agent_left_text;
+            std::string agent_center_text;
+            std::string agent_root_center_text;
 
-			if (isAgentAvatarValid())
-			{
-				tvector = gAgent.getPosGlobalFromAgent(gAgentAvatarp->mRoot->getWorldPosition());
-				agent_root_center_text = llformat("AgentRootCenter %f %f %f",
-												  (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
-			}
-			else
-			{
-				agent_root_center_text = "---";
-			}
+            LLVector3d tvector; // Temporary vector to hold data for printing.
+
+            // Update camera center, camera view, wind info every other frame
+            tvector = gAgent.getPositionGlobal();
+            agent_center_text = llformat("AgentCenter  %f %f %f",
+                                         (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+
+            if (isAgentAvatarValid())
+            {
+                tvector = gAgent.getPosGlobalFromAgent(gAgentAvatarp->mRoot->getWorldPosition());
+                agent_root_center_text = llformat("AgentRootCenter %f %f %f",
+                                                  (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+            }
+            else
+            {
+                agent_root_center_text = "---";
+            }
 
 
-			tvector = LLVector4(gAgent.getFrameAgent().getAtAxis());
-			agent_view_text = llformat("AgentAtAxis  %f %f %f",
-									   (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+            tvector = LLVector4(gAgent.getFrameAgent().getAtAxis());
+            agent_view_text = llformat("AgentAtAxis  %f %f %f",
+                                       (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
 
-			tvector = LLVector4(gAgent.getFrameAgent().getLeftAxis());
-			agent_left_text = llformat("AgentLeftAxis  %f %f %f",
-									   (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+            tvector = LLVector4(gAgent.getFrameAgent().getLeftAxis());
+            agent_left_text = llformat("AgentLeftAxis  %f %f %f",
+                                       (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
 
-			tvector = gAgentCamera.getCameraPositionGlobal();
-			camera_center_text = llformat("CameraCenter %f %f %f",
-										  (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
+            tvector = gAgentCamera.getCameraPositionGlobal();
+            camera_center_text = llformat("CameraCenter %f %f %f",
+                                          (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
 
-			tvector = LLVector4(LLViewerCamera::getInstance()->getAtAxis());
-			camera_view_text = llformat("CameraAtAxis    %f %f %f",
-										(F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
-		
-			addText(xpos, ypos, agent_center_text);  ypos += y_inc;
-			addText(xpos, ypos, agent_root_center_text);  ypos += y_inc;
-			addText(xpos, ypos, agent_view_text);  ypos += y_inc;
-			addText(xpos, ypos, agent_left_text);  ypos += y_inc;
-			addText(xpos, ypos, camera_center_text);  ypos += y_inc;
-			addText(xpos, ypos, camera_view_text);  ypos += y_inc;
-		}
+            tvector = LLVector4(LLViewerCamera::getInstance()->getAtAxis());
+            camera_view_text = llformat("CameraAtAxis    %f %f %f",
+                                        (F32)(tvector.mdV[VX]), (F32)(tvector.mdV[VY]), (F32)(tvector.mdV[VZ]));
 
-		if (gDisplayWindInfo)
-		{
-			wind_vel_text = llformat("Wind velocity %.2f m/s", gWindVec.magVec());
-			wind_vector_text = llformat("Wind vector   %.2f %.2f %.2f", gWindVec.mV[0], gWindVec.mV[1], gWindVec.mV[2]);
-			rwind_vel_text = llformat("RWind vel %.2f m/s", gRelativeWindVec.magVec());
-			rwind_vector_text = llformat("RWind vec   %.2f %.2f %.2f", gRelativeWindVec.mV[0], gRelativeWindVec.mV[1], gRelativeWindVec.mV[2]);
+            addText(xpos, ypos, agent_center_text);  ypos += y_inc;
+            addText(xpos, ypos, agent_root_center_text);  ypos += y_inc;
+            addText(xpos, ypos, agent_view_text);  ypos += y_inc;
+            addText(xpos, ypos, agent_left_text);  ypos += y_inc;
+            addText(xpos, ypos, camera_center_text);  ypos += y_inc;
+            addText(xpos, ypos, camera_view_text);  ypos += y_inc;
+        }
 
-			addText(xpos, ypos, wind_vel_text);  ypos += y_inc;
-			addText(xpos, ypos, wind_vector_text);  ypos += y_inc;
-			addText(xpos, ypos, rwind_vel_text);  ypos += y_inc;
-			addText(xpos, ypos, rwind_vector_text);  ypos += y_inc;
-		}
-		if (gDisplayWindInfo)
-		{
-			audio_text = llformat("Audio for wind: %d", gAudiop ? gAudiop->isWindEnabled() : -1);
-			addText(xpos, ypos, audio_text);  ypos += y_inc;
-		}
-		if (gDisplayFOV)
-		{
-			addText(xpos, ypos, llformat("FOV: %2.1f deg", RAD_TO_DEG * LLViewerCamera::getInstance()->getView()));
-			ypos += y_inc;
-		}
-		if (gDisplayBadge)
-		{
-			addText(xpos, ypos+(y_inc/2), llformat("Hippos!", RAD_TO_DEG * LLViewerCamera::getInstance()->getView()));
-			ypos += y_inc * 2;
-		}
-		
-		/*if (LLViewerJoystick::getInstance()->getOverrideCamera())
-		{
-			addText(xpos + 200, ypos, llformat("Flycam"));
-			ypos += y_inc;
-		}*/
-		
-		static LLCachedControl<bool> debugShowRenderInfo(gSavedSettings, "DebugShowRenderInfo");
-		if (debugShowRenderInfo)
-		{
-			LLTrace::Recording& last_frame_recording = LLTrace::get_frame_recording().getLastRecording();
+        if (gDisplayWindInfo)
+        {
+            wind_vel_text = llformat("Wind velocity %.2f m/s", gWindVec.magVec());
+            wind_vector_text = llformat("Wind vector   %.2f %.2f %.2f", gWindVec.mV[0], gWindVec.mV[1], gWindVec.mV[2]);
+            rwind_vel_text = llformat("RWind vel %.2f m/s", gRelativeWindVec.magVec());
+            rwind_vector_text = llformat("RWind vec   %.2f %.2f %.2f", gRelativeWindVec.mV[0], gRelativeWindVec.mV[1], gRelativeWindVec.mV[2]);
 
-			//show streaming cost/triangle count of known prims in current region OR selection
-			{
-				F32 cost = 0.f;
-				S32 count = 0;
-				S32 vcount = 0;
-				S32 object_count = 0;
-				S32 total_bytes = 0;
-				S32 visible_bytes = 0;
+            addText(xpos, ypos, wind_vel_text);  ypos += y_inc;
+            addText(xpos, ypos, wind_vector_text);  ypos += y_inc;
+            addText(xpos, ypos, rwind_vel_text);  ypos += y_inc;
+            addText(xpos, ypos, rwind_vector_text);  ypos += y_inc;
+        }
+        if (gDisplayWindInfo)
+        {
+            audio_text = llformat("Audio for wind: %d", gAudiop ? gAudiop->isWindEnabled() : -1);
+            addText(xpos, ypos, audio_text);  ypos += y_inc;
+        }
+        if (gDisplayFOV)
+        {
+            addText(xpos, ypos, llformat("FOV: %2.1f deg", RAD_TO_DEG * LLViewerCamera::getInstance()->getView()));
+            ypos += y_inc;
+        }
+        if (gDisplayBadge)
+        {
+            addText(xpos, ypos+(y_inc/2), llformat("Hippos!", RAD_TO_DEG * LLViewerCamera::getInstance()->getView()));
+            ypos += y_inc * 2;
+        }
 
-				const char* label = "Region";
-				if (LLSelectMgr::getInstance()->getSelection()->getObjectCount() == 0)
-				{ //region
-					LLViewerRegion* region = gAgent.getRegion();
-					if (region)
-					{
-						for (S32 i = 0; i < gObjectList.getNumObjects(); ++i)
-						{
-							LLViewerObject* object = gObjectList.getObject(i);
-							if (object && 
-								object->getRegion() == region &&
-								object->getVolume())
-							{
-								object_count++;
-								S32 bytes = 0;	
-								S32 visible = 0;
-								cost += object->getStreamingCost();
+        /*if (LLViewerJoystick::getInstance()->getOverrideCamera())
+        {
+            addText(xpos + 200, ypos, llformat("Flycam"));
+            ypos += y_inc;
+        }*/
+
+        static LLCachedControl<bool> debug_show_render_info(gSavedSettings, "DebugShowRenderInfo", false);
+        if (debug_show_render_info())
+        {
+            LLTrace::Recording& last_frame_recording = LLTrace::get_frame_recording().getLastRecording();
+
+            //show streaming cost/triangle count of known prims in current region OR selection
+            {
+                F32 cost = 0.f;
+                S32 count = 0;
+                S32 vcount = 0;
+                S32 object_count = 0;
+                S32 total_bytes = 0;
+                S32 visible_bytes = 0;
+
+                const char* label = "Region";
+                if (LLSelectMgr::getInstance()->getSelection()->getObjectCount() == 0)
+                { //region
+                    LLViewerRegion* region = gAgent.getRegion();
+                    if (region)
+                    {
+                        for (S32 i = 0; i < gObjectList.getNumObjects(); ++i)
+                        {
+                            LLViewerObject* object = gObjectList.getObject(i);
+                            if (object &&
+                                object->getRegion() == region &&
+                                object->getVolume())
+                            {
+                                object_count++;
+                                S32 bytes = 0;
+                                S32 visible = 0;
+                                cost += object->getStreamingCost();
                                 LLMeshCostData costs;
                                 if (object->getCostData(costs))
                                 {
@@ -745,11 +735,11 @@ public:
             }
 
             gPipeline.mNumVisibleNodes = LLPipeline::sVisibleLightCount = 0;
-		}
-		static LLCachedControl<bool> debugShowAvatarRenderInfo(gSavedSettings, "DebugShowAvatarRenderInfo");
-		if (debugShowAvatarRenderInfo)
-		{
-			std::map<std::string, LLVOAvatar*> sorted_avs;
+        }
+        static LLCachedControl<bool> debug_show_avatar_render_info(gSavedSettings, "DebugShowAvatarRenderInfo", false);
+        if (debug_show_avatar_render_info())
+        {
+            std::map<std::string, LLVOAvatar*> sorted_avs;
             {
                 for (LLCharacter* character : LLCharacter::sInstances)
                 {
@@ -774,40 +764,49 @@ public:
 				addText(xpos, ypos, llformat("%s : %s, complexity %d, area %.2f",
 					trunc_name.c_str(),
                     LLVOAvatar::rezStatusToString(avatar->getRezzedStatus()).c_str(),
-					avatar->getVisualComplexity(),
-					avatar->getAttachmentSurfaceArea()));
-				ypos += y_inc;
-				av_iter++;
-			}
-		}
-		static LLCachedControl<bool> debugShowRenderMatrices(gSavedSettings, "DebugShowRenderMatrices");
-		if (debugShowRenderMatrices)
-		{
-			char camera_lines[8][32];
-			memset(camera_lines, ' ', sizeof(camera_lines));
+                    avatar->getVisualComplexity(),
+                    avatar->getAttachmentSurfaceArea()));
+                ypos += y_inc;
+                av_iter++;
+            }
+        }
+        static LLCachedControl<bool> debug_show_render_matrices(gSavedSettings, "DebugShowRenderMatrices", false);
+        if (debug_show_render_matrices())
+        {
+            char camera_lines[8][32];
+            memset(camera_lines, ' ', sizeof(camera_lines));
 
-			// Projection last column is always <0,0,-1.0001,0>
-			// Projection last row is always <0,0,-0.2>
-			mBackRectCamera1.mBottom = ypos - y_inc + 2;
-			MATRIX_ROW_N32_TO_STR(gGLProjection, 12,camera_lines[7]); addText(xpos, ypos, std::string(camera_lines[7])); ypos += y_inc;
-			MATRIX_ROW_N32_TO_STR(gGLProjection,  8,camera_lines[6]); addText(xpos, ypos, std::string(camera_lines[6])); ypos += y_inc;
-			MATRIX_ROW_N32_TO_STR(gGLProjection,  4,camera_lines[5]); addText(xpos, ypos, std::string(camera_lines[5])); ypos += y_inc; mBackRectCamera1.mTop    = ypos + 2;
-			MATRIX_ROW_N32_TO_STR(gGLProjection,  0,camera_lines[4]); addText(xpos, ypos, std::string(camera_lines[4])); ypos += y_inc; mBackRectCamera2.mBottom = ypos + 2;
+            // Projection last column is always <0,0,-1.0001,0>
+            // Projection last row is always <0,0,-0.2>
+            mBackRectCamera1.mBottom = ypos - y_inc + 2;
+            MATRIX_ROW_N32_TO_STR(gGLProjection, 12,camera_lines[7]); addText(xpos, ypos, std::string(camera_lines[7])); ypos += y_inc;
+            MATRIX_ROW_N32_TO_STR(gGLProjection,  8,camera_lines[6]); addText(xpos, ypos, std::string(camera_lines[6])); ypos += y_inc;
+            MATRIX_ROW_N32_TO_STR(gGLProjection,  4,camera_lines[5]); addText(xpos, ypos, std::string(camera_lines[5])); ypos += y_inc; mBackRectCamera1.mTop    = ypos + 2;
+            MATRIX_ROW_N32_TO_STR(gGLProjection,  0,camera_lines[4]); addText(xpos, ypos, std::string(camera_lines[4])); ypos += y_inc; mBackRectCamera2.mBottom = ypos + 2;
 
-			addText(xpos, ypos, "Projection Matrix");
-			ypos += y_inc;
+            addText(xpos, ypos, "Projection Matrix");
+            ypos += y_inc;
 
-			// View last column is always <0,0,0,1>
-			MATRIX_ROW_F32_TO_STR(gGLModelView, 12,camera_lines[3]); addText(xpos, ypos, std::string(camera_lines[3])); ypos += y_inc;
-			MATRIX_ROW_N32_TO_STR(gGLModelView,  8,camera_lines[2]); addText(xpos, ypos, std::string(camera_lines[2])); ypos += y_inc;
-			MATRIX_ROW_N32_TO_STR(gGLModelView,  4,camera_lines[1]); addText(xpos, ypos, std::string(camera_lines[1])); ypos += y_inc; mBackRectCamera2.mTop = ypos + 2;
-			MATRIX_ROW_N32_TO_STR(gGLModelView,  0,camera_lines[0]); addText(xpos, ypos, std::string(camera_lines[0])); ypos += y_inc;
+#if LL_DARWIN
+// For sprintf deprecation
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+            // View last column is always <0,0,0,1>
+            MATRIX_ROW_F32_TO_STR(gGLModelView, 12,camera_lines[3]); addText(xpos, ypos, std::string(camera_lines[3])); ypos += y_inc;
+#if LL_DARWIN
+#pragma clang diagnostic pop
+#endif
+            MATRIX_ROW_N32_TO_STR(gGLModelView,  8,camera_lines[2]); addText(xpos, ypos, std::string(camera_lines[2])); ypos += y_inc;
+            MATRIX_ROW_N32_TO_STR(gGLModelView,  4,camera_lines[1]); addText(xpos, ypos, std::string(camera_lines[1])); ypos += y_inc; mBackRectCamera2.mTop = ypos + 2;
+            MATRIX_ROW_N32_TO_STR(gGLModelView,  0,camera_lines[0]); addText(xpos, ypos, std::string(camera_lines[0])); ypos += y_inc;
 
-			addText(xpos, ypos, "View Matrix");
-			ypos += y_inc;
-		}
-		// disable use of glReadPixels which messes up nVidia nSight graphics debugging
-        if (gSavedSettings.getBOOL("DebugShowColor") && !LLRender::sNsightDebugSupport)
+            addText(xpos, ypos, "View Matrix");
+            ypos += y_inc;
+        }
+        // disable use of glReadPixels which messes up nVidia nSight graphics debugging
+        static LLCachedControl<bool> debug_show_color(gSavedSettings, "DebugShowColor", false);
+        if (debug_show_color() && !LLRender::sNsightDebugSupport)
         {
             U8 color[4];
             LLCoordGL coord = gViewerWindow->getCurrentMouse();
@@ -822,154 +821,153 @@ public:
         }
 
         // only display these messages if we are actually rendering beacons at this moment
-		if (LLPipeline::getRenderBeacons() && LLFloaterReg::instanceVisible("beacons"))
-		{
-			if (LLPipeline::getRenderMOAPBeacons())
-			{
-				addText(xpos, ypos, "Viewing media beacons (white)");
-				ypos += y_inc;
-			}
+        if (LLPipeline::getRenderBeacons() && LLFloaterReg::instanceVisible("beacons"))
+        {
+            if (LLPipeline::getRenderMOAPBeacons())
+            {
+                addText(xpos, ypos, "Viewing media beacons (white)");
+                ypos += y_inc;
+            }
 
-			if (LLPipeline::toggleRenderTypeControlNegated(LLPipeline::RENDER_TYPE_PARTICLES))
-			{
-				addText(xpos, ypos, particle_hiding);
-				ypos += y_inc;
-			}
+            if (LLPipeline::toggleRenderTypeControlNegated(LLPipeline::RENDER_TYPE_PARTICLES))
+            {
+                addText(xpos, ypos, particle_hiding);
+                ypos += y_inc;
+            }
 
-			if (LLPipeline::getRenderParticleBeacons())
-			{
-				addText(xpos, ypos, "Viewing particle beacons (blue)");
-				ypos += y_inc;
-			}
+            if (LLPipeline::getRenderParticleBeacons())
+            {
+                addText(xpos, ypos, "Viewing particle beacons (blue)");
+                ypos += y_inc;
+            }
 
-			if (LLPipeline::getRenderSoundBeacons())
-			{
-				addText(xpos, ypos, "Viewing sound beacons (yellow)");
-				ypos += y_inc;
-			}
+            if (LLPipeline::getRenderSoundBeacons())
+            {
+                addText(xpos, ypos, "Viewing sound beacons (yellow)");
+                ypos += y_inc;
+            }
 
-			if (LLPipeline::getRenderScriptedBeacons())
-			{
-				addText(xpos, ypos, beacon_scripted);
-				ypos += y_inc;
-			}
-			else
-				if (LLPipeline::getRenderScriptedTouchBeacons())
-				{
-					addText(xpos, ypos, beacon_scripted_touch);
-					ypos += y_inc;
-				}
+            if (LLPipeline::getRenderScriptedBeacons())
+            {
+                addText(xpos, ypos, beacon_scripted);
+                ypos += y_inc;
+            }
+            else
+                if (LLPipeline::getRenderScriptedTouchBeacons())
+                {
+                    addText(xpos, ypos, beacon_scripted_touch);
+                    ypos += y_inc;
+                }
 
-			if (LLPipeline::getRenderPhysicalBeacons())
-			{
-				addText(xpos, ypos, "Viewing physical object beacons (green)");
-				ypos += y_inc;
-			}
-		}
+            if (LLPipeline::getRenderPhysicalBeacons())
+            {
+                addText(xpos, ypos, "Viewing physical object beacons (green)");
+                ypos += y_inc;
+            }
+        }
 
-		static LLUICachedControl<bool> show_sun_beacon("sunbeacon", false);
-		static LLUICachedControl<bool> show_moon_beacon("moonbeacon", false);
+        static LLUICachedControl<bool> show_sun_beacon("sunbeacon", false);
+        static LLUICachedControl<bool> show_moon_beacon("moonbeacon", false);
 
-		if (show_sun_beacon)
-		{
-			addText(xpos, ypos, beacon_sun);
-			ypos += y_inc;
-		}
-		if (show_moon_beacon)
-		{
-			addText(xpos, ypos, beacon_moon);
-			ypos += y_inc;
-		}
+        if (show_sun_beacon)
+        {
+            addText(xpos, ypos, beacon_sun);
+            ypos += y_inc;
+        }
+        if (show_moon_beacon)
+        {
+            addText(xpos, ypos, beacon_moon);
+            ypos += y_inc;
+        }
 
-		if(log_texture_traffic)
-		{	
-			U32 old_y = ypos ;
-			for(S32 i = LLViewerTexture::BOOST_NONE; i < LLViewerTexture::MAX_GL_IMAGE_CATEGORY; i++)
-			{
-				if(gTotalTextureBytesPerBoostLevel[i] > (S32Bytes)0)
-				{
-					addText(xpos, ypos, llformat("Boost_Level %d:  %.3f MB", i, F32Megabytes(gTotalTextureBytesPerBoostLevel[i]).value()));
-					ypos += y_inc;
-				}
-			}
-			if(ypos != old_y)
-			{
-				addText(xpos, ypos, "Network traffic for textures:");
-				ypos += y_inc;
-			}
-		}				
+        if(log_texture_traffic)
+        {
+            U32 old_y = ypos ;
+            for(S32 i = LLViewerTexture::BOOST_NONE; i < LLViewerTexture::MAX_GL_IMAGE_CATEGORY; i++)
+            {
+                if(gTotalTextureBytesPerBoostLevel[i] > (S32Bytes)0)
+                {
+                    addText(xpos, ypos, llformat("Boost_Level %d:  %.3f MB", i, F32Megabytes(gTotalTextureBytesPerBoostLevel[i]).value()));
+                    ypos += y_inc;
+                }
+            }
+            if(ypos != old_y)
+            {
+                addText(xpos, ypos, "Network traffic for textures:");
+                ypos += y_inc;
+            }
+        }
 
-		static LLCachedControl<bool> debugShowTextureInfo(gSavedSettings, "DebugShowTextureInfo");
-		if (debugShowTextureInfo)
-		{
-			LLViewerObject* objectp = NULL ;
-			
-			LLSelectNode* nodep = LLSelectMgr::instance().getHoverNode();
-			if (nodep)
-			{
-				objectp = nodep->getObject();
-			}
+        static LLCachedControl<bool> debug_show_texture_info(gSavedSettings, "DebugShowTextureInfo", false);
+        if (debug_show_texture_info())
+        {
+            LLViewerObject* objectp = NULL ;
 
-			if (objectp && !objectp->isDead())
-			{
-				S32 num_faces = objectp->mDrawable->getNumFaces() ;
-				std::set<LLViewerFetchedTexture*> tex_list;
+            LLSelectNode* nodep = LLSelectMgr::instance().getHoverNode();
+            if (nodep)
+            {
+                objectp = nodep->getObject();
+            }
 
-				for(S32 i = 0 ; i < num_faces; i++)
-				{
-					LLFace* facep = objectp->mDrawable->getFace(i) ;
-					if(facep)
-					{						
-						LLViewerFetchedTexture* tex = dynamic_cast<LLViewerFetchedTexture*>(facep->getTexture()) ;
-						if(tex)
-						{
-							if(tex_list.find(tex) != tex_list.end())
-							{
-								continue ; //already displayed.
-							}
-							tex_list.insert(tex);
+            if (objectp && !objectp->isDead())
+            {
+                S32 num_faces = objectp->mDrawable->getNumFaces() ;
+                std::set<LLViewerFetchedTexture*> tex_list;
 
-							std::string uuid_str;
-							tex->getID().toString(uuid_str);
-							uuid_str = uuid_str.substr(0,7);
+                for(S32 i = 0 ; i < num_faces; i++)
+                {
+                    LLFace* facep = objectp->mDrawable->getFace(i) ;
+                    if(facep)
+                    {
+                        LLViewerFetchedTexture* tex = dynamic_cast<LLViewerFetchedTexture*>(facep->getTexture()) ;
+                        if(tex)
+                        {
+                            if(tex_list.find(tex) != tex_list.end())
+                            {
+                                continue ; //already displayed.
+                            }
+                            tex_list.insert(tex);
 
-							addText(xpos, ypos, llformat("ID: %s v_size: %.3f", uuid_str.c_str(), tex->getMaxVirtualSize()));
-							ypos += y_inc;
+                            std::string uuid_str;
+                            tex->getID().toString(uuid_str);
+                            uuid_str = uuid_str.substr(0,7);
 
-							addText(xpos, ypos, llformat("discard level: %d desired level: %d Missing: %s", tex->getDiscardLevel(), 
-								tex->getDesiredDiscardLevel(), tex->isMissingAsset() ? "Y" : "N"));
-							ypos += y_inc;
-						}
-					}
-				}
-			}
-		}
-	}
+                            addText(xpos, ypos, llformat("ID: %s v_size: %.3f", uuid_str.c_str(), tex->getMaxVirtualSize()));
+                            ypos += y_inc;
 
-	void draw()
-	{
-		LL_RECORD_BLOCK_TIME(FTM_DISPLAY_DEBUG_TEXT);
+                            addText(xpos, ypos, llformat("discard level: %d desired level: %d Missing: %s", tex->getDiscardLevel(),
+                                tex->getDesiredDiscardLevel(), tex->isMissingAsset() ? "Y" : "N"));
+                            ypos += y_inc;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-		// Camera matrix text is hard to see again a white background
-		// Add a dark background underneath the matrices for readability (contrast)
-		if (mBackRectCamera1.mTop >= 0)
-		{
-			mBackColor.setAlpha( 0.75f );
-			gl_rect_2d(mBackRectCamera1, mBackColor, true);
+    void draw()
+    {
+        LL_RECORD_BLOCK_TIME(FTM_DISPLAY_DEBUG_TEXT);
 
-			mBackColor.setAlpha( 0.66f );
-			gl_rect_2d(mBackRectCamera2, mBackColor, true);
-		}
+        // Camera matrix text is hard to see again a white background
+        // Add a dark background underneath the matrices for readability (contrast)
+        if (mBackRectCamera1.mTop >= 0)
+        {
+            mBackColor.setAlpha( 0.75f );
+            gl_rect_2d(mBackRectCamera1, mBackColor, true);
 
-		for (line_list_t::iterator iter = mLineList.begin();
-			 iter != mLineList.end(); ++iter)
-		{
-			const Line& line = *iter;
-			LLFontGL::getFontMonospace()->renderUTF8(line.text, 0, (F32)line.x, (F32)line.y, mTextColor,
-											 LLFontGL::LEFT, LLFontGL::TOP,
-											 LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, NULL, false);
-		}
-	}
+            mBackColor.setAlpha( 0.66f );
+            gl_rect_2d(mBackRectCamera2, mBackColor, true);
+        }
+
+        for (line_list_t::iterator iter = mLineList.begin();
+             iter != mLineList.end(); ++iter)
+        {
+            const Line& line = *iter;
+            LLFontGL::getFontMonospace()->renderUTF8(line.text, 0, (F32)line.x, (F32)line.y, mTextColor,
+                    LLFontGL::LEFT, LLFontGL::TOP, LLFontGL::NORMAL, LLFontGL::NO_SHADOW);
+        }
+    }
 
 };
 
@@ -1485,10 +1483,16 @@ void LLViewerWindow::handleMouseMove(LLWindow *window,  LLCoordGL pos, MASK mask
 
     mWindow->showCursorFromMouseMove();
 
-    if (gAwayTimer.getElapsedTimeF32() > LLAgent::MIN_AFK_TIME
-        && !gDisconnected)
+    if (!gDisconnected)
+    {
+        if (gAwayTimer.getElapsedTimeF32() > LLAgent::MIN_AFK_TIME)
     {
         gAgent.clearAFK();
+    }
+        else
+        {
+            gAwayTriggerTimer.reset();
+        }
     }
 }
 
@@ -1518,10 +1522,13 @@ void LLViewerWindow::handleMouseLeave(LLWindow *window)
 
 bool LLViewerWindow::handleCloseRequest(LLWindow *window)
 {
-    // User has indicated they want to close, but we may need to ask
-    // about modified documents.
-    LLAppViewer::instance()->userQuit();
-    // Don't quit immediately
+    if (!LLApp::isExiting() && !LLApp::isStopped())
+    {
+        // User has indicated they want to close, but we may need to ask
+        // about modified documents.
+        LLAppViewer::instance()->userQuit();
+        // Don't quit immediately
+    }
     return false;
 }
 
@@ -1605,6 +1612,10 @@ bool LLViewerWindow::handleTranslatedKeyDown(KEY key,  MASK mask, bool repeated)
 	{
 		gAgent.clearAFK();
 	}
+    else
+    {
+        gAwayTriggerTimer.reset();
+    }
 
 	// *NOTE: We want to interpret KEY_RETURN later when it arrives as
 	// a Unicode char, not as a keydown.  Otherwise when client frame
@@ -1679,7 +1690,8 @@ bool LLViewerWindow::handleActivate(LLWindow *window, bool activated)
         mActive = false;
 
         // if the user has chosen to go Away automatically after some time, then go Away when minimizing
-        if (gSavedSettings.getS32("AFKTimeout"))
+        static LLCachedControl<S32> afk_time(gSavedSettings, "AFKTimeout", 300);
+        if (afk_time())
         {
             gAgent.setAFK();
         }
@@ -2108,6 +2120,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 
 std::string LLViewerWindow::getLastSnapshotDir()
 {
+    static LLCachedControl<std::string> sSnapshotDir(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseDir", ""));
     return sSnapshotDir;
 }
 
@@ -2280,7 +2293,7 @@ void LLViewerWindow::initWorldUI()
 		gStatusBar->setFollowsAll();
 		gStatusBar->setShape(mStatusBarContainer->getLocalRect());
 		mStatusBarContainer->addChildInBack(gStatusBar);
-		mStatusBarContainer->setVisible(TRUE);
+		mStatusBarContainer->setVisible(true);
 	}
 
 	//BD
@@ -2295,7 +2308,7 @@ void LLViewerWindow::initWorldUI()
 			mChicletBar->setShape(mChicletContainer->getLocalRect());
 			mChicletBar->setFollowsAll();
 			mChicletContainer->addChild(mChicletBar);
-			mChicletContainer->setVisible(TRUE);
+			mChicletContainer->setVisible(true);
 		}
 	}
 
@@ -2308,7 +2321,7 @@ void LLViewerWindow::initWorldUI()
 		gSideBar = new LLSideBar(mMachinimaSidebar->getLocalRect());
 		gSideBar->setShape(mMachinimaSidebar->getLocalRect());
 		mMachinimaSidebar->addChild(gSideBar);
-		mMachinimaSidebar->setVisible(TRUE);
+		mMachinimaSidebar->setVisible(true);
 	}
 
 
@@ -2322,7 +2335,7 @@ void LLViewerWindow::initWorldUI()
 		navbar->setShape(mNavBarContainer->getLocalRect());
 		navbar->setBackgroundColor(gMenuBarView->getBackgroundColor().get());
 		mNavBarContainer->addChild(navbar);
-		mNavBarContainer->setVisible(TRUE);
+		mNavBarContainer->setVisible(true);
 	}
 
 	//BD
@@ -2334,7 +2347,7 @@ void LLViewerWindow::initWorldUI()
 		gDragonStatus = new BDStatus(mStateManagementContainer->getLocalRect());
 		gDragonStatus->setShape(mStateManagementContainer->getLocalRect());
 		mStateManagementContainer->addChild(gDragonStatus);
-		mStateManagementContainer->setVisible(TRUE);
+		mStateManagementContainer->setVisible(true);
 	}
 
 	if ( gHUDView == NULL )
@@ -2357,27 +2370,39 @@ void LLViewerWindow::initWorldUI()
 	if (gToolBarView)
 	{
 		gToolBarView->loadToolbars();
-		gToolBarView->setVisible(TRUE);
+		gToolBarView->setVisible(true);
 	}
 
 	if (!gNonInteractive)
 	{
 		LLMediaCtrl* destinations = LLFloaterReg::getInstance("destinations")->getChild<LLMediaCtrl>("destination_guide_contents");
-		if (destinations)
-		{
-			destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-			std::string url = gSavedSettings.getString("DestinationGuideURL");
-			url = LLWeb::expandURLSubstitutions(url, LLSD());
-			destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-		}
-		LLMediaCtrl* avatar_picker = LLFloaterReg::getInstance("avatar")->findChild<LLMediaCtrl>("avatar_picker_contents");
-		if (avatar_picker)
-		{
-			avatar_picker->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-			std::string url = gSavedSettings.getString("AvatarPickerURL");
-			url = LLWeb::expandURLSubstitutions(url, LLSD());
-			avatar_picker->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-		}
+        if (destinations)
+        {
+            destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+            std::string url = gSavedSettings.getString("DestinationGuideURL");
+            url = LLWeb::expandURLSubstitutions(url, LLSD());
+            destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+        }
+        LLMediaCtrl* avatar_welcome_pack = LLFloaterReg::getInstance("avatar_welcome_pack")->findChild<LLMediaCtrl>("avatar_picker_contents");
+        if (avatar_welcome_pack)
+        {
+            avatar_welcome_pack->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+            std::string url = gSavedSettings.getString("AvatarWelcomePack");
+            url = LLWeb::expandURLSubstitutions(url, LLSD());
+            avatar_welcome_pack->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+        }
+        LLMediaCtrl* search = LLFloaterReg::getInstance("search")->findChild<LLMediaCtrl>("search_contents");
+        if (search)
+        {
+            search->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+        }
+        LLMediaCtrl* marketplace = LLFloaterReg::getInstance("marketplace")->getChild<LLMediaCtrl>("marketplace_contents");
+        if (marketplace)
+        {
+            marketplace->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+            std::string url = gSavedSettings.getString("MarketplaceURL");
+            marketplace->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
+        }
 	}
 }
 
@@ -3069,7 +3094,8 @@ bool LLViewerWindow::handleKey(KEY key, MASK mask)
 	{
 		if ((focusedFloaterName == "nearby_chat") || (focusedFloaterName == "im_container") || (focusedFloaterName == "impanel"))
 		{
-			if (gSavedSettings.getBOOL("ArrowKeysAlwaysMove"))
+			LLCachedControl<bool> key_move(gSavedSettings, "ArrowKeysAlwaysMove");
+            if (key_move())
 			{
 				// let Control-Up and Control-Down through for chat line history,
 				if (!(key == KEY_UP && mask == MASK_CONTROL)
@@ -4809,6 +4835,7 @@ void LLViewerWindow::saveImageNumbered(LLImageFormatted *image, bool force_picke
     // Get a base file location if needed.
     if (force_picker || !isSnapshotLocSet())
     {
+        static LLCachedControl<std::string> sSnapshotBaseName(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseName", "Snapshot"));
         std::string proposed_name(sSnapshotBaseName);
 
         // getSaveFile will append an appropriate extension to the proposed name, based on the ESaveFilter constant passed in.
@@ -4865,11 +4892,12 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
 
 // Check if there is enough free space to save snapshot
 #ifdef LL_WINDOWS
-    boost::filesystem::path b_path(utf8str_to_utf16str(lastSnapshotDir));
+    boost::filesystem::path b_path(ll_convert<std::wstring>(lastSnapshotDir));
 #else
     boost::filesystem::path b_path(lastSnapshotDir);
 #endif
-    if (!boost::filesystem::is_directory(b_path))
+    boost::system::error_code ec;
+    if (!boost::filesystem::is_directory(b_path, ec) || ec.failed())
     {
         LLSD args;
         args["PATH"] = lastSnapshotDir;
@@ -4878,7 +4906,16 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
         failure_cb();
         return;
     }
-    boost::filesystem::space_info b_space = boost::filesystem::space(b_path);
+    boost::filesystem::space_info b_space = boost::filesystem::space(b_path, ec);
+    if (ec.failed())
+    {
+        LLSD args;
+        args["PATH"] = lastSnapshotDir;
+        LLNotificationsUtil::add("SnapshotToLocalDirNotExist", args);
+        resetSnapshotLoc();
+        failure_cb();
+        return;
+    }
     if (b_space.free < image->getDataSize())
     {
         LLSD args;
@@ -4895,29 +4932,31 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
         LLNotificationsUtil::add("SnapshotToComputerFailed", args);
 
         failure_cb();
+
+        // Shouldn't there be a return here?
     }
 
+    static LLCachedControl<std::string> sSnapshotBaseName(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseName", "Snapshot"));
+    static LLCachedControl<std::string> sSnapshotDir(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseDir", ""));
+
     // Look for an unused file name
-    bool is_snapshot_name_loc_set = isSnapshotLocSet();
+    auto is_snapshot_name_loc_set = isSnapshotLocSet();
     std::string filepath;
-    S32 i = 1;
-    S32 err = 0;
-    std::string extension("." + image->getExtension());
+    auto i = 1;
+    auto err = 0;
+    auto extension("." + image->getExtension());
+    auto now = LLDate::now();
     do
     {
         filepath = sSnapshotDir;
         filepath += gDirUtilp->getDirDelimiter();
         filepath += sSnapshotBaseName;
-
-        if (is_snapshot_name_loc_set)
-        {
-            filepath += llformat("_%.3d",i);
-        }
-
+        filepath += now.toLocalDateString("_%Y-%m-%d_%H%M%S");
+        filepath += llformat("%.2d", i);
         filepath += extension;
 
         llstat stat_info;
-        err = LLFile::stat( filepath, &stat_info );
+        err = LLFile::stat(filepath, &stat_info);
         i++;
     }
     while( -1 != err  // Search until the file is not found (i.e., stat() gives an error).
@@ -4952,12 +4991,12 @@ void LLViewerWindow::movieSize(S32 new_width, S32 new_height)
     }
 }
 
-bool LLViewerWindow::saveSnapshot(const std::string& filepath, S32 image_width, S32 image_height, bool show_ui, bool show_hud, bool do_rebuild, LLSnapshotModel::ESnapshotLayerType type, LLSnapshotModel::ESnapshotFormat format)
+bool LLViewerWindow::saveSnapshot(const std::string& filepath, S32 image_width, S32 image_height, bool show_ui, bool show_hud, bool do_rebuild, bool show_balance, LLSnapshotModel::ESnapshotLayerType type, LLSnapshotModel::ESnapshotFormat format)
 {
     LL_INFOS() << "Saving snapshot to: " << filepath << LL_ENDL;
 
     LLPointer<LLImageRaw> raw = new LLImageRaw;
-    bool success = rawSnapshot(raw, image_width, image_height, true, false, show_ui, show_hud, do_rebuild);
+    bool success = rawSnapshot(raw, image_width, image_height, true, false, show_ui, show_hud, do_rebuild, show_balance);
 
     if (success)
     {
@@ -5007,8 +5046,8 @@ void LLViewerWindow::playSnapshotAnimAndSound()
 
 bool LLViewerWindow::isSnapshotLocSet() const
 {
-    std::string snapshot_dir = sSnapshotDir;
-    return !snapshot_dir.empty();
+    static LLCachedControl<std::string> sSnapshotDir(LLCachedControl<std::string>(gSavedPerAccountSettings, "SnapshotBaseDir", ""));
+    return !sSnapshotDir().empty();
 }
 
 void LLViewerWindow::resetSnapshotLoc() const
@@ -5018,7 +5057,7 @@ void LLViewerWindow::resetSnapshotLoc() const
 
 bool LLViewerWindow::thumbnailSnapshot(LLImageRaw *raw, S32 preview_width, S32 preview_height, bool show_ui, bool show_hud, bool do_rebuild, bool no_post, LLSnapshotModel::ESnapshotLayerType type)
 {
-    return rawSnapshot(raw, preview_width, preview_height, false, false, show_ui, show_hud, do_rebuild, no_post, type);
+    return rawSnapshot(raw, preview_width, preview_height, false, false, show_ui, show_hud, do_rebuild, no_post, gSavedSettings.getBOOL("RenderBalanceInSnapshot"), type);
 }
 
 // Saves the image from the screen to a raw image
@@ -5125,215 +5164,219 @@ bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_hei
         if (!reset_deferred)
         {
             // if image cropping or need to enlarge the scene, compute a scale_factor
-            F32 ratio = llmin((F32)window_width / image_width, (F32)window_height / image_height);
-            snapshot_width = (S32)(ratio * image_width);
-            snapshot_height = (S32)(ratio * image_height);
-            scale_factor = llmax(1.0f, 1.0f / ratio);
+            F32 ratio = llmin( (F32)window_width / image_width , (F32)window_height / image_height) ;
+            snapshot_width  = (S32)(ratio * image_width) ;
+            snapshot_height = (S32)(ratio * image_height) ;
+            scale_factor = llmax(1.0f, 1.0f / ratio) ;
         }
     }
-	
-	if (show_ui && scale_factor > 1.f)
-	{
-		// Note: we should never get there...
-		LL_WARNS() << "over scaling UI not supported." << LL_ENDL;
-	}
 
-	S32 buffer_x_offset = llfloor(((window_width  - snapshot_width)  * scale_factor) / 2.f);
-	S32 buffer_y_offset = llfloor(((window_height - snapshot_height) * scale_factor) / 2.f);
+    if (show_ui && scale_factor > 1.f)
+    {
+        // Note: we should never get there...
+        LL_WARNS() << "over scaling UI not supported." << LL_ENDL;
+    }
 
-	S32 image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
-	S32 image_buffer_y = llfloor(snapshot_height * scale_factor) ;
+    S32 buffer_x_offset = llfloor(((window_width  - snapshot_width)  * scale_factor) / 2.f);
+    S32 buffer_y_offset = llfloor(((window_height - snapshot_height) * scale_factor) / 2.f);
 
-	if ((image_buffer_x > max_size) || (image_buffer_y > max_size)) // boundary check to avoid memory overflow
-	{
-		scale_factor *= llmin((F32)max_size / image_buffer_x, (F32)max_size / image_buffer_y) ;
-		image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
-		image_buffer_y = llfloor(snapshot_height * scale_factor) ;
-	}
-	if ((image_buffer_x > 0) && (image_buffer_y > 0))
-	{
-		raw->resize(image_buffer_x, image_buffer_y, 3);
-	}
-	else
-	{
-		return false ;
-	}
-	if (raw->isBufferInvalid())
-	{
-		return false ;
-	}
+    S32 image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
+    S32 image_buffer_y = llfloor(snapshot_height * scale_factor) ;
 
-	bool high_res = scale_factor >= 2.f; // Font scaling is slow, only do so if rez is much higher
-	if (high_res && show_ui)
-	{
-		// Note: we should never get there...
-		LL_WARNS() << "High res UI snapshot not supported. " << LL_ENDL;
-		/*send_agent_pause();
-		//rescale fonts
-		initFonts(scale_factor);
-		LLHUDObject::reshapeAll();*/
-	}
+    if ((image_buffer_x > max_size) || (image_buffer_y > max_size)) // boundary check to avoid memory overflow
+    {
+        scale_factor *= llmin((F32)max_size / image_buffer_x, (F32)max_size / image_buffer_y) ;
+        image_buffer_x = llfloor(snapshot_width  * scale_factor) ;
+        image_buffer_y = llfloor(snapshot_height * scale_factor) ;
+    }
 
-	S32 output_buffer_offset_y = 0;
+    LLImageDataLock lock(raw);
 
-	F32 depth_conversion_factor_1 = (LLViewerCamera::getInstance()->getFar() + LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
-	F32 depth_conversion_factor_2 = (LLViewerCamera::getInstance()->getFar() - LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
+    if ((image_buffer_x > 0) && (image_buffer_y > 0))
+    {
+        raw->resize(image_buffer_x, image_buffer_y, 3);
+    }
+    else
+    {
+        return false;
+    }
 
-	// Subimages are in fact partial rendering of the final view. This happens when the final view is bigger than the screen.
-	// In most common cases, scale_factor is 1 and there's no more than 1 iteration on x and y
-	for (int subimage_y = 0; subimage_y < scale_factor; ++subimage_y)
-	{
-		S32 subimage_y_offset = llclamp(buffer_y_offset - (subimage_y * window_height), 0, window_height);;
-		// handle fractional columns
-		U32 read_height = llmax(0, (window_height - subimage_y_offset) -
-			llmax(0, (window_height * (subimage_y + 1)) - (buffer_y_offset + raw->getHeight())));
+    if (raw->isBufferInvalid())
+    {
+        return false;
+    }
 
-		S32 output_buffer_offset_x = 0;
-		for (int subimage_x = 0; subimage_x < scale_factor; ++subimage_x)
-		{
-			gDisplaySwapBuffers = false;
-			gDepthDirty = true;
+    bool high_res = scale_factor >= 2.f; // Font scaling is slow, only do so if rez is much higher
+    if (high_res && show_ui)
+    {
+        // Note: we should never get there...
+        LL_WARNS() << "High res UI snapshot not supported. " << LL_ENDL;
+        /*send_agent_pause();
+        //rescale fonts
+        initFonts(scale_factor);
+        LLHUDObject::reshapeAll();*/
+    }
 
-			S32 subimage_x_offset = llclamp(buffer_x_offset - (subimage_x * window_width), 0, window_width);
-			// handle fractional rows
-			U32 read_width = llmax(0, (window_width - subimage_x_offset) -
-									llmax(0, (window_width * (subimage_x + 1)) - (buffer_x_offset + raw->getWidth())));
-			
-			// Skip rendering and sampling altogether if either width or height is degenerated to 0 (common in cropping cases)
-			if (read_width && read_height)
-			{
-				const U32 subfield = subimage_x+(subimage_y*llceil(scale_factor));
-				display(do_rebuild, scale_factor, subfield, TRUE);
-				
-				if (!LLPipeline::sRenderDeferred)
-				{
-					// Required for showing the GUI in snapshots and performing bloom composite overlay
-					// Call even if show_ui is false
-					render_ui(scale_factor, subfield);
-					swap();
-				}
-				
-				for (U32 out_y = 0; out_y < read_height ; out_y++)
-				{
-					S32 output_buffer_offset = ( 
-												(out_y * (raw->getWidth())) // ...plus iterated y...
-												+ (window_width * subimage_x) // ...plus subimage start in x...
-												+ (raw->getWidth() * window_height * subimage_y) // ...plus subimage start in y...
-												- output_buffer_offset_x // ...minus buffer padding x...
-												- (output_buffer_offset_y * (raw->getWidth()))  // ...minus buffer padding y...
-												) * raw->getComponents();
-				
-					// Ping the watchdog thread every 100 lines to keep us alive (arbitrary number, feel free to change)
-					if (out_y % 100 == 0)
-					{
-						LLAppViewer::instance()->pingMainloopTimeout("LLViewerWindow::rawSnapshot");
-					}
-					// disable use of glReadPixels when doing nVidia nSight graphics debugging
-					if (!LLRender::sNsightDebugSupport)
-					{
-						if (type == LLSnapshotModel::SNAPSHOT_TYPE_COLOR)
-						{
-							glReadPixels(
-									 subimage_x_offset, out_y + subimage_y_offset,
-									 read_width, 1,
-									 GL_RGB, GL_UNSIGNED_BYTE,
-									 raw->getData() + output_buffer_offset
-									 );
-						}
-						else // LLSnapshotModel::SNAPSHOT_TYPE_DEPTH
-						{
-							LLPointer<LLImageRaw> depth_line_buffer = new LLImageRaw(read_width, 1, sizeof(GL_FLOAT)); // need to store floating point values
-							glReadPixels(
-										 subimage_x_offset, out_y + subimage_y_offset,
-										 read_width, 1,
-										 GL_DEPTH_COMPONENT, GL_FLOAT,
-										 depth_line_buffer->getData()// current output pixel is beginning of buffer...
-										 );
+    S32 output_buffer_offset_y = 0;
 
-							for (S32 i = 0; i < (S32)read_width; i++)
-							{
-								F32 depth_float = *(F32*)(depth_line_buffer->getData() + (i * sizeof(F32)));
-					
-								F32 linear_depth_float = 1.f / (depth_conversion_factor_1 - (depth_float * depth_conversion_factor_2));
-								U8 depth_byte = F32_to_U8(linear_depth_float, LLViewerCamera::getInstance()->getNear(), LLViewerCamera::getInstance()->getFar());
-								// write converted scanline out to result image
-								for (S32 j = 0; j < raw->getComponents(); j++)
-								{
-									*(raw->getData() + output_buffer_offset + (i * raw->getComponents()) + j) = depth_byte;
-								}
-							}
-						}
-					}
-				}
-			}
-			output_buffer_offset_x += subimage_x_offset;
-			stop_glerror();
-		}
-		output_buffer_offset_y += subimage_y_offset;
-	}
+    F32 depth_conversion_factor_1 = (LLViewerCamera::getInstance()->getFar() + LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
+    F32 depth_conversion_factor_2 = (LLViewerCamera::getInstance()->getFar() - LLViewerCamera::getInstance()->getNear()) / (2.f * LLViewerCamera::getInstance()->getFar() * LLViewerCamera::getInstance()->getNear());
 
-	gDisplaySwapBuffers = false;
-	gSnapshotNoPost = false;
-	gDepthDirty = true;
+    // Subimages are in fact partial rendering of the final view. This happens when the final view is bigger than the screen.
+    // In most common cases, scale_factor is 1 and there's no more than 1 iteration on x and y
+    for (int subimage_y = 0; subimage_y < scale_factor; ++subimage_y)
+    {
+        S32 subimage_y_offset = llclamp(buffer_y_offset - (subimage_y * window_height), 0, window_height);;
+        // handle fractional columns
+        U32 read_height = llmax(0, (window_height - subimage_y_offset) -
+            llmax(0, (window_height * (subimage_y + 1)) - (buffer_y_offset + raw->getHeight())));
 
-	// POST SNAPSHOT
-	if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
-	{
-		LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
-	}
+        S32 output_buffer_offset_x = 0;
+        for (int subimage_x = 0; subimage_x < scale_factor; ++subimage_x)
+        {
+            gDisplaySwapBuffers = false;
+            gDepthDirty = true;
 
-	if (hide_hud)
-	{
-		LLPipeline::sShowHUDAttachments = true;
-	}
+            S32 subimage_x_offset = llclamp(buffer_x_offset - (subimage_x * window_width), 0, window_width);
+            // handle fractional rows
+            U32 read_width = llmax(0, (window_width - subimage_x_offset) -
+                                    llmax(0, (window_width * (subimage_x + 1)) - (buffer_x_offset + raw->getWidth())));
 
-	/*if (high_res)
-	{
-		initFonts(1.f);
-		LLHUDObject::reshapeAll();
-	}*/
+            // Skip rendering and sampling altogether if either width or height is degenerated to 0 (common in cropping cases)
+            if (read_width && read_height)
+            {
+                const U32 subfield = subimage_x+(subimage_y*llceil(scale_factor));
+                display(do_rebuild, scale_factor, subfield, true);
 
-	// Pre-pad image to number of pixels such that the line length is a multiple of 4 bytes (for BMP encoding)
-	// Note: this formula depends on the number of components being 3.  Not obvious, but it's correct.	
-	image_width += (image_width * 3) % 4;
+                if (!LLPipeline::sRenderDeferred)
+                {
+                    // Required for showing the GUI in snapshots and performing bloom composite overlay
+                    // Call even if show_ui is false
+                    render_ui(scale_factor, subfield);
+                    swap();
+                }
 
-	bool ret = TRUE ;
-	// Resize image
-	if(llabs(image_width - image_buffer_x) > 4 || llabs(image_height - image_buffer_y) > 4)
-	{
-		ret = raw->scale( image_width, image_height );  
-	}
-	else if(image_width != image_buffer_x || image_height != image_buffer_y)
-	{
-		ret = raw->scale( image_width, image_height, false );  
-	}
-	
+                for (U32 out_y = 0; out_y < read_height ; out_y++)
+                {
+                    S32 output_buffer_offset = (
+                                                (out_y * (raw->getWidth())) // ...plus iterated y...
+                                                + (window_width * subimage_x) // ...plus subimage start in x...
+                                                + (raw->getWidth() * window_height * subimage_y) // ...plus subimage start in y...
+                                                - output_buffer_offset_x // ...minus buffer padding x...
+                                                - (output_buffer_offset_y * (raw->getWidth()))  // ...minus buffer padding y...
+                                                ) * raw->getComponents();
 
-	setCursor(UI_CURSOR_ARROW);
+                    // Ping the watchdog thread every 100 lines to keep us alive (arbitrary number, feel free to change)
+                    if (out_y % 100 == 0)
+                    {
+                        LLAppViewer::instance()->pingMainloopTimeout("LLViewerWindow::rawSnapshot");
+                    }
+                    // disable use of glReadPixels when doing nVidia nSight graphics debugging
+                    if (!LLRender::sNsightDebugSupport)
+                    {
+                        if (type == LLSnapshotModel::SNAPSHOT_TYPE_COLOR)
+                        {
+                            glReadPixels(
+                                     subimage_x_offset, out_y + subimage_y_offset,
+                                     read_width, 1,
+                                     GL_RGB, GL_UNSIGNED_BYTE,
+                                     raw->getData() + output_buffer_offset
+                                     );
+                        }
+                        else // LLSnapshotModel::SNAPSHOT_TYPE_DEPTH
+                        {
+                            LLPointer<LLImageRaw> depth_line_buffer = new LLImageRaw(read_width, 1, sizeof(GL_FLOAT)); // need to store floating point values
+                            glReadPixels(
+                                         subimage_x_offset, out_y + subimage_y_offset,
+                                         read_width, 1,
+                                         GL_DEPTH_COMPONENT, GL_FLOAT,
+                                         depth_line_buffer->getData()// current output pixel is beginning of buffer...
+                                         );
 
-	if (do_rebuild)
-	{
-		// If we had to do a rebuild, that means that the lists of drawables to be rendered
-		// was empty before we started.
-		// Need to reset these, otherwise we call state sort on it again when render gets called the next time
-		// and we stand a good chance of crashing on rebuild because the render drawable arrays have multiple copies of
-		// objects on them.
-		gPipeline.resetDrawOrders();
-	}
+                            for (S32 i = 0; i < (S32)read_width; i++)
+                            {
+                                F32 depth_float = *(F32*)(depth_line_buffer->getData() + (i * sizeof(F32)));
 
-	if (reset_deferred)
-	{
-		scratch_space.flush();
-		scratch_space.release();
-		gPipeline.allocateScreenBuffer(original_width, original_height);
-	}
+                                F32 linear_depth_float = 1.f / (depth_conversion_factor_1 - (depth_float * depth_conversion_factor_2));
+                                U8 depth_byte = F32_to_U8(linear_depth_float, LLViewerCamera::getInstance()->getNear(), LLViewerCamera::getInstance()->getFar());
+                                // write converted scanline out to result image
+                                for (S32 j = 0; j < raw->getComponents(); j++)
+                                {
+                                    *(raw->getData() + output_buffer_offset + (i * raw->getComponents()) + j) = depth_byte;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            output_buffer_offset_x += subimage_x_offset;
+            stop_glerror();
+        }
+        output_buffer_offset_y += subimage_y_offset;
+    }
 
-	if (high_res)
-	{
-		send_agent_resume();
-	}
-	
-	return ret;
+    gDisplaySwapBuffers = false;
+    gSnapshotNoPost = false;
+    gDepthDirty = true;
+
+    // POST SNAPSHOT
+    if (!gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI))
+    {
+        LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
+    }
+
+    if (hide_hud)
+    {
+        LLPipeline::sShowHUDAttachments = true;
+    }
+
+    /*if (high_res)
+    {
+        initFonts(1.f);
+        LLHUDObject::reshapeAll();
+    }*/
+
+    // Pre-pad image to number of pixels such that the line length is a multiple of 4 bytes (for BMP encoding)
+    // Note: this formula depends on the number of components being 3.  Not obvious, but it's correct.
+    image_width += (image_width * 3) % 4;
+
+    bool ret = true ;
+    // Resize image
+    if(llabs(image_width - image_buffer_x) > 4 || llabs(image_height - image_buffer_y) > 4)
+    {
+        ret = raw->scale( image_width, image_height );
+    }
+    else if(image_width != image_buffer_x || image_height != image_buffer_y)
+    {
+        ret = raw->scale( image_width, image_height, false );
+    }
+
+    setCursor(UI_CURSOR_ARROW);
+
+    if (do_rebuild)
+    {
+        // If we had to do a rebuild, that means that the lists of drawables to be rendered
+        // was empty before we started.
+        // Need to reset these, otherwise we call state sort on it again when render gets called the next time
+        // and we stand a good chance of crashing on rebuild because the render drawable arrays have multiple copies of
+        // objects on them.
+        gPipeline.resetDrawOrders();
+    }
+
+    if (reset_deferred)
+    {
+        scratch_space.flush();
+        scratch_space.release();
+        gPipeline.allocateScreenBuffer(original_width, original_height);
+
+    }
+
+    if (high_res)
+    {
+        send_agent_resume();
+    }
+
+    return ret;
 }
 
 bool LLViewerWindow::simpleSnapshot(LLImageRaw* raw, S32 image_width, S32 image_height, const int num_render_passes)
@@ -5808,6 +5851,14 @@ void LLViewerWindow::setProgressCancelButtonVisible( bool b, const std::string& 
     }
 }
 
+void LLViewerWindow::setBalanceVisible(bool visible)
+{
+    if (gStatusBar)
+    {
+        gStatusBar->setBalanceVisible(visible);
+    }
+}
+
 LLProgressView *LLViewerWindow::getProgressView() const
 {
     return mProgressView;
@@ -6266,7 +6317,7 @@ void LLPickInfo::fetchResults()
             mObjectOffset = gAgentCamera.calcFocusOffset(objectp, v_intersection, mPickPt.mX, mPickPt.mY);
             mObjectID = objectp->mID;
             mObjectFace = (te_offset == NO_FACE) ? -1 : (S32)te_offset;
-
+            mPickHUD = objectp->isHUDAttachment();
 
 
             mPosGlobal = gAgent.getPosGlobalFromAgent(v_intersection);

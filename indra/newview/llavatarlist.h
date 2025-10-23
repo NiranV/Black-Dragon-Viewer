@@ -98,7 +98,9 @@ public:
 
     boost::signals2::connection setItemDoubleClickCallback(const mouse_signal_t::slot_type& cb);
 
-	//BD
+	boost::signals2::connection setItemClickedCallback(const mouse_signal_t::slot_type& cb);
+
+    //BD
 	boost::signals2::connection setExtraDataCallback(const extra_data_signal_t::slot_type& cb);
 	void setExtraDataUpdatePeriod(F32 period);
 
@@ -106,7 +108,7 @@ public:
 
     void handleDisplayNamesOptionChanged();
 
-    void setShowCompleteName(bool show) { mShowCompleteName = show;};
+    void setShowCompleteName(bool show, bool force = false) { mShowCompleteName = show; mForceCompleteName = force; };
 
 protected:
 	void refresh();
@@ -117,7 +119,9 @@ protected:
 		uuid_vec_t& vadded,
 		uuid_vec_t& vremoved);
 	void updateLastInteractionTimes();
-	void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
+	void rebuildNames();
+    void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
+    void onItemClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
 	void updateAvatarNames();
 	//BD
 	void updateExtraData();
@@ -131,6 +135,7 @@ private:
 	bool mShowSpeakingIndicator;
 	bool mShowPermissions;
 	bool mShowCompleteName;
+    bool mForceCompleteName;
 	//BD
 	bool mShowExtraInformation;
 
@@ -147,6 +152,7 @@ private:
 
 	commit_signal_t mRefreshCompleteSignal;
 	mouse_signal_t mItemDoubleClickSignal;
+    mouse_signal_t mItemClickedSignal;
 	//BD
 	extra_data_signal_t mExtraDataSignal;
 };

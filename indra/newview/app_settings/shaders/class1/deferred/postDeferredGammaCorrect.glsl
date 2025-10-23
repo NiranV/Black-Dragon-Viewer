@@ -53,6 +53,7 @@ void main()
     diff.rgb = legacyGamma(diff.rgb);
 #endif
 
-    frag_color = max(diff, vec4(0));
+    diff.rgb = clamp(diff.rgb, vec3(0.0), vec3(1.0));
+    frag_color = diff;
 }
 

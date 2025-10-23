@@ -2,7 +2,7 @@
 <llsd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="llsd.xsd">
 <map>
-  <key>ImporterDebug</key>
+  <key>ImporterDebugVerboseLogging</key>
   <map>
     <key>Comment</key>
     <string>Enable debug output to more precisely identify sources of import errors. Warning: the output can slow down import on many machines.</string>
@@ -27,13 +27,24 @@
   <key>ImporterModelLimit</key>
   <map>
     <key>Comment</key>
-    <string>Limits amount of importer generated models for dae files</string>
+    <string>Limits amount of importer generated (when over 8 faces) models for dae and gltf files</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
     <string>U32</string>
     <key>Value</key>
     <integer>768</integer>
+  </map>
+  <key>ImporterDebugMode</key>
+  <map>
+    <key>Comment</key>
+    <string>At 0 does nothing, at 1 dumps skinning data near orifinal file, at 2 dumps skining data and positions/weights of first 5 models, at 3 dumps skinning data and models as llsd</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>U32</string>
+    <key>Value</key>
+    <integer>0</integer>
   </map>
   <key>ImporterPreprocessDAE</key>
   <map>
@@ -91,7 +102,7 @@
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <real>0</real>
+      <real>300</real>
     </map>
     <key>AckCollectTime</key>
     <map>
@@ -339,6 +350,17 @@
     <map>
       <key>Comment</key>
       <string>Audio level of voice chat</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>0.5</real>
+    </map>
+    <key>AudioLevelWind</key>
+    <map>
+      <key>Comment</key>
+      <string>Audio level of wind noise when standing still</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -610,16 +632,16 @@
       <key>Value</key>
       <real>16.0</real>
     </map>
-    <key>AvatarPickerURL</key>
+    <key>AvatarWelcomePack</key>
     <map>
-      <key>Comment</key>
-      <string>Avatar picker contents</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>String</string>
-      <key>Value</key>
-      <string>http://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/avatars.html</string>
+        <key>Comment</key>
+        <string>Avatar Welcome Pack contents</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>String</string>
+        <key>Value</key>
+        <string>http://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/vawp/index.html</string>
     </map>
     <key>AvatarRotateThresholdSlow</key>
     <map>
@@ -1152,6 +1174,39 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>EnableDiscord</key>
+    <map>
+      <key>Comment</key>
+      <string>When set, connect to Discord to enable Rich Presence</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>ShowDiscordActivityDetails</key>
+    <map>
+      <key>Comment</key>
+      <string>When set, show avatar name on Discord Rich Presence</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>ShowDiscordActivityState</key>
+    <map>
+      <key>Comment</key>
+      <string>When set, show location on Discord Rich Presence</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>EnableDiskCacheDebugInfo</key>
     <map>
       <key>Comment</key>
@@ -1166,13 +1221,13 @@
     <key>DiskCachePercentOfTotal</key>
     <map>
       <key>Comment</key>
-      <string>The percent of total cache size (defined by CacheSize) to use for the disk cache</string>
+      <string>The percent of total cache size (defined by CacheSize) to use for the disk cache (ex: asset storage, excludes textures)</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>40.0</real>
+      <real>35.0</real>
     </map>
     <key>DiskCacheDirName</key>
     <map>
@@ -1216,7 +1271,7 @@
       <key>Type</key>
       <string>U32</string>
       <key>Value</key>
-      <integer>4096</integer>
+      <integer>6144</integer>
     </map>
     <key>CacheValidateCounter</key>
     <map>
@@ -1875,6 +1930,17 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+    <key>DebugSelectionLODs</key>
+    <map>
+        <key>Comment</key>
+        <string>Force selection to show specific LOD, -1 for off, 0 - lowest, 4 - high.</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>S32</string>
+        <key>Value</key>
+        <integer>-1</integer>
+    </map>
   <key>AnimatedObjectsAllowLeftClick</key>
   <map>
     <key>Comment</key>
@@ -3686,6 +3752,17 @@
         <string>U32</string>
         <key>Value</key>
         <integer>5000</integer>
+    </map>
+    <key>InventoryExposeFolderID</key>
+    <map>
+        <key>Comment</key>
+        <string>Allows copying folder id from context menu</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>0</integer>
     </map>
     <key>MarketplaceListingsSortOrder</key>
     <map>
@@ -6350,6 +6427,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>PlaySoundChatMention</key>
+    <map>
+      <key>Comment</key>
+      <string>Plays a sound when got mentioned in a chat</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>PluginAttachDebuggerToPlugins</key>
     <map>
       <key>Comment</key>
@@ -7922,10 +8010,21 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>RenderTextureVRAMDivisor</key>
+  <map>
+      <key>Comment</key>
+      <string>Divisor for maximum amount of VRAM the viewer will use for textures. 1 = all the VRAM.  Used in conjunction with RenderMaxVRAMBudget.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>1</integer>
+  </map>
   <key>RenderMinFreeMainMemoryThreshold</key>
   <map>
     <key>Comment</key>
-    <string>Minimum of available physical memory in MB before textures get scaled down</string>
+    <string>If available free physical memory is below this value textures get agresively scaled down</string>
     <key>Persist</key>
     <integer>0</integer>
     <key>Type</key>
@@ -9269,6 +9368,28 @@
     <key>Value</key>
     <integer>1</integer>
   </map>
+    <key>RenderReflectionProbeDynamicAllocation</key>
+    <map>
+        <key>Comment</key>
+        <string>Enable dynamic allocation of reflection probes. -1 means no dynamic allocation. Sets a buffer to allocate when a dynamic allocation occurs otherwise.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>S32</string>
+        <key>Value</key>
+        <integer>-1</integer>
+    </map>
+    <key>RenderReflectionProbeCount</key>
+    <map>
+        <key>Comment</key>
+        <string>Number of probes to render.  Maximum of 256.  Clamps to the nearest power of 2.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>U32</string>
+        <key>Value</key>
+        <integer>256</integer>
+    </map>
   <key>RenderReflectionProbeResolution</key>
   <map>
     <key>Comment</key>
@@ -9729,6 +9850,28 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>RenderBalanceInSnapshot</key>
+    <map>
+      <key>Comment</key>
+      <string>Display L$ balance in snapshot</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>ObscureBalanceInStatusBar</key>
+    <map>
+        <key>Comment</key>
+        <string>If true, balance will be shows as '*'</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>0</integer>
     </map>
     <key>RenderUIBuffer</key>
     <map>
@@ -11548,6 +11691,28 @@
       <key>Value</key>
       <string>fss.txt</string>
     </map>
+    <key>StatsFrametimeSampleSeconds</key>
+    <map>
+        <key>Comment</key>
+        <string>The number of seconds to sample extended frametime data (percentiles, stddev).</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>S32</string>
+        <key>Value</key>
+        <integer>5</integer>
+    </map>
+    <key>StatsFrametimeEventThreshold</key>
+    <map>
+        <key>Comment</key>
+        <string>The percentage that the frametime difference must exceed in order to register a frametime event. 0.1 = 10%, 0.25 = 25%, etc.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>0.1</real>
+    </map>
     <key>SystemLanguage</key>
     <map>
       <key>Comment</key>
@@ -11755,7 +11920,7 @@
         <key>Type</key>
         <string>F32</string>
         <key>Value</key>
-        <real>0.04</real>
+        <real>0.0095</real>
     </map>
     <key>TextureScaleMaxAreaFactor</key>
     <map>
@@ -12469,6 +12634,28 @@
       <string>String</string>
       <key>Value</key>
       <string>2ca849ba-2885-4bc3-90ef-d4987a5b983a</string>
+    </map>
+    <key>UISndChatMention</key>
+    <map>
+      <key>Comment</key>
+      <string>Sound file for chat mention(uuid for sound asset)</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>03e77cb5-592c-5b33-d271-2e46497c3fb3</string>
+    </map>
+    <key>UISndChatPing</key>
+    <map>
+      <key>Comment</key>
+      <string>Sound file for chat ping(uuid for sound asset)</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>7dd36df6-2624-5438-f988-fdf8588a0ad9</string>
     </map>
     <key>UISndClick</key>
     <map>
@@ -13819,7 +14006,7 @@
     <key>FullScreen</key>
     <map>
       <key>Comment</key>
-      <string>run a fullscreen session</string>
+      <string>Run a fullscreen session. MacOS not supported</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -14298,10 +14485,32 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>OutfitGallerySortByName</key>
+    <key>OutfitGallerySortOrder</key>
     <map>
       <key>Comment</key>
-      <string>Always sort outfits by name in Outfit Gallery</string>
+      <string>Gallery sorting: 0 - sort outfits by name, 1 - images frst, 2 - favorites first</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>OutfitListSortOrder</key>
+    <map>
+      <key>Comment</key>
+      <string>How outfit list in Avatar's floater is sorted. 0 - by name 1 - favorites to top</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>OutfitListFilterFullList</key>
+    <map>
+      <key>Comment</key>
+      <string> 0 - show only matches. 1 - show all items in outfit as long as outfit or item inside matches.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -16228,6 +16437,50 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>InventoryFavoritesUseStar</key>
+  <map>
+    <key>Comment</key>
+    <string>Show star near favorited items in inventory</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventoryFavoritesUseHollowStar</key>
+  <map>
+    <key>Comment</key>
+    <string>Show star near folders that contain favorites</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventoryFavoritesColorText</key>
+  <map>
+    <key>Comment</key>
+    <string>render favorite items using InventoryFavoriteText as color</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventoryAddAttachmentBehavior</key>
+  <map>
+    <key>Comment</key>
+    <string>Defines behavior when hitting return on an inventory item</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>0</integer>
+  </map>
   <key>StatsReportMaxDuration</key>
   <map>
     <key>Comment</key>
@@ -16316,6 +16569,7 @@
         <key>Value</key>
         <integer>1</integer>
     </map>
+<<<<<<< HEAD
     <!-- Black Dragon Debugs -->
     <key>Include</key>
     <array>
@@ -16325,5 +16579,73 @@
       <!-- RLVa Debugs -->
       <!--<string>settings_rlva.xml</string>-->
     </array>
+=======
+    <key>MediaAutoPlayHuds</key>
+    <map>
+        <key>Comment</key>
+        <string>Automatically play HUD media</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
+    <key>MediaFirstClickInteract</key>
+    <map>
+      <key>Comment</key>
+      <string>This setting controls which media (once loaded) does not require a first click to focus before interaction can begin. This allows clicks to be passed directly to media bypassing the focus click requirement. This setting is a bitfield, precomputed values are as follows: Disabled=0; Worn HUDs only=1; Owned objects=2; Friend objects=4; Group objects=8; Landowner objects=16; Any object=32767; All MOAP=32768. For complete details see lltoolpie.h enum MediaFirstClickTypes.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>31</integer>
+    </map>
+    <key>EnableSelectionHints</key>
+    <map>
+      <key>Comment</key>
+      <string>Whether or not to send editing hints to animate the arm when editing an object.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>EnableLookAtTarget</key>
+    <map>
+      <key>Comment</key>
+      <string>Whether or not to animate the avatar head and send look at targets when moving the cursor or focusing on objects</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>LimitLookAtTarget</key>
+    <map>
+      <key>Comment</key>
+      <string>Whether or not to clamp the look at targets around the avatar head before sending</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>LimitLookAtTargetDistance</key>
+    <map>
+      <key>Comment</key>
+      <string>Distance to limit look at target to</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <integer>2</integer>
+    </map>
+>>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
 </map>
 </llsd>

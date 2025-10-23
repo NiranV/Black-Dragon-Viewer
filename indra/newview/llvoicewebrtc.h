@@ -204,7 +204,7 @@ public:
     //@}
 
     // authorize the user
-    void userAuthorized(const std::string &user_id, const LLUUID &agentID) override {};
+    void userAuthorized(const std::string &user_id, const LLUUID &agentID) override;
 
 
     void OnConnectionEstablished(const std::string& channelID, const LLUUID& regionID);
@@ -351,6 +351,9 @@ public:
         bool isSpatial() override { return true; }
         bool isEstate() override { return true; }
         bool isCallbackPossible() override { return false; }
+
+      private:
+        bool isRegionWebRTCEnabled(const LLUUID& regionID);
     };
 
     class parcelSessionState : public sessionState
@@ -440,10 +443,8 @@ public:
     boost::signals2::connection mAvatarNameCacheConnection;
 
 private:
-
-    // helper function to retrieve the audio level
-    // Used in multiple places.
-    float getAudioLevel();
+    // init or restart the WebRTC device interface.
+    void initWebRTC();
 
     // Coroutine support methods
     //---
@@ -455,7 +456,6 @@ private:
 
     LL::WorkQueue::weak_t mMainQueue;
 
-    bool mTuningMode;
     F32 mTuningMicGain;
     int mTuningSpeakerVolume;
     bool mDevicesListUpdated;            // set to true when the device list has been updated

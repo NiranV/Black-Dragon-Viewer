@@ -421,8 +421,11 @@ bool LLGLSLShader::createShader()
     llassert_always(!mShaderFiles.empty());
 
 #if LL_DARWIN
-    // work-around missing mix(vec3,vec3,bvec3)
-    mDefines["OLD_SELECT"] = "1";
+    if(!gGLManager.mIsApple)
+    {
+        // work-around missing mix(vec3,vec3,bvec3)
+        mDefines["OLD_SELECT"] = "1";
+    }
 #endif
 
     mShaderHash = hash();
@@ -543,7 +546,7 @@ bool LLGLSLShader::createShader()
         }
     }
 
-#ifdef LL_PROFILER_ENABLE_RENDER_DOC
+#if LL_PROFILER_ENABLE_RENDER_DOC
     setLabel(mName.c_str());
 #endif
 
@@ -1076,8 +1079,8 @@ void LLGLSLShader::bind()
 
 void LLGLSLShader::bind(U8 variant)
 {
-    llassert(mGLTFVariants.size() == LLGLSLShader::NUM_GLTF_VARIANTS);
-    llassert(variant < LLGLSLShader::NUM_GLTF_VARIANTS);
+    llassert_always(mGLTFVariants.size() == LLGLSLShader::NUM_GLTF_VARIANTS);
+    llassert_always(variant < LLGLSLShader::NUM_GLTF_VARIANTS);
     mGLTFVariants[variant].bind();
 }
 
@@ -1085,7 +1088,7 @@ void LLGLSLShader::bind(bool rigged)
 {
     if (rigged)
     {
-        llassert(mRiggedVariant);
+        llassert_always(mRiggedVariant);
         mRiggedVariant->bind();
     }
     else
@@ -1247,23 +1250,40 @@ S32 LLGLSLShader::disableTexture(S32 uniform, LLTexUnit::eTextureType mode)
         llassert(false);
         return -1;
     }
+
     S32 index = mTexture[uniform];
-    if (index != -1 && gGL.getTexUnit(index)->getCurrType() != LLTexUnit::TT_NONE)
+    if (index < 0)
     {
-        if (gDebugGL && gGL.getTexUnit(index)->getCurrType() != mode)
+        // Invalid texture index - nothing to disable
+        return index;
+    }
+
+    LLTexUnit* tex_unit = gGL.getTexUnit(index);
+    if (!tex_unit)
+    {
+        // Invalid texture unit
+        LL_WARNS_ONCE("Shader") << "Invalid texture unit at index: " << index << LL_ENDL;
+        return index;
+    }
+
+    LLTexUnit::eTextureType curr_type = tex_unit->getCurrType();
+    if (curr_type != LLTexUnit::TT_NONE)
+    {
+        if (gDebugGL && curr_type != mode)
         {
             if (gDebugSession)
             {
-                gFailLog << "Texture channel " << index << " texture type corrupted." << std::endl;
+                gFailLog << "Texture channel " << index << " texture type corrupted. Expected: " << mode << ", Found: " << curr_type << std::endl;
                 ll_fail("LLGLSLShader::disableTexture failed");
             }
             else
             {
-                LL_ERRS() << "Texture channel " << index << " texture type corrupted." << LL_ENDL;
+                LL_ERRS() << "Texture channel " << index << " texture type corrupted. Expected: " << mode << ", Found: " << curr_type << LL_ENDL;
             }
         }
-        gGL.getTexUnit(index)->disable();
+        tex_unit->disable();
     }
+
     return index;
 }
 
@@ -2061,7 +2081,7 @@ LLUUID LLGLSLShader::hash()
     return hash_obj.digest();
 }
 
-#ifdef LL_PROFILER_ENABLE_RENDER_DOC
+#if LL_PROFILER_ENABLE_RENDER_DOC
 void LLGLSLShader::setLabel(const char* label) {
     LL_LABEL_OBJECT_GL(GL_PROGRAM, mProgramObject, strlen(label), label);
 }

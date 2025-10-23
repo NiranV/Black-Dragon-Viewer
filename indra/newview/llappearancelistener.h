@@ -1,11 +1,9 @@
 /**
- * @file llfloateravatar.h
- * @author Leyla Farazha
- * @brief floater for the avatar changer
+ * @file llappearancelistener.h
  *
- * $LicenseInfo:firstyear=2011&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2024&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2011, Linden Research, Inc.
+ * Copyright (C) 2024, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,22 +23,24 @@
  * $/LicenseInfo$
  */
 
-#ifndef LL_FLOATER_AVATAR_H
-#define LL_FLOATER_AVATAR_H
 
-#include "llfloater.h"
-class LLMediaCtrl;
+#ifndef LL_LLAPPEARANCELISTENER_H
+#define LL_LLAPPEARANCELISTENER_H
 
-class LLFloaterAvatar:
-    public LLFloater
+#include "lleventapi.h"
+
+class LLAppearanceListener : public LLEventAPI
 {
-    friend class LLFloaterReg;
-private:
-    LLFloaterAvatar(const LLSD& key);
-    ~LLFloaterAvatar();
-    bool postBuild() override;
+public:
+    LLAppearanceListener();
 
-    LLMediaCtrl* mAvatarPicker;
+private:
+    void wearOutfit(LLSD const &data);
+    void wearItems(LLSD const &data);
+    void detachItems(LLSD const &data);
+    void getOutfitsList(LLSD const &data);
+    void getOutfitItems(LLSD const &data);
 };
 
-#endif
+#endif // LL_LLAPPEARANCELISTENER_H
+

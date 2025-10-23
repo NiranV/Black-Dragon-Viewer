@@ -60,10 +60,12 @@ static LLPanelInjector<LLInventoryGallery> t_inventory_gallery("inventory_galler
 const S32 GALLERY_ITEMS_PER_ROW_MIN = 2;
 const S32 FAST_LOAD_THUMBNAIL_TRSHOLD = 50; // load folders below this value immediately
 
+
 // Helper dnd functions
 bool dragCategoryIntoFolder(LLUUID dest_id, LLInventoryCategory* inv_cat, bool drop, std::string& tooltip_msg, bool is_link);
 bool dragItemIntoFolder(LLUUID folder_id, LLInventoryItem* inv_item, bool drop, std::string& tooltip_msg, bool user_confirm);
 void dropToMyOutfits(LLInventoryCategory* inv_cat);
+void dropToMyOutfitsSubfolder(LLInventoryCategory* inv_cat, const LLUUID& dest_id);
 
 class LLGalleryPanel: public LLPanel
 {
@@ -634,7 +636,7 @@ void LLInventoryGallery::removeFromLastRow(LLInventoryGalleryItem* item)
     mItemPanels.pop_back();
 }
 
-LLInventoryGalleryItem* LLInventoryGallery::buildGalleryItem(std::string name, LLUUID item_id, LLAssetType::EType type, LLUUID thumbnail_id, LLInventoryType::EType inventory_type, U32 flags, time_t creation_date, bool is_link, bool is_worn)
+LLInventoryGalleryItem* LLInventoryGallery::buildGalleryItem(std::string name, LLUUID item_id, LLAssetType::EType type, LLUUID thumbnail_id, LLInventoryType::EType inventory_type, U32 flags, time_t creation_date, bool is_link, bool is_worn, bool is_favorite)
 {
     LLInventoryGalleryItem::Params giparams;
     giparams.visible = true;
@@ -645,6 +647,7 @@ LLInventoryGalleryItem* LLInventoryGallery::buildGalleryItem(std::string name, L
     gitem->setUUID(item_id);
     gitem->setGallery(this);
     gitem->setType(type, inventory_type, flags, is_link);
+    gitem->setFavorite(is_favorite);
     gitem->setLoadImmediately(mLoadThumbnailsImmediately);
     gitem->setThumbnail(thumbnail_id);
     gitem->setWorn(is_worn);
@@ -937,8 +940,19 @@ bool LLInventoryGallery::updateAddedItem(LLUUID item_id)
     }
 
     bool res = false;
+    bool is_favorite = get_is_favorite(obj);
 
-    LLInventoryGalleryItem* item = buildGalleryItem(name, item_id, obj->getType(), thumbnail_id, inventory_type, misc_flags, obj->getCreationDate(), obj->getIsLinkType(), is_worn);
+    LLInventoryGalleryItem* item = buildGalleryItem(
+        name,
+        item_id,
+        obj->getType(),
+        thumbnail_id,
+        inventory_type,
+        misc_flags,
+        obj->getCreationDate(),
+        obj->getIsLinkType(),
+        is_worn,
+        is_favorite);
     mItemMap.insert(LLInventoryGallery::gallery_item_map_t::value_type(item_id, item));
     if (mGalleryCreated)
     {
@@ -975,7 +989,7 @@ void LLInventoryGallery::updateRemovedItem(LLUUID item_id)
     mItemBuildQuery.erase(item_id);
 }
 
-void LLInventoryGallery::updateChangedItemName(LLUUID item_id, std::string name)
+void LLInventoryGallery::updateChangedItemData(LLUUID item_id, std::string name, bool is_favorite)
 {
     gallery_item_map_t::iterator iter = mItemMap.find(item_id);
     if (iter != mItemMap.end())
@@ -984,6 +998,7 @@ void LLInventoryGallery::updateChangedItemName(LLUUID item_id, std::string name)
         if (item)
         {
             item->setItemName(name);
+            item->setFavorite(is_favorite);
         }
     }
 }
@@ -1999,7 +2014,7 @@ void LLInventoryGallery::deleteSelection()
 
             for (LLInventoryModel::item_array_t::value_type& item : items)
             {
-                if (get_is_item_worn(item))
+                if (!item->getIsLinkType() && get_is_item_worn(item))
                 {
                     has_worn = true;
                     LLWearableType::EType type = item->getWearableType();
@@ -2020,7 +2035,7 @@ void LLInventoryGallery::deleteSelection()
         }
 
         LLViewerInventoryItem* item = gInventory.getItem(id);
-        if (item && get_is_item_worn(item))
+        if (item && !item->getIsLinkType() && get_is_item_worn(item))
         {
             has_worn = true;
             LLWearableType::EType type = item->getWearableType();
@@ -2333,7 +2348,7 @@ void LLInventoryGallery::refreshList(const LLUUID& category_id)
             return;
         }
 
-        updateChangedItemName(*items_iter, obj->getName());
+        updateChangedItemData(*items_iter, obj->getName(), get_is_favorite(obj));
         mNeedsArrange = true;
     }
 
@@ -2847,6 +2862,14 @@ void LLInventoryGalleryItem::setType(LLAssetType::EType type, LLInventoryType::E
 
     getChild<LLIconCtrl>("item_type")->setValue(icon_name);
     getChild<LLIconCtrl>("link_overlay")->setVisible(is_link);
+}
+
+void LLInventoryGalleryItem::setFavorite(bool is_favorite)
+{
+    getChild<LLIconCtrl>("fav_icon")->setVisible(is_favorite);
+    static const LLUIColor text_color = LLUIColorTable::instance().getColor("LabelTextColor", LLColor4::white);
+    static const LLUIColor favorite_color = LLUIColorTable::instance().getColor("InventoryFavoriteColor", LLColor4::white);
+    mNameText->setReadOnlyColor(is_favorite ? favorite_color : text_color);
 }
 
 void LLInventoryGalleryItem::setThumbnail(LLUUID id)
@@ -3712,6 +3735,7 @@ bool dragCategoryIntoFolder(LLUUID dest_id, LLInventoryCategory* inv_cat,
         //
 
         bool is_movable = true;
+        bool create_outfit = false;
 
         if (is_movable && (marketplacelistings_id == cat_id))
         {
@@ -3745,14 +3769,24 @@ bool dragCategoryIntoFolder(LLUUID dest_id, LLInventoryCategory* inv_cat,
         U32 max_items_to_wear = gSavedSettings.getU32("WearFolderLimit");
         if (is_movable && move_is_into_outfit)
         {
-            if (dest_id == my_outifts_id)
+            if ((inv_cat->getPreferredType() != LLFolderType::FT_NONE) && (inv_cat->getPreferredType() != LLFolderType::FT_OUTFIT))
+            {
+                tooltip_msg = LLTrans::getString("TooltipCantCreateOutfit");
+                is_movable = false;
+            }
+            else if (dest_id == my_outifts_id)
             {
                 if (source != LLToolDragAndDrop::SOURCE_AGENT || move_is_from_marketplacelistings)
                 {
                     tooltip_msg = LLTrans::getString("TooltipOutfitNotInInventory");
                     is_movable = false;
                 }
-                else if (can_move_to_my_outfits(model, inv_cat, max_items_to_wear))
+                else if (can_move_to_my_outfits_as_outfit(model, inv_cat, max_items_to_wear))
+                {
+                    is_movable = true;
+                    create_outfit = true;
+                }
+                else if (can_move_to_my_outfits_as_subfolder(model, inv_cat))
                 {
                     is_movable = true;
                 }
@@ -3762,13 +3796,44 @@ bool dragCategoryIntoFolder(LLUUID dest_id, LLInventoryCategory* inv_cat,
                     is_movable = false;
                 }
             }
-            else if (dest_cat && dest_cat->getPreferredType() == LLFolderType::FT_NONE)
+            else if (!dest_cat)
             {
-                is_movable = ((inv_cat->getPreferredType() == LLFolderType::FT_NONE) || (inv_cat->getPreferredType() == LLFolderType::FT_OUTFIT));
+                is_movable = false;
+                tooltip_msg = LLTrans::getString("TooltipCantCreateOutfit");
             }
             else
             {
-                is_movable = false;
+                EMyOutfitsSubfolderType dest_res = myoutfit_object_subfolder_type(model, dest_id, my_outifts_id);
+                EMyOutfitsSubfolderType inv_res = myoutfit_object_subfolder_type(model, cat_id, my_outifts_id);
+                if ((dest_res == MY_OUTFITS_OUTFIT || dest_res == MY_OUTFITS_SUBOUTFIT) && inv_res == MY_OUTFITS_OUTFIT)
+                {
+                    is_movable = false;
+                    tooltip_msg = LLTrans::getString("TooltipCantMoveOutfitIntoOutfit");
+                }
+                else if (dest_res == MY_OUTFITS_OUTFIT || dest_res == MY_OUTFITS_SUBOUTFIT)
+                {
+                    is_movable = false;
+                    tooltip_msg = LLTrans::getString("TooltipCantCreateOutfit");
+                }
+                else if (dest_res == MY_OUTFITS_SUBFOLDER && inv_res == MY_OUTFITS_SUBOUTFIT)
+                {
+                    is_movable = false;
+                    tooltip_msg = LLTrans::getString("TooltipCantCreateOutfit");
+                }
+                else if (can_move_to_my_outfits_as_outfit(model, inv_cat, max_items_to_wear))
+                {
+                    is_movable = true;
+                    create_outfit = true;
+                }
+                else if (can_move_to_my_outfits_as_subfolder(model, inv_cat))
+                {
+                    is_movable = true;
+                }
+                else
+                {
+                    is_movable = false;
+                    tooltip_msg = LLTrans::getString("TooltipCantCreateOutfit");
+                }
             }
         }
         if (is_movable && move_is_into_current_outfit && is_link)
@@ -3894,9 +3959,73 @@ bool dragCategoryIntoFolder(LLUUID dest_id, LLInventoryCategory* inv_cat,
 
             if (dest_id == my_outifts_id)
             {
-                // Category can contains objects,
-                // create a new folder and populate it with links to original objects
-                dropToMyOutfits(inv_cat);
+                EMyOutfitsSubfolderType inv_res = myoutfit_object_subfolder_type(model, cat_id, my_outifts_id);
+                if (inv_res == MY_OUTFITS_SUBFOLDER || inv_res == MY_OUTFITS_OUTFIT || !create_outfit)
+                {
+                    gInventory.changeCategoryParent(
+                        (LLViewerInventoryCategory*)inv_cat,
+                        dest_id,
+                        move_is_into_trash);
+                }
+                else
+                {
+                    // Category can contains objects,
+                    // create a new folder and populate it with links to original objects
+                    dropToMyOutfits(inv_cat);
+                }
+            }
+            else if (move_is_into_my_outfits)
+            {
+                EMyOutfitsSubfolderType dest_res = myoutfit_object_subfolder_type(model, dest_id, my_outifts_id);
+                EMyOutfitsSubfolderType inv_res = myoutfit_object_subfolder_type(model, cat_id, my_outifts_id);
+                switch (inv_res)
+                {
+                case MY_OUTFITS_NO:
+                    // Moning from outside outfits into outfits
+                    if (dest_res == MY_OUTFITS_SUBFOLDER && create_outfit)
+                    {
+                        // turn it into outfit
+                        dropToMyOutfitsSubfolder(inv_cat, dest_id);
+                    }
+                    else
+                    {
+                        gInventory.changeCategoryParent(
+                            (LLViewerInventoryCategory*)inv_cat,
+                            dest_id,
+                            move_is_into_trash);
+                    }
+                    break;
+                case MY_OUTFITS_SUBFOLDER:
+                case MY_OUTFITS_OUTFIT:
+                    // only permit moving subfodlers and outfits into other subfolders
+                    if (dest_res == MY_OUTFITS_SUBFOLDER)
+                    {
+                        gInventory.changeCategoryParent(
+                            (LLViewerInventoryCategory*)inv_cat,
+                            dest_id,
+                            move_is_into_trash);
+                    }
+                    else
+                    {
+                        assert(false); // mot permitted, shouldn't have accepted
+                    }
+                    break;
+                case MY_OUTFITS_SUBOUTFIT:
+                    if (dest_res == MY_OUTFITS_SUBOUTFIT || dest_res == MY_OUTFITS_OUTFIT)
+                    {
+                        gInventory.changeCategoryParent(
+                            (LLViewerInventoryCategory*)inv_cat,
+                            dest_id,
+                            move_is_into_trash);
+                    }
+                    else
+                    {
+                        assert(false); // mot permitted, shouldn't have accepted
+                    }
+                    break;
+                default:
+                    break;
+                }
             }
             // if target is current outfit folder we use link
             else if (move_is_into_current_outfit &&
@@ -4036,6 +4165,14 @@ void dropToMyOutfits(LLInventoryCategory* inv_cat)
     // make a folder in the My Outfits directory.
     const LLUUID dest_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MY_OUTFITS);
 
+    // Note: creation will take time, so passing folder id to callback is slightly unreliable,
+    // but so is collecting and passing descendants' ids
+    inventory_func_type func = boost::bind(&outfitFolderCreatedCallback, inv_cat->getUUID(), _1);
+    gInventory.createNewCategory(dest_id, LLFolderType::FT_OUTFIT, inv_cat->getName(), func, inv_cat->getThumbnailUUID());
+}
+
+void dropToMyOutfitsSubfolder(LLInventoryCategory* inv_cat, const LLUUID &dest_id)
+{
     // Note: creation will take time, so passing folder id to callback is slightly unreliable,
     // but so is collecting and passing descendants' ids
     inventory_func_type func = boost::bind(&outfitFolderCreatedCallback, inv_cat->getUUID(), _1);

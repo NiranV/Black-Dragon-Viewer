@@ -294,7 +294,7 @@ void LLPanelPrimMediaControls::updateShape()
     LLViewerMediaImpl* media_impl = getTargetMediaImpl();
     LLViewerObject* objectp = getTargetObject();
 
-    if(!media_impl || gFloaterTools->getVisible())
+    if(!media_impl || (gFloaterTools && gFloaterTools->getVisible()))
     {
         setVisible(false);
         return;
@@ -645,7 +645,7 @@ void LLPanelPrimMediaControls::updateShape()
         vert_it = vect_face.begin();
         vert_end = vect_face.end();
 
-        glm::mat4 mat;
+        glm::mat4 mat = glm::identity<glm::mat4>();
         if (!is_hud)
         {
             mat = get_current_projection() * get_current_modelview();
@@ -777,7 +777,7 @@ void LLPanelPrimMediaControls::draw()
     else if(mFadeTimer.getStarted())
     {
         F32 time = mFadeTimer.getElapsedTimeF32();
-        alpha *= llmax(lerp(1.0, 0.0, time / mControlFadeTime), 0.0f);
+        alpha *= llmax(lerp(1.f, 0.f, time / mControlFadeTime), 0.0f);
 
         if(time >= mControlFadeTime)
         {

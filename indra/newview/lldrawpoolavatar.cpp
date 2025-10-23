@@ -580,7 +580,6 @@ void LLDrawPoolAvatar::beginImpostor()
 
     if (!LLPipeline::sReflectionRender)
     {
-        LLVOAvatar::sRenderDistance = llclamp(LLVOAvatar::sRenderDistance, 16.f, 256.f);
         LLVOAvatar::sNumVisibleAvatars = 0;
     }
 
@@ -636,7 +635,6 @@ void LLDrawPoolAvatar::beginDeferredImpostor()
 
     if (!LLPipeline::sReflectionRender)
     {
-        LLVOAvatar::sRenderDistance = llclamp(LLVOAvatar::sRenderDistance, 16.f, 256.f);
         LLVOAvatar::sNumVisibleAvatars = 0;
     }
 

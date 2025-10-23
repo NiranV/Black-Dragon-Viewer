@@ -130,17 +130,6 @@ void LLSettingsBase::saveValuesIfNeeded()
 }
 
 //=========================================================================
-void LLSettingsBase::lerpSettings(LLSettingsBase &other, F64 mix)
-{
-    LL_PROFILE_ZONE_SCOPED_CATEGORY_ENVIRONMENT;
-    saveValuesIfNeeded();
-    stringset_t skip = getSkipInterpolateKeys();
-    stringset_t slerps = getSlerpKeys();
-    mSettings = interpolateSDMap(mSettings, other.getSettings(), other.getParameterMap(), mix, skip, slerps);
-    setDirtyFlag(true);
-    loadValuesFromLLSD();
-}
-
 void LLSettingsBase::lerpVector2(LLVector2& a, const LLVector2& b, F32 mix)
 {
     a.mV[0] = lerp(a.mV[0], b.mV[0], mix);
@@ -372,14 +361,12 @@ LLSD LLSettingsBase::interpolateSDValue(const std::string& key_name, const LLSD 
                 new_array = q.getValue();
             }
             else
-            {   // TODO: We could expand this to inspect the type and do a deep lerp based on type.
-                // for now assume a heterogeneous array of reals.
+            {
                 size_t len = std::max(value.size(), other_value.size());
 
                 for (size_t i = 0; i < len; ++i)
                 {
-
-                    new_array[i] = lerp((F32)value[i].asReal(), (F32)other_value[i].asReal(), (F32)mix);
+                    new_array[i] = interpolateSDValue(key_name, value[i], other_value[i], defaults, mix, skip, slerps);
                 }
             }
 

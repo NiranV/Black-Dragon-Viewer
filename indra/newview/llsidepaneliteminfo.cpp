@@ -58,6 +58,8 @@
 //BD
 #include "llnamebox.h"
 
+const char* const DEFAULT_DESC = "(No Description)";
+
 class PropertiesChangedCallback : public LLInventoryCallback
 {
 public:
@@ -130,6 +132,7 @@ LLSidepanelItemInfo::LLSidepanelItemInfo(const LLPanel::Params& p)
     , mUpdatePendingId(-1)
     , mIsDirty(false) /*Not ready*/
     , mParentFloater(NULL)
+    , mLabelItemDesc(NULL)
 {
     gInventory.addObserver(this);
     gIdleCallbacks.addFunction(&LLSidepanelItemInfo::onIdle, (void*)this);
@@ -937,14 +940,24 @@ void LLSidepanelItemInfo::onCommitDescription()
     LLViewerInventoryItem* item = findItem();
     if(!item) return;
 
-	if((item->getDescription() != mLabelItemDesc->getText()) &&
-	   (gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE)))
-	{
-		LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
+    if(!mLabelItemDesc)
+    {
+        return;
+    }
+    if (!gAgent.allowOperation(PERM_MODIFY, item->getPermissions(), GP_OBJECT_MANIPULATE))
+    {
+        return;
+    }
+    std::string old_desc = item->getDescription();
+    std::string new_desc = mLabelItemDesc->getText();
+    if(old_desc != new_desc)
+    {
+        mLabelItemDesc->setSelectAllOnFocusReceived(false);
+        LLPointer<LLViewerInventoryItem> new_item = new LLViewerInventoryItem(item);
 
-		new_item->setDescription(mLabelItemDesc->getText());
-		onCommitChanges(new_item);
-	}
+        new_item->setDescription(new_desc);
+        onCommitChanges(new_item);
+    }
 }
 
 void LLSidepanelItemInfo::onCommitPermissions(LLUICtrl* ctrl)

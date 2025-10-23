@@ -216,99 +216,112 @@ void PeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
 
 bool PeopleContextMenu::enableContextMenuItem(const LLSD& userdata)
 {
-	if(gAgent.getID() == mUUIDs.front())
-	{
-		return false;
-	}
-	std::string item = userdata.asString();
+    std::string item = userdata.asString();
+    if(gAgent.getID() == mUUIDs.front())
+    {
+        if (item == std::string("can_zoom_in"))
+        {
+            return true;
+        }
+        return false;
+    }
 
-	// Note: can_block and can_delete is used only for one person selected menu
-	// so we don't need to go over all uuids.
+    // Note: can_block and can_delete is used only for one person selected menu
+    // so we don't need to go over all uuids.
 
-	if (item == std::string("can_block"))
-	{
-		const LLUUID& id = mUUIDs.front();
-		return LLAvatarActions::canBlock(id);
-	}
-	else if (item == std::string("can_add"))
-	{
-		// We can add friends if:
-		// - there are selected people
-		// - and there are no friends among selection yet.
+    if (item == std::string("can_block"))
+    {
+        const LLUUID& id = mUUIDs.front();
+        return LLAvatarActions::canBlock(id);
+    }
+    else if (item == std::string("can_add"))
+    {
+        // We can add friends if:
+        // - there are selected people
+        // - and there are no friends among selection yet.
 
-		bool result = (mUUIDs.size() > 0);
+        //EXT-7389 - disable for more than 1
+        if(mUUIDs.size() > 1)
+        {
+            return false;
+        }
 
-		uuid_vec_t::const_iterator
-			id = mUUIDs.begin(),
-			uuids_end = mUUIDs.end();
+        bool result = (mUUIDs.size() > 0);
 
-		for (;id != uuids_end; ++id)
-		{
-			if ( LLAvatarActions::isFriend(*id) )
-			{
-				result = false;
-				break;
-			}
-		}
+        uuid_vec_t::const_iterator
+            id = mUUIDs.begin(),
+            uuids_end = mUUIDs.end();
 
-		return result;
-	}
-	else if (item == std::string("can_delete"))
-	{
-		// We can remove friends if:
-		// - there are selected people
-		// - and there are only friends among selection.
+        for (;id != uuids_end; ++id)
+        {
+            if ( LLAvatarActions::isFriend(*id) )
+            {
+                result = false;
+                break;
+            }
+        }
 
-		bool result = (mUUIDs.size() > 0);
+        return result;
+    }
+    else if (item == std::string("can_delete"))
+    {
+        // We can remove friends if:
+        // - there are selected people
+        // - and there are only friends among selection.
 
-		uuid_vec_t::const_iterator
-			id = mUUIDs.begin(),
-			uuids_end = mUUIDs.end();
+        bool result = (mUUIDs.size() > 0);
 
-		for (;id != uuids_end; ++id)
-		{
-			if ( !LLAvatarActions::isFriend(*id) )
-			{
-				result = false;
-				break;
-			}
-		}
+        uuid_vec_t::const_iterator
+            id = mUUIDs.begin(),
+            uuids_end = mUUIDs.end();
 
-		return result;
-	}
-	else if (item == std::string("can_call"))
-	{
-		return LLAvatarActions::canCall();
-	}
-	else if (item == std::string("can_zoom_in"))
-	{
-		const LLUUID& id = mUUIDs.front();
+        for (;id != uuids_end; ++id)
+        {
+            if ( !LLAvatarActions::isFriend(*id) )
+            {
+                result = false;
+                break;
+            }
+        }
 
-		return gObjectList.findObject(id);
-	}
-	else if (item == std::string("can_show_on_map"))
-	{
-		const LLUUID& id = mUUIDs.front();
+        return result;
+    }
+    else if (item == std::string("can_call"))
+    {
+        return LLAvatarActions::canCall();
+    }
+    else if (item == std::string("can_zoom_in"))
+    {
+        const LLUUID& id = mUUIDs.front();
 
-		return (LLAvatarTracker::instance().isBuddyOnline(id) && is_agent_mappable(id))
-					|| gAgent.isGodlike();
-	}
-	else if(item == std::string("can_offer_teleport"))
-	{
-		return LLAvatarActions::canOfferTeleport(mUUIDs);
-	}
-	else if (item == std::string("can_callog"))
-	{
-		return LLLogChat::isTranscriptExist(mUUIDs.front());
-	}
-	//BD - Report Abuse
-	else if (item == std::string("can_im") || item == std::string("can_invite") ||
-	         item == std::string("can_share") || item == std::string("can_pay") ||
+        return gObjectList.findObject(id);
+    }
+    else if (item == std::string("can_show_on_map"))
+    {
+        const LLUUID& id = mUUIDs.front();
+
+        return (LLAvatarTracker::instance().isBuddyOnline(id) && is_agent_mappable(id))
+                    || gAgent.isGodlike();
+    }
+    else if(item == std::string("can_offer_teleport"))
+    {
+        return LLAvatarActions::canOfferTeleport(mUUIDs);
+    }
+    else if (item == std::string("can_callog"))
+    {
+        return LLLogChat::isTranscriptExist(mUUIDs.front());
+    }
+    else if (item == std::string("can_im") || item == std::string("can_invite"))
+    {
+        return true;
+    }
+    //BD - Report Abuse
+	else if (item == std::string("can_share") || item == std::string("can_pay") ||
 			 item == std::string("can_report"))
-	{
-		return true;
-	}
-	return false;
+    {
+        return mUUIDs.size() == 1;
+    }
+    return false;
 }
 
 bool PeopleContextMenu::checkContextMenuItem(const LLSD& userdata)
@@ -426,7 +439,10 @@ void PeopleContextMenu::eject()
             avatar = (LLVOAvatar*) object;
         }
     }
-    if (!avatar) return;
+
+    if (!avatar)
+        return;
+
     LLSD payload;
     payload["avatar_id"] = avatar->getID();
     std::string fullname = avatar->getFullname();

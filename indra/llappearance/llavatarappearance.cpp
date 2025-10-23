@@ -29,16 +29,17 @@
 #include "llavatarappearance.h"
 #include "llavatarappearancedefines.h"
 #include "llavatarjointmesh.h"
+#include "lljointdata.h"
 #include "llstl.h"
 #include "lldir.h"
 #include "llpolymorph.h"
 #include "llpolymesh.h"
 #include "llpolyskeletaldistortion.h"
-#include "llstl.h"
 #include "lltexglobalcolor.h"
 #include "llwearabledata.h"
 #include "boost/bind.hpp"
 #include "boost/tokenizer.hpp"
+#include "v4math.h"
 
 using namespace LLAvatarAppearanceDefines;
 
@@ -71,11 +72,13 @@ public:
         mChildren.clear();
     }
     bool parseXml(LLXmlTreeNode* node);
+    glm::mat4 getJointMatrix();
 
 private:
     std::string mName;
     std::string mSupport;
     std::string mAliases;
+    std::string mGroup;
     bool mIsJoint;
     LLVector3 mPos;
     LLVector3 mEnd;
@@ -108,10 +111,16 @@ public:
     S32 getNumCollisionVolumes() const { return mNumCollisionVolumes; }
 
 private:
+    typedef std::vector<LLAvatarBoneInfo*> bone_info_list_t;
+    static void getJointMatricesAndHierarhy(
+        LLAvatarBoneInfo* bone_info,
+        LLJointData& data,
+        const glm::mat4& parent_mat);
+
+private:
     S32 mNumBones;
     S32 mNumCollisionVolumes;
     LLAvatarAppearance::joint_alias_map_t mJointAliasMap;
-    typedef std::vector<LLAvatarBoneInfo*> bone_info_list_t;
     bone_info_list_t mBoneInfoList;
 };
 
@@ -772,120 +781,116 @@ bool LLAvatarAppearance::hasPelvisFixup( F32& fixup ) const
 //-----------------------------------------------------------------------------
 void LLAvatarAppearance::buildCharacter()
 {
-	//-------------------------------------------------------------------------
-	// remove all references to our existing skeleton
-	// so we can rebuild it
-	//-------------------------------------------------------------------------
-	flushAllMotions();
+    //-------------------------------------------------------------------------
+    // remove all references to our existing skeleton
+    // so we can rebuild it
+    //-------------------------------------------------------------------------
+    flushAllMotions();
 
-	//-------------------------------------------------------------------------
-	// remove all of mRoot's children
-	//-------------------------------------------------------------------------
-	mRoot->removeAllChildren();
-	mJointMap.clear();
-	mIsBuilt = false;
+    //-------------------------------------------------------------------------
+    // remove all of mRoot's children
+    //-------------------------------------------------------------------------
+    mRoot->removeAllChildren();
+    mJointMap.clear();
+    mIsBuilt = false;
 
-	//-------------------------------------------------------------------------
-	// clear mesh data
-	//-------------------------------------------------------------------------
-	for (LLAvatarJoint* joint : mMeshLOD)
-	{
-		for (LLAvatarJointMesh* mesh : joint->mMeshParts)
-		{
-			mesh->setMesh(NULL);
-		}
-	}
+    //-------------------------------------------------------------------------
+    // clear mesh data
+    //-------------------------------------------------------------------------
+    for (LLAvatarJoint* joint : mMeshLOD)
+    {
+        for (LLAvatarJointMesh* mesh : joint->mMeshParts)
+        {
+            mesh->setMesh(NULL);
+        }
+    }
 
-	//-------------------------------------------------------------------------
-	// (re)load our skeleton and meshes
-	//-------------------------------------------------------------------------
-	LLTimer timer;
+    //-------------------------------------------------------------------------
+    // (re)load our skeleton and meshes
+    //-------------------------------------------------------------------------
+    LLTimer timer;
 
-	BOOL status = loadAvatar();
-	stop_glerror();
+    bool status = loadAvatar();
+    stop_glerror();
 
-// 	gPrintMessagesThisFrame = TRUE;
-	LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
+    LL_DEBUGS() << "Avatar load took " << timer.getElapsedTimeF32() << " seconds." << LL_ENDL;
 
-	if (!status)
-	{
-		if (isSelf())
-		{
-			LL_ERRS() << "Unable to load user's avatar" << LL_ENDL;
-		}
-		else
-		{
-			LL_WARNS() << "Unable to load other's avatar" << LL_ENDL;
-		}
-		return;
-	}
+    if (!status)
+    {
+        if (isSelf())
+        {
+            LL_ERRS() << "Unable to load user's avatar" << LL_ENDL;
+        }
+        else
+        {
+            LL_WARNS() << "Unable to load other's avatar" << LL_ENDL;
+        }
+        return;
+    }
 
-	//-------------------------------------------------------------------------
-	// initialize "well known" joint pointers
-	//-------------------------------------------------------------------------
-	mPelvisp		= mRoot->findJoint("mPelvis");
-	mTorsop			= mRoot->findJoint("mTorso");
-	mChestp			= mRoot->findJoint("mChest");
-	mNeckp			= mRoot->findJoint("mNeck");
-	mHeadp			= mRoot->findJoint("mHead");
-	mSkullp			= mRoot->findJoint("mSkull");
-	mHipLeftp		= mRoot->findJoint("mHipLeft");
-	mHipRightp		= mRoot->findJoint("mHipRight");
-	mKneeLeftp		= mRoot->findJoint("mKneeLeft");
-	mKneeRightp		= mRoot->findJoint("mKneeRight");
-	mAnkleLeftp		= mRoot->findJoint("mAnkleLeft");
-	mAnkleRightp	= mRoot->findJoint("mAnkleRight");
-	mFootLeftp		= mRoot->findJoint("mFootLeft");
-	mFootRightp		= mRoot->findJoint("mFootRight");
-	mWristLeftp		= mRoot->findJoint("mWristLeft");
-	mWristRightp	= mRoot->findJoint("mWristRight");
-	mEyeLeftp		= mRoot->findJoint("mEyeLeft");
-	mEyeRightp		= mRoot->findJoint("mEyeRight");
-	//BD
+    //-------------------------------------------------------------------------
+    // initialize "well known" joint pointers
+    //-------------------------------------------------------------------------
+    mPelvisp        = mRoot->findJoint("mPelvis");
+    mTorsop         = mRoot->findJoint("mTorso");
+    mChestp         = mRoot->findJoint("mChest");
+    mNeckp          = mRoot->findJoint("mNeck");
+    mHeadp          = mRoot->findJoint("mHead");
+    mSkullp         = mRoot->findJoint("mSkull");
+    mHipLeftp       = mRoot->findJoint("mHipLeft");
+    mHipRightp      = mRoot->findJoint("mHipRight");
+    mKneeLeftp      = mRoot->findJoint("mKneeLeft");
+    mKneeRightp     = mRoot->findJoint("mKneeRight");
+    mAnkleLeftp     = mRoot->findJoint("mAnkleLeft");
+    mAnkleRightp    = mRoot->findJoint("mAnkleRight");
+    mFootLeftp      = mRoot->findJoint("mFootLeft");
+    mFootRightp     = mRoot->findJoint("mFootRight");
+    mWristLeftp     = mRoot->findJoint("mWristLeft");
+    mWristRightp    = mRoot->findJoint("mWristRight");
+    mEyeLeftp       = mRoot->findJoint("mEyeLeft");
+    mEyeRightp      = mRoot->findJoint("mEyeRight");
+    //BD
 	mShoulderRightp = mRoot->findJoint("mShoulderRight");
 	mShoulderLeftp	= mRoot->findJoint("mShoulderLeft");
 	mElbowRightp	= mRoot->findJoint("mElbowRight");
 	mElbowLeftp		= mRoot->findJoint("mElbowLeft");
 
-	//-------------------------------------------------------------------------
-	// Make sure "well known" pointers exist
-	//-------------------------------------------------------------------------
-	if (!(mPelvisp && 
-		  mTorsop &&
-		  mChestp &&
-		  mNeckp &&
-		  mHeadp &&
-		  mSkullp &&
-		  mHipLeftp &&
-		  mHipRightp &&
-		  mKneeLeftp &&
-		  mKneeRightp &&
-		  mAnkleLeftp &&
-		  mAnkleRightp &&
-		  mFootLeftp &&
-		  mFootRightp &&
-		  mWristLeftp &&
-		  mWristRightp &&
-		  mEyeLeftp &&
-		  mEyeRightp &&
-		  //BD
+    //-------------------------------------------------------------------------
+    // Make sure "well known" pointers exist
+    //-------------------------------------------------------------------------
+    if (!(mPelvisp &&
+          mTorsop &&
+          mChestp &&
+          mNeckp &&
+          mHeadp &&
+          mSkullp &&
+          mHipLeftp &&
+          mHipRightp &&
+          mKneeLeftp &&
+          mKneeRightp &&
+          mAnkleLeftp &&
+          mAnkleRightp &&
+          mFootLeftp &&
+          mFootRightp &&
+          mWristLeftp &&
+          mWristRightp &&
+          mEyeLeftp &&
+          mEyeRightp &&
+          //BD
 		  mShoulderRightp &&
 		  mShoulderLeftp &&
 		  mElbowRightp &&
-		  mElbowLeftp))
-	{
-		LL_ERRS() << "Failed to create avatar." << LL_ENDL;
-		return;
-	}
+		  mElbowLeftp))))
+    {
+        LL_ERRS() << "Failed to create avatar." << LL_ENDL;
+        return;
+    }
 
-	//-------------------------------------------------------------------------
-	// initialize the pelvis
-	//-------------------------------------------------------------------------
-	// SL-315
-	mPelvisp->setPosition( LLVector3(0.0f, 0.0f, 0.0f) );
-
-	mIsBuilt = true;
-	stop_glerror();
+    //-------------------------------------------------------------------------
+    // initialize the pelvis
+    //-------------------------------------------------------------------------
+    // SL-315
+    mPelvisp->setPosition( LLVector3(0.0f, 0.0f, 0.0f) );
 
 
 }
@@ -1615,36 +1620,60 @@ bool LLAvatarBoneInfo::parseXml(LLXmlTreeNode* node)
         mSupport = "base";
     }
 
-	if (mIsJoint)
-	{
-		static LLStdStringHandle pivot_string = LLXmlTree::addAttributeString("pivot");
-		if (!node->getFastAttributeVector3(pivot_string, mPivot))
-		{
-			LL_WARNS() << "Bone without pivot" << LL_ENDL;
-			return false;
-		}
-	}
+    // Skeleton has 133 bones, but shader only allows 110 (LL_MAX_JOINTS_PER_MESH_OBJECT)
+    // Groups can be used by importer to cut out unused groups of joints
+    static LLStdStringHandle group_string = LLXmlTree::addAttributeString("group");
+    if (!node->getFastAttributeString(group_string, mGroup))
+    {
+        LL_WARNS() << "Bone without group " << mName << LL_ENDL;
+        mGroup = "global";
+    }
 
-	//BD
+    if (mIsJoint)
+    {
+        static LLStdStringHandle pivot_string = LLXmlTree::addAttributeString("pivot");
+        if (!node->getFastAttributeVector3(pivot_string, mPivot))
+        {
+            LL_WARNS() << "Bone without pivot" << LL_ENDL;
+            return false;
+        }
+    }
+
+    //BD
 	static LLStdStringHandle reposition_string = LLXmlTree::addAttributeString("reposition");
 	if (!node->getFastAttributeBOOL(reposition_string, mHasPosition))
 	{
 		mHasPosition = false;
 	}
 
-	// parse children
-	LLXmlTreeNode* child;
-	for( child = node->getFirstChild(); child; child = node->getNextChild() )
-	{
-		LLAvatarBoneInfo *child_info = new LLAvatarBoneInfo;
-		if (!child_info->parseXml(child))
-		{
-			delete child_info;
-			return false;
-		}
-		mChildren.push_back(child_info);
-	}
-	return true;
+    // parse children
+    LLXmlTreeNode* child;
+    for( child = node->getFirstChild(); child; child = node->getNextChild() )
+    {
+        LLAvatarBoneInfo *child_info = new LLAvatarBoneInfo;
+        if (!child_info->parseXml(child))
+        {
+            delete child_info;
+            return false;
+        }
+        mChildren.push_back(child_info);
+    }
+    return true;
+}
+
+
+glm::mat4 LLAvatarBoneInfo::getJointMatrix()
+{
+    glm::mat4 mat(1.0f);
+    // 1. Scaling
+    mat = glm::scale(mat, glm::vec3(mScale[0], mScale[1], mScale[2]));
+    // 2. Rotation (Euler angles rad)
+    mat = glm::rotate(mat, mRot[0], glm::vec3(1, 0, 0));
+    mat = glm::rotate(mat, mRot[1], glm::vec3(0, 1, 0));
+    mat = glm::rotate(mat, mRot[2], glm::vec3(0, 0, 1));
+    // 3. Position
+    mat = glm::translate(mat, glm::vec3(mPos[0], mPos[1], mPos[2]));
+    return mat;
 }
 
 //-----------------------------------------------------------------------------
@@ -1675,6 +1704,25 @@ bool LLAvatarSkeletonInfo::parseXml(LLXmlTreeNode* node)
         mBoneInfoList.push_back(info);
     }
     return true;
+}
+
+void LLAvatarSkeletonInfo::getJointMatricesAndHierarhy(
+    LLAvatarBoneInfo* bone_info,
+    LLJointData& data,
+    const glm::mat4& parent_mat)
+{
+    data.mName = bone_info->mName;
+    data.mJointMatrix = bone_info->getJointMatrix();
+    data.mScale = glm::vec3(bone_info->mScale[0], bone_info->mScale[1], bone_info->mScale[2]);
+    data.mRotation = bone_info->mRot;
+    data.mRestMatrix = parent_mat * data.mJointMatrix;
+    data.mIsJoint = bone_info->mIsJoint;
+    data.mGroup = bone_info->mGroup;
+    for (LLAvatarBoneInfo* child_info : bone_info->mChildren)
+    {
+        LLJointData& child_data = data.mChildren.emplace_back();
+        getJointMatricesAndHierarhy(child_info, child_data, data.mRestMatrix);
+    }
 }
 
 //Make aliases for joint and push to map.
@@ -1736,6 +1784,16 @@ const LLAvatarAppearance::joint_alias_map_t& LLAvatarAppearance::getJointAliases
     }
 
     return mJointAliasMap;
+}
+
+void LLAvatarAppearance::getJointMatricesAndHierarhy(std::vector<LLJointData> &data) const
+{
+    glm::mat4 identity(1.f);
+    for (LLAvatarBoneInfo* bone_info : sAvatarSkeletonInfo->mBoneInfoList)
+    {
+        LLJointData& child_data = data.emplace_back();
+        LLAvatarSkeletonInfo::getJointMatricesAndHierarhy(bone_info, child_data, identity);
+    }
 }
 
 

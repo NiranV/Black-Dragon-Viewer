@@ -73,6 +73,7 @@ float noise(vec2 x) {
 
 //=============================
 
+vec3 clampHDRRange(vec3 color);
 
 
 void main()
@@ -98,6 +99,7 @@ void main()
     diff.rgb += nz*0.003;
 #endif
 
+    diff.rgb = clampHDRRange(diff.rgb);
     frag_color = diff;
 
     gl_FragDepth = texture(depthMap, vary_fragcoord.xy).r;

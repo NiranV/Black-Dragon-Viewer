@@ -515,6 +515,7 @@ bool LLSnapshotLivePreview::onIdle( void* snapshot_preview )
     static LLCachedControl<bool> freeze_time(gSavedSettings, "FreezeTime", false);
     static LLCachedControl<bool> use_freeze_frame(gSavedSettings, "UseFreezeFrame", false);
     static LLCachedControl<bool> render_ui(gSavedSettings, "RenderUIInSnapshot", false);
+    static LLCachedControl<bool> render_balance(gSavedSettings, "RenderBalanceInSnapshot", false);
     static LLCachedControl<bool> render_hud(gSavedSettings, "RenderHUDInSnapshot", false);
     static LLCachedControl<bool> render_no_post(gSavedSettings, "RenderSnapshotNoPost", false);
 
@@ -544,6 +545,7 @@ bool LLSnapshotLivePreview::onIdle( void* snapshot_preview )
                 render_hud,
                 false,
                 render_no_post,
+                render_balance,
                 previewp->mSnapshotBufferType,
                 previewp->getMaxImageSize()))
         {
@@ -812,7 +814,7 @@ void LLSnapshotLivePreview::saveTexture(bool outfit_snapshot, std::string name)
             tid, LLAssetType::AT_TEXTURE, res_name, res_desc, 0,
             folder_type, inv_type,
             PERM_ALL, LLFloaterPerms::getGroupPerms("Uploads"), LLFloaterPerms::getEveryonePerms("Uploads"),
-            expected_upload_cost, !outfit_snapshot));
+            expected_upload_cost, LLUUID::null, !outfit_snapshot));
 
         upload_new_resource(assetUploadInfo);
 

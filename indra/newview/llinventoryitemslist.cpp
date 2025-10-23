@@ -99,7 +99,7 @@ void LLInventoryItemsList::updateSelection()
 
     for(std::vector<LLSD>::const_iterator cur_id_it = cur.begin(); cur_id_it != cur.end() && !mSelectTheseIDs.empty(); ++cur_id_it)
     {
-        uuid_vec_t::iterator select_ids_it = std::find(mSelectTheseIDs.begin(), mSelectTheseIDs.end(), *cur_id_it);
+        uuid_vec_t::iterator select_ids_it = std::find(mSelectTheseIDs.begin(), mSelectTheseIDs.end(), cur_id_it->asUUID());
         if(select_ids_it != mSelectTheseIDs.end())
         {
             selectItemByUUID(*select_ids_it);
@@ -115,7 +115,7 @@ void LLInventoryItemsList::doIdle()
 {
     if (mRefreshState == REFRESH_COMPLETE) return;
 
-    if (isInVisibleChain() || mForceRefresh )
+    if (isInVisibleChain() || mForceRefresh || !getFilterSubString().empty())
     {
         refresh();
 

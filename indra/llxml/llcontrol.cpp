@@ -199,9 +199,12 @@ LLControlVariable::LLControlVariable(const std::string& name, eControlType type,
 	  mPresetType(preset_type)
 {
 	if ((persist != PERSIST_NO) && mComment.empty())
-	{
-		LL_ERRS() << "Must supply a comment for control " << mName << LL_ENDL;
-	}
+    {
+        // File isn't actually missing, but something is wrong with it
+        // so the main point is to warn user to reinstall
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Must supply a comment for control " << mName << LL_ENDL;
+    }
 	//Push back versus setValue'ing here, since we don't want to call a signal yet
 	mValues.push_back(initial);
 }

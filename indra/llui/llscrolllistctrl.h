@@ -328,7 +328,7 @@ public:
 	void setAllowKeyboardMovement(bool b)		{ mAllowKeyboardMovement = b; }
 
 	void			setMaxSelectable(U32 max_selected) { mMaxSelectable = max_selected; }
-	S32				getMaxSelectable() { return mMaxSelectable; }
+	S32				getMaxSelectable() const { return mMaxSelectable; }
 
 
 	virtual S32		getScrollPos() const;
@@ -344,7 +344,7 @@ public:
 	// support right-click context menus for avatar/group lists
 	enum ContextMenuType { MENU_NONE, MENU_AVATAR, MENU_GROUP };
 	void setContextMenu(const ContextMenuType &menu) { mContextMenuType = menu; }
-    ContextMenuType getContextMenuType() { return mContextMenuType; }
+    ContextMenuType getContextMenuType() const { return mContextMenuType; }
 	//BD - Right Click Context Menu
 	void setContextMenu(LLContextMenu* new_context_menu);
 
@@ -416,7 +416,7 @@ public:
 
 	void setNumDynamicColumns(S32 num) { mNumDynamicWidthColumns = num; }
 	void updateStaticColumnWidth(LLScrollListColumn* col, S32 new_width);
-	S32 getTotalStaticColumnWidth() { return mTotalStaticColumnWidth; }
+	S32 getTotalStaticColumnWidth() const { return mTotalStaticColumnWidth; }
 
 	std::string     getSortColumnName();
 	bool			getSortAscending() { return mSortColumns.empty() ? true : mSortColumns.back().second; }

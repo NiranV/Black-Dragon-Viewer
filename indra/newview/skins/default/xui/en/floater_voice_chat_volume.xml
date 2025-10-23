@@ -33,6 +33,8 @@
 		height="23"
 		increment="0.025"
 		initial_value="0.5"
+		label="Voice Chat"
+		label_width="60"
 		layout="topleft"
 		left="5"
 		top_pad="0"

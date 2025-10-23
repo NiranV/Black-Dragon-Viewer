@@ -152,22 +152,24 @@ uniform float exposure;
 uniform float tonemap_mix;
 uniform int tonemap_type;
 
+
 vec3 toneMap(vec3 color)
 {
 #ifndef NO_POST
+    vec3 linear_input_color = color;
+
     float exp_scale = texture(exposureMap, vec2(0.5,0.5)).r;
+    float final_exposure = exposure * exp_scale;
+    vec3 exposed_color = color * final_exposure;
 
-    color *= exposure * exp_scale;
-
-    vec3 clamped_color = clamp(color.rgb, vec3(0.0), vec3(1.0));
-
+    vec3 tonemapped_color = exposed_color;
     switch(tonemap_type)
     {
     case 0:
-        color = PBRNeutralToneMapping(color);
+        tonemapped_color = PBRNeutralToneMapping(exposed_color);
         break;
     case 1:
-        color = toneMapACES_Hill(color);
+        tonemapped_color = toneMapACES_Hill(exposed_color);
         break;
     case 2:
         color = PBRReinhardToneMapping(color);
@@ -180,8 +182,13 @@ vec3 toneMap(vec3 color)
         break;
     }
 
-    // mix tonemapped and linear here to provide adjustment
-    color = mix(clamped_color, color, tonemap_mix);
+    vec3 exposed_linear_input = linear_input_color * final_exposure;
+    color = mix(exposed_linear_input, tonemapped_color, tonemap_mix);
+
+    color = clamp(color, 0.0, 1.0);
+#else
+    color *= exposure * texture(exposureMap, vec2(0.5,0.5)).r;
+    color = clamp(color, 0.0, 1.0);
 #endif
 
     return color;
@@ -191,29 +198,33 @@ vec3 toneMap(vec3 color)
 vec3 toneMapNoExposure(vec3 color)
 {
 #ifndef NO_POST
-    vec3 clamped_color = clamp(color.rgb, vec3(0.0), vec3(1.0));
+    vec3 linear_input_color = color;
 
+    vec3 tonemapped_color = color;
     switch(tonemap_type)
     {
     case 0:
-        color = PBRNeutralToneMapping(color);
+        tonemapped_color = PBRNeutralToneMapping(color);
         break;
     case 1:
-        color = PBRReinhardToneMapping(color);
+        tonemapped_color = toneMapACES_Hill(color);
         break;
     case 2:
-        color = PBRReinhardToneMapping(color);
+        tonemapped_color = PBRReinhardToneMapping(color);
         break;
     case 3:
-        color = Uncharted2ToneMapping(color);
+        tonemapped_color = Uncharted2ToneMapping(color);
         break;
     case 4:
-        color = FilmicToneMapping(color);
+        tonemapped_color = FilmicToneMapping(color);
         break;
     }
 
-    // mix tonemapped and linear here to provide adjustment
-    color = mix(clamped_color, color, tonemap_mix);
+    color = mix(linear_input_color, tonemapped_color, tonemap_mix);
+
+    color = clamp(color, 0.0, 1.0);
+#else
+     color = clamp(color, 0.0, 1.0);
 #endif
 
     return color;

@@ -141,13 +141,109 @@ protected:
 
 private:
 
-	typedef enum e_online_status {
+    typedef enum e_online_status {
 		E_OFFLINE,
 		E_ONLINE,
 		E_UNKNOWN,
 		//BD - Developer tracker
 		E_DEVELOPER,
 	} EOnlineStatus;
+
+    /**
+     * Enumeration of item elements in order from right to left.
+     *
+     * updateChildren() assumes that indexes are in the such order to process avatar icon easier.
+     *
+     * @see updateChildren()
+     */
+    typedef enum e_avatar_item_child {
+        ALIC_SPEAKER_INDICATOR,
+        ALIC_PROFILE_BUTTON,
+        ALIC_INFO_BUTTON,
+        ALIC_PERMISSION_ONLINE,
+        ALIC_PERMISSION_MAP,
+        ALIC_PERMISSION_EDIT_MINE,
+        ALIC_PERMISSION_EDIT_THEIRS,
+        ALIC_INTERACTION_TIME,
+        ALIC_NAME,
+        ALIC_ICON,
+        ALIC_COUNT,
+    } EAvatarListItemChildIndex;
+
+    void setNameInternal(const std::string& name, const std::string& highlight);
+    void onAvatarNameCache(const LLAvatarName& av_name);
+
+    std::string formatSeconds(U32 secs);
+
+    typedef std::map<EItemState, LLColor4> icon_color_map_t;
+    static icon_color_map_t& getItemIconColorMap();
+
+    /**
+     * Initializes widths of all children to use them while changing visibility of any of them.
+     *
+     * @see updateChildren()
+     */
+    static void initChildrenWidths(LLAvatarListItem* self);
+
+    /**
+     * Updates position and rectangle of visible children to fit all available item's width.
+     */
+    void updateChildren();
+
+    /**
+     * Update visibility of active permissions icons.
+     *
+     * Need to call updateChildren() afterwards to sort out their layout.
+     */
+    bool showPermissions(bool visible);
+
+    /**
+     * Gets child view specified by index.
+     *
+     * This method implemented via switch by all EAvatarListItemChildIndex values.
+     * It is used to not store children in array or vector to avoid of increasing memory usage.
+     */
+    LLView* getItemChildView(EAvatarListItemChildIndex child_index);
+
+    LLTextBox* mAvatarName;
+    LLTextBox* mLastInteractionTime;
+    LLStyle::Params mAvatarNameStyle;
+
+    LLButton* mInfoBtn;
+    LLButton* mProfileBtn;
+
+    LLUUID mAvatarId;
+    std::string mHighlihtSubstring; // substring to highlight
+    EOnlineStatus mOnlineStatus;
+    //Flag indicating that info/profile button shouldn't be shown at all.
+    //Speaker indicator and avatar name coords are translated accordingly
+    bool mShowInfoBtn;
+    bool mShowProfileBtn;
+
+    /// indicates whether to show icons representing permissions granted
+    bool mShowPermissions;
+
+    /// true when the mouse pointer is hovering over this item
+    bool mHovered;
+
+    bool mShowCompleteName;
+    bool mForceCompleteName;
+    std::string mGreyOutUsername;
+
+    void fetchAvatarName();
+    boost::signals2::connection mAvatarNameCacheConnection;
+
+    static bool sStaticInitialized; // this variable is introduced to improve code readability
+    static S32  sLeftPadding; // padding to first left visible child (icon or name)
+    static S32  sNameRightPadding; // right padding from name to next visible child
+
+    /**
+     * Contains widths of each child specified by EAvatarListItemChildIndex
+     * including padding to the next right one.
+     *
+     * @see initChildrenWidths()
+     */
+    static S32 sChildrenWidths[ALIC_COUNT];
 
 	void setNameInternal(const std::string& name, const std::string& highlight);
 	void onAvatarNameCache(const LLAvatarName& av_name);

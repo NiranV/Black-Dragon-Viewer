@@ -306,6 +306,7 @@ void LLXMLNode::addChild(LLXMLNodePtr& new_child)
 // virtual
 LLXMLNodePtr LLXMLNode::createChild(const char* name, bool is_attribute)
 {
+    // Todo: validate to make sure node name is valid? (no spaces, etc)
     return createChild(gStringTable.addStringEntry(name), is_attribute);
 }
 
@@ -1281,7 +1282,7 @@ bool LLXMLNode::getAttributeU8(const char* name, U8& value )
 bool LLXMLNode::getAttributeS8(const char* name, S8& value )
 {
     LLXMLNodePtr node;
-    S32 val;
+    S32 val{};
     if (!(getAttribute(name, node) && node->getIntValue(1, &val)))
     {
         return false;
@@ -1293,7 +1294,7 @@ bool LLXMLNode::getAttributeS8(const char* name, S8& value )
 bool LLXMLNode::getAttributeU16(const char* name, U16& value )
 {
     LLXMLNodePtr node;
-    U32 val;
+    U32 val{};
     if (!(getAttribute(name, node) && node->getUnsignedValue(1, &val)))
     {
         return false;
@@ -1305,7 +1306,7 @@ bool LLXMLNode::getAttributeU16(const char* name, U16& value )
 bool LLXMLNode::getAttributeS16(const char* name, S16& value )
 {
     LLXMLNodePtr node;
-    S32 val;
+    S32 val{};
     if (!(getAttribute(name, node) && node->getIntValue(1, &val)))
     {
         return false;

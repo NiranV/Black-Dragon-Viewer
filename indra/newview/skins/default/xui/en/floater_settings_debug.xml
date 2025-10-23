@@ -68,6 +68,7 @@
    right="-8"
    name="comment_text"
    follows="left|top"
+   max_length="1024"   
    width="320"
    top_pad="0"
    word_wrap="true" />

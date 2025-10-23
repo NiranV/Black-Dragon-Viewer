@@ -301,7 +301,8 @@ struct AttachmentInfo
         AttachmentInfo(metadata.logFilePathname,      "text/plain"),
         AttachmentInfo(metadata.userSettingsPathname, "text/xml"),
         AttachmentInfo(metadata.accountSettingsPathname, "text/xml"),
-        AttachmentInfo(metadata.staticDebugPathname,  "text/xml")
+        AttachmentInfo(metadata.staticDebugPathname,  "text/xml"),
+        AttachmentInfo(metadata.attributesPathname,  "text/xml")
     };
 
     secondLogPath = metadata.secondLogFilePathname;
@@ -371,7 +372,7 @@ struct AttachmentInfo
 - (void)sendEvent:(NSEvent *)event
 {
     [super sendEvent:event];
-    if ([event type] == NSKeyUp && ([event modifierFlags] & NSCommandKeyMask))
+    if ([event type] == NSEventTypeKeyUp && ([event modifierFlags] & NSEventModifierFlagCommand))
     {   
         [[self keyWindow] sendEvent:event];
     }

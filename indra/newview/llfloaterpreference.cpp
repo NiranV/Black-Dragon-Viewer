@@ -1530,6 +1530,11 @@ bool LLFloaterPreference::postBuild()
 	mAvatarSettingsList->setRightMouseDownCallback(boost::bind(&LLFloaterPreference::onAvatarListRightClick, this, _1, _2, _3));
 	getChild<LLFilterEditor>("people_filter_input")->setCommitCallback(boost::bind(&LLFloaterPreference::onFilterEdit, this, _2));
 
+#ifndef LL_DISCORD
+    LLPanel* panel = getChild<LLPanel>("privacy_preferences_discord");
+    getChild<LLTabContainer>("privacy_tab_container")->removeTabPanel(panel);
+#endif
+
 	return true;
 }
 

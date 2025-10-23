@@ -257,16 +257,24 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
         getChild<LLTextBox>("setting_name_txt")->setToolTip(controlp->getName());
         mComment->setVisible(true);
 
-        std::string old_text = mComment->getText();
         std::string new_text = controlp->getComment();
         // Don't setText if not nessesary, it will reset scroll
         // This is a debug UI that reads from xml, there might
         // be use cases where comment changes, but not the name
-		if (old_text != new_text)
+		if (mOldText != new_text)
 		{
 			mComment->setText(controlp->getComment());
+			mOldText = new_text;
 		}
         
+		mValX->setMaxValue(F32_MAX);
+        mValY->setMaxValue(F32_MAX);
+        mValZ->setMaxValue(F32_MAX);
+        mValW->setMaxValue(F32_MAX);
+        mValX->setMinValue(-F32_MAX);
+        mValY->setMinValue(-F32_MAX);
+        mValZ->setMinValue(-F32_MAX);
+        mValW->setMinValue(-F32_MAX);
 		if (!mValX->hasFocus())
 		{
 			mValX->setIncrement(0.1f);
@@ -282,7 +290,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 //		//BD - Vector4
 		if (!mValW->hasFocus())
 		{
-			mValZ->setIncrement(0.1f);
+			mValW->setIncrement(0.1f);
 		}
 
 		LLSD sd = controlp->get();
@@ -577,6 +585,7 @@ void LLFloaterSettingsDebug::updateControl(LLControlVariable* controlp)
 // [/RLVa:KB]
 		  default:
 			mComment->setText(std::string("unknown"));
+			mOldText = "unknown";
 			break;
 		}
 	}

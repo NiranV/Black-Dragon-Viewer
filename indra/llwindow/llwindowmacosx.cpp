@@ -279,6 +279,10 @@ void callResetKeys()
 
 bool callUnicodeCallback(wchar_t character, unsigned int mask)
 {
+    if (!gWindowImplementation)
+    {
+        return false;
+    }
     NativeKeyEventData eventData;
 
     memset(&eventData, 0, sizeof(NativeKeyEventData));
@@ -300,7 +304,7 @@ bool callUnicodeCallback(wchar_t character, unsigned int mask)
 
 void callFocus()
 {
-    if (gWindowImplementation)
+    if (gWindowImplementation && gWindowImplementation->getCallbacks())
     {
         gWindowImplementation->getCallbacks()->handleFocus(gWindowImplementation);
     }
@@ -308,7 +312,7 @@ void callFocus()
 
 void callFocusLost()
 {
-    if (gWindowImplementation)
+    if (gWindowImplementation && gWindowImplementation->getCallbacks())
     {
         gWindowImplementation->getCallbacks()->handleFocusLost(gWindowImplementation);
     }
@@ -316,6 +320,10 @@ void callFocusLost()
 
 void callRightMouseDown(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     if (gWindowImplementation->allowsLanguageInput())
     {
         gWindowImplementation->interruptLanguageTextInput();
@@ -329,6 +337,10 @@ void callRightMouseDown(float *pos, MASK mask)
 
 void callRightMouseUp(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     if (gWindowImplementation->allowsLanguageInput())
     {
         gWindowImplementation->interruptLanguageTextInput();
@@ -342,6 +354,10 @@ void callRightMouseUp(float *pos, MASK mask)
 
 void callLeftMouseDown(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     if (gWindowImplementation->allowsLanguageInput())
     {
         gWindowImplementation->interruptLanguageTextInput();
@@ -355,6 +371,10 @@ void callLeftMouseDown(float *pos, MASK mask)
 
 void callLeftMouseUp(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     if (gWindowImplementation->allowsLanguageInput())
     {
         gWindowImplementation->interruptLanguageTextInput();
@@ -369,6 +389,10 @@ void callLeftMouseUp(float *pos, MASK mask)
 
 void callDoubleClick(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     if (gWindowImplementation->allowsLanguageInput())
     {
         gWindowImplementation->interruptLanguageTextInput();
@@ -382,7 +406,7 @@ void callDoubleClick(float *pos, MASK mask)
 
 void callResize(unsigned int width, unsigned int height)
 {
-    if (gWindowImplementation != NULL)
+    if (gWindowImplementation && gWindowImplementation->getCallbacks())
     {
         gWindowImplementation->getCallbacks()->handleResize(gWindowImplementation, width, height);
     }
@@ -390,6 +414,10 @@ void callResize(unsigned int width, unsigned int height)
 
 void callMouseMoved(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     LLCoordGL       outCoords;
     outCoords.mX = ll_round(pos[0]);
     outCoords.mY = ll_round(pos[1]);
@@ -403,6 +431,10 @@ void callMouseMoved(float *pos, MASK mask)
 
 void callMouseDragged(float *pos, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     LLCoordGL       outCoords;
     outCoords.mX = ll_round(pos[0]);
     outCoords.mY = ll_round(pos[1]);
@@ -424,6 +456,10 @@ void callScrollMoved(float deltaX, float deltaY)
 
 void callMouseExit()
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->getCallbacks()->handleMouseLeave(gWindowImplementation);
 }
 
@@ -475,11 +511,19 @@ void callWindowDidChangeScreen()
 
 void callDeltaUpdate(float *delta, MASK mask)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->updateMouseDeltas(delta);
 }
 
 void callOtherMouseDown(float *pos, MASK mask, int button)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     LLCoordGL       outCoords;
     outCoords.mX = ll_round(pos[0]);
     outCoords.mY = ll_round(pos[1]);
@@ -500,6 +544,10 @@ void callOtherMouseDown(float *pos, MASK mask, int button)
 
 void callOtherMouseUp(float *pos, MASK mask, int button)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     LLCoordGL outCoords;
     outCoords.mX = ll_round(pos[0]);
     outCoords.mY = ll_round(pos[1]);
@@ -524,27 +572,43 @@ void callModifier(MASK mask)
 
 void callHandleDragEntered(std::string url)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->handleDragNDrop(url, LLWindowCallbacks::DNDA_START_TRACKING);
 }
 
 void callHandleDragExited(std::string url)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->handleDragNDrop(url, LLWindowCallbacks::DNDA_STOP_TRACKING);
 }
 
 void callHandleDragUpdated(std::string url)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->handleDragNDrop(url, LLWindowCallbacks::DNDA_TRACK);
 }
 
 void callHandleDragDropped(std::string url)
 {
+    if (!gWindowImplementation)
+    {
+        return;
+    }
     gWindowImplementation->handleDragNDrop(url, LLWindowCallbacks::DNDA_DROPPED);
 }
 
 void callQuitHandler()
 {
-    if (gWindowImplementation)
+    if (gWindowImplementation && gWindowImplementation->getCallbacks())
     {
         if(gWindowImplementation->getCallbacks()->handleCloseRequest(gWindowImplementation))
         {
@@ -555,7 +619,7 @@ void callQuitHandler()
 
 void getPreeditSelectionRange(int *position, int *length)
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         gWindowImplementation->getPreeditor()->getSelectionRange(position, length);
     }
@@ -563,7 +627,7 @@ void getPreeditSelectionRange(int *position, int *length)
 
 void getPreeditMarkedRange(int *position, int *length)
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         gWindowImplementation->getPreeditor()->getPreeditRange(position, length);
     }
@@ -571,7 +635,7 @@ void getPreeditMarkedRange(int *position, int *length)
 
 void setPreeditMarkedRange(int position, int length)
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         gWindowImplementation->getPreeditor()->markAsPreedit(position, length);
     }
@@ -580,7 +644,7 @@ void setPreeditMarkedRange(int position, int length)
 bool handleUnicodeCharacter(wchar_t c)
 {
     bool success = false;
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         success = gWindowImplementation->getPreeditor()->handleUnicodeCharHere(c);
     }
@@ -590,7 +654,7 @@ bool handleUnicodeCharacter(wchar_t c)
 
 void resetPreedit()
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         gWindowImplementation->getPreeditor()->resetPreedit();
     }
@@ -600,7 +664,7 @@ void resetPreedit()
 // This largely mirrors the old implementation, only sans the carbon parameters.
 void setMarkedText(unsigned short *unitext, unsigned int *selectedRange, unsigned int *replacementRange, long text_len, attributedStringInfo segments)
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         LLPreeditor *preeditor = gWindowImplementation->getPreeditor();
         preeditor->resetPreedit();
@@ -623,7 +687,7 @@ void setMarkedText(unsigned short *unitext, unsigned int *selectedRange, unsigne
 
 void getPreeditLocation(float *location, unsigned int length)
 {
-    if (gWindowImplementation->getPreeditor())
+    if (gWindowImplementation && gWindowImplementation->getPreeditor())
     {
         LLPreeditor *preeditor = gWindowImplementation->getPreeditor();
         LLCoordGL coord;
@@ -921,7 +985,7 @@ bool LLWindowMacOSX::getPosition(LLCoordScreen *position)
     }
     else if(mWindow)
     {
-        const CGPoint & pos = getContentViewBoundsPosition(mWindow);
+        CGPoint pos = getContentViewRect(mWindow).origin;
 
         position->mX = pos.x;
         position->mY = pos.y;
@@ -948,7 +1012,7 @@ bool LLWindowMacOSX::getSize(LLCoordScreen *size)
     }
     else if(mWindow)
     {
-        const CGSize & sz = gHiDPISupport ? getDeviceContentViewSize(mWindow, mGLView) : getContentViewBoundsSize(mWindow);
+        CGSize sz = getBackingViewRect(mWindow, mGLView).size;
 
         size->mX = sz.width;
         size->mY = sz.height;
@@ -974,7 +1038,7 @@ bool LLWindowMacOSX::getSize(LLCoordWindow *size)
     }
     else if(mWindow)
     {
-        const CGSize & sz = gHiDPISupport ? getDeviceContentViewSize(mWindow, mGLView) : getContentViewBoundsSize(mWindow);
+        CGSize sz = getBackingViewRect(mWindow, mGLView).size;
 
         size->mX = sz.width;
         size->mY = sz.height;
@@ -1160,6 +1224,12 @@ void LLWindowMacOSX::setMouseClipping( bool b )
     adjustCursorDecouple();
 }
 
+#if LL_DARWIN
+// For CGSetLocalEventsSuppressionInterval there is no replacement in modern API
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 bool LLWindowMacOSX::setCursorPosition(const LLCoordWindow position)
 {
     bool result = false;
@@ -1196,6 +1266,10 @@ bool LLWindowMacOSX::setCursorPosition(const LLCoordWindow position)
 
     return result;
 }
+
+#if LL_DARWIN
+#pragma clang diagnostic pop
+#endif
 
 bool LLWindowMacOSX::getCursorPosition(LLCoordWindow *position)
 {
@@ -1421,8 +1495,9 @@ bool LLWindowMacOSX::convertCoords(LLCoordScreen from, LLCoordWindow* to)
 
         convertScreenToWindow(mWindow, mouse_point);
 
-        to->mX = mouse_point[0];
-        to->mY = mouse_point[1];
+        float scale_factor = getSystemUISize();
+        to->mX = mouse_point[0] * scale_factor;
+        to->mY = mouse_point[1] * scale_factor;
 
         return true;
     }
@@ -1434,9 +1509,9 @@ bool LLWindowMacOSX::convertCoords(LLCoordWindow from, LLCoordScreen *to)
     if(mWindow)
     {
         float mouse_point[2];
-
-        mouse_point[0] = from.mX;
-        mouse_point[1] = from.mY;
+        float scale_factor = getSystemUISize();
+        mouse_point[0] = from.mX / scale_factor;
+        mouse_point[1] = from.mY / scale_factor;
 
         convertWindowToScreen(mWindow, mouse_point);
 
@@ -2573,7 +2648,7 @@ MASK LLWindowMacOSX::modifiersToMask(S16 modifiers)
 
 F32 LLWindowMacOSX::getSystemUISize()
 {
-    return gHiDPISupport ? ::getDeviceUnitSize(mGLView) : LLWindow::getSystemUISize();
+    return ::getDeviceUnitSize(mGLView);
 }
 
 #if LL_OS_DRAGDROP_ENABLED

@@ -114,6 +114,7 @@ private:
     LLIconCtrl* mItemTypeIcon;
     LLTextBox* mLabelOwnerName;
     LLTextBox* mLabelCreatorName;
+    LLTextEditor* mLabelItemDesc;
 
     //
     // UI Elements

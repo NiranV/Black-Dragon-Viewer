@@ -61,6 +61,7 @@
 #include "lllocationhistory.h"
 #include "llgltfmateriallist.h"
 #include "llimageworker.h"
+#include "llregex.h"
 
 #include "llloginflags.h"
 #include "llmd5.h"
@@ -301,8 +302,51 @@ void callback_cache_name(const LLUUID& id, const std::string& full_name, bool is
 // exported functionality
 //
 
+void do_startup_frame()
+{
+    // Until after STATE_AGENT_SEND we don't get very many UDP packets to poll the socket,
+    // and after STATE_PRECACHE the LLAppViewer::idleNetwork() will do UDP processing,
+    // so we only bother to process between those two states.
+    EStartupState state = LLStartUp::getStartupState();
+    if (state > STATE_AGENT_SEND && state < STATE_PRECACHE)
+    {
+        // drain the UDP socket...
+        U64 t0 = totalTime();
+        constexpr U64 MAX_STARTUP_FRAME_TIME = 2000; // usec
+        constexpr U64 MAX_STARTUP_FRAME_MESSAGES = 100;
+        S32 num_messages = 0;
+        bool needs_drain = false;
+        LockMessageChecker lmc(gMessageSystem);
+        while (lmc.checkAllMessages(gFrameCount, gServicePump))
+        {
+            if (gDoDisconnect)
+            {
+                // We're disconnecting, don't process any more messages from the server
+                // We're usually disconnecting due to either network corruption or a
+                // server going down, so this is OK.
+                break;
+            }
+            if (++num_messages >= MAX_STARTUP_FRAME_MESSAGES
+                || (totalTime() - t0) > MAX_STARTUP_FRAME_TIME)
+            {
+                needs_drain = true;
+                break;
+            }
+        }
+        if (needs_drain || gMessageSystem->mPacketRing.getNumBufferedPackets() > 0)
+        {
+             gMessageSystem->drainUdpSocket();
+        }
+        lmc.processAcks();
+    }
+    // ...then call display_startup()
+    display_startup();
+}
+
 void pump_idle_startup_network(void)
 {
+    // while there are message to process:
+    //     process one then call display_startup()
     {
         LockMessageChecker lmc(gMessageSystem);
         while (lmc.checkAllMessages(gFrameCount, gServicePump))
@@ -312,6 +356,7 @@ void pump_idle_startup_network(void)
         lmc.processAcks();
 		set_startup_status(0.41, 1.0f, LLTrans::getString("WorldWait"), "Waiting");
     }
+    // finally call one last display_startup()
     display_startup();
 }
 
@@ -638,24 +683,9 @@ bool idle_startup()
 			gAssetStorage = new LLViewerAssetStorage(msg, gXferManager);
 
 
-			F32 dropPercent = gSavedSettings.getF32("PacketDropPercentage");
-			msg->mPacketRing.setDropPercentage(dropPercent);
-
-            F32 inBandwidth = gSavedSettings.getF32("InBandwidth"); 
-            F32 outBandwidth = gSavedSettings.getF32("OutBandwidth"); 
-			if (inBandwidth != 0.f)
-			{
-				LL_DEBUGS("AppInit") << "Setting packetring incoming bandwidth to " << inBandwidth << LL_ENDL;
-                msg->mPacketRing.setUseInThrottle(true);
-				msg->mPacketRing.setInBandwidth(inBandwidth);
-			}
-			if (outBandwidth != 0.f)
-			{
-				LL_DEBUGS("AppInit") << "Setting packetring outgoing bandwidth to " << outBandwidth << LL_ENDL;
-                msg->mPacketRing.setUseOutThrottle(true);
-				msg->mPacketRing.setOutBandwidth(outBandwidth);
-			}
-		}
+            F32 dropPercent = gSavedSettings.getF32("PacketDropPercentage");
+            msg->mPacketRing.setDropPercentage(dropPercent);
+        }
 
 		LL_INFOS("AppInit") << "Message System Initialized." << LL_ENDL;
 
@@ -719,6 +749,10 @@ bool idle_startup()
 			LL_WARNS("AppInit") << "Unreliable timers detected (may be bad PCI chipset)!!" << LL_ENDL;
 		}
 
+#ifdef LL_DISCORD
+        LLAppViewer::initDiscordSocial();
+#endif
+
 		//
 		// Log on to system
 		//
@@ -736,8 +770,8 @@ bool idle_startup()
 			// Log into last account
 			gRememberPassword = true;
 			gRememberUser = true;
-			gSavedSettings.setBOOL("RememberPassword", TRUE);
-			gSavedSettings.setBOOL("RememberUser", TRUE);
+			gSavedSettings.setBOOL("RememberPassword", true);
+			gSavedSettings.setBOOL("RememberUser", true);
 			show_connect_box = false;    			
 		}
 		else if (gSavedSettings.getLLSD("UserLoginInfo").size() == 3)
@@ -861,7 +895,7 @@ bool idle_startup()
         }
         LL_DEBUGS("AppInit") << "PeekMessage processed" << LL_ENDL;
 #endif
-        display_startup();
+        do_startup_frame();
         timeout.reset();
 		return false;
 	}
@@ -1039,6 +1073,7 @@ bool idle_startup()
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
 		// Display the startup progress bar.
+		gViewerWindow->initTextures(agent_location_id);
 		gViewerWindow->setShowProgress(true, false);
 		gViewerWindow->setProgressCancelButtonVisible(true, LLTrans::getString("Quit"));
 
@@ -1202,7 +1237,7 @@ bool idle_startup()
                         }
                         catch (LLCertException &cert_exception)
                         {
-                            LL_WARNS("LLStartup", "SECAPI") << "Caught " << cert_exception.what() << " certificate expception on getCertificate("<< response["certificate"] << ")" << LL_ENDL;
+                            LL_WARNS("LLStartUp", "SECAPI") << "Caught " << cert_exception.what() << " certificate expception on getCertificate("<< response["certificate"] << ")" << LL_ENDL;
                             LLSD args;
                             args["REASON"] = LLTrans::getString(cert_exception.what());
 
@@ -1927,7 +1962,7 @@ bool idle_startup()
 		set_startup_status(0.59f, 1.f, LLTrans::getString("InventorySend"), "Basic Inventory");
         display_startup();
         LLStartUp::setStartupState(STATE_INVENTORY_SEND2);
-        display_startup();
+        do_startup_frame();
         return false;
     }
 
@@ -2050,7 +2085,7 @@ bool idle_startup()
         LLInventoryModelBackgroundFetch::instance().start();
 		gInventory.createCommonSystemCategories();
         LLStartUp::setStartupState(STATE_INVENTORY_CALLBACKS );
-        display_startup();
+        do_startup_frame();
 
         return false;
     }
@@ -2062,7 +2097,7 @@ bool idle_startup()
     {
         if (!LLInventoryModel::isSysFoldersReady())
         {
-            display_startup();
+            do_startup_frame();
             return false;
         }
         LLInventoryModelBackgroundFetch::instance().start();
@@ -2478,7 +2513,7 @@ bool idle_startup()
 		// _LL_DEBUGS("AppInit") << "Done releasing bitmap" << LL_ENDL;
 		//gViewerWindow->revealIntroPanel();
 		gViewerWindow->setStartupComplete(); 
-		gViewerWindow->setProgressCancelButtonVisible(FALSE);
+		gViewerWindow->setProgressCancelButtonVisible(false);
 		set_startup_status(0.96f, 1.0f, LLTrans::getString("Cleanup"), "Start observing Friends");
 		display_startup();
 
@@ -2615,6 +2650,27 @@ void login_callback(S32 option, void *userdata)
 	{
 		LL_WARNS("AppInit") << "Unknown login button clicked" << LL_ENDL;
 	}
+}
+
+void validate_release_notes_coro(const std::string url)
+{
+    LLVersionInfo& versionInfo(LLVersionInfo::instance());
+    const boost::regex version_regex(R"(\b\d+\.\d+\.\d+\.\d+\b)");
+
+    if (url.find(versionInfo.getVersion()) == std::string::npos // has no our build version
+        && ll_regex_search(url, version_regex)) // has any version
+    {
+        LL_INFOS() << "Received release notes url \"" << url << "\" wwith mismatching build, falling back to locally generated url" << LL_ENDL;
+        // Updater only provides notes for a most recent version, if it is not
+        // the current one, fall back to the hardcoded URL.
+        LLSD info(LLAppViewer::instance()->getViewerInfo());
+        std::string alt_url = info["VIEWER_RELEASE_NOTES_URL"].asString();
+        release_notes_coro(alt_url);
+    }
+    else
+    {
+        release_notes_coro(url);
+    }
 }
 
 /**
@@ -3637,7 +3693,7 @@ bool process_login_success_response()
 
     // Agent id needed for parcel info request in LLUrlEntryParcel
     // to resolve parcel name.
-    LLUrlEntryParcel::setAgentID(gAgentID);
+    LLUrlEntryBase::setAgentID(gAgentID);
 
     text = response["session_id"].asString();
     if(!text.empty()) gAgentSessionID.set(text);
@@ -3956,24 +4012,7 @@ bool process_login_success_response()
 	}
 
 
-	// Only save mfa_hash for future logins if the user wants their info remembered.
-	if(response.has("mfa_hash")
-       && gSavedSettings.getBOOL("RememberUser")
-       && LLLoginInstance::getInstance()->saveMFA())
-	{
-		std::string grid(LLGridManager::getInstance()->getGridId());
-		std::string user_id(gUserCredential->userID());
-		gSecAPIHandler->addToProtectedMap("mfa_hash", grid, user_id, response["mfa_hash"]);
-		// TODO(brad) - related to SL-17223 consider building a better interface that sync's automatically
-		gSecAPIHandler->syncProtectedMap();
-	}
-    else if (!LLLoginInstance::getInstance()->saveMFA())
-    {
-        std::string grid(LLGridManager::getInstance()->getGridId());
-        std::string user_id(gUserCredential->userID());
-        gSecAPIHandler->removeFromProtectedMap("mfa_hash", grid, user_id);
-        gSecAPIHandler->syncProtectedMap();
-    }
+	LLLoginInstance::getInstance()->saveMFAHash(response);
 
 	bool success = false;
 	// JC: gesture loading done below, when we have an asset system

@@ -51,6 +51,8 @@ class LLCheckBoxCtrl;
 class LLSliderCtrl;
 class LLSpinCtrl;
 class LLSearchEditor;
+class LLComboBox;
+class LLScrollListCtrl;
 
 class LLWorldMapParcelInfoObserver : public LLRemoteParcelInfoObserver
 {
@@ -175,7 +177,7 @@ protected:
     void            onLocationFocusChanged( LLFocusableElement* ctrl );
     void            onLocationCommit();
     void            onCoordinatesCommit();
-    void            onCommitSearchResult();
+    void            onCommitSearchResult(bool from_search);
 
     void            onTeleportFinished();
 
@@ -212,6 +214,7 @@ private:
 
     bool                    mIsClosing;
     bool                    mSetToUserPosition;
+    bool                    mProcessingSearchUpdate; // Don't update search string from what user set it to
 
     LLVector3d              mTrackedLocation;
     LLTracker::ETrackingStatus mTrackedStatus;
@@ -219,14 +222,11 @@ private:
     LLUUID                  mTrackedAvatarID;
     LLSLURL                 mSLURL;
 
-    LLCtrlListInterface *   mListFriendCombo;
-    LLCtrlListInterface *   mListLandmarkCombo;
-    LLCtrlListInterface *   mListSearchResults;
-
     LLButton*               mTeleportButton = nullptr;
     LLButton*               mShowDestinationButton = nullptr;
     LLButton*               mCopySlurlButton = nullptr;
     LLButton*               mGoHomeButton = nullptr;
+    LLButton*               mSearchButton = nullptr;
 
     LLCheckBoxCtrl*         mPeopleCheck = nullptr;
     LLCheckBoxCtrl*         mInfohubCheck = nullptr;
@@ -245,6 +245,13 @@ private:
     LLUICtrl*               mTeleportCoordSpinZ = nullptr;
 
     LLSliderCtrl*           mZoomSlider = nullptr;
+
+    LLComboBox*             mLandmarkCombo = nullptr;
+    LLComboBox*             mFriendCombo = nullptr;
+
+    LLScrollListCtrl*       mSearchResults = nullptr;
+
+    LLPanel*                mTrackCtrlsPanel = nullptr;
 
     boost::signals2::connection mTeleportFinishConnection;
 };

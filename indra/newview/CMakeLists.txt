@@ -15,6 +15,9 @@ include(CMakeCopyIfDifferent)
 include(CubemapToEquirectangularJS)
 include(DBusGlib)
 include(DragDrop)
+if (USE_DISCORD)
+  include(Discord)
+endif ()
 include(EXPAT)
 include(Hunspell)
 include(JPEGEncoderBasic)
@@ -60,6 +63,11 @@ if (NOT HAVOK_TPV)
    # which means we need to duct tape this togther ...
 
    add_subdirectory(${LLPHYSICSEXTENSIONS_SRC_DIR} llphysicsextensions)
+   if (NOT "${LLPHYSICSEXTENSIONS_STUB_DIR}" STREQUAL "")
+      # for darwin universal builds we need both real llphysicsextensions and the stub for aarch64 fallback
+      # this will only be set when HAVOK is ON, otherwise the normal stub fallback will be in effect
+      add_subdirectory(${LLPHYSICSEXTENSIONS_STUB_DIR} llphysicsextensionsstub)
+   endif()
 
    # Another hack that works with newer cmake versions:
    cmake_policy( SET CMP0079 NEW)
@@ -105,6 +113,7 @@ set(viewer_SOURCE_FILES
     gltf/accessor.cpp
     gltf/primitive.cpp
     gltf/animation.cpp
+    gltf/llgltfloader.cpp
     groupchatlistener.cpp
     llaccountingcostmanager.cpp
     llaisapi.cpp
@@ -121,6 +130,7 @@ set(viewer_SOURCE_FILES
     llagentwearables.cpp
     llanimstatelabels.cpp
     llappcorehttp.cpp
+    llappearancelistener.cpp
     llappearancemgr.cpp
     llappviewer.cpp
     llappviewerlistener.cpp
@@ -206,11 +216,11 @@ set(viewer_SOURCE_FILES
     llflexibleobject.cpp
     llfloater360capture.cpp
     llfloaterabout.cpp
+    llfloateravatarwelcomepack.cpp
     llfloaterbvhpreview.cpp
     llfloateraddpaymentmethod.cpp
     llfloaterauction.cpp
     llfloaterautoreplacesettings.cpp
-    llfloateravatar.cpp
     llfloateravatarpicker.cpp
     llfloateravatarrendersettings.cpp
     llfloateravatartextures.cpp
@@ -229,6 +239,7 @@ set(viewer_SOURCE_FILES
     llfloatercamera.cpp
     llfloatercamerapresets.cpp
     llfloaterchangeitemthumbnail.cpp
+    llfloaterchatmentionpicker.cpp
     llfloaterchatvoicevolume.cpp
     llfloaterclassified.cpp
     llfloatercolorpicker.cpp
@@ -318,6 +329,7 @@ set(viewer_SOURCE_FILES
     llfloatersettingscolor.cpp
     llfloatersettingsdebug.cpp
     llfloatersidepanelcontainer.cpp
+    llfloaterslapptest.cpp
     llfloatersnapshot.cpp
     llfloatersounddevices.cpp
     llfloaterspellchecksettings.cpp
@@ -363,6 +375,7 @@ set(viewer_SOURCE_FILES
     llhudeffectpointat.cpp
     llhudeffecttrail.cpp
     llhudeffectblob.cpp
+    llhudeffectresetskeleton.cpp
     llhudicon.cpp
     llhudmanager.cpp
     llhudnametag.cpp
@@ -388,6 +401,7 @@ set(viewer_SOURCE_FILES
     llinventorygallerymenu.cpp
     llinventoryicon.cpp
     llinventoryitemslist.cpp
+    llinventorylistener.cpp
     llinventorylistitem.cpp
     llinventorymodel.cpp
     llinventorymodelbackgroundfetch.cpp
@@ -412,6 +426,7 @@ set(viewer_SOURCE_FILES
     llmaniprotate.cpp
     llmanipscale.cpp
     llmaniptranslate.cpp
+    llfloatermarketplace.cpp
     llmarketplacefunctions.cpp
     llmarketplacenotifications.cpp
     llmaterialeditor.cpp
@@ -787,6 +802,7 @@ set(viewer_HEADER_FILES
     gltf/buffer_util.h
     gltf/primitive.h
     gltf/animation.h
+    gltf/llgltfloader.h
     llaccountingcost.h
     llaccountingcostmanager.h
     llaisapi.h
@@ -804,6 +820,7 @@ set(viewer_HEADER_FILES
     llanimstatelabels.h
     llappcorehttp.h
     llappearance.h
+    llappearancelistener.h
     llappearancemgr.h
     llappviewer.h
     llappviewerlistener.h
@@ -889,11 +906,11 @@ set(viewer_HEADER_FILES
     llflexibleobject.h
     llfloater360capture.h
     llfloaterabout.h
+    llfloateravatarwelcomepack.h
     llfloaterbvhpreview.h
     llfloateraddpaymentmethod.h
     llfloaterauction.h
     llfloaterautoreplacesettings.h
-    llfloateravatar.h
     llfloateravatarpicker.h
     llfloateravatarrendersettings.h
     llfloateravatartextures.h
@@ -911,6 +928,7 @@ set(viewer_HEADER_FILES
     llfloaterbuyland.h
     llfloatercamerapresets.h
     llfloaterchangeitemthumbnail.h
+    llfloaterchatmentionpicker.h
     llfloatercamera.h
     llfloaterchatvoicevolume.h
     llfloaterclassified.h
@@ -962,6 +980,7 @@ set(viewer_HEADER_FILES
     llfloaterlinkreplace.h
     llfloaterloadprefpreset.h
     llfloatermap.h
+    llfloatermarketplace.h
     llfloatermarketplacelistings.h
     llfloatermediasettings.h
     llfloatermemleak.h
@@ -1002,6 +1021,7 @@ set(viewer_HEADER_FILES
     llfloatersettingscolor.h
     llfloatersettingsdebug.h
     llfloatersidepanelcontainer.h
+    llfloaterslapptest.h
     llfloatersnapshot.h
     llfloatersounddevices.h
     llfloaterspellchecksettings.h
@@ -1046,6 +1066,7 @@ set(viewer_HEADER_FILES
     llhudeffectpointat.h
     llhudeffecttrail.h
     llhudeffectblob.h
+    llhudeffectresetskeleton.h
     llhudicon.h
     llhudmanager.h
     llhudnametag.h
@@ -1070,6 +1091,7 @@ set(viewer_HEADER_FILES
     llinventorygallerymenu.h
     llinventoryicon.h
     llinventoryitemslist.h
+    llinventorylistener.h
     llinventorylistitem.h
     llinventorymodel.h
     llinventorymodelbackgroundfetch.h
@@ -1443,7 +1465,7 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt"
            "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}\n")
 
 set_source_files_properties(
-   llversioninfo.cpp tests/llversioninfo_test.cpp 
+   llversioninfo.cpp tests/llversioninfo_test.cpp
    PROPERTIES
    COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}" # see BuildVersion.cmake
    )
@@ -1455,11 +1477,24 @@ if (DARWIN)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
+  set_source_files_properties(
+    llappviewermacosx-objc.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
+
+  set_source_files_properties(
+    llfilepicker_mac.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
+
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
     llappdelegate-objc.mm
     PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
     COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}"
     # BugsplatMac is a module, imported with @import. That language feature
     # demands these -f switches.
@@ -1643,7 +1678,7 @@ endif (WINDOWS)
 file(GLOB_RECURSE viewer_XUI_FILES LIST_DIRECTORIES FALSE
     ${CMAKE_CURRENT_SOURCE_DIR}/skins/*.xml)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/skins PREFIX "XUI Files" FILES ${viewer_XUI_FILES})
-set_source_files_properties(${viewer_XUI_FILES} 
+set_source_files_properties(${viewer_XUI_FILES}
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 list(APPEND viewer_SOURCE_FILES ${viewer_XUI_FILES})
 
@@ -1651,7 +1686,7 @@ list(APPEND viewer_SOURCE_FILES ${viewer_XUI_FILES})
 file(GLOB_RECURSE viewer_SHADER_FILES LIST_DIRECTORIES FALSE
     ${CMAKE_CURRENT_SOURCE_DIR}/app_settings/shaders/*.glsl)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/app_settings/shaders PREFIX "Shaders" FILES ${viewer_SHADER_FILES})
-set_source_files_properties(${viewer_SHADER_FILES} 
+set_source_files_properties(${viewer_SHADER_FILES}
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 list(APPEND viewer_SOURCE_FILES ${viewer_SHADER_FILES})
 
@@ -1676,7 +1711,7 @@ set(viewer_APPSETTINGS_FILES
     app_settings/toolbars.xml
     app_settings/trees.xml
     app_settings/viewerart.xml
-    ${CMAKE_SOURCE_DIR}/../etc/message.xml
+    app_settings/message.xml
     ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
     packages-info.txt
     featuretable.txt
@@ -1747,6 +1782,10 @@ list(APPEND EVENT_HOST_SCRIPTS ${EVENT_HOST_SCRIPT_GLOB_LIST})
 set(PACKAGE ON CACHE BOOL
     "Add a package target that builds an installer package.")
 
+if(USE_PRECOMPILED_HEADERS)
+  target_precompile_headers( ${VIEWER_BINARY_NAME} PRIVATE llviewerprecompiledheaders.h )
+endif(USE_PRECOMPILED_HEADERS)
+
 if (WINDOWS)
     set_target_properties(${VIEWER_BINARY_NAME}
         PROPERTIES
@@ -1756,10 +1795,6 @@ if (WINDOWS)
         LINK_FLAGS_RELEASE "/FORCE:MULTIPLE /MAP\"blackdragon-bin.MAP\" /OPT:REF /LARGEADDRESSAWARE"
         )
     target_compile_options(${VIEWER_BINARY_NAME} PRIVATE /bigobj)
-
-    if(USE_PRECOMPILED_HEADERS)
-       target_precompile_headers( ${VIEWER_BINARY_NAME} PRIVATE llviewerprecompiledheaders.h )
-    endif(USE_PRECOMPILED_HEADERS)
 
     # If adding a file to viewer_manifest.py in the WindowsManifest.construct() method, be sure to add the dependency
     # here.
@@ -1774,8 +1809,8 @@ if (WINDOWS)
     # And of course it's straightforward to read a text file in Python.
 
     set(COPY_INPUT_DEPENDENCIES
-      # The following commented dependencies are determined at variably at build time. Can't do this here.
-      ${CMAKE_SOURCE_DIR}/../etc/message.xml
+      # The following commented dependencies are determined variably at build time. Can't do this here.
+      app_settings/message.xml
       ${CMAKE_SOURCE_DIR}/../scripts/messages/message_template.msg
       ${SHARED_LIB_STAGING_DIR}/openjpeg.dll
       ${SHARED_LIB_STAGING_DIR}/llwebrtc.dll
@@ -1804,6 +1839,12 @@ if (WINDOWS)
                )
     endif (ADDRESS_SIZE EQUAL 64)
 
+    if (TARGET ll::discord_sdk)
+        list(APPEND COPY_INPUT_DEPENDENCIES
+             ${SHARED_LIB_STAGING_DIR}/discord_partner_sdk.dll
+             )
+    endif ()
+
     #if (USE_FMODSTUDIO)
     if (TARGET ll::fmodstudio)
       list(APPEND COPY_INPUT_DEPENDENCIES
@@ -1811,7 +1852,6 @@ if (WINDOWS)
            ${SHARED_LIB_STAGING_DIR}/fmodL.dll
           )
     #endif (USE_FMODSTUDIO)
-    endif ()
 
     if (TARGET ll::openal)
       list(APPEND COPY_INPUT_DEPENDENCIES
@@ -1829,6 +1869,7 @@ if (WINDOWS)
         --arch=${ARCH}
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
+        "--discord=${USE_DISCORD}"
         "--openal=${USE_OPENAL}"
         "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -1867,6 +1908,7 @@ if (WINDOWS)
             --arch=${ARCH}
             --artwork=${ARTWORK_DIR}
             "--bugsplat=${BUGSPLAT_DB}"
+            "--discord=${USE_DISCORD}"
             "--openal=${USE_OPENAL}"
             "--tracy=${USE_TRACY}"
             --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -1931,6 +1973,7 @@ if (WINDOWS)
               --arch=${ARCH}
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
+              "--discord=${USE_DISCORD}"
               "--openal=${USE_OPENAL}"
               "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -1960,7 +2003,14 @@ if (WINDOWS)
 elseif (DARWIN)
     set_target_properties(${VIEWER_BINARY_NAME}
         PROPERTIES
-        LINK_FLAGS_RELEASE "${LINK_FLAGS_RELEASE} -Xlinker -dead_strip -Xlinker -map -Xlinker ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}.MAP"
+        RESOURCE SecondLife.xib
+        LINK_FLAGS_RELEASE "${LINK_FLAGS_RELEASE} -Xlinker -dead_strip"
+        # arch specific flags for universal builds: https://stackoverflow.com/a/77942065
+        XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=x86_64]  "$(inherited) -DLLPHYSICSEXTENSIONS_USE_FULL"
+        XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=arm64]   "$(inherited) -DLLPHYSICSEXTENSIONS_USE_STUB"
+        # only generate the .MAP file for llphysicsextensions_tpv on x86_64
+        XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=x86_64] "$(inherited) -L${CMAKE_CURRENT_BINARY_DIR}/llphysicsextensions/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensions  -Xlinker -map -Xlinker ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}.MAP"
+        XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=arm64]  "$(inherited) -L${CMAKE_CURRENT_BINARY_DIR}/llphysicsextensionsstub/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensionsstub"
         )
 else (WINDOWS)
         # Linux
@@ -1983,7 +2033,7 @@ endif (WINDOWS)
 # one of these being libz where you can find four or more versions in play
 # at once.  On Linux, libz can be found at link and run time via a number
 # of paths:
-#     
+#
 #      => -lfreetype
 #        => libz.so.1 (on install machine, not build)
 #      => -lSDL
@@ -2016,15 +2066,19 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         llcommon
         llmeshoptimizer
         llwebrtc
-        ll::ndof
         lllogin
         llprimitive
         llappearance
         ${LLPHYSICSEXTENSIONS_LIBRARIES}
         ll::bugsplat
+        ll::ndof
         ll::tracy
         ll::openxr
         )
+
+if (USE_DISCORD)
+   target_link_libraries(${VIEWER_BINARY_NAME} ll::discord_sdk )
+endif ()
 
 if( TARGET ll::intel_memops )
    target_link_libraries(${VIEWER_BINARY_NAME} ll::intel_memops )
@@ -2055,7 +2109,7 @@ foreach(elem ${country_codes})
    set(emoji_mapping_src_file
       "${emoji_mapping_src_folder}/${elem}/emoji_characters.xml")
    set(emoji_mapping_dst_file
-      "${emoji_mapping_dst_folder}/${elem}/emoji_characters.xml")      
+      "${emoji_mapping_dst_folder}/${elem}/emoji_characters.xml")
    configure_file(${emoji_mapping_src_file} ${emoji_mapping_dst_file} COPYONLY)
 endforeach()
 
@@ -2082,6 +2136,7 @@ if (LINUX)
         --arch=${ARCH}
         --artwork=${ARTWORK_DIR}
         "--bugsplat=${BUGSPLAT_DB}"
+        "--discord=${USE_DISCORD}"
         "--openal=${USE_OPENAL}"
         "--tracy=${USE_TRACY}"
         --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2110,6 +2165,7 @@ if (LINUX)
       --arch=${ARCH}
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
+      "--discord=${USE_DISCORD}"
       "--openal=${USE_OPENAL}"
       "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2155,17 +2211,23 @@ if (DARWIN)
 
   # https://blog.kitware.com/upcoming-in-cmake-2-8-12-osx-rpath-support/
   set(CMAKE_MACOSX_RPATH 1)
-  
+
   set_target_properties(
     ${VIEWER_BINARY_NAME}
     PROPERTIES
     OUTPUT_NAME "${product}"
     # From Contents/MacOS/SecondLife, look in Contents/Frameworks
+<<<<<<< HEAD
     INSTALL_RPATH "@loader_path/../Frameworks"
     # SIGH, as of 2018-05-24 (cmake 3.11.1) the INSTALL_RPATH property simply
     # does not work. Try this:
     LINK_FLAGS "-rpath @loader_path/../Frameworks"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-BlackDragon.plist"
+=======
+    BUILD_WITH_INSTALL_RPATH 1
+    INSTALL_RPATH "@executable_path/../Frameworks"
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-SecondLife.plist"
+>>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
     )
 
@@ -2186,6 +2248,7 @@ if (DARWIN)
       --arch=${ARCH}
       --artwork=${ARTWORK_DIR}
       "--bugsplat=${BUGSPLAT_DB}"
+      "--discord=${USE_DISCORD}"
       "--openal=${USE_OPENAL}"
       "--tracy=${USE_TRACY}"
       --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2197,9 +2260,6 @@ if (DARWIN)
       --grid=${GRID}
       --source=${CMAKE_CURRENT_SOURCE_DIR}
       --versionfile=${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt
-    DEPENDS
-      ${VIEWER_BINARY_NAME}
-      ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
@@ -2221,6 +2281,7 @@ if (DARWIN)
               --arch=${ARCH}
               --artwork=${ARTWORK_DIR}
               "--bugsplat=${BUGSPLAT_DB}"
+              "--discord=${USE_DISCORD}"
               "--openal=${USE_OPENAL}"
               "--tracy=${USE_TRACY}"
               --build=${CMAKE_CURRENT_BINARY_DIR}
@@ -2233,8 +2294,6 @@ if (DARWIN)
               --touch=${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,>/.${product}.bat
               --versionfile=${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt
               ${SIGNING_SETTING}
-        DEPENDS
-          ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
       )
   endif (PACKAGE)
 endif (DARWIN)
@@ -2274,7 +2333,7 @@ if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIE
             PROPERTIES
             XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
             XCODE_ATTRIBUTE_DWARF_DSYM_FOLDER_PATH "${SYMBOLS_STAGING_DIR}/dSYMs")
-    
+
       add_custom_command(OUTPUT "${VIEWER_APP_XCARCHIVE}"
         COMMAND "zip"
         ARGS
@@ -2309,7 +2368,7 @@ if (LL_TESTS)
 #    llremoteparcelrequest.cpp
     llviewerhelputil.cpp
     llversioninfo.cpp
-#    llvocache.cpp  
+#    llvocache.cpp
     llworldmap.cpp
     llworldmipmap.cpp
   )
@@ -2318,7 +2377,7 @@ if (LL_TESTS)
     llworldmap.cpp
     llworldmipmap.cpp
     PROPERTIES
-    LL_TEST_ADDITIONAL_SOURCE_FILES 
+    LL_TEST_ADDITIONAL_SOURCE_FILES
     tests/llviewertexture_stub.cpp
     #llviewertexturelist.cpp
   )
@@ -2352,7 +2411,7 @@ if (LL_TESTS)
     llworldmap.cpp
     llworldmipmap.cpp
     PROPERTIES
-    LL_TEST_ADDITIONAL_SOURCE_FILES 
+    LL_TEST_ADDITIONAL_SOURCE_FILES
     tests/llviewertexture_stub.cpp
   )
 

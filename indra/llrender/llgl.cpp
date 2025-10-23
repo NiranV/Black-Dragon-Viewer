@@ -1123,17 +1123,6 @@ bool LLGLManager::initGL()
     if (mGLVersion >= 2.f)
     {
         parse_glsl_version(mGLSLVersionMajor, mGLSLVersionMinor);
-
-#if 0 && LL_DARWIN
-        // TODO maybe switch to using a core profile for GL 3.2?
-        // https://stackoverflow.com/a/19868861
-        //never use GLSL greater than 1.20 on OSX
-        if (mGLSLVersionMajor > 1 || mGLSLVersionMinor > 30)
-        {
-            mGLSLVersionMajor = 1;
-            mGLSLVersionMinor = 30;
-        }
-#endif
     }
 
     if (mGLVersion >= 2.1f && LLImageGL::sCompressTextures)
@@ -1228,28 +1217,9 @@ bool LLGLManager::initGL()
     }
 #endif
 
-#if LL_WINDOWS
-    if (mVRAM < 256)
-    {
-        // Something likely went wrong using the above extensions
-        // try WMI first and fall back to old method (from dxdiag) if all else fails
-        // Function will check all GPUs WMI knows of and will pick up the one with most
-        // memory. We need to check all GPUs because system can switch active GPU to
-        // weaker one, to preserve power when not under load.
-        U32 mem = LLDXHardware::getMBVideoMemoryViaWMI();
-        if (mem != 0)
-        {
-            mVRAM = mem;
-            LL_WARNS("RenderInit") << "VRAM Detected (WMI):" << mVRAM<< LL_ENDL;
-        }
-    }
-#endif
-
     if (mVRAM < 256 && old_vram > 0)
     {
         // fall back to old method
-        // Note: on Windows value will be from LLDXHardware.
-        // Either received via dxdiag or via WMI by id from dxdiag.
         mVRAM = old_vram;
     }
 
@@ -1266,7 +1236,7 @@ bool LLGLManager::initGL()
     // there's some implementation that reports a crazy value
     mMaxUniformBlockSize = llmin(mMaxUniformBlockSize, 65536);
 
-    if (mGLVersion >= 4.59f)
+    if (mHasAnisotropic)
     {
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &mMaxAnisotropy);
     }
@@ -1434,6 +1404,11 @@ void LLGLManager::initExtensions()
     mHasCubeMapArray = mGLVersion >= 3.99f;
     mHasTransformFeedback = mGLVersion >= 3.99f;
     mHasDebugOutput = mGLVersion >= 4.29f;
+    mHasAnisotropic = mGLVersion >= 4.59f;
+    if(!mHasAnisotropic && gGLHExts.mSysExts)
+    {
+        mHasAnisotropic = ExtensionExists("GL_EXT_texture_filter_anisotropic", gGLHExts.mSysExts);
+    }
 
     // Misc
     glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, (GLint*) &mGLMaxVertexRange);
@@ -2462,12 +2437,15 @@ void LLGLState::checkStates(GLboolean writeAlpha)
         return;
     }
 
-    GLint src;
-    GLint dst;
-    glGetIntegerv(GL_BLEND_SRC, &src);
-    glGetIntegerv(GL_BLEND_DST, &dst);
-    llassert_always(src == GL_SRC_ALPHA);
-    llassert_always(dst == GL_ONE_MINUS_SRC_ALPHA);
+    GLint srcRGB, dstRGB, srcAlpha, dstAlpha;
+    glGetIntegerv(GL_BLEND_SRC_RGB, &srcRGB);
+    glGetIntegerv(GL_BLEND_DST_RGB, &dstRGB);
+    glGetIntegerv(GL_BLEND_SRC_ALPHA, &srcAlpha);
+    glGetIntegerv(GL_BLEND_DST_ALPHA, &dstAlpha);
+    llassert_always(srcRGB == GL_SRC_ALPHA);
+    llassert_always(srcAlpha == GL_SRC_ALPHA);
+    llassert_always(dstRGB == GL_ONE_MINUS_SRC_ALPHA);
+    llassert_always(dstAlpha == GL_ONE_MINUS_SRC_ALPHA);
 
     // disable for now until usage is consistent
     //GLboolean colorMask[4];
@@ -2748,7 +2726,7 @@ void LLGLUserClipPlane::setPlane(F32 a, F32 b, F32 c, F32 d)
     if(cplane[2] < 0)
         cplane *= -1;
 
-    glm::mat4 suffix;
+    glm::mat4 suffix = glm::identity<glm::mat4>();
     suffix = glm::row(suffix, 2, cplane);
     glm::mat4 newP = suffix * P;
     gGL.matrixMode(LLRender::MM_PROJECTION);

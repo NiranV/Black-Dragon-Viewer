@@ -46,6 +46,7 @@
 #include "llfocusmgr.h"
 #include "llcoord.h"
 #include "llwindow.h"
+#include "llemojihelper.h"
 #include "llcriticaldamp.h"
 #include "lluictrlfactory.h"
 
@@ -507,7 +508,7 @@ void LLMenuItemGL::draw( void )
 		color = mDisabledColor.get();
 	}
 
-	// Highlight if needed
+	//BD - Highlight if needed
 	if(getHighlighted())
 		color = LLUIColorTable::instance().getColor("SearchableMenuHighlightColor", LLColor4::red);
 
@@ -1412,6 +1413,7 @@ void LLMenuItemBranchDownGL::openMenu( void )
     }
     else
     {
+        LLEmojiHelper::instance().hideHelper(nullptr, true);
         if (branch->getTornOff())
         {
             LLFloater * branch_parent = dynamic_cast<LLFloater *>(branch->getParent());

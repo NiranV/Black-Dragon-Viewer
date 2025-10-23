@@ -38,7 +38,6 @@
 #include "llregionhandle.h"
 #include "llsurface.h"
 #include "message.h"
-//#include "vmath.h"
 #include "v3math.h"
 #include "v4math.h"
 
@@ -3253,6 +3252,7 @@ void LLViewerRegionImpl::buildCapabilityNames(LLSD& capabilityNames)
     capabilityNames.append("FetchInventory2");
     capabilityNames.append("FetchInventoryDescendents2");
     capabilityNames.append("IncrementCOFVersion");
+    capabilityNames.append("RequestTaskInventory");
     AISAPI::getCapNames(capabilityNames);
 
     capabilityNames.append("InterestList");
@@ -3731,12 +3731,6 @@ bool LLViewerRegion::bakesOnMeshEnabled() const
 {
     return (mSimulatorFeatures.has("BakesOnMeshEnabled") &&
         mSimulatorFeatures["BakesOnMeshEnabled"].asBoolean());
-}
-
-bool LLViewerRegion::meshRezEnabled() const
-{
-    return (mSimulatorFeatures.has("MeshRezEnabled") &&
-                mSimulatorFeatures["MeshRezEnabled"].asBoolean());
 }
 
 bool LLViewerRegion::dynamicPathfindingEnabled() const

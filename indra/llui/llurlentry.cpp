@@ -29,7 +29,6 @@
 #include "llurlentry.h"
 #include "lluictrl.h"
 #include "lluri.h"
-#include "llurlmatch.h"
 #include "llurlregistry.h"
 #include "lluriparser.h"
 
@@ -42,13 +41,12 @@
 #include "lluicolortable.h"
 #include "message.h"
 #include "llexperiencecache.h"
-
-#define APP_HEADER_REGEX "((x-grid-location-info://[-\\w\\.]+/app)|(secondlife:///app))"
+#include "v3dmath.h"
 
 // Utility functions
 std::string localize_slapp_label(const std::string& url, const std::string& full_name);
 
-
+LLUUID LLUrlEntryBase::sAgentID(LLUUID::null);
 LLUrlEntryBase::LLUrlEntryBase()
 {
 }
@@ -68,7 +66,7 @@ std::string LLUrlEntryBase::getIcon(const std::string &url)
     return mIcon;
 }
 
-LLStyle::Params LLUrlEntryBase::getStyle() const
+LLStyle::Params LLUrlEntryBase::getStyle(const std::string &url) const
 {
     LLStyle::Params style_params;
     style_params.color = LLUIColorTable::instance().getColor("HTMLLinkColor");
@@ -220,6 +218,16 @@ bool LLUrlEntryBase::isWikiLinkCorrect(const std::string &labeled_url) const
         return (chr == L'\uFF0F'); // "Fullwidth Solidus"
     },
         L'\u002F'); // Solidus
+
+    std::replace_if(wlabel.begin(),
+        wlabel.end(),
+        [](const llwchar& chr)
+    {
+        return // Not a decomposition, but suficiently similar
+            (chr == L'\u04BA') // "Cyrillic Capital Letter Shha"
+            || (chr == L'\u04BB'); // "Cyrillic Small Letter Shha"
+    },
+        L'\u0068'); // "Latin Small Letter H"
 
     std::string label = wstring_to_utf8str(wlabel);
     if ((label.find(".com") != std::string::npos
@@ -621,6 +629,11 @@ LLUUID  LLUrlEntryAgent::getID(const std::string &string) const
     return LLUUID(getIDStringFromUrl(string));
 }
 
+bool LLUrlEntryAgent::isAgentID(const std::string& url) const
+{
+    return sAgentID == getID(url);
+}
+
 std::string LLUrlEntryAgent::getTooltip(const std::string &string) const
 {
     // return a tooltip corresponding to the URL type instead of the generic one
@@ -657,10 +670,14 @@ std::string LLUrlEntryAgent::getTooltip(const std::string &string) const
     return LLTrans::getString("TooltipAgentUrl");
 }
 
-bool LLUrlEntryAgent::underlineOnHoverOnly(const std::string &string) const
+LLStyle::EUnderlineLink LLUrlEntryAgent::getUnderline(const std::string& string) const
 {
     std::string url = getUrl(string);
-    return LLStringUtil::endsWith(url, "/about") || LLStringUtil::endsWith(url, "/inspect");
+    if (LLStringUtil::endsWith(url, "/about") || LLStringUtil::endsWith(url, "/inspect"))
+    {
+        return LLStyle::EUnderlineLink::UNDERLINE_ON_HOVER;
+    }
+    return LLStyle::EUnderlineLink::UNDERLINE_ALWAYS;
 }
 
 std::string LLUrlEntryAgent::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
@@ -702,11 +719,12 @@ std::string LLUrlEntryAgent::getLabel(const std::string &url, const LLUrlLabelCa
     }
 }
 
-LLStyle::Params LLUrlEntryAgent::getStyle() const
+LLStyle::Params LLUrlEntryAgent::getStyle(const std::string &url) const
 {
-    LLStyle::Params style_params = LLUrlEntryBase::getStyle();
+    LLStyle::Params style_params = LLUrlEntryBase::getStyle(url);
     style_params.color = LLUIColorTable::instance().getColor("HTMLLinkColor");
     style_params.readonly_color = LLUIColorTable::instance().getColor("HTMLLinkColor");
+
     return style_params;
 }
 
@@ -741,6 +759,10 @@ std::string localize_slapp_label(const std::string& url, const std::string& full
     {
         return LLTrans::getString("SLappAgentRemoveFriend") + " " + full_name;
     }
+    if (LLStringUtil::endsWith(url, "/mention"))
+    {
+        return "@" + full_name;
+    }
     return full_name;
 }
 
@@ -750,6 +772,36 @@ std::string LLUrlEntryAgent::getIcon(const std::string &url)
     // *NOTE: Could look up a badge here by calling getIDStringFromUrl()
     // and looking up the badge for the agent.
     return mIcon;
+}
+
+///
+/// LLUrlEntryAgentMention Describes a chat mention Url, e.g.,
+/// secondlife:///app/agent/0e346d8b-4433-4d66-a6b0-fd37083abc4c/mention
+///
+LLUrlEntryAgentMention::LLUrlEntryAgentMention()
+{
+    mPattern  = boost::regex(APP_HEADER_REGEX "/agent/[\\da-f-]+/mention", boost::regex::perl | boost::regex::icase);
+    mMenuName = "menu_url_agent.xml";
+    mIcon = std::string();
+}
+
+LLStyle::EUnderlineLink LLUrlEntryAgentMention::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
+}
+
+LLStyle::Params LLUrlEntryAgentMention::getStyle(const std::string& url) const
+{
+    LLStyle::Params style_params = LLUrlEntryAgent::getStyle(url);
+    style_params.color = LLUIColorTable::instance().getColor("ChatMentionFont");
+    style_params.readonly_color = LLUIColorTable::instance().getColor("ChatMentionFont");
+    style_params.font.style = "NORMAL";
+    style_params.draw_highlight_bg = true;
+
+    LLUUID agent_id(getIDStringFromUrl(url));
+    style_params.highlight_bg_color = LLUIColorTable::instance().getColor((agent_id == sAgentID) ? "ChatSelfMentionHighlight" : "ChatMentionHighlight");
+
+    return style_params;
 }
 
 //
@@ -813,7 +865,7 @@ std::string LLUrlEntryAgentName::getLabel(const std::string &url, const LLUrlLab
     }
 }
 
-LLStyle::Params LLUrlEntryAgentName::getStyle() const
+LLStyle::Params LLUrlEntryAgentName::getStyle(const std::string &url) const
 {
     // don't override default colors
     return LLStyle::Params().is_link(false);
@@ -949,9 +1001,9 @@ std::string LLUrlEntryGroup::getLabel(const std::string &url, const LLUrlLabelCa
     }
 }
 
-LLStyle::Params LLUrlEntryGroup::getStyle() const
+LLStyle::Params LLUrlEntryGroup::getStyle(const std::string &url) const
 {
-    LLStyle::Params style_params = LLUrlEntryBase::getStyle();
+    LLStyle::Params style_params = LLUrlEntryBase::getStyle(url);
     style_params.color = LLUIColorTable::instance().getColor("HTMLLinkColor");
     style_params.readonly_color = LLUIColorTable::instance().getColor("HTMLLinkColor");
     return style_params;
@@ -1027,11 +1079,11 @@ std::string LLUrlEntryChat::getLabel(const std::string &url, const LLUrlLabelCal
 }
 
 // LLUrlEntryParcel statics.
-LLUUID  LLUrlEntryParcel::sAgentID(LLUUID::null);
 LLUUID  LLUrlEntryParcel::sSessionID(LLUUID::null);
 LLHost  LLUrlEntryParcel::sRegionHost;
 bool    LLUrlEntryParcel::sDisconnected(false);
 std::set<LLUrlEntryParcel*> LLUrlEntryParcel::sParcelInfoObservers;
+std::map<LLUUID, LLVector3d> LLUrlEntryParcel::sParcelPos;
 
 ///
 /// LLUrlEntryParcel Describes a Second Life parcel Url, e.g.,
@@ -1124,6 +1176,20 @@ void LLUrlEntryParcel::processParcelInfo(const LLParcelData& parcel_data)
             url_entry->onParcelInfoReceived(parcel_data.parcel_id.asString(), label);
         }
     }
+    if (sParcelPos.find(parcel_data.parcel_id) == sParcelPos.end())
+    {
+        sParcelPos[parcel_data.parcel_id] = LLVector3d(parcel_data.global_x, parcel_data.global_y, parcel_data.global_z);
+    }
+}
+
+// static
+LLVector3d LLUrlEntryParcel::getParcelPos(const LLUUID& parcel_id)
+{
+    if (sParcelPos.find(parcel_id) != sParcelPos.end())
+    {
+        return sParcelPos[parcel_id];
+    }
+    return LLVector3d();
 }
 
 //
@@ -1361,17 +1427,17 @@ std::string LLUrlEntrySLLabel::getTooltip(const std::string &string) const
     return LLUrlEntryBase::getTooltip(string);
 }
 
-bool LLUrlEntrySLLabel::underlineOnHoverOnly(const std::string &string) const
+LLStyle::EUnderlineLink LLUrlEntrySLLabel::getUnderline(const std::string& string) const
 {
     std::string url = getUrl(string);
-    LLUrlMatch match;
+    LLUrlMatch  match;
     if (LLUrlRegistry::instance().findUrl(url, match))
     {
-        return match.underlineOnHoverOnly();
+        return match.getUnderline();
     }
 
     // unrecognized URL? should not happen
-    return LLUrlEntryBase::underlineOnHoverOnly(string);
+    return LLUrlEntryBase::getUnderline(string);
 }
 
 //
@@ -1435,7 +1501,7 @@ std::string LLUrlEntryNoLink::getLabel(const std::string &url, const LLUrlLabelC
     return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryNoLink::getStyle() const
+LLStyle::Params LLUrlEntryNoLink::getStyle(const std::string &url) const
 {
     // Don't render as URL (i.e. no context menu or hand cursor).
     return LLStyle::Params().is_link(false);

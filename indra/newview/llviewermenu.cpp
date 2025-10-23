@@ -86,6 +86,7 @@
 #include "lltoolface.h"
 #include "llhints.h"
 #include "llhudeffecttrail.h"
+#include "llhudeffectresetskeleton.h"
 #include "llhudmanager.h"
 #include "llimview.h"
 #include "llinventorybridge.h"
@@ -316,7 +317,10 @@ void force_error_software_exception();
 void force_error_os_exception();
 void force_error_driver_crash();
 void force_error_coroutine_crash();
+void force_error_coroprocedure_crash();
+void force_error_work_queue_crash();
 void force_error_thread_crash();
+void force_exception_thread_crash();
 
 void handle_force_delete();
 void print_object_info();
@@ -1867,7 +1871,6 @@ class LLAdvancedAppearanceToXML : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        std::string emptyname;
         LLViewerObject *obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
         LLVOAvatar *avatar = NULL;
         if (obj)
@@ -1894,7 +1897,7 @@ class LLAdvancedAppearanceToXML : public view_listener_t
         }
         if (avatar)
         {
-            avatar->dumpArchetypeXML(emptyname);
+            avatar->dumpArchetypeXML(LLStringUtil::null);
         }
         return true;
     }
@@ -2665,11 +2668,38 @@ class LLAdvancedForceErrorCoroutineCrash : public view_listener_t
     }
 };
 
+class LLAdvancedForceErrorCoroprocedureCrash : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        force_error_coroprocedure_crash();
+        return true;
+    }
+};
+
+class LLAdvancedForceErrorWorkQueueCrash : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        force_error_work_queue_crash();
+        return true;
+    }
+};
+
 class LLAdvancedForceErrorThreadCrash : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
         force_error_thread_crash();
+        return true;
+    }
+};
+
+class LLAdvancedForceExceptionThreadCrash : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        force_exception_thread_crash();
         return true;
     }
 };
@@ -3341,17 +3371,21 @@ void handle_object_edit()
 {
     update_camera();
 
-	LLFloaterReg::showInstance("build");
-	
-	LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
-	gFloaterTools->setEditTool( LLToolCompTranslate::getInstance() );
-	
-	gJoystick->moveObjects(true);
-	gJoystick->setNeedsReset(true);
-	
-	// Could be first use
-	//LLFirstUse::useBuild();
-	return;
+    LLFloaterReg::showInstance("build");
+
+    LLToolMgr::getInstance()->setCurrentToolset(gBasicToolset);
+
+    if (gFloaterTools)
+    {
+        gFloaterTools->setEditTool( LLToolCompTranslate::getInstance() );
+    }
+
+    LLViewerJoystick::getInstance()->moveObjects(true);
+    LLViewerJoystick::getInstance()->setNeedsReset(true);
+
+    // Could be first use
+    //LLFirstUse::useBuild();
+    return;
 }
 
 void handle_object_edit_gltf_material()
@@ -4507,13 +4541,6 @@ void set_god_level(U8 god_level)
 
     // changing god-level can affect which menus we see
     show_debug_menus();
-
-    // changing god-level can invalidate search results
-    LLFloaterSearch *search = dynamic_cast<LLFloaterSearch*>(LLFloaterReg::getInstance("search"));
-    if (search)
-    {
-        search->godLevelChanged(god_level);
-    }
 }
 
 #ifdef TOGGLE_HACKED_GODLIKE_VIEWER
@@ -5811,6 +5838,38 @@ class LLToolsEnablePathfindingRebakeRegion : public view_listener_t
     }
 };
 
+class LLToolsCheckSelectionLODMode : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        std::string param = userdata.asString();
+        static LLCachedControl<S32> debug_selection_lods(gSavedSettings, "DebugSelectionLODs", 0);
+        if ("default" == param)
+        {
+            return debug_selection_lods() < 0;
+        }
+        else if ("high" == param)
+        {
+            return debug_selection_lods() == 3;
+        }
+        else if ("medium" == param)
+        {
+            return debug_selection_lods() == 2;
+        }
+        else if ("low" == param)
+        {
+            return debug_selection_lods() == 1;
+        }
+        else if ("lowest" == param)
+        {
+            return debug_selection_lods() == 0;
+        }
+
+        return false;
+    }
+};
+
+
 // Round the position of all root objects to the grid
 class LLToolsSnapObjectXY : public view_listener_t
 {
@@ -6641,7 +6700,7 @@ void handle_look_at_selection(const LLSD& param)
     }
 }
 
-void handle_zoom_to_object(const LLUUID& object_id)
+bool handle_zoom_to_object(const LLUUID& object_id)
 {
     const F32 PADDING_FACTOR = 2.f;
 
@@ -6659,12 +6718,14 @@ void handle_zoom_to_object(const LLUUID& object_id)
         obj_to_cam.normVec();
 
 
-            LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
+        LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
 
-            gAgentCamera.setCameraPosAndFocusGlobal(object_center_global + LLVector3d(obj_to_cam * distance),
+        gAgentCamera.setCameraPosAndFocusGlobal(object_center_global + LLVector3d(obj_to_cam * distance),
                                             object_center_global,
                                             object_id );
+        return true;
     }
+    return false;
 }
 
 class LLAvatarInviteToGroup : public view_listener_t
@@ -6775,8 +6836,18 @@ class LLAvatarResetSkeleton : public view_listener_t
     {
         if (LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject()))
         {
+            if(avatar->getID() == gAgentID)
+            {
+                LLHUDEffectResetSkeleton* effectp = (LLHUDEffectResetSkeleton*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_RESET_SKELETON, true);
+                effectp->setSourceObject(gAgentAvatarp);
+                effectp->setTargetObject((LLViewerObject*)avatar);
+                effectp->setResetAnimations(false);
+            }
+            else
+            {
             avatar->resetSkeleton(false);
 			avatar->rebuildAttachments();
+        }
         }
         return true;
     }
@@ -6800,7 +6871,17 @@ class LLAvatarResetSkeletonAndAnimations : public view_listener_t
     {
         if (LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject()))
         {
+            if(avatar->getID() == gAgentID)
+            {
+                LLHUDEffectResetSkeleton* effectp = (LLHUDEffectResetSkeleton*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_RESET_SKELETON, true);
+                effectp->setSourceObject(gAgentAvatarp);
+                effectp->setTargetObject((LLViewerObject*)avatar);
+                effectp->setResetAnimations(true);
+            }
+            else
+            {
             avatar->resetSkeleton(true);
+        }
         }
         return true;
     }
@@ -6828,11 +6909,24 @@ class LLAvatarResetSelfSkeletonAndAnimations : public view_listener_t
     {
         if (LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject()))
         {
-            avatar->resetSkeleton(true);
+            if(avatar->getID() == gAgentID)
+            {
+                LLHUDEffectResetSkeleton* effectp = (LLHUDEffectResetSkeleton*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_RESET_SKELETON, true);
+                effectp->setSourceObject(gAgentAvatarp);
+                effectp->setTargetObject((LLViewerObject*)avatar);
+                effectp->setResetAnimations(true);
         }
         else
         {
-            gAgentAvatarp->resetSkeleton(true);
+                avatar->resetSkeleton(true);
+            }
+        }
+        else
+        {
+            LLHUDEffectResetSkeleton* effectp = (LLHUDEffectResetSkeleton*)LLHUDManager::getInstance()->createViewerEffect(LLHUDObject::LL_HUD_EFFECT_RESET_SKELETON, true);
+            effectp->setSourceObject(gAgentAvatarp);
+            effectp->setTargetObject(gAgentAvatarp);
+            effectp->setResetAnimations(true);
         }
         return true;
     }
@@ -8625,6 +8719,36 @@ class LLToolsSelectBySurrounding : public view_listener_t
     }
 };
 
+class LLToolsSelectionLODMode : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        std::string param = userdata.asString();
+        if ("default" == param)
+        {
+            gSavedSettings.setS32("DebugSelectionLODs", -1);
+        }
+        else if ("high" == param)
+        {
+            gSavedSettings.setS32("DebugSelectionLODs", 3);
+        }
+        else if ("medium" == param)
+        {
+            gSavedSettings.setS32("DebugSelectionLODs", 2);
+        }
+        else if ("low" == param)
+        {
+            gSavedSettings.setS32("DebugSelectionLODs", 1);
+        }
+        else if ("lowest" == param)
+        {
+            gSavedSettings.setS32("DebugSelectionLODs", 0);
+        }
+
+        return true;
+    }
+};
+
 class LLToolsShowHiddenSelection : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -8848,9 +8972,24 @@ void force_error_coroutine_crash()
     LLAppViewer::instance()->forceErrorCoroutineCrash();
 }
 
+void force_error_coroprocedure_crash()
+{
+    LLAppViewer::instance()->forceErrorCoroprocedureCrash();
+}
+
+void force_error_work_queue_crash()
+{
+    LLAppViewer::instance()->forceErrorWorkQueueCrash();
+}
+
 void force_error_thread_crash()
 {
     LLAppViewer::instance()->forceErrorThreadCrash();
+}
+
+void force_exception_thread_crash()
+{
+    LLAppViewer::instance()->forceExceptionThreadCrash();
 }
 
 class LLToolsUseSelectionForGrid : public view_listener_t
@@ -10168,6 +10307,7 @@ void initialize_menus()
     view_listener_t::addMenu(new LLToolsSelectInvisibleObjects(), "Tools.SelectInvisibleObjects");
     view_listener_t::addMenu(new LLToolsSelectReflectionProbes(), "Tools.SelectReflectionProbes");
     view_listener_t::addMenu(new LLToolsSelectBySurrounding(), "Tools.SelectBySurrounding");
+    view_listener_t::addMenu(new LLToolsSelectionLODMode(), "Tools.SelectionLODMode");
     view_listener_t::addMenu(new LLToolsShowHiddenSelection(), "Tools.ShowHiddenSelection");
     view_listener_t::addMenu(new LLToolsShowSelectionLightRadius(), "Tools.ShowSelectionLightRadius");
     view_listener_t::addMenu(new LLToolsEditLinkedParts(), "Tools.EditLinkedParts");
@@ -10200,6 +10340,7 @@ void initialize_menus()
     view_listener_t::addMenu(new LLToolsEnablePathfindingView(), "Tools.EnablePathfindingView");
     view_listener_t::addMenu(new LLToolsDoPathfindingRebakeRegion(), "Tools.DoPathfindingRebakeRegion");
     view_listener_t::addMenu(new LLToolsEnablePathfindingRebakeRegion(), "Tools.EnablePathfindingRebakeRegion");
+    view_listener_t::addMenu(new LLToolsCheckSelectionLODMode(), "Tools.ToolsCheckSelectionLODMode");
 
     // Help menu
     // most items use the ShowFloater method
@@ -10369,7 +10510,10 @@ void initialize_menus()
     view_listener_t::addMenu(new LLAdvancedForceErrorSoftwareExceptionCoro(), "Advanced.ForceErrorSoftwareExceptionCoro");
     view_listener_t::addMenu(new LLAdvancedForceErrorDriverCrash(), "Advanced.ForceErrorDriverCrash");
     view_listener_t::addMenu(new LLAdvancedForceErrorCoroutineCrash(), "Advanced.ForceErrorCoroutineCrash");
+    view_listener_t::addMenu(new LLAdvancedForceErrorCoroprocedureCrash(), "Advanced.ForceErrorCoroprocedureCrash");
+    view_listener_t::addMenu(new LLAdvancedForceErrorWorkQueueCrash(), "Advanced.ForceErrorWorkQueueCrash");
     view_listener_t::addMenu(new LLAdvancedForceErrorThreadCrash(), "Advanced.ForceErrorThreadCrash");
+    view_listener_t::addMenu(new LLAdvancedForceExceptionThreadCrash(), "Advanced.ForceExceptionThreadCrash");
     view_listener_t::addMenu(new LLAdvancedForceErrorDisconnectViewer(), "Advanced.ForceErrorDisconnectViewer");
 
     // Advanced (toplevel)

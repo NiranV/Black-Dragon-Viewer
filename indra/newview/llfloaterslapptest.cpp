@@ -1,11 +1,9 @@
 /**
- * @file llfloateravatar.h
- * @author Leyla Farazha
- * @brief floater for the avatar changer
+ * @file llfloaterslapptest.cpp
  *
- * $LicenseInfo:firstyear=2011&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2025&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2011, Linden Research, Inc.
+ * Copyright (C) 2025, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,35 +25,27 @@
 
 #include "llviewerprecompiledheaders.h"
 
-#include "llfloateravatar.h"
+#include "llfloaterslapptest.h"
 #include "lluictrlfactory.h"
-#include "llmediactrl.h"
 
+#include "lllineeditor.h"
+#include "lltextbox.h"
 
-LLFloaterAvatar::LLFloaterAvatar(const LLSD& key)
-    :   LLFloater(key)
+LLFloaterSLappTest::LLFloaterSLappTest(const LLSD& key)
+    :   LLFloater("floater_test_slapp")
 {
 }
 
-LLFloaterAvatar::~LLFloaterAvatar()
-{
-    if (mAvatarPicker)
-    {
-        mAvatarPicker->navigateStop();
-        mAvatarPicker->clearCache();          //images are reloading each time already
-        mAvatarPicker->unloadMediaSource();
-    }
-}
+LLFloaterSLappTest::~LLFloaterSLappTest()
+{}
 
-bool LLFloaterAvatar::postBuild()
+bool LLFloaterSLappTest::postBuild()
 {
-    mAvatarPicker = findChild<LLMediaCtrl>("avatar_picker_contents");
-    if (mAvatarPicker)
-    {
-        mAvatarPicker->clearCache();
-    }
-    enableResizeCtrls(true, true, false);
+    getChild<LLLineEditor>("remove_folder_id")->setKeystrokeCallback([this](LLLineEditor* editor, void*)
+        {
+            std::string slapp(getString("remove_folder_slapp"));
+            getChild<LLTextBox>("remove_folder_txt")->setValue(slapp + editor->getValue().asString());
+        }, NULL);
+
     return true;
 }
-
-

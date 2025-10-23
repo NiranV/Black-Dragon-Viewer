@@ -442,7 +442,6 @@ void LLFloaterEnvironmentAdjust::onButtonReset()
             //this->closeFloater();
             LLEnvironment::instance().clearEnvironment(LLEnvironment::ENV_LOCAL);
             LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
-            LLEnvironment::instance().updateEnvironment();
         }
     }); 
 }
@@ -707,9 +706,31 @@ void LLFloaterEnvironmentAdjust::onCloudScrollChanged()
 
 void LLFloaterEnvironmentAdjust::onCloudMapChanged()
 {
-	if (!mLiveSky) 
-		return;
-	mLiveSky->setCloudNoiseTextureId(mCloudImage->getValue().asUUID());
+    if (!mLiveSky)
+    {
+        return;
+    }
+
+    LLTextureCtrl* picker_ctrl = getChild<LLTextureCtrl>(FIELD_SKY_CLOUD_MAP);
+
+    LLUUID new_texture_id = picker_ctrl->getValue().asUUID();
+
+    LLEnvironment::instance().setSelectedEnvironment(LLEnvironment::ENV_LOCAL);
+
+    LLSettingsSky::ptr_t sky_to_set = mLiveSky->buildClone();
+    if (!sky_to_set)
+    {
+        return;
+    }
+
+    sky_to_set->setCloudNoiseTextureId(new_texture_id);
+
+    LLEnvironment::instance().setEnvironment(LLEnvironment::ENV_LOCAL, sky_to_set);
+
+    LLEnvironment::instance().updateEnvironment(LLEnvironment::TRANSITION_INSTANT, true);
+
+    picker_ctrl->setValue(new_texture_id);
+
 	mCloudImageChanged = true;
 }
 

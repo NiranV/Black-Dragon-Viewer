@@ -228,7 +228,7 @@
         width="22">
         <button.commit_callback
           function="WebContent.TestURL"
-          parameter="https://callum-linden.s3.amazonaws.com/sample_media/ss.mp4"/>
+          parameter="https://sl-viewer-media-system.s3.amazonaws.com/bookmarks/index.html"/>
       </button>
       <button
         image_overlay="Video_URL_Off"

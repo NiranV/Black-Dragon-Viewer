@@ -49,6 +49,7 @@
 #include "llviewerobjectlist.h"
 #include "llviewertexture.h"
 #include "llviewertexturelist.h"
+#include "llviewerthrottle.h"
 #include "llviewerwindow.h"
 #include "llwindow.h"
 #include "llvovolume.h"
@@ -682,13 +683,15 @@ void LLGLTexMemBar::draw()
     gGL.color4f(0.f, 0.f, 0.f, 0.25f);
     gl_rect_2d(-10, getRect().getHeight() + line_height * 2 + 1, getRect().getWidth() + 2, getRect().getHeight() + 2);
 
-    text = llformat("Est. Free: %d MB Sys Free: %d MB FBO: %d MB Bias: %.2f Cache: %.1f/%.1f MB",
-        (S32)LLViewerTexture::sFreeVRAMMegabytes,
-        LLMemory::getAvailableMemKB() / 1024,
-        LLRenderTarget::sBytesAllocated / (1024 * 1024),
-        discard_bias,
-        cache_usage,
-        cache_max_usage);
+    text = llformat("Est. Free: %d MB Sys Free: %d MB FBO: %d MB Probe#: %d Probe Mem: %d MB Bias: %.2f Cache: %.1f/%.1f MB",
+                    (S32)LLViewerTexture::sFreeVRAMMegabytes,
+                    LLMemory::getAvailableMemKB()/1024,
+                    LLRenderTarget::sBytesAllocated/(1024*1024),
+                    gPipeline.mReflectionMapManager.probeCount(),
+                    gPipeline.mReflectionMapManager.probeMemory(),
+                    discard_bias,
+                    cache_usage,
+                    cache_max_usage);
     LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height * 8,
         text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
@@ -754,8 +757,8 @@ void LLGLTexMemBar::draw()
         LLFontGL::NORMAL, LLFontGL::NO_SHADOW, S32_MAX, S32_MAX, &x_right);
 
     F32Kilobits bandwidth(LLAppViewer::getTextureFetch()->getTextureBandwidth());
-    F32Kilobits max_bandwidth(gSavedSettings.getF32("ThrottleBandwidthKBPS"));
-    color = bandwidth > max_bandwidth ? LLColor4::red : bandwidth > max_bandwidth * .75f ? LLColor4::yellow : text_color;
+    F32Kilobits max_bandwidth(LLViewerThrottle::getMaxBandwidthKbps());
+    color = bandwidth > max_bandwidth ? LLColor4::red : bandwidth > max_bandwidth*.75f ? LLColor4::yellow : text_color;
     color[VALPHA] = text_color[VALPHA];
     text = llformat("BW:%.0f/%.0f", bandwidth.value(), max_bandwidth.value());
     LLFontGL::getFontMonospace()->renderUTF8(text, 0, (S32)x_right, v_offset + line_height * 3,
@@ -763,12 +766,12 @@ void LLGLTexMemBar::draw()
 
     // Mesh status line
     text = llformat("Mesh: Reqs(Tot/Htp/Big): %u/%u/%u Rtr/Err: %u/%u Cread/Cwrite: %u/%u Low/At/High: %d/%d/%d",
-        LLMeshRepository::sMeshRequestCount, LLMeshRepository::sHTTPRequestCount, LLMeshRepository::sHTTPLargeRequestCount,
-        LLMeshRepository::sHTTPRetryCount, LLMeshRepository::sHTTPErrorCount,
-        LLMeshRepository::sCacheReads, LLMeshRepository::sCacheWrites,
-        LLMeshRepoThread::sRequestLowWater, LLMeshRepoThread::sRequestWaterLevel, LLMeshRepoThread::sRequestHighWater);
-    LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height * 2,
-        text_color, LLFontGL::LEFT, LLFontGL::TOP);
+                    LLMeshRepository::sMeshRequestCount, LLMeshRepository::sHTTPRequestCount, LLMeshRepository::sHTTPLargeRequestCount,
+                    LLMeshRepository::sHTTPRetryCount, LLMeshRepository::sHTTPErrorCount,
+                    (U32)LLMeshRepository::sCacheReads, (U32)LLMeshRepository::sCacheWrites,
+                    LLMeshRepoThread::sRequestLowWater, LLMeshRepoThread::sRequestWaterLevel, LLMeshRepoThread::sRequestHighWater);
+    LLFontGL::getFontMonospace()->renderUTF8(text, 0, 0, v_offset + line_height*2,
+                                             text_color, LLFontGL::LEFT, LLFontGL::TOP);
 
     // Header for texture table columns
     S32 dx1 = 0;
