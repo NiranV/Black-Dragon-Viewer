@@ -22,16 +22,16 @@ width="996">
  trusted_content="true" 
  bg_opaque_color="Black"
  border_visible="false"
- top="-599"
+ top="-613"
  follows="all"
- start_url="https://www.youtube.com/embed/TRFu2MKr1Xk?autoplay=1&amp;loop=1&amp;playlist=TRFu2MKr1Xk&amp;hl=en&amp;persist_hl=1"
+ start_url="https://streamable.com/e/i0qj81?autoplay=1&amp;nocontrols=1"
  left="0"
  name="html"
- height="599"
- width="996" />
+ height="649"
+ width="999" />
  <icon
  follows="bottom|left|right"
- height="125"
+ height="135"
  image_name="Toolbar_Middle_Selected"
  color="0.15 0.05 0 1"
  layout="topleft"
@@ -40,10 +40,10 @@ width="996">
  visible="true"
  width="996"
  left="0"
- top="-125"/>
+ top="-135"/>
  <icon
  follows="bottom|left|right"
- height="125"
+ height="135"
  image_name="Toolbar_Middle_Selected"
  color="0 0 0 1"
  layout="topleft"
@@ -52,7 +52,7 @@ width="996">
  visible="true"
  width="996"
  left="0"
- top="-125"/>
+ top="-135"/>
  <icon
  follows="top|left|right"
  height="20"
@@ -84,8 +84,8 @@ width="996">
  layout="topleft"
  left="1"
  name="cost_text_border"
- top="20"
- width="994"/>
+ top="17"
+ width="872"/>
  <button
  follows="left|top|right"
  height="20"
@@ -103,6 +103,22 @@ width="996">
  function="Floater.Show"
  parameter="sl_about"/>
  </button>
+<button
+follows="right|top"
+height="18"
+control_name="ShowSupporters"
+is_toggle="true"
+image_unselected="Toolbar_Middle_Off"
+image_selected="Toolbar_Middle_Selected"
+label="Supporters"
+font="SansSerif"
+font.style="BOLD"
+layout="topleft"
+left="-121"
+halign="center"
+name="show_supporters"
+top="1"
+width="120"/>
  <layout_stack
  border_size="0"
  follows="all"
@@ -3348,8 +3364,9 @@ Merge Linden Release. (445 Changes)
  
  <panel
  follows="top|right"
- height="248"
+ height="261"
  background_visible="true"
+ visibility_control="ShowSupporters"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
  left="643"
@@ -3375,7 +3392,7 @@ Merge Linden Release. (445 Changes)
     font_shadow="soft"
     font.style="BOLD"
     halign="left"
-    height="296"
+    height="335"
     top_pad="0"
     left="7"
     name="store_list"
@@ -3406,6 +3423,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
  follows="top|right"
  height="40"
  background_visible="true"
+ visibility_control="ShowSupporters"
  bg_alpha_color="0.0 0.0 0.0 0.55"
  layout="topleft"
  left="643"
@@ -3493,7 +3511,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     layout="topleft"
     left_pad="1"
     name="cost_text_border"
-    top="25"
+    top="16"
     width="78"/>
    </layout_panel>
    <layout_panel
@@ -3512,7 +3530,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     font.style="BOLD"
     halign="center"
     height="20"
-    top="0"
+    top_pad="-2"
     left="0"
     name="app_name_text"
     width="420"
@@ -3695,7 +3713,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     height="23"
     image_unselected="Toolbar_Middle_Off"
     image_selected="Toolbar_Middle_Selected"
-    label="*LIFT OFF*"
+    label="*HOARD GOLD*"
     font="SansSerif"
     font.style="BOLDITALIC"
     label_color="1 1 1 0.8"
@@ -3721,7 +3739,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     layout="topleft"
     left="0"
     name="cost_text_border"
-    top="25"
+    top="16"
     width="120"/>
     <button
     follows="right|top"
@@ -3736,7 +3754,7 @@ CF Design - [https://marketplace.secondlife.com/en-US/stores/52775 Marketplace]
     left_pad="1"
     halign="center"
     name="quit_btn"
-    top_delta="-8"
+    top_delta="1"
     width="77"/>
    </layout_panel>
   </layout_stack>
