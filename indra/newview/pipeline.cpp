@@ -8433,7 +8433,7 @@ void LLPipeline::renderFinalize()
     LLRenderTarget* targetBuffer = &mPostPongMap;
 
     //BD - Volumetric Lighting
-    renderVolumetric(&mRT->screen, &mRT->screen);
+    renderVolumetric(sourceBuffer, sourceBuffer);
     
     combineGlow(sourceBuffer, targetBuffer);
     std::swap(sourceBuffer, targetBuffer);
