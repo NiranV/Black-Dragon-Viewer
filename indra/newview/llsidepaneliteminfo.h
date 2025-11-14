@@ -48,6 +48,7 @@ class LLPermissions;
 class LLTextBox;
 class LLNameBox;
 class LLLineEditor;
+class LLTextEditor;
 
 class LLSidepanelItemInfo : public LLPanel, public LLInventoryObserver
 {
@@ -78,7 +79,6 @@ public:
 	LLUICtrl*		mLabelItemNameTitle;
 	LLLineEditor*	mLabelItemName;
 	LLUICtrl*		mLabelItemDescTitle;
-	LLLineEditor*	mLabelItemDesc;
 	LLUICtrl*		mLabelCreatorTitle;
 	LLUICtrl*		mLabelOwnerTitle;
 

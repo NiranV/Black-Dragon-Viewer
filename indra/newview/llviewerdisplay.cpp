@@ -1671,21 +1671,12 @@ void render_ui_3d()
     gUIProgram.bind();
     gGL.color4f(1.f, 1.f, 1.f, 1.f);
 
-<<<<<<< HEAD
-	// Coordinate axes
-	static LLCachedControl<bool> showAxes(gSavedSettings, "ShowAxes");
-	if (showAxes)
-	{
-		draw_axes();
-	}
-=======
     // Coordinate axes
     static LLCachedControl<bool> show_axes(gSavedSettings, "ShowAxes");
     if (show_axes())
     {
         draw_axes();
     }
->>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
 
     gViewerWindow->renderSelections(false, false, true); // Non HUD call in render_hud_elements
 
@@ -1821,88 +1812,3 @@ void render_ui_2d()
     // reset current origin for font rendering, in case of tiling render
     LLFontGL::sCurOrigin.set(0, 0);
 }
-<<<<<<< HEAD
-=======
-
-void render_disconnected_background()
-{
-    gUIProgram.bind();
-
-    gGL.color4f(1.f, 1.f, 1.f, 1.f);
-    if (!gDisconnectedImagep && gDisconnected)
-    {
-        LL_INFOS() << "Loading last bitmap..." << LL_ENDL;
-
-        std::string temp_str;
-        temp_str = gDirUtilp->getLindenUserDir() + gDirUtilp->getDirDelimiter() + LLStartUp::getScreenLastFilename();
-
-        LLPointer<LLImagePNG> image_png = new LLImagePNG;
-        if( !image_png->load(temp_str) )
-        {
-            //LL_INFOS() << "Bitmap load failed" << LL_ENDL;
-            return;
-        }
-
-        LLPointer<LLImageRaw> raw = new LLImageRaw;
-        if (!image_png->decode(raw, 0.0f))
-        {
-            LL_INFOS() << "Bitmap decode failed" << LL_ENDL;
-            gDisconnectedImagep = NULL;
-            return;
-        }
-
-        U8 *rawp = raw->getData();
-        S32 npixels = (S32)image_png->getWidth()*(S32)image_png->getHeight();
-        for (S32 i = 0; i < npixels; i++)
-        {
-            S32 sum = 0;
-            sum = *rawp + *(rawp+1) + *(rawp+2);
-            sum /= 3;
-            *rawp = ((S32)sum*6 + *rawp)/7;
-            rawp++;
-            *rawp = ((S32)sum*6 + *rawp)/7;
-            rawp++;
-            *rawp = ((S32)sum*6 + *rawp)/7;
-            rawp++;
-        }
-
-
-        raw->expandToPowerOfTwo();
-        gDisconnectedImagep = LLViewerTextureManager::getLocalTexture(raw.get(), false);
-        gStartTexture = gDisconnectedImagep;
-        gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-    }
-
-    // Make sure the progress view always fills the entire window.
-    S32 width = gViewerWindow->getWindowWidthScaled();
-    S32 height = gViewerWindow->getWindowHeightScaled();
-
-    if (gDisconnectedImagep)
-    {
-        LLGLSUIDefault gls_ui;
-        gViewerWindow->setup2DRender();
-        gGL.pushMatrix();
-        {
-            // scale ui to reflect UIScaleFactor
-            // this can't be done in setup2DRender because it requires a
-            // pushMatrix/popMatrix pair
-            const LLVector2& display_scale = gViewerWindow->getDisplayScale();
-            gGL.scalef(display_scale.mV[VX], display_scale.mV[VY], 1.f);
-
-            gGL.getTexUnit(0)->bind(gDisconnectedImagep);
-            gGL.color4f(1.f, 1.f, 1.f, 1.f);
-            gl_rect_2d_simple_tex(width, height);
-            gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-        }
-        gGL.popMatrix();
-    }
-    gGL.flush();
-
-    gUIProgram.unbind();
-}
-
-void display_cleanup()
-{
-    gDisconnectedImagep = nullptr;
-}
->>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5

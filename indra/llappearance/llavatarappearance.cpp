@@ -880,7 +880,7 @@ void LLAvatarAppearance::buildCharacter()
 		  mShoulderRightp &&
 		  mShoulderLeftp &&
 		  mElbowRightp &&
-		  mElbowLeftp))))
+		  mElbowLeftp))
     {
         LL_ERRS() << "Failed to create avatar." << LL_ENDL;
         return;

@@ -1509,7 +1509,7 @@ void LLTextBase::draw()
     //BD - Draw highlighted if needed
     if( LLSearchableControl::getHighlighted() )
     {
-        const LLColor4& bg_color = LLSearchableControl::getHighlightBGColor();
+        const LLColor4& bg_color = LLSearchableControl::getHighlightBgColor();
         LLRect bg_rect = mVisibleTextRect;
         if( mScroller )
             bg_rect.intersectWith( text_rect );

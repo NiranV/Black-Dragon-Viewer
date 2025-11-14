@@ -204,7 +204,7 @@ LLFloaterTexturePicker::~LLFloaterTexturePicker()
 
 void LLFloaterTexturePicker::setImageID(const LLUUID& image_id, bool set_selection /*=true*/)
 {
-	if( ((mImageAssetID != image_id) || mTentative) && mActive)
+	if( ((mImageAssetID != image_id) || getTentative()) && mActive)
 	{
 		mNoCopyTextureSelected = false;
 		mViewModel->setDirty(); // *TODO: shouldn't we be using setValue() here?
@@ -1535,7 +1535,7 @@ void LLFloaterTexturePicker::setLocalTextureEnabled(bool enabled)
     mLocalTextureEnabled = enabled;
     //BD
     mTabModes->enableTabButton(1, enabled);
-    if (!enabled && (mModeSelector->getValue().asInteger() == 2))
+    if (!enabled && (mTabModes->getCurrentPanelIndex() == 2))
     {
         mTabModes->selectTab(0);
         onModeSelect(0, this);

@@ -5128,7 +5128,9 @@ void LLWindowWin32::updateWindowTheme()
         FreeLibrary(hUxTheme);
     }
     BOOL dark_mode(use_dark_mode);
-    DwmSetWindowAttribute(mWindowHandle, DWMWA_USE_IMMERSIVE_DARK_MODE, &dark_mode, sizeof(dark_mode));
+    //BD - TODO: Come back to this, i don't feel like updating Windows Devkit and breaking absolutely
+    //     everything again for now.
+    //DwmSetWindowAttribute(mWindowHandle, DWMWA_USE_IMMERSIVE_DARK_MODE, &dark_mode, sizeof(dark_mode));
 
     LL_INFOS("Window") << "Viewer window theme is set to " << (use_dark_mode ? "dark" : "light") << " mode" << LL_ENDL;
 }

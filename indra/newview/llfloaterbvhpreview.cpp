@@ -121,8 +121,8 @@ std::string STATUS[] =
 //-----------------------------------------------------------------------------
 // LLFloaterBvhPreview()
 //-----------------------------------------------------------------------------
-LLFloaterBvhPreview::LLFloaterBvhPreview(const LLSD& args) :
-    LLFloaterNameDesc(args)
+LLFloaterBvhPreview::LLFloaterBvhPreview(const std::string& filename) :
+    LLFloaterNameDesc(filename)
 {
     mLastMouseX = 0;
     mLastMouseY = 0;

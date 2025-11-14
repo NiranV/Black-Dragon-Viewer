@@ -93,16 +93,16 @@
     <key>AFKTimeout</key>
     <map>
       <key>Comment</key>
-            <string>
-                Time before automatically setting AFK (away from keyboard) mode (seconds, 0=never).
-                Valid values are: 0, 120, 300, 600, 1800
-</string>
+      <string>
+          Time before automatically setting AFK (away from keyboard) mode (seconds, 0=never).
+          Valid values are: 0, 120, 300, 600, 1800
+      </string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <real>300</real>
+      <real>300.0</real>
     </map>
     <key>AckCollectTime</key>
     <map>
@@ -16569,17 +16569,6 @@
         <key>Value</key>
         <integer>1</integer>
     </map>
-<<<<<<< HEAD
-    <!-- Black Dragon Debugs -->
-    <key>Include</key>
-    <array>
-      <!-- Black Dragon Debugs -->
-      <string>settings_blackdragon.xml</string>
-      <string>settings_firestorm.xml</string>
-      <!-- RLVa Debugs -->
-      <!--<string>settings_rlva.xml</string>-->
-    </array>
-=======
     <key>MediaAutoPlayHuds</key>
     <map>
         <key>Comment</key>
@@ -16646,6 +16635,15 @@
       <key>Value</key>
       <integer>2</integer>
     </map>
->>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
+
+    <!-- Black Dragon Debugs -->
+    <key>Include</key>
+    <array>
+      <!-- Black Dragon Debugs -->
+      <string>settings_blackdragon.xml</string>
+      <string>settings_firestorm.xml</string>
+      <!-- RLVa Debugs -->
+      <!--<string>settings_rlva.xml</string>-->
+    </array>
 </map>
 </llsd>

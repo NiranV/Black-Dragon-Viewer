@@ -162,7 +162,7 @@ bool LLSidepanelItemInfo::postBuild()
 	mLabelItemNameTitle = getChild<LLUICtrl>("LabelItemNameTitle");
 	mLabelItemName = getChild<LLLineEditor>("LabelItemName");
 	mLabelItemDescTitle = getChild<LLUICtrl>("LabelItemDescTitle");
-	mLabelItemDesc = getChild<LLLineEditor>("LabelItemDesc");
+	mLabelItemDesc = getChild<LLTextEditor>("LabelItemDesc");
 	mLabelCreatorTitle = getChild<LLUICtrl>("LabelCreatorTitle");
 	mLabelOwnerTitle = getChild<LLUICtrl>("LabelOwnerTitle");
 	mChangeThumbnailBtn = getChild<LLUICtrl>("change_thumbnail_btn");
@@ -172,7 +172,6 @@ bool LLSidepanelItemInfo::postBuild()
 
 	mLabelItemName->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
 	mLabelItemName->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onCommitName,this));
-	mLabelItemDesc->setPrevalidate(&LLTextValidate::validateASCIIPrintableNoPipe);
 	mLabelItemDesc->setCommitCallback(boost::bind(&LLSidepanelItemInfo:: onCommitDescription, this));
 	// Creator information
 	getChild<LLUICtrl>("BtnCreator")->setCommitCallback(boost::bind(&LLSidepanelItemInfo::onClickCreator,this));

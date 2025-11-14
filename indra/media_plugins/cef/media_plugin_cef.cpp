@@ -38,13 +38,6 @@
 #include "volume_catcher.h"
 #include "media_plugin_base.h"
 
-// _getpid()/getpid()
-#if LL_WINDOWS
-#include <process.h>
-#else
-#include <unistd.h>
-#endif
-
 #include "dullahan.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +46,7 @@ class MediaPluginCEF :
     public MediaPluginBase
 {
 public:
-    MediaPluginCEF(LLPluginInstance::sendMessageFunction host_send_func, void *host_user_data);
+    MediaPluginCEF(LLPluginInstance::sendMessageFunction host_send_func, void* host_user_data);
     ~MediaPluginCEF();
 
     /*virtual*/
@@ -71,7 +64,7 @@ private:
     void onLoadStartCallback();
     void onRequestExitCallback();
     void onLoadEndCallback(int httpStatusCode, std::string url);
-    void onLoadError(int status, const std::string error_text, const std::string error_url);
+    void onLoadError(int status, const std::string error_text);
     void onAddressChangeCallback(std::string url);
     void onOpenPopupCallback(std::string url, std::string target);
     bool onHTTPAuthCallback(const std::string host, const std::string realm, std::string& username, std::string& password);
@@ -81,7 +74,7 @@ private:
     bool onJSBeforeUnloadCallback();
 
     void postDebugMessage(const std::string& msg);
-    void authResponse(LLPluginMessage &message);
+    void authResponse(LLPluginMessage& message);
 
     void keyEvent(dullahan::EKeyEvent key_event, LLSD native_key_data);
     void unicodeInput(std::string event, LLSD native_key_data);
@@ -106,14 +99,12 @@ private:
     std::string mAuthUsername;
     std::string mAuthPassword;
     bool mAuthOK;
-    bool mCanUndo;
-    bool mCanRedo;
     bool mCanCut;
     bool mCanCopy;
     bool mCanPaste;
-    bool mCanDelete;
-    bool mCanSelectAll;
     std::string mRootCachePath;
+    std::string mCachePath;
+    std::string mContextCachePath;
     std::string mCefLogFile;
     bool mCefLogVerbose;
     std::vector<std::string> mPickedFiles;
@@ -124,8 +115,8 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-MediaPluginCEF::MediaPluginCEF(LLPluginInstance::sendMessageFunction host_send_func, void *host_user_data) :
-MediaPluginBase(host_send_func, host_user_data)
+MediaPluginCEF::MediaPluginCEF(LLPluginInstance::sendMessageFunction host_send_func, void* host_user_data) :
+    MediaPluginBase(host_send_func, host_user_data)
 {
     mWidth = 0;
     mHeight = 0;
@@ -148,13 +139,10 @@ MediaPluginBase(host_send_func, host_user_data)
     mAuthUsername = "";
     mAuthPassword = "";
     mAuthOK = false;
-    mCanUndo = false;
-    mCanRedo = false;
     mCanCut = false;
     mCanCopy = false;
     mCanPaste = false;
-    mCanDelete = false;
-    mCanSelectAll = false;
+    mCachePath = "";
     mCefLogFile = "";
     mCefLogVerbose = false;
     mPickedFiles.clear();
@@ -192,7 +180,7 @@ void MediaPluginCEF::postDebugMessage(const std::string& msg)
 //
 void MediaPluginCEF::onPageChangedCallback(const unsigned char* pixels, int x, int y, const int width, const int height)
 {
-    if( mPixels && pixels )
+    if (mPixels && pixels)
     {
         if (mWidth == width && mHeight == height)
         {
@@ -254,17 +242,15 @@ void MediaPluginCEF::onLoadStartCallback()
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-void MediaPluginCEF::onLoadError(int status, const std::string error_text, const std::string error_url)
+void MediaPluginCEF::onLoadError(int status, const std::string error_text)
 {
     std::stringstream msg;
 
-    msg << "<b>Loading error</b>";
+    msg << "<b>Loading error!</b>";
     msg << "<p>";
-    msg << "Error message: " << error_text;
-    msg << "<p>";
-    msg << "Error URL: <tt>" << error_url << "</tt>";
-    msg << "<p>";
-    msg << "Error code: " << status;
+    msg << "Message: " << error_text;
+    msg << "<br>";
+    msg << "Code: " << status;
 
     mCEFLib->showBrowserMessage(msg.str());
 }
@@ -424,47 +410,47 @@ void MediaPluginCEF::onCursorChangedCallback(dullahan::ECursorType type)
 
     switch (type)
     {
-        case dullahan::CT_POINTER:
-            name = "UI_CURSOR_ARROW";
-            break;
-        case dullahan::CT_CROSS:
-            name = "UI_CURSOR_CROSS";
-            break;
-        case dullahan::CT_HAND:
-            name = "UI_CURSOR_HAND";
-            break;
-        case dullahan::CT_IBEAM:
-            name = "UI_CURSOR_IBEAM";
-            break;
-        case dullahan::CT_WAIT:
-            name = "UI_CURSOR_WAIT";
-            break;
+    case dullahan::CT_POINTER:
+        name = "UI_CURSOR_ARROW";
+        break;
+    case dullahan::CT_CROSS:
+        name = "UI_CURSOR_CROSS";
+        break;
+    case dullahan::CT_HAND:
+        name = "UI_CURSOR_HAND";
+        break;
+    case dullahan::CT_IBEAM:
+        name = "UI_CURSOR_IBEAM";
+        break;
+    case dullahan::CT_WAIT:
+        name = "UI_CURSOR_WAIT";
+        break;
         //case dullahan::CT_HELP:
-        case dullahan::CT_ROWRESIZE:
-        case dullahan::CT_NORTHRESIZE:
-        case dullahan::CT_SOUTHRESIZE:
-        case dullahan::CT_NORTHSOUTHRESIZE:
-            name = "UI_CURSOR_SIZENS";
-            break;
-        case dullahan::CT_COLUMNRESIZE:
-        case dullahan::CT_EASTRESIZE:
-        case dullahan::CT_WESTRESIZE:
-        case dullahan::CT_EASTWESTRESIZE:
-            name = "UI_CURSOR_SIZEWE";
-            break;
-        case dullahan::CT_NORTHEASTRESIZE:
-        case dullahan::CT_SOUTHWESTRESIZE:
-        case dullahan::CT_NORTHEASTSOUTHWESTRESIZE:
-            name = "UI_CURSOR_SIZENESW";
-            break;
-        case dullahan::CT_SOUTHEASTRESIZE:
-        case dullahan::CT_NORTHWESTRESIZE:
-        case dullahan::CT_NORTHWESTSOUTHEASTRESIZE:
-            name = "UI_CURSOR_SIZENWSE";
-            break;
-        case dullahan::CT_MOVE:
-            name = "UI_CURSOR_SIZEALL";
-            break;
+    case dullahan::CT_ROWRESIZE:
+    case dullahan::CT_NORTHRESIZE:
+    case dullahan::CT_SOUTHRESIZE:
+    case dullahan::CT_NORTHSOUTHRESIZE:
+        name = "UI_CURSOR_SIZENS";
+        break;
+    case dullahan::CT_COLUMNRESIZE:
+    case dullahan::CT_EASTRESIZE:
+    case dullahan::CT_WESTRESIZE:
+    case dullahan::CT_EASTWESTRESIZE:
+        name = "UI_CURSOR_SIZEWE";
+        break;
+    case dullahan::CT_NORTHEASTRESIZE:
+    case dullahan::CT_SOUTHWESTRESIZE:
+    case dullahan::CT_NORTHEASTSOUTHWESTRESIZE:
+        name = "UI_CURSOR_SIZENESW";
+        break;
+    case dullahan::CT_SOUTHEASTRESIZE:
+    case dullahan::CT_NORTHWESTRESIZE:
+    case dullahan::CT_NORTHWESTSOUTHEASTRESIZE:
+        name = "UI_CURSOR_SIZENWSE";
+        break;
+    case dullahan::CT_MOVE:
+        name = "UI_CURSOR_SIZEALL";
+        break;
         //case dullahan::CT_MIDDLEPANNING:
         //case dullahan::CT_EASTPANNING:
         //case dullahan::CT_NORTHPANNING:
@@ -477,37 +463,37 @@ void MediaPluginCEF::onCursorChangedCallback(dullahan::ECursorType type)
         //case dullahan::CT_VERTICALTEXT:
         //case dullahan::CT_CELL:
         //case dullahan::CT_CONTEXTMENU:
-        case dullahan::CT_ALIAS:
-            name = "UI_CURSOR_TOOLMEDIAOPEN";
-            break;
-        case dullahan::CT_PROGRESS:
-            name = "UI_CURSOR_WORKING";
-            break;
-        case dullahan::CT_COPY:
-            name = "UI_CURSOR_ARROWCOPY";
-            break;
-        case dullahan::CT_NONE:
-            name = "UI_CURSOR_NO";
-            break;
-        case dullahan::CT_NODROP:
-        case dullahan::CT_NOTALLOWED:
-            name = "UI_CURSOR_NOLOCKED";
-            break;
-        case dullahan::CT_ZOOMIN:
-            name = "UI_CURSOR_TOOLZOOMIN";
-            break;
-        case dullahan::CT_ZOOMOUT:
-            name = "UI_CURSOR_TOOLZOOMOUT";
-            break;
-        case dullahan::CT_GRAB:
-            name = "UI_CURSOR_TOOLGRAB";
-            break;
+    case dullahan::CT_ALIAS:
+        name = "UI_CURSOR_TOOLMEDIAOPEN";
+        break;
+    case dullahan::CT_PROGRESS:
+        name = "UI_CURSOR_WORKING";
+        break;
+    case dullahan::CT_COPY:
+        name = "UI_CURSOR_ARROWCOPY";
+        break;
+    case dullahan::CT_NONE:
+        name = "UI_CURSOR_NO";
+        break;
+    case dullahan::CT_NODROP:
+    case dullahan::CT_NOTALLOWED:
+        name = "UI_CURSOR_NOLOCKED";
+        break;
+    case dullahan::CT_ZOOMIN:
+        name = "UI_CURSOR_TOOLZOOMIN";
+        break;
+    case dullahan::CT_ZOOMOUT:
+        name = "UI_CURSOR_TOOLZOOMOUT";
+        break;
+    case dullahan::CT_GRAB:
+        name = "UI_CURSOR_TOOLGRAB";
+        break;
         //case dullahan::CT_GRABING:
         //case dullahan::CT_CUSTOM:
 
-        default:
-            LL_WARNS() << "Unknown cursor ID: " << (int)type << LL_ENDL;
-            break;
+    default:
+        LL_WARNS() << "Unknown cursor ID: " << (int)type << LL_ENDL;
+        break;
     }
 
     LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "cursor_changed");
@@ -517,7 +503,7 @@ void MediaPluginCEF::onCursorChangedCallback(dullahan::ECursorType type)
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-void MediaPluginCEF::authResponse(LLPluginMessage &message)
+void MediaPluginCEF::authResponse(LLPluginMessage& message)
 {
     mAuthOK = message.getValueBoolean("ok");
     if (mAuthOK)
@@ -621,12 +607,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 mCEFLib->setOnTooltipCallback(std::bind(&MediaPluginCEF::onTooltipCallback, this, std::placeholders::_1));
                 mCEFLib->setOnLoadStartCallback(std::bind(&MediaPluginCEF::onLoadStartCallback, this));
                 mCEFLib->setOnLoadEndCallback(std::bind(&MediaPluginCEF::onLoadEndCallback, this, std::placeholders::_1, std::placeholders::_2));
-
-                // CEF 139 seems to have introduced a loading failure at the login page (only?) I haven't seen it on
-                // any other page and it only happens about 1 in 8 times. Without this handler for the error page
-                // (red box, error message/code/url) the page load recovers after display a brief built in error.
-                // Not ideal but better than stopping altgoether. Will restore this once I discover the error.
-                //mCEFLib->setOnLoadErrorCallback(std::bind(&MediaPluginCEF::onLoadError, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+                mCEFLib->setOnLoadErrorCallback(std::bind(&MediaPluginCEF::onLoadError, this, std::placeholders::_1, std::placeholders::_2));
                 mCEFLib->setOnAddressChangeCallback(std::bind(&MediaPluginCEF::onAddressChangeCallback, this, std::placeholders::_1));
                 mCEFLib->setOnOpenPopupCallback(std::bind(&MediaPluginCEF::onOpenPopupCallback, this, std::placeholders::_1, std::placeholders::_2));
                 mCEFLib->setOnHTTPAuthCallback(std::bind(&MediaPluginCEF::onHTTPAuthCallback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
@@ -654,7 +635,10 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 // and set it to white
                 settings.background_color = 0xffffffff; // white
 
+                settings.cache_enabled = true;
                 settings.root_cache_path = mRootCachePath;
+                settings.cache_path = mCachePath;
+                settings.context_cache_path = mContextCachePath;
                 settings.cookies_enabled = mCookiesEnabled;
 
                 // configure proxy argument if enabled and valid
@@ -724,7 +708,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 F32 factor = (F32)message_in.getValueReal("factor");
 #if LL_DARWIN
                 //temporary fix for SL-10473: issue with displaying checkboxes on Mojave
-                factor*=1.001;
+                factor *= 1.001;
 #endif
                 mCEFLib->setPageZoom(factor);
 
@@ -745,32 +729,23 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 std::string user_data_path_cache = message_in.getValue("cache_path");
                 std::string subfolder = message_in.getValue("username");
 
-                // media plugin doesn't have access to gDirUtilp
-                std::string path_separator;
-#if LL_WINDOWS
-                path_separator = "\\";
-#else
-                path_separator = "/";
-#endif
-
                 mRootCachePath = user_data_path_cache + "cef_cache";
-
-                // Issue #4498 Introduce an additional sub-folder underneath the main cache
-                // folder so that each CEF media instance gets its own (as per the CEF API
-                // official position). These folders will be removed at startup by Viewer code
-                // so that their non-trivial size does not exhaust available disk space. This
-                // begs the question - why turn on the cache at all? There are 2 reasons - firstly
-                // some of the instances will benefit from per Viewer session caching and will
-                // use the injected SL cookie and secondly, it's not clear how having no cache
-                // interacts with the multiple simultaneous paradigm we use.
-                mRootCachePath += path_separator;
-# if LL_WINDOWS
-                mRootCachePath += std::to_string(_getpid());
-# else
-                mRootCachePath += std::to_string(getpid());
-# endif
-
-
+                if (!subfolder.empty())
+                {
+                    std::string delim;
+#if LL_WINDOWS
+                    // media plugin doesn't have access to gDirUtilp
+                    delim = "\\";
+#else
+                    delim = "/";
+#endif
+                    mCachePath = mRootCachePath + delim + subfolder;
+                }
+                else
+                {
+                    mCachePath = mRootCachePath;
+                }
+                mContextCachePath = ""; // disabled by ""
                 mCefLogFile = message_in.getValue("cef_log_file");
                 mCefLogVerbose = message_in.getValueBoolean("cef_verbose_log");
             }
@@ -948,14 +923,6 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
             {
                 authResponse(message_in);
             }
-            if (message_name == "edit_undo")
-            {
-                mCEFLib->editUndo();
-            }
-            if (message_name == "edit_redo")
-            {
-                mCEFLib->editRedo();
-            }
             if (message_name == "edit_cut")
             {
                 mCEFLib->editCut();
@@ -968,18 +935,6 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
             {
                 mCEFLib->editPaste();
             }
-            if (message_name == "edit_delete")
-            {
-                mCEFLib->editDelete();
-            }
-            if (message_name == "edit_select_all")
-            {
-                mCEFLib->editSelectAll();
-            }
-            if (message_name == "edit_show_source")
-            {
-                mCEFLib->viewSource();
-            }
         }
         else if (message_class == LLPLUGIN_MESSAGE_CLASS_MEDIA_BROWSER)
         {
@@ -988,7 +943,7 @@ void MediaPluginCEF::receiveMessage(const char* message_string)
                 F32 factor = (F32)message_in.getValueReal("factor");
 #if LL_DARWIN
                 //temporary fix for SL-10473: issue with displaying checkboxes on Mojave
-                factor*=1.001;
+                factor *= 1.001;
 #endif
                 mCEFLib->setPageZoom(factor);
             }
@@ -1082,11 +1037,11 @@ void MediaPluginCEF::keyEvent(dullahan::EKeyEvent key_event, LLSD native_key_dat
     // here too or we get double key presses on a mac.
     bool esc_key = (event_umodchars == 27);
     bool tab_key_up = (event_umodchars == 9) && (key_event == dullahan::EKeyEvent::KE_KEY_UP);
-    if ((esc_key || ((unsigned char)event_chars < 0x10 || (unsigned char)event_chars >= 0x7f )) && !tab_key_up)
+    if ((esc_key || ((unsigned char)event_chars < 0x10 || (unsigned char)event_chars >= 0x7f)) && !tab_key_up)
     {
         mCEFLib->nativeKeyboardEventOSX(key_event, event_modifiers,
-                                        event_keycode, event_chars,
-                                        event_umodchars, event_isrepeat);
+            event_keycode, event_chars,
+            event_umodchars, event_isrepeat);
     }
 #elif LL_WINDOWS
     U32 msg = ll_U32_from_sd(native_key_data["msg"]);
@@ -1116,8 +1071,8 @@ void MediaPluginCEF::unicodeInput(std::string event, LLSD native_key_data = LLSD
     }
 
     mCEFLib->nativeKeyboardEventOSX(key_event, event_modifiers,
-                                    event_keycode, event_chars,
-                                    event_umodchars, event_isrepeat);
+        event_keycode, event_chars,
+        event_umodchars, event_isrepeat);
 #elif LL_WINDOWS
     event = ""; // not needed here but prevents unused var warning as error
     U32 msg = ll_U32_from_sd(native_key_data["msg"]);
@@ -1131,30 +1086,13 @@ void MediaPluginCEF::unicodeInput(std::string event, LLSD native_key_data = LLSD
 //
 void MediaPluginCEF::checkEditState()
 {
-    bool can_undo = mCEFLib->editCanUndo();
-    bool can_redo = mCEFLib->editCanRedo();
     bool can_cut = mCEFLib->editCanCut();
     bool can_copy = mCEFLib->editCanCopy();
     bool can_paste = mCEFLib->editCanPaste();
-    bool can_delete = mCEFLib->editCanDelete();
-    bool can_select_all = mCEFLib->editCanSelectAll();
 
-    if ((can_undo != mCanUndo) || (can_redo != mCanRedo) || (can_cut != mCanCut) || (can_copy != mCanCopy)
-        || (can_paste != mCanPaste) || (can_delete != mCanDelete) || (can_select_all != mCanSelectAll))
+    if ((can_cut != mCanCut) || (can_copy != mCanCopy) || (can_paste != mCanPaste))
     {
         LLPluginMessage message(LLPLUGIN_MESSAGE_CLASS_MEDIA, "edit_state");
-
-        if (can_undo != mCanUndo)
-        {
-            mCanUndo = can_undo;
-            message.setValueBoolean("undo", can_undo);
-        }
-
-        if (can_redo != mCanRedo)
-        {
-            mCanRedo = can_redo;
-            message.setValueBoolean("redo", can_redo);
-        }
 
         if (can_cut != mCanCut)
         {
@@ -1172,18 +1110,6 @@ void MediaPluginCEF::checkEditState()
         {
             mCanPaste = can_paste;
             message.setValueBoolean("paste", can_paste);
-        }
-
-        if (can_delete != mCanDelete)
-        {
-            mCanDelete = can_delete;
-            message.setValueBoolean("delete", can_delete);
-        }
-
-        if (can_select_all != mCanSelectAll)
-        {
-            mCanSelectAll = can_select_all;
-            message.setValueBoolean("select_all", can_select_all);
         }
 
         sendMessage(message);
@@ -1210,8 +1136,8 @@ bool MediaPluginCEF::init()
 //
 int init_media_plugin(LLPluginInstance::sendMessageFunction host_send_func,
     void* host_user_data,
-    LLPluginInstance::sendMessageFunction *plugin_send_func,
-    void **plugin_user_data)
+    LLPluginInstance::sendMessageFunction* plugin_send_func,
+    void** plugin_user_data)
 {
     MediaPluginCEF* self = new MediaPluginCEF(host_send_func, host_user_data);
     *plugin_send_func = MediaPluginCEF::staticReceiveMessage;

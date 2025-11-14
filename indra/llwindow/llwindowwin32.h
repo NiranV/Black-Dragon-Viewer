@@ -224,6 +224,7 @@ protected:
 	bool		mCustomGammaSet;
 
 	LPWSTR		mIconResource;
+    LPWSTR      mIconSmallResource;
 	bool		mInputProcessingPaused;
 
 	// The following variables are for Language Text Input control.

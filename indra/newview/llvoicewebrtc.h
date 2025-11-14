@@ -60,10 +60,10 @@ typedef std::shared_ptr<LLVoiceWebRTCConnection> connectionPtr_t;
 extern const std::string WEBRTC_VOICE_SERVER_TYPE;
 
 class LLWebRTCVoiceClient : public LLSingleton<LLWebRTCVoiceClient>,
-                            virtual public LLVoiceModuleInterface,
-                            public llwebrtc::LLWebRTCDevicesObserver,
-                            public LLMuteListObserver,
-                            public llwebrtc::LLWebRTCLogCallback
+    virtual public LLVoiceModuleInterface,
+    public llwebrtc::LLWebRTCDevicesObserver,
+    public LLMuteListObserver,
+    public llwebrtc::LLWebRTCLogCallback
 {
     LLSINGLETON(LLWebRTCVoiceClient);
     LOG_CLASS(LLWebRTCVoiceClient);
@@ -74,7 +74,7 @@ public:
     /// @name LLVoiceModuleInterface virtual implementations
     ///  @see LLVoiceModuleInterface
     //@{
-    void init(LLPumpIO *pump) override;    // Call this once at application startup (creates connector)
+    void init(LLPumpIO* pump) override;    // Call this once at application startup (creates connector)
     void terminate() override;    // Call this to clean up during shutdown
 
     static bool isShuttingDown() { return sShuttingDown; }
@@ -86,7 +86,7 @@ public:
     // Returns true if WebRTC has successfully logged in and is not in error state
     bool isVoiceWorking() const override;
 
-    std::string sipURIFromID(const LLUUID &id) const override;
+    std::string sipURIFromID(const LLUUID& id) const override;
     LLSD getP2PChannelInfoTemplate(const LLUUID& id) const override;
 
     void setHidden(bool hidden) override;  // virtual
@@ -129,7 +129,7 @@ public:
     LLVoiceDeviceList& getRenderDevices() override;
     //@}
 
-    void getParticipantList(std::set<LLUUID> &participants) override;
+    void getParticipantList(std::set<LLUUID>& participants) override;
     bool isParticipant(const LLUUID& speaker_id) override;
 
     // Send a text message to the specified user, initiating the session if necessary.
@@ -138,10 +138,10 @@ public:
     // Returns true if calling back the session URI after the session has closed is possible.
     // Currently this will be false only for PSTN P2P calls.
     // NOTE: this will return true if the session can't be found.
-    bool isSessionCallBackPossible(const LLUUID &session_id) override;
+    bool isSessionCallBackPossible(const LLUUID& session_id) override;
 
     // WebRTC doesn't preclude text im
-    bool isSessionTextIMPossible(const LLUUID &session_id) override { return true; }
+    bool isSessionTextIMPossible(const LLUUID& session_id) override { return true; }
 
     ////////////////////////////
     /// @name Channel stuff
@@ -155,7 +155,7 @@ public:
         startAdHocSession(channelInfo, notify_on_first_join, hangup_on_last_leave);
     }
 
-    bool setSpatialChannel(const LLSD &channelInfo) override;
+    bool setSpatialChannel(const LLSD& channelInfo) override;
 
     void leaveNonSpatialChannel() override;
 
@@ -163,13 +163,13 @@ public:
 
     void leaveChannel(bool stopTalking);
 
-    bool isCurrentChannel(const LLSD &channelInfo) override;
-    bool compareChannels(const LLSD &channelInfo1, const LLSD &channelInfo2) override;
+    bool isCurrentChannel(const LLSD& channelInfo) override;
+    bool compareChannels(const LLSD& channelInfo1, const LLSD& channelInfo2) override;
     //@}
 
-    LLVoiceP2POutgoingCallInterface *getOutgoingCallInterface() override { return nullptr; }
+    LLVoiceP2POutgoingCallInterface* getOutgoingCallInterface() override { return nullptr; }
 
-    LLVoiceP2PIncomingCallInterfacePtr getIncomingCallInterface(const LLSD &voice_call_info) override { return nullptr; }
+    LLVoiceP2PIncomingCallInterfacePtr getIncomingCallInterface(const LLSD& voice_call_info) override { return nullptr; }
 
     /////////////////////////
     /// @name Volume/gain
@@ -188,7 +188,7 @@ public:
     //////////////////////////
     /// @name nearby speaker accessors
     std::string getDisplayName(const LLUUID& id) override;
-    bool isParticipantAvatar(const LLUUID &id) override;
+    bool isParticipantAvatar(const LLUUID& id) override;
     bool getIsSpeaking(const LLUUID& id) override;
     bool getIsModeratorMuted(const LLUUID& id) override;
     F32 getCurrentPower(const LLUUID& id) override;        // "power" is related to "amplitude" in a defined way.  I'm just not sure what the formula is...
@@ -200,17 +200,17 @@ public:
     /// @name LLMuteListObserver
     //@{
     void onChange() override;
-    void onChangeDetailed(const LLMute& ) override;
+    void onChangeDetailed(const LLMute&) override;
     //@}
 
     // authorize the user
-    void userAuthorized(const std::string &user_id, const LLUUID &agentID) override;
+    void userAuthorized(const std::string& user_id, const LLUUID& agentID) override {};
 
 
     void OnConnectionEstablished(const std::string& channelID, const LLUUID& regionID);
-    void OnConnectionShutDown(const std::string &channelID, const LLUUID &regionID);
-    void OnConnectionFailure(const std::string &channelID,
-        const LLUUID &regionID,
+    void OnConnectionShutDown(const std::string& channelID, const LLUUID& regionID);
+    void OnConnectionFailure(const std::string& channelID,
+        const LLUUID& regionID,
         LLVoiceClientStatusObserver::EStatusType status_type = LLVoiceClientStatusObserver::ERROR_UNKNOWN);
     void updatePosition(void); // update the internal position state
     void sendPositionUpdate(bool force); // send the position to the voice server.
@@ -231,11 +231,11 @@ public:
     /// @name Devices change notification
     //  LLWebRTCDevicesObserver
     //@{
-    void OnDevicesChanged(const llwebrtc::LLWebRTCVoiceDeviceList &render_devices,
-                          const llwebrtc::LLWebRTCVoiceDeviceList &capture_devices) override;
+    void OnDevicesChanged(const llwebrtc::LLWebRTCVoiceDeviceList& render_devices,
+        const llwebrtc::LLWebRTCVoiceDeviceList& capture_devices) override;
     //@}
-    void OnDevicesChangedImpl(const llwebrtc::LLWebRTCVoiceDeviceList &render_devices,
-                              const llwebrtc::LLWebRTCVoiceDeviceList &capture_devices);
+    void OnDevicesChangedImpl(const llwebrtc::LLWebRTCVoiceDeviceList& render_devices,
+        const llwebrtc::LLWebRTCVoiceDeviceList& capture_devices);
 
     struct participantState
     {
@@ -256,11 +256,11 @@ public:
     };
     typedef std::shared_ptr<participantState> participantStatePtr_t;
 
-    participantStatePtr_t findParticipantByID(const std::string &channelID, const LLUUID &id);
-    participantStatePtr_t addParticipantByID(const std::string& channelID, const LLUUID &id, const LLUUID& region);
-    void removeParticipantByID(const std::string& channelID, const LLUUID &id, const LLUUID& region);
+    participantStatePtr_t findParticipantByID(const std::string& channelID, const LLUUID& id);
+    participantStatePtr_t addParticipantByID(const std::string& channelID, const LLUUID& id, const LLUUID& region);
+    void removeParticipantByID(const std::string& channelID, const LLUUID& id, const LLUUID& region);
 
-  protected:
+protected:
 
     typedef std::map<const LLUUID, participantStatePtr_t> participantUUIDMap;
 
@@ -270,13 +270,13 @@ public:
         typedef std::shared_ptr<sessionState> ptr_t;
         typedef std::weak_ptr<sessionState> wptr_t;
 
-        typedef std::function<void(const ptr_t &)> sessionFunc_t;
+        typedef std::function<void(const ptr_t&)> sessionFunc_t;
 
-        static void addSession(const std::string &channelID, ptr_t& session);
+        static void addSession(const std::string& channelID, ptr_t& session);
         virtual ~sessionState();
 
         participantStatePtr_t addParticipant(const LLUUID& agent_id, const LLUUID& region);
-        void removeParticipant(const participantStatePtr_t &participant);
+        void removeParticipant(const participantStatePtr_t& participant);
         void removeAllParticipants(const LLUUID& region = LLUUID());
 
         participantStatePtr_t findParticipantByID(const LLUUID& id);
@@ -290,7 +290,7 @@ public:
 
         virtual bool processConnectionStates();
 
-        virtual void sendData(const std::string &data);
+        virtual void sendData(const std::string& data);
 
         void setMuteMic(bool muted);
         void setSpeakerVolume(F32 volume);
@@ -306,7 +306,7 @@ public:
         bool isEmpty() { return mWebRTCConnections.empty(); }
 
         virtual bool isSpatial() = 0;
-        virtual bool isEstate()  = 0;
+        virtual bool isEstate() = 0;
         virtual bool isCallbackPossible() = 0;
 
         std::string mHandle;
@@ -320,11 +320,13 @@ public:
 
         participantUUIDMap mParticipantsByUUID;
 
-        static bool hasSession(const std::string &sessionID)
-        { return sSessions.find(sessionID) != sSessions.end(); }
+        static bool hasSession(const std::string& sessionID)
+        {
+            return sSessions.find(sessionID) != sSessions.end();
+        }
 
-       bool mHangupOnLastLeave;  // notify observers after the session becomes empty.
-       bool mNotifyOnFirstJoin;  // notify observers when the first peer joins.
+        bool mHangupOnLastLeave;  // notify observers after the session becomes empty.
+        bool mNotifyOnFirstJoin;  // notify observers when the first peer joins.
 
     protected:
         sessionState();
@@ -335,8 +337,8 @@ public:
         static std::map<std::string, ptr_t> sSessions;  // canonical list of outstanding sessions.
 
         static void for_eachPredicate(const std::pair<std::string,
-                                      LLWebRTCVoiceClient::sessionState::wptr_t> &a,
-                                      sessionFunc_t func);
+            LLWebRTCVoiceClient::sessionState::wptr_t>& a,
+            sessionFunc_t func);
     };
 
     typedef std::shared_ptr<sessionState> sessionStatePtr_t;
@@ -344,21 +346,18 @@ public:
 
     class estateSessionState : public sessionState
     {
-      public:
+    public:
         estateSessionState();
         bool processConnectionStates() override;
 
         bool isSpatial() override { return true; }
         bool isEstate() override { return true; }
         bool isCallbackPossible() override { return false; }
-
-      private:
-        bool isRegionWebRTCEnabled(const LLUUID& regionID);
     };
 
     class parcelSessionState : public sessionState
     {
-      public:
+    public:
         parcelSessionState(const std::string& channelID, S32 parcel_local_id);
 
         bool isSpatial() override { return true; }
@@ -369,7 +368,7 @@ public:
     class adhocSessionState : public sessionState
     {
     public:
-        adhocSessionState(const std::string &channelID,
+        adhocSessionState(const std::string& channelID,
             const std::string& credentials,
             bool notify_on_first_join,
             bool hangup_on_last_leave);
@@ -381,7 +380,7 @@ public:
         bool isCallbackPossible() override { return mNotifyOnFirstJoin && mHangupOnLastLeave; }
 
         // don't send spatial data to adhoc sessions.
-        void sendData(const std::string &data) override { }
+        void sendData(const std::string& data) override { }
 
     protected:
         std::string mCredentials;
@@ -392,13 +391,13 @@ public:
     // Private Member Functions
     //////////////////////////////////////////////////////
 
-    static void predSendData(const LLWebRTCVoiceClient::sessionStatePtr_t &session, const std::string& spatial_data);
-    static void predUpdateOwnVolume(const LLWebRTCVoiceClient::sessionStatePtr_t &session, F32 audio_level);
-    static void predSetMuteMic(const LLWebRTCVoiceClient::sessionStatePtr_t &session, bool mute);
-    static void predSetSpeakerVolume(const LLWebRTCVoiceClient::sessionStatePtr_t &session, F32 volume);
-    static void predShutdownSession(const LLWebRTCVoiceClient::sessionStatePtr_t &session);
-    static void predSetUserMute(const LLWebRTCVoiceClient::sessionStatePtr_t &session, const LLUUID& id, bool mute);
-    static void predSetUserVolume(const LLWebRTCVoiceClient::sessionStatePtr_t &session, const LLUUID& id, F32 volume);
+    static void predSendData(const LLWebRTCVoiceClient::sessionStatePtr_t& session, const std::string& spatial_data);
+    static void predUpdateOwnVolume(const LLWebRTCVoiceClient::sessionStatePtr_t& session, F32 audio_level);
+    static void predSetMuteMic(const LLWebRTCVoiceClient::sessionStatePtr_t& session, bool mute);
+    static void predSetSpeakerVolume(const LLWebRTCVoiceClient::sessionStatePtr_t& session, F32 volume);
+    static void predShutdownSession(const LLWebRTCVoiceClient::sessionStatePtr_t& session);
+    static void predSetUserMute(const LLWebRTCVoiceClient::sessionStatePtr_t& session, const LLUUID& id, bool mute);
+    static void predSetUserVolume(const LLWebRTCVoiceClient::sessionStatePtr_t& session, const LLUUID& id, F32 volume);
 
     //----------------------------------
     // devices
@@ -411,8 +410,8 @@ public:
 
     /////////////////////////////
     // Sending updates of current state
-    void setListenerPosition(const LLVector3d &position, const LLVector3 &velocity, const LLQuaternion &rot);
-    void setAvatarPosition(const LLVector3d &position, const LLVector3 &velocity, const LLQuaternion &rot);
+    void setListenerPosition(const LLVector3d& position, const LLVector3& velocity, const LLQuaternion& rot);
+    void setAvatarPosition(const LLVector3d& position, const LLVector3& velocity, const LLQuaternion& rot);
 
     LLVector3d getListenerPosition() { return mListenerPosition; }
     LLVector3d getSpeakerPosition() { return mAvatarPosition; }
@@ -424,10 +423,10 @@ public:
     // Accessors for data related to nearby speakers
 
     /////////////////////////////
-    sessionStatePtr_t findP2PSession(const LLUUID &agent_id);
+    sessionStatePtr_t findP2PSession(const LLUUID& agent_id);
 
-    sessionStatePtr_t addSession(const std::string &channel_id, sessionState::ptr_t session);
-    void deleteSession(const sessionStatePtr_t &session);
+    sessionStatePtr_t addSession(const std::string& channel_id, sessionState::ptr_t session);
+    void deleteSession(const sessionStatePtr_t& session);
 
     // Does the actual work to get out of the audio session
     void leaveAudioSession();
@@ -435,16 +434,18 @@ public:
     friend class LLWebRTCVoiceClientCapResponder;
 
 
-    void lookupName(const LLUUID &id);
+    void lookupName(const LLUUID& id);
     void onAvatarNameCache(const LLUUID& id, const LLAvatarName& av_name);
-    void avatarNameResolved(const LLUUID &id, const std::string &name);
-    static void predAvatarNameResolution(const LLWebRTCVoiceClient::sessionStatePtr_t &session, LLUUID id, std::string name);
+    void avatarNameResolved(const LLUUID& id, const std::string& name);
+    static void predAvatarNameResolution(const LLWebRTCVoiceClient::sessionStatePtr_t& session, LLUUID id, std::string name);
 
     boost::signals2::connection mAvatarNameCacheConnection;
 
 private:
-    // init or restart the WebRTC device interface.
-    void initWebRTC();
+
+    // helper function to retrieve the audio level
+    // Used in multiple places.
+    float getAudioLevel();
 
     // Coroutine support methods
     //---
@@ -456,10 +457,11 @@ private:
 
     LL::WorkQueue::weak_t mMainQueue;
 
+    bool mTuningMode;
     F32 mTuningMicGain;
     int mTuningSpeakerVolume;
     bool mDevicesListUpdated;            // set to true when the device list has been updated
-                                        // and false when the panelvoicedevicesettings has queried for an update status.
+    // and false when the panelvoicedevicesettings has queried for an update status.
     std::string mSpatialSessionCredentials;
 
     std::string mMainSessionGroupHandle; // handle of the "main" session group.
@@ -468,17 +470,17 @@ private:
 
     sessionStatePtr_t mNextSession;    // Session state for the session we're trying to join
 
-    llwebrtc::LLWebRTCDeviceInterface *mWebRTCDeviceInterface;
+    llwebrtc::LLWebRTCDeviceInterface* mWebRTCDeviceInterface;
 
     LLVoiceDeviceList mCaptureDevices;
     LLVoiceDeviceList mRenderDevices;
 
     bool startEstateSession();
     bool startParcelSession(const std::string& channelID, S32 parcelID);
-    bool startAdHocSession(const LLSD &channelInfo, bool notify_on_first_join, bool hangup_on_last_leave);
+    bool startAdHocSession(const LLSD& channelInfo, bool notify_on_first_join, bool hangup_on_last_leave);
 
     bool inSpatialChannel();
-    bool inOrJoiningChannel(const std::string &channelID);
+    bool inOrJoiningChannel(const std::string& channelID);
     bool inEstateChannel();
 
     LLSD getAudioSessionChannelInfo();
@@ -549,7 +551,7 @@ class LLVoiceWebRTCStats : public LLSingleton<LLVoiceWebRTCStats>
     LOG_CLASS(LLVoiceWebRTCStats);
     virtual ~LLVoiceWebRTCStats();
 
-  private:
+private:
     F64SecondsImplicit mStartTime;
 
     U32 mConnectCycles;
@@ -563,7 +565,7 @@ class LLVoiceWebRTCStats : public LLSingleton<LLVoiceWebRTCStats>
     F64 mEstablishTime;
     U32 mEstablishAttempts;
 
-  public:
+public:
 
     void reset();
     void connectionAttemptStart();
@@ -580,8 +582,8 @@ class LLVoiceWebRTCConnection :
     public llwebrtc::LLWebRTCDataObserver,
     public std::enable_shared_from_this<LLVoiceWebRTCConnection>
 {
-  public:
-    LLVoiceWebRTCConnection(const LLUUID &regionID, const std::string &channelID);
+public:
+    LLVoiceWebRTCConnection(const LLUUID& regionID, const std::string& channelID);
 
     virtual ~LLVoiceWebRTCConnection() = 0;
 
@@ -590,25 +592,25 @@ class LLVoiceWebRTCConnection :
     //  LLWebRTCSignalingObserver
     //@{
     void OnIceGatheringState(EIceGatheringState state) override;
-    void OnIceCandidate(const llwebrtc::LLWebRTCIceCandidate &candidate) override;
-    void OnOfferAvailable(const std::string &sdp) override;
+    void OnIceCandidate(const llwebrtc::LLWebRTCIceCandidate& candidate) override;
+    void OnOfferAvailable(const std::string& sdp) override;
     void OnRenegotiationNeeded() override;
     void OnPeerConnectionClosed() override;
-    void OnAudioEstablished(llwebrtc::LLWebRTCAudioInterface *audio_interface) override;
+    void OnAudioEstablished(llwebrtc::LLWebRTCAudioInterface* audio_interface) override;
     //@}
 
     /////////////////////////
     /// @name Data Notification
     /// LLWebRTCDataObserver
     //@{
-    void OnDataReceived(const std::string &data, bool binary) override;
-    void OnDataChannelReady(llwebrtc::LLWebRTCDataInterface *data_interface) override;
+    void OnDataReceived(const std::string& data, bool binary) override;
+    void OnDataChannelReady(llwebrtc::LLWebRTCDataInterface* data_interface) override;
     //@}
 
-    void OnDataReceivedImpl(const std::string &data, bool binary);
+    void OnDataReceivedImpl(const std::string& data, bool binary);
 
     void sendJoin();
-    void sendData(const std::string &data);
+    void sendData(const std::string& data);
 
     void processIceUpdates();
 
@@ -636,26 +638,26 @@ class LLVoiceWebRTCConnection :
         return mShutDown;
     }
 
-    void OnVoiceConnectionRequestSuccess(const LLSD &body);
+    void OnVoiceConnectionRequestSuccess(const LLSD& body);
 
-  protected:
+protected:
     typedef enum e_voice_connection_state
     {
-        VOICE_STATE_ERROR                  = 0x0,
-        VOICE_STATE_START_SESSION          = 0x1,
+        VOICE_STATE_ERROR = 0x0,
+        VOICE_STATE_START_SESSION = 0x1,
         VOICE_STATE_WAIT_FOR_SESSION_START = 0x2,
-        VOICE_STATE_REQUEST_CONNECTION     = 0x4,
-        VOICE_STATE_CONNECTION_WAIT        = 0x8,
-        VOICE_STATE_SESSION_ESTABLISHED    = 0x10,
-        VOICE_STATE_WAIT_FOR_DATA_CHANNEL  = 0x20,
-        VOICE_STATE_SESSION_UP             = 0x40,
-        VOICE_STATE_SESSION_RETRY          = 0x80,
-        VOICE_STATE_DISCONNECT             = 0x100,
-        VOICE_STATE_WAIT_FOR_EXIT          = 0x200,
-        VOICE_STATE_SESSION_EXIT           = 0x400,
-        VOICE_STATE_WAIT_FOR_CLOSE         = 0x800,
-        VOICE_STATE_CLOSED                 = 0x1000,
-        VOICE_STATE_SESSION_STOPPING       = 0x1F80
+        VOICE_STATE_REQUEST_CONNECTION = 0x4,
+        VOICE_STATE_CONNECTION_WAIT = 0x8,
+        VOICE_STATE_SESSION_ESTABLISHED = 0x10,
+        VOICE_STATE_WAIT_FOR_DATA_CHANNEL = 0x20,
+        VOICE_STATE_SESSION_UP = 0x40,
+        VOICE_STATE_SESSION_RETRY = 0x80,
+        VOICE_STATE_DISCONNECT = 0x100,
+        VOICE_STATE_WAIT_FOR_EXIT = 0x200,
+        VOICE_STATE_SESSION_EXIT = 0x400,
+        VOICE_STATE_WAIT_FOR_CLOSE = 0x800,
+        VOICE_STATE_CLOSED = 0x1000,
+        VOICE_STATE_SESSION_STOPPING = 0x1F80
     } EVoiceConnectionState;
 
     EVoiceConnectionState mVoiceConnectionState;
@@ -705,7 +707,7 @@ class LLVoiceWebRTCConnection :
     S32  mOutstandingRequests;
 
     S32  mRetryWaitPeriod; // number of UPDATE_THROTTLE_SECONDS we've
-                           // waited since our last attempt to connect.
+    // waited since our last attempt to connect.
     F32  mRetryWaitSecs;   // number of seconds to wait before next retry
 
 
@@ -713,17 +715,17 @@ class LLVoiceWebRTCConnection :
     std::vector<llwebrtc::LLWebRTCIceCandidate> mIceCandidates;
     bool                                        mIceCompleted;
 
-    llwebrtc::LLWebRTCPeerConnectionInterface *mWebRTCPeerConnectionInterface;
-    llwebrtc::LLWebRTCAudioInterface *mWebRTCAudioInterface;
-    llwebrtc::LLWebRTCDataInterface  *mWebRTCDataInterface;
+    llwebrtc::LLWebRTCPeerConnectionInterface* mWebRTCPeerConnectionInterface;
+    llwebrtc::LLWebRTCAudioInterface* mWebRTCAudioInterface;
+    llwebrtc::LLWebRTCDataInterface* mWebRTCDataInterface;
 };
 
 
 class LLVoiceWebRTCSpatialConnection :
     public LLVoiceWebRTCConnection
 {
-  public:
-    LLVoiceWebRTCSpatialConnection(const LLUUID &regionID, S32 parcelLocalID, const std::string &channelID);
+public:
+    LLVoiceWebRTCSpatialConnection(const LLUUID& regionID, S32 parcelLocalID, const std::string& channelID);
 
     virtual ~LLVoiceWebRTCSpatialConnection();
 
@@ -741,14 +743,14 @@ protected:
 
 class LLVoiceWebRTCAdHocConnection : public LLVoiceWebRTCConnection
 {
-  public:
-    LLVoiceWebRTCAdHocConnection(const LLUUID &regionID, const std::string &channelID, const std::string& credentials);
+public:
+    LLVoiceWebRTCAdHocConnection(const LLUUID& regionID, const std::string& channelID, const std::string& credentials);
 
     virtual ~LLVoiceWebRTCAdHocConnection();
 
     bool isSpatial() override { return false; }
 
-  protected:
+protected:
     void requestVoiceConnection() override;
 
     std::string mCredentials;
@@ -757,4 +759,3 @@ class LLVoiceWebRTCAdHocConnection : public LLVoiceWebRTCConnection
 #define VOICE_ELAPSED LLVoiceTimer(__FUNCTION__);
 
 #endif //LL_WebRTC_VOICE_CLIENT_H
-

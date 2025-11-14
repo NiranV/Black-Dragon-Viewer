@@ -121,6 +121,8 @@ bool LLViewerCamera::updateCameraLocation(const LLVector3 &center, const LLVecto
         }
     }*/
 
+    LLVector3 origin = center;
+
     LLVector3 at(point_of_interest - origin);
     at.normalize();
     if (at.isNull() || !at.isFinite())

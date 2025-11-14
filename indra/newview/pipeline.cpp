@@ -8183,7 +8183,7 @@ void LLPipeline::renderDoF(LLRenderTarget* src, LLRenderTarget* dst)
                 }
                 else if (gAgentCamera.cameraMouselook())
                 { // focus on point under mouselook crosshairs
-                    LLVector4a result, normal, tangent, start, end, particle_end;
+                    LLVector4a result, normal, tangent, start, end;
                     LLVector2 uv;
                     result.clear();
 

@@ -253,7 +253,7 @@ class ViewerManifest(LLManifest):
         return CHANNEL_VENDOR_BASE + ' ' + app_suffix
 
     def exec_name(self):
-        return "SecondLifeViewer"
+        return "BlackDragonViewer"
 
     def app_name_oneword(self):
         return ''.join(self.app_name().split())
@@ -549,13 +549,6 @@ class Windows_x86_64_Manifest(ViewerManifest):
         with self.prefix(src=os.path.join(self.args['build'], os.pardir,
                                           'sharedlibs', self.args['buildtype'])):
             
-            # Get fmodstudio dll if needed
-            if self.args['fmodstudio'] == 'ON':
-                if(self.args['buildtype'].lower() == 'debug'):
-                    self.path("fmodL.dll")
-                else:
-                    self.path("fmod.dll")
-        
             # WebRTC libraries
             for libfile in (
                     'llwebrtc.dll',
@@ -597,6 +590,14 @@ class Windows_x86_64_Manifest(ViewerManifest):
                 self.path("BsSndRpt64.exe")
                 self.path("BugSplat64.dll")
                 self.path("BugSplatRc64.dll")
+
+            # Get fmodstudio dll if needed
+            with self.prefix(src=os.path.join(pkgdir, 'lib', 'release')):
+                if self.args['fmodstudio'] == 'ON':
+                    if(self.args['buildtype'].lower() == 'debug'):
+                        self.path("fmodL.dll")
+                    else:
+                        self.path("fmod.dll")
 
             if self.args['tracy'] == 'ON':
                 with self.prefix(src=os.path.join(pkgdir, 'bin')):
@@ -1321,9 +1322,9 @@ if __name__ == "__main__":
     # fmodstudio and openal can be used simultaneously and controled by environment
     extra_arguments = [
         dict(name='bugsplat', description="""BugSplat database to which to post crashes,
-             if BugSplat crash reporting is desired""", default=''),
-        dict(name='fmodstudio', description="""Indication if fmod studio libraries are needed""", default='OFF'),
-        dict(name='discord', description="""Indication discord social sdk libraries are needed""", default='OFF'),
+             if BugSplat crash reporting is desired""", default='OFF'),
+        dict(name='fmodstudio', description="""Indication if fmod studio libraries are needed""", default='ON'),
+        dict(name='discord', description="""Indication discord social sdk libraries are needed""", default='ON'),
         dict(name='openal', description="""Indication openal libraries are needed""", default='OFF'),
         dict(name='tracy', description="""Indication tracy profiler is enabled""", default='OFF'),
         ]

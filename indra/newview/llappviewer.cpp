@@ -3532,7 +3532,7 @@ LLSD LLAppViewer::getViewerInfo() const
             url += "/";
         url += LLURI::escape(versionInfo.getVersion()) + ".html";
     }
-	info["VIEWER_RELEASE_NOTES_URL"] = url;*/
+	info["VIEWER_RELEASE_NOTES_URL"] = url;
 
 	// Position
 	LLViewerRegion* region = gAgent.getRegion();
@@ -5704,7 +5704,7 @@ void LLAppViewer::idleNetwork()
     S32 total_decoded = 0;
 
     static const LLCachedControl<bool> speed_test(gSavedSettings, "SpeedTest", false);
-    if (!speed_test())
+    if (!speed_test)
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_NETWORK("idle network"); //LL_RECORD_BLOCK_TIME(FTM_IDLE_NETWORK); // decode
 

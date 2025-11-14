@@ -2383,14 +2383,14 @@ void LLViewerWindow::initWorldUI()
             url = LLWeb::expandURLSubstitutions(url, LLSD());
             destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
         }
-        LLMediaCtrl* avatar_welcome_pack = LLFloaterReg::getInstance("avatar_welcome_pack")->findChild<LLMediaCtrl>("avatar_picker_contents");
+        /*LLMediaCtrl* avatar_welcome_pack = LLFloaterReg::getInstance("avatar_welcome_pack")->findChild<LLMediaCtrl>("avatar_picker_contents");
         if (avatar_welcome_pack)
         {
             avatar_welcome_pack->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
             std::string url = gSavedSettings.getString("AvatarWelcomePack");
             url = LLWeb::expandURLSubstitutions(url, LLSD());
             avatar_welcome_pack->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-        }
+        }*/
         LLMediaCtrl* search = LLFloaterReg::getInstance("search")->findChild<LLMediaCtrl>("search_contents");
         if (search)
         {
@@ -5063,8 +5063,8 @@ bool LLViewerWindow::thumbnailSnapshot(LLImageRaw *raw, S32 preview_width, S32 p
 // Saves the image from the screen to a raw image
 // Since the required size might be bigger than the available screen, this method rerenders the scene in parts (called subimages) and copy
 // the results over to the final raw image.
-bool LLViewerWindow::rawSnapshot(LLImageRaw *raw, S32 image_width, S32 image_height, 
-    bool keep_window_aspect, bool is_texture, bool show_ui, bool show_hud, bool do_rebuild, bool no_post, LLSnapshotModel::ESnapshotLayerType type, S32 max_size)
+bool LLViewerWindow::rawSnapshot(LLImageRaw* raw, S32 image_width, S32 image_height,
+    bool keep_window_aspect, bool is_texture, bool show_ui, bool show_hud, bool do_rebuild, bool no_post, bool show_balance, LLSnapshotModel::ESnapshotLayerType type, S32 max_size)
 {
 	if (!raw)
 	{
@@ -5848,14 +5848,6 @@ void LLViewerWindow::setProgressCancelButtonVisible( bool b, const std::string& 
     if (mProgressView)
     {
         mProgressView->setCancelButtonVisible( b, label );
-    }
-}
-
-void LLViewerWindow::setBalanceVisible(bool visible)
-{
-    if (gStatusBar)
-    {
-        gStatusBar->setBalanceVisible(visible);
     }
 }
 

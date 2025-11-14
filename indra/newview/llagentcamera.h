@@ -184,6 +184,7 @@ private:
     F32             mCameraCurrentFOVZoomFactor;    // Interpolated fov zoom
     LLVector4       mCameraCollidePlane;            // Colliding plane for camera
     F32             mCameraZoomFraction;            // Mousewheel driven fraction of zoom
+    LLVector3       mCameraPositionAgent;           // Camera position in agent coordinates
     LLVector3       mCameraVirtualPositionAgent;    // Camera virtual position (target) before performing FOV zoom
     LLVector3d      mCameraSmoothingLastPositionGlobal;
     LLVector3d      mCameraSmoothingLastPositionAgent;

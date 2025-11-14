@@ -1845,13 +1845,14 @@ if (WINDOWS)
              )
     endif ()
 
-    #if (USE_FMODSTUDIO)
+#if (USE_FMODSTUDIO)
     if (TARGET ll::fmodstudio)
       list(APPEND COPY_INPUT_DEPENDENCIES
            ${SHARED_LIB_STAGING_DIR}/fmod.dll
            ${SHARED_LIB_STAGING_DIR}/fmodL.dll
           )
-    #endif (USE_FMODSTUDIO)
+    endif ()
+#endif (USE_FMODSTUDIO)
 
     if (TARGET ll::openal)
       list(APPEND COPY_INPUT_DEPENDENCIES
@@ -2217,17 +2218,9 @@ if (DARWIN)
     PROPERTIES
     OUTPUT_NAME "${product}"
     # From Contents/MacOS/SecondLife, look in Contents/Frameworks
-<<<<<<< HEAD
-    INSTALL_RPATH "@loader_path/../Frameworks"
-    # SIGH, as of 2018-05-24 (cmake 3.11.1) the INSTALL_RPATH property simply
-    # does not work. Try this:
-    LINK_FLAGS "-rpath @loader_path/../Frameworks"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-BlackDragon.plist"
-=======
     BUILD_WITH_INSTALL_RPATH 1
     INSTALL_RPATH "@executable_path/../Frameworks"
-    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-SecondLife.plist"
->>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-BlackDragon.plist"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
     )
 

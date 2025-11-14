@@ -104,7 +104,7 @@ public:
 	void showSpeakingIndicator(bool show);
 	void setShowPermissions(bool show) { mShowPermissions = show; };
 	void setLastInteractionTime(U32 secs_since);
-	void setShowCompleteName(bool show) { mShowCompleteName = show;};
+    void setShowCompleteName(bool show, bool force = false) { mShowCompleteName = show; mForceCompleteName = force; };
 
 	//BD - Developer tracker
 	void setOnline(bool online, bool is_dev = false);
@@ -208,6 +208,9 @@ private:
     LLTextBox* mAvatarName;
     LLTextBox* mLastInteractionTime;
     LLStyle::Params mAvatarNameStyle;
+    //BD
+    LLTextBox* mExtraInformation;
+    LLIconCtrl* mSelectedIcon;
 
     LLButton* mInfoBtn;
     LLButton* mProfileBtn;
@@ -245,44 +248,6 @@ private:
      */
     static S32 sChildrenWidths[ALIC_COUNT];
 
-	void setNameInternal(const std::string& name, const std::string& highlight);
-	void onAvatarNameCache(const LLAvatarName& av_name);
-
-	std::string formatSeconds(U32 secs);
-
-	typedef std::map<EItemState, LLColor4> icon_color_map_t;
-	static icon_color_map_t& getItemIconColorMap();
-
-	//Update visibility of active permissions icons.
-	bool showPermissions(bool visible);
-
-	LLTextBox* mAvatarName;
-	//BD
-	LLTextBox* mExtraInformation;
-	LLStyle::Params mAvatarNameStyle;
-	
-	LLButton* mInfoBtn;
-
-	LLIconCtrl* mSelectedIcon;
-
-	LLUUID mAvatarId;
-	std::string mHighlihtSubstring; // substring to highlight
-	EOnlineStatus mOnlineStatus;
-	//Flag indicating that info/profile button shouldn't be shown at all.
-	//Speaker indicator and avatar name coords are translated accordingly
-	bool mShowInfoBtn;
-
-	/// indicates whether to show icons representing permissions granted
-	bool mShowPermissions;
-
-	/// true when the mouse pointer is hovering over this item
-	bool mHovered;
-
-	bool mShowCompleteName;
-	std::string mGreyOutUsername;
-
-	void fetchAvatarName();
-	boost::signals2::connection mAvatarNameCacheConnection;
 };
 
 #endif //LL_LLAVATARLISTITEM_H

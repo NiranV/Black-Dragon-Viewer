@@ -1072,8 +1072,8 @@ bool idle_startup()
 
 		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
 
-		// Display the startup progress bar.
-		gViewerWindow->initTextures(agent_location_id);
+		//BD - Display the startup progress bar.
+		//gViewerWindow->initTextures(agent_location_id);
 		gViewerWindow->setShowProgress(true, false);
 		gViewerWindow->setProgressCancelButtonVisible(true, LLTrans::getString("Quit"));
 
@@ -1667,7 +1667,7 @@ bool idle_startup()
 		LLViewerCamera::getInstance()->setViewHeightInPixels(gViewerWindow->getWorldViewHeightRaw());
 		LLViewerCamera::getInstance()->setAspect(gViewerWindow->getWorldViewAspectRatio());
 		// Initialize FOV
-		LLViewerCamera::getInstance()->setDefaultFOV(gSavedSettings.getF32("CameraAngle"), true); 
+		LLViewerCamera::getInstance()->setDefaultFOV(gSavedSettings.getF32("CameraAngle")); 
 
 		set_startup_status(0.35f, 1.0f, LLTrans::getString("SeedGranted"), "Moving Agent");
 		display_startup();
@@ -2650,6 +2650,34 @@ void login_callback(S32 option, void *userdata)
 	{
 		LL_WARNS("AppInit") << "Unknown login button clicked" << LL_ENDL;
 	}
+}
+
+void release_notes_coro(const std::string url)
+{
+    if (url.empty())
+    {
+        return;
+    }
+
+    LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
+        httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("releaseNotesCoro", httpPolicy));
+    LLCore::HttpRequest::ptr_t httpRequest(new LLCore::HttpRequest);
+    LLCore::HttpOptions::ptr_t httpOpts = LLCore::HttpOptions::ptr_t(new LLCore::HttpOptions);
+
+    httpOpts->setHeadersOnly(true); // only making sure it isn't 404 or something like that
+
+    LLSD result = httpAdapter->getAndSuspend(httpRequest, url, httpOpts);
+
+    LLSD httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
+
+    if (!status)
+    {
+        return;
+    }
+
+    LLWeb::loadURLInternal(url);
 }
 
 void validate_release_notes_coro(const std::string url)
