@@ -1978,7 +1978,7 @@ void LLLineEditor::draw()
                 text_color,
                 LLFontGL::LEFT, LLFontGL::BOTTOM,
                 0,
-                LLFontGL::NO_SHADOW,
+                LLFontGL::DROP_SHADOW_SOFT,
                 select_left - mScrollHPos,
                 mTextRightEdge - ll_round(rendered_pixels_right),
                 &rendered_pixels_right);
@@ -2002,7 +2002,7 @@ void LLLineEditor::draw()
                 tmp_color,
                 LLFontGL::LEFT, LLFontGL::BOTTOM,
                 0,
-                LLFontGL::NO_SHADOW,
+                LLFontGL::DROP_SHADOW_SOFT,
                 select_right - mScrollHPos - rendered_text,
                 mTextRightEdge - ll_round(rendered_pixels_right),
                 &rendered_pixels_right);
@@ -2018,7 +2018,7 @@ void LLLineEditor::draw()
                 text_color,
                 LLFontGL::LEFT, LLFontGL::BOTTOM,
                 0,
-                LLFontGL::NO_SHADOW,
+                LLFontGL::DROP_SHADOW_SOFT,
                 S32_MAX,
                 mTextRightEdge - ll_round(rendered_pixels_right),
                 &rendered_pixels_right);
@@ -2033,7 +2033,7 @@ void LLLineEditor::draw()
             text_color,
             LLFontGL::LEFT, LLFontGL::BOTTOM,
             0,
-            LLFontGL::NO_SHADOW,
+            LLFontGL::DROP_SHADOW_SOFT,
             S32_MAX,
             mTextRightEdge - ll_round(rendered_pixels_right),
             &rendered_pixels_right);
@@ -2167,7 +2167,7 @@ void LLLineEditor::draw()
                         tmp_color,
                         LLFontGL::LEFT, LLFontGL::BOTTOM,
                         0,
-                        LLFontGL::NO_SHADOW,
+                        LLFontGL::DROP_SHADOW_SOFT,
                         1);
                 }
 
@@ -2194,7 +2194,7 @@ void LLLineEditor::draw()
                             LLFontGL::LEFT,
                             LLFontGL::BOTTOM,
                             0,
-                            LLFontGL::NO_SHADOW,
+                            LLFontGL::DROP_SHADOW_SOFT,
                             S32_MAX,
                             mTextRightEdge - ll_round(rendered_pixels_right),
                             &rendered_pixels_right, false);
@@ -2220,7 +2220,7 @@ void LLLineEditor::draw()
                             LLFontGL::LEFT,
                             LLFontGL::BOTTOM,
                             0,
-                            LLFontGL::NO_SHADOW,
+                            LLFontGL::DROP_SHADOW_SOFT,
                             S32_MAX,
                             mTextRightEdge - ll_round(rendered_pixels_right),
                             &rendered_pixels_right);
