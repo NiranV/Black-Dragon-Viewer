@@ -13070,7 +13070,6 @@ Do you want to save your changes to [NAME]'s profile?
   </notification>
 
   <notification
-<<<<<<< HEAD
    icon="notify.tga"
    name="RequestPosing"
    log_to_im="true"
@@ -13142,7 +13141,8 @@ Allow them to pose you?
    persist="true"
 	type="notify">
    [NAME_SLURL] has accepted your synchronization attempt, you will now synchronize your pose to them in periodic intervals.
-=======
+</notification>
+   <notification>
    icon="alertmodal.tga"
    name="WaterExclusionSurfacesWarning"
    type="alertmodal">
@@ -13172,6 +13172,5 @@ Allow them to pose you?
           ignoretext="Image Upload Resized"
           name="okignore"
           yestext="OK"/>
->>>>>>> 57a9e51360aebf142bbbdc2663f68ebacfb7d8f5
   </notification>
 </notifications>
