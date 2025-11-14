@@ -44,8 +44,8 @@
 static LLWidgetNameRegistry::StaticRegistrar sRegisterPanelInventoryListItemBaseParams(&typeid(LLPanelInventoryListItemBase::Params), "inventory_list_item");
 
 constexpr S32 WIDGET_SPACING = 3;
-constexpr S32 FAVORITE_IMAGE_SIZE = 14;
-constexpr S32 FAVORITE_IMAGE_PAD = 3;
+constexpr S32 FAVORITE_IMAGE_SIZE = 16;
+constexpr S32 FAVORITE_IMAGE_PAD = 2;
 
 bool get_is_item_favorite(const LLViewerInventoryItem* inv)
 {
