@@ -172,13 +172,13 @@ vec3 toneMap(vec3 color)
         tonemapped_color = toneMapACES_Hill(exposed_color);
         break;
     case 2:
-        color = PBRReinhardToneMapping(color);
+        tonemapped_color = PBRReinhardToneMapping(color);
         break;
     case 3:
-        color = Uncharted2ToneMapping(color);
+        tonemapped_color = Uncharted2ToneMapping(color);
         break;
     case 4:
-        color = FilmicToneMapping(color);
+        tonemapped_color = FilmicToneMapping(color);
         break;
     }
 
