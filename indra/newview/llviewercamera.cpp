@@ -73,14 +73,14 @@ LLViewerCamera::LLViewerCamera() : LLCamera()
     mAverageSpeed = 0.f;
     mAverageAngularSpeed = 0.f;
 
-    //BD - Does not connect and thus breaks all CameraAngle related options.
-    mCameraAngleChangedSignal = gSavedSettings.getControl("CameraAngle")->getCommitSignal()->connect(boost::bind(&LLViewerCamera::updateCameraAngle, this, _2));
-}
-
-LLViewerCamera::~LLViewerCamera()
-{
-    //BD - Does not connect and thus breaks all CameraAngle related options.
-    mCameraAngleChangedSignal.disconnect();
+    LLPointer<LLControlVariable> cntrl_ptr = gSavedSettings.getControl("CameraAngle");
+    if (cntrl_ptr.notNull())
+    {
+        cntrl_ptr->getCommitSignal()->connect([](LLControlVariable* control, const LLSD& value, const LLSD& previous)
+        {
+            LLViewerCamera::getInstance()->setDefaultFOV((F32)value.asReal());
+        });
+    }
 }
 
 bool LLViewerCamera::updateCameraLocation(const LLVector3 &center, const LLVector3 &up_direction, const LLVector3 &point_of_interest)
@@ -96,6 +96,7 @@ bool LLViewerCamera::updateCameraLocation(const LLVector3 &center, const LLVecto
 
     mLastPointOfInterest = point_of_interest;
 
+    //BD - Disable water collision.
     /*LLViewerRegion* regp = LLWorld::instance().getRegionFromPosAgent(getOrigin());
     if (!regp)
     {
@@ -816,18 +817,12 @@ void LLViewerCamera::setViewNoBroadcast(F32 vertical_fov_rads)
     LLCamera::setView(vertical_fov_rads);
 }
 
-void LLViewerCamera::setDefaultFOV(F32 vertical_fov_rads, bool debug)
+void LLViewerCamera::setDefaultFOV(F32 vertical_fov_rads)
 {
-    setAspect(getAspect());
-    LL_INFOS("Camera_Debug") << "1-1 :" << debug << "(" << getAspect() << ")" << LL_ENDL;
     vertical_fov_rads = llclamp(vertical_fov_rads, getMinView(), getMaxView());
-    LL_INFOS("Camera_Debug") << "1-2 (" << vertical_fov_rads << ")" << LL_ENDL;
-    setView(vertical_fov_rads, debug);
-    LL_INFOS("Camera_Debug") << "1-3" << LL_ENDL;
+    setView(vertical_fov_rads);
     mCameraFOVDefault = vertical_fov_rads;
-    LL_INFOS("Camera_Debug") << "1-4" << LL_ENDL;
     mCosHalfCameraFOV = cosf(mCameraFOVDefault * 0.5f);
-    LL_INFOS("Camera_Debug") << "1-5" << LL_ENDL;
 }
 
 bool LLViewerCamera::isDefaultFOVChanged()
@@ -838,10 +833,5 @@ bool LLViewerCamera::isDefaultFOVChanged()
         return !gSavedSettings.getBOOL("IgnoreFOVZoomForLODs");
     }
     return false;
-}
-
-void LLViewerCamera::updateCameraAngle(const LLSD& value)
-{
-    setDefaultFOV((F32)value.asReal(), true);
 }
 
