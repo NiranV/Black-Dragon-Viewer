@@ -24,7 +24,7 @@
   <panel
   layout="topleft"
   follows="left|top|right"
-  height="783"
+  height="799"
   name="camera_scroll_panel"
   top="0"
   mouse_opaque="false"
@@ -683,6 +683,24 @@
    left="10"
    top_pad="0"
    name="MouselookExperimentalHeadScaling"
+   width="256">
+   <check_box.check_button
+     image_overlay="Caution_Widget"
+     image_overlay_alignment="left"/>
+   </check_box>
+   <check_box
+   control_name="BDFirstPersonAim"
+   follows="left|top"
+   height="16"
+   enabled_control="EnableMouselook"
+   label="Allow experimental aiming animations in Mouselook"
+   tool_tip="This option toggles whether the Viewer will rotate the chest to follow your aim in Mouselook, this allows aiming animations in first person to follow your first person look direction and appear more like in shooter games.
+||&lt;icon&gt;Caution_Widget_Mini&lt;/icon&gt; Caution Badge
+|Note that rotating the chest bone will affect your head position which is where your first person camera resides, looking up or down will work slightly different and you might not be able to see your own feet."
+   layout="topleft"
+   left="10"
+   top_pad="0"
+   name="BDFirstPersonAim"
    width="256">
    <check_box.check_button
      image_overlay="Caution_Widget"
