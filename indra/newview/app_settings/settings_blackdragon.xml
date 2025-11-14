@@ -953,7 +953,7 @@
     <key>Value</key>
     <integer>1</integer>
     <key>PresetType</key>
-    <integer>1</integer>
+    <integer>0</integer>
   </map>
   <key>RenderEnableFullbright</key>
   <map>
