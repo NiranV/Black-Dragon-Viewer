@@ -132,6 +132,10 @@ bool    LLPanelVolume::postBuild()
             childSetCommitCallback("light texture control", onCommitLight, this);
         }
 
+        //BD
+        childSetCommitCallback("Shadow Checkbox Ctrl", onCommitShadow, this);
+        mCheckShadow = getChild<LLCheckBoxCtrl>("Shadow Checkbox Ctrl");
+
         childSetCommitCallback("Light Intensity",onCommitLight,this);
         getChild<LLUICtrl>("Light Intensity")->setValidateBeforeCommit(precommitValidate);
         childSetCommitCallback("Light Radius",onCommitLight,this);
@@ -310,6 +314,12 @@ void LLPanelVolume::getState( )
     bool is_light = volobjp && volobjp->getIsLight();
     getChild<LLUICtrl>("Light Checkbox Ctrl")->setValue(is_light);
     getChildView("Light Checkbox Ctrl")->setEnabled(editable && single_volume && volobjp);
+
+    //BD
+    BOOL projector_enabled = is_light && volobjp->getLightTextureID().notNull();
+    BOOL has_shadow = projector_enabled && volobjp->getHasShadow();
+    mCheckShadow->setValue(has_shadow);
+    mCheckShadow->setEnabled(projector_enabled);
 
     if (is_light && editable && single_volume)
     {
@@ -872,6 +882,21 @@ void LLPanelVolume::doSendIsReflectionProbe(const LLSD & notification, const LLS
         // cancelled, touch up UI state
         getChild<LLUICtrl>("Reflection Probe")->setValue(false);
     }
+}
+
+//BD
+void LLPanelVolume::sendHasShadow()
+{
+    LLViewerObject* objectp = mObject;
+    if (!objectp || (objectp->getPCode() != LL_PCODE_VOLUME))
+    {
+        return;
+    }
+    LLVOVolume* volobjp = (LLVOVolume*)objectp;
+
+    bool value = getChild<LLUICtrl>("Shadow Checkbox Ctrl")->getValue();
+    volobjp->setHasShadow(value);
+    LL_INFOS() << "update shadow sent" << LL_ENDL;
 }
 
 void LLPanelVolume::sendIsFlexible()
@@ -1515,6 +1540,31 @@ void LLPanelVolume::onCommitIsLight( LLUICtrl* ctrl, void* userdata )
 {
     LLPanelVolume* self = (LLPanelVolume*) userdata;
     self->sendIsLight();
+}
+
+//BD
+// static
+void LLPanelVolume::onCommitShadow(LLUICtrl* ctrl, void* userdata)
+{
+    LLPanelVolume* self = (LLPanelVolume*)userdata;
+    LLViewerObject* objectp = self->mObject;
+    if (!objectp || (objectp->getPCode() != LL_PCODE_VOLUME))
+    {
+        return;
+    }
+    LLVOVolume* volobjp = (LLVOVolume*)objectp;
+
+    if (volobjp->isLightSpotlight())
+    {
+        if (volobjp->hasSpotLightShadow())
+        {
+            volobjp->setHasShadow(false);
+        }
+        else
+        {
+            volobjp->setHasShadow(true);
+        }
+    }
 }
 
 // static

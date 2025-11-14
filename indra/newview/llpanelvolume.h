@@ -58,6 +58,9 @@ public:
 
     void            sendIsLight();
 
+    //BD
+    void			sendHasShadow();
+
     // when an object is becoming a refleciton probe, present a dialog asking for confirmation
     // otherwise, send the reflection probe update immediately
     void            sendIsReflectionProbe();
@@ -78,6 +81,8 @@ public:
     void            onCommitAnimatedMeshCheckbox(LLUICtrl* ctrl, void* userdata);
     static void     onCommitPhysicsParam(       LLUICtrl* ctrl, void* userdata);
     static void     onCommitMaterial(       LLUICtrl* ctrl, void* userdata);
+    //BD
+    static void 	onCommitShadow(LLUICtrl* ctrl, void* userdata);
 
     void        onLightCancelColor(const LLSD& data);
     void        onLightSelectColor(const LLSD& data);
@@ -127,6 +132,9 @@ protected:
     LLSpinCtrl*     mSpinWind;
     LLSpinCtrl*     mSpinForce[3];
 */
+
+    //BD
+    LLCheckBoxCtrl* mCheckShadow;
 
     S32         mComboMaterialItemCount;
     LLComboBox*     mComboMaterial;
