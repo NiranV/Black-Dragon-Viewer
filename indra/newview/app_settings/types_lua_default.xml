@@ -21,6 +21,20 @@
       </map>
       <map>
         <key>name</key>
+        <string>uuid_like</string>
+        <key>definition</key>
+        <map>
+          <key>kind</key>
+          <string>union</string>
+          <key>types</key>
+          <array>
+            <string>string</string>
+            <string>uuid</string>
+          </array>
+        </map>
+      </map>
+      <map>
+        <key>name</key>
         <string>list</string>
         <key>definition</key>
         <map>
