@@ -1792,7 +1792,17 @@ bool idle_startup()
 			gCacheName->setUpstream(regionp->getHost());
 		}
 		set_startup_status(0.43f, 1.f, LLTrans::getString("AgentSend"), "");
-		display_startup();
+		do_startup_frame();
+
+        // It is entirely possible that we may get the friends list _before_ we have the callbacks registered to process that.
+        // This will lead to the friends list not being processed properly and online statuses not being updated appropriately at login.
+        // So, we need to make sure that we have the callbacks registered before we get the friends list.
+        // This appears to crop up on some systems somewhere between STATE_AGENT_SEND and STATE_INVENTORY_SEND.  It's happened to me a few times now.
+        // -Geenz 2025-03-12
+        LL_INFOS() << " AvatarTracker" << LL_ENDL;
+        set_startup_status(0.44f, 0.5f, LLTrans::getString("AgentSend"), "Registering Avatar Tracker Callbacks");
+        LLAvatarTracker::instance().registerCallbacks(msg);
+        do_startup_frame();
 
 		// Create login effect
 		// But not on first login, because you can't see your avatar then
@@ -2131,11 +2141,7 @@ bool idle_startup()
 		LL_INFOS() << " Inventory" << LL_ENDL;
 		LLInventoryModel::registerCallbacks(msg);
 		set_startup_status(0.66f, 0.33f, LLTrans::getString("InventorySend"), "Registering Inventory Callbacks");
-		display_startup();
-		LL_INFOS() << " AvatarTracker" << LL_ENDL;
-		set_startup_status(0.67f, 0.66f, LLTrans::getString("InventorySend"), "Registering Avatar Tracker Callbacks");
-		LLAvatarTracker::instance().registerCallbacks(msg);
-		display_startup();
+		do_startup_frame();
 		LL_INFOS() << " Landmark" << LL_ENDL;
 		set_startup_status(0.67f, 1.f, LLTrans::getString("InventorySend"), "Registering Landmark Callbacks");
 		LLLandmark::registerCallbacks(msg);
