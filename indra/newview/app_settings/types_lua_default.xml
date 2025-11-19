@@ -261,6 +261,12 @@
                 </map>
                 <map>
                   <key>name</key>
+                  <string>eventName</string>
+                  <key>type</key>
+                  <string>EventName</string>
+                </map>
+                <map>
+                  <key>name</key>
                   <string>handler</string>
                   <key>type</key>
                   <string>EventHandler</string>
