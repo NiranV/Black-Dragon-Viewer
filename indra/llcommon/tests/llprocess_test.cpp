@@ -95,7 +95,7 @@ static std::string readfile(const std::string& pathname, const std::string& desc
     {
         use_desc = "in " + pathname;
     }
-    std::ifstream inf(pathname.c_str());
+    llifstream  inf(pathname.c_str());
     std::string output;
     if (!std::getline(inf, output))
     {
@@ -126,6 +126,8 @@ void waitfor(LLProcess& proc, int timeout=60)
     {
         yield();
     }
+    // Pump once more after the process exits to flush any final events such as EOF.
+    yield(0);
     std::string msg = "process took longer than " + std::to_string(timeout) + " seconds to terminate";
     tut::ensure(msg, i < timeout);
 }
@@ -137,6 +139,8 @@ void waitfor(LLProcess::handle h, const std::string& desc, int timeout=60)
     {
         yield();
     }
+    // Pump once more after the process exits to flush any final events such as EOF.
+    yield(0);
     std::string msg = "process took longer than " + std::to_string(timeout) + " seconds to terminate";
     tut::ensure(msg, i < timeout);
 }
@@ -182,7 +186,7 @@ struct PythonProcessLauncher
             const char* APR_LOG = getenv("APR_LOG");
             if (APR_LOG && *APR_LOG)
             {
-                std::ifstream inf(APR_LOG);
+                llifstream inf(APR_LOG);
                 if (! inf.is_open())
                 {
                     LL_WARNS() << "Couldn't open '" << APR_LOG << "'" << LL_ENDL;
@@ -834,7 +838,7 @@ namespace tut
         // How do we know it's not terminated? By making it respond to
         // a specific stimulus in a specific way.
         {
-            std::ofstream outf(to.getName().c_str());
+            llofstream outf(to.getName().c_str());
             outf << "go";
         } // flush and close.
         // now wait for the script to terminate... one way or another.
@@ -897,7 +901,7 @@ namespace tut
         // How do we know it's not terminated? By making it respond to
         // a specific stimulus in a specific way.
         {
-            std::ofstream outf(to.getName().c_str());
+            llofstream outf(to.getName().c_str());
             outf << "go";
         } // flush and close.
         // now wait for the script to terminate... one way or another.

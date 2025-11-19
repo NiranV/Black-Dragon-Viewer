@@ -260,7 +260,6 @@ bool LLFeatureManager::loadFeatureTables()
     // *TODO - if I or anyone else adds something else to the skipped list
     // make this data driven.  Put it in the feature table and parse it
     // correctly
-    mSkippedFeatures.insert("RenderAnisotropic");
     mSkippedFeatures.insert("RenderGamma");
     mSkippedFeatures.insert("RenderVBOEnable");
     mSkippedFeatures.insert("RenderFogRatio");
@@ -509,17 +508,20 @@ bool LLFeatureManager::loadGPUClass()
             mGPUClass = GPU_CLASS_5;
         }
 
+        LLMemory::updateMemoryInfo();
     #if LL_WINDOWS
         const F32Gigabytes MIN_PHYSICAL_MEMORY(8);
-
-        LLMemory::updateMemoryInfo();
+    #elif LL_LINUX
+        const F32Gigabytes MIN_PHYSICAL_MEMORY(2);
+    #endif
+    #if LL_WINDOWS || LL_LINUX
         F32Gigabytes physical_mem = LLMemory::getMaxMemKB();
         if (MIN_PHYSICAL_MEMORY > physical_mem && mGPUClass > GPU_CLASS_1)
         {
             // reduce quality on systems that don't have enough memory
             mGPUClass = (EGPUClass)(mGPUClass - 1);
         }
-    #endif //LL_WINDOWS
+    #endif //LL_WINDOWS || LL_LINUX
     } //end if benchmark
     else
     {
@@ -754,6 +756,10 @@ void LLFeatureManager::applyBaseMasks()
     if (gGLManager.mVRAM < 2048)
     {
         maskFeatures("VRAMLT2GB");
+    }
+    if (!gGLManager.mHasAnisotropic || 2.f > gGLManager.mMaxAnisotropy)
+    {
+        maskFeatures("AnisotropicMissing");
     }
     if (gGLManager.mGLVersion < 3.99f)
     {

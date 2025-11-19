@@ -122,6 +122,7 @@
 #include "llpanellogin.h"
 #include "llmutelist.h"
 #include "llavatarpropertiesprocessor.h"
+#include "llpaneldirbrowser.h"
 #include "llpanelgrouplandmoney.h"
 #include "llpanelgroupnotices.h"
 #include "llparcel.h"
@@ -182,7 +183,6 @@
 #include "llnamelistctrl.h"
 #include "llnamebox.h"
 #include "llnameeditor.h"
-#include "llpostprocess.h"
 #include "llagentlanguage.h"
 #include "llwearable.h"
 #include "llinventorybridge.h"
@@ -1345,10 +1345,6 @@ bool idle_startup()
         do_startup_frame();
 
         LLDrawable::initClass();
-        do_startup_frame();
-
-        // init the shader managers
-        LLPostProcess::initClass();
         do_startup_frame();
 
         LLAvatarAppearance::initClass("avatar_lad.xml","avatar_skeleton.xml");
@@ -2836,6 +2832,13 @@ void register_viewer_callbacks(LLMessageSystem* msg)
     msg->setHandlerFuncFast(_PREHASH_GroupNoticesListReply,         LLPanelGroupNotices::processGroupNoticesListReply);
 
     msg->setHandlerFuncFast(_PREHASH_AvatarPickerReply,             LLFloaterAvatarPicker::processAvatarPickerReply);
+
+    msg->setHandlerFuncFast(_PREHASH_DirPlacesReply,                LLPanelDirBrowser::processDirPlacesReply);
+    msg->setHandlerFuncFast(_PREHASH_DirPeopleReply,                LLPanelDirBrowser::processDirPeopleReply);
+    msg->setHandlerFuncFast(_PREHASH_DirEventsReply,                LLPanelDirBrowser::processDirEventsReply);
+    msg->setHandlerFuncFast(_PREHASH_DirGroupsReply,                LLPanelDirBrowser::processDirGroupsReply);
+    msg->setHandlerFuncFast(_PREHASH_DirClassifiedReply,            LLPanelDirBrowser::processDirClassifiedReply);
+    msg->setHandlerFuncFast(_PREHASH_DirLandReply,                  LLPanelDirBrowser::processDirLandReply);
 
     msg->setHandlerFuncFast(_PREHASH_MapBlockReply,                 LLWorldMapMessage::processMapBlockReply);
     msg->setHandlerFuncFast(_PREHASH_MapItemReply,                  LLWorldMapMessage::processMapItemReply);

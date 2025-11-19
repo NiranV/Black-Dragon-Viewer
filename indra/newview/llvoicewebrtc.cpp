@@ -699,6 +699,7 @@ void LLWebRTCVoiceClient::setCaptureDevice(const std::string& name)
 {
     if (mWebRTCDeviceInterface)
     {
+        LL_DEBUGS("Voice") << "new capture device is " << name << LL_ENDL;
         mWebRTCDeviceInterface->setCaptureDevice(name);
     }
 }
@@ -727,6 +728,9 @@ void LLWebRTCVoiceClient::OnDevicesChangedImpl(const llwebrtc::LLWebRTCVoiceDevi
         return;
     }
     LL_PROFILE_ZONE_SCOPED_CATEGORY_VOICE;
+
+    LL_DEBUGS("Voice") << "Reiniting " << LL_ENDL;
+
     std::string inputDevice = gSavedSettings.getString("VoiceInputAudioDevice");
     std::string outputDevice = gSavedSettings.getString("VoiceOutputAudioDevice");
 
@@ -789,6 +793,7 @@ void LLWebRTCVoiceClient::setRenderDevice(const std::string& name)
 {
     if (mWebRTCDeviceInterface)
     {
+        LL_DEBUGS("Voice") << "new render device is " << name << LL_ENDL;
         mWebRTCDeviceInterface->setRenderDevice(name);
     }
 }
@@ -2320,7 +2325,7 @@ LLVoiceWebRTCConnection::LLVoiceWebRTCConnection(const LLUUID &regionID, const s
 
     // retries wait a short period...randomize it so
     // all clients don't try to reconnect at once.
-    mRetryWaitSecs = (F32)((F32) rand() / (RAND_MAX)) + 0.5f;
+    mRetryWaitSecs = (F32)((F32) rand() / F32(RAND_MAX)) + 0.5f;
 
     mWebRTCPeerConnectionInterface = llwebrtc::newPeerConnection();
     mWebRTCPeerConnectionInterface->setSignalingObserver(this);
@@ -2926,7 +2931,7 @@ bool LLVoiceWebRTCConnection::connectionStateMachine()
         case VOICE_STATE_SESSION_UP:
         {
             mRetryWaitPeriod = 0;
-            mRetryWaitSecs = (F32)((F32)rand() / (RAND_MAX)) + 0.5f;
+            mRetryWaitSecs = (F32)((F32)rand() / F32(RAND_MAX)) + 0.5f;
 
             // we'll stay here as long as the session remains up.
             if (mShutDown)
@@ -2964,7 +2969,7 @@ bool LLVoiceWebRTCConnection::connectionStateMachine()
                 {
                     // back off the retry period, and do it by a small random
                     // bit so all clients don't reconnect at once.
-                    mRetryWaitSecs += (F32)((F32) rand() / (RAND_MAX)) + 0.5f;
+                    mRetryWaitSecs += (F32)((F32) rand() / F32(RAND_MAX)) + 0.5f;
                     mRetryWaitPeriod = 0;
                 }
             }
