@@ -69,38 +69,6 @@
       </map>
       <map>
         <key>name</key>
-        <string>DetectedEvent</string>
-        <key>definition</key>
-        <map>
-          <key>kind</key>
-          <string>table</string>
-          <key>properties</key>
-          <array>
-            <map>
-              <key>name</key>
-              <string>valid</string>
-              <key>type</key>
-              <string>boolean</string>
-            </map>
-            <map>
-              <key>name</key>
-              <string>index</string>
-              <key>type</key>
-              <string>number</string>
-            </map>
-            <map>
-              <key>name</key>
-              <string>can_change_damage</string>
-              <key>type</key>
-              <string>boolean</string>
-            </map>
-          </array>
-          <key>methods</key>
-          <array />
-        </map>
-      </map>
-      <map>
-        <key>name</key>
         <string>DetectedEventName</string>
         <key>definition</key>
         <map>
@@ -824,6 +792,33 @@
             <string>negate a vector</string>
           </map>
         </array>
+      </map>
+      <map>
+        <key>name</key>
+        <string>DetectedEvent</string>
+        <key>properties</key>
+        <array>
+          <map>
+            <key>name</key>
+            <string>valid</string>
+            <key>type</key>
+            <string>boolean</string>
+          </map>
+          <map>
+            <key>name</key>
+            <string>index</string>
+            <key>type</key>
+            <string>number</string>
+          </map>
+          <map>
+            <key>name</key>
+            <string>can_change_damage</string>
+            <key>type</key>
+            <string>boolean</string>
+          </map>
+        </array>
+        <key>methods</key>
+        <array />
       </map>
     </array>
     <key>globalVariables</key>
