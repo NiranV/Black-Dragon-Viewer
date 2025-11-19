@@ -911,6 +911,35 @@
       </map>
       <map>
         <key>name</key>
+        <string>vector</string>
+        <key>parameters</key>
+        <array>
+          <map>
+            <key>name</key>
+            <string>x</string>
+            <key>type</key>
+            <string>number</string>
+          </map>
+          <map>
+            <key>name</key>
+            <string>y</string>
+            <key>type</key>
+            <string>number</string>
+          </map>
+          <map>
+            <key>name</key>
+            <string>z</string>
+            <key>type</key>
+            <string>number</string>
+          </map>
+        </array>
+        <key>returnType</key>
+        <string>vector</string>
+        <key>comment</key>
+        <string>Creates a vector from x,y,z</string>
+      </map>
+      <map>
+        <key>name</key>
         <string>quaternion</string>
         <key>parameters</key>
         <array>
