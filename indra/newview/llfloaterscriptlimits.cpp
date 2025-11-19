@@ -28,7 +28,7 @@
 #include "llviewerprecompiledheaders.h"
 #include "llfloaterscriptlimits.h"
 
- // library includes
+// library includes
 #include "llavatarnamecache.h"
 #include "llsdutil.h"
 #include "llsdutil_math.h"
@@ -92,7 +92,7 @@ bool LLFloaterScriptLimits::postBuild()
 {
     mTab = getChild<LLTabContainer>("scriptlimits_panels");
 
-    if (!mTab)
+    if(!mTab)
     {
         LL_WARNS() << "Error! couldn't get scriptlimits_panels, aborting Script Information setup" << LL_ENDL;
         return false;
@@ -101,7 +101,7 @@ bool LLFloaterScriptLimits::postBuild()
     // contruct the panel
     LLPanelScriptLimitsRegionMemory* panel_memory = new LLPanelScriptLimitsRegionMemory;
     mInfoPanels.push_back(panel_memory);
-    panel_memory->buildFromFile("panel_script_limits_region_memory.xml");
+    panel_memory->buildFromFile( "panel_script_limits_region_memory.xml");
     mTab->addTabPanel(panel_memory);
     mTab->selectTab(0);
     return true;
@@ -114,7 +114,7 @@ LLFloaterScriptLimits::~LLFloaterScriptLimits()
 // public
 void LLFloaterScriptLimits::refresh()
 {
-    for (info_panels_t::iterator iter = mInfoPanels.begin();
+    for(info_panels_t::iterator iter = mInfoPanels.begin();
         iter != mInfoPanels.end(); ++iter)
     {
         (*iter)->refresh();
@@ -149,7 +149,7 @@ void LLPanelScriptLimitsInfo::updateChild(LLUICtrl* child_ctr)
 
 LLPanelScriptLimitsRegionMemory::~LLPanelScriptLimitsRegionMemory()
 {
-    if (!mParcelId.isNull())
+    if(!mParcelId.isNull())
     {
         LLRemoteParcelInfoProcessor::getInstance()->removeObserver(mParcelId, this);
         mParcelId.setNull();
@@ -317,7 +317,7 @@ void LLPanelScriptLimitsRegionMemory::getLandScriptDetailsCoro(std::string url)
 
 void LLPanelScriptLimitsRegionMemory::processParcelInfo(const LLParcelData& parcel_data)
 {
-    if (!getLandScriptResources())
+    if(!getLandScriptResources())
     {
         std::string msg_error = LLTrans::getString("ScriptLimitsRequestError");
         getChild<LLUICtrl>("loading_text")->setValue(LLSD(msg_error));
@@ -333,7 +333,7 @@ void LLPanelScriptLimitsRegionMemory::setParcelID(const LLUUID& parcel_id)
 {
     if (!parcel_id.isNull())
     {
-        if (!mParcelId.isNull())
+        if(!mParcelId.isNull())
         {
             LLRemoteParcelInfoProcessor::getInstance()->removeObserver(mParcelId, this);
             mParcelId.setNull();
@@ -352,7 +352,7 @@ void LLPanelScriptLimitsRegionMemory::setParcelID(const LLUUID& parcel_id)
 // virtual
 void LLPanelScriptLimitsRegionMemory::setErrorStatus(S32 status, const std::string& reason)
 {
-    LL_WARNS() << "Can't handle remote parcel request." << " Http Status: " << status << ". Reason : " << reason << LL_ENDL;
+    LL_WARNS() << "Can't handle remote parcel request."<< " Http Status: "<< status << ". Reason : "<< reason<<LL_ENDL;
 }
 
 // callback from the name cache with an owner name to add to the list
@@ -365,11 +365,11 @@ void LLPanelScriptLimitsRegionMemory::onAvatarNameCache(
 
 // callback from the name cache with an owner name to add to the list
 void LLPanelScriptLimitsRegionMemory::onNameCache(
-    const LLUUID& id,
-    const std::string& full_name)
+                         const LLUUID& id,
+                         const std::string& full_name)
 {
-    LLScrollListCtrl* list = getChild<LLScrollListCtrl>("scripts_list");
-    if (!list)
+    LLScrollListCtrl *list = getChild<LLScrollListCtrl>("scripts_list");
+    if(!list)
     {
         return;
     }
@@ -380,11 +380,11 @@ void LLPanelScriptLimitsRegionMemory::onNameCache(
     for (id_itor = mObjectListItems.begin(); id_itor != mObjectListItems.end(); ++id_itor)
     {
         LLSD element = *id_itor;
-        if (element["owner_id"].asUUID() == id)
+        if(element["owner_id"].asUUID() == id)
         {
             LLScrollListItem* item = list->getItem(element["id"].asUUID());
 
-            if (item)
+            if(item)
             {
                 item->getColumn(3)->setValue(LLSD(name));
                 element["columns"][3]["value"] = name;
@@ -395,9 +395,9 @@ void LLPanelScriptLimitsRegionMemory::onNameCache(
 
 void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
 {
-    LLScrollListCtrl* list = getChild<LLScrollListCtrl>("scripts_list");
+    LLScrollListCtrl *list = getChild<LLScrollListCtrl>("scripts_list");
 
-    if (!list)
+    if(!list)
     {
         LL_WARNS() << "Error getting the scripts_list control" << LL_ENDL;
         return;
@@ -406,7 +406,7 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
     auto number_parcels = content["parcels"].size();
 
     LLStringUtil::format_map_t args_parcels;
-    args_parcels["[PARCELS]"] = llformat("%d", number_parcels);
+    args_parcels["[PARCELS]"] = llformat ("%d", number_parcels);
     std::string msg_parcels = LLTrans::getString("ScriptLimitsParcelsOwned", args_parcels);
     getChild<LLUICtrl>("parcels_listed")->setValue(LLSD(msg_parcels));
 
@@ -418,20 +418,20 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
     bool has_locations = false;
     bool has_local_ids = false;
 
-    for (size_t i = 0; i < number_parcels; i++)
+    for(size_t i = 0; i < number_parcels; i++)
     {
         std::string parcel_name = content["parcels"][i]["name"].asString();
         auto number_objects = content["parcels"][i]["objects"].size();
 
         S32 local_id = 0;
-        if (content["parcels"][i].has("local_id"))
+        if(content["parcels"][i].has("local_id"))
         {
             // if any locations are found flag that we can use them and turn on the highlight button
             has_local_ids = true;
             local_id = content["parcels"][i]["local_id"].asInteger();
         }
 
-        for (size_t j = 0; j < number_objects; j++)
+        for(size_t j = 0; j < number_objects; j++)
         {
             S32 size = content["parcels"][i]["objects"][j]["resources"]["memory"].asInteger() / SIZE_OF_ONE_KB;
 
@@ -448,7 +448,7 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
             F32 location_y = 0.0f;
             F32 location_z = 0.0f;
 
-            if (content["parcels"][i]["objects"][j].has("location"))
+            if(content["parcels"][i]["objects"][j].has("location"))
             {
                 // if any locations are found flag that we can use them and turn on the highlight button
                 LLVector3 vec = ll_vector3_from_sd(content["parcels"][i]["objects"][j]["location"]);
@@ -461,7 +461,7 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
             std::string owner_buf;
 
             // in the future the server will give us owner names, so see if we're there yet:
-            if (content["parcels"][i]["objects"][j].has("owner_name"))
+            if(content["parcels"][i]["objects"][j].has("owner_name"))
             {
                 owner_buf = content["parcels"][i]["objects"][j]["owner_name"].asString();
             }
@@ -480,9 +480,9 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
                     owner_buf = av_name.getUserName();
                     owner_buf = LLCacheName::buildUsername(owner_buf);
                 }
-                if (!name_is_cached)
+                if(!name_is_cached)
                 {
-                    if (std::find(names_requested.begin(), names_requested.end(), owner_id) == names_requested.end())
+                    if(std::find(names_requested.begin(), names_requested.end(), owner_id) == names_requested.end())
                     {
                         names_requested.push_back(owner_id);
                         if (is_group_owned)
@@ -551,7 +551,7 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
     if (has_locations)
     {
         LLButton* btn = getChild<LLButton>("highlight_btn");
-        if (btn)
+        if(btn)
         {
             btn->setVisible(true);
         }
@@ -560,7 +560,7 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
     if (has_local_ids)
     {
         LLButton* btn = getChild<LLButton>("return_btn");
-        if (btn)
+        if(btn)
         {
             btn->setVisible(true);
         }
@@ -572,13 +572,13 @@ void LLPanelScriptLimitsRegionMemory::setRegionDetails(LLSD content)
 
 void LLPanelScriptLimitsRegionMemory::setRegionSummary(LLSD content)
 {
-    if (content["summary"]["used"][0]["type"].asString() == std::string("memory"))
+    if(content["summary"]["used"][0]["type"].asString() == std::string("memory"))
     {
         mParcelMemoryUsed = content["summary"]["used"][0]["amount"].asInteger() / SIZE_OF_ONE_KB;
         mParcelMemoryMax = content["summary"]["available"][0]["amount"].asInteger() / SIZE_OF_ONE_KB;
         mGotParcelMemoryUsed = true;
     }
-    else if (content["summary"]["used"][1]["type"].asString() == std::string("memory"))
+    else if(content["summary"]["used"][1]["type"].asString() == std::string("memory"))
     {
         mParcelMemoryUsed = content["summary"]["used"][1]["amount"].asInteger() / SIZE_OF_ONE_KB;
         mParcelMemoryMax = content["summary"]["available"][1]["amount"].asInteger() / SIZE_OF_ONE_KB;
@@ -590,13 +590,13 @@ void LLPanelScriptLimitsRegionMemory::setRegionSummary(LLSD content)
         return;
     }
 
-    if (content["summary"]["used"][0]["type"].asString() == std::string("urls"))
+    if(content["summary"]["used"][0]["type"].asString() == std::string("urls"))
     {
         mParcelURLsUsed = content["summary"]["used"][0]["amount"].asInteger();
         mParcelURLsMax = content["summary"]["available"][0]["amount"].asInteger();
         mGotParcelURLsUsed = true;
     }
-    else if (content["summary"]["used"][1]["type"].asString() == std::string("urls"))
+    else if(content["summary"]["used"][1]["type"].asString() == std::string("urls"))
     {
         mParcelURLsUsed = content["summary"]["used"][1]["amount"].asInteger();
         mParcelURLsMax = content["summary"]["available"][1]["amount"].asInteger();
@@ -608,18 +608,18 @@ void LLPanelScriptLimitsRegionMemory::setRegionSummary(LLSD content)
         return;
     }
 
-    if ((mParcelMemoryUsed >= 0) && (mParcelMemoryMax >= 0))
+    if((mParcelMemoryUsed >= 0) && (mParcelMemoryMax >= 0))
     {
         LLStringUtil::format_map_t args_parcel_memory;
-        args_parcel_memory["[COUNT]"] = llformat("%d", mParcelMemoryUsed);
+        args_parcel_memory["[COUNT]"] = llformat ("%d", mParcelMemoryUsed);
         std::string translate_message = "ScriptLimitsMemoryUsedSimple";
 
         if (0 < mParcelMemoryMax)
         {
             S32 parcel_memory_available = mParcelMemoryMax - mParcelMemoryUsed;
 
-            args_parcel_memory["[MAX]"] = llformat("%d", mParcelMemoryMax);
-            args_parcel_memory["[AVAILABLE]"] = llformat("%d", parcel_memory_available);
+            args_parcel_memory["[MAX]"] = llformat ("%d", mParcelMemoryMax);
+            args_parcel_memory["[AVAILABLE]"] = llformat ("%d", parcel_memory_available);
             translate_message = "ScriptLimitsMemoryUsed";
         }
 
@@ -627,14 +627,14 @@ void LLPanelScriptLimitsRegionMemory::setRegionSummary(LLSD content)
         getChild<LLUICtrl>("memory_used")->setValue(LLSD(msg_parcel_memory));
     }
 
-    if ((mParcelURLsUsed >= 0) && (mParcelURLsMax >= 0))
+    if((mParcelURLsUsed >= 0) && (mParcelURLsMax >= 0))
     {
         S32 parcel_urls_available = mParcelURLsMax - mParcelURLsUsed;
 
         LLStringUtil::format_map_t args_parcel_urls;
-        args_parcel_urls["[COUNT]"] = llformat("%d", mParcelURLsUsed);
-        args_parcel_urls["[MAX]"] = llformat("%d", mParcelURLsMax);
-        args_parcel_urls["[AVAILABLE]"] = llformat("%d", parcel_urls_available);
+        args_parcel_urls["[COUNT]"] = llformat ("%d", mParcelURLsUsed);
+        args_parcel_urls["[MAX]"] = llformat ("%d", mParcelURLsMax);
+        args_parcel_urls["[AVAILABLE]"] = llformat ("%d", parcel_urls_available);
         std::string msg_parcel_urls = LLTrans::getString("ScriptLimitsURLsUsed", args_parcel_urls);
         getChild<LLUICtrl>("urls_used")->setValue(LLSD(msg_parcel_urls));
     }
@@ -649,8 +649,8 @@ bool LLPanelScriptLimitsRegionMemory::postBuild()
     std::string msg_waiting = LLTrans::getString("ScriptLimitsRequestWaiting");
     getChild<LLUICtrl>("loading_text")->setValue(LLSD(msg_waiting));
 
-    LLScrollListCtrl* list = getChild<LLScrollListCtrl>("scripts_list");
-    if (!list)
+    LLScrollListCtrl *list = getChild<LLScrollListCtrl>("scripts_list");
+    if(!list)
     {
         return false;
     }
@@ -658,7 +658,7 @@ bool LLPanelScriptLimitsRegionMemory::postBuild()
     checkButtonsEnabled();
 
     //set all columns to resizable mode even if some columns will be empty
-    for (S32 column = 0; column < list->getNumColumns(); column++)
+    for(S32 column = 0; column < list->getNumColumns(); column++)
     {
         LLScrollListColumn* columnp = list->getColumn(column);
         columnp->mHeader->setHasResizableElement(true);
@@ -672,7 +672,7 @@ bool LLPanelScriptLimitsRegionMemory::StartRequestChain()
     LLUUID region_id;
 
     LLFloaterLand* instance = LLFloaterReg::getTypedInstance<LLFloaterLand>("about_land");
-    if (!instance)
+    if(!instance)
     {
         getChild<LLUICtrl>("loading_text")->setValue(LLSD(std::string("")));
         //might have to do parent post build here
@@ -689,7 +689,7 @@ bool LLPanelScriptLimitsRegionMemory::StartRequestChain()
 
         region_id = region->getRegionID();
 
-        if (region_id != current_region_id)
+        if(region_id != current_region_id)
         {
             std::string msg_wrong_region = LLTrans::getString("ScriptLimitsRequestWrongRegion");
             getChild<LLUICtrl>("loading_text")->setValue(LLSD(msg_wrong_region));
@@ -708,8 +708,8 @@ bool LLPanelScriptLimitsRegionMemory::StartRequestChain()
         else
         {
             LL_WARNS() << "Can't get parcel info for script information request" << region_id
-                << ". Region: " << region->getName()
-                << " does not support RemoteParcelRequest" << LL_ENDL;
+                    << ". Region: " << region->getName()
+                    << " does not support RemoteParcelRequest" << LL_ENDL;
 
             std::string msg_waiting = LLTrans::getString("ScriptLimitsRequestError");
             getChild<LLUICtrl>("loading_text")->setValue(LLSD(msg_waiting));
@@ -726,7 +726,7 @@ bool LLPanelScriptLimitsRegionMemory::StartRequestChain()
 
 void LLPanelScriptLimitsRegionMemory::clearList()
 {
-    LLCtrlListInterface* list = childGetListInterface("scripts_list");
+    LLCtrlListInterface *list = childGetListInterface("scripts_list");
 
     if (list)
     {
@@ -759,18 +759,18 @@ void LLPanelScriptLimitsRegionMemory::checkButtonsEnabled()
 void LLPanelScriptLimitsRegionMemory::onClickRefresh(void* userdata)
 {
     LLFloaterScriptLimits* instance = LLFloaterReg::getTypedInstance<LLFloaterScriptLimits>("script_limits");
-    if (instance)
+    if(instance)
     {
         LLTabContainer* tab = instance->getChild<LLTabContainer>("scriptlimits_panels");
-        if (tab)
+        if(tab)
         {
             LLPanelScriptLimitsRegionMemory* panel_memory = (LLPanelScriptLimitsRegionMemory*)tab->getChild<LLPanel>("script_limits_region_memory_panel");
-            if (panel_memory)
+            if(panel_memory)
             {
                 //To stop people from hammering the refesh button and accidentally dosing themselves - enough requests can crash the viewer!
                 //turn the button off, then turn it on when we get a response
                 LLButton* btn = panel_memory->getChild<LLButton>("refresh_list_btn");
-                if (btn)
+                if(btn)
                 {
                     btn->setEnabled(false);
                 }
@@ -797,7 +797,7 @@ void LLPanelScriptLimitsRegionMemory::showBeacon()
     if (!first_selected) return;
 
     std::string name = first_selected->getColumn(2)->getValue().asString();
-    std::string pos_string = first_selected->getColumn(5)->getValue().asString();
+    std::string pos_string =  first_selected->getColumn(5)->getValue().asString();
 
     F32 x, y, z;
     S32 matched = sscanf(pos_string.c_str(), "<%g,%g,%g>", &x, &y, &z);
@@ -814,13 +814,13 @@ void LLPanelScriptLimitsRegionMemory::showBeacon()
 void LLPanelScriptLimitsRegionMemory::onClickHighlight(void* userdata)
 {
     LLFloaterScriptLimits* instance = LLFloaterReg::getTypedInstance<LLFloaterScriptLimits>("script_limits");
-    if (instance)
+    if(instance)
     {
         LLTabContainer* tab = instance->getChild<LLTabContainer>("scriptlimits_panels");
-        if (tab)
+        if(tab)
         {
             LLPanelScriptLimitsRegionMemory* panel = (LLPanelScriptLimitsRegionMemory*)tab->getChild<LLPanel>("script_limits_region_memory_panel");
-            if (panel)
+            if(panel)
             {
                 panel->showBeacon();
             }
@@ -836,12 +836,12 @@ void LLPanelScriptLimitsRegionMemory::onClickHighlight(void* userdata)
 
 void LLPanelScriptLimitsRegionMemory::returnObjectsFromParcel(S32 local_id)
 {
-    LLMessageSystem* msg = gMessageSystem;
+    LLMessageSystem *msg = gMessageSystem;
 
     LLViewerRegion* region = gAgent.getRegion();
     if (!region) return;
 
-    LLCtrlListInterface* list = childGetListInterface("scripts_list");
+    LLCtrlListInterface *list = childGetListInterface("scripts_list");
     if (!list || list->getItemCount() == 0) return;
 
     std::vector<LLSD>::iterator id_itor;
@@ -857,7 +857,7 @@ void LLPanelScriptLimitsRegionMemory::returnObjectsFromParcel(S32 local_id)
             continue;
         }
 
-        if (element["local_id"].asInteger() != local_id)
+        if(element["local_id"].asInteger() != local_id)
         {
             // Not the parcel we are looking for
             continue;
@@ -867,8 +867,8 @@ void LLPanelScriptLimitsRegionMemory::returnObjectsFromParcel(S32 local_id)
         {
             msg->newMessageFast(_PREHASH_ParcelReturnObjects);
             msg->nextBlockFast(_PREHASH_AgentData);
-            msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-            msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+            msg->addUUIDFast(_PREHASH_AgentID,  gAgent.getID());
+            msg->addUUIDFast(_PREHASH_SessionID,gAgent.getSessionID());
             msg->nextBlockFast(_PREHASH_ParcelData);
             msg->addS32Fast(_PREHASH_LocalID, element["local_id"].asInteger());
             msg->addU32Fast(_PREHASH_ReturnType, RT_LIST);
@@ -893,7 +893,7 @@ void LLPanelScriptLimitsRegionMemory::returnObjectsFromParcel(S32 local_id)
 
 void LLPanelScriptLimitsRegionMemory::returnObjects()
 {
-    if (!mContent.has("parcels"))
+    if(!mContent.has("parcels"))
     {
         return;
     }
@@ -901,10 +901,10 @@ void LLPanelScriptLimitsRegionMemory::returnObjects()
     auto number_parcels = mContent["parcels"].size();
 
     // a message per parcel containing all objects to be returned from that parcel
-    for (size_t i = 0; i < number_parcels; i++)
+    for(size_t i = 0; i < number_parcels; i++)
     {
         S32 local_id = 0;
-        if (mContent["parcels"][i].has("local_id"))
+        if(mContent["parcels"][i].has("local_id"))
         {
             local_id = mContent["parcels"][i]["local_id"].asInteger();
             returnObjectsFromParcel(local_id);
@@ -919,13 +919,13 @@ void LLPanelScriptLimitsRegionMemory::returnObjects()
 void LLPanelScriptLimitsRegionMemory::onClickReturn(void* userdata)
 {
     LLFloaterScriptLimits* instance = LLFloaterReg::getTypedInstance<LLFloaterScriptLimits>("script_limits");
-    if (instance)
+    if(instance)
     {
         LLTabContainer* tab = instance->getChild<LLTabContainer>("scriptlimits_panels");
-        if (tab)
+        if(tab)
         {
             LLPanelScriptLimitsRegionMemory* panel = (LLPanelScriptLimitsRegionMemory*)tab->getChild<LLPanel>("script_limits_region_memory_panel");
-            if (panel)
+            if(panel)
             {
                 panel->returnObjects();
             }
@@ -938,3 +938,4 @@ void LLPanelScriptLimitsRegionMemory::onClickReturn(void* userdata)
         return;
     }
 }
+

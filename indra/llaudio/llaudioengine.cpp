@@ -1380,12 +1380,12 @@ bool LLAudioSource::setupChannel()
 
 void LLAudioSource::stop()
 {
-	play(LLUUID::null);
-	if (mCurrentDatap)
-	{
-		// always reset data if something wants us to stop
-		mCurrentDatap = nullptr;
-	}
+    play(LLUUID::null);
+    if (mCurrentDatap)
+    {
+        // always reset data if something wants us to stop
+        mCurrentDatap = nullptr;
+    }
 }
 
 bool LLAudioSource::play(const LLUUID &audio_uuid)

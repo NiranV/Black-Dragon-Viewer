@@ -724,8 +724,17 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                                 region_message = true;
                             }
                         }
-                        gIMMgr->addMessage(
-                            session_id,
+
+                    std::string real_name;
+
+                    if (!notice_name.empty())
+                    {   // The simulator has injected some sort of notice into the conversation.
+                        // findString will only replace the contents of buffer if the notice_id is found.
+                        LLTrans::findString(buffer, notice_name, notice_args);
+                        real_name = SYSTEM_FROM;
+                    }
+
+                    gIMMgr->addMessage(session_id,
                             from_id,
                             name,
                             buffer,
@@ -736,7 +745,9 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                             region_id,
                             position,
                             region_message,
-                            timestamp);
+                        timestamp,
+                        LLUUID::null,
+                        real_name);
                     }
                     else
                     {

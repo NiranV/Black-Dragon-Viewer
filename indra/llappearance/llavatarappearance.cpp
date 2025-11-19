@@ -892,6 +892,8 @@ void LLAvatarAppearance::buildCharacter()
     // SL-315
     mPelvisp->setPosition( LLVector3(0.0f, 0.0f, 0.0f) );
 
+    mIsBuilt = true;
+    stop_glerror();
 
 }
 

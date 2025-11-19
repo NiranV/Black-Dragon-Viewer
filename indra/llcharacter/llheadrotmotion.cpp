@@ -378,7 +378,7 @@ bool LLEyeMotion::onActivate()
 void LLEyeMotion::adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_state, LLJointState& right_eye_state)
 {
     // Compute eye rotation.
-    BOOL has_eye_target = false;
+    bool has_eye_target = false;
     LLQuaternion	target_eye_rot;
     LLVector3		eye_look_at;
     F32				vergence;
@@ -464,6 +464,7 @@ void LLEyeMotion::adjustEyeTarget(LLVector3* targetPos, LLJointState& left_eye_s
 //-----------------------------------------------------------------------------
 bool LLEyeMotion::onUpdate(F32 time, U8* joint_mask)
 {
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
     //calculate jitter
     if (mEyeJitterTimer.getElapsedTimeF32() > mEyeJitterTime)
     {
@@ -576,3 +577,4 @@ void LLEyeMotion::onDeactivate()
 }
 
 // End
+

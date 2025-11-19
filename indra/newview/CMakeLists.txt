@@ -1382,7 +1382,6 @@ set(viewer_HEADER_FILES
     llviewerinput.h
     llviewerlayer.h
     llviewermedia.h
-    llviewermedia_streamingaudio.h
     llviewermediafocus.h
     llviewermediaobserver.h
     llviewermenu.h

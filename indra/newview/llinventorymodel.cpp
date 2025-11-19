@@ -2694,6 +2694,7 @@ bool LLInventoryModel::loadSkeleton(
     LL_PROFILE_ZONE_SCOPED;
 	LL_DEBUGS(LOG_INV) << "importing inventory skeleton for " << owner_id << LL_ENDL;
 
+    LLTimer timer;
 	typedef std::set<LLPointer<LLViewerInventoryCategory>, InventoryIDPtrLess> cat_set_t;
 	cat_set_t temp_cats;
 	bool rv = true;
@@ -2805,6 +2806,7 @@ bool LLInventoryModel::loadSkeleton(
 		bool is_cache_obsolete = false;
 		if (loadFromFile(inventory_filename, categories, items, categories_to_update, is_cache_obsolete))
 		{
+            LL_PROFILE_ZONE_NAMED("loadFromFile");
 			// We were able to find a cache of files. So, use what we
 			// found to generate a set of categories we should add. We
 			// will go through each category loaded and if the version
@@ -3137,7 +3139,8 @@ bool LLInventoryModel::loadSkeleton(
 	}
 
 	LL_INFOS(LOG_INV) << "Successfully loaded " << cached_category_count
-					  << " categories and " << cached_item_count << " items from cache."
+                      << " categories and " << cached_item_count << " items from cache"
+                      << " after " << timer.getElapsedTimeF32() << " seconds."
 					  << LL_ENDL;
 
 	return rv;

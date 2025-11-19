@@ -173,7 +173,8 @@ elseif(DARWIN)
         libvivoxsdk.dylib
        )
     set(debug_src_dir "${ARCH_PREBUILT_DIRS_DEBUG}")
-    set(debug_files)
+    set(debug_files
+       )
     set(release_src_dir "${ARCH_PREBUILT_DIRS_RELEASE}")
     set(release_files
         libndofdev.dylib

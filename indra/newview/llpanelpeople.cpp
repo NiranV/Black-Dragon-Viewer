@@ -437,7 +437,7 @@ private:
 		}
 		/*virtual*/ void changed(U32 mask)
 		{
-			// _LL_DEBUGS() << "Inventory changed: " << mask << LL_ENDL;
+            LL_DEBUGS() << "Inventory changed: " << mask << LL_ENDL;
 
 			static bool synchronize_friends_folders = true;
 			if (synchronize_friends_folders)
@@ -453,9 +453,9 @@ private:
 			// That means LLInventoryObserver::STRUCTURE is present in MASK instead of LLInventoryObserver::REMOVE
 			if ((CALLINGCARD_ADDED & mask) == CALLINGCARD_ADDED)
 			{
-				/*// _LL_DEBUGS() << "Calling card added: count: " << gInventory.getChangedIDs().size() 
+                LL_DEBUGS() << "Calling card added: count: " << gInventory.getChangedIDs().size()
 					<< ", first Inventory ID: "<< (*gInventory.getChangedIDs().begin())
-					<< LL_ENDL;*/
+                    << LL_ENDL;
 
 				bool friendFound = false;
 				std::set<LLUUID> changedIDs = gInventory.getChangedIDs();
@@ -470,7 +470,7 @@ private:
 
 				if (friendFound)
 				{
-					// _LL_DEBUGS() << "friend found, panel should be updated" << LL_ENDL;
+                    LL_DEBUGS() << "friend found, panel should be updated" << LL_ENDL;
 					mUpdater->changed(LLFriendObserver::ADD);
 				}
 			}
@@ -1263,6 +1263,7 @@ bool LLPanelPeople::onGroupPlusButtonValidate()
 {
 	if (!gAgent.canJoinGroups())
 	{
+        LLNotificationsUtil::add("JoinedTooManyGroups");
 		return false;
 	}
 
@@ -1279,12 +1280,6 @@ void LLPanelPeople::onGroupMinusButtonClicked()
 void LLPanelPeople::onGroupPlusMenuItemClicked(const LLSD& userdata)
 {
     std::string chosen_item = userdata.asString();
-
-	if (!gAgent.canJoinGroups())
-	{
-		LLNotificationsUtil::add("JoinedTooManyGroups");
-		return;
-	}
 
 	if (chosen_item == "join_group")
 		LLGroupActions::search();

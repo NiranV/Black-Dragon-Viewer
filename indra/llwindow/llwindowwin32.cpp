@@ -1216,7 +1216,7 @@ bool LLWindowWin32::setSizeImpl(const LLCoordWindow size)
     DWORD dw_ex_style = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
     DWORD dw_style = WS_OVERLAPPEDWINDOW;
 
-    AdjustWindowRectEx(&window_rect, dw_style, false, dw_ex_style);
+    AdjustWindowRectEx(&window_rect, dw_style, FALSE, dw_ex_style);
 
     return setSizeImpl(LLCoordScreen(window_rect.right - window_rect.left, window_rect.bottom - window_rect.top));
 }
@@ -1334,7 +1334,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
 
             // Move window borders out not to cover window contents.
             // This converts client rect to window rect, i.e. expands it by the window border size.
-            AdjustWindowRectEx(&window_rect, dw_style, false, dw_ex_style);
+            AdjustWindowRectEx(&window_rect, dw_style, FALSE, dw_ex_style);
         }
         // If it failed, we don't want to run fullscreen
         else
@@ -1554,7 +1554,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
         U32 num_formats = 0;
 
         // First we try and get a 32 bit depth pixel format
-        bool result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
+        BOOL result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
 
         while(!result && mFSAASamples > 0)
         {
@@ -1600,7 +1600,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
                 LL_INFOS("Window") << "No valid pixel format for " << mFSAASamples << "x anti-aliasing." << LL_ENDL;
                 attrib_list[end_attrib] = 0;
 
-                bool result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
+                BOOL result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
                 if (!result)
                 {
                     close();
@@ -1614,7 +1614,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
                 LL_INFOS("Window") << "No 32 bit z-buffer, trying 24 bits instead" << LL_ENDL;
                 // Try 24-bit format
                 attrib_list[1] = 24;
-                bool result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
+                BOOL result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
                 if (!result)
                 {
                     close();
@@ -1626,7 +1626,7 @@ bool LLWindowWin32::switchContext(bool fullscreen, const LLCoordScreen& size, bo
                 {
                     LL_WARNS("Window") << "Couldn't get 24 bit z-buffer,trying 16 bits instead!" << LL_ENDL;
                     attrib_list[1] = 16;
-                    bool result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
+                    BOOL result = wglChoosePixelFormatARB(mhDC, attrib_list, NULL, 256, pixel_formats, &num_formats);
                     if (!result || !num_formats)
                     {
                         close();
@@ -1795,7 +1795,7 @@ const   S32   max_format  = (S32)num_formats - 1;
     SetWindowLongPtr(mWindowHandle, GWLP_USERDATA, (LONG_PTR)this);
 
     // register this window as handling drag/drop events from the OS
-    DragAcceptFiles( mWindowHandle, true );
+    DragAcceptFiles( mWindowHandle, TRUE );
 
     mDragDrop->init( mWindowHandle );
 
@@ -2042,7 +2042,7 @@ void LLWindowWin32::moveWindow( const LLCoordScreen& position, const LLCoordScre
     // NOW we can call MoveWindow
     mWindowThread->post([=]()
         {
-            MoveWindow(mWindowHandle, position.mX, position.mY, size.mX, size.mY, true);
+            MoveWindow(mWindowHandle, position.mX, position.mY, size.mX, size.mY, TRUE);
         });
 }
 
@@ -2115,7 +2115,7 @@ void LLWindowWin32::hideCursor()
 
     mWindowThread->post([=]()
         {
-            while (ShowCursor(false) >= 0)
+            while (ShowCursor(FALSE) >= 0)
             {
                 // nothing, wait for cursor to push down
             }
@@ -2134,7 +2134,7 @@ void LLWindowWin32::showCursor()
     mWindowThread->post([=]()
         {
             // makes sure the cursor shows up
-            while (ShowCursor(true) < 0)
+            while (ShowCursor(TRUE) < 0)
             {
                 // do nothing, wait for cursor to pop out
             }
@@ -2437,7 +2437,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
         case WM_PAINT:
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_WIN32("mwp - WM_PAINT");
-            GetUpdateRect(window_imp->mWindowHandle, &update_rect, false);
+            GetUpdateRect(window_imp->mWindowHandle, &update_rect, FALSE);
             update_width = update_rect.right - update_rect.left + 1;
             update_height = update_rect.bottom - update_rect.top + 1;
 
@@ -2485,7 +2485,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
             window_imp->post([=]()
                 {
                     // This message should be sent whenever the app gains or loses focus.
-                    bool activating = (bool)w_param;
+                    BOOL activating = (BOOL)w_param;
 
                     if (window_imp->mFullscreen)
                     {
@@ -2518,7 +2518,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
             window_imp->post([=]()
                 {
                     // Can be one of WA_ACTIVE, WA_CLICKACTIVE, or WA_INACTIVE
-                    bool activating = (LOWORD(w_param) != WA_INACTIVE);
+                    BOOL activating = (LOWORD(w_param) != WA_INACTIVE);
 
                     if (!activating && LLWinImm::isAvailable() && window_imp->mPreeditor)
                     {
@@ -3785,7 +3785,7 @@ void LLSplashScreenWin32::updateImpl(const std::string& mesg)
     SendDlgItemMessage(mWindow,
         666,        // HACK: text id
         WM_SETTEXT,
-        false,
+        FALSE,
         (LPARAM)w_mesg);
 }
 
@@ -4129,48 +4129,48 @@ void LLWindowWin32::fillCharPosition(const LLCoordGL& caret, const LLRect& bound
 
 void LLWindowWin32::fillCompositionLogfont(LOGFONT *logfont)
 {
-	// Our font is a list of FreeType recognized font files that may
-	// not have a corresponding ones in Windows' fonts.  Hence, we
-	// can't simply tell Windows which font we are using.  We will
-	// notify a _standard_ font for a current input locale instead.
-	// We use a hard-coded knowledge about the Windows' standard
-	// configuration to do so...
+    // Our font is a list of FreeType recognized font files that may
+    // not have a corresponding ones in Windows' fonts.  Hence, we
+    // can't simply tell Windows which font we are using.  We will
+    // notify a _standard_ font for a current input locale instead.
+    // We use a hard-coded knowledge about the Windows' standard
+    // configuration to do so...
 
-	memset(logfont, 0, sizeof(LOGFONT));
+    memset(logfont, 0, sizeof(LOGFONT));
 
 //	//BD - We don't support any language other than German and English.
 	/*const WORD lang_id = LOWORD(GetKeyboardLayout(0));
-	switch (PRIMARYLANGID(lang_id))
-	{
+    switch (PRIMARYLANGID(lang_id))
+    {
 	/*case LANG_CHINESE:
-		// We need to identify one of two Chinese fonts.
-		switch (SUBLANGID(lang_id))
-		{
-		case SUBLANG_CHINESE_SIMPLIFIED:
-		case SUBLANG_CHINESE_SINGAPORE:
-			logfont->lfCharSet = GB2312_CHARSET;
-			lstrcpy(logfont->lfFaceName, TEXT("SimHei"));
-			break;
-		case SUBLANG_CHINESE_TRADITIONAL:
-		case SUBLANG_CHINESE_HONGKONG:
-		case SUBLANG_CHINESE_MACAU:
-		default:
-			logfont->lfCharSet = CHINESEBIG5_CHARSET;
-			lstrcpy(logfont->lfFaceName, TEXT("MingLiU"));
-			break;			
-		}
-		break;
-	case LANG_JAPANESE:
-		logfont->lfCharSet = SHIFTJIS_CHARSET;
-		lstrcpy(logfont->lfFaceName, TEXT("MS Gothic"));
-		break;		
-	case LANG_KOREAN:
-		logfont->lfCharSet = HANGUL_CHARSET;
-		lstrcpy(logfont->lfFaceName, TEXT("Gulim"));
-		break;
+        // We need to identify one of two Chinese fonts.
+        switch (SUBLANGID(lang_id))
+        {
+        case SUBLANG_CHINESE_SIMPLIFIED:
+        case SUBLANG_CHINESE_SINGAPORE:
+            logfont->lfCharSet = GB2312_CHARSET;
+            lstrcpy(logfont->lfFaceName, TEXT("SimHei"));
+            break;
+        case SUBLANG_CHINESE_TRADITIONAL:
+        case SUBLANG_CHINESE_HONGKONG:
+        case SUBLANG_CHINESE_MACAU:
+        default:
+            logfont->lfCharSet = CHINESEBIG5_CHARSET;
+            lstrcpy(logfont->lfFaceName, TEXT("MingLiU"));
+            break;
+        }
+        break;
+    case LANG_JAPANESE:
+        logfont->lfCharSet = SHIFTJIS_CHARSET;
+        lstrcpy(logfont->lfFaceName, TEXT("MS Gothic"));
+        break;
+    case LANG_KOREAN:
+        logfont->lfCharSet = HANGUL_CHARSET;
+        lstrcpy(logfont->lfFaceName, TEXT("Gulim"));
+        break;
 	default:*/
-	logfont->lfCharSet = ANSI_CHARSET;
-	lstrcpy(logfont->lfFaceName, TEXT("Tahoma"));
+        logfont->lfCharSet = ANSI_CHARSET;
+        lstrcpy(logfont->lfFaceName, TEXT("Tahoma"));
 	/*	break;
 	}*/
 
@@ -4184,7 +4184,7 @@ void LLWindowWin32::fillCompositionLogfont(LOGFONT *logfont)
         logfont->lfHeight = 10;
     }
     logfont->lfWeight = FW_NORMAL;
-}	
+}
 
 U32 LLWindowWin32::fillReconvertString(const LLWString &text,
     S32 focus, S32 focus_length, RECONVERTSTRING *reconvert_string)
@@ -4627,7 +4627,7 @@ bool LLWindowWin32::getInputDevices(U32 device_type_filter,
         // Enumerate devices
         HRESULT status = gDirectInput8->EnumDevices(
             (DWORD) device_type_filter,        // DWORD dwDevType,
-            (LPDIENUMDEVICESCALLBACK)di8_devices_callback,  // LPDIENUMDEVICESCALLBACK lpCallback, // bool DIEnumDevicesCallback( LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef ) // bool CALLBACK DinputDevice::DevicesCallback
+            (LPDIENUMDEVICESCALLBACK)di8_devices_callback,  // LPDIENUMDEVICESCALLBACK lpCallback, // BOOL DIEnumDevicesCallback( LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef ) // BOOL CALLBACK DinputDevice::DevicesCallback
             (LPVOID*)userdata, // LPVOID pvRef
             DIEDFL_ATTACHEDONLY       // DWORD dwFlags
             );

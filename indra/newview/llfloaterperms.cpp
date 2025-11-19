@@ -198,7 +198,7 @@ void LLFloaterPermsDefault::updateCap()
     }
     else
     {
-        // _LL_DEBUGS("ObjectPermissionsFloater") << "AgentPreferences cap not available." << LL_ENDL;
+        LL_DEBUGS("ObjectPermissionsFloater") << "AgentPreferences cap not available." << LL_ENDL;
     }
 }
 
@@ -221,11 +221,11 @@ void LLFloaterPermsDefault::updateCapCoro(std::string url)
         (LLSD::Integer)LLFloaterPerms::getNextOwnerPerms(sCategoryNames[CAT_OBJECTS]);
 
     {
-        /*// _LL_DEBUGS("ObjectPermissionsFloater") << "Sending default permissions to '"
+        LL_DEBUGS("ObjectPermissionsFloater") << "Sending default permissions to '"
             << url << "'\n";
         std::ostringstream sent_perms_log;
         LLSDSerialize::toPrettyXML(postData, sent_perms_log);
-        LL_CONT << sent_perms_log.str() << LL_ENDL;*/
+        LL_CONT << sent_perms_log.str() << LL_ENDL;
     }
 
     while (true)

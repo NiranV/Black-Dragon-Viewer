@@ -41,9 +41,6 @@
 #include "lltransientfloatermgr.h"
 #include "llvoiceclient.h"
 
-//BD - Right Click Menu
-#include "llmutelist.h"
-
 class LLAvatarName;
 
 //////////////////////////////////////////////////////////////////////////////
