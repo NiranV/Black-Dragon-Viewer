@@ -164,6 +164,69 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="312"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Candido Ferraris as Patreon patron.
+Added: Joanna B. as Patreon patron.
+Added: punkLIST as Patreon patron.
+Added: Kodex as Patreon patron.
+Added: Dezirae Hailey as Patreon patron.
+Added: Kendal Andel's Marketplace and Inworld Store to the about page.
+Added: Experimental First Person aiming animation toggle to Preferences - Camera.
+Added: Button to hide login screen supporters.
+Changed: Inventory Favorite Icon.
+Changed: Disabled Depth of Field only Chromatic Aberration by default to prevent confusion when enabling normal CA.
+Changed: Login screen layout slightly.
+Changed: Use soft label shadows for combobox and line editors to match the rest of the UI.
+Changed: Version to 5.5.0 - Favorite Dragon.
+Fixed: Compile. Needs investigation. All libraries and WebRTC has been reverted.
+Fixed: Volumetric Lighting broke with the new rendering changes.
+Fixed: Extra Tone Mapping styles not working correctly.
+Fixed: Login screen background video and replaced it with a new one.
+Fixed: Shadow toggle in Object Features tab doesn't enable.
+Fixed: Broken notifications.
+Fixed: Black Dragon application icon.
+Fixed: Several minor code differences between latest LL code and BD.
+Fixed: Missing part of LL's fix for friendlist sometimes not loading when the Viewer starts jumbling things out of order.
+Misc: Replaced several many display_startup() calls with the more throughout do_startup_frame().
+Merged Linden Release (1000+ Changes).
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.4.5
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="988"
      top_pad="3"
      left="7"
