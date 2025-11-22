@@ -252,6 +252,59 @@
             </map>
             <map>
               <key>name</key>
+              <string>once</string>
+              <key>parameters</key>
+              <array>
+                <map>
+                  <key>name</key>
+                  <string>self</string>
+                </map>
+                <map>
+                  <key>name</key>
+                  <string>eventName</string>
+                  <key>type</key>
+                  <string>DetectedEventName</string>
+                </map>
+                <map>
+                  <key>name</key>
+                  <string>handler</string>
+                  <key>type</key>
+                  <string>DetectedEventHandler</string>
+                </map>
+              </array>
+              <key>returnType</key>
+              <string>EventHandler</string>
+              <key>overloads</key>
+              <array>
+                <map>
+                  <key>name</key>
+                  <string>once</string>
+                  <key>parameters</key>
+                  <array>
+                    <map>
+                      <key>name</key>
+                      <string>self</string>
+                    </map>
+                    <map>
+                      <key>name</key>
+                      <string>eventName</string>
+                      <key>type</key>
+                      <string>NonDetectedEventName</string>
+                    </map>
+                    <map>
+                      <key>name</key>
+                      <string>handler</string>
+                      <key>type</key>
+                      <string>EventHandler</string>
+                    </map>
+                  </array>
+                  <key>returnType</key>
+                  <string>EventHandler</string>
+                </map>
+              </array>
+            </map>
+            <map>
+              <key>name</key>
               <string>off</string>
               <key>parameters</key>
               <array>
