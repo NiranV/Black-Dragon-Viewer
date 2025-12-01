@@ -35,9 +35,9 @@
 
 //BD
 constexpr F32 DEFAULT_FIELD_OF_VIEW     = 63.33f * DEG_TO_RAD;
-constexpr F32 DEFAULT_ASPECT_RATIO  = 640.f / 480.f;
-constexpr F32 DEFAULT_NEAR_PLANE    = 0.25f;
-constexpr F32 DEFAULT_FAR_PLANE     = 64.f; // far reaches across two horizontal, not diagonal, regions
+constexpr F32 DEFAULT_ASPECT_RATIO      = 640.f / 480.f;
+constexpr F32 DEFAULT_NEAR_PLANE        = 0.25f;
+constexpr F32 DEFAULT_FAR_PLANE         = 64.f; // far reaches across two horizontal, not diagonal, regions
 
 constexpr F32 MAX_ASPECT_RATIO  = 50.0f;
 constexpr F32 MAX_NEAR_PLANE    = 1023.9f;   // Clamp the near plane just before the skybox ends
@@ -153,7 +153,7 @@ public:
     LLPlane getUserClipPlane();
     void setUserClipPlane(LLPlane& plane);
     void disableUserClipPlane();
-    virtual void setView(F32 vertical_fov_rads);
+    virtual void setView(F32 vertical_fov_rads, bool debug = false);
     void setViewHeightInPixels(S32 height);
     void setAspect(F32 new_aspect);
     void setNear(F32 new_near);
