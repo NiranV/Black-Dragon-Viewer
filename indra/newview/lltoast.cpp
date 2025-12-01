@@ -422,7 +422,10 @@ void LLToast::setVisible(bool show)
         if(mHideBtn)
             mHideBtn->setVisible(show);
     }
-    LLModalDialog::setVisible(show);
+    //BD - Treat toasts as floaters, otherwise we crash on showing a notification while dragging
+    //     a slider.
+    //LLModalDialog::setVisible(show);
+    LLFloater::setVisible(show);
     if (mPanel
         && !mPanel->isDead()
         && mWrapperPanel
