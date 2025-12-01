@@ -553,7 +553,7 @@
      name="inventory filter tabs"
      tab_height="20"
      tab_position="top"
-     tab_min_width="98"
+     tab_min_width="60"
      top_pad="0"
      width="283">
     <inventory_panel
@@ -602,6 +602,25 @@
       border="false"
       bevel_style="none"
 		name="Worn Items"/>
+      <favorites_inventory_panel
+      bg_opaque_image="Panel_Background"
+      background_visible="false"
+      border="false"
+      bevel_style="none"
+      follows="all"
+      height="323"
+      left_delta="18"
+      top_pad="1"
+      width="220"
+      label="Favorites"
+      help_topic="recent_inventory_tab"
+      layout="topleft"
+      name="Favorites"
+      show_item_link_overlays="true"
+      preinitialize_views="false"
+      scroll.reserve_scroll_corner="false">
+         <folder double_click_override="true"/>
+      </favorites_inventory_panel>
   </tab_container>
    </panel>
   <panel
