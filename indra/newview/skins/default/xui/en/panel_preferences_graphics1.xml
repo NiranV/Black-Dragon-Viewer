@@ -480,7 +480,7 @@ width="510">
        tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
-||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;b&gt;12GB RAM is recommended as minimum for this option.&lt;/b&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart to take effect for now.
 ||RenderMaxVRAMBudget: &lt;blue&gt;2048&lt;/blue&gt;"
@@ -513,7 +513,7 @@ width="510">
        tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
-||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart to take effect for now.
 ||RenderMaxVRAMBudget: &lt;blue&gt;6144&lt;/blue&gt;"
@@ -524,18 +524,62 @@ width="510">
        tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
-||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;b&gt;16GB RAM is recommended as minimum for this option.&lt;/b&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart to take effect for now.
 ||RenderMaxVRAMBudget: &lt;blue&gt;8196&lt;/blue&gt;"
        value="8196"
+       name="item4"/>
+       <combo_box.item
+       label="12288 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||NOTE:
+|Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
+||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;12288&lt;/blue&gt;"
+       value="12288"
+       name="item4"/>
+       <combo_box.item
+       label="16384 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||NOTE:
+|Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
+||&lt;b&gt;32GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;16384&lt;/blue&gt;"
+       value="16384"
+       name="item4"/>
+       <combo_box.item
+       label="20480 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||NOTE:
+|Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
+||&lt;b&gt;64GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;20480&lt;/blue&gt;"
+       value="20480"
+       name="item4"/>
+       <combo_box.item
+       label="24576 MB"
+       tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
+||NOTE:
+|Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. This also means it drastically increases the minimum RAM requirement.
+||&lt;b&gt;64GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|Changing this option needs a restart to take effect for now.
+||RenderMaxVRAMBudget: &lt;blue&gt;24576&lt;/blue&gt;"
+       value="24576"
        name="item4"/>
       <combo_box.item
        label="Unlimited"
        tool_tip="This This option sets the maximum amount of memory from your graphics card (VRAM) to be used for textures Too low values will cause texture thrashing.
 ||NOTE:
 |Keep in mind that all textures need to be saved in both your GPU's VRAM as well as your system's RAM. Unlimited means the Viewer can load as many textures both into VRAM as well as RAM as it can before it crashes. This also means it drastically increases the minimum RAM requirement.
-||&lt;b&gt;24GB RAM is recommended as minimum for this option.&lt;/b&gt;
+||&lt;b&gt;Up to 64GB RAM is recommended as minimum for this option depending on your GPU VRAM.&lt;/b&gt;
 ||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
 |Changing this option needs a restart to take effect for now.
 ||RenderMaxVRAMBudget: &lt;blue&gt;0&lt;/blue&gt;"
