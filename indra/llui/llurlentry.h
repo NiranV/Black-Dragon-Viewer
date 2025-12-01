@@ -587,7 +587,8 @@ public:
 	LLUrlEntryRed();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
+    LLStyle::EUnderlineLink getUnderline(const std::string& string) const;
 };
 
 /// LLUrlEntryGreen lets us turn text to green with <green>...</green> tags
@@ -598,7 +599,8 @@ public:
 	LLUrlEntryGreen();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
+    LLStyle::EUnderlineLink getUnderline(const std::string& string) const;
 };
 
 /// LLUrlEntryBlue lets us turn text to blue with <blue>...</blue> tags
@@ -609,7 +611,8 @@ public:
 	LLUrlEntryBlue();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
+    LLStyle::EUnderlineLink getUnderline(const std::string& string) const;
 };
 
 /// LLUrlEntryUnderline lets us underline text with <u>...</u> tags
@@ -620,7 +623,7 @@ public:
 	LLUrlEntryUnderline();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
 };
 
 /// LLUrlEntryBold lets us write fat letters with <b>...</b> tags
@@ -631,7 +634,8 @@ public:
 	LLUrlEntryBold();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
+    LLStyle::EUnderlineLink getUnderline(const std::string& string) const;
 };
 
 /// LLUrlEntryItalic lets us write in italic style with <i>...</i> tags
@@ -642,7 +646,8 @@ public:
 	LLUrlEntryItalic();
 	/*virtual*/ std::string getLabel(const std::string &url, const LLUrlLabelCallback &cb);
 	/*virtual*/ std::string getUrl(const std::string &string) const;
-	/*virtual*/ LLStyle::Params getStyle() const;
+    /*virtual*/ LLStyle::Params getStyle(const std::string& url) const;
+    LLStyle::EUnderlineLink getUnderline(const std::string& string) const;
 };
 
 

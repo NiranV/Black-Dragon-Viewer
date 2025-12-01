@@ -1671,29 +1671,35 @@ std::string LLUrlEntryIPv6::getUrl(const std::string &string) const
 //
 LLUrlEntryRed::LLUrlEntryRed()
 {
-	mPattern = boost::regex("<red>.*?</red>",
-		boost::regex::perl | boost::regex::icase);
+    // return the text between the <red> and </red> tags
+    mPattern = boost::regex("<red>.*?</red>",
+        boost::regex::perl | boost::regex::icase);
 }
 
-std::string LLUrlEntryRed::getUrl(const std::string &url) const
+std::string LLUrlEntryRed::getUrl(const std::string& url) const
 {
-	// return the text between the <red> and </red> tags
-	return url.substr(5, url.size() - 5 - 6);
+    return url.substr(5, url.size() - 5 - 6);
 }
 
 std::string LLUrlEntryRed::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryRed::getStyle() const
+LLStyle::Params LLUrlEntryRed::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.color = LLUIColorTable::instance().getColor("Red_Chat");
 	style_params.readonly_color = LLUIColorTable::instance().getColor("Red_Chat");
+    style_params.is_link = false;
 	return style_params;
 }
+
+LLStyle::EUnderlineLink LLUrlEntryRed::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
+}
+
 
 // LLUrlEntryGreen lets us turn text to green with <green>...</green> tags
 //
@@ -1711,16 +1717,21 @@ std::string LLUrlEntryGreen::getUrl(const std::string &url) const
 
 std::string LLUrlEntryGreen::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryGreen::getStyle() const 
+LLStyle::Params LLUrlEntryGreen::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.color = LLUIColorTable::instance().getColor("Green_Chat");
 	style_params.readonly_color = LLUIColorTable::instance().getColor("Green_Chat");
+    style_params.is_link = false;
 	return style_params;
+}
+
+LLStyle::EUnderlineLink LLUrlEntryGreen::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
 }
 
 // LLUrlEntryBlue lets us turn text to blue with <blue>...</blue> tags
@@ -1739,16 +1750,21 @@ std::string LLUrlEntryBlue::getUrl(const std::string &url) const
 
 std::string LLUrlEntryBlue::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryBlue::getStyle() const 
+LLStyle::Params LLUrlEntryBlue::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.color = LLUIColorTable::instance().getColor("Blue_Chat");
 	style_params.readonly_color = LLUIColorTable::instance().getColor("Blue_Chat");
+    style_params.is_link = false;
 	return style_params;
+}
+
+LLStyle::EUnderlineLink LLUrlEntryBlue::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
 }
 
 // LLUrlEntryUnderline lets us underline text with <u>...</u> tags
@@ -1767,11 +1783,10 @@ std::string LLUrlEntryUnderline::getUrl(const std::string &url) const
 
 std::string LLUrlEntryUnderline::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryUnderline::getStyle() const 
+LLStyle::Params LLUrlEntryUnderline::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.font.style = "UNDERLINE";
@@ -1794,15 +1809,20 @@ std::string LLUrlEntryBold::getUrl(const std::string &url) const
 
 std::string LLUrlEntryBold::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryBold::getStyle() const 
+LLStyle::Params LLUrlEntryBold::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.font.style = "BOLD";
+    style_params.is_link = false;
 	return style_params;
+}
+
+LLStyle::EUnderlineLink LLUrlEntryBold::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
 }
 
 // LLUrlEntryItalic lets us write in italic style with <i>...</i> tags
@@ -1821,15 +1841,20 @@ std::string LLUrlEntryItalic::getUrl(const std::string &url) const
 
 std::string LLUrlEntryItalic::getLabel(const std::string &url, const LLUrlLabelCallback &cb)
 {
-	getStyle();
 	return getUrl(url);
 }
 
-LLStyle::Params LLUrlEntryItalic::getStyle() const
+LLStyle::Params LLUrlEntryItalic::getStyle(const std::string& url) const
 {
 	LLStyle::Params style_params;
 	style_params.font.style = "ITALIC";
+    style_params.is_link = false;
 	return style_params;
+}
+
+LLStyle::EUnderlineLink LLUrlEntryItalic::getUnderline(const std::string& string) const
+{
+    return LLStyle::EUnderlineLink::UNDERLINE_NEVER;
 }
 
 //
