@@ -2374,8 +2374,7 @@
          tear_off="true">
             <menu_item_call
              label="Force Breakpoint"
-             name="Force Breakpoint"
-             shortcut="control|alt|shift|B">
+             name="Force Breakpoint">
                 <menu_item_call.on_click
                  function="Advanced.ForceErrorBreakpoint" />
             </menu_item_call>
