@@ -164,6 +164,59 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="182"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: 12GB, 16GB, 20GB and 24GB options for Max VRAM option.
+Changed: Updated the Max VRAM option tooltips to give a better estimate on how much RAM they will need.
+Changed: Default AFK timer back to unlimited (disabled).
+Changed: Default VSync to off.
+Changed: Aser's Patreon patronage amount.
+Changed: Reduced Keybinding logging to Debug.
+Changed: Version to 5.5.1.
+Fixed: Search window being broken.
+Fixed: Missing new Favorites tab in Inventory.
+Fixed: Viewer crashing when displaying warnings from slider options when dragged. (Typing was not affected) Handle toasts as floaters again.
+Fixed: Special Black Dragon text variations (Red/Green/Blue/Bold/Italic/Underline) not working anymore.
+Removed: Shortcut to force a breakpoint. People have been accidentally doing this.
+Misc: Some buddy list related code changes on how we ask for the online status when logging.
+Misc: Code cleanup, removed no longer necessary logging.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.5.0
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="312"
      top_pad="3"
      left="7"
