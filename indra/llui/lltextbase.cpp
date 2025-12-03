@@ -3521,6 +3521,11 @@ LLNormalTextSegment::LLNormalTextSegment( LLStyleConstSP style, S32 start, S32 e
 {
     mFontHeight = mStyle->getFont()->getLineHeight();
     mCanEdit = !mStyle->getDrawHighlightBg();
+    if (!mCanEdit)
+    {
+        // Emoji shouldn't split the segment with the mention.
+        mPermitsEmoji = false;
+    }
 
     LLUIImagePtr image = mStyle->getImage();
     if (image.notNull())
@@ -4041,6 +4046,7 @@ LLInlineViewSegment::LLInlineViewSegment(const Params& p, S32 start, S32 end)
     mTopPad(p.top_pad),
     mBottomPad(p.bottom_pad)
 {
+    mPermitsEmoji = false;
 }
 
 LLInlineViewSegment::~LLInlineViewSegment()
