@@ -86,6 +86,7 @@
 #include "raytrace.h"
 
 // newview includes
+#include "llaccordionctrl.h"
 #include "llbox.h"
 #include "llchicletbar.h"
 #include "llconsole.h"
@@ -1882,8 +1883,9 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     // pass its value right now. Instead, pass it a nullary function that
     // will, when we later need it, return the value of gKeyboard.
     // boost::lambda::var() constructs such a functor on the fly.
-    mWindowListener.reset(new LLWindowListener(this, boost::lambda::var(gKeyboard)));
-    mViewerWindowListener.reset(new LLViewerWindowListener(this));
+    LLWindowListener::KeyboardGetter getter = [](){ return gKeyboard; };
+    mWindowListener = std::make_unique<LLWindowListener>(this, getter);
+    mViewerWindowListener = std::make_unique<LLViewerWindowListener>(this);
 
     mSystemChannel.reset(new LLNotificationChannel("System", "Visible", LLNotificationFilters::includeEverything));
     mCommunicationChannel.reset(new LLCommunicationChannel("Communication", "Visible"));
@@ -2316,36 +2318,23 @@ void LLViewerWindow::initWorldUI()
         gToolBarView->setVisible(true);
     }
 
-    if (!gNonInteractive)
+    // Don't preload cef instances on low end hardware
+    const F32Gigabytes MIN_PHYSICAL_MEMORY(8);
+    F32Gigabytes physical_mem = LLMemory::getMaxMemKB();
+    if (physical_mem <= 0)
     {
-        LLMediaCtrl* destinations = LLFloaterReg::getInstance("destinations")->getChild<LLMediaCtrl>("destination_guide_contents");
-        if (destinations)
-        {
-            destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-            std::string url = gSavedSettings.getString("DestinationGuideURL");
-            url = LLWeb::expandURLSubstitutions(url, LLSD());
-            destinations->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-        }
-        LLMediaCtrl* avatar_welcome_pack = LLFloaterReg::getInstance("avatar_welcome_pack")->findChild<LLMediaCtrl>("avatar_picker_contents");
-        if (avatar_welcome_pack)
-        {
-            avatar_welcome_pack->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-            std::string url = gSavedSettings.getString("AvatarWelcomePack");
-            url = LLWeb::expandURLSubstitutions(url, LLSD());
-            avatar_welcome_pack->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-        }
-        LLMediaCtrl* search = LLFloaterReg::getInstance("search")->findChild<LLMediaCtrl>("search_contents");
-        if (search)
-        {
-            search->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-        }
-        LLMediaCtrl* marketplace = LLFloaterReg::getInstance("marketplace")->getChild<LLMediaCtrl>("marketplace_contents");
-        if (marketplace)
-        {
-            marketplace->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
-            std::string url = gSavedSettings.getString("MarketplaceURL");
-            marketplace->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-        }
+        LLMemory::updateMemoryInfo();
+        physical_mem = LLMemory::getMaxMemKB();
+    }
+
+    if (!gNonInteractive && physical_mem > MIN_PHYSICAL_MEMORY)
+    {
+        LL_INFOS() << "Preloading cef instances" << LL_ENDL;
+
+        LLFloaterReg::getInstance("destinations");
+        LLFloaterReg::getInstance("avatar_welcome_pack");
+        LLFloaterReg::getInstance("search");
+        LLFloaterReg::getInstance("marketplace");
     }
 }
 
@@ -3434,6 +3423,8 @@ void LLViewerWindow::updateUI()
 
     LLConsole::updateClass();
 
+    // execute postponed arrange calls
+    LLAccordionCtrl::updateClass();
     // animate layout stacks so we have up to date rect for world view
     LLLayoutStack::updateClass();
 
@@ -6123,7 +6114,7 @@ bool LLViewerWindow::getUIVisibility()
 //
 LLPickInfo::LLPickInfo()
     : mKeyMask(MASK_NONE),
-      mPickCallback(NULL),
+      mPickCallback(nullptr),
       mPickType(PICK_INVALID),
       mWantSurfaceInfo(false),
       mObjectFace(-1),
@@ -6134,7 +6125,7 @@ LLPickInfo::LLPickInfo()
       mNormal(),
       mTangent(),
       mBinormal(),
-      mHUDIcon(NULL),
+      mHUDIcon(nullptr),
       mPickTransparent(false),
       mPickRigged(false),
       mPickParticle(false)

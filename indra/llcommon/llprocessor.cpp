@@ -765,6 +765,7 @@ private:
         }
 #endif // LL_RELEASE_FOR_DOWNLOAD
 
+        // @TODO: Audit our usage of machdep.cpu.feature_bits.
 
         uint64_t ext_feature_info = getSysctlInt64("machdep.cpu.extfeature_bits");
         S32 *ext_feature_infos = (S32*)(&ext_feature_info);
