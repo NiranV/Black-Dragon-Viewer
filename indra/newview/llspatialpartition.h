@@ -64,23 +64,15 @@ void pushVerts(LLFace* face);
     Make every effort to keep size minimal.
     Member ordering is important for cache coherency
 */
-class LLDrawInfo final : public LLRefCount
+class alignas(16) LLDrawInfo final : public LLRefCount
 {
     LL_ALIGN_NEW;
 protected:
     ~LLDrawInfo();
 
 public:
-    LLDrawInfo(const LLDrawInfo& rhs)
-    {
-        *this = rhs;
-    }
-
-    const LLDrawInfo& operator=(const LLDrawInfo& rhs)
-    {
-        LL_ERRS() << "Illegal operation!" << LL_ENDL;
-        return *this;
-    }
+    LLDrawInfo(const LLDrawInfo& rhs) = delete;
+    const LLDrawInfo& operator=(const LLDrawInfo& rhs) = delete;
 
     // return a hash of this LLDrawInfo as a debug color
     LLColor4U getDebugColor() const;
@@ -198,24 +190,17 @@ public:
     };
 };
 
-LL_ALIGN_PREFIX(16)
-class LLSpatialGroup : public LLOcclusionCullingGroup
+class alignas(16) LLSpatialGroup : public LLOcclusionCullingGroup
 {
     using super = LLOcclusionCullingGroup;
     friend class LLSpatialPartition;
     friend class LLOctreeStateCheck;
+
+    LL_ALIGN_NEW
 public:
 
-    LLSpatialGroup(const LLSpatialGroup& rhs) : LLOcclusionCullingGroup(rhs)
-    {
-        *this = rhs;
-    }
-
-    const LLSpatialGroup& operator=(const LLSpatialGroup& rhs)
-    {
-        LL_ERRS() << "Illegal operation!" << LL_ENDL;
-        return *this;
-    }
+    LLSpatialGroup(const LLSpatialGroup& rhs) = delete;
+    const LLSpatialGroup& operator=(const LLSpatialGroup& rhs) = delete;
 
     static U32 sNodeCount;
     static bool sNoDelete; //deletion of spatial groups and draw info not allowed if true
@@ -338,8 +323,8 @@ public:
     virtual void rebound();
 
 public:
-    LL_ALIGN_16(LLVector4a mViewAngle);
-    LL_ALIGN_16(LLVector4a mLastUpdateViewAngle);
+    LLVector4a mViewAngle;
+    LLVector4a mLastUpdateViewAngle;
 
 protected:
     virtual ~LLSpatialGroup();
@@ -369,7 +354,7 @@ public:
     U32 mRenderOrder = 0;
     // Reflection Probe associated with this node (if any)
     LLPointer<LLReflectionMap> mReflectionProbe = nullptr;
-} LL_ALIGN_POSTFIX(16);
+};
 
 class LLGeometryManager
 {
