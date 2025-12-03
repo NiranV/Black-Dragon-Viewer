@@ -218,7 +218,6 @@
 #include "llfloatersimplesnapshot.h"
 #include "llfloatersnapshot.h"
 #include "llsidepanelinventory.h"
-#include "llatmosphere.h"
 
 // includes for idle() idleShutdown()
 #include "llviewercontrol.h"
@@ -1234,8 +1233,8 @@ bool LLAppViewer::init()
     /// Tell the Coprocedure manager how to discover and store the pool sizes
     // what I wanted
     LLCoprocedureManager::getInstance()->setPropertyMethods(
-        boost::bind(&LLControlGroup::getU32, boost::ref(gSavedSettings), _1),
-        boost::bind(&LLControlGroup::declareU32, boost::ref(gSavedSettings), _1, _2, _3, LLControlVariable::PERSIST_ALWAYS));
+        std::bind(&LLControlGroup::getU32, std::ref(gSavedSettings), std::placeholders::_1),
+        std::bind(&LLControlGroup::declareU32, std::ref(gSavedSettings), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, LLControlVariable::PERSIST_ALWAYS));
 
     // TODO: consider moving proxy initialization here or LLCopocedureManager after proxy initialization, may be implement
     // some other protection to make sure we don't use network before initializng proxy
@@ -1702,8 +1701,6 @@ void LLAppViewer::flushLFSIO()
 
 bool LLAppViewer::cleanup()
 {
-    LLAtmosphere::cleanupClass();
-
     //ditch LLVOAvatarSelf instance
     gAgentAvatarp = NULL;
 
@@ -3148,7 +3145,7 @@ bool LLAppViewer::initWindow()
 
     // Need to load feature table before cheking to start watchdog.
     bool use_watchdog = false;
-    int watchdog_enabled_setting = gSavedSettings.getS32("WatchdogEnabled");
+    S32 watchdog_enabled_setting = gSavedSettings.getS32("WatchdogEnabled");
     if (watchdog_enabled_setting == -1)
     {
         use_watchdog = !LLFeatureManager::getInstance()->isFeatureAvailable("WatchdogDisabled");
@@ -3614,10 +3611,15 @@ void LLAppViewer::writeSystemInfo()
     if (! gDebugInfo.has("Dynamic") )
         gDebugInfo["Dynamic"] = LLSD::emptyMap();
 
-#if LL_WINDOWS && !LL_BUGSPLAT
+#if LL_DARWIN
+    // crash processing in CrashMetadataSingleton reads SLLog
+    gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"SecondLife.crash");
+#elif LL_WINDOWS && !LL_BUGSPLAT
     gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_DUMP,"SecondLife.log");
 #else
-    //Not ideal but sufficient for good reporting.
+    // Far from ideal, especially when multiple instances get involved.
+    // Note that attachmentsForBugSplat expects .old extendion.
+    // Todo: improve.
     gDebugInfo["SLLog"] = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,"SecondLife.old");  //LLError::logFileName();
 #endif
 
@@ -3940,7 +3942,7 @@ void LLAppViewer::processMarkerFiles()
 #if LL_WINDOWS && LL_BUGSPLAT
             // bugsplat will set correct state in bugsplatSendLog
             // Might be more accurate to rename this one into 'unknown'
-            gLastExecEvent = LAST_EXEC_FROZE;
+            gLastExecEvent = LAST_EXEC_UNKNOWN;
 #else
             gLastExecEvent = LAST_EXEC_OTHER_CRASH;
 #endif // LL_WINDOWS
@@ -3986,7 +3988,8 @@ void LLAppViewer::processMarkerFiles()
     {
         if (markerIsSameVersion(logout_marker_file))
         {
-            gLastExecEvent = LAST_EXEC_LOGOUT_FROZE;
+            // Either froze, got killed or somehow crash was not caught
+            gLastExecEvent = LAST_EXEC_LOGOUT_UNKNOWN;
             LL_INFOS("MarkerFile") << "Logout crash marker '"<< logout_marker_file << "', changing LastExecEvent to LOGOUT_FROZE" << LL_ENDL;
         }
         else
@@ -4024,6 +4027,22 @@ void LLAppViewer::processMarkerFiles()
         }
         LLAPRFile::remove(error_marker_file);
     }
+
+#if LL_DARWIN
+    if (!mSecondInstance && gLastExecEvent != LAST_EXEC_NORMAL)
+    {
+        // While windows reports crashes immediately, mac reports next run and
+        // may take a while to trigger crash report so it has a special file.
+        // Remove .crash file if exists
+        std::string old_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
+            "SecondLife.old");
+        std::string crash_log_file = gDirUtilp->getExpandedFilename(LL_PATH_LOGS,
+            "SecondLife.crash");
+        LLFile::remove(crash_log_file);
+        // Rename ".old" log file to ".crash"
+        LLFile::rename(old_log_file, crash_log_file);
+    }
+#endif
 }
 
 void LLAppViewer::removeMarkerFiles()
@@ -4378,6 +4397,8 @@ bool LLAppViewer::initCache()
         LL_WARNS("AppCache") << "Unable to set cache location" << LL_ENDL;
         gSavedSettings.setString("CacheLocation", "");
         gSavedSettings.setString("CacheLocationTopFolder", "");
+        gSavedSettings.setString("NewCacheLocation", "");
+        gSavedSettings.setString("NewCacheLocationTopFolder", "");
     }
 
     const std::string cache_dir = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, cache_dir_name);
@@ -4430,7 +4451,7 @@ bool LLAppViewer::initCache()
     return true;
 }
 
-void LLAppViewer::addOnIdleCallback(const boost::function<void()>& cb)
+void LLAppViewer::addOnIdleCallback(const std::function<void()>& cb)
 {
     gMainloopWork.post(cb);
 }
@@ -5797,12 +5818,12 @@ void LLAppViewer::forceExceptionThreadCrash()
     thread->start();
 }
 
-void LLAppViewer::initMainloopTimeout(std::string_view state, F32 secs)
+void LLAppViewer::initMainloopTimeout(std::string_view state)
 {
     if (!mMainloopTimeout)
     {
         mMainloopTimeout = new LLWatchdogTimeout();
-        resumeMainloopTimeout(state, secs);
+        resumeMainloopTimeout(state);
     }
 }
 
@@ -5815,17 +5836,11 @@ void LLAppViewer::destroyMainloopTimeout()
     }
 }
 
-void LLAppViewer::resumeMainloopTimeout(std::string_view state, F32 secs)
+void LLAppViewer::resumeMainloopTimeout(std::string_view state)
 {
     if (mMainloopTimeout)
     {
-        if (secs < 0.0f)
-        {
-            static LLCachedControl<F32> mainloop_timeout(gSavedSettings, "MainloopTimeoutDefault", 60.f);
-            secs = mainloop_timeout;
-        }
-
-        mMainloopTimeout->setTimeout(secs);
+        mMainloopTimeout->setTimeout(getMainloopTimeoutSec());
         mMainloopTimeout->start(state);
     }
 }
@@ -5838,20 +5853,30 @@ void LLAppViewer::pauseMainloopTimeout()
     }
 }
 
-void LLAppViewer::pingMainloopTimeout(std::string_view state, F32 secs)
+void LLAppViewer::pingMainloopTimeout(std::string_view state)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_APP;
 
     if (mMainloopTimeout)
     {
-        if (secs < 0.0f)
-        {
-            static LLCachedControl<F32> mainloop_timeout(gSavedSettings, "MainloopTimeoutDefault", 60);
-            secs = mainloop_timeout;
-        }
-
-        mMainloopTimeout->setTimeout(secs);
+        mMainloopTimeout->setTimeout(getMainloopTimeoutSec());
         mMainloopTimeout->ping(state);
+    }
+}
+
+
+F32 LLAppViewer::getMainloopTimeoutSec() const
+{
+    if (LLStartUp::getStartupState() == STATE_STARTED
+        && gAgent.getTeleportState() == LLAgent::TELEPORT_NONE)
+    {
+        static LLCachedControl<F32> mainloop_started(gSavedSettings, "MainloopTimeoutStarted", 30.f);
+        return mainloop_started();
+    }
+    else
+    {
+        static LLCachedControl<F32> mainloop_default(gSavedSettings, "MainloopTimeoutDefault", 120.f);
+        return mainloop_default();
     }
 }
 

@@ -30,7 +30,6 @@
 #include <fstream>
 
 #include <boost/regex.hpp>
-#include <boost/assign/list_of.hpp>
 
 #include "llfeaturemanager.h"
 #include "lldir.h"
@@ -184,15 +183,15 @@ void LLFeatureList::dump()
     }
 }
 
-static const std::vector<std::string> sGraphicsLevelNames = boost::assign::list_of
-    ("Low")
-    ("LowMid")
-    ("Mid")
-    ("MidHigh")
-    ("High")
-    ("HighUltra")
-    ("Ultra")
-;
+static const std::vector<std::string> sGraphicsLevelNames = {
+    "Low",
+    "LowMid",
+    "Mid",
+    "MidHigh",
+    "High",
+    "HighUltra",
+    "Ultra"
+};
 
 U32 LLFeatureManager::getMaxGraphicsLevel() const
 {
@@ -445,9 +444,9 @@ bool LLFeatureManager::loadGPUClass()
 
     if (gGLManager.getRawGLString().find("Radeon") != std::string::npos && checkRDNA35() && gGLManager.mDriverVersionVendorString.find("25.") != std::string::npos)
     {
-        LL_WARNS("RenderInit") << "Detected AMD RDNA3.5 GPU on a known bad driver; disabling shader profiling to prevent freezes." << LL_ENDL;
-        mSkipProfiling = true;
-        LLGLSLShader::sCanProfile = false;
+        LL_WARNS("RenderInit") << "Detected AMD RDNA3.5 GPU on a known bad driver; disabling benchmark and occlusion culling to prevent freezes." << LL_ENDL;
+        gSavedSettings.setBOOL("SkipBenchmark", true);
+        gSavedSettings.setBOOL("UseOcclusion", false);
     }
 
     if (!gSavedSettings.getBOOL("SkipBenchmark"))
@@ -509,12 +508,8 @@ bool LLFeatureManager::loadGPUClass()
         }
 
         LLMemory::updateMemoryInfo();
-    #if LL_WINDOWS
-        const F32Gigabytes MIN_PHYSICAL_MEMORY(8);
-    #elif LL_LINUX
-        const F32Gigabytes MIN_PHYSICAL_MEMORY(2);
-    #endif
     #if LL_WINDOWS || LL_LINUX
+        const F32Gigabytes MIN_PHYSICAL_MEMORY(8);
         F32Gigabytes physical_mem = LLMemory::getMaxMemKB();
         if (MIN_PHYSICAL_MEMORY > physical_mem && mGPUClass > GPU_CLASS_1)
         {

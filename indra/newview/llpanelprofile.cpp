@@ -106,11 +106,11 @@ LLUUID post_profile_image(std::string cap_url, const LLSD &first_data, std::stri
 {
     LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
-        httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("post_profile_image_coro", httpPolicy));
-    LLCore::HttpRequest::ptr_t httpRequest(new LLCore::HttpRequest);
+        httpAdapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("post_profile_image_coro", httpPolicy);
+    LLCore::HttpRequest::ptr_t httpRequest = std::make_shared<LLCore::HttpRequest>();
     LLCore::HttpHeaders::ptr_t httpHeaders;
 
-    LLCore::HttpOptions::ptr_t httpOpts(new LLCore::HttpOptions);
+    LLCore::HttpOptions::ptr_t httpOpts = std::make_shared<LLCore::HttpOptions>();
     httpOpts->setFollowRedirects(true);
 
     LLSD result = httpAdapter->postAndSuspend(httpRequest, cap_url, first_data, httpOpts, httpHeaders);
@@ -138,9 +138,9 @@ LLUUID post_profile_image(std::string cap_url, const LLSD &first_data, std::stri
     }
 
     // Upload the image
-    LLCore::HttpRequest::ptr_t uploaderhttpRequest(new LLCore::HttpRequest);
-    LLCore::HttpHeaders::ptr_t uploaderhttpHeaders(new LLCore::HttpHeaders);
-    LLCore::HttpOptions::ptr_t uploaderhttpOpts(new LLCore::HttpOptions);
+    LLCore::HttpRequest::ptr_t uploaderhttpRequest = std::make_shared<LLCore::HttpRequest>();
+    LLCore::HttpHeaders::ptr_t uploaderhttpHeaders = std::make_shared<LLCore::HttpHeaders>();
+    LLCore::HttpOptions::ptr_t uploaderhttpOpts = std::make_shared<LLCore::HttpOptions>();
     S64 length;
 
     {
@@ -710,6 +710,10 @@ LLPanelProfileSecondLife::~LLPanelProfileSecondLife()
     {
         mAvatarNameCacheConnection.disconnect();
     }
+    if (mMenuNameCacheConnection.connected())
+    {
+        mMenuNameCacheConnection.disconnect();
+    }
 }
 
 bool LLPanelProfileSecondLife::postBuild()
@@ -1024,7 +1028,7 @@ void LLPanelProfileSecondLife::fillCommonData(const LLAvatarData* avatar_data)
     if (getSelfProfile())
     {
         mAllowPublish = avatar_data->flags & AVATAR_ALLOW_PUBLISH;
-        mShowInSearchCombo->setValue(mAllowPublish);
+        mShowInSearchCombo->setValue(mAllowPublish ? LLSD::Integer(1) : LLSD::Integer(0));
     }
 }
 
@@ -1458,7 +1462,7 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
     }
     else if (item_name == "edit_display_name")
     {
-        LLAvatarNameCache::get(getAvatarId(), boost::bind(&LLPanelProfileSecondLife::onAvatarNameCacheSetName, this, _1, _2));
+        mMenuNameCacheConnection = LLAvatarNameCache::get(getAvatarId(), boost::bind(&LLPanelProfileSecondLife::onAvatarNameCacheSetName, this, _1, _2));
         LLFirstUse::setDisplayName(false);
     }
     else if (item_name == "edit_partner")
