@@ -423,7 +423,7 @@ LLSD LLScriptEditorWSServer::handleFileWatcherFileListRequest() const
     LLSD response;
 
     response["temp_dir"] = LLFile::tmpdir();
-    
+
     // Add array of script_id's from active scripts
     LLSD script_ids_array = LLSD::emptyArray();
     for (const auto& [script_id, subinfo] : mSubscriptions)
@@ -431,9 +431,9 @@ LLSD LLScriptEditorWSServer::handleFileWatcherFileListRequest() const
         script_ids_array.append(script_id);
     }
     response["script_ids"] = script_ids_array;
-    
+
     response["success"] = true;
-    
+
     return response;
 }
 
