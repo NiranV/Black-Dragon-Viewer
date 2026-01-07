@@ -2454,7 +2454,10 @@ bool LLAppViewer::loadSettingsFromDirectory(const std::string& location_key,
                 full_settings_path = gDirUtilp->getExpandedFilename((ELLPath)path_index, file.file_name());
             }
 
-            if(settings_group->loadFromFile(full_settings_path, set_defaults, file.persistent))
+            // Be softer for files in the user's folders, user can't just reinstall those
+            bool error_when_no_comment = !set_defaults && location_key != "User";
+
+            if(settings_group->loadFromFile(full_settings_path, set_defaults, file.persistent, error_when_no_comment))
             {   // success!
                 LL_INFOS("Settings") << "Loaded settings file " << full_settings_path << LL_ENDL;
             }
@@ -4499,7 +4502,19 @@ void LLAppViewer::purgeCacheImmediate()
 {
     LL_INFOS("AppCache") << "Purging Object Cache and Texture Cache immediately..." << LL_ENDL;
     LLAppViewer::getTextureCache()->purgeCache(LL_PATH_CACHE, false);
-    LLVOCache::getInstance()->removeCache(LL_PATH_CACHE, true);
+    if (LLVOCache::instanceExists())
+    {
+        LLVOCache::getInstance()->removeCache(LL_PATH_CACHE, true);
+    }
+    else if (!mSecondInstance)
+    {
+        // LLVOCache requires parameters to be initialized, if it's not there, try manually
+        std::string mask = "*";
+        std::string cache_dir = gDirUtilp->getExpandedFilename(LL_PATH_CACHE, "objectcache");
+        LL_INFOS() << "Removing cache at " << cache_dir << LL_ENDL;
+        gDirUtilp->deleteFilesInDir(cache_dir, mask); //delete all files
+        LLFile::remove(cache_dir);
+    }
 }
 
 std::string LLAppViewer::getSecondLifeTitle() const
