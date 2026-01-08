@@ -28,7 +28,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <regex>
 
 #include "llkeywords.h"
 #include "llsdserialize.h"
@@ -63,8 +62,6 @@ LLKeywords::~LLKeywords()
     mLineTokenList.clear();
     std::for_each(mDelimiterTokenList.begin(), mDelimiterTokenList.end(), DeletePointer());
     mDelimiterTokenList.clear();
-    std::for_each(mRegexTokenList.begin(), mRegexTokenList.end(), DeletePointer());
-    mRegexTokenList.clear();
 }
 
 // Add the token as described
@@ -105,11 +102,8 @@ void LLKeywords::addToken(LLKeywordToken::ETokenType type,
     case LLKeywordToken::TT_TWO_SIDED_DELIMITER:
     case LLKeywordToken::TT_DOUBLE_QUOTATION_MARKS:
     case LLKeywordToken::TT_ONE_SIDED_DELIMITER:
+    case LLKeywordToken::TT_LONG_BRACKET:
         mDelimiterTokenList.push_front(new LLKeywordToken(type, color, key, tool_tip, delimiter));
-        break;
-
-    case LLKeywordToken::TT_REGEX_MATCH:
-        mRegexTokenList.push_front(new LLKeywordToken(type, color, key, tool_tip, delimiter));
         break;
 
     default:
@@ -229,13 +223,14 @@ void LLKeywords::processTokens()
     if (mLuauLanguage)
     {
         addToken(LLKeywordToken::TT_DOUBLE_QUOTATION_MARKS, "\'", LLUIColorTable::instance().getColor("SyntaxLslStringLiteral"), "String literal", "\'");
+        // TODO: Might be nice to add a special case for this so we can still highlight expressions in `{}`s
         addToken(LLKeywordToken::TT_DOUBLE_QUOTATION_MARKS, "`", LLUIColorTable::instance().getColor("SyntaxLslStringLiteral"), "String literal", "`");
         // Add Lua-style comments
         addToken(LLKeywordToken::TT_ONE_SIDED_DELIMITER, "--", LLUIColorTable::instance().getColor("SyntaxLslComment"), "Comment (Lua-style single-line)\nNon-functional commentary or disabled code", delimiter);
-        // Add Lua multi-line comments
-        addToken(LLKeywordToken::TT_REGEX_MATCH, "^--\\[(=*)\\[", LLUIColorTable::instance().getColor("SyntaxLslComment"), "Comment (Lua-style multi-line)\nNon-functional commentary or disabled code", "\\]\\1\\]");
-        // Add Lua multi-line strings
-        addToken(LLKeywordToken::TT_REGEX_MATCH, "^\\[(=*)\\[", LLUIColorTable::instance().getColor("SyntaxLslStringLiteral"), "String literal (Lua-style multi-line)", "\\]\\1\\]");
+        // Add Lua multi-line comments (long brackets)
+        addToken(LLKeywordToken::TT_LONG_BRACKET, "--[", LLUIColorTable::instance().getColor("SyntaxLslComment"), "Comment (Lua-style multi-line)\nNon-functional commentary or disabled code", delimiter);
+        // Add Lua multi-line strings (long brackets)
+        addToken(LLKeywordToken::TT_LONG_BRACKET, "[", LLUIColorTable::instance().getColor("SyntaxLslStringLiteral"), "String literal (Lua-style multi-line)", delimiter);
     }
     else
     {
@@ -262,20 +257,6 @@ void LLKeywords::processTokens()
             {
                 LL_WARNS("LSL-Tokens-Processing") << "Map for " + itr->first + " entries is missing! Ignoring." << LL_ENDL;
             }
-        }
-    }
-
-    // Pre-compile all regex patterns for tokens in mRegexTokenList
-    for (LLKeywordToken* regex_token : mRegexTokenList)
-    {
-        std::string start_pattern(regex_token->getToken().begin(), regex_token->getToken().end());
-        try
-        {
-            regex_token->setCompiledRegex(new std::regex(start_pattern));
-        }
-        catch (const std::regex_error& e)
-        {
-            LL_WARNS() << "Regex error in start pattern: " << e.what() << " in pattern: " << start_pattern << LL_ENDL;
         }
     }
 
@@ -522,10 +503,6 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
 
     seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
 
-    std::string text_to_search;
-    text_to_search.reserve(wtext.size());
-
-    bool  has_regex = !mRegexTokenList.empty();
     auto& delimiters = mDelimiterTokenList;
 
     const llwchar* base = wtext.c_str();
@@ -608,129 +585,6 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
 
         while( *cur && *cur != '\n' )
         {
-            // Check for regex matches first
-            bool regex_matched = false;
-            if (has_regex)
-            {
-                S32 seg_start = (S32)(cur - base);
-
-                text_to_search.assign(wtext.begin() + seg_start, wtext.end());
-
-                for (LLKeywordToken* regex_token : mRegexTokenList)
-                {
-                    std::regex* compiled_regex = regex_token->getCompiledRegex();
-
-                    // If we have a pre-compiled regex, use it
-                    if (compiled_regex)
-                    {
-                        std::string end_pattern(regex_token->getDelimiter().begin(), regex_token->getDelimiter().end());
-
-                        try
-                        {
-                            std::smatch start_match;
-
-                            if (std::regex_search(text_to_search, start_match, *compiled_regex) && !start_match.empty())
-                            {
-                                if (start_match.position() == 0) // Match starts at current position
-                                {
-                                    // Calculate segment boundaries for start pattern
-                                    S32 start_match_length = static_cast<S32>(start_match.str().length());
-                                    S32 start_seg_end = seg_start + start_match_length;
-
-                                    if (end_pattern.empty())
-                                    {
-                                        // If no end pattern is provided, treat the entire regex match as a single segment
-                                        // Move cursor past the matched segment
-                                        cur = base + start_seg_end;
-
-                                        // Insert the matched segment
-                                        insertSegments(wtext, *seg_list, regex_token, text_len, seg_start, start_seg_end, style, editor);
-                                    }
-                                    else
-                                    {   // TODO: better optimization for this part
-
-                                        // Look for the end pattern after the start pattern
-                                        std::string remaining_text = text_to_search.substr(start_match_length);
-
-                                        // Process end pattern - replace any capture group references
-                                        std::string actual_end_pattern = end_pattern;
-
-                                        // Handle capture groups in the end pattern (replace \1, \2, etc. with their matched content)
-                                        for (size_t i = 1; i < start_match.size(); ++i)
-                                        {
-                                            std::string capture = start_match[i].str();
-                                            std::string placeholder = "\\" + std::to_string(i);
-
-                                            // Replace all occurrences of the placeholder with the captured content
-                                            size_t pos = 0;
-                                            while ((pos = actual_end_pattern.find(placeholder, pos)) != std::string::npos)
-                                            {
-                                                actual_end_pattern.replace(pos, placeholder.length(), capture);
-                                                pos += capture.length();
-                                            }
-                                        }
-
-                                        try
-                                        {
-                                            std::regex end_regex_pattern(actual_end_pattern);
-                                            std::smatch end_match;
-
-                                            S32 seg_end = start_seg_end;
-
-                                            if (std::regex_search(remaining_text, end_match, end_regex_pattern) && !end_match.empty())
-                                            {
-                                                // Calculate position of end match relative to the original text
-                                                S32 end_match_position = static_cast<S32>(end_match.position());
-                                                S32 end_match_length = static_cast<S32>(end_match.str().length());
-
-                                                // Calculate the total length including both patterns and text between
-                                                seg_end += end_match_position + end_match_length;
-                                            }
-                                            else
-                                            {
-                                                // End pattern not found, treat everything up to EOF as the segment
-                                                seg_end += static_cast<S32>(remaining_text.length());
-                                            }
-
-                                            // Move cursor past the entire matched segment (start + content + end)
-                                            cur = base + seg_end;
-
-                                            // Insert the matched segment
-                                            insertSegments(wtext, *seg_list, regex_token, text_len, seg_start, seg_end, style, editor);
-                                        }
-                                        catch (const std::regex_error& e)
-                                        {
-                                            LL_WARNS() << "Regex error in end pattern: " << e.what() << " in pattern: " << actual_end_pattern << LL_ENDL;
-                                            // Fall back to treating the start match as the entire segment
-                                            cur = base + start_seg_end;
-                                            insertSegments(wtext, *seg_list, regex_token, text_len, seg_start, start_seg_end, style, editor);
-                                        }
-                                    }
-
-                                    regex_matched = true;
-                                    break;
-                                }
-                            }
-                        }
-                        catch (const std::regex_error& e)
-                        {
-                            LL_WARNS() << "Error using compiled regex: " << e.what() << LL_ENDL;
-                        }
-                    }
-                    else
-                    {
-                        // Skip tokens that aren't pre-compiled
-                        LL_WARNS() << "Skipping regex token due to missing pre-compiled pattern: "
-                                   << wstring_to_utf8str(regex_token->getToken()) << LL_ENDL;
-                    }
-                }
-
-                if (regex_matched)
-                {
-                    continue;
-                }
-            }
-
             // Check against delimiters
             {
                 S32 seg_start = 0;
@@ -750,9 +604,79 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                     S32 seg_end = 0;
 
                     seg_start = (S32)(cur - base);
-                    cur += cur_delimiter->getLengthHead();
 
                     LLKeywordToken::ETokenType type = cur_delimiter->getType();
+
+                    // Handle Lua long brackets specially - need to verify full pattern
+                    if (type == LLKeywordToken::TT_LONG_BRACKET)
+                    {
+                        const llwchar* p = cur + cur_delimiter->getLengthHead();  // after --[ or [
+
+                        // Count equals signs
+                        S32 level = 0;
+                        while (*p == '=')
+                        {
+                            level++;
+                            p++;
+                        }
+
+                        // Must have second [
+                        if (*p == '[')
+                        {
+                            p++;  // skip the second [
+                            const llwchar* content_start = p;
+
+                            // Build the closing pattern: ] + level equals + ]
+                            // Search for it in the remaining text
+                            while (*p)
+                            {
+                                if (*p == ']')
+                                {
+                                    // Check if this is our closing bracket
+                                    const llwchar* close_check = p + 1;
+                                    S32 close_equals = 0;
+                                    while (*close_check == '=')
+                                    {
+                                        close_equals++;
+                                        close_check++;
+                                    }
+                                    if (close_equals == level && *close_check == ']')
+                                    {
+                                        // Found the matching close
+                                        seg_end = (S32)(close_check + 1 - base);
+                                        cur = close_check + 1;
+                                        insertSegments(wtext, *seg_list, cur_delimiter, text_len, seg_start, seg_end, style, editor);
+                                        break;
+                                    }
+                                }
+                                p++;
+                            }
+
+                            if (!*p)
+                            {
+                                // No closing found, highlight to end of file
+                                seg_end = text_len - 1;
+                                cur = base + seg_end;
+                                insertSegments(wtext, *seg_list, cur_delimiter, text_len, seg_start, seg_end, style, editor);
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            // Not a valid long bracket (e.g., --[abc), skip this delimiter
+                            cur_delimiter = NULL;
+                        }
+                    }
+
+                    if (!cur_delimiter)
+                    {
+                        // Long bracket validation failed, continue to next character
+                        cur++;
+                        continue;
+                    }
+
+                    cur += cur_delimiter->getLengthHead();
+
                     if(type == LLKeywordToken::TT_TWO_SIDED_DELIMITER || type == LLKeywordToken::TT_DOUBLE_QUOTATION_MARKS)
                     {
                         while( *cur && !cur_delimiter->isTail(cur))
@@ -1008,14 +932,6 @@ void LLKeywords::dump()
     {
         LLKeywordToken* delimiter_token = *iter;
         delimiter_token->dump();
-    }
-
-    LL_INFOS() << "LLKeywords::sRegexTokenList" << LL_ENDL;
-    for (token_list_t::iterator iter = mRegexTokenList.begin();
-         iter != mRegexTokenList.end(); ++iter)
-    {
-        LLKeywordToken* regex_token = *iter;
-        regex_token->dump();
     }
 }
 
