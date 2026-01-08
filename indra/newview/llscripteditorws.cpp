@@ -287,7 +287,7 @@ void LLScriptEditorWSServer::setupConnectionMethods(LLJSONRPCConnection::ptr_t c
                 return LLSD();
             });
         script_connection->registerMethod("script.list",
-            [that, connection_id](const std::string&, const LLSD&, const LLSD& params) -> LLSD
+            [that](const std::string&, const LLSD&, const LLSD& params) -> LLSD
             {
                 auto server = that.lock();
                 if (server)
