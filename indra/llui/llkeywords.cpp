@@ -62,6 +62,8 @@ LLKeywords::~LLKeywords()
     mLineTokenList.clear();
     std::for_each(mDelimiterTokenList.begin(), mDelimiterTokenList.end(), DeletePointer());
     mDelimiterTokenList.clear();
+    mLineTokenByFirstChar.clear();
+    mDelimiterTokenByFirstChar.clear();
 }
 
 // Add the token as described
@@ -96,15 +98,29 @@ void LLKeywords::addToken(LLKeywordToken::ETokenType type,
         break;
 
     case LLKeywordToken::TT_LINE:
-        mLineTokenList.push_front(new LLKeywordToken(type, color, key, tool_tip, LLWStringUtil::null));
+    {
+        LLKeywordToken* token = new LLKeywordToken(type, color, key, tool_tip, LLWStringUtil::null);
+        mLineTokenList.push_front(token);
+        if (!key.empty())
+        {
+            mLineTokenByFirstChar[key[0]].push_front(token);
+        }
         break;
+    }
 
     case LLKeywordToken::TT_TWO_SIDED_DELIMITER:
     case LLKeywordToken::TT_DOUBLE_QUOTATION_MARKS:
     case LLKeywordToken::TT_ONE_SIDED_DELIMITER:
     case LLKeywordToken::TT_LONG_BRACKET:
-        mDelimiterTokenList.push_front(new LLKeywordToken(type, color, key, tool_tip, delimiter));
+    {
+        LLKeywordToken* token = new LLKeywordToken(type, color, key, tool_tip, delimiter);
+        mDelimiterTokenList.push_front(token);
+        if (!key.empty())
+        {
+            mDelimiterTokenByFirstChar[key[0]].push_front(token);
+        }
         break;
+    }
 
     default:
         llassert(0);
@@ -503,7 +519,8 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
 
     seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
 
-    auto& delimiters = mDelimiterTokenList;
+    static LLCachedControl<bool> sDisableSyntaxHighlighting(gSavedSettings, "ScriptEditorDisableSyntaxHighlight", false);
+    const bool disable_syntax_highlighting = sDisableSyntaxHighlighting;
 
     const llwchar* base = wtext.c_str();
     const llwchar* cur = base;
@@ -538,24 +555,26 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
             // Line start tokens
             {
                 bool line_done = false;
-                for (token_list_t::iterator iter = mLineTokenList.begin();
-                     iter != mLineTokenList.end(); ++iter)
+                auto line_token_it = mLineTokenByFirstChar.find(*cur);
+                if (line_token_it != mLineTokenByFirstChar.end())
                 {
-                    LLKeywordToken* cur_token = *iter;
-                    if( cur_token->isHead( cur ) )
+                    for (auto* cur_token : line_token_it->second)
                     {
-                        S32 seg_start = (S32)(cur - base);
-                        while( *cur && *cur != '\n' )
+                        if( cur_token->isHead( cur ) )
                         {
-                            // skip the rest of the line
-                            cur++;
-                        }
-                        S32 seg_end = (S32)(cur - base);
+                            S32 seg_start = (S32)(cur - base);
+                            while( *cur && *cur != '\n' )
+                            {
+                                // skip the rest of the line
+                                cur++;
+                            }
+                            S32 seg_end = (S32)(cur - base);
 
-                        //create segments from seg_start to seg_end
-                        insertSegments(wtext, *seg_list,cur_token, text_len, seg_start, seg_end, style, editor);
-                        line_done = true; // to break out of second loop.
-                        break;
+                            //create segments from seg_start to seg_end
+                            insertSegments(wtext, *seg_list,cur_token, text_len, seg_start, seg_end, style, editor);
+                            line_done = true; // to break out of second loop.
+                            break;
+                        }
                     }
                 }
 
@@ -573,8 +592,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
         }
 
         // Check if syntax highlighting is disabled
-        static LLCachedControl<bool> sDisableSyntaxHighlighting(gSavedSettings, "ScriptEditorDisableSyntaxHighlight", false);
-        if (sDisableSyntaxHighlighting)
+        if (disable_syntax_highlighting)
         {
             if (*cur && *cur != '\n')
             {
@@ -589,12 +607,16 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
             {
                 S32 seg_start = 0;
                 LLKeywordToken* cur_delimiter = NULL;
-                for (auto* delimiter : delimiters)
+                auto delimiter_it = mDelimiterTokenByFirstChar.find(*cur);
+                if (delimiter_it != mDelimiterTokenByFirstChar.end())
                 {
-                    if( delimiter->isHead( cur ) )
+                    for (auto* delimiter : delimiter_it->second)
                     {
-                        cur_delimiter = delimiter;
-                        break;
+                        if( delimiter->isHead( cur ) )
+                        {
+                            cur_delimiter = delimiter;
+                            break;
+                        }
                     }
                 }
 
