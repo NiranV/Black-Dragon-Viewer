@@ -200,6 +200,9 @@ protected:
     typedef std::deque<LLKeywordToken*> token_list_t;
     token_list_t mLineTokenList;
     token_list_t mDelimiterTokenList;
+    typedef std::map<llwchar, token_list_t> token_by_first_char_map_t;
+    token_by_first_char_map_t mLineTokenByFirstChar;
+    token_by_first_char_map_t mDelimiterTokenByFirstChar;
 
     typedef  std::map<std::string, std::string, std::less<>> element_attributes_t;
     typedef element_attributes_t::const_iterator attribute_iterator_t;
