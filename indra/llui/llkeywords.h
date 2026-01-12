@@ -36,6 +36,7 @@
 #include <map>
 #include <list>
 #include <deque>
+#include <vector>
 #include "llpointer.h"
 
 class LLTextSegment;
@@ -124,6 +125,25 @@ public:
                              const LLWString& text,
                              class LLTextEditor& editor,
                              LLStyleConstSP style);
+    struct SegmentOp
+    {
+        enum EOpType
+        {
+            OP_LINE_BREAK,
+            OP_TOKEN
+        };
+        EOpType         type;
+        S32             start;
+        S32             end;
+        LLKeywordToken* token;
+    };
+    typedef std::vector<SegmentOp> segment_ops_t;
+    void        collectSegmentOps(segment_ops_t& ops, const LLWString& text, bool disable_syntax_highlighting) const;
+    void        applySegmentOps(std::vector<LLTextSegmentPtr> *seg_list,
+                                const LLWString& text,
+                                const segment_ops_t& ops,
+                                class LLTextEditor& editor,
+                                LLStyleConstSP style);
     void        initialize(LLSD SyntaxXML, bool luau_language = false);
     void        processTokens();
 

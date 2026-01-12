@@ -41,7 +41,7 @@ public:
         Params();
     };
 
-    ~LLScriptEditor() override {};
+    ~LLScriptEditor() override;
 
     // LLView override
     void    draw() override;
@@ -55,6 +55,8 @@ public:
     LLKeywords& getKeywords();
     bool    getIsLuauLanguage() { return mLuauLanguage; }
     void    setLuauLanguage(bool luau_language) { mLuauLanguage = luau_language; }
+    U32     getKeywordsGeneration() const { return mKeywordsGeneration; }
+    void    applySyntaxSegments(const LLWString& text, const LLKeywords::segment_ops_t& ops);
 
     static std::string getScriptFontSize();
     LLFontGL* getScriptFont();
@@ -68,6 +70,8 @@ private:
     void    drawLineNumbers();
     void  updateSegments() override;
     void  drawSelectionBackground() override;
+    void    ensureSyntaxWorker();
+    void    queueSyntaxParse();
 
     LLKeywords  mKeywordsLua;
     LLKeywords  mKeywordsLSL;
@@ -75,6 +79,12 @@ private:
 
     bool        mShowLineNumbers;
     bool mUseDefaultFontSize;
+    U32         mKeywordsGeneration;
+    S32         mLastQueuedTextGeneration;
+    U32         mLastQueuedKeywordsGeneration;
+    bool        mLastQueuedDisableHighlight;
+    LLKeywords* mLastQueuedKeywords;
+    class LLScriptEditorSyntaxWorker* mSyntaxWorker;
 };
 
 #endif // LL_SCRIPTEDITOR_H
