@@ -32,6 +32,7 @@
 #include "lllocalcliprect.h"
 #include "llviewercontrol.h"
 #include "llworkerthread.h"
+#include <algorithm>
 #include <utility>
 
 static LLWorkerThread& getSyntaxWorkerThread()
@@ -186,7 +187,12 @@ private:
             return;
         }
 
-        mEditor->applySyntaxSegments(result.text, result.ops);
+        mEditor->queueSyntaxApply(std::move(result.text),
+                                  std::move(result.ops),
+                                  result.text_generation,
+                                  result.keywords_generation,
+                                  result.disable_highlight,
+                                  result.keywords);
     }
 
     LLScriptEditor* mEditor;
@@ -219,7 +225,14 @@ LLScriptEditor::LLScriptEditor(const Params& p)
     mLastQueuedKeywordsGeneration(0),
     mLastQueuedDisableHighlight(false),
     mLastQueuedKeywords(nullptr),
-    mSyntaxWorker(nullptr)
+    mSyntaxWorker(nullptr),
+    mSyntaxApplyState(SyntaxApplyState::Idle),
+    mPendingApplyOpIndex(0),
+    mPendingApplySegmentIndex(0),
+    mPendingApplyTextGeneration(-1),
+    mPendingApplyKeywordsGeneration(0),
+    mPendingApplyDisableHighlight(false),
+    mPendingApplyKeywords(nullptr)
 {
     if (mShowLineNumbers)
     {
@@ -339,6 +352,7 @@ void LLScriptEditor::loadKeywords()
     LL_PROFILE_ZONE_SCOPED;
     ensureSyntaxWorker();
     mSyntaxWorker->waitForIdle(true);
+    resetPendingSyntaxApply();
     getKeywords().processTokens();
     ++mKeywordsGeneration;
 
@@ -367,6 +381,7 @@ void LLScriptEditor::updateSegments()
         {
             queueSyntaxParse();
         }
+        processPendingSyntaxApply();
     }
 
     LLTextBase::updateSegments();
@@ -408,6 +423,119 @@ void LLScriptEditor::queueSyntaxParse()
     request.disable_highlight = disable_syntax_highlighting;
     request.keywords = keywords;
     mSyntaxWorker->queueRequest(request);
+}
+
+void LLScriptEditor::queueSyntaxApply(LLWString text,
+                                      LLKeywords::segment_ops_t ops,
+                                      S32 text_generation,
+                                      U32 keywords_generation,
+                                      bool disable_highlight,
+                                      LLKeywords* keywords)
+{
+    if (text_generation != getTextGeneration()
+        || keywords_generation != mKeywordsGeneration
+        || keywords != &getKeywords())
+    {
+        return;
+    }
+
+    resetPendingSyntaxApply();
+
+    constexpr size_t kImmediateOpsThreshold = 500;
+    if (ops.size() <= kImmediateOpsThreshold)
+    {
+        applySyntaxSegments(text, ops);
+        return;
+    }
+
+    mPendingApplyText = std::move(text);
+    mPendingApplyOps = std::move(ops);
+    mPendingApplyTextGeneration = text_generation;
+    mPendingApplyKeywordsGeneration = keywords_generation;
+    mPendingApplyDisableHighlight = disable_highlight;
+    mPendingApplyKeywords = keywords;
+    mPendingApplyOpIndex = 0;
+    mPendingApplySegmentIndex = 0;
+    mPendingApplySegments.clear();
+    mPendingApplySegmentSet.clear();
+    mPendingApplyStyle = new LLStyle(LLStyle::Params().font(getScriptFont()).color(mDefaultColor.get()));
+    mSyntaxApplyState = SyntaxApplyState::Building;
+}
+
+void LLScriptEditor::processPendingSyntaxApply()
+{
+    if (mSyntaxApplyState == SyntaxApplyState::Idle)
+    {
+        return;
+    }
+
+    static LLCachedControl<bool> sDisableSyntaxHighlighting(gSavedSettings, "ScriptEditorDisableSyntaxHighlight", false);
+    if (mPendingApplyTextGeneration != getTextGeneration()
+        || mPendingApplyKeywordsGeneration != mKeywordsGeneration
+        || mPendingApplyKeywords != &getKeywords()
+        || mPendingApplyDisableHighlight != sDisableSyntaxHighlighting)
+    {
+        resetPendingSyntaxApply();
+        return;
+    }
+
+    constexpr size_t kOpsPerSlice = 250;
+    constexpr size_t kSegmentsPerSlice = 250;
+
+    if (mSyntaxApplyState == SyntaxApplyState::Building)
+    {
+        if (mPendingApplyStyle.isNull())
+        {
+            mPendingApplyStyle = new LLStyle(LLStyle::Params().font(getScriptFont()).color(mDefaultColor.get()));
+        }
+        bool done = getKeywords().applySegmentOpsRange(&mPendingApplySegments,
+                                                      mPendingApplyText,
+                                                      mPendingApplyOps,
+                                                      mPendingApplyOpIndex,
+                                                      kOpsPerSlice,
+                                                      *this,
+                                                      mPendingApplyStyle);
+        if (done)
+        {
+            mSyntaxApplyState = SyntaxApplyState::Inserting;
+        }
+        return;
+    }
+
+    size_t end_index = std::min(mPendingApplySegmentIndex + kSegmentsPerSlice, mPendingApplySegments.size());
+    for (; mPendingApplySegmentIndex < end_index; ++mPendingApplySegmentIndex)
+    {
+        LLTextSegmentPtr segment = mPendingApplySegments[mPendingApplySegmentIndex];
+        segment->linkToDocument(this);
+        mPendingApplySegmentSet.insert(segment);
+    }
+
+    if (mPendingApplySegmentIndex >= mPendingApplySegments.size())
+    {
+        S32 saved_scroll_index = mScrollIndex;
+        segment_set_t old_segments;
+        old_segments.swap(mSegments);
+        mSegments.swap(mPendingApplySegmentSet);
+        mScrollIndex = saved_scroll_index;
+        needsReflow(0);
+        resetPendingSyntaxApply();
+    }
+}
+
+void LLScriptEditor::resetPendingSyntaxApply()
+{
+    mSyntaxApplyState = SyntaxApplyState::Idle;
+    mPendingApplyText.clear();
+    mPendingApplyOps.clear();
+    mPendingApplySegments.clear();
+    mPendingApplySegmentSet.clear();
+    mPendingApplyOpIndex = 0;
+    mPendingApplySegmentIndex = 0;
+    mPendingApplyStyle = LLStyleConstSP();
+    mPendingApplyTextGeneration = -1;
+    mPendingApplyKeywordsGeneration = 0;
+    mPendingApplyDisableHighlight = false;
+    mPendingApplyKeywords = nullptr;
 }
 
 void LLScriptEditor::applySyntaxSegments(const LLWString& text, const LLKeywords::segment_ops_t& ops)

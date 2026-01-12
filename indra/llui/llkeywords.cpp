@@ -828,29 +828,41 @@ void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, b
     }
 }
 
-void LLKeywords::applySegmentOps(std::vector<LLTextSegmentPtr> *seg_list,
-                                 const LLWString& wtext,
-                                 const segment_ops_t& ops,
-                                 LLTextEditor& editor,
-                                 LLStyleConstSP style)
+bool LLKeywords::applySegmentOpsRange(std::vector<LLTextSegmentPtr> *seg_list,
+                                      const LLWString& wtext,
+                                      const segment_ops_t& ops,
+                                      size_t& op_index,
+                                      size_t max_ops,
+                                      LLTextEditor& editor,
+                                      LLStyleConstSP style)
 {
     if (wtext.empty())
     {
-        return;
+        return true;
     }
 
-    // Clear the segment list
-    seg_list->clear();
-    // Reserve capacity for segments based on an estimated average of 8 characters per segment.
-    constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
-    seg_list->reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
+    if (op_index == 0)
+    {
+        // Clear the segment list
+        seg_list->clear();
+        // Reserve capacity for segments based on an estimated average of 8 characters per segment.
+        constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
+        seg_list->reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
+
+        S32 text_len = static_cast<S32>(wtext.size()) + 1;
+        seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
+    }
 
     S32 text_len = static_cast<S32>(wtext.size()) + 1;
-
-    seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
-
-    for (const auto& op : ops)
+    size_t end_index = op_index + max_ops;
+    if (end_index > ops.size())
     {
+        end_index = ops.size();
+    }
+
+    for (; op_index < end_index; ++op_index)
+    {
+        const auto& op = ops[op_index];
         if (op.type == SegmentOp::OP_LINE_BREAK)
         {
             LLTextSegmentPtr text_segment = new LLLineBreakTextSegment(style, op.start);
@@ -862,6 +874,18 @@ void LLKeywords::applySegmentOps(std::vector<LLTextSegmentPtr> *seg_list,
             insertSegments(wtext, *seg_list, op.token, text_len, op.start, op.end, style, editor);
         }
     }
+
+    return op_index >= ops.size();
+}
+
+void LLKeywords::applySegmentOps(std::vector<LLTextSegmentPtr> *seg_list,
+                                 const LLWString& wtext,
+                                 const segment_ops_t& ops,
+                                 LLTextEditor& editor,
+                                 LLStyleConstSP style)
+{
+    size_t op_index = 0;
+    applySegmentOpsRange(seg_list, wtext, ops, op_index, ops.size(), editor, style);
 }
 
 // Walk through a string, applying the rules specified by the keyword token list and

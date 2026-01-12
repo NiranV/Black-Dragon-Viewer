@@ -37,6 +37,7 @@
 #include <list>
 #include <deque>
 #include <vector>
+#include <cstddef>
 #include "llpointer.h"
 
 class LLTextSegment;
@@ -144,6 +145,13 @@ public:
                                 const segment_ops_t& ops,
                                 class LLTextEditor& editor,
                                 LLStyleConstSP style);
+    bool        applySegmentOpsRange(std::vector<LLTextSegmentPtr> *seg_list,
+                                     const LLWString& text,
+                                     const segment_ops_t& ops,
+                                     size_t& op_index,
+                                     size_t max_ops,
+                                     class LLTextEditor& editor,
+                                     LLStyleConstSP style);
     void        initialize(LLSD SyntaxXML, bool luau_language = false);
     void        processTokens();
 

@@ -29,6 +29,7 @@
 #define LL_SCRIPTEDITOR_H
 
 #include "lltexteditor.h"
+#include <cstddef>
 
 class LLScriptEditor : public LLTextEditor
 {
@@ -64,14 +65,29 @@ public:
 
   protected:
     friend class LLUICtrlFactory;
+    friend class LLScriptEditorSyntaxWorker;
     LLScriptEditor(const Params& p);
 
 private:
+    enum class SyntaxApplyState
+    {
+        Idle,
+        Building,
+        Inserting
+    };
     void    drawLineNumbers();
     void  updateSegments() override;
     void  drawSelectionBackground() override;
     void    ensureSyntaxWorker();
     void    queueSyntaxParse();
+    void    queueSyntaxApply(LLWString text,
+                             LLKeywords::segment_ops_t ops,
+                             S32 text_generation,
+                             U32 keywords_generation,
+                             bool disable_highlight,
+                             LLKeywords* keywords);
+    void    processPendingSyntaxApply();
+    void    resetPendingSyntaxApply();
 
     LLKeywords  mKeywordsLua;
     LLKeywords  mKeywordsLSL;
@@ -85,6 +101,18 @@ private:
     bool        mLastQueuedDisableHighlight;
     LLKeywords* mLastQueuedKeywords;
     class LLScriptEditorSyntaxWorker* mSyntaxWorker;
+    SyntaxApplyState mSyntaxApplyState;
+    LLWString   mPendingApplyText;
+    LLKeywords::segment_ops_t mPendingApplyOps;
+    segment_vec_t mPendingApplySegments;
+    segment_set_t mPendingApplySegmentSet;
+    size_t      mPendingApplyOpIndex;
+    size_t      mPendingApplySegmentIndex;
+    LLStyleConstSP mPendingApplyStyle;
+    S32         mPendingApplyTextGeneration;
+    U32         mPendingApplyKeywordsGeneration;
+    bool        mPendingApplyDisableHighlight;
+    LLKeywords* mPendingApplyKeywords;
 };
 
 #endif // LL_SCRIPTEDITOR_H
