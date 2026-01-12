@@ -254,7 +254,9 @@ LLScriptEditor::~LLScriptEditor()
 bool LLScriptEditor::postBuild()
 {
     gSavedSettings.getControl("LSLFontSizeName")->getCommitSignal()->connect(boost::bind(&LLScriptEditor::onFontSizeChange, this));
-    return LLTextEditor::postBuild();
+    bool result = LLTextEditor::postBuild();
+    setFont(getScriptFont());
+    return result;
 }
 
 void LLScriptEditor::draw()
@@ -621,6 +623,7 @@ void LLScriptEditor::onFontSizeChange()
 {
     if (!mUseDefaultFontSize)
     {
+        setFont(getScriptFont());
         needsReflow();
     }
 }
