@@ -577,9 +577,9 @@ void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, b
         // Check if syntax highlighting is disabled
         if (disable_syntax_highlighting)
         {
-            if (*cur && *cur != '\n')
+            while (*cur && *cur != '\n')
             {
-                cur++;
+                ++cur;
             }
             continue; // skip processing any further syntax highlighting
         }
