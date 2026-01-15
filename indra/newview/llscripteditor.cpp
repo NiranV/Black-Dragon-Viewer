@@ -443,6 +443,7 @@ void LLScriptEditor::queueSyntaxApply(LLWString text,
 
     resetPendingSyntaxApply();
 
+    // Small updates can apply synchronously; larger ones use background slices.
     constexpr size_t kImmediateOpsThreshold = 500;
     if (ops.size() <= kImmediateOpsThreshold)
     {
@@ -481,6 +482,7 @@ void LLScriptEditor::processPendingSyntaxApply()
         return;
     }
 
+    // Slice sizes control UI budget while applying large highlight updates.
     constexpr size_t kOpsPerSlice = 250;
     constexpr size_t kSegmentsPerSlice = 250;
 

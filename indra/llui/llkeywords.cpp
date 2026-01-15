@@ -506,6 +506,8 @@ void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, b
     {
         return;
     }
+    // Heuristic to reduce reallocation churn on large scripts.
+    ops.reserve(wtext.size() / 8);
 
     const llwchar* base = wtext.c_str();
     const llwchar* cur = base;
