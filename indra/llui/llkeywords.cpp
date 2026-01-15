@@ -497,6 +497,7 @@ bool LLKeywords::WStringMapIndex::operator<(const LLKeywords::WStringMapIndex &o
 }
 
 LLTrace::BlockTimerStatHandle FTM_SYNTAX_COLORING("Syntax Coloring");
+constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
 
 void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, bool disable_syntax_highlighting) const
 {
@@ -507,7 +508,7 @@ void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, b
         return;
     }
     // Heuristic to reduce reallocation churn on large scripts.
-    ops.reserve(wtext.size() / 8);
+    ops.reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
 
     const llwchar* base = wtext.c_str();
     const llwchar* cur = base;
@@ -848,7 +849,6 @@ bool LLKeywords::applySegmentOpsRange(std::vector<LLTextSegmentPtr> *seg_list,
         // Clear the segment list
         seg_list->clear();
         // Reserve capacity for segments based on an estimated average of 8 characters per segment.
-        constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
         seg_list->reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
 
         S32 text_len = static_cast<S32>(wtext.size()) + 1;
