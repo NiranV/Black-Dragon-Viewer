@@ -497,42 +497,29 @@ bool LLKeywords::WStringMapIndex::operator<(const LLKeywords::WStringMapIndex &o
 }
 
 LLTrace::BlockTimerStatHandle FTM_SYNTAX_COLORING("Syntax Coloring");
+constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
 
-// Walk through a string, applying the rules specified by the keyword token list and
-// create a list of color segments.
-void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLWString& wtext, LLTextEditor& editor, LLStyleConstSP style)
+void LLKeywords::collectSegmentOps(segment_ops_t& ops, const LLWString& wtext, bool disable_syntax_highlighting) const
 {
-    LL_RECORD_BLOCK_TIME(FTM_SYNTAX_COLORING);
+    ops.clear();
 
-    if( wtext.empty() )
+    if (wtext.empty())
     {
         return;
     }
-
-    // Clear the segment list
-    seg_list->clear();
-    // Reserve capacity for segments based on an estimated average of 8 characters per segment.
-    constexpr size_t AVERAGE_SEGMENT_LENGTH = 8;
-    seg_list->reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
-
-    S32 text_len = static_cast<S32>(wtext.size()) + 1;
-
-    seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
-
-    static LLCachedControl<bool> sDisableSyntaxHighlighting(gSavedSettings, "ScriptEditorDisableSyntaxHighlight", false);
-    const bool disable_syntax_highlighting = sDisableSyntaxHighlighting;
+    // Heuristic to reduce reallocation churn on large scripts.
+    ops.reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
 
     const llwchar* base = wtext.c_str();
     const llwchar* cur = base;
+
     while( *cur )
     {
         if( *cur == '\n' || cur == base )
         {
             if( *cur == '\n' )
             {
-                LLTextSegmentPtr text_segment = new LLLineBreakTextSegment(style, (S32)(cur - base));
-                text_segment->setToken( 0 );
-                insertSegment( *seg_list, text_segment, text_len, style, editor);
+                ops.push_back({SegmentOp::OP_LINE_BREAK, (S32)(cur - base), 0, nullptr});
                 cur++;
                 if( !*cur || *cur == '\n' )
                 {
@@ -570,8 +557,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                             }
                             S32 seg_end = (S32)(cur - base);
 
-                            //create segments from seg_start to seg_end
-                            insertSegments(wtext, *seg_list,cur_token, text_len, seg_start, seg_end, style, editor);
+                            ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, cur_token});
                             line_done = true; // to break out of second loop.
                             break;
                         }
@@ -594,9 +580,9 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
         // Check if syntax highlighting is disabled
         if (disable_syntax_highlighting)
         {
-            if (*cur && *cur != '\n')
+            while (*cur && *cur != '\n')
             {
-                cur++;
+                ++cur;
             }
             continue; // skip processing any further syntax highlighting
         }
@@ -646,7 +632,6 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                         if (*p == '[')
                         {
                             p++;  // skip the second [
-                            const llwchar* content_start = p;
 
                             // Build the closing pattern: ] + level equals + ]
                             // Search for it in the remaining text
@@ -667,7 +652,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                                         // Found the matching close
                                         seg_end = (S32)(close_check + 1 - base);
                                         cur = close_check + 1;
-                                        insertSegments(wtext, *seg_list, cur_delimiter, text_len, seg_start, seg_end, style, editor);
+                                        ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, cur_delimiter});
                                         break;
                                     }
                                 }
@@ -677,9 +662,9 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                             if (!*p)
                             {
                                 // No closing found, highlight to end of file
-                                seg_end = text_len - 1;
+                                seg_end = static_cast<S32>(wtext.size());
                                 cur = base + seg_end;
-                                insertSegments(wtext, *seg_list, cur_delimiter, text_len, seg_start, seg_end, style, editor);
+                                ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, cur_delimiter});
                             }
                             continue;
                         }
@@ -761,7 +746,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                         seg_end = seg_start + between_delimiters + cur_delimiter->getLengthHead();
                     }
 
-                    insertSegments(wtext, *seg_list, cur_delimiter, text_len, seg_start, seg_end, style, editor);
+                    ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, cur_delimiter});
                     // Note: we don't increment cur, since the end of one delimited seg may be immediately
                     // followed by the start of another one.
                     continue;
@@ -794,13 +779,12 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                     S32 seg_end = seg_start + seg_len;
 
                     // First try to match the whole token (including dots for Lua namespaces)
-                    word_token_map_t::iterator map_iter = mWordTokenMap.find(WStringMapIndex(word_start, seg_len));
+                    word_token_map_t::const_iterator map_iter = mWordTokenMap.find(WStringMapIndex(word_start, seg_len));
 
                     if (map_iter != mWordTokenMap.end())
                     {
                         // Found a match for the complete token (including any namespace)
-                        LLKeywordToken* cur_token = map_iter->second;
-                        insertSegments(wtext, *seg_list, cur_token, text_len, seg_start, seg_end, style, editor);
+                        ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, map_iter->second});
                     }
                     else if (namespace_dots > 0 && mLuauLanguage)
                     {
@@ -815,8 +799,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                             if (map_iter != mWordTokenMap.end())
                             {
                                 // Found a match for the namespace prefix, highlight just that part
-                                LLKeywordToken* cur_token = map_iter->second;
-                                insertSegments(wtext, *seg_list, cur_token, text_len, seg_start, seg_start + prefix_len, style, editor);
+                                ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_start + prefix_len, map_iter->second});
 
                                 // Now try to match the function part (after the dot)
                                 const llwchar* func_part = last_dot + 1;
@@ -830,13 +813,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
                                     if (map_iter != mWordTokenMap.end())
                                     {
                                         // Found a match for the function part
-                                        LLKeywordToken* cur_token = map_iter->second;
-                                        insertSegments(wtext, *seg_list, cur_token, text_len, seg_start, seg_end, style, editor);
-                                    }
-                                    else
-                                    {
-                                        // No token found, continue without incrementing cur
-                                        // since we already advanced it while collecting the word
+                                        ops.push_back({SegmentOp::OP_TOKEN, seg_start, seg_end, map_iter->second});
                                     }
                                 }
                             }
@@ -852,6 +829,84 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
             }
         }
     }
+}
+
+bool LLKeywords::applySegmentOpsRange(std::vector<LLTextSegmentPtr> *seg_list,
+                                      const LLWString& wtext,
+                                      const segment_ops_t& ops,
+                                      size_t& op_index,
+                                      size_t max_ops,
+                                      LLTextEditor& editor,
+                                      LLStyleConstSP style)
+{
+    if (wtext.empty())
+    {
+        return true;
+    }
+
+    if (op_index == 0)
+    {
+        // Clear the segment list
+        seg_list->clear();
+        // Reserve capacity for segments based on an estimated average of 8 characters per segment.
+        seg_list->reserve(wtext.size() / AVERAGE_SEGMENT_LENGTH);
+
+        S32 text_len = static_cast<S32>(wtext.size()) + 1;
+        seg_list->push_back( new LLNormalTextSegment( style, 0, text_len, editor ) );
+    }
+
+    S32 text_len = static_cast<S32>(wtext.size()) + 1;
+    size_t end_index = op_index + max_ops;
+    if (end_index > ops.size())
+    {
+        end_index = ops.size();
+    }
+
+    for (; op_index < end_index; ++op_index)
+    {
+        const auto& op = ops[op_index];
+        if (op.type == SegmentOp::OP_LINE_BREAK)
+        {
+            LLTextSegmentPtr text_segment = new LLLineBreakTextSegment(style, op.start);
+            text_segment->setToken( 0 );
+            insertSegment( *seg_list, text_segment, text_len, style, editor);
+        }
+        else
+        {
+            insertSegments(wtext, *seg_list, op.token, text_len, op.start, op.end, style, editor);
+        }
+    }
+
+    return op_index >= ops.size();
+}
+
+void LLKeywords::applySegmentOps(std::vector<LLTextSegmentPtr> *seg_list,
+                                 const LLWString& wtext,
+                                 const segment_ops_t& ops,
+                                 LLTextEditor& editor,
+                                 LLStyleConstSP style)
+{
+    size_t op_index = 0;
+    applySegmentOpsRange(seg_list, wtext, ops, op_index, ops.size(), editor, style);
+}
+
+// Walk through a string, applying the rules specified by the keyword token list and
+// create a list of color segments.
+void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLWString& wtext, LLTextEditor& editor, LLStyleConstSP style)
+{
+    LL_RECORD_BLOCK_TIME(FTM_SYNTAX_COLORING);
+
+    if( wtext.empty() )
+    {
+        return;
+    }
+
+    static LLCachedControl<bool> sDisableSyntaxHighlighting(gSavedSettings, "ScriptEditorDisableSyntaxHighlight", false);
+    const bool disable_syntax_highlighting = sDisableSyntaxHighlighting;
+
+    segment_ops_t ops;
+    collectSegmentOps(ops, wtext, disable_syntax_highlighting);
+    applySegmentOps(seg_list, wtext, ops, editor, style);
 }
 
 void LLKeywords::insertSegments(const LLWString& wtext, std::vector<LLTextSegmentPtr>& seg_list, LLKeywordToken* cur_token, S32 text_len, S32 seg_start, S32 seg_end, LLStyleConstSP style, LLTextEditor& editor )
