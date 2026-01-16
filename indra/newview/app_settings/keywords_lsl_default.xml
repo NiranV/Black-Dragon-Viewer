@@ -4442,6 +4442,87 @@
             <key>value</key>
             <string>5</string>
          </map>
+         <key>PARCEL_SALE_AGENT</key>
+         <map>
+            <key>tooltip</key>
+            <string>The agent authorized to purchase the parcel.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>2</string>
+         </map>
+         <key>PARCEL_SALE_ERROR_BAD_PARAMS</key>
+         <map>
+            <key>tooltip</key>
+            <string>The parameters provided to set the sale information are invalid.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>5</string>
+         </map>
+         <key>PARCEL_SALE_ERROR_INVALID_PRICE</key>
+         <map>
+            <key>tooltip</key>
+            <string>The price set for the parcel is invalid (e.g., less than or equal to 0).</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>4</string>
+         </map>
+         <key>PARCEL_SALE_ERROR_IN_ESCROW</key>
+         <map>
+            <key>tooltip</key>
+            <string>The parcel is currently in escrow and cannot be set for sale.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>3</string>
+         </map>
+         <key>PARCEL_SALE_ERROR_NO_PARCEL</key>
+         <map>
+            <key>tooltip</key>
+            <string>The parcel could not be found.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>1</string>
+         </map>
+         <key>PARCEL_SALE_ERROR_NO_PERMISSIONS</key>
+         <map>
+            <key>tooltip</key>
+            <string>The script does not have the required permissions to set the sale information.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>2</string>
+         </map>
+         <key>PARCEL_SALE_OBJECTS</key>
+         <map>
+            <key>tooltip</key>
+            <string>Are the objects on the parcel included in the sale?</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>3</string>
+         </map>
+         <key>PARCEL_SALE_OK</key>
+         <map>
+            <key>tooltip</key>
+            <string>The sale information was successfully set.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>0</string>
+         </map>
+         <key>PARCEL_SALE_PRICE</key>
+         <map>
+            <key>tooltip</key>
+            <string>The price of the parcel. If no authorized agent is set, must be greater than 0.</string>
+            <key>type</key>
+            <string>integer</string>
+            <key>value</key>
+            <string>1</string>
+         </map>
          <key>PASSIVE</key>
          <map>
             <key>tooltip</key>
@@ -21991,6 +22072,38 @@ If another state is defined before the default state, the compiler will report a
             <real>0</real>
             <key>tooltip</key>
             <string>Sets the specified PermissionFlag permission to the value specified by PermissionMask on the object the script is attached to.</string>
+         </map>
+         <key>llSetParcelForSale</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>ForSale</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>If TRUE, the parcel is put up for sale.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>Options</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A list of options to set for the sale.</string>
+                     <key>type</key>
+                     <string>list</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>integer</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Sets the parcel the object is on for sale.\nForSale is a boolean, if TRUE the parcel is put up for sale. Options is a list of options to set for the sale, such as price, authorized buyer, and whether to include objects on the parcel.\n Setting ForSale to FALSE will remove the parcel from sale and clear any options that were set.</string>
          </map>
          <key>llSetParcelMusicURL</key>
          <map>
