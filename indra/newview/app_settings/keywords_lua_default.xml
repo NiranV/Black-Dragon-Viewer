@@ -10260,7 +10260,7 @@ vector position - position in local coordinates
       </map>
       <key>functions</key>
       <map>
-         <!-- Global Lua functions -->
+         <!-- Builtin Luau functions -->
          <key>assert</key>
          <map>
             <key>arguments</key>
@@ -10327,6 +10327,8 @@ vector position - position in local coordinates
          </map>
          <key>gcinfo</key>
          <map>
+            <key>arguments</key>
+            <array />
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -10335,29 +10337,6 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the total heap size in kilobytes.</string>
-         </map>
-         <key>getfenv</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>target</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional function or stack index to get the environment table for.</string>
-                     <key>type</key>
-                     <string>(function | number)?</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>table</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the environment table for the specified function or stack index.</string>
          </map>
          <key>getmetatable</key>
          <map>
@@ -10596,38 +10575,6 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns a subset of arguments or the number of arguments.</string>
-         </map>
-         <key>setfenv</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>target</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The function or stack index to set the environment for.</string>
-                     <key>type</key>
-                     <string>function | number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>env</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The environment table to set.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>void</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Changes the environment table for the specified function or stack index.</string>
          </map>
          <key>setmetatable</key>
          <map>
@@ -10921,6 +10868,122 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns values from an array in the specified index range.</string>
+         </map>
+         <!-- Global SLua functions -->
+         <key>dangerouslyexecuterequiredmodule</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>(...any) -&gt; ...any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>...any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Dangerously executes a required module function</string>
+         </map>
+         <key>toquaternion</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>val</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Converts a value to a quaternion, returns nil if invalid</string>
+         </map>
+         <key>torotation</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>val</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Converts a value to a rotation (quaternion), returns nil if invalid</string>
+         </map>
+         <key>touuid</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>val</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string | buffer | uuid</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>uuid?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Converts a string, buffer, or uuid to a uuid, returns nil if invalid</string>
+         </map>
+         <key>tovector</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>val</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Converts a value to a vector, returns nil if invalid</string>
          </map>
          <!-- math library-->
          <key>math</key>         
