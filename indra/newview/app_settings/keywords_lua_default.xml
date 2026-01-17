@@ -149,16 +149,28 @@
          <map>
             <key>tooltip</key>
             <string>Lua nil: represents the absence of a useful value.</string>
+            <key>type</key>
+            <string>nil</string>
+            <key>value</key>
+            <string>nil</string>
          </map>
          <key>true</key>
          <map>
             <key>tooltip</key>
             <string>Lua true: Boolean true value.</string>
+            <key>type</key>
+            <string>boolean</string>
+            <key>value</key>
+            <string>true</string>
          </map>
          <key>false</key>
          <map>
             <key>tooltip</key>
             <string>Lua false: Boolean false value.</string>
+            <key>type</key>
+            <string>boolean</string>
+            <key>value</key>
+            <string>false</string>
          </map>
          <!-- Same as for LSL -->
          <key>ACTIVE</key>
