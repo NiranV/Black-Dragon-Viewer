@@ -12756,7 +12756,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(boolean, any?)</string>
+            <string>(boolean, string?)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12772,7 +12772,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>A function to be executed by the new coroutine.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(...any) -&gt; ...any</string>
                   </map>
                </map>
             </array>
@@ -12788,7 +12788,7 @@ vector position - position in local coordinates
          <key>coroutine.isyieldable</key>
          <map>
             <key>arguments</key>
-            <array/>
+            <array />
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -12796,7 +12796,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns true if the coroutine can yield.</string>
+            <string>Returns true if the currently running coroutine can yield.</string>
          </map>
          <key>coroutine.resume</key>
          <map>
@@ -12812,19 +12812,19 @@ vector position - position in local coordinates
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Arguments to pass to the coroutine.</string>
                      <key>type</key>
-                     <string>variadic</string>
+                     <string>...any</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(boolean, variadic)</string>
+            <string>(boolean, ...any)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12833,7 +12833,7 @@ vector position - position in local coordinates
          <key>coroutine.running</key>
          <map>
             <key>arguments</key>
-            <array/>
+            <array />
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -12841,7 +12841,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the currently running coroutine, or nil if running in the main coroutine.</string>
+            <string>Returns the currently running coroutine, or nil if called from in the main coroutine.</string>
          </map>
          <key>coroutine.status</key>
          <map>
@@ -12860,7 +12860,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string</string>
+            <string>"running" | "suspended" | "normal" | "dead"</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12876,14 +12876,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>A function to execute in a coroutine.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(...any) -&gt; ...any</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>function</string>
+            <string>(...any) -&gt; ...any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12894,19 +12894,19 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Values to pass to the resuming code.</string>
                      <key>type</key>
-                     <string>variadic</string>
+                     <string>...any</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>variadic</string>
+            <string>...any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
