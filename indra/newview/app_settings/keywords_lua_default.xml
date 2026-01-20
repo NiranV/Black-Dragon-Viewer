@@ -12961,47 +12961,6 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Returns information about a stack frame or function based on specified format.</string>
          </map>
-         <key>debug.traceback</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>co</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional thread reference for traceback.</string>
-                     <key>type</key>
-                     <string>thread</string>
-                  </map>
-               </map>
-               <map>
-                  <key>msg</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional message prepended to the traceback.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>level</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional stack level to start traceback.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns a human-readable call stack starting from the specified level.</string>
-         </map>
          <key>debug.getinfo</key>
          <map>
             <key>arguments</key>
@@ -13075,6 +13034,61 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Returns the name and value of a local variable at the specified stack level.</string>
          </map>
+         <key>debug.getmetatable</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Value whose metatable is retrieved.</string>
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>table|nil</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the metatable of the given value, if any.</string>
+         </map>
+         <key>debug.getupvalue</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>function</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Function whose upvalues are being retrieved.</string>
+                     <key>type</key>
+                     <string>function</string>
+                  </map>
+               </map>
+               <map>
+                  <key>index</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Index of the upvalue.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string|any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the name and value of an upvalue for a given function.</string>
+         </map>
          <key>debug.setlocal</key>
          <map>
             <key>arguments</key>
@@ -13116,37 +13130,37 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Sets the value of a local variable at the specified stack level.</string>
          </map>
-         <key>debug.getupvalue</key>
+         <key>debug.setmetatable</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>function</key>
+                  <key>value</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Function whose upvalues are being retrieved.</string>
+                     <string>Value whose metatable is to be set.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>any</string>
                   </map>
                </map>
                <map>
-                  <key>index</key>
+                  <key>metatable</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Index of the upvalue.</string>
+                     <string>Table to be set as the new metatable.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>table|nil</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string|any</string>
+            <string>any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the name and value of an upvalue for a given function.</string>
+            <string>Sets the metatable for a given value.</string>
          </map>
          <key>debug.setupvalue</key>
          <map>
@@ -13189,60 +13203,46 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Sets the value of an upvalue for a given function.</string>
          </map>
-         <key>debug.getmetatable</key>
+         <key>debug.traceback</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>value</key>
+                  <key>co</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Value whose metatable is retrieved.</string>
+                     <string>Optional thread reference for traceback.</string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>thread</string>
+                  </map>
+               </map>
+               <map>
+                  <key>msg</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Optional message prepended to the traceback.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>level</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Optional stack level to start traceback.</string>
+                     <key>type</key>
+                     <string>number</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>table|nil</string>
+            <string>string</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the metatable of the given value, if any.</string>
-         </map>
-         <key>debug.setmetatable</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>value</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Value whose metatable is to be set.</string>
-                     <key>type</key>
-                     <string>any</string>
-                  </map>
-               </map>
-               <map>
-                  <key>metatable</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to be set as the new metatable.</string>
-                     <key>type</key>
-                     <string>table|nil</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>any</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Sets the metatable for a given value.</string>
+            <string>Returns a human-readable call stack starting from the specified level.</string>
          </map>
          <!-- llbase64 library-->
          <key>llbase64.decode</key>
