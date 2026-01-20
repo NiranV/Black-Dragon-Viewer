@@ -12920,47 +12920,6 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>debug namespace.</string>
          </map>
-         <key>debug.info</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>co</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional thread or function reference.</string>
-                     <key>type</key>
-                     <string>thread|function|number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>level</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Stack level or function reference for inspection.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>String specifying requested information.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>any</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns information about a stack frame or function based on specified format.</string>
-         </map>
          <key>debug.getinfo</key>
          <map>
             <key>arguments</key>
@@ -13088,6 +13047,47 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the name and value of an upvalue for a given function.</string>
+         </map>
+         <key>debug.info</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>co</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Optional thread or function reference.</string>
+                     <key>type</key>
+                     <string>thread|function|number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>level</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Stack level or function reference for inspection.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>String specifying requested information.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns information about a stack frame or function based on specified format.</string>
          </map>
          <key>debug.setlocal</key>
          <map>
