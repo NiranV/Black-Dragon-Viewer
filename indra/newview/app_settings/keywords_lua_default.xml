@@ -4684,7 +4684,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x20</string>
+            <string>0x00020</string>
          </map>
          <key>PERMISSION_CHANGE_JOINTS</key>
          <map>
@@ -4693,7 +4693,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x100</string>
+            <string>0x00100</string>
          </map>
          <key>PERMISSION_CHANGE_LINKS</key>
          <map>
@@ -4702,7 +4702,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x80</string>
+            <string>0x00080</string>
          </map>
          <key>PERMISSION_CHANGE_PERMISSIONS</key>
          <map>
@@ -4711,7 +4711,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x200</string>
+            <string>0x00200</string>
          </map>
          <key>PERMISSION_CONTROL_CAMERA</key>
          <map>
@@ -4720,7 +4720,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x800</string>
+            <string>0x00800</string>
          </map>
          <key>PERMISSION_DEBIT</key>
          <map>
@@ -4729,7 +4729,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x2</string>
+            <string>0x00002</string>
          </map>
          <key>PERMISSION_OVERRIDE_ANIMATIONS</key>
          <map>
@@ -4738,7 +4738,16 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x8000</string>
+            <string>0x08000</string>
+         </map>
+         <key>PERMISSION_PRIVILEGED_LAND_ACCESS</key>
+         <map>
+            <key>tooltip</key>
+            <string>Grants the script privileged access to land parcel functions, such as parcel sale.</string>
+            <key>type</key>
+            <string>number</string>
+            <key>value</key>
+            <string>0x80000</string>
          </map>
          <key>PERMISSION_RELEASE_OWNERSHIP</key>
          <map>
@@ -4747,7 +4756,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x40</string>
+            <string>0x00040</string>
          </map>
          <key>PERMISSION_REMAP_CONTROLS</key>
          <map>
@@ -4756,7 +4765,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x8</string>
+            <string>0x00008</string>
          </map>
          <key>PERMISSION_RETURN_OBJECTS</key>
          <map>
@@ -4765,7 +4774,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>65536</string>
+            <string>0x10000</string>
          </map>
          <key>PERMISSION_SILENT_ESTATE_MANAGEMENT</key>
          <map>
@@ -4774,16 +4783,16 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x4000</string>
+            <string>0x04000</string>
          </map>
          <key>PERMISSION_TAKE_CONTROLS</key>
          <map>
             <key>tooltip</key>
-            <string>If this permission enabled, the object can successfully call the llTakeControls libray call.</string>
+            <string>If this permission enabled, the object can successfully call the llTakeControls library call.</string>
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x4</string>
+            <string>0x00004</string>
          </map>
          <key>PERMISSION_TELEPORT</key>
          <map>
@@ -4792,7 +4801,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x1000</string>
+            <string>0x01000</string>
          </map>
          <key>PERMISSION_TRACK_CAMERA</key>
          <map>
@@ -4801,7 +4810,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x400</string>
+            <string>0x00400</string>
          </map>
          <key>PERMISSION_TRIGGER_ANIMATION</key>
          <map>
@@ -4810,7 +4819,7 @@
             <key>type</key>
             <string>integer</string>
             <key>value</key>
-            <string>0x10</string>
+            <string>0x00010</string>
          </map>
          <key>PERM_ALL</key>
          <map>
