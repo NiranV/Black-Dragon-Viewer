@@ -27090,7 +27090,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>boolean</string>
+            <string>number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
