@@ -11794,7 +11794,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Offset in source buffer (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -11803,14 +11803,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Number of bytes to copy (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -11876,14 +11876,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Number of bytes to fill (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12381,7 +12381,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12422,7 +12422,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12463,7 +12463,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12504,7 +12504,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12545,7 +12545,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12588,14 +12588,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Number of bytes to write (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12636,7 +12636,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12677,7 +12677,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12718,7 +12718,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
