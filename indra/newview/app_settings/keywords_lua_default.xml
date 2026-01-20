@@ -263,7 +263,7 @@ type rotation = quaternion</string>
       </map>
       <key>constants</key>
       <map>
-         <!-- Lua inbuilt-->
+         <!-- Luau Builtin Constants -->
          <key>nil</key>
          <map>
             <key>tooltip</key>
@@ -290,6 +290,111 @@ type rotation = quaternion</string>
             <string>boolean</string>
             <key>value</key>
             <string>false</string>
+         </map>
+         <!-- SLua Library Constants -->
+         <key>lljson._NAME</key>
+         <map>
+            <key>tooltip</key>
+            <string>Name of the lljson library</string>
+            <key>type</key>
+            <string>string</string>
+            <key>value</key>
+            <string>lljson</string>
+         </map>
+         <key>lljson._VERSION</key>
+         <map>
+            <key>tooltip</key>
+            <string>Version of the lljson library</string>
+            <key>type</key>
+            <string>string</string>
+            <key>value</key>
+            <string>2.1.0.11</string>
+         </map>
+         <key>lljson.array_mt</key>
+         <map>
+            <key>tooltip</key>
+            <string>Metatable for declaring table as an array for json encode</string>
+            <key>type</key>
+            <string>{ [any]: any }</string>
+            <key>value</key>
+            <string>{}</string>
+         </map>
+         <key>lljson.empty_array</key>
+         <map>
+            <key>tooltip</key>
+            <string>A constant to pass for an empty array to json encode</string>
+            <key>type</key>
+            <string>userdata</string>
+         </map>
+         <key>lljson.empty_array_mt</key>
+         <map>
+            <key>tooltip</key>
+            <string>Metatable for declaring table as an empty array for json encode</string>
+            <key>type</key>
+            <string>{ [any]: any }</string>
+            <key>value</key>
+            <string>{}</string>
+         </map>
+         <key>lljson.null</key>
+         <map>
+            <key>tooltip</key>
+            <string>A constant to pass for null to json encode</string>
+            <key>type</key>
+            <string>userdata</string>
+         </map>
+         <key>math.huge</key>
+         <map>
+            <key>tooltip</key>
+            <string>A value larger than any other numeric value (infinity)</string>
+            <key>type</key>
+            <string>number</string>
+            <key>value</key>
+            <string>inf</string>
+         </map>
+         <key>math.pi</key>
+         <map>
+            <key>tooltip</key>
+            <string>The value of pi</string>
+            <key>type</key>
+            <string>number</string>
+            <key>value</key>
+            <string>.14159265358979</string>
+         </map>
+         <key>quaternion.identity</key>
+         <map>
+            <key>tooltip</key>
+            <string>Identity quaternion constant</string>
+            <key>type</key>
+            <string>quaternion</string>
+            <key>value</key>
+            <string>&lt;0, 0, 0, 1&gt;</string>
+         </map>
+         <key>utf8.charpattern</key>
+         <map>
+            <key>tooltip</key>
+            <string>Pattern that matches exactly one UTF-8 byte sequence</string>
+            <key>type</key>
+            <string>string</string>
+            <key>value</key>
+            <string>[\\\\x00-\\\\x7F\\\\xC2-\\\\xF4][\\\\x80-\\\\xBF]*</string>
+         </map>
+         <key>vector.one</key>
+         <map>
+            <key>tooltip</key>
+            <string>A one vector</string>
+            <key>type</key>
+            <string>vector</string>
+            <key>value</key>
+            <string>&lt;1,1,1&gt;</string>
+         </map>
+         <key>vector.zero</key>
+         <map>
+            <key>tooltip</key>
+            <string>A zero vector</string>
+            <key>type</key>
+            <string>vector</string>
+            <key>value</key>
+            <string>&lt;0,0,0&gt;</string>
          </map>
          <!-- Same as for LSL -->
          <key>ACTIVE</key>
@@ -10388,7 +10493,7 @@ vector position - position in local coordinates
       </map>
       <key>functions</key>
       <map>
-         <!-- Builtin Luau functions -->
+         <!-- Luau Builtin Functions -->
          <key>assert</key>
          <map>
             <key>type-arguments</key>
@@ -11207,6 +11312,442 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Converts a value to a vector, returns nil if invalid</string>
+         </map>
+         <!-- bit32 library-->
+         <key>bit32.arshift</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>disp</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Arithmetic right shift</string>
+         </map>
+         <key>bit32.band</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Bitwise AND of all arguments</string>
+         </map>
+         <key>bit32.bnot</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Bitwise NOT</string>
+         </map>
+         <key>bit32.bor</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Bitwise OR of all arguments</string>
+         </map>
+         <key>bit32.btest</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>boolean</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns true if bitwise AND of all arguments is not zero</string>
+         </map>
+         <key>bit32.bxor</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Bitwise XOR of all arguments</string>
+         </map>
+         <key>bit32.byteswap</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Swap byte order</string>
+         </map>
+         <key>bit32.countlz</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Count leading zeros</string>
+         </map>
+         <key>bit32.countrz</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Count trailing zeros</string>
+         </map>
+         <key>bit32.extract</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>field</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>width</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Extracts bits from n at position field with width</string>
+         </map>
+         <key>bit32.lrotate</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>disp</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Left rotate</string>
+         </map>
+         <key>bit32.lshift</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>disp</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Left shift</string>
+         </map>
+         <key>bit32.replace</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>v</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>field</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>width</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Replaces bits in n at position field with width using value v</string>
+         </map>
+         <key>bit32.rrotate</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>disp</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Right rotate</string>
+         </map>
+         <key>bit32.rshift</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>disp</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Right shift</string>
          </map>
          <!-- buffer library-->
          <key>buffer</key>
@@ -12192,6 +12733,180 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Copies bytes from the source buffer into the target buffer.</string>
          </map>
+         <!-- coroutine library-->
+         <key>coroutine.close</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>co</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>thread</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>(boolean, string?)</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Closes a coroutine, returns success and optional error message</string>
+         </map>
+         <key>coroutine.create</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>(...any) -&gt; ...any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>thread</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a new coroutine from a function</string>
+         </map>
+         <key>coroutine.isyieldable</key>
+         <map>
+            <key>arguments</key>
+            <array />
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>boolean</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns true if the coroutine can yield</string>
+         </map>
+         <key>coroutine.resume</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>co</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>thread</string>
+                  </map>
+               </map>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>(boolean, ...any)</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Resumes a coroutine, returns success and results</string>
+         </map>
+         <key>coroutine.running</key>
+         <map>
+            <key>arguments</key>
+            <array />
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>thread?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the running coroutine, or nil if called from main thread</string>
+         </map>
+         <key>coroutine.status</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>co</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>thread</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>"running" | "suspended" | "normal" | "dead"</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the status of a coroutine</string>
+         </map>
+         <key>coroutine.wrap</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>(...any) -&gt; ...any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>(...any) -&gt; ...any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a coroutine and returns a function that resumes it</string>
+         </map>
+         <key>coroutine.yield</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>...any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>...any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Suspends the coroutine and returns values to resume</string>
+         </map>
          <!-- debug library-->
          <key>debug</key>
          <map>
@@ -12966,6 +13681,155 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
+         </map>
+         <!-- llbase64 library-->
+         <key>llbase64.decode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>data</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Decodes a base64 string to a string</string>
+         </map>
+         <key>llbase64.encode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>data</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string | buffer</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Encodes a string or buffer to base64</string>
+         </map>
+         <!-- lljson library-->
+         <key>lljson.decode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>json</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Decodes a JSON string to a Lua value</string>
+         </map>
+         <key>lljson.encode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Encodes a Lua value as JSON</string>
+         </map>
+         <key>lljson.sldecode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>json</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Decodes a JSON string to a Lua value preserving SL types</string>
+         </map>
+         <key>lljson.slencode</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+               <map>
+                  <key>tight</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>boolean?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Encodes a Lua value as JSON preserving SL types. Use tight to encode more compactly.</string>
          </map>
          <!-- math library-->
          <key>math</key>         
@@ -13949,6 +14813,318 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the current Unix timestamp or the timestamp of the given date.</string>
+         </map>
+         <!-- quaternion library-->
+         <key>quaternion</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>y</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>z</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string />
+         </map>
+         <key>quaternion.conjugate</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns conjugate of quaternion</string>
+         </map>
+         <key>quaternion.create</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>y</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>z</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Constructor</string>
+         </map>
+         <key>quaternion.dot</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Dot product of two quaternions</string>
+         </map>
+         <key>quaternion.magnitude</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns magnitude of quaternion</string>
+         </map>
+         <key>quaternion.normalize</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns normalized quaternion</string>
+         </map>
+         <key>quaternion.slerp</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>quaternion</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Spherical linear interpolation</string>
+         </map>
+         <key>quaternion.tofwd</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns forward vector from quaternion rotation</string>
+         </map>
+         <key>quaternion.toleft</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns left vector from quaternion rotation</string>
+         </map>
+         <key>quaternion.toup</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>q</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>quaternion</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns up vector from quaternion rotation</string>
          </map>
          <!-- string library-->
          <key>string</key>
@@ -14952,6 +16128,104 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Creates a shallow copy of a table.</string>
+         </map>
+         <!-- utf8 library-->
+         <key>utf8.offset</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>number?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the byte position of the n-th character</string>
+         </map>
+         <!-- uuid library-->
+         <key>uuid</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>self</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>any</string>
+                  </map>
+               </map>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string | buffer | uuid</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>uuid?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Allows calling uuid() as a constructor</string>
+         </map>
+         <key>uuid.create</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string />
+                     <key>type</key>
+                     <string>string | buffer | uuid</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>uuid?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a new uuid from a string, buffer, or existing uuid. Returns nil if the string is not a valid UUID. Throws an error if the buffer is shorter than 16 bytes.</string>
          </map>
          <!-- vector library-->
          <key>vector</key>
