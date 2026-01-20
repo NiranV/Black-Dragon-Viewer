@@ -147,22 +147,38 @@
             <key>tooltip</key>
             <string>Opaque external data.</string>
          </map>
-         <key>vector</key>
-         <map>
-            <key>tooltip</key>
-            <string>A set of three float values. Used to represent colors (RGB), positions, directions, and velocities.</string>
-         </map>
          <key>unknown</key>
          <map>
             <key>tooltip</key>
             <string>The union of every type. Similar to any without disabling type-checking.</string>
+         </map>
+         <!-- SLua Base Classes -->
+         <key>LLDetectedEvent</key>
+         <map>
+            <key>tooltip</key>
+            <string>Event detection class providing access to detected object/avatar information</string>
+         </map>
+         <key>quaternion</key>
+         <map>
+            <key>tooltip</key>
+            <string>A set of four float values. Used to represent rotations and orientations.</string>
          </map>
          <key>uuid</key>
          <map>
             <key>tooltip</key>
             <string>A 128‑bit unique identifier formatted as 36 hexadecimal characters (8‑4‑4‑4‑12), e.g. "A822FF2B-FF02-461D-B45D-DCD10A2DE0C2".</string>
          </map>
-         <!-- Type Aliases -->
+         <key>vector</key>
+         <map>
+            <key>tooltip</key>
+            <string>A set of three float values. Used to represent colors (RGB), positions, directions, and velocities.</string>
+         </map>
+         <!-- SLua Type Aliases -->
+         <key>LLDetectedEventHandler</key>
+         <map>
+            <key>tooltip</key>
+            <string>type LLDetectedEventHandler = (detected: {LLDetectedEvent}) -&gt; ()</string>
+         </map>
          <key>LLDetectedEventName</key>
          <map>
             <key>tooltip</key>
@@ -232,6 +248,17 @@ type OsDateTime = {
             <key>tooltip</key>
             <string>'rotation' is an alias for 'quaternion'
 type rotation = quaternion</string>
+         <!-- SLua Classes -->
+         </map>
+         <key>LLEvents</key>
+         <map>
+            <key>tooltip</key>
+            <string>Event registration and management class for Second Life events</string>
+         </map>
+         <key>LLTimers</key>
+         <map>
+            <key>tooltip</key>
+            <string>Timer management class for scheduling periodic and one-time callbacks</string>
          </map>
       </map>
       <key>constants</key>
