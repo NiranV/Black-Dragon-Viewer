@@ -101,10 +101,26 @@
       </map>
       <key>types</key>
       <map>
+         <!-- Lua inbuilt -->
+         <key>any</key>
+         <map>
+            <key>tooltip</key>
+            <string>The unspecified type. Disables type-checking. Use unknown instead to use type-checking.</string>
+         </map>
          <key>boolean</key>
          <map>
             <key>tooltip</key>
             <string>Boolean: represents a true or false value.</string>
+         </map>
+         <key>buffer</key>
+         <map>
+            <key>tooltip</key>
+            <string>Read-write binary data.</string>
+         </map>
+         <key>never</key>
+         <map>
+            <key>tooltip</key>
+            <string>The empty type that contains no values.</string>
          </map>
          <key>number</key>
          <map>
@@ -114,7 +130,7 @@
          <key>string</key>
          <map>
             <key>tooltip</key>
-            <string>Text data (UTF‑8).</string>
+            <string>Read-only binary data. Usually UTF-8-encoded text.</string>
          </map>
          <key>table</key>
          <map>
@@ -134,14 +150,19 @@
          <key>vector</key>
          <map>
             <key>tooltip</key>
-            <string>A vector is a data type that contains a set of three float values.\nVectors are used to represent colors (RGB), positions, and directions/velocities.</string>
+            <string>A set of three float values. Used to represent colors (RGB), positions, directions, and velocities.</string>
+         </map>
+         <key>unknown</key>
+         <map>
+            <key>tooltip</key>
+            <string>The union of every type. Similar to any without disabling type-checking.</string>
          </map>
          <key>uuid</key>
          <map>
             <key>tooltip</key>
             <string>A 128‑bit unique identifier formatted as 36 hexadecimal characters (8‑4‑4‑4‑12), e.g. "A822FF2B-FF02-461D-B45D-DCD10A2DE0C2".</string>
          </map>
-      </map>
+               </map>
       <key>constants</key>
       <map>
          <!-- Lua inbuilt-->
