@@ -11757,212 +11757,6 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>buffer namespace.</string>
          </map>
-         <key>buffer.create</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>size</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Size of the buffer to create.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>buffer</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Creates a buffer of the requested size with all bytes initialized to 0.</string>
-         </map>
-         <key>buffer.fromstring</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>str</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>String to initialize the buffer with.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>buffer</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Creates a buffer initialized to the contents of the string.</string>
-         </map>
-         <key>buffer.tostring</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to convert to a string.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the buffer data as a string.</string>
-         </map>
-         <key>buffer.len</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to get the size of.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the size of the buffer in bytes.</string>
-         </map>
-         <key>buffer.readi8</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to read from.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads a signed 8-bit integer from the buffer at the given offset.</string>
-         </map>
-         <key>buffer.writei8</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to write to.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to write at.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>value</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Value to write.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>void</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Writes a signed 8-bit integer to the buffer at the given offset.</string>
-         </map>
-         <key>buffer.readstring</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to start reading.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>count</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number of bytes to read.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads a string of the given length from the buffer at the specified offset.</string>
-         </map>
          <key>buffer.copy</key>
          <map>
             <key>arguments</key>
@@ -12021,6 +11815,29 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Copies bytes from the source buffer into the target buffer.</string>
+         </map>
+         <key>buffer.create</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>size</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Size of the buffer to create.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>buffer</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a buffer of the requested size with all bytes initialized to 0.</string>
          </map>
          <key>buffer.fill</key>
          <map>
@@ -12072,7 +11889,53 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Fills the buffer with the specified value starting at the given offset.</string>
          </map>
-         <key>buffer.readu8</key>
+         <key>buffer.fromstring</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>str</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>String to initialize the buffer with.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>buffer</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a buffer initialized to the contents of the string.</string>
+         </map>
+         <key>buffer.len</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to get the size of.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the size of the buffer in bytes.</string>
+         </map>
+         <key>buffer.readf32</key>
          <map>
             <key>arguments</key>
             <array>
@@ -12102,9 +11965,9 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Reads an unsigned 8-bit integer from the buffer at the given offset.</string>
+            <string>Reads a 32-bit floating-point number from the buffer at the given offset.</string>
          </map>
-         <key>buffer.writeu8</key>
+         <key>buffer.readf64</key>
          <map>
             <key>arguments</key>
             <array>
@@ -12112,7 +11975,7 @@ vector position - position in local coordinates
                   <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Buffer to write to.</string>
+                     <string>Buffer to read from.</string>
                      <key>type</key>
                      <string>buffer</string>
                   </map>
@@ -12121,16 +11984,7 @@ vector position - position in local coordinates
                   <key>offset</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Byte offset to write at.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>value</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Value to write.</string>
+                     <string>Byte offset to read from.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -12139,11 +11993,11 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Writes an unsigned 8-bit integer to the buffer at the given offset.</string>
+            <string>Reads a 64-bit floating-point number from the buffer at the given offset.</string>
          </map>
          <key>buffer.readi16</key>
          <map>
@@ -12177,48 +12031,7 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Reads a signed 16-bit integer from the buffer at the given offset.</string>
          </map>
-         <key>buffer.writei16</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to write to.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to write at.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>value</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Value to write.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>void</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Writes a signed 16-bit integer to the buffer at the given offset.</string>
-         </map>
-         <key>buffer.readf32</key>
+         <key>buffer.readi32</key>
          <map>
             <key>arguments</key>
             <array>
@@ -12248,7 +12061,199 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Reads a 32-bit floating-point number from the buffer at the given offset.</string>
+            <string>Reads a signed 32-bit integer from the buffer at the given offset.</string>
+         </map>
+         <key>buffer.readi8</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to read from.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads a signed 8-bit integer from the buffer at the given offset.</string>
+         </map>
+         <key>buffer.readstring</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to start reading.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>count</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Number of bytes to read.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads a string of the given length from the buffer at the specified offset.</string>
+         </map>
+         <key>buffer.readu16</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to read from.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads an unsigned 16-bit integer from the buffer at the given offset.</string>
+         </map>
+         <key>buffer.readu32</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to read from.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads an unsigned 32-bit integer from the buffer at the given offset.</string>
+         </map>
+         <key>buffer.readu8</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to read from.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads an unsigned 8-bit integer from the buffer at the given offset.</string>
+         </map>
+         <key>buffer.tostring</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to convert to a string.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the buffer data as a string.</string>
          </map>
          <key>buffer.writef32</key>
          <map>
@@ -12291,38 +12296,6 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Writes a 32-bit floating-point number to the buffer at the given offset.</string>
          </map>
-         <key>buffer.readf64</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to read from.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads a 64-bit floating-point number from the buffer at the given offset.</string>
-         </map>
          <key>buffer.writef64</key>
          <map>
             <key>arguments</key>
@@ -12364,39 +12337,7 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Writes a 64-bit floating-point number to the buffer at the given offset.</string>
          </map>
-         <key>buffer.readu16</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to read from.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads an unsigned 16-bit integer from the buffer at the given offset.</string>
-         </map>
-         <key>buffer.writeu16</key>
+         <key>buffer.writei16</key>
          <map>
             <key>arguments</key>
             <array>
@@ -12435,39 +12376,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Writes an unsigned 16-bit integer to the buffer at the given offset.</string>
-         </map>
-         <key>buffer.readi32</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to read from.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads a signed 32-bit integer from the buffer at the given offset.</string>
+            <string>Writes a signed 16-bit integer to the buffer at the given offset.</string>
          </map>
          <key>buffer.writei32</key>
          <map>
@@ -12510,39 +12419,7 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Writes a signed 32-bit integer to the buffer at the given offset.</string>
          </map>
-         <key>buffer.readu32</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to read from.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads an unsigned 32-bit integer from the buffer at the given offset.</string>
-         </map>
-         <key>buffer.writeu32</key>
+         <key>buffer.writei8</key>
          <map>
             <key>arguments</key>
             <array>
@@ -12581,48 +12458,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Writes an unsigned 32-bit integer to the buffer at the given offset.</string>
-         </map>
-         <key>buffer.readstring</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>b</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Buffer to read from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>offset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Byte offset to start reading.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>count</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number of bytes to read.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Reads a string of the given length from the buffer at the specified offset.</string>
+            <string>Writes a signed 8-bit integer to the buffer at the given offset.</string>
          </map>
          <key>buffer.writestring</key>
          <map>
@@ -12674,51 +12510,33 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Writes data from a string into the buffer at the specified offset.</string>
          </map>
-         <key>buffer.copy</key>
+         <key>buffer.writeu16</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>target</key>
+                  <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Target buffer to copy into.</string>
+                     <string>Buffer to write to.</string>
                      <key>type</key>
                      <string>buffer</string>
                   </map>
                </map>
                <map>
-                  <key>targetOffset</key>
+                  <key>offset</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Offset in target buffer.</string>
+                     <string>Byte offset to write at.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>source</key>
+                  <key>value</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Source buffer to copy from.</string>
-                     <key>type</key>
-                     <string>buffer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>sourceOffset</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Offset in source buffer (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>count</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number of bytes to copy (optional).</string>
+                     <string>Value to write.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -12731,7 +12549,89 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Copies bytes from the source buffer into the target buffer.</string>
+            <string>Writes an unsigned 16-bit integer to the buffer at the given offset.</string>
+         </map>
+         <key>buffer.writeu32</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to write to.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to write at.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Value to write.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>void</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Writes an unsigned 32-bit integer to the buffer at the given offset.</string>
+         </map>
+         <key>buffer.writeu8</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to write to.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>offset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Byte offset to write at.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Value to write.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>void</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Writes an unsigned 8-bit integer to the buffer at the given offset.</string>
          </map>
          <!-- coroutine library-->
          <key>coroutine.close</key>
