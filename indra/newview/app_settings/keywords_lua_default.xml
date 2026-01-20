@@ -11935,6 +11935,47 @@ vector position - position in local coordinates
             <key>tooltip</key>
             <string>Returns the size of the buffer in bytes.</string>
          </map>
+         <key>buffer.readbits</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to read from.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>bitOffset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Bit offset to read at.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>bitCount</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Number of bits to read. Must be in [0, 32] range.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reads up to 32 bits from the buffer at the given offset.</string>
+         </map>
          <key>buffer.readf32</key>
          <map>
             <key>arguments</key>
@@ -12254,6 +12295,56 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the buffer data as a string.</string>
+         </map>
+         <key>buffer.writebits</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Buffer to write to.</string>
+                     <key>type</key>
+                     <string>buffer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>bitOffset</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Bit offset to write at.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>bitCount</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Number of bits to write. Must be in [0, 32] range.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>value</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Source of bits to write.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>()</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Writes up to 32 bits to the buffer at the given offset.</string>
          </map>
          <key>buffer.writef32</key>
          <map>
