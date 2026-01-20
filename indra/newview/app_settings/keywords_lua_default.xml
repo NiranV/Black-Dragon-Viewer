@@ -11314,24 +11314,31 @@ vector position - position in local coordinates
             <string>Converts a value to a vector, returns nil if invalid</string>
          </map>
          <!-- bit32 library-->
+         <key>bit32</key>
+         <map>
+            <key>energy</key>
+            <real>-1.0</real>
+            <key>tooltip</key>
+            <string>bit32 library functions.</string>
+         </map>
          <key>bit32.arshift</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>disp</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number of bits to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -11344,19 +11351,19 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Arithmetic right shift</string>
+            <string>Shifts n by i bits to the right. If i is negative, a left shift is performed.</string>
          </map>
          <key>bit32.band</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>...</key>
+                  <key>args</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Numbers to perform bitwise AND on.</string>
                      <key>type</key>
-                     <string>...number</string>
+                     <string>array</string>
                   </map>
                </map>
             </array>
@@ -11367,17 +11374,17 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Bitwise AND of all arguments</string>
+            <string>Performs a bitwise AND operation on input numbers.</string>
          </map>
          <key>bit32.bnot</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to negate.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -11390,7 +11397,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Bitwise NOT</string>
+            <string>Returns the bitwise negation of the input number.</string>
          </map>
          <key>bit32.bor</key>
          <map>
@@ -12725,6 +12732,13 @@ vector position - position in local coordinates
             <string>Writes an unsigned 8-bit integer to the buffer at the given offset.</string>
          </map>
          <!-- coroutine library-->
+         <key>coroutine</key>
+         <map>
+            <key>energy</key>
+            <real>-1.0</real>
+            <key>tooltip</key>
+            <string>coroutine namespace.</string>
+         </map>
          <key>coroutine.close</key>
          <map>
             <key>arguments</key>
@@ -12733,7 +12747,7 @@ vector position - position in local coordinates
                   <key>co</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>The coroutine to close.</string>
                      <key>type</key>
                      <string>thread</string>
                   </map>
@@ -12742,11 +12756,11 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(boolean, string?)</string>
+            <string>(boolean, any?)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Closes a coroutine, returns success and optional error message</string>
+            <string>Closes a coroutine, returning true if successful or false and an error.</string>
          </map>
          <key>coroutine.create</key>
          <map>
@@ -12756,9 +12770,9 @@ vector position - position in local coordinates
                   <key>f</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>A function to be executed by the new coroutine.</string>
                      <key>type</key>
-                     <string>(...any) -&gt; ...any</string>
+                     <string>function</string>
                   </map>
                </map>
             </array>
@@ -12769,12 +12783,12 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Creates a new coroutine from a function</string>
+            <string>Returns a new coroutine that, when resumed, will run function f.</string>
          </map>
          <key>coroutine.isyieldable</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array/>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -12782,7 +12796,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns true if the coroutine can yield</string>
+            <string>Returns true if the coroutine can yield.</string>
          </map>
          <key>coroutine.resume</key>
          <map>
@@ -12792,34 +12806,34 @@ vector position - position in local coordinates
                   <key>co</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>The coroutine to resume.</string>
                      <key>type</key>
                      <string>thread</string>
                   </map>
                </map>
                <map>
-                  <key>...</key>
+                  <key>args</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Arguments to pass to the coroutine.</string>
                      <key>type</key>
-                     <string>...any</string>
+                     <string>variadic</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(boolean, ...any)</string>
+            <string>(boolean, variadic)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Resumes a coroutine, returns success and results</string>
+            <string>Resumes a coroutine, returning true and results if successful, or false and an error.</string>
          </map>
          <key>coroutine.running</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array/>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -12827,7 +12841,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the running coroutine, or nil if called from main thread</string>
+            <string>Returns the currently running coroutine, or nil if running in the main coroutine.</string>
          </map>
          <key>coroutine.status</key>
          <map>
@@ -12837,7 +12851,7 @@ vector position - position in local coordinates
                   <key>co</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>The coroutine to check status of.</string>
                      <key>type</key>
                      <string>thread</string>
                   </map>
@@ -12846,11 +12860,11 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>"running" | "suspended" | "normal" | "dead"</string>
+            <string>string</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the status of a coroutine</string>
+            <string>Returns the status of the coroutine: "running", "suspended", "normal", or "dead".</string>
          </map>
          <key>coroutine.wrap</key>
          <map>
@@ -12860,43 +12874,43 @@ vector position - position in local coordinates
                   <key>f</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>A function to execute in a coroutine.</string>
                      <key>type</key>
-                     <string>(...any) -&gt; ...any</string>
+                     <string>function</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(...any) -&gt; ...any</string>
+            <string>function</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Creates a coroutine and returns a function that resumes it</string>
+            <string>Creates a coroutine and returns a function that resumes it.</string>
          </map>
          <key>coroutine.yield</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>...</key>
+                  <key>args</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Values to pass to the resuming code.</string>
                      <key>type</key>
-                     <string>...any</string>
+                     <string>variadic</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>...any</string>
+            <string>variadic</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Suspends the coroutine and returns values to resume</string>
+            <string>Yields the current coroutine, passing arguments to the resuming code.</string>
          </map>
          <!-- debug library-->
          <key>debug</key>
@@ -13229,449 +13243,6 @@ vector position - position in local coordinates
             <real>0</real>
             <key>tooltip</key>
             <string>Sets the metatable for a given value.</string>
-         </map>
-         <!-- coroutine library-->
-         <key>coroutine</key>
-         <map>
-            <key>energy</key>
-            <real>-1.0</real>
-            <key>tooltip</key>
-            <string>coroutine namespace.</string>
-         </map>
-         <key>coroutine.create</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A function to be executed by the new coroutine.</string>
-                     <key>type</key>
-                     <string>function</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>thread</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns a new coroutine that, when resumed, will run function f.</string>
-         </map>
-         <key>coroutine.running</key>
-         <map>
-            <key>arguments</key>
-            <array/>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>thread?</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the currently running coroutine, or nil if running in the main coroutine.</string>
-         </map>
-         <key>coroutine.status</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>co</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The coroutine to check status of.</string>
-                     <key>type</key>
-                     <string>thread</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the status of the coroutine: "running", "suspended", "normal", or "dead".</string>
-         </map>
-         <key>coroutine.wrap</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A function to execute in a coroutine.</string>
-                     <key>type</key>
-                     <string>function</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>function</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Creates a coroutine and returns a function that resumes it.</string>
-         </map>
-         <key>coroutine.yield</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Values to pass to the resuming code.</string>
-                     <key>type</key>
-                     <string>variadic</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>variadic</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Yields the current coroutine, passing arguments to the resuming code.</string>
-         </map>
-         <key>coroutine.isyieldable</key>
-         <map>
-            <key>arguments</key>
-            <array/>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>boolean</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns true if the coroutine can yield.</string>
-         </map>
-         <key>coroutine.resume</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>co</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The coroutine to resume.</string>
-                     <key>type</key>
-                     <string>thread</string>
-                  </map>
-               </map>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Arguments to pass to the coroutine.</string>
-                     <key>type</key>
-                     <string>variadic</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>(boolean, variadic)</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Resumes a coroutine, returning true and results if successful, or false and an error.</string>
-         </map>
-         <key>coroutine.close</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>co</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The coroutine to close.</string>
-                     <key>type</key>
-                     <string>thread</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>(boolean, any?)</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Closes a coroutine, returning true if successful or false and an error.</string>
-         </map>
-
-         <key>bit32</key>
-         <map>
-            <key>energy</key>
-            <real>-1.0</real>
-            <key>tooltip</key>
-            <string>bit32 library functions.</string>
-         </map>
-         <key>bit32.arshift</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number to shift.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number of bits to shift.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Shifts n by i bits to the right. If i is negative, a left shift is performed.</string>
-         </map>
-         <key>bit32.band</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Numbers to perform bitwise AND on.</string>
-                     <key>type</key>
-                     <string>array</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Performs a bitwise AND operation on input numbers.</string>
-         </map>
-         <key>bit32.bnot</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Number to negate.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the bitwise negation of the input number.</string>
-         </map>
-         <key>utf8</key>
-         <map>
-            <key>energy</key>
-            <real>-1.0</real>
-            <key>tooltip</key>
-            <string>UTF-8 library functions.</string>
-         </map>
-         <key>utf8.offset</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Character position.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the byte offset of the nth Unicode codepoint in string s.</string>
-         </map>
-         <key>utf8.char</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Unicode codepoints.</string>
-                     <key>type</key>
-                     <string>array</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Creates a string from Unicode codepoints.</string>
-         </map>
-         <key>utf8.codepoint</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>j</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Ending position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>array</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the Unicode codepoints in the specified range of string s.</string>
-         </map>
-         <key>utf8.len</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>j</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Ending position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the number of Unicode codepoints in the specified range of string s.</string>
-         </map>
-         <key>utf8.codes</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>iterator</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
          </map>
          <!-- llbase64 library-->
          <key>llbase64.decode</key>
@@ -16121,6 +15692,13 @@ vector position - position in local coordinates
             <string>Creates a shallow copy of a table.</string>
          </map>
          <!-- utf8 library-->
+         <key>utf8</key>
+         <map>
+            <key>energy</key>
+            <real>-1.0</real>
+            <key>tooltip</key>
+            <string>UTF-8 library functions.</string>
+         </map>
          <key>utf8.offset</key>
          <map>
             <key>arguments</key>
@@ -16129,7 +15707,7 @@ vector position - position in local coordinates
                   <key>s</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input string.</string>
                      <key>type</key>
                      <string>string</string>
                   </map>
@@ -16138,7 +15716,7 @@ vector position - position in local coordinates
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Character position.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -16147,20 +15725,148 @@ vector position - position in local coordinates
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Starting position (optional).</string>
                      <key>type</key>
-                     <string>number?</string>
+                     <string>number</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number?</string>
+            <string>number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the byte position of the n-th character</string>
+            <string>Returns the byte offset of the nth Unicode codepoint in string s.</string>
+         </map>
+         <key>utf8.char</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>args</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Unicode codepoints.</string>
+                     <key>type</key>
+                     <string>array</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a string from Unicode codepoints.</string>
+         </map>
+         <key>utf8.codepoint</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting position (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>j</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Ending position (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>array</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the Unicode codepoints in the specified range of string s.</string>
+         </map>
+         <key>utf8.len</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting position (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>j</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Ending position (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the number of Unicode codepoints in the specified range of string s.</string>
+         </map>
+         <key>utf8.codes</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>iterator</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
          </map>
          <!-- uuid library-->
          <key>uuid</key>
