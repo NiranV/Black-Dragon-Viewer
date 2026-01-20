@@ -10364,6 +10364,10 @@ vector position - position in local coordinates
          <!-- Builtin Luau functions -->
          <key>assert</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>T</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10372,7 +10376,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The value to check for truthiness.</string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>T?</string>
                   </map>
                </map>
                <map>
@@ -10388,7 +10392,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>any</string>
+            <string>T</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10420,7 +10424,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>never</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10456,7 +10460,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>table?</string>
+            <string>{any}?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10464,6 +10468,11 @@ vector position - position in local coordinates
          </map>
          <key>next</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10472,7 +10481,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to traverse.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{[K]: V}</string>
                   </map>
                </map>
                <map>
@@ -10481,14 +10490,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Optional key to start traversal after.</string>
                      <key>type</key>
-                     <string>any?</string>
+                     <string>K?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>(any, any)?</string>
+            <string>(K, V)?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10574,6 +10583,11 @@ vector position - position in local coordinates
          </map>
          <key>rawget</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10582,7 +10596,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to perform the lookup on.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{[K]: V}</string>
                   </map>
                </map>
                <map>
@@ -10591,14 +10605,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The key to look up in the table.</string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>K</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>any?</string>
+            <string>V?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10606,6 +10620,11 @@ vector position - position in local coordinates
          </map>
          <key>rawset</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10614,7 +10633,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to assign the value to.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{[K]: V}</string>
                   </map>
                </map>
                <map>
@@ -10623,7 +10642,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The key to assign the value to.</string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>K</string>
                   </map>
                </map>
                <map>
@@ -10632,18 +10651,46 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The value to assign.</string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>V</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>{[K]: V}</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
             <string>Assigns a value to a table field bypassing metatables.</string>
+         </map>
+         <key>rawlen</key>
+         <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>The table to assign the value to.</string>
+                     <key>type</key>
+                     <string>{[any]: any} | string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the length of a table or string bypassing metatables.</string>
          </map>
          <key>select</key>
          <map>
@@ -10659,7 +10706,7 @@ vector position - position in local coordinates
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>The arguments to select from.</string>
@@ -10812,6 +10859,10 @@ vector position - position in local coordinates
          </map>
          <key>ipairs</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10820,14 +10871,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to iterate over.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{V}</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>iterator</string>
+            <string>(({V}, number) -&gt; (number?, V), {V}, number)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10835,6 +10886,11 @@ vector position - position in local coordinates
          </map>
          <key>pairs</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10843,14 +10899,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to iterate over.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{[K]: V}</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>iterator</string>
+            <string>(({[K], V}, K) -&gt; (K?, V), {[K], V}, K)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10858,6 +10914,11 @@ vector position - position in local coordinates
          </map>
          <key>pcall</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>A...</string>
+               <string>R...</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10866,23 +10927,23 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>A function to be called.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(A...) -&gt; R...</string>
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Arguments to pass to the function.</string>
                      <key>type</key>
-                     <string>variadic</string>
+                     <string>A...</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>boolean, variadic</string>
+            <string>(boolean, R...)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10890,6 +10951,13 @@ vector position - position in local coordinates
          </map>
          <key>xpcall</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>E</string>
+               <string>A...</string>
+               <string>R1...</string>
+               <string>R2...</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10898,7 +10966,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>A function to be called.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(A...) -&gt; R1...</string>
                   </map>
                </map>
                <map>
@@ -10907,30 +10975,57 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Error handler function.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(E) -&gt; R2...</string>
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Arguments to pass to the function.</string>
                      <key>type</key>
-                     <string>variadic</string>
+                     <string>A...</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>boolean, variadic</string>
+            <string>(boolean, R1...)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
             <string>Calls function f with parameters args, handling errors with e if they occur.</string>
          </map>
+         <key>require</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>target</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>The name of the external module.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>any</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Execute the named external module.</string>
+         </map>
          <key>unpack</key>
          <map>
+            <key>type-arguments</key>
+            <array>
+               <string>V</string>
+            </array>
             <key>arguments</key>
             <array>
                <map>
@@ -10939,7 +11034,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array from which to extract values.</string>
                      <key>type</key>
-                     <string>array</string>
+                     <string>{V}</string>
                   </map>
                </map>
                <map>
@@ -10948,7 +11043,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Starting index (optional, defaults to 1).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -10957,14 +11052,14 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Ending index (optional, defaults to #a).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>variadic</string>
+            <string>...V</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
