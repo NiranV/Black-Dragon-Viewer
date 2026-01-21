@@ -16497,8 +16497,8 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Applies math.sign to each component of the vector.</string>
          </map>
+         <!-- ll library -->
          <key>ll</key>
-         <!-- LL Namespace-->
          <map>
             <key>energy</key>
             <real>-1</real>
