@@ -13513,7 +13513,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>array</string>
+            <string>(number, number)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13611,7 +13611,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Base of the logarithm (default is e).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
@@ -13652,12 +13652,21 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>list</key>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>A list of numbers to find the maximum from.</string>
                      <key>type</key>
-                     <string>array</string>
+                     <string>...number</string>
                   </map>
                </map>
             </array>
@@ -13675,12 +13684,21 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>list</key>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>A list of numbers to find the minimum from.</string>
                      <key>type</key>
-                     <string>array</string>
+                     <string>...number</string>
                   </map>
                </map>
             </array>
@@ -13710,7 +13728,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>array</string>
+            <string>(number, number)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13735,7 +13753,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Y coordinate for the noise function (default is 0).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -13744,7 +13762,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Z coordinate for the noise function (default is 0).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
