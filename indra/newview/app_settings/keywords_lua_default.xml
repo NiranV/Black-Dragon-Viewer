@@ -15786,47 +15786,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>UTF-8 library functions.</string>
          </map>
-         <key>utf8.offset</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Character position.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting position (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the byte offset of the nth Unicode codepoint in string s.</string>
-         </map>
          <key>utf8.char</key>
          <map>
             <key>arguments</key>
@@ -15891,6 +15850,29 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns the Unicode codepoints in the specified range of string s.</string>
          </map>
+         <key>utf8.codes</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>iterator</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
+         </map>
          <key>utf8.len</key>
          <map>
             <key>arguments</key>
@@ -15932,7 +15914,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns the number of Unicode codepoints in the specified range of string s.</string>
          </map>
-         <key>utf8.codes</key>
+         <key>utf8.offset</key>
          <map>
             <key>arguments</key>
             <array>
@@ -15945,15 +15927,33 @@ Returns true if result is non-zero.</string>
                      <string>string</string>
                   </map>
                </map>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Character position.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting position (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>iterator</string>
+            <string>number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
+            <string>Returns the byte offset of the nth Unicode codepoint in string s.</string>
          </map>
          <!-- uuid library-->
          <key>uuid</key>
