@@ -15044,7 +15044,7 @@ Returns true if result is non-zero.</string>
                   <key>separator</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Seperator to split on. Default is ","</string>
+                     <string>Separator to split on. Default is ","</string>
                      <key>type</key>
                      <string>string?</string>
                   </map>
@@ -15216,7 +15216,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Creates a shallow copy of a table.</string>
+            <string>Creates a shallow copy of the table.</string>
          </map>
          <key>table.concat</key>
          <map>
@@ -15235,25 +15235,25 @@ Returns true if result is non-zero.</string>
                   <key>sep</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Separator string.</string>
+                     <string>Separator string (optional).</string>
                      <key>type</key>
                      <string>string</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting index.</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
                </map>
                <map>
-                  <key>t</key>
+                  <key>j</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Ending index.</string>
+                     <string>Ending index (optional).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15266,7 +15266,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Concatenates elements of an array with an optional separator.</string>
+            <string>Joins an array of strings into one string, with an optional separator.</string>
          </map>
          <key>table.create</key>
          <map>
@@ -15276,7 +15276,7 @@ Returns true if result is non-zero.</string>
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Number of elements.</string>
+                     <string>Number of elements to allocate.</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15285,7 +15285,7 @@ Returns true if result is non-zero.</string>
                   <key>v</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Value to prefill elements with.</string>
+                     <string>Value to prefill elements with (optional).</string>
                      <key>type</key>
                      <string>various</string>
                   </map>
@@ -15298,7 +15298,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Creates a table with preallocated elements.</string>
+            <string>Creates a new table with pre-allocated array capacity, optionally filled.</string>
          </map>
          <key>table.find</key>
          <map>
@@ -15317,16 +15317,16 @@ Returns true if result is non-zero.</string>
                   <key>v</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Value to find.</string>
+                     <string>Value to search for.</string>
                      <key>type</key>
                      <string>various</string>
                   </map>
                </map>
                <map>
-                  <key>init</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting index for search.</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15339,7 +15339,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Finds the first occurrence of a value in a table and returns its index.</string>
+            <string>Finds the first occurrence of a value in the array and returns its index.</string>
          </map>
          <key>table.foreach</key>
          <map>
@@ -15371,7 +15371,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Iterates over all key-value pairs in a table.</string>
+            <string>Iterates over all key-value pairs in the table (deprecated).</string>
          </map>
          <key>table.freeze</key>
          <map>
@@ -15394,17 +15394,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Freezes a table, preventing modifications.</string>
+            <string>Freezes a table, making it read-only.</string>
          </map>
          <key>table.getn</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>t</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table whose length is determined.</string>
+                     <string>Array to check.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15417,17 +15417,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the number of elements in a table.</string>
+            <string>Returns the length of an array (deprecated; use # instead).</string>
          </map>
          <key>table.insert</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>t</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to insert into.</string>
+                     <string>Array to insert into.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15436,7 +15436,7 @@ Returns true if result is non-zero.</string>
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Position to insert at.</string>
+                     <string>Index to insert at (default: at the end).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15458,7 +15458,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Inserts a value at a specific index in a table.</string>
+            <string>Inserts an element at the specified index, or at the end of the array.</string>
          </map>
          <key>table.isfrozen</key>
          <map>
@@ -15491,7 +15491,7 @@ Returns true if result is non-zero.</string>
                   <key>t</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to search for the maximum numeric key.</string>
+                     <string>Table to check.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15504,23 +15504,23 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the highest numeric key in a table.</string>
+            <string>Returns the highest numeric key in the table.</string>
          </map>
          <key>table.move</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>a</key>
+                  <key>src</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Source table.</string>
+                     <string>Source array.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
                      <string>Starting index.</string>
@@ -15529,7 +15529,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>t</key>
+                  <key>j</key>
                   <map>
                      <key>tooltip</key>
                      <string>Ending index.</string>
@@ -15547,10 +15547,10 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>tt</key>
+                  <key>dest</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Optional target table.</string>
+                     <string>Destination array (optional).</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15563,7 +15563,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Moves elements from one table to another or within the same table.</string>
+            <string>Inserts elements [i..j] from src array into dest array at [d].</string>
          </map>
          <key>table.pack</key>
          <map>
@@ -15573,7 +15573,7 @@ Returns true if result is non-zero.</string>
                   <key>args</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Variable arguments.</string>
+                     <string>Array elements.</string>
                      <key>type</key>
                      <string>varargs</string>
                   </map>
@@ -15586,17 +15586,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Packs multiple arguments into a table.</string>
+            <string>Packs multiple arguments into a new array with length field n.</string>
          </map>
          <key>table.remove</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>t</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to remove from.</string>
+                     <string>Array to remove from.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15605,7 +15605,7 @@ Returns true if result is non-zero.</string>
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Position to remove.</string>
+                     <string>Index to remove (default: the last one).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15618,17 +15618,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Removes an element from a table at a given index.</string>
+            <string>Removes and returns the element at the specified index from the array, or from the end of the array.</string>
          </map>
          <key>table.sort</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>t</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to be sorted.</string>
+                     <string>Array to be sorted.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15650,7 +15650,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Sorts a table in ascending order.</string>
+            <string>Sorts an array in place.</string>
          </map>
          <key>table.unpack</key>
          <map>
@@ -15660,25 +15660,25 @@ Returns true if result is non-zero.</string>
                   <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to unpack.</string>
+                     <string>Array to unpack.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting index.</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
                </map>
                <map>
-                  <key>t</key>
+                  <key>j</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Ending index.</string>
+                     <string>Ending index (optional).</string>
                      <key>type</key>
                      <string>integer</string>
                   </map>
@@ -15691,7 +15691,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns unpacked values from a table within a specified range.</string>
+            <string>Unpacks array elements into multiple return values.</string>
          </map>
          <!-- utf8 library-->
          <key>utf8</key>
