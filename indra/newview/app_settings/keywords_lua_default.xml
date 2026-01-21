@@ -14748,6 +14748,38 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Formats input values into a string using printf-style format specifiers.</string>
          </map>
+         <key>string.gmatch</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>pattern</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Pattern to search for.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>() -&gt; ...string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns an iterator function for pattern matches</string>
+         </map>
          <key>string.gsub</key>
          <map>
             <key>arguments</key>
@@ -14917,6 +14949,29 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Packs values into a binary string.</string>
          </map>
+         <key>string.packsize</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>fmt</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Pack format string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the size of a packed string for the given format.</string>
+         </map>
          <key>string.rep</key>
          <map>
             <key>arguments</key>
@@ -14971,6 +15026,38 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the input string with bytes in reverse order.</string>
+         </map>
+         <key>string.split</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>separator</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Seperator to split on. Default is ","</string>
+                     <key>type</key>
+                     <string>string?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>{string}</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Splits a string by separator. Returns a list of substrings.</string>
          </map>
          <key>string.sub</key>
          <map>
