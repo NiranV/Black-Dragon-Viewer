@@ -13230,6 +13230,29 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns the arc sine of n in radians.</string>
          </map>
+         <key>math.atan</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the arc tangent of n in radians.</string>
+         </map>
          <key>math.atan2</key>
          <map>
             <key>arguments</key>
@@ -13262,29 +13285,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns the arc tangent of y/x in radians.</string>
          </map>
-         <key>math.atan</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A number.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the arc tangent of n in radians.</string>
-         </map>
          <key>math.ceil</key>
          <map>
             <key>arguments</key>
@@ -13308,7 +13308,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Rounds n upwards to the next integer boundary.</string>
          </map>
-         <key>math.cosh</key>
+         <key>math.clamp</key>
          <map>
             <key>arguments</key>
             <array>
@@ -13316,7 +13316,25 @@ Returns true if result is non-zero.</string>
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A number to compute the hyperbolic cosine of.</string>
+                     <string>The value to be clamped.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>min</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Minimum allowable value.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>max</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Maximum allowable value.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -13329,7 +13347,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the hyperbolic cosine of n.</string>
+            <string>Returns n clamped between min and max.</string>
          </map>
          <key>math.cos</key>
          <map>
@@ -13353,6 +13371,29 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the cosine of n.</string>
+         </map>
+         <key>math.cosh</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number to compute the hyperbolic cosine of.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the hyperbolic cosine of n.</string>
          </map>
          <key>math.deg</key>
          <map>
@@ -13551,29 +13592,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Linearly interpolates between a and b using factor t.</string>
          </map>
-         <key>math.log10</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A number to compute base-10 logarithm.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns base-10 logarithm of n.</string>
-         </map>
          <key>math.log</key>
          <map>
             <key>arguments</key>
@@ -13605,6 +13623,29 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Returns logarithm of n in the given base.</string>
+         </map>
+         <key>math.log10</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number to compute base-10 logarithm.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns base-10 logarithm of n.</string>
          </map>
          <key>math.max</key>
          <map>
@@ -13674,6 +13715,47 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Returns the integer and fractional parts of n.</string>
+         </map>
+         <key>math.noise</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>X coordinate for the noise function.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>y</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Y coordinate for the noise function (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>z</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Z coordinate for the noise function (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns Perlin noise value for the point (x, y, z).</string>
          </map>
          <key>math.pow</key>
          <map>
@@ -13785,7 +13867,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Sets the seed for the random number generator.</string>
          </map>
-         <key>math.sinh</key>
+         <key>math.round</key>
          <map>
             <key>arguments</key>
             <array>
@@ -13793,7 +13875,7 @@ Returns true if result is non-zero.</string>
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A number to compute the hyperbolic sine of.</string>
+                     <string>A number to round to the nearest integer.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -13806,181 +13888,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the hyperbolic sine of n.</string>
-         </map>
-         <key>math.sin</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>An angle in radians.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the sine of n.</string>
-         </map>
-         <key>math.sqrt</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A number to compute the square root of.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the square root of n.</string>
-         </map>
-         <key>math.tanh</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>A number to compute the hyperbolic tangent of.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the hyperbolic tangent of n.</string>
-         </map>
-         <key>math.tan</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>An angle in radians.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the tangent of n.</string>
-         </map>
-         <key>math.noise</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>x</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>X coordinate for the noise function.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>y</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Y coordinate for the noise function (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>z</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Z coordinate for the noise function (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns Perlin noise value for the point (x, y, z).</string>
-         </map>
-         <key>math.clamp</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>n</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>The value to be clamped.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>min</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Minimum allowable value.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>max</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Maximum allowable value.</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns n clamped between min and max.</string>
+            <string>Rounds n to the nearest integer.</string>
          </map>
          <key>math.sign</key>
          <map>
@@ -14005,7 +13913,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns -1 if n is negative, 1 if positive, and 0 if zero.</string>
          </map>
-         <key>math.round</key>
+         <key>math.sin</key>
          <map>
             <key>arguments</key>
             <array>
@@ -14013,7 +13921,7 @@ Returns true if result is non-zero.</string>
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A number to round to the nearest integer.</string>
+                     <string>An angle in radians.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14026,7 +13934,99 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Rounds n to the nearest integer.</string>
+            <string>Returns the sine of n.</string>
+         </map>
+         <key>math.sinh</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number to compute the hyperbolic sine of.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the hyperbolic sine of n.</string>
+         </map>
+         <key>math.sqrt</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number to compute the square root of.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the square root of n.</string>
+         </map>
+         <key>math.tan</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>An angle in radians.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the tangent of n.</string>
+         </map>
+         <key>math.tanh</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>n</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>A number to compute the hyperbolic tangent of.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the hyperbolic tangent of n.</string>
          </map>
          <!-- os library-->
          <key>os</key>
