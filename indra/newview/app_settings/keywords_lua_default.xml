@@ -15697,6 +15697,43 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Removes and returns the element at the specified index from the array, or from the end of the array.</string>
          </map>
+         <key>table.shrink</key>
+         <map>
+            <key>type-arguments</key>
+            <array>
+               <string>K</string>
+               <string>V</string>
+            </array>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to shrink.</string>
+                     <key>type</key>
+                     <string>{[K]: V}</string>
+                  </map>
+               </map>
+               <map>
+                  <key>reorder</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Allow moving sparse array elements to hash table storage.</string>
+                     <key>type</key>
+                     <string>boolean?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>{[K]: V}</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Reduces the memory usage of the table to the minimum necessary.</string>
+         </map>
          <key>table.sort</key>
          <map>
             <key>type-arguments</key>
