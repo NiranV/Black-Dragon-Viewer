@@ -15172,6 +15172,52 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>table namespace.</string>
          </map>
+         <key>table.clear</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to clear.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>void</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Clears all elements from a table while keeping its capacity.</string>
+         </map>
+         <key>table.clone</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to clone.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>table</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Creates a shallow copy of a table.</string>
+         </map>
          <key>table.concat</key>
          <map>
             <key>arguments</key>
@@ -15221,312 +15267,6 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Concatenates elements of an array with an optional separator.</string>
-         </map>
-         <key>table.foreach</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to iterate over.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Function applied to each key-value pair.</string>
-                     <key>type</key>
-                     <string>function</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>various</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Iterates over all key-value pairs in a table.</string>
-         </map>
-         <key>table.getn</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table whose length is determined.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>integer</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the number of elements in a table.</string>
-         </map>
-         <key>table.maxn</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to search for the maximum numeric key.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>integer</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns the highest numeric key in a table.</string>
-         </map>
-         <key>table.insert</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to insert into.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Position to insert at.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>v</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Value to insert.</string>
-                     <key>type</key>
-                     <string>various</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>void</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Inserts a value at a specific index in a table.</string>
-         </map>
-         <key>table.remove</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to remove from.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>i</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Position to remove.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>various</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Removes an element from a table at a given index.</string>
-         </map>
-         <key>table.sort</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to be sorted.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Comparison function.</string>
-                     <key>type</key>
-                     <string>function</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>void</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Sorts a table in ascending order.</string>
-         </map>
-         <key>table.pack</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Variable arguments.</string>
-                     <key>type</key>
-                     <string>varargs</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>table</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Packs multiple arguments into a table.</string>
-         </map>
-         <key>table.unpack</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>a</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Table to unpack.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting index.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Ending index.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>varargs</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns unpacked values from a table within a specified range.</string>
-         </map>
-         <key>table.move</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>a</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Source table.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Starting index.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>t</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Ending index.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>d</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Destination index.</string>
-                     <key>type</key>
-                     <string>integer</string>
-                  </map>
-               </map>
-               <map>
-                  <key>tt</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Optional target table.</string>
-                     <key>type</key>
-                     <string>table</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>table</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Moves elements from one table to another or within the same table.</string>
          </map>
          <key>table.create</key>
          <map>
@@ -15601,7 +15341,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Finds the first occurrence of a value in a table and returns its index.</string>
          </map>
-         <key>table.clear</key>
+         <key>table.foreach</key>
          <map>
             <key>arguments</key>
             <array>
@@ -15609,20 +15349,29 @@ Returns true if result is non-zero.</string>
                   <key>t</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to clear.</string>
+                     <string>Table to iterate over.</string>
                      <key>type</key>
                      <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Function applied to each key-value pair.</string>
+                     <key>type</key>
+                     <string>function</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>various</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Clears all elements from a table while keeping its capacity.</string>
+            <string>Iterates over all key-value pairs in a table.</string>
          </map>
          <key>table.freeze</key>
          <map>
@@ -15647,6 +15396,70 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Freezes a table, preventing modifications.</string>
          </map>
+         <key>table.getn</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table whose length is determined.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>integer</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the number of elements in a table.</string>
+         </map>
+         <key>table.insert</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to insert into.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Position to insert at.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>v</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Value to insert.</string>
+                     <key>type</key>
+                     <string>various</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>void</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Inserts a value at a specific index in a table.</string>
+         </map>
          <key>table.isfrozen</key>
          <map>
             <key>arguments</key>
@@ -15670,7 +15483,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns true if a table is frozen.</string>
          </map>
-         <key>table.clone</key>
+         <key>table.maxn</key>
          <map>
             <key>arguments</key>
             <array>
@@ -15678,7 +15491,66 @@ Returns true if result is non-zero.</string>
                   <key>t</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Table to clone.</string>
+                     <string>Table to search for the maximum numeric key.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>integer</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns the highest numeric key in a table.</string>
+         </map>
+         <key>table.move</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Source table.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting index.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Ending index.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>d</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Destination index.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>tt</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Optional target table.</string>
                      <key>type</key>
                      <string>table</string>
                   </map>
@@ -15691,7 +15563,135 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Creates a shallow copy of a table.</string>
+            <string>Moves elements from one table to another or within the same table.</string>
+         </map>
+         <key>table.pack</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>args</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Variable arguments.</string>
+                     <key>type</key>
+                     <string>varargs</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>table</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Packs multiple arguments into a table.</string>
+         </map>
+         <key>table.remove</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to remove from.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>i</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Position to remove.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>various</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Removes an element from a table at a given index.</string>
+         </map>
+         <key>table.sort</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to be sorted.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Comparison function.</string>
+                     <key>type</key>
+                     <string>function</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>void</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Sorts a table in ascending order.</string>
+         </map>
+         <key>table.unpack</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Table to unpack.</string>
+                     <key>type</key>
+                     <string>table</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting index.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Ending index.</string>
+                     <key>type</key>
+                     <string>integer</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>varargs</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns unpacked values from a table within a specified range.</string>
          </map>
          <!-- utf8 library-->
          <key>utf8</key>
