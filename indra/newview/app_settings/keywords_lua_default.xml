@@ -16014,10 +16014,44 @@ Returns true if result is non-zero.</string>
          <!-- vector library-->
          <key>vector</key>
          <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>x</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>X component of the vector.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>y</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Y component of the vector.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+               <map>
+                  <key>z</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Z component of the vector (optional).</string>
+                     <key>type</key>
+                     <string>number?</string>
+                  </map>
+               </map>
+            </array>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
             <key>tooltip</key>
-            <string>vector namespace.</string>
+            <string>Creates a new vector with the given component values. Alias of vector.create.</string>
          </map>
          <key>vector.abs</key>
          <map>
@@ -16274,6 +16308,47 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Applies math.floor to each component of the vector.</string>
+         </map>
+         <key>vector.lerp</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Start vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>b</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>End vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>t</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Interpolation factor.</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Linearly interpolates between a and b using factor t.</string>
          </map>
          <key>vector.magnitude</key>
          <map>
