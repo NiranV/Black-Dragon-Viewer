@@ -15826,7 +15826,7 @@ Returns true if result is non-zero.</string>
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting position (optional).</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15835,7 +15835,7 @@ Returns true if result is non-zero.</string>
                   <key>j</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Ending position (optional).</string>
+                     <string>Ending index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15848,7 +15848,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the Unicode codepoints in the specified range of string s.</string>
+            <string>Returns the Unicode codepoints in the specified range of the string.</string>
          </map>
          <key>utf8.codes</key>
          <map>
@@ -15871,7 +15871,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in string s.</string>
+            <string>Returns an iterator that produces the byte offset and Unicode codepoint for each character in the string.</string>
          </map>
          <key>utf8.len</key>
          <map>
@@ -15890,7 +15890,7 @@ Returns true if result is non-zero.</string>
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting position (optional).</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15899,7 +15899,7 @@ Returns true if result is non-zero.</string>
                   <key>j</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Ending position (optional).</string>
+                     <string>Ending index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15912,7 +15912,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the number of Unicode codepoints in the specified range of string s.</string>
+            <string>Returns the number of Unicode codepoints in the specified range of the string, or nil and error index.</string>
          </map>
          <key>utf8.offset</key>
          <map>
@@ -15940,7 +15940,7 @@ Returns true if result is non-zero.</string>
                   <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting position (optional).</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15953,7 +15953,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the byte offset of the nth Unicode codepoint in string s.</string>
+            <string>Returns the byte offset of the nth Unicode codepoint in the string.</string>
          </map>
          <!-- uuid library-->
          <key>uuid</key>
