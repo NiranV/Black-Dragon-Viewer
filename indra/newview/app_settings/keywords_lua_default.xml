@@ -10592,7 +10592,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>{any}?</string>
+            <string>{[any]: any}?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10663,7 +10663,7 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Arguments to print to standard output.</string>
