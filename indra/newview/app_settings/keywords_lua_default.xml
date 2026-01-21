@@ -12939,7 +12939,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Function reference or stack level number.</string>
                      <key>type</key>
-                     <string>function|number</string>
+                     <string>((...any) -&gt; ...any) | number</string>
                   </map>
                </map>
                <map>
@@ -12955,7 +12955,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>table</string>
+            <string>{[any]: any}</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -12987,7 +12987,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string|any</string>
+            <string>string | any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13010,7 +13010,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>table|nil</string>
+            <string>{[any]: any}?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13026,7 +13026,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Function whose upvalues are being retrieved.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(...any) -&gt; ...any</string>
                   </map>
                </map>
                <map>
@@ -13042,7 +13042,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string|any</string>
+            <string>string | any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13058,7 +13058,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Optional thread or function reference.</string>
                      <key>type</key>
-                     <string>thread|function|number</string>
+                     <string>thread | ((...any) -&gt; ...any) | number</string>
                   </map>
                </map>
                <map>
@@ -13083,7 +13083,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>any</string>
+            <string>...any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -13149,7 +13149,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Table to be set as the new metatable.</string>
                      <key>type</key>
-                     <string>table|nil</string>
+                     <string>{[any]: any}?</string>
                   </map>
                </map>
             </array>
@@ -13172,7 +13172,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Function whose upvalues are being modified.</string>
                      <key>type</key>
-                     <string>function</string>
+                     <string>(...any) -&gt; ...any</string>
                   </map>
                </map>
                <map>
@@ -13222,7 +13222,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Optional message prepended to the traceback.</string>
                      <key>type</key>
-                     <string>string</string>
+                     <string>string?</string>
                   </map>
                </map>
                <map>
@@ -13231,7 +13231,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Optional stack level to start traceback.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
