@@ -11317,9 +11317,9 @@ vector position - position in local coordinates
          <key>bit32</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>bit32 library functions.</string>
+            <string>Bitwise operations library</string>
          </map>
          <key>bit32.arshift</key>
          <map>
@@ -11762,9 +11762,9 @@ Returns true if result is non-zero.</string>
          <key>buffer</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>buffer namespace.</string>
+            <string>Buffer manipulation library for binary data</string>
          </map>
          <key>buffer.copy</key>
          <map>
@@ -12737,9 +12737,9 @@ Returns true if result is non-zero.</string>
          <key>coroutine</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>coroutine namespace.</string>
+            <string>Coroutine manipulation library</string>
          </map>
          <key>coroutine.close</key>
          <map>
@@ -12918,9 +12918,9 @@ Returns true if result is non-zero.</string>
          <key>debug</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>debug namespace.</string>
+            <string>Debug library for introspection</string>
          </map>
          <key>debug.info</key>
          <map>
@@ -13005,6 +13005,13 @@ Returns true if result is non-zero.</string>
             <string>Returns a human-readable call stack starting from the specified level.</string>
          </map>
          <!-- llbase64 library-->
+         <key>llbase64</key>
+         <map>
+            <key>energy</key>
+            <real>-1</real>
+            <key>tooltip</key>
+            <string>Base64 encoding/decoding library</string>
+         </map>
          <key>llbase64.decode</key>
          <map>
             <key>arguments</key>
@@ -13052,6 +13059,13 @@ Returns true if result is non-zero.</string>
             <string>Encodes a string or buffer to base64</string>
          </map>
          <!-- lljson library-->
+         <key>lljson</key>
+         <map>
+            <key>energy</key>
+            <real>-1</real>
+            <key>tooltip</key>
+            <string>JSON encoding/decoding library for Second Life</string>
+         </map>
          <key>lljson.decode</key>
          <map>
             <key>arguments</key>
@@ -13154,12 +13168,12 @@ Returns true if result is non-zero.</string>
             <string>Encodes a Lua value as JSON preserving SL types. Use tight to encode more compactly.</string>
          </map>
          <!-- math library-->
-         <key>math</key>         
+         <key>math</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>math namespace.</string>
+            <string>Mathematical functions library</string>
          </map>
          <key>math.abs</key>
          <map>
@@ -14178,9 +14192,9 @@ Returns true if result is non-zero.</string>
          <key>os</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>os namespace.</string>
+            <string>Operating system facilities library</string>
          </map>
          <key>os.clock</key>
          <map>
@@ -14598,9 +14612,9 @@ Returns true if result is non-zero.</string>
          <key>string</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>string namespace.</string>
+            <string>String manipulation library</string>
          </map>
          <key>string.byte</key>
          <map>
@@ -15165,12 +15179,12 @@ Returns true if result is non-zero.</string>
             <string>Returns an uppercase version of the input string.</string>
          </map>
          <!-- table library-->
-         <key>table</key>         
+         <key>table</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>table namespace.</string>
+            <string>Table manipulation library</string>
          </map>
          <key>table.clear</key>
          <map>
@@ -15782,9 +15796,9 @@ Returns true if result is non-zero.</string>
          <key>utf8</key>
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>UTF-8 library functions.</string>
+            <string>UTF-8 support library</string>
          </map>
          <key>utf8.char</key>
          <map>
@@ -16458,7 +16472,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Computes the normalized version (unit vector) of vector.</string>
+            <string>Computes the normalized version (unit vector) of the vector.</string>
          </map>
          <key>vector.sign</key>
          <map>
@@ -16487,9 +16501,9 @@ Returns true if result is non-zero.</string>
          <!-- LL Namespace-->
          <map>
             <key>energy</key>
-            <real>-1.0</real>
+            <real>-1</real>
             <key>tooltip</key>
-            <string>ll namespace.</string>
+            <string>Library for functions shared between LSL and SLua</string>
          </map>
          <key>ll.Abs</key>
          <map>
