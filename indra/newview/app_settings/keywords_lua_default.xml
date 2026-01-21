@@ -9619,12 +9619,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfCollisions</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9637,12 +9637,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfCollisions</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9655,12 +9655,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfCollisions</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9833,12 +9833,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>count</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string>The number of damage events queued.</string>
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10217,12 +10217,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>count</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string>The number of damage events queued.</string>
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10366,32 +10366,18 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberDetected</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
             <key>tooltip</key>
             <string>This event is raised whenever objects matching the constraints of the llSensor command are detected.
 			The number of detected objects is passed to the script in the parameter. Information on those objects may be gathered via the llDetected* functions.</string>
-         </map>
-         <key>state_entry</key>
-         <map>
-            <key>arguments</key>
-            <array />
-            <key>tooltip</key>
-            <string>The state_entry event occurs whenever a new state is entered, including at program start, and is always the first event handled.</string>
-         </map>
-         <key>state_exit</key>
-         <map>
-            <key>arguments</key>
-            <array />
-            <key>tooltip</key>
-            <string>The state_exit event occurs whenever the state command is used to transition to another state. It is handled before the new states state_entry event.</string>
          </map>
          <key>timer</key>
          <map>
@@ -10405,12 +10391,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfTouches</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10424,12 +10410,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfTouches</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10442,12 +10428,12 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>NumberOfTouches</key>
+                  <key>detected</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>{LLDetectedEvent}</string>
                   </map>
                </map>
             </array>
