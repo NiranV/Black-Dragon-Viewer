@@ -363,7 +363,7 @@ type rotation = quaternion</string>
          <key>quaternion.identity</key>
          <map>
             <key>tooltip</key>
-            <string>Identity quaternion constant</string>
+            <string>Identity quaternion constant.</string>
             <key>type</key>
             <string>quaternion</string>
             <key>value</key>
@@ -14331,7 +14331,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string />
+            <string>Creates a new quaternion with the given component values. Alias of quaternion.create.</string>
          </map>
          <key>quaternion.conjugate</key>
          <map>
@@ -15998,15 +15998,6 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>self</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string />
-                     <key>type</key>
-                     <string>any</string>
-                  </map>
-               </map>
-               <map>
                   <key>value</key>
                   <map>
                      <key>tooltip</key>
@@ -16023,7 +16014,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Allows calling uuid() as a constructor</string>
+            <string>Creates a new uuid from a string, buffer, or existing uuid. Returns nil if the string is not a valid UUID. Throws an error if the buffer is shorter than 16 bytes. Alias of uuid.create</string>
          </map>
          <key>uuid.create</key>
          <map>
