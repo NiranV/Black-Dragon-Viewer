@@ -14616,7 +14616,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
@@ -14625,7 +14625,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>t</key>
+                  <key>j</key>
                   <map>
                      <key>tooltip</key>
                      <string>Ending index (optional).</string>
@@ -14680,7 +14680,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>p</key>
+                  <key>pattern</key>
                   <map>
                      <key>tooltip</key>
                      <string>Pattern to search for.</string>
@@ -14692,7 +14692,7 @@ Returns true if result is non-zero.</string>
                   <key>init</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting position (optional).</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14714,14 +14714,14 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Finds an instance of the pattern in the string.</string>
+            <string>Finds the first instance of the pattern in the string.</string>
          </map>
          <key>string.format</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>s</key>
+                  <key>formatstring</key>
                   <map>
                      <key>tooltip</key>
                      <string>Format string.</string>
@@ -14762,7 +14762,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>p</key>
+                  <key>pattern</key>
                   <map>
                      <key>tooltip</key>
                      <string>Pattern to replace.</string>
@@ -14771,7 +14771,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>repl</key>
                   <map>
                      <key>tooltip</key>
                      <string>Replacement string, function, or table.</string>
@@ -14780,7 +14780,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>maxs</key>
+                  <key>maxn</key>
                   <map>
                      <key>tooltip</key>
                      <string>Maximum replacements (optional).</string>
@@ -14819,7 +14819,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the number of bytes in the string.</string>
+            <string>Returns the number of bytes in the string. Identical to #s</string>
          </map>
          <key>string.lower</key>
          <map>
@@ -14858,7 +14858,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>p</key>
+                  <key>pattern</key>
                   <map>
                      <key>tooltip</key>
                      <string>Pattern to match.</string>
@@ -14870,7 +14870,7 @@ Returns true if result is non-zero.</string>
                   <key>init</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Starting position (optional).</string>
+                     <string>Starting index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14890,7 +14890,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>f</key>
+                  <key>fmt</key>
                   <map>
                      <key>tooltip</key>
                      <string>Pack format string.</string>
@@ -14986,19 +14986,19 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>f</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Start index.</string>
+                     <string>Starting index.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>t</key>
+                  <key>j</key>
                   <map>
                      <key>tooltip</key>
-                     <string>End index (optional).</string>
+                     <string>Ending index (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -15018,7 +15018,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>f</key>
+                  <key>fmt</key>
                   <map>
                      <key>tooltip</key>
                      <string>Pack format string.</string>
