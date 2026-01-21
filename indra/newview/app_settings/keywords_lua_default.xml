@@ -14291,7 +14291,7 @@ Returns true if result is non-zero.</string>
                   <key>x</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>X component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14300,7 +14300,7 @@ Returns true if result is non-zero.</string>
                   <key>y</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Y component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14309,7 +14309,7 @@ Returns true if result is non-zero.</string>
                   <key>z</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Z component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14318,7 +14318,7 @@ Returns true if result is non-zero.</string>
                   <key>s</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>S component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14341,7 +14341,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14354,7 +14354,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns conjugate of quaternion</string>
+            <string>Computes the conjugate of the quaternion.</string>
          </map>
          <key>quaternion.create</key>
          <map>
@@ -14364,7 +14364,7 @@ Returns true if result is non-zero.</string>
                   <key>x</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>X component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14373,7 +14373,7 @@ Returns true if result is non-zero.</string>
                   <key>y</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Y component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14382,7 +14382,7 @@ Returns true if result is non-zero.</string>
                   <key>z</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Z component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14391,7 +14391,7 @@ Returns true if result is non-zero.</string>
                   <key>s</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>S component of the quaternion.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14404,7 +14404,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Constructor</string>
+            <string>Creates a new quaternion with the given component values.</string>
          </map>
          <key>quaternion.dot</key>
          <map>
@@ -14414,7 +14414,7 @@ Returns true if result is non-zero.</string>
                   <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Left input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14423,7 +14423,7 @@ Returns true if result is non-zero.</string>
                   <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Right input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14436,7 +14436,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Dot product of two quaternions</string>
+            <string>Computes the dot product of two quaternions.</string>
          </map>
          <key>quaternion.magnitude</key>
          <map>
@@ -14446,7 +14446,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14459,7 +14459,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns magnitude of quaternion</string>
+            <string>Computes the magnitude of the quaternion.</string>
          </map>
          <key>quaternion.normalize</key>
          <map>
@@ -14469,7 +14469,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14482,7 +14482,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns normalized quaternion</string>
+            <string>Computes the normalized version (unit quaternion) of the quaternion.</string>
          </map>
          <key>quaternion.slerp</key>
          <map>
@@ -14492,7 +14492,7 @@ Returns true if result is non-zero.</string>
                   <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Start quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14501,7 +14501,7 @@ Returns true if result is non-zero.</string>
                   <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>End quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14510,7 +14510,7 @@ Returns true if result is non-zero.</string>
                   <key>t</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Interpolation factor.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -14523,7 +14523,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Spherical linear interpolation</string>
+            <string>Spherical linear interpolation from a to b using factor t.</string>
          </map>
          <key>quaternion.tofwd</key>
          <map>
@@ -14533,7 +14533,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14546,7 +14546,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns forward vector from quaternion rotation</string>
+            <string>Computes the forward vector from the quaternion.</string>
          </map>
          <key>quaternion.toleft</key>
          <map>
@@ -14556,7 +14556,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14569,7 +14569,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns left vector from quaternion rotation</string>
+            <string>Computes the left vector from the quaternion.</string>
          </map>
          <key>quaternion.toup</key>
          <map>
@@ -14579,7 +14579,7 @@ Returns true if result is non-zero.</string>
                   <key>q</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Input quaternion.</string>
                      <key>type</key>
                      <string>quaternion</string>
                   </map>
@@ -14592,7 +14592,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns up vector from quaternion rotation</string>
+            <string>Computes the up vector from the quaternion.</string>
          </map>
          <!-- string library-->
          <key>string</key>
