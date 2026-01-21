@@ -11351,7 +11351,8 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Shifts n by i bits to the right. If i is negative, a left shift is performed.</string>
+            <string>Shifts n by i bits to the right. If i is negative, a left shift is performed.
+Does an arithmetic shift: The most significant bit of n is propagated during the shift.</string>
          </map>
          <key>bit32.band</key>
          <map>
@@ -11407,7 +11408,7 @@ vector position - position in local coordinates
                   <key>...</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Numbers to perform bitwise OR on.</string>
                      <key>type</key>
                      <string>...number</string>
                   </map>
@@ -11420,7 +11421,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Bitwise OR of all arguments</string>
+            <string>Performs a bitwise OR operation on input numbers.</string>
          </map>
          <key>bit32.btest</key>
          <map>
@@ -11430,7 +11431,7 @@ vector position - position in local coordinates
                   <key>...</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Numbers to perform bitwise AND on.</string>
                      <key>type</key>
                      <string>...number</string>
                   </map>
@@ -11443,7 +11444,8 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns true if bitwise AND of all arguments is not zero</string>
+            <string>Performs a bitwise AND operation on input numbers.
+Returns true if result is non-zero.</string>
          </map>
          <key>bit32.bxor</key>
          <map>
@@ -11453,7 +11455,7 @@ vector position - position in local coordinates
                   <key>...</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Numbers to perform bitwise XOR on.</string>
                      <key>type</key>
                      <string>...number</string>
                   </map>
@@ -11466,7 +11468,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Bitwise XOR of all arguments</string>
+            <string>Performs a bitwise XOR operation on input numbers.</string>
          </map>
          <key>bit32.byteswap</key>
          <map>
@@ -11583,19 +11585,19 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to rotate.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>disp</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number of bits to rotate.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -11608,26 +11610,26 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Left rotate</string>
+            <string>Rotates n by i bits to the left. If i is negative, a right rotate is performed.</string>
          </map>
          <key>bit32.lshift</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>disp</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number of bits to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -11640,7 +11642,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Left shift</string>
+            <string>Shifts n by i bits to the left. If i is negative, a right shift is performed.</string>
          </map>
          <key>bit32.replace</key>
          <map>
@@ -11697,19 +11699,19 @@ vector position - position in local coordinates
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to rotate.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>disp</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number of bits to rotate.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -11722,26 +11724,26 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Right rotate</string>
+            <string>Rotates n by i bits to the right. If i is negative, a left rotate is performed.</string>
          </map>
          <key>bit32.rshift</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
                </map>
                <map>
-                  <key>disp</key>
+                  <key>i</key>
                   <map>
                      <key>tooltip</key>
-                     <string />
+                     <string>Number of bits to shift.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
