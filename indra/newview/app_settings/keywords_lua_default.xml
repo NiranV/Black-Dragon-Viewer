@@ -16070,7 +16070,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Axis to determine the sign of the angle (optional).</string>
                      <key>type</key>
-                     <string>vector</string>
+                     <string>vector?</string>
                   </map>
                </map>
             </array>
@@ -16175,16 +16175,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Z component of the vector (optional).</string>
                      <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-               <map>
-                  <key>w</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>W component of the vector (optional, defaults to 0 in 4-wide mode).</string>
-                     <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
@@ -16317,7 +16308,16 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Input vector.</string>
                      <key>type</key>
-                     <string>array of vector</string>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Vectors to find the maximum from.</string>
+                     <key>type</key>
+                     <string>...vector</string>
                   </map>
                </map>
             </array>
@@ -16340,7 +16340,16 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Input vector.</string>
                      <key>type</key>
-                     <string>array of vector</string>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>...</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Vectors to find the minimum from.</string>
+                     <key>type</key>
+                     <string>...vector</string>
                   </map>
                </map>
             </array>
