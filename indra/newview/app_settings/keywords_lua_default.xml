@@ -16019,6 +16019,134 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>vector namespace.</string>
          </map>
+         <key>vector.abs</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Applies math.abs to each component of the vector.</string>
+         </map>
+         <key>vector.angle</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec1</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>First input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>vec2</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Second input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>axis</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Axis to determine the sign of the angle (optional).</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Computes the angle between two vectors in radians.</string>
+         </map>
+         <key>vector.ceil</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Applies math.ceil to each component of the vector.</string>
+         </map>
+         <key>vector.clamp</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input vector to be clamped.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>min</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Minimum vector value.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+               <map>
+                  <key>max</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Maximum vector value.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Clamps each component of the vector between min and max values.</string>
+         </map>
          <key>vector.create</key>
          <map>
             <key>arguments</key>
@@ -16068,52 +16196,6 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Creates a new vector with the given component values.</string>
-         </map>
-         <key>vector.magnitude</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Calculates the magnitude of a given vector.</string>
-         </map>
-         <key>vector.normalize</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Computes the unit vector of a given vector.</string>
          </map>
          <key>vector.cross</key>
          <map>
@@ -16179,47 +16261,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Computes the dot product of two vectors.</string>
          </map>
-         <key>vector.angle</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec1</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>First input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-               <map>
-                  <key>vec2</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Second input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-               <map>
-                  <key>axis</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Axis to determine the sign of the angle (optional).</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Computes the angle between two vectors in radians.</string>
-         </map>
          <key>vector.floor</key>
          <map>
             <key>arguments</key>
@@ -16243,7 +16284,7 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Applies math.floor to each component of the vector.</string>
          </map>
-         <key>vector.ceil</key>
+         <key>vector.magnitude</key>
          <map>
             <key>arguments</key>
             <array>
@@ -16260,98 +16301,11 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>vector</string>
+            <string>number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Applies math.ceil to each component of the vector.</string>
-         </map>
-         <key>vector.abs</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Applies math.abs to each component of the vector.</string>
-         </map>
-         <key>vector.sign</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input vector.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Applies math.sign to each component of the vector.</string>
-         </map>
-         <key>vector.clamp</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>vec</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input vector to be clamped.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-               <map>
-                  <key>min</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Minimum vector value.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-               <map>
-                  <key>max</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Maximum vector value.</string>
-                     <key>type</key>
-                     <string>vector</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Clamps each component of the vector between min and max values.</string>
+            <string>Calculates the magnitude of a given vector.</string>
          </map>
          <key>vector.max</key>
          <map>
@@ -16398,6 +16352,52 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Computes the component-wise minimum of multiple vectors.</string>
+         </map>
+         <key>vector.normalize</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Computes the unit vector of a given vector.</string>
+         </map>
+         <key>vector.sign</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>vec</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input vector.</string>
+                     <key>type</key>
+                     <string>vector</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>vector</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Applies math.sign to each component of the vector.</string>
          </map>
          <key>ll</key>
          <!-- LL Namespace-->
