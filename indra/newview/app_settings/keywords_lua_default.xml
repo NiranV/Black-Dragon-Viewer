@@ -13792,7 +13792,7 @@ Returns true if result is non-zero.</string>
                   <key>...</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A list of numbers to find the maximum from.</string>
+                     <string>Numbers to find the maximum from.</string>
                      <key>type</key>
                      <string>...number</string>
                   </map>
@@ -13805,7 +13805,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the maximum value in the given list.</string>
+            <string>Returns the maximum value from the given numbers.</string>
          </map>
          <key>math.min</key>
          <map>
@@ -13824,7 +13824,7 @@ Returns true if result is non-zero.</string>
                   <key>...</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A list of numbers to find the minimum from.</string>
+                     <string>Numbers to find the minimum from.</string>
                      <key>type</key>
                      <string>...number</string>
                   </map>
@@ -13837,7 +13837,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the minimum value in the given list.</string>
+            <string>Returns the minimum value from the given numbers.</string>
          </map>
          <key>math.modf</key>
          <map>
@@ -16024,7 +16024,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
@@ -16047,19 +16047,19 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec1</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>First input vector.</string>
+                     <string>Left input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
                </map>
                <map>
-                  <key>vec2</key>
+                  <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Second input vector.</string>
+                     <string>Right input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
@@ -16081,14 +16081,14 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Computes the angle between two vectors in radians.</string>
+            <string>Computes the angle between two vectors in radians. The axis, if specified, is used to determine the sign of the angle.</string>
          </map>
          <key>vector.ceil</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
@@ -16111,7 +16111,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector to be clamped.</string>
@@ -16173,7 +16173,7 @@ Returns true if result is non-zero.</string>
                   <key>z</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Z component of the vector.</string>
+                     <string>Z component of the vector (optional).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -16202,19 +16202,19 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec1</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>First input vector.</string>
+                     <string>Left input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
                </map>
                <map>
-                  <key>vec2</key>
+                  <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Second input vector.</string>
+                     <string>Right input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
@@ -16234,19 +16234,19 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec1</key>
+                  <key>a</key>
                   <map>
                      <key>tooltip</key>
-                     <string>First input vector.</string>
+                     <string>Left input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
                </map>
                <map>
-                  <key>vec2</key>
+                  <key>b</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Second input vector.</string>
+                     <string>Right input vector.</string>
                      <key>type</key>
                      <string>vector</string>
                   </map>
@@ -16266,7 +16266,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
@@ -16289,7 +16289,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
@@ -16305,17 +16305,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Calculates the magnitude of a given vector.</string>
+            <string>Computes the magnitude of the vector.</string>
          </map>
          <key>vector.max</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vectors</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Multiple input vectors.</string>
+                     <string>Input vector.</string>
                      <key>type</key>
                      <string>array of vector</string>
                   </map>
@@ -16328,17 +16328,17 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Computes the component-wise maximum of multiple vectors.</string>
+            <string>Applies math.max to each component of the vectors.</string>
          </map>
          <key>vector.min</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vectors</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Multiple input vectors.</string>
+                     <string>Input vector.</string>
                      <key>type</key>
                      <string>array of vector</string>
                   </map>
@@ -16351,14 +16351,14 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Computes the component-wise minimum of multiple vectors.</string>
+            <string>Applies math.max to each component of the vectors.</string>
          </map>
          <key>vector.normalize</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
@@ -16374,14 +16374,14 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Computes the unit vector of a given vector.</string>
+            <string>Computes the normalized version (unit vector) of vector.</string>
          </map>
          <key>vector.sign</key>
          <map>
             <key>arguments</key>
             <array>
                <map>
-                  <key>vec</key>
+                  <key>v</key>
                   <map>
                      <key>tooltip</key>
                      <string>Input vector.</string>
