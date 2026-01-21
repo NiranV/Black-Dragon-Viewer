@@ -381,7 +381,7 @@ type rotation = quaternion</string>
          <key>vector.one</key>
          <map>
             <key>tooltip</key>
-            <string>A one vector</string>
+            <string>Constant vector with all components set to 1.</string>
             <key>type</key>
             <string>vector</string>
             <key>value</key>
@@ -390,7 +390,7 @@ type rotation = quaternion</string>
          <key>vector.zero</key>
          <map>
             <key>tooltip</key>
-            <string>A zero vector</string>
+            <string>Constant vector with all components set to 0.</string>
             <key>type</key>
             <string>vector</string>
             <key>value</key>
@@ -16018,28 +16018,6 @@ Returns true if result is non-zero.</string>
             <real>-1.0</real>
             <key>tooltip</key>
             <string>vector namespace.</string>
-         </map>
-         <key>vector.zero</key>
-         <map>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Constant vector with all components set to 0.</string>
-         </map>
-         <key>vector.one</key>
-         <map>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>vector</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Constant vector with all components set to 1.</string>
          </map>
          <key>vector.create</key>
          <map>
