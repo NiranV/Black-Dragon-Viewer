@@ -14748,6 +14748,56 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Formats input values into a string using printf-style format specifiers.</string>
          </map>
+         <key>string.gsub</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>p</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Pattern to replace.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Replacement string, function, or table.</string>
+                     <key>type</key>
+                     <string>function | table | string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>maxs</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Maximum replacements (optional).</string>
+                     <key>type</key>
+                     <string>number</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string, number</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Performs pattern-based substitution in a string.</string>
+         </map>
          <key>string.len</key>
          <map>
             <key>arguments</key>
@@ -14794,29 +14844,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns a lowercase version of the input string.</string>
          </map>
-         <key>string.upper</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Returns an uppercase version of the input string.</string>
-         </map>
          <key>string.match</key>
          <map>
             <key>arguments</key>
@@ -14857,6 +14884,38 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Finds and returns matches for a pattern in the input string.</string>
+         </map>
+         <key>string.pack</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Pack format string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+               <map>
+                  <key>args</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Values to encode.</string>
+                     <key>type</key>
+                     <string>any...</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Packs values into a binary string.</string>
          </map>
          <key>string.rep</key>
          <map>
@@ -14954,88 +15013,6 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Returns a substring from the given range.</string>
          </map>
-         <key>string.gsub</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>s</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Input string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>p</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Pattern to replace.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Replacement string, function, or table.</string>
-                     <key>type</key>
-                     <string>function | table | string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>maxs</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Maximum replacements (optional).</string>
-                     <key>type</key>
-                     <string>number</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string, number</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Performs pattern-based substitution in a string.</string>
-         </map>
-         <key>string.pack</key>
-         <map>
-            <key>arguments</key>
-            <array>
-               <map>
-                  <key>f</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Pack format string.</string>
-                     <key>type</key>
-                     <string>string</string>
-                  </map>
-               </map>
-               <map>
-                  <key>args</key>
-                  <map>
-                     <key>tooltip</key>
-                     <string>Values to encode.</string>
-                     <key>type</key>
-                     <string>any...</string>
-                  </map>
-               </map>
-            </array>
-            <key>energy</key>
-            <real>10</real>
-            <key>return</key>
-            <string>string</string>
-            <key>sleep</key>
-            <real>0</real>
-            <key>tooltip</key>
-            <string>Packs values into a binary string.</string>
-         </map>
          <key>string.unpack</key>
          <map>
             <key>arguments</key>
@@ -15067,6 +15044,29 @@ Returns true if result is non-zero.</string>
             <real>0</real>
             <key>tooltip</key>
             <string>Decodes a binary string using a pack format.</string>
+         </map>
+         <key>string.upper</key>
+         <map>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>s</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Input string.</string>
+                     <key>type</key>
+                     <string>string</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>string</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Returns an uppercase version of the input string.</string>
          </map>
          <!-- table library-->
          <key>table</key>         
