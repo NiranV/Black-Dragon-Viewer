@@ -15791,12 +15791,12 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Unicode codepoints.</string>
                      <key>type</key>
-                     <string>array</string>
+                     <string>...number</string>
                   </map>
                </map>
             </array>
@@ -15828,7 +15828,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -15837,14 +15837,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Ending index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>array</string>
+            <string>...number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -15867,7 +15867,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>iterator</string>
+            <string>((string, number) -&gt; (number, number), string, number)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -15892,7 +15892,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -15901,14 +15901,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Ending index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number</string>
+            <string>(number?, number?)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -15942,14 +15942,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number</string>
+            <string>number?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
