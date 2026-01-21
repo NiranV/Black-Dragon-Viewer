@@ -14621,7 +14621,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -14630,14 +14630,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Ending index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number...</string>
+            <string>...number</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -14648,12 +14648,12 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Byte values to convert to string.</string>
                      <key>type</key>
-                     <string>number...</string>
+                     <string>...number</string>
                   </map>
                </map>
             </array>
@@ -14694,7 +14694,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
                <map>
@@ -14703,14 +14703,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Perform raw search (optional).</string>
                      <key>type</key>
-                     <string>boolean</string>
+                     <string>boolean?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number?, number?, string...</string>
+            <string>(number?, number?, ...string)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -14730,12 +14730,12 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Values to format.</string>
                      <key>type</key>
-                     <string>any...</string>
+                     <string>...any</string>
                   </map>
                </map>
             </array>
@@ -14808,7 +14808,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Replacement string, function, or table.</string>
                      <key>type</key>
-                     <string>function | table | string</string>
+                     <string>string | { [string]: string } | (...string) -&gt; string</string>
                   </map>
                </map>
                <map>
@@ -14817,14 +14817,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Maximum replacements (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string, number</string>
+            <string>(string, number)</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -14904,14 +14904,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Starting index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>string...</string>
+            <string>...string</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -14931,12 +14931,12 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Values to encode.</string>
                      <key>type</key>
-                     <string>any...</string>
+                     <string>...any</string>
                   </map>
                </map>
             </array>
@@ -15087,7 +15087,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Ending index (optional).</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
@@ -15122,11 +15122,20 @@ Returns true if result is non-zero.</string>
                      <string>string</string>
                   </map>
                </map>
+               <map>
+                  <key>init</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Starting index (optional).</string>
+                     <key>type</key>
+                     <string>number?</string>
+                  </map>
+               </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>any...</string>
+            <string>...any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
