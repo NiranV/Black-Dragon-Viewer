@@ -11359,12 +11359,12 @@ Does an arithmetic shift: The most significant bit of n is propagated during the
             <key>arguments</key>
             <array>
                <map>
-                  <key>args</key>
+                  <key>...</key>
                   <map>
                      <key>tooltip</key>
                      <string>Numbers to perform bitwise AND on.</string>
                      <key>type</key>
-                     <string>array</string>
+                     <string>...number</string>
                   </map>
                </map>
             </array>
@@ -11756,7 +11756,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Right shift</string>
+            <string>Shifts n by i bits to the right. If i is negative, a left shift is performed.</string>
          </map>
          <!-- buffer library-->
          <key>buffer</key>
