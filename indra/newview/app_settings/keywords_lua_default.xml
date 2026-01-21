@@ -10661,7 +10661,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10868,7 +10868,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16591,7 +16591,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -16623,7 +16623,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -16655,7 +16655,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16678,7 +16678,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -16726,7 +16726,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16790,7 +16790,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16822,7 +16822,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16900,7 +16900,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -16923,7 +16923,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17091,7 +17091,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17114,7 +17114,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17237,7 +17237,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17317,7 +17317,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -17383,7 +17383,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17415,7 +17415,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17440,7 +17440,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17518,7 +17518,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17584,7 +17584,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -17625,7 +17625,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17653,7 +17653,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -17809,7 +17809,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18273,7 +18273,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -18295,7 +18295,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>0</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18382,7 +18382,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18423,7 +18423,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>20</real>
             <key>tooltip</key>
@@ -18502,7 +18502,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18534,7 +18534,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18703,7 +18703,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -18749,7 +18749,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -20149,7 +20149,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -21582,7 +21582,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -21623,7 +21623,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>3</real>
             <key>tooltip</key>
@@ -21689,7 +21689,7 @@ Returns true if result is non-zero.</string>
             <key>god-mode</key>
             <boolean>1</boolean>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -21799,7 +21799,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -21947,7 +21947,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22043,7 +22043,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>2</real>
             <key>tooltip</key>
@@ -22376,7 +22376,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22408,7 +22408,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22458,7 +22458,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22490,7 +22490,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22522,7 +22522,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22563,7 +22563,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22586,7 +22586,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -22863,7 +22863,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -23825,7 +23825,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -23848,7 +23848,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -23889,7 +23889,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -23976,7 +23976,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24008,7 +24008,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24040,7 +24040,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24072,7 +24072,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24183,7 +24183,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -24262,7 +24262,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -24359,7 +24359,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -24438,7 +24438,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -24511,7 +24511,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -24552,7 +24552,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -24602,7 +24602,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24625,7 +24625,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24698,7 +24698,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24730,7 +24730,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24785,7 +24785,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24826,7 +24826,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -24882,7 +24882,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -24960,7 +24960,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -24983,7 +24983,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>2</real>
             <key>tooltip</key>
@@ -25111,7 +25111,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25134,7 +25134,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25157,7 +25157,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25189,7 +25189,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25221,7 +25221,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25253,7 +25253,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25308,7 +25308,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -25340,7 +25340,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25390,7 +25390,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25430,7 +25430,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>20</real>
             <key>tooltip</key>
@@ -25462,7 +25462,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25503,7 +25503,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25528,7 +25528,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25541,7 +25541,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25564,7 +25564,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25616,7 +25616,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>3</real>
             <key>tooltip</key>
@@ -25631,7 +25631,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25690,7 +25690,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>3</real>
             <key>tooltip</key>
@@ -25713,7 +25713,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -25736,7 +25736,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -25759,7 +25759,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -25782,7 +25782,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26020,7 +26020,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26077,7 +26077,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26204,7 +26204,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26217,7 +26217,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -26230,7 +26230,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -26253,7 +26253,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26266,7 +26266,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26279,7 +26279,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26393,7 +26393,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>200</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -26452,7 +26452,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>200</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.1000000000000000055511151</real>
             <key>tooltip</key>
@@ -26695,7 +26695,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26750,7 +26750,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26782,7 +26782,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -26906,7 +26906,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -26970,7 +26970,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -27016,7 +27016,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27127,7 +27127,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27140,7 +27140,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27208,7 +27208,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27281,7 +27281,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27313,7 +27313,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27345,7 +27345,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27377,7 +27377,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27400,7 +27400,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27423,7 +27423,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27446,7 +27446,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27469,7 +27469,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27492,7 +27492,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27524,7 +27524,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27556,7 +27556,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27579,7 +27579,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27643,7 +27643,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27684,7 +27684,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27748,7 +27748,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27791,7 +27791,7 @@ Returns true if result is non-zero.</string>
             <key>god-mode</key>
             <boolean>1</boolean>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27823,7 +27823,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27864,7 +27864,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27905,7 +27905,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27946,7 +27946,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -27987,7 +27987,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28062,7 +28062,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28094,7 +28094,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28135,7 +28135,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28167,7 +28167,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28208,7 +28208,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28294,7 +28294,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28317,7 +28317,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28363,7 +28363,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28386,7 +28386,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28420,7 +28420,7 @@ Returns true if result is non-zero.</string>
             <key>god-mode</key>
             <boolean>1</boolean>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28475,7 +28475,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>2</real>
             <key>tooltip</key>
@@ -28507,7 +28507,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28566,7 +28566,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28589,7 +28589,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28646,7 +28646,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>20</real>
             <key>tooltip</key>
@@ -28671,7 +28671,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28717,7 +28717,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28749,7 +28749,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28772,7 +28772,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -28795,7 +28795,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28827,7 +28827,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28850,7 +28850,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28873,7 +28873,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28896,7 +28896,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28928,7 +28928,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -28969,7 +28969,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29001,7 +29001,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0.2000000000000000111022302</real>
             <key>tooltip</key>
@@ -29078,7 +29078,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29101,7 +29101,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29133,7 +29133,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29156,7 +29156,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29179,7 +29179,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29211,7 +29211,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29243,7 +29243,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29266,7 +29266,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29298,7 +29298,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29330,7 +29330,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29362,7 +29362,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29490,7 +29490,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29513,7 +29513,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>0</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29565,7 +29565,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29590,7 +29590,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29636,7 +29636,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29659,7 +29659,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29682,7 +29682,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29695,7 +29695,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29708,7 +29708,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29721,7 +29721,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29744,7 +29744,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29757,7 +29757,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29892,7 +29892,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -29933,7 +29933,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30029,7 +30029,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30052,7 +30052,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30093,7 +30093,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>20</real>
             <key>tooltip</key>
@@ -30143,7 +30143,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30193,7 +30193,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30216,7 +30216,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>100</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>5</real>
             <key>tooltip</key>
@@ -30257,7 +30257,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>1</real>
             <key>tooltip</key>
@@ -30408,7 +30408,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30458,7 +30458,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30481,7 +30481,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30527,7 +30527,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30730,7 +30730,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30771,7 +30771,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -30826,7 +30826,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>void</string>
+            <string>()</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
