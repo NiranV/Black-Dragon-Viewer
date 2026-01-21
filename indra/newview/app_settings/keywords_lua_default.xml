@@ -13283,7 +13283,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the arc tangent of y/x in radians.</string>
+            <string>Returns the arc tangent of y/x in radians, using the signs to determine the quadrant.</string>
          </map>
          <key>math.ceil</key>
          <map>
@@ -13293,7 +13293,7 @@ Returns true if result is non-zero.</string>
                   <key>n</key>
                   <map>
                      <key>tooltip</key>
-                     <string>A number.</string>
+                     <string>A number to round up.</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -13306,7 +13306,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Rounds n upwards to the next integer boundary.</string>
+            <string>Returns the smallest integer larger than or equal to n.</string>
          </map>
          <key>math.clamp</key>
          <map>
@@ -13370,7 +13370,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the cosine of n.</string>
+            <string>Returns the cosine of n (n is in radians).</string>
          </map>
          <key>math.cosh</key>
          <map>
@@ -13462,7 +13462,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Rounds n down to the previous integer.</string>
+            <string>Returns the largest integer smaller than or equal to n.</string>
          </map>
          <key>math.fmod</key>
          <map>
@@ -13517,7 +13517,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Splits n into a significand and exponent.</string>
+            <string>Returns m and e such that n = m * 2^e.</string>
          </map>
          <key>math.ldexp</key>
          <map>
@@ -13622,7 +13622,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns logarithm of n in the given base.</string>
+            <string>Returns the logarithm of n in the given base (default e).</string>
          </map>
          <key>math.log10</key>
          <map>
@@ -13645,7 +13645,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns base-10 logarithm of n.</string>
+            <string>Returns the base-10 logarithm of n.</string>
          </map>
          <key>math.max</key>
          <map>
@@ -13733,7 +13733,7 @@ Returns true if result is non-zero.</string>
                   <key>y</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Y coordinate for the noise function (optional).</string>
+                     <string>Y coordinate for the noise function (default is 0).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -13742,7 +13742,7 @@ Returns true if result is non-zero.</string>
                   <key>z</key>
                   <map>
                      <key>tooltip</key>
-                     <string>Z coordinate for the noise function (optional).</string>
+                     <string>Z coordinate for the noise function (default is 0).</string>
                      <key>type</key>
                      <string>number</string>
                   </map>
@@ -13762,7 +13762,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array>
                <map>
-                  <key>x</key>
+                  <key>base</key>
                   <map>
                      <key>tooltip</key>
                      <string>Base value.</string>
@@ -13771,7 +13771,7 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
                <map>
-                  <key>y</key>
+                  <key>exponent</key>
                   <map>
                      <key>tooltip</key>
                      <string>Exponent value.</string>
@@ -13787,7 +13787,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns x raised to the power of y.</string>
+            <string>Returns base to the power of exponent.</string>
          </map>
          <key>math.rad</key>
          <map>
@@ -13934,7 +13934,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the sine of n.</string>
+            <string>Returns the sine of n (n is in radians).</string>
          </map>
          <key>math.sinh</key>
          <map>
@@ -14003,7 +14003,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
-            <string>Returns the tangent of n.</string>
+            <string>Returns the tangent of n (n is in radians).</string>
          </map>
          <key>math.tanh</key>
          <map>
