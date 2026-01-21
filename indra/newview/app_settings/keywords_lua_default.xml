@@ -14185,7 +14185,7 @@ Returns true if result is non-zero.</string>
          <key>os.clock</key>
          <map>
             <key>arguments</key>
-            <array/>
+            <array />
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -14205,7 +14205,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Optional format string for the date representation.</string>
                      <key>type</key>
-                     <string>string</string>
+                     <string>string?</string>
                   </map>
                </map>
                <map>
@@ -14214,14 +14214,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Optional timestamp to format; defaults to the current time.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>table|string</string>
+            <string>(string | OsDateTime)?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -14246,7 +14246,7 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Second timestamp value.</string>
                      <key>type</key>
-                     <string>number</string>
+                     <string>number?</string>
                   </map>
                </map>
             </array>
@@ -14269,14 +14269,14 @@ Returns true if result is non-zero.</string>
                      <key>tooltip</key>
                      <string>Optional table with date/time fields; returns the corresponding Unix timestamp.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>OsDateTime?</string>
                   </map>
                </map>
             </array>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>number</string>
+            <string>number?</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
