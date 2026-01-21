@@ -15373,6 +15373,43 @@ Returns true if result is non-zero.</string>
             <key>tooltip</key>
             <string>Iterates over all key-value pairs in the table (deprecated).</string>
          </map>
+         <key>table.foreachi</key>
+         <map>
+            <key>type-arguments</key>
+            <array>
+               <string>V</string>
+               <string>R</string>
+            </array>
+            <key>arguments</key>
+            <array>
+               <map>
+                  <key>a</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Array to iterate over.</string>
+                     <key>type</key>
+                     <string>{V}</string>
+                  </map>
+               </map>
+               <map>
+                  <key>f</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string>Function applied to each index-value pair.</string>
+                     <key>type</key>
+                     <string>(index: number, value: V) -&gt; R?</string>
+                  </map>
+               </map>
+            </array>
+            <key>energy</key>
+            <real>10</real>
+            <key>return</key>
+            <string>R?</string>
+            <key>sleep</key>
+            <real>0</real>
+            <key>tooltip</key>
+            <string>Iterates over all index-value pairs in the array (deprecated).</string>
+         </map>
          <key>table.freeze</key>
          <map>
             <key>arguments</key>
