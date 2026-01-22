@@ -153,7 +153,7 @@
             <string>The union of every type. Similar to any without disabling type-checking.</string>
          </map>
          <!-- SLua Base Classes -->
-         <key>LLDetectedEvent</key>
+         <key>DetectedEvent</key>
          <map>
             <key>tooltip</key>
             <string>Event detection class providing access to detected object/avatar information</string>
@@ -177,7 +177,7 @@
          <key>LLDetectedEventHandler</key>
          <map>
             <key>tooltip</key>
-            <string>type LLDetectedEventHandler = (detected: {LLDetectedEvent}) -&gt; ()</string>
+            <string>type LLDetectedEventHandler = (detected: {DetectedEvent}) -&gt; ()</string>
          </map>
          <key>LLDetectedEventName</key>
          <map>
@@ -9624,7 +9624,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9642,7 +9642,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9660,7 +9660,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -9838,7 +9838,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10222,7 +10222,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10371,7 +10371,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10398,7 +10398,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10417,7 +10417,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
@@ -10435,7 +10435,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>Array of detected events.</string>
                      <key>type</key>
-                     <string>{LLDetectedEvent}</string>
+                     <string>{DetectedEvent}</string>
                   </map>
                </map>
             </array>
