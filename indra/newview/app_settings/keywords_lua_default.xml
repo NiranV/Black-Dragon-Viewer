@@ -10381,6 +10381,8 @@ vector position - position in local coordinates
          </map>
          <key>timer</key>
          <map>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>arguments</key>
             <array />
             <key>tooltip</key>
@@ -18933,6 +18935,8 @@ Returns true if result is non-zero.</string>
          <map>
             <key>arguments</key>
             <array />
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -26276,6 +26280,8 @@ Returns true if result is non-zero.</string>
          <map>
             <key>arguments</key>
             <array />
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -28337,6 +28343,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -29098,6 +29106,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
