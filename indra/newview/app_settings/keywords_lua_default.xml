@@ -68,10 +68,20 @@
             <key>tooltip</key>
             <string>Lua break statement: exits the nearest loop.</string>
          </map>
+         <key>continue</key>
+         <map>
+            <key>tooltip</key>
+            <string>Luau continue statement: skip to the next loop iteration.</string>
+         </map>
          <key>local</key>
          <map>
             <key>tooltip</key>
             <string>Lua local keyword: declares a local variable or function.</string>
+         </map>
+         <key>export</key>
+         <map>
+            <key>tooltip</key>
+            <string>Luau export keyword: declares a type that can be used in outside this module.</string>
          </map>
          <key>in</key>
          <map>
