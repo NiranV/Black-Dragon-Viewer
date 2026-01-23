@@ -38,11 +38,6 @@
             <key>tooltip</key>
             <string>Lua for loop: for var = start, end, step do ... end</string>
          </map>
-         <key>goto</key>
-         <map>
-            <key>tooltip</key>
-            <string>Lua goto statement: jumps to a specified label.</string>
-         </map>
          <key>return</key>
          <map>
             <key>tooltip</key>
