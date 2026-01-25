@@ -233,11 +233,6 @@ type OsDateTime = {
             <key>tooltip</key>
             <string>type list = {string | number | vector | uuid | quaternion | boolean}</string>
          </map>
-         <key>numeric</key>
-         <map>
-            <key>tooltip</key>
-            <string>type numeric = boolean | number</string>
-         </map>
          <key>rotation</key>
          <map>
             <key>tooltip</key>
