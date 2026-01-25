@@ -11302,7 +11302,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Bitwise operations library</string>
+            <string>Bitwise operations library.</string>
          </map>
          <key>bit32.arshift</key>
          <map>
@@ -11747,7 +11747,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Buffer manipulation library for binary data</string>
+            <string>Buffer manipulation library for binary data.</string>
          </map>
          <key>buffer.copy</key>
          <map>
@@ -12722,7 +12722,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Coroutine manipulation library</string>
+            <string>Coroutine manipulation library.</string>
          </map>
          <key>coroutine.close</key>
          <map>
@@ -12903,7 +12903,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Debug library for introspection</string>
+            <string>Debug library for introspection.</string>
          </map>
          <key>debug.info</key>
          <map>
@@ -12993,7 +12993,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Base64 encoding/decoding library</string>
+            <string>Base64 encoding/decoding library.</string>
          </map>
          <key>llbase64.decode</key>
          <map>
@@ -13047,7 +13047,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>JSON encoding/decoding library for Second Life</string>
+            <string>JSON encoding/decoding library for Second Life.</string>
          </map>
          <key>lljson.decode</key>
          <map>
@@ -13156,7 +13156,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Mathematical functions library</string>
+            <string>Mathematical functions library.</string>
          </map>
          <key>math.abs</key>
          <map>
@@ -14177,7 +14177,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Operating system facilities library</string>
+            <string>Operating system facilities library.</string>
          </map>
          <key>os.clock</key>
          <map>
@@ -14597,7 +14597,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>String manipulation library</string>
+            <string>String manipulation library.</string>
          </map>
          <key>string.byte</key>
          <map>
@@ -15818,7 +15818,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>UTF-8 support library</string>
+            <string>UTF-8 support library.</string>
          </map>
          <key>utf8.char</key>
          <map>
@@ -16514,7 +16514,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Library for functions shared between LSL and SLua</string>
+            <string>Library for functions shared between LSL and SLua.</string>
          </map>
          <key>ll.Abs</key>
          <map>
