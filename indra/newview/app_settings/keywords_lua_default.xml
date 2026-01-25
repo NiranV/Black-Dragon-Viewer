@@ -137,11 +137,6 @@
             <key>tooltip</key>
             <string>Read-only binary data. Usually UTF-8-encoded text.</string>
          </map>
-         <key>table</key>
-         <map>
-            <key>tooltip</key>
-            <string>Collection of key‑value pairs.</string>
-         </map>
          <key>thread</key>
          <map>
             <key>tooltip</key>
@@ -10854,7 +10849,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to set the metatable for.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{ [any]: any }</string>
                   </map>
                </map>
                <map>
@@ -10863,7 +10858,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The metatable to set.</string>
                      <key>type</key>
-                     <string>table?</string>
+                     <string>{ [any]: any }?</string>
                   </map>
                </map>
             </array>
@@ -15172,7 +15167,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Table manipulation library</string>
+            <string>Table manipulation library. Tables are collections of key-value pairs.</string>
          </map>
          <key>table.clear</key>
          <map>
