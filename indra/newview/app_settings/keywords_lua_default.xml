@@ -38,11 +38,6 @@
             <key>tooltip</key>
             <string>Lua for loop: for var = start, end, step do ... end</string>
          </map>
-         <key>goto</key>
-         <map>
-            <key>tooltip</key>
-            <string>Lua goto statement: jumps to a specified label.</string>
-         </map>
          <key>return</key>
          <map>
             <key>tooltip</key>
@@ -73,10 +68,20 @@
             <key>tooltip</key>
             <string>Lua break statement: exits the nearest loop.</string>
          </map>
+         <key>continue</key>
+         <map>
+            <key>tooltip</key>
+            <string>Luau continue statement: skip to the next loop iteration.</string>
+         </map>
          <key>local</key>
          <map>
             <key>tooltip</key>
             <string>Lua local keyword: declares a local variable or function.</string>
+         </map>
+         <key>export</key>
+         <map>
+            <key>tooltip</key>
+            <string>Luau export keyword: declares a type that can be used in outside this module.</string>
          </map>
          <key>in</key>
          <map>
@@ -132,20 +137,10 @@
             <key>tooltip</key>
             <string>Read-only binary data. Usually UTF-8-encoded text.</string>
          </map>
-         <key>table</key>
-         <map>
-            <key>tooltip</key>
-            <string>Collection of key‑value pairs.</string>
-         </map>
          <key>thread</key>
          <map>
             <key>tooltip</key>
             <string>Represents a coroutine.</string>
-         </map>
-         <key>userdata</key>
-         <map>
-            <key>tooltip</key>
-            <string>Opaque external data.</string>
          </map>
          <key>unknown</key>
          <map>
@@ -174,54 +169,11 @@
             <string>A set of three float values. Used to represent colors (RGB), positions, directions, and velocities.</string>
          </map>
          <!-- SLua Type Aliases -->
-         <key>LLDetectedEventHandler</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLDetectedEventHandler = (detected: {DetectedEvent}) -&gt; ()</string>
-         </map>
-         <key>LLDetectedEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLDetectedEventName = {}</string>
-         </map>
-         <key>LLEventHandler</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLEventHandler = (...any) -&gt; ()</string>
-         </map>
-         <key>LLEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLEventName = LLDetectedEventName | LLNonDetectedEventName</string>
-         </map>
-         <key>LLNonDetectedEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLNonDetectedEventName = {}</string>
-         </map>
-         <key>LLTimerCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Union of timer callback types
-type LLTimerCallback = LLTimerEveryCallback | LLTimerOnceCallback</string>
-         </map>
-         <key>LLTimerEveryCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Callback type for LLTimers.every() - receives scheduled time and interval
-type LLTimerEveryCallback = (scheduled: number, interval: number) -&gt; ()</string>
-         </map>
-         <key>LLTimerOnceCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Callback type for LLTimers.once() - receives scheduled time
-type LLTimerOnceCallback = (scheduled: number) -&gt; ()</string>
-         </map>
          <key>OsDateTime</key>
          <map>
             <key>tooltip</key>
             <string>Date/time table structure used by os.date and os.time
-type OsDateTime = {
+export type OsDateTime = {
   year: number,
   month: number,
   day: number,
@@ -236,19 +188,13 @@ type OsDateTime = {
          <key>list</key>
          <map>
             <key>tooltip</key>
-            <string>type list = {string | number | vector | uuid | quaternion | boolean}</string>
-         </map>
-         <key>numeric</key>
-         <map>
-            <key>tooltip</key>
-            <string>type numeric = boolean | number</string>
+            <string>export type list = {string | number | vector | uuid | quaternion | boolean}</string>
          </map>
          <key>rotation</key>
          <map>
             <key>tooltip</key>
             <string>'rotation' is an alias for 'quaternion'
-type rotation = quaternion</string>
-         <!-- SLua Classes -->
+export type rotation = quaternion</string>
          </map>
          <key>LLEvents</key>
          <map>
@@ -324,7 +270,7 @@ type rotation = quaternion</string>
             <key>tooltip</key>
             <string>A constant to pass for an empty array to json encode</string>
             <key>type</key>
-            <string>userdata</string>
+            <string>any</string>
          </map>
          <key>lljson.empty_array_mt</key>
          <map>
@@ -340,7 +286,7 @@ type rotation = quaternion</string>
             <key>tooltip</key>
             <string>A constant to pass for null to json encode</string>
             <key>type</key>
-            <string>userdata</string>
+            <string>any</string>
          </map>
          <key>math.huge</key>
          <map>
@@ -10640,7 +10586,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>10</real>
             <key>return</key>
-            <string>userdata</string>
+            <string>any</string>
             <key>sleep</key>
             <real>0</real>
             <key>tooltip</key>
@@ -10854,7 +10800,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The table to set the metatable for.</string>
                      <key>type</key>
-                     <string>table</string>
+                     <string>{ [any]: any }</string>
                   </map>
                </map>
                <map>
@@ -10863,7 +10809,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string>The metatable to set.</string>
                      <key>type</key>
-                     <string>table?</string>
+                     <string>{ [any]: any }?</string>
                   </map>
                </map>
             </array>
@@ -11307,7 +11253,7 @@ vector position - position in local coordinates
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Bitwise operations library</string>
+            <string>Bitwise operations library.</string>
          </map>
          <key>bit32.arshift</key>
          <map>
@@ -11752,7 +11698,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Buffer manipulation library for binary data</string>
+            <string>Buffer manipulation library for binary data.</string>
          </map>
          <key>buffer.copy</key>
          <map>
@@ -12727,7 +12673,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Coroutine manipulation library</string>
+            <string>Coroutine manipulation library.</string>
          </map>
          <key>coroutine.close</key>
          <map>
@@ -12908,7 +12854,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Debug library for introspection</string>
+            <string>Debug library for introspection.</string>
          </map>
          <key>debug.info</key>
          <map>
@@ -12998,7 +12944,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Base64 encoding/decoding library</string>
+            <string>Base64 encoding/decoding library.</string>
          </map>
          <key>llbase64.decode</key>
          <map>
@@ -13052,7 +12998,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>JSON encoding/decoding library for Second Life</string>
+            <string>JSON encoding/decoding library for Second Life.</string>
          </map>
          <key>lljson.decode</key>
          <map>
@@ -13161,7 +13107,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Mathematical functions library</string>
+            <string>Mathematical functions library.</string>
          </map>
          <key>math.abs</key>
          <map>
@@ -14182,7 +14128,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Operating system facilities library</string>
+            <string>Operating system facilities library.</string>
          </map>
          <key>os.clock</key>
          <map>
@@ -14602,7 +14548,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>String manipulation library</string>
+            <string>String manipulation library.</string>
          </map>
          <key>string.byte</key>
          <map>
@@ -15172,7 +15118,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Table manipulation library</string>
+            <string>Table manipulation library. Tables are collections of key-value pairs.</string>
          </map>
          <key>table.clear</key>
          <map>
@@ -15385,6 +15331,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -15422,6 +15370,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -15473,6 +15423,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -15823,7 +15775,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>UTF-8 support library</string>
+            <string>UTF-8 support library.</string>
          </map>
          <key>utf8.char</key>
          <map>
@@ -16519,7 +16471,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>-1</real>
             <key>tooltip</key>
-            <string>Library for functions shared between LSL and SLua</string>
+            <string>Library for functions shared between LSL and SLua.</string>
          </map>
          <key>ll.Abs</key>
          <map>
@@ -16654,6 +16606,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17831,6 +17785,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17854,6 +17810,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17877,6 +17835,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17900,6 +17860,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17923,6 +17885,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17946,6 +17910,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17969,6 +17935,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -17992,6 +17960,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18015,6 +17985,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18038,6 +18010,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18061,6 +18035,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18084,6 +18060,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18107,6 +18085,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18130,6 +18110,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18153,6 +18135,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18176,6 +18160,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18199,6 +18185,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
@@ -18222,6 +18210,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>1</boolean>
             <key>energy</key>
             <real>10</real>
             <key>return</key>
