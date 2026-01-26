@@ -10109,35 +10109,40 @@ vector position - position in local coordinates
          <key>moving_end</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered whenever an object with this script stops moving.</string>
          </map>
          <key>moving_start</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered whenever an object with this script starts moving.</string>
          </map>
          <key>no_sensor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>This event is raised when sensors are active, via the llSensor function call, but are not sensing anything.</string>
          </map>
          <key>not_at_rot_target</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>When a target is set via the llRotTarget function call, but the script is outside the specified angle this event is raised.</string>
          </map>
          <key>not_at_target</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>When a target is set via the llTarget library call, but the script is outside the specified range this event is raised.</string>
          </map>
@@ -10178,7 +10183,8 @@ vector position - position in local coordinates
          <key>on_death</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered when an avatar reaches 0 health.</string>
          </map>
@@ -10330,7 +10336,8 @@ vector position - position in local coordinates
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>This event is raised at regular intervals set by the llSetTimerEvent library function.</string>
          </map>
@@ -10499,7 +10506,8 @@ vector position - position in local coordinates
          <key>gcinfo</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12724,7 +12732,8 @@ Returns true if result is non-zero.</string>
          <key>coroutine.isyieldable</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12769,7 +12778,8 @@ Returns true if result is non-zero.</string>
          <key>coroutine.running</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14133,7 +14143,8 @@ Returns true if result is non-zero.</string>
          <key>os.clock</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -16911,7 +16922,8 @@ Returns true if result is non-zero.</string>
          <key>ll.AvatarOnSitTarget</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17043,7 +17055,8 @@ Returns true if result is non-zero.</string>
          <key>ll.BreakAllLinks</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17189,7 +17202,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ClearCameraParams</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17590,7 +17604,8 @@ Returns true if result is non-zero.</string>
          <key>ll.DataSizeKeyValue</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17605,7 +17620,8 @@ Returns true if result is non-zero.</string>
          <key>ll.DeleteCharacter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17761,7 +17777,8 @@ Returns true if result is non-zero.</string>
          <key>ll.DetachFromAvatar</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18283,7 +18300,8 @@ Returns true if result is non-zero.</string>
          <key>ll.Die</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>0.0</real>
             <key>return</key>
@@ -18773,7 +18791,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GenerateKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18786,7 +18805,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetAccel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18924,7 +18944,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetAndResetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -19008,7 +19029,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetAttached</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19099,7 +19121,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCameraAspect</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19112,7 +19135,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCameraFOV</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19125,7 +19149,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCameraPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19138,7 +19163,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCameraRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19151,7 +19177,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCenterOfMass</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19219,7 +19246,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetCreator</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19232,7 +19260,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetDate</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19245,7 +19274,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetDayLength</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19258,7 +19288,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetDayOffset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19294,7 +19325,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetEnergy</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19412,7 +19444,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetForce</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19425,7 +19458,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetFreeMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19438,7 +19472,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetFreeURLs</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19451,7 +19486,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetGMTclock</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19464,7 +19500,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetGeometricCenter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19734,7 +19771,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19857,7 +19895,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetLinkNumber</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20003,7 +20042,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetLocalPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20016,7 +20056,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetLocalRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20029,7 +20070,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMass</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20042,7 +20084,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMassMKS</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20055,7 +20098,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMaxScaleFactor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20068,7 +20112,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMemoryLimit</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20081,7 +20126,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMinScaleFactor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20094,7 +20140,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMoonDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20107,7 +20154,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetMoonRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20239,7 +20287,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetNumberOfPrims</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20252,7 +20301,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetNumberOfSides</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20265,7 +20315,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetObjectAnimationNames</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20278,7 +20329,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetObjectDesc</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20378,7 +20430,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetObjectName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20437,7 +20490,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetOmega</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20450,7 +20504,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetOwner</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20573,7 +20628,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetParcelMusicURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20650,7 +20706,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetPermissions</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20663,7 +20720,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetPermissionsKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20676,7 +20734,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetPhysicsMaterial</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20689,7 +20748,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20757,7 +20817,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionAgentCount</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20770,7 +20831,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionCorner</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20783,7 +20845,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionDayLength</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20796,7 +20859,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionDayOffset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20809,7 +20873,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionFPS</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20822,7 +20887,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionFlags</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20835,7 +20901,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionMoonDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20848,7 +20915,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionMoonRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20861,7 +20929,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20874,7 +20943,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionSunDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20887,7 +20957,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionSunRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20900,7 +20971,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionTimeDilation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20913,7 +20985,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRegionTimeOfDay</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20949,7 +21022,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRootPosition</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20962,7 +21036,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRootRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20975,7 +21050,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20988,7 +21064,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetSPMaxMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21001,7 +21078,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetScale</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21014,7 +21092,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetScriptName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21073,7 +21152,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetSimulatorHostname</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21086,7 +21166,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetStartParameter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21099,7 +21180,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetStartString</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21226,7 +21308,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetSunDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21239,7 +21322,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetSunRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21344,7 +21428,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21357,7 +21442,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetTimeOfDay</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21370,7 +21456,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetTimestamp</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21383,7 +21470,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetTorque</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21396,7 +21484,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetUnixTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21409,7 +21498,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetUsedMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21445,7 +21535,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetVel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21490,7 +21581,8 @@ Returns true if result is non-zero.</string>
          <key>ll.GetWallclock</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22275,7 +22367,8 @@ Returns true if result is non-zero.</string>
          <key>ll.KeyCountKeyValue</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22589,7 +22682,8 @@ Returns true if result is non-zero.</string>
          <key>ll.LinksetDataAvailable</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22625,7 +22719,8 @@ Returns true if result is non-zero.</string>
          <key>ll.LinksetDataCountKeys</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22853,7 +22948,8 @@ Returns true if result is non-zero.</string>
          <key>ll.LinksetDataReset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24870,7 +24966,8 @@ Returns true if result is non-zero.</string>
          <key>ll.OpenRemoteDataChannel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -25418,7 +25515,8 @@ Returns true if result is non-zero.</string>
          <key>ll.RefreshPrimURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -25531,7 +25629,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ReleaseControls</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -25619,7 +25718,8 @@ Returns true if result is non-zero.</string>
          <key>ll.RemoteDataSetRegion</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -26080,7 +26180,8 @@ Returns true if result is non-zero.</string>
          <key>ll.RequestSecureURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26125,7 +26226,8 @@ Returns true if result is non-zero.</string>
          <key>ll.RequestURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26207,7 +26309,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ResetLandBanList</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26220,7 +26323,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ResetLandPassList</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26256,7 +26360,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ResetScript</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26269,7 +26374,8 @@ Returns true if result is non-zero.</string>
          <key>ll.ResetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -27132,7 +27238,8 @@ Returns true if result is non-zero.</string>
          <key>ll.SensorRemove</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29691,7 +29798,8 @@ Returns true if result is non-zero.</string>
          <key>ll.StopHover</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29704,7 +29812,8 @@ Returns true if result is non-zero.</string>
          <key>ll.StopLookAt</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29717,7 +29826,8 @@ Returns true if result is non-zero.</string>
          <key>ll.StopMoveToTarget</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29753,7 +29863,8 @@ Returns true if result is non-zero.</string>
          <key>ll.StopSound</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>

@@ -9881,35 +9881,40 @@ If another state is defined before the default state, the compiler will report a
          <key>moving_end</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered whenever an object with this script stops moving.</string>
          </map>
          <key>moving_start</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered whenever an object with this script starts moving.</string>
          </map>
          <key>no_sensor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>This event is raised when sensors are active, via the llSensor function call, but are not sensing anything.</string>
          </map>
          <key>not_at_rot_target</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>When a target is set via the llRotTarget function call, but the script is outside the specified angle this event is raised.</string>
          </map>
          <key>not_at_target</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>When a target is set via the llTarget library call, but the script is outside the specified range this event is raised.</string>
          </map>
@@ -9950,7 +9955,8 @@ If another state is defined before the default state, the compiler will report a
          <key>on_death</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>Triggered when an avatar reaches 0 health.</string>
          </map>
@@ -10100,21 +10106,24 @@ If another state is defined before the default state, the compiler will report a
          <key>state_entry</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>The state_entry event occurs whenever a new state is entered, including at program start, and is always the first event handled.</string>
          </map>
          <key>state_exit</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>The state_exit event occurs whenever the state command is used to transition to another state. It is handled before the new states state_entry event.</string>
          </map>
          <key>timer</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>tooltip</key>
             <string>This event is raised at regular intervals set by the llSetTimerEvent library function.</string>
          </map>
@@ -10649,7 +10658,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llAvatarOnSitTarget</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -10781,7 +10791,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llBreakAllLinks</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -10927,7 +10938,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llClearCameraParams</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11328,7 +11340,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llDataSizeKeyValue</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11343,7 +11356,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llDeleteCharacter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11497,7 +11511,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llDetachFromAvatar</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11985,7 +12000,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llDie</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>0.0</real>
             <key>return</key>
@@ -12477,7 +12493,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGenerateKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12490,7 +12507,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetAccel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12628,7 +12646,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetAndResetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12710,7 +12729,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetAttached</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12801,7 +12821,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCameraAspect</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12814,7 +12835,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCameraFOV</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12827,7 +12849,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCameraPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12840,7 +12863,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCameraRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12853,7 +12877,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCenterOfMass</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12921,7 +12946,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetCreator</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12934,7 +12960,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetDate</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12947,7 +12974,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetDayLength</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12960,7 +12988,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetDayOffset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -12996,7 +13025,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetEnergy</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13116,7 +13146,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetForce</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13129,7 +13160,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetFreeMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13142,7 +13174,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetFreeURLs</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13155,7 +13188,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetGMTclock</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13168,7 +13202,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetGeometricCenter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13438,7 +13473,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13563,7 +13599,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetLinkNumber</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13711,7 +13748,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetLocalPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13724,7 +13762,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetLocalRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13737,7 +13776,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMass</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13750,7 +13790,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMassMKS</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13763,7 +13804,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMaxScaleFactor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13776,7 +13818,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMemoryLimit</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13789,7 +13832,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMinScaleFactor</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13802,7 +13846,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMoonDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13815,7 +13860,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetMoonRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13947,7 +13993,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetNumberOfPrims</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13960,7 +14007,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetNumberOfSides</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13973,7 +14021,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetObjectAnimationNames</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -13986,7 +14035,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetObjectDesc</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14088,7 +14138,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetObjectName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14147,7 +14198,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetOmega</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14160,7 +14212,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetOwner</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14285,7 +14338,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetParcelMusicURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14362,7 +14416,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetPermissions</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14375,7 +14430,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetPermissionsKey</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14388,7 +14444,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetPhysicsMaterial</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14401,7 +14458,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetPos</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14473,7 +14531,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionAgentCount</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14486,7 +14545,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionCorner</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14499,7 +14559,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionDayLength</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14512,7 +14573,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionDayOffset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14525,7 +14587,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionFPS</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14538,7 +14601,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionFlags</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14551,7 +14615,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionMoonDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14564,7 +14629,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionMoonRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14577,7 +14643,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14590,7 +14657,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionSunDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14603,7 +14671,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionSunRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14616,7 +14685,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionTimeDilation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14629,7 +14699,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRegionTimeOfDay</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14665,7 +14736,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRootPosition</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14678,7 +14750,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRootRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14691,7 +14764,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetRot</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14704,7 +14778,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetSPMaxMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14717,7 +14792,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetScale</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14730,7 +14806,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetScriptName</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14791,7 +14868,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetSimulatorHostname</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14804,7 +14882,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetStartParameter</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14817,7 +14896,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetStartString</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14946,7 +15026,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetSunDirection</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14959,7 +15040,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetSunRotation</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15064,7 +15146,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15077,7 +15160,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetTimeOfDay</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15090,7 +15174,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetTimestamp</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15103,7 +15188,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetTorque</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15116,7 +15202,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetUnixTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15129,7 +15216,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetUsedMemory</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15165,7 +15253,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetVel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15210,7 +15299,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llGetWallclock</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15999,7 +16089,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llKeyCountKeyValue</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -16313,7 +16404,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llLinksetDataAvailable</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -16349,7 +16441,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llLinksetDataCountKeys</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -16577,7 +16670,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llLinksetDataReset</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18564,7 +18658,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llOpenRemoteDataChannel</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -19116,7 +19211,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llRefreshPrimURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -19229,7 +19325,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llReleaseControls</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19317,7 +19414,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llRemoteDataSetRegion</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>deprecated</key>
             <boolean>true</boolean>
             <key>energy</key>
@@ -19778,7 +19876,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llRequestSecureURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19823,7 +19922,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llRequestURL</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19905,7 +20005,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llResetLandBanList</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19918,7 +20019,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llResetLandPassList</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19954,7 +20056,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llResetScript</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19967,7 +20070,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llResetTime</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20834,7 +20938,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llSensorRemove</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23393,7 +23498,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llStopHover</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23406,7 +23512,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llStopLookAt</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23419,7 +23526,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llStopMoveToTarget</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23455,7 +23563,8 @@ If another state is defined before the default state, the compiler will report a
          <key>llStopSound</key>
          <map>
             <key>arguments</key>
-            <array />
+            <array>
+            </array>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
