@@ -69,7 +69,7 @@
          <key>quaternion</key>
          <map>
             <key>private</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>The quaternion type is a left over from way back when LSL was created. It was later renamed to &lt;rotation&gt; to make it more user friendly, but it appears someone forgot to remove it ;-)</string>
          </map>
@@ -616,7 +616,7 @@
          <key>ATTACH_LPEC</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Attach to the avatar's right pectoral. (Deprecated, use ATTACH_RIGHT_PEC)</string>
             <key>type</key>
@@ -780,7 +780,7 @@
          <key>ATTACH_RPEC</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Attach to the avatar's left pectoral. (deprecated, use ATTACH_LEFT_PEC)</string>
             <key>type</key>
@@ -5048,7 +5048,7 @@
          <key>PRIM_CAST_SHADOWS</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -6952,7 +6952,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_CHANNEL</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -6963,7 +6963,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_REPLY</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -6974,7 +6974,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_REQUEST</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -8759,7 +8759,7 @@ vector position - position in local coordinates
          <key>VEHICLE_FLAG_NO_FLY_UP</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Old, changed to VEHICLE_FLAG_NO_DEFLECTION_UP</string>
             <key>type</key>
@@ -10000,7 +10000,7 @@ If another state is defined before the default state, the compiler will report a
          <key>remote_data</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>arguments</key>
             <array>
                <map>
@@ -10401,7 +10401,7 @@ If another state is defined before the default state, the compiler will report a
                    Returns TRUE if the agent is in the Experience and the Experience can run in the current location.
                 </string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llAllowInventoryDrop</key>
          <map>
@@ -11007,7 +11007,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11032,7 +11032,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11130,7 +11130,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -11492,7 +11492,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Derezzes an object previously rezzed by a script in this region. Returns TRUE on success or FALSE if the object could not be derezzed.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llDetachFromAvatar</key>
          <map>
@@ -11576,7 +11576,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if detected object or agent Number has the same user group active as this object.\nIt will return FALSE if the object or agent is in the group, but the group is not active.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llDetectedKey</key>
          <map>
@@ -12059,7 +12059,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Checks to see whether the border hit by Direction from Position is the edge of the world (has no neighboring region).\nReturns TRUE if the line along Direction from Position hits the edge of the world in the current simulator, returns FALSE if that edge crosses into another simulator.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llEjectFromLand</key>
          <map>
@@ -13061,7 +13061,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns a string with the requested data about the region.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetExperienceDetails</key>
          <map>
@@ -13535,7 +13535,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Get the media parameters for a particular face on linked prim, given the desired list of parameter names. Returns a list of values in the order requested.	Returns an empty list if no media exists on the face.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetLinkName</key>
          <map>
@@ -13628,7 +13628,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns the list of primitive attributes requested in the Parameters list for LinkNumber.\nPRIM_* flags can be broken into three categories, face flags, prim flags, and object flags.\n* Supplying a prim or object flag will return that flag's attributes.\n* Face flags require the user to also supply a face index parameter.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetLinkSitFlags</key>
          <map>
@@ -14028,7 +14028,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns a list of object details specified in the Parameters list for the object or avatar in the region with key ID.\nParameters are specified by the OBJECT_* constants.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetObjectLinkKey</key>
          <map>
@@ -14225,7 +14225,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns a list of parcel details specified in the ParcelDetails list for the parcel at Position.\nParameters is one or more of: PARCEL_DETAILS_NAME, _DESC, _OWNER, _GROUP, _AREA, _ID, _SEE_AVATARS.\nReturns a list that is the parcel details specified in ParcelDetails (in the same order) for the parcel at Position.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetParcelFlags</key>
          <map>
@@ -14443,7 +14443,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns the media parameters for a particular face on an object, given the desired list of parameter names, in the order requested. Returns an empty list if no media exists on the face.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetPrimitiveParams</key>
          <map>
@@ -14468,7 +14468,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns the primitive parameters specified in the parameters list.\nReturns primitive parameters specified in the Parameters list.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetRegionAgentCount</key>
          <map>
@@ -14763,7 +14763,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if the script named is running.\nReturns TRUE if ScriptName is running.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetSimStats</key>
          <map>
@@ -14900,7 +14900,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns boolean value of the specified status (e.g. STATUS_PHANTOM) of the object the script is attached to.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llGetSubString</key>
          <map>
@@ -15401,7 +15401,7 @@ If another state is defined before the default state, the compiler will report a
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>void</string>
             <key>sleep</key>
@@ -15809,7 +15809,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if avatar ID is a friend of the script owner.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llIsLinkGLTFMaterial</key>
          <map>
@@ -15843,7 +15843,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Checks the face for a PBR render material.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llJson2List</key>
          <map>
@@ -17865,7 +17865,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17944,7 +17944,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18041,7 +18041,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18120,7 +18120,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18162,7 +18162,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Adds or removes agents from the estate's agent access or ban lists, or groups to the estate's group access list. Action is one of the ESTATE_ACCESS_ALLOWED_* operations to perform.\nReturns an integer representing a boolean, TRUE if the call was successful; FALSE if throttled, invalid action, invalid or null id or object owner is not allowed to manage the estate.\nThe object owner is notified of any changes, unless PERMISSION_SILENT_ESTATE_MANAGEMENT has been granted to the script.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llMapBeacon</key>
          <map>
@@ -18566,7 +18566,7 @@ If another state is defined before the default state, the compiler will report a
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18631,7 +18631,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if id ID over land owned by the script owner, otherwise FALSE.\nReturns TRUE if key ID is over land owned by the object owner, FALSE otherwise.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llOwnerSay</key>
          <map>
@@ -18702,7 +18702,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Queries the media properties of the parcel containing the script, via one or more PARCEL_MEDIA_COMMAND_* arguments specified in CommandList.\nThis function will only work if the script is contained within an object owned by the land-owner (or if the land is owned by a group, only if the object has been deeded to the group).</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llParseString2List</key>
          <map>
@@ -19118,7 +19118,7 @@ If another state is defined before the default state, the compiler will report a
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19216,7 +19216,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19304,7 +19304,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -19319,7 +19319,7 @@ If another state is defined before the default state, the compiler will report a
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -20572,7 +20572,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if avatar ID is in the same region and has the same active group, otherwise FALSE.\nReturns TRUE if the object or agent identified is in the same simulator and has the same active group as this object. Otherwise, returns FALSE.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llSay</key>
          <map>
@@ -20629,7 +20629,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Attempts to resize the entire object by ScalingFactor, maintaining the size-position ratios of the prims.\n\nResizing is subject to prim scale limits and linkability limits. This function can not resize the object if the linkset is physical, a pathfinding character, in a keyframed motion, or if resizing would cause the parcel to overflow.\nReturns a boolean (an integer) TRUE if it succeeds, FALSE if it fails.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llScaleTexture</key>
          <map>
@@ -20695,7 +20695,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if Position is over public land, sandbox land, land that doesn't allow everyone to edit and build, or land that doesn't allow outside scripts.\nReturns true if the position is over public land, land that doesn't allow everyone to edit and build, or land that doesn't allow outside scripts.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llScriptProfiler</key>
          <map>
@@ -20762,7 +20762,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21487,7 +21487,7 @@ If another state is defined before the default state, the compiler will report a
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>void</string>
             <key>sleep</key>
@@ -21756,7 +21756,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22044,7 +22044,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Requests Limit bytes to be reserved for this script.\nReturns TRUE or FALSE indicating whether the limit was set successfully.\nThis function has no effect if the script is running in the LSO VM.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llSetObjectDesc</key>
          <map>
@@ -22118,7 +22118,7 @@ If another state is defined before the default state, the compiler will report a
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>void</string>
             <key>sleep</key>
@@ -22342,7 +22342,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22367,7 +22367,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -22400,7 +22400,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Attempts to move the object so that the root prim is within 0.1m of Position.\nReturns an integer boolean, TRUE if the object is successfully placed within 0.1 m of Position, FALSE otherwise.\nPosition may be any location within the region or up to 10m across a region border.\nIf the position is below ground, it will be set to the ground level at that x,y location.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llSetRemoteScriptAccessPin</key>
          <map>
@@ -23263,7 +23263,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23288,7 +23288,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -23590,7 +23590,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24415,7 +24415,7 @@ If another state is defined before the default state, the compiler will report a
             <key>tooltip</key>
             <string>Returns TRUE if PublicKey, Message, and Algorithm produce the same base64-formatted Signature.</string>
             <key>bool_semantics</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
          </map>
          <key>llVolumeDetect</key>
          <map>
@@ -24638,7 +24638,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24672,7 +24672,7 @@ If another state is defined before the default state, the compiler will report a
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>

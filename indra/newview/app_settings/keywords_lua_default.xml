@@ -868,7 +868,7 @@ export type rotation = quaternion</string>
          <key>ATTACH_LPEC</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Attach to the avatar's right pectoral. (Deprecated, use ATTACH_RIGHT_PEC)</string>
             <key>type</key>
@@ -1032,7 +1032,7 @@ export type rotation = quaternion</string>
          <key>ATTACH_RPEC</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Attach to the avatar's left pectoral. (deprecated, use ATTACH_LEFT_PEC)</string>
             <key>type</key>
@@ -5291,7 +5291,7 @@ export type rotation = quaternion</string>
          <key>PRIM_CAST_SHADOWS</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -7195,7 +7195,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_CHANNEL</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -7206,7 +7206,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_REPLY</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -7217,7 +7217,7 @@ vector position - position in local coordinates
          <key>REMOTE_DATA_REQUEST</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string />
             <key>type</key>
@@ -8993,7 +8993,7 @@ vector position - position in local coordinates
          <key>VEHICLE_FLAG_NO_FLY_UP</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>tooltip</key>
             <string>Old, changed to VEHICLE_FLAG_NO_DEFLECTION_UP</string>
             <key>type</key>
@@ -10228,7 +10228,7 @@ vector position - position in local coordinates
          <key>remote_data</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>arguments</key>
             <array>
                <map>
@@ -10328,7 +10328,7 @@ vector position - position in local coordinates
          <key>timer</key>
          <map>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>arguments</key>
             <array />
             <key>tooltip</key>
@@ -15332,7 +15332,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15371,7 +15371,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -15424,7 +15424,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -16607,7 +16607,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17269,7 +17269,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17294,7 +17294,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17392,7 +17392,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17786,7 +17786,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17811,7 +17811,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17836,7 +17836,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17861,7 +17861,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17886,7 +17886,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17911,7 +17911,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17936,7 +17936,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17961,7 +17961,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -17986,7 +17986,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18011,7 +18011,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18036,7 +18036,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18061,7 +18061,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18086,7 +18086,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18111,7 +18111,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18136,7 +18136,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18161,7 +18161,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18186,7 +18186,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18211,7 +18211,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -18926,7 +18926,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -21681,7 +21681,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>()</string>
             <key>sleep</key>
@@ -24173,7 +24173,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24252,7 +24252,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24349,7 +24349,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24428,7 +24428,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -24872,7 +24872,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -25420,7 +25420,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -25518,7 +25518,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -25606,7 +25606,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -25621,7 +25621,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -26271,7 +26271,7 @@ Returns true if result is non-zero.</string>
             <key>arguments</key>
             <array />
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -27060,7 +27060,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -27785,7 +27785,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>()</string>
             <key>sleep</key>
@@ -28054,7 +28054,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -28334,7 +28334,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -28416,7 +28416,7 @@ Returns true if result is non-zero.</string>
             <key>energy</key>
             <real>10.0</real>
             <key>god-mode</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>return</key>
             <string>()</string>
             <key>sleep</key>
@@ -28640,7 +28640,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -28665,7 +28665,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29097,7 +29097,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29561,7 +29561,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29586,7 +29586,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -29888,7 +29888,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -30934,7 +30934,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -30968,7 +30968,7 @@ Returns true if result is non-zero.</string>
                </map>
             </array>
             <key>deprecated</key>
-            <boolean>1</boolean>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
