@@ -169,54 +169,11 @@
             <string>A set of three float values. Used to represent colors (RGB), positions, directions, and velocities.</string>
          </map>
          <!-- SLua Type Aliases -->
-         <key>LLDetectedEventHandler</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLDetectedEventHandler = (detected: {DetectedEvent}) -&gt; ()</string>
-         </map>
-         <key>LLDetectedEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLDetectedEventName = {}</string>
-         </map>
-         <key>LLEventHandler</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLEventHandler = (...any) -&gt; ()</string>
-         </map>
-         <key>LLEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLEventName = LLDetectedEventName | LLNonDetectedEventName</string>
-         </map>
-         <key>LLNonDetectedEventName</key>
-         <map>
-            <key>tooltip</key>
-            <string>type LLNonDetectedEventName = {}</string>
-         </map>
-         <key>LLTimerCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Union of timer callback types
-type LLTimerCallback = LLTimerEveryCallback | LLTimerOnceCallback</string>
-         </map>
-         <key>LLTimerEveryCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Callback type for LLTimers.every() - receives scheduled time and interval
-type LLTimerEveryCallback = (scheduled: number, interval: number) -&gt; ()</string>
-         </map>
-         <key>LLTimerOnceCallback</key>
-         <map>
-            <key>tooltip</key>
-            <string>Callback type for LLTimers.once() - receives scheduled time
-type LLTimerOnceCallback = (scheduled: number) -&gt; ()</string>
-         </map>
          <key>OsDateTime</key>
          <map>
             <key>tooltip</key>
             <string>Date/time table structure used by os.date and os.time
-type OsDateTime = {
+export type OsDateTime = {
   year: number,
   month: number,
   day: number,
@@ -231,14 +188,13 @@ type OsDateTime = {
          <key>list</key>
          <map>
             <key>tooltip</key>
-            <string>type list = {string | number | vector | uuid | quaternion | boolean}</string>
+            <string>export type list = {string | number | vector | uuid | quaternion | boolean}</string>
          </map>
          <key>rotation</key>
          <map>
             <key>tooltip</key>
             <string>'rotation' is an alias for 'quaternion'
-type rotation = quaternion</string>
-         <!-- SLua Classes -->
+export type rotation = quaternion</string>
          </map>
          <key>LLEvents</key>
          <map>
