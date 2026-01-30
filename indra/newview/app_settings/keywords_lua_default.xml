@@ -11173,7 +11173,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string></string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>string | quaternion</string>
                   </map>
                </map>
             </array>
@@ -11184,7 +11184,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0.0</real>
             <key>tooltip</key>
-            <string>Converts a value to a quaternion, returns nil if invalid</string>
+            <string>Converts a string to a quaternion, returns nil if invalid</string>
          </map>
          <key>torotation</key>
          <map>
@@ -11196,7 +11196,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string></string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>string | quaternion</string>
                   </map>
                </map>
             </array>
@@ -11207,7 +11207,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0.0</real>
             <key>tooltip</key>
-            <string>Converts a value to a rotation (quaternion), returns nil if invalid</string>
+            <string>Converts a string to a rotation (quaternion), returns nil if invalid</string>
          </map>
          <key>touuid</key>
          <map>
@@ -11242,7 +11242,7 @@ vector position - position in local coordinates
                      <key>tooltip</key>
                      <string></string>
                      <key>type</key>
-                     <string>any</string>
+                     <string>string | vector</string>
                   </map>
                </map>
             </array>
@@ -11253,7 +11253,7 @@ vector position - position in local coordinates
             <key>sleep</key>
             <real>0.0</real>
             <key>tooltip</key>
-            <string>Converts a value to a vector, returns nil if invalid</string>
+            <string>Converts a string to a vector, returns nil if invalid</string>
          </map>
          <!-- bit32 library-->
          <key>bit32</key>
@@ -12969,6 +12969,15 @@ Returns true if result is non-zero.</string>
                      <string>string</string>
                   </map>
                </map>
+               <map>
+                  <key>asBuffer</key>
+                  <map>
+                     <key>tooltip</key>
+                     <string></string>
+                     <key>type</key>
+                     <string>false?</string>
+                  </map>
+               </map>
             </array>
             <key>energy</key>
             <real>10.0</real>
@@ -12977,7 +12986,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0.0</real>
             <key>tooltip</key>
-            <string>Decodes a base64 string to a string</string>
+            <string>Decodes a base64 string to a string, or buffer if asBuffer is true</string>
          </map>
          <key>llbase64.encode</key>
          <map>
@@ -14209,6 +14218,8 @@ Returns true if result is non-zero.</string>
                   </map>
                </map>
             </array>
+            <key>deprecated</key>
+            <boolean>true</boolean>
             <key>energy</key>
             <real>10.0</real>
             <key>return</key>
@@ -14216,7 +14227,7 @@ Returns true if result is non-zero.</string>
             <key>sleep</key>
             <real>0.0</real>
             <key>tooltip</key>
-            <string>Returns the difference in seconds between two timestamps.</string>
+            <string>Returns the difference in seconds between two timestamps. Same as a - b.</string>
          </map>
          <key>os.time</key>
          <map>
