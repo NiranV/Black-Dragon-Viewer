@@ -164,6 +164,71 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="336"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Chris Chris as Patreon patron.
+Added: Doreen Elytis as Patreon patron.
+Changed: Kanika Nigam's patronage amount.
+Changed: Pose Creator to Version 2.
+Changed: Poser Version to 17.2.
+Changed: (Pose Creator) Moved keyframe check logic into the main function to simplify code.
+Changed: (Poser) Improved onscreen rotation widget rotations when clicking the center.
+Changed: (Poser) Disabled onscreen rotation snapping as it was causing sudden bone flipping due to how bone directions work.
+Changed: (Poser) Consoliderated bone syncing code into a function to be used for better readability and maintainability.
+Changed: Version to 5.5.2.
+Fixed: (Pose Creator) Full bone reset not resetting position and scale on mirrored bone.
+Fixed: (Pose Creator) Full bone reset not creating keyframes on reset.
+Fixed: (Pose Creator) Bone rotation reset not creating keyframes on reset.
+Fixed: (Pose Creator) Bone position reset not creating keyframes on reset.
+Fixed: (Pose Creator) Bone scale reset not creating keyframes on reset.
+Fixed: (Pose Creator) Revert bone rotation not creating keyframes.
+Fixed: (Pose Creator) Pose flipping not creating keyframes.
+Fixed: (Pose Creator) Pasting Bone Rotation not creating keyframes.
+Fixed: (Pose Creator) Pasting Bone Position not creating keyframes.
+Fixed: (Pose Creator) Pasting Bone Scale not creating keyframes.
+Fixed: (Pose Creator) Mirror bone not creating keyframes.
+Fixed: (Pose Creator) Pose Symmetrizing not creating keyframes on changed bones.
+Fixed: (Poser) Flipping the pose not syncing to others.
+Fixed: (Poser) Pose Symmetrize not syncing to others.
+Fixed: (Poser) Joint Symmetrize not syncing the mirror bone.
+Removed: Outdated Avatar toolbar button.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.5.1
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="182"
      top_pad="3"
      left="7"
