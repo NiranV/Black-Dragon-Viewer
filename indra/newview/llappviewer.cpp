@@ -1929,7 +1929,6 @@ bool LLAppViewer::cleanup()
 
 	//BD
 	//release_start_screen(); // just in case
-    display_cleanup();
 
     LLError::logToFixedBuffer(NULL); // stop the fixed buffer recorder
 

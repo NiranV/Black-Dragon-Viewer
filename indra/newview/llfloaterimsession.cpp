@@ -251,7 +251,7 @@ void LLFloaterIMSession::sendMsgFromInputEditor()
 	{
 		if (mInputEditor)
 		{
-            LLWString text = mInputEditor->getConvertedText();
+			LLWString text = mInputEditor->getWText();
 			LLWStringUtil::trim(text);
 			LLWStringUtil::replaceChar(text,182,'\n'); // Convert paragraph symbols back into newlines.
 			if(!text.empty())
