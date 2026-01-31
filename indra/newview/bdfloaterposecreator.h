@@ -78,7 +78,7 @@ private:
 	//BD - Keyframes
 	void onKeyframeSelect();
 	void onKeyframeAdd();
-	void onKeyframeAdd(F32 time, LLJoint* joint);
+	void onKeyframeAdd(F32 time, LLScrollListItem* key_item, LLJoint* joint);
 	void onKeyframeRemove();
 	void onKeyframeTime();
 	void onKeyframeRefresh();
