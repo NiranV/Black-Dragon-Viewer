@@ -1056,36 +1056,8 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
 		}
 	}
 
-    //BD - Sync our bone changes.
-    for (LLCharacter* character : LLCharacter::sInstances)
-    {
-        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-        {
-            if (c_avatar && c_avatar->getIsInSync())
-            {
-                const LLUUID& id = avatar->getID();
-                mSyncList[id] = joint->getJointNum();
-                bool found = false;
-                for (const auto& item : mSyncLists)
-                {
-                    if (item[1].asInteger() == joint->getJointNum())
-                        found = true;
-                }
-
-                if (!found)
-                {
-                    LLSD sync_info;
-                    sync_info[0] = c_avatar->getID();
-                    sync_info[1] = joint->getJointNum();
-                    mSyncLists.push_back(sync_info);
-                }
-
-                //BD - Reset the sync timer so it doesn't sync while we're dragging
-                //     need a better way to handle this.
-                mSyncTimer.reset();
-            }
-        }
-    }
+    //BD - Add bone to sync list to synchronize changes when the timer runs out.
+    syncTargetBones(avatar, joint);
 	
 	//BD - If we are in Mirror mode, try to find the opposite bone of our currently
 	//     selected one, for now this simply means we take the name and replace "Left"
@@ -1151,37 +1123,8 @@ void BDFloaterPoser::onJointSet(LLUICtrl* ctrl, const LLSD& param)
                 item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
 			}
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        mSyncList[id] = mirror_joint->getJointNum();
-
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, mirror_joint);
 		}
 	}
 }
@@ -1222,35 +1165,8 @@ void BDFloaterPoser::onJointPosSet(LLUICtrl* ctrl, const LLSD& param)
 
             item->getColumn(COL_VISUAL_POS)->setValue(vec3.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
 		}
 	}
 }
@@ -1284,35 +1200,8 @@ void BDFloaterPoser::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 
             item->getColumn(COL_VISUAL_SCALE)->setValue(vec3.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
 		}
 	}
 }
@@ -1491,25 +1380,8 @@ void BDFloaterPoser::onJointRotationReset()
                     joint->setRotation(quat);
                 }
 
-                //BD - Sync our bone changes.
-                for (LLCharacter* character : LLCharacter::sInstances)
-                {
-                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                    {
-                        if (c_avatar && c_avatar->getIsInSync())
-                        {
-                            const LLUUID& id = avatar->getID();
-                            mSyncList[id] = joint->getJointNum();
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                            //     need a better way to handle this.
-                            mSyncTimer.reset();
-                        }
-                    }
-                }
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
 
                 //BD - If we are in Mirror mode, try to find the opposite bone of our currently
                 //     selected one, for now this simply means we take the name and replace "Left"
@@ -1574,25 +1446,8 @@ void BDFloaterPoser::onJointRotationReset()
 
                             item2->getColumn(COL_VISUAL_ROT)->setValue(LLVector3::zero.getValue());
 
-                            //BD - Sync our bone changes.
-                            for (LLCharacter* character : LLCharacter::sInstances)
-                            {
-                                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                                {
-                                    if (c_avatar && c_avatar->getIsInSync())
-                                    {
-                                        const LLUUID& id = avatar->getID();
-                                        mSyncList[id] = mirror_joint->getJointNum();
-                                        LLSD sync_info;
-                                        sync_info[0] = c_avatar->getID();
-                                        sync_info[1] = mirror_joint->getJointNum();
-                                        mSyncLists.push_back(sync_info);
-                                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                                        //     need a better way to handle this.
-                                        mSyncTimer.reset();
-                                    }
-                                }
-                            }
+                            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                            syncTargetBones(avatar, mirror_joint);
                         }
                     }
                 }
@@ -1654,34 +1509,8 @@ void BDFloaterPoser::onJointPositionReset()
 
                 item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
 
-                //BD - Sync our bone changes.
-                for (LLCharacter* character : LLCharacter::sInstances)
-                {
-                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                    {
-                        if (c_avatar && c_avatar->getIsInSync())
-                        {
-                            const LLUUID& id = avatar->getID();
-                            bool found = false;
-                            for (const auto& item : mSyncLists)
-                            {
-                                if (item[1].asInteger() == joint->getJointNum())
-                                    found = true;
-                            }
-
-                            if (!found)
-                            {
-                                LLSD sync_info;
-                                sync_info[0] = c_avatar->getID();
-                                sync_info[1] = joint->getJointNum();
-                                mSyncLists.push_back(sync_info);
-                            }
-                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                            //     need a better way to handle this.
-                            mSyncTimer.reset();
-                        }
-                    }
-                }
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
             }
         }
     }
@@ -1725,34 +1554,8 @@ void BDFloaterPoser::onJointScaleReset()
 
                 item->getColumn(COL_VISUAL_SCALE)->setValue(scale.getValue());
 
-                //BD - Sync our bone changes.
-                for (LLCharacter* character : LLCharacter::sInstances)
-                {
-                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                    {
-                        if (c_avatar && c_avatar->getIsInSync())
-                        {
-                            const LLUUID& id = avatar->getID();
-                            bool found = false;
-                            for (const auto& item : mSyncLists)
-                            {
-                                if (item[1].asInteger() == joint->getJointNum())
-                                    found = true;
-                            }
-
-                            if (!found)
-                            {
-                                LLSD sync_info;
-                                sync_info[0] = c_avatar->getID();
-                                sync_info[1] = joint->getJointNum();
-                                mSyncLists.push_back(sync_info);
-                            }
-                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                            //     need a better way to handle this.
-                            mSyncTimer.reset();
-                        }
-                    }
-                }
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
 			}
 		}
 	}
@@ -1808,34 +1611,8 @@ void BDFloaterPoser::onJointRotationRevert()
                     joint->setRotation(quat);
                 }
 
-                //BD - Sync our bone changes.
-                for (LLCharacter* character : LLCharacter::sInstances)
-                {
-                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                    {
-                        if (c_avatar && c_avatar->getIsInSync())
-                        {
-                            const LLUUID& id = avatar->getID();
-                            bool found = false;
-                            for (const auto& item : mSyncLists)
-                            {
-                                if (item[1].asInteger() == joint->getJointNum())
-                                    found = true;
-                            }
-
-                            if (!found)
-                            {
-                                LLSD sync_info;
-                                sync_info[0] = c_avatar->getID();
-                                sync_info[1] = joint->getJointNum();
-                                mSyncLists.push_back(sync_info);
-                            }
-                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                            //     need a better way to handle this.
-                            mSyncTimer.reset();
-                        }
-                    }
-                }
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
 
 				//BD - If we are in Mirror mode, try to find the opposite bone of our currently
 				//     selected one, for now this simply means we take the name and replace "Left"
@@ -1898,34 +1675,8 @@ void BDFloaterPoser::onJointRotationRevert()
                                 mirror_joint->setRotation(quat);
                             }
 
-                            //BD - Sync our bone changes.
-                            for (LLCharacter* character : LLCharacter::sInstances)
-                            {
-                                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                                {
-                                    if (c_avatar && c_avatar->getIsInSync())
-                                    {
-                                        const LLUUID& id = avatar->getID();
-                                        bool found = false;
-                                        for (const auto& item : mSyncLists)
-                                        {
-                                            if (item[1].asInteger() == joint->getJointNum())
-                                                found = true;
-                                        }
-
-                                        if (!found)
-                                        {
-                                            LLSD sync_info;
-                                            sync_info[0] = c_avatar->getID();
-                                            sync_info[1] = joint->getJointNum();
-                                            mSyncLists.push_back(sync_info);
-                                        }
-                                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                                        //     need a better way to handle this.
-                                        mSyncTimer.reset();
-                                    }
-                                }
-                            }
+                            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                            syncTargetBones(avatar, mirror_joint);
 						}
 					}
 				}
@@ -2026,6 +1777,9 @@ void BDFloaterPoser::onFlipPose()
 
                     //BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
                     flipped[mirror_joint->getJointNum()] = true;
+
+                    //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                    syncTargetBones(avatar, mirror_joint);
                 }
                 else
                 {
@@ -2035,6 +1789,9 @@ void BDFloaterPoser::onFlipPose()
                         joint->setRotation(inv_rot_quat);
                     }
                 }
+
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
 
                 S32 axis = 0;
                 while (axis <= 2)
@@ -2155,6 +1912,9 @@ void BDFloaterPoser::onPoseSymmetrize(const LLSD& param)
 
                     //BD - Make sure we flag this bone as flipped so we skip it next time we iterate over it.
                     flipped[mirror_joint->getJointNum()] = true;
+
+                    //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                    syncTargetBones(avatar, mirror_joint);
                 }
 
                 S32 axis = 0;
@@ -2226,34 +1986,8 @@ void BDFloaterPoser::onJointsRecapture()
                                     joint->setPosition(pos);
                                 }
 
-                                //BD - Sync our bone changes.
-                                for (LLCharacter* character : LLCharacter::sInstances)
-                                {
-                                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                                    {
-                                        if (c_avatar && c_avatar->getIsInSync())
-                                        {
-                                            const LLUUID& id = avatar->getID();
-                                            bool found = false;
-                                            for (const auto& item : mSyncLists)
-                                            {
-                                                if (item[1].asInteger() == joint->getJointNum())
-                                                    found = true;
-                                            }
-
-                                            if (!found)
-                                            {
-                                                LLSD sync_info;
-                                                sync_info[0] = c_avatar->getID();
-                                                sync_info[1] = joint->getJointNum();
-                                                mSyncLists.push_back(sync_info);
-                                            }
-                                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                                            //     need a better way to handle this.
-                                            mSyncTimer.reset();
-                                        }
-                                    }
-                                }
+                                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                                syncTargetBones(avatar, joint);
 
                                 //BD - Get all columns and fill in the new values.
                                 LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
@@ -2331,34 +2065,8 @@ void BDFloaterPoser::onJointRecapture()
                     joint->setPosition(pos);
                 }
 
-                //BD - Sync our bone changes.
-                for (LLCharacter* character : LLCharacter::sInstances)
-                {
-                    if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                    {
-                        if (c_avatar && c_avatar->getIsInSync())
-                        {
-                            const LLUUID& id = avatar->getID();
-                            bool found = false;
-                            for (const auto& item : mSyncLists)
-                            {
-                                if (item[1].asInteger() == joint->getJointNum())
-                                    found = true;
-                            }
-
-                            if (!found)
-                            {
-                                LLSD sync_info;
-                                sync_info[0] = c_avatar->getID();
-                                sync_info[1] = joint->getJointNum();
-                                mSyncLists.push_back(sync_info);
-                            }
-                            //BD - Reset the sync timer so it doesn't sync while we're dragging
-                            //     need a better way to handle this.
-                            mSyncTimer.reset();
-                        }
-                    }
-                }
+                //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                syncTargetBones(avatar, joint);
 
                 //BD - Get all columns and fill in the new values.
                 LLScrollListCell* col_rot_x = item->getColumn(COL_ROT_X);
@@ -2435,34 +2143,8 @@ void BDFloaterPoser::onJointPasteRotation()
 
             item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
         }
     }
 }
@@ -2504,34 +2186,8 @@ void BDFloaterPoser::onJointPastePosition()
 
             item->getColumn(COL_VISUAL_POS)->setValue(pos.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
         }
     }
 }
@@ -2568,34 +2224,8 @@ void BDFloaterPoser::onJointPasteScale()
 
             item->getColumn(COL_VISUAL_SCALE)->setValue(scale.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
         }
     }
 }
@@ -2642,34 +2272,8 @@ void BDFloaterPoser::onJointMirror()
 
             item->getColumn(COL_VISUAL_ROT)->setValue(euler_rot.getValue());
 
-            //BD - Sync our bone changes.
-            for (LLCharacter* character : LLCharacter::sInstances)
-            {
-                if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                {
-                    if (c_avatar && c_avatar->getIsInSync())
-                    {
-                        const LLUUID& id = avatar->getID();
-                        bool found = false;
-                        for (const auto& item : mSyncLists)
-                        {
-                            if (item[1].asInteger() == joint->getJointNum())
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            LLSD sync_info;
-                            sync_info[0] = c_avatar->getID();
-                            sync_info[1] = joint->getJointNum();
-                            mSyncLists.push_back(sync_info);
-                        }
-                        //BD - Reset the sync timer so it doesn't sync while we're dragging
-                        //     need a better way to handle this.
-                        mSyncTimer.reset();
-                    }
-                }
-            }
+            //BD - Add bone to sync list to synchronize changes when the timer runs out.
+            syncTargetBones(avatar, joint);
         }
     }
 }
@@ -2755,34 +2359,8 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
 
                     item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
 
-                    //BD - Sync our bone changes.
-                    for (LLCharacter* character : LLCharacter::sInstances)
-                    {
-                        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                        {
-                            if (c_avatar && c_avatar->getIsInSync())
-                            {
-                                const LLUUID& id = avatar->getID();
-                                bool found = false;
-                                for (const auto& item : mSyncLists)
-                                {
-                                    if (item[1].asInteger() == joint->getJointNum())
-                                        found = true;
-                                }
-
-                                if (!found)
-                                {
-                                    LLSD sync_info;
-                                    sync_info[0] = c_avatar->getID();
-                                    sync_info[1] = joint->getJointNum();
-                                    mSyncLists.push_back(sync_info);
-                                }
-                                //BD - Reset the sync timer so it doesn't sync while we're dragging
-                                //     need a better way to handle this.
-                                mSyncTimer.reset();
-                            }
-                        }
-                    }
+                    //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                    syncTargetBones(avatar, joint);
                 }
                 else
                 {
@@ -2809,34 +2387,8 @@ void BDFloaterPoser::onJointSymmetrize(bool from)
 
                     item2->getColumn(COL_VISUAL_ROT)->setValue(mirror_rot.getValue());
 
-                    //BD - Sync our bone changes.
-                    for (LLCharacter* character : LLCharacter::sInstances)
-                    {
-                        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
-                        {
-                            if (c_avatar && c_avatar->getIsInSync())
-                            {
-                                const LLUUID& id = avatar->getID();
-                                bool found = false;
-                                for (const auto& item : mSyncLists)
-                                {
-                                    if (item[1].asInteger() == joint->getJointNum())
-                                        found = true;
-                                }
-
-                                if (!found)
-                                {
-                                    LLSD sync_info;
-                                    sync_info[0] = c_avatar->getID();
-                                    sync_info[1] = joint->getJointNum();
-                                    mSyncLists.push_back(sync_info);
-                                }
-                                //BD - Reset the sync timer so it doesn't sync while we're dragging
-                                //     need a better way to handle this.
-                                mSyncTimer.reset();
-                            }
-                        }
-                    }
+                    //BD - Add bone to sync list to synchronize changes when the timer runs out.
+                    syncTargetBones(avatar, mirror_joint);
                 }
             }
         }
@@ -3482,6 +3034,38 @@ void BDFloaterPoser::onModifierTabSwitch()
                     BDToolCompPoseTranslate::getInstance()->setAvatar(avatar);
                     BDToolCompPoseTranslate::getInstance()->setJoint(joint);
                 }
+            }
+        }
+    }
+}
+
+void BDFloaterPoser::syncTargetBones(LLVOAvatar* target_avatar, LLJoint* target_joint)
+{
+    //BD - Sync our bone changes.
+    for (LLCharacter* character : LLCharacter::sInstances)
+    {
+        if (LLVOAvatar* c_avatar = (LLVOAvatar*)character)
+        {
+            if (c_avatar && c_avatar->getIsInSync())
+            {
+                const LLUUID& id = target_avatar->getID();
+                bool found = false;
+                for (const auto& item : mSyncLists)
+                {
+                    if (item[1].asInteger() == target_joint->getJointNum())
+                        found = true;
+                }
+
+                if (!found)
+                {
+                    LLSD sync_info;
+                    sync_info[0] = c_avatar->getID();
+                    sync_info[1] = target_joint->getJointNum();
+                    mSyncLists.push_back(sync_info);
+                }
+                //BD - Reset the sync timer so it doesn't sync while we're dragging
+                //     need a better way to handle this.
+                mSyncTimer.reset();
             }
         }
     }

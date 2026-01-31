@@ -441,8 +441,8 @@ bool BDManipTranslateJoint::handleMouseDownOnPart( S32 x, S32 y, MASK mask )
     LLVector3       axis;
 
     // Compute unit vectors for arrow hit and a plane through that vector
-    bool axis_exists = getManipAxis(nullptr, mManipPart, axis);
-    getManipNormal(nullptr, mManipPart, mManipNormal);
+    bool axis_exists = getBoneAxis(nullptr, mManipPart, axis);
+    getBoneNormal(nullptr, mManipPart, mManipNormal);
 
     //LLVector3 select_center_agent = gAgent.getPosAgentFromGlobal(LLSelectMgr::getInstance()->getSelectionCenterGlobal());
     // TomY: The above should (?) be identical to the below
@@ -493,7 +493,7 @@ bool BDManipTranslateJoint::handleHover(S32 x, S32 y, MASK mask)
     }
 
     // Handle auto-rotation if necessary.
-    LLRect world_rect = gViewerWindow->getWorldViewRectScaled();
+    /*LLRect world_rect = gViewerWindow->getWorldViewRectScaled();
     const F32 ROTATE_ANGLE_PER_SECOND = 30.f * DEG_TO_RAD;
     const S32 ROTATE_H_MARGIN = world_rect.getWidth() / 20;
     const F32 rotate_angle = ROTATE_ANGLE_PER_SECOND / gFPSClamped;
@@ -509,17 +509,17 @@ bool BDManipTranslateJoint::handleHover(S32 x, S32 y, MASK mask)
     {
         gAgentCamera.cameraOrbitAround(-rotate_angle);
         rotated = true;
-    }
+    }*/
 
     // Suppress processing if mouse hasn't actually moved.
     // This may cause problems if the camera moves outside of the
     // rotation above.
-    if( x == mLastHoverMouseX && y == mLastHoverMouseY && !rotated)
+    /*if (x == mLastHoverMouseX && y == mLastHoverMouseY && !rotated)
     {
         LL_DEBUGS("UserInput") << "hover handled by BDManipTranslateJoint (mouse unmoved)" << LL_ENDL;
         gViewerWindow->setCursor(UI_CURSOR_TOOLTRANSLATE);
         return true;
-    }
+    }*/
     mLastHoverMouseX = x;
     mLastHoverMouseY = y;
 
@@ -555,7 +555,7 @@ bool BDManipTranslateJoint::handleHover(S32 x, S32 y, MASK mask)
     }
 
     // Compute unit vectors for arrow hit and a plane through that vector
-    bool axis_exists = getManipAxis(nullptr, mManipPart, axis_f);        // TODO: move this
+    bool axis_exists = getBoneAxis(nullptr, mManipPart, axis_f);        // TODO: move this
 
     axis_d.setVec(axis_f);
 
@@ -608,18 +608,20 @@ bool BDManipTranslateJoint::handleHover(S32 x, S32 y, MASK mask)
     objWorldRotation.transQuat();
 
     LLVector3 old_position_local = mJoint->getTargetPosition();
-    LLVector3 new_position_local = mSavedJointPos + (clamped_relative_move_f * objWorldRotation);
+    LLVector3 new_position_local = mSavedJointPos + clamped_relative_move_f;
 
     //RN: I forget, but we need to do this because of snapping which doesn't often result
     // in position changes even when the mouse moves
-    mJoint->setTargetPosition(new_position_local);
+    //mJoint->setTargetPosition(new_position_local);
     if (mJoint->getJointNum() >= 134)
     {
-        mSavedJointPos = mJoint->getPosition();
+        mJoint->setPosition(new_position_local);
+        //mSavedJointPos = mJoint->getPosition();
     }
     else
     {
-        mSavedJointPos = mJoint->getTargetPosition();
+        mJoint->setTargetPosition(new_position_local);
+        //mSavedJointPos = mJoint->getTargetPosition();
     }
 
     gAgentCamera.clearFocusObject();
@@ -884,7 +886,7 @@ void BDManipTranslateJoint::render()
     {
         //LLGLDisable gls_stencil(GL_STENCIL_TEST);
         renderTranslationHandles();
-        renderSnapGuides();
+        //renderSnapGuides();
     }
     gGL.popMatrix();
 
@@ -893,7 +895,7 @@ void BDManipTranslateJoint::render()
 
 void BDManipTranslateJoint::renderSnapGuides()
 {
-    if (!gSavedSettings.getBOOL("SnapEnabled"))
+    //if (!gSavedSettings.getBOOL("SnapEnabled"))
     {
         return;
     }
@@ -956,7 +958,7 @@ void BDManipTranslateJoint::renderSnapGuides()
 
         highlightIntersection(normal, selection_center, grid_rotation, inner_color);
         mManipPart = temp_manip;
-        getManipAxis(nullptr, mManipPart, translate_axis);
+        getBoneAxis(nullptr, mManipPart, translate_axis);
 
         LLVector3 at_axis_abs;
         {
@@ -1421,6 +1423,8 @@ void BDManipTranslateJoint::renderTranslationHandles()
     LLGLDepthTest gls_depth(GL_FALSE);
 
     LLSelectMgr::getInstance()->getGrid(grid_origin, grid_rotation, grid_scale);
+    grid_rotation = mJoint->getWorldRotation();
+    grid_origin = mJoint->getWorldPosition();
     LLVector3 at_axis;
     {
         at_axis = LLViewerCamera::getInstance()->getAtAxis() * ~grid_rotation;
@@ -1776,7 +1780,7 @@ void BDManipTranslateJoint::renderTranslationHandles()
             U32 face = face_list[nearest][i];
 
             LLVector3 arrow_axis;
-            getManipAxis(nullptr, which_arrow[face], arrow_axis);
+            getBoneAxis(nullptr, which_arrow[face], arrow_axis);
 
             renderArrow(which_arrow[face],
                         mManipPart,
@@ -1899,4 +1903,67 @@ LLVector3 BDManipTranslateJoint::getPivotPoint()
     }
 
     return LLVector3::zero;
+}
+
+bool BDManipTranslateJoint::getBoneAxis(LLViewerObject* object, EManipPart manip, LLVector3& axis)
+{
+    
+    LLQuaternion grid_rotation = mJoint->getWorldRotation();
+
+    if (manip == LL_X_ARROW)
+    {
+        axis = LLVector3::x_axis;
+    }
+    else if (manip == LL_Y_ARROW)
+    {
+        axis = LLVector3::y_axis;
+    }
+    else if (manip == LL_Z_ARROW)
+    {
+        axis = LLVector3::z_axis;
+    }
+    else
+    {
+        return false;
+    }
+
+    axis.rotVec(grid_rotation);
+    return true;
+}
+
+void BDManipTranslateJoint::getBoneNormal(LLViewerObject* object, EManipPart manip, LLVector3& normal)
+{
+    LLQuaternion grid_rotation = mJoint->getWorldRotation();
+
+    if (manip >= LL_X_ARROW && manip <= LL_Z_ARROW)
+    {
+        LLVector3 arrow_axis;
+        getBoneAxis(object, manip, arrow_axis);
+
+        LLVector3 cross = arrow_axis % LLViewerCamera::getInstance()->getAtAxis();
+        normal = cross % arrow_axis;
+        normal.normVec();
+    }
+    else if (manip >= LL_YZ_PLANE && manip <= LL_XY_PLANE)
+    {
+        switch (manip)
+        {
+        case LL_YZ_PLANE:
+            normal = LLVector3::x_axis;
+            break;
+        case LL_XZ_PLANE:
+            normal = LLVector3::y_axis;
+            break;
+        case LL_XY_PLANE:
+            normal = LLVector3::z_axis;
+            break;
+        default:
+            break;
+        }
+        normal.rotVec(grid_rotation);
+    }
+    else
+    {
+        normal.clearVec();
+    }
 }

@@ -105,6 +105,8 @@ protected:
                                      LLQuaternion grid_rotation,
                                      LLColor4 inner_color);
     F32         getMinGridScale();
+    bool        getBoneAxis(LLViewerObject* object, EManipPart manip, LLVector3& axis);
+    void        getBoneNormal(LLViewerObject* object, EManipPart manip, LLVector3& normal);
 
     LLJoint* mJoint = nullptr;
     BoneAxes     mBoneAxes;

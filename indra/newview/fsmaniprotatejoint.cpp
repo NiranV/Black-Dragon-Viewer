@@ -703,10 +703,10 @@ void FSManipRotateJoint::render()
     renderManipulatorRings(agent_space_center, active_rotation);
 
     // are we in the middle of a constrained drag?
-    if (mManipPart >= LL_ROT_X && mManipPart <= LL_ROT_Z)
+    /*if (mManipPart >= LL_ROT_X && mManipPart <= LL_ROT_Z)
     {
         renderSnapGuidelines();
-    }
+    }*/
 
     // Debug: render joint's Euler angles for diagnostic purposes.
     LLVector3 euler_angles;
@@ -1367,7 +1367,7 @@ F32 FSManipRotateJoint::dragConstrained(S32 x, S32 y)
         bool hit = getMousePointOnPlaneAgent(projected_mouse, x, y, snap_plane_center, constraint_axis);
         projected_mouse -= snap_plane_center;
 
-        if (gSavedSettings.getBOOL("SnapEnabled")) {
+        /*if (gSavedSettings.getBOOL("SnapEnabled")) {
             S32 snap_plane = 0;
 
             F32 dot = cam_to_snap_plane * constraint_axis;
@@ -1508,7 +1508,8 @@ F32 FSManipRotateJoint::dragConstrained(S32 x, S32 y)
                 mInSnapRegime = false;
             }
         }
-        else {
+        else */
+        {
             if (mInSnapRegime)
             {
                 mSmoothRotate = true;
@@ -1546,7 +1547,7 @@ F32 FSManipRotateJoint::dragConstrained(S32 x, S32 y)
         mMouseCur = projected_mouse;
         mMouseCur.normVec();
 
-        if (gSavedSettings.getBOOL("SnapEnabled") && projected_mouse.magVec() > SNAP_GUIDE_INNER_RADIUS * mRadiusMeters)
+        /*if (gSavedSettings.getBOOL("SnapEnabled") && projected_mouse.magVec() > SNAP_GUIDE_INNER_RADIUS * mRadiusMeters)
         {
             if (!mInSnapRegime)
             {
@@ -1577,7 +1578,7 @@ F32 FSManipRotateJoint::dragConstrained(S32 x, S32 y)
             }
             return -angle;
         }
-        else
+        else*/
         {
             if (mInSnapRegime)
             {
@@ -1614,11 +1615,22 @@ void FSManipRotateJoint::drag(S32 x, S32 y)
 
     if (mManipPart == LL_ROT_GENERAL)
     {
-        LLQuaternion delta_rot = dragUnconstrained(x, y);
+        //LLQuaternion delta_rot = dragUnconstrained(x, y);
+        LLQuaternion new_rot = dragUnconstrained(x, y);
+        rot_quat *= new_rot;
+
+        /*new_rot.getEulerAngles(&vec3.mV[VX], &vec3.mV[VY], &vec3.mV[VZ]);
+
+        vec3.mV[VX] -= mSavedJointRotVec[VX];
+        vec3.mV[VY] -= mSavedJointRotVec[VY];
+        vec3.mV[VZ] -= mSavedJointRotVec[VZ];
+
+        rot_mat = LLMatrix3(vec3.mV[VX], vec3.mV[VY], vec3.mV[VZ]);
+        rot_quat = LLQuaternion(rot_mat) * rot_quat;*/
 
         // Compose the saved joint rotation with the delta to compute the new world rotation.
-        LLQuaternion new_world_rot = mSavedJointRot * delta_rot;
-        mJoint->setWorldRotation(new_world_rot);
+        //LLQuaternion new_world_rot = mSavedJointRot * new_rot;
+        //mJoint->setTargetRotation(rot_quat);
     }
     if (mManipPart == LL_ROT_ROLL)
     {

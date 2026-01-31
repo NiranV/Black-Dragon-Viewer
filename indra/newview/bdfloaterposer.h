@@ -123,6 +123,7 @@ private:
     void onSyncTheirPose(const LLUUID& id);
     void onSyncBones();
     void sendSyncPackage(std::string message, const LLUUID& id);
+    void syncTargetBones(LLVOAvatar* target_avatar, LLJoint* target_joint);
     
 
 	//BD - Misc
