@@ -23,16 +23,6 @@
   is_running_function="Floater.IsOpen"
   is_running_parameters="appearance"/>
   <command
-  name="avatar"
-  available_in_toybox="true"
-  icon="Command_Avatar_Icon"
-  label_ref="Command_Avatar_Label"
-  tooltip_ref="Command_Avatar_Tooltip"
-  execute_function="Floater.Toggle"
-  execute_parameters="avatar"
-  is_running_function="Floater.IsOpen"
-  is_running_parameters="avatar"/>
-  <command
   name="build"
   available_in_toybox="true"
   icon="Command_Build_Icon"
