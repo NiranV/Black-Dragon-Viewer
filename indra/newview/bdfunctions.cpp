@@ -45,14 +45,15 @@ BDFunctions gDragonLibrary;
 const LLUUID DEV_ID = LLUUID("bec8c369-bd86-4d3e-91d6-106c645ab681");
 
 BDFunctions::BDFunctions()
-	: mAllowWalkingBackwards(TRUE)
-	, mAvatarRotateThresholdSlow(2.f)
-	, mAvatarRotateThresholdFast(2.f)
-	, mAvatarRotateThresholdMouselook(120.f)
-	, mMovementRotationSpeed(0.2f)
-	, mUseFreezeWorld(FALSE)
-	, mDebugAvatarRezTime(FALSE)
+    : mAllowWalkingBackwards(TRUE)
+    , mAvatarRotateThresholdSlow(2.f)
+    , mAvatarRotateThresholdFast(2.f)
+    , mAvatarRotateThresholdMouselook(120.f)
+    , mMovementRotationSpeed(0.2f)
+    , mUseFreezeWorld(FALSE)
+    , mDebugAvatarRezTime(FALSE)
 {
+    mWarningCD.start();
 }
 
 BDFunctions::~BDFunctions()
@@ -123,8 +124,11 @@ void BDFunctions::onCommitX(LLUICtrl* ctrl, const LLSD& param)
 	vec4.mV[VX] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
 
-	//BD - Trigger Warning System
-	triggerWarning(ctrl, param);
+    if (gDragonLibrary.mWarningCD.hasExpired())
+    {
+        //BD - Trigger Warning System
+        triggerWarning(ctrl, param);
+    }
 }
 
 void BDFunctions::onCommitY(LLUICtrl* ctrl, const LLSD& param)
@@ -177,8 +181,11 @@ void BDFunctions::onCommitY(LLUICtrl* ctrl, const LLSD& param)
 	vec4.mV[VY] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
 
-	//BD - Trigger Warning System
-	triggerWarning(ctrl, param);
+    if (gDragonLibrary.mWarningCD.hasExpired())
+    {
+        //BD - Trigger Warning System
+        triggerWarning(ctrl, param);
+    }
 }
 
 void BDFunctions::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
@@ -226,8 +233,11 @@ void BDFunctions::onCommitZ(LLUICtrl* ctrl, const LLSD& param)
 	vec4.mV[VZ] = value;
 	gSavedSettings.setUntypedValue(param.asString(), vec4.getValue());
 
-	//BD - Trigger Warning System
-	gDragonLibrary.triggerWarning(ctrl, param);
+    if (gDragonLibrary.mWarningCD.hasExpired())
+    {
+        //BD - Trigger Warning System
+        triggerWarning(ctrl, param);
+    }
 }
 
 //BD - Vector4
@@ -270,8 +280,11 @@ void BDFunctions::onCommitW(LLUICtrl* ctrl, const LLSD& param)
 	vec4.mV[VW] = value;
 	gSavedSettings.setVector4(param.asString(), vec4);
 
-	//BD - Trigger Warning System
-	triggerWarning(ctrl, param);
+    if(gDragonLibrary.mWarningCD.hasExpired())
+    {
+        //BD - Trigger Warning System
+        triggerWarning(ctrl, param);
+    }
 }
 
 //BD - Array Lock feature
@@ -392,8 +405,8 @@ void BDFunctions::triggerWarning(LLUICtrl* ctrl, const LLSD& param)
 		}
 	}
 	//else if (type == TYPE_S32 || type == TYPE_U32 || type == TYPE_F32)
-	else if (type == TYPE_VEC2 || type == TYPE_VEC3 || type == TYPE_VEC3D || type == TYPE_VEC4
-			|| type == TYPE_S32 || type == TYPE_U32 || type == TYPE_F32)
+	else if ((type == TYPE_VEC2 || type == TYPE_VEC3 || type == TYPE_VEC3D || type == TYPE_VEC4
+			|| type == TYPE_S32 || type == TYPE_U32 || type == TYPE_F32))
 	{
 		if (val.asReal() > max_val)
 		{
@@ -409,6 +422,7 @@ void BDFunctions::triggerWarning(LLUICtrl* ctrl, const LLSD& param)
 			LLNotifications::instance().setIgnored(name + "_Min", true);
 			LL_WARNS("Notifications") << "Value set to: " << val.asReal() << " but minimum allowed is: " << min_val << LL_ENDL;
 		}
+        gDragonLibrary.mWarningCD.setTimerExpirySec(5.0f);
 	}
 }
 

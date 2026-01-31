@@ -24,6 +24,7 @@
 #include "llbutton.h"
 #include "lltabcontainer.h"
 #include "llsettingsbase.h"
+#include "llframetimer.h"
 
 class LLComboBox;
 
@@ -90,6 +91,8 @@ public:
 	F32 mAvatarRotateThresholdFast;
 	F32 mAvatarRotateThresholdMouselook;
 	F32 mMovementRotationSpeed;
+
+    LLFrameTimer mWarningCD;
 
 	bool mUseFreezeWorld;
 
