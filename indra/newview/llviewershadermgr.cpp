@@ -931,6 +931,7 @@ bool LLViewerShaderMgr::loadShadersWater()
 
     if (success)
     {
+        bool ssr = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
         // load water shader
         gWaterProgram.mName = "Water Shader";
         gWaterProgram.mFeatures.calculatesAtmospherics = true;
@@ -939,6 +940,7 @@ bool LLViewerShaderMgr::loadShadersWater()
         gWaterProgram.mFeatures.hasSrgb = true;
         gWaterProgram.mFeatures.hasReflectionProbes = true;
         gWaterProgram.mFeatures.hasTonemap = true;
+        gWaterProgram.mFeatures.hasScreenSpaceReflections = ssr;
         gWaterProgram.mFeatures.hasShadows = use_sun_shadow;
         gWaterProgram.mShaderFiles.clear();
         gWaterProgram.mShaderFiles.push_back(make_pair("environment/waterV.glsl", GL_VERTEX_SHADER));
@@ -952,6 +954,11 @@ bool LLViewerShaderMgr::loadShadersWater()
         if (use_sun_shadow)
         {
             gWaterProgram.addPermutation("HAS_SUN_SHADOW", "1");
+        }
+
+        if (ssr)
+        {
+            gWaterProgram.addPermutation("SSR", "1");
         }
 
         gWaterProgram.mShaderGroup = LLGLSLShader::SG_WATER;
