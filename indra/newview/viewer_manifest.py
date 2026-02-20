@@ -963,6 +963,17 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                 # nested Resources directory
                 super().construct()
 
+                if not self.is_rearranging():
+                    # For dev builds, replace the copied shaders with a
+                    # symlink to the source tree so that shader edits are
+                    # picked up without rebuilding.
+                    shader_dst = os.path.join(self.get_dst_prefix(), "app_settings", "shaders")
+                    shader_src = os.path.join(self.args['source'], "app_settings", "shaders")
+                    if os.path.isdir(shader_dst) and not os.path.islink(shader_dst):
+                        shutil.rmtree(shader_dst)
+                    if not os.path.islink(shader_dst):
+                        self.relsymlinkf(shader_src, "app_settings/shaders")
+
                 # need .icns file referenced by Info.plist
                 with self.prefix(src=self.icon_path(), dst="") :
                     self.path("secondlife.icns")
