@@ -271,10 +271,21 @@ void LLReflectionMapManager::update()
     initReflectionMaps();
 
     static LLCachedControl<bool> render_hdr(gSavedSettings, "RenderHDREnabled", true);
+    static LLCachedControl<S32> probe_quality(gSavedSettings, "RenderReflectionProbeQuality", 1);
 
     if (!mRenderTarget.isComplete())
     {
-        U32 color_fmt = render_hdr ? GL_R11F_G11F_B10F : GL_RGB8;
+        U32 color_fmt;
+        if (probe_quality > 0)
+        {
+            // High quality: RGBA with alpha preservation for sky blending
+            color_fmt = render_hdr ? GL_RGBA16F : GL_RGBA8;
+        }
+        else
+        {
+            // Low quality: RGB only (legacy path)
+            color_fmt = render_hdr ? GL_R11F_G11F_B10F : GL_RGB8;
+        }
         U32 targetRes = mProbeResolution * 4; // super sample
         mRenderTarget.allocate(targetRes, targetRes, color_fmt, true);
     }
@@ -287,7 +298,18 @@ void LLReflectionMapManager::update()
         mMipChain.resize(count);
         for (U32 i = 0; i < count; ++i)
         {
-            mMipChain[i].allocate(res, res, render_hdr ? GL_R11F_G11F_B10F : GL_RGB8);
+            U32 mip_fmt;
+            if (probe_quality > 0)
+            {
+                // High quality: RGBA with alpha preservation
+                mip_fmt = render_hdr ? GL_RGBA16F : GL_RGBA8;
+            }
+            else
+            {
+                // Low quality: RGB only (legacy path)
+                mip_fmt = render_hdr ? GL_R11F_G11F_B10F : GL_RGB8;
+            }
+            mMipChain[i].allocate(res, res, mip_fmt);
             res /= 2;
         }
     }
@@ -783,7 +805,9 @@ void LLReflectionMapManager::updateProbeFace(LLReflectionMap* probe, U32 face)
         gPipeline.andRenderTypeMask(LLPipeline::RENDER_TYPE_SKY, LLPipeline::RENDER_TYPE_WL_SKY,
             LLPipeline::RENDER_TYPE_WATER, LLPipeline::RENDER_TYPE_VOIDWATER, LLPipeline::RENDER_TYPE_CLOUDS, LLPipeline::RENDER_TYPE_TERRAIN, LLPipeline::END_RENDER_TYPES);
 
+        LLPipeline::sDefaultProbeRender = true;
         probe->update(mRenderTarget.getWidth(), face);
+        LLPipeline::sDefaultProbeRender = false;
 
         gPipeline.popRenderTypeMask();
     }
@@ -1453,13 +1477,15 @@ void LLReflectionMapManager::initReflectionMaps()
                 mTexture = new LLCubeMapArray();
 
                 static LLCachedControl<bool> render_hdr(gSavedSettings, "RenderHDREnabled", true);
+                static LLCachedControl<S32> probe_quality(gSavedSettings, "RenderReflectionProbeQuality", 1);
 
                 // store mReflectionProbeCount+2 cube maps, final two cube maps are used for render target and radiance map generation
                 // source)
-                mTexture->allocate(mProbeResolution, 3, mReflectionProbeCount + 2, true, render_hdr);
+                U32 components = (probe_quality > 0) ? 4 : 3;  // Use 4 components (RGBA) for high quality with alpha preservation, 3 (RGB) for low quality
+                mTexture->allocate(mProbeResolution, components, mReflectionProbeCount + 2, true, render_hdr);
 
                 mIrradianceMaps = new LLCubeMapArray();
-                mIrradianceMaps->allocate(LL_IRRADIANCE_MAP_RESOLUTION, 3, mReflectionProbeCount, false, render_hdr);
+                mIrradianceMaps->allocate(LL_IRRADIANCE_MAP_RESOLUTION, components, mReflectionProbeCount, false, render_hdr);
             }
         }
 

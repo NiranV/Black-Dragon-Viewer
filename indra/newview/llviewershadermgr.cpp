@@ -162,6 +162,7 @@ LLGLSLShader            gHazeProgram;
 LLGLSLShader            gHazeWaterProgram;
 LLGLSLShader            gDeferredBlurLightProgram;
 LLGLSLShader            gDeferredSoftenProgram;
+LLGLSLShader            gDeferredSoftenCubeProgram;
 LLGLSLShader            gDeferredShadowProgram;
 LLGLSLShader            gDeferredSkinnedShadowProgram;
 LLGLSLShader            gDeferredShadowCubeProgram;
@@ -424,6 +425,7 @@ void LLViewerShaderMgr::finalizeShaderList()
     mShaderList.push_back(&gHazeProgram);
     mShaderList.push_back(&gHazeWaterProgram);
     mShaderList.push_back(&gDeferredSoftenProgram);
+    mShaderList.push_back(&gDeferredSoftenCubeProgram);
     mShaderList.push_back(&gDeferredAlphaProgram);
     mShaderList.push_back(&gHUDAlphaProgram);
     mShaderList.push_back(&gDeferredAlphaImpostorProgram);
@@ -836,6 +838,12 @@ std::string LLViewerShaderMgr::loadBasicShaders()
     {
         attribs["REFMAP_LEVEL"] = std::to_string(probe_level);
         attribs["REF_SAMPLE_COUNT"] = "32";
+
+        S32 probe_quality = gSavedSettings.getS32("RenderReflectionProbeQuality");
+        if (probe_quality > 0)
+        {
+            attribs["REFLECTION_PROBE_MED_QUALITY"] = "1";
+        }
     }
 
     if (mirrors)
@@ -1097,6 +1105,7 @@ bool LLViewerShaderMgr::loadShadersDeferred()
         gDeferredSunProgram.unload();
         gDeferredBlurLightProgram.unload();
         gDeferredSoftenProgram.unload();
+        gDeferredSoftenCubeProgram.unload();
         gDeferredShadowProgram.unload();
         gDeferredSkinnedShadowProgram.unload();
         gDeferredShadowCubeProgram.unload();
@@ -2133,6 +2142,35 @@ bool LLViewerShaderMgr::loadShadersDeferred()
         }
 
         success = gDeferredSoftenProgram.createShader();
+        llassert(success);
+    }
+
+    if (success)
+    {
+        // Cube snapshot variant with CUBE_SNAPSHOT define
+        gDeferredSoftenCubeProgram.mName = "Deferred Soften Cube Shader";
+        gDeferredSoftenCubeProgram.mFeatures = gDeferredSoftenProgram.mFeatures;
+        gDeferredSoftenCubeProgram.mShaderFiles = gDeferredSoftenProgram.mShaderFiles;
+        gDeferredSoftenCubeProgram.mShaderLevel = gDeferredSoftenProgram.mShaderLevel;
+        gDeferredSoftenCubeProgram.mShaderGroup = gDeferredSoftenProgram.mShaderGroup;
+        gDeferredSoftenCubeProgram.mDefines = gDeferredSoftenProgram.mDefines;
+        gDeferredSoftenCubeProgram.clearPermutations();
+        add_common_permutations(&gDeferredSoftenCubeProgram);
+
+        if (use_sun_shadow)
+        {
+            gDeferredSoftenCubeProgram.addPermutation("HAS_SUN_SHADOW", "1");
+        }
+
+        if (gSavedSettings.getBOOL("RenderDeferredSSAO"))
+        {
+            gDeferredSoftenCubeProgram.mShaderLevel = llmax(gDeferredSoftenCubeProgram.mShaderLevel, 2);
+            gDeferredSoftenCubeProgram.addPermutation("HAS_SSAO", "1");
+        }
+
+        gDeferredSoftenCubeProgram.addPermutation("CUBE_SNAPSHOT", "1");
+
+        success = gDeferredSoftenCubeProgram.createShader();
         llassert(success);
     }
 

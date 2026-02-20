@@ -197,6 +197,8 @@ public:
         MODELVIEW_DELTA_MATRIX,             //  "modelview_delta"
         INVERSE_MODELVIEW_DELTA_MATRIX,     //  "inv_modelview_delta"
         CUBE_SNAPSHOT,                      //  "cube_snapshot"
+        DEFAULT_PROBE_RENDER,               //  "default_probe_render"
+        REFLECTION_PROBE_QUALITY,           //  "reflection_probe_quality"
 
         FXAA_TC_SCALE,                      //  "tc_scale"
         FXAA_RCP_SCREEN_RES,                //  "rcp_screen_res"

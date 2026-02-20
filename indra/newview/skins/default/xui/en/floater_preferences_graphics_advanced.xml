@@ -768,19 +768,42 @@
        value="2"/>
   </combo_box>
 
-  <check_box
-    control_name="RenderScreenSpaceReflections"
+  <text
+    type="string"
+    length="1"
+    follows="left|top"
     height="16"
-    initial_value="true"
-    label="Screen Space Reflections"
     layout="topleft"
     left="420"
-    name="ScreenSpaceReflections"
+    name="ReflectionsQualityText"
+    text_readonly_color="LabelDisabledColor"
     top_delta="24"
-    width="240">
-    <check_box.commit_callback
-      function="Pref.RenderOptionUpdate" />
-  </check_box>
+    width="128">
+    Reflections Quality:
+  </text>
+
+  <combo_box
+   height="18"
+   layout="topleft"
+   left_delta="130"
+   top_delta="0"
+   name="ReflectionsQuality"
+   width="150">
+    <combo_box.item
+      label="Low"
+      name="0"
+      value="0"/>
+    <combo_box.item
+      label="Medium"
+      name="1"
+      value="1"/>
+    <combo_box.item
+      label="High"
+      name="2"
+      value="2"/>
+    <combo_box.commit_callback
+      function="Pref.UpdateReflectionsQuality" />
+  </combo_box>
   
   <text
     type="string"

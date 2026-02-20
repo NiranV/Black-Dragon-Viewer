@@ -105,6 +105,7 @@ RenderMaxPartCount			1	0
 RenderTransparentWater      1   0
 RenderReflectionsEnabled    1   0
 RenderReflectionProbeDetail	1	0
+RenderReflectionProbeQuality	1	0
 RenderTerrainDetail			1	0
 RenderTerrainLODFactor		1	1
 RenderTerrainPBRDetail      1   -4
@@ -148,6 +149,7 @@ RenderLocalLightCount		1	256
 RenderTransparentWater      1   0
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	0
+RenderReflectionProbeQuality	1	0
 RenderTerrainDetail			1	1
 RenderTerrainLODFactor		1	1.0
 RenderTerrainPBRDetail      1   -1
@@ -202,6 +204,7 @@ RenderFSAAType  			1	1
 RenderFSAASamples			1	1
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	0
+RenderReflectionProbeQuality	1	1
 RenderScreenSpaceReflections 1  0
 RenderReflectionProbeLevel  1   1
 RenderMirrors				1	0
@@ -244,6 +247,7 @@ RenderFSAAType  			1	1
 RenderFSAASamples			1	1
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	1
+RenderReflectionProbeQuality	1	1
 RenderScreenSpaceReflections 1  0
 RenderReflectionProbeLevel  1   1
 RenderMirrors				1	0
@@ -286,6 +290,7 @@ RenderFSAAType  			1	2
 RenderFSAASamples			1	2
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	1
+RenderReflectionProbeQuality	1	1
 RenderScreenSpaceReflections 1  0
 RenderReflectionProbeLevel  1   2
 RenderMirrors				1	0
@@ -328,6 +333,7 @@ RenderFSAAType  			1	2
 RenderFSAASamples			1	2
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	1
+RenderReflectionProbeQuality	1	1
 RenderScreenSpaceReflections 1  0
 RenderReflectionProbeLevel  1   3
 RenderMirrors				1	0
@@ -370,6 +376,7 @@ RenderFSAAType  			1	2
 RenderFSAASamples			1	3
 RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	1
+RenderReflectionProbeQuality	1	1
 RenderScreenSpaceReflections 1  1
 RenderReflectionProbeLevel  1   3
 RenderMirrors				1	0

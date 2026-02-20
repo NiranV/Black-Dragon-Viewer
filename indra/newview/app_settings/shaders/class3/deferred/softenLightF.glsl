@@ -80,8 +80,6 @@ vec3 srgb_to_linear(vec3 c);
 
 uniform vec4 waterPlane;
 
-uniform int cube_snapshot;
-
 uniform float sky_hdr_scale;
 
 void calcHalfVectors(vec3 lv, vec3 n, vec3 v, out vec3 h, out vec3 l, out float nh, out float nl, out float nv, out float vh, out float lightDist);
@@ -281,5 +279,20 @@ void main()
         final_scale = 1.1;
 
     frag_color.rgb = clampHDRRange(color.rgb * final_scale); //output linear since local lights will be added to this shader's results
+
+    // Alpha handling for reflection probe cubemaps
+#ifdef CUBE_SNAPSHOT
+    if (GET_GBUFFER_FLAG(gb.gbufferFlag, GBUFFER_FLAG_SKIP_ATMOS))
+    {
+        // Sky/clouds: write 1.0 alpha (will use void probe)
+        frag_color.a = 1.0;
+    }
+    else
+    {
+        // Everything else: write 0.0 alpha (will use local probe)
+        frag_color.a = 0.0;
+    }
+#else
     frag_color.a = 0.0;
+#endif
 }

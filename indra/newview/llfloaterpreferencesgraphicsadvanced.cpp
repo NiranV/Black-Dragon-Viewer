@@ -48,6 +48,7 @@ LLFloaterPreferenceGraphicsAdvanced::LLFloaterPreferenceGraphicsAdvanced(const L
     mCommitCallbackRegistrar.add("Pref.RenderOptionUpdate",            boost::bind(&LLFloaterPreferenceGraphicsAdvanced::onRenderOptionEnable, this));
     mCommitCallbackRegistrar.add("Pref.UpdateIndirectMaxNonImpostors", boost::bind(&LLFloaterPreferenceGraphicsAdvanced::updateMaxNonImpostors,this));
     mCommitCallbackRegistrar.add("Pref.UpdateIndirectMaxComplexity",   boost::bind(&LLFloaterPreferenceGraphicsAdvanced::updateMaxComplexity,this));
+    mCommitCallbackRegistrar.add("Pref.UpdateReflectionsQuality",      boost::bind(&LLFloaterPreferenceGraphicsAdvanced::onReflectionsQualityChanged, this));
 
     mCommitCallbackRegistrar.add("Pref.Cancel", boost::bind(&LLFloaterPreferenceGraphicsAdvanced::onBtnCancel, this, _2));
     mCommitCallbackRegistrar.add("Pref.OK",     boost::bind(&LLFloaterPreferenceGraphicsAdvanced::onBtnOK, this, _2));
@@ -171,6 +172,24 @@ void LLFloaterPreferenceGraphicsAdvanced::refresh()
     bool enable_complexity = gSavedSettings.getS32("RenderAvatarComplexityMode") != LLVOAvatar::AV_RENDER_ONLY_SHOW_FRIENDS;
     getChild<LLSliderCtrl>("IndirectMaxComplexity")->setEnabled(enable_complexity);
     getChild<LLSliderCtrl>("IndirectMaxNonImpostors")->setEnabled(enable_complexity);
+
+    // Set Reflections Quality dropdown based on current settings
+    S32 probe_quality = gSavedSettings.getS32("RenderReflectionProbeQuality");
+    bool ssr_enabled = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
+    LLComboBox* reflections_combo = getChild<LLComboBox>("ReflectionsQuality");
+
+    if (probe_quality == 0)
+    {
+        reflections_combo->setValue(0); // Low
+    }
+    else if (probe_quality == 1 && !ssr_enabled)
+    {
+        reflections_combo->setValue(1); // Medium
+    }
+    else
+    {
+        reflections_combo->setValue(2); // High
+    }
 }
 
 void LLFloaterPreferenceGraphicsAdvanced::refreshEnabledGraphics()
@@ -404,4 +423,33 @@ void LLFloaterPreferenceGraphicsAdvanced::onBtnCancel(const LLSD& userdata)
     {
         instance->onBtnCancel(userdata);
     }
+}
+
+void LLFloaterPreferenceGraphicsAdvanced::onReflectionsQualityChanged()
+{
+    LLComboBox* combo = getChild<LLComboBox>("ReflectionsQuality");
+    S32 quality = combo->getValue().asInteger();
+
+    // Map quality levels to settings:
+    // 0 (Low) = probe quality 0, SSR off
+    // 1 (Medium) = probe quality 1, SSR off
+    // 2 (High) = probe quality 1, SSR on
+
+    if (quality == 0)
+    {
+        gSavedSettings.setS32("RenderReflectionProbeQuality", 0);
+        gSavedSettings.setBOOL("RenderScreenSpaceReflections", false);
+    }
+    else if (quality == 1)
+    {
+        gSavedSettings.setS32("RenderReflectionProbeQuality", 1);
+        gSavedSettings.setBOOL("RenderScreenSpaceReflections", false);
+    }
+    else // quality == 2
+    {
+        gSavedSettings.setS32("RenderReflectionProbeQuality", 1);
+        gSavedSettings.setBOOL("RenderScreenSpaceReflections", true);
+    }
+
+    onRenderOptionEnable();
 }
