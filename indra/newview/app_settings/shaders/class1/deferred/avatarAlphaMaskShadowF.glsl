@@ -43,10 +43,24 @@ void main()
 
     if (alpha < minimum_alpha)
     {
-      if (fract(0.5*floor(target_pos_x / pos_w )) < 0.25)
-      {
-        discard;
-      }
+        // 4x4 Bayer dither pattern
+        vec2 screen_pos = gl_FragCoord.xy;
+        ivec2 ipos = ivec2(mod(screen_pos, 4.0));
+
+        // 4x4 Bayer matrix values normalized to [0, 1]
+        const float dither_pattern[16] = float[16](
+            0.0/16.0,  8.0/16.0,  2.0/16.0, 10.0/16.0,
+           12.0/16.0,  4.0/16.0, 14.0/16.0,  6.0/16.0,
+            3.0/16.0, 11.0/16.0,  1.0/16.0,  9.0/16.0,
+           15.0/16.0,  7.0/16.0, 13.0/16.0,  5.0/16.0
+        );
+
+        float threshold = dither_pattern[ipos.y * 4 + ipos.x];
+
+        if (alpha < threshold)
+        {
+            discard;
+        }
     }
 
     frag_color = vec4(1,1,1,1);
