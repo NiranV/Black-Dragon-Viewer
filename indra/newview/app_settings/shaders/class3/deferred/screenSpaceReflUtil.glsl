@@ -255,7 +255,7 @@ float tapScreenSpaceReflection(
 
         // Jitter ray origin along the surface normal (outward only) to break up step-boundary striations.
         // Each pixel gets a different offset, so concentric banding from discrete steps dissolves into noise.
-        float normalJitter = random(tc * screen_res + float(s) * 0.789) * max(STEP_SIZE, -viewPos.z * 0.005);
+        float normalJitter = random(tc * screen_res + float(s) * 0.789) * (STEP_SIZE + -viewPos.z * 0.005);
         vec3 jitteredPos = biasedPos + normal * normalJitter;
         vec3 transformedJitteredPos = (inv_modelview_delta * vec4(jitteredPos, 1.0)).xyz;
         vec3 hitCoord = transformedJitteredPos;
