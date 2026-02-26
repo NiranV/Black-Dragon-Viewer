@@ -121,8 +121,8 @@ std::string STATUS[] =
 //-----------------------------------------------------------------------------
 // LLFloaterBvhPreview()
 //-----------------------------------------------------------------------------
-LLFloaterBvhPreview::LLFloaterBvhPreview(const std::string& filename) :
-    LLFloaterNameDesc(filename)
+LLFloaterBvhPreview::LLFloaterBvhPreview(const LLSD& args) :
+    LLFloaterNameDesc(args)
 {
     mLastMouseX = 0;
     mLastMouseY = 0;
@@ -153,7 +153,7 @@ LLFloaterBvhPreview::LLFloaterBvhPreview(const std::string& filename) :
     mIDList["Wink"] = ANIM_AGENT_EXPRESS_WINK;
     mIDList["Worry"] = ANIM_AGENT_EXPRESS_WORRY;
 
-    mFilenameAndPath = filename;
+    mFilenameAndPath = args["filename"].asString();
 	mFilename = gDirUtilp->getBaseFileName(mFilenameAndPath, false);
 
 	mIsAnimFile = false;
