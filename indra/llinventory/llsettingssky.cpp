@@ -1222,12 +1222,12 @@ void LLSettingsSky::loadValuesFromLLSD()
 
     if (mSkySettingVersion > 1)
     {
-        mHDRMax = settings[SETTING_HDR_MAX].asReal();
-        mHDRMin = settings[SETTING_HDR_MIN].asReal();
-        mHDROffset = settings[SETTING_HDR_OFFSET].asReal();
-        mTonemapMix = settings[SETTING_HDR_TONEMAPPER_AMOUNT].asReal();
-        mTonemapper = settings[SETTING_HDR_TONEMAPPER].asReal();
-        mSunBrightness = settings[SETTING_SUN_BRIGHTNESS].asReal();
+        mHDRMax = (F32)settings[SETTING_HDR_MAX].asReal();
+        mHDRMin = (F32)settings[SETTING_HDR_MIN].asReal();
+        mHDROffset = (F32)settings[SETTING_HDR_OFFSET].asReal();
+        mTonemapMix = (F32)settings[SETTING_HDR_TONEMAPPER_AMOUNT].asReal();
+        mTonemapper = (U8)settings[SETTING_HDR_TONEMAPPER].asInteger();
+        mSunBrightness = (F32)settings[SETTING_SUN_BRIGHTNESS].asReal();
     }
     else
     {
