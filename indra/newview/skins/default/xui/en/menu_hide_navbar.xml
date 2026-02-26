@@ -8,7 +8,7 @@
  top="624"
  visible="false"
  width="128">
-   <!--<menu_item_check
+   <menu_item_check
          label="Show Coordinates"
          name="Show Coordinates">
            <menu_item_check.on_click
@@ -30,25 +30,58 @@
     </menu_item_check>
     <menu_item_separator/>
     <menu_item_check
-         label="Show Navigation &amp; Favorites Bar"
+         label="Show Favorites Bar"
          layout="topleft"
-         name="ShowNavbarNavigationPanel">
+         name="ShowNavbarFavoritesPanel">
            <on_click
              function="ToggleControl"
-             parameter="ShowNavbarNavigationPanel" /> 
+             parameter="ShowNavbarFavoritesPanel" /> 
              <on_check
              function="CheckControl"
-             parameter="ShowNavbarNavigationPanel" />
+             parameter="ShowNavbarFavoritesPanel" />
     </menu_item_check>
     <menu_item_check
-         label="Show Mini-Location Bar"
+         label="Show FPS Counter"
          layout="topleft"
-         name="ShowMiniLocationPanel">
+         name="ShowFPSCounter">
            <on_click
              function="ToggleControl"
-             parameter="ShowMiniLocationPanel" />
+             parameter="ShowFPSCounter" /> 
              <on_check
              function="CheckControl"
-             parameter="ShowMiniLocationPanel" />
-    </menu_item_check>-->
+             parameter="ShowFPSCounter" />
+    </menu_item_check>
+    <menu_item_check
+         label="Show Net Stats"
+         layout="topleft"
+         name="ShowNetStats">
+           <on_click
+             function="ToggleControl"
+             parameter="ShowNetStats" /> 
+             <on_check
+             function="CheckControl"
+             parameter="ShowNetStats" />
+    </menu_item_check>
+    <menu_item_check
+         label="Show Menu Filter"
+         layout="topleft"
+         name="MenuSearch">
+           <on_click
+             function="ToggleControl"
+             parameter="MenuSearch" /> 
+             <on_check
+             function="CheckControl"
+             parameter="MenuSearch" />
+    </menu_item_check>
+    <menu_item_check
+         label="Show Search Bar"
+         layout="topleft"
+         name="ShowTopSearchBar">
+           <on_click
+             function="ToggleControl"
+             parameter="ShowTopSearchBar" /> 
+             <on_check
+             function="CheckControl"
+             parameter="ShowTopSearchBar" />
+    </menu_item_check>
 </menu>
