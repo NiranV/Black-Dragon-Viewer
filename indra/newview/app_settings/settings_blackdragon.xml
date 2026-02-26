@@ -1506,7 +1506,7 @@
   <key>ShowVisualPosingTools</key>
   <map>
     <key>Comment</key>
-    <string>Show search bar in navigationbar</string>
+    <string>Show visual posing tools</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
