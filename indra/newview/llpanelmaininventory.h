@@ -98,8 +98,6 @@ public:
 
     //BD
 	LLInventoryPanel* setupInventoryPanel();
-	void onOutboxClearSearch();
-	void onOutboxFilterEdit(const std::string& search_string);
 
     bool isRecentItemsPanelSelected();
 
@@ -159,8 +157,6 @@ protected:
 
     static bool filtersVisible(void* user_data);
     void onClearSearch();
-    static void onFoldersByName(void *user_data);
-    static bool checkFoldersByName(void *user_data);
 
     static bool incrementalFind(LLFolderViewItem* first_item, const char *find_text, bool backward);
     void onFilterSelected();
@@ -183,11 +179,6 @@ protected:
     void saveTexture(const LLSD& userdata);
     bool isSaveTextureEnabled(const LLSD& userdata);
     void updateItemcountText();
-
-    //BD
-	void setSortObjects();
-	void setSortSystemOnTop();
-	void setSortFoldersByName();
 
     void updatePanelVisibility();
     void updateCombinationVisibility();

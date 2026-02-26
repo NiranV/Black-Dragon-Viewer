@@ -759,6 +759,20 @@ bool LLInventoryFilter::isModified() const
     return mFilterModified != FILTER_NONE;
 }
 
+void LLInventoryFilter::resetFilters()
+{
+    mFilterOps.mFilterObjectTypes = 0xffffffffffffffffUL;
+    mFilterOps.mFilterCategoryTypes = 0xffffffffffffffffULL;
+    mFilterOps.mFilterWearableTypes = 0xffffffffffffffffULL;
+    mFilterOps.mFilterTypes = FILTERTYPE_OBJECT;
+    mFilterOps.mFilterLinks = FILTERLINK_INCLUDE_LINKS;
+    mFilterSubString.clear();
+    mFilterOps.mPermissions = PERM_NONE;
+    mFilterOps.mMinDate = time_min();
+    mFilterOps.mMaxDate = time_max();
+    mFilterOps.mHoursAgo = 0;
+}
+
 void LLInventoryFilter::updateFilterTypes(U64 types, U64& current_types)
 {
     if (current_types != types)

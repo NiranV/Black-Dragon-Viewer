@@ -59,10 +59,8 @@
 #include "llviewernetwork.h"
 #include "llweb.h"
 
-//BD
-#include "llbuycurrencyhtml.h"
-#include "llfloaterbuycurrency.h"
 #include "llresmgr.h"
+#include "llbuycurrencyhtml.h"
 
 static LLPanelInjector<LLSidepanelInventory> t_inventory("sidepanel_inventory");
 
@@ -78,8 +76,6 @@ static const char * const INBOX_LAYOUT_PANEL_NAME = "inbox_layout_panel";
 static const char * const INVENTORY_LAYOUT_STACK_NAME = "inventory_layout_stack";
 static const char * const MARKETPLACE_INBOX_PANEL = "marketplace_inbox";
 
-//BD
-const F32 ICON_TIMER_EXPIRY		= 3.f; // How long the balance and health icons should flash after a change.
 static bool sLoginCompleted = false;
 
 //
@@ -123,47 +119,40 @@ private:
 //
 
 LLSidepanelInventory::LLSidepanelInventory()
-	: LLPanel()
-	, mPanelMainInventory(NULL)
-	, mInboxEnabled(false)
-	, mCategoriesObserver(NULL)
-	, mInboxAddedObserver(NULL)
-	, mInboxLayoutPanel(NULL)
-	//BD
-	, mBoxBalance(NULL)
-	, mBalance(0)
-	, mSquareMetersCredit(0)
-	, mSquareMetersCommitted(0)
+    : LLPanel()
+    , mPanelMainInventory(NULL)
+    , mInboxEnabled(false)
+    , mCategoriesObserver(NULL)
+    , mInboxAddedObserver(NULL)
+    , mInboxLayoutPanel(NULL)
+    //BD
+    , mBoxBalance(NULL)
+    , mBalance(0)
+    , mSquareMetersCredit(0)
+    , mSquareMetersCommitted(0)
 {
 
-	//BD
-	mBalanceTimer = new LLFrameTimer();
-	//buildFromFile( "panel_inventory.xml"); // Called from LLRegisterPanelClass::defaultPanelClassBuilder()
+    //BD
+    mBalanceTimer = new LLFrameTimer();
+    //buildFromFile( "panel_inventory.xml"); // Called from LLRegisterPanelClass::defaultPanelClassBuilder()
 }
 
 LLSidepanelInventory::~LLSidepanelInventory()
 {
-	//BD
-	delete mBalanceTimer;
-	mBalanceTimer = NULL;
+    // Save the InventoryMainPanelHeight in settings per account
+    gSavedPerAccountSettings.setS32("InventoryInboxHeight", mInboxLayoutPanel->getTargetDim());
 
-	// Save the InventoryMainPanelHeight in settings per account
-	gSavedPerAccountSettings.setS32("InventoryInboxHeight", mInboxLayoutPanel->getTargetDim());
+    if (mCategoriesObserver && gInventory.containsObserver(mCategoriesObserver))
+    {
+        gInventory.removeObserver(mCategoriesObserver);
+    }
+    delete mCategoriesObserver;
 
-	if (mCategoriesObserver && gInventory.containsObserver(mCategoriesObserver))
-	{
-		gInventory.removeObserver(mCategoriesObserver);
-	}
-	delete mCategoriesObserver;
-	
-	if (mInboxAddedObserver && gInventory.containsObserver(mInboxAddedObserver))
-	{
-		gInventory.removeObserver(mInboxAddedObserver);
-	}
-	delete mInboxAddedObserver;
-
-	//BD
-	gInventory.removeObserver(this);
+    if (mInboxAddedObserver && gInventory.containsObserver(mInboxAddedObserver))
+    {
+        gInventory.removeObserver(mInboxAddedObserver);
+    }
+    delete mInboxAddedObserver;
 }
 
 void handleInventoryDisplayInboxChanged()
@@ -177,47 +166,41 @@ void handleInventoryDisplayInboxChanged()
 
 bool LLSidepanelInventory::postBuild()
 {
-	//BD
-	gInventory.addObserver(this);
+    // UI elements from inventory panel
+    {
+        mInventoryPanel = getChild<LLPanel>("sidepanel_inventory_panel");
 
-	// UI elements from inventory panel
-	{
-		mInventoryPanel = getChild<LLPanel>("sidepanel_inventory_panel");
+        mBoxBalance = getChild<LLTextBox>("balance");
+        mBoxBalance->setClickedCallback(&LLSidepanelInventory::onClickBalance, this);
 
-		//BD
-		mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
-
-		mBoxBalance = getChild<LLTextBox>("balance");
-		mBoxBalance->setClickedCallback( &LLSidepanelInventory::onClickBalance, this );
-		
-		mPanelMainInventory = mInventoryPanel->getChild<LLPanelMainInventory>("panel_main_inventory");
-		mPanelMainInventory->setSelectCallback(boost::bind(&LLSidepanelInventory::onSelectionChange, this, _1, _2));
+        mPanelMainInventory = mInventoryPanel->getChild<LLPanelMainInventory>("panel_main_inventory");
+        mPanelMainInventory->setSelectCallback(boost::bind(&LLSidepanelInventory::onSelectionChange, this, _1, _2));
         mPanelMainInventory->setParentSidepanel(this);
         mPanelMainInventory->setInboxPanel(getChild<LLPanelMarketplaceInbox>("marketplace_inbox"));
-		//LLTabContainer* tabs = mPanelMainInventory->getChild<LLTabContainer>("inventory filter tabs");
-		//tabs->setCommitCallback(boost::bind(&LLSidepanelInventory::updateVerbs, this));
+        //LLTabContainer* tabs = mPanelMainInventory->getChild<LLTabContainer>("inventory filter tabs");
+        //tabs->setCommitCallback(boost::bind(&LLSidepanelInventory::updateVerbs, this));
 
-		/* 
-		   EXT-4846 : "Can we suppress the "Landmarks" and "My Favorites" folder since they have their own Task Panel?"
-		   Deferring this until 2.1.
-		LLInventoryPanel *my_inventory_panel = mPanelMainInventory->getChild<LLInventoryPanel>("All Items");
-		my_inventory_panel->addHideFolderType(LLFolderType::FT_LANDMARK);
-		my_inventory_panel->addHideFolderType(LLFolderType::FT_FAVORITE);
-		*/
+        /*
+           EXT-4846 : "Can we suppress the "Landmarks" and "My Favorites" folder since they have their own Task Panel?"
+           Deferring this until 2.1.
+        LLInventoryPanel *my_inventory_panel = mPanelMainInventory->getChild<LLInventoryPanel>("All Items");
+        my_inventory_panel->addHideFolderType(LLFolderType::FT_LANDMARK);
+        my_inventory_panel->addHideFolderType(LLFolderType::FT_FAVORITE);
+        */
 
-		//LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLSidepanelInventory::updateVerbs, this));
-	}
-	
-	// Received items inbox setup
-	{
-		LLLayoutStack* inv_stack = getChild<LLLayoutStack>(INVENTORY_LAYOUT_STACK_NAME);
+        //LLOutfitObserver::instance().addCOFChangedCallback(boost::bind(&LLSidepanelInventory::updateVerbs, this));
+    }
 
-		// Set up button states and callbacks
-		LLButton * inbox_button = getChild<LLButton>(INBOX_BUTTON_NAME);
+    // Received items inbox setup
+    {
+        LLLayoutStack* inv_stack = getChild<LLLayoutStack>(INVENTORY_LAYOUT_STACK_NAME);
 
-		inbox_button->setCommitCallback(boost::bind(&LLSidepanelInventory::onToggleInboxBtn, this));
+        // Set up button states and callbacks
+        LLButton * inbox_button = getChild<LLButton>(INBOX_BUTTON_NAME);
 
-		// For main Inventory floater: Get the previous inbox state from "InventoryInboxToggleState" setting. 
+        inbox_button->setCommitCallback(boost::bind(&LLSidepanelInventory::onToggleInboxBtn, this));
+
+        // For main Inventory floater: Get the previous inbox state from "InventoryInboxToggleState" setting.
         // For additional Inventory floaters: Collapsed state is default.
         bool is_inbox_collapsed = !inbox_button->getToggleState() || sLoginCompleted;
 
@@ -257,14 +240,6 @@ bool LLSidepanelInventory::postBuild()
     }
 
     return true;
-}
-
-//BD
-// virtual
-void LLSidepanelInventory::draw()
-{
-	LLPanel::draw();
-	updateItemcountText();
 }
 
 void LLSidepanelInventory::updateInbox()
@@ -356,15 +331,8 @@ void LLSidepanelInventory::observeInboxModifications(const LLUUID& inboxID)
 
 void LLSidepanelInventory::enableInbox(bool enabled)
 {
-	mInboxEnabled = enabled;
-	
-	LLLayoutPanel * inbox_layout_panel = getChild<LLLayoutPanel>(INBOX_LAYOUT_PANEL_NAME);
-	inbox_layout_panel->setVisible(enabled);
+    mInboxEnabled = enabled;
 
-	//BD - Hack, the inbox is a very reliable way of telling whether this is the main inventory
-	//     or a new inventory window, make the balance display depent on it.
-	mBoxBalance->setVisible(enabled);
-	getChild<LLUICtrl>("balance_icon")->setVisible(enabled);
     if(!enabled || !mPanelMainInventory->isSingleFolderMode())
     {
         toggleInbox();
@@ -525,7 +493,6 @@ bool LLSidepanelInventory::canWearSelected()
     return true;
 }
 
-
 LLInventoryItem *LLSidepanelInventory::getSelectedItem()
 {
     LLFolderView* root = mPanelMainInventory->getActivePanel()->getRootFolder();
@@ -643,145 +610,107 @@ void LLSidepanelInventory::cleanup()
     }
 }
 
-//BD
-// virtual
-void LLSidepanelInventory::changed(U32)
-{
-	updateItemcountText();
-}
-
-void LLSidepanelInventory::updateItemcountText()
-{
-	if(mItemCount != gInventory.getItemCount())
-	{
-		mItemCount = gInventory.getItemCount();
-		mItemCountString = "";
-		LLLocale locale(LLLocale::USER_LOCALE);
-		LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
-	}
-
-	LLStringUtil::format_map_t string_args;
-	string_args["[ITEM_COUNT]"] = mItemCountString;
-
-	std::string text = "";
-
-	if (LLInventoryModelBackgroundFetch::instance().folderFetchActive())
-	{
-		text = getString("ItemcountFetching", string_args);
-	}
-	else if (LLInventoryModelBackgroundFetch::instance().isEverythingFetched())
-	{
-		text = getString("ItemcountCompleted", string_args);
-	}
-	else
-	{
-		text = getString("ItemcountUnknown");
-	}
-	
-    mCounterCtrl->setValue(text);
-}
-
 void LLSidepanelInventory::setBalance(S32 balance)
 {
-	if (balance > getBalance() && getBalance() != 0)
-	{
-		LLFirstUse::receiveLindens();
-	}
+    if (balance > getBalance() && getBalance() != 0)
+    {
+        LLFirstUse::receiveLindens();
+    }
 
-	std::string money_str = LLResMgr::getInstance()->getMonetaryString( balance );
+    std::string money_str = LLResMgr::getInstance()->getMonetaryString(balance);
 
-	LLStringUtil::format_map_t string_args;
-	string_args["[AMT]"] = llformat("%s", money_str.c_str());
-	std::string label_str = getString("buycurrencylabel", string_args);
-	mBoxBalance->setValue(label_str);
+    LLStringUtil::format_map_t string_args;
+    string_args["[AMT]"] = llformat("%s", money_str.c_str());
+    std::string label_str = getString("buycurrencylabel", string_args);
+    mBoxBalance->setValue(label_str);
 
-	if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
-	{
-		if (mBalance > balance)
-			make_ui_sound("UISndMoneyChangeDown");
-		else
-			make_ui_sound("UISndMoneyChangeUp");
-	}
+    if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
+    {
+        if (mBalance > balance)
+            make_ui_sound("UISndMoneyChangeDown");
+        else
+            make_ui_sound("UISndMoneyChangeUp");
+    }
 
-	if( balance != mBalance )
-	{
-		mBalanceTimer->reset();
-		mBalanceTimer->setTimerExpirySec( ICON_TIMER_EXPIRY );
-		mBalance = balance;
-	}
+    if (balance != mBalance)
+    {
+        mBalanceTimer->reset();
+        mBalanceTimer->setTimerExpirySec(0.0f);
+        mBalance = balance;
+    }
 }
 
 
 // static
 void LLSidepanelInventory::sendMoneyBalanceRequest()
 {
-	LLMessageSystem* msg = gMessageSystem;
-	msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
-	msg->nextBlockFast(_PREHASH_AgentData);
-	msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-	msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-	msg->nextBlockFast(_PREHASH_MoneyData);
-	msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null );
-	gAgent.sendReliableMessage();
+    LLMessageSystem* msg = gMessageSystem;
+    msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    msg->nextBlockFast(_PREHASH_MoneyData);
+    msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null);
+    gAgent.sendReliableMessage();
 }
 
 //static 
-void LLSidepanelInventory::onClickBalance(void* )
+void LLSidepanelInventory::onClickBalance(void*)
 {
-	// Force a balance request message:
-	LLSidepanelInventory::sendMoneyBalanceRequest();
-	// The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
+    // Force a balance request message:
+    LLSidepanelInventory::sendMoneyBalanceRequest();
+    // The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
 }
 
 void LLSidepanelInventory::onClickBuyCurrency()
 {
-	// open a currency floater - actual one open depends on 
-	// value specified in settings.xml
-	LLBuyCurrencyHTML::openCurrencyFloater();
-	LLFirstUse::receiveLindens(false);
+    // open a currency floater - actual one open depends on 
+    // value specified in settings.xml
+    LLBuyCurrencyHTML::openCurrencyFloater();
+    LLFirstUse::receiveLindens(false);
 }
 
 void LLSidepanelInventory::setLandCredit(S32 credit)
 {
-	mSquareMetersCredit = credit;
+    mSquareMetersCredit = credit;
 }
 
 S32 LLSidepanelInventory::getBalance() const
 {
-	return mBalance;
+    return mBalance;
 }
 
 void LLSidepanelInventory::debitBalance(S32 debit)
 {
-	setBalance(getBalance() - debit);
+    setBalance(getBalance() - debit);
 }
 
 void LLSidepanelInventory::creditBalance(S32 credit)
 {
-	setBalance(getBalance() + credit);
+    setBalance(getBalance() + credit);
 }
 
 void LLSidepanelInventory::setLandCommitted(S32 committed)
 {
-	mSquareMetersCommitted = committed;
+    mSquareMetersCommitted = committed;
 }
 
 S32 LLSidepanelInventory::getSquareMetersCredit() const
 {
-	return mSquareMetersCredit;
+    return mSquareMetersCredit;
 }
 
 bool LLSidepanelInventory::isUserTiered() const
 {
-	return (mSquareMetersCredit > 0);
+    return (mSquareMetersCredit > 0);
 }
 
 S32 LLSidepanelInventory::getSquareMetersCommitted() const
 {
-	return mSquareMetersCommitted;
+    return mSquareMetersCommitted;
 }
 
 S32 LLSidepanelInventory::getSquareMetersLeft() const
 {
-	return mSquareMetersCredit - mSquareMetersCommitted;
+    return mSquareMetersCredit - mSquareMetersCommitted;
 }

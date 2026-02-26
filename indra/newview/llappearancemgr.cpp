@@ -2614,7 +2614,7 @@ void LLAppearanceMgr::updateAppearanceFromCOF(bool enforce_item_restrictions,
     dumpItemArray(obj_items,"asset_dump: obj_item");
 
     LLViewerInventoryCategory *cof = gInventory.getCategory(current_outfit_id);
-    if (cof && !gInventory.isCategoryComplete(current_outfit_id))
+    if (!gInventory.isCategoryComplete(current_outfit_id))
     {
         LL_WARNS() << "COF info is not complete. Version " << cof->getVersion()
                 << " descendent_count " << cof->getDescendentCount()
@@ -4242,10 +4242,10 @@ bool LLAppearanceMgr::moveWearable(LLViewerInventoryItem* item, bool closer_to_b
     swap_item->setDescription(item->getActualDescription());
     item->setDescription(tmp);
 
-    // LL_DEBUGS("Inventory") << "swap, item "
-    //                     << ll_pretty_print_sd(item->asLLSD())
-    //                     << " swap_item "
-    //                     << ll_pretty_print_sd(swap_item->asLLSD()) << LL_ENDL;
+    LL_INFOS("Inventory") << "swap, item "
+                         << ll_pretty_print_sd(item->asLLSD())
+                         << " swap_item "
+                         << ll_pretty_print_sd(swap_item->asLLSD()) << LL_ENDL;
 
     // FIXME switch to use AISv3 where supported.
     //items need to be updated on a dataserver
@@ -4259,7 +4259,7 @@ bool LLAppearanceMgr::moveWearable(LLViewerInventoryItem* item, bool closer_to_b
 
     //to cause appearance of the agent to be updated
     bool result = false;
-    if ((result = gAgentWearables.moveWearable(item, closer_to_body)))
+    if (result = gAgentWearables.moveWearable(item, closer_to_body))
     {
         gAgentAvatarp->wearableUpdated(item->getWearableType());
     }

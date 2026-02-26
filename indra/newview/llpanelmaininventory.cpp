@@ -160,9 +160,6 @@ LLPanelMainInventory::LLPanelMainInventory(const LLPanel::Params& p)
 	mCommitCallbackRegistrar.add("Inventory.ResetFilters", boost::bind(&LLPanelMainInventory::resetFilters, this));
 	mCommitCallbackRegistrar.add("Inventory.SetSortBy", boost::bind(&LLPanelMainInventory::setSortBy, this, _2));
 	mCommitCallbackRegistrar.add("Inventory.Share",  boost::bind(&LLAvatarActions::shareWithAvatars, this));
-	mCommitCallbackRegistrar.add("Inventory.SortObjects", boost::bind(&LLPanelMainInventory::setSortObjects, this));
-	mCommitCallbackRegistrar.add("Inventory.SortFolders", boost::bind(&LLPanelMainInventory::setSortFoldersByName, this));
-	mCommitCallbackRegistrar.add("Inventory.SystemToTop", boost::bind(&LLPanelMainInventory::setSortSystemOnTop, this));
 
 	//BD
 	mCommitCallbackRegistrar.add("Inventory.Custom.Action", boost::bind(&LLPanelMainInventory::onCustomAction, this, _2));
@@ -335,6 +332,11 @@ bool LLPanelMainInventory::postBuild()
 
     // Trigger callback for focus received so we can deselect items in inbox/outbox
     LLFocusableElement::setFocusReceivedCallback(boost::bind(&LLPanelMainInventory::onFocusReceived, this));
+
+    if (mActivePanel)
+    {
+        mActivePanel->refresh();
+    }
 
     return true;
 }
@@ -633,104 +635,57 @@ void LLPanelMainInventory::resetAllItemsFilters()
 	setFilterTextFromFilter();
 }
 
-//BD
-void LLPanelMainInventory::setSortSystemOnTop()
-{
-	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	if ( sort_order_mask & LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP )
-	{
-		sort_order_mask &= ~LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
-	}
-	else
-	{
-		sort_order_mask |= LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
-	}
-	getActivePanel()->setSortOrder(sort_order_mask);
-	if ("Recent Items" == getActivePanel()->getName())
-	{
-		gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
-	}
-	else
-	{
-		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
-	}
-}
-
-
 void LLPanelMainInventory::findLinks(const LLUUID& item_id, const std::string& item_name)
 {
     mFilterSubString = item_name;
 
-    LLInventoryFilter &filter = mActivePanel->getFilter();
+    LLInventoryFilter& filter = mActivePanel->getFilter();
     filter.setFindAllLinksMode(item_name, item_id);
 
     mFilterEditor->setText(item_name);
     mFilterEditor->setFocus(true);
 }
 
-
-
-
-void LLPanelMainInventory::setSortFoldersByName()
-{
-	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	if ( sort_order_mask & LLInventoryFilter::SO_FOLDERS_BY_NAME )
-	{
-		sort_order_mask &= ~LLInventoryFilter::SO_FOLDERS_BY_NAME;
-	}
-	else
-	{
-		sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
-	}
-	getActivePanel()->setSortOrder(sort_order_mask);
-	if ("Recent Items" == getActivePanel()->getName())
-	{
-		gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
-	}
-	else
-	{
-		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
-	}
-}
-
 void LLPanelMainInventory::setSortBy(const LLSD& userdata)
 {
-	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	if (sort_order_mask & LLInventoryFilter::SO_FOLDERS_BY_NAME)
-	{
-		sort_order_mask &= ~LLInventoryFilter::SO_FOLDERS_BY_NAME;
-	}
-	else
-	{
-		sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
-	}
-	getActivePanel()->setSortOrder(sort_order_mask);
-	if ("Recent Items" == getActivePanel()->getName())
-	{
-		gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
-	}
-	else
-	{
-		gSavedSettings.setU32("InventorySortOrder", sort_order_mask);
-	}
-	if (mSingleFolderMode && !isListViewMode())
-	{
-		mCombinationGalleryPanel->setSortOrder(sort_order_mask, true);
-	}
-}
+    U32 sort_order_mask = getActivePanel()->getSortOrder();
+    std::string sort_type = userdata.asString();
+    if (sort_type == "name")
+    {
+        sort_order_mask &= ~LLInventoryFilter::SO_DATE;
+    }
+    else if (sort_type == "date")
+    {
+        sort_order_mask |= LLInventoryFilter::SO_DATE;
+    }
+    else if (sort_type == "foldersalwaysbyname")
+    {
+        if (sort_order_mask & LLInventoryFilter::SO_FOLDERS_BY_NAME)
+        {
+            sort_order_mask &= ~LLInventoryFilter::SO_FOLDERS_BY_NAME;
+        }
+        else
+        {
+            sort_order_mask |= LLInventoryFilter::SO_FOLDERS_BY_NAME;
+        }
+    }
+    else if (sort_type == "systemfolderstotop")
+    {
+        if (sort_order_mask & LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP)
+        {
+            sort_order_mask &= ~LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
+        }
+        else
+        {
+            sort_order_mask |= LLInventoryFilter::SO_SYSTEM_FOLDERS_TO_TOP;
+        }
+    }
+    if (mSingleFolderMode && !isListViewMode())
+    {
+        mCombinationGalleryPanel->setSortOrder(sort_order_mask, true);
+    }
 
-void LLPanelMainInventory::setSortObjects()
-{
-	U32 sort_order_mask = getActivePanel()->getSortOrder();
-	if (sort_order_mask & LLInventoryFilter::SO_DATE)
-	{
-		sort_order_mask &= ~LLInventoryFilter::SO_DATE;
-	}
-	else
-	{
-		sort_order_mask |= LLInventoryFilter::SO_DATE;
-	}
-	getActivePanel()->setSortOrder(sort_order_mask);
+    getActivePanel()->setSortOrder(sort_order_mask);
     if (isRecentItemsPanelSelected())
     {
         gSavedSettings.setU32("RecentItemsSortOrder", sort_order_mask);
@@ -1026,60 +981,55 @@ void LLPanelMainInventory::setFocusOnFilterEditor()
 // virtual
 void LLPanelMainInventory::draw()
 {
-	//BD
-	U32 item_count = gInventory.getItemCount();
-	llassert(mFreshCountCtrl != NULL);
-	if (item_count > 0)
-	{
-		mInboxBtnLayout->setVisible(true);
+    if (mActivePanel && mFilterEditor)
+    {
+        mFilterEditor->setText(mFilterSubString);
+    }
+    if (mActivePanel && mResortActivePanel)
+    {
+        // EXP-756: Force resorting of the list the first time we draw the list:
+        // In the case of date sorting, we don't have enough information at initialization time
+        // to correctly sort the folders. Later manual resort doesn't do anything as the order value is
+        // set correctly. The workaround is to reset the order to alphabetical (or anything) then to the correct order.
+        U32 order = mActivePanel->getSortOrder();
+        mActivePanel->setSortOrder(LLInventoryFilter::SO_NAME);
+        mActivePanel->setSortOrder(order);
+        mResortActivePanel = false;
+    }
+    LLPanel::draw();
+    updateItemcountText();
+    updateCombinationVisibility();
+}
+
+void LLPanelMainInventory::updateItemcountText()
+{
+    const LLUUID inbox_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX);
+    LLFolderViewFolder* inbox = getPanel()->getFolderByID(inbox_id);
+    if (inbox)
+    {
+        mInboxBtnLayout->setVisible(true);
         std::string item_count_str = "---";
 
         U32 inbox_count;
         U32 fresh_item_count = getFreshItemCount();
 
-        const LLUUID inbox_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_INBOX);
-        LLFolderViewFolder* inbox = getPanel()->getFolderByID(inbox_id);
-        if (inbox)
+        inbox_count = static_cast<U32>(inbox->getChildCount());
+        item_count_str = llformat("%d", inbox_count);
+
+        LLStringUtil::format_map_t args;
+        args["[NUM]"] = item_count_str;
+        mInboxButton->setLabel(getString("InboxLabelWithArg", args));
+
+        if (fresh_item_count > 0)
         {
-            inbox_count = static_cast<U32>(inbox->getChildCount());
-            item_count_str = llformat("%d", inbox_count);
+            mFreshCountCtrl->setText(getString("InboxFreshArg"));
+            mFreshCountCtrl->setTextArg("[NUM_NEW]", llformat("%d", fresh_item_count));
         }
-        
-		LLStringUtil::format_map_t args;
-		args["[NUM]"] = item_count_str;
-		mInboxButton->setLabel(getString("InboxLabelWithArg", args));
-
-		if (fresh_item_count > 0)
-		{
-			mFreshCountCtrl->setText(getString("InboxFreshArg"));
-			mFreshCountCtrl->setTextArg("[NUM_NEW]", llformat("%d", fresh_item_count));
-		}
-		else
-		{
-			mFreshCountCtrl->setText(getString("InboxLabelNoArg"));
-		}
-	}
-	else
-	{
-		mInboxButton->setLabel(getString("InboxLabelNoArg"));
-	}
-
-	if (mActivePanel && mFilterEditor)
-	{
-		mFilterEditor->setText(mFilterSubString);
-	}	
-	if (mActivePanel && mResortActivePanel)
-	{
-		// EXP-756: Force resorting of the list the first time we draw the list: 
-		// In the case of date sorting, we don't have enough information at initialization time
-		// to correctly sort the folders. Later manual resort doesn't do anything as the order value is 
-		// set correctly. The workaround is to reset the order to alphabetical (or anything) then to the correct order.
-		U32 order = mActivePanel->getSortOrder();
-		mActivePanel->setSortOrder(LLInventoryFilter::SO_NAME);
-		mActivePanel->setSortOrder(order);
-		mResortActivePanel = false;
-	}
-	LLPanel::draw();
+        else
+        {
+            mFreshCountCtrl->setText(getString("InboxLabelNoArg"));
+        }
+    }
 }
 
 void LLPanelMainInventory::onFocusReceived()
@@ -1159,16 +1109,11 @@ LLInventoryPanel* LLPanelMainInventory::setupInventoryPanel()
 	LLRect inventory_placeholder_rect = inbox_inventory_placeholder->getRect();
 	mInventoryInboxPanel->setShape(inventory_placeholder_rect);
 
-	// Set the sort order newest to oldest
-	mInventoryInboxPanel->getFolderViewModel()->setSorter(LLInventoryFilter::SO_DATE);
-	mInventoryInboxPanel->getFilter().markDefault();
-	mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
-
 	// Set selection callback for proper update of inventory status buttons
 	//mInventoryInboxPanel->setSelectCallback(boost::bind(&LLPanelMarketplaceInbox::onSelectionChange, this));
 
 	// Set up the note to display when the inbox is empty
-	mInventoryInboxPanel->getFilter().setEmptyLookupMessage("InventoryInboxNoItems");
+	//mInventoryInboxPanel->getFilter().setEmptyLookupMessage("InventoryInboxNoItems");
 
 	// Hide the placeholder text
 	inbox_inventory_placeholder->setVisible(false);
@@ -1231,37 +1176,6 @@ const U32 LLPanelMainInventory::getTotalItemCount()
 	return item_count;
 }
 
-void LLPanelMainInventory::onOutboxClearSearch()
-{
-	if (mInventoryInboxPanel)
-	{
-		mInventoryInboxPanel->setFilterSubString(LLStringUtil::null);
-		mSavedFolderState->setApply(TRUE);
-		mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
-		LLOpenFoldersWithSelection opener;
-		mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(opener);
-		mInventoryInboxPanel->getRootFolder()->scrollToShowSelection();
-	}
-}
-
-void LLPanelMainInventory::onOutboxFilterEdit(const std::string& search_string)
-{
-	if (mInventoryInboxPanel)
-	{
-
-		if (search_string == "")
-		{
-			onClearSearch();
-		}
-
-		if (!mInventoryInboxPanel->getFilter().isNotDefault())
-		{
-			mSavedFolderState->setApply(false);
-			mInventoryInboxPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
-		}
-		mInventoryInboxPanel->setFilterSubString(search_string);
-	}
-}
 
 ///----------------------------------------------------------------------------
 /// LLFloaterInventoryFinder
@@ -1557,8 +1471,7 @@ void LLFloaterInventoryFinder::draw()
         mPanelMainInventory->getPanel()->setDateSearchDirection(getDateSearchDirection());
     }
 
-	//BD
-	LLFloater::draw();
+	LLPanel::draw();
 }
 
 void LLFloaterInventoryFinder::onCreatorSelfFilterCommit()

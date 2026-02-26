@@ -335,6 +335,7 @@ public:
     bool                isNotDefault() const;
     void                markDefault();
     void                resetDefault();
+    void                resetFilters();
 
     // +-------------------------------------------------------------------+
     // + Generation

@@ -79,7 +79,7 @@
          image_selected="Toolbar_Middle_Selected"
          image_unselected="Toolbar_Middle_Off"
          layout="topleft"
-         left="2"
+         left="1"
          name="options_gear_btn"
          tool_tip="Show additional options"
          top="1"
@@ -89,8 +89,8 @@
          height="25"
          image_name="Toolbar_Middle_Off"
          layout="topleft"
-         left_pad="149"
+         left_pad="164"
          name="dummy_icon"
-         width="127" />
+         width="116" />
     </panel>
 </panel>

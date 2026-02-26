@@ -405,30 +405,32 @@
 										layout="topleft"
 										name="InventorySortObjectsByDate">
 										<menu_item_check.on_click
-										function="Inventory.SortObjects"/>
-										<menu_item_check.on_check
-										function="Inventory.Check"
-										parameter="sort_by_recent" />
+										function="Inventory.SetSortBy"
+                              parameter="date"/>
+										</menu_item_check>
+                              <menu_item_check
+										label="Sort Objects by Name"
+										layout="topleft"
+										name="InventorySortObjectsByName">
+										<menu_item_check.on_click
+										function="Inventory.SetSortBy"
+                              parameter="name"/>
 										</menu_item_check>
 										<menu_item_check
 										label="Sort System Folders to Top"
 										layout="topleft"
 										name="InventorySystemFoldersToTop">
 										<menu_item_check.on_click
-										function="Inventory.SystemToTop"/>
-										<menu_item_check.on_check
-										function="Inventory.Check"
-										parameter="sort_system_folders_to_top" />
+										function="Inventory.SetSortBy"
+                              parameter="systemfolderstotop"/>
 										</menu_item_check>
 										<menu_item_check
 										label="Sort Folders by Name"
 										layout="topleft"
 										name="InventorySortFoldersByName">
 										<menu_item_check.on_click
-										function="Inventory.SortFolders"/>
-										<menu_item_check.on_check
-										function="Inventory.Check"
-										parameter="sort_folders_by_name" />
+										function="Inventory.SetSortBy"
+                              parameter="foldersalwaysbyname" />
             </menu_item_check>
 					<menu_item_separator
      layout="topleft" />
@@ -558,7 +560,7 @@
      width="283">
     <inventory_panel
      bg_opaque_image="Panel_Background"
-					folder_view.use_ellipses="true"
+	  folder_view.use_ellipses="true"
      background_visible="false"
      border="false"
      bevel_style="none"
@@ -575,7 +577,7 @@
 	</inventory_panel>
     <recent_inventory_panel
      background_visible="false"
-					folder_view.use_ellipses="true"
+	  folder_view.use_ellipses="true"
      border="false"
      bevel_style="none"
      follows="all"

@@ -25,7 +25,7 @@
  */
 
 #include "llviewerprecompiledheaders.h"
-#include "llsidepanelinventorysubpanel.h"
+#include "llsidepanelinventorysubpanel.h" 
 
 #include "roles_constants.h"
 

@@ -46,7 +46,7 @@ class LLSidepanelTaskInfo;
 class LLTextBox;
 
 //BD
-class LLSidepanelInventory : public LLPanel, LLInventoryObserver
+class LLSidepanelInventory : public LLPanel
 {
 public:
     LLSidepanelInventory();
@@ -64,9 +64,7 @@ public:
 
 	/*virtual*/ bool postBuild();
 	/*virtual*/ void onOpen(const LLSD& key);
-	//BD
-	/*virtual*/ void draw();
-	/*virtual*/ void changed(U32);
+
 
 	void		setBalance(S32 balance);
 	void		debitBalance(S32 debit);
@@ -135,9 +133,6 @@ protected:
     bool canWearSelected(); // check whether selected items can be worn
 
     void onInboxChanged(const LLUUID& inbox_id);
-
-	//BD
-	void updateItemcountText();
 
 	//
 	// UI Elements
