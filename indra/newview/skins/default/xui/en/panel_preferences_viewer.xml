@@ -113,6 +113,17 @@ width="510">
 		     name="TabToTextFieldsOnly"
 		     top_pad="0"
 		     width="256" />
+			 <check_box
+		     control_name="SnapshotAddDate"
+		     height="16"
+		     initial_value="true"
+		     label="Add Date to Snapshot Names"
+		     tool_tip="This option toggles whether the Viewer should automatically append the current date to a snapshot name when saving."
+		     layout="topleft"
+		     left="10"
+		     name="SnapshotAddDate"
+		     top_pad="0"
+		     width="256" />
 		    
 			 <text
 		     name="head_label2"

@@ -4951,8 +4951,18 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
         filepath = sSnapshotDir;
         filepath += gDirUtilp->getDirDelimiter();
         filepath += sSnapshotBaseName;
-        filepath += now.toLocalDateString("_%Y-%m-%d_%H%M%S");
-        filepath += llformat("%.2d", i);
+        if (gSavedSettings.getBOOL("SnapshotAddDate"))
+        {
+            filepath += now.toLocalDateString("_%Y-%m-%d_%H%M%S");
+            filepath += llformat("%.2d", i);
+        }
+        else
+        {
+            if (is_snapshot_name_loc_set)
+            {
+                filepath += llformat("_%.3d", i);
+            }
+        }
         filepath += extension;
 
         llstat stat_info;
