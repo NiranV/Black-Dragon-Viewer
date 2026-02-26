@@ -835,7 +835,7 @@ void LLPanelPeople::updateNearbyList()
 
     std::vector<LLVector3d> positions;
 
-    LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("NearMeRange"));
+    LLWorld::getInstance()->getAvatars(&mNearbyList->getIDs(), &positions, gAgent.getPositionGlobal(), 4800.f);
     mNearbyList->setDirty();
 #ifdef LL_DISCORD
     if (gSavedSettings.getBOOL("EnableDiscord"))
@@ -1633,8 +1633,7 @@ bool LLPanelPeople::updateNearbyArrivalTime()
 {
     std::vector<LLVector3d> positions;
     std::vector<LLUUID> uuids;
-    static LLCachedControl<F32> range(gSavedSettings, "NearMeRange");
-    LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), range);
+    LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), 4800.f);
     LLRecentPeople::instance().updateAvatarsArrivalTime(uuids);
     return LLApp::isExiting();
 }
