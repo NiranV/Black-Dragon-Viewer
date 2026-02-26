@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
  legacy_header_height="18"
- height="245"
+ height="285"
  layout="topleft"
  name="beacons"
  help_topic="beacons"
