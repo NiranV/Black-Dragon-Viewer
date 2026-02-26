@@ -402,6 +402,7 @@ bool idle_startup()
 		LL_WARNS_ONCE() << "gViewerWindow is not initialized" << LL_ENDL;
 		return false; // No world yet
 	}
+    LL_PROFILE_ZONE_SCOPED;
 
 	const F32 PRECACHING_DELAY = gSavedSettings.getF32("PrecachingDelay");
 	static LLTimer timeout;
@@ -1561,7 +1562,7 @@ bool idle_startup()
 
 		if ( gViewerWindow != NULL)
 		{	// This isn't the first logon attempt, so show the UI
-			gViewerWindow->setNormalControlsVisible( TRUE );
+			gViewerWindow->setNormalControlsVisible( true );
 		}	
 		set_startup_status(0.26f, 0.66f, LLTrans::getString("SeedGranted"), "Logging to Console");
 		do_startup_frame();
@@ -1617,7 +1618,11 @@ bool idle_startup()
 
 		// create a container's instance for start a controlling conversation windows
 		// by the voice's events
-		LLFloaterIMContainer::getInstance();
+        LLFloaterIMContainer* im_inst = LLFloaterIMContainer::getInstance();
+        if (gAgent.isFirstLogin() && im_inst)
+        {
+            im_inst->openFloater(im_inst->getKey());
+        }
 
 		set_startup_status(0.32f, 0.5f, LLTrans::getString("SeedGranted"), "Asking Media Autoplay");
 		do_startup_frame();
@@ -1800,7 +1805,7 @@ bool idle_startup()
         // -Geenz 2025-03-12
         LL_INFOS() << " AvatarTracker" << LL_ENDL;
         set_startup_status(0.44f, 0.5f, LLTrans::getString("AgentSend"), "Registering Avatar Tracker Callbacks");
-        LLAvatarTracker::instance().registerCallbacks(msg);
+        LLAvatarTracker::instance().registerCallbacks(gMessageSystem);
         do_startup_frame();
 
 		// Create login effect
@@ -1826,29 +1831,6 @@ bool idle_startup()
 	//---------------------------------------------------------------------
 	if (STATE_AGENT_WAIT == LLStartUp::getStartupState())
 	{
-		{
-			set_startup_status(0.45f, 1.f, LLTrans::getString("AgentWait"), "Processing Messages");
-			do_startup_frame();
-			LockMessageChecker lmc(gMessageSystem);
-			while (lmc.checkAllMessages(gFrameCount, gServicePump))
-			{
-				if (gAgentMovementCompleted)
-				{
-					// Sometimes we have more than one message in the
-					// queue. break out of this loop and continue
-					// processing. If we don't, then this could skip one
-					// or more login steps.
-					break;
-				}
-				else
-				{
-					/*// _LL_DEBUGS("AppInit") << "Awaiting AvatarInitComplete, got "
-										 << gMessageSystem->getMessageName() << LL_ENDL;*/
-				}
-			}
-			lmc.processAcks();
-		}
-
 		set_startup_status(0.46f, 1.f, LLTrans::getString("AgentWait"), "");
 		do_startup_frame();
 
@@ -1859,7 +1841,7 @@ bool idle_startup()
 
 		if (!gAgentMovementCompleted && timeout.getElapsedTimeF32() > STATE_AGENT_WAIT_TIMEOUT)
 		{
-			LL_WARNS("AppInit") << "Backing up to login screen!" << LL_ENDL;
+            LL_WARNS("AppInit") << "Timeout on agent movement. Sending logout and backing up to login screen!" << LL_ENDL;
 			if (gRememberPassword)
 			{
 				LLNotificationsUtil::add("LoginPacketNeverReceived", LLSD(), LLSD(), login_alert_status);
@@ -2226,9 +2208,6 @@ bool idle_startup()
 
 		//do_startup_frame();
 
-		// We're successfully logged in.
-		gSavedSettings.setBOOL("FirstLoginThisInstall", FALSE);
-
 		set_startup_status(0.7f, 1.f, LLTrans::getString("Misc"), "Initializing Initial Windows");
 		do_startup_frame();
 
@@ -2301,6 +2280,8 @@ bool idle_startup()
 		// TODO: Put this into RegisterNewAgent
 		// JC - 7/20/2002
 		gViewerWindow->sendShapeToSim();
+
+        LLPresetsManager::getInstance()->createMissingDefault(PRESETS_CAMERA);
 
 		// The reason we show the alert is because we want to
 		// reduce confusion for when you log in and your provided
@@ -2593,6 +2574,27 @@ bool idle_startup()
 
         LLPerfStats::StatsRecorder::setAutotuneInit();
 
+        // Display Avatar Welcome Pack the first time a user logs in
+        // (or clears their settings....)
+        if (gSavedSettings.getBOOL("FirstLoginThisInstall"))
+        {
+            LLFloater* avatar_welcome_pack_floater = LLFloaterReg::findInstance("avatar_welcome_pack");
+            if (avatar_welcome_pack_floater != nullptr)
+            {
+                // There is a (very - 1 in ~50 times) hard to repro bug where the login
+                // page is not hidden when the AWP floater is presented. This (agressive)
+                // approach to always close it seems like the best fix for now.
+                LLPanelLogin::closePanel();
+
+                avatar_welcome_pack_floater->setVisible(true);
+            }
+        }
+
+        //// We're successfully logged in.
+        // 2025-06 Moved lower down in the state machine so the Avatar Welcome Pack
+        // floater display can be triggered correctly.
+        gSavedSettings.setBOOL("FirstLoginThisInstall", false);
+
 		//BD - Turn VSync back on if it was.
 		if (gSavedSettings.getBOOL("RenderVSyncEnable"))
 		{
@@ -2617,7 +2619,7 @@ void login_show()
 	// Hide the toolbars: may happen to come back here if login fails after login agent but before login in region
 	if (gToolBarView)
 	{
-		gToolBarView->setVisible(FALSE);
+		gToolBarView->setVisible(false);
 	}
 	
 	LLPanelLogin::show(	gViewerWindow->getWindowRectScaled(), login_callback, NULL );
@@ -2639,7 +2641,7 @@ void login_callback(S32 option, void *userdata)
 		if (!gSavedSettings.getBOOL("RememberPassword"))
 		{
 			// turn off the setting and write out to disk
-			gSavedSettings.saveToFile( gSavedSettings.getString("ClientSettingsFile") , TRUE );
+			gSavedSettings.saveToFile( gSavedSettings.getString("ClientSettingsFile") , true );
 			LLUIColorTable::instance().saveUserSettings();
 		}
 
@@ -2739,7 +2741,8 @@ void show_release_notes_if_required()
             LLEventPumps::instance().obtain("relnotes").listen(
                 "showrelnotes",
                 [](const LLSD& url) {
-                LLWeb::loadURLInternal(url.asString());
+                LLCoros::instance().launch("releaseNotesCoro",
+                    boost::bind(&validate_release_notes_coro, url.asString()));
                 return false;
             });
         }
@@ -2747,7 +2750,9 @@ void show_release_notes_if_required()
 #endif // LL_RELEASE_FOR_DOWNLOAD
         {
             LLSD info(LLAppViewer::instance()->getViewerInfo());
-            LLWeb::loadURLInternal(info["VIEWER_RELEASE_NOTES_URL"]);
+            std::string url = info["VIEWER_RELEASE_NOTES_URL"].asString();
+            LLCoros::instance().launch("releaseNotesCoro",
+                boost::bind(&release_notes_coro, url));
         }
         release_notes_shown = true;
     }
@@ -3079,6 +3084,7 @@ void LLStartUp::loadInitialOutfit( const std::string& outfit_folder_name,
 	LLAppearanceMgr::instance().setAttachmentInvLinkEnable(true);
 	// Initiate creation of COF, since we're also bypassing that.
 	gInventory.ensureCategoryForTypeExists(LLFolderType::FT_CURRENT_OUTFIT);
+    LLAppearanceMgr::getInstance()->initCOFID();
 	
 	ESex gender;
 	if (gender_name == "male")
@@ -3142,7 +3148,7 @@ void LLStartUp::loadInitialOutfit( const std::string& outfit_folder_name,
 		LL_DEBUGS() << "initial outfit category id: " << cat_id << LL_ENDL;
 	}
 
-	gAgent.setOutfitChosen(TRUE);
+	gAgent.setOutfitChosen(true);
 	gAgentWearables.sendDummyAgentWearablesUpdate();
 }
 
@@ -3191,7 +3197,9 @@ std::string LLStartUp::startupStateToString(EStartupState state)
 		RTNENUM( STATE_AGENT_SEND );
 		RTNENUM( STATE_AGENT_WAIT );
 		RTNENUM( STATE_INVENTORY_SEND );
-        RTNENUM(STATE_INVENTORY_CALLBACKS );
+        RTNENUM( STATE_INVENTORY_CALLBACKS );
+        RTNENUM( STATE_INVENTORY_SKEL);
+        RTNENUM( STATE_INVENTORY_SEND2 );
 		RTNENUM( STATE_MISC );
 		RTNENUM( STATE_PRECACHE );
 		RTNENUM( STATE_WEARABLES_WAIT );
@@ -3237,7 +3245,7 @@ void reset_login()
 
 	if ( gViewerWindow )
 	{	// Hide menus and normal buttons
-		gViewerWindow->setNormalControlsVisible( FALSE );
+		gViewerWindow->setNormalControlsVisible( false );
 	}
 
 	// Hide any other stuff
@@ -3620,7 +3628,7 @@ void trust_cert_done(const LLSD& notification, const LLSD& response)
 		}
 		case OPT_CANCEL_TRUST:
 			reset_login();
-			gSavedSettings.setBOOL("AutoLogin", FALSE);			
+			gSavedSettings.setBOOL("AutoLogin", false);			
 			LLStartUp::setStartupState( STATE_LOGIN_SHOW );				
 		default:
 			LLPanelLogin::giveFocus();
@@ -3871,7 +3879,7 @@ bool process_login_success_response()
 		if(server_utc_time)
 		{
 			time_t now = time(NULL);
-			gUTCOffset = ((S32)server_utc_time - (S32)now);
+            gUTCOffset = (S32)(server_utc_time - now);
 
 			// Print server timestamp
 			LLSD substitution;
@@ -4068,7 +4076,7 @@ void transition_back_to_login_panel(const std::string& emsg)
 {
 	// Bounce back to the login screen.
 	reset_login(); // calls LLStartUp::setStartupState( STATE_LOGIN_SHOW );
-	gSavedSettings.setBOOL("AutoLogin", FALSE);
+	gSavedSettings.setBOOL("AutoLogin", false);
 }
 
 //BD

@@ -162,8 +162,6 @@ bool LLStatusBar::postBuild()
 {
     gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
-    mTextTime = getChild<LLTextBox>("TimeText" );
-
 	mTextTime = getChild<LLTextBox>("TimeText" );
 //	//BD - Statusbar Framerate Count
 	mFPSText = getChild<LLTextBox>("FPSText");
