@@ -1,9 +1,9 @@
 /**
- * @file pbrShadowAlphaBlendF.glsl
+ * @file SMAAResolveV.glsl
  *
- * $LicenseInfo:firstyear=2023&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2024&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2023, Linden Research, Inc.
+ * Copyright (C) 2024, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,24 +23,12 @@
  * $/LicenseInfo$
  */
 
-out vec4 frag_color;
+in vec3 position;
 
-uniform sampler2D diffuseMap;
-
-in vec4 post_pos;
-in float target_pos_x;
-in vec4 vertex_color;
-in vec2 vary_texcoord0;
-uniform float minimum_alpha;
-
-void bayerDitherDiscard(float alpha, float threshold);
+out vec2 vary_texcoord0;
 
 void main()
 {
-    float alpha = texture(diffuseMap, vary_texcoord0.xy).a;
-    alpha *= vertex_color.a;
-
-    bayerDitherDiscard(alpha, 0.88);
-
-    frag_color = vec4(1,1,1,1);
+    gl_Position = vec4(position.xyz, 1.0);
+    vary_texcoord0 = (gl_Position.xy * 0.5 + 0.5);
 }

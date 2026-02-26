@@ -1,9 +1,9 @@
 /**
- * @file pbrShadowAlphaBlendF.glsl
+ * @file velocityFuncV.glsl
  *
- * $LicenseInfo:firstyear=2023&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2007&license=viewerlgpl$
  * Second Life Viewer Source Code
- * Copyright (C) 2023, Linden Research, Inc.
+ * Copyright (C) 2007, Linden Research, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,24 +23,11 @@
  * $/LicenseInfo$
  */
 
-out vec4 frag_color;
+out vec4 vary_cur_clip;
+out vec4 vary_last_clip;
 
-uniform sampler2D diffuseMap;
-
-in vec4 post_pos;
-in float target_pos_x;
-in vec4 vertex_color;
-in vec2 vary_texcoord0;
-uniform float minimum_alpha;
-
-void bayerDitherDiscard(float alpha, float threshold);
-
-void main()
+void writeVaryVelocity(vec4 pos, vec4 last_pos)
 {
-    float alpha = texture(diffuseMap, vary_texcoord0.xy).a;
-    alpha *= vertex_color.a;
-
-    bayerDitherDiscard(alpha, 0.88);
-
-    frag_color = vec4(1,1,1,1);
+    vary_cur_clip = pos;
+    vary_last_clip = last_pos;
 }
