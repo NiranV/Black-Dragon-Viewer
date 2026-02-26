@@ -60,7 +60,7 @@ private:
 	void onJointScaleSet(LLUICtrl* ctrl, const LLSD& param);
 	void onJointChangeState();
 	void onJointControlsRefresh();
-	void onJointRotPosScaleReset();
+	void onJointRotPosScaleReset(bool no_write = false);
 	void onJointRotationReset();
 	void onJointPositionReset();
 	void onJointScaleReset();

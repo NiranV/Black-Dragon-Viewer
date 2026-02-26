@@ -95,7 +95,7 @@ BDFloaterPoseCreator::BDFloaterPoseCreator(const LLSD& key)
 	//BD - Add or remove a joint state to or from the pose (enable/disable our overrides).
 	mCommitCallbackRegistrar.add("Joint.ChangeState", boost::bind(&BDFloaterPoseCreator::onJointChangeState, this));
 	//BD - Reset all selected bone rotations and positions.
-	mCommitCallbackRegistrar.add("Joint.ResetJointFull", boost::bind(&BDFloaterPoseCreator::onJointRotPosScaleReset, this));
+	mCommitCallbackRegistrar.add("Joint.ResetJointFull", boost::bind(&BDFloaterPoseCreator::onJointRotPosScaleReset, this, false));
 	//BD - Reset all selected bone rotations back to 0,0,0.
 	mCommitCallbackRegistrar.add("Joint.ResetJointRotation", boost::bind(&BDFloaterPoseCreator::onJointRotationReset, this));
 	//BD - Reset all selected bones positions back to their default.
@@ -563,6 +563,12 @@ void BDFloaterPoseCreator::onKeyframeSelect()
 
 void BDFloaterPoseCreator::onKeyframeAdd(F32 time, LLScrollListItem* key_item, LLJoint* joint)
 {
+    if (!joint)
+        return;
+
+    if (!gDragonAnimator.mPoseCreatorMotion)
+        return;
+
     //BD - After a lot of different approaches this seemed to be the most feasible and functional.
     LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
     LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
@@ -609,60 +615,54 @@ void BDFloaterPoseCreator::onKeyframeAdd(F32 time, LLScrollListItem* key_item, L
     //BD - We couldn't find a keyframe, create one automatically.
     if (!found)
     {
-        LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
         S32 modifier_idx = mModifierTabs->getCurrentPanelIndex();
 
-        if (joint)
+        if (modifier_idx == 0)
         {
-            LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
+            //BD - Create a rotation key and put it into the rotation curve.
+            LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
 
-            if (modifier_idx == 0)
+            //BD - Increase the key number since we are adding another key.
+            joint_motion->mRotationCurve.mNumKeys++;
+
+            joint_motion->mRotationCurve.mKeys[(F32)joint_motion->mRotationCurve.mNumKeys] = rotation_key;
+
+            LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+            if (joint_state->getUsage() ^ LLJointState::ROT)
             {
-                //BD - Create a rotation key and put it into the rotation curve.
-                LLKeyframeMotion::RotationKey rotation_key = LLKeyframeMotion::RotationKey(ll_round(time, 0.001f), joint->getTargetRotation());
-
-                //BD - Increase the key number since we are adding another key.
-                joint_motion->mRotationCurve.mNumKeys++;
-
-                joint_motion->mRotationCurve.mKeys[(F32)joint_motion->mRotationCurve.mNumKeys] = rotation_key;
-
-                LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
-                if (joint_state->getUsage() ^ LLJointState::ROT)
-                {
-                    joint_state->setUsage(joint_state->getUsage() | LLJointState::ROT);
-                }
+                joint_state->setUsage(joint_state->getUsage() | LLJointState::ROT);
             }
-            else if (modifier_idx == 1)
+        }
+        else if (modifier_idx == 1)
+        {
+            //BD - Create a position key and put it into the position curve.
+            LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
+
+            //BD - Increase the key number since we are adding another key.
+            joint_motion->mPositionCurve.mNumKeys++;
+
+            joint_motion->mPositionCurve.mKeys[(F32)joint_motion->mPositionCurve.mNumKeys] = position_key;
+
+            LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+            if (joint_state->getUsage() ^ LLJointState::POS)
             {
-                //BD - Create a position key and put it into the position curve.
-                LLKeyframeMotion::PositionKey position_key = LLKeyframeMotion::PositionKey(ll_round(time, 0.001f), joint->getTargetPosition());
-
-                //BD - Increase the key number since we are adding another key.
-                joint_motion->mPositionCurve.mNumKeys++;
-
-                joint_motion->mPositionCurve.mKeys[(F32)joint_motion->mPositionCurve.mNumKeys] = position_key;
-
-                LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
-                if (joint_state->getUsage() ^ LLJointState::POS)
-                {
-                    joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
-                }
+                joint_state->setUsage(joint_state->getUsage() | LLJointState::POS);
             }
-            else if (modifier_idx == 2)
+        }
+        else if (modifier_idx == 2)
+        {
+            //BD - Create a scale key and put it into the scale curve.
+            LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
+
+            //BD - Increase the key number since we are adding another key.
+            joint_motion->mScaleCurve.mNumKeys++;
+
+            joint_motion->mScaleCurve.mKeys[(F32)joint_motion->mScaleCurve.mNumKeys] = scale_key;
+
+            LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
+            if (joint_state->getUsage() ^ LLJointState::SCALE)
             {
-                //BD - Create a scale key and put it into the scale curve.
-                LLKeyframeMotion::ScaleKey scale_key = LLKeyframeMotion::ScaleKey(ll_round(time, 0.001f), joint->getScale());
-
-                //BD - Increase the key number since we are adding another key.
-                joint_motion->mScaleCurve.mNumKeys++;
-
-                joint_motion->mScaleCurve.mKeys[(F32)joint_motion->mScaleCurve.mNumKeys] = scale_key;
-
-                LLJointState* joint_state = gDragonAnimator.mPoseCreatorMotion->findJointState(joint);
-                if (joint_state->getUsage() ^ LLJointState::SCALE)
-                {
-                    joint_state->setUsage(joint_state->getUsage() | LLJointState::SCALE);
-                }
+                joint_state->setUsage(joint_state->getUsage() | LLJointState::SCALE);
             }
         }
     }
@@ -1315,7 +1315,7 @@ void BDFloaterPoseCreator::onPoseStartStop()
 				//BD - We need to reset the skeleton here and reapply all the latest keyframes.
 				if (!gDragonLibrary.checkKonamiCode())
 				{
-					onJointRotPosScaleReset();
+					onJointRotPosScaleReset(true);
 				}
 				onPoseReapply();
 			}
@@ -1407,7 +1407,7 @@ void BDFloaterPoseCreator::onPoseStart()
 	else
 	{
 		//BD - Reset everything, all rotations, positions and scales of all bones.
-		onJointRotPosScaleReset();
+		onJointRotPosScaleReset(true);
 
 		//BD - Clear posing when we're done now that we've safely endangered getting spaghetified.
 		gAgentAvatarp->clearPosing();
@@ -1966,7 +1966,7 @@ void BDFloaterPoseCreator::onJointScaleSet(LLUICtrl* ctrl, const LLSD& param)
 
 	//BD - Add the keyframe with our changes.
     {
-		onKeyframeAdd((time * FRAMETIME), key_item, joint);
+		onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
 		//BD - Always select the last entry whenever we switch bones to allow quickly making
 		//     changes or adding new keyframes.
@@ -2006,7 +2006,7 @@ void BDFloaterPoseCreator::onJointChangeState()
 }
 
 //BD - We use this to reset everything at once.
-void BDFloaterPoseCreator::onJointRotPosScaleReset()
+void BDFloaterPoseCreator::onJointRotPosScaleReset(bool no_write)
 {
     LLScrollListItem* key_item = mKeyframeScroll->getFirstSelected();
     S32 time = key_item ? key_item->getColumn(0)->getValue().asInteger() : 1;
@@ -2068,8 +2068,9 @@ void BDFloaterPoseCreator::onJointRotPosScaleReset()
 					joint->setScale(scale);
 
                     //BD - Add the keyframe with our changes.
+                    if(!no_write)
                     {
-                        onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                        onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                         //BD - Always select the last entry whenever we switch bones to allow quickly making
                         //     changes or adding new keyframes.
@@ -2189,7 +2190,7 @@ void BDFloaterPoseCreator::onJointRotationReset()
 
                 //BD - Add the keyframe with our changes.
                 {
-                    onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                    onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                     //BD - Always select the last entry whenever we switch bones to allow quickly making
                     //     changes or adding new keyframes.
@@ -2287,7 +2288,7 @@ void BDFloaterPoseCreator::onJointPositionReset()
 
                 //BD - Add the keyframe with our changes.
                 {
-                    onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                    onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                     //BD - Always select the last entry whenever we switch bones to allow quickly making
                     //     changes or adding new keyframes.
@@ -2328,7 +2329,7 @@ void BDFloaterPoseCreator::onJointScaleReset()
 
                 //BD - Add the keyframe with our changes.
                 {
-                    onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                    onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                     //BD - Always select the last entry whenever we switch bones to allow quickly making
                     //     changes or adding new keyframes.
@@ -2379,7 +2380,7 @@ void BDFloaterPoseCreator::onJointRotationRevert()
 
                 //BD - Add the keyframe with our changes.
                 {
-                    onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                    onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                     //BD - Always select the last entry whenever we switch bones to allow quickly making
                     //     changes or adding new keyframes.
@@ -2517,7 +2518,7 @@ void BDFloaterPoseCreator::onFlipPose()
 
         //BD - Add the keyframe with our changes.
         {
-            onKeyframeAdd((time * FRAMETIME), key_item, joint);
+            onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
             //BD - Always select the last entry whenever we switch bones to allow quickly making
             //     changes or adding new keyframes.
@@ -2576,7 +2577,7 @@ void BDFloaterPoseCreator::onJointPasteRotation()
 
             //BD - Add the keyframe with our changes.
             {
-                onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                 //BD - Always select the last entry whenever we switch bones to allow quickly making
                 //     changes or adding new keyframes.
@@ -2610,7 +2611,7 @@ void BDFloaterPoseCreator::onJointPastePosition()
 
             //BD - Add the keyframe with our changes.
             {
-                onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                 //BD - Always select the last entry whenever we switch bones to allow quickly making
                 //     changes or adding new keyframes.
@@ -2643,7 +2644,7 @@ void BDFloaterPoseCreator::onJointPasteScale()
 
             //BD - Add the keyframe with our changes.
             {
-                onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                 //BD - Always select the last entry whenever we switch bones to allow quickly making
                 //     changes or adding new keyframes.
@@ -2682,7 +2683,7 @@ void BDFloaterPoseCreator::onJointMirror()
 
             //BD - Add the keyframe with our changes.
             {
-                onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                 //BD - Always select the last entry whenever we switch bones to allow quickly making
                 //     changes or adding new keyframes.
@@ -2738,7 +2739,7 @@ void BDFloaterPoseCreator::onJointSymmetrize()
 
                 //BD - Add the keyframe with our changes.
                 {
-                    onKeyframeAdd((time * FRAMETIME), key_item, joint);
+                    onKeyframeAdd((time * FRAMETIME), nullptr, joint);
 
                     //BD - Always select the last entry whenever we switch bones to allow quickly making
                     //     changes or adding new keyframes.
