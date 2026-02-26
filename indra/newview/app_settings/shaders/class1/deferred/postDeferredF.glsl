@@ -40,21 +40,18 @@ in vec2 vary_fragcoord;
 
 void dofSample(inout vec4 diff, inout float w, float min_sc, vec2 tc)
 {
+	vec4 s = texture(diffuseRect, tc);
+	float sc = abs(s.a*2.0-1.0)*max_cof;
 #if HAS_DOF_CHROMA
-	vec3 col_offset = vec3(0.0015, 0.0001, 0.0005);
-	float mult = min_sc * chroma_str;
+	vec3 col_offset = vec3(0.0015, 0.0000, 0.0005);
+	float mult = sc * (chroma_str * 0.2);
 	col_offset *= vec3(mult);
 
-    vec4 s;
     s.r = texture(diffuseRect, tc + vec2(col_offset.x)).r;
     s.g = texture(diffuseRect, tc + vec2(col_offset.y)).g;
     s.b = texture(diffuseRect, tc + vec2(col_offset.z)).b;
     s.a = texture(diffuseRect, tc).a;
-#else
-	vec4 s = texture(diffuseRect, tc);
 #endif
-
-    float sc = abs(s.a*2.0-1.0)*max_cof;
 
     if (sc > min_sc) //sampled pixel is more "out of focus" than current sample radius
     {

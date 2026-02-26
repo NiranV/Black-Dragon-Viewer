@@ -78,23 +78,53 @@ vec3 clampHDRRange(vec3 color);
 
 void main()
 {
-#if HAS_DOF_CHROMA
     vec4 diff = texture(diffuseRect, vary_fragcoord.xy);
-#else
-    vec3 col_offset = vec3(0.0015, 0.0001, 0.0005);
-	col_offset *= vec3(chroma_str);
+#if HAS_DOF_CHROMA == 0
+    vec3 col = diff.rgb;
 
-    vec4 diff;
-    diff.r = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.x)).r;
-    diff.g  = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.y)).g;
-    diff.b = texture(diffuseRect, vary_fragcoord.xy + vec2(col_offset.z)).b;
-    diff.a = texture(diffuseRect, vary_fragcoord.xy).a;
+    float luma = dot(col, vec3(0.2126, 0.7152, 0.0722));
+
+    vec2 p = (vary_fragcoord.xy / screen_res.xy) * 2.0 - 1.0;
+    float r = dot(p, p);
+
+    float depth = texture(depthMap, vary_fragcoord.xy).r;
+    float depthWeight = smoothstep(0.2, 0.8, depth);
+    depthWeight *= depthWeight;
+
+    vec3 gx = dFdx(col);
+    vec3 gy = dFdy(col);
+    vec3 grad = gx + gy;
+    float edge = length(grad);
+
+    // Blue disperses most, green least
+    const float wR = 0.60;
+    const float wG = 0.15;
+    const float wB = 1.00;
+
+    float ca =
+        chroma_str *
+        edge *
+        smoothstep(0.15, 1.0, luma) *
+        smoothstep(0.0, 1.2, r) *
+        depthWeight;
+
+    vec2 dir = normalize(p + 1e-5);
+
+    col.r += ca * wR * (grad.r) * dir.x;
+    col.g += ca * wG * (grad.g) * dir.x * 0.25; // very subtle
+    col.b -= ca * wB * (grad.b) * dir.x;
+
+    col.r += ca * wR * gy.r * 0.30;
+    col.b -= ca * wB * gy.b * 0.30;
+
+    diff.rgb = col;
+    diff.rgb = clamp(diff.rgb, 0.0, 1.0);
 #endif
 
 
 #ifdef HAS_NOISE
-    vec2 tc = vary_fragcoord.xy*screen_res*4.0;
-    vec3 seed = (diff.rgb+vec3(1.0))*vec3(tc.xy, tc.x+tc.y);
+    vec2 tc_q = vary_fragcoord.xy*screen_res*4.0;
+    vec3 seed = (diff.rgb+vec3(1.0))*vec3(tc_q.xy, tc_q.x+tc_q.y);
     vec3 nz = vec3(noise(seed.rg), noise(seed.gb), noise(seed.rb));
     diff.rgb += nz*0.003;
 #endif
