@@ -66,10 +66,10 @@ public:
     void endDeferredPass(S32 pass) override;
     void renderDeferred(S32 pass) override;
 
-    S32 getNumMotionBlurPasses() override;
-    void beginMotionBlurPass(S32 pass) override;
-    void endMotionBlurPass(S32 pass) override;
-    void renderMotionBlur(S32 pass) override;
+    S32 getNumVelocityPasses() override;
+    void beginVelocityPass(S32 pass) override;
+    void endVelocityPass(S32 pass) override;
+    void renderVelocity(S32 pass) override;
 };
 
 #endif //LL_LLDRAWPOOLMATERIALS_H

@@ -242,25 +242,25 @@ void LLDrawPool::renderShadow(S32 pass)
 }
 
 //virtual
-void LLDrawPool::beginMotionBlurPass(S32 pass)
+void LLDrawPool::beginVelocityPass(S32 pass)
 {
 
 }
 
 //virtual
-void LLDrawPool::endMotionBlurPass(S32 pass)
+void LLDrawPool::endVelocityPass(S32 pass)
 {
 
 }
 
 //virtual
-S32 LLDrawPool::getNumMotionBlurPasses()
+S32 LLDrawPool::getNumVelocityPasses()
 {
     return 0;
 }
 
 //virtual
-void LLDrawPool::renderMotionBlur(S32 pass)
+void LLDrawPool::renderVelocity(S32 pass)
 {
 
 }

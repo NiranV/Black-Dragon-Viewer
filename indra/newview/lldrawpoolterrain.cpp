@@ -202,14 +202,14 @@ void LLDrawPoolTerrain::drawLoop()
 }
 
 //============================================
-// motion blur implementation
+// velocity buffer implementation
 //============================================
-S32 LLDrawPoolTerrain::getNumMotionBlurPasses()
+S32 LLDrawPoolTerrain::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolTerrain::beginMotionBlurPass(S32 pass)
+void LLDrawPoolTerrain::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
 
@@ -219,14 +219,14 @@ void LLDrawPoolTerrain::beginMotionBlurPass(S32 pass)
     gVelocityProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolTerrain::endMotionBlurPass(S32 pass)
+void LLDrawPoolTerrain::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
 
     gVelocityProgram.unbind();
 }
 
-void LLDrawPoolTerrain::renderMotionBlur(S32 pass)
+void LLDrawPoolTerrain::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
     LLGLEnable cull(GL_CULL_FACE);

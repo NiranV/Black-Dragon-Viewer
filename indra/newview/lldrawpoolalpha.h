@@ -58,10 +58,10 @@ public:
     void renderPostDeferred(S32 pass) override;
     S32 getNumPasses() override { return 1; }
 
-    S32 getNumMotionBlurPasses() override;
-    void beginMotionBlurPass(S32 pass) override;
-    void endMotionBlurPass(S32 pass) override;
-    void renderMotionBlur(S32 pass) override;
+    S32 getNumVelocityPasses() override;
+    void beginVelocityPass(S32 pass) override;
+    void endVelocityPass(S32 pass) override;
+    void renderVelocity(S32 pass) override;
 
     void forwardRender(bool write_depth = false);
     void prerender() override;

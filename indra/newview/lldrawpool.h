@@ -110,10 +110,10 @@ public:
     virtual S32 getNumShadowPasses();
     virtual void renderShadow(S32 pass = 0);
 
-    virtual void beginMotionBlurPass(S32 pass);
-    virtual void endMotionBlurPass(S32 pass);
-    virtual S32 getNumMotionBlurPasses();
-    virtual void renderMotionBlur(S32 pass = 0);
+    virtual void beginVelocityPass(S32 pass);
+    virtual void endVelocityPass(S32 pass);
+    virtual S32 getNumVelocityPasses();
+    virtual void renderVelocity(S32 pass = 0);
 
     virtual void render(S32 pass = 0) {};
     virtual void prerender() {};

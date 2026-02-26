@@ -309,7 +309,7 @@ public:
 
     void renderGeomDeferred(LLCamera& camera, bool do_occlusion = false);
     void renderGeomPostDeferred(LLCamera& camera);
-    void renderGeomMotionBlur();
+    void renderGeomVelocity();
     void renderMotionBlurComposite(LLRenderTarget* src, LLRenderTarget* dst);
     void renderGeomShadow(LLCamera& camera);
     void bindLightFunc(LLGLSLShader& shader);

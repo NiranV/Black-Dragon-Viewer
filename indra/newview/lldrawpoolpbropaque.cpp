@@ -94,12 +94,12 @@ void LLDrawPoolGLTFPBR::renderPostDeferred(S32 pass)
     }
 }
 
-S32 LLDrawPoolGLTFPBR::getNumMotionBlurPasses()
+S32 LLDrawPoolGLTFPBR::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolGLTFPBR::beginMotionBlurPass(S32 pass)
+void LLDrawPoolGLTFPBR::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLSLShader& shader = (mRenderType == LLPipeline::RENDER_TYPE_PASS_GLTF_PBR_ALPHA_MASK)
@@ -110,7 +110,7 @@ void LLDrawPoolGLTFPBR::beginMotionBlurPass(S32 pass)
     shader.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolGLTFPBR::endMotionBlurPass(S32 pass)
+void LLDrawPoolGLTFPBR::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     if (mRenderType == LLPipeline::RENDER_TYPE_PASS_GLTF_PBR_ALPHA_MASK)
@@ -119,7 +119,7 @@ void LLDrawPoolGLTFPBR::endMotionBlurPass(S32 pass)
         gVelocityProgram.unbind();
 }
 
-void LLDrawPoolGLTFPBR::renderMotionBlur(S32 pass)
+void LLDrawPoolGLTFPBR::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);

@@ -889,7 +889,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask, bool depth_only, bool rigged)
     }
 }
 
-S32 LLDrawPoolAlpha::getNumMotionBlurPasses()
+S32 LLDrawPoolAlpha::getNumVelocityPasses()
 {
     // Only render velocity from one instance to avoid double-stamping mLastModelMatrix
     if (getType() == LLDrawPool::POOL_ALPHA_PRE_WATER)
@@ -897,7 +897,7 @@ S32 LLDrawPoolAlpha::getNumMotionBlurPasses()
     return 1;
 }
 
-void LLDrawPoolAlpha::beginMotionBlurPass(S32 pass)
+void LLDrawPoolAlpha::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.bind();
@@ -906,13 +906,13 @@ void LLDrawPoolAlpha::beginMotionBlurPass(S32 pass)
     gVelocityAlphaProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolAlpha::endMotionBlurPass(S32 pass)
+void LLDrawPoolAlpha::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.unbind();
 }
 
-void LLDrawPoolAlpha::renderMotionBlur(S32 pass)
+void LLDrawPoolAlpha::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);

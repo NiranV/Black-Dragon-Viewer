@@ -182,16 +182,16 @@ void LLDrawPoolFullbright::renderPostDeferred(S32 pass)
 }
 
 // ============================================
-// Motion Blur Velocity Passes
+// Velocity Buffer Passes
 // ============================================
 
 // LLDrawPoolSimple
-S32 LLDrawPoolSimple::getNumMotionBlurPasses()
+S32 LLDrawPoolSimple::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolSimple::beginMotionBlurPass(S32 pass)
+void LLDrawPoolSimple::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.bind();
@@ -200,13 +200,13 @@ void LLDrawPoolSimple::beginMotionBlurPass(S32 pass)
     gVelocityProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolSimple::endMotionBlurPass(S32 pass)
+void LLDrawPoolSimple::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.unbind();
 }
 
-void LLDrawPoolSimple::renderMotionBlur(S32 pass)
+void LLDrawPoolSimple::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);
@@ -220,12 +220,12 @@ void LLDrawPoolSimple::renderMotionBlur(S32 pass)
 }
 
 // LLDrawPoolGrass
-S32 LLDrawPoolGrass::getNumMotionBlurPasses()
+S32 LLDrawPoolGrass::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolGrass::beginMotionBlurPass(S32 pass)
+void LLDrawPoolGrass::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.bind();
@@ -234,13 +234,13 @@ void LLDrawPoolGrass::beginMotionBlurPass(S32 pass)
     gVelocityProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolGrass::endMotionBlurPass(S32 pass)
+void LLDrawPoolGrass::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.unbind();
 }
 
-void LLDrawPoolGrass::renderMotionBlur(S32 pass)
+void LLDrawPoolGrass::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);
@@ -248,12 +248,12 @@ void LLDrawPoolGrass::renderMotionBlur(S32 pass)
 }
 
 // LLDrawPoolAlphaMask
-S32 LLDrawPoolAlphaMask::getNumMotionBlurPasses()
+S32 LLDrawPoolAlphaMask::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolAlphaMask::beginMotionBlurPass(S32 pass)
+void LLDrawPoolAlphaMask::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.bind();
@@ -262,13 +262,13 @@ void LLDrawPoolAlphaMask::beginMotionBlurPass(S32 pass)
     gVelocityAlphaProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolAlphaMask::endMotionBlurPass(S32 pass)
+void LLDrawPoolAlphaMask::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.unbind();
 }
 
-void LLDrawPoolAlphaMask::renderMotionBlur(S32 pass)
+void LLDrawPoolAlphaMask::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);
@@ -282,12 +282,12 @@ void LLDrawPoolAlphaMask::renderMotionBlur(S32 pass)
 }
 
 // LLDrawPoolFullbrightAlphaMask
-S32 LLDrawPoolFullbrightAlphaMask::getNumMotionBlurPasses()
+S32 LLDrawPoolFullbrightAlphaMask::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolFullbrightAlphaMask::beginMotionBlurPass(S32 pass)
+void LLDrawPoolFullbrightAlphaMask::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.bind();
@@ -296,13 +296,13 @@ void LLDrawPoolFullbrightAlphaMask::beginMotionBlurPass(S32 pass)
     gVelocityAlphaProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolFullbrightAlphaMask::endMotionBlurPass(S32 pass)
+void LLDrawPoolFullbrightAlphaMask::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityAlphaProgram.unbind();
 }
 
-void LLDrawPoolFullbrightAlphaMask::renderMotionBlur(S32 pass)
+void LLDrawPoolFullbrightAlphaMask::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);
@@ -316,12 +316,12 @@ void LLDrawPoolFullbrightAlphaMask::renderMotionBlur(S32 pass)
 }
 
 // LLDrawPoolFullbright
-S32 LLDrawPoolFullbright::getNumMotionBlurPasses()
+S32 LLDrawPoolFullbright::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolFullbright::beginMotionBlurPass(S32 pass)
+void LLDrawPoolFullbright::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.bind();
@@ -330,13 +330,13 @@ void LLDrawPoolFullbright::beginMotionBlurPass(S32 pass)
     gVelocityProgram.uniform4f(LLShaderMgr::VIEWPORT, (F32)gGLViewport[0], (F32)gGLViewport[1], (F32)gGLViewport[2], (F32)gGLViewport[3]);
 }
 
-void LLDrawPoolFullbright::endMotionBlurPass(S32 pass)
+void LLDrawPoolFullbright::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     gVelocityProgram.unbind();
 }
 
-void LLDrawPoolFullbright::renderMotionBlur(S32 pass)
+void LLDrawPoolFullbright::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED;
     LLGLEnable cull(GL_CULL_FACE);

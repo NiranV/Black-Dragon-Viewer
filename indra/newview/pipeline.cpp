@@ -4143,10 +4143,10 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
 // Render all of our geometry that's required after our deferred pass.
 // This is gonna be stuff like alpha, water, etc.
-void LLPipeline::renderGeomMotionBlur()
+void LLPipeline::renderGeomVelocity()
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
-    LL_PROFILE_GPU_ZONE("renderGeomMotionBlur");
+    LL_PROFILE_GPU_ZONE("renderGeomVelocity");
 
     mVelocityMap.bindTarget();
     mVelocityMap.clear(GL_COLOR_BUFFER_BIT);
@@ -4160,12 +4160,12 @@ void LLPipeline::renderGeomMotionBlur()
     for (pool_set_t::iterator iter = mPools.begin(); iter != mPools.end(); ++iter)
     {
         LLDrawPool* poolp = *iter;
-        S32 num_passes = poolp->getNumMotionBlurPasses();
+        S32 num_passes = poolp->getNumVelocityPasses();
         for (S32 i = 0; i < num_passes; ++i)
         {
-            poolp->beginMotionBlurPass(i);
-            poolp->renderMotionBlur(i);
-            poolp->endMotionBlurPass(i);
+            poolp->beginVelocityPass(i);
+            poolp->renderVelocity(i);
+            poolp->endVelocityPass(i);
         }
     }
 
@@ -9097,7 +9097,7 @@ void LLPipeline::renderDeferredLighting()
 
     if (RenderMotionBlur || RenderFSAAType == 3)
     {
-        renderGeomMotionBlur();
+        renderGeomVelocity();
     }
 
     screen_target->flush();

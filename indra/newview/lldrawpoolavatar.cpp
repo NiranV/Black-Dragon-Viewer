@@ -408,12 +408,12 @@ void LLDrawPoolAvatar::renderShadow(S32 pass)
     }
 }
 
-S32 LLDrawPoolAvatar::getNumMotionBlurPasses()
+S32 LLDrawPoolAvatar::getNumVelocityPasses()
 {
     return 1;
 }
 
-void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
+void LLDrawPoolAvatar::beginVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 
@@ -432,7 +432,7 @@ void LLDrawPoolAvatar::beginMotionBlurPass(S32 pass)
     gGL.diffuseColor4f(1, 1, 1, 1);
 }
 
-void LLDrawPoolAvatar::endMotionBlurPass(S32 pass)
+void LLDrawPoolAvatar::endVelocityPass(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
 
@@ -444,7 +444,7 @@ void LLDrawPoolAvatar::endMotionBlurPass(S32 pass)
     sRenderingSkinned = false;
 }
 
-void LLDrawPoolAvatar::renderMotionBlur(S32 pass)
+void LLDrawPoolAvatar::renderVelocity(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR;
     LLGLEnable cull(GL_CULL_FACE);
