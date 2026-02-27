@@ -125,6 +125,7 @@
 #include "llpanellogin.h"
 #include "llmutelist.h"
 #include "llavatarpropertiesprocessor.h"
+#include "llpaneldirbrowser.h"
 #include "llpanelgrouplandmoney.h"
 #include "llpanelgroupnotices.h"
 #include "llparcel.h"
@@ -404,54 +405,99 @@ bool idle_startup()
 	}
     LL_PROFILE_ZONE_SCOPED;
 
-	const F32 PRECACHING_DELAY = gSavedSettings.getF32("PrecachingDelay");
-	static LLTimer timeout;
+    const F32 PRECACHING_DELAY = gSavedSettings.getF32("PrecachingDelay");
+    static LLTimer timeout;
 
-	static LLTimer login_time;
+    static LLTimer login_time;
 
-	// until this is encapsulated, this little hack for the
-	// auth/transform loop will do.
+    // until this is encapsulated, this little hack for the
+    // auth/transform loop will do.
 	//BD
 	static F32 progress = 0.0f;
 
-	static std::string auth_desc;
-	static std::string auth_message;
+    static std::string auth_desc;
+    static std::string auth_message;
 
-	static LLVector3 agent_start_position_region(10.f, 10.f, 10.f);		// default for when no space server
+    static LLVector3 agent_start_position_region(10.f, 10.f, 10.f);     // default for when no space server
 
-	// last location by default
-	static S32  agent_location_id = START_LOCATION_ID_LAST;
+    // last location by default
+    static S32  agent_location_id = START_LOCATION_ID_LAST;
 
-	static bool show_connect_box = true;
+    static bool show_connect_box = true;
 
-	//static bool stipend_since_login = false;
+    //static bool stipend_since_login = false;
 
-	// HACK: These are things from the main loop that usually aren't done
-	// until initialization is complete, but need to be done here for things
-	// to work.
-	gIdleCallbacks.callFunctions();
-	gViewerWindow->updateUI();
+    // HACK: These are things from the main loop that usually aren't done
+    // until initialization is complete, but need to be done here for things
+    // to work.
+    gIdleCallbacks.callFunctions();
+    gViewerWindow->updateUI();
 
-	LLMortician::updateClass();
+    LLMortician::updateClass();
 
-	const std::string delims (" ");
-	std::string system;
-	size_t begIdx, endIdx;
-	std::string osString = LLOSInfo::instance().getOSStringSimple();
+    const std::string delims (" ");
+    std::string system;
+    size_t begIdx, endIdx;
+    std::string osString = LLOSInfo::instance().getOSStringSimple();
 
-	begIdx = osString.find_first_not_of (delims);
-	endIdx = osString.find_first_of (delims, begIdx);
-	system = osString.substr (begIdx, endIdx - begIdx);
-	system += "Locale";
+    begIdx = osString.find_first_not_of (delims);
+    endIdx = osString.find_first_of (delims, begIdx);
+    system = osString.substr (begIdx, endIdx - begIdx);
+    system += "Locale";
 
-	LLStringUtil::setLocale (LLTrans::getString(system));
+    std::string locale = LLTrans::getString(system);
+    if (locale != LLStringUtil::getLocale()) // is there a reason to do this on repeat?
+    {
+        LLStringUtil::setLocale(locale);
 
-	//note: Removing this line will cause incorrect button size in the login screen. -- bao.
-	gTextureList.updateImages(0.01f) ;
+        // Not all locales have AMPM, test it
+        if (LLStringOps::sAM.empty()) // Might already be overriden from LLAppViewer::init()
+        {
+            LLDate datetime(0.0);
+            std::string val = datetime.toHTTPDateString("%p");
+            if (val.empty())
+            {
+                LL_DEBUGS("InitInfo") << "Current locale \"" << locale << "\" "
+                    << "doesn't support AM/PM time format" << LL_ENDL;
+                // fallback to declarations in strings.xml
+                LLStringOps::sAM = LLTrans::getString("dateTimeAM");
+                LLStringOps::sPM = LLTrans::getString("dateTimePM");
+            }
+            else
+            {
+                std::wstring utf16str = ll_convert<std::wstring>(val);
+                if (utf16str.size() > 4)
+                {
+                    LL_DEBUGS("InitInfo") << "Current locale \"" << locale << "\" "
+                        << "has impracitcally long AM/PM time format" << LL_ENDL;
+                    // fallback to declarations in strings.xml
+                    LLStringOps::sAM = LLTrans::getString("dateTimeAM");
+                    LLStringOps::sPM = LLTrans::getString("dateTimePM");
+                }
+            }
+        }
 
-	if ( STATE_FIRST == LLStartUp::getStartupState() )
-	{
-        //BD - Disable VSync during login.
+        // Some locales (as well some of our own dateTimeAM/PM) return long
+        // strings for AM/PM which aren't practical to display in the UI.
+        // Hardcode to "AM"/"PM" in those cases.
+        std::wstring utf16str = ll_convert<std::wstring>(LLStringOps::sAM);
+        if (utf16str.size() > 4)
+        {
+            LLStringOps::sAM = "AM";
+        }
+        utf16str = ll_convert<std::wstring>(LLStringOps::sPM);
+        if (utf16str.size() > 4)
+        {
+            LLStringOps::sPM = "PM";
+        }
+    }
+
+    //note: Removing this line will cause incorrect button size in the login screen. -- bao.
+    gTextureList.updateImages(0.01f) ;
+
+    if ( STATE_FIRST == LLStartUp::getStartupState() )
+    {
+		//BD - Disable VSync during login.
         //     VSync on login is evil, it slowls the Viewer login, inventory creation and precaching
         //     as well as the wearable wait to a crawl. Without VSync we get 10-100x the speed.
         //     VSync has caused several people to "hang" on inventory creation, resulting in a timeout
@@ -462,151 +508,151 @@ bool idle_startup()
             LL_INFOS("Window") << "Temporarily disabling vertical sync" << LL_ENDL;
             wglSwapIntervalEXT(0);
         }
-
-		static bool first_call = true;
-		if (first_call)
-		{
-			// Other phases get handled when startup state changes,
-			// need to capture the initial state as well.
-			LLStartUp::getPhases().startPhase(LLStartUp::getStartupStateString());
-			first_call = false;
-		}
-
-		gViewerWindow->showCursor(); 
-		gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
-
-		/////////////////////////////////////////////////
-		//
-		// Initialize stuff that doesn't need data from simulators
-		//
-		std::string lastGPU = gSavedSettings.getString("LastGPUString");
-		std::string thisGPU = LLFeatureManager::getInstance()->getGPUString();
 		
-		if (LLFeatureManager::getInstance()->isSafe())
-		{
-			LLNotificationsUtil::add("DisplaySetToSafe");
-		}
-		else if ((gSavedSettings.getS32("LastFeatureVersion") < LLFeatureManager::getInstance()->getVersion()) &&
-				 (gSavedSettings.getS32("LastFeatureVersion") != 0))
-		{
-			LLNotificationsUtil::add("DisplaySetToRecommendedFeatureChange");
-		}
-		else if ( ! lastGPU.empty() && (lastGPU != thisGPU))
-		{
-			LLSD subs;
-			subs["LAST_GPU"] = lastGPU;
-			subs["THIS_GPU"] = thisGPU;
-			LLNotificationsUtil::add("DisplaySetToRecommendedGPUChange", subs);
-		}
-		else if (!gViewerWindow->getInitAlert().empty())
-		{
-			LLNotificationsUtil::add(gViewerWindow->getInitAlert());
-		}
-			
-		//-------------------------------------------------
-		// Init the SOCKS 5 proxy if the user has configured
-		// one. We need to do this early in case the user
-		// is using SOCKS for HTTP so we get the login
-		// screen and HTTP tables via SOCKS.
-		//-------------------------------------------------
-		LLStartUp::startLLProxy();
+        static bool first_call = true;
+        if (first_call)
+        {
+            // Other phases get handled when startup state changes,
+            // need to capture the initial state as well.
+            LLStartUp::getPhases().startPhase(LLStartUp::getStartupStateString());
+            first_call = false;
+        }
 
-		gSavedSettings.setS32("LastFeatureVersion", LLFeatureManager::getInstance()->getVersion());
-		gSavedSettings.setString("LastGPUString", thisGPU);
+        gViewerWindow->showCursor();
+        gViewerWindow->getWindow()->setCursor(UI_CURSOR_WAIT);
+
+        /////////////////////////////////////////////////
+        //
+        // Initialize stuff that doesn't need data from simulators
+        //
+        std::string lastGPU = gSavedSettings.getString("LastGPUString");
+        std::string thisGPU = LLFeatureManager::getInstance()->getGPUString();
+
+        if (LLFeatureManager::getInstance()->isSafe())
+        {
+            LLNotificationsUtil::add("DisplaySetToSafe");
+        }
+        else if ((gSavedSettings.getS32("LastFeatureVersion") < LLFeatureManager::getInstance()->getVersion()) &&
+                 (gSavedSettings.getS32("LastFeatureVersion") != 0))
+        {
+            LLNotificationsUtil::add("DisplaySetToRecommendedFeatureChange");
+        }
+        else if ( ! lastGPU.empty() && (lastGPU != thisGPU))
+        {
+            LLSD subs;
+            subs["LAST_GPU"] = lastGPU;
+            subs["THIS_GPU"] = thisGPU;
+            LLNotificationsUtil::add("DisplaySetToRecommendedGPUChange", subs);
+        }
+        else if (!gViewerWindow->getInitAlert().empty())
+        {
+            LLNotificationsUtil::add(gViewerWindow->getInitAlert());
+        }
+
+        //-------------------------------------------------
+        // Init the SOCKS 5 proxy if the user has configured
+        // one. We need to do this early in case the user
+        // is using SOCKS for HTTP so we get the login
+        // screen and HTTP tables via SOCKS.
+        //-------------------------------------------------
+        LLStartUp::startLLProxy();
+
+        gSavedSettings.setS32("LastFeatureVersion", LLFeatureManager::getInstance()->getVersion());
+        gSavedSettings.setString("LastGPUString", thisGPU);
 
 
-		std::string xml_file = LLUI::locateSkin("xui_version.xml");
-		LLXMLNodePtr root;
-		bool xml_ok = false;
-		if (LLXMLNode::parseFile(xml_file, root, NULL))
-		{
-			if( (root->hasName("xui_version") ) )
-			{
-				std::string value = root->getValue();
-				F32 version = 0.0f;
-				LLStringUtil::convertToF32(value, version);
-				if (version >= 1.0f)
-				{
-					xml_ok = true;
-				}
-			}
-		}
-		if (!xml_ok)
-		{
-			// If XML is bad, there's a good possibility that notifications.xml is ALSO bad.
-			// If that's so, then we'll get a fatal error on attempting to load it, 
-			// which will display a nontranslatable error message that says so.
-			// Otherwise, we'll display a reasonable error message that IS translatable.
-			LLAppViewer::instance()->earlyExit("BadInstallation");
-		}
-		//
-		// Statistics stuff
-		//
+        std::string xml_file = LLUI::locateSkin("xui_version.xml");
+        LLXMLNodePtr root;
+        bool xml_ok = false;
+        if (LLXMLNode::parseFile(xml_file, root, NULL))
+        {
+            if( (root->hasName("xui_version") ) )
+            {
+                std::string value = root->getValue();
+                F32 version = 0.0f;
+                LLStringUtil::convertToF32(value, version);
+                if (version >= 1.0f)
+                {
+                    xml_ok = true;
+                }
+            }
+        }
+        if (!xml_ok)
+        {
+            // If XML is bad, there's a good possibility that notifications.xml is ALSO bad.
+            // If that's so, then we'll get a fatal error on attempting to load it,
+            // which will display a nontranslatable error message that says so.
+            // Otherwise, we'll display a reasonable error message that IS translatable.
+            LLAppViewer::instance()->earlyExit("BadInstallation");
+        }
+        //
+        // Statistics stuff
+        //
 
-		// Load autopilot and stats stuff
-		gAgentPilot.load();
+        // Load autopilot and stats stuff
+        gAgentPilot.load();
 
-		//gErrorStream.setTime(gSavedSettings.getBOOL("LogTimestamps"));
+        //gErrorStream.setTime(gSavedSettings.getBOOL("LogTimestamps"));
 
-		// Load the throttle settings
-		gViewerThrottle.load();
+        // Load the throttle settings
+        gViewerThrottle.load();
 
-		//
-		// Initialize messaging system
-		//
-		LL_DEBUGS("AppInit") << "Initializing messaging system..." << LL_ENDL;
+        //
+        // Initialize messaging system
+        //
+        LL_DEBUGS("AppInit") << "Initializing messaging system..." << LL_ENDL;
 
-		std::string message_template_path = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"message_template.msg");
+        std::string message_template_path = gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,"message_template.msg");
 
-		LLFILE* found_template = NULL;
-		found_template = LLFile::fopen(message_template_path, "r");		/* Flawfinder: ignore */
-		
-		#if LL_WINDOWS
-			// On the windows dev builds, unpackaged, the message_template.msg 
-			// file will be located in:
-			// build-vc**/newview/<config>/app_settings
-			if (!found_template)
-			{
-				message_template_path = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, "app_settings", "message_template.msg");
-				found_template = LLFile::fopen(message_template_path.c_str(), "r");		/* Flawfinder: ignore */
-			}	
-		#elif LL_DARWIN
-			// On Mac dev builds, message_template.msg lives in:
-			// indra/build-*/newview/<config>/Second Life/Contents/Resources/app_settings
-			if (!found_template)
-			{
-				message_template_path =
-					gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,
-												   "message_template.msg");
-				found_template = LLFile::fopen(message_template_path.c_str(), "r");		/* Flawfinder: ignore */
-			}		
-		#endif
+        LLFILE* found_template = NULL;
+        found_template = LLFile::fopen(message_template_path, "r");     /* Flawfinder: ignore */
 
-		if (found_template)
-		{
-			fclose(found_template);
+        #if LL_WINDOWS
+            // On the windows dev builds, unpackaged, the message_template.msg
+            // file will be located in:
+            // build-vc**/newview/<config>/app_settings
+            if (!found_template)
+            {
+                message_template_path = gDirUtilp->getExpandedFilename(LL_PATH_EXECUTABLE, "app_settings", "message_template.msg");
+                found_template = LLFile::fopen(message_template_path.c_str(), "r");     /* Flawfinder: ignore */
+            }
+        #elif LL_DARWIN
+            // On Mac dev builds, message_template.msg lives in:
+            // indra/build-*/newview/<config>/Second Life/Contents/Resources/app_settings
+            if (!found_template)
+            {
+                message_template_path =
+                    gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS,
+                                                   "message_template.msg");
+                found_template = LLFile::fopen(message_template_path.c_str(), "r");     /* Flawfinder: ignore */
+            }
+        #endif
 
-			U32 port = gSavedSettings.getU32("UserConnectionPort");
+        if (found_template)
+        {
+            fclose(found_template);
 
-			if ((NET_USE_OS_ASSIGNED_PORT == port) &&   // if nothing specified on command line (-port)
-			    (gSavedSettings.getBOOL("ConnectionPortEnabled")))
-			  {
-			    port = gSavedSettings.getU32("ConnectionPort");
-			  }
+            U32 port = gSavedSettings.getU32("UserConnectionPort");
 
-			// TODO parameterize 
-			const F32 circuit_heartbeat_interval = 5;
-			const F32 circuit_timeout = 100;
+            if ((NET_USE_OS_ASSIGNED_PORT == port) &&   // if nothing specified on command line (-port)
+                (gSavedSettings.getBOOL("ConnectionPortEnabled")))
+              {
+                port = gSavedSettings.getU32("ConnectionPort");
+              }
 
-			const LLUseCircuitCodeResponder* responder = NULL;
-			bool failure_is_fatal = true;
-			
-			if(!start_messaging_system(
-				   message_template_path,
-				   port,
-				   LLVersionInfo::instance().getMajor(),
-				   LLVersionInfo::instance().getMinor(),
-				   LLVersionInfo::instance().getPatch(),
+            // TODO parameterize
+            const F32 circuit_heartbeat_interval = 5;
+            const F32 circuit_timeout = 100;
+
+            const LLUseCircuitCodeResponder* responder = NULL;
+            bool failure_is_fatal = true;
+
+            if(!start_messaging_system(
+                   message_template_path,
+                   port,
+                   LLVersionInfo::instance().getMajor(),
+                   LLVersionInfo::instance().getMinor(),
+                   LLVersionInfo::instance().getPatch(),
                    false,
 				   std::string(),
 				   responder,
@@ -2669,9 +2715,9 @@ void release_notes_coro(const std::string url)
 
     LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
     LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
-        httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("releaseNotesCoro", httpPolicy));
-    LLCore::HttpRequest::ptr_t httpRequest(new LLCore::HttpRequest);
-    LLCore::HttpOptions::ptr_t httpOpts = LLCore::HttpOptions::ptr_t(new LLCore::HttpOptions);
+        httpAdapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("releaseNotesCoro", httpPolicy);
+    LLCore::HttpRequest::ptr_t httpRequest = std::make_shared<LLCore::HttpRequest>();
+    LLCore::HttpOptions::ptr_t httpOpts = std::make_shared<LLCore::HttpOptions>();
 
     httpOpts->setHeadersOnly(true); // only making sure it isn't 404 or something like that
 
@@ -2915,97 +2961,100 @@ void register_viewer_callbacks(LLMessageSystem* msg)
 
     msg->setHandlerFunc("AvatarPropertiesReply",
                         &LLAvatarPropertiesProcessor::processAvatarLegacyPropertiesReply);
-	msg->setHandlerFunc("AvatarInterestsReply",
-						&LLAvatarPropertiesProcessor::processAvatarInterestsReply);
-	msg->setHandlerFunc("AvatarGroupsReply",
-						&LLAvatarPropertiesProcessor::processAvatarGroupsReply);
-	// ratings deprecated
-	//msg->setHandlerFuncFast(_PREHASH_AvatarStatisticsReply,
-	//					LLPanelAvatar::processAvatarStatisticsReply);
-	msg->setHandlerFunc("AvatarNotesReply",
-						&LLAvatarPropertiesProcessor::processAvatarNotesReply);
-	msg->setHandlerFunc("AvatarPicksReply",
-						&LLAvatarPropertiesProcessor::processAvatarPicksReply);
- 	msg->setHandlerFunc("AvatarClassifiedReply",
- 						&LLAvatarPropertiesProcessor::processAvatarClassifiedsReply);
+    msg->setHandlerFunc("AvatarInterestsReply",
+                        &LLAvatarPropertiesProcessor::processAvatarInterestsReply);
+    msg->setHandlerFunc("AvatarGroupsReply",
+                        &LLAvatarPropertiesProcessor::processAvatarGroupsReply);
+    msg->setHandlerFunc("AvatarNotesReply",
+                        &LLAvatarPropertiesProcessor::processAvatarNotesReply);
+    msg->setHandlerFunc("AvatarPicksReply",
+                        &LLAvatarPropertiesProcessor::processAvatarPicksReply);
+    msg->setHandlerFunc("AvatarClassifiedReply",
+                        &LLAvatarPropertiesProcessor::processAvatarClassifiedsReply);
 
-	msg->setHandlerFuncFast(_PREHASH_CreateGroupReply,
-						LLGroupMgr::processCreateGroupReply);
-	msg->setHandlerFuncFast(_PREHASH_JoinGroupReply,
-						LLGroupMgr::processJoinGroupReply);
-	msg->setHandlerFuncFast(_PREHASH_EjectGroupMemberReply,
-						LLGroupMgr::processEjectGroupMemberReply);
-	msg->setHandlerFuncFast(_PREHASH_LeaveGroupReply,
-						LLGroupMgr::processLeaveGroupReply);
-	msg->setHandlerFuncFast(_PREHASH_GroupProfileReply,
-						LLGroupMgr::processGroupPropertiesReply);
+    msg->setHandlerFuncFast(_PREHASH_CreateGroupReply,
+                        LLGroupMgr::processCreateGroupReply);
+    msg->setHandlerFuncFast(_PREHASH_JoinGroupReply,
+                        LLGroupMgr::processJoinGroupReply);
+    msg->setHandlerFuncFast(_PREHASH_EjectGroupMemberReply,
+                        LLGroupMgr::processEjectGroupMemberReply);
+    msg->setHandlerFuncFast(_PREHASH_LeaveGroupReply,
+                        LLGroupMgr::processLeaveGroupReply);
+    msg->setHandlerFuncFast(_PREHASH_GroupProfileReply,
+                        LLGroupMgr::processGroupPropertiesReply);
 
-	// ratings deprecated
-	// msg->setHandlerFuncFast(_PREHASH_ReputationIndividualReply,
-	//					LLFloaterRate::processReputationIndividualReply);
+    // ratings deprecated
+    // msg->setHandlerFuncFast(_PREHASH_ReputationIndividualReply,
+    //                  LLFloaterRate::processReputationIndividualReply);
 
-	msg->setHandlerFunc("ScriptControlChange",
-						LLAgent::processScriptControlChange );
+    msg->setHandlerFunc("ScriptControlChange",
+                        LLAgent::processScriptControlChange );
 
-	msg->setHandlerFuncFast(_PREHASH_ViewerEffect, LLHUDManager::processViewerEffect);
+    msg->setHandlerFuncFast(_PREHASH_ViewerEffect, LLHUDManager::processViewerEffect);
 
-	msg->setHandlerFuncFast(_PREHASH_GrantGodlikePowers, process_grant_godlike_powers);
+    msg->setHandlerFuncFast(_PREHASH_GrantGodlikePowers, process_grant_godlike_powers);
 
-	msg->setHandlerFuncFast(_PREHASH_GroupAccountSummaryReply,
-							LLPanelGroupLandMoney::processGroupAccountSummaryReply);
-	msg->setHandlerFuncFast(_PREHASH_GroupAccountDetailsReply,
-							LLPanelGroupLandMoney::processGroupAccountDetailsReply);
-	msg->setHandlerFuncFast(_PREHASH_GroupAccountTransactionsReply,
-							LLPanelGroupLandMoney::processGroupAccountTransactionsReply);
+    msg->setHandlerFuncFast(_PREHASH_GroupAccountSummaryReply,
+                            LLPanelGroupLandMoney::processGroupAccountSummaryReply);
+    msg->setHandlerFuncFast(_PREHASH_GroupAccountDetailsReply,
+                            LLPanelGroupLandMoney::processGroupAccountDetailsReply);
+    msg->setHandlerFuncFast(_PREHASH_GroupAccountTransactionsReply,
+                            LLPanelGroupLandMoney::processGroupAccountTransactionsReply);
 
-	msg->setHandlerFuncFast(_PREHASH_UserInfoReply,
-		process_user_info_reply);
+    msg->setHandlerFuncFast(_PREHASH_UserInfoReply,
+        process_user_info_reply);
 
-	msg->setHandlerFunc("RegionHandshake", process_region_handshake, NULL);
+    msg->setHandlerFunc("RegionHandshake", process_region_handshake, NULL);
 
-	msg->setHandlerFunc("TeleportStart", process_teleport_start );
-	msg->setHandlerFunc("TeleportProgress", process_teleport_progress);
-	msg->setHandlerFunc("TeleportFailed", process_teleport_failed, NULL);
-	msg->setHandlerFunc("TeleportLocal", process_teleport_local, NULL);
+    msg->setHandlerFunc("TeleportStart", process_teleport_start );
+    msg->setHandlerFunc("TeleportProgress", process_teleport_progress);
+    msg->setHandlerFunc("TeleportFailed", process_teleport_failed, NULL);
+    msg->setHandlerFunc("TeleportLocal", process_teleport_local, NULL);
 
-	msg->setHandlerFunc("ImageNotInDatabase", LLViewerTextureList::processImageNotInDatabase, NULL);
+    msg->setHandlerFunc("ImageNotInDatabase", LLViewerTextureList::processImageNotInDatabase, NULL);
 
-	msg->setHandlerFuncFast(_PREHASH_GroupMembersReply,
-						LLGroupMgr::processGroupMembersReply);
-	msg->setHandlerFunc("GroupRoleDataReply",
-						LLGroupMgr::processGroupRoleDataReply);
-	msg->setHandlerFunc("GroupRoleMembersReply",
-						LLGroupMgr::processGroupRoleMembersReply);
-	msg->setHandlerFunc("GroupTitlesReply",
-						LLGroupMgr::processGroupTitlesReply);
-	// Special handler as this message is sometimes used for group land.
-	msg->setHandlerFunc("PlacesReply", process_places_reply);
-	msg->setHandlerFunc("GroupNoticesListReply", LLPanelGroupNotices::processGroupNoticesListReply);
+    msg->setHandlerFuncFast(_PREHASH_GroupMembersReply,
+                        LLGroupMgr::processGroupMembersReply);
+    msg->setHandlerFunc("GroupRoleDataReply",
+                        LLGroupMgr::processGroupRoleDataReply);
+    msg->setHandlerFunc("GroupRoleMembersReply",
+                        LLGroupMgr::processGroupRoleMembersReply);
+    msg->setHandlerFunc("GroupTitlesReply",
+                        LLGroupMgr::processGroupTitlesReply);
+    // Special handler as this message is sometimes used for group land.
+    msg->setHandlerFunc("PlacesReply", process_places_reply);
+    msg->setHandlerFunc("GroupNoticesListReply", LLPanelGroupNotices::processGroupNoticesListReply);
 
-	msg->setHandlerFunc("AvatarPickerReply", LLFloaterAvatarPicker::processAvatarPickerReply);
+    msg->setHandlerFunc("AvatarPickerReply", LLFloaterAvatarPicker::processAvatarPickerReply);
 
-	msg->setHandlerFunc("MapBlockReply", LLWorldMapMessage::processMapBlockReply);
-	msg->setHandlerFunc("MapItemReply", LLWorldMapMessage::processMapItemReply);
-	msg->setHandlerFunc("EventInfoReply", LLEventNotifier::processEventInfoReply);
-	
-	msg->setHandlerFunc("PickInfoReply", &LLAvatarPropertiesProcessor::processPickInfoReply);
-//	msg->setHandlerFunc("ClassifiedInfoReply", LLPanelClassified::processClassifiedInfoReply);
-	msg->setHandlerFunc("ClassifiedInfoReply", LLAvatarPropertiesProcessor::processClassifiedInfoReply);
-	msg->setHandlerFunc("ParcelInfoReply", LLRemoteParcelInfoProcessor::processParcelInfoReply);
-	msg->setHandlerFunc("ScriptDialog", process_script_dialog);
-	msg->setHandlerFunc("LoadURL", process_load_url);
-	msg->setHandlerFunc("ScriptTeleportRequest", process_script_teleport_request);
-	msg->setHandlerFunc("EstateCovenantReply", process_covenant_reply);
+    msg->setHandlerFunc("DirPlacesReply", LLPanelDirBrowser::processDirPlacesReply);
+    msg->setHandlerFunc("DirPeopleReply", LLPanelDirBrowser::processDirPeopleReply);
+    msg->setHandlerFunc("DirEventsReply", LLPanelDirBrowser::processDirEventsReply);
+    msg->setHandlerFunc("DirGroupsReply", LLPanelDirBrowser::processDirGroupsReply);
+    msg->setHandlerFunc("DirClassifiedReply", LLPanelDirBrowser::processDirClassifiedReply);
+    msg->setHandlerFunc("DirLandReply", LLPanelDirBrowser::processDirLandReply);
 
-	// calling cards
-	msg->setHandlerFunc("OfferCallingCard", process_offer_callingcard);
-	msg->setHandlerFunc("AcceptCallingCard", process_accept_callingcard);
-	msg->setHandlerFunc("DeclineCallingCard", process_decline_callingcard);
+    msg->setHandlerFunc("MapBlockReply", LLWorldMapMessage::processMapBlockReply);
+    msg->setHandlerFunc("MapItemReply", LLWorldMapMessage::processMapItemReply);
+    msg->setHandlerFunc("EventInfoReply", LLEventNotifier::processEventInfoReply);
 
-	msg->setHandlerFunc("ParcelObjectOwnersReply", LLPanelLandObjects::processParcelObjectOwnersReply);
+    msg->setHandlerFunc("PickInfoReply", &LLAvatarPropertiesProcessor::processPickInfoReply);
+    msg->setHandlerFunc("ClassifiedInfoReply", LLAvatarPropertiesProcessor::processClassifiedInfoReply);
+    msg->setHandlerFunc("ParcelInfoReply", LLRemoteParcelInfoProcessor::processParcelInfoReply);
+    msg->setHandlerFunc("ScriptDialog", process_script_dialog);
+    msg->setHandlerFunc("LoadURL", process_load_url);
+    msg->setHandlerFunc("ScriptTeleportRequest", process_script_teleport_request);
+    msg->setHandlerFunc("EstateCovenantReply", process_covenant_reply);
 
-	msg->setHandlerFunc("InitiateDownload", process_initiate_download);
-	msg->setHandlerFunc("LandStatReply", LLFloaterTopObjects::handle_land_reply);
+    // calling cards
+    msg->setHandlerFunc("OfferCallingCard", process_offer_callingcard);
+    msg->setHandlerFunc("AcceptCallingCard", process_accept_callingcard);
+    msg->setHandlerFunc("DeclineCallingCard", process_decline_callingcard);
+
+    msg->setHandlerFunc("ParcelObjectOwnersReply", LLPanelLandObjects::processParcelObjectOwnersReply);
+
+    msg->setHandlerFunc("InitiateDownload", process_initiate_download);
+    msg->setHandlerFunc("LandStatReply", LLFloaterTopObjects::handle_land_reply);
     msg->setHandlerFunc("GenericMessage", process_generic_message);
     msg->setHandlerFunc("GenericStreamingMessage", process_generic_streaming_message);
     msg->setHandlerFunc("LargeGenericMessage", process_large_generic_message);

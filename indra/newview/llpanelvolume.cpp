@@ -543,7 +543,7 @@ void LLPanelVolume::getState( )
         getChildView("FlexForceY")->setEnabled(true);
         getChildView("FlexForceZ")->setEnabled(true);
 
-        LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+        LLFlexibleObjectData *attributes = objectp->getFlexibleObjectData();
 
         getChild<LLUICtrl>("FlexNumSections")->setValue((F32)attributes->getSimulateLOD());
         getChild<LLUICtrl>("FlexGravity")->setValue(attributes->getGravity());
@@ -593,13 +593,17 @@ void LLPanelVolume::getState( )
 
     bool enable_material = editable && single_volume && material_same;
     LLCachedControl<bool> edit_linked(gSavedSettings, "EditLinkedParts", false);
-    if (!enable_material && !edit_linked())
+    if (!enable_material)
     {
         LLViewerObject* root = selection->getPrimaryObject();
         while (root && !root->isAvatar() && root->getParent())
         {
             LLViewerObject* parent = (LLViewerObject*)root->getParent();
             if (parent->isAvatar())
+            {
+                break;
+            }
+            if (!parent->isSelected())
             {
                 break;
             }
@@ -650,7 +654,7 @@ void LLPanelVolume::getState( )
     mComboPhysicsShapeType->add(getString("None"), LLSD(1));
 
     bool isMesh = false;
-    LLSculptParams *sculpt_params = (LLSculptParams *)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+    LLSculptParams *sculpt_params = objectp->getSculptParams();
     if (sculpt_params)
     {
         U8 sculpt_type = sculpt_params->getSculptType();
@@ -1065,7 +1069,7 @@ void LLPanelVolume::onCopyFeatures()
     // Flexi Prim
     if (volobjp && volobjp->isFlexible())
     {
-        LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+        LLFlexibleObjectData *attributes = objectp->getFlexibleObjectData();
         if (attributes)
         {
             clipboard["flex"]["lod"] = attributes->getSimulateLOD();
@@ -1163,7 +1167,7 @@ void LLPanelVolume::onPasteFeatures()
             objectp->setClickAction(CLICK_ACTION_NONE);
         }
 
-        LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+        LLFlexibleObjectData *attributes = objectp->getFlexibleObjectData();
         if (attributes)
         {
             LLFlexibleObjectData new_attributes;
@@ -1615,7 +1619,7 @@ void LLPanelVolume::onCommitFlexible( LLUICtrl* ctrl, void* userdata )
         return;
     }
 
-    LLFlexibleObjectData *attributes = (LLFlexibleObjectData *)objectp->getParameterEntry(LLNetworkData::PARAMS_FLEXIBLE);
+    LLFlexibleObjectData *attributes = objectp->getFlexibleObjectData();
     if (attributes)
     {
         LLFlexibleObjectData new_attributes;

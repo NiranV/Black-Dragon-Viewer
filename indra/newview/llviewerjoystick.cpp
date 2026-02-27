@@ -36,7 +36,6 @@
 #include "lltoolmgr.h"
 #include "llselectmgr.h"
 #include "llviewermenu.h"
-#include "llviewerwindow.h"
 #include "llwindow.h"
 #include "llagent.h"
 #include "llagentcamera.h"

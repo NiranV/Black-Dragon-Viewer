@@ -38,8 +38,8 @@ class LLWindow;
 class LLNamedFunction
 {
 public:
-	LLNamedFunction() : mFunction(NULL) { };
-	~LLNamedFunction() { };
+    LLNamedFunction() : mFunction(nullptr) { };
+    ~LLNamedFunction() { };
 
 	std::string	mName;
 	LLKeyFunc	mFunction;

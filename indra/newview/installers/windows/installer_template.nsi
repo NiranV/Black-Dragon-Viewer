@@ -32,6 +32,7 @@ SetCompressor /solid lzma	# Compress whole installer as one block
 SetDatablockOptimize off	# Only saves us 0.1%, not worth it
 XPStyle on                  # Add an XP manifest to the installer
 RequestExecutionLevel admin	# For when we write to Program Files
+Unicode true                # Enable unicode support
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Project flags
@@ -163,6 +164,74 @@ Var DO_UNINSTALL_V2     # If non-null, path to a previous Viewer 2 installation 
 !include "x64.nsh"			# for 64bit detection
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Substring function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+!define StrStr "!insertmacro StrStr"
+ 
+!macro StrStr ResultVar String SubString
+  Push `${String}`
+  Push `${SubString}`
+  Call StrStr
+  Pop `${ResultVar}`
+!macroend
+ 
+Function StrStr
+
+# After this point:
+# ------------------------------------------
+# $R0 = SubString (input)
+# $R1 = String (input)
+# $R2 = SubStringLen (temp)
+# $R3 = StrLen (temp)
+# $R4 = StartCharPos (temp)
+# $R5 = TempStr (temp)
+# function from nsis.sourceforge.io/StrStr
+ 
+  ;Get input from user
+  Exch $R0
+  Exch
+  Exch $R1
+  Push $R2
+  Push $R3
+  Push $R4
+  Push $R5
+ 
+  ;Get "String" and "SubString" length
+  StrLen $R2 $R0
+  StrLen $R3 $R1
+  ;Start "StartCharPos" counter
+  StrCpy $R4 0
+ 
+  ;Loop until "SubString" is found or "String" reaches its end
+  ${Do}
+    ;Remove everything before and after the searched part ("TempStr")
+    StrCpy $R5 $R1 $R2 $R4
+ 
+    ;Compare "TempStr" with "SubString"
+    ${IfThen} $R5 == $R0 ${|} ${ExitDo} ${|}
+    ;If not "SubString", this could be "String"'s end
+    ${IfThen} $R4 >= $R3 ${|} ${ExitDo} ${|}
+    ;If not, continue the loop
+    IntOp $R4 $R4 + 1
+  ${Loop}
+ 
+# After this point:
+# ------------------------------------------
+# $R0 = ResultVar (output)
+ 
+  ;Remove part before "SubString" on "String" (if there has one)
+  StrCpy $R0 $R1 `` $R4
+ 
+  ;Return output to user
+  Pop $R5
+  Pop $R4
+  Pop $R3
+  Pop $R2
+  Pop $R1
+  Exch $R0
+FunctionEnd
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Pre-directory page callback
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Function dirPre
@@ -189,14 +258,30 @@ Function .onInit
 # However, SL-10506 complains about the resulting behavior, so the logic below
 # is adapted from before we introduced MultiUser.nsh.
 
+# Check if user specified /D= on the command line
+System::Call 'kernel32::GetCommandLine()t .r0'
+Push $0
+Push " /D="
+Call StrStr
+Pop $1
+${If} $1 != ""
+    # /D= was specified, extract the path
+    # spaces are allowed in path after /D=, it's expected to be the last parameter
+    StrLen $2 $1 
+    StrCpy $INSTDIR $1 $2 4	# Skip over " /D="
+    Goto after_instdir
+${EndIf}
+
 # if $0 is empty, this is the first time for this viewer name
 ReadRegStr $0 SHELL_CONTEXT "${INSTNAME_KEY}" ""
 
 # viewer with this name was installed before
 ${If} $0 != ""
-	# use the value we got from registry as install location
+    # use the value we got from registry as install location
     StrCpy $INSTDIR $0
 ${EndIf}
+
+after_instdir:
 
 Call CheckCPUFlags							# Make sure we have SSE2 support
 Call CheckWindowsVersion					# Don't install On unsupported systems
@@ -397,8 +482,18 @@ CreateShortCut	"$SMPROGRAMS\$INSTSHORTCUT\Uninstall $INSTSHORTCUT.lnk" \
 
 # Other shortcuts
 SetOutPath "$INSTDIR"
-CreateShortCut "$DESKTOP\$INSTSHORTCUT.lnk" \
+
+Push $0
+${GetParameters} $COMMANDLINE
+${GetOptionsS} $COMMANDLINE "/marker" $0
+# Returns error if option does not exist
+IfErrors 0 DESKTOP_SHORTCUT_DONE
+  # "/marker" is set by updater, do not recreate desktop shortcut
+  CreateShortCut "$DESKTOP\$INSTSHORTCUT.lnk" \
         "$INSTDIR\$VIEWER_EXE" "$SHORTCUT_LANG_PARAM" "$INSTDIR\$VIEWER_EXE"
+
+DESKTOP_SHORTCUT_DONE:
+Pop $0
 CreateShortCut "$INSTDIR\$INSTSHORTCUT.lnk" \
         "$INSTDIR\$VIEWER_EXE" "$SHORTCUT_LANG_PARAM" "$INSTDIR\$VIEWER_EXE"
 CreateShortCut "$INSTDIR\Uninstall $INSTSHORTCUT.lnk" \
@@ -672,8 +767,21 @@ Function un.UserSettingsFiles
 
 StrCmp $DO_UNINSTALL_V2 "true" Keep			# Don't remove user's settings files on auto upgrade
 
-# Ask if user wants to keep data files or not
-MessageBox MB_YESNO|MB_ICONQUESTION $(RemoveDataFilesMB) IDYES Remove IDNO Keep
+ClearErrors
+Push $0
+${GetParameters} $COMMANDLINE
+${GetOptionsS} $COMMANDLINE "/clrusrfiles" $0
+# GetOptionsS returns an error if option does not exist, jump past Goto.
+IfErrors +3 0
+  Pop $0
+  Goto Remove
+
+Pop $0
+ClearErrors
+
+ifSilent Keep 0
+  # Ask if user wants to keep data files or not
+  MessageBox MB_YESNO|MB_ICONQUESTION $(RemoveDataFilesMB) IDYES Remove IDNO Keep
 
 Remove:
 Push $0
@@ -769,11 +877,25 @@ RMDir "$INSTDIR"
 IfFileExists "$INSTDIR" FOLDERFOUND NOFOLDER
 
 FOLDERFOUND:
+ifSilent NOFOLDER 0
   MessageBox MB_OK $(DeleteProgramFilesMB) /SD IDOK IDOK NOFOLDER
 
 NOFOLDER:
 
-MessageBox MB_YESNO $(DeleteRegistryKeysMB) IDYES DeleteKeys IDNO NoDelete
+ClearErrors
+Push $0
+${GetParameters} $COMMANDLINE
+${GetOptionsS} $COMMANDLINE "/clearreg" $0
+# GetOptionsS returns an error if option does not exist, jump past Goto.
+IfErrors +3 0
+  Pop $0
+  Goto DeleteKeys
+
+Pop $0
+ClearErrors
+
+ifSilent NoDelete 0
+	MessageBox MB_YESNO $(DeleteRegistryKeysMB) IDYES DeleteKeys IDNO NoDelete
 
 DeleteKeys:
   DeleteRegKey SHELL_CONTEXT "SOFTWARE\Classes\x-grid-location-info"

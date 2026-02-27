@@ -374,8 +374,6 @@ void LLWebRTCImpl::terminate()
 
     mSignalingThread->BlockingCall([this]() { mPeerConnectionFactory = nullptr; });
 
-    mPeerConnections.clear();
-
     mWorkerThread->BlockingCall(
         [this]()
         {
@@ -386,6 +384,14 @@ void LLWebRTCImpl::terminate()
             mDeviceModule     = nullptr;
             mTaskQueueFactory = nullptr;
         });
+
+    // In case peer connections still somehow have jobs in workers,
+    // only clear connections up after clearing workers.
+    mNetworkThread = nullptr;
+    mWorkerThread = nullptr;
+    mSignalingThread = nullptr;
+
+    mPeerConnections.clear();
     webrtc::LogMessage::RemoveLogToStream(mLogSink);
 }
 
@@ -566,14 +572,20 @@ void LLWebRTCImpl::workerDeployDevices()
 void LLWebRTCImpl::setCaptureDevice(const std::string &id)
 {
 
-    mRecordingDevice = id;
-    deployDevices();
+    if (mRecordingDevice != id)
+    {
+        mRecordingDevice = id;
+        deployDevices();
+    }
 }
 
 void LLWebRTCImpl::setRenderDevice(const std::string &id)
 {
-    mPlayoutDevice = id;
-    deployDevices();
+    if (mPlayoutDevice != id)
+    {
+        mPlayoutDevice = id;
+        deployDevices();
+    }
 }
 
 // updateDevices needs to happen on the worker thread.
@@ -635,6 +647,13 @@ void LLWebRTCImpl::OnDevicesUpdated()
 void LLWebRTCImpl::setTuningMode(bool enable)
 {
     mTuningMode = enable;
+    if (!mTuningMode
+        && !mMute
+        && mPeerCustomProcessor
+        && mPeerCustomProcessor->getGain() != mGain)
+    {
+        mPeerCustomProcessor->setGain(mGain);
+    }
     mWorkerThread->PostTask(
         [this]
         {
@@ -714,12 +733,17 @@ void LLWebRTCImpl::intSetMute(bool mute, int delay_ms)
     {
         mPeerCustomProcessor->setGain(mMute ? 0.0f : mGain);
     }
+
+    // Sequence counter to prevent race conditions from rapid requests to mute/unmute
+    static std::atomic<uint32_t> mute_sequence(0);
+    uint32_t current_sequence = ++mute_sequence;
+
     if (mMute)
     {
         mWorkerThread->PostDelayedTask(
-            [this]
+            [this, current_sequence]
             {
-                if (mDeviceModule)
+                if (mDeviceModule && (current_sequence == mute_sequence.load()))
                 {
                     mDeviceModule->ForceStopRecording();
                 }
@@ -729,9 +753,9 @@ void LLWebRTCImpl::intSetMute(bool mute, int delay_ms)
     else
     {
         mWorkerThread->PostTask(
-            [this]
+            [this, current_sequence]
             {
-                if (mDeviceModule)
+                if (mDeviceModule && (current_sequence == mute_sequence.load()))
                 {
                     mDeviceModule->InitRecording();
                     mDeviceModule->ForceStartRecording();
@@ -766,6 +790,7 @@ void LLWebRTCImpl::freePeerConnection(LLWebRTCPeerConnectionInterface* peer_conn
     std::find(mPeerConnections.begin(), mPeerConnections.end(), peer_connection);
     if (it != mPeerConnections.end())
     {
+        // Todo: make sure conection had no jobs in workers
         mPeerConnections.erase(it);
         if (mPeerConnections.empty())
         {
@@ -785,7 +810,8 @@ LLWebRTCPeerConnectionImpl::LLWebRTCPeerConnectionImpl() :
     mWebRTCImpl(nullptr),
     mPeerConnection(nullptr),
     mMute(MUTE_INITIAL),
-    mAnswerReceived(false)
+    mAnswerReceived(false),
+    mPendingJobs(0)
 {
 }
 
@@ -793,6 +819,11 @@ LLWebRTCPeerConnectionImpl::~LLWebRTCPeerConnectionImpl()
 {
     mSignalingObserverList.clear();
     mDataObserverList.clear();
+    mPeerConnectionFactory.release();
+    if (mPendingJobs > 0)
+    {
+        RTC_LOG(LS_ERROR) << __FUNCTION__ << "Destroying a connection that has " << std::to_string(mPendingJobs) << " unfinished jobs that might cause workers to crash";
+    }
 }
 
 //
@@ -804,8 +835,10 @@ void LLWebRTCPeerConnectionImpl::init(LLWebRTCImpl * webrtc_impl)
     mWebRTCImpl = webrtc_impl;
     mPeerConnectionFactory = mWebRTCImpl->getPeerConnectionFactory();
 }
+
 void LLWebRTCPeerConnectionImpl::terminate()
 {
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
         [this]()
         {
@@ -848,6 +881,7 @@ void LLWebRTCPeerConnectionImpl::terminate()
                     observer->OnPeerConnectionClosed();
                 }
             }
+            mPendingJobs--;
         });
 }
 
@@ -869,6 +903,7 @@ bool LLWebRTCPeerConnectionImpl::initializeConnection(const LLWebRTCPeerConnecti
     RTC_DCHECK(!mPeerConnection);
     mAnswerReceived = false;
 
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
         [this,options]()
         {
@@ -890,7 +925,17 @@ bool LLWebRTCPeerConnectionImpl::initializeConnection(const LLWebRTCPeerConnecti
             config.set_max_port(60100);
 
             webrtc::PeerConnectionDependencies pc_dependencies(this);
-            auto error_or_peer_connection = mPeerConnectionFactory->CreatePeerConnectionOrError(config, std::move(pc_dependencies));
+            // Other thread manages mPeerConnectionFactory's lifetime and it can be reset
+            // at any momment, create own scoped_refptr (atomic).
+            webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface> peer_connection_factory = mPeerConnectionFactory;
+            if (peer_connection_factory == nullptr)
+            {
+                RTC_LOG(LS_ERROR) << __FUNCTION__ << "Error creating peer connection, factory doesn't exist";
+                // Too early?
+                mPendingJobs--;
+                return;
+            }
+            auto error_or_peer_connection = peer_connection_factory->CreatePeerConnectionOrError(config, std::move(pc_dependencies));
             if (error_or_peer_connection.ok())
             {
                 mPeerConnection = std::move(error_or_peer_connection.value());
@@ -902,6 +947,7 @@ bool LLWebRTCPeerConnectionImpl::initializeConnection(const LLWebRTCPeerConnecti
                 {
                     observer->OnRenegotiationNeeded();
                 }
+                mPendingJobs--;
                 return;
             }
 
@@ -922,10 +968,10 @@ bool LLWebRTCPeerConnectionImpl::initializeConnection(const LLWebRTCPeerConnecti
             audioOptions.noise_suppression = true;
             audioOptions.init_recording_on_send = false;
 
-            mLocalStream = mPeerConnectionFactory->CreateLocalMediaStream("SLStream");
+            mLocalStream = peer_connection_factory->CreateLocalMediaStream("SLStream");
 
             webrtc::scoped_refptr<webrtc::AudioTrackInterface> audio_track(
-                mPeerConnectionFactory->CreateAudioTrack("SLAudio", mPeerConnectionFactory->CreateAudioSource(audioOptions).get()));
+                peer_connection_factory->CreateAudioTrack("SLAudio", peer_connection_factory->CreateAudioSource(audioOptions).get()));
             audio_track->set_enabled(false);
             mLocalStream->AddTrack(audio_track);
 
@@ -963,7 +1009,9 @@ bool LLWebRTCPeerConnectionImpl::initializeConnection(const LLWebRTCPeerConnecti
             }
 
             webrtc::PeerConnectionInterface::RTCOfferAnswerOptions offerOptions;
+            this->AddRef(); // CreateOffer will deref this when it's done.  Without this, the callbacks never get called.
             mPeerConnection->CreateOffer(this, offerOptions);
+            mPendingJobs--;
         });
 
     return true;
@@ -1006,6 +1054,7 @@ void LLWebRTCPeerConnectionImpl::AnswerAvailable(const std::string &sdp)
 {
     RTC_LOG(LS_INFO) << __FUNCTION__ << " Remote SDP: " << sdp;
 
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
                                [this, sdp]()
                                {
@@ -1015,6 +1064,7 @@ void LLWebRTCPeerConnectionImpl::AnswerAvailable(const std::string &sdp)
                                        mPeerConnection->SetRemoteDescription(webrtc::CreateSessionDescription(webrtc::SdpType::kAnswer, sdp),
                                                                              webrtc::scoped_refptr<webrtc::SetRemoteDescriptionObserverInterface>(this));
                                    }
+                                   mPendingJobs--;
                                });
 }
 
@@ -1037,6 +1087,7 @@ void LLWebRTCPeerConnectionImpl::setMute(bool mute)
     mMute = new_state;
 
 
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
         [this, force_reset, enable]()
         {
@@ -1060,6 +1111,7 @@ void LLWebRTCPeerConnectionImpl::setMute(bool mute)
                     track->set_enabled(enable);
                 }
             }
+            mPendingJobs--;
         }
     });
 }
@@ -1081,6 +1133,7 @@ void LLWebRTCPeerConnectionImpl::resetMute()
 
 void LLWebRTCPeerConnectionImpl::setReceiveVolume(float volume)
 {
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
         [this, volume]()
         {
@@ -1099,11 +1152,13 @@ void LLWebRTCPeerConnectionImpl::setReceiveVolume(float volume)
                     }
                 }
             }
+            mPendingJobs--;
         });
 }
 
 void LLWebRTCPeerConnectionImpl::setSendVolume(float volume)
 {
+    mPendingJobs++;
     mWebRTCImpl->PostSignalingTask(
         [this, volume]()
         {
@@ -1114,6 +1169,7 @@ void LLWebRTCPeerConnectionImpl::setSendVolume(float volume)
                     track->GetSource()->SetVolume(volume*5.0);
                 }
             }
+            mPendingJobs--;
         });
 }
 
@@ -1190,11 +1246,13 @@ void LLWebRTCPeerConnectionImpl::OnConnectionChange(webrtc::PeerConnectionInterf
     {
         case webrtc::PeerConnectionInterface::PeerConnectionState::kConnected:
         {
+            mPendingJobs++;
             mWebRTCImpl->PostWorkerTask([this]() {
                 for (auto &observer : mSignalingObserverList)
                 {
                     observer->OnAudioEstablished(this);
                 }
+                mPendingJobs--;
             });
             break;
         }
@@ -1452,11 +1510,13 @@ void LLWebRTCPeerConnectionImpl::sendData(const std::string& data, bool binary)
     {
         webrtc::CopyOnWriteBuffer cowBuffer(data.data(), data.length());
         webrtc::DataBuffer     buffer(cowBuffer, binary);
+        mPendingJobs++;
         mWebRTCImpl->PostNetworkTask([this, buffer]() {
                 if (mDataChannel)
                 {
                     mDataChannel->Send(buffer);
                 }
+                mPendingJobs--;
             });
     }
 }
@@ -1474,6 +1534,57 @@ void LLWebRTCPeerConnectionImpl::unsetDataObserver(LLWebRTCDataObserver* observe
     {
         mDataObserverList.erase(it);
     }
+}
+
+class LLStatsCollectorCallback : public webrtc::RTCStatsCollectorCallback
+{
+public:
+    typedef std::function<void(const LLWebRTCStatsMap&)> StatsCallback;
+
+    LLStatsCollectorCallback(StatsCallback callback) : callback_(callback) {}
+
+    void OnStatsDelivered(const webrtc::scoped_refptr<const webrtc::RTCStatsReport>& report) override
+    {
+        if (callback_)
+        {
+            // Transform RTCStatsReport stats to simple map
+            LLWebRTCStatsMap stats_map;
+            for (const auto& stats : *report)
+            {
+                std::map<std::string, std::string> stat_attributes;
+
+                // Convert each attribute to string format
+                for (const auto& attribute : stats.Attributes())
+                {
+                    stat_attributes[attribute.name()] = attribute.ToString();
+                }
+                stats_map[stats.id()] = stat_attributes;
+            }
+            callback_(stats_map);
+        }
+    }
+
+private:
+    StatsCallback callback_;
+};
+
+void LLWebRTCPeerConnectionImpl::gatherConnectionStats()
+{
+    if (!mPeerConnection)
+    {
+        return;
+    }
+
+    auto stats_callback = webrtc::make_ref_counted<LLStatsCollectorCallback>(
+        [this](const LLWebRTCStatsMap& generic_stats)
+        {
+            for (auto& observer : mSignalingObserverList)
+            {
+                observer->OnStatsDelivered(generic_stats);
+            }
+        });
+
+     mPeerConnection->GetStats(stats_callback.get());
 }
 
 LLWebRTCImpl * gWebRTCImpl = nullptr;

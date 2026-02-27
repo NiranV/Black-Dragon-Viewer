@@ -37,7 +37,6 @@
 #include "llrender.h"
 #include "llenvironment.h"
 #include "llerrorcontrol.h"
-#include "llatmosphere.h"
 #include "llworld.h"
 #include "llsky.h"
 
@@ -588,6 +587,7 @@ void LLViewerShaderMgr::setShaders()
     unloadShaders();
 
     LLPipeline::sRenderGlow = gSavedSettings.getBOOL("RenderGlow");
+    LLPipeline::RenderAvatarCloth = gSavedSettings.getBOOL("RenderAvatarCloth");
 
     if (gViewerWindow)
     {
@@ -2373,7 +2373,9 @@ bool LLViewerShaderMgr::loadShadersDeferred()
         gDeferredAvatarProgram.mShaderFiles.push_back(make_pair("deferred/avatarF.glsl", GL_FRAGMENT_SHADER));
         gDeferredAvatarProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 
+        gDeferredAvatarProgram.clearPermutations();
         add_common_permutations(&gDeferredAvatarProgram);
+        gDeferredAvatarProgram.addPermutation("AVATAR_CLOTH", LLPipeline::RenderAvatarCloth ? "1" : "0");
 
         success = gDeferredAvatarProgram.createShader();
         llassert(success);
@@ -3629,7 +3631,7 @@ bool LLViewerShaderMgr::loadShadersInterface()
 
 std::string LLViewerShaderMgr::getShaderDirPrefix(void)
 {
-    return gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "shaders/class");
+    return gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, "shaders", "class");
 }
 
 void LLViewerShaderMgr::updateShaderUniforms(LLGLSLShader * shader)

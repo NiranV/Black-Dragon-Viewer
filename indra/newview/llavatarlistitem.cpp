@@ -44,7 +44,7 @@
 //BD
 #include "llpanelpeople.h"
 
-static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(&typeid(LLAvatarListItem::Params), "avatar_list_item");
+static LLWidgetNameRegistry::StaticRegistrar sRegisterAvatarListItemParams(typeid(LLAvatarListItem::Params), "avatar_list_item");
 
 LLAvatarListItem::Params::Params()
 :   default_style("default_style"),

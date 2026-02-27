@@ -35,7 +35,6 @@
 #include "llvirtualtrackball.h"
 #include "llsettingssky.h"
 #include "llenvironment.h"
-#include "llatmosphere.h"
 #include "llviewercontrol.h"
 
 namespace

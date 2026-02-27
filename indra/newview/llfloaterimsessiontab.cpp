@@ -48,6 +48,7 @@
 #include "llfloaterimnearbychat.h"
 #include "llgroupiconctrl.h"
 #include "lllayoutstack.h"
+#include "llnotificationsutil.h"
 #include "llpanelemojicomplete.h"
 #include "lltoolbarview.h"
 
@@ -649,8 +650,19 @@ void LLFloaterIMSessionTab::deleteAllChildren()
 
 std::string LLFloaterIMSessionTab::appendTime()
 {
-    std::string timeStr = "[" + LLTrans::getString("TimeHour") + "]:"
-                          "[" + LLTrans::getString("TimeMin") + "]";
+    std::string timeStr;
+    static bool use_24h = gSavedSettings.getBOOL("Use24HourClock");
+    if (use_24h)
+    {
+        timeStr = "[" + LLTrans::getString("TimeHour") + "]:"
+            "[" + LLTrans::getString("TimeMin") + "]";
+    }
+    else
+    {
+        timeStr = "[" + LLTrans::getString("TimeHour12") + "]:"
+            "[" + LLTrans::getString("TimeMin") + "] ["
+            + LLTrans::getString("TimeAMPM") + "]";
+    }
 
     LLSD substitution;
     substitution["datetime"] = (S32)time_corrected();
@@ -1410,6 +1422,23 @@ bool LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )
         }
     }
     return handled;
+}
+
+void LLFloaterIMSessionTab::onClickCloseBtn(bool app_quitting)
+{
+    bool is_ad_hoc = (mSession ? mSession->isAdHocSessionType() : false);
+    if (is_ad_hoc && !app_quitting)
+    {
+        LLNotificationsUtil::add("ConfirmLeaveAdhoc", LLSD(), LLSD(), [this](const LLSD& notification, const LLSD& response)
+        {
+            if (0 == LLNotificationsUtil::getSelectedOption(notification, response))
+                closeFloater();
+        });
+    }
+    else
+    {
+        closeFloater();
+    }
 }
 
 //BD

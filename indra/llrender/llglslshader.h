@@ -162,6 +162,7 @@ public:
 
     static std::set<LLGLSLShader*> sInstances;
     static bool sProfileEnabled;
+    static bool sCanProfile;
 
     LLGLSLShader();
     ~LLGLSLShader();

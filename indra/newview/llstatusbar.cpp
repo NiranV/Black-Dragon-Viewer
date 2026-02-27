@@ -312,26 +312,28 @@ void LLStatusBar::refresh()
 	}
 	
 	// update clock every 10 seconds
-	if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
-	{
-		mClockUpdateTimer.reset();
+    if(mClockUpdateTimer.getElapsedTimeF32() > 10.f)
+    {
+        mClockUpdateTimer.reset();
 
-		// Get current UTC time, adjusted for the user's clock
-		// being off.
-		time_t utc_time;
-		utc_time = time_corrected();
+        // Get current UTC time, adjusted for the user's clock
+        // being off.
+        time_t utc_time;
+        utc_time = time_corrected();
 
-		std::string timeStr = getString("time");
-		LLSD substitution;
-		substitution["datetime"] = (S32) utc_time;
-		LLStringUtil::format (timeStr, substitution);
-		mTextTime->setText(timeStr);
+        static bool use_24h = gSavedSettings.getBOOL("Use24HourClock");
+        std::string timeStr = use_24h ? getString("time") : getString("time_ampm");
 
-		// set the tooltip to have the date
-		std::string dtStr = getString("timeTooltip");
-		LLStringUtil::format (dtStr, substitution);
-		mTextTime->setToolTip (dtStr);
-	}
+        LLSD substitution;
+        substitution["datetime"] = (S32) utc_time;
+        LLStringUtil::format (timeStr, substitution);
+        mTextTime->setText(timeStr);
+
+        // set the tooltip to have the date
+        std::string dtStr = getString("timeTooltip");
+        LLStringUtil::format (dtStr, substitution);
+        mTextTime->setToolTip (dtStr);
+    }
 
 	// update the master volume button state
 	bool mute_audio = LLAppViewer::instance()->getMasterSystemAudioMute();

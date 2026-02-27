@@ -489,6 +489,17 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>RecentJumpThresholdSecs</key>
+    <map>
+      <key>Comment</key>
+      <string>Seconds after a jump input during which finish-anim is suppressed to avoid interrupting rapid successive jumps.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>1.0</real>
+    </map>
     <key>AvatarAxisDeadZone0</key>
     <map>
       <key>Comment</key>
@@ -641,7 +652,7 @@
         <key>Type</key>
         <string>String</string>
         <key>Value</key>
-        <string>http://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/vawp/index.html</string>
+        <string>https://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/vawp/index.html</string>
     </map>
     <key>AvatarRotateThresholdSlow</key>
     <map>
@@ -2467,7 +2478,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/guide.html</string>
+      <string>https://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/guide.html</string>
     </map>
   <key>DisableCameraConstraints</key>
     <map>
@@ -2491,16 +2502,16 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-    <key>DisableMouseWarp</key>
+    <key>MouseWarpMode</key>
     <map>
       <key>Comment</key>
-      <string>Disable warping of the mouse to the center of the screen during alt-zoom and mouse look. Useful with certain input devices, mouse sharing programs like Synergy, or running under Parallels.</string>
+      <string>Controls warping of the mouse to the center of the screen during alt-zoom and mouse look. Useful with certain input devices, mouse sharing programs like Synergy, or running under Parallels. 0 - automatic, 1 - on, 2 - off</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
-      <string>Boolean</string>
+      <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>DisableExternalBrowser</key>
     <map>
@@ -2775,7 +2786,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://events.[GRID]/viewer/embed/event/[EVENT_ID]</string>
+      <string>https://events.[GRID]/viewer/embed/event/[EVENT_ID]</string>
     </map>
     <key>MainWorkTime</key>
     <map>
@@ -3421,7 +3432,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://viewer-help.secondlife.com/[LANGUAGE]/[CHANNEL]/[VERSION]/[TOPIC][DEBUG_MODE]</string>
+      <string>https://viewer-help.secondlife.com/[LANGUAGE]/[CHANNEL]/[VERSION]/[TOPIC][DEBUG_MODE]</string>
     </map>
     <key>HowToHelpURL</key>
     <map>
@@ -3432,7 +3443,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/howto/index.html</string>
+      <string>https://lecs-viewer-web-components.s3.amazonaws.com/v3.0/[GRID_LOWERCASE]/howto/index.html</string>
     </map>
     <key>HomeSidePanelURL</key>
     <map>
@@ -4048,7 +4059,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://wiki.secondlife.com/wiki/[LSL_STRING]</string>
+      <string>https://wiki.secondlife.com/wiki/[LSL_STRING]</string>
     </map>
     <key>LSLFontSizeName</key>
     <map>
@@ -4391,7 +4402,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>40.0</real>
+    <real>90.0</real>
   </map>
   <key>LogMessages</key>
     <map>
@@ -4473,13 +4484,24 @@
     <key>MainloopTimeoutDefault</key>
     <map>
       <key>Comment</key>
-      <string>Timeout duration for mainloop lock detection, in seconds.</string>
+      <string>Timeout duration for mainloop lock detection during teleports, login and logout, in seconds.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>F32</string>
       <key>Value</key>
-      <real>60.0</real>
+      <real>120.0</real>
+    </map>
+    <key>MainloopTimeoutStarted</key>
+    <map>
+        <key>Comment</key>
+        <string>Timeout duration for mainloop lock detection when logged in and not teleporting, in seconds.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>F32</string>
+        <key>Value</key>
+        <real>60.0</real>
     </map>
     <key>MapScale</key>
     <map>
@@ -4568,6 +4590,17 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>1</integer>
+    </map>
+    <key>MapShowGridCoords</key>
+    <map>
+      <key>Comment</key>
+      <string>Shows/hides the grid coordinates of each region on the world map.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
     </map>
     <key>MiniMapAutoCenter</key>
     <map>
@@ -6071,6 +6104,39 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>OpenDebugStatVoice</key>
+    <map>
+      <key>Comment</key>
+      <string>Expand Voice (WebRTC) stats display</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>OpenDebugStatVoiceOutgoing</key>
+    <map>
+      <key>Comment</key>
+      <string>Expand Outgoing audio (Voice) stats display</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>OpenDebugStatVoiceIncoming</key>
+    <map>
+      <key>Comment</key>
+      <string>Expand Incoming audio (Voice) stats display</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
     <key>OutBandwidth</key>
     <map>
       <key>Comment</key>
@@ -7313,7 +7379,7 @@
   <key>RenderAvatarCloth</key>
     <map>
       <key>Comment</key>
-      <string>DEPRECATED - only false supported - Controls if avatars use wavy cloth</string>
+      <string>Controls if system avatar clothes use wavy cloth</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -7352,7 +7418,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>32.0</real>
+    <real>48.0</real>
   </map>
   <key>RenderCPUBasis</key>
   <map>
@@ -7991,7 +8057,7 @@
   <key>RenderMaxOpenGLVersion</key>
   <map>
     <key>Comment</key>
-    <string>Maximum OpenGL version to attempt use (minimum 3.1 maximum 4.6).  Requires restart.</string>
+    <string>Maximum OpenGL version to attempt use (minimum 3.1 maximum 4.6).  Requires restart. Windows only.</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
@@ -9218,6 +9284,17 @@
     <key>Value</key>
     <integer>16</integer>
   </map>
+    <key>RenderReflectionProbeShowTransparent</key>
+    <map>
+        <key>Comment</key>
+        <string>Show reflection probes in the transparency debug view</string>
+        <key>Persist</key>
+        <integer>0</integer>
+        <key>Type</key>
+        <string>Boolean</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
     <key>RenderReflectionProbeVolumes</key>
     <map>
       <key>Comment</key>
@@ -9311,7 +9388,7 @@
     <key>RenderQualityPerformance</key>
     <map>
       <key>Comment</key>
-      <string>Which graphics settings you've chosen</string>
+      <string>Which graphics settings you've chosen. Don't use this setting to change quality directly from debug settings.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -9319,7 +9396,18 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
-  
+    <key>DebugQualityPerformance</key>
+    <map>
+        <key>Comment</key>
+        <string>Allows to change performance quality directly from debug settings.</string>
+        <key>Persist</key>
+        <integer>1</integer>
+        <key>Type</key>
+        <string>U32</string>
+        <key>Value</key>
+        <integer>1</integer>
+    </map>
+
   <key>RenderReflectionDetail</key>
     <map>
       <key>Comment</key>
@@ -10566,13 +10654,13 @@
   <key>SceneLoadRearMaxRadiusFraction</key>
   <map>
     <key>Comment</key>
-    <string>a percentage of draw distance beyond which all objects outside of view frustum will be unloaded, regardless of pixel threshold</string>
+    <string>a fraction of draw distance beyond which all objects outside of view frustum will be unloaded, regardless of pixel threshold</string>
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>75.0</real>
+    <real>0.75</real>
   </map>
     <key>SceneLoadRearPixelThreshold</key>
     <map>
@@ -10804,6 +10892,17 @@
       <string>S32</string>
       <key>Value</key>
       <integer>1</integer>
+    </map>
+    <key>GroupTitlesTagMode</key>
+    <map>
+      <key>Comment</key>
+      <string>Select Group Titles tag mode: 0 - no group tags, 1 - only my group tag, 2 - all group tags</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>2</integer>
     </map>
     <key>ShowAxes</key>
     <map>
@@ -11233,6 +11332,45 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>ShowPGClassifieds</key>
+    <map>
+      <key>Comment</key>
+      <string>Display results of find classifieds that are flagged as general</string>
+      <key>Persist</key>
+      <integer>1</integer>
+	  <key>HideFromEditor</key>
+	  <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>ShowMatureClassifieds</key>
+    <map>
+      <key>Comment</key>
+      <string>Display results of find classifieds that are flagged as moderate</string>
+      <key>Persist</key>
+      <integer>1</integer>
+	  <key>HideFromEditor</key>
+	  <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>ShowAdultClassifieds</key>
+    <map>
+      <key>Comment</key>
+      <string>Display results of find classifieds that are flagged as adult</string>
+      <key>Persist</key>
+      <integer>1</integer>
+	  <key>HideFromEditor</key>
+	  <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>ShowPGSims</key>
     <map>
       <key>Comment</key>
@@ -11271,6 +11409,54 @@
       <string>Boolean</string>
       <key>Value</key>
       <integer>0</integer>
+    </map>
+    <key>ShowPGEvents</key>
+    <map>
+      <key>Comment</key>
+      <string>Display results of find events that are flagged as general</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>HideFromEditor</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+    <key>ShowMatureGroups</key>
+    <map>
+      <key>Comment</key>
+      <string>Include groups that are flagged as mature to Search results</string>
+      <key>Persist</key>
+      <integer>1</integer>
+	  <key>HideFromEditor</key>
+	  <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>FindLandArea</key>
+    <map>
+      <key>Comment</key>
+      <string>Enables filtering of land search results by area</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>FindLandPrice</key>
+    <map>
+      <key>Comment</key>
+      <string>Enables filtering of land search results by price</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
     </map>
     <key>ShowNearClip</key>
     <map>
@@ -13188,9 +13374,9 @@
     <key>Use24HourClock</key>
     <map>
         <key>Comment</key>
-        <string>12 vs 24. At the moment only for region restart schedule floater</string>
+        <string>12 vs 24. At the moment coverage is partial</string>
         <key>Persist</key>
-        <integer>0</integer>
+        <integer>1</integer>
         <key>Type</key>
         <string>Boolean</string>
         <key>Value</key>
@@ -13929,13 +14115,13 @@
     <key>WatchdogEnabled</key>
     <map>
       <key>Comment</key>
-      <string>Controls whether the thread watchdog timer is activated. Value is boolean. Set to -1 to defer to built-in default.</string>
+      <string>Controls whether the thread watchdog timer is activated. Value is S32. Set to -1 to defer to built-in default.</string>
       <key>Persist</key>
       <integer>0</integer>
       <key>Type</key>
       <string>S32</string>
       <key>Value</key>
-      <integer>0</integer>
+      <integer>1</integer>
     </map>
     <key>WaterGLFogDensityScale</key>
     <map>
@@ -14747,7 +14933,7 @@
       <key>Type</key>
       <string>String</string>
       <key>Value</key>
-      <string>http://common-flash-secondlife-com.s3.amazonaws.com/viewer/v2.6/agni/404.html</string>
+      <string>https://common-flash-secondlife-com.s3.amazonaws.com/viewer/v2.6/agni/404.html</string>
     </map>
     <key>OpenIMOnVoice</key>
     <map>
@@ -16481,6 +16667,39 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <key>InventoryShowRecentTab</key>
+  <map>
+    <key>Comment</key>
+    <string>Show/hide Recent tab in the Inventory floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventoryShowWornTab</key>
+  <map>
+    <key>Comment</key>
+    <string>Show/hide Worn tab in the Inventory floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
+  <key>InventoryShowFavoritesTab</key>
+  <map>
+    <key>Comment</key>
+    <string>Show/hide Favorites tab in the Inventory floater</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+  </map>
   <key>StatsReportMaxDuration</key>
   <map>
     <key>Comment</key>
@@ -16634,6 +16853,17 @@
       <string>F32</string>
       <key>Value</key>
       <integer>2</integer>
+    </map>
+    <key>PurgeDiskCacheOnStartup</key>
+    <map>
+      <key>Comment</key>
+      <string>Whether or not to LRU purge the disk cache during startup on main thread</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
     </map>
 
     <!-- Black Dragon Debugs -->

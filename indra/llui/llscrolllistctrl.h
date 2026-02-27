@@ -66,95 +66,95 @@ public:
         static void declareValues();
     };
 
-	struct Contents : public LLInitParam::Block<Contents>
-	{
-		Multiple<LLScrollListColumn::Params>	columns;
-		Multiple<LLScrollListItem::Params>		rows;
+    struct Contents : public LLInitParam::Block<Contents>
+    {
+        Multiple<LLScrollListColumn::Params>    columns;
+        Multiple<LLScrollListItem::Params>      rows;
 
-		//Multiple<Contents>						groups;
+        //Multiple<Contents>                        groups;
 
-		Contents();
-	};
+        Contents();
+    };
 
-	// *TODO: Add callbacks to Params
-	typedef boost::function<void (void)> callback_t;
+    // *TODO: Add callbacks to Params
+    typedef std::function<void (void)> callback_t;
 
-	template<typename T> struct maximum
-	{
-		typedef T result_type;
+    template<typename T> struct maximum
+    {
+        typedef T result_type;
 
-		template<typename InputIterator>
-		T operator()(InputIterator first, InputIterator last) const
-		{
-			// If there are no slots to call, just return the
-			// default-constructed value
-			if(first == last ) return T();
-			T max_value = *first++;
-			while (first != last) {
-				if (max_value < *first)
-				max_value = *first;
-				++first;
-			}
+        template<typename InputIterator>
+        T operator()(InputIterator first, InputIterator last) const
+        {
+            // If there are no slots to call, just return the
+            // default-constructed value
+            if(first == last ) return T();
+            T max_value = *first++;
+            while (first != last) {
+                if (max_value < *first)
+                max_value = *first;
+                ++first;
+            }
 
-			return max_value;
-		}
-	};
+            return max_value;
+        }
+    };
 
-	
-	typedef boost::signals2::signal<S32 (S32,const LLScrollListItem*,const LLScrollListItem*),maximum<S32> > sort_signal_t;
-	typedef boost::signals2::signal<bool(const LLUUID& user_id)> is_friend_signal_t;
-	
-	struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
-	{
-		// behavioral flags
-		Optional<bool>	multi_select,
-						commit_on_keyboard_movement,
-						commit_on_selection_change,
-						mouse_wheel_opaque;
 
-		Optional<ESelectionType, SelectionTypeNames> selection_type;
+    typedef boost::signals2::signal<S32 (S32,const LLScrollListItem*,const LLScrollListItem*),maximum<S32> > sort_signal_t;
+    typedef boost::signals2::signal<bool(const LLUUID& user_id)> is_friend_signal_t;
 
-		// display flags
-		Optional<bool>	has_border,
-						draw_heading,
-						draw_stripes,
-						background_visible,
-						scroll_bar_bg_visible;
+    struct Params : public LLInitParam::Block<Params, LLUICtrl::Params>
+    {
+        // behavioral flags
+        Optional<bool>  multi_select,
+                        commit_on_keyboard_movement,
+                        commit_on_selection_change,
+                        mouse_wheel_opaque;
 
-		// layout
-		Optional<S32>	column_padding,
-						row_padding,
-						page_lines,
-						heading_height;
+        Optional<ESelectionType, SelectionTypeNames> selection_type;
 
-		// sort and search behavior
-		Optional<S32>	search_column,
-						sort_column;
-		Optional<bool>	sort_ascending,
-						can_sort; // whether user is allowed to sort
+        // display flags
+        Optional<bool>  has_border,
+                        draw_heading,
+                        draw_stripes,
+                        background_visible,
+                        scroll_bar_bg_visible;
 
-		// colors
-		Optional<LLUIColor>	fg_unselected_color,
-							fg_selected_color,
-							bg_selected_color,
-							fg_disable_color,
-							bg_writeable_color,
-							bg_readonly_color,
-							bg_stripe_color,
-							hovered_color,
-							highlighted_color,
-							scroll_bar_bg_color,
+        // layout
+        Optional<S32>   column_padding,
+                        row_padding,
+                        page_lines,
+                        heading_height;
+
+        // sort and search behavior
+        Optional<S32>   search_column,
+                        sort_column;
+        Optional<bool>  sort_ascending,
+                        can_sort; // whether user is allowed to sort
+
+        // colors
+        Optional<LLUIColor> fg_unselected_color,
+                            fg_selected_color,
+                            bg_selected_color,
+                            fg_disable_color,
+                            bg_writeable_color,
+                            bg_readonly_color,
+                            bg_stripe_color,
+                            hovered_color,
+                            highlighted_color,
+                            scroll_bar_bg_color,
 							//BD
 							bg_marked_color;
 
-		Optional<Contents> contents;
+        Optional<Contents> contents;
 
 		Optional<std::string> context_menu;
 
-		Optional<LLViewBorder::Params> border;
-		
-		Params();
-	};
+        Optional<LLViewBorder::Params> border;
+
+        Params();
+    };
 
 protected:
     friend class LLUICtrlFactory;
@@ -245,11 +245,11 @@ public:
 
 	S32				getHighlightedItemInx() const { return mHighlightedItem; } 
 	
-	void			setDoubleClickCallback( callback_t cb ) { mOnDoubleClickCallback = cb; }
-	void			setMaximumSelectCallback( callback_t cb) { mOnMaximumSelectCallback = cb; }
-	void			setSortChangedCallback( callback_t cb) 	{ mOnSortChangedCallback = cb; }
-	// Convenience function; *TODO: replace with setter above + boost::bind() in calling code
-	void			setDoubleClickCallback( boost::function<void (void* userdata)> cb, void* userdata) { mOnDoubleClickCallback = boost::bind(cb, userdata); }
+	void            setDoubleClickCallback( callback_t cb ) { mOnDoubleClickCallback = cb; }
+    void            setMaximumSelectCallback( callback_t cb) { mOnMaximumSelectCallback = cb; }
+    void            setSortChangedCallback( callback_t cb)  { mOnSortChangedCallback = cb; }
+    // Convenience function; *TODO: replace with setter above + boost::bind() in calling code
+    void            setDoubleClickCallback( std::function<void (void* userdata)> cb, void* userdata) { mOnDoubleClickCallback = std::bind(cb, userdata); }
 
 	void			swapWithNext(S32 index);
 	void			swapWithPrevious(S32 index);

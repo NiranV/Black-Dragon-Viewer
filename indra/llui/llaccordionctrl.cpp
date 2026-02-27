@@ -47,6 +47,8 @@ static constexpr F32 AUTO_SCROLL_RATE_ACCEL = 120.f;
 
 static LLDefaultChildRegistry::Register<LLAccordionCtrl>    t2("accordion");
 
+std::set<LLAccordionCtrl*> LLAccordionCtrl::sPendingArrange;
+
 LLAccordionCtrl::LLAccordionCtrl(const Params& params):LLPanel(params)
  , mFitParent(params.fit_parent)
  , mNoVisibleTabsOrigString(params.no_visible_tabs_text.initial_value().asString())
@@ -164,7 +166,11 @@ bool LLAccordionCtrl::postBuild()
 //---------------------------------------------------------------------------------
 LLAccordionCtrl::~LLAccordionCtrl()
 {
-  mAccordionTabs.clear();
+    if (mArrangePending)
+    {
+        sPendingArrange.erase(this);
+    }
+    mAccordionTabs.clear();
 }
 
 //---------------------------------------------------------------------------------
@@ -185,7 +191,7 @@ void LLAccordionCtrl::reshape(S32 width, S32 height, bool called_from_parent)
     // necessary text paddings can be set via h_pad and v_pad
     mNoVisibleTabsHelpText->setRect(getLocalRect());
 
-    arrange();
+    scheduleArrange();
 }
 
 //---------------------------------------------------------------------------------
@@ -328,7 +334,7 @@ void LLAccordionCtrl::addCollapsibleCtrl(LLAccordionCtrlTab* accordion_tab)
     mAccordionTabs.push_back(accordion_tab);
 
     accordion_tab->setDropDownStateChangedCallback( boost::bind(&LLAccordionCtrl::onCollapseCtrlCloseOpen, this, (S16)(mAccordionTabs.size() - 1)) );
-    arrange();
+    scheduleArrange();
 }
 
 void LLAccordionCtrl::removeCollapsibleCtrl(LLAccordionCtrlTab* accordion_tab)
@@ -497,6 +503,7 @@ void LLAccordionCtrl::arrangeMultiple()
 
 void LLAccordionCtrl::arrange()
 {
+    LL_PROFILE_ZONE_SCOPED;
     updateNoTabsHelpTextVisibility();
 
     if (mAccordionTabs.empty())
@@ -687,8 +694,9 @@ S32 LLAccordionCtrl::notifyParent(const LLSD& info)
         std::string str_action = info["action"];
         if (str_action == "size_changes")
         {
-            //
-            arrange();
+            // Multiple children can request an arrange,
+            // but only need to do it once so schedule it for later.
+            scheduleArrange();
             return 1;
         }
         if (str_action == "select_next")
@@ -929,4 +937,26 @@ void LLAccordionCtrl::collapseAllTabs()
         }
         arrange();
     }
+}
+
+void LLAccordionCtrl::scheduleArrange()
+{
+    if (!mArrangePending)
+    {
+        mArrangePending = true;
+        sPendingArrange.insert(this);
+    }
+}
+
+void LLAccordionCtrl::updateClass()
+{
+    for (LLAccordionCtrl* inst : sPendingArrange)
+    {
+        if (inst)
+        {
+            inst->mArrangePending = false;
+            inst->arrange();
+        }
+    }
+    sPendingArrange.clear();
 }

@@ -120,6 +120,8 @@ private:
     LLTextEditor*       mResaleText;
     LLTextBox*          mSaleToText;
     LLAccordionCtrl*    mAccordionCtrl;
+
+    boost::signals2::scoped_connection mAvatarNameCacheConnection;
 };
 
 #endif // LL_LLPANELPLACEPROFILE_H

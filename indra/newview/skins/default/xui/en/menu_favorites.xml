@@ -36,6 +36,9 @@
         <menu_item_call.on_click
          function="Favorites.DoToSelected"
          parameter="show_on_map" />
+        <menu_item_call.on_enable
+         function="Favorites.EnableSelected"
+         parameter="show_on_map" />
     </menu_item_call>
     <menu_item_call
      label="Copy SLurl"
@@ -43,6 +46,9 @@
      name="Copy slurl">
         <menu_item_call.on_click
          function="Favorites.DoToSelected"
+         parameter="copy_slurl" />
+        <menu_item_call.on_enable
+         function="Favorites.EnableSelected"
          parameter="copy_slurl" />
     </menu_item_call>
     <menu_item_call

@@ -37,7 +37,7 @@
 #include "llfloater.h"
 #include "lluistring.h"
 #include "llview.h"
-#include <boost/function.hpp>
+#include <boost/bind.hpp>
  //BD
 #include "llsearchablecontrol.h"
 
@@ -735,6 +735,8 @@ public:
     virtual bool    handleRightMouseUp  ( S32 x, S32 y, MASK mask );
 
     virtual bool    addChild            (LLView* view, S32 tab_group = 0);
+    /*virtual*/ void deleteAllChildren();
+    /*virtual*/ void removeChild(LLView* ctrl);
 
             LLHandle<LLContextMenu> getHandle() { return getDerivedHandle<LLContextMenu>(); }
 

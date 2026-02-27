@@ -141,7 +141,7 @@
 #include "llwindow.h"
 #include "llpathfindingmanager.h"
 #include "llstartup.h"
-#include "boost/unordered_map.hpp"
+#include <unordered_map>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/json.hpp>
@@ -168,7 +168,7 @@ using namespace LLAvatarAppearanceDefines;
 
 typedef LLPointer<LLViewerObject> LLViewerObjectPtr;
 
-static boost::unordered_map<std::string, LLStringExplicit> sDefaultItemLabels;
+static std::unordered_map<std::string, LLStringExplicit> sDefaultItemLabels;
 
 LLVOAvatar* find_avatar_from_object(LLViewerObject* object);
 LLVOAvatar* find_avatar_from_object(const LLUUID& object_id);
@@ -446,7 +446,23 @@ static LLSLMMenuUpdater* gSLMMenuUpdater = NULL;
 
 LLSLMMenuUpdater::LLSLMMenuUpdater()
 {
-    mMarketplaceListingsItem = gMenuHolder->getChild<LLView>("MarketplaceListings")->getHandle();
+    LLView* me_menu = gMenuHolder->findChild<LLView>("Me");
+    if (!me_menu)
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Can't find 'Me' menu in 'menu_viewer'" << LL_ENDL;
+        return;
+    }
+
+    LLView* marketplace_listings = me_menu->findChild<LLView>("MarketplaceListings");
+    if (!marketplace_listings)
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Can't find 'MarketplaceListings' in 'Me' menu" << LL_ENDL;
+        return;
+    }
+
+    mMarketplaceListingsItem = marketplace_listings->getHandle();
 }
 void LLSLMMenuUpdater::setMerchantMenu()
 {
@@ -458,7 +474,7 @@ void LLSLMMenuUpdater::setMerchantMenu()
     LLCommand* command = LLCommandManager::instance().getCommand("marketplacelistings");
     gToolBarView->enableCommand(command->id(), true);
 
-    const LLUUID marketplacelistings_id = gInventory.findCategoryUUIDForType(LLFolderType::FT_MARKETPLACE_LISTINGS);
+    const LLUUID marketplacelistings_id = gInventory.getMarketplaceListingsUUID();
     if (marketplacelistings_id.isNull())
     {
         U32 mkt_status = LLMarketplaceData::instance().getSLMStatus();
@@ -506,57 +522,59 @@ void check_merchant_status(bool force)
 
 void init_menus()
 {
-	// Initialize actions
-	initialize_menus();
+    LL_PROFILE_ZONE_SCOPED;
 
-	///
-	/// Popup menu
-	///
-	/// The popup menu is now populated by the show_context_menu()
-	/// method.
-	
-	LLMenuGL::Params menu_params;
-	menu_params.name = "Popup";
-	menu_params.visible = false;
-	gPopupMenuView = LLUICtrlFactory::create<LLMenuGL>(menu_params);
-	gMenuHolder->addChild( gPopupMenuView );
+    // Initialize actions
+    initialize_menus();
 
-	///
-	/// Context menus
-	///
+    ///
+    /// Popup menu
+    ///
+    /// The popup menu is now populated by the show_context_menu()
+    /// method.
 
-	const widget_registry_t& registry =
-		LLViewerMenuHolderGL::child_registry_t::instance();
-	gEditMenu = LLUICtrlFactory::createFromFile<LLMenuGL>("menu_edit.xml", gMenuHolder, registry);
-	gMenuAvatarSelf = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_avatar_self.xml", gMenuHolder, registry);
-	gMenuAvatarOther = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_avatar_other.xml", gMenuHolder, registry);
+    LLMenuGL::Params menu_params;
+    menu_params.name = "Popup";
+    menu_params.visible = false;
+    gPopupMenuView = LLUICtrlFactory::create<LLMenuGL>(menu_params);
+    gMenuHolder->addChild( gPopupMenuView );
 
-	gDetachScreenPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Detach HUD", true);
-	gDetachPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Detach", true);
+    ///
+    /// Context menus
+    ///
 
-	gMenuObject = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_object.xml", gMenuHolder, registry);
+    const widget_registry_t& registry =
+        LLViewerMenuHolderGL::child_registry_t::instance();
+    gEditMenu = LLUICtrlFactory::createFromFile<LLMenuGL>("menu_edit.xml", gMenuHolder, registry);
+    gMenuAvatarSelf = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_avatar_self.xml", gMenuHolder, registry);
+    gMenuAvatarOther = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_avatar_other.xml", gMenuHolder, registry);
 
-	gAttachScreenPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Attach HUD");
-	gAttachPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Attach");
+    gDetachScreenPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Detach HUD", true);
+    gDetachPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Detach", true);
 
-	gMenuAttachmentSelf = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_attachment_self.xml", gMenuHolder, registry);
-	gMenuAttachmentOther = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_attachment_other.xml", gMenuHolder, registry);
+    gMenuObject = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_object.xml", gMenuHolder, registry);
 
-	gDetachHUDAttSelfMenu = gMenuHolder->getChild<LLContextMenu>("Detach Self HUD", true);
-	gDetachAttSelfMenu = gMenuHolder->getChild<LLContextMenu>("Detach Self", true);
+    gAttachScreenPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Attach HUD");
+    gAttachPieMenu = gMenuHolder->getChild<LLContextMenu>("Object Attach");
 
-	gMenuLand = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_land.xml", gMenuHolder, registry);
+    gMenuAttachmentSelf = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_attachment_self.xml", gMenuHolder, registry);
+    gMenuAttachmentOther = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_attachment_other.xml", gMenuHolder, registry);
 
-	gMenuMuteParticle = LLUICtrlFactory::createFromFile<LLContextMenu>(
-		"menu_mute_particle.xml", gMenuHolder, registry);
+    gDetachHUDAttSelfMenu = gMenuHolder->getChild<LLContextMenu>("Detach Self HUD", true);
+    gDetachAttSelfMenu = gMenuHolder->getChild<LLContextMenu>("Detach Self", true);
 
-//	//BD - Pie Menu
+    gMenuLand = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_land.xml", gMenuHolder, registry);
+
+    gMenuMuteParticle = LLUICtrlFactory::createFromFile<LLContextMenu>(
+        "menu_mute_particle.xml", gMenuHolder, registry);
+
+    //	//BD - Pie Menu
 	///
 	/// Pie menus
 	///
@@ -593,58 +611,74 @@ void init_menus()
 
 	//BD
 	LLColor4 context_menu_color = LLUIColorTable::instance().getColor("MenuDefaultBgColor");
-	
-	gMenuAvatarSelf->setBackgroundColor( context_menu_color );
-	gMenuAvatarOther->setBackgroundColor( context_menu_color );
-	gMenuObject->setBackgroundColor( context_menu_color );
-	gMenuAttachmentSelf->setBackgroundColor( context_menu_color );
-	gMenuAttachmentOther->setBackgroundColor( context_menu_color );
 
-	gMenuLand->setBackgroundColor( context_menu_color );
+    
 
-	gPopupMenuView->setBackgroundColor( color );
+    gMenuAvatarSelf->setBackgroundColor( context_menu_color );
+    gMenuAvatarOther->setBackgroundColor( context_menu_color );
+    gMenuObject->setBackgroundColor( context_menu_color );
+    gMenuAttachmentSelf->setBackgroundColor( context_menu_color );
+    gMenuAttachmentOther->setBackgroundColor( context_menu_color );
 
-	LLView* menu_bar_holder = gViewerWindow->getRootView()->getChildView("menu_bar_holder");
+    gMenuLand->setBackgroundColor( context_menu_color );
 
-	gMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_viewer.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-	gMenuBarView->setRect(LLRect(0, menu_bar_holder->getRect().mTop, 0, menu_bar_holder->getRect().mTop - MENU_BAR_HEIGHT));
-	gMenuBarView->setBackgroundColor( color );
+    LLUIColor color = LLUIColorTable::instance().getColor( "MenuPopupBgColor" );
+    gPopupMenuView->setBackgroundColor( color );
 
-	menu_bar_holder->addChild(gMenuBarView);
+    // *TODO:Also fix cost in llfolderview.cpp for Inventory menus
+    const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
+    const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
 
-	// *TODO:Also fix cost in llfolderview.cpp for Inventory menus
-	const std::string texture_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost());
-	const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
-	const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
-	gMenuHolder->childSetLabelArg("Upload Image", "[COST]", texture_upload_cost_str);
-	gMenuHolder->childSetLabelArg("Upload Sound", "[COST]", sound_upload_cost_str);
-	gMenuHolder->childSetLabelArg("Upload Animation", "[COST]", animation_upload_cost_str);
+    LLView* main_upload_menu = gMenuHolder->findChild<LLView>("Upload");
+    if (!main_upload_menu)
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Can't find 'Upload' menu in 'menu_viewer'" << LL_ENDL;
+        return;
+    }
 
-	gDetachAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach", true);
-	gDetachHUDAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach HUD", true);
+    LLView* upload_sound = main_upload_menu->findChild<LLView>("Upload Sound");
+    if (!upload_sound)
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Can't find 'Upload Sound' menu item in 'Upload' menu" << LL_ENDL;
+        return;
+    }
+    upload_sound->setLabelArg("[COST]", sound_upload_cost_str);
 
-	// Don't display the Memory console menu if the feature is turned off
-	LLMenuItemCheckGL *memoryMenu = gMenuBarView->getChild<LLMenuItemCheckGL>("Memory", true);
-	if (memoryMenu)
-	{
-		memoryMenu->setVisible(false);
-	}
-	
-	gAttachSubMenu = gMenuBarView->findChildMenuByName("Attach Object", true);
-	gDetachSubMenu = gMenuBarView->findChildMenuByName("Detach Object", true);
+    LLView* upload_anim = main_upload_menu->findChild<LLView>("Upload Animation");
+    if (!upload_anim)
+    {
+        LLError::LLUserWarningMsg::showMissingFiles();
+        LL_ERRS() << "Can't find 'Upload Animation' menu item in 'Upload' menu" << LL_ENDL;
+        return;
+    }
+    upload_anim->setLabelArg("[COST]", animation_upload_cost_str);
 
-	gMenuBarView->createJumpKeys();
 
-	// Let land based option enable when parcel changes
-	gMenuParcelObserver = new LLMenuParcelObserver();
-	
-	// tooltips are on top of EVERYTHING, including menus
-	gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
+    gAttachSubMenu = gMenuBarView->findChildMenuByName("Attach Object", true);
+    gDetachSubMenu = gMenuBarView->findChildMenuByName("Detach Object", true);
 
-	//gMenuHolder->mMarketPlaceListings = gMenuHolder->getChild<LLView>("MarketplaceListings");
-	//gMenuHolder->mLandBuyPass = gMenuHolder->getChild<LLView>("Land Buy Pass");
-	//gMenuHolder->mLandBuy = gMenuHolder->getChild<LLView>("Land Buy");
-	//gMenuHolder->mBuyLand = gMenuHolder->getChild<LLView>("Buy Land");
+    gDetachAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach", true);
+    gDetachHUDAvatarMenu = gMenuHolder->getChild<LLMenuGL>("Avatar Detach HUD", true);
+
+    gMenuBarView->createJumpKeys();
+
+    // Let land based option enable when parcel changes
+    gMenuParcelObserver = new LLMenuParcelObserver();
+
+    gSLMMenuUpdater = new LLSLMMenuUpdater();
+
+    gLoginMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_login.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+    gLoginMenuBarView->arrangeAndClear();
+    LLRect menuBarRect = gLoginMenuBarView->getRect();
+    menuBarRect.setLeftTopAndSize(0, menu_bar_holder->getRect().getHeight(), menuBarRect.getWidth(), menuBarRect.getHeight());
+    gLoginMenuBarView->setRect(menuBarRect);
+    gLoginMenuBarView->setBackgroundColor( color );
+    menu_bar_holder->addChild(gLoginMenuBarView);
+
+    // tooltips are on top of EVERYTHING, including menus
+    gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
 }
 
 ///////////////////
@@ -3146,11 +3180,45 @@ void handle_object_show_original()
     show_item_original(object->getAttachmentItemID());
 }
 
+void handle_object_set_favorite(const LLSD& userdata)
+{
+    LLViewerObject* object = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+    if (!object)
+    {
+        return;
+    }
+    LLViewerObject *parent = (LLViewerObject*)object->getParent();
+    while (parent)
+    {
+        if(parent->isAvatar())
+        {
+            break;
+        }
+        object = parent;
+        parent = (LLViewerObject*)parent->getParent();
+    }
+    if (!object || object->isAvatar())
+    {
+        return;
+    }
+
+    LLUUID item_id = gInventory.getLinkedItemID(object->getAttachmentItemID());
+
+    std::string action = userdata.asString();
+    if (action == "Add")
+    {
+        set_favorite(item_id, true);
+    }
+    if (action == "Remove")
+    {
+        set_favorite(item_id, false);
+    }
+}
 
 static void init_default_item_label(LLUICtrl* ctrl)
 {
     const std::string& item_name = ctrl->getName();
-    boost::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
+    std::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
     if (it == sDefaultItemLabels.end())
     {
         // *NOTE: This will not work for items of type LLMenuItemCheckGL because they return boolean value
@@ -3165,12 +3233,12 @@ static void init_default_item_label(LLUICtrl* ctrl)
 
 static LLStringExplicit get_default_item_label(const std::string& item_name)
 {
-	LLStringExplicit res("");
-	auto it = sDefaultItemLabels.find(item_name);
-	if (it != sDefaultItemLabels.end())
-	{
-		res = it->second;
-	}
+    LLStringExplicit res("");
+    std::unordered_map<std::string, LLStringExplicit>::iterator it = sDefaultItemLabels.find(item_name);
+    if (it != sDefaultItemLabels.end())
+    {
+        res = it->second;
+    }
 
     return res;
 }
@@ -3201,6 +3269,41 @@ bool enable_object_touch(LLUICtrl* ctrl)
 
     return new_value;
 };
+
+bool enable_object_favorite(const LLSD& userdata)
+{
+    LLViewerObject* object = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+    if (!object)
+    {
+        return false;
+    }
+    LLViewerObject* parent = (LLViewerObject*)object->getParent();
+    while (parent)
+    {
+        if (parent->isAvatar())
+        {
+            break;
+        }
+        object = parent;
+        parent = (LLViewerObject*)parent->getParent();
+    }
+    if (!object || object->isAvatar())
+    {
+        return false;
+    }
+
+    std::string action = userdata.asString();
+    LLUUID item_id = gInventory.getLinkedItemID(object->getAttachmentItemID());
+    if (action == "Add")
+    {
+        return !get_is_favorite(item_id);
+    }
+    if (action == "Remove")
+    {
+        return get_is_favorite(item_id);
+    }
+    return false;
+}
 
 //void label_touch(std::string& label, void*)
 //{
@@ -6706,7 +6809,7 @@ bool handle_zoom_to_object(const LLUUID& object_id)
 
     LLViewerObject* object = gObjectList.findObject(object_id);
 
-    if (object)
+    if (object && object->isReachable())
     {
         gAgentCamera.setFocusOnAvatar(false, ANIMATE);
 
@@ -6857,11 +6960,8 @@ class LLAvatarEnableResetSkeleton : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
     {
-        if (LLVOAvatar* avatar = find_avatar_from_object(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject()))
-        {
-            return true;
-        }
-        return false;
+        LLViewerObject* obj = LLSelectMgr::getInstance()->getSelection()->getPrimaryObject();
+        return obj && obj->getAvatar();
     }
 };
 
@@ -8906,6 +9006,12 @@ LLVOAvatar* find_avatar_from_object(LLViewerObject* object)
         }
         else if( !object->isAvatar() )
         {
+            // Check for animesh objects (animated objects with a control avatar)
+            LLVOAvatar* avatar = object->getAvatar();
+            if (avatar)
+            {
+                return avatar;
+            }
             object = NULL;
         }
     }
@@ -9184,6 +9290,17 @@ class LLViewHighlightTransparent : public view_listener_t
     {
         LLDrawPoolAlpha::sShowDebugAlpha = !LLDrawPoolAlpha::sShowDebugAlpha;
 
+        // invisible objects skip building their render batches unless sShowDebugAlpha is true, so rebuild batches whenever toggling this flag
+        gPipeline.rebuildDrawInfo();
+        return true;
+    }
+};
+
+class LLViewHighlightTransparentProbe : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        gSavedSettings.setBOOL("RenderReflectionProbeShowTransparent", !gSavedSettings.getBOOL("RenderReflectionProbeShowTransparent"));
         // invisible objects skip building their render batches unless sShowDebugAlpha is true, so rebuild batches whenever toggling this flag
         gPipeline.rebuildDrawInfo();
         return true;
@@ -9695,17 +9812,6 @@ class LLWorldEnableEnvPreset : public view_listener_t
     }
 };
 
-
-/// Post-Process callbacks
-class LLWorldPostProcess : public view_listener_t
-{
-    bool handleEvent(const LLSD& userdata)
-    {
-        LLFloaterReg::showInstance("env_post_process");
-        return true;
-    }
-};
-
 class LLWorldCheckBanLines : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -10180,36 +10286,34 @@ void initialize_spellcheck_menu()
 
 void initialize_menus()
 {
-	// A parameterized event handler used as ctrl-8/9/0 zoom controls below.
-	class LLZoomer : public view_listener_t
-	{
-	public:
-		// The "mult" parameter says whether "val" is a multiplier or used to set the value.
-		LLZoomer(F32 val, bool mult=true) : mVal(val), mMult(mult) {}
-		bool handleEvent(const LLSD& userdata)
-		{
-			F32 new_fov_rad = mMult ? LLViewerCamera::getInstance()->getDefaultFOV() * mVal : mVal;
-			LLViewerCamera::getInstance()->setDefaultFOV(new_fov_rad);
-			gSavedSettings.setF32("CameraAngle", LLViewerCamera::getInstance()->getView()); // setView may have clamped it.
-			return true;
-		}
-	private:
-		F32 mVal;
-		bool mMult;
-	};
-	
-	LLUICtrl::EnableCallbackRegistry::Registrar& enable = LLUICtrl::EnableCallbackRegistry::currentRegistrar();
-	LLUICtrl::CommitCallbackRegistry::Registrar& commit = LLUICtrl::CommitCallbackRegistry::currentRegistrar();
-	
-	// Generic enable and visible
-	// Don't prepend MenuName.Foo because these can be used in any menu.
-	enable.add("IsGodCustomerService", boost::bind(&is_god_customer_service));
+    LL_PROFILE_ZONE_SCOPED;
 
-#if AL_VIEWER_EVENT_RECORDER
-	enable.add("displayViewerEventRecorderMenuItems",boost::bind(&LLViewerEventRecorder::displayViewerEventRecorderMenuItems,&LLViewerEventRecorder::instance()));
-#else
-	enable.add("displayViewerEventRecorderMenuItems", boost::bind(&always_disable_menu));
-#endif
+    // A parameterized event handler used as ctrl-8/9/0 zoom controls below.
+    class LLZoomer : public view_listener_t
+    {
+    public:
+        // The "mult" parameter says whether "val" is a multiplier or used to set the value.
+        LLZoomer(F32 val, bool mult=true) : mVal(val), mMult(mult) {}
+        bool handleEvent(const LLSD& userdata)
+        {
+            F32 new_fov_rad = mMult ? LLViewerCamera::getInstance()->getDefaultFOV() * mVal : mVal;
+            LLViewerCamera::getInstance()->setDefaultFOV(new_fov_rad);
+            gSavedSettings.setF32("CameraAngle", LLViewerCamera::getInstance()->getView()); // setView may have clamped it.
+            return true;
+        }
+    private:
+        F32 mVal;
+        bool mMult;
+    };
+
+    LLUICtrl::EnableCallbackRegistry::Registrar& enable = LLUICtrl::EnableCallbackRegistry::currentRegistrar();
+    LLUICtrl::CommitCallbackRegistry::Registrar& commit = LLUICtrl::CommitCallbackRegistry::currentRegistrar();
+
+    // Generic enable and visible
+    // Don't prepend MenuName.Foo because these can be used in any menu.
+    enable.add("IsGodCustomerService", boost::bind(&is_god_customer_service));
+
+    enable.add("displayViewerEventRecorderMenuItems",boost::bind(&LLViewerEventRecorder::displayViewerEventRecorderMenuItems,&LLViewerEventRecorder::instance()));
 
 	view_listener_t::addEnable(new LLUploadCostCalculator(), "Upload.CalculateCosts");
 
@@ -10236,64 +10340,64 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEnableEditPhysics(), "Edit.EnableEditPhysics");
 	commit.add("CustomizeAvatar", boost::bind(&handle_customize_avatar));
     commit.add("NowWearing", boost::bind(&handle_now_wearing));
-	commit.add("EditOutfit", boost::bind(&handle_edit_outfit));
-	commit.add("EditShape", boost::bind(&handle_edit_shape));
-	commit.add("HoverHeight", boost::bind(&handle_hover_height));
-	commit.add("EditPhysics", boost::bind(&handle_edit_physics));
+    commit.add("EditOutfit", boost::bind(&handle_edit_outfit));
+    commit.add("EditShape", boost::bind(&handle_edit_shape));
+    commit.add("HoverHeight", boost::bind(&handle_hover_height));
+    commit.add("EditPhysics", boost::bind(&handle_edit_physics));
 
-	// View menu
-	view_listener_t::addMenu(new LLViewMouselook(), "View.Mouselook");
-	view_listener_t::addMenu(new LLViewJoystickFlycam(), "View.JoystickFlycam");
-	view_listener_t::addMenu(new LLViewResetView(), "View.ResetView");
-	view_listener_t::addMenu(new LLViewLookAtLastChatter(), "View.LookAtLastChatter");
-	view_listener_t::addMenu(new LLViewShowHoverTips(), "View.ShowHoverTips");
-	view_listener_t::addMenu(new LLViewHighlightTransparent(), "View.HighlightTransparent");
-	view_listener_t::addMenu(new LLViewToggleRenderType(), "View.ToggleRenderType");
-	view_listener_t::addMenu(new LLViewShowHUDAttachments(), "View.ShowHUDAttachments");
-	//BD
+    // View menu
+    view_listener_t::addMenu(new LLViewMouselook(), "View.Mouselook");
+    view_listener_t::addMenu(new LLViewJoystickFlycam(), "View.JoystickFlycam");
+    view_listener_t::addMenu(new LLViewResetView(), "View.ResetView");
+    view_listener_t::addMenu(new LLViewLookAtLastChatter(), "View.LookAtLastChatter");
+    view_listener_t::addMenu(new LLViewShowHoverTips(), "View.ShowHoverTips");
+    view_listener_t::addMenu(new LLViewHighlightTransparent(), "View.HighlightTransparent");
+    view_listener_t::addMenu(new LLViewHighlightTransparentProbe(), "View.HighlightTransparentProbe");
+    view_listener_t::addMenu(new LLViewToggleRenderType(), "View.ToggleRenderType");
+    view_listener_t::addMenu(new LLViewShowHUDAttachments(), "View.ShowHUDAttachments");
+    //BD
 	view_listener_t::addMenu(new LLZoomer(1.1f), "View.ZoomOut");
 	view_listener_t::addMenu(new LLZoomer(0.9f), "View.ZoomIn");
-	view_listener_t::addMenu(new LLZoomer(DEFAULT_FIELD_OF_VIEW, false), "View.ZoomDefault");
-	view_listener_t::addMenu(new LLViewDefaultUISize(), "View.DefaultUISize");
-	view_listener_t::addMenu(new LLViewToggleUI(), "View.ToggleUI");
+    view_listener_t::addMenu(new LLZoomer(DEFAULT_FIELD_OF_VIEW, false), "View.ZoomDefault");
+    view_listener_t::addMenu(new LLViewDefaultUISize(), "View.DefaultUISize");
+    view_listener_t::addMenu(new LLViewToggleUI(), "View.ToggleUI");
 
-	view_listener_t::addMenu(new LLViewEnableMouselook(), "View.EnableMouselook");
-	view_listener_t::addMenu(new LLViewEnableJoystickFlycam(), "View.EnableJoystickFlycam");
-	view_listener_t::addMenu(new LLViewEnableLastChatter(), "View.EnableLastChatter");
+    view_listener_t::addMenu(new LLViewEnableMouselook(), "View.EnableMouselook");
+    view_listener_t::addMenu(new LLViewEnableJoystickFlycam(), "View.EnableJoystickFlycam");
+    view_listener_t::addMenu(new LLViewEnableLastChatter(), "View.EnableLastChatter");
 
-	view_listener_t::addMenu(new LLViewCheckJoystickFlycam(), "View.CheckJoystickFlycam");
-	view_listener_t::addMenu(new LLViewCheckShowHoverTips(), "View.CheckShowHoverTips");
-	view_listener_t::addMenu(new LLViewCheckHighlightTransparent(), "View.CheckHighlightTransparent");
-	view_listener_t::addMenu(new LLViewCheckRenderType(), "View.CheckRenderType");
-	view_listener_t::addMenu(new LLViewStatusAway(), "View.Status.CheckAway");
-	view_listener_t::addMenu(new LLViewStatusDoNotDisturb(), "View.Status.CheckDoNotDisturb");
-	view_listener_t::addMenu(new LLViewCheckHUDAttachments(), "View.CheckHUDAttachments");
-	
-	//Communicate Nearby chat
-	view_listener_t::addMenu(new LLCommunicateNearbyChat(), "Communicate.NearbyChat");
+    view_listener_t::addMenu(new LLViewCheckJoystickFlycam(), "View.CheckJoystickFlycam");
+    view_listener_t::addMenu(new LLViewCheckShowHoverTips(), "View.CheckShowHoverTips");
+    view_listener_t::addMenu(new LLViewCheckHighlightTransparent(), "View.CheckHighlightTransparent");
+    view_listener_t::addMenu(new LLViewCheckRenderType(), "View.CheckRenderType");
+    view_listener_t::addMenu(new LLViewStatusAway(), "View.Status.CheckAway");
+    view_listener_t::addMenu(new LLViewStatusDoNotDisturb(), "View.Status.CheckDoNotDisturb");
+    view_listener_t::addMenu(new LLViewCheckHUDAttachments(), "View.CheckHUDAttachments");
 
-	// World menu
-	view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");
-	view_listener_t::addMenu(new LLWorldCreateLandmark(), "World.CreateLandmark");
-	view_listener_t::addMenu(new LLWorldPlaceProfile(), "World.PlaceProfile");
-	view_listener_t::addMenu(new LLWorldSetHomeLocation(), "World.SetHomeLocation");
-	view_listener_t::addMenu(new LLWorldTeleportHome(), "World.TeleportHome");
-	view_listener_t::addMenu(new LLWorldSetAway(), "World.SetAway");
-	view_listener_t::addMenu(new LLWorldSetDoNotDisturb(), "World.SetDoNotDisturb");
-	view_listener_t::addMenu(new LLWorldLindenHome(), "World.LindenHome");
+    //Communicate Nearby chat
+    view_listener_t::addMenu(new LLCommunicateNearbyChat(), "Communicate.NearbyChat");
 
-	view_listener_t::addMenu(new LLWorldEnableCreateLandmark(), "World.EnableCreateLandmark");
-	view_listener_t::addMenu(new LLWorldEnableSetHomeLocation(), "World.EnableSetHomeLocation");
-	view_listener_t::addMenu(new LLWorldEnableTeleportHome(), "World.EnableTeleportHome");
-	view_listener_t::addMenu(new LLWorldEnableBuyLand(), "World.EnableBuyLand");
+    // World menu
+    view_listener_t::addMenu(new LLWorldAlwaysRun(), "World.AlwaysRun");
+    view_listener_t::addMenu(new LLWorldCreateLandmark(), "World.CreateLandmark");
+    view_listener_t::addMenu(new LLWorldPlaceProfile(), "World.PlaceProfile");
+    view_listener_t::addMenu(new LLWorldSetHomeLocation(), "World.SetHomeLocation");
+    view_listener_t::addMenu(new LLWorldTeleportHome(), "World.TeleportHome");
+    view_listener_t::addMenu(new LLWorldSetAway(), "World.SetAway");
+    view_listener_t::addMenu(new LLWorldSetDoNotDisturb(), "World.SetDoNotDisturb");
+    view_listener_t::addMenu(new LLWorldLindenHome(), "World.LindenHome");
 
-	view_listener_t::addMenu(new LLWorldCheckAlwaysRun(), "World.CheckAlwaysRun");
-	
-	view_listener_t::addMenu(new LLWorldEnvSettings(), "World.EnvSettings");
-	view_listener_t::addMenu(new LLWorldEnableEnvSettings(), "World.EnableEnvSettings");
-	view_listener_t::addMenu(new LLWorldEnvPreset(), "World.EnvPreset");
-	view_listener_t::addMenu(new LLWorldEnableEnvPreset(), "World.EnableEnvPreset");
-	view_listener_t::addMenu(new LLWorldPostProcess(), "World.PostProcess");
+    view_listener_t::addMenu(new LLWorldEnableCreateLandmark(), "World.EnableCreateLandmark");
+    view_listener_t::addMenu(new LLWorldEnableSetHomeLocation(), "World.EnableSetHomeLocation");
+    view_listener_t::addMenu(new LLWorldEnableTeleportHome(), "World.EnableTeleportHome");
+    view_listener_t::addMenu(new LLWorldEnableBuyLand(), "World.EnableBuyLand");
+
+    view_listener_t::addMenu(new LLWorldCheckAlwaysRun(), "World.CheckAlwaysRun");
+
+    view_listener_t::addMenu(new LLWorldEnvSettings(), "World.EnvSettings");
+    view_listener_t::addMenu(new LLWorldEnableEnvSettings(), "World.EnableEnvSettings");
+    view_listener_t::addMenu(new LLWorldEnvPreset(), "World.EnvPreset");
+    view_listener_t::addMenu(new LLWorldEnableEnvPreset(), "World.EnableEnvPreset");
     view_listener_t::addMenu(new LLWorldCheckBanLines() , "World.CheckBanLines");
     view_listener_t::addMenu(new LLWorldShowBanLines() , "World.ShowBanLines");
 
@@ -10603,6 +10707,7 @@ void initialize_menus()
     view_listener_t::addMenu(new LLObjectBuild(), "Object.Build");
     commit.add("Object.Touch", boost::bind(&handle_object_touch));
     commit.add("Object.ShowOriginal", boost::bind(&handle_object_show_original));
+    commit.add("Object.SetFavorite", boost::bind(&handle_object_set_favorite, _2));
     commit.add("Object.SitOrStand", boost::bind(&handle_object_sit_or_stand));
     commit.add("Object.Delete", boost::bind(&handle_object_delete));
     view_listener_t::addMenu(new LLObjectAttachToAvatar(true), "Object.AttachToAvatar");
@@ -10631,6 +10736,7 @@ void initialize_menus()
     enable.add("Object.EnableEditGLTFMaterial", boost::bind(&enable_object_edit_gltf_material));
     enable.add("Object.EnableOpen", boost::bind(&enable_object_open));
     enable.add("Object.EnableTouch", boost::bind(&enable_object_touch, _1));
+    enable.add("Object.EnableFavorites", boost::bind(&enable_object_favorite, _2));
     enable.add("Object.EnableDelete", boost::bind(&enable_object_delete));
     enable.add("Object.EnableWear", boost::bind(&object_is_wearable));
 

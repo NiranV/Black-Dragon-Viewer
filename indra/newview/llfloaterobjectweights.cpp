@@ -215,7 +215,7 @@ void LLFloaterObjectWeights::draw()
             toggleRenderLoadingIndicators(false);
         }
         mTrianglesShown->setText(llformat("%d", total_tris));
-        mPixelArea->setText(llformat("%d", pixel_area));
+        mPixelArea->setText(llformat("%ld", (S64)pixel_area)); // value capped at 10M
     }
     LLFloater::draw();
 }

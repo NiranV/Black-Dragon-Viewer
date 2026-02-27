@@ -49,6 +49,7 @@
 #include "llthreadsafequeue.h"
 #include "stringize.h"
 #include "llframetimer.h"
+#include "llwatchdog.h"
 
 // System includes
 #include <commdlg.h>
@@ -364,7 +365,8 @@ static LLMonitorInfo sMonitorInfo;
 // the containing class a friend.
 struct LLWindowWin32::LLWindowWin32Thread : public LL::ThreadPool
 {
-    static const int MAX_QUEUE_SIZE = 2048;
+    static constexpr int MAX_QUEUE_SIZE = 2048;
+    static constexpr F32 WINDOW_TIMEOUT_SEC = 90.f;
 
     LLThreadSafeQueue<MSG> mMessageQueue;
 
@@ -426,6 +428,50 @@ struct LLWindowWin32::LLWindowWin32Thread : public LL::ThreadPool
         PostMessage(windowHandle, WM_POST_FUNCTION_, wparam, LPARAM(ptr));
     }
 
+    // Call from main thread.
+    void initTimeout()
+    {
+        // post into thread's queue to avoid threading issues
+        post([this]()
+        {
+            if (!mWindowTimeout)
+            {
+                mWindowTimeout = std::make_unique<LLWatchdogTimeout>("WindowThread");
+                // supposed to be executed within run(),
+                // so no point checking if thread is alive
+                resumeTimeout("TimeoutInit");
+            }
+        });
+    }
+private:
+    // These timeout related functions are strictly for the thread.
+    void resumeTimeout(std::string_view state)
+    {
+        if (mWindowTimeout)
+        {
+            mWindowTimeout->setTimeout(WINDOW_TIMEOUT_SEC);
+            mWindowTimeout->start(state);
+        }
+    }
+
+    void pauseTimeout()
+    {
+        if (mWindowTimeout)
+        {
+            mWindowTimeout->stop();
+        }
+    }
+
+    void pingTimeout(std::string_view state)
+    {
+        if (mWindowTimeout)
+        {
+            mWindowTimeout->setTimeout(WINDOW_TIMEOUT_SEC);
+            mWindowTimeout->ping(state);
+        }
+    }
+
+public:
     using FuncType = std::function<void()>;
     // call GetMessage() and pull enqueue messages for later processing
     HWND mWindowHandleThrd = NULL;
@@ -436,6 +482,8 @@ struct LLWindowWin32::LLWindowWin32Thread : public LL::ThreadPool
     bool mGLReady = false;
     bool mGotGLBuffer = false;
     LLAtomicBool mDeleteOnExit = false;
+private:
+    std::unique_ptr<LLWatchdogTimeout> mWindowTimeout;
 };
 
 
@@ -450,6 +498,7 @@ LLWindowWin32::LLWindowWin32(LLWindowCallbacks* callbacks,
                              F32 max_gl_version)
     :
     LLWindow(callbacks, fullscreen, flags),
+    mAbsoluteCursorPosition(false),
     mMaxGLVersion(max_gl_version),
     mMaxCores(max_cores)
 {
@@ -2552,10 +2601,13 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
         case WM_CLOSE:
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_WIN32("mwp - WM_CLOSE");
+            // todo: WM_CLOSE can be caused by user and by task manager,
+            // distinguish these cases.
+            // For now assume it is always user.
             window_imp->post([=]()
                 {
                     // Will the app allow the window to close?
-                    if (window_imp->mCallbacks->handleCloseRequest(window_imp))
+                    if (window_imp->mCallbacks->handleCloseRequest(window_imp, true))
                     {
                         // Get the app to initiate cleanup.
                         window_imp->mCallbacks->handleQuit(window_imp);
@@ -2571,6 +2623,47 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
             {
                 PostQuitMessage(0);  // Posts WM_QUIT with an exit code of 0
             }
+            return 0;
+        }
+        case WM_QUERYENDSESSION:
+        {
+            // Generally means that OS is going to shut down or user is going to log off.
+            // Can use ShutdownBlockReasonCreate here.
+            LL_INFOS("Window") << "Received WM_QUERYENDSESSION with wParam: " << (U32)w_param << " lParam: " << (U32)l_param << LL_ENDL;
+            return TRUE; // 1 = ok to end session. 0 no longer works by itself, use ShutdownBlockReasonCreate
+        }
+        case WM_ENDSESSION:
+        {
+            // OS session is shutting down, initiate cleanup.
+            // Comes after WM_QUERYENDSESSION
+            LL_PROFILE_ZONE_NAMED_CATEGORY_WIN32("mwp - WM_ENDSESSION");
+            LL_INFOS("Window") << "Received WM_ENDSESSION with wParam: " << (U32)w_param << " lParam: " << (U32)l_param << LL_ENDL;
+            unsigned int end_session_flags = (U32)l_param;
+
+            if (w_param == TRUE // if true, session is ending
+                || end_session_flags == 0 // not possible to determine type of the event
+                // || (end_session_flags & ENDSESSION_CLOSEAPP)) system update or low resources, must be acompanied by w_param == TRUE
+                || (end_session_flags & ENDSESSION_CRITICAL) // will shutdown regardless of app state
+                || (end_session_flags & ENDSESSION_LOGOFF)) // logoff, can delay shutdown
+            {
+                window_imp->post([=]()
+                {
+                    // Check if app needs cleanup or can be closed immediately.
+                    if (window_imp->mCallbacks->handleSessionExit(window_imp))
+                    {
+                        // Get the app to initiate cleanup.
+                        window_imp->mCallbacks->handleQuit(window_imp);
+                    }
+                });
+                // Give app a second to finish up. That's not enough for a clean exit,
+                // but better than nothing.
+                // Todo: sync this better, some kind of waitForResult? Can't wait forever,
+                // but for ENDSESSION_LOGOFF can potentially use ShutdownBlockReasonCreate
+                // for a bigger delay.
+                ms_sleep(1000);
+            }
+            // Don't need to post quit or destroy window,
+            // if session is ending OS is going to take care of it.
             return 0;
         }
         case WM_COMMAND:
@@ -3197,6 +3290,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 
                         prev_absolute_x = absolute_x;
                         prev_absolute_y = absolute_y;
+                        window_imp->mAbsoluteCursorPosition = true;
                     }
                     else
                     {
@@ -3213,6 +3307,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
                             window_imp->mRawMouseDelta.mX += (S32)round((F32)raw->data.mouse.lLastX * (F32)speed / DEFAULT_SPEED);
                             window_imp->mRawMouseDelta.mY -= (S32)round((F32)raw->data.mouse.lLastY * (F32)speed / DEFAULT_SPEED);
                         }
+                        window_imp->mAbsoluteCursorPosition = false;
                     }
                 }
             }
@@ -4637,6 +4732,11 @@ bool LLWindowWin32::getInputDevices(U32 device_type_filter,
     return false;
 }
 
+void LLWindowWin32::initWatchdog()
+{
+    mWindowThread->initTimeout();
+}
+
 F32 LLWindowWin32::getSystemUISize()
 {
     F32 scale_value = 1.f;
@@ -4774,6 +4874,8 @@ void LLWindowWin32::LLWindowWin32Thread::checkDXMem()
         return;
     }
 
+    pauseTimeout();
+
     IDXGIFactory4* p_factory = nullptr;
 
     HRESULT res = CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&p_factory);
@@ -4877,6 +4979,8 @@ void LLWindowWin32::LLWindowWin32Thread::checkDXMem()
     }
 
     mGotGLBuffer = true;
+
+    resumeTimeout("checkDXMem");
 }
 
 void LLWindowWin32::LLWindowWin32Thread::run()
@@ -4892,6 +4996,9 @@ void LLWindowWin32::LLWindowWin32Thread::run()
         timeBeginPeriod(llclamp((U32) 1, tc.wPeriodMin, tc.wPeriodMax));
     }
 
+    // Normally won't exist yet, but in case of re-init, make sure it's cleaned up
+    resumeTimeout("WindowThread");
+
     while (! getQueue().done())
     {
         LL_PROFILE_ZONE_SCOPED_CATEGORY_WIN32;
@@ -4901,6 +5008,7 @@ void LLWindowWin32::LLWindowWin32Thread::run()
 
         if (mWindowHandleThrd != 0)
         {
+            pingTimeout("messages");
             MSG msg;
             BOOL status;
             if (mhDCThrd == 0)
@@ -4928,6 +5036,7 @@ void LLWindowWin32::LLWindowWin32Thread::run()
 
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_WIN32("w32t - Function Queue");
+            pingTimeout("queue");
             logger.onChange("runPending()");
             //process any pending functions
             getQueue().runPending();
@@ -4942,6 +5051,7 @@ void LLWindowWin32::LLWindowWin32Thread::run()
 #endif
     }
 
+    pauseTimeout();
     destroyWindow();
 
     if (mDeleteOnExit)

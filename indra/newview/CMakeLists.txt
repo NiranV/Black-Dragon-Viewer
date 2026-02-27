@@ -50,7 +50,7 @@ include(VulkanGltf)
 include(ZLIBNG)
 include(LLPrimitive)
 
-if (NOT HAVOK_TPV)
+if (HAVOK)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
 #if(USE_FMODSTUDIO)
@@ -80,7 +80,7 @@ if (NOT HAVOK_TPV)
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif (NOT HAVOK_TPV)
+endif ()
 
 set(viewer_SOURCE_FILES
 #	Black Dragon
@@ -248,6 +248,7 @@ set(viewer_SOURCE_FILES
     llfloatercreatelandmark.cpp
     llfloaterdeleteprefpreset.cpp
     llfloaterdestinations.cpp
+    llfloaterdirectory.cpp
     llfloaterdisplayname.cpp
     llfloatereditenvironmentbase.cpp
     llfloatereditextdaycycle.cpp
@@ -309,7 +310,6 @@ set(viewer_SOURCE_FILES
     llfloaterpay.cpp
     llfloaterperformance.cpp
     llfloaterperms.cpp
-    llfloaterpostprocess.cpp
     llfloaterprofile.cpp
     llfloaterpreference.cpp
     llfloaterpreviewtrash.cpp
@@ -331,7 +331,6 @@ set(viewer_SOURCE_FILES
     llfloatersidepanelcontainer.cpp
     llfloaterslapptest.cpp
     llfloatersnapshot.cpp
-    llfloatersounddevices.cpp
     llfloaterspellchecksettings.cpp
     llfloatertelehub.cpp
     llfloatertestinspectors.cpp
@@ -343,7 +342,6 @@ set(viewer_SOURCE_FILES
     llfloatertranslationsettings.cpp
     llfloateruipreview.cpp
     llfloaterurlentry.cpp
-    llfloatervoiceeffect.cpp
     llfloatervoicevolume.cpp
     llfloaterwateradjust.cpp
     llfloaterwebcontent.cpp
@@ -447,6 +445,7 @@ set(viewer_SOURCE_FILES
     llfloaterimnearbychat.cpp
     llfloaterimnearbychathandler.cpp
     llfloaterimnearbychatlistener.cpp
+    llnearbyvoicemoderation.cpp
     llnetmap.cpp
     llnotificationalerthandler.cpp
     llnotificationgrouphandler.cpp
@@ -469,11 +468,20 @@ set(viewer_SOURCE_FILES
     llpanelblockedlist.cpp
     llpanelclassified.cpp
     llpanelcontents.cpp
+    llpaneldirbrowser.cpp
+    llpaneldirclassified.cpp
+    llpaneldirevents.cpp
+    llpaneldirgroups.cpp
+    llpaneldirland.cpp
+    llpaneldirpeople.cpp
+    llpaneldirplaces.cpp
+    llpaneldirweb.cpp
     llpaneleditsky.cpp
     llpaneleditwater.cpp
     llpaneleditwearable.cpp
     llpanelemojicomplete.cpp
     llpanelenvironment.cpp
+    llpaneleventinfo.cpp
     llpanelexperiencelisteditor.cpp
     llpanelexperiencelog.cpp
     llpanelexperiencepicker.cpp
@@ -525,7 +533,8 @@ set(viewer_SOURCE_FILES
     llpanelpulldown.cpp
     llpanelteleporthistory.cpp
     llpaneltiptoast.cpp
-    llpanelvoiceeffect.cpp
+    llpanelpulldown.cpp
+    llpanelvoicedevicesettings.cpp
     llpanelvolume.cpp
     llpanelvolumepulldown.cpp
     llpanelwearing.cpp
@@ -745,7 +754,6 @@ set(viewer_SOURCE_FILES
     llvovolume.cpp
     llvowater.cpp
     llvowlsky.cpp
-    llwatchdog.cpp
     llwearableitemslist.cpp
     llwearablelist.cpp
     llweb.cpp
@@ -938,6 +946,7 @@ set(viewer_HEADER_FILES
     llfloatercreatelandmark.h
     llfloaterdeleteprefpreset.h
     llfloaterdestinations.h
+    llfloaterdirectory.h
     llfloaterdisplayname.h
     llfloatereditextdaycycle.h
     llfloateremojipicker.h
@@ -1002,7 +1011,6 @@ set(viewer_HEADER_FILES
     llfloaterpay.h
     llfloaterperformance.h
     llfloaterperms.h
-    llfloaterpostprocess.h
     llfloaterprofile.h
     llfloaterpreference.h
     llfloaterpreviewtrash.h
@@ -1023,7 +1031,6 @@ set(viewer_HEADER_FILES
     llfloatersidepanelcontainer.h
     llfloaterslapptest.h
     llfloatersnapshot.h
-    llfloatersounddevices.h
     llfloaterspellchecksettings.h
     llfloatertelehub.h
     llfloatertestinspectors.h
@@ -1035,7 +1042,6 @@ set(viewer_HEADER_FILES
     llfloatertranslationsettings.h
     llfloateruipreview.h
     llfloaterurlentry.h
-    llfloatervoiceeffect.h
     llfloatervoicevolume.h
     llfloaterwateradjust.h
     llfloaterwebcontent.h
@@ -1133,6 +1139,7 @@ set(viewer_HEADER_FILES
     llnameeditor.h
     llnamelistctrl.h
     llnavigationbar.h
+    llnearbyvoicemoderation.h
     llnetmap.h
     llnotificationhandler.h
     llnotificationlistitem.h
@@ -1149,11 +1156,20 @@ set(viewer_HEADER_FILES
     llpanelblockedlist.h
     llpanelclassified.h
     llpanelcontents.h
+    llpaneldirbrowser.h
+    llpaneldirclassified.h
+    llpaneldirevents.h
+    llpaneldirgroups.h
+    llpaneldirland.h
+    llpaneldirpeople.h
+    llpaneldirplaces.h
+    llpaneldirweb.h
     llpaneleditsky.h
     llpaneleditwater.h
     llpaneleditwearable.h
     llpanelemojicomplete.h
     llpanelenvironment.h
+    llpaneleventinfo.h
     llpanelexperiencelisteditor.h
     llpanelexperiencelog.h
     llpanelexperiencepicker.h
@@ -1206,7 +1222,8 @@ set(viewer_HEADER_FILES
     llpanelpulldown.h
     llpanelteleporthistory.h
     llpaneltiptoast.h
-    llpanelvoiceeffect.h
+    llpanelpulldown.h
+    llpanelvoicedevicesettings.h
     llpanelvolume.h
     llpanelvolumepulldown.h
     llpanelwearing.h
@@ -1432,7 +1449,6 @@ set(viewer_HEADER_FILES
     llvovolume.h
     llvowater.h
     llvowlsky.h
-    llwatchdog.h
     llwearableitemslist.h
     llwearablelist.h
     llweb.h
@@ -1755,10 +1771,6 @@ endif (WINDOWS)
 #  set(FMODWRAPPER_LIBRARY ${FMODSTUDIO_LIBRARY})
 #endif (USE_FMODSTUDIO)
 
-if (HAVOK OR HAVOK_TPV)
-  set(LLSTARTUP_COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS} -DLL_HAVOK")
-endif (HAVOK OR HAVOK_TPV)
-
 if( DEFINED LLSTARTUP_COMPILE_FLAGS )
    # progress view disables/enables icons based on available packages
    set_source_files_properties(llprogressview.cpp PROPERTIES COMPILE_FLAGS "${LLSTARTUP_COMPILE_FLAGS}")
@@ -2006,13 +2018,32 @@ elseif (DARWIN)
         PROPERTIES
         RESOURCE SecondLife.xib
         LINK_FLAGS_RELEASE "${LINK_FLAGS_RELEASE} -Xlinker -dead_strip"
-        # arch specific flags for universal builds: https://stackoverflow.com/a/77942065
-        XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=x86_64]  "$(inherited) -DLLPHYSICSEXTENSIONS_USE_FULL"
-        XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=arm64]   "$(inherited) -DLLPHYSICSEXTENSIONS_USE_STUB"
-        # only generate the .MAP file for llphysicsextensions_tpv on x86_64
-        XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=x86_64] "$(inherited) -L${CMAKE_CURRENT_BINARY_DIR}/llphysicsextensions/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensions  -Xlinker -map -Xlinker ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}.MAP"
-        XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=arm64]  "$(inherited) -L${CMAKE_CURRENT_BINARY_DIR}/llphysicsextensionsstub/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensionsstub"
         )
+    if(HAVOK)
+      set_target_properties(${VIEWER_BINARY_NAME}
+          PROPERTIES
+          # arch specific flags for universal builds: https://stackoverflow.com/a/77942065
+          XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=x86_64]  "$(inherited) -DLLPHYSICSEXTENSIONS_USE_FULL -DLL_HAVOK=1"
+          XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=arm64]   "$(inherited) -DLLPHYSICSEXTENSIONS_USE_STUB"
+          # only generate the .MAP file for llphysicsextensions_tpv on x86_64
+          XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=x86_64] "$(inherited) -L${CMAKE_CURRENT_BINARY_DIR}/llphysicsextensions/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensions  -Xlinker -map -Xlinker ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}.MAP"
+          XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=arm64]  "$(inherited) -L${CMAKE_BINARY_DIR}/llphysicsextensionsos/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensionsos"
+          )
+      add_dependencies(${VIEWER_BINARY_NAME} llphysicsextensionsos)
+    elseif(HAVOK_TPV)
+      set_target_properties(${VIEWER_BINARY_NAME}
+          PROPERTIES
+          # arch specific flags for universal builds: https://stackoverflow.com/a/77942065
+          XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=x86_64]  "$(inherited) -DLLPHYSICSEXTENSIONS_USE_FULL -DLL_HAVOK=1"
+          XCODE_ATTRIBUTE_OTHER_CFLAGS[arch=arm64]   "$(inherited) -DLLPHYSICSEXTENSIONS_USE_STUB"
+          # only generate the .MAP file for llphysicsextensions_tpv on x86_64
+          XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=x86_64] "$(inherited) -L${ARCH_PREBUILT_DIRS}/ -lllphysicsextensions_tpv"
+          XCODE_ATTRIBUTE_OTHER_LDFLAGS[arch=arm64]  "$(inherited) -L${CMAKE_BINARY_DIR}/llphysicsextensionsos/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,${CMAKE_CFG_INTDIR}>/ -lllphysicsextensionsos"
+          )
+      add_dependencies(${VIEWER_BINARY_NAME} llphysicsextensionsos)
+    else()
+      target_link_libraries(${VIEWER_BINARY_NAME} llphysicsextensionsos)
+    endif()
 else (WINDOWS)
         # Linux
     set_target_properties(${VIEWER_BINARY_NAME}
@@ -2088,6 +2119,10 @@ endif()
 if( TARGET ll::nvapi )
    target_link_libraries(${VIEWER_BINARY_NAME} ll::nvapi )
 endif()
+
+if ( TARGET llconvexdecomposition )
+    target_link_libraries(${VIEWER_BINARY_NAME} llconvexdecomposition )
+endif ()
 
 set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH
     "Path to artwork files.")

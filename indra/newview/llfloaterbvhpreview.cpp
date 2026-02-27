@@ -1127,17 +1127,17 @@ void LLFloaterBvhPreview::onBtnOK(void* userdata)
 				//BD - BVH Upload
 				if (!floaterp->mIsAnimFile)
 				{
-					LLResourceUploadInfo::ptr_t assetUploadInfo(new LLResourceUploadInfo(
-						floaterp->mTransactionID, LLAssetType::AT_ANIMATION,
-						name, desc, 0,
-						LLFolderType::FT_NONE, LLInventoryType::IT_ANIMATION,
-						LLFloaterPerms::getNextOwnerPerms("Uploads"),
-						LLFloaterPerms::getGroupPerms("Uploads"),
-						LLFloaterPerms::getEveryonePerms("Uploads"),
-						expected_upload_cost,
-                        floaterp->mDestinationFolderId));
+                        LLResourceUploadInfo::ptr_t assetUploadInfo = std::make_shared<LLResourceUploadInfo>(
+                        floaterp->mTransactionID, LLAssetType::AT_ANIMATION,
+                        name, desc, 0,
+                        LLFolderType::FT_NONE, LLInventoryType::IT_ANIMATION,
+                        LLFloaterPerms::getNextOwnerPerms("Uploads"),
+                        LLFloaterPerms::getGroupPerms("Uploads"),
+                        LLFloaterPerms::getEveryonePerms("Uploads"),
+                        expected_upload_cost,
+                        floaterp->mDestinationFolderId);
 
-					upload_new_resource(assetUploadInfo);
+                    upload_new_resource(assetUploadInfo);
 				}
 				//BD - Anim Upload
 				else

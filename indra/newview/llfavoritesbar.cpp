@@ -1531,54 +1531,84 @@ bool LLFavoritesBarCtrl::enableSelected(const LLSD& userdata)
     {
         return !LLAgentPicksInfo::getInstance()->isPickLimitReached();
     }
+    else if (param == "copy_slurl"
+             || param == "show_on_map")
+    {
+        LLViewerInventoryItem* item = gInventory.getItem(mSelectedItemID);
+        if (nullptr == item)
+            return false; // shouldn't happen as it is selected from existing items
+
+        const LLUUID& asset_id = item->getAssetUUID();
+
+        // Favorites are supposed to be loaded first, it should be here already
+        LLLandmark* landmark = gLandmarkList.getAsset(asset_id, NULL /*callback*/);
+        return nullptr != landmark;
+    }
 
     return false;
 }
 
 void LLFavoritesBarCtrl::doToSelected(const LLSD& userdata)
 {
-	std::string action = userdata.asString();
-	LL_INFOS("FavoritesBar") << "Action = " << action << " Item = " << mSelectedItemID.asString() << LL_ENDL;
-	
-	LLViewerInventoryItem* item = gInventory.getItem(mSelectedItemID);
-	if (!item)
-		return;
-	
-	if (action == "open")
-	{
-		onButtonClick(item->getUUID());
-	}
-	else if (action == "about")
-	{
-		LLSD key;
-		key["type"] = "landmark";
-		key["id"] = mSelectedItemID;
+    std::string action = userdata.asString();
+    LL_INFOS("FavoritesBar") << "Action = " << action << " Item = " << mSelectedItemID.asString() << LL_ENDL;
 
-		LLFloaterSidePanelContainer::showPanel("places", key);
-	}
-	else if (action == "copy_slurl")
-	{
-		LLVector3d posGlobal;
-		LLLandmarkActions::getLandmarkGlobalPos(mSelectedItemID, posGlobal);
+    LLViewerInventoryItem* item = gInventory.getItem(mSelectedItemID);
+    if (!item)
+        return;
 
-		if (!posGlobal.isExactlyZero())
-		{
-			LLLandmarkActions::getSLURLfromPosGlobal(posGlobal, copy_slurl_to_clipboard_cb);
-		}
-	}
-	else if (action == "show_on_map")
-	{
-		LLFloaterWorldMap* worldmap_instance = LLFloaterWorldMap::getInstance();
+    if (action == "open")
+    {
+        onButtonClick(item->getUUID());
+    }
+    else if (action == "about")
+    {
+        LLSD key;
+        key["type"] = "landmark";
+        key["id"] = mSelectedItemID;
 
-		LLVector3d posGlobal;
-		LLLandmarkActions::getLandmarkGlobalPos(mSelectedItemID, posGlobal);
+        LLFloaterSidePanelContainer::showPanel("places", key);
+    }
+    else if (action == "copy_slurl")
+    {
+        LLVector3d posGlobal;
+        LLLandmarkActions::getLandmarkGlobalPos(mSelectedItemID, posGlobal);
 
-		if (!posGlobal.isExactlyZero() && worldmap_instance)
-		{
-			worldmap_instance->trackLocation(posGlobal);
-			LLFloaterReg::showInstance("world_map", "center");
-		}
-	}
+        // inventory item and asset exist, otherwise
+        // enableSelected wouldn't have let it get here,
+        // only need to check location validity
+        if (!posGlobal.isExactlyZero())
+        {
+            LLLandmarkActions::getSLURLfromPosGlobal(posGlobal, copy_slurl_to_clipboard_cb);
+        }
+        else
+        {
+            LLNotificationsUtil::add("LandmarkLocationUnknown");
+        }
+    }
+    else if (action == "show_on_map")
+    {
+        LLFloaterWorldMap* worldmap_instance = LLFloaterWorldMap::getInstance();
+
+        LLVector3d posGlobal;
+        LLLandmarkActions::getLandmarkGlobalPos(mSelectedItemID, posGlobal);
+
+        if (worldmap_instance)
+        {
+            // inventory item and asset exist, otherwise
+            // enableSelected wouldn't have let it get here,
+            // only need to check location validity
+            if (!posGlobal.isExactlyZero())
+            {
+                worldmap_instance->trackLocation(posGlobal);
+                LLFloaterReg::showInstance("world_map", "center");
+            }
+            else
+            {
+                LLNotificationsUtil::add("LandmarkLocationUnknown");
+            }
+        }
+    }
     else if (action == "create_pick")
     {
         LLSD args;

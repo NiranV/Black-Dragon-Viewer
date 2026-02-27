@@ -51,8 +51,8 @@ LLMotion::LLMotion( const LLUUID &id ) :
     mSendStopTimestamp(F32_MAX),
     mResidualWeight(0.f),
     mFadeWeight(1.f),
-    mDeactivateCallback(NULL),
-    mDeactivateCallbackUserData(NULL),
+    mDeactivateCallback(nullptr),
+    mDeactivateCallbackUserData(nullptr),
     //BD - Eternal
 	mEternal(false)
 {

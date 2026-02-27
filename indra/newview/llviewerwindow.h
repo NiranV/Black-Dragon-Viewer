@@ -49,8 +49,9 @@
 #include "llsnapshotmodel.h"
 #include "llviewercamera.h"
 
-#include <boost/function.hpp>
 #include <boost/signals2.hpp>
+
+#include <functional>
 
 class LLView;
 class LLViewerObject;
@@ -146,6 +147,10 @@ private:
 
 };
 
+struct MainPanel : public LLPanel
+{
+};
+
 static const U32 MAX_SNAPSHOT_IMAGE_SIZE = 12228; // max snapshot image size 12228 * 12228
 
 class LLViewerWindow : public LLWindowCallbacks
@@ -200,7 +205,8 @@ public:
     /*virtual*/ bool handleUnicodeChar(llwchar uni_char, MASK mask);    // NOT going to handle extended
     /*virtual*/ bool handleMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask);
     /*virtual*/ bool handleMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask);
-    /*virtual*/ bool handleCloseRequest(LLWindow *window);
+    /*virtual*/ bool handleCloseRequest(LLWindow *window, bool from_user);
+    /*virtual*/ bool handleSessionExit(LLWindow* window);
     /*virtual*/ void handleQuit(LLWindow *window);
     /*virtual*/ bool handleRightMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask);
     /*virtual*/ bool handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask);
@@ -240,7 +246,7 @@ public:
                     const std::map<std::string, std::string>& args);
 
     // signal on update of WorldView rect
-    typedef boost::function<void (LLRect old_world_rect, LLRect new_world_rect)> world_rect_callback_t;
+    typedef std::function<void (LLRect old_world_rect, LLRect new_world_rect)> world_rect_callback_t;
     typedef boost::signals2::signal<void (LLRect old_world_rect, LLRect new_world_rect)> world_rect_signal_t;
     world_rect_signal_t mOnWorldViewRectUpdated;
     boost::signals2::connection setOnWorldViewRectUpdated(world_rect_callback_t cb) { return mOnWorldViewRectUpdated.connect(cb); }
@@ -249,6 +255,7 @@ public:
     // ACCESSORS
     //
     LLRootView*         getRootView()       const;
+    MainPanel*          getMainView()       const { return mMainView; }
 
     // 3D world area in scaled pixels (via UI scale), use for most UI computations
     LLRect          getWorldViewRectScaled() const;
@@ -406,6 +413,7 @@ public:
     void resetSnapshotLoc();
 
     void            playSnapshotAnimAndSound();
+    static void     onSnapshotNotificationClick(const LLSD& notification, const LLSD& response);
 
     // draws selection boxes around selected objects, must call displayObjects first
     void            renderSelections( bool for_gl_pick, bool pick_parcel_walls, bool for_hud );

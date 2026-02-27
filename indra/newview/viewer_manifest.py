@@ -243,6 +243,16 @@ class ViewerManifest(LLManifest):
             }
         return "%(channel_vendor_base)s%(channel_variant_underscores)s_%(version_underscores)s_%(arch)s" % substitution_strings
 
+    def installer_base_name_mac(self):
+        global CHANNEL_VENDOR_BASE
+        # a standard map of strings for replacing in the templates
+        substitution_strings = {
+            'channel_vendor_base' : '_'.join(CHANNEL_VENDOR_BASE.split()),
+            'channel_variant_underscores':self.channel_variant_app_suffix(),
+            'version_underscores' : '_'.join(self.args['version'])
+            }
+        return "%(channel_vendor_base)s%(channel_variant_underscores)s_%(version_underscores)s_universal" % substitution_strings
+
     def app_name(self):
         global CHANNEL_VENDOR_BASE
         channel_type=self.channel_type()
@@ -858,13 +868,12 @@ class Darwin_x86_64_Manifest(ViewerManifest):
         with self.prefix(src="", dst="Contents"):  # everything goes in Contents
             bugsplat_db = self.args.get('bugsplat')
             if bugsplat_db:
-                # Inject BugsplatServerURL into Info.plist if provided.
+                # Inject Bugsplat's db into Info.plist if provided.
                 Info_plist = self.dst_path_of("Info.plist")
                 with open(Info_plist, 'rb') as f:
                     Info = plistlib.load(f)
                     # https://www.bugsplat.com/docs/platforms/os-x#configuration
-                    Info["BugsplatServerURL"] = \
-                        "https://{}.bugsplat.com/".format(bugsplat_db)
+                    Info["BugSplatDatabase"] = bugsplat_db
                     self.put_in_file(
                         plistlib.dumps(Info),
                         os.path.basename(Info_plist),
@@ -878,6 +887,8 @@ class Darwin_x86_64_Manifest(ViewerManifest):
 
                 if self.args.get('bugsplat'):
                     self.path2basename(relpkgdir, "BugsplatMac.framework")
+                    self.path2basename(relpkgdir, "CrashReporter.framework")
+                    self.path2basename(relpkgdir, "HockeySDK.framework")
 
                 # OpenAL dylibs
                 if self.args['openal'] == 'ON':
@@ -915,6 +926,24 @@ class Darwin_x86_64_Manifest(ViewerManifest):
                     # stamped into the framework.
                     # Let exception, if any, propagate -- if this doesn't
                     # work, we need the build to noisily fail!
+                    oldpath = subprocess.check_output(
+                        ['objdump', '--macho', '--dylib-id', '--non-verbose',
+                         os.path.join(relpkgdir, "HockeySDK.framework", "HockeySDK")],
+                        text=True
+                        ).splitlines()[-1]  # take the last line of output
+                    self.run_command(
+                        ['install_name_tool', '-change', oldpath,
+                         '@executable_path/../Frameworks/HockeySDK.framework/HockeySDK',
+                         executable])
+                    oldpath = subprocess.check_output(
+                        ['objdump', '--macho', '--dylib-id', '--non-verbose',
+                         os.path.join(relpkgdir, "CrashReporter.framework", "CrashReporter")],
+                        text=True
+                        ).splitlines()[-1]  # take the last line of output
+                    self.run_command(
+                        ['install_name_tool', '-change', oldpath,
+                         '@executable_path/../Frameworks/CrashReporter.framework/CrashReporter',
+                         executable])
                     oldpath = subprocess.check_output(
                         ['objdump', '--macho', '--dylib-id', '--non-verbose',
                          os.path.join(relpkgdir, "BugsplatMac.framework", "BugsplatMac")],
@@ -1088,7 +1117,7 @@ class Darwin_x86_64_Manifest(ViewerManifest):
 
 
     def package_finish(self):
-        imagename = self.installer_base_name()
+        imagename = self.installer_base_name_mac()
         self.set_github_output('imagename', imagename)
         finalname = imagename + ".dmg"
         self.package_file = finalname

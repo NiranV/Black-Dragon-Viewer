@@ -210,11 +210,13 @@ public:
     /*virtual*/ const LLSD      getValue() const;
     /*virtual*/ void    setColor(const LLUIColor&);
     /*virtual*/ void    setValue(const LLSD& value);
+    void                setIconSize(S32 size);
 
 private:
     LLPointer<LLUIImage>    mIcon;
     LLUIColor                mColor;
     LLFontGL::HAlign        mAlignment;
+    S32                     mIconSize;
 };
 
 

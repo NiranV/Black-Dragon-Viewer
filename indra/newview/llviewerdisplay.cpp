@@ -241,8 +241,11 @@ void display_stats()
     if (gRecentFPSTime.getElapsedTimeF32() >= FPS_LOG_FREQUENCY)
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_DISPLAY("DS - FPS");
+        LLTrace::Recording& recording = LLTrace::get_frame_recording().getLastRecording();
+        F64 normalized_session_jitter = recording.getLastValue(LLStatViewer::NOTRMALIZED_FRAMETIME_JITTER_SESSION);
+        F64 normalized_period_jitter = recording.getLastValue(LLStatViewer::NORMALIZED_FRAMTIME_JITTER_PERIOD);
         F32 fps = gRecentFrameCount / FPS_LOG_FREQUENCY;
-        LL_INFOS() << llformat("FPS: %.02f", fps) << LL_ENDL;
+        LL_INFOS() << llformat("FPS: %.02f SESSION JITTER: %.4f PERIOD JITTER: %.4f", fps, normalized_session_jitter, normalized_period_jitter) << LL_ENDL;
         gRecentFrameCount = 0;
         gRecentFPSTime.reset();
     }
@@ -542,61 +545,60 @@ void display(bool rebuild, F32 zoom_factor, int subfield, bool for_snapshot)
 #elif LL_DARWIN
         // MBW -- Do something clever here.
 #endif
-		// Not actually rendering, don't bother.
-		return;
-	}
+        // Not actually rendering, don't bother.
+        return;
+    }
 
 
-	//
-	// Bail out if we're in the startup state and don't want to try to
-	// render the world.
-	//
-	if (LLStartUp::getStartupState() < STATE_PRECACHE)
-	{
-		app_viewer->pingMainloopTimeout("Display:Startup");
-		display_startup();
-		return;
-	}
+    //
+    // Bail out if we're in the startup state and don't want to try to
+    // render the world.
+    //
+    if (LLStartUp::getStartupState() < STATE_PRECACHE)
+    {
+        LLAppViewer::instance()->pingMainloopTimeout("Display:Startup");
+        display_startup();
+        return;
+    }
 
 
-	if (gShaderProfileFrame)
-	{
-		LLGLSLShader::initProfile();
-	}
+    if (gShaderProfileFrame)
+    {
+        LLGLSLShader::initProfile();
+    }
 
-	//LLGLState::verify(false);
+    //LLGLState::verify(false);
 
-	/////////////////////////////////////////////////
-	//
-	// Update GL Texture statistics (used for discard logic?)
-	//
+    /////////////////////////////////////////////////
+    //
+    // Update GL Texture statistics (used for discard logic?)
+    //
 
-	app_viewer->pingMainloopTimeout("Display:TextureStats");
-	stop_glerror();
+    LLAppViewer::instance()->pingMainloopTimeout("Display:TextureStats");
+    stop_glerror();
 
-	LLImageGL::updateStats(gFrameTimeSeconds);
-	
-	static const LLCachedControl<S32> av_name_tag_mode(gSavedSettings, "AvatarNameTagMode");
-	static const LLCachedControl<bool> name_tag_show_grp_title(gSavedSettings, "NameTagShowGroupTitles");
+    LLImageGL::updateStats(gFrameTimeSeconds);
 
-	LLVOAvatar::sRenderName = av_name_tag_mode;
-	LLVOAvatar::sRenderGroupTitles = (name_tag_show_grp_title && av_name_tag_mode);
-	
-	gPipeline.mBackfaceCull = true;
-	gFrameCount++;
-	gRecentFrameCount++;
-	if (gFocusMgr.getAppHasFocus())
-	{
-		gForegroundFrameCount++;
-	}
+    static LLCachedControl<S32> avatar_name_tag_mode(gSavedSettings, "AvatarNameTagMode", 1);
+    static LLCachedControl<S32> name_tag_show_group_titles(gSavedSettings, "GroupTitlesTagMode", 2 /*all group tags*/);
+    LLVOAvatar::sRenderName = avatar_name_tag_mode;
+    LLVOAvatar::sRenderGroupTitles = avatar_name_tag_mode > 0 ? name_tag_show_group_titles : 0;
 
-	//////////////////////////////////////////////////////////
-	//
-	// Display start screen if we're teleporting, and skip render
-	//
+    gPipeline.mBackfaceCull = true;
+    gFrameCount++;
+    gRecentFrameCount++;
+    if (gFocusMgr.getAppHasFocus())
+    {
+        gForegroundFrameCount++;
+    }
 
-	if (gTeleportDisplay)
-	{
+    //////////////////////////////////////////////////////////
+    //
+    // Display start screen if we're teleporting, and skip render
+    //
+
+    if (gTeleportDisplay)
+    {
         LL_PROFILE_ZONE_NAMED_CATEGORY_DISPLAY("Teleport Display");
 		LLAppViewer::instance()->pingMainloopTimeout("Display:Teleport");
 		// Note: false = not minimized, do update the TP screen. HB
@@ -1545,6 +1547,11 @@ void render_ui(F32 zoom_factor, int subfield)
             {
                 render_disconnected_background();
             }*/
+        }
+        else
+        {
+            // Make sure particle effects disappear
+            LLHUDObject::renderAllForTimer();
         }
 
         if (render_ui)

@@ -34,7 +34,6 @@
 #include <fstream>
 #include <algorithm>
 #include <boost/filesystem.hpp>
-#include <boost/lambda/core.hpp>
 #include <boost/regex.hpp>
 
 #include "llagent.h"
@@ -86,6 +85,7 @@
 #include "raytrace.h"
 
 // newview includes
+#include "llaccordionctrl.h"
 #include "llbox.h"
 #include "llchicletbar.h"
 #include "llconsole.h"
@@ -1389,7 +1389,7 @@ LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *wi
                                 // Check the whitelist, if there's media (otherwise just show it)
                                 if (te->getMediaData() == NULL || te->getMediaData()->checkCandidateUrl(url))
                                 {
-                                    if ( obj != mDragHoveredObject.get())
+                                    if (obj != mDragHoveredObject)
                                     {
                                         // Highlight the dragged object
                                         LLSelectMgr::getInstance()->unhighlightObjectOnly(mDragHoveredObject);
@@ -1520,16 +1520,41 @@ void LLViewerWindow::handleMouseLeave(LLWindow *window)
     LLToolTipMgr::instance().blockToolTips();
 }
 
-bool LLViewerWindow::handleCloseRequest(LLWindow *window)
+bool LLViewerWindow::handleCloseRequest(LLWindow *window, bool from_user)
 {
     if (!LLApp::isExiting() && !LLApp::isStopped())
     {
-        // User has indicated they want to close, but we may need to ask
-        // about modified documents.
-        LLAppViewer::instance()->userQuit();
-        // Don't quit immediately
+        if (from_user)
+        {
+            // User has indicated they want to close, but we may need to ask
+            // about modified documents.
+            LLAppViewer::instance()->userQuit();
+            // Don't quit immediately
+        }
+        else
+        {
+            // OS is asking us to quit, assume we have time and start cleanup
+            LLAppViewer::instance()->requestQuit();
+        }
     }
     return false;
+}
+
+bool LLViewerWindow::handleSessionExit(LLWindow* window)
+{
+    if (!LLApp::isExiting() && !LLApp::isStopped())
+    {
+        // Viewer received WM_ENDSESSION and app will be killed soon if it doesn't respond
+        LLAppViewer* app = LLAppViewer::instance();
+        app->sendSimpleLogoutRequest();
+        app->earlyExitNoNotify();
+
+        // Not viewer's fault, remove marker files so
+        // that statistics won't consider this to be a crash
+        app->removeMarkerFiles();
+        return false;
+    }
+    return true;
 }
 
 void LLViewerWindow::handleQuit(LLWindow *window)
@@ -1972,7 +1997,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
         p.ignore_pixel_depth,
         0,
         max_core_count,
-        max_gl_version); //don't use window level anti-aliasing
+        max_gl_version); //don't use window level anti-aliasing, windows only
 
     if (NULL == mWindow)
     {
@@ -2129,10 +2154,6 @@ void LLViewerWindow::initGLDefaults()
     // RN: Need this for translation and stretch manip.
     gBox.prerender();
 }
-
-struct MainPanel : public LLPanel
-{
-};
 
 void LLViewerWindow::initBase()
 {
@@ -3377,7 +3398,31 @@ void LLViewerWindow::clearPopups()
 
 void LLViewerWindow::moveCursorToCenter()
 {
-    if (! gSavedSettings.getBOOL("DisableMouseWarp"))
+    bool mouse_warp = false;
+    static LLCachedControl<S32> mouse_warp_mode(gSavedSettings, "MouseWarpMode", 1);
+
+    switch (mouse_warp_mode())
+    {
+    case 0:
+        // For Windows:
+        // Mouse usually uses 'delta' position since it isn't aware of own location, keep it centered.
+        // Touch screen reports absolute or virtual absolute position and warping a physical
+        // touch is pointless, so don't move it.
+        //
+        // MacOS
+        // If 'decoupled', CGAssociateMouseAndMouseCursorPosition can make mouse stay in
+        // one place and not move, do not move it (needs testing).
+        mouse_warp = mWindow->isWrapMouse();
+        break;
+    case 1:
+        mouse_warp = true;
+        break;
+    default:
+        mouse_warp = false;
+        break;
+    }
+
+    if (mouse_warp)
     {
         S32 x = getWorldViewWidthScaled() / 2;
         S32 y = getWorldViewHeightScaled() / 2;
@@ -3427,13 +3472,11 @@ void append_xui_tooltip(LLView* viewp, LLToolTip::Params& params)
     }
 }
 
-static LLTrace::BlockTimerStatHandle ftm("Update UI");
-
 // Update UI based on stored mouse position from mouse-move
 // event processing.
 void LLViewerWindow::updateUI()
 {
-	LL_PROFILE_ZONE_SCOPED_CATEGORY_UI; //LL_RECORD_BLOCK_TIME(ftm);
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_UI;
 
 	static std::string last_handle_msg;
 
@@ -3451,10 +3494,15 @@ void LLViewerWindow::updateUI()
         }
 	}
 
-	LLConsole::updateClass();
+    {
+        LL_PROFILE_ZONE_NAMED("UI updateClass");
+        LLConsole::updateClass();
 
-	// animate layout stacks so we have up to date rect for world view
-	LLLayoutStack::updateClass();
+        // execute postponed arrange calls
+        LLAccordionCtrl::updateClass();
+        // animate layout stacks so we have up to date rect for world view
+        LLLayoutStack::updateClass();
+    }
 
 	// use full window for world view when not rendering UI
 	//bool world_view_uses_full_window = gAgentCamera.cameraMouselook() || !gPipeline.hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_UI);
@@ -3884,56 +3932,57 @@ void LLViewerWindow::updateUI()
 
 void LLViewerWindow::updateLayout()
 {
-	LLTool* tool = LLToolMgr::getInstance()->getCurrentTool();
-	if (gFloaterTools != NULL
-		&& tool != NULL
-		&& tool != gToolNull  
-		&& tool != LLToolCompInspect::getInstance() 
-		&& tool != LLToolDragAndDrop::getInstance() 
-		&& !LLPipeline::FreezeTime)
-	{ 
-		// Suppress the toolbox view if our source tool was the pie tool,
-		// and we've overridden to something else.
-		bool suppress_toolbox = 
-			(LLToolMgr::getInstance()->getBaseTool() == LLToolPie::getInstance()) &&
-			(LLToolMgr::getInstance()->getCurrentTool() != LLToolPie::getInstance());
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_UI;
+    LLTool* tool = LLToolMgr::getInstance()->getCurrentTool();
+    if (gFloaterTools != NULL
+        && tool != NULL
+        && tool != gToolNull
+        && tool != LLToolCompInspect::getInstance()
+        && tool != LLToolDragAndDrop::getInstance()
+        && !gSavedSettings.getBOOL("FreezeTime"))
+    {
+        // Suppress the toolbox view if our source tool was the pie tool,
+        // and we've overridden to something else.
+        bool suppress_toolbox =
+            (LLToolMgr::getInstance()->getBaseTool() == LLToolPie::getInstance()) &&
+            (LLToolMgr::getInstance()->getCurrentTool() != LLToolPie::getInstance());
 
-		LLMouseHandler *captor = gFocusMgr.getMouseCapture();
-		// With the null, inspect, or drag and drop tool, don't muck
-		// with visibility.
+        LLMouseHandler *captor = gFocusMgr.getMouseCapture();
+        // With the null, inspect, or drag and drop tool, don't muck
+        // with visibility.
 
-		if (gFloaterTools->isMinimized()
-			||	(tool != LLToolPie::getInstance()						// not default tool
-				&& tool != LLToolCompGun::getInstance()					// not coming out of mouselook
-				&& !suppress_toolbox									// not override in third person
-				&& LLToolMgr::getInstance()->getCurrentToolset()->isShowFloaterTools()
-				&& (!captor || dynamic_cast<LLView*>(captor) != NULL)))						// not dragging
-		{
-			// Force floater tools to be visible (unless minimized)
-			if (!gFloaterTools->getVisible())
-			{
-				gFloaterTools->openFloater();
-			}
-			// Update the location of the blue box tool popup
-			LLCoordGL select_center_screen;
-			MASK	mask = gKeyboard->currentMask(TRUE);
-			gFloaterTools->updatePopup( select_center_screen, mask );
-		}
+        if (gFloaterTools->isMinimized()
+            ||  (tool != LLToolPie::getInstance()                       // not default tool
+                && tool != LLToolCompGun::getInstance()                 // not coming out of mouselook
+                && !suppress_toolbox                                    // not override in third person
+                && LLToolMgr::getInstance()->getCurrentToolset()->isShowFloaterTools()
+                && (!captor || dynamic_cast<LLView*>(captor) != NULL)))                     // not dragging
+        {
+            // Force floater tools to be visible (unless minimized)
+            if (!gFloaterTools->getVisible())
+            {
+                gFloaterTools->openFloater();
+            }
+            // Update the location of the blue box tool popup
+            LLCoordGL select_center_screen;
+            MASK    mask = gKeyboard->currentMask(true);
+            gFloaterTools->updatePopup( select_center_screen, mask );
+        }
 //		//BD - Right Click Steering
 		else if(!LLToolCamera::getInstance()->mRightMouse)
 		{
 			gFloaterTools->setVisible(false);
 		}
-		//gMenuBarView->setItemVisible("BuildTools", gFloaterTools->getVisible());
-	}
+        //gMenuBarView->setItemVisible("BuildTools", gFloaterTools->getVisible());
+    }
 
-	// Always update console
-	if(gConsole)
-	{
-		LLRect console_rect = getChatConsoleRect();
-		gConsole->reshape(console_rect.getWidth(), console_rect.getHeight());
-		gConsole->setRect(console_rect);
-	}
+    // Always update console
+    if(gConsole)
+    {
+        LLRect console_rect = getChatConsoleRect();
+        gConsole->reshape(console_rect.getWidth(), console_rect.getHeight());
+        gConsole->setRect(console_rect);
+    }
 }
 
 void LLViewerWindow::updateMouseDelta()
@@ -4378,15 +4427,15 @@ void LLViewerWindow::pickAsync( S32 x,
                                 bool pick_unselectable,
                                 bool pick_reflection_probes)
 {
+    static LLCachedControl<bool> select_invisible_objects(gSavedSettings, "SelectInvisibleObjects");
     // "Show Debug Alpha" means no object actually transparent
     bool in_build_mode = LLFloaterReg::instanceVisible("build");
-    if (LLDrawPoolAlpha::sShowDebugAlpha
-        || (in_build_mode && gSavedSettings.getBOOL("SelectInvisibleObjects")))
+    if (LLDrawPoolAlpha::sShowDebugAlpha || (in_build_mode && select_invisible_objects))
     {
         pick_transparent = true;
     }
 
-    LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, pick_rigged, false, pick_reflection_probes, pick_unselectable, true, callback);
+    LLPickInfo pick_info(LLCoordGL(x, y_from_bot), mask, pick_transparent, pick_rigged, false, pick_reflection_probes, true, pick_unselectable, callback);
     schedulePick(pick_info);
 }
 
@@ -4409,7 +4458,6 @@ void LLViewerWindow::schedulePick(LLPickInfo& pick_info)
     // until the pick triggered in handleMouseDown has been processed, for example
     mWindow->delayInputProcessing();
 }
-
 
 void LLViewerWindow::performPick()
 {
@@ -4444,8 +4492,9 @@ void LLViewerWindow::returnEmptyPicks()
 // Performs the GL object/land pick.
 LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot, bool pick_transparent, bool pick_rigged, bool pick_particle, bool pick_unselectable, bool pick_reflection_probe)
 {
+    static LLCachedControl<bool> select_invisible_objects(gSavedSettings, "SelectInvisibleObjects");
     bool in_build_mode = LLFloaterReg::instanceVisible("build");
-    if ((in_build_mode && gSavedSettings.getBOOL("SelectInvisibleObjects")) || LLDrawPoolAlpha::sShowDebugAlpha)
+    if ((in_build_mode && select_invisible_objects) || LLDrawPoolAlpha::sShowDebugAlpha)
     {
         // build mode allows interaction with all transparent objects
         // "Show Debug Alpha" means no object actually transparent
@@ -4453,7 +4502,7 @@ LLPickInfo LLViewerWindow::pickImmediate(S32 x, S32 y_from_bot, bool pick_transp
     }
 
     // shortcut queueing in mPicks and just update mLastPick in place
-    MASK    key_mask = gKeyboard->currentMask(true);
+    MASK key_mask = gKeyboard->currentMask(true);
     mLastPick = LLPickInfo(LLCoordGL(x, y_from_bot), key_mask, pick_transparent, pick_rigged, pick_particle, pick_reflection_probe, true, false, NULL);
     mLastPick.fetchResults();
 
@@ -4976,6 +5025,19 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
     if (image->save(filepath))
     {
         playSnapshotAnimAndSound();
+
+        // Show clickable notification with filepath
+        LLSD args;
+        args["FILEPATH"] = filepath;
+
+        LLSD payload;
+        payload["filepath"] = filepath;
+
+        LLNotificationsUtil::add("SnapshotSavedToComputer",
+                                 args,
+                                 payload.with("respond_on_mousedown", true),
+                                 boost::bind(&LLViewerWindow::onSnapshotNotificationClick, _1, _2));
+
         success_cb();
     }
     else
@@ -4987,6 +5049,16 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
 void LLViewerWindow::resetSnapshotLoc()
 {
     gSavedPerAccountSettings.setString("SnapshotBaseDir", std::string());
+}
+
+// static
+void LLViewerWindow::onSnapshotNotificationClick(const LLSD& notification, const LLSD& response)
+{
+    std::string filepath = notification["payload"]["filepath"].asString();
+    if (!filepath.empty())
+    {
+        gDirUtilp->openDir(filepath);
+    }
 }
 
 // static
@@ -6174,7 +6246,7 @@ bool LLViewerWindow::getUIVisibility()
 //
 LLPickInfo::LLPickInfo()
     : mKeyMask(MASK_NONE),
-      mPickCallback(NULL),
+      mPickCallback(nullptr),
       mPickType(PICK_INVALID),
       mWantSurfaceInfo(false),
       mObjectFace(-1),
@@ -6185,7 +6257,7 @@ LLPickInfo::LLPickInfo()
       mNormal(),
       mTangent(),
       mBinormal(),
-      mHUDIcon(NULL),
+      mHUDIcon(nullptr),
       mPickTransparent(false),
       mPickRigged(false),
       mPickParticle(false)
@@ -6198,14 +6270,14 @@ LLPickInfo::LLPickInfo(const LLCoordGL& mouse_pos,
     bool pick_rigged,
     bool pick_particle,
     bool pick_reflection_probe,
-    bool pick_uv_coords,
+    bool pick_surface_info,
     bool pick_unselectable,
     void (*pick_callback)(const LLPickInfo& pick_info))
     : mMousePt(mouse_pos),
     mKeyMask(keyboard_mask),
     mPickCallback(pick_callback),
     mPickType(PICK_INVALID),
-    mWantSurfaceInfo(pick_uv_coords),
+    mWantSurfaceInfo(pick_surface_info),
     mObjectFace(-1),
     mUVCoords(-1.f, -1.f),
     mSTCoords(-1.f, -1.f),

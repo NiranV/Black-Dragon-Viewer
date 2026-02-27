@@ -105,6 +105,7 @@ public:
 #if LL_WINDOWS
     virtual bool getCursorDelta(LLCoordCommon* delta) = 0;
 #endif
+    virtual bool isWrapMouse() const = 0;
     virtual void showCursor() = 0;
     virtual void hideCursor() = 0;
     virtual bool isCursorHidden() = 0;
@@ -214,6 +215,8 @@ public:
     };
 
     virtual S32 getRefreshRate() { return mRefreshRate; }
+
+    virtual void initWatchdog() {} // windows runs window as a thread and it needs a watchdog
 protected:
     LLWindow(LLWindowCallbacks* callbacks, bool fullscreen, U32 flags);
     virtual ~LLWindow();

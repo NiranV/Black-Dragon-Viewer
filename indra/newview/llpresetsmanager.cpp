@@ -26,8 +26,6 @@
 
 #include "llviewerprecompiledheaders.h"
 
-#include <boost/assign/list_of.hpp>
-
 #include "llpresetsmanager.h"
 
 #include "lldiriterator.h"
@@ -250,19 +248,17 @@ void LLPresetsManager::settingChanged()
 
 void LLPresetsManager::getControlNames(std::vector<std::string>& names)
 {
-	const std::vector<std::string> camera_controls = boost::assign::list_of
-		// From panel_preferences_move.xml
-		("CameraAngle")
-		("CameraOffsetScale")
-		("EditCameraMovement")
-		("AppearanceCameraMovement")
-		// From llagentcamera.cpp
-		("CameraOffsetBuild")
-		("TrackFocusObject")
-		("CameraOffsetRearView")
-		("FocusOffsetRearView")
-		("AvatarSitRotation")
-        ;
+    const std::vector<std::string> camera_controls = {
+        // From panel_preferences_move.xml
+        "CameraAngle",
+        "CameraOffsetScale",
+        // From llagentcamera.cpp
+        "CameraOffsetBuild",
+        "TrackFocusObject",
+        "CameraOffsetRearView",
+        "FocusOffsetRearView",
+        "AvatarSitRotation",
+    };
     names = camera_controls;
 }
 

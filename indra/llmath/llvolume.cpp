@@ -912,7 +912,7 @@ bool LLProfile::generate(const LLProfileParams& params, bool path_open,F32 detai
                 case LL_PCODE_HOLE_CIRCLE:
                 case LL_PCODE_HOLE_SAME:
                 default:
-                    addHole(params, true, circle_detail, 0, hollow, 1.f);
+                    addHole(params, false, circle_detail, 0, hollow, 1.f);
                     break;
                 }
             }
@@ -4965,9 +4965,17 @@ LLVolumeFace::LLVolumeFace(const LLVolumeFace& src)
     mOctree(NULL),
     mOctreeTriangles(NULL)
 {
-    mExtents = (LLVector4a*) ll_aligned_malloc_16(sizeof(LLVector4a)*3);
-    mCenter = mExtents+2;
-    *this = src;
+    try
+    {
+        mExtents = (LLVector4a*)ll_aligned_malloc_16(sizeof(LLVector4a) * 3);
+        mCenter = mExtents + 2;
+        *this = src;
+    }
+    catch (std::bad_alloc&)
+    {
+        LLError::LLUserWarningMsg::showOutOfMemory();
+        LL_ERRS("LLVolume") << "Bad memory allocation in LLVolumeFace" << LL_ENDL;
+    }
 }
 
 LLVolumeFace& LLVolumeFace::operator=(const LLVolumeFace& src)
@@ -5185,7 +5193,7 @@ void LLVolumeFace::remap()
     // Documentation for meshopt_generateVertexRemapMulti claims that remap should use vertice count
     // but all examples use indice count. There are out of bounds crashes when using vertice count.
     // To be on the safe side use bigger of the two.
-    std::vector<unsigned int> remap(llmax(mNumIndices, mNumVertices));
+    std::vector<unsigned int> remap(llmax(mNumIndices, mNumVertices), 0);
     S32 remap_vertices_count = static_cast<S32>(LLMeshOptimizer::generateRemapMultiU16(&remap[0],
         mIndices,
         mNumIndices,
@@ -5703,7 +5711,12 @@ bool LLVolumeFace::cacheOptimize(bool gen_tangents)
         catch (std::bad_alloc&)
         {
             LLError::LLUserWarningMsg::showOutOfMemory();
-            LL_ERRS("LLCoros") << "Bad memory allocation in MikktData::genTangSpace" << LL_ENDL;
+            LL_ERRS("LLVolume") << "Bad memory allocation in MikktData::genTangSpace" << LL_ENDL;
+        }
+        catch (...)
+        {
+            LL_WARNS_ONCE("LLVolume") << "Mikktspace::genTangSpace() failed" << LL_ENDL;
+            return false;
         }
 
 
@@ -5725,7 +5738,7 @@ bool LLVolumeFace::cacheOptimize(bool gen_tangents)
         catch (std::bad_alloc&)
         {
             LLError::LLUserWarningMsg::showOutOfMemory();
-            LL_ERRS("LLCoros") << "Failed to allocate memory for remap: " << (S32)data.p.size() << LL_ENDL;
+            LL_ERRS("LLVOLUME") << "Failed to allocate memory for remap: " << (S32)data.p.size() << LL_ENDL;
         }
 
         U32 stream_count = data.w.empty() ? 4 : 5;
@@ -5735,19 +5748,27 @@ bool LLVolumeFace::cacheOptimize(bool gen_tangents)
         {
             try
             {
+                // providing mIndices should help avoid unused vertices
+                // but those should have been filtered out on upload
                 vert_count = static_cast<S32>(meshopt_generateVertexRemapMulti(&remap[0], nullptr, data.p.size(), data.p.size(), mos, stream_count));
             }
             catch (std::bad_alloc&)
             {
                 LLError::LLUserWarningMsg::showOutOfMemory();
-                LL_ERRS("LLCoros") << "Failed to allocate memory for VertexRemap: " << (S32)data.p.size() << LL_ENDL;
+                LL_ERRS("LLVolume") << "Failed to allocate memory for VertexRemap: " << (S32)data.p.size() << LL_ENDL;
             }
         }
 
-        if (vert_count < 65535 && vert_count != 0)
+        // Probably should be using meshopt_remapVertexBuffer instead of remaping manually
+        if (vert_count < 65535 && vert_count > 0)
         {
             //copy results back into volume
             resizeVertices(vert_count);
+            if (mNumVertices == 0)
+            {
+                LLError::LLUserWarningMsg::showOutOfMemory();
+                LL_ERRS("LLVolume") << "Failed to allocate memory for resizeVertices(" << vert_count << ")" << LL_ENDL;
+            }
 
             if (!data.w.empty())
             {
@@ -5760,12 +5781,26 @@ bool LLVolumeFace::cacheOptimize(bool gen_tangents)
             {
                 U32 src_idx = i;
                 U32 dst_idx = remap[i];
-                if (dst_idx >= (U32)mNumVertices)
+                if (dst_idx == U32_MAX)
+                {
+                    // Unused indices? Probably need to resize mIndices
+                    dst_idx = mNumVertices - 1;
+                    llassert(false);
+                    LL_DEBUGS_ONCE("LLVOLUME") << "U32_MAX destination index, substituting" << LL_ENDL;
+                }
+                else if (dst_idx >= (U32)mNumVertices)
                 {
                     dst_idx = mNumVertices - 1;
                     // Shouldn't happen, figure out what gets returned in remap and why.
                     llassert(false);
                     LL_DEBUGS_ONCE("LLVOLUME") << "Invalid destination index, substituting" << LL_ENDL;
+                }
+                if (src_idx >= (U32)data.p.size())
+                {
+                    // data.p.size() is supposed to be equal to mNumIndices
+                    src_idx = (U32)(data.p.size() - 1);
+                    llassert(false);
+                    LL_DEBUGS_ONCE("LLVOLUME") << "Invalid source index, substituting" << LL_ENDL;
                 }
                 mIndices[i] = dst_idx;
 
@@ -5800,7 +5835,7 @@ bool LLVolumeFace::cacheOptimize(bool gen_tangents)
         }
         else
         {
-            if (vert_count == 0)
+            if (vert_count <= 0)
             {
                 LL_WARNS_ONCE("LLVOLUME") << "meshopt_generateVertexRemapMulti failed to process a model or model was invalid" << LL_ENDL;
             }

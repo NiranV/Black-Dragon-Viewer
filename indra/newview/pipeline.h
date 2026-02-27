@@ -1111,6 +1111,7 @@ public:
     static bool RenderMirrors;
     static S32 RenderHeroProbeUpdateRate;
     static S32 RenderHeroProbeConservativeUpdateMultiplier;
+	static bool RenderAvatarCloth;
 
 //  //BD - Special Options
 	static bool CameraFreeDoFFocus;

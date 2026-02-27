@@ -385,10 +385,7 @@ bool LLTaskInvFVBridge::removeItem()
                 return true;
             }
 
-            LLSD payload;
-            payload["task_id"] = mPanel->getTaskUUID();
-            payload["inventory_ids"].append(mUUID);
-            LLNotificationsUtil::add("RemoveItemWarn", LLSD(), payload, boost::bind(&remove_task_inventory_callback, _1, _2, mPanel));
+            LLNotificationsUtil::add("CantModifyContentInNoModTask");
             return false;
         }
     }
@@ -411,13 +408,7 @@ void LLTaskInvFVBridge::removeBatch(std::vector<LLFolderViewModelItem*>& batch)
 
     if (!object->permModify())
     {
-        LLSD payload;
-        payload["task_id"] = mPanel->getTaskUUID();
-        for (LLFolderViewModelItem* item : batch)
-        {
-            payload["inventory_ids"].append(((LLTaskInvFVBridge*)item)->getUUID());
-        }
-        LLNotificationsUtil::add("RemoveItemWarn", LLSD(), payload, boost::bind(&remove_task_inventory_callback, _1, _2, mPanel));
+        LLNotificationsUtil::add("CantModifyContentInNoModTask");
     }
     else
     {
@@ -1839,7 +1830,7 @@ void LLPanelObjectInventory::onFocusReceived()
 
 LLFolderViewItem* LLPanelObjectInventory::getItemByID( const LLUUID& id )
 {
-    std::map<LLUUID, LLFolderViewItem*>::iterator map_it = mItemMap.find(id);
+    auto map_it = mItemMap.find(id);
     if (map_it != mItemMap.end())
     {
         return map_it->second;

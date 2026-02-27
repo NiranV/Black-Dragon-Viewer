@@ -103,64 +103,63 @@ static const std::string PROFILE_IMAGE_UPLOAD_CAP = "UploadAgentProfileImage";
 
 LLUUID post_profile_image(std::string cap_url, const LLSD &first_data, std::string path_to_image, LLHandle<LLPanel> *handle)
 {
-	LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
-	LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
-		httpAdapter(new LLCoreHttpUtil::HttpCoroutineAdapter("post_profile_image_coro", httpPolicy));
-	LLCore::HttpRequest::ptr_t httpRequest(new LLCore::HttpRequest);
-	LLCore::HttpHeaders::ptr_t httpHeaders;
+    LLCore::HttpRequest::policy_t httpPolicy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    LLCoreHttpUtil::HttpCoroutineAdapter::ptr_t
+        httpAdapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("post_profile_image_coro", httpPolicy);
+    LLCore::HttpRequest::ptr_t httpRequest = std::make_shared<LLCore::HttpRequest>();
+    LLCore::HttpHeaders::ptr_t httpHeaders;
 
-	LLCore::HttpOptions::ptr_t httpOpts(new LLCore::HttpOptions);
-	httpOpts->setFollowRedirects(true);
+    LLCore::HttpOptions::ptr_t httpOpts = std::make_shared<LLCore::HttpOptions>();
+    httpOpts->setFollowRedirects(true);
 
-	LLSD result = httpAdapter->postAndSuspend(httpRequest, cap_url, first_data, httpOpts, httpHeaders);
+    LLSD result = httpAdapter->postAndSuspend(httpRequest, cap_url, first_data, httpOpts, httpHeaders);
 
-	LLSD httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
-	LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
+    LLSD httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
 
-	if (!status)
-	{
-		// todo: notification?
-		LL_WARNS("AvatarProperties") << "Failed to get uploader cap " << status.toString() << LL_ENDL;
-		return LLUUID::null;
-	}
-	if (!result.has("uploader"))
-	{
-		// todo: notification?
-		LL_WARNS("AvatarProperties") << "Failed to get uploader cap, response contains no data." << LL_ENDL;
-		return LLUUID::null;
-	}
-	std::string uploader_cap = result["uploader"].asString();
-	if (uploader_cap.empty())
-	{
-		LL_WARNS("AvatarProperties") << "Failed to get uploader cap, cap invalid." << LL_ENDL;
-		return LLUUID::null;
-	}
+    if (!status)
+    {
+        // todo: notification?
+        LL_WARNS("AvatarProperties") << "Failed to get uploader cap " << status.toString() << LL_ENDL;
+        return LLUUID::null;
+    }
+    if (!result.has("uploader"))
+    {
+        // todo: notification?
+        LL_WARNS("AvatarProperties") << "Failed to get uploader cap, response contains no data." << LL_ENDL;
+        return LLUUID::null;
+    }
+    std::string uploader_cap = result["uploader"].asString();
+    if (uploader_cap.empty())
+    {
+        LL_WARNS("AvatarProperties") << "Failed to get uploader cap, cap invalid." << LL_ENDL;
+        return LLUUID::null;
+    }
 
-	// Upload the image
+    // Upload the image
+    LLCore::HttpRequest::ptr_t uploaderhttpRequest = std::make_shared<LLCore::HttpRequest>();
+    LLCore::HttpHeaders::ptr_t uploaderhttpHeaders = std::make_shared<LLCore::HttpHeaders>();
+    LLCore::HttpOptions::ptr_t uploaderhttpOpts = std::make_shared<LLCore::HttpOptions>();
+    S64 length;
 
-	LLCore::HttpRequest::ptr_t uploaderhttpRequest(new LLCore::HttpRequest);
-	LLCore::HttpHeaders::ptr_t uploaderhttpHeaders(new LLCore::HttpHeaders);
-	LLCore::HttpOptions::ptr_t uploaderhttpOpts(new LLCore::HttpOptions);
-	S64 length;
+    {
+        llifstream instream(path_to_image.c_str(), std::iostream::binary | std::iostream::ate);
+        if (!instream.is_open())
+        {
+            LL_WARNS("AvatarProperties") << "Failed to open file " << path_to_image << LL_ENDL;
+            return LLUUID::null;
+        }
+        length = instream.tellg();
+    }
 
-	{
-		llifstream instream(path_to_image.c_str(), std::iostream::binary | std::iostream::ate);
-		if (!instream.is_open())
-		{
-			LL_WARNS("AvatarProperties") << "Failed to open file " << path_to_image << LL_ENDL;
-			return LLUUID::null;
-		}
-		length = instream.tellg();
-	}
+    uploaderhttpHeaders->append(HTTP_OUT_HEADER_CONTENT_TYPE, "application/jp2"); // optional
+    uploaderhttpHeaders->append(HTTP_OUT_HEADER_CONTENT_LENGTH, llformat("%d", length)); // required!
+    uploaderhttpOpts->setFollowRedirects(true);
 
-	uploaderhttpHeaders->append(HTTP_OUT_HEADER_CONTENT_TYPE, "application/jp2"); // optional
-	uploaderhttpHeaders->append(HTTP_OUT_HEADER_CONTENT_LENGTH, llformat("%d", length)); // required!
-	uploaderhttpOpts->setFollowRedirects(true);
+    result = httpAdapter->postFileAndSuspend(uploaderhttpRequest, uploader_cap, path_to_image, uploaderhttpOpts, uploaderhttpHeaders);
 
-	result = httpAdapter->postFileAndSuspend(uploaderhttpRequest, uploader_cap, path_to_image, uploaderhttpOpts, uploaderhttpHeaders);
-
-	httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
-	status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
+    httpResults = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(httpResults);
 
     LL_DEBUGS("AvatarProperties") << result << LL_ENDL;
 
@@ -690,11 +689,12 @@ void LLFloaterProfilePermissions::onCancel()
 
 LLPanelProfileSecondLife::LLPanelProfileSecondLife()
     : LLPanelProfilePropertiesProcessorTab()
-	, mAvatarNameCacheConnection()
-	, mHasUnsavedDescriptionChanges(false)
-	, mWaitingForImageUpload(false)
-	, mAllowPublish(false)
-	, mHideAge(false)
+    , mAvatarNameCacheConnection()
+    , mHasUnsavedDescriptionChanges(false)
+    , mWaitingForImageUpload(false)
+    , mAllowPublish(false)
+    , mHideAge(false)
+    , mAllowEdit(true)
 {
 }
 
@@ -707,10 +707,14 @@ LLPanelProfileSecondLife::~LLPanelProfileSecondLife()
 
     LLVoiceClient::removeObserver((LLVoiceClientStatusObserver*)this);
 
-	if (mAvatarNameCacheConnection.connected())
-	{
-		mAvatarNameCacheConnection.disconnect();
-	}
+    if (mAvatarNameCacheConnection.connected())
+    {
+        mAvatarNameCacheConnection.disconnect();
+    }
+    if (mMenuNameCacheConnection.connected())
+    {
+        mMenuNameCacheConnection.disconnect();
+    }
 }
 
 bool LLPanelProfileSecondLife::postBuild()
@@ -759,19 +763,20 @@ void LLPanelProfileSecondLife::onOpen(const LLSD& key)
 	LLUUID avatar_id = getAvatarId();
 
     bool own_profile = getSelfProfile();
+    bool allow_edit = own_profile && mAllowEdit;
 
 	mGroupList->setShowNone(!own_profile);
 
-	childSetVisible("notes_panel", !own_profile);
-	childSetVisible("settings_panel", own_profile);
-	childSetVisible("about_buttons_panel", own_profile);
+    childSetVisible("notes_panel", !allow_edit);
+    childSetVisible("settings_panel", allow_edit);
+    childSetVisible("about_buttons_panel", allow_edit);
 
-	if (own_profile)
-	{
-		// Group list control cannot toggle ForAgent loading
-		// Less than ideal, but viewing own profile via search is edge case
-		mGroupList->enableForAgent(false);
-	}
+    if (allow_edit)
+    {
+        // Group list control cannot toggle ForAgent loading
+        // Less than ideal, but viewing own profile via search is edge case
+        mGroupList->enableForAgent(false);
+    }
 
 	// Init menu, menu needs to be created in scope of a registar to work correctly.
 	LLUICtrl::CommitCallbackRegistry::ScopedRegistrar commit;
@@ -791,7 +796,7 @@ void LLPanelProfileSecondLife::onOpen(const LLSD& key)
 		mAgentActionMenuButton->setMenu("menu_profile_other.xml", LLMenuButton::MP_BOTTOM_RIGHT);
 	}
 
-	mDescriptionEdit->setParseHTML(!own_profile);
+    mDescriptionEdit->setParseHTML(!allow_edit);
 
     if (!own_profile)
     {
@@ -860,8 +865,8 @@ void LLPanelProfileSecondLife::resetData()
 {
 	resetLoading();
 
-	// Set default image and 1:1 dimensions for it
-	mSecondLifePic->setValue("Generic_Person_Large");
+    // Set default image and 1:1 dimensions for it
+    mSecondLifePic->setValue(LLUUID());
 
 	LLRect imageRect = mSecondLifePic->getRect();
     mSecondLifePic->reshape(imageRect.getHeight(), imageRect.getHeight());
@@ -1024,7 +1029,7 @@ void LLPanelProfileSecondLife::fillCommonData(const LLAvatarData* avatar_data)
     if (getSelfProfile())
     {
         mAllowPublish = avatar_data->flags & AVATAR_ALLOW_PUBLISH;
-        mShowInSearchCombo->setValue(mAllowPublish);
+        mShowInSearchCombo->setValue(mAllowPublish ? LLSD::Integer(1) : LLSD::Integer(0));
     }
 }
 
@@ -1282,7 +1287,7 @@ void LLPanelProfileSecondLife::setLoaded()
         {
             mHideAgeCombo->setEnabled(true);
         }
-        mDescriptionEdit->setEnabled(true);
+        mDescriptionEdit->setEnabled(mAllowEdit);
     }
 }
 
@@ -1466,21 +1471,21 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
 			wstr = utf8str_to_wstring(av_name.getUserName());
 		}
         LLClipboard::instance().copyToClipboard(wstr, 0, static_cast<S32>(wstr.size()));
-	}
-	else if (item_name == "edit_display_name")
-	{
-		LLAvatarNameCache::get(getAvatarId(), boost::bind(&LLPanelProfileSecondLife::onAvatarNameCacheSetName, this, _1, _2));
-		LLFirstUse::setDisplayName(false);
-	}
-	else if (item_name == "edit_partner")
-	{
-		std::string url = "https://[GRID]/my/account/partners.php";
-		LLSD subs;
-		url = LLWeb::expandURLSubstitutions(url, subs);
-		LLUrlAction::openURL(url);
-	}
-	else if (item_name == "upload_photo")
-	{
+    }
+    else if (item_name == "edit_display_name")
+    {
+        mMenuNameCacheConnection = LLAvatarNameCache::get(getAvatarId(), boost::bind(&LLPanelProfileSecondLife::onAvatarNameCacheSetName, this, _1, _2));
+        LLFirstUse::setDisplayName(false);
+    }
+    else if (item_name == "edit_partner")
+    {
+        std::string url = "https://[GRID]/my/account/partners.php";
+        LLSD subs;
+        url = LLWeb::expandURLSubstitutions(url, subs);
+        LLUrlAction::openURL(url);
+    }
+    else if (item_name == "upload_photo")
+    {
         (new LLProfileImagePicker(PROFILE_IMAGE_SL, new LLHandle<LLPanel>(LLPanel::getHandle())))->getFile();
 
 		LLFloater* floaterp = mFloaterTexturePickerHandle.get();

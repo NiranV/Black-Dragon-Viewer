@@ -225,6 +225,13 @@ enum ERenderName
     RENDER_NAME_FADE
 };
 
+enum ERenderGroupTitle
+{
+    RENDER_GROUP_TITLE_NEVER,
+    RENDER_GROUP_TITLE_SELF,
+    RENDER_GROUP_TITLE_ALWAYS
+};
+
 #define JELLYDOLLS_SHOULD_IMPOSTOR
 
 //-----------------------------------------------------------------------------
@@ -615,7 +622,7 @@ const LLUUID LLVOAvatar::sStepSounds[LL_MCODE_END] =
 };
 
 S32 LLVOAvatar::sRenderName = RENDER_NAME_ALWAYS;
-bool LLVOAvatar::sRenderGroupTitles = true;
+S32 LLVOAvatar::sRenderGroupTitles = RENDER_GROUP_TITLE_ALWAYS;
 S32 LLVOAvatar::sNumVisibleChatBubbles = 0;
 bool LLVOAvatar::sDebugInvisible = false;
 bool LLVOAvatar::sShowAttachmentPoints = false;
@@ -3592,7 +3599,7 @@ void LLVOAvatar::idleUpdateLoadingEffect()
 void LLVOAvatar::idleUpdateWindEffect()
 {
     // update wind effect
-    if ((LLViewerShaderMgr::instance()->getShaderLevel(LLViewerShaderMgr::SHADER_AVATAR) >= LLDrawPoolAvatar::SHADER_LEVEL_CLOTH))
+    if (LLPipeline::RenderAvatarCloth)
     {
         F32 hover_strength = 0.f;
         F32 time_delta = mRippleTimer.getElapsedTimeF32() - mRippleTimeLast;
@@ -3844,9 +3851,10 @@ void LLVOAvatar::idleUpdateNameTagText(bool new_name)
             addNameTagLine(line, name_tag_color, LLFontGL::NORMAL,
                 LLFontGL::getFontSansSerifSmall());
         }
+        bool render_title = (sRenderGroupTitles == RENDER_GROUP_TITLE_ALWAYS) ||
+                            (isSelf() && (sRenderGroupTitles == RENDER_GROUP_TITLE_SELF));
 
-        if (sRenderGroupTitles
-            && title && title->getString() && title->getString()[0] != '\0')
+        if (render_title && title && title->getString() && title->getString()[0] != '\0')
         {
             std::string title_str = title->getString();
             LLStringFn::replace_ascii_controlchars(title_str,LL_UNKNOWN_CHAR);
@@ -4767,10 +4775,19 @@ void LLVOAvatar::updateOrientation(LLAgent& agent, F32 speed, F32 delta_time)
 		}
 
 		// use tighter threshold when turning
-		if (mTurning)
-		{
-			pelvis_rot_threshold *= 0.4f;
-		}
+        if (mTurning)
+        {
+            pelvis_rot_threshold *= 0.4f;
+            // account for fps, assume that above value is for ~60fps
+            constexpr F32 default_frame_sec = 0.016f;
+            F32 prev_frame_sec = LLFrameTimer::getFrameDeltaTimeF32();
+            if (default_frame_sec > prev_frame_sec)
+            {
+                // reduce threshold since turn rate per second is constant,
+                // shorter frame means shorter turn.
+                pelvis_rot_threshold *= prev_frame_sec/default_frame_sec;
+            }
+        }
 
 		// am I done turning?
 		if (angle < pelvis_rot_threshold)
@@ -11726,12 +11743,17 @@ void LLVOAvatar::calculateUpdateRenderComplexity()
             LLPerfStats::tunables.userFPSTuningStrategy != LLPerfStats::TUNE_SCENE_ONLY &&
             !isVisuallyMuted())
         {
-            LLUUID id = getID(); // <== use id to make sure this avatar didn't get deleted between frames
-            LL::WorkQueue::getInstance("mainloop")->post([this, id]()
+            const LLUUID id = getID(); // <== use id to make sure this avatar didn't get deleted between frames
+            LL::WorkQueue::getInstance("mainloop")->post([id]()
                 {
-                    if (gObjectList.findObject(id) != nullptr)
+                    LLViewerObject* obj = gObjectList.findObject(id);
+                    if (obj
+                        && !obj->isDead()
+                        && obj->isAvatar()
+                        && obj->mDrawable)
                     {
-                        gPipeline.profileAvatar(this);
+                        LLVOAvatar* avatar = (LLVOAvatar*)obj;
+                        gPipeline.profileAvatar(avatar);
                     }
                 });
         }

@@ -79,6 +79,8 @@ typedef enum
     LAST_EXEC_BAD_ALLOC,
     LAST_EXEC_MISSING_FILES,
     LAST_EXEC_GRAPHICS_INIT,
+    LAST_EXEC_UNKNOWN,
+    LAST_EXEC_LOGOUT_UNKNOWN,
     LAST_EXEC_COUNT
 } eLastExecEvent;
 
@@ -151,6 +153,12 @@ public:
     std::string getWindowTitle() const; // The window display name.
 
     void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
+
+    // sendSimpleLogoutRequest does not create a marker file.
+    // Meant for lost network case, and for forced shutdowns,
+    // to at least attempt to remove the ghost from the world.
+    void sendSimpleLogoutRequest();
+
     void badNetworkHandler(); // Cause a crash state due to bad network packet.
 
 	//BD
@@ -201,11 +209,13 @@ public:
     // For thread debugging.
     // llstartup needs to control init.
     // llworld, send_agent_pause() also controls pause/resume.
-    void initMainloopTimeout(std::string_view state, F32 secs = -1.0f);
+    void initMainloopTimeout(std::string_view state);
     void destroyMainloopTimeout();
     void pauseMainloopTimeout();
-    void resumeMainloopTimeout(std::string_view state = "", F32 secs = -1.0f);
-    void pingMainloopTimeout(std::string_view state, F32 secs = -1.0f);
+    void resumeMainloopTimeout(std::string_view state = "");
+    void pingMainloopTimeout(std::string_view state);
+
+    F32 getMainloopTimeoutSec() const;
 
     // Handle the 'login completed' event.
     // *NOTE:Mani Fix this for login abstraction!!
@@ -219,7 +229,7 @@ public:
         return mOnLoginCompleted.connect(cb);
     }
 
-    void addOnIdleCallback(const boost::function<void()>& cb); // add a callback to fire (once) when idle
+    void addOnIdleCallback(const std::function<void()>& cb); // add a callback to fire (once) when idle
 
     void initGeneralThread();
     void purgeUserDataOnExit() { mPurgeUserDataOnExit = true; }
@@ -249,6 +259,7 @@ public:
 
     // Writes an error code into the error_marker file for use on next startup.
     void createErrorMarker(eLastExecEvent error_code) const;
+    bool errorMarkerExists() const;
 
     // Attempt a 'soft' quit with disconnect and saving of settings/cache.
     // Intended to be thread safe.
@@ -320,10 +331,6 @@ private:
 
     void sendLogoutRequest();
     void disconnectViewer();
-
-    // Does not create a marker file. For lost network case,
-    // to at least attempt to remove the ghost from the world.
-    void sendSimpleLogoutRequest();
 
     // *FIX: the app viewer class should be some sort of singleton, no?
     // Perhaps its child class is the singleton and this should be an abstract base.
@@ -425,8 +432,6 @@ extern S32 gPendingMetricsUploads;
 
 extern F32 gSimLastTime;
 extern F32 gSimFrames;
-
-extern bool     gDisconnected;
 
 extern LLFrameTimer gRestoreGLTimer;
 extern bool         gRestoreGL;

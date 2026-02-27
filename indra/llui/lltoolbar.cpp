@@ -111,33 +111,33 @@ LLToolBar::Params::Params()
 {}
 
 LLToolBar::LLToolBar(const LLToolBar::Params& p)
-:	LLUICtrl(p),
-	mReadOnly(p.read_only),
-	mButtonType(p.button_display_mode),
-	mSideType(p.side),
-	mWrap(p.wrap),
-	mNeedsLayout(false),
-	mModified(false),
-	mButtonPanel(NULL),
-	mCenteringStack(NULL),
-	mPadLeft(p.pad_left),
-	mPadRight(p.pad_right),
-	mPadTop(p.pad_top),
-	mPadBottom(p.pad_bottom),
-	mPadBetween(p.pad_between),
-	mMinGirth(p.min_girth),
-	mPopupMenuHandle(),
-	mRightMouseTargetButton(NULL),
-	mStartDragItemCallback(NULL),
-	mHandleDragItemCallback(NULL),
-	mHandleDropCallback(NULL),
-	mButtonAddSignal(NULL),
-	mButtonEnterSignal(NULL),
-	mButtonLeaveSignal(NULL),
-	mButtonRemoveSignal(NULL),
-	mDragAndDropTarget(false),
-	mCaretIcon(NULL),
-	mCenterPanel(NULL),
+:   LLUICtrl(p),
+    mReadOnly(p.read_only),
+    mButtonType(p.button_display_mode),
+    mSideType(p.side),
+    mWrap(p.wrap),
+    mNeedsLayout(false),
+    mModified(false),
+    mButtonPanel(nullptr),
+    mCenteringStack(nullptr),
+    mPadLeft(p.pad_left),
+    mPadRight(p.pad_right),
+    mPadTop(p.pad_top),
+    mPadBottom(p.pad_bottom),
+    mPadBetween(p.pad_between),
+    mMinGirth(p.min_girth),
+    mPopupMenuHandle(),
+    mRightMouseTargetButton(nullptr),
+    mStartDragItemCallback(nullptr),
+    mHandleDragItemCallback(nullptr),
+    mHandleDropCallback(nullptr),
+    mButtonAddSignal(nullptr),
+    mButtonEnterSignal(nullptr),
+    mButtonLeaveSignal(nullptr),
+    mButtonRemoveSignal(nullptr),
+    mDragAndDropTarget(false),
+    mCaretIcon(nullptr),
+    mCenterPanel(nullptr),
 //	//BD - Additional Toolbar Layouts
 	mLayoutType(p.button_layout_mode)
 {
@@ -1160,7 +1160,7 @@ bool LLToolBar::handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
     // if drop is set, it's time to call the callback to get the operation done
     if (handled && drop)
     {
-        handled = mHandleDropCallback(cargo_data, x, y, this);
+        handled = mHandleDropCallback(cargo_data, cargo_type, x, y, this);
     }
 
     // We accept only single tool drop on toolbars
@@ -1203,12 +1203,12 @@ LLToolBarButton::LLToolBarButton(const Params& p)
     mWidthRange(p.button_width),
     mDesiredHeight(p.desired_height),
     mId(""),
-    mIsEnabledSignal(NULL),
-    mIsRunningSignal(NULL),
-    mIsStartingSignal(NULL),
+    mIsEnabledSignal(nullptr),
+    mIsRunningSignal(nullptr),
+    mIsStartingSignal(nullptr),
     mIsDragged(false),
-    mStartDragItemCallback(NULL),
-    mHandleDragItemCallback(NULL),
+    mStartDragItemCallback(nullptr),
+    mHandleDragItemCallback(nullptr),
     mOriginalImageSelected(p.image_selected),
     mOriginalImageUnselected(p.image_unselected),
     mOriginalImagePressed(p.image_pressed),
@@ -1364,7 +1364,7 @@ void LLToolBar::LLCenterLayoutPanel::handleReshape(const LLRect& rect, bool by_u
 {
     LLLayoutPanel::handleReshape(rect, by_user);
 
-    if (!mReshapeCallback.empty())
+    if (mReshapeCallback != nullptr)
     {
         LLRect r;
         localRectToOtherView(mButtonPanel->getRect(), &r, gFloaterView);

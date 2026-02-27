@@ -239,7 +239,7 @@ void LLFloater::initClass()
 }
 
 // defaults for floater param block pulled from widgets/floater.xml
-static LLWidgetNameRegistry::StaticRegistrar sRegisterFloaterParams(&typeid(LLFloater::Params), "floater");
+static LLWidgetNameRegistry::StaticRegistrar sRegisterFloaterParams(typeid(LLFloater::Params), "floater");
 
 LLFloater::LLFloater(const LLSD& key, const LLFloater::Params& p)
 :   LLPanel(),  // intentionally do not pass params here, see initFromParams
@@ -2322,7 +2322,7 @@ void LLFloater::drawConeToOwner(F32 &context_cone_opacity,
         LLRect local_rect = getLocalRect();
 
         gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-        LLGLEnable(GL_CULL_FACE);
+        LLGLEnable cull_face(GL_CULL_FACE);
         gGL.begin(LLRender::TRIANGLE_STRIP);
         {
             gGL.color4f(0.f, 0.f, 0.f, contex_cone_in_alpha * context_cone_opacity);
