@@ -30,7 +30,7 @@
 
 #include "stdtypes.h" // from llcommon
 
- // Entirely abstract.  Based exactly on the historic API.
+// Entirely abstract.  Based exactly on the historic API.
 class LLStreamingAudioInterface
 {
  public:

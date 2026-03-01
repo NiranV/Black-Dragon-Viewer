@@ -249,7 +249,6 @@ S32 LLAvatarTracker::addBuddyList(const LLAvatarTracker::buddy_map_t& buds)
         {
             ++new_buddy_count;
             mBuddyInfo[agent_id] = (*itr).second;
-            LLRelationship* relation = (*itr).second;
 
             // pre-request name for notifications?
             LLAvatarName av_name;
@@ -257,7 +256,7 @@ S32 LLAvatarTracker::addBuddyList(const LLAvatarTracker::buddy_map_t& buds)
 
             addChangedMask(LLFriendObserver::ADD, agent_id);
             LL_DEBUGS() << "Added buddy " << agent_id
-                    << ", " << (relation->isOnline() ? "Online" : "Offline")
+                    << ", " << (mBuddyInfo[agent_id]->isOnline() ? "Online" : "Offline")
                     << ", TO: " << mBuddyInfo[agent_id]->getRightsGrantedTo()
                     << ", FROM: " << mBuddyInfo[agent_id]->getRightsGrantedFrom()
                     << LL_ENDL;

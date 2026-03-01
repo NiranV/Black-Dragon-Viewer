@@ -60,8 +60,6 @@ public:
     bool hasHeroProbes = false;
     bool isPBRTerrain = false;
     bool hasTonemap = false;
-//	//BD - Motion Blur
-	//bool hasMotionBlur;
 };
 
 // ============= Structure for caching shader uniforms ===============

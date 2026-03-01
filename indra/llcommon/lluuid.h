@@ -170,7 +170,6 @@ public:
     LLAssetID makeAssetID(const LLUUID& session) const;
 };
 
-
 // std::hash implementation for LLUUID
 namespace std
 {

@@ -40,7 +40,7 @@ retry_cmd()
 
 build_dir_Darwin()
 {
-  echo build-darwin-x86_64
+  echo build-darwin-universal
 }
 
 build_dir_Linux()
@@ -241,7 +241,11 @@ build()
   if $build_viewer
   then
     begin_section "autobuild $variant"
-    "$autobuild" build --no-configure -c $variant || fatal "failed building $variant"
+    # honor autobuild_build_parameters same as sling-buildscripts
+    eval_autobuild_build_parameters=$(eval $(echo echo $autobuild_build_parameters))
+    "$autobuild" build --no-configure -c $variant \
+         $eval_autobuild_build_parameters \
+    || fatal "failed building $variant"
     echo true >"$build_dir"/build_ok
     end_section "autobuild $variant"
 
@@ -257,8 +261,8 @@ build()
         done
     fi
 
-    # *TODO: Make this a build extension.
-    package_llphysicsextensions_tpv || fatal "failed building llphysicsextensions packages"
+    # *TODO: Make this a build extension. disabled for now
+    # package_llphysicsextensions_tpv || fatal "failed building llphysicsextensions packages"
     end_section "extensions $variant"
 
   else
@@ -383,7 +387,7 @@ do
       if `cat "$build_dir/build_ok"`
       then
           case "$variant" in
-            Release)
+            Release*)
               if [ -r "$build_dir/autobuild-package.xml" ]
               then
                   begin_section "Autobuild metadata"

@@ -149,8 +149,8 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
 
     try
     {
-        /*// _LL_DEBUGS("LLLogin") << "Entering coroutine " << LLCoros::getName()
-                             << " with uri '" << uri << "', parameters " << printable_params << LL_ENDL;*/
+        LL_DEBUGS("LLLogin") << "Entering coroutine " << LLCoros::getName()
+                             << " with uri '" << uri << "', parameters " << printable_params << LL_ENDL;
 
         LLEventPump& xmlrpcPump(LLEventPumps::instance().obtain("LLXMLRPCTransaction"));
         // EXT-4193: use a DIFFERENT reply pump than for the SRV request. We used
@@ -191,7 +191,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
                 sendProgressEvent("offline", "downloading");
             }
 
-            // _LL_DEBUGS("LLLogin") << "Auth Response: " << mAuthResponse << LL_ENDL;
+            LL_DEBUGS("LLLogin") << "Auth Response: " << mAuthResponse << LL_ENDL;
             status = mAuthResponse["status"].asString();
 
             // Okay, we've received our final status event for this
@@ -288,7 +288,7 @@ void LLLogin::Impl::loginCoro(std::string uri, LLSD login_params)
         // if below.
         if( status == "Started")
         {
-            // _LL_DEBUGS("LLLogin") << mAuthResponse << LL_ENDL;
+            LL_DEBUGS("LLLogin") << mAuthResponse << LL_ENDL;
             continue;
         }
 |*==========================================================================*/

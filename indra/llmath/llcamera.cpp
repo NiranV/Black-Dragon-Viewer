@@ -112,13 +112,10 @@ void LLCamera::disableUserClipPlane()
     mPlaneCount = AGENT_PLANE_NO_USER_CLIP_NUM;
 }
 
-void LLCamera::setView(F32 vertical_fov_rads, bool debug)
+void LLCamera::setView(F32 vertical_fov_rads)
 {
-    if (debug) LL_INFOS("Camera_Debug") << "3-1" << LL_ENDL;
     mView = llclamp(vertical_fov_rads, MIN_FIELD_OF_VIEW, MAX_FIELD_OF_VIEW);
-    if (debug) LL_INFOS("Camera_Debug") << "3-2" << LL_ENDL;
     calculateFrustumPlanes();
-    if (debug) LL_INFOS("Camera_Debug") << "3-3" << LL_ENDL;
 }
 
 void LLCamera::setViewHeightInPixels(S32 height)
@@ -403,6 +400,7 @@ void LLCamera::calculateFrustumPlanes()
     bottom = -top;
     left = top * mAspect;
     right = -left;
+
     calculateFrustumPlanes(left, right, top, bottom);
 }
 

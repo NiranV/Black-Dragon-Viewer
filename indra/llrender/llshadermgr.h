@@ -167,7 +167,7 @@ public:
         DEFERRED_SSAO_MAX_RADIUS,           //  "ssao_max_radius"
         DEFERRED_SSAO_FACTOR,               //  "ssao_factor"
         DEFERRED_SSAO_FACTOR_INV,           //  "ssao_factor_inv"
-        DEFERRED_SSAO_EFFECT_MAT,			//  "ssao_effect_mat"
+        DEFERRED_SSAO_EFFECT_MAT,           //  "ssao_effect_mat"
         DEFERRED_SCREEN_RES,                //  "screen_res"
         DEFERRED_NEAR_CLIP,                 //  "near_clip"
         DEFERRED_SHADOW_OFFSET,             //  "shadow_offset"
@@ -376,10 +376,6 @@ public:
 		DEFERRED_GREYSCALE_STRENGTH,
 		DEFERRED_SEPIA_STRENGTH,
 		DEFERRED_CHROMA_STRENGTH,
-
-//		//BD - Motion Blur
-		//TIME_STEP,
-		//MBLUR_STRENGTH,
 
 		CURRENT_MODELVIEW_MATRIX,
 		LAST_MODELVIEW_MATRIX,

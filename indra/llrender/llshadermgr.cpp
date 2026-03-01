@@ -362,16 +362,7 @@ bool LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
         }
     }
 
-//	//BD - Motion Blur
-	/*/if (features->hasMotionBlur)
-	{
-		if (!shader->attachVertexObject("deferred/velocityFuncV.glsl"))
-		{
-			return false;
-		}
-	}*/
-
-	return true;
+    return true;
 }
 
 //============================================================================
@@ -1582,10 +1573,6 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("greyscale_str");
 	mReservedUniforms.push_back("sepia_str");
 	mReservedUniforms.push_back("chroma_str");
-
-//	//BD - Motion Blur
-	//mReservedUniforms.push_back("time_step");
-	//mReservedUniforms.push_back("mblur_strength");
 
 	mReservedUniforms.push_back("current_modelview_matrix");
 	mReservedUniforms.push_back("last_modelview_matrix");

@@ -816,7 +816,7 @@ void LLUUID::generate()
         our_clock_seq = clock_seq;  // Ensure we're using a different clock_seq value from previous time
     }
 
-	time_last = timestamp;
+    time_last = timestamp;
 
     memcpy(mData + 10, node_id, 6);     /* Flawfinder: ignore */
     U32 tmp;
