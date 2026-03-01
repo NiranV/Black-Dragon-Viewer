@@ -257,7 +257,7 @@ void LLScrollListBar::setValue(const LLSD& value)
     }
 }
 
-void LLScrollListBar::setColor(const LLUIColor& color)
+void LLScrollListBar::setColor(const LLColor4& color)
 {
     mColor = color;
 }
@@ -377,7 +377,7 @@ S32 LLScrollListText::getContentWidth() const
 }
 
 
-void LLScrollListText::setColor(const LLUIColor& color)
+void LLScrollListText::setColor(const LLColor4& color)
 {
     mColor = color;
     mUseColor = true;
@@ -888,7 +888,7 @@ S32 LLScrollListVector::getContentWidth() const
 }
 
 
-void LLScrollListVector::setColor(const LLUIColor& color)
+void LLScrollListVector::setColor(const LLColor4& color)
 {
     mColor = color;
     mUseColor = true;

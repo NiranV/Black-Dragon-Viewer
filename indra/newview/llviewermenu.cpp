@@ -622,7 +622,6 @@ void init_menus()
 
     gMenuLand->setBackgroundColor( context_menu_color );
 
-    LLUIColor color = LLUIColorTable::instance().getColor( "MenuPopupBgColor" );
     gPopupMenuView->setBackgroundColor( color );
 
     // *TODO:Also fix cost in llfolderview.cpp for Inventory menus
@@ -668,14 +667,6 @@ void init_menus()
     gMenuParcelObserver = new LLMenuParcelObserver();
 
     gSLMMenuUpdater = new LLSLMMenuUpdater();
-
-    gLoginMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_login.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
-    gLoginMenuBarView->arrangeAndClear();
-    LLRect menuBarRect = gLoginMenuBarView->getRect();
-    menuBarRect.setLeftTopAndSize(0, menu_bar_holder->getRect().getHeight(), menuBarRect.getWidth(), menuBarRect.getHeight());
-    gLoginMenuBarView->setRect(menuBarRect);
-    gLoginMenuBarView->setBackgroundColor( color );
-    menu_bar_holder->addChild(gLoginMenuBarView);
 
     // tooltips are on top of EVERYTHING, including menus
     gViewerWindow->getRootView()->sendChildToFront(gToolTipView);
@@ -3017,7 +3008,7 @@ class LLObjectRefreshTextures : public view_listener_t
 					}
                     if (objectp->isSculpted() && !objectp->isMesh())
                     {
-                        LLSculptParams* sculpt_params = (LLSculptParams*)objectp->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+                        LLSculptParams* sculpt_params = (LLSculptParams*)objectp->getSculptParams();
                         LLUUID sculpt_id = sculpt_params->getSculptTexture();
                         LLViewerFetchedTexture* fetched_texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
                         if (fetched_texture)

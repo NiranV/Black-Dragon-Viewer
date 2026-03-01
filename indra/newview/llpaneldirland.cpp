@@ -35,10 +35,13 @@
 #include "llnotificationsutil.h"
 #include "llqueryflags.h"
 #include "llscrolllistctrl.h"
-#include "llstatusbar.h"
 #include "lltextbox.h"
 #include "llviewercontrol.h"
 #include "llviewermessage.h"
+
+//BD
+#include "llsidepanelinventory.h"
+#include "llfloatersidepanelcontainer.h"
 
 //-----------------------------------------------------------------------------
 // Constants
@@ -65,9 +68,11 @@ bool LLPanelDirLand::postBuild()
     childSetCommitCallback("pricecheck", onCommitPrice, this);
     childSetCommitCallback("areacheck", onCommitArea, this);
 
-    if (gStatusBar)
+    //BD
+    LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
+    if (sidepanel_inventory)
     {
-        childSetValue("priceedit", gStatusBar->getBalance());
+        childSetValue("priceedit", sidepanel_inventory->getBalance());
     }
     childSetEnabled("priceedit", gSavedSettings.getBOOL("FindLandPrice"));
     LLLineEditor* priceedit = getChild<LLLineEditor>("priceedit");

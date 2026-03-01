@@ -163,7 +163,7 @@ public:
     /*virtual*/ bool    getVisible() const;
     /*virtual*/ void    highlightText(S32 offset, S32 num_chars);
 
-    /*virtual*/ void    setColor(const LLUIColor&);
+    /*virtual*/ void    setColor(const LLColor4&);
     /*virtual*/ bool    isText() const;
     /*virtual*/ const std::string & getToolTip() const;
     /*virtual*/ bool    needsToolTip() const;
@@ -208,7 +208,7 @@ public:
     /*virtual*/ S32     getWidth() const;
     /*virtual*/ S32     getHeight() const;
     /*virtual*/ const LLSD      getValue() const;
-    /*virtual*/ void    setColor(const LLUIColor&);
+    /*virtual*/ void    setColor(const LLColor4&);
     /*virtual*/ void    setValue(const LLSD& value);
     void                setIconSize(S32 size);
 
@@ -229,7 +229,7 @@ public:
     /*virtual*/ S32     getWidth() const;
     /*virtual*/ S32     getHeight() const;
     /*virtual*/ const LLSD      getValue() const;
-    /*virtual*/ void    setColor(const LLUIColor&);
+    /*virtual*/ void    setColor(const LLColor4&);
     /*virtual*/ void    setValue(const LLSD& value);
 
 private:
@@ -341,7 +341,7 @@ public:
     /*virtual*/ bool    getVisible() const;
     /*virtual*/ void    highlightText(S32 offset, S32 num_chars);
 
-    /*virtual*/ void    setColor(const LLUIColor&);
+    /*virtual*/ void    setColor(const LLColor4&);
     /*virtual*/ bool    isText() const;
     /*virtual*/ const std::string& getToolTip() const;
     /*virtual*/ bool    needsToolTip() const;

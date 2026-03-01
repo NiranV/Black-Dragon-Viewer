@@ -936,7 +936,7 @@ U32 BDFloaterComplexity::getRenderCost(LLVOVolume* volume, texture_cost& texture
 		}
 		else
 		{
-			const LLSculptParams* sculpt_params = (LLSculptParams*)drawablep->getVObj()->getParameterEntry(LLNetworkData::PARAMS_SCULPT);
+			const LLSculptParams* sculpt_params = (LLSculptParams*)drawablep->getVObj()->getSculptParams();
 			LLUUID sculpt_id = sculpt_params->getSculptTexture();
 			LLViewerFetchedTexture* texture = LLViewerTextureManager::getFetchedTexture(sculpt_id);
 			if (textures.find(texture) == textures.end())

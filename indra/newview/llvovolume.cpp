@@ -3149,7 +3149,7 @@ void LLVOVolume::setIsLight(bool is_light)
 //BD
 void LLVOVolume::setHasShadow(bool has_shadow)
 {
-	LLLightImageParams* param_block = (LLLightImageParams*)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
+	LLLightImageParams* param_block = getLightImageParams();
 	if (param_block)
 	{
 		param_block->setSpotLightShadow(has_shadow);
@@ -3245,16 +3245,15 @@ bool LLVOVolume::getIsLightFast() const
 //BD
 bool LLVOVolume::getHasShadow() const
 {
-	if (getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT_IMAGE))
+	const LLLightImageParams *param_block = getLightImageParams();
+	if (param_block)
 	{
-		const LLLightImageParams *param_block = (const LLLightImageParams *)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
-		if (param_block)
-		{
-			return param_block->hasSpotLightShadow();
-		}
+		return param_block->hasSpotLightShadow();
 	}
-
-	return false;
+    else
+    {
+        return false;
+    }
 }
 
 LLColor3 LLVOVolume::getLightSRGBBaseColor() const
@@ -3373,12 +3372,15 @@ bool LLVOVolume::isLightSpotlight() const
 //BD
 bool LLVOVolume::hasSpotLightShadow() const
 {
-	LLLightImageParams* params = (LLLightImageParams*)getParameterEntry(LLNetworkData::PARAMS_LIGHT_IMAGE);
-	if (params && getParameterEntryInUse(LLNetworkData::PARAMS_LIGHT_IMAGE))
+	LLLightImageParams* params = getLightImageParams();
+	if (params)
 	{
 		return params->hasSpotLightShadow();
 	}
-	return false;
+    else
+    {
+        return false;
+    }
 }
 
 

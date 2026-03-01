@@ -583,7 +583,7 @@ public:
 	LLPanel* mChicletContainer = nullptr;
 	LLPanel* mStateManagementContainer = nullptr;
 	LLView* mFloaterSnapRegion = nullptr;
-	LLPanel* mMainView;
+    MainPanel* mMainView;                  // a view of size mWindowRectRaw, directly containing the base elements of the ui tree
 };
 
 //

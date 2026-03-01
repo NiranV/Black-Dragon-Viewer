@@ -1954,12 +1954,13 @@ LLViewerWindow::LLViewerWindow(const Params& p)
 	mStateManagementContainer(NULL),
 	mFloaterSnapRegion(NULL)
 {
-	// gKeyboard is still NULL, so it doesn't do LLWindowListener any good to
-	// pass its value right now. Instead, pass it a nullary function that
-	// will, when we later need it, return the value of gKeyboard.
-	// boost::lambda::var() constructs such a functor on the fly.
-	mWindowListener.reset(new LLWindowListener(this, boost::lambda::var(gKeyboard)));
-	mViewerWindowListener.reset(new LLViewerWindowListener(this));
+    // gKeyboard is still NULL, so it doesn't do LLWindowListener any good to
+    // pass its value right now. Instead, pass it a nullary function that
+    // will, when we later need it, return the value of gKeyboard.
+    // boost::lambda::var() constructs such a functor on the fly.
+    LLWindowListener::KeyboardGetter getter = []() { return gKeyboard; };
+    mWindowListener = std::make_unique<LLWindowListener>(this, getter);
+    mViewerWindowListener = std::make_unique<LLViewerWindowListener>(this);
 
 	mSystemChannel.reset(new LLNotificationChannel("System", "Visible", LLNotificationFilters::includeEverything));
 	mCommunicationChannel.reset(new LLCommunicationChannel("Communication", "Visible"));
