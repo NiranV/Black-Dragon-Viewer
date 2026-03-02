@@ -624,36 +624,22 @@ void init_menus()
 
     gPopupMenuView->setBackgroundColor( color );
 
+
+    LLView* menu_bar_holder = gViewerWindow->getRootView()->getChildView("menu_bar_holder");
+
+    gMenuBarView = LLUICtrlFactory::getInstance()->createFromFile<LLMenuBarGL>("menu_viewer.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance());
+    gMenuBarView->setRect(LLRect(0, menu_bar_holder->getRect().mTop, 0, menu_bar_holder->getRect().mTop - MENU_BAR_HEIGHT));
+    gMenuBarView->setBackgroundColor(color);
+
+    menu_bar_holder->addChild(gMenuBarView);
+
     // *TODO:Also fix cost in llfolderview.cpp for Inventory menus
+    const std::string texture_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getTextureUploadCost());
     const std::string sound_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getSoundUploadCost());
     const std::string animation_upload_cost_str = std::to_string(LLAgentBenefitsMgr::current().getAnimationUploadCost());
-
-    LLView* main_upload_menu = gMenuHolder->findChild<LLView>("Upload");
-    if (!main_upload_menu)
-    {
-        LLError::LLUserWarningMsg::showMissingFiles();
-        LL_ERRS() << "Can't find 'Upload' menu in 'menu_viewer'" << LL_ENDL;
-        return;
-    }
-
-    LLView* upload_sound = main_upload_menu->findChild<LLView>("Upload Sound");
-    if (!upload_sound)
-    {
-        LLError::LLUserWarningMsg::showMissingFiles();
-        LL_ERRS() << "Can't find 'Upload Sound' menu item in 'Upload' menu" << LL_ENDL;
-        return;
-    }
-    upload_sound->setLabelArg("[COST]", sound_upload_cost_str);
-
-    LLView* upload_anim = main_upload_menu->findChild<LLView>("Upload Animation");
-    if (!upload_anim)
-    {
-        LLError::LLUserWarningMsg::showMissingFiles();
-        LL_ERRS() << "Can't find 'Upload Animation' menu item in 'Upload' menu" << LL_ENDL;
-        return;
-    }
-    upload_anim->setLabelArg("[COST]", animation_upload_cost_str);
-
+    gMenuHolder->childSetLabelArg("Upload Image", "[COST]", texture_upload_cost_str);
+    gMenuHolder->childSetLabelArg("Upload Sound", "[COST]", sound_upload_cost_str);
+    gMenuHolder->childSetLabelArg("Upload Animation", "[COST]", animation_upload_cost_str);
 
     gAttachSubMenu = gMenuBarView->findChildMenuByName("Attach Object", true);
     gDetachSubMenu = gMenuBarView->findChildMenuByName("Detach Object", true);
