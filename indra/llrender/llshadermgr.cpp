@@ -174,6 +174,14 @@ bool LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
         }
     }
 
+    if (features->hasMotionBlur)
+    {
+        if (!shader->attachVertexObject("deferred/velocityFuncV.glsl"))
+        {
+            return false;
+        }
+    }
+
     if (!shader->attachVertexObject("deferred/textureUtilV.glsl"))
     {
         return false;
@@ -1429,6 +1437,7 @@ void LLShaderMgr::initAttribsAndUniforms()
     mReservedUniforms.push_back("lightFunc");
     mReservedUniforms.push_back("lightMap");
     mReservedUniforms.push_back("bloomMap");
+    mReservedUniforms.push_back("velocityMap");
     mReservedUniforms.push_back("projectionMap");
     mReservedUniforms.push_back("norm_mat");
 
@@ -1541,6 +1550,18 @@ void LLShaderMgr::initAttribsAndUniforms()
     mReservedUniforms.push_back("areaTex");
     mReservedUniforms.push_back("searchTex");
     mReservedUniforms.push_back("blendTex");
+    mReservedUniforms.push_back("subsampleIndices");
+    mReservedUniforms.push_back("currentColorTex");
+    mReservedUniforms.push_back("previousColorTex");
+    mReservedUniforms.push_back("velocityTex");
+
+    mReservedUniforms.push_back("current_modelview_matrix");
+    mReservedUniforms.push_back("last_modelview_matrix");
+    mReservedUniforms.push_back("last_modelview_matrix_inverse");
+    mReservedUniforms.push_back("current_object_matrix");
+    mReservedUniforms.push_back("last_object_matrix");
+    mReservedUniforms.push_back("lastMatrixPalette");
+    mReservedUniforms.push_back("motion_blur_strength");
 
 //	//BD - Special Options
 	mReservedUniforms.push_back("seconds60");
@@ -1573,13 +1594,6 @@ void LLShaderMgr::initAttribsAndUniforms()
 	mReservedUniforms.push_back("greyscale_str");
 	mReservedUniforms.push_back("sepia_str");
 	mReservedUniforms.push_back("chroma_str");
-
-	mReservedUniforms.push_back("current_modelview_matrix");
-	mReservedUniforms.push_back("last_modelview_matrix");
-	mReservedUniforms.push_back("last_modelview_matrix_inverse");
-	mReservedUniforms.push_back("current_object_matrix");
-	mReservedUniforms.push_back("last_object_matrix");
-	mReservedUniforms.push_back("lastMatrixPalette");
 
     llassert(mReservedUniforms.size() == END_RESERVED_UNIFORMS);
 

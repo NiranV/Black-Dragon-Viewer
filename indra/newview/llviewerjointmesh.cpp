@@ -186,28 +186,25 @@ void LLViewerJointMesh::uploadJointMatrices()
                 memcpy(mat+offset*4, vector, sizeof(GLfloat)*4);
             }
         }
+
+        // Save previous frame palette before uploading current
+        if (mLastMatrixPaletteFrame < (S32)gFrameCount - 1)
+        {
+            memcpy(mLastMatrixPalette, mat, sizeof(GLfloat) * 45 * 4);
+        }
+        mLastMatrixPaletteFrame = gFrameCount;
+
         stop_glerror();
         if (LLGLSLShader::sCurBoundShaderPtr)
         {
             LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLViewerShaderMgr::AVATAR_MATRIX, 45, mat);
-//			//BD - Motion Blur
-			/*if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
-			{
-				if (!mLastMatrixPalette)
-				{
-					mLastMatrixPalette = new F32[45 * 4];
-				}
-
-				if (mLastMatrixPaletteUpdated < gFrameCount - 1)
-				{
-					memcpy(mLastMatrixPalette, mat, sizeof(F32) * 45 * 4);
-				}
-
-				LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLShaderMgr::AVATAR_LAST_MATRIX, 45, (GLfloat*)mLastMatrixPalette);
-
-				memcpy(mLastMatrixPalette, mat, sizeof(F32) * 45 * 4);
-				mLastMatrixPaletteUpdated = gFrameCount;
-			}*/
+            // Upload last frame palette for motion blur
+            if (LLGLSLShader::sCurBoundShaderPtr == &gAvatarVelocityProgram)
+            {
+                LLGLSLShader::sCurBoundShaderPtr->uniform4fv(LLViewerShaderMgr::AVATAR_LAST_MATRIX, 45, mLastMatrixPalette);
+                // Save current palette as "last" for next frame
+                memcpy(mLastMatrixPalette, mat, sizeof(GLfloat) * 45 * 4);
+            }
         }
         stop_glerror();
     }

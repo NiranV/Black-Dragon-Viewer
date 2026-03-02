@@ -68,9 +68,9 @@ public:
 
     bool isAnimatable() const override { return false; }
 
-//	//BD - Motion Blur
-	//F32*						mLastMatrixPalette;
-	//U32							mLastMatrixPaletteUpdated;
+    // Previous frame matrix palette for motion blur
+    F32 mLastMatrixPalette[45 * 4];
+    S32 mLastMatrixPaletteFrame = -1;
 
 private:
 

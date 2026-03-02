@@ -5571,8 +5571,7 @@ void LLVolumeGeometryManager::registerFace(LLSpatialGroup* group, LLFace* facep,
 		draw_vec.push_back(draw_info);
 		draw_info->mTextureMatrix = tex_mat;
 		draw_info->mModelMatrix = model_mat;
-//		//BD - Motion Blur
-		//draw_info->mLastModelMatrix = last_model_mat;
+        draw_info->mLastModelMatrix = &drawable->mLastVelocityMatrix;
 		
 		draw_info->mBump  = bump;
 		draw_info->mShiny = shiny;

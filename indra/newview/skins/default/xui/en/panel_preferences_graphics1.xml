@@ -1582,6 +1582,15 @@ width="510">
 ||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing. Less cheap antialiasing than FXAA but more advanced, keeps the image sharper at the cost of more jagged edges."
        value="2"
        name="item2"/>
+       <combo_box.item
+       label="SMAA T2"
+       tool_tip="&lt;b&gt;CPU:&lt;/b&gt; None
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing with temporal reprojection commonly seen in TAA. Less cheap antialiasing than FXAA but more advanced."
+       value="2"
+       name="item2"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
@@ -3528,7 +3537,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1216"
+	  height="1280"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -5981,6 +5990,83 @@ width="510">
    <button
  follows="left|top"
  control_name="RenderVolumetricLightingFalloffMultiplier"
+ height="15"
+ is_toggle="false"
+ label="⌊default⌉"
+ image_selected="PushButton_Default_Off"
+ image_unselected="PushButton_Default_Off"
+ layout="topleft"
+ left="370"
+ top_delta="0"
+ name="default"
+ width="60">
+         <button.commit_callback
+                                 function="Pref.Default"/>
+      </button>
+
+      <text
+ type="string"
+ length="1"
+ follows="right|top"
+ height="12"
+ layout="topleft"
+ left="25"
+ halign="center"
+ name="separator_label"
+ top_pad="7"
+ width="450">
+ Motion Blur
+ </text>
+ <icon
+  follows="top|right"
+  height="1"
+  image_name="Prefs_Separator"
+  color="1 1 1 1"
+  layout="topleft"
+  name="separator"
+  mouse_opaque="false"
+  width="450"
+  left="25"
+  top_pad="0"/>
+   <check_box
+   control_name="RenderMotionBlur"
+   height="16"
+   initial_value="false"
+   label="Motion Blur"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles Motion Blur. This effect will create smearing across moving objects to create the illusion of speed."
+   layout="topleft"
+   left="10"
+   name="RenderMotionBlur"
+   top_pad="10"
+   width="115" />
+   <slider
+      can_edit_text="true"
+      control_name="RenderMotionBlurStrength"
+      decimal_digits="0"
+      follows="left|top"
+      height="14"
+      increment="1"
+      initial_value="32"
+	tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option controls the length in pixels that Motion Blur can smear moving objects."
+      label="Motion Blur Strength:"
+      label_width="150"
+      layout="topleft"
+      left="10"
+      max_val="128"
+      min_val="16"
+      name="RenderMotionBlurStrength"
+      top_pad="10"/>
+   <button
+ follows="left|top"
+ control_name="RenderMotionBlurStrength"
  height="15"
  is_toggle="false"
  label="⌊default⌉"

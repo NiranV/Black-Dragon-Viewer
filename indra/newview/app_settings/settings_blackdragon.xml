@@ -1269,19 +1269,6 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
-  <key>RenderMotionBlurStrength</key>
-  <map>
-    <key>Comment</key>
-    <string>Test</string>
-    <key>Persist</key>
-    <integer>1</integer>
-    <key>Type</key>
-    <string>U32</string>
-    <key>Value</key>
-    <integer>120</integer>
-    <key>PresetType</key>
-    <integer>1</integer>
-  </map>
   <key>RenderVolumetricLighting</key>
   <map>
     <key>Comment</key>
