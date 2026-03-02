@@ -1815,8 +1815,8 @@ void LLFloaterPreference::onOpen(std::string path)
 {
 	if (path.empty())
 		return;
-	LLWString url_wstring = utf8str_to_wstring(path);
-	llutf16string url_utf16 = wstring_to_utf16str(url_wstring);
+
+    std::wstring url_utf16 = ll_convert<std::wstring>(path);
 	SHELLEXECUTEINFO sei = { sizeof(sei) };
 	sei.nShow = SW_SHOWNORMAL;
 	sei.lpVerb = L"open";

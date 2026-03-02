@@ -808,7 +808,7 @@ extern bool gCubeSnapshot;
     gAgent.sendReliableMessage();
     // sync the camera with the new value
     if (debug) LL_INFOS("Camera_Debug") << "2-6" << LL_ENDL;
-    LLCamera::setView(vertical_fov_rads, debug); // call base implementation
+    LLCamera::setView(vertical_fov_rads); // call base implementation
     if (debug) LL_INFOS("Camera_Debug") << "2-7" << LL_ENDL;
 }
 
