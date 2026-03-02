@@ -170,6 +170,9 @@ bool LLSidepanelInventory::postBuild()
     {
         mInventoryPanel = getChild<LLPanel>("sidepanel_inventory_panel");
 
+        //BD
+        mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
+
         mBoxBalance = getChild<LLTextBox>("balance");
         mBoxBalance->setClickedCallback(&LLSidepanelInventory::onClickBalance, this);
 
@@ -240,6 +243,15 @@ bool LLSidepanelInventory::postBuild()
     }
 
     return true;
+}
+
+//BD
+// virtual
+void LLSidepanelInventory::draw()
+{
+    updateItemcountText();
+
+    LLPanel::draw();
 }
 
 void LLSidepanelInventory::updateInbox()
@@ -332,6 +344,14 @@ void LLSidepanelInventory::observeInboxModifications(const LLUUID& inboxID)
 void LLSidepanelInventory::enableInbox(bool enabled)
 {
     mInboxEnabled = enabled;
+
+    LLLayoutPanel* inbox_layout_panel = getChild<LLLayoutPanel>(INBOX_LAYOUT_PANEL_NAME);
+    inbox_layout_panel->setVisible(enabled);
+
+    //BD - Hack, the inbox is a very reliable way of telling whether this is the main inventory
+    //     or a new inventory window, make the balance display depent on it.
+    mBoxBalance->setVisible(enabled);
+    getChild<LLUICtrl>("balance_icon")->setVisible(enabled);
 
     if(!enabled || !mPanelMainInventory->isSingleFolderMode())
     {
@@ -608,6 +628,44 @@ void LLSidepanelInventory::cleanup()
             iv->cleanup();
         }
     }
+}
+
+//BD
+// virtual
+void LLSidepanelInventory::changed(U32)
+{
+    updateItemcountText();
+}
+
+void LLSidepanelInventory::updateItemcountText()
+{
+    if (mItemCount != gInventory.getItemCount())
+    {
+        mItemCount = gInventory.getItemCount();
+        mItemCountString = "";
+        LLLocale locale(LLLocale::USER_LOCALE);
+        LLResMgr::getInstance()->getIntegerString(mItemCountString, mItemCount);
+    }
+
+    LLStringUtil::format_map_t string_args;
+    string_args["[ITEM_COUNT]"] = mItemCountString;
+
+    std::string text = "";
+
+    if (LLInventoryModelBackgroundFetch::instance().folderFetchActive())
+    {
+        text = getString("ItemcountFetching", string_args);
+    }
+    else if (LLInventoryModelBackgroundFetch::instance().isEverythingFetched())
+    {
+        text = getString("ItemcountCompleted", string_args);
+    }
+    else
+    {
+        text = getString("ItemcountUnknown");
+    }
+
+    mCounterCtrl->setValue(text);
 }
 
 void LLSidepanelInventory::setBalance(S32 balance)
