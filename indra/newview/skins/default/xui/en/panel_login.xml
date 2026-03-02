@@ -164,6 +164,84 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="507"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Option to toggle adding date and time to snapshot names.
+Added: Motion Blur back, implemented Geenz's improved Motion Blur.
+Added: SMAA T2x as further Antialiasing option.
+Added: SMAA T2x and Motion Blur options to Preferences - Display.
+Added: More SSR improvements from Geenz, fixing SSR in High Res snapshots and making it more stable.
+Added: Shadow blur improvements from Geenz.
+Added: Missing Patronage amount to Brian Strazzella.
+Added: Brielynn Serenity as Patreon Patron.
+Added: Chris Chris as Patreon Patron.
+Added: Doreen Elytis as Patreon Patron.
+Added: Kibra_Sai as Patreon Patron.
+Changed: Several attempts to fix Main Inventory not showing all items in folders and some general code cleanup and parity with LL Viewer.
+Changed: NearMeRange to only affect the share function, Nearby is locked at 4800 now as intended.
+Changed: Improvements to Chromatic Aberration, specifically a better more realistic approach for non-DoF. Slightly cleaned up code a bit.
+Changed: Increase max Chroma strength to 50 in Preferences for the new Chromatic Aberration.
+Changed: Increase maximum Chroma strength in Machinima Sidebar to 50 for the new Chromatic Aberration.
+Changed: Updated Kanika Nigam's patronage amount.
+Changed: Version to 5.6.0.
+Fixed: (Pose Creator) Crash when starting Posing.
+Fixed: (Pose Creator) Crash when stopping Posing.
+Fixed: (Pose Creator) Crash when previewing animation.
+Fixed: (Pose Creator) Corruption of animation.
+Fixed: (Pose Creator) Attachment Bone Position/Rotation corruption when resetting bones.
+Fixed: Upload .ANIM files crashes the Viewer.
+Fixed: Outfit Wearing panel bottom button panel overlapping.
+Fixed: Several more cases of code descrepancy between LL and BD.
+Fixed: Wrong description for visual posing tools debug.
+Fixed: Beacons floater being too short and several options clipping out of the window.
+Fixed: Right-click menu on Topbar.
+Fixed: Most compile errors. Still external symbol errors, trying to figure out whats wrong.
+Fixed: Compile. Finally.
+Fixed: Startup crash.
+Fixed: Inventory balance and item count display.
+Removed: Old Motion Blur implementation and deprecated code.
+Misc: Some code cleanup.
+Misc: Restore WebRTC and all libraries as preparation for the upcoming merge.
+Misc: A lot of matching code to LL Release .2.26.
+Misc: Cleanup.
+Merged Linden Release 2026.02 (~400 changes)
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.5.2
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="336"
      top_pad="3"
      left="7"
