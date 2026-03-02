@@ -6866,7 +6866,7 @@ Tone Mapping
       label_width="150"
       layout="topleft"
       left="10"
-      max_val="1"
+      max_val="50"
       min_val="0"
       name="ChromaStrength"
       top_pad="1"/>
