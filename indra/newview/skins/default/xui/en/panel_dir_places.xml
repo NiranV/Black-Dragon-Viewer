@@ -7,36 +7,43 @@
  left="1"
  mouse_opaque="false"
  name="panel_dir_places"
- width="778">
+ width="758">
     <string name="searching_text">
         Searching...
     </string>
     <string name="not_found_text">
         None Found.
     </string>
-    <text
-     bg_visible="false"
-     border_visible="false"
-     top="8"
+
+     <icon
+    follows="left|top|right"
+    image_name="Toolbar_Middle_Off"
+    height="25"
+    width="443"
+    layout="topleft"
+    left="2"
+    top_pad="2"/>
+    <line_editor
+     bevel_style="in"
+     border_style="line"
+     border_thickness="1"
+     top_delta="2"
+     follows="left|right|top"
      layout="topleft"
-     follows="left|top"
      font="SansSerif"
-     h_pad="0"
-     halign="left"
-     height="16"
-     left="5"
+     height="20"
+     left_delta="2"
+     max_length="63"
      mouse_opaque="true"
-     name="find"
-     width="150">
-        Enter search terms:
-    </text>
-    <combo_box
+     name="name"
+     width="439" />
+     <combo_box
      allow_text_entry="false"
      follows="right|top"
      layout="topleft"
-     height="18"
-     top_delta="0"
-     left="525"
+     height="25"
+     top_delta="-2"
+     left_pad="3"
      max_chars="20"
      mouse_opaque="true"
      name="Category"
@@ -54,162 +61,158 @@
         <combo_item name="Shopping" value="shopping" label="Shopping"/>
         <combo_item name="Adult" value="adult" label="Adult"/>
         <combo_item name="Other" value="other" label="Other"/>
+        <combo_box.combo_button
+		image_unselected="ToolbarDropDown_Off"
+		image_selected="ToolbarDropDown_Press"
+		image_disabled="ToolbarDropDown_Off" />
+		<combo_box.drop_down_button
+		pad_right="0"
+		image_unselected="ToolbarDropDown_Off"
+		image_selected="ToolbarDropDown_Press"
+		image_pressed="ToolbarDropDown_Press" 
+		image_pressed_selected="ToolbarDropDown_Press"
+		image_disabled="ToolbarDropDown_Off" />
     </combo_box>
-    <check_box
-     left_pad="5"
-     control_name="ShowPGSims"
-     follows="right|top"
-     layout="topleft"
-     font="SansSerifSmall"
-     height="16"
-     initial_value="true"
-     label=""
-     mouse_opaque="true"
-     name="incpg"
-     width="15" />
-    <icon
-     follows="right|top"
-     height="16"
-     top_delta="-1"
-     image_name="Parcel_PG_Dark"
-     tool_tip="General"
-     layout="topleft"
-     left_pad="2"
-     name="rating_icon_general"
-     width="16"/>
-    <check_box
-     left_pad="4"
-     top_delta="1"
-     layout="topleft"
-     control_name="ShowMatureSims"
-     follows="right|top"
-     font="SansSerifSmall"
-     height="16"
-     initial_value="true"
-     label=""
-     mouse_opaque="true"
-     name="incmature"
-     width="15" />
-     <icon
-     follows="right|top"
-     height="16"
-     top_delta="-1"
-     image_name="Parcel_M_Dark"
-     tool_tip="Moderate"
-     layout="topleft"
-     left_pad="2"
-     name="rating_icon_moderate"
-     width="16"/>
-    <check_box
-     left_pad="4"
-     top_delta="1"
-     layout="topleft"
-     control_name="ShowAdultSims"
-     follows="right|top"
-     font="SansSerifSmall"
-     height="16"
-     initial_value="false"
-     label=""
-     mouse_opaque="true"
-     name="incadult"
-     width="15" />
-    <icon
-     follows="right|top"
-     height="16"
-     top_delta="-1"
-     image_name="Parcel_R_Dark"
-     tool_tip="Adult"
-     layout="topleft"
-     left_pad="2"
-     name="rating_icon_adult"
-     width="16"/>
-    <line_editor
-     bevel_style="in"
-     border_style="line"
-     border_thickness="1"
-     top_pad="3"
-     follows="left|right|top"
-     layout="topleft"
-     font="SansSerif"
-     height="18"
-     left="5"
-     max_length="63"
-     mouse_opaque="true"
-     name="name"
-     width="650" />
     <button
      follows="right|top"
      layout="topleft"
      font="SansSerif"
-     halign="center"
-     height="20"
-     label="Search"
      top_delta="0"
-     left_pad="5"
+     control_name="ShowPGSims"
+     initial_value="true"
+     left_pad="1"
+     height="25"
+     label=""
+     is_toggle="true"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     image_overlay="Parcel_PG_Dark"
+     mouse_opaque="true"
+     name="incpg"
+     width="25" />
+     <button
+     follows="right|top"
+     layout="topleft"
+     font="SansSerif"
+     top_delta="0"
+     control_name="ShowMatureSims"
+     initial_value="true"
+     left_pad="1"
+     height="25"
+     label=""
+     is_toggle="true"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     image_overlay="Parcel_M_Dark"
+     mouse_opaque="true"
+     name="incmature"
+     width="25" />
+     <button
+     follows="right|top"
+     layout="topleft"
+     font="SansSerif"
+     top_delta="0"
+     control_name="ShowAdultSims"
+     initial_value="true"
+     left_pad="1"
+     height="25"
+     label=""
+     is_toggle="true"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
+     image_overlay="Parcel_R_Dark"
+     mouse_opaque="true"
+     name="incadult"
+     width="25" />
+
+    <button
+     follows="right|top"
+     layout="topleft"
+     font="SansSerif"
+     top_delta="0"
+     left_pad="1"
+     height="25"
+     label="Search"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      mouse_opaque="true"
      name="Search"
-     width="105" />
+     width="103" />
     <scroll_list
      background_visible="true"
      layout="topleft"
-     top_pad="3"
+     top_pad="1"
      column_padding="0"
-     draw_border="true"
+     draw_border="false"
      draw_heading="true"
      follows="left|top|right|bottom"
-     height="450"
-     left="5"
+     height="480"
+     left="2"
      mouse_opaque="true"
      multi_select="false"
      name="results"
      search_column="2"
      width="336">
-        <column label="" name="icon" width="24" />
+     <column label="" name="icon" width="24" />
         <column dynamicwidth="true" label="Name" name="name" />
         <column label="Traffic" name="dwell" width="75" />
     </scroll_list>
-    <text
-     bg_visible="false"
-     border_visible="false"
-     bottom_delta="-20"
-     follows="left|bottom"
-     font="SansSerifSmall"
-     h_pad="0"
-     halign="left"
-     height="16"
-     left="4"
-     mouse_opaque="true"
-     name="result_text"
-     v_pad="0"
-     width="328" />
     <button
      image_overlay="Arrow_Left_Off"
-     image_disabled="PushButton_Disabled"
-     image_disabled_selected="PushButton_Disabled"
-     image_selected="PushButton_Selected"
-     image_unselected="PushButton_Off"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      chrome="true"
      hover_glow_amount="0.15"
      tool_tip="Previous page"
-     follows="right|bottom"
-     height="22"
-     right="305"
-     bottom="-533"
+     follows="left|bottom"
+     layout="topleft"
+     height="23"
+     left="2"
+     top_pad="1"
      name="prev_btn"
      width="32" />
+     <icon
+    follows="left|bottom|right"
+    image_name="Toolbar_Middle_Off"
+    height="23"
+    width="270"
+    layout="topleft"
+    left_pad="1"
+    top_delta="0"/>
+    <text
+     bg_visible="false"
+     border_visible="false"
+     top_delta="5"
+     follows="left|bottom"
+     font="SansSerifSmall"
+     h_pad="0"
+     halign="center"
+     height="16"
+     left_delta="2"
+     layout="topleft"
+     mouse_opaque="true"
+     name="result_text"
+     v_pad="0"
+     width="267" >
+     500 found
+</text>
     <button
      image_overlay="Arrow_Right_Off"
-     image_disabled="PushButton_Disabled"
-     image_disabled_selected="PushButton_Disabled"
-     image_selected="PushButton_Selected"
-     image_unselected="PushButton_Off"
+     image_hover_unselected="Toolbar_Middle_Over"
+     image_selected="Toolbar_Middle_Selected"
+     image_unselected="Toolbar_Middle_Off"
      chrome="true"
      tool_tip="Next page"
      follows="right|bottom"
-     height="22"
+     height="23"
      layout="topleft"
-     left_pad="5"
+     left_pad="2"
      name="next_btn"
-     top_delta="0"
+     top_delta="-5"
      width="32"/>
 </panel>

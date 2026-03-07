@@ -246,7 +246,8 @@ void LLPanelGroup::onBackBtnClick()
 
 void LLPanelGroup::hideBackBtn()
 {
-    childSetVisible("back", false);
+    //BD
+    childSetEnabled("black", false);
     setBackgroundVisible(false);
 }
 

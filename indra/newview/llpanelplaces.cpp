@@ -1340,7 +1340,8 @@ LLPanelPlaceInfo* LLPanelPlaces::getCurrentInfoPanel()
 
 void LLPanelPlaces::hideBackBtn()
 {
-    mPlaceProfileBackBtn->setVisible(false);
+    //BD
+    mPlaceProfileBackBtn->setEnabled(false);
     setBackgroundVisible(false);
     mPlaceProfile->setBackgroundVisible(false);
 }

@@ -12,15 +12,17 @@
  title="Search">
     <tab_container
      top="0"
-     left="0"
+     left="10"
      follows="left|top|right|bottom"
      height="550"
-     width="780"
+     width="760"
      mouse_opaque="false"
      name="Directory Tabs"
      tab_position="top">
         <panel
          border="false"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          label="People"
          filename="panel_dir_people.xml"
          class="panel_dir_people"
@@ -33,6 +35,8 @@
         <panel
          border="false"
          label="Groups"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_groups.xml"
          class="panel_dir_groups"
          name="panel_dir_groups"
@@ -44,6 +48,8 @@
         <panel
          border="false"
          label="Places"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_places.xml"
          class="panel_dir_places"
          name="panel_dir_places"
@@ -55,6 +61,8 @@
         <panel
          border="false"
          label="Land Sales"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_land.xml"
          class="panel_dir_land"
          name="panel_dir_land"
@@ -66,6 +74,8 @@
         <panel
          border="false"
          label="Events"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_events.xml"
          class="panel_dir_events"
          name="panel_dir_events"
@@ -77,6 +87,8 @@
         <panel
          border="false"
          label="Classifieds"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_classified.xml"
          class="panel_dir_classified"
          name="panel_dir_classified"
@@ -88,6 +100,8 @@
         <panel
          border="false"
          label="Web"
+         bg_alpha_image="Panel_Background"
+			background_visible="true"
          filename="panel_dir_web.xml"
          class="panel_dir_web"
          name="panel_dir_web"
@@ -98,15 +112,15 @@
          bottom="-1" />
 </tab_container>
     <panel
-     top="65"
+     top="50"
      follows="right|top"
-     height="486"
-     left="345"
+     height="498"
+     left="348"
      visible="false"
      name="panel_profile_secondlife"
      class="panel_profile_secondlife"
      filename="panel_profile_secondlife.xml"
-     width="425" />
+     width="419" />
     <panel
      top="70"
      follows="bottom|right|top"

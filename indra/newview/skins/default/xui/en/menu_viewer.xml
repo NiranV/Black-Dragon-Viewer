@@ -547,6 +547,17 @@
              function="Floater.ToggleOrBringToFront"
              parameter="search" />
         </menu_item_check>
+        <menu_item_check
+        label="Legacy Search"
+        name="Legacy Search"
+        shortcut="control|F">
+            <menu_item_check.on_check
+             function="Floater.Visible"
+             parameter="legacy_search" />
+            <menu_item_check.on_click
+             function="Floater.ToggleOrBringToFront"
+             parameter="legacy_search" />
+        </menu_item_check>
 		<menu_item_separator/>
       <menu_item_call
              label="Landmark This Place"

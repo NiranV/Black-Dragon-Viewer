@@ -89,10 +89,12 @@ bool LLPanelDirBrowser::postBuild()
     mNextPageBtn = getChild<LLButton>("next_btn");
 
     mPrevPageBtn->setClickedCallback([this](LLUICtrl*, const LLSD&){ prevPage(); });
-    mPrevPageBtn->setVisible(false);
+    //mPrevPageBtn->setVisible(false);
+    mPrevPageBtn->setEnabled(false);
 
     mNextPageBtn->setClickedCallback([this](LLUICtrl*, const LLSD&) { nextPage(); });
-    mNextPageBtn->setVisible(false);
+    //mNextPageBtn->setVisible(false);
+    mNextPageBtn->setEnabled(false);
 
     return true;
 }
@@ -138,7 +140,9 @@ void LLPanelDirBrowser::draw()
 void LLPanelDirBrowser::nextPage()
 {
     mSearchStart += mResultsPerPage;
-    mPrevPageBtn->setVisible(true);
+    //BD
+    //mPrevPageBtn->setVisible(true);
+    mPrevPageBtn->setEnabled(true);
 
     performQuery();
 }
@@ -148,7 +152,9 @@ void LLPanelDirBrowser::nextPage()
 void LLPanelDirBrowser::prevPage()
 {
     mSearchStart -= mResultsPerPage;
-    mPrevPageBtn->setVisible(mSearchStart > 0);
+    //BD
+    //mPrevPageBtn->setVisible(mSearchStart > 0);
+    mPrevPageBtn->setEnabled(mSearchStart > 0);
 
     performQuery();
 }
@@ -157,8 +163,11 @@ void LLPanelDirBrowser::prevPage()
 void LLPanelDirBrowser::resetSearchStart()
 {
     mSearchStart = 0;
-    mNextPageBtn->setVisible(false);
-    mPrevPageBtn->setVisible(false);
+    //BD
+    //mNextPageBtn->setVisible(false);
+    //mPrevPageBtn->setVisible(false);
+    mNextPageBtn->setEnabled(false);
+    mPrevPageBtn->setEnabled(false);
 }
 
 // protected
@@ -171,7 +180,9 @@ void LLPanelDirBrowser::updateResultCount()
 
     if (!mHaveSearchResults) result_count = 0;
 
-    if (mNextPageBtn && mNextPageBtn->getVisible())
+    //
+    //if (mNextPageBtn && mNextPageBtn->getVisible())
+    if (mNextPageBtn && mNextPageBtn->getEnabled())
     {
         // Item count be off by a few if bogus items sent from database
         // Just use the number of results per page. JC
@@ -1129,7 +1140,9 @@ S32 LLPanelDirBrowser::showNextButton(S32 rows)
     {
         // HACK: The (mResultsPerPage)+1th entry indicates there are 'more'
         bool show_next = (mResultsReceived > mResultsPerPage);
-        mNextPageBtn->setVisible(show_next);
+        //BD
+        mNextPageBtn->setEnabled(show_next);
+        //mNextPageBtn->setVisible(show_next);
         if (show_next)
         {
             rows -= (mResultsReceived - mResultsPerPage);
@@ -1138,8 +1151,11 @@ S32 LLPanelDirBrowser::showNextButton(S32 rows)
     else
     {
         // Hide page buttons
-        mNextPageBtn->setVisible(false);
-        mPrevPageBtn->setVisible(false);
+        // BD
+        //mNextPageBtn->setVisible(false);
+        //mPrevPageBtn->setVisible(false);
+        mNextPageBtn->setEnabled(false);
+        mPrevPageBtn->setEnabled(false);
     }
     return rows;
 }
