@@ -4416,7 +4416,7 @@ and report the problem.
   <string name="no_limit">No Limit</string>
   
 	<!-- Black Dragon specific -->
-	<string name="VIEWER_VERSION_LOCAL">5.6.0</string>
+	<string name="VIEWER_VERSION_LOCAL">5.6.1</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Favorite Dragon</string>
 	<string name="VIEWER_UPDATE_CHECKING">Checking for updates.</string>
 	<string name="VIEWER_UPDATE_AVAILABLE">Update available!</string>
