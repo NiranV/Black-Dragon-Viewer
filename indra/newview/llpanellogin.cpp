@@ -66,6 +66,9 @@
 #include "llglheaders.h"
 #include "llpanelloginlistener.h"
 
+//BD
+#include "bdfunctions.h"
+
 
 #if LL_WINDOWS
 #pragma warning(disable: 4355)      // 'this' used in initializer list
@@ -78,6 +81,16 @@ BOOL LLPanelLogin::sCapslockDidNotification = false;
 BOOL LLPanelLogin::sCredentialSet = false;
 
 // Helper functions
+
+bool callback_show_url(const LLSD& notification, const LLSD& response)
+{
+    S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
+    if (0 == option)
+    {
+        LLWeb::loadURL("https://github.com/NiranV/Black-Dragon-Viewer/releases");
+    }
+    return false;
+}
 
 LLPointer<LLCredential> load_user_credentials(std::string &user_key)
 {
@@ -296,18 +309,12 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 	//BD - Version info.
 	std::string channel = LLVersionInfo::instance().getChannel();
 	std::string version = llformat("%s (%d)", LLVersionInfo::instance().getShortVersion().c_str(), LLVersionInfo::instance().getBuild());
+    std::string local_version = LLTrans::getString("VIEWER_VERSION_LOCAL");
 	LLButton* channel_text = getChild<LLButton>("channel_text");
 	channel_text->setLabelArg("[CHANNEL]", channel);
-	channel_text->setLabelArg("[VERSION]", version);
-	channel_text->setLabelArg("[VIEWER_VERSION_LOCAL]", LLTrans::getString("VIEWER_VERSION_LOCAL"));
+    channel_text->setLabelArg("[VERSION]", version);
+	channel_text->setLabelArg("[VIEWER_VERSION_LOCAL]", local_version);
 	channel_text->setLabelArg("[VIEWER_VERSION_IDENTIFIER]", LLTrans::getString("VIEWER_VERSION_IDENTIFIER"));
-
-	//BD - It should no longer be required to lock out Intel as newer ones can and must handle
-	//     deferred now with PBR.
-	//bool is_good_gpu = (gGLManager.mIsNVIDIA || gGLManager.mIsAMD);
-	//getChild<LLPanel>("intel_warning_panel")->setVisible(!is_good_gpu);
-	//getChild<LLUICtrl>("intel_warning_icon1")->setVisible(!is_good_gpu);
-	//getChild<LLUICtrl>("intel_warning_icon2")->setVisible(!is_good_gpu);
 
 	//BD - Force preferences to initialize.
 	LLFloaterReg::getInstance("preferences");
@@ -315,6 +322,37 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
     LLCheckBoxCtrl* remember_name = getChild<LLCheckBoxCtrl>("remember_name");
     remember_name->setCommitCallback(boost::bind(&LLPanelLogin::onRememberUserCheck, this));
     getChild<LLCheckBoxCtrl>("remember_password")->setCommitCallback(boost::bind(&LLPanelLogin::onRememberPasswordCheck, this));
+
+
+    //BD - Fetch latest version.
+    std::string version_str = gDragonLibrary.fetchRemoteVersion();
+    std::string update_str = LLTrans::getString("VIEWER_UPDATE_CHECKING");
+    size_t count = version_str.find_first_of(" \n\r\t") + 1;
+    std::string new_version = version_str.substr(count);
+
+    S32 result = gDragonLibrary.compareVersions(new_version, local_version);
+    LL_INFOS() << "Detected Remote Version: " << new_version << LL_ENDL;
+
+    if (result > 0)
+    {
+        LL_INFOS() << "Update available!" << LL_ENDL;
+        update_str = LLTrans::getString("VIEWER_UPDATE_AVAILABLE");
+        LLNotificationsUtil::add("UpdateAvailable", LLSD(), LLSD(), callback_show_url);
+    }
+    else if (result == 0)
+    {
+        LL_INFOS() << "Up to date." << LL_ENDL;
+        update_str = LLTrans::getString("VIEWER_UP_DO_DATE");
+    }
+    else
+    {
+        LL_INFOS() << "Local version is newer (dev build?)." << LL_ENDL;
+        update_str = LLTrans::getString("VIEWER_NEWER");
+    }
+
+    LLButton* new_version_text = getChild<LLButton>("new_version");
+    new_version_text->setLabelArg("[CHANNEL]", new_version);
+    new_version_text->setLabelArg("[UPDATE_STRING]", update_str);
 }
 
 void LLPanelLogin::addFavoritesToStartLocation()
@@ -1226,3 +1264,4 @@ std::string LLPanelLogin::getUserName(LLPointer<LLCredential> &cred)
 
     return "unknown";
 }
+

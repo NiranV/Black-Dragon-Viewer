@@ -815,3 +815,89 @@ std::string BDFunctions::getWindlightDir(std::string folder, bool system)
 	return sys_dir;
 }
 
+//BD - Updater Stuff
+//=====================================================================================================
+
+size_t BDFunctions::writeCallback(void* contents, size_t size, size_t nmemb, void* userp)
+{
+    size_t totalSize = size * nmemb;
+    std::string* response = static_cast<std::string*>(userp);
+    response->append(static_cast<char*>(contents), totalSize);
+    return totalSize;
+}
+
+std::string BDFunctions::fetchRemoteVersion()
+{
+    CURL* curl = curl_easy_init();
+    std::string response;
+
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "https://raw.githubusercontent.com/NiranV/Black-Dragon-Viewer/refs/heads/master/indra/newview/VIEWER_VERSION.txt");
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+        curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "BlackDragonUpdater/1.0");
+
+        CURLcode res = curl_easy_perform(curl);
+
+        S32 httpCode = 0;
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+
+        LL_INFOS() << "HTTP Code: " << httpCode << LL_ENDL;
+
+        if (res != CURLE_OK)
+        {
+            LL_WARNS() << "curl error: " << curl_easy_strerror(res) << LL_ENDL;
+        }
+
+        curl_easy_cleanup(curl);
+    }
+
+    return response;
+}
+
+std::vector<S32> BDFunctions::splitVersion(const std::string& version)
+{
+    std::vector<S32> parts;
+    std::stringstream ss(version);
+    std::string item;
+
+    while (std::getline(ss, item, '.'))
+    {
+        try
+        {
+            parts.push_back(std::stoi(item));
+        }
+        catch (...)
+        {
+            parts.push_back(0); // fallback if malformed
+        }
+    }
+
+    return parts;
+}
+
+S32 BDFunctions::compareVersions(const std::string& remote, const std::string& local)
+{
+    std::vector<S32> remoteParts = splitVersion(remote);
+    std::vector<S32> localParts = splitVersion(local);
+
+    size_t maxLength = std::max(remoteParts.size(), localParts.size());
+
+    // Pad shorter version with zeros
+    remoteParts.resize(maxLength, 0);
+    localParts.resize(maxLength, 0);
+
+    for (size_t i = 0; i < maxLength; ++i)
+    {
+        if (remoteParts[i] > localParts[i])
+            return 1;
+
+        if (remoteParts[i] < localParts[i])
+            return -1;
+    }
+
+    return 0;
+}

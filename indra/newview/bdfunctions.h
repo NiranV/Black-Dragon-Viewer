@@ -78,6 +78,12 @@ public:
 	void loadItem(LLSettingsBase::ptr_t settings);
 	bool loadPreset(std::string filename, LLSettingsBase::ptr_t settings);
 
+//  //BD - Update Checker
+    static size_t writeCallback(void* contents, size_t size, size_t nmemb, void* userp);
+    std::string fetchRemoteVersion();
+    std::vector<S32> splitVersion(const std::string& version);
+    S32 compareVersions(const std::string& remote, const std::string& local);
+
 	bool mCameraOverride;
 
 	LLSD mDefaultSkyPresets;

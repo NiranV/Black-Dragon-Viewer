@@ -91,17 +91,34 @@ width="996">
  height="20"
  image_unselected="transparentj2c"
  image_selected="transparentj2c"
- label="[CHANNEL] [VERSION] - [[VIEWER_VERSION_LOCAL] - [VIEWER_VERSION_IDENTIFIER]]"
+ label="Version: [CHANNEL] [VERSION] - [[VIEWER_VERSION_LOCAL] - [VIEWER_VERSION_IDENTIFIER]]"
  font="SansSerifSmall"
  layout="topleft"
  left="3"
  halign="left"
  name="channel_text"
  top="1"
- width="994">
+ width="400">
  <button.commit_callback
  function="Floater.Show"
  parameter="sl_about"/>
+ </button>
+ <button
+ follows="left|top|right"
+ height="20"
+ image_unselected="transparentj2c"
+ image_selected="transparentj2c"
+ label="Latest Available: [CHANNEL] - [UPDATE_STRING]"
+ font="SansSerifSmall"
+ layout="topleft"
+ left="500"
+ halign="left"
+ name="new_version"
+ top="1"
+ width="300">
+ <button.commit_callback
+ function="PromptShowURL"
+ parameter="WebLaunchExternalTarget,https://github.com/NiranV/Black-Dragon-Viewer/releases"/>
  </button>
 <button
 follows="right|top"

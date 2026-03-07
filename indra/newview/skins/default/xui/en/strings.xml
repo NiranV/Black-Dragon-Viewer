@@ -4418,6 +4418,10 @@ and report the problem.
 	<!-- Black Dragon specific -->
 	<string name="VIEWER_VERSION_LOCAL">5.6.0</string>
 	<string name="VIEWER_VERSION_IDENTIFIER">Favorite Dragon</string>
+	<string name="VIEWER_UPDATE_CHECKING">Checking for updates.</string>
+	<string name="VIEWER_UPDATE_AVAILABLE">Update available!</string>
+	<string name="VIEWER_UP_TO_DATE">Viewer is up to date.</string>
+	<string name="VIEWER_NEWER">Viewer is newer.</string>
 	
 	<!-- Special "key" 15 is essentially NONE -->
 	<string name="15"></string>

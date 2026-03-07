@@ -13136,6 +13136,20 @@ Do you want to save your changes to [NAME]'s profile?
   </notification>
 
   <notification
+   icon="alertmodal.tga"
+   name="UpdateAvailable"
+   type="alertmodal">
+There's an update available for Black Dragon, do you want to go to the download page and get it?
+
+It contains fixeeeeees.
+<tag>confirm</tag>
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Nah, thanks."
+     yestext="YES, GIMME!"/>
+  </notification>
+
+  <notification
    icon="notify.tga"
    name="RequestPosing"
    log_to_im="true"
