@@ -179,6 +179,7 @@
 #include "bdfloaterobjects.h"
 #include "bdfloaterposer.h"
 #include "bdfloaterposecreator.h"
+#include "llfloaterbigpreview.h"
 
 #include "llfloaterwateradjust.h"
 #include "llfloaterenvironmentsettings.h"
@@ -534,6 +535,7 @@ void LLViewerFloaterReg::registerFloaters()
 	LLFloaterReg::add("poser", "floater_poser.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterPoser>);
 	LLFloaterReg::add("poser_creator", "floater_poser_creator.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<BDFloaterPoseCreator>);
 	LLFloaterReg::add("special_thanks", "floater_special_thanks.xml", &LLFloaterReg::build<LLFloater>);
+    LLFloaterReg::add("big_preview", "floater_big_preview.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<LLFloaterBigPreview>);
 
     LLFloaterReg::registerControlVariables(); // Make sure visibility and rect controls get preserved when saving
 }
