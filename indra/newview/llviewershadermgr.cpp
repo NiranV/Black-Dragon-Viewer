@@ -1741,6 +1741,11 @@ bool LLViewerShaderMgr::loadShadersDeferred()
         gDeferredSunProgram.mShaderFiles.push_back(make_pair(fragment, GL_FRAGMENT_SHADER));
         gDeferredSunProgram.mShaderLevel = mShaderLevel[SHADER_DEFERRED];
 
+        if (gSavedSettings.getBOOL("RenderDeferredHBAO"))
+        {
+            gDeferredSunProgram.addPermutation("HAS_HBAO", "1");
+        }
+
         add_common_permutations(&gDeferredSunProgram);
 
         success = gDeferredSunProgram.createShader();

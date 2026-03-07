@@ -37,6 +37,7 @@ vec4 getNorm(vec2 pos_screen);
 float sampleDirectionalShadow(vec3 shadow_pos, vec3 norm, vec2 pos_screen);
 float sampleSpotShadow(vec3 shadow_pos, vec3 norm, int index, vec2 pos_screen);
 float calcAmbientOcclusion(vec4 pos, vec3 norm, vec2 pos_screen);
+float calcHBAmbientOcclusion(vec4 pos, vec3 normal, vec2 pos_screen);
 
 void main()
 {
@@ -46,7 +47,11 @@ void main()
 
     vec4 col;
     col.r = sampleDirectionalShadow(pos.xyz, norm.xyz, pos_screen);
+#if HAS_HBAO
+    col.g = calcHBAmbientOcclusion(pos, norm.xyz, pos_screen);
+#else
     col.g = calcAmbientOcclusion(pos, norm.xyz, pos_screen);
+#endif
     col.b = sampleSpotShadow(pos.xyz, norm.xyz, 0, pos_screen);
     col.a = sampleSpotShadow(pos.xyz, norm.xyz, 1, pos_screen);
 

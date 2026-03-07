@@ -1228,8 +1228,8 @@ void settings_setup_listeners()
 	gSavedSettings.getControl("RenderShadowDetail")->getSignal()->connect(boost::bind(&handleShadowMapsChanged, _2));
 	//gSavedSettings.getControl("RenderDeferredSSAO")->getSignal()->connect(boost::bind(&handleSSAOChanged, _2));
 	//gSavedSettings.getControl("RenderDepthOfField")->getSignal()->connect(boost::bind(&handleGodraysChanged, _2));
-//	//BD - Motion Blur
-	//gSavedSettings.getControl("RenderMotionBlur")->getSignal()->connect(boost::bind(&handleReleaseGLBufferChanged, _2));
+//	//BD - Experimental HBAO
+	gSavedSettings.getControl("RenderDeferredHBAO")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 //	//BD - Depth of Field
 	gSavedSettings.getControl("RenderDepthOfFieldFront")->getSignal()->connect(boost::bind(&handleSetShaderChanged, _2));
 

@@ -253,10 +253,8 @@ U32 LLPipeline::RenderVolumetricLightingResolution;
 F32 LLPipeline::RenderVolumetricLightingMultiplier;
 F32 LLPipeline::RenderVolumetricLightingFalloffMultiplier;
 
-//BD - Motion Blur
-/*bool LLPipeline::RenderMotionBlur;
-U32 LLPipeline::RenderMotionBlurStrength;
-U32 LLPipeline::RenderMotionBlurQuality;*/
+//BD - Experimental HBAO
+bool LLPipeline::RenderDeferredHBAO;
 
 const U32 LLPipeline::MAX_PREVIEW_WIDTH = 512;
 
@@ -699,10 +697,8 @@ void LLPipeline::init()
 	//connectRefreshCachedSettingsSafe("RenderShadowResolution");
 	//connectRefreshCachedSettingsSafe("RenderProjectorShadowResolution");
 
-//	//BD - Motion Blur
-	/*connectRefreshCachedSettingsSafe("RenderMotionBlur");
-	connectRefreshCachedSettingsSafe("RenderMotionBlurStrength");
-	connectRefreshCachedSettingsSafe("RenderRiggedMotionBlurQuality");*/
+//	//BD - Experimental HBAO
+	connectRefreshCachedSettingsSafe("RenderDeferredHBAO");
 }
 
 LLPipeline::~LLPipeline()
@@ -1313,19 +1309,14 @@ void LLPipeline::refreshCachedSettings()
 	RenderProjectorShadowResolution = gSavedSettings.getVector2("RenderProjectorShadowResolution");
 	RenderShadowResolution = gSavedSettings.getVector4("RenderShadowResolution");
 
-//	//BD - Screen Space Reflections
-	//RenderScreenSpaceReflections = gSavedSettings.getBOOL("RenderScreenSpaceReflections");
-	//RenderSSRResolution = gSavedSettings.getU32("RenderSSRResolution");
-	//RenderSSRBrightness = gSavedSettings.getF32("RenderSSRBrightness");
-
 //	//BD - Post Processing
 	RenderChromaStrength = gSavedSettings.getF32("RenderChromaStrength");
 	RenderSepiaStrength = gSavedSettings.getF32("RenderPostSepiaStrength");
 	RenderGreyscaleStrength = gSavedSettings.getF32("RenderPostGreyscaleStrength");
 	RenderNumColors = gSavedSettings.getU32("RenderPostPosterizationSamples");
 
-//	//BD - Exodus Post Process
-	//exoPostProcess::instance().ExodusRenderPostSettingsUpdate();
+//  //BD - Experimental HBAO
+    RenderDeferredHBAO = gSavedSettings.getBOOL("RenderDeferredHBAO");
 
     if (gNonInteractive)
     {

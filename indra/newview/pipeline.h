@@ -1135,15 +1135,18 @@ public:
 	static LLVector4 RenderShadowFarClipVec;
 	static bool RenderImpostors;
 
-//    //BD - Shadow Map Allocation
+//  //BD - Shadow Map Allocation
 	static LLVector2 RenderProjectorShadowResolution;
 	static LLVector4 RenderShadowResolution;
 
-//    //BD - Volumetric Lighting
+//  //BD - Volumetric Lighting
 	static bool RenderVolumetricLighting;
 	static U32 RenderVolumetricLightingResolution;
 	static F32 RenderVolumetricLightingMultiplier;
 	static F32 RenderVolumetricLightingFalloffMultiplier;
+
+//  //BD - Experimental HBAO
+    static bool RenderDeferredHBAO;
 };
 
 void render_bbox(const LLVector3 &min, const LLVector3 &max);
