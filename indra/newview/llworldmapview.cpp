@@ -523,7 +523,8 @@ void LLWorldMapView::draw()
             auto print = [&](std::string text, F32 x, F32 y, bool use_ellipses)
                 {
                     font->renderUTF8(text, 0,
-                        (F32)llfloor(left + x), (F32)llfloor(bottom + y),
+                        left + 3.f,
+                        bottom + 5.f,
                         LLColor4::white,
                         LLFontGL::LEFT, LLFontGL::BASELINE, LLFontGL::NORMAL, LLFontGL::DROP_SHADOW,
                         S32_MAX, //max_chars
@@ -538,6 +539,7 @@ void LLWorldMapView::draw()
             std::string grid_name = info->getName();
             if (info->isDown())
             {
+                //mesg = llformat("%s (%s)", info->getName().c_str(), sStringsMap["offline"].c_str());
                 grid_name += " (" + sStringsMap["offline"] + ")";
             }
             else
@@ -550,10 +552,10 @@ void LLWorldMapView::draw()
 				}
 
 				//BD - Show an avatar count behind the SIM name
-				mesg = llformat("%s (%d *) ", info->getName().c_str(), agent_count);
+                grid_name = llformat("%s (%d *) ", info->getName().c_str(), agent_count);
 			}
 
-            if (!mesg.empty())
+            /*if (!mesg.empty())
 			{
 				//BD
 				font->renderUTF8(
@@ -566,7 +568,7 @@ void LLWorldMapView::draw()
 					(S32)mMapScale, //max_pixels
 					NULL,
 					true); //use ellipses
-			}
+			}*/
 
             if (print_coords)
             {
