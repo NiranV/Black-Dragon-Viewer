@@ -573,50 +573,104 @@ void BDFloaterPoseCreator::onKeyframeAdd(F32 time, LLScrollListItem* key_item, L
     LLKeyframeMotion::JointMotionList* joint_list = gDragonAnimator.mPoseCreatorMotion->getJointMotionList();
     LLKeyframeMotion::JointMotion* joint_motion = joint_list->getJointMotion(joint->getJointNum());
     LLKeyframeMotion::RotationCurve rot_curve = joint_motion->mRotationCurve;
+    S32 modifier_idx = mModifierTabs->getCurrentPanelIndex();
 
     //BD - Attempt to find the keyframe first.
     bool found = false;
     S32 si = mKeyframeScroll->getFirstSelectedIndex() + 1;
-    for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = joint_motion->mRotationCurve.mKeys.begin();
-        it != joint_motion->mRotationCurve.mKeys.end(); )
+    if (modifier_idx == 0)
     {
-        std::map<F32, LLKeyframeMotion::RotationKey>::iterator curr_it = it;
-        //BD - Previously we were rounding the keyframe time and comparing it to the time set
-        //     in the keyframe list entry, this was ugly and had a big downside, having two
-        //     or more entries with the same time resulting in all of them getting changed.
-        //     Lucky for us, adding new keyframes into any transformation curve automatically
-        //     counts a float value (used here as S32 since its whole numbers anyway) up by 1
-        //     for every keyframe added, this allows us to easily "compare" the what seems to be
-        //     the index number of the keyframe, against the index number in the list.
-        //     This should work for now until we decide to allow reordering keyframes.
-        //if (ll_round(curr_it->second.mTime, 0.1f) == ll_round(time, 0.1f))
-        if ((S32)curr_it->first == si)
+        for (std::map<F32, LLKeyframeMotion::RotationKey>::iterator it = joint_motion->mRotationCurve.mKeys.begin();
+            it != joint_motion->mRotationCurve.mKeys.end(); )
         {
-            found = true;
-            curr_it->second.mRotation = joint->getTargetRotation();
-
-            F32 roll, pitch, yaw;
-            LLQuaternion rot_quat = joint->getTargetRotation();
-            rot_quat.getEulerAngles(&roll, &pitch, &yaw);
-            //BD - Should we really be able to get here? The comparison above should already
-            //     prevent ever getting here since a missing selection means we will never
-            //     find a keyframe. I don't trust anything.
-            if (key_item)
+            std::map<F32, LLKeyframeMotion::RotationKey>::iterator curr_it = it;
+            //BD - Previously we were rounding the keyframe time and comparing it to the time set
+            //     in the keyframe list entry, this was ugly and had a big downside, having two
+            //     or more entries with the same time resulting in all of them getting changed.
+            //     Lucky for us, adding new keyframes into any transformation curve automatically
+            //     counts a float value (used here as S32 since its whole numbers anyway) up by 1
+            //     for every keyframe added, this allows us to easily "compare" the what seems to be
+            //     the index number of the keyframe, against the index number in the list.
+            //     This should work for now until we decide to allow reordering keyframes.
+            //if (ll_round(curr_it->second.mTime, 0.1f) == ll_round(time, 0.1f))
+            if ((S32)curr_it->first == si)
             {
-                key_item->getColumn(2)->setValue(ll_round(roll, 0.001f));
-                key_item->getColumn(3)->setValue(ll_round(pitch, 0.001f));
-                key_item->getColumn(4)->setValue(ll_round(yaw, 0.001f));
+                found = true;
+                curr_it->second.mRotation = joint->getTargetRotation();
+
+                F32 roll, pitch, yaw;
+                LLQuaternion rot_quat = joint->getTargetRotation();
+                rot_quat.getEulerAngles(&roll, &pitch, &yaw);
+                //BD - Should we really be able to get here? The comparison above should already
+                //     prevent ever getting here since a missing selection means we will never
+                //     find a keyframe. I don't trust anything.
+                if (key_item)
+                {
+                    key_item->getColumn(2)->setValue(ll_round(roll, 0.001f));
+                    key_item->getColumn(3)->setValue(ll_round(pitch, 0.001f));
+                    key_item->getColumn(4)->setValue(ll_round(yaw, 0.001f));
+                }
+                break;
             }
-            break;
+            ++it;
         }
-        ++it;
+    }
+    else if (modifier_idx == 1)
+    {
+        for (std::map<F32, LLKeyframeMotion::PositionKey>::iterator it = joint_motion->mPositionCurve.mKeys.begin();
+            it != joint_motion->mPositionCurve.mKeys.end(); )
+        {
+            std::map<F32, LLKeyframeMotion::PositionKey>::iterator curr_it = it;
+            if ((S32)curr_it->first == si)
+            {
+                found = true;
+                curr_it->second.mPosition = joint->getTargetPosition();
+
+                LLVector3 pos = joint->getTargetPosition();
+                //BD - Should we really be able to get here? The comparison above should already
+                //     prevent ever getting here since a missing selection means we will never
+                //     find a keyframe. I don't trust anything.
+                if (key_item)
+                {
+                    key_item->getColumn(2)->setValue(ll_round(pos.mV[VX], 0.001f));
+                    key_item->getColumn(3)->setValue(ll_round(pos.mV[VY], 0.001f));
+                    key_item->getColumn(4)->setValue(ll_round(pos.mV[VZ], 0.001f));
+                }
+                break;
+            }
+            ++it;
+        }
+    }
+    else if (modifier_idx == 2)
+    {
+        for (std::map<F32, LLKeyframeMotion::ScaleKey>::iterator it = joint_motion->mScaleCurve.mKeys.begin();
+            it != joint_motion->mScaleCurve.mKeys.end(); )
+        {
+            std::map<F32, LLKeyframeMotion::ScaleKey>::iterator curr_it = it;
+            if ((S32)curr_it->first == si)
+            {
+                found = true;
+                curr_it->second.mScale = joint->getScale();
+
+                LLVector3 scale = joint->getScale();
+                //BD - Should we really be able to get here? The comparison above should already
+                //     prevent ever getting here since a missing selection means we will never
+                //     find a keyframe. I don't trust anything.
+                if (key_item)
+                {
+                    key_item->getColumn(2)->setValue(ll_round(scale.mV[VX], 0.001f));
+                    key_item->getColumn(3)->setValue(ll_round(scale.mV[VY], 0.001f));
+                    key_item->getColumn(4)->setValue(ll_round(scale.mV[VZ], 0.001f));
+                }
+                break;
+            }
+            ++it;
+        }
     }
 
     //BD - We couldn't find a keyframe, create one automatically.
     if (!found)
     {
-        S32 modifier_idx = mModifierTabs->getCurrentPanelIndex();
-
         if (modifier_idx == 0)
         {
             //BD - Create a rotation key and put it into the rotation curve.
