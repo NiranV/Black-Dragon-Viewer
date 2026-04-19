@@ -82,7 +82,7 @@ BOOL LLPanelLogin::sCredentialSet = false;
 
 // Helper functions
 
-bool callback_show_url(const LLSD& notification, const LLSD& response)
+bool callback_show_release_url(const LLSD& notification, const LLSD& response)
 {
     S32 option = LLNotificationsUtil::getSelectedOption(notification, response);
     if (0 == option)
@@ -337,7 +337,7 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
     {
         LL_INFOS() << "Update available!" << LL_ENDL;
         update_str = LLTrans::getString("VIEWER_UPDATE_AVAILABLE");
-        LLNotificationsUtil::add("UpdateAvailable", LLSD(), LLSD(), callback_show_url);
+        LLNotificationsUtil::add("UpdateAvailable", LLSD(), LLSD(), callback_show_release_url);
     }
     else if (result == 0)
     {
