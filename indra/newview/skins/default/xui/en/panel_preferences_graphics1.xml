@@ -1589,7 +1589,7 @@ width="510">
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
 ||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing with temporal reprojection commonly seen in TAA. Less cheap antialiasing than FXAA but more advanced."
-       value="2"
+       value="3"
        name="item2"/>
       <combo_box.drop_down_button
        pad_right="4"
