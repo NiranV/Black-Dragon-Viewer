@@ -115,5 +115,60 @@ width="508"/>
  name="DisableLookAtAnimation"
  top_pad="0"
  width="350" />
- 
+ <check_box
+ control_name="EnableLookAtTarget"
+ height="16"
+ initial_value="false"
+ label="Enable LookAt Target Broacasting"
+ tool_tip="Whether or not to animate the avatar head and send look at targets when moving the cursor or focusing on objects."
+ layout="topleft"
+ left_delta="0"
+ name="EnableLookAtTarget"
+ top_pad="0"
+ width="350" />
+ <check_box
+ control_name="LimitLookAtTarget"
+ height="16"
+ initial_value="false"
+ label="Limit LookAt Target Distance"
+ tool_tip="Whether or not to clamp the look at targets around the avatar head before sending."
+ layout="topleft"
+ left_delta="0"
+ name="LimitLookAtTarget"
+ top_pad="0"
+ width="350" />
+ <slider
+   can_edit_text="true"
+   control_name="LimitLookAtTargetDistance"
+   enabled_control="LimitLookAtTarget"
+   decimal_digits="1"
+   follows="left|top"
+   height="15"
+   increment="0.1"
+   label="Distance (m):"
+   tool_tip="This option controls the distance to limit the look at targets to."
+   initial_value="10"
+   layout="topleft"
+   left="10"
+   max_val="30"
+   min_val="0.1"
+   label_width="150"
+   name="LimitLookAtTargetDistance"
+   top_pad="4"/>
+   <button
+   follows="left|top"
+   control_name="LimitLookAtTargetDistance"
+   height="15"
+   is_toggle="false"
+   label="⌊default⌉"
+   image_selected="PushButton_Default_Off"
+   image_unselected="PushButton_Default_Off"
+   layout="topleft"
+   left="370"
+   top_delta="0"
+   name="default"
+   width="60">
+   <button.commit_callback
+   function="Pref.Default"/>
+   </button>
 </panel>
