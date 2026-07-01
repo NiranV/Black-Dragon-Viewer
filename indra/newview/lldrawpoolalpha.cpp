@@ -198,14 +198,24 @@ void LLDrawPoolAlpha::renderPostDeferred(S32 pass)
     // already being setup for rendering
     LLGLSLShader::unbind();
 
-    if (!LLPipeline::sRenderingHUDs)
+    //BD - Alpha rendering fix ported from AYAStorm.
+    //     Credits: Mayatonton
+    if (!LLPipeline::sRenderingHUDs &&
+        getType() == LLDrawPool::POOL_ALPHA_POST_WATER)
     {
-        // first pass, render rigged objects only and render to depth buffer
-        forwardRender(true);
+        // back-to-front: non-rigged background first, rigged foreground after
+        forwardRender();        // ① non-rigged (Rez Object alpha BLEND)
+        forwardRender(true);    // ② rigged (attachment alpha BLEND) — over the bg
     }
-
-    // second pass, regular forward alpha rendering
-    forwardRender();
+    else
+    {
+        // PRE_WATER / HUD: keep upstream order (water fog integrity).
+        if (!LLPipeline::sRenderingHUDs)
+        {
+            forwardRender(true);
+        }
+        forwardRender();
+    }
 
     // final pass, render to depth for depth of field effects
     if (!LLPipeline::sImpostorRender 
