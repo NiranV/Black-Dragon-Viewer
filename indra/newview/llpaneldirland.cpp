@@ -40,7 +40,7 @@
 #include "llviewermessage.h"
 
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 #include "llfloatersidepanelcontainer.h"
 
 //-----------------------------------------------------------------------------
@@ -69,11 +69,7 @@ bool LLPanelDirLand::postBuild()
     childSetCommitCallback("areacheck", onCommitArea, this);
 
     //BD
-    LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-    if (sidepanel_inventory)
-    {
-        childSetValue("priceedit", sidepanel_inventory->getBalance());
-    }
+    childSetValue("priceedit", gDragonLibrary.getBalance());
     childSetEnabled("priceedit", gSavedSettings.getBOOL("FindLandPrice"));
     LLLineEditor* priceedit = getChild<LLLineEditor>("priceedit");
     priceedit->setPrevalidateInput(LLTextValidate::validateNonNegativeS32);

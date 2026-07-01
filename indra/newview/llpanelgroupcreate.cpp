@@ -40,7 +40,7 @@
 #include "lltexturectrl.h"
 #include "lluictrlfactory.h"
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
 // Viewer includes
 #include "llagentbenefits.h"
@@ -122,7 +122,7 @@ void LLPanelGroupCreate::refreshCreatedGroup(const LLUUID& group_id)
     params["open_tab_name"] = "panel_group_info_sidetray";
     LLFloaterSidePanelContainer::showPanel("people", "panel_group_info_sidetray", params);
 	//BD
-	LLSidepanelInventory::sendMoneyBalanceRequest();
+	BDFunctions::sendMoneyBalanceRequest();
 }
 
 void LLPanelGroupCreate::addMembershipRow(const std::string &name)

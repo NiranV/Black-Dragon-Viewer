@@ -216,7 +216,7 @@
 #endif
 
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 #include "llpanelprofileclassifieds.h"
 #include "bdfunctions.h"
 
@@ -1926,7 +1926,7 @@ bool idle_startup()
         // Get L$ and ownership credit information
         LL_INFOS() << "Requesting Money Balance" << LL_ENDL;
 		//BD
-		LLSidepanelInventory::sendMoneyBalanceRequest();
+		BDFunctions::sendMoneyBalanceRequest();
         do_startup_frame();
 
 		// Inform simulator of our language preference
@@ -2182,8 +2182,8 @@ bool idle_startup()
 		set_startup_status(0.68f, 1.f, LLTrans::getString("InventorySend"), "Creating Inventory Window");
 		do_startup_frame();
 		// Create the inventory views
-		LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
-		LLFloaterReg::getInstance("inventory");
+		//LL_INFOS() << "Creating Inventory Views" << LL_ENDL;
+		//LLFloaterReg::getInstance("inventory");
 
 		LLStartUp::setStartupState( STATE_MISC );
 		do_startup_frame();

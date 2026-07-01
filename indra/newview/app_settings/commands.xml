@@ -79,7 +79,7 @@
   icon="Command_Inventory_Icon"
   label_ref="Command_Inventory_Label"
   tooltip_ref="Command_Inventory_Tooltip"
-  execute_function="Floater.Toggle"
+  execute_function="Floater.NewWindow"
   execute_parameters="inventory"
   is_enabled_function="RLV.EnableIfNot"
   is_enabled_parameters="showinv"

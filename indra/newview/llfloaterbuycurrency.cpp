@@ -43,8 +43,7 @@
 #include "llwindow.h"
 #include "llappviewer.h"
 //BD
-#include "llfloatersidepanelcontainer.h"
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
 static const S32 MINIMUM_BALANCE_AMOUNT = 0;
 
@@ -125,8 +124,7 @@ void LLFloaterBuyCurrencyUI::target(const std::string& name, S32 price)
     }
 
     //BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	S32 balance = sidepanel_inventory->getBalance();
+	S32 balance = gDragonLibrary.getBalance();
     S32 need = price - balance;
     if (need < 0)
     {
@@ -227,8 +225,7 @@ void LLFloaterBuyCurrencyUI::updateUI()
             }
         }
 
-        LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-        S32 balance = sidepanel_inventory->getBalance();
+        S32 balance = gDragonLibrary.getBalance();
         getChildView("balance_label")->setVisible(true);
         getChildView("balance_amount")->setVisible(true);
         getChild<LLUICtrl>("balance_amount")->setTextArg("[AMT]", llformat("%d", balance));
@@ -287,7 +284,7 @@ void LLFloaterBuyCurrencyUI::onClickBuy()
 	updateUI();
 	// Update L$ balance
 	//BD
-	LLSidepanelInventory::sendMoneyBalanceRequest();
+	BDFunctions::sendMoneyBalanceRequest();
 }
 
 void LLFloaterBuyCurrencyUI::onClickCancel()
@@ -295,7 +292,7 @@ void LLFloaterBuyCurrencyUI::onClickCancel()
 	closeFloater();
 	// Update L$ balance
 	//BD
-	LLSidepanelInventory::sendMoneyBalanceRequest();
+	BDFunctions::sendMoneyBalanceRequest();
 }
 
 LLFetchAvatarPaymentInfo* LLFloaterBuyCurrency::sPropertiesRequest = NULL;

@@ -62,6 +62,9 @@
 #include "llresmgr.h"
 #include "llbuycurrencyhtml.h"
 
+//BD
+#include "bdfunctions.h"
+
 static LLPanelInjector<LLSidepanelInventory> t_inventory("sidepanel_inventory");
 
 //
@@ -174,7 +177,8 @@ bool LLSidepanelInventory::postBuild()
         mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
 
         mBoxBalance = getChild<LLTextBox>("balance");
-        mBoxBalance->setClickedCallback(&LLSidepanelInventory::onClickBalance, this);
+        mBoxBalance->setClickedCallback(&BDFunctions::onClickBalance, this);
+        mBoxBalance->setVisible(true);
 
         mPanelMainInventory = mInventoryPanel->getChild<LLPanelMainInventory>("panel_main_inventory");
         mPanelMainInventory->setSelectCallback(boost::bind(&LLSidepanelInventory::onSelectionChange, this, _1, _2));
@@ -250,6 +254,7 @@ bool LLSidepanelInventory::postBuild()
 void LLSidepanelInventory::draw()
 {
     updateItemcountText();
+    setBalance(gDragonLibrary.mBalance);
 
     LLPanel::draw();
 }
@@ -350,8 +355,8 @@ void LLSidepanelInventory::enableInbox(bool enabled)
 
     //BD - Hack, the inbox is a very reliable way of telling whether this is the main inventory
     //     or a new inventory window, make the balance display depent on it.
-    mBoxBalance->setVisible(enabled);
-    getChild<LLUICtrl>("balance_icon")->setVisible(enabled);
+    //mBoxBalance->setVisible(enabled);
+    //getChild<LLUICtrl>("balance_icon")->setVisible(enabled);
 
     if(!enabled || !mPanelMainInventory->isSingleFolderMode())
     {
@@ -670,105 +675,10 @@ void LLSidepanelInventory::updateItemcountText()
 
 void LLSidepanelInventory::setBalance(S32 balance)
 {
-    if (balance > getBalance() && getBalance() != 0)
-    {
-        LLFirstUse::receiveLindens();
-    }
-
     std::string money_str = LLResMgr::getInstance()->getMonetaryString(balance);
 
     LLStringUtil::format_map_t string_args;
     string_args["[AMT]"] = llformat("%s", money_str.c_str());
     std::string label_str = getString("buycurrencylabel", string_args);
     mBoxBalance->setValue(label_str);
-
-    if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
-    {
-        if (mBalance > balance)
-            make_ui_sound("UISndMoneyChangeDown");
-        else
-            make_ui_sound("UISndMoneyChangeUp");
-    }
-
-    if (balance != mBalance)
-    {
-        mBalanceTimer->reset();
-        mBalanceTimer->setTimerExpirySec(0.0f);
-        mBalance = balance;
-    }
-}
-
-
-// static
-void LLSidepanelInventory::sendMoneyBalanceRequest()
-{
-    LLMessageSystem* msg = gMessageSystem;
-    msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
-    msg->nextBlockFast(_PREHASH_AgentData);
-    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-    msg->nextBlockFast(_PREHASH_MoneyData);
-    msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null);
-    gAgent.sendReliableMessage();
-}
-
-//static 
-void LLSidepanelInventory::onClickBalance(void*)
-{
-    // Force a balance request message:
-    LLSidepanelInventory::sendMoneyBalanceRequest();
-    // The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
-}
-
-void LLSidepanelInventory::onClickBuyCurrency()
-{
-    // open a currency floater - actual one open depends on 
-    // value specified in settings.xml
-    LLBuyCurrencyHTML::openCurrencyFloater();
-    LLFirstUse::receiveLindens(false);
-}
-
-void LLSidepanelInventory::setLandCredit(S32 credit)
-{
-    mSquareMetersCredit = credit;
-}
-
-S32 LLSidepanelInventory::getBalance() const
-{
-    return mBalance;
-}
-
-void LLSidepanelInventory::debitBalance(S32 debit)
-{
-    setBalance(getBalance() - debit);
-}
-
-void LLSidepanelInventory::creditBalance(S32 credit)
-{
-    setBalance(getBalance() + credit);
-}
-
-void LLSidepanelInventory::setLandCommitted(S32 committed)
-{
-    mSquareMetersCommitted = committed;
-}
-
-S32 LLSidepanelInventory::getSquareMetersCredit() const
-{
-    return mSquareMetersCredit;
-}
-
-bool LLSidepanelInventory::isUserTiered() const
-{
-    return (mSquareMetersCredit > 0);
-}
-
-S32 LLSidepanelInventory::getSquareMetersCommitted() const
-{
-    return mSquareMetersCommitted;
-}
-
-S32 LLSidepanelInventory::getSquareMetersLeft() const
-{
-    return mSquareMetersCredit - mSquareMetersCommitted;
 }

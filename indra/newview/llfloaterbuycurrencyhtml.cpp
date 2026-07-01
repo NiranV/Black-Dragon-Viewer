@@ -29,7 +29,7 @@
 #include "llfloaterbuycurrencyhtml.h"
 #include "llhttpconstants.h"
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 #include "llfloatersidepanelcontainer.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +79,7 @@ void LLFloaterBuyCurrencyHTML::navigateToFinalURL()
 	codec.str( "" );
 
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	codec << sidepanel_inventory->getBalance();
+	codec << gDragonLibrary.getBalance();
 	replace[ "[BAL]" ] = codec.str();
 
     // message - "This cost L$x,xxx for example
@@ -104,7 +103,7 @@ void LLFloaterBuyCurrencyHTML::handleMediaEvent( LLPluginClassMedia* self, EMedi
         // update currency after we complete a navigation since there are many ways
         // this can result in a different L$ balance
         //BD
-		LLSidepanelInventory::sendMoneyBalanceRequest();
+		BDFunctions::sendMoneyBalanceRequest();
     };
 }
 
@@ -114,7 +113,7 @@ void LLFloaterBuyCurrencyHTML::onClose( bool app_quitting )
 {
 	// Update L$ balance one more time
 	//BD
-	LLSidepanelInventory::sendMoneyBalanceRequest();
+	BDFunctions::sendMoneyBalanceRequest();
 
     destroy();
 }

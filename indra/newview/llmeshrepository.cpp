@@ -81,7 +81,7 @@
 #include "llskinningutil.h"
 
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
 #include "boost/iostreams/device/array.hpp"
 #include "boost/iostreams/stream.hpp"
@@ -6119,7 +6119,7 @@ void on_new_single_inventory_upload_complete(
         // this upload costed us L$, update our balance
         // and display something saying that it cost L$
 		//BD
-		LLSidepanelInventory::sendMoneyBalanceRequest();
+		BDFunctions::sendMoneyBalanceRequest();
 
         LLSD args;
         args["AMOUNT"] = llformat("%d", upload_price);

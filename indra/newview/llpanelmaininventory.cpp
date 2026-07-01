@@ -191,7 +191,7 @@ bool LLPanelMainInventory::postBuild()
         // "All Items" is the previous only view, so it gets the InventorySortOrder
         mAllItemsPanel->setSortOrder(gSavedSettings.getU32(LLInventoryPanel::DEFAULT_SORT_ORDER));
         mAllItemsPanel->getFilter().markDefault();
-        mAllItemsPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
+        //mAllItemsPanel->getRootFolder()->applyFunctorRecursively(*mSavedFolderState);
         mAllItemsPanel->setSelectCallback(boost::bind(&LLPanelMainInventory::onSelectionChange, this, mAllItemsPanel, _1, _2));
         mResortActivePanel = true;
     }

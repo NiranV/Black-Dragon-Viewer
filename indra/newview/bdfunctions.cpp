@@ -28,6 +28,9 @@
 #include "llnotificationsutil.h"
 #include "llnotifications.h"
 #include "llstartup.h"
+#include "llbuycurrencyhtml.h"
+#include "llfloatersidepanelcontainer.h"
+#include "llsidepanelinventory.h"
 
 //BD - Windlight Stuff
 #include "llsettingsbase.h"
@@ -52,7 +55,13 @@ BDFunctions::BDFunctions()
     , mMovementRotationSpeed(0.2f)
     , mUseFreezeWorld(FALSE)
     , mDebugAvatarRezTime(FALSE)
+    , mBalance(0)
+    , mSquareMetersCredit(0)
+    , mSquareMetersCommitted(0)
 {
+
+    //BD
+    mBalanceTimer = new LLFrameTimer();
     mWarningCD.start();
 }
 
@@ -900,4 +909,53 @@ S32 BDFunctions::compareVersions(const std::string& remote, const std::string& l
     }
 
     return 0;
+}
+
+//BD - Balance Stuff
+//=====================================================================================================
+void BDFunctions::setBalance(S32 balance)
+{
+    if (mBalance && (fabs((F32)(mBalance - balance)) > gSavedSettings.getF32("UISndMoneyChangeThreshold")))
+    {
+        if (mBalance > balance)
+            make_ui_sound("UISndMoneyChangeDown");
+        else
+            make_ui_sound("UISndMoneyChangeUp");
+    }
+
+    if (balance != mBalance)
+    {
+        mBalanceTimer->reset();
+        mBalanceTimer->setTimerExpirySec(0.0f);
+        mBalance = balance;
+    }
+}
+
+
+// static
+void BDFunctions::sendMoneyBalanceRequest()
+{
+    LLMessageSystem* msg = gMessageSystem;
+    msg->newMessageFast(_PREHASH_MoneyBalanceRequest);
+    msg->nextBlockFast(_PREHASH_AgentData);
+    msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+    msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    msg->nextBlockFast(_PREHASH_MoneyData);
+    msg->addUUIDFast(_PREHASH_TransactionID, LLUUID::null);
+    gAgent.sendReliableMessage();
+}
+
+//static 
+void BDFunctions::onClickBalance(void*)
+{
+    // Force a balance request message:
+    sendMoneyBalanceRequest();
+    // The refresh of the display (call to setBalance()) will be done by process_money_balance_reply()
+}
+
+void BDFunctions::onClickBuyCurrency()
+{
+    // open a currency floater - actual one open depends on 
+    // value specified in settings.xml
+    LLBuyCurrencyHTML::openCurrencyFloater();
 }

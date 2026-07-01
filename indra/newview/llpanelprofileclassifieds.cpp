@@ -60,7 +60,7 @@
 #include "llviewertexture.h"
 
 //BD
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
  //*TODO: verify this limit
 const S32 MAX_AVATAR_CLASSIFIEDS = 100;
@@ -960,8 +960,7 @@ void LLPanelProfileClassified::onSaveClick()
 	}
 	if (isNew() || isNewWithErrors())
 	{
-		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-		if (sidepanel_inventory->getBalance() < getPriceForListing())
+		if (gDragonLibrary.getBalance() < getPriceForListing())
 		{
 			LLNotificationsUtil::add("ClassifiedInsufficientFunds");
 			return;

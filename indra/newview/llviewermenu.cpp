@@ -152,7 +152,7 @@
 
 //BD
 #include "llfloatersidepanelcontainer.h"
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 #include "llteleporthistory.h"
 #include "llfloaterbuildoptions.h"
 #include "llurlaction.h"
@@ -5643,8 +5643,7 @@ void handle_buy_or_take()
 		S32 total_price = selection_price();
 
 		//BD
-		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-		if (total_price <= sidepanel_inventory->getBalance() || total_price == 0)
+		if (total_price <= gDragonLibrary.getBalance() || total_price == 0)
 		{
 			handle_buy();
 		}
@@ -5800,8 +5799,7 @@ void handle_buy()
     S32 price = sale_info.getSalePrice();
 	
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	if (price > 0 && price > sidepanel_inventory->getBalance())
+	if (price > 0 && price > gDragonLibrary.getBalance())
 	{
 		LLStringUtil::format_map_t args;
 		args["AMOUNT"] = llformat("%d", price);

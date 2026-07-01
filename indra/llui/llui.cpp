@@ -136,6 +136,14 @@ void make_ui_sound(const char* namep)
     }
 }
 
+S32 get_instance_num()
+{
+    static S32 instance_num = 0;
+    instance_num = (instance_num + 1) % S32_MAX;
+
+    return instance_num;
+}
+
 void make_ui_sound_deferred(const char* namep)
 {
     LLUUID soundUUID = find_ui_sound(namep);
@@ -189,6 +197,8 @@ mHelpImpl(NULL)
 
     // Currently unused, but kept for reference:
     reg.add("Button.ToggleFloater", boost::bind(&LLButton::toggleFloaterAndSetToggleState, _1, _2));
+
+    reg.add("Floater.NewWindow", [](LLUICtrl* ctrl, const LLSD& param) -> void { LLFloaterReg::showInstance(param.asStringRef(), get_instance_num(), false); });
 
     // Used by menus along with Floater.Toggle to display visibility as a check-mark
     LLUICtrl::EnableCallbackRegistry::defaultRegistrar().add("Floater.Visible", [](LLUICtrl* ctrl, const LLSD& param) -> bool { return LLFloaterReg::instanceVisible(param.asStringRef(), LLSD()); });

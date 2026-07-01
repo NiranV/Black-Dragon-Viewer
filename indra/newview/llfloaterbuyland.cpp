@@ -63,7 +63,7 @@
 #include "llviewernetwork.h"
 #include "roles_constants.h"
 //BD
-#include "llfloatersidepanelcontainer.h"
+#include "bdfunctions.h"
 #include "llsidepanelinventory.h"
 
 // NOTE: This is duplicated in lldatamoney.cpp ...
@@ -342,9 +342,8 @@ void LLFloaterBuyLandUI::SelectionObserver::changed()
 void LLFloaterBuyLandUI::updateAgentInfo()
 {
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	mAgentCommittedTier = sidepanel_inventory->getSquareMetersCommitted();
-	mAgentCashBalance = sidepanel_inventory->getBalance();
+	mAgentCommittedTier = gDragonLibrary.getSquareMetersCommitted();
+	mAgentCashBalance = gDragonLibrary.getBalance();
 
     // *TODO: This is an approximation, we should send this value down
     // to the viewer. See SL-10728 for details.

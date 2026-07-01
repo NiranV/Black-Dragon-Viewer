@@ -71,19 +71,6 @@ public:
 
 
 	void		setBalance(S32 balance);
-	void		debitBalance(S32 debit);
-	void		creditBalance(S32 credit);
-
-	S32			getBalance() const;
-
-	void setLandCredit(S32 credit);
-	void setLandCommitted(S32 committed);
-
-	bool isUserTiered() const;
-
-	S32 getSquareMetersCommitted() const;
-	S32 getSquareMetersLeft() const;
-	S32 getSquareMetersCredit() const;
 
 	// Request the latest currency balance from the server
 	static void sendMoneyBalanceRequest();

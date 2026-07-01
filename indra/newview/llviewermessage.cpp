@@ -121,6 +121,7 @@
 
 //BD
 #include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
 #include <boost/foreach.hpp>
 
@@ -4494,15 +4495,11 @@ void process_money_balance_reply( LLMessageSystem* msg, void** )
 	msg->getStringFast(_PREHASH_MoneyData, _PREHASH_Description, desc);
 	LL_INFOS("Messaging") << "L$, credit, committed: " << balance << " " << credit << " "
 			<< committed << LL_ENDL;
-    
-	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	if (sidepanel_inventory)
-	{
-		sidepanel_inventory->setBalance(balance);
-		sidepanel_inventory->setLandCredit(credit);
-		sidepanel_inventory->setLandCommitted(committed);
-	}
+
+    //BD - Balance Updates
+    gDragonLibrary.setBalance(balance);
+    gDragonLibrary.setLandCredit(credit);
+    gDragonLibrary.setLandCommitted(committed);
 
 	if (desc.empty()
 		|| !gSavedSettings.getBOOL("NotifyMoneyChange"))

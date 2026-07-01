@@ -55,7 +55,7 @@
 #include "llviewermessage.h"
 
 //BD
-#include "llfloatersidepanelcontainer.h"
+#include "bdfunctions.h"
 #include "llsidepanelinventory.h"
 
 static LLPanelInjector<LLPanelGroupLandMoney> t_panel_group_money("panel_group_land_money");
@@ -312,11 +312,7 @@ bool LLPanelGroupLandMoney::impl::applyContribution()
 	sqm_avail = your_contribution;
 	
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	if(sidepanel_inventory)
-	{
-		sqm_avail += sidepanel_inventory->getSquareMetersLeft();
-	}
+	sqm_avail += gDragonLibrary.getSquareMetersLeft();
 
 	// get new contribution and compare to available
 	S32 new_contribution = atoi(mYourContributionEditorp->getText().c_str());
@@ -613,11 +609,7 @@ void LLPanelGroupLandMoney::activate()
 		//or find better way of distributing up to date land data. - jwolk
 		S32 max_avail = mImplementationp->getStoredContribution();
 		//BD
-		LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-		if(sidepanel_inventory)
-		{
-			max_avail += sidepanel_inventory->getSquareMetersLeft();
-		}
+        max_avail += gDragonLibrary.getSquareMetersLeft();
 		mImplementationp->setYourMaxContributionTextBox(max_avail);
 	}
 

@@ -88,7 +88,7 @@
 //BD
 #include "llfloatersidepanelcontainer.h"
 #include "lliconctrl.h"
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 #include "lltoolbarview.h"
 #include "bdpaneldrawdistance.h"
 //
@@ -579,8 +579,7 @@ void LLStatusBar::onClickMediaToggle(void* data)
 bool can_afford_transaction(S32 cost)
 {
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	return((cost <= 0)||((sidepanel_inventory) && (sidepanel_inventory->getBalance() >=cost)));
+	return((cost <= 0) || (gDragonLibrary.getBalance() >=cost));
 }
 
 void LLStatusBar::onVolumeChanged(const LLSD& newvalue)
@@ -620,7 +619,7 @@ public:
 			&& tokens[0].asString() == "request")
 		{
 			//BD
-			LLSidepanelInventory::sendMoneyBalanceRequest();
+			BDFunctions::sendMoneyBalanceRequest();
 			return true;
 		}
 		return false;

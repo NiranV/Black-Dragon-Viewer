@@ -83,7 +83,7 @@
 #include <boost/tokenizer.hpp>
 
 //BD
-#include "llfloatersidepanelcontainer.h"
+#include "bdfunctions.h"
 #include "llsidepanelinventory.h"
 #include "llsnapshotlivepreview.h"
 
@@ -1312,9 +1312,8 @@ void upload_done_callback(
                 else if(region)
                 {
                     //BD
-					LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
 					// Charge user for upload
-					sidepanel_inventory->debitBalance(expected_upload_cost);
+					gDragonLibrary.debitBalance(expected_upload_cost);
 
                     LLMessageSystem* msg = gMessageSystem;
                     msg->newMessageFast(_PREHASH_MoneyTransferRequest);
@@ -1439,8 +1438,7 @@ void upload_new_resource(
             LLAssetType::AT_ANIMATION == uploadInfo->getAssetType())
 		{
 			//BD
-			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-			S32 balance = sidepanel_inventory->getBalance();
+			S32 balance = gDragonLibrary.getBalance();
 			if (balance < uploadInfo->getExpectedUploadCost())
 			{
 				// insufficient funds, bail on this upload

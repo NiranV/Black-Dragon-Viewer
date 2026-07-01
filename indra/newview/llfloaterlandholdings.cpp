@@ -53,7 +53,7 @@
 #include "llgroupactions.h"
 
 //BD
-#include "llfloatersidepanelcontainer.h"
+#include "bdfunctions.h"
 #include "llsidepanelinventory.h"
 
 const std::string LINDEN_HOMES_SKU = "131";
@@ -350,10 +350,9 @@ void LLFloaterLandHoldings::onGrantList(void* data)
 void LLFloaterLandHoldings::refreshAggregates()
 {
 	//BD
-	LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-	S32 allowed_area = sidepanel_inventory->getSquareMetersCredit();
-	S32 current_area = sidepanel_inventory->getSquareMetersCommitted();
-	S32 available_area = sidepanel_inventory->getSquareMetersLeft();
+	S32 allowed_area = gDragonLibrary.getSquareMetersCredit();
+	S32 current_area = gDragonLibrary.getSquareMetersCommitted();
+	S32 available_area = gDragonLibrary.getSquareMetersLeft();
 
     getChild<LLUICtrl>("allowed_text")->setTextArg("[AREA]", llformat("%d",allowed_area));
     getChild<LLUICtrl>("current_text")->setTextArg("[AREA]", llformat("%d",current_area));

@@ -84,6 +84,30 @@ public:
     std::vector<S32> splitVersion(const std::string& version);
     S32 compareVersions(const std::string& remote, const std::string& local);
 
+//  //BD - Balance Stuff
+    void setBalance(S32 balance);
+    void debitBalance(S32 debit) { setBalance(getBalance() - debit); }
+    void creditBalance(S32 credit) { setBalance(getBalance() + credit); }
+
+    S32 getBalance() const { return mBalance; }
+
+    void setLandCredit(S32 credit) { mSquareMetersCredit = credit; }
+    void setLandCommitted(S32 committed) { mSquareMetersCommitted = committed; }
+
+    bool isUserTiered() const { return (mSquareMetersCredit > 0); }
+
+    S32 getSquareMetersCredit() const { return mSquareMetersCredit; }
+    S32 getSquareMetersCommitted() const { return mSquareMetersCommitted; }
+    S32 getSquareMetersLeft() const { return mSquareMetersCredit - mSquareMetersCommitted; }
+
+    // Request the latest currency balance from the server
+    static void sendMoneyBalanceRequest();
+
+    void onClickBuyCurrency();
+    static void onClickBalance(void* data);
+
+
+
 	bool mCameraOverride;
 
 	LLSD mDefaultSkyPresets;
@@ -103,6 +127,16 @@ public:
 	bool mUseFreezeWorld;
 
 	bool mDebugAvatarRezTime;
+
+    //BD - Balance
+    S32							mBalance;
+    S32							mItemCount;
+    S32							mSquareMetersCredit;
+    S32							mSquareMetersCommitted;
+
+    std::string 				mItemCountString;
+
+    LLFrameTimer* mBalanceTimer;
 };
 
 extern BDFunctions gDragonLibrary;

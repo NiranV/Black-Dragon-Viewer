@@ -54,7 +54,7 @@
 #include "llviewerregion.h"
 
 //BD
-#include "llfloatersidepanelcontainer.h"
+#include "bdfunctions.h"
 #include "llsidepanelinventory.h"
 
 const F64 COVENANT_REFRESH_TIME_SEC = 60.0f;
@@ -655,8 +655,7 @@ void LLPanelPlaceProfile::onForSaleBannerClick()
 			S32 price = parcel->getSalePrice();
 
 			//BD
-			LLSidepanelInventory* sidepanel_inventory = LLFloaterSidePanelContainer::getPanel<LLSidepanelInventory>("inventory");
-			if(price - sidepanel_inventory->getBalance() > 0)
+			if(price - gDragonLibrary.getBalance() > 0)
 			{
 				LLStringUtil::format_map_t args;
 				args["AMOUNT"] = llformat("%d", price);

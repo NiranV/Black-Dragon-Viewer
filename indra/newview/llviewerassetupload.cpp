@@ -55,8 +55,7 @@
 #include "llvoavatarself.h"
 
 //BD
-#include "llfloatersidepanelcontainer.h"
-#include "llsidepanelinventory.h"
+#include "bdfunctions.h"
 
 void dialog_refresh_all();
 
@@ -935,7 +934,7 @@ void LLViewerAssetUpload::AssetInventoryUploadCoproc(LLCoreHttpUtil::HttpCorouti
             // this upload costed us L$, update our balance
             // and display something saying that it cost L$
 			//BD
-			LLSidepanelInventory::sendMoneyBalanceRequest();
+			BDFunctions::sendMoneyBalanceRequest();
 
             LLSD args;
             args["AMOUNT"] = llformat("%d", uploadPrice);
