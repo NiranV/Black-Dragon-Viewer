@@ -181,6 +181,58 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
+     height="169"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Option to hide lookAt broadcasting.
+Added: Options to limit lookAt distance.
+Added: Option to enable HBAO replacing SSAO to Preferences - Display.
+Changed: Workaround Inventory bugs by forcing a new inventory window to be created at all times.
+Changed: Allow Balance to work everywhere in the UI.
+Changed: Show Balance in every Inventory window.
+Changed: Allow Inbox to work and show in every Inventory window.
+Changed: Disable shader cache by default.
+Changed: Tooltip for SMAA TAA to add a warning about its potential graphical glitches.
+Changed: Made improvements to HBAO to allow its blur to scale with shadow blur setting like SSAO.
+Changed: Version 5.6.3.
+Fixed: Implement fix for rigged alpha mesh alpha cutting out static alpha in other objects.
+Fixed: 'Up to date' string being broken.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.6.2
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
      height="78"
      top_pad="3"
      left="7"
