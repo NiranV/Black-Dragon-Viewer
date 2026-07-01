@@ -3542,7 +3542,7 @@ width="510">
 	  follows="top|left|right"
       visibility_control="PrefsDeferredVisible"
 	  layout="topleft"
-	  height="1280"
+	  height="1300"
    background_visible="false"
    bg_alpha_color="0.5 0.2 0.2 0.3"
 	  auto_resize="false"
@@ -5392,6 +5392,22 @@ width="510">
    left="10"
    name="UseSSAO"
    top_pad="7"
+   width="115" />
+   <check_box
+   control_name="RenderDeferredHBAO"
+   enabled_control="RenderDeferredSSAO"
+   height="16"
+   initial_value="true"
+   label="Horizon Based Ambient Occlusion (HBAO)"
+   tool_tip="&lt;b&gt;CPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;GPU:&lt;/b&gt; Medium
+|&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
+|&lt;b&gt;Graphics:&lt;/b&gt; Medium
+||This option toggles Horizon Based Ambient Occlusion (HBAO) emulating indirect lighting and the lack thereof giving objects a more realistic, less flat look."
+   layout="topleft"
+   left="10"
+   name="UseHBAO"
+   top_pad="1"
    width="115" />
      <slider
       decimal_digits="2"
