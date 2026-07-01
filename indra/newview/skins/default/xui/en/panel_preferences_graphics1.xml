@@ -1588,9 +1588,14 @@ width="510">
 |&lt;b&gt;GPU:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Performance:&lt;/b&gt; &lt;green&gt;Low&lt;/green&gt;
 |&lt;b&gt;Graphics:&lt;/b&gt; Medium
-||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing with temporal reprojection commonly seen in TAA. Less cheap antialiasing than FXAA but more advanced."
+||This option enables (S)ubpixel (M)orphological (A)nti(a)liasing with temporal reprojection commonly seen in TAA. Less cheap antialiasing than FXAA but more advanced.
+||&lt;icon&gt;Popup_Caution&lt;/icon&gt;
+|SMAA T2 can cause graphical glitches such as doubled up textures/meshes and weird artifacts."
        value="3"
        name="item2"/>
+       <combo_box.combo_icon
+       default_index="2"
+       warns_index="3"/>
       <combo_box.drop_down_button
        pad_right="4"
        image_unselected="Transparent"
