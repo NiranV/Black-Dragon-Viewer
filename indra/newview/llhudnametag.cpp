@@ -55,13 +55,13 @@
 #include "bdfunctions.h"
 #include "llvoavatar.h"
 
-const F32 SPRING_STRENGTH = 0.7f;
-const F32 HORIZONTAL_PADDING = 16.f;
+const F32 SPRING_STRENGTH = 0.5f;
+const F32 HORIZONTAL_PADDING = 20.f;
 const F32 VERTICAL_PADDING = 12.f;
 const F32 LINE_PADDING = 3.f;           // aka "leading"
 const F32 BUFFER_SIZE = 2.f;
 const S32 NUM_OVERLAP_ITERATIONS = 10;
-const F32 POSITION_DAMPING_TC = 0.01f;
+const F32 POSITION_DAMPING_TC = 0.005f; //BD
 const F32 MAX_STABLE_CAMERA_VELOCITY = 0.1f;
 const F32 LOD_0_SCREEN_COVERAGE = 0.15f;
 const F32 LOD_1_SCREEN_COVERAGE = 0.30f;
@@ -339,10 +339,11 @@ void LLHUDNameTag::renderText()
         mBGImage->draw3D(render_position, x_pixel_vec, y_pixel_vec, label_top_rect, label_top_color);
     }
 
+    //BD - Voice Indicator
     if (voice_enabled)
 	{
 		LLRect voice_ptt_rect = screen_rect;
-		voice_ptt_rect.setLeftTopAndSize(screen_rect.mLeft + 6, screen_rect.mTop - 4, 18, 18);
+		voice_ptt_rect.setLeftTopAndSize(screen_rect.mLeft + 6, screen_rect.mTop - 6, 18, 18);
 		if (is_speaking)
 		{
 			F32 voice_power = voice_client->getCurrentPower(id);
@@ -382,7 +383,7 @@ void LLHUDNameTag::renderText()
 	}*/
 
     F32 y_offset = (F32)mOffsetY;
-
+    LLFontGL::ShadowType shadow   = LLFontGL::DROP_SHADOW;
     // Render label
     {
         for(std::vector<LLHUDTextSegment>::iterator segment_iter = mLabelSegments.begin();
@@ -403,7 +404,7 @@ void LLHUDNameTag::renderText()
             }
 
             LLColor4 label_color(0.f, 0.f, 0.f, alpha_factor);
-            hud_render_text(segment_iter->getText(), render_position, *fontp, segment_iter->mStyle, LLFontGL::NO_SHADOW, x_offset, y_offset, label_color, false);
+            hud_render_text(segment_iter->getText(), render_position, *fontp, segment_iter->mStyle, shadow, x_offset, y_offset, label_color, false);
         }
     }
 
@@ -430,7 +431,6 @@ void LLHUDNameTag::renderText()
             y_offset -= LINE_PADDING;
 
             U8 style = segment_iter->mStyle;
-            LLFontGL::ShadowType shadow = LLFontGL::DROP_SHADOW;
 
             F32 x_offset;
             if (mTextAlignment== ALIGN_TEXT_CENTER)
