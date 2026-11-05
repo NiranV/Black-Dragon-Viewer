@@ -325,10 +325,8 @@ LLPanelLogin::LLPanelLogin(const LLRect &rect,
 
 
     //BD - Fetch latest version.
-    std::string version_str = gDragonLibrary.fetchRemoteVersion();
+    std::string new_version = gDragonLibrary.fetchRemoteVersion();
     std::string update_str = LLTrans::getString("VIEWER_UPDATE_CHECKING");
-    size_t count = version_str.find_first_of("\n\r\t");
-    std::string new_version = version_str.substr(count+1);
 
     S32 result = gDragonLibrary.compareVersions(new_version, local_version);
     LL_INFOS() << "Detected Remote Version: " << new_version << LL_ENDL;

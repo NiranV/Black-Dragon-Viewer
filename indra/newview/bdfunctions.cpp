@@ -842,7 +842,7 @@ std::string BDFunctions::fetchRemoteVersion()
 
     if (curl)
     {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://raw.githubusercontent.com/NiranV/Black-Dragon-Viewer/refs/heads/master/indra/newview/VIEWER_VERSION.txt");
+        curl_easy_setopt(curl, CURLOPT_URL, "https://raw.githubusercontent.com/NiranV/Black-Dragon-Viewer/refs/heads/master/indra/newview/BD_VERSION.txt");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
@@ -855,6 +855,13 @@ std::string BDFunctions::fetchRemoteVersion()
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
         LL_INFOS() << "HTTP Code: " << httpCode << LL_ENDL;
+
+        if (httpCode == 404)
+        {
+            //BD - Uh oh. We didn't get a version, set the version to 0.0.0.
+            //     Assume no update is available.
+            response = "0.0.0";
+        }
 
         if (res != CURLE_OK)
         {
