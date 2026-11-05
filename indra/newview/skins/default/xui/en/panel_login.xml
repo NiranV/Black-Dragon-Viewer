@@ -3784,7 +3784,7 @@ Merge Linden Release. (445 Changes)
  
  <panel
  follows="top|right"
- height="261"
+ height="281"
  background_visible="true"
  visibility_control="ShowSupporters"
  bg_alpha_color="0.0 0.0 0.0 0.55"

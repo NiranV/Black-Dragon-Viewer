@@ -250,16 +250,16 @@ visible="true">
 				visible="false"
 				tab_stop="false" 
 				name="machinima_layout_panel"
-				width="345"
+				width="351"
 				visibility_control="MachinimaSidebar">
 					<panel
 					top="0"
 					follows="top|right|bottom"
 					height="474"
-					left="-345"
+					left="-351"
 					mouse_opaque="false"
 					name="machinima"
-					width="345"/>
+					width="351"/>
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

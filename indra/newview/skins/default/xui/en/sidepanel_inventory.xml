@@ -159,12 +159,12 @@ width="320">
    height="17"
    layout="topleft"
    halign="right"
-   right="-30"
+   right="-26"
    word_wrap="false"
    name="ItemcountText"
-   top="3"
+   top="2"
    width="70">
-       ---
+       1,000,000
    </text>
    <icon 
    scale_image="true"
@@ -173,21 +173,21 @@ width="320">
    color="1 1 1 0.7"
    height="14"
    image_name="Command_PF_Characters_Icon"
-   right="-12"
-   top_delta="-1"
+   right="-10"
+   top_delta="0"
    width="14" />
    <text
 			follows="right|top"
    height="17"
-			visible="false"
+			visible="true"
    layout="topleft"
    halign="right"
-   right="-113"
+   right="-90"
    word_wrap="false"
-   top="3"
-   width="70"
+   top="2"
+   width="76"
    tool_tip="Click to refresh your L$ balance"
-   value="--- L$" 
+   value="1,000,000 L$" 
    name="balance"/>
 			<icon 
    scale_image="true"

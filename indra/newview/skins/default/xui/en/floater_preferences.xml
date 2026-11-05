@@ -254,7 +254,7 @@ width="669">
   <panel
   class="panel_preference"
   filename="panel_preferences_chat.xml"
-  label="Chat &amp; Instant Messages"
+  label="Chat &amp; IM"
   layout="topleft"
   name="chat" />
   <panel
