@@ -218,6 +218,7 @@ width="654">
 					follows="top|left"
 					is_toggle="false"
 					layout="topleft"
+					visible="false"
 					label="Request Posing"
 					image_overlay="Play_Off"
 					image_overlay_selected="Pause_Off"

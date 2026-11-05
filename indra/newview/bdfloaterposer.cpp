@@ -548,7 +548,7 @@ void BDFloaterPoser::onPoseStart()
 	LLVOAvatar* avatar = (LLVOAvatar*)av_item->getUserdata();
 	if (!avatar || avatar->isDead()) return;
 
-    bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
+    bool is_poseable = (avatar->isSelf() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
 	BDPosingMotion* motion = (BDPosingMotion*)avatar->findMotion(ANIM_BD_POSING_MOTION);
 	if ((!motion || motion->isStopped()) && is_poseable)
 	{
@@ -888,7 +888,7 @@ void BDFloaterPoser::onJointControlsRefresh()
 	bool is_pelvis = false;
 	bool is_posing = (avatar->isFullyLoaded() && avatar->getPosing());
     bool is_visual_posing = (is_posing && gSavedSettings.getBOOL("ShowVisualPosingTools"));
-    bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
+    bool is_poseable = (avatar->isSelf() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
 	S32 index = mJointTabs->getCurrentPanelIndex();
     S32 curr_idx = mModifierTabs->getCurrentPanelIndex();
 	LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
@@ -2831,7 +2831,7 @@ void BDFloaterPoser::onAvatarsRefresh()
         create_new = true;
         if (LLVOAvatar* avatar = (LLVOAvatar*)character)
         {
-            bool is_poseable = (avatar->isSelf() || gDragonLibrary.checkKonamiCode() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
+            bool is_poseable = (avatar->isSelf() || avatar->isControlAvatar()) ? true : avatar->getIsPoseable();
             for (LLScrollListItem* av_item : mAvatarScroll->getAllData())
             {
                 if (av_item)
@@ -2936,7 +2936,7 @@ LLVector3 BDFloaterPoser::getJointRot(const std::string& jointName)
     //BD - Rotations are only supported by joints so far, everything
     //     else snaps back instantly.
     LLScrollListItem* item = mJointScrolls[index]->getFirstSelected();
-    if (!item)
+    if (item)
     {
         LLJoint* joint = (LLJoint*)item->getUserdata();
         if (!joint)
