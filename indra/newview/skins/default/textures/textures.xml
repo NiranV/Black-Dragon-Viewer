@@ -876,6 +876,11 @@ with the same filename but different name
 
   <!-- Back Dragon textures-->
 
+  <texture name="Mouse_Icon" file_name="icons/mouse_icon.png" preload="true" />
+  <texture name="Mouse_Middle_Icon" file_name="icons/mouse_middle_icon.png" preload="true" />
+  <texture name="Mouse_Left_Icon" file_name="icons/mouse_left_icon.png" preload="true" />
+  <texture name="Mouse_Right_Icon" file_name="icons/mouse_right_icon.png" preload="true" />
+
   <texture name="Poser_Copy" file_name="icons/Poser_Copy.png" preload="true" />
   <texture name="Poser_Paste" file_name="icons/Poser_Paste.png" preload="true" />
   <texture name="Poser_Recapture" file_name="icons/Poser_Recapture.png" preload="true" />
