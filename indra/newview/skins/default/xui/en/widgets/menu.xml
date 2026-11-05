@@ -2,8 +2,8 @@
 <menu name="menu" 
       bg_color="MenuDefaultBgColor"
       bg_visible="true"
-      drop_shadow="true"
       tear_off="false"
       font="SansSerifSmall" 
+      font_shadow="soft" 
       shortcut_pad="15">
 </menu>
