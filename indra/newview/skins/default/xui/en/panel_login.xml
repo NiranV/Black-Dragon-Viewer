@@ -181,7 +181,67 @@ width="120"/>
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="169"
+     height="294"
+     top_pad="3"
+     left="7"
+     max_length="9999"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="1200"
+     word_wrap="false">
+Added: Several new textures for left, right and middle mouse clicks to be used.
+Added: Mouse icon textures.
+Added: Several third party logo textures.
+Changed: Simplified all font rendering paths, force usage of soft drop shadows everywhere.
+Changed: Direct the update checker to the new version file.
+Changed: Force soft drop shadows for nametags.
+Changed: Tweaked nametag movement.
+Changed: Menu colors and drop shadows to make them a little more readable and fitting to the rest.
+Changed: All fonts for the Viewer from SansSerif to Roboto.
+Changed: Font sizes slightly for better readability.
+Changed: Reverted Toolbar button for Inventory to toggle the main inventory. This reintroduces the rare inventory bug for some people.
+Changed: Version 5.6.4 - Fonted Dragon.
+Fixed: Handle 404 as a failure and assume there is no update available.
+Fixed: (Poser) Request Pose button overlapping on first start.
+Fixed: (Poser) Potentially wrong if condition leading to rotations not being set properly?
+Fixed: Positioning of nametag names.
+Fixed: Positioning of nametag voice indicators.
+Fixed: Several many places in preferences, sidebar, login and inventory where text was clipping due to the new fonts.
+Removed: (Poser) Dev Debug tools as per request.
+Misc: Add Version file to repository.
+Misc: Changed and reverted several attempted inventory fixes and changes that had no effect.
+     </text>
+     <view_border
+     bevel_style="in"
+     follows="top|left"
+     height="1"
+     layout="topleft"
+     left="1"
+     name="cost_text_border"
+     top_pad="10"
+     width="250"/>
+     <text
+     follows="top|left|right"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="14"
+     top_delta="-6"
+     left_pad="3"
+     name="changelog_text"
+     bg_visible="false"
+     bg_writeable_color="Black_50" 
+     width="990"
+     word_wrap="false">
+     5.6.3
+     </text>
+    <text
+     follows="top|left"
+     font="SansSerifSmall"
+     font_shadow="soft"
+     halign="left"
+     height="182"
      top_pad="3"
      left="7"
      max_length="9999"
@@ -233,7 +293,7 @@ Fixed: 'Up to date' string being broken.
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="78"
+     height="84"
      top_pad="3"
      left="7"
      max_length="9999"
@@ -278,7 +338,7 @@ Misc: Merge changes.
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="104"
+     height="112"
      top_pad="3"
      left="7"
      max_length="9999"
@@ -325,7 +385,7 @@ Misc: Push version file update for upcoming update checks.
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="507"
+     height="546"
      top_pad="3"
      left="7"
      max_length="9999"
@@ -403,7 +463,7 @@ Merged Linden Release 2026.02 (~400 changes)
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="336"
+     height="349"
      top_pad="3"
      left="7"
      max_length="9999"
@@ -468,7 +528,7 @@ Removed: Outdated Avatar toolbar button.
      font="SansSerifSmall"
      font_shadow="soft"
      halign="left"
-     height="182"
+     height="195"
      top_pad="3"
      left="7"
      max_length="9999"
