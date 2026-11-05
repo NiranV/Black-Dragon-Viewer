@@ -2,7 +2,7 @@
 <fonts>
 
   <font name="default" comment="default font files (global fallbacks)">
-    <file>DejaVuSans.ttf</file>
+    <file>Roboto-Regular.ttf</file>
     <file functor="is_emoji">TwemojiSVG.ttf</file>
     <os name="Windows">
       <file>meiryo.TTC</file>
@@ -30,7 +30,19 @@
 
   <font name="SansSerifBold"
 	comment="Name of bold sans-serif font">
-    <file>DejaVuSans-Bold.ttf</file>
+    <file>Roboto-ExtraBold.ttf</file>
+    <os name="Windows">
+      <file>arialbd.ttf</file>
+      </os>
+    <os name="Mac">
+      <file>Helvetica.dfont</file>
+      </os>
+  </font>
+
+  <font name="SansSerifPreferences"
+	comment="Name of bold sans-serif font"
+  size="20">
+    <file>Roboto-ExtraBold.ttf</file>
     <os name="Windows">
       <file>arialbd.ttf</file>
       </os>
@@ -40,7 +52,7 @@
   </font>
 
   <font name="SansSerif" comment="Name of san-serif font (Truetype file name)">
-    <file>DejaVuSans.ttf</file>
+    <file>Roboto-SemiBold.ttf</file>
     <os name="Windows">
       <file>arial.ttf</file>
       </os>
@@ -52,19 +64,19 @@
   <font name="SansSerif"
 	comment="Name of bold sans-serif font"
 	font_style="BOLD">
-    <file>DejaVuSans-Bold.ttf</file>
+    <file>Roboto-ExtraBold.ttf</file>
   </font>
 
   <font name="SansSerif"
 	comment="Name of italic sans-serif font"
 	font_style="ITALIC">
-    <file>DejaVuSans-Oblique.ttf</file>
+    <file>Roboto-Italic.ttf</file>
   </font>
 
   <font name="SansSerif"
 	comment="Name of bold italic sans-serif font"
 	font_style="BOLD|ITALIC">
-    <file>DejaVuSans-BoldOblique.ttf</file>
+    <file>Roboto-BoldItalic.ttf</file>
   </font>
 
   <font name="Emoji"
@@ -74,35 +86,35 @@
 
   <font name="Monospace"
 	comment="Name of monospace font">
-    <file>DejaVuSansMono.ttf</file>
+    <file>Roboto-Medium.ttf</file>
   </font>
 
   <font name="DejaVu"
 	comment="Name of DejaVu font">
-    <file>DejaVuSans.ttf</file>
+    <file>Roboto-Regular.ttf</file>
   </font>
 
   <font name="DejaVu"
 	comment="Name of DejaVu font (bold)"
 	font_style="BOLD">
-    <file>DejaVuSans-Bold.ttf</file>
+    <file>Roboto-ExtraBold.ttf</file>
   </font>
 
   <font name="DejaVu"
 	comment="Name of DejaVu font (italic)"
 	font_style="ITALIC">
-    <file>DejaVuSans-Oblique.ttf</file>
+    <file>Roboto-Italic.ttf</file>
   </font>
 
   <font name="DejaVu"
 	comment="Name of DejaVu font (bold italic)"
 	font_style="BOLD|ITALIC">
-    <file>DejaVuSans-BoldOblique.ttf</file>
+    <file>Roboto-BoldItalic.ttf</file>
   </font>
 
   <font name="Helvetica"
 	comment="Name of Helvetica font">
-    <file>DejaVuSans.ttf</file>
+    <file>Roboto-Regular.ttf</file>
     <os name="Windows">
       <file>arial.ttf</file>
       </os>
@@ -114,7 +126,7 @@
   <font name="Helvetica"
 	comment="Name of Helvetica font (bold)"
 	font_style="BOLD">
-    <file>DejaVuSans-Bold.ttf</file>
+    <file>Roboto-ExtraBold.ttf</file>
     <os name="Windows">
       <file>arialbd.ttf</file>
       </os>
@@ -126,7 +138,7 @@
   <font name="Helvetica"
 	comment="Name of Helvetica font (italic)"
 	font_style="ITALIC">
-    <file>DejaVuSans-Oblique.ttf</file>
+    <file>Roboto-Italic.ttf</file>
     <os name="Windows">
       <file>ariali.ttf</file>
       </os>
@@ -138,7 +150,7 @@
   <font name="Helvetica"
 	comment="Name of Helvetica font (bold italic)"
 	font_style="BOLD|ITALIC">
-    <file>DejaVuSans-BoldOblique.ttf</file>
+    <file>Roboto-BoldItalic.ttf</file>
     <os name="Windows">
       <file>arialbi.ttf</file>
       </os>
@@ -150,7 +162,7 @@
   <font name="OverrideTest"
 	comment="Name of font to test overriding">
     <file>times.ttf</file>
-    <file>DejaVuSans.ttf</file>
+    <file>Roboto-Regular.ttf</file>
   </font>
 
   <font_size name="Monospace"
@@ -163,15 +175,15 @@
 	     />
   <font_size name="Large"
 	     comment="Size of large font (points, or 1/72 of an inch)"
-	     size="10.6"
+	     size="12.0"
 	     />
   <font_size name="Medium"
 	     comment="Size of medium font (points, or 1/72 of an inch)"
-	     size="8.6"
+	     size="10.6"
 	     />
   <font_size name="Small"
 	     comment="Size of small font (points, or 1/72 of an inch)"
-	     size="7.6"
+	     size="8.8"
 	     />
   <font_size name="Pie"
 	     comment="Size of pie menu font (points, or 1/72 of an inch)"
@@ -179,7 +191,7 @@
 	     />
   <font_size name="SmallLSL"
          comment="Size of small font for LSL editor (points, or 1/72 of an inch)"
-         size="7"
+         size="8.8"
          />
   <font_size name="HugeLSL"
          comment="Size of huge font for LSL editor (points, or 1/72 of an inch)"
