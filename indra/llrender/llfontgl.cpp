@@ -446,7 +446,7 @@ S32 LLFontGL::render(const LLWString &wstr, S32 begin_offset, F32 x, F32 y, cons
 
 S32 LLFontGL::render(const LLWString &text, S32 begin_offset, F32 x, F32 y, const LLColor4 &color) const
 {
-    return render(text, begin_offset, x, y, color, LEFT, BASELINE, NORMAL, NO_SHADOW);
+    return render(text, begin_offset, x, y, color, LEFT, BASELINE, NORMAL, DROP_SHADOW_SOFT);
 }
 
 S32 LLFontGL::renderUTF8(const std::string &text, S32 begin_offset, F32 x, F32 y, const LLColor4 &color, HAlign halign, VAlign valign, U8 style, ShadowType shadow, S32 max_chars, S32 max_pixels, F32* right_x, bool use_ellipses, bool use_color) const
@@ -456,7 +456,7 @@ S32 LLFontGL::renderUTF8(const std::string &text, S32 begin_offset, F32 x, F32 y
 
 S32 LLFontGL::renderUTF8(const std::string &text, S32 begin_offset, S32 x, S32 y, const LLColor4 &color) const
 {
-    return renderUTF8(text, begin_offset, (F32)x, (F32)y, color, LEFT, BASELINE, NORMAL, NO_SHADOW);
+    return renderUTF8(text, begin_offset, (F32)x, (F32)y, color, LEFT, BASELINE, NORMAL, DROP_SHADOW_SOFT);
 }
 
 S32 LLFontGL::renderUTF8(const std::string &text, S32 begin_offset, S32 x, S32 y, const LLColor4 &color, HAlign halign, VAlign valign, U8 style, ShadowType shadow) const
@@ -1286,53 +1286,8 @@ void LLFontGL::drawGlyph(S32& glyph_count, LLVector4a* vertex_out, LLVector2* uv
     F32 slant_offset;
     slant_offset = ((style & ITALIC) ? ( -mFontFreetype->getAscenderHeight() * 0.2f) : 0.f);
 
-    //FIXME: bold and drop shadow are mutually exclusive only for convenience
-    //Allow both when we need them.
-    if (style & BOLD)
-    {
-        for (S32 pass = 0; pass < 2; pass++)
-        {
-            LLRectf screen_rect_offset = screen_rect;
-
-            screen_rect_offset.translate((F32)(pass * BOLD_OFFSET), 0.f);
-            renderTriangle(&vertex_out[glyph_count * 6], &uv_out[glyph_count * 6], &colors_out[glyph_count * 6], screen_rect_offset, uv_rect, color, slant_offset);
-            glyph_count++;
-        }
-    }
-    else if (shadow == DROP_SHADOW_SOFT)
-    {
-        LLColor4U shadow_color = LLFontGL::sShadowColor;
-        shadow_color.mV[VALPHA] = U8(color.mV[VALPHA] * drop_shadow_strength * DROP_SHADOW_SOFT_STRENGTH);
-        for (S32 pass = 0; pass < 5; pass++)
-        {
-            LLRectf screen_rect_offset = screen_rect;
-
-            switch(pass)
-            {
-            case 0:
-                screen_rect_offset.translate(-1.f, -1.f);
-                break;
-            case 1:
-                screen_rect_offset.translate(1.f, -1.f);
-                break;
-            case 2:
-                screen_rect_offset.translate(1.f, 1.f);
-                break;
-            case 3:
-                screen_rect_offset.translate(-1.f, 1.f);
-                break;
-            case 4:
-                screen_rect_offset.translate(0, -2.f);
-                break;
-            }
-
-            renderTriangle(&vertex_out[glyph_count * 6], &uv_out[glyph_count * 6], &colors_out[glyph_count * 6], screen_rect_offset, uv_rect, shadow_color, slant_offset);
-            glyph_count++;
-        }
-        renderTriangle(&vertex_out[glyph_count * 6], &uv_out[glyph_count * 6], &colors_out[glyph_count * 6], screen_rect, uv_rect, color, slant_offset);
-        glyph_count++;
-    }
-    else if (shadow == DROP_SHADOW)
+    //BD - Soft drop shadows for everything, drop shadows only if we specifically request them.
+    if (shadow == DROP_SHADOW)
     {
         LLColor4U shadow_color = LLFontGL::sShadowColor;
         shadow_color.mV[VALPHA] = U8(color.mV[VALPHA] * drop_shadow_strength);
@@ -1345,6 +1300,33 @@ void LLFontGL::drawGlyph(S32& glyph_count, LLVector4a* vertex_out, LLVector2* uv
     }
     else // normal rendering
     {
+        LLColor4U shadow_color  = LLFontGL::sShadowColor;
+        shadow_color.mV[VALPHA] = U8(color.mV[VALPHA] * drop_shadow_strength * DROP_SHADOW_SOFT_STRENGTH);
+
+        for (S32 pass = 0; pass < 4; pass++)
+        {
+            LLRectf screen_rect_offset = screen_rect;
+
+            switch (pass)
+            {
+                case 0:
+                    screen_rect_offset.translate(-1.f, -1.f);
+                    break;
+                case 1:
+                    screen_rect_offset.translate(1.f, -2.f);
+                    break;
+                case 2:
+                    screen_rect_offset.translate(1.f, 1.f);
+                    break;
+                case 3:
+                    screen_rect_offset.translate(-1.f, 1.f);
+                    break;
+            }
+
+            renderTriangle(&vertex_out[glyph_count * 6], &uv_out[glyph_count * 6], &colors_out[glyph_count * 6], screen_rect_offset,
+                           uv_rect, shadow_color, slant_offset);
+            glyph_count++;
+        }
         renderTriangle(&vertex_out[glyph_count * 6], &uv_out[glyph_count * 6], &colors_out[glyph_count * 6], screen_rect, uv_rect, color, slant_offset);
         glyph_count++;
     }
